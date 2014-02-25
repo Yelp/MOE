@@ -1,7 +1,17 @@
+# Swap files
+*.sw[nop]
+
+# Data files
+*.mat
+
+# OSX crap
+*.DS_Store
+
 # Compiled Object files
 *.slo
 *.lo
 *.o
+*.pyc
 
 # Compiled Dynamic libraries
 *.so
