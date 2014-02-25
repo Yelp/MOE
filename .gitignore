@@ -7,6 +7,9 @@
 # OSX crap
 *.DS_Store
 
+# Python setuptools
+*.egg-info
+
 # Compiled Object files
 *.slo
 *.lo
