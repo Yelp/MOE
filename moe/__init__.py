@@ -9,10 +9,13 @@ def main(global_config, **settings):
     """ This function returns a WSGI application.
     """
     config = Configurator(settings=settings, root_factory=Root)
-    config.add_view('moe.views.my_view',
-                    context='moe:resources.Root',
-                    renderer='moe:templates/mytemplate.pt')
     config.add_static_view('static', 'moe:static')
+
+    # Routes
+    config.add_route('home', '/')
+    config.add_route('docs', '/docs')
+    config.add_route('about', '/about')
+
     # MongoDB
     def add_mongo_db(event):
         settings = event.request.registry.settings
@@ -33,5 +36,5 @@ def main(global_config, **settings):
             )
     config.registry.settings['mongodb_conn'] = conn
     config.add_subscriber(add_mongo_db, NewRequest)
-    config.scan('moe')
+    config.scan()
     return config.make_wsgi_app()
