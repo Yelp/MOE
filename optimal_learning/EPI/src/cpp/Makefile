@@ -2,7 +2,7 @@ include ../../../../OL_ARCH
 #if this does not exist, run "configure" in the root directory
 
 # TODO(eliu): clean up these options: which are needed, what (remaining) is redundant with -O2 (on gcc & icc), etc (#40473)
-CFLAGS_GCC = -std=c++11 -Wold-style-cast -Wnon-virtual-dtor -Wctor-dtor-privacy -Woverloaded-virtual -Wsign-promo -Wundef -Wshadow -Wcast-align -Wzero-as-null-pointer-constant -Wall -Wextra -g -O2 -fopenmp -march=native -fPIC -ftree-vectorize -fomit-frame-pointer -fno-trapping-math -fno-signaling-nans -fno-math-errno #-fassociative-math
+CFLAGS_GCC = -std=c++11 -Wold-style-cast -Wnon-virtual-dtor -Wctor-dtor-privacy -Woverloaded-virtual -Wsign-promo -Wundef -Wshadow -Wcast-align -Wzero-as-null-pointer-constant -Wall -Wextra -g -O2 -fopenmp -fPIC -ftree-vectorize -fomit-frame-pointer -fno-trapping-math -fno-signaling-nans -fno-math-errno #-fassociative-math
 CFLAGS_ICC = $(CFLAGS_GCC)
 #CFLAGS_ICC += -vec-report2 -cxxlib -fstrict-aliasing -alias-const -freorder-blocks -ftz -no-prec-div -no-prec-sqrt -fast-transcendentals -fp-model fast=1 -vec-guard-write -align -finline -restrict -ip -opt-multi-version-aggressive -falign-stack=maintain-16-byte -opt-streaming-stores auto -opt-subscript-in-range
 

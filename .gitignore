@@ -1,5 +1,11 @@
+# Logs
+*.log
+
 # Swap files
 *.sw[nop]
+
+# Configure stuff
+OL_ARCH
 
 # Data files
 *.mat

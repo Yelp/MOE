@@ -14,7 +14,7 @@ Requires:
 4. `boost 1.51+` - http://www.boost.org/users/download/
 5. `pip 1.2.1+` - http://pip.readthedocs.org/en/latest/installing.html
 6. `mongodb 2.4.9+` - http://docs.mongodb.org/manual/installation/
-7. we recommend using a virtualenv http://www.jontourage.com/2011/02/09/virtualenv-pip-basics/
+7. We recommend using a virtualenv http://www.jontourage.com/2011/02/09/virtualenv-pip-basics/
 
 Install:
 
@@ -25,3 +25,26 @@ $ git pull origin master
 $ make
 $ pip install -e .
 $ pserve --reload development.ini
+
+OSX tips:
+
+Download macports - http://www.macports.org/install.php
+
+Getting gcc and boost:
+```bash
+$ sudo port selfupdate
+$ sudo port install gcc47
+$ sudo port select --set gcc mp-gcc47
+$ sudo port install boost
+
+Contributing
+------------
+
+1. Fork it.
+2. Create a branch (`git checkout -b my_moe_branch`)
+3. Commit your changes (`git commit -am "Added Some Mathemagics"`)
+4. Push to the branch (`git push origin my_moe_branch`)
+5. Open a [Pull Request][1]
+6. Optimize locally while you wait
+
+[1]: http://github.com/sc932/MOE/pulls

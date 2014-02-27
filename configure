@@ -1,0 +1,82 @@
+#!/bin/zsh -f
+
+# Configuration file
+export archfile='OL_ARCH'
+
+# Script log file
+export logfile='configure.log'
+if [ -e $logfile ]; then
+    /bin/rm $logfile
+fi
+touch $logfile
+
+# Header
+echo "OptimalLearning configurator for input:" | tee -a $logfile
+echo "         $0:t $argv" | tee -a $logfile
+echo "" | tee -a $logfile
+
+# Set top level directory
+#export topdir=`pwd`
+export topdir=`git rev-parse --show-toplevel`
+echo "Top level directory:  $topdir" | tee -a $logfile
+
+# We need to determine the version of python (leading 2 digits) to determine what libpython library to use.
+# These libraries are named like libpython2.7.a or libpython2.6.so
+# For now, we will set python version according to the currently active interpreter.
+# TODO: Allow user to override this choice with a cmdline option (part of #40473)
+#
+# python -c 'import sys; print(sys.version_info[:])' gets the python version by invoking the python interpreter
+# it produces a tuple, output like: (2, 7, 3, 'final', 0)
+# (tested to work in python 2 and 3)
+# This expression is echo'd so that shell will not try to interpret it as a command (so to string-ify)
+#
+# Then cut -d',' -f 1,2 outputs everything to the left of the first comma and the second comma:
+# (2, 7  <--- 5 characters
+#
+# Then sed 's/(//' replaces all instances open-paren, "(", with nothing:
+# 2, 7
+#
+# Then sed 's/,[[:space:]]*/./' replaces the combination of a comma followed by ANY number of spaces with a . like:
+# 2.7
+#
+# The expression is wrapped in $() so that the interior will be executed before shell attempts to execute "=" (assignment)
+export python_ver=$(echo "$(python -c 'import sys; print(sys.version_info[:])')" | cut -d',' -f 1,2 | sed 's/(//' |sed 's/,[[:space:]]*/./')
+
+#export pythonlib="lpython${python_ver}"
+#echo "python: $python_ver, $pythonlib"
+
+export boost_python='boost_python'
+
+
+export cc='gcc'
+export cxx='g++'
+export copts=''
+export cxxopts=''
+export libs="-L/opt/local/lib -l${boost_python} -lpython${python_ver}"
+export ldopt=''
+export linkopt=''
+export incext=''
+
+export incext="${incext} -I/opt/local/include -I/usr/include/python${python_ver}"
+
+# Write configuration file
+cat >! $archfile <<EOF
+# OptimalLearning configurator.
+#
+# Automatically generated configuration options for OptimalLearning
+#   Input: $0:t $argv
+DEFINE   =
+TOPDIR   = $topdir
+CC       = $cc
+CXX      = $cxx
+COPTS    = $copt
+CXXOPTS  = $cxxopt
+LLIBS    = $libs
+LDOPTS   = $ldopt
+LINKOPTS = $linkopt
+INCEXT = $incext
+PYTHON_VER = $python_ver
+BOOST_PYTHON = $boost_python
+EOF
+
+cp $archfile $topdir
