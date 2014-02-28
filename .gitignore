@@ -3,6 +3,7 @@
 
 # Swap files
 *.sw[nop]
+*~
 
 # Configure stuff
 OL_ARCH

@@ -9,6 +9,12 @@ requires = [
     'pyramid',
     'WebError',
     'pymongo',
+    'testify',
+    'nose',
+    'yolk',
+    'numpy',
+    'scipy',
+    'matplotlib',
     ]
 
 setup(name='MOE',

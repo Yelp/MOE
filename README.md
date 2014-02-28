@@ -30,18 +30,21 @@ OSX tips:
 
 Download macports - http://www.macports.org/install.php
 
-Getting gcc and boost:
+Download xQuartz (needed for X11, needed for matplotlob) - http://xquartz.macosforge.org/landing/
+
+Getting gcc and boost and matplotlib reqs:
 ```bash
 $ sudo port selfupdate
 $ sudo port install gcc47
 $ sudo port select --set gcc mp-gcc47
 $ sudo port install boost
+$ sudo port install py-matplotlib
 
 Contributing
 ------------
 
 1. Fork it.
-2. Create a branch (`git checkout -b my_moe_branch`)
+2. Create a branch (`git checkout -b my_moe_branch`) (make sure to run `make test`)
 3. Commit your changes (`git commit -am "Added Some Mathemagics"`)
 4. Push to the branch (`git push origin my_moe_branch`)
 5. Open a [Pull Request][1]

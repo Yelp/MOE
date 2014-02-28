@@ -8,5 +8,5 @@ production:
 		for SUBDIR in $(SUBDIRS); do if [ -e $$SUBDIR/Makefile ]; then ($(MAKE) -C $$SUBDIR $(MFLAGS)); fi; done
 
 test:
-		$(TESTIFY) tests
+		$(TESTIFY) -v tests
 
