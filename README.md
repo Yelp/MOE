@@ -29,11 +29,11 @@ $ pserve --reload development.ini
 
 OSX tips:
 
-Download macports - http://www.macports.org/install.php
+0. Are you sure you wouldn't rather be running linux?
+1. Download macports - http://www.macports.org/install.php
+2. Download xQuartz (needed for X11, needed for matplotlob) - http://xquartz.macosforge.org/landing/
+3. Getting gcc and boost and matplotlib reqs (before installing MOE):
 
-Download xQuartz (needed for X11, needed for matplotlob) - http://xquartz.macosforge.org/landing/
-
-Getting gcc and boost and matplotlib reqs:
 ```bash
 $ sudo port selfupdate
 $ sudo port install gcc47
@@ -41,6 +41,11 @@ $ sudo port select --set gcc mp-gcc47
 $ sudo port install boost
 $ sudo port install py-matplotlib
 ```
+
+Linux tips:
+
+1. You can apt-get everything you need. Woo real package managers!
+2. Having trouble with matplotlib dependencies? `sudo apt-get python-matplotlib`
 
 Contributing
 ------------
