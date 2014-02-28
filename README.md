@@ -25,6 +25,7 @@ $ git pull origin master
 $ make
 $ pip install -e .
 $ pserve --reload development.ini
+```
 
 OSX tips:
 
@@ -39,6 +40,7 @@ $ sudo port install gcc47
 $ sudo port select --set gcc mp-gcc47
 $ sudo port install boost
 $ sudo port install py-matplotlib
+```
 
 Contributing
 ------------
