@@ -74,6 +74,9 @@ class GaussianProcessTestCase(T.TestCase):
 		will use the values provided in random_normal_values for drawing the points if given need 2 per point
 		see gaussian_process.sample_from_process for details
 		"""
+		if default_sample_variance is None:
+				default_sample_variance = self.default_sample_variance
+
 		for point_on, point_to_sample in enumerate(points_to_sample):
 			# wrap the point in a numpy array
 			point_point = numpy.array(point_to_sample)
