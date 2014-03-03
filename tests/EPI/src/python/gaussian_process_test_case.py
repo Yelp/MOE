@@ -15,7 +15,7 @@ class GaussianProcessTestCase(T.TestCase):
 	default_covariance_signal_variance = 1.0
 	default_covariance_length = [0.5]
 	default_gaussian_process_class = OptimalGaussianProcessLinkedCpp
-	default_sample_variance = 0.001
+	default_sample_variance = 0.01
 	tol = 1e-12 # TODO eliu look into this ticket #43006
 
 	def assert_relatively_equal(self, value_one, value_two, tol=None):
@@ -68,7 +68,7 @@ class GaussianProcessTestCase(T.TestCase):
 			max_number_of_threads=max_number_of_threads,
 			)
 
-	def _sample_points_from_gaussian_process(self, gaussian_process, points_to_sample, random_normal_values=None, extra_gaussian_process=None):
+	def _sample_points_from_gaussian_process(self, gaussian_process, points_to_sample, random_normal_values=None, extra_gaussian_process=None, default_sample_variance=None):
 		"""Samples the points in points_to_sample by drawing them from the gaussian_process
 		and them adding them to gaussian_process, and also to extra_gaussian_process if it is provided
 		will use the values provided in random_normal_values for drawing the points if given need 2 per point
@@ -84,24 +84,23 @@ class GaussianProcessTestCase(T.TestCase):
 				sample_variance_normal = random_normal_values[point_on * 2 + 1]
 			else:
 				random_normal = None
-				sample_variance_normal = None
+				sample_variance_normal = default_sample_variance
 
 			# draw a value from gaussian_process at point_point
 			point_val = gaussian_process.sample_from_process(
 					point_point,
 					random_normal=random_normal,
-					sample_variance_normal=sample_variance_normal
 					)
 
 			# wrap the point in the SamplePoint class
-			sample_point = SamplePoint(point_point, point_val)
+			sample_point = SamplePoint(point_point, point_val, default_sample_variance)
 
 			# add the point to the GPs
 			gaussian_process.add_sample_point(sample_point)
 			if extra_gaussian_process:
 				extra_gaussian_process.add_sample_point(sample_point)
 
-	def _make_random_processes_from_latin_hypercube(self, domain, num_points_in_sample, default_sample_variance=None, covariance_of_process=None):
+	def _make_random_processes_from_latin_hypercube(self, domain, num_points_in_sample, default_sample_variance=None, covariance_of_process=None, default_signal_variance=None):
 		if default_sample_variance is None:
 			default_sample_variance = self.default_sample_variance
 
@@ -109,13 +108,13 @@ class GaussianProcessTestCase(T.TestCase):
 				gaussian_process_class=OptimalGaussianProcessLinkedCpp,
 				domain=domain,
 				covariance_of_process=covariance_of_process,
-				default_sample_variance=default_sample_variance
+				default_sample_variance=default_sample_variance,
 				)
 		python_GP = self._make_default_gaussian_process(
 				gaussian_process_class=OptimalGaussianProcessPython,
 				domain=domain,
 				covariance_of_process=covariance_of_process,
-				default_sample_variance=default_sample_variance
+				default_sample_variance=default_sample_variance,
 				)
 
 		# A num_points_in_sample random latin hypercube points
@@ -125,7 +124,8 @@ class GaussianProcessTestCase(T.TestCase):
 		self._sample_points_from_gaussian_process(
 				gaussian_process=cpp_GP,
 				points_to_sample=stencil_points_to_sample,
-				extra_gaussian_process=python_GP
+				extra_gaussian_process=python_GP,
+				default_sample_variance=default_sample_variance,
 				)
 
 		return cpp_GP, python_GP

@@ -15,6 +15,7 @@ def main(global_config, **settings):
     config.add_route('home', '/')
     config.add_route('docs', '/docs')
     config.add_route('about', '/about')
+    config.add_route('gp_ei', '/gp/ei')
 
     # MongoDB
     def add_mongo_db(event):
