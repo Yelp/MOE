@@ -13,8 +13,7 @@ Requires:
 3. `cmake 2.8.9+` - http://www.cmake.org/cmake/help/install.html
 4. `boost 1.51+` - http://www.boost.org/users/download/
 5. `pip 1.2.1+` - http://pip.readthedocs.org/en/latest/installing.html
-6. `mongodb 2.4.9+` - http://docs.mongodb.org/manual/installation/
-7. We recommend using a virtualenv http://www.jontourage.com/2011/02/09/virtualenv-pip-basics/
+6. We recommend using a virtualenv http://www.jontourage.com/2011/02/09/virtualenv-pip-basics/
 
 Install:
 
