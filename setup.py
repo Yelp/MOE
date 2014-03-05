@@ -10,11 +10,14 @@ requires = [
     'WebError',
     'pymongo',
     'testify',
+    'webtest',
     'nose',
     'yolk',
     'numpy',
     'scipy',
     'matplotlib',
+    'simplejson',
+    'colander',
     ]
 
 setup(name='MOE',

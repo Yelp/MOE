@@ -16,6 +16,7 @@ def main(global_config, **settings):
     config.add_route('docs', '/docs')
     config.add_route('about', '/about')
     config.add_route('gp_ei', '/gp/ei')
+    config.add_route('gp_mean_var', '/gp/mean_var')
 
     # MongoDB
     if settings['use_mongo'] == 'true':
