@@ -1,11 +1,15 @@
 from pyramid.response import Response
 from pyramid.view import view_config
 
-from optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp import OptimalGaussianProcessLinkedCpp
+import simplejson as json
+
+import optimal_learning.EPI.src.cpp.GPP as C_GP
+from optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp import OptimalGaussianProcessLinkedCpp, ExpectedImprovementOptimizationParameters
 from optimal_learning.EPI.src.python.models.covariance_of_process import CovarianceOfProcess
 from optimal_learning.EPI.src.python.models.sample_point import SamplePoint
 
-from moe.schemas import GpMeanVarRequest, GpEiRequest, GpEiResponse, GpMeanVarResponse
+from moe.schemas import GpMeanVarRequest, GpEiRequest, GpEiResponse, GpMeanVarResponse, GpNextPointsEpiRequest, GpNextPointsEpiResponse
+from moe.constant import pretty_default
 
 @view_config(route_name='home', renderer='moe:templates/index.mako')
 def index_page(request):
@@ -25,6 +29,29 @@ def docs_page(request):
             'nav_active': 'docs',
             }
 
+# Pretty inputs
+
+@view_config(route_name='gp_next_points_epi_pretty', renderer='moe:templates/pretty_input.mako')
+def gp_next_points_epi_pretty_view(request):
+    return {
+            'endpoint': 'gp_next_points_epi',
+            'default_text': json.dumps(pretty_default['gp_next_points_epi']),
+            }
+
+@view_config(route_name='gp_ei_pretty', renderer='moe:templates/pretty_input.mako')
+def gp_ei_pretty_view(request):
+    return {
+            'endpoint': 'gp_ei',
+            'default_text': json.dumps(pretty_default['gp_ei']),
+            }
+
+@view_config(route_name='gp_mean_var_pretty', renderer='moe:templates/pretty_input.mako')
+def gp_mean_var_pretty_view(request):
+    return {
+            'endpoint': 'gp_mean_var',
+            'default_text': json.dumps(pretty_default['gp_mean_var']),
+            }
+
 # GP routes
 
 def _make_default_covariance_of_process(signal_variance=None, length=None):
@@ -38,10 +65,7 @@ def _make_default_covariance_of_process(signal_variance=None, length=None):
 def _make_gp_from_gp_info(gp_info):
     """Create and return a C++ backed GP from a gp_info dict
 
-    gp_info has the following form:
-    gp_info = {
-        ...
-        }
+    gp_info has the form of GpInfo in moe/schemas.py
 
     """
     # Load up the info
@@ -70,6 +94,57 @@ def _make_gp_from_gp_info(gp_info):
         GP.add_sample_point(sample_point, point['value_var'])
 
     return GP
+
+@view_config(route_name='gp_next_points_epi', renderer='json', request_method='POST')
+def gp_next_points_epi_view(request):
+    params_schema = GpNextPointsEpiRequest()
+    params = params_schema.deserialize(request.json_body)
+
+    num_samples_to_generate = params.get('num_samples_to_generate')
+    gp_info = params.get('gp_info')
+
+    GP = _make_gp_from_gp_info(gp_info)
+
+    
+    num_multistarts=5
+    gd_iterations=1000
+    max_num_restarts=3
+    gamma=0.9
+    pre_mult=1.0
+    mc_iterations=1000
+    max_relative_change=1.0
+    tolerance=1.0e-7
+
+    ei_optimization_parameters = ExpectedImprovementOptimizationParameters(
+            domain_type=C_GP.DomainTypes.tensor_product,
+            optimizer_type=C_GP.OptimizerTypes.gradient_descent,
+            num_random_samples=0,
+            optimizer_parameters=C_GP.GradientDescentParameters(
+                num_multistarts,
+                gd_iterations,
+                max_num_restarts,
+                gamma,
+                pre_mult,
+                max_relative_change,
+                tolerance,
+                ),
+            )
+    next_points = GP.multistart_expected_improvement_optimization(
+            ei_optimization_parameters,
+            num_samples_to_generate,
+            )
+    expected_improvement = GP.evaluate_expected_improvement_at_point_list(next_points)
+
+    json_points_to_sample = list([list(row) for row in next_points])
+
+    resp_schema = GpNextPointsEpiResponse()
+    resp = resp_schema.serialize({
+            'endpoint': 'gp_next_points_epi',
+            'points_to_sample': json_points_to_sample,
+            'expected_improvement': list(expected_improvement),
+            })
+
+    return resp
 
 @view_config(route_name='gp_mean_var', renderer='json', request_method='POST')
 def gp_mean_var_view(request):

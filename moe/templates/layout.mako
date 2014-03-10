@@ -11,6 +11,7 @@
   <!-- bootstrap -->
   <link rel="stylesheet" href="${request.static_url('moe:static/css/bootstrap.css')}" />
   <link rel="script" href="${request.static_url('moe:static/js/bootstrap.js')}" />
+  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
   <!-- font-awesome -->
   <link rel="stylesheet" href="${request.static_url('moe:static/css/font-awesome.min.css')}" />
   <!-- d3 -->

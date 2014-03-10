@@ -24,12 +24,12 @@ class ClosedInterval(collections.namedtuple('ClosedInterval', ['min', 'max'])):
 
 class ExpectedImprovementOptimizationParameters(object):
 	__slots__ = ('domain_type', 'optimizer_type', 'num_random_samples', 'optimizer_parameters', )
-	def __init__(self):
+	def __init__(self, domain_type=None, optimizer_type=None, num_random_samples=None, optimizer_parameters=None):
 		# see gpp_python.cpp for .*_type enum definitions. .*_type variables must be from those enums (NOT integers)
-		self.domain_type = None
-		self.optimizer_type = None
-		self.num_random_samples = None # number of samples to 'dumb' search over
-		self.optimizer_parameters = None # must match the optimizer_type
+		self.domain_type = domain_type
+		self.optimizer_type = optimizer_type
+		self.num_random_samples = num_random_samples # number of samples to 'dumb' search over
+		self.optimizer_parameters = optimizer_parameters # must match the optimizer_type
 		# NOTE: need both num_random_samples AND optimizer_parameters if generating > 1 sample
 		# using gradient descent optimization
 		# NOTE: this is a temporary class. when OptimalGaussianProcessLinkedCpp.get_multistart_best() is deleted,
