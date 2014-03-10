@@ -17,7 +17,7 @@ echo "" | tee -a $logfile
 
 # Set top level directory
 #export topdir=`pwd`
-export topdir=`git rev-parse --show-toplevel`
+export topdir="`git rev-parse --show-toplevel`"
 echo "Top level directory:  $topdir" | tee -a $logfile
 
 # We need to determine the version of python (leading 2 digits) to determine what libpython library to use.
