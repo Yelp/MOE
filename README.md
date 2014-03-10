@@ -21,6 +21,7 @@ Install:
 $ git clone https://github.com/sc932/MOE.git
 $ cd MOE
 $ git pull origin master
+$ ./configure
 $ make
 $ pip install -e .
 $ pserve --reload development.ini
