@@ -31,6 +31,13 @@ class GpMeanVarRequest(colander.MappingSchema):
     points_to_sample = ListOfPointsInDomain()
     gp_info = GpInfo()
 
+class GpNextPointsEpiRequest(colander.MappingSchema):
+    num_samples_to_generate = colander.SchemaNode(
+            colander.Int(),
+            validator=colander.Range(min=1),
+            )
+    gp_info = GpInfo()
+
 class GpEiRequest(colander.MappingSchema):
     points_to_evaluate = ListOfPointsInDomain()
     points_being_sampled = ListOfPointsInDomain()
@@ -45,6 +52,11 @@ class ListOfExpectedImprovements(colander.SequenceSchema):
             colander.Float(),
             validator=colander.Range(min=0),
             )
+
+class GpNextPointsEpiResponse(colander.MappingSchema):
+    endpoint = colander.SchemaNode(colander.String())
+    points_to_sample = ListOfPointsInDomain()
+    expected_improvement = ListOfExpectedImprovements()
 
 class GpEiResponse(colander.MappingSchema):
     endpoint = colander.SchemaNode(colander.String())

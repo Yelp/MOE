@@ -4,8 +4,10 @@ import simplejson as json
 
 from tests.EPI.src.python.gaussian_process_test_case import GaussianProcessTestCase
 from optimal_learning.EPI.src.python.lib.math import get_latin_hypercube_points
+from optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp import ExpectedImprovementOptimizationParameters
+import optimal_learning.EPI.src.cpp.GPP as C_GP
 
-from moe.schemas import GpEiResponse, GpMeanVarResponse
+from moe.schemas import GpEiResponse, GpMeanVarResponse, GpNextPointsEpiResponse
 
 class RestGaussianProcessTestCase(GaussianProcessTestCase):
 
@@ -92,6 +94,87 @@ class TestGpMeanVarView(RestGaussianProcessTestCase):
 
             self.assert_lists_relatively_equal(rest_mean, cpp_mean, tol=1e-11)
             self.assert_matrix_relatively_equal(rest_var, cpp_var, tol=1e-11)
+
+class TestGpNextPointsEiView(RestGaussianProcessTestCase):
+
+    """Test that the /gp/ei endpoint does the same thing as the C++ interface."""
+
+    domain_1d = [[0,1]]
+    domain_2d = [[0,1],[0,1]]
+    domain_3d = [[0,1],[0,1],[0,1]]
+    test_cases = [
+            {
+                'domain': domain_1d,
+                'num_samples_to_generate': 1,
+                'num_points_in_sample': 10,
+                },
+            {
+                'domain': domain_2d,
+                'num_samples_to_generate': 1,
+                'num_points_in_sample': 10,
+                },
+            {
+                'domain': domain_3d,
+                'num_samples_to_generate': 1,
+                'num_points_in_sample': 10,
+                },
+            ]
+
+    def _build_json_payload(self, GP, num_samples_to_generate):
+        """Create a json_payload to POST to the /gp/next_points/epi endpoint with all needed info."""
+        json_payload = json.dumps({
+            'num_samples_to_generate': num_samples_to_generate,
+            'gp_info': self._build_gp_info(GP),
+            })
+        return json_payload
+
+    def test_interface_returns_same_as_cpp(self):
+        """Test that the /gp/next_points/epi endpoint does the same thing as the C++ interface."""
+        for test_case in self.test_cases:
+            num_points_in_sample = test_case['num_points_in_sample']
+            num_samples_to_generate = test_case['num_samples_to_generate']
+            domain = test_case['domain']
+
+            GP, _ = self._make_random_processes_from_latin_hypercube(domain, num_points_in_sample)
+            # Next points from C++
+            num_multistarts=5
+            gd_iterations=1000
+            max_num_restarts=3
+            gamma=0.9
+            pre_mult=1.0
+            mc_iterations=1000
+            max_relative_change=1.0
+            tolerance=1.0e-7
+
+            ei_optimization_parameters = ExpectedImprovementOptimizationParameters(
+                    domain_type=C_GP.DomainTypes.tensor_product,
+                    optimizer_type=C_GP.OptimizerTypes.gradient_descent,
+                    num_random_samples=0,
+                    optimizer_parameters=C_GP.GradientDescentParameters(
+                        num_multistarts,
+                        gd_iterations,
+                        max_num_restarts,
+                        gamma,
+                        pre_mult,
+                        max_relative_change,
+                        tolerance,
+                        ),
+                    )
+            next_points = GP.multistart_expected_improvement_optimization(
+                    ei_optimization_parameters,
+                    num_samples_to_generate,
+                    )
+
+            # Next point from REST
+            json_payload = self._build_json_payload(GP, num_samples_to_generate)
+            resp = self.testapp.post('/gp/next_points/epi', json_payload)
+            resp_schema = GpNextPointsEpiResponse()
+            resp_dict = resp_schema.deserialize(json.loads(resp.body))
+            T.assert_in('points_to_sample', resp_dict)
+            T.assert_in('expected_improvement', resp_dict)
+
+            for ei in resp_dict['expected_improvement']:
+                T.assert_gte(ei, 0.0)
 
 class TestGpEiView(RestGaussianProcessTestCase):
 
