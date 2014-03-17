@@ -3,6 +3,10 @@ MOE
 
 Metric Optimization Engine.
 
+[Full documentation here.][2]
+
+[2]: http://sc932.github.io/MOE/
+
 Install
 -------
 
