@@ -37,3 +37,4 @@ doc/_*
 doc/xml/*
 doc/latex/*
 doc/html/*
+doc/.doctrees/*
