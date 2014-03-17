@@ -20,6 +20,9 @@
 #ifndef OPTIMAL_LEARNING_EPI_SRC_CPP_GPP_GEOMETRY_HPP_
 #define OPTIMAL_LEARNING_EPI_SRC_CPP_GPP_GEOMETRY_HPP_
 
+namespace optimal_learning_gpp_geometry_hpp {
+}
+
 #include <limits>
 #include <vector>
 
@@ -183,8 +186,8 @@ inline OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT double OrthogonalDistanceToPlan
     :dim: number of spatial dimensions
     :point[dim]: point to project onto plane
 
-  \return
-    point[dim]: point projected onto plane
+  \output
+    :point[dim]: point projected onto plane
 \endrst*/
 inline OL_NONNULL_POINTERS void OrthogonalProjectionOntoPlane(double const * restrict plane, int dim, double * restrict point) noexcept {
   // formula: let d be the orthogonal, signed distance from point to plane (where + means the point lies in the half-space
