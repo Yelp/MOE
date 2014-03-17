@@ -31,3 +31,7 @@ OL_ARCH
 *.lai
 *.la
 *.a
+
+# built doc files
+doc/_*
+doc/xml/*
