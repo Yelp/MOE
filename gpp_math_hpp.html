@@ -59,19 +59,9 @@
 <h1>gpp_math.hpp<a class="headerlink" href="#gpp-math-hpp" title="Permalink to this headline">¶</a></h1>
 <p></p>
 <p></p>
-<p><p id="project0namespaceoptimal__learning"><em>namespace</em> <strong>optimal_learning</strong></p>
+<p><p id="project0namespaceoptimal__learning__gpp__math__hpp"><em>namespace</em> <strong>optimal_learning_gpp_math_hpp</strong></p>
 <blockquote>
 <div><p></p>
-<p><p><p>This file contains utilities for some simple problems in n-dimensional computational geometry.  For example,
-(orthogonal) distance from point to plane, point projection, hypercube/simplex intersection, etc.</p>
-<p>Unless indicated otherwise, we will specify a plane in dim-space by dim + 1 numbers.  The equation of plane is:</p>
-<p><span class="math">\(\, a_0 + \sum_i n_i * x_i = 0, i = 1..dim\)</span></p>
-<p>Hence we can describe any plane as: <span class="math">\(\, [n_1, n_2, ..., n_{dim}, a_0]\)</span></p>
-<p>Here, <span class="math">\(\, n_{vec} = [n_1, ..., n_{dim}]\)</span> is the (outward) normal vector.</p>
-<p>By convention, <span class="math">\(\, ||n_{vec}||_2 = 1\)</span> (UNIT normal).</p>
-<p>Recall that a plane is fully specified by a point <span class="math">\(\, r_0\)</span> and a normal vector <span class="math">\(\, n_{vec}\)</span>. Then a point r is in the plane
-if and only if <span class="math">\(\, (r-r_0) \cdot n_{vec} = 0\)</span>. Since <span class="math">\(\, r_0\)</span> is constant, we can precompute and store <span class="math">\(\, r_0 \cdot n_{vec} = -a_0\)</span>.</p>
-</p>
 <p><p>These comments are quite long; here&#8217;s a table of contents:</p>
 <ol class="arabic simple">
 <li>OVERVIEW OF GAUSSIAN PROCESSES AND EXPECTED IMPROVEMENT; WHAT ARE WE TRYING TO DO?</li>
@@ -233,7 +223,12 @@ Efficient Global Optimization of Expensive Black-Box Functions
 Jones, D.R., Schonlau, M., Welch, W.J. 1998.
 Journal of Global Optimization, 13, 455-492.</p>
  </p>
+</div></blockquote>
 </p>
+<p><p id="project0namespaceoptimal__learning"><em>namespace</em> <strong>optimal_learning</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
 <em>Functions</em><blockquote>
 <div><p><span class="target" id="project0namespaceoptimal__learning_1a349b2b417f39d01939fcfdfcff8d1326"></span><div class="line-block">
 <div class="line">OL_NONNULL_POINTERS void <strong>SetupExpectedImprovementState</strong>(const  <a class="reference internal" href="#project0classoptimal__learning_1_1_one_potential_sample_expected_improvement_evaluator"><em>OnePotentialSampleExpectedImprovementEvaluator</em></a>  &amp; ei_evaluator, double const *restrict starting_point, int max_num_threads, bool configure_for_gradients, std::vector&lt; typename  <a class="reference internal" href="#project0structoptimal__learning_1_1_one_potential_sample_expected_improvement_state"><em>OnePotentialSampleExpectedImprovementEvaluator::StateType</em></a>  &gt; * state_vector)</div>
@@ -268,7 +263,7 @@ Journal of Global Optimization, 13, 455-492.</p>
 </table>
 </div></blockquote>
 <dl class="docutils">
-<dt><strong>Returns</strong>:</dt>
+<dt><strong>Outputs</strong>:</dt>
 <dd>state_vector[max_num_threads]: vector of states containing max_num_threads properly initialized state objects</dd>
 </dl>
  </p>
@@ -330,7 +325,7 @@ sure if there&#8217;s a nicer way to template-fu this.</p>
 </tbody>
 </table>
 </dd>
-<dt><strong>Returns</strong>:</dt>
+<dt><strong>Outputs</strong>:</dt>
 <dd>state_vector[max_num_threads]: vector of states containing max_num_threads properly initialized state objects</dd>
 </dl>
  </p>
@@ -381,7 +376,7 @@ local optima (i.e., the gradient may be substantially nonzero).</p>
 </tbody>
 </table>
 </dd>
-<dt><strong>Returns</strong>:</dt>
+<dt><strong>Outputs</strong>:</dt>
 <dd>normal_rng[1]: NormalRNG object will have its state changed due to random draws
 next_point[dim]: point yielding the best EI according to gradient descent</dd>
 </dl>
@@ -447,7 +442,7 @@ of iterations, tolerances, learning rate)</td>
 max_num_threads: maximum number of threads for use by OpenMP (generally should be &lt;= # cores)
 normal_rng[max_num_threads]: a vector of NormalRNG objects that provide the (pesudo)random source for MC integration</p>
 </dd>
-<dt><strong>Returns</strong>:</dt>
+<dt><strong>Outputs</strong>:</dt>
 <dd>normal_rng[max_num_threads]: NormalRNG objects will have their state changed due to random draws
 found_flag[1]: true if best_next_point corresponds to a nonzero EI
 best_next_point[dim]: point yielding the best EI according to MGD</dd>
@@ -524,7 +519,7 @@ of iterations, tolerances, learning rate)</td>
 </tbody>
 </table>
 </dd>
-<dt><strong>Returns</strong>:</dt>
+<dt><strong>Outputs</strong>:</dt>
 <dd>found_flag[1]: true if best_next_point corresponds to a nonzero EI
 uniform_generator[1]:UniformRandomGenerator object will have its state changed due to random draws
 normal_rng[max_num_threads]: NormalRNG objects will have their state changed due to random draws
@@ -562,7 +557,7 @@ max_int_steps: maximum number of MC iterations
 max_num_threads: maximum number of threads for use by OpenMP (generally should be &lt;= # cores)
 normal_rng[max_num_threads]: a vector of NormalRNG objects that provide the (pesudo)random source for MC integration</p>
 </dd>
-<dt><strong>Returns</strong>:</dt>
+<dt><strong>Outputs</strong>:</dt>
 <dd>found_flag[1]: true if best_next_point corresponds to a nonzero EI
 normal_rng[max_num_threads]: NormalRNG objects will have their state changed due to random draws
 function_values[num_multistarts]: EI evaluated at each point of initial_guesses, in the same order as initial_guesses; never dereferenced if nullptr
@@ -599,7 +594,7 @@ max_num_threads: maximum number of threads for use by OpenMP (generally should b
 uniform_generator[1]: a UniformRandomGenerator object providing the random engine for uniform random numbers
 normal_rng[max_num_threads]: a vector of NormalRNG objects that provide the (pesudo)random source for MC integration</p>
 </dd>
-<dt><strong>Returns</strong>:</dt>
+<dt><strong>Outputs</strong>:</dt>
 <dd>found_flag[1]: true if best_next_point corresponds to a nonzero EI
 uniform_generator[1]: UniformRandomGenerator object will have its state changed due to random draws
 normal_rng[max_num_threads]: NormalRNG objects will have their state changed due to random draws
@@ -665,7 +660,7 @@ PointsToSampleState::SetupState() which interacts with functions in this class.<
 <div><p></p>
 <p><p>Constructs a GaussianProcess object.  All inputs are required; no default constructor nor copy/assignment are allowed.</p>
 <dl class="docutils">
-<dt>params</dt>
+<dt><strong>Parameters</strong>:</dt>
 <dd><table class="first last docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -716,7 +711,7 @@ PointsToSampleState::SetupState() which interacts with functions in this class.<
 <p><p>Change the hyperparameters of this GP&#8217;s covariance function.
 Also forces recomputation of all derived quantities for GP to remain consistent.</p>
 <dl class="docutils">
-<dt>params</dt>
+<dt><strong>Parameters</strong>:</dt>
 <dd><table class="first last docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -740,7 +735,7 @@ Also forces recomputation of all derived quantities for GP to remain consistent.
 ASSUMES all needed space is ALREADY ALLOCATED.</p>
 <p>This function should not be called directly; instead use PointsToSampleState::SetupState().</p>
 <dl class="docutils">
-<dt>params</dt>
+<dt><strong>Parameters</strong>:</dt>
 <dd><table class="first last docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -754,8 +749,17 @@ ASSUMES all needed space is ALREADY ALLOCATED.</p>
 </tbody>
 </table>
 </dd>
-<dt><strong>Returns</strong>:</dt>
-<dd>points_to_sample_state[1]: pointer to a fully configured PointsToSampleState object. overwrites input</dd>
+<dt><strong>Outputs</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">points_to_sample_state[1]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">pointer to a fully configured PointsToSampleState object. overwrites input</td>
+</tr>
+</tbody>
+</table>
+</dd>
 </dl>
  </p>
 </div></blockquote>
@@ -768,7 +772,7 @@ ASSUMES all needed space is ALREADY ALLOCATED.</p>
 <p><p>Adds a single (point, fcn value) pair to the GP with the option of noise variance (set to 0.0 if undesired).</p>
 <p>Also forces recomputation of all derived quantities for GP to remain consistent.</p>
 <dl class="docutils">
-<dt>params</dt>
+<dt><strong>Parameters</strong>:</dt>
 <dd><table class="first last docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -798,7 +802,7 @@ ASSUMES all needed space is ALREADY ALLOCATED.</p>
 BUT if the drawn (point, value) pair is meant to be added back into the GP (e.g., for testing), then this point
 MUST be drawn with noise_variance equal to the noise associated with &#8220;point&#8221; as a member of &#8220;points_sampled&#8221;</p>
 <dl class="docutils">
-<dt>params</dt>
+<dt><strong>Parameters</strong>:</dt>
 <dd><table class="first last docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -839,7 +843,7 @@ No inputs may be nullptr.</p>
 </tbody>
 </table>
 </dd>
-<dt><strong>Returns</strong>:</dt>
+<dt><strong>Outputs</strong>:</dt>
 <dd><table class="first last docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -868,7 +872,7 @@ However, for <cite>0 &lt;= i, j &lt; num_to_sample, i != j, grad_mu[d][i][j] = 0
 (See sources or implementation for further details.)
 Thus, grad_mu is stored in a reduced form which only tracks the nonzero entries.</p>
 <dl class="docutils">
-<dt>params</dt>
+<dt><strong>Parameters</strong>:</dt>
 <dd><table class="first last docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -879,7 +883,7 @@ Thus, grad_mu is stored in a reduced form which only tracks the nonzero entries.
 </tbody>
 </table>
 </dd>
-<dt><strong>Returns</strong>:</dt>
+<dt><strong>Outputs</strong>:</dt>
 <dd><table class="first docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -907,10 +911,10 @@ points_to_sample and points_sampled are not allowed to contain duplicates either
 themselves or with each other.  Violating this results in undefined behavior.
 No inputs may be nullptr.</p>
 <dl class="docutils">
-<dt>params</dt>
-<dd>points_to_sample_state[1]: ptr to a FULLY CONFIGURED PointsToSampleState (configure via PointsToSampleState::SetupState)
-<strong>Returns</strong>:
-points_to_sample_state[1]: ptr to a FULLY CONFIGURED PointsToSampleState; only temporary state may be mutated
+<dt><strong>Parameters</strong>:</dt>
+<dd>points_to_sample_state[1]: ptr to a FULLY CONFIGURED PointsToSampleState (configure via PointsToSampleState::SetupState)</dd>
+<dt><strong>Outputs</strong>:</dt>
+<dd>points_to_sample_state[1]: ptr to a FULLY CONFIGURED PointsToSampleState; only temporary state may be mutated
 var_star[num_to_sample][num_to_sample]: variance of GP</dd>
 </dl>
  </p>
@@ -947,12 +951,23 @@ thus only grad_chol[d][i][j] is formed with k (var_of_grad) as an input paramete
 <dt><strong>Parameters</strong>:</dt>
 <dd>points_to_sample_state[1]: ptr to a FULLY CONFIGURED PointsToSampleState (configure via PointsToSampleState::SetupState)
 var_of_grad: index of points_to_sample in {0, .. num_to_sample-1} to be differentiated against</dd>
-<dt><strong>Returns</strong>:</dt>
-<dd>points_to_sample_state[1]: ptr to a FULLY CONFIGURED PointsToSampleState; only temporary state may be mutated
-grad_chol[dim][num_to_sample][num_to_sample]: gradient of the cholesky-factored
+<dt><strong>Outputs</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">points_to_sample_state[1]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">ptr to a FULLY CONFIGURED PointsToSampleState; only temporary state may be mutated</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">grad_chol[dim][num_to_sample][num_to_sample]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">gradient of the cholesky-factored
 variance of the GP.  grad_chol[d][i][j] is actually the gradients of var_{i,j} with
 respect to x_{d,k}, the d-th dimension of the k-th entry of points_to_sample, where
-k = var_of_grad</dd>
+k = var_of_grad</td>
+</tr>
+</tbody>
+</table>
+</dd>
 </dl>
  </p>
 </div></blockquote>
@@ -966,7 +981,15 @@ k = var_of_grad</dd>
 See gpp_random, struct NormalRNG for details.</p>
 <dl class="docutils">
 <dt><strong>Parameters</strong>:</dt>
-<dd>seed: new seed to set</dd>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">seed:</th><td class="field-body">new seed to set</td>
+</tr>
+</tbody>
+</table>
+</dd>
 </dl>
  </p>
 </div></blockquote>
@@ -981,7 +1004,15 @@ current time, and potentially other factors.
 See gpp_random, struct NormalRNG for details.</p>
 <dl class="docutils">
 <dt><strong>Parameters</strong>:</dt>
-<dd>seed: base value for new seed</dd>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">seed:</th><td class="field-body">base value for new seed</td>
+</tr>
+</tbody>
+</table>
+</dd>
 </dl>
  </p>
 </div></blockquote>
@@ -1317,10 +1348,27 @@ at points_to_sample.</p>
 <p>In general, the EI expression is complex and difficult to evaluate; hence we use Monte-Carlo simulation to approximate it.</p>
 <dl class="docutils">
 <dt><strong>Parameters</strong>:</dt>
-<dd>ei_state[1]: properly configured state object</dd>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">ei_state[1]:</th><td class="field-body">properly configured state object</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Outputs</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">ei_state[1]:</th><td class="field-body">state with temporary storage modified; normal_rng modified</td>
+</tr>
+</tbody>
+</table>
+</dd>
 <dt><strong>Returns</strong>:</dt>
-<dd>ei_state[1]: state with temporary storage modified; normal_rng modified
-the expected improvement from sampling points_to_sample</dd>
+<dd>the expected improvement from sampling points_to_sample</dd>
 </dl>
  </p>
 </div></blockquote>
@@ -1337,7 +1385,7 @@ Monte-Carlo simulation to approximate it.</p>
 <dl class="docutils">
 <dt><strong>Parameters</strong>:</dt>
 <dd>ei_state[1]: properly configured state object</dd>
-<dt><strong>Returns</strong>:</dt>
+<dt><strong>Outputs</strong>:</dt>
 <dd>ei_state[1]: state with temporary storage modified; normal_rng modified
 grad_EI[dim]: gradient of expected improvement wrt each dimension of the index_of_current_point-th entry in points_to_sample</dd>
 </dl>
@@ -1462,8 +1510,10 @@ must have a different NormalRNG (different seeds, not just different objects).</
 <blockquote>
 <div><p></p>
 <p><p>Get current point&#8211;potential sample whose EI is being evaluated</p>
-<p><strong>Returns</strong>:
-current_point[dim]: potential sample whose EI is being evaluted</p>
+<dl class="docutils">
+<dt><strong>Outputs</strong>:</dt>
+<dd>current_point[dim]: potential sample whose EI is being evaluted</dd>
+</dl>
  </p>
 </div></blockquote>
 <p><span class="target" id="project0structoptimal__learning_1_1_expected_improvement_state_1a06fb0e405ce62fa5039c2074538e1ad2"></span><div class="line-block">
@@ -1705,9 +1755,10 @@ underlying gp</td>
 </tbody>
 </table>
 </dd>
+<dt><strong>Outputs</strong>:</dt>
+<dd>ei_state[1]: state with temporary storage modified</dd>
 <dt><strong>Returns</strong>:</dt>
-<dd>ei_state[1]: state with temporary storage modified
-the expected improvement from sampling points_to_sample</dd>
+<dd>the expected improvement from sampling points_to_sample</dd>
 </dl>
  </p>
 </div></blockquote>
@@ -1730,7 +1781,7 @@ the expected improvement from sampling points_to_sample</dd>
 </tbody>
 </table>
 </dd>
-<dt><strong>Returns</strong>:</dt>
+<dt><strong>Outputs</strong>:</dt>
 <dd>ei_state[1]: state with temporary storage modified
 grad_EI[dim]: gradient of expected improvement wrt each dimension of the index_of_current_point-th entry in points_to_sample</dd>
 </dl>
@@ -1850,8 +1901,10 @@ associated Gaussian Process (which arrives as part of the ei_evaluator).</p>
 <blockquote>
 <div><p></p>
 <p><p>Get current point&#8211;potential sample whose EI is being evaluated</p>
-<p><strong>Returns</strong>:
-current_point[dim]: potential sample whose EI is being evaluted</p>
+<dl class="docutils">
+<dt><strong>Outputs</strong>:</dt>
+<dd>current_point[dim]: potential sample whose EI is being evaluted</dd>
+</dl>
  </p>
 </div></blockquote>
 <p><span class="target" id="project0structoptimal__learning_1_1_one_potential_sample_expected_improvement_state_1af5f55120b0b3d218472ec26cd83ac67c"></span><div class="line-block">
