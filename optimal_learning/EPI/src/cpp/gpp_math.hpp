@@ -173,6 +173,9 @@
 #ifndef OPTIMAL_LEARNING_EPI_SRC_CPP_GPP_MATH_HPP_
 #define OPTIMAL_LEARNING_EPI_SRC_CPP_GPP_MATH_HPP_
 
+namespace optimal_learning_gpp_math_hpp {
+}
+
 #include <algorithm>
 #include <memory>
 #include <vector>

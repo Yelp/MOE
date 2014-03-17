@@ -20,6 +20,9 @@
 #ifndef OPTIMAL_LEARNING_EPI_SRC_CPP_GPP_GEOMETRY_HPP_
 #define OPTIMAL_LEARNING_EPI_SRC_CPP_GPP_GEOMETRY_HPP_
 
+namespace optimal_learning_gpp_geometry_hpp {
+}
+
 #include <limits>
 #include <vector>
 
