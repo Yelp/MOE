@@ -173,6 +173,9 @@
 #ifndef OPTIMAL_LEARNING_EPI_SRC_CPP_GPP_MATH_HPP_
 #define OPTIMAL_LEARNING_EPI_SRC_CPP_GPP_MATH_HPP_
 
+namespace optimal_learning_gpp_math_hpp {
+}
+
 #include <algorithm>
 #include <memory>
 #include <vector>
@@ -238,7 +241,7 @@ class GaussianProcess final {
   /**\rst
     Constructs a GaussianProcess object.  All inputs are required; no default constructor nor copy/assignment are allowed.
 
-    \params
+    \param
         :covariance: the CovarianceFunction object encoding assumptions about the GP's behavior on our data
         :points_sampled[dim][num_sampled]: points that have already been sampled
         :points_sampled_value[num_sampled]: values of the already-sampled points
@@ -272,7 +275,7 @@ class GaussianProcess final {
     Change the hyperparameters of this GP's covariance function.
     Also forces recomputation of all derived quantities for GP to remain consistent.
 
-    \params
+    \param
         :hyperparameters_new[covariance_.GetNumberOfHyperparameters]: new hyperparameter array
   \endrst*/
   void SetCovarianceHyperparameters(double const * restrict hyperparameters_new) OL_NONNULL_POINTERS {
@@ -286,12 +289,12 @@ class GaussianProcess final {
 
     This function should not be called directly; instead use PointsToSampleState::SetupState().
 
-    \params
+    \param
         :points_to_sample_state[1]: pointer to a PointsToSampleState object where all space has been properly allocated
         :configure_for_gradients: whether the resulting PointsToSampleState object should be configured for gradient computation
     
-    \return
-        points_to_sample_state[1]: pointer to a fully configured PointsToSampleState object. overwrites input
+    \output
+        :points_to_sample_state[1]: pointer to a fully configured PointsToSampleState object. overwrites input
   \endrst*/
   void FillPointsToSampleState(StateType * points_to_sample_state, bool configure_for_gradients) const OL_NONNULL_POINTERS;
 
@@ -300,7 +303,7 @@ class GaussianProcess final {
 
     Also forces recomputation of all derived quantities for GP to remain consistent.
 
-    \params
+    \param
         :new_point[dim]: coordinates of the new point to add
         :new_point_value: function value at the new point
         :noise_variance: \sigma_n^2 corresponding to the signal noise in measuring new_point_value
@@ -316,9 +319,10 @@ class GaussianProcess final {
     BUT if the drawn (point, value) pair is meant to be added back into the GP (e.g., for testing), then this point
     MUST be drawn with noise_variance equal to the noise associated with "point" as a member of "points_sampled"
 
-    \params
+    \param
         :point_to_sample[dim]: coordinates of the point at which to generate a function value (from GP)
         :noise_variance_this_point: if this point is to be added into the GP, it needs to be generated with its associated noise var
+
     \return
         function value drawn from this GP
   \endrst*/
@@ -333,7 +337,7 @@ class GaussianProcess final {
     \param
         :points_to_sample_state: a FULLY CONFIGURED PointsToSampleState (configure via PointsToSampleState::SetupState)
     
-    \return
+    \output
         :mean_of_points[num_to_sample]: mean of GP, one per GP dimension
   \endrst*/
   void ComputeMeanOfPoints(const StateType& points_to_sample_state, double * restrict mean_of_points) const noexcept OL_NONNULL_POINTERS;
@@ -349,10 +353,10 @@ class GaussianProcess final {
     (See sources or implementation for further details.)
     Thus, grad_mu is stored in a reduced form which only tracks the nonzero entries.
 
-    \params
+    \param
         :points_to_sample_state: a FULLY CONFIGURED PointsToSampleState (configure via PointsToSampleState::SetupState)
 
-    \return
+    \output
         :grad_mu[dim][num_to_sample]: gradient of the mean of the GP.  grad_mu[d][i] is
         actually the gradient of mu_i with respect to x_{d,i}, the d-th dimension of
         the i-th entry of points_to_sample.
@@ -366,9 +370,10 @@ class GaussianProcess final {
     themselves or with each other.  Violating this results in undefined behavior.
     No inputs may be nullptr.
 
-    \params
+    \param
         points_to_sample_state[1]: ptr to a FULLY CONFIGURED PointsToSampleState (configure via PointsToSampleState::SetupState)
-        \return
+    
+    \output
         points_to_sample_state[1]: ptr to a FULLY CONFIGURED PointsToSampleState; only temporary state may be mutated
         var_star[num_to_sample][num_to_sample]: variance of GP
   \endrst*/
@@ -401,12 +406,12 @@ class GaussianProcess final {
         points_to_sample_state[1]: ptr to a FULLY CONFIGURED PointsToSampleState (configure via PointsToSampleState::SetupState)
         var_of_grad: index of points_to_sample in {0, .. num_to_sample-1} to be differentiated against
 
-    \return
-        points_to_sample_state[1]: ptr to a FULLY CONFIGURED PointsToSampleState; only temporary state may be mutated
-        grad_chol[dim][num_to_sample][num_to_sample]: gradient of the cholesky-factored
-        variance of the GP.  grad_chol[d][i][j] is actually the gradients of var_{i,j} with
-        respect to x_{d,k}, the d-th dimension of the k-th entry of points_to_sample, where
-        k = var_of_grad
+    \output
+        :points_to_sample_state[1]: ptr to a FULLY CONFIGURED PointsToSampleState; only temporary state may be mutated
+        :grad_chol[dim][num_to_sample][num_to_sample]: gradient of the cholesky-factored
+          variance of the GP.  grad_chol[d][i][j] is actually the gradients of var_{i,j} with
+          respect to x_{d,k}, the d-th dimension of the k-th entry of points_to_sample, where
+          k = var_of_grad
   \endrst*/
   void ComputeGradCholeskyVarianceOfPoints(StateType * points_to_sample_state, int var_of_grad, double const * restrict chol_var, double * restrict grad_chol) const noexcept OL_NONNULL_POINTERS;
 
@@ -415,7 +420,7 @@ class GaussianProcess final {
     See gpp_random, struct NormalRNG for details.
 
     \param
-        seed: new seed to set
+        :seed: new seed to set
   \endrst*/
   void SetExplicitSeed(EngineType::result_type seed) noexcept {
     normal_rng_.SetExplicitSeed(seed);
@@ -427,7 +432,7 @@ class GaussianProcess final {
     See gpp_random, struct NormalRNG for details.
 
     \param
-        seed: base value for new seed
+        :seed: base value for new seed
   \endrst*/
   void SetRandommizedSeed(EngineType::result_type seed) noexcept {
     normal_rng_.SetRandomizedSeed(seed, 0);  // this is intended for single-threaded use only, so thread_id = 0
@@ -661,10 +666,12 @@ class ExpectedImprovementEvaluator final {
     In general, the EI expression is complex and difficult to evaluate; hence we use Monte-Carlo simulation to approximate it.
 
     \param
-        ei_state[1]: properly configured state object
+        :ei_state[1]: properly configured state object
+
+    \output
+        :ei_state[1]: state with temporary storage modified; normal_rng modified
 
     \return
-        ei_state[1]: state with temporary storage modified; normal_rng modified
         the expected improvement from sampling points_to_sample
   \endrst*/
   double ComputeExpectedImprovement(StateType * ei_state) const OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT;
@@ -679,7 +686,7 @@ class ExpectedImprovementEvaluator final {
     \param
         ei_state[1]: properly configured state object
 
-    \return
+    \output
         ei_state[1]: state with temporary storage modified; normal_rng modified
         grad_EI[dim]: gradient of expected improvement wrt each dimension of the index_of_current_point-th entry in points_to_sample
   \endrst*/
@@ -758,8 +765,8 @@ struct ExpectedImprovementState final {
   /**\rst
     Get current point--potential sample whose EI is being evaluated
 
-    \return
-    current_point[dim]: potential sample whose EI is being evaluted
+    \output
+      current_point[dim]: potential sample whose EI is being evaluted
   \endrst*/
   void GetCurrentPoint(double * restrict current_point) const noexcept OL_NONNULL_POINTERS {
     std::copy(union_of_points.data() + kIndexOfCurrentPoint*dim, union_of_points.data() + (kIndexOfCurrentPoint+1)*dim, current_point);
@@ -889,8 +896,10 @@ class OnePotentialSampleExpectedImprovementEvaluator final {
     \param
         :ei_state[1]: properly configured state object
 
-    \return
+    \output
         ei_state[1]: state with temporary storage modified
+        
+    \return
         the expected improvement from sampling points_to_sample
   \endrst*/
   double ComputeExpectedImprovement(StateType * ei_state) const;
@@ -903,7 +912,7 @@ class OnePotentialSampleExpectedImprovementEvaluator final {
     \param
         :ei_state[1]: properly configured state object
 
-    \return
+    \output
         ei_state[1]: state with temporary storage modified
         grad_EI[dim]: gradient of expected improvement wrt each dimension of the index_of_current_point-th entry in points_to_sample
   \endrst*/
@@ -972,8 +981,8 @@ struct OnePotentialSampleExpectedImprovementState final {
   /**\rst
     Get current point--potential sample whose EI is being evaluated
 
-    \return
-    current_point[dim]: potential sample whose EI is being evaluted
+    \output
+      current_point[dim]: potential sample whose EI is being evaluted
   \endrst*/
   void GetCurrentPoint(double * restrict current_point_out) const noexcept OL_NONNULL_POINTERS {
     std::copy(current_point.begin(), current_point.end(), current_point_out);
@@ -1048,7 +1057,7 @@ struct OnePotentialSampleExpectedImprovementState final {
       :configure_for_gradients: true if these state objects will be used to compute gradients, false otherwise
       :state_vector[arbitrary]: vector of state objects, arbitrary size (usually 0)
 
-  \return
+  \output
       state_vector[max_num_threads]: vector of states containing max_num_threads properly initialized state objects
 \endrst*/
 inline OL_NONNULL_POINTERS void SetupExpectedImprovementState(const OnePotentialSampleExpectedImprovementEvaluator& ei_evaluator, double const * restrict starting_point, int max_num_threads, bool configure_for_gradients, std::vector<typename OnePotentialSampleExpectedImprovementEvaluator::StateType> * state_vector) {
@@ -1091,7 +1100,7 @@ inline OL_NONNULL_POINTERS void SetupExpectedImprovementState(const OnePotential
       :state_vector[arbitrary]: vector of state objects, arbitrary size (usually 0)
       :normal_rng[max_num_threads]: a vector of NormalRNG objects that provide the (pesudo)random source for MC integration
 
-  \return
+  \output
       state_vector[max_num_threads]: vector of states containing max_num_threads properly initialized state objects
 \endrst*/
 inline OL_NONNULL_POINTERS void SetupExpectedImprovementState(const ExpectedImprovementEvaluator& ei_evaluator, double const * restrict starting_point, double const * restrict points_to_sample, int num_to_sample, int dim, int max_num_threads, bool configure_for_gradients, NormalRNG * normal_rng, std::vector<typename ExpectedImprovementEvaluator::StateType> * state_vector) {
@@ -1133,7 +1142,7 @@ inline OL_NONNULL_POINTERS void SetupExpectedImprovementState(const ExpectedImpr
       :num_to_sample: number of points being sampled concurrently
       :normal_rng[1]: a NormalRNG object that provides the (pesudo)random source for MC integration
 
-  \return
+  \output
       normal_rng[1]: NormalRNG object will have its state changed due to random draws
       next_point[dim]: point yielding the best EI according to gradient descent
 \endrst*/
@@ -1195,7 +1204,7 @@ void RestartedGradientDescentEIOptimization(const ExpectedImprovementEvaluator& 
       max_num_threads: maximum number of threads for use by OpenMP (generally should be <= # cores)
       normal_rng[max_num_threads]: a vector of NormalRNG objects that provide the (pesudo)random source for MC integration
 
-  \return
+  \output
       normal_rng[max_num_threads]: NormalRNG objects will have their state changed due to random draws
       found_flag[1]: true if best_next_point corresponds to a nonzero EI
       best_next_point[dim]: point yielding the best EI according to MGD
@@ -1285,7 +1294,7 @@ OL_NONNULL_POINTERS void ComputeOptimalPointToSampleViaMultistartGradientDescent
       :uniform_generator[1]: a UniformRandomGenerator object providing the random engine for uniform random numbers
       :normal_rng[max_num_threads]: a vector of NormalRNG objects that provide the (pesudo)random source for MC integration
 
-  \return
+  \output
       found_flag[1]: true if best_next_point corresponds to a nonzero EI
       uniform_generator[1]:UniformRandomGenerator object will have its state changed due to random draws
       normal_rng[max_num_threads]: NormalRNG objects will have their state changed due to random draws
@@ -1332,7 +1341,7 @@ OL_NONNULL_POINTERS void ComputeOptimalPointToSampleWithRandomStarts(const Gauss
       max_num_threads: maximum number of threads for use by OpenMP (generally should be <= # cores)
       normal_rng[max_num_threads]: a vector of NormalRNG objects that provide the (pesudo)random source for MC integration
 
-  \return
+  \output
       found_flag[1]: true if best_next_point corresponds to a nonzero EI
       normal_rng[max_num_threads]: NormalRNG objects will have their state changed due to random draws
       function_values[num_multistarts]: EI evaluated at each point of initial_guesses, in the same order as initial_guesses; never dereferenced if nullptr
@@ -1403,7 +1412,7 @@ void EvaluateEIAtPointList(const GaussianProcess& gaussian_process, const Domain
       uniform_generator[1]: a UniformRandomGenerator object providing the random engine for uniform random numbers
       normal_rng[max_num_threads]: a vector of NormalRNG objects that provide the (pesudo)random source for MC integration
 
-  \return
+  \output
       found_flag[1]: true if best_next_point corresponds to a nonzero EI
       uniform_generator[1]: UniformRandomGenerator object will have its state changed due to random draws
       normal_rng[max_num_threads]: NormalRNG objects will have their state changed due to random draws
@@ -1445,7 +1454,8 @@ void ComputeOptimalPointToSampleViaLatinHypercubeSearch(const GaussianProcess& g
       num_samples_to_generate: how many simultaneous experiments you would like to run
       uniform_generator[1]: a UniformRandomGenerator object providing the random engine for uniform random numbers
       normal_rng[max_num_threads]: a vector of NormalRNG objects that provide the (pesudo)random source for MC integration
-  \return
+      
+  \output
       found_flag[1]: true if best_points_to_sample corresponds to a nonzero EI if sampled simultaneously
       uniform_generator[1]:UniformRandomGenerator object will have its state changed due to random draws
       normal_rng[max_num_threads]: NormalRNG objects will have their state changed due to random draws
