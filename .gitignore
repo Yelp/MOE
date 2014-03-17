@@ -35,3 +35,5 @@ OL_ARCH
 # built doc files
 doc/_*
 doc/xml/*
+doc/latex/*
+doc/html/*
