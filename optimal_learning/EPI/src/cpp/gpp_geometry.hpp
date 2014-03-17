@@ -1,17 +1,21 @@
 // gpp_geometry.hpp
-/*
+/**\rst
   This file contains utilities for some simple problems in n-dimensional computational geometry.  For example,
   (orthogonal) distance from point to plane, point projection, hypercube/simplex intersection, etc.
 
   Unless indicated otherwise, we will specify a plane in dim-space by dim + 1 numbers.  The equation of plane is:
-  a_0 + \sum_i n_i * x_i = 0, i = 1..dim
-  Hence we can describe any plane as: [n_1, n_2, ..., n_{dim}, a_0]
-  Here, n_vec = [n_1, ..., n_{dim}] is the (outward) normal vector.
-  By convention, ||n_vec||_2 = 1 (UNIT normal).
 
-  Recall that a plane is fully specified by a point r_0 and a normal vector n_vec. Then a point r is in the plane
-  if and only if (r-r_0) \cdot n_vec = 0. Since r_0 is constant, we can precompute and store r_0 \cdot n_vec = -a_0.
-*/
+  \ms a_0 + \sum_i n_i * x_i = 0, i = 1..dim\me
+
+  Hence we can describe any plane as: \ms [n_1, n_2, ..., n_{dim}, a_0]\me
+
+  Here, \ms n_{vec} = [n_1, ..., n_{dim}]\me is the (outward) normal vector.
+
+  By convention, \ms ||n_{vec}||_2 = 1\me (UNIT normal).
+
+  Recall that a plane is fully specified by a point \ms r_0\me and a normal vector \ms n_{vec}\me. Then a point r is in the plane
+  if and only if \ms (r-r_0) \cdot n_{vec} = 0\me. Since \ms r_0\me is constant, we can precompute and store \ms r_0 \cdot n_{vec} = -a_0\me.
+\endrst*/
 
 #ifndef OPTIMAL_LEARNING_EPI_SRC_CPP_GPP_GEOMETRY_HPP_
 #define OPTIMAL_LEARNING_EPI_SRC_CPP_GPP_GEOMETRY_HPP_
@@ -24,78 +28,83 @@
 
 namespace optimal_learning {
 
-/*
-  Container to represent the mathematical notion of a closed interval, commonly written [a,b].
-  The closed interval [a,b] is the set of all numbers x \in R such that a <= x <= b.
+/**\rst
+  Container to represent the mathematical notion of a closed interval, commonly written \ms [a,b]\me.
+  The closed interval \ms [a,b]\me is the set of all numbers \ms x \in \mathbb{R}\me such that \ms a \leq x \leq b\me.
   Note that "closed" here indicates the interval *includes* both endpoints.
-  An interval with a > b is considered empty.
+  An interval with \ms a > b\me is considered empty.
 
-  WARNING: *undefined behavior* if either endpoint is NaN or if the interval is 
-           [+inf, +inf] or [-inf, -inf].
-           None of these conditions make any sense mathematically either.
+  .. WARNING::
+
+          *undefined behavior* if either endpoint is NaN or if the interval is \ms [+\infty, +\infty]\me or \ms [-\infty, -\infty]\me.
+
+          Neither of these conditions make any sense mathematically either.
 
   This struct is "trivial" and "standard layout" and thus "POD" (in the C++11 sense).
-  http://en.cppreference.com/w/cpp/types/is_pod
-  http://stackoverflow.com/questions/4178175/what-are-aggregates-and-pods-and-how-why-are-they-special/7189821#7189821
+    * http://en.cppreference.com/w/cpp/types/is_pod
+    * http://stackoverflow.com/questions/4178175/what-are-aggregates-and-pods-and-how-why-are-they-special/7189821#7189821
 
-  This struct is not an aggregate; list (aka brace) initialization and a 2-argument constructor are both available:
-  ClosedInterval tmp(1.0, 2.0);  // this ctor makes it non-aggregate
-  ClosedInterval tmp{1.0, 2.0};  // and brace-style (aka initializer list) inits also work
-*/
+  This struct is not an aggregate; list (aka brace) initialization and a 2-argument constructor are both available::
+
+    ClosedInterval tmp(1.0, 2.0);  // this ctor makes it non-aggregate
+    ClosedInterval tmp{1.0, 2.0};  // and brace-style (aka initializer list) inits also work
+\endrst*/
 struct ClosedInterval {
-  /*
+  /**\rst
     Explicitly defaulted default constructor.
     Defining a custom ctor (below) disables the default ctor, so we explicitly default it.
     This is needed to maintain POD-ness.
 
-    Note: this ctor cannot be declared constexpr because the implicit default ctor is not
-    constexpr. It does not make sense in the same way that "constexpr double d;" is undefined.
-  */
+    .. NOTE::
+        this ctor cannot be declared constexpr because the implicit default ctor is not
+        constexpr. It does not make sense in the same way that "constexpr double d;" is undefined.
+  \endrst*/
   ClosedInterval() = default;
 
-  /*
+  /**\rst
     Constructs a ClosedInterval object with specified min, max.
 
     The presence of this ctor makes this object a non-aggregate, so brace-initialization
     follow list initialization rules (not aggregate initialization):
-    http://en.cppreference.com/w/cpp/language/list_initialization
+      * http://en.cppreference.com/w/cpp/language/list_initialization
 
-    INPUTS:
-    min_in: left bound of the interval
-    max_in: right bound of the interval
-  */
+    \param
+        :min_in: left bound of the interval
+        :max_in: right bound of the interval
+  \endrst*/
   constexpr ClosedInterval(double min_in, double max_in) noexcept : min(min_in), max(max_in) {  // NOLINT(build/include_what_you_use) misinterpreting these as calls to std::min, max
   }
 
-  /*
+  /**\rst
     Check if a value is inside this ClosedInterval.
 
-    INPUTS:
-    value: the value to check
-    RETURNS:
-    true if min <= value <= max
-  */
+    \param
+        :value: the value to check
+
+    \return
+        true if min <= value <= max
+  \endrst*/
   constexpr bool IsInside(double value) const noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
     return (value >= min) & (value <= max);
   }
 
-  /*
+  /**\rst
     Compute the length of this ClosedInterval; result can be negative (i.e., an empty interval).
 
-    RETURNS:
-    length of the interval
-  */
+    \return
+        length of the interval
+  \endrst*/
   constexpr double Length() const noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
     return max - min;
   }
 
-  /*
+  /**\rst
     Checks whether the interval is \emptyset (empty, max < min).
     Equivalent to Length() >= 0.0.
 
-    RETURNS:
-    true if the interval is non-empty: max >= min
-  */
+    \return
+        true if the interval is non-empty: max >= min
+  \endrst*/
   constexpr bool IsEmpty() const noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
     return max < min;
   }
@@ -103,16 +112,17 @@ struct ClosedInterval {
   double min, max;
 };
 
-/*
+/**\rst
   Simple auxilliary function that checks if a point is within the given hypercube.
 
-  INPUTS:
-  domain[dim]: array of ClosedInterval specifying the boundaries of a dim-dimensional tensor-product domain.
-  point[dim]: the point to check
-  dim: the number of spatial dimensions
-  OUTPUTS:
-  true if the point is inside the specified tensor-product domain
-*/
+  \param
+    :domain[dim]: array of ClosedInterval specifying the boundaries of a dim-dimensional tensor-product domain.
+    :point[dim]: the point to check
+    :dim: the number of spatial dimensions
+  
+  \return
+    true if the point is inside the specified tensor-product domain
+\endrst*/
 inline OL_WARN_UNUSED_RESULT OL_NONNULL_POINTERS bool CheckPointInHypercube(ClosedInterval const * restrict domain, double const * restrict point, int dim) noexcept {
   for (int i = 0; i < dim; ++i) {
     if (domain[i].IsInside(point[i]) == false) {
@@ -122,18 +132,19 @@ inline OL_WARN_UNUSED_RESULT OL_NONNULL_POINTERS bool CheckPointInHypercube(Clos
   return true;
 }
 
-/*
-  Checks if a point is inside/on the unit d-simplex.  A point x_i lies inside the unit d-simplex if:
-  1) x_i >= 0 \forall i  (i ranging over dimension)
-  2) \sum_i x_i <= 1
-  (Implying that x_i <= 1 \forall i)
+/**\rst
+  Checks if a point is inside/on the unit d-simplex.  A point \ms x_i\me lies inside the unit d-simplex if:
+  1) \ms x_i \geq 0 \ \forall \ i\me  (i ranging over dimension)
+  2) \ms \sum_i x_i \leq 1\me
+  (Implying that \ms x_i \leq 1 \ \forall \ i\me )
 
-  INPUTS:
-  point[dim]: point to check
-  dim: number of dimensions
-  OUTPUTS:
-  true if the point lies inside/on the unit d-simplex
-*/
+  \param
+    :point[dim]: point to check
+    :dim: number of dimensions
+
+  \return
+    true if the point lies inside/on the unit d-simplex
+\endrst*/
 inline OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT bool CheckPointInUnitSimplex(double const * restrict point, int dim) noexcept {
   static constexpr double wall_tolerance = 4*std::numeric_limits<double>::epsilon();  // being this far outside the simplex still counts as inside
   double sum = 0.0;
@@ -146,16 +157,17 @@ inline OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT bool CheckPointInUnitSimplex(do
   return (sum - wall_tolerance) <= 1.0;  // can be slightly beyond 1 to account for floating point issues
 }
 
-/*
+/**\rst
   Signed, shortest distance from point to plane: + means the point is on the same half-space as the plane's normal vector
 
-  INPUTS:
-  point[dim]: point to compute distance from
-  plane[dim+1]: plane to compute distance to; data ordered as specified in file docs
-  dim: number of spatial dimensions
-  RETURNS:
-  signed, shortest distance from point to plane where + means the point and normal are in the same half-space
-*/
+  \param
+    :point[dim]: point to compute distance from
+    :plane[dim+1]: plane to compute distance to; data ordered as specified in file docs
+    :dim: number of spatial dimensions
+
+  \return
+    signed, shortest distance from point to plane where + means the point and normal are in the same half-space
+\endrst*/
 inline OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT double OrthogonalDistanceToPlane(double const * restrict point, double const * restrict plane, int dim) noexcept {
   // formula: let p_1 = "point", p_0 be any point in the plane, and n be the normal vector
   // distance = |(p_1 - p_0) \cdot n|/||n||_2 = |p_1 \cdot n + a_0|/||n||_2 (b/c \sum_i n_i * p_0_i = -a_0)
@@ -163,16 +175,17 @@ inline OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT double OrthogonalDistanceToPlan
   return distance + plane[dim];  // plane[dim] is a_0 AND we assume ||n||_2 = 1.
 }
 
-/*
+/**\rst
   Projects a point onto a plane.
 
-  INPUTS:
-  plane[dim+1]: plane to compute distance to; data ordered as specified in file docs
-  dim: number of spatial dimensions
-  point[dim]: point to project onto plane
-  OUTPUTS:
-  point[dim]: point projected onto plane
-*/
+  \param
+    :plane[dim+1]: plane to compute distance to; data ordered as specified in file docs
+    :dim: number of spatial dimensions
+    :point[dim]: point to project onto plane
+
+  \return
+    point[dim]: point projected onto plane
+\endrst*/
 inline OL_NONNULL_POINTERS void OrthogonalProjectionOntoPlane(double const * restrict plane, int dim, double * restrict point) noexcept {
   // formula: let d be the orthogonal, signed distance from point to plane (where + means the point lies in the half-space
   //          pointed to by the normal vector)
@@ -187,23 +200,25 @@ inline OL_NONNULL_POINTERS void OrthogonalProjectionOntoPlane(double const * res
   }
 }
 
-/*
-  "plane" is specified as [n_1, n_2, ..., n_{dim}, a_0], where the hyperplane has the equation: a_0 + \sum_i n_i * x_i = 0
-  Hence n_vec = [n_1, ..., n_{dim}] is the (outward) normal vector.
+/**\rst
+  "plane" is specified as \ms [n_1, n_2, ..., n_{dim}, a_0]\me, where the hyperplane has the equation:\ms a_0 + \sum_i n_i * x_i = 0\me
+  Hence \ms n_{vec} = [n_1, ..., n_{dim}]\me is the (outward) normal vector.
 
-  By convention, ||n_vec||_2 = 1.
+  By convention, \ms ||n_{vec}||_2 = 1\me.
 
-  WARNING: This fails UNGRACEFULLY if vector \cdot normal = 0.0 and point \cdot normal + a_0 = 0
-  i.e., the vector is parallel to the plane and the starting point lies on the plane.
+  .. WARNING::
+    This fails UNGRACEFULLY if vector \ms\cdot\me normal = 0.0 and point \ms\cdot\me normal \ms + a_0 = 0\me
+    i.e., the vector is parallel to the plane and the starting point lies on the plane.
 
-  INPUTS:
-  point[dim]: point to compute distance from
-  plane[dim+1]: plane to compute distance to; data ordered as specified in header docs
-  vector[dim]: vector to compute distance along
-  dim: number of spatial dimensions
-  RETURNS:
-  signed distance along the given vector; + means the intersection is in the same direction as the vector
-*/
+  \param
+    :point[dim]: point to compute distance from
+    :plane[dim+1]: plane to compute distance to; data ordered as specified in header docs
+    :vector[dim]: vector to compute distance along
+    :dim: number of spatial dimensions
+
+  \return
+    signed distance along the given vector; + means the intersection is in the same direction as the vector
+\endrst*/
 inline OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT double DistanceToPlaneAlongVector(double const * restrict point, double const * restrict plane, double const * restrict vector, int dim) noexcept {
   // Let p_1 be the intersection of the ray (point, vector) and the plane.  Let p_0 be any point in the plane.
   // Then (p_1 - p_0) \cdot n = 0.  Also, p_0 \cdot n = -a_0 by the definition of the plane.
