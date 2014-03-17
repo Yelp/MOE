@@ -45,7 +45,7 @@ export python_ver=$(echo "$(python -c 'import sys; print(sys.version_info[:])')"
 #export pythonlib="lpython${python_ver}"
 #echo "python: $python_ver, $pythonlib"
 
-export boost_python='boost_python'
+export boost_python='boost_python-mt'
 
 
 export cc='gcc'

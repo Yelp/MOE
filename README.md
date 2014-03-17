@@ -13,7 +13,8 @@ Requires:
 3. `cmake 2.8.9+` - http://www.cmake.org/cmake/help/install.html
 4. `boost 1.51+` - http://www.boost.org/users/download/
 5. `pip 1.2.1+` - http://pip.readthedocs.org/en/latest/installing.html
-6. We recommend using a virtualenv http://www.jontourage.com/2011/02/09/virtualenv-pip-basics/
+6. `doxygen 1.8.5+` - http://www.stack.nl/~dimitri/doxygen/index.html
+7. We recommend using a virtualenv http://www.jontourage.com/2011/02/09/virtualenv-pip-basics/
 
 Install:
 
@@ -41,6 +42,7 @@ $ sudo port install gcc47
 $ sudo port select --set gcc mp-gcc47
 $ sudo port install boost
 $ sudo port install py-matplotlib
+$ sudo port install doxygen
 ```
 
 More OSX tips:

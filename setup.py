@@ -18,6 +18,8 @@ requires = [
     'matplotlib',
     'simplejson',
     'colander',
+    'sphinx',
+    'breathe',
     ]
 
 setup(name='MOE',

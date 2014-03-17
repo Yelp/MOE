@@ -10,3 +10,6 @@ production:
 test:
 		$(TESTIFY) -v tests
 
+docs:
+		$(MAKE) -C doc doxygen
+		$(MAKE) -C doc html
