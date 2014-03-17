@@ -1,0 +1,258 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Welcome to MOE’s documentation! &mdash; MOE 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/breathe.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="MOE 0.1.0 documentation" href="#" />
+    <link rel="next" title="optimal_learning.EPI.src.python.models package" href="optimal_learning.EPI.src.python.models.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="optimal_learning.EPI.src.python.models.html" title="optimal_learning.EPI.src.python.models package"
+             accesskey="N">next</a> |</li>
+        <li><a href="#">MOE 0.1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="welcome-to-moe-s-documentation">
+<h1>Welcome to MOE&#8217;s documentation!<a class="headerlink" href="#welcome-to-moe-s-documentation" title="Permalink to this headline">¶</a></h1>
+<p><strong>Contents:</strong></p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><a class="reference internal" href="#quick-start">Quick Start</a></li>
+<li><a class="reference internal" href="#source-documentation">Source Documentation</a></li>
+</ol>
+</div></blockquote>
+<div class="section" id="quick-start">
+<h2>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="requires">
+<h3>Requires<a class="headerlink" href="#requires" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li><tt class="docutils literal"><span class="pre">python</span> <span class="pre">2.6.7+</span></tt> - <a class="reference external" href="http://python.org/download/">http://python.org/download/</a></li>
+<li><tt class="docutils literal"><span class="pre">gcc</span> <span class="pre">4.7.3+</span></tt> - <a class="reference external" href="http://gcc.gnu.org/install/">http://gcc.gnu.org/install/</a></li>
+<li><tt class="docutils literal"><span class="pre">cmake</span> <span class="pre">2.8.9+</span></tt> - <a class="reference external" href="http://www.cmake.org/cmake/help/install.html">http://www.cmake.org/cmake/help/install.html</a></li>
+<li><tt class="docutils literal"><span class="pre">boost</span> <span class="pre">1.51+</span></tt> - <a class="reference external" href="http://www.boost.org/users/download/">http://www.boost.org/users/download/</a></li>
+<li><tt class="docutils literal"><span class="pre">pip</span> <span class="pre">1.2.1+</span></tt> - <a class="reference external" href="http://pip.readthedocs.org/en/latest/installing.html">http://pip.readthedocs.org/en/latest/installing.html</a></li>
+<li><tt class="docutils literal"><span class="pre">doxygen</span> <span class="pre">1.8.5+</span></tt> - <a class="reference external" href="http://www.stack.nl/~dimitri/doxygen/index.html">http://www.stack.nl/~dimitri/doxygen/index.html</a></li>
+<li>We recommend using a virtualenv <a class="reference external" href="http://www.jontourage.com/2011/02/09/virtualenv-pip-basics/">http://www.jontourage.com/2011/02/09/virtualenv-pip-basics/</a></li>
+</ol>
+</div>
+<div class="section" id="install">
+<h3>Install<a class="headerlink" href="#install" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre>$ git clone https://github.com/sc932/MOE.git
+$ cd MOE
+$ git pull origin master
+$ ./configure
+$ make
+$ pip install -e .
+$ pserve --reload development.ini
+</pre></div>
+</div>
+</div>
+<div class="section" id="osx-tips">
+<h3>OSX tips<a class="headerlink" href="#osx-tips" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple" start="0">
+<li>Are you sure you wouldn&#8217;t rather be running linux?</li>
+<li>Download macports - <a class="reference external" href="http://www.macports.org/install.php">http://www.macports.org/install.php</a></li>
+<li>Most dependencies macports can resolve, make sure you set your <tt class="docutils literal"><span class="pre">PATH</span></tt> env var.</li>
+<li>Download xQuartz (needed for X11, needed for matplotlob) - <a class="reference external" href="http://xquartz.macosforge.org/landing/">http://xquartz.macosforge.org/landing/</a></li>
+<li>Getting gcc and boost and matplotlib reqs (before installing MOE):</li>
+</ol>
+<div class="highlight-python"><div class="highlight"><pre>$ sudo port selfupdate
+$ sudo port install gcc47
+$ sudo port select --set gcc mp-gcc47
+$ sudo port install boost
+$ sudo port install py-matplotlib
+$ sudo port install doxygen
+</pre></div>
+</div>
+<div class="section" id="more-osx-tips">
+<h4>More OSX tips<a class="headerlink" href="#more-osx-tips" title="Permalink to this headline">¶</a></h4>
+<ol class="arabic simple">
+<li>Make sure you create your virtualenv with the correct python <tt class="docutils literal"><span class="pre">--python=/opt/local/bin/python</span></tt> if you are using macports</li>
+</ol>
+</div>
+</div>
+<div class="section" id="linux-tips">
+<h3>Linux tips<a class="headerlink" href="#linux-tips" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li>You can apt-get everything you need. Woo real package managers!</li>
+<li>Having trouble with matplotlib dependencies? <tt class="docutils literal"><span class="pre">sudo</span> <span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">python-matplotlib</span></tt></li>
+</ol>
+</div>
+</div>
+<div class="section" id="contributing">
+<h2>Contributing<a class="headerlink" href="#contributing" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li>Fork it.</li>
+<li>Create a branch (<tt class="docutils literal"><span class="pre">git</span> <span class="pre">checkout</span> <span class="pre">-b</span> <span class="pre">my_moe_branch</span></tt>) (make sure to run <tt class="docutils literal"><span class="pre">make</span> <span class="pre">test</span></tt>)</li>
+<li>Commit your changes (<tt class="docutils literal"><span class="pre">git</span> <span class="pre">commit</span> <span class="pre">-am</span> <span class="pre">&quot;Added</span> <span class="pre">Some</span> <span class="pre">Mathemagics&quot;</span></tt>)</li>
+<li>Push to the branch (<tt class="docutils literal"><span class="pre">git</span> <span class="pre">push</span> <span class="pre">origin</span> <span class="pre">my_moe_branch</span></tt>)</li>
+<li>Open a <a class="reference external" href="http://github.com/sc932/MOE/pulls">Pull Request</a></li>
+<li>Optimize locally while you wait</li>
+</ol>
+</div>
+</div>
+<div class="section" id="source-documentation">
+<h1>Source Documentation<a class="headerlink" href="#source-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="python-files">
+<h2>Python Files<a class="headerlink" href="#python-files" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="optimal_learning.EPI.src.python.models.html">optimal_learning.EPI.src.python.models package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="optimal_learning.EPI.src.python.models.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimal_learning.EPI.src.python.models.html#module-optimal_learning.EPI.src.python.models.covariance_of_process">optimal_learning.EPI.src.python.models.covariance_of_process module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimal_learning.EPI.src.python.models.html#module-optimal_learning.EPI.src.python.models.gaussian_process">optimal_learning.EPI.src.python.models.gaussian_process module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimal_learning.EPI.src.python.models.html#module-optimal_learning.EPI.src.python.models.optimal_gaussian_process">optimal_learning.EPI.src.python.models.optimal_gaussian_process module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimal_learning.EPI.src.python.models.html#optimal-learning-epi-src-python-models-optimal-gaussian-process-linked-cpp-module">optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimal_learning.EPI.src.python.models.html#module-optimal_learning.EPI.src.python.models.plottable_optimal_gaussian_process">optimal_learning.EPI.src.python.models.plottable_optimal_gaussian_process module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimal_learning.EPI.src.python.models.html#module-optimal_learning.EPI.src.python.models.sample_point">optimal_learning.EPI.src.python.models.sample_point module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimal_learning.EPI.src.python.models.html#module-optimal_learning.EPI.src.python.models">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="optimal_learning.EPI.src.python.lib.html">optimal_learning.EPI.src.python.lib package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="optimal_learning.EPI.src.python.lib.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimal_learning.EPI.src.python.lib.html#optimal-learning-epi-src-python-lib-cuda-linkers-module">optimal_learning.EPI.src.python.lib.cuda_linkers module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimal_learning.EPI.src.python.lib.html#module-optimal_learning.EPI.src.python.lib.math">optimal_learning.EPI.src.python.lib.math module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimal_learning.EPI.src.python.lib.html#module-optimal_learning.EPI.src.python.lib.mvncdf">optimal_learning.EPI.src.python.lib.mvncdf module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimal_learning.EPI.src.python.lib.html#optimal-learning-epi-src-python-lib-plotter-module">optimal_learning.EPI.src.python.lib.plotter module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimal_learning.EPI.src.python.lib.html#optimal-learning-epi-src-python-lib-space-io-module">optimal_learning.EPI.src.python.lib.space_io module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimal_learning.EPI.src.python.lib.html#optimal-learning-epi-src-python-lib-updater-module">optimal_learning.EPI.src.python.lib.updater module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimal_learning.EPI.src.python.lib.html#module-optimal_learning.EPI.src.python.lib">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="c-files">
+<h2>C++ Files<a class="headerlink" href="#c-files" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="gpp_math_hpp.html">gpp_math.hpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpp_geometry_hpp.html">gpp_geometry.hpp</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><em>Index</em></a></li>
+<li><a class="reference internal" href="py-modindex.html"><em>Module Index</em></a></li>
+<li><a class="reference internal" href="search.html"><em>Search Page</em></a></li>
+</ul>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Welcome to MOE&#8217;s documentation!</a><ul>
+<li><a class="reference internal" href="#quick-start">Quick Start</a><ul>
+<li><a class="reference internal" href="#requires">Requires</a></li>
+<li><a class="reference internal" href="#install">Install</a></li>
+<li><a class="reference internal" href="#osx-tips">OSX tips</a><ul>
+<li><a class="reference internal" href="#more-osx-tips">More OSX tips</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#linux-tips">Linux tips</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#contributing">Contributing</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#source-documentation">Source Documentation</a><ul>
+<li><a class="reference internal" href="#python-files">Python Files</a></li>
+<li><a class="reference internal" href="#c-files">C++ Files</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+
+  <h4>Next topic</h4>
+  <p class="topless"><a href="optimal_learning.EPI.src.python.models.html"
+                        title="next chapter">optimal_learning.EPI.src.python.models package</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/index.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="optimal_learning.EPI.src.python.models.html" title="optimal_learning.EPI.src.python.models package"
+             >next</a> |</li>
+        <li><a href="#">MOE 0.1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

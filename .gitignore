@@ -1,0 +1,40 @@
+# Logs
+*.log
+
+# Swap files
+*.sw[nop]
+*~
+
+# Configure stuff
+OL_ARCH
+
+# Data files
+*.mat
+
+# OSX crap
+*.DS_Store
+
+# Python setuptools
+*.egg-info
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.pyc
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+
+# built doc files
+doc/_*
+doc/xml/*
+doc/latex/*
+doc/html/*
+doc/.doctrees/*

@@ -1,0 +1,573 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>gpp_geometry.hpp &mdash; MOE 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/breathe.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="MOE 0.1.0 documentation" href="index.html" />
+    <link rel="prev" title="gpp_math.hpp" href="gpp_math_hpp.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="gpp_math_hpp.html" title="gpp_math.hpp"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">MOE 0.1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="gpp-geometry-hpp">
+<h1>gpp_geometry.hpp<a class="headerlink" href="#gpp-geometry-hpp" title="Permalink to this headline">¶</a></h1>
+<p></p>
+<p></p>
+<p><p id="project0namespaceoptimal__learning"><em>namespace</em> <strong>optimal_learning</strong></p>
+<blockquote>
+<div><p></p>
+<p><p><p>This file contains utilities for some simple problems in n-dimensional computational geometry.  For example,
+(orthogonal) distance from point to plane, point projection, hypercube/simplex intersection, etc.</p>
+<p>Unless indicated otherwise, we will specify a plane in dim-space by dim + 1 numbers.  The equation of plane is:</p>
+<p><span class="math">\(\, a_0 + \sum_i n_i * x_i = 0, i = 1..dim\)</span></p>
+<p>Hence we can describe any plane as: <span class="math">\(\, [n_1, n_2, ..., n_{dim}, a_0]\)</span></p>
+<p>Here, <span class="math">\(\, n_{vec} = [n_1, ..., n_{dim}]\)</span> is the (outward) normal vector.</p>
+<p>By convention, <span class="math">\(\, ||n_{vec}||_2 = 1\)</span> (UNIT normal).</p>
+<p>Recall that a plane is fully specified by a point <span class="math">\(\, r_0\)</span> and a normal vector <span class="math">\(\, n_{vec}\)</span>. Then a point r is in the plane
+if and only if <span class="math">\(\, (r-r_0) \cdot n_{vec} = 0\)</span>. Since <span class="math">\(\, r_0\)</span> is constant, we can precompute and store <span class="math">\(\, r_0 \cdot n_{vec} = -a_0\)</span>.</p>
+</p>
+<p><p>These comments are quite long; here&#8217;s a table of contents:</p>
+<ol class="arabic simple">
+<li>OVERVIEW OF GAUSSIAN PROCESSES AND EXPECTED IMPROVEMENT; WHAT ARE WE TRYING TO DO?</li>
+<li>FILE OVERVIEW</li>
+<li>IMPLEMENTATION NOTES</li>
+<li>NOTATION</li>
+<li>CITATIONS</li>
+</ol>
+<p><strong>1 OVERVIEW OF GAUSSIAN PROCESSES AND EXPECTED IMPROVEMENT; WHAT ARE WE TRYING TO DO?</strong></p>
+<p>At a high level, this file optimizes an objective function <span class="math">\(\, f(x)\)</span>.  This operation
+requires data/uncertainties about prior and concurrent experiments as well as
+a covariance function describing how these data [are expected to] relate to each
+other.  The points <span class="math">\(\, x\)</span> represent experiments. If <span class="math">\(\, f(x)\)</span> is say, survival rate for
+a drug test, the dimensions of x might include dosage amount, dosage frequency,
+and overall drug-use time-span.</p>
+<p>The objective function is not required in closed form; instead, only the ability
+to sample it at points of interest is needed.  Thus, the optimization process
+cannot work with <span class="math">\(\, f(x)\)</span> directly; instead a surrogate is built via interpolation
+with Gaussian Proccesses (GPs).</p>
+<p>Following Rasmussen &amp; Williams (Chapter 2, Section 2), a Gaussian Process is a collection of random
+variables, any finite number of which have a joint Gaussian distribution (Defn 2.1).
+Hence a GP is fully specified by its mean function, <span class="math">\(\, m(x)\)</span>, and covariance function,
+<span class="math">\(\, k(x,x')\)</span>.  Then we assume that a real process <span class="math">\(\, f(x)\)</span> (e.g., drug survival rate) is
+distributed like:</p>
+<div class="math">
+\[f(x) ~ GP(m(x), k(x,x'))\]</div>
+<p>with</p>
+<div class="math">
+\[m(x) = E[f(x)], k(x,x') = E[(f(x) - m(x))*(f(x') - m(x'))].\]</div>
+<p>Then sampling from <span class="math">\(\, f(x)\)</span> is simply drawing from a Gaussian with the appropriate mean
+and variance.</p>
+<p>However, since we do not know <span class="math">\(\, f(x)\)</span>, we cannot precisely build its corresponding GP.
+Instead, using samples from <span class="math">\(\, f(x)\)</span> (e.g., by measuring experimental outcomes), we can
+iteratively improve our estimate of <span class="math">\(\, f(x)\)</span>.  See GaussianProcess class docs
+and implementation docs for details on how this is done.</p>
+<p>The optimization process models the objective using a Gaussian process (GP) prior
+(also called a GP predictor) based on the specified covariance and the input
+data (e.g., through member functions ComputeMeanOfPoints, ComputeVarianceOfPoints).  Using the GP,
+we can compute the expected improvement (EI) from sampling any particular point.  EI
+is defined relative to the best currently known value, and it represents what the
+algorithm believes is the most likely outcome from sampling a particular point
+(aka conducting a particular experiment).</p>
+<p>See ExpectedImprovementEvaluator and OnePotentialSampleExpectedImprovementEvaluator class
+docs for further details on computing EI.  Both support ComputeExpectedImprovement() and
+ComputeGradExpectedImprovement().</p>
+<p>The dimension of the GP is equal to the number of simultaneous experiments being run;
+i.e., the GP may be multivariate.  The behavior of the GP is controlled by its underlying
+covariance function and the data/uncertainty of prior points (experiments).</p>
+<p>With the ability the compute EI, the final step is to optimize
+to find the best EI.  This is done using multistart gradient descent (MGD), in
+ComputeOptimalPointToSampleWithRandomStarts().  This generates a uniform random
+sampling of points and calls ComputeOptimalPointToSampleViaMultistartGradientDescent(),
+which carries out the multistart process via templates from gpp_optimization.hpp.</p>
+<p>The idea behind gradient descent is simple.  The gradient gives us the direction of
+steepest ascent (negative gradient is steepest descent).  So each iteration, we compute
+the gradient and take a step in that direction.  The size of the step is not specified
+by GD and is left to the specific implementation.  Basically if we take steps that are
+too large, we run the risk of over-shooting the solution and even diverging.  If we
+take steps that are too small, it may take an intractably long time to reach the solution.
+Thus the magic is in choosing the step size; we do not claim that our implementation is
+perfect, but it seems to work reasonably.  See gpp_optimization.hpp for more details about
+GD as well as the template definition.</p>
+<p>For particularly difficult problems or problems where gradient descent&#8217;s parameters are not
+well-chosen, GD can fail to converge.  If this happens, we can fall back to a &#8216;dumb&#8217; search
+(i.e., evaluate EI at a large number of random points and take the best one).  This
+functionality is accessed through: ComputeOptimalPointToSampleViaLatinHypercubeSearch&lt;&gt;().</p>
+<p><strong>2 FILE OVERVIEW</strong></p>
+<p>This file contains mathematical functions supporting optimal learning.
+These include functions to compute characteristics of Gaussian Processes
+(e.g., variance, mean) and the gradients of these quantities as well as functions to
+compute and optimize the expected improvement.</p>
+<p>Functions here generally require some combination of a CovarianceInterface object as well as
+data about prior and current (i.e., concurrent) experiments.  These data are encapsulated in
+the GaussianProcess class.  Then we build an ExpectedImprovementEvaluator object (with
+associated state, see gpp_common.hpp item 5 for (Evaluator, State) relations) on top of a
+GaussianProcess for computing and optimizing EI.</p>
+<p>For further theoretical details about Gaussian Processes, see
+Rasmussen and Williams, Gaussian Processes for Machine Learning (2006).
+A bare-bones summary is provided in gpp_math.cpp.</p>
+<p>For further details about expected improvement and the optimization thereof,
+see Scott Clark&#8217;s PhD thesis.  Again, a summary is provided in gpp_math.cpp&#8217;s file comments.</p>
+<p><strong>3 IMPLEMENTATION NOTES</strong></p>
+<ol class="loweralpha">
+<li><p class="first">This file has a few primary endpoints for EI optimization:</p>
+<ol class="lowerroman">
+<li><dl class="first docutils">
+<dt>ComputeOptimalPointToSampleWithRandomStarts&lt;&gt;()</dt>
+<dd><p class="first last">Takes in a covariance function and prior data, outputs the next best point (experiment)
+to sample (run). Uses gradient descent. Only produces a single new point to sample.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>ComputeOptimalPointToSampleViaLatinHypercubeSearch&lt;&gt;()</dt>
+<dd><p class="first last">Takes in a covariance function and prior data, outputs the next best point (experiment)
+to sample (run). Uses &#8216;dumb&#8217; search. Only produces a single new point to sample.</p>
+</dd>
+</dl>
+</li>
+<li><p class="first">ComputeOptimalSetOfPointsToSample&lt;&gt;()
+Takes in a covariance function and prior data, outputs the next best set of points (experiments)
+to sample (run). Uses gradient descent and/or &#8216;dumb&#8217; search. Produces a specified number of
+points for simultaneous sampling.</p>
+</li>
+</ol>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>See gpp_math.cpp&#8217;s header comments for more detailed implementation notes.</p>
+<p class="last">There are also several other functions with external linkage in this header; these
+are provided to ease testing and to permit lower level access from python.</p>
+</div>
+</li>
+<li><p class="first">See gpp_common.hpp header comments for additional implementation notes.</p>
+</li>
+</ol>
+<p><strong>4 NOTATION</strong></p>
+<dl class="docutils">
+<dt>And domain-specific notation, following Rasmussen, Williams:</dt>
+<dd><ul class="first last simple">
+<li>X = points_sampled; this is the training data (size dim X num_sampled), also called the design matrix</li>
+<li>Xs = points_to_sample; this is the test data (size dim X num_to_sample)</li>
+<li>y, f, <span class="math">\(\, f(x)\)</span> = points_sampled_value, the experimental results from sampling training points</li>
+<li>K, K(X,X) = covariance(X_i, X_j), covariance matrix between training inputs</li>
+<li>Ks, K(Xs,X) = covariance(X_i, Xs_j), covariance matrix between training and test inputs</li>
+<li>Kss, K(Xs,Xs) = covariance(Xs_i, Xs_j), covariance matrix between test inputs</li>
+<li>theta: (vector) of hyperparameters for a covariance function</li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Due to confusion with multiplication, Rasmussen &amp; Williams&#8217; &#8220;K_*&#8221; notation has been repalced with &#8220;Ks&#8221; and
+&#8220;K_{**}&#8221; is &#8220;Kss&#8221;.</p>
+</div>
+<p><strong>5 CITATIONS</strong></p>
+<p>a)
+Gaussian Processes for Machine Learning
+Carl edward Rasmussen and Christopher K. I. Williams. 2006.
+Massachusetts Institute of Technology.  55 Hayward St., Cambridge, MA 02142.
+<a class="reference external" href="http://www.gaussianprocess.org/gpml/">http://www.gaussianprocess.org/gpml/</a> (free electronic copy)</p>
+<p>b)
+Parallel Machine Learning Algorithms In Bioinformatics and Global Optimization (PhD Dissertation)
+Part II, EPI: Expected Parallel Improvement
+Scott Clark. 2012.
+Cornell University, Center for Applied Mathematics.  Ithaca, NY.
+<a class="reference external" href="https://github.com/sc932/Thesis">https://github.com/sc932/Thesis</a>
+<a class="reference external" href="mailto:sclark&#37;&#52;&#48;yelp&#46;com">sclark<span>&#64;</span>yelp<span>&#46;</span>com</a></p>
+<p>c)
+Differentiation of the Cholesky Algorithm
+S. P. Smith. 1995.
+Journal of Computational and Graphical Statistics. Volume 4. Number 2. p134-147</p>
+<p>d)
+A Multi-points Criterion for Deterministic Parallel Global Optimization based on Gaussian Processes.
+David Ginsbourger, Rodolphe Le Riche, and Laurent Carraro.  2008.
+D´epartement 3MI. Ecole Nationale Sup´erieure des Mines. 158 cours Fauriel, Saint-Etienne, France.
+{ginsbourger, leriche, <a class="reference external" href="mailto:carraro}&#37;&#52;&#48;emse&#46;fr">carraro}<span>&#64;</span>emse<span>&#46;</span>fr</a></p>
+<p>e)
+Efficient Global Optimization of Expensive Black-Box Functions
+Jones, D.R., Schonlau, M., Welch, W.J. 1998.
+Journal of Global Optimization, 13, 455-492.</p>
+ </p>
+</p>
+<em>Functions</em><blockquote>
+<div><p><span class="target" id="project0namespaceoptimal__learning_1a15274264924e72ab6adbf7200070c737"></span><div class="line-block">
+<div class="line">OL_WARN_UNUSED_RESULT OL_NONNULL_POINTERS bool <strong>CheckPointInHypercube</strong>(<a class="reference internal" href="#project0structoptimal__learning_1_1_closed_interval"><em>ClosedInterval</em></a>  const *restrict domain, double const *restrict point, int dim)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Simple auxilliary function that checks if a point is within the given hypercube.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">domain[dim]:</th><td class="field-body">array of ClosedInterval specifying the boundaries of a dim-dimensional tensor-product domain.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">point[dim]:</th><td class="field-body">the point to check</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">dim:</th><td class="field-body">the number of spatial dimensions</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd>true if the point is inside the specified tensor-product domain</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0namespaceoptimal__learning_1a9036cc8c05916b20a3f9131681766412"></span><div class="line-block">
+<div class="line">OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT bool <strong>CheckPointInUnitSimplex</strong>(double const *restrict point, int dim)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Checks if a point is inside/on the unit d-simplex.  A point <span class="math">\(\, x_i\)</span> lies inside the unit d-simplex if:
+1) <span class="math">\(\, x_i \geq 0 \ \forall \ i\)</span>  (i ranging over dimension)
+2) <span class="math">\(\, \sum_i x_i \leq 1\)</span>
+(Implying that <span class="math">\(\, x_i \leq 1 \ \forall \ i\)</span> )</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">point[dim]:</th><td class="field-body">point to check</td>
+</tr>
+<tr class="field-even field"><th class="field-name">dim:</th><td class="field-body">number of dimensions</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd>true if the point lies inside/on the unit d-simplex</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0namespaceoptimal__learning_1a222241083168be55ae777562c5fb7c52"></span><div class="line-block">
+<div class="line">OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT double <strong>OrthogonalDistanceToPlane</strong>(double const *restrict point, double const *restrict plane, int dim)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Signed, shortest distance from point to plane: + means the point is on the same half-space as the plane&#8217;s normal vector</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">point[dim]:</th><td class="field-body">point to compute distance from</td>
+</tr>
+<tr class="field-even field"><th class="field-name">plane[dim+1]:</th><td class="field-body">plane to compute distance to; data ordered as specified in file docs</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">dim:</th><td class="field-body">number of spatial dimensions</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd>signed, shortest distance from point to plane where + means the point and normal are in the same half-space</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0namespaceoptimal__learning_1a9d59c0ec1c44448a0ad5f21e3c9f5ff1"></span><div class="line-block">
+<div class="line">OL_NONNULL_POINTERS void <strong>OrthogonalProjectionOntoPlane</strong>(double const *restrict plane, int dim, double *restrict point)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Projects a point onto a plane.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">plane[dim+1]:</th><td class="field-body">plane to compute distance to; data ordered as specified in file docs</td>
+</tr>
+<tr class="field-even field"><th class="field-name">dim:</th><td class="field-body">number of spatial dimensions</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">point[dim]:</th><td class="field-body">point to project onto plane</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd>point[dim]: point projected onto plane</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0namespaceoptimal__learning_1a39102d4fe7f4fb9556e99cadcdb53db6"></span><div class="line-block">
+<div class="line">OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT double <strong>DistanceToPlaneAlongVector</strong>(double const *restrict point, double const *restrict plane, double const *restrict vector, int dim)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>&#8220;plane&#8221; is specified as <span class="math">\(\, [n_1, n_2, ..., n_{dim}, a_0]\)</span>, where the hyperplane has the equation:<span class="math">\(\, a_0 + \sum_i n_i * x_i = 0\)</span>
+Hence <span class="math">\(\, n_{vec} = [n_1, ..., n_{dim}]\)</span> is the (outward) normal vector.</p>
+<p>By convention, <span class="math">\(\, ||n_{vec}||_2 = 1\)</span>.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This fails UNGRACEFULLY if vector <span class="math">\(\,\cdot\)</span> normal = 0.0 and point <span class="math">\(\,\cdot\)</span> normal <span class="math">\(\, + a_0 = 0\)</span>
+i.e., the vector is parallel to the plane and the starting point lies on the plane.</p>
+</div>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">point[dim]:</th><td class="field-body">point to compute distance from</td>
+</tr>
+<tr class="field-even field"><th class="field-name">plane[dim+1]:</th><td class="field-body">plane to compute distance to; data ordered as specified in header docs</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">vector[dim]:</th><td class="field-body">vector to compute distance along</td>
+</tr>
+<tr class="field-even field"><th class="field-name">dim:</th><td class="field-body">number of spatial dimensions</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd>signed distance along the given vector; + means the intersection is in the same direction as the vector</dd>
+</dl>
+ </p>
+</div></blockquote>
+</div></blockquote>
+<p><p id="project0structoptimal__learning_1_1_closed_interval"><em>class</em> <strong>ClosedInterval</strong></p>
+<blockquote>
+<div><p></p>
+<p><p>Container to represent the mathematical notion of a closed interval, commonly written <span class="math">\(\, [a,b]\)</span>.
+The closed interval <span class="math">\(\, [a,b]\)</span> is the set of all numbers <span class="math">\(\, x \in \mathbb{R}\)</span> such that <span class="math">\(\, a \leq x \leq b\)</span>.
+Note that &#8220;closed&#8221; here indicates the interval <em>includes</em> both endpoints.
+An interval with <span class="math">\(\, a &gt; b\)</span> is considered empty.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p><em>undefined behavior</em> if either endpoint is NaN or if the interval is <span class="math">\(\, [+\infty, +\infty]\)</span> or <span class="math">\(\, [-\infty, -\infty]\)</span>.</p>
+<p class="last">Neither of these conditions make any sense mathematically either.</p>
+</div>
+<dl class="docutils">
+<dt>This struct is &#8220;trivial&#8221; and &#8220;standard layout&#8221; and thus &#8220;POD&#8221; (in the C++11 sense).</dt>
+<dd><ul class="first last simple">
+<li><a class="reference external" href="http://en.cppreference.com/w/cpp/types/is_pod">http://en.cppreference.com/w/cpp/types/is_pod</a></li>
+<li><a class="reference external" href="http://stackoverflow.com/questions/4178175/what-are-aggregates-and-pods-and-how-why-are-they-special/7189821#7189821">http://stackoverflow.com/questions/4178175/what-are-aggregates-and-pods-and-how-why-are-they-special/7189821#7189821</a></li>
+</ul>
+</dd>
+</dl>
+<p>This struct is not an aggregate; list (aka brace) initialization and a 2-argument constructor are both available:</p>
+<div class="highlight-python"><div class="highlight"><pre>ClosedInterval tmp(1.0, 2.0);  // this ctor makes it non-aggregate
+ClosedInterval tmp{1.0, 2.0};  // and brace-style (aka initializer list) inits also work
+</pre></div>
+</div>
+ </p>
+<em>Public Functions</em><blockquote>
+<div><p><span class="target" id="project0structoptimal__learning_1_1_closed_interval_1a3380d2e30aaeb649ceaca4c5c77071e6"></span><div class="line-block">
+<div class="line"> <strong>ClosedInterval</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Explicitly defaulted default constructor.
+Defining a custom ctor (below) disables the default ctor, so we explicitly default it.
+This is needed to maintain POD-ness.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">this ctor cannot be declared constexpr because the implicit default ctor is not
+constexpr. It does not make sense in the same way that &#8220;constexpr double d;&#8221; is undefined.</p>
+</div>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_closed_interval_1a0d021868cbe67f7be650caac7f796387"></span><div class="line-block">
+<div class="line">constexpr <strong>ClosedInterval</strong>(double min_in, double max_in)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Constructs a ClosedInterval object with specified min, max.</p>
+<p>The presence of this ctor makes this object a non-aggregate, so brace-initialization
+follow list initialization rules (not aggregate initialization):</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference external" href="http://en.cppreference.com/w/cpp/language/list_initialization">http://en.cppreference.com/w/cpp/language/list_initialization</a></li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">min_in:</th><td class="field-body">left bound of the interval</td>
+</tr>
+<tr class="field-even field"><th class="field-name">max_in:</th><td class="field-body">right bound of the interval</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_closed_interval_1af1c94c63510d4e69d5b61e91e624e991"></span><div class="line-block">
+<div class="line">constexpr bool <strong>IsInside</strong>(double value)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Check if a value is inside this ClosedInterval.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">value:</th><td class="field-body">the value to check</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd>true if min &lt;= value &lt;= max</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_closed_interval_1a129f50b3549b5aaf0bff21e0d68f6808"></span><div class="line-block">
+<div class="line">constexpr double <strong>Length</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Compute the length of this ClosedInterval; result can be negative (i.e., an empty interval).</p>
+<dl class="docutils">
+<dt><strong>Returns</strong>:</dt>
+<dd>length of the interval</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_closed_interval_1a36c7745c979301d53678f16aabd94b2d"></span><div class="line-block">
+<div class="line">constexpr bool <strong>IsEmpty</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Checks whether the interval is emptyset (empty, max &lt; min).
+Equivalent to Length() &gt;= 0.0.</p>
+<dl class="docutils">
+<dt><strong>Returns</strong>:</dt>
+<dd>true if the interval is non-empty: max &gt;= min</dd>
+</dl>
+ </p>
+</div></blockquote>
+</div></blockquote>
+<em>Public Members</em><blockquote>
+<div><p><span class="target" id="project0structoptimal__learning_1_1_closed_interval_1aa86783e6aa16ee8d849d92b149307792"></span>double <strong>min</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_closed_interval_1a1a4ed748c50ae8fb3b6715dec4745909"></span>double <strong>max</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</p>
+</div></blockquote>
+</p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="gpp_math_hpp.html"
+                        title="previous chapter">gpp_math.hpp</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/gpp_geometry_hpp.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="gpp_math_hpp.html" title="gpp_math.hpp"
+             >previous</a> |</li>
+        <li><a href="index.html">MOE 0.1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

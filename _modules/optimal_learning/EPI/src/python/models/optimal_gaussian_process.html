@@ -1,0 +1,323 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>optimal_learning.EPI.src.python.models.optimal_gaussian_process &mdash; MOE 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../../_static/breathe.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../../',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../../../../../../_static/favicon.ico"/>
+    <link rel="top" title="MOE 0.1.0 documentation" href="../../../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">MOE 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../../../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for optimal_learning.EPI.src.python.models.optimal_gaussian_process</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="c"># Copyright (C) 2012 Scott Clark. All rights reserved.</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">scipy.stats</span> <span class="c"># for stats dists</span>
+
+<span class="kn">import</span> <span class="nn">optimal_learning.EPI.src.python.lib.mvncdf</span> <span class="c"># multivariate normal cdf</span>
+<span class="kn">import</span> <span class="nn">optimal_learning.EPI.src.python.models.covariance_of_process</span>
+<span class="kn">import</span> <span class="nn">optimal_learning.EPI.src.python.lib.math</span>
+<span class="kn">from</span> <span class="nn">optimal_learning.EPI.src.python.models.gaussian_process</span> <span class="kn">import</span> <span class="n">GaussianProcess</span>
+
+
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">,</span> <span class="n">format</span><span class="o">=</span><span class="s">&#39;</span><span class="si">%(asctime)s</span><span class="s"> - </span><span class="si">%(levelname)s</span><span class="s"> - </span><span class="si">%(message)s</span><span class="s">&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="OptimalGaussianProcess"><a class="viewcode-back" href="../../../../../../optimal_learning.EPI.src.python.models.html#optimal_learning.EPI.src.python.models.optimal_gaussian_process.OptimalGaussianProcess">[docs]</a><span class="k">class</span> <span class="nc">OptimalGaussianProcess</span><span class="p">(</span><span class="n">GaussianProcess</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;docstring!</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_number_of_threads</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;max_number_of_threads passed through to subclasses (not used in this class)</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="nb">super</span><span class="p">(</span><span class="n">OptimalGaussianProcess</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<div class="viewcode-block" id="OptimalGaussianProcess.get_1D_analytic_grad_EI"><a class="viewcode-back" href="../../../../../../optimal_learning.EPI.src.python.models.html#optimal_learning.EPI.src.python.models.optimal_gaussian_process.OptimalGaussianProcess.get_1D_analytic_grad_EI">[docs]</a>	<span class="k">def</span> <span class="nf">get_1D_analytic_grad_EI</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point_to_sample</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Return the analytic derivative of the EI for a single sample point</span>
+
+<span class="sd">		see GiLeCa08</span>
+
+<span class="sd">		:Returns: double</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">mu_star</span><span class="p">,</span> <span class="n">var_star</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_mean_and_var_of_points</span><span class="p">([</span><span class="n">point_to_sample</span><span class="p">])</span>
+
+		<span class="n">cholesky_decomp</span><span class="p">,</span> <span class="n">grad_cholesky_decomp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cholesky_decomp_and_grad</span><span class="p">([</span><span class="n">point_to_sample</span><span class="p">])</span>
+
+		<span class="n">grad_mu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_grad_mu</span><span class="p">([</span><span class="n">point_to_sample</span><span class="p">])</span>
+
+		<span class="n">sigma</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">var_star</span><span class="p">))</span>
+
+		<span class="n">mu_diff</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">best_so_far</span> <span class="o">-</span> <span class="n">mu_star</span><span class="p">)</span>
+
+		<span class="n">C</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">best_so_far</span> <span class="o">-</span> <span class="n">mu_star</span><span class="p">)</span><span class="o">/</span><span class="n">sigma</span>
+		<span class="n">pdf_C</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">best_so_far</span> <span class="o">-</span> <span class="n">mu_star</span><span class="p">)</span><span class="o">/</span><span class="n">sigma</span><span class="p">)</span>
+		<span class="n">cdf_C</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">cdf</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">best_so_far</span> <span class="o">-</span> <span class="n">mu_star</span><span class="p">)</span><span class="o">/</span><span class="n">sigma</span><span class="p">)</span>
+
+		<span class="n">d_C</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">sigma</span><span class="o">*</span><span class="n">grad_mu</span> <span class="o">-</span> <span class="n">grad_cholesky_decomp</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">best_so_far</span> <span class="o">-</span> <span class="n">mu_star</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="n">sigma</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+
+		<span class="n">d_A</span> <span class="o">=</span> <span class="o">-</span><span class="n">grad_mu</span><span class="o">*</span><span class="n">cdf_C</span> <span class="o">+</span> <span class="n">mu_diff</span><span class="o">*</span><span class="n">pdf_C</span><span class="o">*</span><span class="n">d_C</span>
+
+		<span class="n">d_B</span> <span class="o">=</span> <span class="n">grad_cholesky_decomp</span><span class="o">*</span><span class="n">pdf_C</span> <span class="o">+</span> <span class="n">sigma</span><span class="o">*</span><span class="p">(</span><span class="o">-</span><span class="n">C</span><span class="p">)</span><span class="o">*</span><span class="n">pdf_C</span><span class="o">*</span><span class="n">d_C</span>
+
+		<span class="k">return</span> <span class="n">d_A</span> <span class="o">+</span> <span class="n">d_B</span>
+</div>
+<div class="viewcode-block" id="OptimalGaussianProcess.get_1D_analytic_expected_improvement"><a class="viewcode-back" href="../../../../../../optimal_learning.EPI.src.python.models.html#optimal_learning.EPI.src.python.models.optimal_gaussian_process.OptimalGaussianProcess.get_1D_analytic_expected_improvement">[docs]</a>	<span class="k">def</span> <span class="nf">get_1D_analytic_expected_improvement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point_to_sample</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Calculate the expected improvement for a single point exactly using normal pdf/cdf</span>
+
+<span class="sd">		:Returns: double</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">mu_star</span><span class="p">,</span> <span class="n">var_star</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_mean_and_var_of_points</span><span class="p">([</span><span class="n">point_to_sample</span><span class="p">])</span>
+
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain</span> <span class="ow">and</span> <span class="n">optimal_learning</span><span class="o">.</span><span class="n">EPI</span><span class="o">.</span><span class="n">src</span><span class="o">.</span><span class="n">python</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">not_in_domain</span><span class="p">(</span><span class="n">point_to_sample</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="p">):</span>
+			<span class="k">return</span> <span class="mf">0.0</span>
+
+		<span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">max</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,(</span><span class="bp">self</span><span class="o">.</span><span class="n">best_so_far</span> <span class="o">-</span> <span class="n">mu_star</span><span class="p">)</span><span class="o">*</span><span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">cdf</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">best_so_far</span> <span class="o">-</span> <span class="n">mu_star</span><span class="p">)</span><span class="o">/</span><span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">var_star</span><span class="p">)))</span> <span class="o">+</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">var_star</span><span class="p">))</span><span class="o">*</span><span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">best_so_far</span> <span class="o">-</span> <span class="n">mu_star</span><span class="p">)</span><span class="o">/</span><span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">var_star</span><span class="p">)))])</span>
+</div>
+<div class="viewcode-block" id="OptimalGaussianProcess.get_2D_analytic_expected_improvement"><a class="viewcode-back" href="../../../../../../optimal_learning.EPI.src.python.models.html#optimal_learning.EPI.src.python.models.optimal_gaussian_process.OptimalGaussianProcess.get_2D_analytic_expected_improvement">[docs]</a>	<span class="k">def</span> <span class="nf">get_2D_analytic_expected_improvement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point_one</span><span class="p">,</span> <span class="n">point_two</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Calculate the expected improvement for two points exactly</span>
+
+<span class="sd">		following GiLeCa08, with some errors corrected</span>
+
+<span class="sd">		:Returns: double</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="p">:</span>
+			<span class="k">if</span> <span class="n">optimal_learning</span><span class="o">.</span><span class="n">EPI</span><span class="o">.</span><span class="n">src</span><span class="o">.</span><span class="n">python</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">not_in_domain</span><span class="p">(</span><span class="n">point_one</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="p">)</span> <span class="ow">or</span> <span class="n">optimal_learning</span><span class="o">.</span><span class="n">EPI</span><span class="o">.</span><span class="n">src</span><span class="o">.</span><span class="n">python</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">not_in_domain</span><span class="p">(</span><span class="n">point_two</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="p">):</span>
+				<span class="k">return</span> <span class="mf">0.0</span>
+
+		<span class="n">eps</span> <span class="o">=</span> <span class="mf">0.00001</span>
+
+		<span class="n">mu_star</span><span class="p">,</span> <span class="n">var_star</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_mean_and_var_of_points</span><span class="p">([</span><span class="n">point_one</span><span class="p">,</span> <span class="n">point_two</span><span class="p">])</span>
+
+		<span class="n">mu_one</span> <span class="o">=</span> <span class="n">mu_star</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+		<span class="n">mu_two</span> <span class="o">=</span> <span class="n">mu_star</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+		<span class="n">sigma_one</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">var_star</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]))</span>
+		<span class="n">sigma_two</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">var_star</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]))</span>
+		<span class="n">sigma_cross</span> <span class="o">=</span> <span class="n">var_star</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+		<span class="k">if</span> <span class="n">sigma_one</span> <span class="o">&lt;</span> <span class="n">eps</span> <span class="ow">and</span> <span class="n">sigma_two</span> <span class="o">&lt;</span> <span class="n">eps</span><span class="p">:</span>
+			<span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">max</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">best_so_far</span> <span class="o">-</span> <span class="n">numpy</span><span class="o">.</span><span class="n">min</span><span class="p">([</span><span class="n">mu_one</span><span class="p">,</span> <span class="n">mu_two</span><span class="p">])])</span>
+		<span class="k">elif</span> <span class="n">sigma_one</span> <span class="o">&lt;</span> <span class="n">eps</span><span class="p">:</span>
+			<span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">min</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">get_1D_analytic_expected_improvement</span><span class="p">(</span><span class="n">point_two</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">best_so_far</span> <span class="o">-</span> <span class="n">mu_one</span><span class="p">])</span>
+		<span class="k">elif</span> <span class="n">sigma_two</span> <span class="o">&lt;</span> <span class="n">eps</span><span class="p">:</span>
+			<span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">min</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">get_1D_analytic_expected_improvement</span><span class="p">(</span><span class="n">point_one</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">best_so_far</span> <span class="o">-</span> <span class="n">mu_two</span><span class="p">])</span>
+
+		<span class="k">def</span> <span class="nf">B_func</span><span class="p">(</span><span class="n">m1</span><span class="p">,</span> <span class="n">m2</span><span class="p">,</span> <span class="n">s1</span><span class="p">,</span> <span class="n">s2</span><span class="p">,</span> <span class="n">c12</span><span class="p">,</span> <span class="n">best</span><span class="p">):</span>
+			<span class="k">return</span> <span class="p">(</span><span class="n">m1</span> <span class="o">-</span> <span class="n">best</span><span class="p">)</span><span class="o">*</span><span class="n">D_func</span><span class="p">(</span><span class="n">m1</span><span class="p">,</span> <span class="n">m2</span><span class="p">,</span> <span class="n">s1</span><span class="p">,</span> <span class="n">s2</span><span class="p">,</span> <span class="n">c12</span><span class="p">,</span> <span class="n">best</span><span class="p">)</span> <span class="o">+</span> <span class="n">s1</span><span class="o">*</span><span class="n">E_func</span><span class="p">(</span><span class="n">m1</span><span class="p">,</span> <span class="n">m2</span><span class="p">,</span> <span class="n">s1</span><span class="p">,</span> <span class="n">s2</span><span class="p">,</span> <span class="n">c12</span><span class="p">,</span> <span class="n">best</span><span class="p">)</span>
+
+		<span class="k">def</span> <span class="nf">E_func</span><span class="p">(</span><span class="n">m1</span><span class="p">,</span> <span class="n">m2</span><span class="p">,</span> <span class="n">s1</span><span class="p">,</span> <span class="n">s2</span><span class="p">,</span> <span class="n">c12</span><span class="p">,</span> <span class="n">best</span><span class="p">):</span>
+			<span class="n">p12</span> <span class="o">=</span> <span class="n">c12</span><span class="o">/</span><span class="p">(</span><span class="n">s1</span><span class="o">*</span><span class="n">s2</span><span class="p">)</span>
+			<span class="n">beta1</span> <span class="o">=</span> <span class="p">(</span><span class="n">m1</span> <span class="o">-</span> <span class="n">m2</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">s2</span><span class="o">*</span><span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">p12</span><span class="o">*</span><span class="n">p12</span><span class="p">)))</span>
+			<span class="n">alpha1</span> <span class="o">=</span> <span class="p">(</span><span class="n">s1</span> <span class="o">-</span> <span class="n">p12</span><span class="o">*</span><span class="n">s2</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">s2</span><span class="o">*</span><span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">p12</span><span class="o">*</span><span class="n">p12</span><span class="p">)))</span>
+			<span class="n">gamma1</span> <span class="o">=</span> <span class="p">(</span><span class="n">best</span> <span class="o">-</span> <span class="n">m1</span><span class="p">)</span><span class="o">/</span><span class="n">s1</span>
+
+			<span class="c"># from phase 3 (different from the proposition!)</span>
+			<span class="k">return</span> <span class="n">alpha1</span><span class="o">*</span><span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">beta1</span><span class="p">)</span><span class="o">/</span><span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">alpha1</span><span class="o">*</span><span class="n">alpha1</span><span class="p">)))</span><span class="o">/</span><span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">alpha1</span><span class="o">*</span><span class="n">alpha1</span><span class="p">))</span><span class="o">*</span><span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">alpha1</span><span class="o">*</span><span class="n">alpha1</span><span class="p">))</span><span class="o">*</span><span class="p">(</span><span class="n">gamma1</span> <span class="o">+</span> <span class="p">(</span><span class="n">alpha1</span><span class="o">*</span><span class="n">beta1</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">alpha1</span><span class="o">*</span><span class="n">alpha1</span><span class="p">)))</span> <span class="o">-</span> <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">gamma1</span><span class="p">)</span><span class="o">*</span><span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">alpha1</span><span class="o">*</span><span class="n">gamma1</span> <span class="o">+</span> <span class="n">beta1</span><span class="p">)</span>
+
+		<span class="k">def</span> <span class="nf">D_func</span><span class="p">(</span><span class="n">m1</span><span class="p">,</span> <span class="n">m2</span><span class="p">,</span> <span class="n">s1</span><span class="p">,</span> <span class="n">s2</span><span class="p">,</span> <span class="n">c12</span><span class="p">,</span> <span class="n">best</span><span class="p">):</span>
+			<span class="n">Gamma</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">s1</span><span class="o">*</span><span class="n">s1</span><span class="p">,</span> <span class="n">c12</span> <span class="o">-</span> <span class="n">s1</span><span class="o">*</span><span class="n">s1</span><span class="p">],[</span><span class="n">c12</span> <span class="o">-</span> <span class="n">s1</span><span class="o">*</span><span class="n">s1</span><span class="p">,</span> <span class="n">s2</span><span class="o">*</span><span class="n">s2</span> <span class="o">+</span> <span class="n">s1</span><span class="o">*</span><span class="n">s1</span> <span class="o">-</span> <span class="mf">2.0</span><span class="o">*</span><span class="n">c12</span><span class="p">]])</span>
+
+			<span class="k">return</span> <span class="n">optimal_learning</span><span class="o">.</span><span class="n">EPI</span><span class="o">.</span><span class="n">src</span><span class="o">.</span><span class="n">python</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">mvncdf</span><span class="o">.</span><span class="n">mvnormcdf</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="n">numpy</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span><span class="o">-</span><span class="n">numpy</span><span class="o">.</span><span class="n">inf</span><span class="p">]),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">best</span> <span class="o">-</span> <span class="n">m1</span><span class="p">,</span> <span class="n">m1</span> <span class="o">-</span> <span class="n">m2</span><span class="p">]),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">]),</span> <span class="n">Gamma</span><span class="p">)</span>
+
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_1D_analytic_expected_improvement</span><span class="p">(</span><span class="n">point_one</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_1D_analytic_expected_improvement</span><span class="p">(</span><span class="n">point_two</span><span class="p">)</span> <span class="o">+</span> <span class="n">B_func</span><span class="p">(</span><span class="n">mu_one</span><span class="p">,</span> <span class="n">mu_two</span><span class="p">,</span> <span class="n">sigma_one</span><span class="p">,</span> <span class="n">sigma_two</span><span class="p">,</span> <span class="n">sigma_cross</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">best_so_far</span><span class="p">)</span> <span class="o">+</span> <span class="n">B_func</span><span class="p">(</span><span class="n">mu_two</span><span class="p">,</span> <span class="n">mu_one</span><span class="p">,</span> <span class="n">sigma_two</span><span class="p">,</span> <span class="n">sigma_one</span><span class="p">,</span> <span class="n">sigma_cross</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">best_so_far</span><span class="p">)</span>
+</div>
+	<span class="k">def</span> <span class="nf">_get_expected_improvement_via_MC</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points_to_sample</span><span class="p">,</span> <span class="n">iterations</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+		<span class="c"># for three or more points find the EI via Monte Carlo</span>
+		<span class="n">mu_star</span><span class="p">,</span> <span class="n">var_star</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_mean_and_var_of_points</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">)</span>
+		<span class="n">cholesky_decomp</span><span class="p">,</span> <span class="n">grad_cholesky_decomp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cholesky_decomp_and_grad</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">)</span>
+
+		<span class="n">normals</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="n">iterations</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">)))</span>
+
+		<span class="n">aggregate</span> <span class="o">=</span> <span class="mf">0.0</span>
+		<span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">iterations</span><span class="p">):</span>
+			<span class="n">improvement_this_step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">best_so_far</span> <span class="o">-</span> <span class="n">numpy</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">mu_star</span> <span class="o">+</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">cholesky_decomp</span><span class="p">,</span> <span class="n">normals</span><span class="p">[</span><span class="n">it</span><span class="p">][:]</span><span class="o">.</span><span class="n">T</span><span class="p">))</span>
+			<span class="k">if</span> <span class="n">improvement_this_step</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+				<span class="n">aggregate</span> <span class="o">+=</span> <span class="n">improvement_this_step</span>
+		<span class="k">return</span> <span class="n">aggregate</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">iterations</span><span class="p">)</span>
+
+<div class="viewcode-block" id="OptimalGaussianProcess.get_expected_improvement"><a class="viewcode-back" href="../../../../../../optimal_learning.EPI.src.python.models.html#optimal_learning.EPI.src.python.models.optimal_gaussian_process.OptimalGaussianProcess.get_expected_improvement">[docs]</a>	<span class="k">def</span> <span class="nf">get_expected_improvement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points_to_sample</span><span class="p">,</span> <span class="n">iterations</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Calculate the expected improvement at *points_to_sample* over a certain number of MC *iterations* in a *domain*</span>
+
+<span class="sd">		:Returns: double</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+
+		<span class="c"># if we resrict the function to a domain there can be no improvement outside of it</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="p">:</span>
+			<span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points_to_sample</span><span class="p">:</span>
+				<span class="k">if</span> <span class="n">optimal_learning</span><span class="o">.</span><span class="n">EPI</span><span class="o">.</span><span class="n">src</span><span class="o">.</span><span class="n">python</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">not_in_domain</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="p">):</span>
+					<span class="k">return</span> <span class="mf">0.0</span>
+
+		<span class="c"># if we are sampling one or two points find the analytic result</span>
+		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+			<span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">max</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_1D_analytic_expected_improvement</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">[</span><span class="mi">0</span><span class="p">])])</span>
+		<span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+			<span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">max</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_2D_analytic_expected_improvement</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">points_to_sample</span><span class="p">[</span><span class="mi">1</span><span class="p">])])</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_expected_improvement_via_MC</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points_to_sample</span><span class="p">,</span> <span class="n">iterations</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="OptimalGaussianProcess.get_expected_grad_EI"><a class="viewcode-back" href="../../../../../../optimal_learning.EPI.src.python.models.html#optimal_learning.EPI.src.python.models.optimal_gaussian_process.OptimalGaussianProcess.get_expected_grad_EI">[docs]</a>	<span class="k">def</span> <span class="nf">get_expected_grad_EI</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">current_point</span><span class="p">,</span> <span class="n">points_being_sampled</span><span class="p">,</span> <span class="n">iterations</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;get the expected EI grad at [current_point, points_being_sampled] wrt current_point&quot;&quot;&quot;</span>
+
+		<span class="c"># TODO if outside the domain, pull it towards the center</span>
+
+		<span class="n">union_of_points</span> <span class="o">=</span> <span class="p">[</span><span class="n">current_point</span><span class="p">]</span>
+		<span class="n">union_of_points</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">points_being_sampled</span><span class="p">)</span>
+
+		<span class="n">mu</span><span class="p">,</span> <span class="n">var_star</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_mean_and_var_of_points</span><span class="p">(</span><span class="n">union_of_points</span><span class="p">)</span>
+		<span class="n">cholesky_decomp</span><span class="p">,</span> <span class="n">grad_chol_decomp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cholesky_decomp_and_grad</span><span class="p">(</span><span class="n">union_of_points</span><span class="p">)</span>
+		<span class="n">grad_mu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_grad_mu</span><span class="p">(</span><span class="n">union_of_points</span><span class="p">)</span>
+
+		<span class="n">normals</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">iterations</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">union_of_points</span><span class="p">)))</span>
+
+		<span class="n">aggregate_dx</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+		<span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">iterations</span><span class="p">):</span>
+			<span class="n">from_var</span> <span class="o">=</span> <span class="n">mu</span> <span class="o">+</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">cholesky_decomp</span><span class="p">,</span> <span class="n">normals</span><span class="p">[</span><span class="n">it</span><span class="p">][:]</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+			<span class="n">improvement</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">best_so_far</span> <span class="o">-</span> <span class="n">from_var</span>
+			<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">improvement</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+				<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">improvement</span><span class="p">)):</span>
+					<span class="k">if</span> <span class="n">improvement</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">improvement</span><span class="p">)</span> <span class="ow">and</span> <span class="n">improvement</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">:</span>
+						<span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+							<span class="n">aggregate_dx</span> <span class="o">-=</span> <span class="n">grad_mu</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+						<span class="n">aggregate_dx</span> <span class="o">-=</span> <span class="n">optimal_learning</span><span class="o">.</span><span class="n">EPI</span><span class="o">.</span><span class="n">src</span><span class="o">.</span><span class="n">python</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">matrix_vector_multiply</span><span class="p">(</span><span class="n">grad_chol_decomp</span><span class="p">,</span> <span class="n">normals</span><span class="p">[</span><span class="n">it</span><span class="p">][:]</span><span class="o">.</span><span class="n">T</span><span class="p">)[</span><span class="n">i</span><span class="p">]</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="k">if</span> <span class="n">improvement</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">:</span>
+					<span class="n">aggregate_dx</span> <span class="o">+=</span> <span class="o">-</span><span class="n">grad_mu</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">grad_chol_decomp</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">normals</span><span class="p">[</span><span class="n">it</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+		<span class="k">return</span> <span class="n">aggregate_dx</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">iterations</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="OptimalGaussianProcess.get_next_step"><a class="viewcode-back" href="../../../../../../optimal_learning.EPI.src.python.models.html#optimal_learning.EPI.src.python.models.optimal_gaussian_process.OptimalGaussianProcess.get_next_step">[docs]</a>	<span class="k">def</span> <span class="nf">get_next_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">starting_point</span><span class="p">,</span> <span class="n">points_being_sampled</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">iterations</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">max_N</span><span class="o">=</span><span class="mi">400</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;get the next step using polyak-ruppert&quot;&quot;&quot;</span>
+		<span class="n">x_hat</span> <span class="o">=</span> <span class="n">starting_point</span>
+
+		<span class="n">x_path</span> <span class="o">=</span> <span class="p">[</span><span class="n">starting_point</span><span class="p">]</span>
+
+		<span class="n">n</span> <span class="o">=</span> <span class="mi">1</span>
+		<span class="k">while</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="n">max_N</span><span class="p">:</span>
+			<span class="n">alpha_n</span> <span class="o">=</span> <span class="mf">0.01</span><span class="o">*</span><span class="n">n</span><span class="o">**-</span><span class="n">gamma</span>
+
+			<span class="n">gx_n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_expected_grad_EI</span><span class="p">(</span><span class="n">x_path</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">points_being_sampled</span><span class="p">,</span> <span class="n">iterations</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+			<span class="n">x_path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x_path</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">alpha_n</span><span class="o">*</span><span class="n">gx_n</span><span class="p">)</span>
+
+			<span class="k">if</span> <span class="n">n</span><span class="o">%</span><span class="p">(</span><span class="n">max_N</span><span class="o">/</span><span class="mi">20</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+				<span class="n">x_hat</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">x_path</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+			<span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span>
+
+		<span class="n">union_of_points</span> <span class="o">=</span> <span class="p">[</span><span class="n">x_hat</span><span class="p">]</span>
+		<span class="n">union_of_points</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">points_being_sampled</span><span class="p">)</span>
+		<span class="n">EI</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_expected_improvement</span><span class="p">(</span><span class="n">union_of_points</span><span class="p">)</span>
+
+		<span class="k">return</span> <span class="n">x_path</span><span class="p">,</span> <span class="n">x_hat</span><span class="p">,</span> <span class="n">EI</span>
+</div>
+<div class="viewcode-block" id="OptimalGaussianProcess.get_next_step_multistart"><a class="viewcode-back" href="../../../../../../optimal_learning.EPI.src.python.models.html#optimal_learning.EPI.src.python.models.optimal_gaussian_process.OptimalGaussianProcess.get_next_step_multistart">[docs]</a>	<span class="k">def</span> <span class="nf">get_next_step_multistart</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">starting_points</span><span class="p">,</span> <span class="n">points_being_sampled</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">iterations</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">max_N</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;get next step using multistart polyak-ruppert&quot;&quot;&quot;</span>
+		<span class="n">polyak_ruppert_paths</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="n">best_improvement</span> <span class="o">=</span> <span class="o">-</span><span class="n">numpy</span><span class="o">.</span><span class="n">inf</span>
+		<span class="n">best_point</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="k">for</span> <span class="n">starting_point</span> <span class="ow">in</span> <span class="n">starting_points</span><span class="p">:</span>
+			<span class="n">x_path</span><span class="p">,</span> <span class="n">x_hat</span><span class="p">,</span> <span class="n">EI</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_next_step</span><span class="p">(</span><span class="n">starting_point</span><span class="p">,</span> <span class="n">points_being_sampled</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="n">gamma</span><span class="p">,</span> <span class="n">iterations</span><span class="o">=</span><span class="n">iterations</span><span class="p">,</span> <span class="n">max_N</span><span class="o">=</span><span class="n">max_N</span><span class="p">)</span>
+			<span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">optimal_learning</span><span class="o">.</span><span class="n">EPI</span><span class="o">.</span><span class="n">src</span><span class="o">.</span><span class="n">python</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">not_in_domain</span><span class="p">(</span><span class="n">x_hat</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="p">):</span>
+				<span class="n">polyak_ruppert_paths</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">x_path</span><span class="p">,</span> <span class="n">x_hat</span><span class="p">,</span> <span class="n">EI</span><span class="p">])</span>
+				<span class="k">if</span> <span class="n">polyak_ruppert_paths</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">best_improvement</span><span class="p">:</span>
+					<span class="n">best_improvement</span> <span class="o">=</span> <span class="n">polyak_ruppert_paths</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
+					<span class="n">best_point</span> <span class="o">=</span> <span class="n">polyak_ruppert_paths</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+
+		<span class="k">return</span> <span class="n">best_point</span><span class="p">,</span> <span class="n">best_improvement</span><span class="p">,</span> <span class="n">polyak_ruppert_paths</span>
+</div>
+<div class="viewcode-block" id="OptimalGaussianProcess.get_multistart_best"><a class="viewcode-back" href="../../../../../../optimal_learning.EPI.src.python.models.html#optimal_learning.EPI.src.python.models.optimal_gaussian_process.OptimalGaussianProcess.get_multistart_best">[docs]</a>	<span class="k">def</span> <span class="nf">get_multistart_best</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">random_restarts</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">points_being_sampled</span><span class="o">=</span><span class="p">[]):</span>
+		<span class="n">best_improvement</span> <span class="o">=</span> <span class="o">-</span><span class="n">numpy</span><span class="o">.</span><span class="n">inf</span>
+		<span class="n">best_next_step</span> <span class="o">=</span> <span class="n">optimal_learning</span><span class="o">.</span><span class="n">EPI</span><span class="o">.</span><span class="n">src</span><span class="o">.</span><span class="n">python</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">make_rand_point</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="p">)</span>
+		<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">random_restarts</span><span class="p">):</span>
+			<span class="n">path</span><span class="p">,</span> <span class="n">next_step</span><span class="p">,</span> <span class="n">improvement</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_next_step</span><span class="p">(</span><span class="n">optimal_learning</span><span class="o">.</span><span class="n">EPI</span><span class="o">.</span><span class="n">src</span><span class="o">.</span><span class="n">python</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">make_rand_point</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="p">),</span> <span class="n">points_being_sampled</span><span class="p">)</span>
+			<span class="c">#path, next_step, improvement = self.get_next_step(numpy.array([-2.141592, 11.274999]), [numpy.array([1.0,0.0])], [0,1])</span>
+			<span class="k">if</span> <span class="n">improvement</span> <span class="o">&gt;</span> <span class="n">best_improvement</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">optimal_learning</span><span class="o">.</span><span class="n">EPI</span><span class="o">.</span><span class="n">src</span><span class="o">.</span><span class="n">python</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">not_in_domain</span><span class="p">(</span><span class="n">next_step</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="p">):</span>
+				<span class="n">best_improvement</span> <span class="o">=</span> <span class="n">improvement</span>
+				<span class="n">best_next_step</span> <span class="o">=</span> <span class="n">next_step</span>
+		<span class="k">return</span> <span class="n">best_next_step</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">MOE 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../../../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,273 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>optimal_learning.EPI.src.python.models.plottable_optimal_gaussian_process &mdash; MOE 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../../_static/breathe.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../../',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../../../../../../_static/favicon.ico"/>
+    <link rel="top" title="MOE 0.1.0 documentation" href="../../../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">MOE 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../../../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for optimal_learning.EPI.src.python.models.plottable_optimal_gaussian_process</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="c"># for sci comp</span>
+<span class="kn">import</span> <span class="nn">matplotlib</span>
+<span class="n">matplotlib</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s">&#39;Agg&#39;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pylab</span> <span class="kn">as</span> <span class="nn">plt</span> <span class="c"># for plotting</span>
+
+<span class="kn">from</span> <span class="nn">optimal_learning.EPI.src.python.models.optimal_gaussian_process</span> <span class="kn">import</span> <span class="n">OptimalGaussianProcess</span>
+
+
+<div class="viewcode-block" id="PlottableOptimalGaussianProcess"><a class="viewcode-back" href="../../../../../../optimal_learning.EPI.src.python.models.html#optimal_learning.EPI.src.python.models.plottable_optimal_gaussian_process.PlottableOptimalGaussianProcess">[docs]</a><span class="k">class</span> <span class="nc">PlottableOptimalGaussianProcess</span><span class="p">(</span><span class="n">OptimalGaussianProcess</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;docstring!</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="PlottableOptimalGaussianProcess.plot_gp_over_one_dim_range"><a class="viewcode-back" href="../../../../../../optimal_learning.EPI.src.python.models.html#optimal_learning.EPI.src.python.models.plottable_optimal_gaussian_process.PlottableOptimalGaussianProcess.plot_gp_over_one_dim_range">[docs]</a>	<span class="k">def</span> <span class="nf">plot_gp_over_one_dim_range</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plotting_range</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">save_figure</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">figure_path</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Plot the mean and variance of the gaussian process over some range</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="n">plotting_range</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="n">plotting_range</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c"># we can only plot in 1D</span>
+
+		<span class="n">points</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span>
+				<span class="n">plotting_range</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+				<span class="n">plotting_range</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+				<span class="p">(</span><span class="n">plotting_range</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">plotting_range</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">/</span><span class="n">resolution</span>
+				<span class="p">)</span>
+
+		<span class="n">mean_values</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">resolution</span><span class="p">)</span>
+		<span class="n">var_values</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">resolution</span><span class="p">)</span>
+
+		<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">point</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
+			<span class="n">mean</span><span class="p">,</span> <span class="n">var</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_mean_and_var_of_points</span><span class="p">([</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">point</span><span class="p">])])</span>
+			<span class="n">mean_values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">mean</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+			<span class="n">var_values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">var</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+		<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+		<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+
+		<span class="c"># show sampled points with red x&#39;s</span>
+		<span class="n">sampled_x_points</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points_sampled</span><span class="p">))</span>
+		<span class="n">sampled_x_vals</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points_sampled</span><span class="p">))</span>
+		<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">sample</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points_sampled</span><span class="p">):</span>
+			<span class="n">sampled_x_points</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">point</span>
+			<span class="n">sampled_x_vals</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">value</span>
+		<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sampled_x_points</span><span class="p">,</span> <span class="n">sampled_x_vals</span><span class="p">,</span> <span class="s">&#39;rx&#39;</span><span class="p">)</span>
+
+		<span class="c"># plot mean and var accross the points</span>
+		<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">mean_values</span><span class="p">,</span> <span class="s">&#39;--&#39;</span><span class="p">)</span>
+		<span class="n">ax</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">mean_values</span> <span class="o">-</span> <span class="n">var_values</span><span class="p">,</span> <span class="n">mean_values</span> <span class="o">+</span> <span class="n">var_values</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s">&#39;green&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+
+		<span class="c"># set limits</span>
+		<span class="n">y_min</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">min</span><span class="p">([</span><span class="n">numpy</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">mean_values</span> <span class="o">-</span> <span class="n">var_values</span><span class="p">),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">sampled_x_vals</span><span class="p">)])</span>
+		<span class="n">y_max</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">max</span><span class="p">([</span><span class="n">numpy</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">mean_values</span> <span class="o">+</span> <span class="n">var_values</span><span class="p">),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">sampled_x_vals</span><span class="p">)])</span>
+		<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span><span class="p">)</span>
+		<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">plotting_range</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">plotting_range</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+		<span class="k">if</span> <span class="n">save_figure</span><span class="p">:</span>
+			<span class="k">if</span> <span class="ow">not</span> <span class="n">figure_path</span><span class="p">:</span>
+				<span class="k">return</span> <span class="n">fig</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">figure_path</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="c"># remove whitespace and save</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="PlottableOptimalGaussianProcess.plot_marginal_likelihood_vs_alpha_and_length"><a class="viewcode-back" href="../../../../../../optimal_learning.EPI.src.python.models.html#optimal_learning.EPI.src.python.models.plottable_optimal_gaussian_process.PlottableOptimalGaussianProcess.plot_marginal_likelihood_vs_alpha_and_length">[docs]</a>	<span class="k">def</span> <span class="nf">plot_marginal_likelihood_vs_alpha_and_length</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">alpha_range</span><span class="o">=</span><span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">],</span> <span class="n">length_range</span><span class="o">=</span><span class="p">[</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">],</span> <span class="n">resolution</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">length_log_scale</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">gd_points</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">save_figure</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">figure_path</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Plot the log marginal likelihood of the process for different hyperparameter values</span>
+<span class="sd">		if gd_points are given it will plot the evolution as well</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="c"># save these for reseting at the end</span>
+		<span class="n">old_hyperparameters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cop</span><span class="o">.</span><span class="n">hyperparameters</span>
+
+		<span class="c"># set up the points to plot over</span>
+		<span class="n">log_marginal_likelihood</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">resolution</span><span class="p">,</span> <span class="n">resolution</span><span class="p">))</span>
+		<span class="n">alpha_points</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span>
+				<span class="n">alpha_range</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+				<span class="n">alpha_range</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+				<span class="p">(</span><span class="n">alpha_range</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">alpha_range</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">/</span><span class="n">resolution</span>
+				<span class="p">)</span>
+		<span class="k">if</span> <span class="n">length_log_scale</span><span class="p">:</span>
+			<span class="n">length_points</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span>
+					<span class="n">numpy</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">length_range</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+					<span class="n">numpy</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">length_range</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+					<span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">length_range</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="n">numpy</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">length_range</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span><span class="o">/</span><span class="n">resolution</span>
+					<span class="p">)</span>
+			<span class="n">length_points</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">length_points</span><span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">length_points</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span>
+					<span class="n">length_range</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+					<span class="n">length_range</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+					<span class="p">(</span><span class="n">length_range</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">length_range</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">/</span><span class="n">resolution</span>
+					<span class="p">)</span>
+
+		<span class="c"># calculate the marginal likelihood for each pairwise set of hyperparameters</span>
+		<span class="k">for</span> <span class="n">alpha_idx</span><span class="p">,</span> <span class="n">alpha_val</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">alpha_points</span><span class="p">):</span>
+			<span class="k">for</span> <span class="n">length_idx</span><span class="p">,</span> <span class="n">length_val</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">length_points</span><span class="p">):</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">cop</span><span class="o">.</span><span class="n">hyperparameters</span> <span class="o">=</span> <span class="p">[</span><span class="n">alpha_val</span><span class="p">,</span> <span class="n">length_val</span><span class="p">]</span>
+
+				<span class="n">log_marginal_likelihood</span><span class="p">[</span><span class="n">alpha_idx</span><span class="p">][</span><span class="n">length_idx</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_log_marginal_likelihood</span><span class="p">()</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">cop</span><span class="o">.</span><span class="n">hyperparameters</span> <span class="o">=</span> <span class="n">old_hyperparameters</span>
+
+		<span class="c"># make the grid and the figure</span>
+		<span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">alpha_points</span><span class="p">,</span> <span class="n">length_points</span><span class="p">)</span>
+		<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+		<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+
+		<span class="k">if</span> <span class="n">gd_points</span><span class="p">:</span>
+			<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">gd_points</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">gd_points</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s">&#39;bx&#39;</span><span class="p">)</span>
+
+		<span class="c"># plot everything and set the axis</span>
+		<span class="n">plt</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">log_marginal_likelihood</span><span class="p">)</span>
+		<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">&quot;Marginal Likelihood vs hyperparameters&quot;</span><span class="p">)</span>
+		<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">alpha_points</span><span class="p">),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">alpha_points</span><span class="p">))</span>
+		<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s">&#39;alpha&#39;</span><span class="p">)</span>
+		<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">length_points</span><span class="p">),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">length_points</span><span class="p">))</span>
+		<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s">&#39;length&#39;</span><span class="p">)</span>
+
+		<span class="c"># save the figure</span>
+		<span class="k">if</span> <span class="n">save_figure</span><span class="p">:</span>
+			<span class="k">if</span> <span class="ow">not</span> <span class="n">figure_path</span><span class="p">:</span>
+				<span class="k">return</span> <span class="n">fig</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">figure_path</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="c"># remove whitespace and save</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="PlottableOptimalGaussianProcess.plot_contour_and_quiver"><a class="viewcode-back" href="../../../../../../optimal_learning.EPI.src.python.models.html#optimal_learning.EPI.src.python.models.plottable_optimal_gaussian_process.PlottableOptimalGaussianProcess.plot_contour_and_quiver">[docs]</a>	<span class="k">def</span> <span class="nf">plot_contour_and_quiver</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">points_being_sampled</span><span class="o">=</span><span class="p">[],</span> <span class="n">save_figure</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">figure_path</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Plot the GPP contour plot and grad_mu&quot;&quot;&quot;</span>
+
+		<span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+			<span class="k">raise</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="s">&quot;Can only plot contour and quiver for 1D functions&quot;</span><span class="p">)</span>
+
+		<span class="n">plotting_points</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">resolution</span><span class="p">))</span>
+
+		<span class="n">sample_grad_EI_dx1</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">resolution</span><span class="p">,</span> <span class="n">resolution</span><span class="p">))</span>
+		<span class="n">sample_grad_EI_dx2</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">resolution</span><span class="p">,</span> <span class="n">resolution</span><span class="p">))</span>
+		<span class="n">sample_EI</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">resolution</span><span class="p">,</span> <span class="n">resolution</span><span class="p">))</span>
+
+		<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x1</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">plotting_points</span><span class="p">):</span>
+			<span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">x2</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">plotting_points</span><span class="p">):</span>
+
+				<span class="n">union_of_points</span> <span class="o">=</span> <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x1</span><span class="p">]),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x2</span><span class="p">])]</span>
+				<span class="n">union_of_points</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">points_being_sampled</span><span class="p">)</span>
+
+				<span class="n">union_of_points_without_x1</span> <span class="o">=</span> <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x2</span><span class="p">])]</span>
+				<span class="n">union_of_points_without_x1</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">points_being_sampled</span><span class="p">)</span>
+
+				<span class="n">union_of_points_without_x2</span> <span class="o">=</span> <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x1</span><span class="p">])]</span>
+				<span class="n">union_of_points_without_x2</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">points_being_sampled</span><span class="p">)</span>
+
+				<span class="n">sample_grad_EI_dx1</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_expected_grad_EI</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x1</span><span class="p">]),</span> <span class="n">union_of_points_without_x1</span><span class="p">)</span>
+				<span class="n">sample_grad_EI_dx2</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_expected_grad_EI</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x2</span><span class="p">]),</span> <span class="n">union_of_points_without_x2</span><span class="p">)</span>
+				<span class="n">sample_EI</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_expected_improvement</span><span class="p">(</span><span class="n">union_of_points</span><span class="p">)</span>
+				<span class="k">print</span> <span class="n">x1</span><span class="p">,</span><span class="n">x2</span>
+
+		<span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">plotting_points</span><span class="p">,</span> <span class="n">plotting_points</span><span class="p">)</span>
+
+		<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+		<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+
+		<span class="k">if</span> <span class="n">points_being_sampled</span><span class="p">:</span>
+			<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">numpy</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">plotting_points</span><span class="p">),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">plotting_points</span><span class="p">)],</span> <span class="p">[</span><span class="n">points_being_sampled</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">points_being_sampled</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="s">&#39;b&#39;</span><span class="p">)</span>
+			<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">points_being_sampled</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+				<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">numpy</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">plotting_points</span><span class="p">),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">plotting_points</span><span class="p">)],</span> <span class="p">[</span><span class="n">points_being_sampled</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">points_being_sampled</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="s">&#39;b&#39;</span><span class="p">)</span>
+
+		<span class="n">plt</span><span class="o">.</span><span class="n">quiver</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">sample_grad_EI_dx1</span><span class="p">,</span> <span class="n">sample_grad_EI_dx2</span><span class="p">)</span>
+		<span class="n">plt</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">sample_EI</span><span class="p">)</span>
+		<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">&quot;Sample EI and grad EI&quot;</span><span class="p">)</span>
+		<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">plotting_points</span><span class="p">),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">plotting_points</span><span class="p">))</span>
+		<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">plotting_points</span><span class="p">),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">plotting_points</span><span class="p">))</span>
+
+		<span class="k">if</span> <span class="n">save_figure</span><span class="p">:</span>
+			<span class="k">if</span> <span class="ow">not</span> <span class="n">figure_path</span><span class="p">:</span>
+				<span class="k">return</span> <span class="n">fig</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">figure_path</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="c"># remove whitespace and save</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">MOE 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../../../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>
