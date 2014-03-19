@@ -4,7 +4,7 @@ import collections
 import logging
 import numpy
 
-import optimal_learning.EPI.src.cpp.build.GPP as C_GP
+import build.GPP as C_GP
 from optimal_learning.EPI.src.python.models.optimal_gaussian_process import OptimalGaussianProcess
 
 
