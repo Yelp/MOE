@@ -1,0 +1,658 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp &mdash; MOE 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../../_static/breathe.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../../',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../../../../../../_static/favicon.ico"/>
+    <link rel="top" title="MOE 0.1.0 documentation" href="../../../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">MOE 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../../../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">collections</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+<span class="kn">import</span> <span class="nn">build.GPP</span> <span class="kn">as</span> <span class="nn">C_GP</span>
+<span class="kn">from</span> <span class="nn">optimal_learning.EPI.src.python.models.optimal_gaussian_process</span> <span class="kn">import</span> <span class="n">OptimalGaussianProcess</span>
+
+
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">,</span> <span class="n">format</span><span class="o">=</span><span class="s">&#39;</span><span class="si">%(asctime)s</span><span class="s"> - </span><span class="si">%(levelname)s</span><span class="s"> - </span><span class="si">%(message)s</span><span class="s">&#39;</span><span class="p">)</span>
+
+<span class="c"># namedtuple to track a closed interval [min, max]</span>
+<div class="viewcode-block" id="ClosedInterval"><a class="viewcode-back" href="../../../../../../optimal_learning.EPI.src.python.models.html#optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.ClosedInterval">[docs]</a><span class="k">class</span> <span class="nc">ClosedInterval</span><span class="p">(</span><span class="n">collections</span><span class="o">.</span><span class="n">namedtuple</span><span class="p">(</span><span class="s">&#39;ClosedInterval&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;min&#39;</span><span class="p">,</span> <span class="s">&#39;max&#39;</span><span class="p">])):</span>
+	<span class="n">__slots__</span> <span class="o">=</span> <span class="p">()</span>
+
+	<span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="ClosedInterval.build_closed_intervals_from_list"><a class="viewcode-back" href="../../../../../../optimal_learning.EPI.src.python.models.html#optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.ClosedInterval.build_closed_intervals_from_list">[docs]</a>	<span class="k">def</span> <span class="nf">build_closed_intervals_from_list</span><span class="p">(</span><span class="n">domain</span><span class="p">):</span>
+		<span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">bounds</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">domain</span><span class="p">):</span>
+			<span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ClosedInterval</span><span class="p">(</span><span class="n">bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+
+		<span class="k">return</span> <span class="n">result</span>
+</div></div>
+<div class="viewcode-block" id="HyperparameterOptimizationParameters"><a class="viewcode-back" href="../../../../../../optimal_learning.EPI.src.python.models.html#optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.HyperparameterOptimizationParameters">[docs]</a><span class="k">class</span> <span class="nc">HyperparameterOptimizationParameters</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;Container for parameters that specify the behavior of a hyperparameter optimizer.</span>
+
+<span class="sd">        We use slots to enforce a &quot;type.&quot; Typo&#39;ing a member name will error, not add a new field.</span>
+<span class="sd">        This class is passed to C++, so it is convenient to be strict about its structure.</span>
+
+<span class="sd">        Attributes:</span>
+<span class="sd">        objective_type: which log likelihood measure to use as the metric of model quality</span>
+<span class="sd">          e.g., log marginal likelihood, leave one out cross validation log pseudo-likelihood</span>
+<span class="sd">        optimizer_type: which optimizer to use (e.g., dumb search, gradient dsecent, Newton)</span>
+<span class="sd">        num_random_samples: number of samples to try if using &#39;dumb&#39; search</span>
+<span class="sd">        optimizer_parameters: parameters to control derviative-based optimizers, e.g.,</span>
+<span class="sd">          step size control, number of steps tolerance, etc.</span>
+<span class="sd">        NOTE: this MUST be a C++ object whose type matches objective_type. e.g., if objective_type</span>
+<span class="sd">        is kNewton, then this must be built via C_GP.NewtonParameters()</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;objective_type&#39;</span><span class="p">,</span> <span class="s">&#39;optimizer_type&#39;</span><span class="p">,</span> <span class="s">&#39;num_random_samples&#39;</span><span class="p">,</span> <span class="s">&#39;optimizer_parameters&#39;</span><span class="p">,</span> <span class="p">)</span>
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">objective_type</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">optimizer_type</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">num_random_samples</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">optimizer_parameters</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+                <span class="c"># see gpp_python.cpp for .*_type enum definitions. .*_type variables must be from those enums (NOT integers)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">objective_type</span> <span class="o">=</span> <span class="n">objective_type</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">optimizer_type</span> <span class="o">=</span> <span class="n">optimizer_type</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">num_random_samples</span> <span class="o">=</span> <span class="n">num_random_samples</span> <span class="c"># number of samples to &#39;dumb&#39; search over</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">optimizer_parameters</span> <span class="o">=</span> <span class="n">optimizer_parameters</span> <span class="c"># must match the optimizer_type</span>
+</div>
+<div class="viewcode-block" id="ExpectedImprovementOptimizationParameters"><a class="viewcode-back" href="../../../../../../optimal_learning.EPI.src.python.models.html#optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.ExpectedImprovementOptimizationParameters">[docs]</a><span class="k">class</span> <span class="nc">ExpectedImprovementOptimizationParameters</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;Container for parameters that specify the behavior of a expected improvement optimizer.</span>
+
+<span class="sd">        We use slots to enforce a &quot;type.&quot; Typo&#39;ing a member name will error, not add a new field.</span>
+<span class="sd">        This class is passed to C++, so it is convenient to be strict about its structure.</span>
+
+<span class="sd">        Attributes:</span>
+<span class="sd">        domain_type: type of domain that we are optimizing expected improvement over (e.g., tensor, simplex)</span>
+<span class="sd">        optimizer_type: which optimizer to use (e.g., dumb search, gradient dsecent)</span>
+<span class="sd">        num_random_samples: number of samples to try if using &#39;dumb&#39; search or if generating more</span>
+<span class="sd">          than one simultaneous sample with dumb search fallback enabled</span>
+<span class="sd">        optimizer_parameters: parameters to control derviative-based optimizers, e.g.,</span>
+<span class="sd">          step size control, number of steps tolerance, etc.</span>
+<span class="sd">        NOTE: this MUST be a C++ object whose type matches objective_type. e.g., if objective_type</span>
+<span class="sd">        is kGradientDescent, then this must be built via C_GP.GradientDescentParameters object</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+	<span class="n">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;domain_type&#39;</span><span class="p">,</span> <span class="s">&#39;optimizer_type&#39;</span><span class="p">,</span> <span class="s">&#39;num_random_samples&#39;</span><span class="p">,</span> <span class="s">&#39;optimizer_parameters&#39;</span><span class="p">,</span> <span class="p">)</span>
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">domain_type</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">optimizer_type</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">num_random_samples</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">optimizer_parameters</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+		<span class="c"># see gpp_python.cpp for .*_type enum definitions. .*_type variables must be from those enums (NOT integers)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">domain_type</span> <span class="o">=</span> <span class="n">domain_type</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">optimizer_type</span> <span class="o">=</span> <span class="n">optimizer_type</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">num_random_samples</span> <span class="o">=</span> <span class="n">num_random_samples</span> <span class="c"># number of samples to &#39;dumb&#39; search over</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">optimizer_parameters</span> <span class="o">=</span> <span class="n">optimizer_parameters</span> <span class="c"># must match the optimizer_type</span>
+		<span class="c"># NOTE: need both num_random_samples AND optimizer_parameters if generating &gt; 1 sample</span>
+		<span class="c"># using gradient descent optimization</span>
+</div>
+<div class="viewcode-block" id="OptimalGaussianProcessLinkedCpp"><a class="viewcode-back" href="../../../../../../optimal_learning.EPI.src.python.models.html#optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.OptimalGaussianProcessLinkedCpp">[docs]</a><span class="k">class</span> <span class="nc">OptimalGaussianProcessLinkedCpp</span><span class="p">(</span><span class="n">OptimalGaussianProcess</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;Overrides methods in OptimalGaussianProcess with calls to C++ code in src/cpp/GPP_python.cpp via boost</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_num_threads</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Initializes max_num_threads (which should be constant for any given instantiation of this class)</span>
+<span class="sd">		Creates a singleton randomness member (C++ RandomnessSourceContainer object) and initializes seeds randomness</span>
+<span class="sd">		sources based on system time (+ potentially other less repeatable quantities) and thread id (as appropriate)</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="nb">super</span><span class="p">(</span><span class="n">OptimalGaussianProcessLinkedCpp</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">max_num_threads</span> <span class="o">=</span> <span class="n">max_num_threads</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">randomness</span> <span class="o">=</span> <span class="n">C_GP</span><span class="o">.</span><span class="n">RandomnessSourceContainer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">max_num_threads</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">randomness</span><span class="o">.</span><span class="n">SetRandomizedUniformGeneratorSeed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="c"># set seed based on less repeatable factors (e.g,. time)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">randomness</span><span class="o">.</span><span class="n">SetRandomizedNormalRNGSeed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="c"># set seed baesd on thread id &amp; less repeatable factors (e.g,. time)</span>
+
+	<span class="k">def</span> <span class="nf">_cppify_hyperparameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;C++ interface expects hyperparameters in a list, where:</span>
+<span class="sd">		hyperparameters[0]: double = \alpha (\sigma_f^2, signal variance)</span>
+<span class="sd">		hyperparameters[1]: list = length scales (len = dim, one length per spatial dimension)</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="c"># HACK</span>
+		<span class="n">alpha</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cop</span><span class="o">.</span><span class="n">hyperparameters</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+		<span class="k">return</span> <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="n">alpha</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cppify_length</span><span class="p">()]</span>
+
+	<span class="k">def</span> <span class="nf">_cppify_extend_scalar_to_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scalar</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Python internally stores some vector values as scalars when they are constant.</span>
+<span class="sd">		C++ internals do not support this, so we need to convert the scalar to an explicit vector</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cppify</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span><span class="o">*</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="n">scalar</span><span class="p">))</span>
+
+	<span class="k">def</span> <span class="nf">_cppify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">array</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;flattens an array or list and rewraps it in a list for cpp to consume</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">array</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span>
+
+	<span class="k">def</span> <span class="nf">_uncppify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">array</span><span class="p">,</span> <span class="n">expected_shape</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;un-flattens an array and makes it the expected shape</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">array</span><span class="p">),</span> <span class="n">expected_shape</span><span class="p">)</span>
+
+	<span class="k">def</span> <span class="nf">_cppify_length</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;C++ interface expects length as a list of size dim=len(self.domain).</span>
+<span class="sd">		Expands constant length values (e.g., = 1.0) to a list (e.g., = [1.0, 1.0, 1.0]).</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">cop_length</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cop</span><span class="o">.</span><span class="n">hyperparameters</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">cop_length</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="p">):</span>
+			<span class="n">length</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="n">cop_length</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">length</span> <span class="o">=</span> <span class="n">cop_length</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cppify</span><span class="p">(</span><span class="n">length</span><span class="p">)</span>
+
+	<span class="nd">@staticmethod</span>
+	<span class="k">def</span> <span class="nf">_build_newton_parameters</span><span class="p">(</span><span class="n">num_multistarts</span><span class="p">,</span> <span class="n">max_num_steps</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">time_factor</span><span class="p">,</span> <span class="n">max_relative_change</span><span class="p">,</span> <span class="n">tolerance</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Calls NewtonParameters&#39; C++ constructor; this object specifies multistarted Newton behavior</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="c"># details on gamma, pre-mult:</span>
+                <span class="c"># on i-th newton iteration, we add 1/(time_factor*gamma^(i+1)) * I to the Hessian to improve robustness</span>
+		<span class="n">newton_data</span> <span class="o">=</span> <span class="n">C_GP</span><span class="o">.</span><span class="n">NewtonParameters</span><span class="p">(</span>
+			<span class="n">num_multistarts</span><span class="p">,</span> <span class="c"># number of initial guesses in multistarting</span>
+			<span class="n">max_num_steps</span><span class="p">,</span> <span class="c"># maximum number of newton iterations per multistart</span>
+			<span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="n">gamma</span><span class="p">),</span> <span class="c"># exponent controlling rate of time_factor increase</span>
+			<span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="n">time_factor</span><span class="p">),</span> <span class="c"># initial amount of diagonal dominance</span>
+			<span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="n">max_relative_change</span><span class="p">),</span> <span class="c"># max relative change allowed per iteration of gradient descent</span>
+			<span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="n">tolerance</span><span class="p">),</span> <span class="c"># stop when the norm of gradient drops below this</span>
+			<span class="p">)</span>
+		<span class="k">return</span> <span class="n">newton_data</span>
+
+	<span class="nd">@staticmethod</span>
+	<span class="k">def</span> <span class="nf">_build_gradient_descent_parameters</span><span class="p">(</span><span class="n">num_multistarts</span><span class="p">,</span> <span class="n">max_num_steps</span><span class="p">,</span> <span class="n">max_num_restarts</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">pre_mult</span><span class="p">,</span> <span class="n">max_relative_change</span><span class="p">,</span> <span class="n">tolerance</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Calls GradientDescentParameters&#39; C++ constructor; this object specifies GD behavior</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="c"># details on gamma, pre-mult:</span>
+		<span class="c"># GD may be implemented using a learning rate: pre_mult * (i+1)^{-\gamma}, where i is the current iteration</span>
+		<span class="n">gd_data</span> <span class="o">=</span> <span class="n">C_GP</span><span class="o">.</span><span class="n">GradientDescentParameters</span><span class="p">(</span>
+			<span class="n">num_multistarts</span><span class="p">,</span> <span class="c"># number of initial guesses in multistarting</span>
+			<span class="n">max_num_steps</span><span class="p">,</span> <span class="c"># maximum number of gradient descent iterations</span>
+			<span class="n">max_num_restarts</span><span class="p">,</span> <span class="c"># maximum number of times we are allowed to call gradient descent.  Should be &gt;= 2 as a minimum.</span>
+			<span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="n">gamma</span><span class="p">),</span> <span class="c"># exponent controlling rate of step size decrease</span>
+			<span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="n">pre_mult</span><span class="p">),</span> <span class="c"># scaling factor for step size</span>
+			<span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="n">max_relative_change</span><span class="p">),</span> <span class="c"># max relative change allowed per iteration of gradient descent</span>
+			<span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="n">tolerance</span><span class="p">),</span> <span class="c"># if gradient drops below this or we cannot move farther than this dist, stop</span>
+			<span class="p">)</span>
+		<span class="k">return</span> <span class="n">gd_data</span>
+
+	<span class="k">def</span> <span class="nf">_build_cpp_gaussian_process</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Calls GaussianProcess&#39;s C++ constructor, using parameters from the current state of this object</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">size_of_domain</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="p">)</span>
+
+		<span class="c"># build a C++ GaussianProcess object</span>
+		<span class="n">gaussian_process</span> <span class="o">=</span> <span class="n">C_GP</span><span class="o">.</span><span class="n">GaussianProcess</span><span class="p">(</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">_cppify_hyperparameters</span><span class="p">(),</span> <span class="c"># hyperparameters, e.g., [signal variance, [length scales]]; see _cppify_hyperparameter docs, C++ python interface docs</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">_cppify</span><span class="p">([</span><span class="n">p</span><span class="o">.</span><span class="n">point</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">points_sampled</span><span class="p">]),</span> <span class="c"># points already sampled</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">_cppify</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">values_of_samples</span><span class="p">),</span> <span class="c"># objective value at each sampled point</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">_cppify</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sample_variance_of_samples</span><span class="p">),</span> <span class="c"># noise variance, one value per sampled point</span>
+				<span class="n">size_of_domain</span><span class="p">,</span> <span class="c"># dimension of parameter space</span>
+				<span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points_sampled</span><span class="p">),</span> <span class="c"># number of points already sampled</span>
+				<span class="p">)</span>
+		<span class="k">return</span> <span class="n">gaussian_process</span>
+
+<div class="viewcode-block" id="OptimalGaussianProcessLinkedCpp.multistart_expected_improvement_optimization"><a class="viewcode-back" href="../../../../../../optimal_learning.EPI.src.python.models.html#optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.OptimalGaussianProcessLinkedCpp.multistart_expected_improvement_optimization">[docs]</a>	<span class="k">def</span> <span class="nf">multistart_expected_improvement_optimization</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ei_optimization_parameters</span><span class="p">,</span> <span class="n">num_samples_to_generate</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">points_being_sampled</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">mc_iterations</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Calls into multistart_expected_improvement_optimization_wrapper in EPI/src/cpp/GPP_python.cpp (solving q,p-EI)</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+
+		<span class="n">gaussian_process</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_cpp_gaussian_process</span><span class="p">()</span>
+
+		<span class="k">if</span> <span class="n">domain</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="n">domain</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain</span>
+
+		<span class="k">if</span> <span class="n">points_being_sampled</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="n">points_being_sampled</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
+
+		<span class="k">if</span> <span class="n">status</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="n">status</span> <span class="o">=</span> <span class="p">{}</span>
+
+		<span class="n">best_points_to_sample</span> <span class="o">=</span> <span class="n">C_GP</span><span class="o">.</span><span class="n">multistart_expected_improvement_optimization</span><span class="p">(</span>
+			<span class="n">ei_optimization_parameters</span><span class="p">,</span> <span class="c"># ExpectedImprovementOptimizationParameters object (see MOE_driver.py)</span>
+			<span class="n">gaussian_process</span><span class="p">,</span> <span class="c"># C++ GaussianProcess object (e.g., from self._build_cpp_gaussian_process())</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">_cppify</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="p">),</span> <span class="c"># [lower, upper] bound pairs for each dimension</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">_cppify</span><span class="p">(</span><span class="n">points_being_sampled</span><span class="p">),</span> <span class="c"># points to sample</span>
+			<span class="nb">len</span><span class="p">(</span><span class="n">points_being_sampled</span><span class="p">),</span> <span class="c"># number of points to sample</span>
+			<span class="n">num_samples_to_generate</span><span class="p">,</span> <span class="c"># how many simultaneous experiments you would like to run</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">best_so_far</span><span class="p">,</span> <span class="c"># best known value of objective so far</span>
+			<span class="n">mc_iterations</span><span class="p">,</span> <span class="c"># number of MC integration points in EI</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">max_num_threads</span><span class="p">,</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">randomness</span><span class="p">,</span> <span class="c"># C++ RandomnessSourceContainer that holds enough randomness sources for multithreading</span>
+			<span class="n">status</span><span class="p">,</span>
+		<span class="p">)</span>
+
+		<span class="c"># reform output to be a list of dim-dimensional points, dim = len(self.domain)</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_uncppify</span><span class="p">(</span><span class="n">best_points_to_sample</span><span class="p">,</span> <span class="p">(</span><span class="n">num_samples_to_generate</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="p">)))</span>
+</div>
+	<span class="k">def</span> <span class="nf">_heuristic_expected_improvement_optimization</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ei_optimization_parameters</span><span class="p">,</span> <span class="n">num_samples_to_generate</span><span class="p">,</span> <span class="n">estimation_policy</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Calls into heuristic_expected_improvement_optimization_wrapper in EPI/src/cpp/GPP_python.cpp</span>
+
+<span class="sd">		Requires estimation_policy, a subclass of ObjectiveEstimationPolicyInterface (C++ pure abstract); examples include</span>
+<span class="sd">		ConstantLiarEstimationPolicy and KrigingBelieverEstimationPolicy.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+
+		<span class="n">gaussian_process</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_cpp_gaussian_process</span><span class="p">()</span>
+
+		<span class="k">if</span> <span class="n">domain</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="n">domain</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain</span>
+
+		<span class="k">if</span> <span class="n">status</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="n">status</span> <span class="o">=</span> <span class="p">{}</span>
+
+		<span class="n">best_points_to_sample</span> <span class="o">=</span> <span class="n">C_GP</span><span class="o">.</span><span class="n">heuristic_expected_improvement_optimization</span><span class="p">(</span>
+			<span class="n">ei_optimization_parameters</span><span class="p">,</span> <span class="c"># ExpectedImprovementOptimizationParameters object (see MOE_driver.py)</span>
+			<span class="n">gaussian_process</span><span class="p">,</span> <span class="c"># C++ GaussianProcess object (e.g., from self._build_cpp_gaussian_process())</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">_cppify</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="p">),</span> <span class="c"># [lower, upper] bound pairs for each dimension</span>
+			<span class="n">estimation_policy</span><span class="p">,</span> <span class="c"># estimation policy to use for guessing objective function values (e.g., ConstantLiar, KrigingBeliever)</span>
+			<span class="n">num_samples_to_generate</span><span class="p">,</span> <span class="c"># how many simultaneous experiments you would like to run</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">best_so_far</span><span class="p">,</span> <span class="c"># best known value of objective so far</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">max_num_threads</span><span class="p">,</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">randomness</span><span class="p">,</span> <span class="c"># C++ RandomnessSourceContainer that holds enough randomness sources for multithreading</span>
+			<span class="n">status</span><span class="p">,</span>
+		<span class="p">)</span>
+
+		<span class="c"># reform output to be a list of dim-dimensional points, dim = len(self.domain)</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_uncppify</span><span class="p">(</span><span class="n">best_points_to_sample</span><span class="p">,</span> <span class="p">(</span><span class="n">num_samples_to_generate</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="p">)))</span>
+
+<div class="viewcode-block" id="OptimalGaussianProcessLinkedCpp.constant_liar_expected_improvement_optimization"><a class="viewcode-back" href="../../../../../../optimal_learning.EPI.src.python.models.html#optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.OptimalGaussianProcessLinkedCpp.constant_liar_expected_improvement_optimization">[docs]</a>	<span class="k">def</span> <span class="nf">constant_liar_expected_improvement_optimization</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ei_optimization_parameters</span><span class="p">,</span> <span class="n">num_samples_to_generate</span><span class="p">,</span> <span class="n">lie_value</span><span class="p">,</span> <span class="n">lie_noise_variance</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Calls into heuristic_expected_improvement_optimization_wrapper in EPI/src/cpp/GPP_python.cpp (solving q,0-EI)</span>
+<span class="sd">		with the ConstantLiarEstimationPolicy.</span>
+
+<span class="sd">		double lie_value: the &quot;constant lie&quot; that this estimator should return</span>
+<span class="sd">		double lie_noise_variance: the noise_variance to associate to the lie_value (MUST be &gt;= 0.0)</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+
+		<span class="n">estimation_policy</span> <span class="o">=</span> <span class="n">C_GP</span><span class="o">.</span><span class="n">ConstantLiarEstimationPolicy</span><span class="p">(</span><span class="n">lie_value</span><span class="p">,</span> <span class="n">lie_noise_variance</span><span class="p">)</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_heuristic_expected_improvement_optimization</span><span class="p">(</span><span class="n">ei_optimization_parameters</span><span class="p">,</span> <span class="n">num_samples_to_generate</span><span class="p">,</span> <span class="n">estimation_policy</span><span class="p">,</span> <span class="n">domain</span><span class="p">,</span> <span class="n">status</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="OptimalGaussianProcessLinkedCpp.kriging_believer_expected_improvement_optimization"><a class="viewcode-back" href="../../../../../../optimal_learning.EPI.src.python.models.html#optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.OptimalGaussianProcessLinkedCpp.kriging_believer_expected_improvement_optimization">[docs]</a>	<span class="k">def</span> <span class="nf">kriging_believer_expected_improvement_optimization</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ei_optimization_parameters</span><span class="p">,</span> <span class="n">num_samples_to_generate</span><span class="p">,</span> <span class="n">std_deviation_coef</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">kriging_noise_variance</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Calls into heuristic_expected_improvement_optimization_wrapper in EPI/src/cpp/GPP_python.cpp (solving q,0-EI)</span>
+<span class="sd">		with the KrigingBelieverEstimationPolicy.</span>
+
+<span class="sd">		double std_deviation_coef: the relative amount of bias (in units of GP std deviation) to introduce into the GP mean</span>
+<span class="sd">		double kriging_noise_variance: the noise_variance to associate to each function value estimate (MUST be &gt;= 0.0)</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+
+		<span class="n">estimation_policy</span> <span class="o">=</span> <span class="n">C_GP</span><span class="o">.</span><span class="n">KrigingBelieverEstimationPolicy</span><span class="p">(</span><span class="n">std_deviation_coef</span><span class="p">,</span> <span class="n">kriging_noise_variance</span><span class="p">)</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_heuristic_expected_improvement_optimization</span><span class="p">(</span><span class="n">ei_optimization_parameters</span><span class="p">,</span> <span class="n">num_samples_to_generate</span><span class="p">,</span> <span class="n">estimation_policy</span><span class="p">,</span> <span class="n">domain</span><span class="p">,</span> <span class="n">status</span><span class="p">)</span>
+
+	<span class="c"># TODO(eliu): this call is DEPRECATED; use multistart_expected_improvement_optimization instead!</span>
+	<span class="c"># not deleting yet in case this screws up inheritance (since this overrides superclass member functions)</span></div>
+<div class="viewcode-block" id="OptimalGaussianProcessLinkedCpp.get_multistart_best"><a class="viewcode-back" href="../../../../../../optimal_learning.EPI.src.python.models.html#optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.OptimalGaussianProcessLinkedCpp.get_multistart_best">[docs]</a>	<span class="k">def</span> <span class="nf">get_multistart_best</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">starting_points</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">points_being_sampled</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">gd_iterations</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">mc_iterations</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">num_multistarts</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">max_num_restarts</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">max_relative_change</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">tolerance</span><span class="o">=</span><span class="mf">1.0e-7</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Wrapper for multistart_expected_improvement_optimization</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+
+		<span class="n">ei_gradient_descent_optimization_parameters</span> <span class="o">=</span> <span class="n">ExpectedImprovementOptimizationParameters</span><span class="p">()</span>
+		<span class="n">ei_gradient_descent_optimization_parameters</span><span class="o">.</span><span class="n">domain_type</span> <span class="o">=</span> <span class="n">C_GP</span><span class="o">.</span><span class="n">DomainTypes</span><span class="o">.</span><span class="n">tensor_product</span>
+		<span class="n">ei_gradient_descent_optimization_parameters</span><span class="o">.</span><span class="n">optimizer_type</span> <span class="o">=</span> <span class="n">C_GP</span><span class="o">.</span><span class="n">OptimizerTypes</span><span class="o">.</span><span class="n">gradient_descent</span>
+		<span class="n">ei_gradient_descent_optimization_parameters</span><span class="o">.</span><span class="n">num_random_samples</span> <span class="o">=</span> <span class="mi">0</span>
+		<span class="n">ei_gradient_descent_optimization_parameters</span><span class="o">.</span><span class="n">optimizer_parameters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_gradient_descent_parameters</span><span class="p">(</span>
+			<span class="n">num_multistarts</span><span class="p">,</span> <span class="c"># num_multistarts</span>
+			<span class="n">gd_iterations</span><span class="p">,</span> <span class="c"># max_num_steps</span>
+			<span class="n">max_num_restarts</span><span class="p">,</span> <span class="c"># max_num_restarts</span>
+			<span class="n">gamma</span><span class="p">,</span> <span class="c"># gamma,</span>
+			<span class="mf">1.0</span><span class="p">,</span> <span class="c"># pre_mult</span>
+			<span class="n">max_relative_change</span><span class="p">,</span> <span class="c"># max_relative_change</span>
+			<span class="n">tolerance</span><span class="p">,</span> <span class="c">#tolerance</span>
+		<span class="p">)</span>
+
+		<span class="n">num_samples_to_generate</span> <span class="o">=</span> <span class="mi">1</span> <span class="c"># the deprecated form of this was written with only the 1 sample to generate case in mind</span>
+		<span class="c"># uncppify b/c users of get_multistart_best expect a list of size len(self.domain)</span>
+		<span class="c"># with the coordinates</span>
+		<span class="c"># multistart_expected_improvement_optimization will return a list of num_samples_to_generate</span>
+		<span class="c"># lists, each of size len(self.domain)</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_uncppify</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">multistart_expected_improvement_optimization</span><span class="p">(</span><span class="n">ei_gradient_descent_optimization_parameters</span><span class="p">,</span> <span class="n">num_samples_to_generate</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">points_being_sampled</span><span class="o">=</span><span class="n">points_being_sampled</span><span class="p">,</span> <span class="n">mc_iterations</span><span class="o">=</span><span class="n">mc_iterations</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="p">))</span>
+</div>
+<div class="viewcode-block" id="OptimalGaussianProcessLinkedCpp.evaluate_expected_improvement_at_point_list"><a class="viewcode-back" href="../../../../../../optimal_learning.EPI.src.python.models.html#optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.OptimalGaussianProcessLinkedCpp.evaluate_expected_improvement_at_point_list">[docs]</a>	<span class="k">def</span> <span class="nf">evaluate_expected_improvement_at_point_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points_to_evaluate</span><span class="p">,</span> <span class="n">points_being_sampled</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">mc_iterations</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Calls into evaluate_EI_at_point_list_wrapper() in src/cpp/GPP_python.cpp</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+
+		<span class="n">gaussian_process</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_cpp_gaussian_process</span><span class="p">()</span>
+
+		<span class="k">if</span> <span class="n">points_being_sampled</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="n">points_being_sampled</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
+
+		<span class="k">if</span> <span class="n">status</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="n">status</span> <span class="o">=</span> <span class="p">{}</span>
+
+		<span class="k">return</span> <span class="n">C_GP</span><span class="o">.</span><span class="n">evaluate_EI_at_point_list</span><span class="p">(</span>
+				<span class="n">gaussian_process</span><span class="p">,</span> <span class="c"># C++ GaussianProcess object (e.g., from self._build_cpp_gaussian_process())</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">_cppify</span><span class="p">(</span><span class="n">points_to_evaluate</span><span class="p">),</span> <span class="c"># points at which to evaluate EI</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">_cppify</span><span class="p">(</span><span class="n">points_being_sampled</span><span class="p">),</span> <span class="c"># points to sample</span>
+				<span class="nb">len</span><span class="p">(</span><span class="n">points_to_evaluate</span><span class="p">),</span> <span class="c"># number of points to evaluate</span>
+				<span class="nb">len</span><span class="p">(</span><span class="n">points_being_sampled</span><span class="p">),</span> <span class="c"># number of points to sample</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">best_so_far</span><span class="p">,</span> <span class="c"># best known value of objective so far</span>
+				<span class="n">mc_iterations</span><span class="p">,</span> <span class="c"># number of MC integration points in EI</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">max_num_threads</span><span class="p">,</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">randomness</span><span class="p">,</span> <span class="c"># C++ RandomnessSourceContainer that holds enough randomness sources for multithreading</span>
+				<span class="n">status</span><span class="p">,</span>
+				<span class="p">)</span>
+</div>
+<div class="viewcode-block" id="OptimalGaussianProcessLinkedCpp.get_grad_mu"><a class="viewcode-back" href="../../../../../../optimal_learning.EPI.src.python.models.html#optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.OptimalGaussianProcessLinkedCpp.get_grad_mu">[docs]</a>	<span class="k">def</span> <span class="nf">get_grad_mu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points_to_sample</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Calls into get_grad_mean_wrapper in src/cpp/GPP_python.cpp</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="c"># hit the cpp with a grad_mu request</span>
+		<span class="n">num_points_to_sample</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">)</span>
+		<span class="n">size_of_domain</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="p">)</span>
+
+		<span class="n">gaussian_process</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_cpp_gaussian_process</span><span class="p">()</span>
+
+		<span class="n">grad_mu</span> <span class="o">=</span> <span class="n">C_GP</span><span class="o">.</span><span class="n">get_grad_mean</span><span class="p">(</span>
+				<span class="n">gaussian_process</span><span class="p">,</span> <span class="c"># C++ GaussianProcess object (e.g., from self._build_cpp_gaussian_process())</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">_cppify</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">),</span> <span class="c"># points to sample</span>
+				<span class="n">num_points_to_sample</span><span class="p">,</span> <span class="c"># number of points to sample</span>
+				<span class="p">)</span>
+		<span class="c"># reform it to match the overidden method</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_uncppify</span><span class="p">(</span><span class="n">grad_mu</span><span class="p">,</span> <span class="p">(</span><span class="n">num_points_to_sample</span><span class="p">,</span> <span class="n">size_of_domain</span><span class="p">))</span>
+</div>
+<div class="viewcode-block" id="OptimalGaussianProcessLinkedCpp.cholesky_decomp_and_grad"><a class="viewcode-back" href="../../../../../../optimal_learning.EPI.src.python.models.html#optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.OptimalGaussianProcessLinkedCpp.cholesky_decomp_and_grad">[docs]</a>	<span class="k">def</span> <span class="nf">cholesky_decomp_and_grad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points_to_sample</span><span class="p">,</span> <span class="n">var_of_grad</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Calls into get_chol_var and get_grad_var in src/cpp/GPP_python.cpp</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">num_points_to_sample</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">)</span>
+		<span class="n">size_of_domain</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="p">)</span>
+
+		<span class="n">gaussian_process</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_cpp_gaussian_process</span><span class="p">()</span>
+
+		<span class="n">cholesky_var</span> <span class="o">=</span> <span class="n">C_GP</span><span class="o">.</span><span class="n">get_chol_var</span><span class="p">(</span>
+				<span class="n">gaussian_process</span><span class="p">,</span> <span class="c"># C++ GaussianProcess object (e.g., from self._build_cpp_gaussian_process())</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">_cppify</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">),</span> <span class="c"># points to sample</span>
+				<span class="n">num_points_to_sample</span><span class="p">,</span> <span class="c"># number of points to sample</span>
+				<span class="p">)</span>
+		<span class="c"># reform it to match the overidden method</span>
+		<span class="n">python_cholesky_var</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_uncppify</span><span class="p">(</span><span class="n">cholesky_var</span><span class="p">,</span> <span class="p">(</span><span class="n">num_points_to_sample</span><span class="p">,</span> <span class="n">num_points_to_sample</span><span class="p">))</span>
+
+		<span class="n">grad_cholesky_var</span> <span class="o">=</span> <span class="n">C_GP</span><span class="o">.</span><span class="n">get_grad_var</span><span class="p">(</span>
+				<span class="n">gaussian_process</span><span class="p">,</span> <span class="c"># C++ GaussianProcess object (e.g., from self._build_cpp_gaussian_process())</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">_cppify</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">),</span> <span class="c"># points to sample</span>
+				<span class="n">num_points_to_sample</span><span class="p">,</span> <span class="c"># number of points to sample</span>
+				<span class="n">var_of_grad</span><span class="p">,</span> <span class="c"># dimension to differentiate in</span>
+				<span class="p">)</span>
+		<span class="c"># reform it to match the overidden method</span>
+		<span class="n">python_grad_cholesky_var</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_uncppify</span><span class="p">(</span><span class="n">grad_cholesky_var</span><span class="p">,</span> <span class="p">(</span><span class="n">num_points_to_sample</span><span class="p">,</span> <span class="n">num_points_to_sample</span><span class="p">,</span> <span class="n">size_of_domain</span><span class="p">))</span>
+
+		<span class="k">return</span> <span class="n">python_cholesky_var</span><span class="p">,</span> <span class="n">python_grad_cholesky_var</span>
+</div>
+<div class="viewcode-block" id="OptimalGaussianProcessLinkedCpp.compute_expected_improvement"><a class="viewcode-back" href="../../../../../../optimal_learning.EPI.src.python.models.html#optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.OptimalGaussianProcessLinkedCpp.compute_expected_improvement">[docs]</a>	<span class="k">def</span> <span class="nf">compute_expected_improvement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points_to_sample</span><span class="p">,</span> <span class="n">force_monte_carlo</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">mc_iterations</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Compute expected improvement. Calls into src/cpp/GPP_python.cpp</span>
+
+<span class="sd">		Automatically selects analytic evaluators when they are available (for performance/accuracy).</span>
+<span class="sd">		Set &quot;force_monte_carlo&quot; to True to force monte-carlo evaluation even if analytic is available.</span>
+<span class="sd">		(This is probably only useful for testing.)</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">gaussian_process</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_cpp_gaussian_process</span><span class="p">()</span>
+
+		<span class="k">return</span> <span class="n">C_GP</span><span class="o">.</span><span class="n">compute_expected_improvement</span><span class="p">(</span>
+			<span class="n">gaussian_process</span><span class="p">,</span> <span class="c"># C++ GaussianProcess object (e.g., from self._build_cpp_gaussian_process())</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">_cppify</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">),</span> <span class="c"># points to sample</span>
+			<span class="nb">len</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">),</span> <span class="c"># number of points to sample</span>
+			<span class="n">mc_iterations</span><span class="p">,</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">best_so_far</span><span class="p">,</span> <span class="c"># best known value of objective so far</span>
+			<span class="n">force_monte_carlo</span><span class="p">,</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">randomness</span><span class="p">,</span>
+		<span class="p">)</span>
+</div>
+<div class="viewcode-block" id="OptimalGaussianProcessLinkedCpp.compute_grad_expected_improvement"><a class="viewcode-back" href="../../../../../../optimal_learning.EPI.src.python.models.html#optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.OptimalGaussianProcessLinkedCpp.compute_grad_expected_improvement">[docs]</a>	<span class="k">def</span> <span class="nf">compute_grad_expected_improvement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points_to_sample</span><span class="p">,</span> <span class="n">force_monte_carlo</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">mc_iterations</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Compute spatial gradient of expected improvement. Calls into src/cpp/GPP_python.cpp</span>
+
+<span class="sd">		Automatically selects analytic evaluators when they are available (for performance/accuracy).</span>
+<span class="sd">		Set &quot;force_monte_carlo&quot; to True to force monte-carlo evaluation even if analytic is available.</span>
+<span class="sd">		(This is probably only useful for testing.)</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">gaussian_process</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_cpp_gaussian_process</span><span class="p">()</span>
+
+		<span class="n">current_point</span> <span class="o">=</span> <span class="n">points_to_sample</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+		<span class="n">points_to_sample_temp</span> <span class="o">=</span> <span class="n">points_to_sample</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+		<span class="n">num_points_to_sample</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">points_to_sample_temp</span><span class="p">)</span>
+
+		<span class="n">grad_EI</span> <span class="o">=</span> <span class="n">C_GP</span><span class="o">.</span><span class="n">compute_grad_expected_improvement</span><span class="p">(</span>
+			<span class="n">gaussian_process</span><span class="p">,</span> <span class="c"># C++ GaussianProcess object (e.g., from self._build_cpp_gaussian_process())</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">_cppify</span><span class="p">([</span><span class="n">points_to_sample_temp</span><span class="p">]),</span> <span class="c"># points to sample</span>
+			<span class="n">num_points_to_sample</span><span class="p">,</span> <span class="c"># number of points to sample</span>
+			<span class="n">mc_iterations</span><span class="p">,</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">best_so_far</span><span class="p">,</span> <span class="c"># best known value of objective so far</span>
+			<span class="n">force_monte_carlo</span><span class="p">,</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">randomness</span><span class="p">,</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">_cppify</span><span class="p">(</span><span class="n">current_point</span><span class="p">),</span>
+		<span class="p">)</span>
+		<span class="c"># TODO(eliu): sclark(?) why is this wrapped in extra [] brackets?</span>
+		<span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">grad_EI</span><span class="p">]])</span>
+
+	<span class="c"># TODO(eliu): this call is DEPRECATED; use compute_grad_expected_improvement instead!</span>
+	<span class="c"># not deleting yet in case this screws up inheritance (since this overrides superclass member functions)</span></div>
+<div class="viewcode-block" id="OptimalGaussianProcessLinkedCpp.get_1D_analytic_grad_EI"><a class="viewcode-back" href="../../../../../../optimal_learning.EPI.src.python.models.html#optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.OptimalGaussianProcessLinkedCpp.get_1D_analytic_grad_EI">[docs]</a>	<span class="k">def</span> <span class="nf">get_1D_analytic_grad_EI</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point_to_sample</span><span class="p">):</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_grad_expected_improvement</span><span class="p">(</span>
+			<span class="p">[</span><span class="n">point_to_sample</span><span class="p">],</span> <span class="c"># callsite expects a list of points, so we need to wrap</span>
+			<span class="n">force_monte_carlo</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+			<span class="n">mc_iterations</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+		<span class="p">)</span>
+
+	<span class="c"># TODO(eliu): this call is DEPRECATED; use compute_expected_improvement instead!</span>
+	<span class="c"># not deleting yet in case this screws up inheritance (since this overrides superclass member functions)</span></div>
+<div class="viewcode-block" id="OptimalGaussianProcessLinkedCpp.get_1D_analytic_expected_improvement"><a class="viewcode-back" href="../../../../../../optimal_learning.EPI.src.python.models.html#optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.OptimalGaussianProcessLinkedCpp.get_1D_analytic_expected_improvement">[docs]</a>	<span class="k">def</span> <span class="nf">get_1D_analytic_expected_improvement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point_to_sample</span><span class="p">):</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_expected_improvement</span><span class="p">(</span>
+			<span class="p">[</span><span class="n">point_to_sample</span><span class="p">],</span> <span class="c"># callsite expects a list of points, so we need to wrap</span>
+			<span class="n">force_monte_carlo</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+			<span class="n">mc_iterations</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+		<span class="p">)</span>
+
+	<span class="c"># TODO(eliu): this call is DEPRECATED; use compute_expected_improvement instead!</span>
+	<span class="c"># not deleting yet in case this screws up inheritance (since this overrides superclass member functions)</span></div>
+<div class="viewcode-block" id="OptimalGaussianProcessLinkedCpp.get_expected_improvement"><a class="viewcode-back" href="../../../../../../optimal_learning.EPI.src.python.models.html#optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.OptimalGaussianProcessLinkedCpp.get_expected_improvement">[docs]</a>	<span class="k">def</span> <span class="nf">get_expected_improvement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points_to_sample</span><span class="p">,</span> <span class="n">mc_iterations</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_expected_improvement</span><span class="p">(</span>
+			<span class="n">points_to_sample</span><span class="p">,</span>
+			<span class="n">force_monte_carlo</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+			<span class="n">mc_iterations</span><span class="o">=</span><span class="n">mc_iterations</span><span class="p">,</span>
+		<span class="p">)</span>
+
+	<span class="c"># TODO(eliu): this call is DEPRECATED; use compute_grad_expected_improvement instead!</span>
+	<span class="c"># not deleting yet in case this screws up inheritance (since this overrides superclass member functions)</span></div>
+<div class="viewcode-block" id="OptimalGaussianProcessLinkedCpp.get_grad_expected_improvement"><a class="viewcode-back" href="../../../../../../optimal_learning.EPI.src.python.models.html#optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.OptimalGaussianProcessLinkedCpp.get_grad_expected_improvement">[docs]</a>	<span class="k">def</span> <span class="nf">get_grad_expected_improvement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points_to_sample</span><span class="p">,</span> <span class="n">mc_iterations</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_grad_expected_improvement</span><span class="p">(</span>
+			<span class="n">points_to_sample</span><span class="p">,</span>
+			<span class="n">force_monte_carlo</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+			<span class="n">mc_iterations</span><span class="o">=</span><span class="n">mc_iterations</span><span class="p">,</span>
+		<span class="p">)</span>
+</div>
+<div class="viewcode-block" id="OptimalGaussianProcessLinkedCpp.get_mean_and_var_of_points"><a class="viewcode-back" href="../../../../../../optimal_learning.EPI.src.python.models.html#optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.OptimalGaussianProcessLinkedCpp.get_mean_and_var_of_points">[docs]</a>	<span class="k">def</span> <span class="nf">get_mean_and_var_of_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points_to_sample</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Calls into get_mean and get_var wrapper in src/cpp/GPP_python.cpp</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">num_points_to_sample</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">)</span>
+
+		<span class="n">gaussian_process</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_cpp_gaussian_process</span><span class="p">()</span>
+
+		<span class="c"># hit the cpp with a get_mean request</span>
+		<span class="n">mu</span> <span class="o">=</span> <span class="n">C_GP</span><span class="o">.</span><span class="n">get_mean</span><span class="p">(</span>
+				<span class="n">gaussian_process</span><span class="p">,</span> <span class="c"># C++ GaussianProcess object (e.g., from self._build_cpp_gaussian_process())</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">_cppify</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">),</span> <span class="c"># points to sample</span>
+				<span class="n">num_points_to_sample</span><span class="p">,</span> <span class="c"># number of points to sample</span>
+				<span class="p">)</span>
+
+		<span class="c"># hit the cpp with a get_var request</span>
+		<span class="n">var</span> <span class="o">=</span> <span class="n">C_GP</span><span class="o">.</span><span class="n">get_var</span><span class="p">(</span>
+				<span class="n">gaussian_process</span><span class="p">,</span> <span class="c"># C++ GaussianProcess object (e.g., from self._build_cpp_gaussian_process())</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">_cppify</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">),</span> <span class="c"># points to sample</span>
+				<span class="n">num_points_to_sample</span><span class="p">,</span> <span class="c"># number of points to sample</span>
+				<span class="p">)</span>
+
+		<span class="n">python_mu</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mu</span><span class="p">)</span>
+		<span class="n">python_var</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_uncppify</span><span class="p">(</span><span class="n">var</span><span class="p">,</span> <span class="p">(</span><span class="n">num_points_to_sample</span><span class="p">,</span> <span class="n">num_points_to_sample</span><span class="p">))</span>
+		<span class="k">return</span> <span class="n">python_mu</span><span class="p">,</span> <span class="n">python_var</span>
+</div>
+<div class="viewcode-block" id="OptimalGaussianProcessLinkedCpp.compute_log_likelihood"><a class="viewcode-back" href="../../../../../../optimal_learning.EPI.src.python.models.html#optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.OptimalGaussianProcessLinkedCpp.compute_log_likelihood">[docs]</a>	<span class="k">def</span> <span class="nf">compute_log_likelihood</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">objective_type</span><span class="o">=</span><span class="n">C_GP</span><span class="o">.</span><span class="n">LogLikelihoodTypes</span><span class="o">.</span><span class="n">log_marginal_likelihood</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Calls into compute_log_likelihood in EPI/src/cpp/GPP_python.cpp to compute</span>
+<span class="sd">		the requested log_likelihood measure (e.g., log marginal or leave one out)</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="n">C_GP</span><span class="o">.</span><span class="n">compute_log_likelihood</span><span class="p">(</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">_cppify</span><span class="p">([</span><span class="n">p</span><span class="o">.</span><span class="n">point</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">points_sampled</span><span class="p">]),</span> <span class="c"># points already sampled</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">_cppify</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">values_of_samples</span><span class="p">),</span> <span class="c"># objective value at each sampled point</span>
+				<span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="p">),</span> <span class="c"># dimension of parameter space</span>
+				<span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points_sampled</span><span class="p">),</span> <span class="c"># number of points already sampled</span>
+				<span class="n">objective_type</span><span class="p">,</span> <span class="c"># log likelihood measure to eval (e.g., LogLikelihoodTypes.log_marginal_likelihood, see gpp_python.cpp for enum declaration)</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">_cppify_hyperparameters</span><span class="p">(),</span> <span class="c"># hyperparameters, e.g., [signal variance, [length scales]]; see _cppify_hyperparameter docs, C++ python interface docs</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">_cppify</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sample_variance_of_samples</span><span class="p">),</span> <span class="c"># noise variance, one value per sampled point</span>
+				<span class="p">)</span>
+</div>
+<div class="viewcode-block" id="OptimalGaussianProcessLinkedCpp.compute_hyperparam_grad_log_likelihood"><a class="viewcode-back" href="../../../../../../optimal_learning.EPI.src.python.models.html#optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.OptimalGaussianProcessLinkedCpp.compute_hyperparam_grad_log_likelihood">[docs]</a>	<span class="k">def</span> <span class="nf">compute_hyperparam_grad_log_likelihood</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">objective_type</span><span class="o">=</span><span class="n">C_GP</span><span class="o">.</span><span class="n">LogLikelihoodTypes</span><span class="o">.</span><span class="n">log_marginal_likelihood</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Calls into compute_hyperparam_grad_log_likelihood in EPI/src/cpp/GPP_python.cpp to compute</span>
+<span class="sd">		the gradient of the requested log_likelihood measure (e.g., log marginal or leave one out) wrt the hyperparameters</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">grad_log_marginal</span> <span class="o">=</span> <span class="n">C_GP</span><span class="o">.</span><span class="n">compute_hyperparameter_grad_log_likelihood</span><span class="p">(</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">_cppify</span><span class="p">([</span><span class="n">p</span><span class="o">.</span><span class="n">point</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">points_sampled</span><span class="p">]),</span> <span class="c"># points already sampled</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">_cppify</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">values_of_samples</span><span class="p">),</span> <span class="c"># objective value at each sampled point</span>
+				<span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="p">),</span> <span class="c"># dimension of parameter space</span>
+				<span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points_sampled</span><span class="p">),</span> <span class="c"># number of points already sampled</span>
+				<span class="n">objective_type</span><span class="p">,</span> <span class="c"># log likelihood measure to eval (e.g., LogLikelihoodTypes.log_marginal_likelihood, see gpp_python.cpp for enum declaration)</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">_cppify_hyperparameters</span><span class="p">(),</span> <span class="c"># hyperparameters, e.g., [signal variance, [length scales]]; see _cppify_hyperparameter docs, C++ python interface docs</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">_cppify</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sample_variance_of_samples</span><span class="p">),</span> <span class="c"># noise variance, one value per sampled point</span>
+				<span class="p">)</span>
+		<span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">grad_log_marginal</span><span class="p">)</span>
+
+	<span class="c"># TODO(eliu): this call is DEPRECATED; use compute_log_likelihood instead!</span>
+	<span class="c"># not deleting yet in case this screws up inheritance (since this overrides superclass member functions)</span></div>
+<div class="viewcode-block" id="OptimalGaussianProcessLinkedCpp.get_log_marginal_likelihood"><a class="viewcode-back" href="../../../../../../optimal_learning.EPI.src.python.models.html#optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.OptimalGaussianProcessLinkedCpp.get_log_marginal_likelihood">[docs]</a>	<span class="k">def</span> <span class="nf">get_log_marginal_likelihood</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Wrapper for compute_log_likelihood</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_log_likelihood</span><span class="p">(</span><span class="n">objective_type</span><span class="o">=</span><span class="n">C_GP</span><span class="o">.</span><span class="n">LogLikelihoodTypes</span><span class="o">.</span><span class="n">log_marginal_likelihood</span><span class="p">)</span>
+
+	<span class="c"># TODO(eliu): this call is DEPRECATED; use compute_log_likelihood instead!</span>
+	<span class="c"># not deleting yet in case this screws up inheritance (since this overrides superclass member functions)</span></div>
+<div class="viewcode-block" id="OptimalGaussianProcessLinkedCpp.get_hyperparam_grad_log_marginal_likelihood"><a class="viewcode-back" href="../../../../../../optimal_learning.EPI.src.python.models.html#optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.OptimalGaussianProcessLinkedCpp.get_hyperparam_grad_log_marginal_likelihood">[docs]</a>	<span class="k">def</span> <span class="nf">get_hyperparam_grad_log_marginal_likelihood</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Wrapper for compute_hyperparam_grad_log_likelihood</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_hyperparam_grad_log_likelihood</span><span class="p">(</span><span class="n">objective_type</span><span class="o">=</span><span class="n">C_GP</span><span class="o">.</span><span class="n">LogLikelihoodTypes</span><span class="o">.</span><span class="n">log_marginal_likelihood</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="OptimalGaussianProcessLinkedCpp.multistart_hyperparameter_optimization"><a class="viewcode-back" href="../../../../../../optimal_learning.EPI.src.python.models.html#optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.OptimalGaussianProcessLinkedCpp.multistart_hyperparameter_optimization">[docs]</a>	<span class="k">def</span> <span class="nf">multistart_hyperparameter_optimization</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hyperparameter_optimization_parameters</span><span class="p">,</span> <span class="n">hyperparameter_domain</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot; Optimizes hyperparameters based on maximizing the log likelihood-like measures using a multistart optimizer:</span>
+<span class="sd">		log_marginal_likelihood     : log marginal likelihood (that the data comes from the model, p(y | X, \theta).</span>
+<span class="sd">		leave_one_out_log_likelihood: leave-one-out log pseudo-likelihood, which evaluates the ability of the</span>
+<span class="sd">		model to predict each member of its training set:</span>
+<span class="sd">		\sum_{i=1}^n log p(y_i | X_{-i}, y_{-i}, \theta), where X_{-i}, y_{-i} denotes the parent set with i-th member removed</span>
+
+<span class="sd">		Optimizers are: null (&#39;dumb&#39; search), gradient descent, newton</span>
+<span class="sd">		&#39;dumb&#39; search means this will just evaluate the objective log likelihood measure at num_multistarts &#39;points&#39;</span>
+<span class="sd">		(hyperparameters) in the domain, uniformly sampled using latin hypercube sampling.</span>
+
+<span class="sd">		See gpp_python.cpp for C++ enum declarations laying out the options for objective and optimizer types.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="c"># default domain is [0.01, 10] for every hyperparameter</span>
+		<span class="k">if</span> <span class="ow">not</span> <span class="n">hyperparameter_domain</span><span class="p">:</span>
+			<span class="n">hyperparameter_domain</span> <span class="o">=</span> <span class="p">[]</span>
+			<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="p">)):</span>
+				<span class="n">hyperparameter_domain</span><span class="p">[</span><span class="mi">2</span><span class="o">*</span><span class="n">i</span> <span class="o">+</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">2.0</span>
+				<span class="n">hyperparameter_domain</span><span class="p">[</span><span class="mi">2</span><span class="o">*</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+
+		<span class="k">if</span> <span class="n">status</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="n">status</span> <span class="o">=</span> <span class="p">{}</span> <span class="c"># must be an initialized dict for the call to C++</span>
+
+		<span class="k">return</span> <span class="n">C_GP</span><span class="o">.</span><span class="n">multistart_hyperparameter_optimization</span><span class="p">(</span>
+				<span class="n">hyperparameter_optimization_parameters</span><span class="p">,</span> <span class="c"># HyperparameterOptimizationParameters object (see MOE_driver)</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">_cppify</span><span class="p">(</span><span class="n">hyperparameter_domain</span><span class="p">),</span> <span class="c"># domain of hyperparameters in LOG-10 SPACE</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">_cppify</span><span class="p">([</span><span class="n">p</span><span class="o">.</span><span class="n">point</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">points_sampled</span><span class="p">]),</span> <span class="c"># points already sampled</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">_cppify</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">values_of_samples</span><span class="p">),</span> <span class="c"># objective value at each sampled point</span>
+				<span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="p">),</span> <span class="c"># dimension of parameter space</span>
+				<span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points_sampled</span><span class="p">),</span> <span class="c"># number of points already sampled</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">_cppify_hyperparameters</span><span class="p">(),</span> <span class="c"># hyperparameters, e.g., [signal variance, [length scales]]; see _cppify_hyperparameter docs, C++ python interface docs</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">_cppify</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sample_variance_of_samples</span><span class="p">),</span> <span class="c"># noise variance, one value per sampled point</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">max_num_threads</span><span class="p">,</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">randomness</span><span class="p">,</span> <span class="c"># C++ RandomnessSourceContainer that holds a UniformRandomGenerator object</span>
+				<span class="n">status</span><span class="p">,</span> <span class="c"># status report on optimizer success, etc.</span>
+				<span class="p">)</span>
+</div>
+<div class="viewcode-block" id="OptimalGaussianProcessLinkedCpp.evaluate_log_likelihood_at_hyperparameter_list"><a class="viewcode-back" href="../../../../../../optimal_learning.EPI.src.python.models.html#optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.OptimalGaussianProcessLinkedCpp.evaluate_log_likelihood_at_hyperparameter_list">[docs]</a>	<span class="k">def</span> <span class="nf">evaluate_log_likelihood_at_hyperparameter_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hyperparameters_to_evaluate</span><span class="p">,</span> <span class="n">objective_type</span><span class="o">=</span><span class="n">C_GP</span><span class="o">.</span><span class="n">LogLikelihoodTypes</span><span class="o">.</span><span class="n">log_marginal_likelihood</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot; Calls into evaluate_log_likelihood_at_hyperparameter_list_wrapper() in src/cpp/GPP_python.cpp</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="n">C_GP</span><span class="o">.</span><span class="n">evaluate_log_likelihood_at_hyperparameter_list</span><span class="p">(</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">_cppify</span><span class="p">(</span><span class="n">hyperparameters_to_evaluate</span><span class="p">),</span> <span class="c"># hyperparameters at which to compute log likelihood</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">_cppify</span><span class="p">([</span><span class="n">p</span><span class="o">.</span><span class="n">point</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">points_sampled</span><span class="p">]),</span> <span class="c"># points already sampled</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">_cppify</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">values_of_samples</span><span class="p">),</span> <span class="c"># objective value at each sampled point</span>
+				<span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="p">),</span> <span class="c"># dimension of parameter space</span>
+				<span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points_sampled</span><span class="p">),</span> <span class="c"># number of points already sampled</span>
+				<span class="n">objective_type</span><span class="p">,</span> <span class="c"># log likelihood measure to eval (e.g., LogLikelihoodTypes.log_marginal_likelihood, see gpp_python.cpp for enum declaration)</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">_cppify_hyperparameters</span><span class="p">(),</span> <span class="c"># hyperparameters, e.g., [signal variance, [length scales]]; see _cppify_hyperparameter docs, C++ python interface docs</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">_cppify</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sample_variance_of_samples</span><span class="p">),</span> <span class="c"># noise variance, one value per sampled point</span>
+				<span class="nb">len</span><span class="p">(</span><span class="n">hyperparameters_to_evaluate</span><span class="p">),</span> <span class="c"># number of hyperparameter points to evaluate</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">max_num_threads</span><span class="p">,</span>
+				<span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">MOE 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../../../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

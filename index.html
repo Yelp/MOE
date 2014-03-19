@@ -76,42 +76,64 @@
 </div>
 <div class="section" id="install">
 <h3>Install<a class="headerlink" href="#install" title="Permalink to this headline">¶</a></h3>
+<p>Read &#8220;CMake Tips&#8221; (below) first if you are unfamiliar with CMake. OS X
+users in particular will probably need to modify their <tt class="docutils literal"><span class="pre">cmake</span></tt> command.</p>
 <div class="highlight-python"><div class="highlight"><pre>$ git clone https://github.com/sc932/MOE.git
 $ cd MOE
 $ git pull origin master
-$ ./configure
+$ mkdir build
+$ cd build
+$ cmake ../optimal_learning/EPI/src/cpp `# This line may require extra options and/or env vars.`
+$ cd ..
 $ make
 $ pip install -e .
 $ pserve --reload development.ini
 </pre></div>
 </div>
 </div>
+<div class="section" id="cmake-tips">
+<h3>CMake Tips<a class="headerlink" href="#cmake-tips" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic">
+<li><p class="first">Do you have dependencies installed in non-standard places? e.g., did you build your own boost? Pass the <tt class="docutils literal"><span class="pre">-DCMAKE_FIND_ROOT_PATH</span></tt> option to cmake: <tt class="docutils literal"><span class="pre">cmake</span> <span class="pre">-DCMAKE_FIND_ROOT_PATH=/path/to/stuff</span> <span class="pre">...</span></tt> (OS X users with MacPorts should set <tt class="docutils literal"><span class="pre">/opt/local</span></tt>)</p>
+</li>
+<li><p class="first">Are you using the right compiler? e.g., for <tt class="docutils literal"><span class="pre">gcc</span></tt>, prepend <tt class="docutils literal"><span class="pre">CC=gcc</span> <span class="pre">CXX=g++</span></tt>: <tt class="docutils literal"><span class="pre">CC=gcc</span> <span class="pre">CXX=g++</span> <span class="pre">cmake</span> <span class="pre">...</span></tt> (OS X users need to explicitly set this.)</p>
+</li>
+<li><p class="first">Once you run cmake, the compiler is set in stone. If you mis-specify
+the compiler, run <tt class="docutils literal"><span class="pre">rm</span> <span class="pre">-fr</span> <span class="pre">*</span></tt> in <tt class="docutils literal"><span class="pre">build/</span></tt> before re-running
+<tt class="docutils literal"><span class="pre">cmake</span></tt> (the build-tree must be empty).</p>
+<p>See: <a class="reference external" href="http://www.cmake.org/Wiki/CMake_FAQ#How_do_I_use_a_different_compiler.3F">http://www.cmake.org/Wiki/CMake_FAQ#How_do_I_use_a_different_compiler.3F</a></p>
+</li>
+<li><p class="first">Using OS X with MacPorts? Your <tt class="docutils literal"><span class="pre">cmake</span></tt> command should probably read: <tt class="docutils literal"><span class="pre">CC=gcc</span> <span class="pre">CXX=g++</span> <span class="pre">cmake</span> <span class="pre">-DCMAKE_FIND_ROOT_PATH=/opt/local</span> <span class="pre">../optimal_learning/EPI/src/cpp</span></tt></p>
+</li>
+</ol>
+</div>
 <div class="section" id="osx-tips">
-<h3>OSX tips<a class="headerlink" href="#osx-tips" title="Permalink to this headline">¶</a></h3>
+<h3>OSX Tips<a class="headerlink" href="#osx-tips" title="Permalink to this headline">¶</a></h3>
 <ol class="arabic simple" start="0">
 <li>Are you sure you wouldn&#8217;t rather be running linux?</li>
-<li>Download macports - <a class="reference external" href="http://www.macports.org/install.php">http://www.macports.org/install.php</a></li>
-<li>Most dependencies macports can resolve, make sure you set your <tt class="docutils literal"><span class="pre">PATH</span></tt> env var.</li>
-<li>Download xQuartz (needed for X11, needed for matplotlob) - <a class="reference external" href="http://xquartz.macosforge.org/landing/">http://xquartz.macosforge.org/landing/</a></li>
-<li>Getting gcc and boost and matplotlib reqs (before installing MOE):</li>
+<li>Download MacPorts - <a class="reference external" href="http://www.macports.org/install.php">http://www.macports.org/install.php</a> (If you change the install directory from <tt class="docutils literal"><span class="pre">/opt/local</span></tt>, don&#8217;t forget to update the cmake invocation.)</li>
+<li>MacPorts can resolve most dependencies. Make sure you set your <tt class="docutils literal"><span class="pre">PATH</span></tt> env var.</li>
+<li>Download xQuartz (needed for X11, needed for matplotlib) - <a class="reference external" href="http://xquartz.macosforge.org/landing/">http://xquartz.macosforge.org/landing/</a> (Also available through MacPorts, see item 4.)</li>
+<li>Getting gcc, boost, matplotlib, and xQuartz (<a href="#id1"><span class="problematic" id="id2">`</span></a>xorg-server) reqs (before installing MOE):</li>
 </ol>
 <div class="highlight-python"><div class="highlight"><pre>$ sudo port selfupdate
 $ sudo port install gcc47
 $ sudo port select --set gcc mp-gcc47
 $ sudo port install boost
+$ sudo port install xorg-server
 $ sudo port install py-matplotlib
 $ sudo port install doxygen
 </pre></div>
 </div>
 <div class="section" id="more-osx-tips">
-<h4>More OSX tips<a class="headerlink" href="#more-osx-tips" title="Permalink to this headline">¶</a></h4>
+<h4>More OSX Tips<a class="headerlink" href="#more-osx-tips" title="Permalink to this headline">¶</a></h4>
 <ol class="arabic simple">
-<li>Make sure you create your virtualenv with the correct python <tt class="docutils literal"><span class="pre">--python=/opt/local/bin/python</span></tt> if you are using macports</li>
+<li>Make sure you create your virtualenv with the correct python <tt class="docutils literal"><span class="pre">--python=/opt/local/bin/python</span></tt> if you are using MacPorts.</li>
 </ol>
 </div>
 </div>
 <div class="section" id="linux-tips">
-<h3>Linux tips<a class="headerlink" href="#linux-tips" title="Permalink to this headline">¶</a></h3>
+<h3>Linux Tips<a class="headerlink" href="#linux-tips" title="Permalink to this headline">¶</a></h3>
 <ol class="arabic simple">
 <li>You can apt-get everything you need. Woo real package managers!</li>
 <li>Having trouble with matplotlib dependencies? <tt class="docutils literal"><span class="pre">sudo</span> <span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">python-matplotlib</span></tt></li>
@@ -141,7 +163,7 @@ $ sudo port install doxygen
 <li class="toctree-l2"><a class="reference internal" href="optimal_learning.EPI.src.python.models.html#module-optimal_learning.EPI.src.python.models.covariance_of_process">optimal_learning.EPI.src.python.models.covariance_of_process module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="optimal_learning.EPI.src.python.models.html#module-optimal_learning.EPI.src.python.models.gaussian_process">optimal_learning.EPI.src.python.models.gaussian_process module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="optimal_learning.EPI.src.python.models.html#module-optimal_learning.EPI.src.python.models.optimal_gaussian_process">optimal_learning.EPI.src.python.models.optimal_gaussian_process module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="optimal_learning.EPI.src.python.models.html#optimal-learning-epi-src-python-models-optimal-gaussian-process-linked-cpp-module">optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimal_learning.EPI.src.python.models.html#module-optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp">optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="optimal_learning.EPI.src.python.models.html#module-optimal_learning.EPI.src.python.models.plottable_optimal_gaussian_process">optimal_learning.EPI.src.python.models.plottable_optimal_gaussian_process module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="optimal_learning.EPI.src.python.models.html#module-optimal_learning.EPI.src.python.models.sample_point">optimal_learning.EPI.src.python.models.sample_point module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="optimal_learning.EPI.src.python.models.html#module-optimal_learning.EPI.src.python.models">Module contents</a></li>
@@ -192,11 +214,12 @@ $ sudo port install doxygen
 <li><a class="reference internal" href="#quick-start">Quick Start</a><ul>
 <li><a class="reference internal" href="#requires">Requires</a></li>
 <li><a class="reference internal" href="#install">Install</a></li>
-<li><a class="reference internal" href="#osx-tips">OSX tips</a><ul>
-<li><a class="reference internal" href="#more-osx-tips">More OSX tips</a></li>
+<li><a class="reference internal" href="#cmake-tips">CMake Tips</a></li>
+<li><a class="reference internal" href="#osx-tips">OSX Tips</a><ul>
+<li><a class="reference internal" href="#more-osx-tips">More OSX Tips</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#linux-tips">Linux tips</a></li>
+<li><a class="reference internal" href="#linux-tips">Linux Tips</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#contributing">Contributing</a></li>

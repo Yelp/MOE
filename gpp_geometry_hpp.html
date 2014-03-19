@@ -54,28 +54,43 @@
   <div class="section" id="gpp-geometry-hpp">
 <h1>gpp_geometry.hpp<a class="headerlink" href="#gpp-geometry-hpp" title="Permalink to this headline">¶</a></h1>
 <p></p>
-<p></p>
-<p><p id="project0namespaceoptimal__learning__gpp__geometry__hpp"><em>namespace</em> <strong>optimal_learning_gpp_geometry_hpp</strong></p>
-<blockquote>
-<div><p></p>
-<p><p>This file contains utilities for some simple problems in n-dimensional computational geometry.  For example,
-(orthogonal) distance from point to plane, point projection, hypercube/simplex intersection, etc.</p>
-<p>Unless indicated otherwise, we will specify a plane in dim-space by dim + 1 numbers.  The equation of plane is:</p>
-<p><span class="math">\(\, a_0 + \sum_i n_i * x_i = 0, i = 1..dim\)</span></p>
-<p>Hence we can describe any plane as: <span class="math">\(\, [n_1, n_2, ..., n_{dim}, a_0]\)</span></p>
-<p>Here, <span class="math">\(\, n_{vec} = [n_1, ..., n_{dim}]\)</span> is the (outward) normal vector.</p>
-<p>By convention, <span class="math">\(\, ||n_{vec}||_2 = 1\)</span> (UNIT normal).</p>
-<p>Recall that a plane is fully specified by a point <span class="math">\(\, r_0\)</span> and a normal vector <span class="math">\(\, n_{vec}\)</span>. Then a point r is in the plane
-if and only if <span class="math">\(\, (r-r_0) \cdot n_{vec} = 0\)</span>. Since <span class="math">\(\, r_0\)</span> is constant, we can precompute and store <span class="math">\(\, r_0 \cdot n_{vec} = -a_0\)</span>.</p>
+<p><dl class="docutils">
+<dt>This file contains classes and utilities to help with (planar) geometry operations.</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt>Functions:</dt>
+<dd><ul class="first last simple">
+<li>CheckPointInHypercube: checks whether a point is in the domain <span class="math">\(\, [x_{1,min}, x_{1,max}] X ... X [x_{dim,min}, x_{dim,max}]\)</span></li>
+<li>CheckPointInUnitSimplex: checks whether a point is in the unit simplex</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Structs:</dt>
+<dd><ul class="first last">
+<li><p class="first">ClosedInterval: represents the closed interval <span class="math">\(\, [a, b]\)</span> with utilities for length, in/out test etc.</p>
+</li>
+<li><dl class="first docutils">
+<dt>Plane: represents a dim-dimensional plane as its &#8220;outward&#8221; unit normal and the signed distance from the origin.</dt>
+<dd><p class="first last">Contains functions for distance, projection, etc.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
  </p>
-</div></blockquote>
-</p>
 <p><p id="project0namespaceoptimal__learning"><em>namespace</em> <strong>optimal_learning</strong></p>
 <blockquote>
 <div><p></p>
 <p></p>
 <em>Functions</em><blockquote>
-<div><p><span class="target" id="project0namespaceoptimal__learning_1a15274264924e72ab6adbf7200070c737"></span><div class="line-block">
+<div><p><span class="target" id="project0namespaceoptimal__learning_1a505b3db82ef10677c4cd73af3116b27d"></span><div class="line-block">
 <div class="line">OL_WARN_UNUSED_RESULT OL_NONNULL_POINTERS bool <strong>CheckPointInHypercube</strong>(<a class="reference internal" href="#project0structoptimal__learning_1_1_closed_interval"><em>ClosedInterval</em></a>  const *restrict domain, double const *restrict point, int dim)</div>
 </div>
 </p>
@@ -102,16 +117,21 @@ if and only if <span class="math">\(\, (r-r_0) \cdot n_{vec} = 0\)</span>. Since
 </dl>
  </p>
 </div></blockquote>
-<p><span class="target" id="project0namespaceoptimal__learning_1a9036cc8c05916b20a3f9131681766412"></span><div class="line-block">
+<p><span class="target" id="project0namespaceoptimal__learning_1a258edfb802ce7c5fa2c98bf09b7f14a3"></span><div class="line-block">
 <div class="line">OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT bool <strong>CheckPointInUnitSimplex</strong>(double const *restrict point, int dim)</div>
 </div>
 </p>
 <blockquote>
 <div><p></p>
-<p><p>Checks if a point is inside/on the unit d-simplex.  A point <span class="math">\(\, x_i\)</span> lies inside the unit d-simplex if:
-1) <span class="math">\(\, x_i \geq 0 \ \forall \ i\)</span>  (i ranging over dimension)
-2) <span class="math">\(\, \sum_i x_i \leq 1\)</span>
-(Implying that <span class="math">\(\, x_i \leq 1 \ \forall \ i\)</span> )</p>
+<p><dl class="docutils">
+<dt>Checks if a point is inside/on the unit d-simplex.  A point <span class="math">\(\, x_i\)</span> lies inside the unit d-simplex if:</dt>
+<dd><ol class="first last arabic simple">
+<li><span class="math">\(\, x_i \geq 0 \ \forall i\)</span>  (i ranging over dimension)</li>
+<li><span class="math">\(\, \sum_i x_i \leq 1\)</span></li>
+</ol>
+</dd>
+</dl>
+<p>Implying that <span class="math">\(\, x_i \leq 1 \ \forall i\)</span>.</p>
 <dl class="docutils">
 <dt><strong>Parameters</strong>:</dt>
 <dd><table class="first last docutils field-list" frame="void" rules="none">
@@ -130,104 +150,6 @@ if and only if <span class="math">\(\, (r-r_0) \cdot n_{vec} = 0\)</span>. Since
 </dl>
  </p>
 </div></blockquote>
-<p><span class="target" id="project0namespaceoptimal__learning_1a222241083168be55ae777562c5fb7c52"></span><div class="line-block">
-<div class="line">OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT double <strong>OrthogonalDistanceToPlane</strong>(double const *restrict point, double const *restrict plane, int dim)</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p><p>Signed, shortest distance from point to plane: + means the point is on the same half-space as the plane&#8217;s normal vector</p>
-<dl class="docutils">
-<dt><strong>Parameters</strong>:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">point[dim]:</th><td class="field-body">point to compute distance from</td>
-</tr>
-<tr class="field-even field"><th class="field-name">plane[dim+1]:</th><td class="field-body">plane to compute distance to; data ordered as specified in file docs</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">dim:</th><td class="field-body">number of spatial dimensions</td>
-</tr>
-</tbody>
-</table>
-</dd>
-<dt><strong>Returns</strong>:</dt>
-<dd>signed, shortest distance from point to plane where + means the point and normal are in the same half-space</dd>
-</dl>
- </p>
-</div></blockquote>
-<p><span class="target" id="project0namespaceoptimal__learning_1a9d59c0ec1c44448a0ad5f21e3c9f5ff1"></span><div class="line-block">
-<div class="line">OL_NONNULL_POINTERS void <strong>OrthogonalProjectionOntoPlane</strong>(double const *restrict plane, int dim, double *restrict point)</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p><p>Projects a point onto a plane.</p>
-<dl class="docutils">
-<dt><strong>Parameters</strong>:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">plane[dim+1]:</th><td class="field-body">plane to compute distance to; data ordered as specified in file docs</td>
-</tr>
-<tr class="field-even field"><th class="field-name">dim:</th><td class="field-body">number of spatial dimensions</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">point[dim]:</th><td class="field-body">point to project onto plane</td>
-</tr>
-</tbody>
-</table>
-</dd>
-<dt><strong>Outputs</strong>:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">point[dim]:</th><td class="field-body">point projected onto plane</td>
-</tr>
-</tbody>
-</table>
-</dd>
-</dl>
- </p>
-</div></blockquote>
-<p><span class="target" id="project0namespaceoptimal__learning_1a39102d4fe7f4fb9556e99cadcdb53db6"></span><div class="line-block">
-<div class="line">OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT double <strong>DistanceToPlaneAlongVector</strong>(double const *restrict point, double const *restrict plane, double const *restrict vector, int dim)</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p><p>&#8220;plane&#8221; is specified as <span class="math">\(\, [n_1, n_2, ..., n_{dim}, a_0]\)</span>, where the hyperplane has the equation:<span class="math">\(\, a_0 + \sum_i n_i * x_i = 0\)</span>
-Hence <span class="math">\(\, n_{vec} = [n_1, ..., n_{dim}]\)</span> is the (outward) normal vector.</p>
-<p>By convention, <span class="math">\(\, ||n_{vec}||_2 = 1\)</span>.</p>
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">This fails UNGRACEFULLY if vector <span class="math">\(\,\cdot\)</span> normal = 0.0 and point <span class="math">\(\,\cdot\)</span> normal <span class="math">\(\, + a_0 = 0\)</span>
-i.e., the vector is parallel to the plane and the starting point lies on the plane.</p>
-</div>
-<dl class="docutils">
-<dt><strong>Parameters</strong>:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">point[dim]:</th><td class="field-body">point to compute distance from</td>
-</tr>
-<tr class="field-even field"><th class="field-name">plane[dim+1]:</th><td class="field-body">plane to compute distance to; data ordered as specified in header docs</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">vector[dim]:</th><td class="field-body">vector to compute distance along</td>
-</tr>
-<tr class="field-even field"><th class="field-name">dim:</th><td class="field-body">number of spatial dimensions</td>
-</tr>
-</tbody>
-</table>
-</dd>
-<dt><strong>Returns</strong>:</dt>
-<dd>signed distance along the given vector; + means the intersection is in the same direction as the vector</dd>
-</dl>
- </p>
-</div></blockquote>
 </div></blockquote>
 <p><p id="project0structoptimal__learning_1_1_closed_interval"><em>class</em> <strong>ClosedInterval</strong></p>
 <blockquote>
@@ -236,11 +158,6 @@ i.e., the vector is parallel to the plane and the starting point lies on the pla
 The closed interval <span class="math">\(\, [a,b]\)</span> is the set of all numbers <span class="math">\(\, x \in \mathbb{R}\)</span> such that <span class="math">\(\, a \leq x \leq b\)</span>.
 Note that &#8220;closed&#8221; here indicates the interval <em>includes</em> both endpoints.
 An interval with <span class="math">\(\, a &gt; b\)</span> is considered empty.</p>
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p><em>undefined behavior</em> if either endpoint is NaN or if the interval is <span class="math">\(\, [+\infty, +\infty]\)</span> or <span class="math">\(\, [-\infty, -\infty]\)</span>.</p>
-<p class="last">Neither of these conditions make any sense mathematically either.</p>
-</div>
 <dl class="docutils">
 <dt>This struct is &#8220;trivial&#8221; and &#8220;standard layout&#8221; and thus &#8220;POD&#8221; (in the C++11 sense).</dt>
 <dd><ul class="first last simple">
@@ -265,20 +182,15 @@ ClosedInterval tmp{1.0, 2.0};  // and brace-style (aka initializer list) inits a
 <p><p>Explicitly defaulted default constructor.
 Defining a custom ctor (below) disables the default ctor, so we explicitly default it.
 This is needed to maintain POD-ness.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">this ctor cannot be declared constexpr because the implicit default ctor is not
-constexpr. It does not make sense in the same way that &#8220;constexpr double d;&#8221; is undefined.</p>
-</div>
  </p>
 </div></blockquote>
-<p><span class="target" id="project0structoptimal__learning_1_1_closed_interval_1a0d021868cbe67f7be650caac7f796387"></span><div class="line-block">
-<div class="line">constexpr <strong>ClosedInterval</strong>(double min_in, double max_in)</div>
+<p><span class="target" id="project0structoptimal__learning_1_1_closed_interval_1a09e945f4dcc8def69ebf58455e779cba"></span><div class="line-block">
+<div class="line"> <strong>ClosedInterval</strong>(double min_in, double max_in)</div>
 </div>
 </p>
 <blockquote>
 <div><p></p>
-<p><p>Constructs a ClosedInterval object with specified min, max.</p>
+<p><p>Constructs a ClosedInterval object with specified <tt class="docutils literal"><span class="pre">min</span></tt>, <tt class="docutils literal"><span class="pre">max</span></tt>.</p>
 <p>The presence of this ctor makes this object a non-aggregate, so brace-initialization
 follow list initialization rules (not aggregate initialization):</p>
 <blockquote>
@@ -302,8 +214,8 @@ follow list initialization rules (not aggregate initialization):</p>
 </dl>
  </p>
 </div></blockquote>
-<p><span class="target" id="project0structoptimal__learning_1_1_closed_interval_1af1c94c63510d4e69d5b61e91e624e991"></span><div class="line-block">
-<div class="line">constexpr bool <strong>IsInside</strong>(double value)</div>
+<p><span class="target" id="project0structoptimal__learning_1_1_closed_interval_1ae81057ce96042e18a218523b14d9a742"></span><div class="line-block">
+<div class="line">bool <strong>IsInside</strong>(double value)</div>
 </div>
 </p>
 <blockquote>
@@ -321,12 +233,12 @@ follow list initialization rules (not aggregate initialization):</p>
 </table>
 </dd>
 <dt><strong>Returns</strong>:</dt>
-<dd>true if min &lt;= value &lt;= max</dd>
+<dd>true if <tt class="docutils literal"><span class="pre">min</span></tt> <span class="math">\(\,\leq\)</span> <tt class="docutils literal"><span class="pre">value</span></tt> <span class="math">\(\,\leq\)</span> <tt class="docutils literal"><span class="pre">max</span></tt></dd>
 </dl>
  </p>
 </div></blockquote>
-<p><span class="target" id="project0structoptimal__learning_1_1_closed_interval_1a129f50b3549b5aaf0bff21e0d68f6808"></span><div class="line-block">
-<div class="line">constexpr double <strong>Length</strong>()</div>
+<p><span class="target" id="project0structoptimal__learning_1_1_closed_interval_1ab7a6893d70f7f81a9206a4283b1b3fb8"></span><div class="line-block">
+<div class="line">double <strong>Length</strong>()</div>
 </div>
 </p>
 <blockquote>
@@ -338,17 +250,17 @@ follow list initialization rules (not aggregate initialization):</p>
 </dl>
  </p>
 </div></blockquote>
-<p><span class="target" id="project0structoptimal__learning_1_1_closed_interval_1a36c7745c979301d53678f16aabd94b2d"></span><div class="line-block">
-<div class="line">constexpr bool <strong>IsEmpty</strong>()</div>
+<p><span class="target" id="project0structoptimal__learning_1_1_closed_interval_1a690e3b92e62cd36e3bd3ecf8034033bb"></span><div class="line-block">
+<div class="line">bool <strong>IsEmpty</strong>()</div>
 </div>
 </p>
 <blockquote>
 <div><p></p>
-<p><p>Checks whether the interval is emptyset (empty, max &lt; min).
-Equivalent to Length() &gt;= 0.0.</p>
+<p><p>Checks whether the interval is <span class="math">\(\,\emptyset\)</span> (i.e., <tt class="docutils literal"><span class="pre">max</span></tt> &lt; <tt class="docutils literal"><span class="pre">min</span></tt>).
+Equivalent to Length() <span class="math">\(\,\geq\)</span> 0.0.</p>
 <dl class="docutils">
 <dt><strong>Returns</strong>:</dt>
-<dd>true if the interval is non-empty: max &gt;= min</dd>
+<dd>true if the interval is non-empty: <tt class="docutils literal"><span class="pre">max</span></tt> <span class="math">\(\,\geq\)</span> <tt class="docutils literal"><span class="pre">min</span></tt></dd>
 </dl>
  </p>
 </div></blockquote>
@@ -362,6 +274,246 @@ Equivalent to Length() &gt;= 0.0.</p>
 <p><span class="target" id="project0structoptimal__learning_1_1_closed_interval_1a1a4ed748c50ae8fb3b6715dec4745909"></span>double <strong>max</strong></p>
 <blockquote>
 <div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</p>
+<p><p id="project0structoptimal__learning_1_1_plane"><em>class</em> <strong>Plane</strong></p>
+<blockquote>
+<div><p></p>
+<p><dl class="docutils">
+<dt>We specify a plane in dim-space using the Hesse (or Hessian) Normal Form:</dt>
+<dd><ul class="first last simple">
+<li><a class="reference external" href="http://mathworld.wolfram.com/HessianNormalForm.html">http://mathworld.wolfram.com/HessianNormalForm.html</a></li>
+</ul>
+</dd>
+</dl>
+<p>The equation of plane requires dim + 1 real numbers:
+<span class="math">\(\, a_0 + \sum_{i=0}^{dim} n_i x_i = 0\)</span></p>
+<p>Hence we can describe any plane as a vector, <span class="math">\(\, [n_0, n_2, ..., n_{dim-1}]\)</span>, and a real number, <span class="math">\(\, a_0\)</span>.</p>
+<p>Let <span class="math">\(\, n_{vec} = [n_0, ..., n_{dim-1}]\)</span> be the (outward) <em>unit</em> normal vector. By convention, <span class="math">\(\, \|n_{vec}\|_2 = 1\)</span>.
+<span class="math">\(\, a_0\)</span> is the <em>signed</em> distance to the origin. This is the distance from the plane to the origin in the direction of
+<span class="math">\(\, n_{vec}\)</span>. Put another way, <span class="math">\(\, a_0\)</span> is positive if the origin is in the same half-space &#8220;pointed to&#8221; by
+<span class="math">\(\, n_{vec}\)</span> and negative otherwise.
+Note: <span class="math">\(\, a_0\)</span> is measured in units of <span class="math">\(\, \|n_{vec}\|\)</span>, so if it is <em>not</em> an unit vector, that is analogous to scaling :math:<a href="#id1"><span class="problematic" id="id2">`</span></a>, a_0nme.</p>
+<dl class="docutils">
+<dt>As an example, let&#8217;s consider 4 planes with dim = 2:</dt>
+<dd><ul class="first last simple">
+<li><span class="math">\(\, a_0\)</span> = -1, and <span class="math">\(\, n_{vec}\)</span> = { 1.0, 0.0}: the plane x =  1 with rightward pointing normal.</li>
+<li><span class="math">\(\, a_0\)</span> = -1, and <span class="math">\(\, n_{vec}\)</span> = {-1.0, 0.0}: the plane x = -1 with leftward  pointing normal.</li>
+<li><span class="math">\(\, a_0\)</span> =  1, and <span class="math">\(\, n_{vec}\)</span> = { 1.0, 0.0}: the plane x = -1 with rightward pointing normal.</li>
+<li><span class="math">\(\, a_0\)</span> =  1, and <span class="math">\(\, n_{vec}\)</span> = {-1.0, 0.0}: the plane x =  1 with leftward  pointing normal.</li>
+</ul>
+</dd>
+</dl>
+<p>Be careful with the signs.</p>
+<p>Another common way of specifying a plane is via a point <span class="math">\(\, x_0\)</span> and an unit normal, <span class="math">\(\, n_{vec}\)</span>. A point x is in the plane
+if and only if <span class="math">\(\, (x-x_0) \cdot n_{vec} = 0\)</span>. Since <span class="math">\(\, x_0\)</span> is constant, we can precompute and store
+<span class="math">\(\, ms x_0 \cdot n_{vec} = -a_0\)</span>, yielding: <span class="math">\(\, x \cdot n_{vec} - x_0 \cdot n_{vec} = x \cdot n_{vec} + a_0\)</span>, which is our
+original equation of a plane.</p>
+ </p>
+<em>Public Functions</em><blockquote>
+<div><p><span class="target" id="project0structoptimal__learning_1_1_plane_1a9522f9e3a0ebe5c5b46f9b4354772a47"></span><div class="line-block">
+<div class="line"> <strong>Plane</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_plane_1a0c2f0a05764bc117806385c5fc932a87"></span><div class="line-block">
+<div class="line"> <strong>Plane</strong>(int dim_in)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Creates a zero-initialized plane object with enough space for dim-dimensions.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This plane is invalid (<tt class="docutils literal"><span class="pre">unit_normal</span></tt> := zero is not a unit vector) and needs to have its members initialized.
+That said, no member functions will fail even without complete initialization.</p>
+</div>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">dim:</th><td class="field-body">the number of spatial dimensions</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_plane_1aae0e65cc41b6b101b59c92a4237a84bb"></span><div class="line-block">
+<div class="line"> <strong>Plane</strong>(double const *restrict unit_normal_in, double offset_in, int dim_in)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Creates a plane in dim-dimensions with the specified unit normal (<span class="math">\(\, n_i\)</span>) and offset (<span class="math">\(\, a_0\)</span>):
+<span class="math">\(\, a_0 + \sum_{i=0}^{dim} n_i * x_i = 0\)</span></p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Failure to specify a unit normal will result in surprising behavior. <span class="math">\(\, a_0\)</span> is really in units of
+<span class="math">\(\,\|n_{vec}\|\)</span>, so if <span class="math">\(\,\|n_{vec}\| = 3.5\)</span>, then the actual distance to the origin is <span class="math">\(\, 3.5 a_0\)</span>.</p>
+</div>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">dim:</th><td class="field-body">the number of spatial dimensions</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">unit_normal[dim]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">the unit normal vector. VectorNorm(unit_normal, dim) must be 1.0</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">offset:</th><td class="field-body">a_0, the signed distance to the origin (see class docs)</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_plane_1a9360050fd0bab065e7d34c938af8e2a0"></span><div class="line-block">
+<div class="line"> <strong>Plane</strong>(double const *restrict unit_normal_in, double const *restrict point, int dim_in)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Creates a plane in dim-dimensions that contains &#8220;point,&#8221; with the specified unit normal.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">dim:</th><td class="field-body">the number of spatial dimensions</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">unit_normal[dim]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">the unit normal vector. VectorNorm(unit_normal, dim) must be 1.0</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">point[dim]:</th><td class="field-body">a point contained in the plane</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_plane_1a25f8926eda0c5dde38cecfe73c798c64"></span><div class="line-block">
+<div class="line">int <strong>dim</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><dl class="docutils">
+<dt><strong>Returns</strong>:</dt>
+<dd>the number of spatial dimensions (that this plane lives in)</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_plane_1a020073e0e4ea6c131abb2967ed870ddc"></span><div class="line-block">
+<div class="line">double <strong>OrthogonalDistanceToPoint</strong>(double const *restrict point)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Computes the signed, shortest distance from this plane to point: positive means the point is in the half-space
+determined by the direction of <tt class="docutils literal"><span class="pre">unit_normal</span></tt>.</p>
+<p>Note: if point is the origin, this yields precisely <span class="math">\(\, a_0\)</span> (<tt class="docutils literal"><span class="pre">offset</span></tt>).</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">point[dim]:</th><td class="field-body">point to compute distance to</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd>signed, shortest distance from this plane to point, where positive means the point and normal are in the same half-space</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_plane_1a2f3b514077dd38ff809a64b86ac9da9a"></span><div class="line-block">
+<div class="line">void <strong>OrthogonalProjectionOntoPlane</strong>(double *restrict point)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Projects a point (orthogonally) onto a plane; i.e., finds the point on the plane that is closest to the input point.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">point[dim]:</th><td class="field-body">point to project onto plane</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Outputs</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">point[dim]:</th><td class="field-body">point projected onto plane</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_plane_1ad4281939e7ac7d694ac6f5affde5dc6b"></span><div class="line-block">
+<div class="line">double <strong>DistanceToPlaneAlongVector</strong>(double const *restrict point, double const *restrict vector)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Computes the signed distance from the specified <tt class="docutils literal"><span class="pre">point</span></tt> to this plane along the specified <tt class="docutils literal"><span class="pre">vector</span></tt>. This result
+is computed in units of <span class="math">\(\,\|vector\|_2\)</span>. That is, a distance of 3.14 means if we compute:
+new_point = 3.14*vector + point,
+then new_point will be on this plane.</p>
+<p>A negative distance means the plane is &#8220;behind&#8221; the ray.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">point[dim]:</th><td class="field-body">point to compute distance from</td>
+</tr>
+<tr class="field-even field"><th class="field-name">vector[dim]:</th><td class="field-body">vector to compute distance along</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd>Signed distance along the given vector; positive means the intersection is in the same direction as the vector.
+This result is in units of <span class="math">\(\,\|vector\|_2\)</span>; normalize vector if you want an actual distance.</dd>
+</dl>
+ </p>
+</div></blockquote>
+</div></blockquote>
+<em>Public Members</em><blockquote>
+<div><p><span class="target" id="project0structoptimal__learning_1_1_plane_1a89e6b486140f2f255dfbb8ffec000da2"></span>double <strong>offset</strong></p>
+<blockquote>
+<div><p>the scalar a_0: the distance from the plane to the origin </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_plane_1a7b40a9b48185c0ebcfa17334d8a3d2fe"></span>std::vector&lt; double &gt; <strong>unit_normal</strong></p>
+<blockquote>
+<div><p>the vector n_i: the &#8220;outward&#8221; unit normal vector </p>
 <p></p>
 </div></blockquote>
 </div></blockquote>

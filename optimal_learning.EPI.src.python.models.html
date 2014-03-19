@@ -415,8 +415,245 @@ w.r.t the variable (in points_to_sample) var</p>
 </dd></dl>
 
 </div>
-<div class="section" id="optimal-learning-epi-src-python-models-optimal-gaussian-process-linked-cpp-module">
-<h2>optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp module<a class="headerlink" href="#optimal-learning-epi-src-python-models-optimal-gaussian-process-linked-cpp-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp">
+<span id="optimal-learning-epi-src-python-models-optimal-gaussian-process-linked-cpp-module"></span><h2>optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp module<a class="headerlink" href="#module-optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.ClosedInterval">
+<em class="property">class </em><tt class="descclassname">optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.</tt><tt class="descname">ClosedInterval</tt><a class="reference internal" href="_modules/optimal_learning/EPI/src/python/models/optimal_gaussian_process_linked_cpp.html#ClosedInterval"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.ClosedInterval" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.ClosedInterval" title="optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.ClosedInterval"><tt class="xref py py-class docutils literal"><span class="pre">optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.ClosedInterval</span></tt></a></p>
+<dl class="staticmethod">
+<dt id="optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.ClosedInterval.build_closed_intervals_from_list">
+<em class="property">static </em><tt class="descname">build_closed_intervals_from_list</tt><big>(</big><em>domain</em><big>)</big><a class="reference internal" href="_modules/optimal_learning/EPI/src/python/models/optimal_gaussian_process_linked_cpp.html#ClosedInterval.build_closed_intervals_from_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.ClosedInterval.build_closed_intervals_from_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.ExpectedImprovementOptimizationParameters">
+<em class="property">class </em><tt class="descclassname">optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.</tt><tt class="descname">ExpectedImprovementOptimizationParameters</tt><big>(</big><em>domain_type=None</em>, <em>optimizer_type=None</em>, <em>num_random_samples=None</em>, <em>optimizer_parameters=None</em><big>)</big><a class="reference internal" href="_modules/optimal_learning/EPI/src/python/models/optimal_gaussian_process_linked_cpp.html#ExpectedImprovementOptimizationParameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.ExpectedImprovementOptimizationParameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Container for parameters that specify the behavior of a expected improvement optimizer.</p>
+<p>We use slots to enforce a &#8220;type.&#8221; Typo&#8217;ing a member name will error, not add a new field.
+This class is passed to C++, so it is convenient to be strict about its structure.</p>
+<p>Attributes:
+domain_type: type of domain that we are optimizing expected improvement over (e.g., tensor, simplex)
+optimizer_type: which optimizer to use (e.g., dumb search, gradient dsecent)
+num_random_samples: number of samples to try if using &#8216;dumb&#8217; search or if generating more</p>
+<blockquote>
+<div>than one simultaneous sample with dumb search fallback enabled</div></blockquote>
+<dl class="docutils">
+<dt>optimizer_parameters: parameters to control derviative-based optimizers, e.g.,</dt>
+<dd>step size control, number of steps tolerance, etc.</dd>
+</dl>
+<p>NOTE: this MUST be a C++ object whose type matches objective_type. e.g., if objective_type
+is kGradientDescent, then this must be built via C_GP.GradientDescentParameters object</p>
+<dl class="attribute">
+<dt id="optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.ExpectedImprovementOptimizationParameters.domain_type">
+<tt class="descname">domain_type</tt><a class="headerlink" href="#optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.ExpectedImprovementOptimizationParameters.domain_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.ExpectedImprovementOptimizationParameters.num_random_samples">
+<tt class="descname">num_random_samples</tt><a class="headerlink" href="#optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.ExpectedImprovementOptimizationParameters.num_random_samples" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.ExpectedImprovementOptimizationParameters.optimizer_parameters">
+<tt class="descname">optimizer_parameters</tt><a class="headerlink" href="#optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.ExpectedImprovementOptimizationParameters.optimizer_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.ExpectedImprovementOptimizationParameters.optimizer_type">
+<tt class="descname">optimizer_type</tt><a class="headerlink" href="#optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.ExpectedImprovementOptimizationParameters.optimizer_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.HyperparameterOptimizationParameters">
+<em class="property">class </em><tt class="descclassname">optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.</tt><tt class="descname">HyperparameterOptimizationParameters</tt><big>(</big><em>objective_type=None</em>, <em>optimizer_type=None</em>, <em>num_random_samples=None</em>, <em>optimizer_parameters=None</em><big>)</big><a class="reference internal" href="_modules/optimal_learning/EPI/src/python/models/optimal_gaussian_process_linked_cpp.html#HyperparameterOptimizationParameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.HyperparameterOptimizationParameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Container for parameters that specify the behavior of a hyperparameter optimizer.</p>
+<p>We use slots to enforce a &#8220;type.&#8221; Typo&#8217;ing a member name will error, not add a new field.
+This class is passed to C++, so it is convenient to be strict about its structure.</p>
+<p>Attributes:
+objective_type: which log likelihood measure to use as the metric of model quality</p>
+<blockquote>
+<div>e.g., log marginal likelihood, leave one out cross validation log pseudo-likelihood</div></blockquote>
+<p>optimizer_type: which optimizer to use (e.g., dumb search, gradient dsecent, Newton)
+num_random_samples: number of samples to try if using &#8216;dumb&#8217; search
+optimizer_parameters: parameters to control derviative-based optimizers, e.g.,</p>
+<blockquote>
+<div>step size control, number of steps tolerance, etc.</div></blockquote>
+<p>NOTE: this MUST be a C++ object whose type matches objective_type. e.g., if objective_type
+is kNewton, then this must be built via C_GP.NewtonParameters()</p>
+<dl class="attribute">
+<dt id="optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.HyperparameterOptimizationParameters.num_random_samples">
+<tt class="descname">num_random_samples</tt><a class="headerlink" href="#optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.HyperparameterOptimizationParameters.num_random_samples" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.HyperparameterOptimizationParameters.objective_type">
+<tt class="descname">objective_type</tt><a class="headerlink" href="#optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.HyperparameterOptimizationParameters.objective_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.HyperparameterOptimizationParameters.optimizer_parameters">
+<tt class="descname">optimizer_parameters</tt><a class="headerlink" href="#optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.HyperparameterOptimizationParameters.optimizer_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.HyperparameterOptimizationParameters.optimizer_type">
+<tt class="descname">optimizer_type</tt><a class="headerlink" href="#optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.HyperparameterOptimizationParameters.optimizer_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.OptimalGaussianProcessLinkedCpp">
+<em class="property">class </em><tt class="descclassname">optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.</tt><tt class="descname">OptimalGaussianProcessLinkedCpp</tt><big>(</big><em>max_num_threads=1</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/optimal_learning/EPI/src/python/models/optimal_gaussian_process_linked_cpp.html#OptimalGaussianProcessLinkedCpp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.OptimalGaussianProcessLinkedCpp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#optimal_learning.EPI.src.python.models.optimal_gaussian_process.OptimalGaussianProcess" title="optimal_learning.EPI.src.python.models.optimal_gaussian_process.OptimalGaussianProcess"><tt class="xref py py-class docutils literal"><span class="pre">optimal_learning.EPI.src.python.models.optimal_gaussian_process.OptimalGaussianProcess</span></tt></a></p>
+<p>Overrides methods in OptimalGaussianProcess with calls to C++ code in src/cpp/GPP_python.cpp via boost</p>
+<dl class="method">
+<dt id="optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.OptimalGaussianProcessLinkedCpp.cholesky_decomp_and_grad">
+<tt class="descname">cholesky_decomp_and_grad</tt><big>(</big><em>points_to_sample</em>, <em>var_of_grad=0</em><big>)</big><a class="reference internal" href="_modules/optimal_learning/EPI/src/python/models/optimal_gaussian_process_linked_cpp.html#OptimalGaussianProcessLinkedCpp.cholesky_decomp_and_grad"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.OptimalGaussianProcessLinkedCpp.cholesky_decomp_and_grad" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls into get_chol_var and get_grad_var in src/cpp/GPP_python.cpp</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.OptimalGaussianProcessLinkedCpp.compute_expected_improvement">
+<tt class="descname">compute_expected_improvement</tt><big>(</big><em>points_to_sample</em>, <em>force_monte_carlo=False</em>, <em>mc_iterations=1000</em><big>)</big><a class="reference internal" href="_modules/optimal_learning/EPI/src/python/models/optimal_gaussian_process_linked_cpp.html#OptimalGaussianProcessLinkedCpp.compute_expected_improvement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.OptimalGaussianProcessLinkedCpp.compute_expected_improvement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute expected improvement. Calls into src/cpp/GPP_python.cpp</p>
+<p>Automatically selects analytic evaluators when they are available (for performance/accuracy).
+Set &#8220;force_monte_carlo&#8221; to True to force monte-carlo evaluation even if analytic is available.
+(This is probably only useful for testing.)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.OptimalGaussianProcessLinkedCpp.compute_grad_expected_improvement">
+<tt class="descname">compute_grad_expected_improvement</tt><big>(</big><em>points_to_sample</em>, <em>force_monte_carlo=False</em>, <em>mc_iterations=1000</em><big>)</big><a class="reference internal" href="_modules/optimal_learning/EPI/src/python/models/optimal_gaussian_process_linked_cpp.html#OptimalGaussianProcessLinkedCpp.compute_grad_expected_improvement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.OptimalGaussianProcessLinkedCpp.compute_grad_expected_improvement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute spatial gradient of expected improvement. Calls into src/cpp/GPP_python.cpp</p>
+<p>Automatically selects analytic evaluators when they are available (for performance/accuracy).
+Set &#8220;force_monte_carlo&#8221; to True to force monte-carlo evaluation even if analytic is available.
+(This is probably only useful for testing.)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.OptimalGaussianProcessLinkedCpp.compute_hyperparam_grad_log_likelihood">
+<tt class="descname">compute_hyperparam_grad_log_likelihood</tt><big>(</big><em>objective_type=build.GPP.LogLikelihoodTypes.log_marginal_likelihood</em><big>)</big><a class="reference internal" href="_modules/optimal_learning/EPI/src/python/models/optimal_gaussian_process_linked_cpp.html#OptimalGaussianProcessLinkedCpp.compute_hyperparam_grad_log_likelihood"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.OptimalGaussianProcessLinkedCpp.compute_hyperparam_grad_log_likelihood" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls into compute_hyperparam_grad_log_likelihood in EPI/src/cpp/GPP_python.cpp to compute
+the gradient of the requested log_likelihood measure (e.g., log marginal or leave one out) wrt the hyperparameters</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.OptimalGaussianProcessLinkedCpp.compute_log_likelihood">
+<tt class="descname">compute_log_likelihood</tt><big>(</big><em>objective_type=build.GPP.LogLikelihoodTypes.log_marginal_likelihood</em><big>)</big><a class="reference internal" href="_modules/optimal_learning/EPI/src/python/models/optimal_gaussian_process_linked_cpp.html#OptimalGaussianProcessLinkedCpp.compute_log_likelihood"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.OptimalGaussianProcessLinkedCpp.compute_log_likelihood" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls into compute_log_likelihood in EPI/src/cpp/GPP_python.cpp to compute
+the requested log_likelihood measure (e.g., log marginal or leave one out)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.OptimalGaussianProcessLinkedCpp.constant_liar_expected_improvement_optimization">
+<tt class="descname">constant_liar_expected_improvement_optimization</tt><big>(</big><em>ei_optimization_parameters</em>, <em>num_samples_to_generate</em>, <em>lie_value</em>, <em>lie_noise_variance=0.0</em>, <em>domain=None</em>, <em>status=None</em><big>)</big><a class="reference internal" href="_modules/optimal_learning/EPI/src/python/models/optimal_gaussian_process_linked_cpp.html#OptimalGaussianProcessLinkedCpp.constant_liar_expected_improvement_optimization"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.OptimalGaussianProcessLinkedCpp.constant_liar_expected_improvement_optimization" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls into heuristic_expected_improvement_optimization_wrapper in EPI/src/cpp/GPP_python.cpp (solving q,0-EI)
+with the ConstantLiarEstimationPolicy.</p>
+<p>double lie_value: the &#8220;constant lie&#8221; that this estimator should return
+double lie_noise_variance: the noise_variance to associate to the lie_value (MUST be &gt;= 0.0)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.OptimalGaussianProcessLinkedCpp.evaluate_expected_improvement_at_point_list">
+<tt class="descname">evaluate_expected_improvement_at_point_list</tt><big>(</big><em>points_to_evaluate</em>, <em>points_being_sampled=None</em>, <em>mc_iterations=1000</em>, <em>status=None</em><big>)</big><a class="reference internal" href="_modules/optimal_learning/EPI/src/python/models/optimal_gaussian_process_linked_cpp.html#OptimalGaussianProcessLinkedCpp.evaluate_expected_improvement_at_point_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.OptimalGaussianProcessLinkedCpp.evaluate_expected_improvement_at_point_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls into evaluate_EI_at_point_list_wrapper() in src/cpp/GPP_python.cpp</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.OptimalGaussianProcessLinkedCpp.evaluate_log_likelihood_at_hyperparameter_list">
+<tt class="descname">evaluate_log_likelihood_at_hyperparameter_list</tt><big>(</big><em>hyperparameters_to_evaluate</em>, <em>objective_type=build.GPP.LogLikelihoodTypes.log_marginal_likelihood</em><big>)</big><a class="reference internal" href="_modules/optimal_learning/EPI/src/python/models/optimal_gaussian_process_linked_cpp.html#OptimalGaussianProcessLinkedCpp.evaluate_log_likelihood_at_hyperparameter_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.OptimalGaussianProcessLinkedCpp.evaluate_log_likelihood_at_hyperparameter_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls into evaluate_log_likelihood_at_hyperparameter_list_wrapper() in src/cpp/GPP_python.cpp</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.OptimalGaussianProcessLinkedCpp.get_1D_analytic_expected_improvement">
+<tt class="descname">get_1D_analytic_expected_improvement</tt><big>(</big><em>point_to_sample</em><big>)</big><a class="reference internal" href="_modules/optimal_learning/EPI/src/python/models/optimal_gaussian_process_linked_cpp.html#OptimalGaussianProcessLinkedCpp.get_1D_analytic_expected_improvement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.OptimalGaussianProcessLinkedCpp.get_1D_analytic_expected_improvement" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.OptimalGaussianProcessLinkedCpp.get_1D_analytic_grad_EI">
+<tt class="descname">get_1D_analytic_grad_EI</tt><big>(</big><em>point_to_sample</em><big>)</big><a class="reference internal" href="_modules/optimal_learning/EPI/src/python/models/optimal_gaussian_process_linked_cpp.html#OptimalGaussianProcessLinkedCpp.get_1D_analytic_grad_EI"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.OptimalGaussianProcessLinkedCpp.get_1D_analytic_grad_EI" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.OptimalGaussianProcessLinkedCpp.get_expected_improvement">
+<tt class="descname">get_expected_improvement</tt><big>(</big><em>points_to_sample</em>, <em>mc_iterations=1000</em><big>)</big><a class="reference internal" href="_modules/optimal_learning/EPI/src/python/models/optimal_gaussian_process_linked_cpp.html#OptimalGaussianProcessLinkedCpp.get_expected_improvement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.OptimalGaussianProcessLinkedCpp.get_expected_improvement" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.OptimalGaussianProcessLinkedCpp.get_grad_expected_improvement">
+<tt class="descname">get_grad_expected_improvement</tt><big>(</big><em>points_to_sample</em>, <em>mc_iterations=1000</em><big>)</big><a class="reference internal" href="_modules/optimal_learning/EPI/src/python/models/optimal_gaussian_process_linked_cpp.html#OptimalGaussianProcessLinkedCpp.get_grad_expected_improvement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.OptimalGaussianProcessLinkedCpp.get_grad_expected_improvement" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.OptimalGaussianProcessLinkedCpp.get_grad_mu">
+<tt class="descname">get_grad_mu</tt><big>(</big><em>points_to_sample</em><big>)</big><a class="reference internal" href="_modules/optimal_learning/EPI/src/python/models/optimal_gaussian_process_linked_cpp.html#OptimalGaussianProcessLinkedCpp.get_grad_mu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.OptimalGaussianProcessLinkedCpp.get_grad_mu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls into get_grad_mean_wrapper in src/cpp/GPP_python.cpp</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.OptimalGaussianProcessLinkedCpp.get_hyperparam_grad_log_marginal_likelihood">
+<tt class="descname">get_hyperparam_grad_log_marginal_likelihood</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/optimal_learning/EPI/src/python/models/optimal_gaussian_process_linked_cpp.html#OptimalGaussianProcessLinkedCpp.get_hyperparam_grad_log_marginal_likelihood"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.OptimalGaussianProcessLinkedCpp.get_hyperparam_grad_log_marginal_likelihood" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrapper for compute_hyperparam_grad_log_likelihood</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.OptimalGaussianProcessLinkedCpp.get_log_marginal_likelihood">
+<tt class="descname">get_log_marginal_likelihood</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/optimal_learning/EPI/src/python/models/optimal_gaussian_process_linked_cpp.html#OptimalGaussianProcessLinkedCpp.get_log_marginal_likelihood"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.OptimalGaussianProcessLinkedCpp.get_log_marginal_likelihood" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrapper for compute_log_likelihood</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.OptimalGaussianProcessLinkedCpp.get_mean_and_var_of_points">
+<tt class="descname">get_mean_and_var_of_points</tt><big>(</big><em>points_to_sample</em><big>)</big><a class="reference internal" href="_modules/optimal_learning/EPI/src/python/models/optimal_gaussian_process_linked_cpp.html#OptimalGaussianProcessLinkedCpp.get_mean_and_var_of_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.OptimalGaussianProcessLinkedCpp.get_mean_and_var_of_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls into get_mean and get_var wrapper in src/cpp/GPP_python.cpp</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.OptimalGaussianProcessLinkedCpp.get_multistart_best">
+<tt class="descname">get_multistart_best</tt><big>(</big><em>starting_points=None</em>, <em>points_being_sampled=None</em>, <em>gamma=0.9</em>, <em>gd_iterations=1000</em>, <em>mc_iterations=1000</em>, <em>num_multistarts=5</em>, <em>max_num_restarts=3</em>, <em>max_relative_change=1.0</em>, <em>tolerance=1e-07</em>, <em>status=None</em><big>)</big><a class="reference internal" href="_modules/optimal_learning/EPI/src/python/models/optimal_gaussian_process_linked_cpp.html#OptimalGaussianProcessLinkedCpp.get_multistart_best"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.OptimalGaussianProcessLinkedCpp.get_multistart_best" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrapper for multistart_expected_improvement_optimization</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.OptimalGaussianProcessLinkedCpp.kriging_believer_expected_improvement_optimization">
+<tt class="descname">kriging_believer_expected_improvement_optimization</tt><big>(</big><em>ei_optimization_parameters</em>, <em>num_samples_to_generate</em>, <em>std_deviation_coef=0.0</em>, <em>kriging_noise_variance=0.0</em>, <em>domain=None</em>, <em>status=None</em><big>)</big><a class="reference internal" href="_modules/optimal_learning/EPI/src/python/models/optimal_gaussian_process_linked_cpp.html#OptimalGaussianProcessLinkedCpp.kriging_believer_expected_improvement_optimization"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.OptimalGaussianProcessLinkedCpp.kriging_believer_expected_improvement_optimization" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls into heuristic_expected_improvement_optimization_wrapper in EPI/src/cpp/GPP_python.cpp (solving q,0-EI)
+with the KrigingBelieverEstimationPolicy.</p>
+<p>double std_deviation_coef: the relative amount of bias (in units of GP std deviation) to introduce into the GP mean
+double kriging_noise_variance: the noise_variance to associate to each function value estimate (MUST be &gt;= 0.0)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.OptimalGaussianProcessLinkedCpp.multistart_expected_improvement_optimization">
+<tt class="descname">multistart_expected_improvement_optimization</tt><big>(</big><em>ei_optimization_parameters</em>, <em>num_samples_to_generate</em>, <em>domain=None</em>, <em>points_being_sampled=None</em>, <em>mc_iterations=1000</em>, <em>status=None</em><big>)</big><a class="reference internal" href="_modules/optimal_learning/EPI/src/python/models/optimal_gaussian_process_linked_cpp.html#OptimalGaussianProcessLinkedCpp.multistart_expected_improvement_optimization"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.OptimalGaussianProcessLinkedCpp.multistart_expected_improvement_optimization" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls into multistart_expected_improvement_optimization_wrapper in EPI/src/cpp/GPP_python.cpp (solving q,p-EI)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.OptimalGaussianProcessLinkedCpp.multistart_hyperparameter_optimization">
+<tt class="descname">multistart_hyperparameter_optimization</tt><big>(</big><em>hyperparameter_optimization_parameters</em>, <em>hyperparameter_domain=None</em>, <em>status=None</em><big>)</big><a class="reference internal" href="_modules/optimal_learning/EPI/src/python/models/optimal_gaussian_process_linked_cpp.html#OptimalGaussianProcessLinkedCpp.multistart_hyperparameter_optimization"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp.OptimalGaussianProcessLinkedCpp.multistart_hyperparameter_optimization" title="Permalink to this definition">¶</a></dt>
+<dd><p>Optimizes hyperparameters based on maximizing the log likelihood-like measures using a multistart optimizer:
+log_marginal_likelihood     : log marginal likelihood (that the data comes from the model, p(y | X,     heta).
+leave_one_out_log_likelihood: leave-one-out log pseudo-likelihood, which evaluates the ability of the
+model to predict each member of its training set:
+sum_{i=1}^n log p(y_i | X_{-i}, y_{-i},        heta), where X_{-i}, y_{-i} denotes the parent set with i-th member removed</p>
+<p>Optimizers are: null (&#8216;dumb&#8217; search), gradient descent, newton
+&#8216;dumb&#8217; search means this will just evaluate the objective log likelihood measure at num_multistarts &#8216;points&#8217;
+(hyperparameters) in the domain, uniformly sampled using latin hypercube sampling.</p>
+<p>See gpp_python.cpp for C++ enum declarations laying out the options for objective and optimizer types.</p>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="module-optimal_learning.EPI.src.python.models.plottable_optimal_gaussian_process">
 <span id="optimal-learning-epi-src-python-models-plottable-optimal-gaussian-process-module"></span><h2>optimal_learning.EPI.src.python.models.plottable_optimal_gaussian_process module<a class="headerlink" href="#module-optimal_learning.EPI.src.python.models.plottable_optimal_gaussian_process" title="Permalink to this headline">¶</a></h2>
@@ -493,7 +730,7 @@ if gd_points are given it will plot the evolution as well</p>
 <li><a class="reference internal" href="#module-optimal_learning.EPI.src.python.models.covariance_of_process">optimal_learning.EPI.src.python.models.covariance_of_process module</a></li>
 <li><a class="reference internal" href="#module-optimal_learning.EPI.src.python.models.gaussian_process">optimal_learning.EPI.src.python.models.gaussian_process module</a></li>
 <li><a class="reference internal" href="#module-optimal_learning.EPI.src.python.models.optimal_gaussian_process">optimal_learning.EPI.src.python.models.optimal_gaussian_process module</a></li>
-<li><a class="reference internal" href="#optimal-learning-epi-src-python-models-optimal-gaussian-process-linked-cpp-module">optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp module</a></li>
+<li><a class="reference internal" href="#module-optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp">optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp module</a></li>
 <li><a class="reference internal" href="#module-optimal_learning.EPI.src.python.models.plottable_optimal_gaussian_process">optimal_learning.EPI.src.python.models.plottable_optimal_gaussian_process module</a></li>
 <li><a class="reference internal" href="#module-optimal_learning.EPI.src.python.models.sample_point">optimal_learning.EPI.src.python.models.sample_point module</a></li>
 <li><a class="reference internal" href="#module-optimal_learning.EPI.src.python.models">Module contents</a></li>
