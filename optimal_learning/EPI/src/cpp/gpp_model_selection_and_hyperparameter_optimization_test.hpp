@@ -23,7 +23,7 @@
 
 #include "gpp_common.hpp"
 #include "gpp_model_selection_and_hyperparameter_optimization.hpp"
-#include "gpp_optimization.hpp"
+#include "gpp_optimization_parameters.hpp"
 
 namespace optimal_learning {
 

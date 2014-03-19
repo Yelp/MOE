@@ -93,14 +93,20 @@
       {          0               else
 
   And the expected improvement, EI, can be computed by averaging repeated computations of I; i.e., monte-carlo integration.
-  This is done in ExpectedImprovementEvaluator::ComputeExpectedImprovement().
+  This is done in ExpectedImprovementEvaluator::ComputeExpectedImprovement(); we can also compute the gradient. This
+  computation is needed in the optimization of q,p-EI.
+
+  There is also a special, analytic case of EI computation that does not require monte-carlo integration. This special
+  case can only be used to compute 1,0-EI (and its gradient). Still this can be very useful (e.g., the heuristic
+  optimization in gpp_heuristic_expected_improvement_optimization.hpp estimates q,0-EI by repeatedly solving
+  1,0-EI).
 
   From there, since EI is taken from a sum of gaussians, we expect it to be reasonably smooth
   and apply multistart, restarted gradient descent to find the optimum.  The use of gradient descent
   implies the need for all of the various "grad" functions, e.g., GP::ComputeGradMeanOfPoints().
   This is handled in the highest level functions of file, ComputeOptimalPointToSampleWithRandomStarts() and
-  ComputeOptimalSetOfPointsToSample().  (The former produces a single point to sample and is defined in math.hpp;
-  the latter produces a specified number of points to sample simultaneously.)
+  ComputeOptimalSetOfPointsToSample(). The former produces a single point to sample (solving 1,p-EI) and is
+  defined in math.hpp; the latter produces a specified number of points to sample simultaneously (solving q,p-EI).
 
   4) CODE OVERVIEW:
   Finally, we give some further details about how the previous ideas map into the code.  We begin with an overview
@@ -133,10 +139,11 @@
   further details can be found below in the call tree discussion as well as in the implementation docs for these
   functions.  The gradient of EI is implemented similarly; see implementation docs for details on the one subtlety.
 
-  OnePotentialSample is a special case of ExpectedImprovementEvaluator.  With num_to_sample = 1, there is only one
-  experiment to worry about and no concurrent events.  This simplifies the EI computation substantially (multi-dimensional
-  Gaussians become a simple one dimensional case) and we can write EI in terms of the PDF and CDF of a N(0,1) normal
-  distribution (which are evaluated numerically by boost).  No monte-carlo necessary!
+  OnePotentialSample is a special case of ExpectedImprovementEvaluator.  With num_to_sample = 1 (only occurs in 1,0-EI
+  evaluation/optimization), there is only one experiment to worry about and no concurrent events.  This simplifies the
+  EI computation substantially (multi-dimensional Gaussians become a simple one dimensional case) and we can write EI
+  analytically in terms of the PDF and CDF of a N(0,1) normal distribution (which are evaluated numerically by boost).
+  No monte-carlo necessary!
 
   ExpectedImprovementEvaluator and OnePotentialSample have corresponding State classes as well.  These are similar
   to each other except OnePotentialSample does not have a NormalRNG pointer (since it does no MC integration) and some
@@ -155,46 +162,50 @@
   component of restarted gradient descent.
 
   5) CODE HIERARCHY / CALL-TREE:
-  For obtaining multiple new points to sample, we have:
+  For obtaining multiple new points to sample (q,p-EI), we have:
   ComputeOptimalSetOfPointsToSample<...>(...) (runs multiple optimizations to generate several new points to sample)
-    <> Repeatedly calls ComputeOptimalPointToSampleWithRandomStarts<...>(...), adding each successively chosen
+    <> Solves (approximately) q,p-EI by solving 1,p-EI, 1,(p+1)-EI, ... , 1,(p+q-1)-EI in sequence.
+    <> That is, repeatedly calls ComputeOptimalPointToSampleWithRandomStarts<...>(...), adding each successively chosen
        point to the points_to_sample set.
     <> Falls back to ComputeOptimalPointToSampleViaLatinHypercubeSearch<...>(...) if MGD fails.
     <> See below for overviews of these two functions.
 
-  For obtaining a single new point to sample, we have two main paths for optimization: multistart gradient descent and 'dumb' search.
-  The optimization hierarchy looks like (these optimization functions are in the header; they are templates):
+  For obtaining a single new point to sample (1,p-EI), we have two main paths for optimization: multistart gradient
+  descent and 'dumb' search. The optimization hierarchy looks like (these optimization functions are in the header;
+  they are templates):
   ComputeOptimalPointToSampleWithRandomStarts<...>(...)  (selects random points; defined in math.hpp)
+    <> Solves 1,p-EI.
     <> Selects random starting locations based on latin hypercube sampling
-    <> this calls:
+    <> This calls:
     ComputeOptimalPointToSampleViaMultistartGradientDescent<...>(...)  (multistart gradient descent)
-      <> switches into analytic OnePotentialSample case when appropriate
-      <> multithreaded over starting locations
-      <> optimizes with restarted gradient descent; collects results and updates the solution as new optima are found
-      <> this calls:
+      <> Switches into analytic OnePotentialSample case when appropriate
+      <> Multithreaded over starting locations
+      <> Optimizes with restarted gradient descent; collects results and updates the solution as new optima are found
+      <> This calls:
       MultistartOptimizer<...>::MultistartOptimize(...) for multistarting (see gpp_optimization.hpp) which in turn uses
       GradientDescentOptimizer::Optimize<ObjectiveFunctionEvaluator, Domain>() (see gpp_optimization.hpp)
 
   ComputeOptimalPointToSampleViaLatinHypercubeSearch<...>(...)  (defined in gpp_math.hpp)
-    <> selects random starting locations based on latin hypercube sampling
-    <> this calls:
+    <> Estimates 1,p-EI with a 'dumb' search.
+    <> Selects random starting locations based on latin hypercube sampling
+    <> This calls:
     <> EvaluateEIAtPointList<...>(...)
       <> Evaluates EI at each starting location
-      <> switches into analytic OnePotentialSample case when appropriate
-      <> multithreaded over starting locations
-      <> this calls:
+      <> Switches into analytic OnePotentialSample case when appropriate
+      <> Multithreaded over starting locations
+      <> This calls:
       MultistartOptimizer<...>::MultistartOptimize(...) for multistarting (see gpp_optimization.hpp)
 
   So finally we will overview the function calls for EI calculation.  We limit our discussion to the general MC case;
   the analytic case is similar and simpler.
   ExpectedImprovementEvaluator::ComputeExpectedImprovement()  (computes EI)
-    <> computes GP.mean, GP.variance, cholesky(GP.variance)
+    <> Computes GP.mean, GP.variance, cholesky(GP.variance)
     <> MC integration: samples from the GP repeatedly (Equation 4) and computes the improvement (Equation 5), averaging the result
-    <> calls out to GP::ComputeMeanOfPoints(), GP:ComputeVarianceOfPoints, ComputeCholeskyFactorL, NormalRNG::operator(),
+    <> Calls out to GP::ComputeMeanOfPoints(), GP:ComputeVarianceOfPoints, ComputeCholeskyFactorL, NormalRNG::operator(),
        and TriangularMatrixVectorMultiply
 
   ExpectedImprovementEvaluator::ComputeGradExpectedImprovement()  (computes gradient of EI*)
-    <> compute GP.mean, variance, cholesky(variance), grad mean, grad variance, grad cholesky variance
+    <> Compute GP.mean, variance, cholesky(variance), grad mean, grad variance, grad cholesky variance
     <> MC integration: Equation 4, 5 as before to compute improvement each step
                        Only have grad EI contributions when improvement > 0
                        When this happens, average in grad EI -= \nabla(\mu) + \nabla(chol(Vars)) * Nvec, where Nvec
@@ -467,7 +478,7 @@ void ExpectedImprovementEvaluator::ComputeGradExpectedImprovement(StateType * ei
 }
 
 /*
-  Uses analytic formulas to compute EI when num_to_sample = 1.
+  Uses analytic formulas to compute EI when num_to_sample = 1 (occurs only in 1,0-EI).
   In this case, the single-parameter (posterior) GP is just a Gaussian.  So the integral in EI (previously eval'd with MC)
   can be computed 'exactly' using high-accuracy routines for the pdf & cdf of a Gaussian random variable.
 
@@ -488,7 +499,7 @@ double OnePotentialSampleExpectedImprovementEvaluator::ComputeExpectedImprovemen
 }
 
 /*
-  Differentiates get_one_to_sample_expected_EI wrt points_to_sample (which is just ONE point).
+  Differentiates get_one_to_sample_expected_EI wrt points_to_sample (which is just ONE point; i.e., 1,0-EI).
   Again, this uses analytic formulas in terms of the pdf & cdf of a Gaussian since the integral in EI (and grad EI)
   can be evaluated 'exactly' for this low dimensional case.
 
@@ -523,43 +534,16 @@ void OnePotentialSampleExpectedImprovementEvaluator::ComputeGradExpectedImprovem
 }
 
 /*
-  This is implements the krieging believer method of selecting multiple, simultaneous experiments.  This method does not optimize
-  num_samples_to_generate points at once; instead it trusts that the GP-mean is the correct function value.  Thus krieging
-  believer may be very inaccurate, but it is also much faster since it always uses the analytic, one point to sample, case.
+  This is not a genuine implementation of the q,p-EI capability insofar as we do not simultaneously optimize
+  num_samples_to_generate new points.
 
-  We do the following:
-  points_to_sample = {}  // this stays empty!
+  Instead, we repeatedly solve 1,p-EI as follows:
+  points_to_sample = points_to_sample_input  // these are the points represented by the "p" in q,p-EI
+  best_points_to_sample = {}  // we will generate q new points to add here
   for i = 0:num_samples_to_generate-1 {
     new_point = ComputeOptimalPointToSample(gaussian_process, points_to_sample, other_parameters)
-    new_function_value = gaussian_process.ComputeMean(new_point)
-    new_function_value_noise = get_noise()  // could be 0, could be average of other noise values, could be some default
-    gaussian_process.AddPoint(new_point, new_function_value, new_function_value_noise)
-      // contrast with ComputeOptimalSetOfPointsToSample
-  }
-  where ComputeOptimalPointToSample (optionally) uses a combination of gradient descent and "dumb" search algorithms.
-
-  Thus iteratively decide and fix a *single* point to sample.  Then we use the GP to find the mean at that point and ADD
-  the (point, mean, noise) tuple to the GP.  For example, with noise = 0, we are totally trusting the GP-mean; hence the name
-  krieging *believer*.
-
-  TODO(eliu): implement krieging believer (ticket 54197)
-*/
-template <typename DomainType>
-void KriegingBelieverPlaceholder(const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters, const DomainType& domain, double const * restrict points_to_sample, int num_to_sample, double best_so_far, int max_int_steps, int max_num_threads, bool lhc_search_only, int num_lhc_samples, int num_samples_to_generate, bool * restrict found_flag, UniformRandomGenerator * uniform_generator, NormalRNG * normal_rng, double * restrict best_points_to_sample) {
-  // cannot modify the input gaussian_process, so Clone() it first and work with the clone
-  // call Clone()
-  // note that we are not sampling from the GP, just adding points; so we don't care about the state of the RNG
-}
-
-/*
-  This is not a genuine implementation of this capability insofar as we do not simultaneously optimize num_samples_to_generate
-  new points.
-
-  Instead, we do the following:
-  points_to_sample = points_to_sample_input
-  for i = 0:num_samples_to_generate-1 {
-    new_point = ComputeOptimalPointToSample(gaussian_process, points_to_sample, other_parameters)
-    points_to_sample.append(new_point)  // contrast this line with krieging believer!
+    points_to_sample.append(new_point)  // contrast this line with ComputeHeuristicSetOfPointsToSample()
+    best_points_to_sample.append(new_point)  // save output
   }
   where ComputeOptimalPointToSample (optionally) uses a combination of gradient descent and "dumb" search algorithms.
 
@@ -567,8 +551,8 @@ void KriegingBelieverPlaceholder(const GaussianProcess& gaussian_process, const 
   fixed points are being sampled.  In each iteration, we append another point to points_to_sample; points_to_sample is initially
   set to whatever is specified in the function's input (can be empty).
 
-  Note that this process is more sophisticated than krieging believer because the GP will account for the effect of the mean
-  AND variance in function values at points_to_sample.  Krieging believer simply trusts the mean and ignores variance.
+  Note that this process is more sophisticated than kriging believer because the GP will account for the effect of the mean
+  AND variance in function values at points_to_sample.  Kriging believer simply trusts the mean and ignores variance.
 
   TODO(eliu): modify EI optimizers to optimize ALL num_samples_to_generate points simultaneously (ticket 55773)
 */
@@ -878,7 +862,7 @@ void GaussianProcess::ComputeGradCholeskyVarianceOfPoints(StateType * points_to_
 
   for (int k = 0; k < num_to_sample; ++k) {
     // L_kk := L_{kk}
-    const double L_kk = chol_var[k*num_to_sample + k];
+    const double L_kk = OL_CHOL_VAR(k, k);
 
     if (likely(L_kk > 1.0e-16)) {
       // differentiates L_kk := L_{kk}

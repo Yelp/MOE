@@ -4,7 +4,7 @@ import collections
 import logging
 import numpy
 
-import optimal_learning.EPI.src.cpp.GPP as C_GP
+import build.GPP as C_GP
 from optimal_learning.EPI.src.python.models.optimal_gaussian_process import OptimalGaussianProcess
 
 
@@ -22,7 +22,52 @@ class ClosedInterval(collections.namedtuple('ClosedInterval', ['min', 'max'])):
 
 		return result
 
+class HyperparameterOptimizationParameters(object):
+
+        """Container for parameters that specify the behavior of a hyperparameter optimizer.
+
+        We use slots to enforce a "type." Typo'ing a member name will error, not add a new field.
+        This class is passed to C++, so it is convenient to be strict about its structure.
+
+        Attributes:
+        objective_type: which log likelihood measure to use as the metric of model quality
+          e.g., log marginal likelihood, leave one out cross validation log pseudo-likelihood
+        optimizer_type: which optimizer to use (e.g., dumb search, gradient dsecent, Newton)
+        num_random_samples: number of samples to try if using 'dumb' search
+        optimizer_parameters: parameters to control derviative-based optimizers, e.g.,
+          step size control, number of steps tolerance, etc.
+        NOTE: this MUST be a C++ object whose type matches objective_type. e.g., if objective_type
+        is kNewton, then this must be built via C_GP.NewtonParameters()
+
+        """
+
+        __slots__ = ('objective_type', 'optimizer_type', 'num_random_samples', 'optimizer_parameters', )
+        def __init__(self, objective_type=None, optimizer_type=None, num_random_samples=None, optimizer_parameters=None):
+                # see gpp_python.cpp for .*_type enum definitions. .*_type variables must be from those enums (NOT integers)
+                self.objective_type = objective_type
+                self.optimizer_type = optimizer_type
+                self.num_random_samples = num_random_samples # number of samples to 'dumb' search over
+                self.optimizer_parameters = optimizer_parameters # must match the optimizer_type
+
 class ExpectedImprovementOptimizationParameters(object):
+
+        """Container for parameters that specify the behavior of a expected improvement optimizer.
+
+        We use slots to enforce a "type." Typo'ing a member name will error, not add a new field.
+        This class is passed to C++, so it is convenient to be strict about its structure.
+
+        Attributes:
+        domain_type: type of domain that we are optimizing expected improvement over (e.g., tensor, simplex)
+        optimizer_type: which optimizer to use (e.g., dumb search, gradient dsecent)
+        num_random_samples: number of samples to try if using 'dumb' search or if generating more
+          than one simultaneous sample with dumb search fallback enabled
+        optimizer_parameters: parameters to control derviative-based optimizers, e.g.,
+          step size control, number of steps tolerance, etc.
+        NOTE: this MUST be a C++ object whose type matches objective_type. e.g., if objective_type
+        is kGradientDescent, then this must be built via C_GP.GradientDescentParameters object
+
+        """
+
 	__slots__ = ('domain_type', 'optimizer_type', 'num_random_samples', 'optimizer_parameters', )
 	def __init__(self, domain_type=None, optimizer_type=None, num_random_samples=None, optimizer_parameters=None):
 		# see gpp_python.cpp for .*_type enum definitions. .*_type variables must be from those enums (NOT integers)
@@ -32,8 +77,6 @@ class ExpectedImprovementOptimizationParameters(object):
 		self.optimizer_parameters = optimizer_parameters # must match the optimizer_type
 		# NOTE: need both num_random_samples AND optimizer_parameters if generating > 1 sample
 		# using gradient descent optimization
-		# NOTE: this is a temporary class. when OptimalGaussianProcessLinkedCpp.get_multistart_best() is deleted,
-		# this will not be necessary
 
 class OptimalGaussianProcessLinkedCpp(OptimalGaussianProcess):
 	"""Overrides methods in OptimalGaussianProcess with calls to C++ code in src/cpp/GPP_python.cpp via boost
@@ -85,7 +128,8 @@ class OptimalGaussianProcessLinkedCpp(OptimalGaussianProcess):
 			length = cop_length
 		return self._cppify(length)
 
-	def _build_newton_parameters(self, num_multistarts, max_num_steps, gamma, time_factor, max_relative_change, tolerance):
+	@staticmethod
+	def _build_newton_parameters(num_multistarts, max_num_steps, gamma, time_factor, max_relative_change, tolerance):
 		"""Calls NewtonParameters' C++ constructor; this object specifies multistarted Newton behavior
 		"""
 		# details on gamma, pre-mult:
@@ -100,7 +144,8 @@ class OptimalGaussianProcessLinkedCpp(OptimalGaussianProcess):
 			)
 		return newton_data
 
-	def _build_gradient_descent_parameters(self, num_multistarts, max_num_steps, max_num_restarts, gamma, pre_mult, max_relative_change, tolerance):
+	@staticmethod
+	def _build_gradient_descent_parameters(num_multistarts, max_num_steps, max_num_restarts, gamma, pre_mult, max_relative_change, tolerance):
 		"""Calls GradientDescentParameters' C++ constructor; this object specifies GD behavior
 		"""
 		# details on gamma, pre-mult:
@@ -133,7 +178,7 @@ class OptimalGaussianProcessLinkedCpp(OptimalGaussianProcess):
 		return gaussian_process
 
 	def multistart_expected_improvement_optimization(self, ei_optimization_parameters, num_samples_to_generate, domain=None, points_being_sampled=None, mc_iterations=1000, status=None):
-		"""Calls into multistart_expected_improvement_optimization_wrapper in EPI/src/cpp/GPP_python.cpp
+		"""Calls into multistart_expected_improvement_optimization_wrapper in EPI/src/cpp/GPP_python.cpp (solving q,p-EI)
 		"""
 
 		gaussian_process = self._build_cpp_gaussian_process()
@@ -149,20 +194,75 @@ class OptimalGaussianProcessLinkedCpp(OptimalGaussianProcess):
 
 		best_points_to_sample = C_GP.multistart_expected_improvement_optimization(
 			ei_optimization_parameters, # ExpectedImprovementOptimizationParameters object (see MOE_driver.py)
-			gaussian_process, # GaussianProcess object
+			gaussian_process, # C++ GaussianProcess object (e.g., from self._build_cpp_gaussian_process())
 			self._cppify(self.domain), # [lower, upper] bound pairs for each dimension
 			self._cppify(points_being_sampled), # points to sample
 			len(points_being_sampled), # number of points to sample
 			num_samples_to_generate, # how many simultaneous experiments you would like to run
 			self.best_so_far, # best known value of objective so far
 			mc_iterations, # number of MC integration points in EI
-			self.max_num_threads, # max allowed number of threads for this computation
+			self.max_num_threads,
 			self.randomness, # C++ RandomnessSourceContainer that holds enough randomness sources for multithreading
 			status,
 		)
 
 		# reform output to be a list of dim-dimensional points, dim = len(self.domain)
 		return self._uncppify(best_points_to_sample, (num_samples_to_generate, len(self.domain)))
+
+	def _heuristic_expected_improvement_optimization(self, ei_optimization_parameters, num_samples_to_generate, estimation_policy, domain=None, status=None):
+		"""
+		Calls into heuristic_expected_improvement_optimization_wrapper in EPI/src/cpp/GPP_python.cpp
+
+		Requires estimation_policy, a subclass of ObjectiveEstimationPolicyInterface (C++ pure abstract); examples include
+		ConstantLiarEstimationPolicy and KrigingBelieverEstimationPolicy.
+		"""
+
+		gaussian_process = self._build_cpp_gaussian_process()
+
+		if domain is None:
+			domain = self.domain
+
+		if status is None:
+			status = {}
+
+		best_points_to_sample = C_GP.heuristic_expected_improvement_optimization(
+			ei_optimization_parameters, # ExpectedImprovementOptimizationParameters object (see MOE_driver.py)
+			gaussian_process, # C++ GaussianProcess object (e.g., from self._build_cpp_gaussian_process())
+			self._cppify(self.domain), # [lower, upper] bound pairs for each dimension
+			estimation_policy, # estimation policy to use for guessing objective function values (e.g., ConstantLiar, KrigingBeliever)
+			num_samples_to_generate, # how many simultaneous experiments you would like to run
+			self.best_so_far, # best known value of objective so far
+			self.max_num_threads,
+			self.randomness, # C++ RandomnessSourceContainer that holds enough randomness sources for multithreading
+			status,
+		)
+
+		# reform output to be a list of dim-dimensional points, dim = len(self.domain)
+		return self._uncppify(best_points_to_sample, (num_samples_to_generate, len(self.domain)))
+
+	def constant_liar_expected_improvement_optimization(self, ei_optimization_parameters, num_samples_to_generate, lie_value, lie_noise_variance=0.0, domain=None, status=None):
+		"""
+		Calls into heuristic_expected_improvement_optimization_wrapper in EPI/src/cpp/GPP_python.cpp (solving q,0-EI)
+		with the ConstantLiarEstimationPolicy.
+
+		double lie_value: the "constant lie" that this estimator should return
+		double lie_noise_variance: the noise_variance to associate to the lie_value (MUST be >= 0.0)
+		"""
+
+		estimation_policy = C_GP.ConstantLiarEstimationPolicy(lie_value, lie_noise_variance)
+		return self._heuristic_expected_improvement_optimization(ei_optimization_parameters, num_samples_to_generate, estimation_policy, domain, status)
+
+	def kriging_believer_expected_improvement_optimization(self, ei_optimization_parameters, num_samples_to_generate, std_deviation_coef=0.0, kriging_noise_variance=0.0, domain=None, status=None):
+		"""
+		Calls into heuristic_expected_improvement_optimization_wrapper in EPI/src/cpp/GPP_python.cpp (solving q,0-EI)
+		with the KrigingBelieverEstimationPolicy.
+
+		double std_deviation_coef: the relative amount of bias (in units of GP std deviation) to introduce into the GP mean
+		double kriging_noise_variance: the noise_variance to associate to each function value estimate (MUST be >= 0.0)
+		"""
+
+		estimation_policy = C_GP.KrigingBelieverEstimationPolicy(std_deviation_coef, kriging_noise_variance)
+		return self._heuristic_expected_improvement_optimization(ei_optimization_parameters, num_samples_to_generate, estimation_policy, domain, status)
 
 	# TODO(eliu): this call is DEPRECATED; use multistart_expected_improvement_optimization instead!
 	# not deleting yet in case this screws up inheritance (since this overrides superclass member functions)
@@ -204,14 +304,14 @@ class OptimalGaussianProcessLinkedCpp(OptimalGaussianProcess):
 			status = {}
 
 		return C_GP.evaluate_EI_at_point_list(
-				gaussian_process, # GaussianProcess object
+				gaussian_process, # C++ GaussianProcess object (e.g., from self._build_cpp_gaussian_process())
 				self._cppify(points_to_evaluate), # points at which to evaluate EI
 				self._cppify(points_being_sampled), # points to sample
 				len(points_to_evaluate), # number of points to evaluate
 				len(points_being_sampled), # number of points to sample
 				self.best_so_far, # best known value of objective so far
 				mc_iterations, # number of MC integration points in EI
-				self.max_num_threads, # max allowed number of threads for this computation
+				self.max_num_threads,
 				self.randomness, # C++ RandomnessSourceContainer that holds enough randomness sources for multithreading
 				status,
 				)
@@ -226,7 +326,7 @@ class OptimalGaussianProcessLinkedCpp(OptimalGaussianProcess):
 		gaussian_process = self._build_cpp_gaussian_process()
 
 		grad_mu = C_GP.get_grad_mean(
-				gaussian_process, # GaussianProcess object
+				gaussian_process, # C++ GaussianProcess object (e.g., from self._build_cpp_gaussian_process())
 				self._cppify(points_to_sample), # points to sample
 				num_points_to_sample, # number of points to sample
 				)
@@ -242,7 +342,7 @@ class OptimalGaussianProcessLinkedCpp(OptimalGaussianProcess):
 		gaussian_process = self._build_cpp_gaussian_process()
 
 		cholesky_var = C_GP.get_chol_var(
-				gaussian_process, # GaussianProcess object
+				gaussian_process, # C++ GaussianProcess object (e.g., from self._build_cpp_gaussian_process())
 				self._cppify(points_to_sample), # points to sample
 				num_points_to_sample, # number of points to sample
 				)
@@ -250,7 +350,7 @@ class OptimalGaussianProcessLinkedCpp(OptimalGaussianProcess):
 		python_cholesky_var = self._uncppify(cholesky_var, (num_points_to_sample, num_points_to_sample))
 
 		grad_cholesky_var = C_GP.get_grad_var(
-				gaussian_process, # GaussianProcess object
+				gaussian_process, # C++ GaussianProcess object (e.g., from self._build_cpp_gaussian_process())
 				self._cppify(points_to_sample), # points to sample
 				num_points_to_sample, # number of points to sample
 				var_of_grad, # dimension to differentiate in
@@ -270,7 +370,7 @@ class OptimalGaussianProcessLinkedCpp(OptimalGaussianProcess):
 		gaussian_process = self._build_cpp_gaussian_process()
 
 		return C_GP.compute_expected_improvement(
-			gaussian_process, # GaussianProcess object
+			gaussian_process, # C++ GaussianProcess object (e.g., from self._build_cpp_gaussian_process())
 			self._cppify(points_to_sample), # points to sample
 			len(points_to_sample), # number of points to sample
 			mc_iterations,
@@ -293,7 +393,7 @@ class OptimalGaussianProcessLinkedCpp(OptimalGaussianProcess):
 		num_points_to_sample = len(points_to_sample_temp)
 
 		grad_EI = C_GP.compute_grad_expected_improvement(
-			gaussian_process, # GaussianProcess object
+			gaussian_process, # C++ GaussianProcess object (e.g., from self._build_cpp_gaussian_process())
 			self._cppify([points_to_sample_temp]), # points to sample
 			num_points_to_sample, # number of points to sample
 			mc_iterations,
@@ -350,14 +450,14 @@ class OptimalGaussianProcessLinkedCpp(OptimalGaussianProcess):
 
 		# hit the cpp with a get_mean request
 		mu = C_GP.get_mean(
-				gaussian_process, # GaussianProcess object
+				gaussian_process, # C++ GaussianProcess object (e.g., from self._build_cpp_gaussian_process())
 				self._cppify(points_to_sample), # points to sample
 				num_points_to_sample, # number of points to sample
 				)
 
 		# hit the cpp with a get_var request
 		var = C_GP.get_var(
-				gaussian_process, # GaussianProcess object
+				gaussian_process, # C++ GaussianProcess object (e.g., from self._build_cpp_gaussian_process())
 				self._cppify(points_to_sample), # points to sample
 				num_points_to_sample, # number of points to sample
 				)
@@ -441,7 +541,7 @@ class OptimalGaussianProcessLinkedCpp(OptimalGaussianProcess):
 				len(self.points_sampled), # number of points already sampled
 				self._cppify_hyperparameters(), # hyperparameters, e.g., [signal variance, [length scales]]; see _cppify_hyperparameter docs, C++ python interface docs
 				self._cppify(self.sample_variance_of_samples), # noise variance, one value per sampled point
-				self.max_num_threads, # max allowed number of threads for this computation
+				self.max_num_threads,
 				self.randomness, # C++ RandomnessSourceContainer that holds a UniformRandomGenerator object
 				status, # status report on optimizer success, etc.
 				)
@@ -459,5 +559,5 @@ class OptimalGaussianProcessLinkedCpp(OptimalGaussianProcess):
 				self._cppify_hyperparameters(), # hyperparameters, e.g., [signal variance, [length scales]]; see _cppify_hyperparameter docs, C++ python interface docs
 				self._cppify(self.sample_variance_of_samples), # noise variance, one value per sampled point
 				len(hyperparameters_to_evaluate), # number of hyperparameter points to evaluate
-				self.max_num_threads, # max allowed number of threads for this computation
+				self.max_num_threads,
 				)

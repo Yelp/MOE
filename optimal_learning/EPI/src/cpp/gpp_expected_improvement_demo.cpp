@@ -40,6 +40,7 @@
 #include "gpp_math.hpp"
 #include "gpp_optimization_parameters.hpp"
 #include "gpp_random.hpp"
+#include "gpp_test_utils.hpp"
 
 using namespace optimal_learning;  // NOLINT, i'm lazy in this file which has no external linkage anyway
 
@@ -116,7 +117,7 @@ int main() {
   hyperparameters_original[3] = 0.2;  // length scale, third dimension
   CovarianceClass covariance_original(dim, hyperparameters_original[0], hyperparameters_original.data() + 1);
   // CovarianceClass provides SetHyperparameters, GetHyperparameters to read/modify
-  // hypers later on
+  // hyperparameters later on
 
   // now fill data
 #if OL_USER_INPUTS == 1
@@ -140,13 +141,8 @@ int main() {
 
   // build an empty GP: since num_sampled (last arg) is 0, none of the data arrays will be used here
   GaussianProcess gp_generator(covariance_original, points_sampled.data(), points_sampled_value.data(), noise_variance.data(), dim, 0);
-
-  for (int j = 0; j < num_sampled; ++j) {
-    // draw function value from the GP
-    points_sampled_value.data()[j] = gp_generator.SamplePointFromGP(points_sampled.data() + dim*j, noise_variance.data()[j]);
-    // add function value back into the GP
-    gp_generator.AddPointToGP(points_sampled.data() + dim*j, points_sampled_value.data()[j], noise_variance.data()[j]);
-  }
+  // fill the GP with randomly generated data
+  FillRandomGaussianProcess(points_sampled.data(), noise_variance.data(), dim, num_sampled, points_sampled_value.data(), &gp_generator);
 
   // set points_to_sample
   // doing this arbitrarily here, but you could imagine running EI opt once with 0 points_to_sample,
@@ -167,13 +163,9 @@ int main() {
   // in the same range the actual ones
   // feel free to experiment and see what happens when the guessed hyperparameters are way wrong
   std::vector<double> hyperparameters_perturbed(covariance_original.GetNumberOfHyperparameters());
-
   boost::uniform_real<double> uniform_double_for_wrong_hyperparameter(0.01, 5.0);
-  for (auto& hyperparameter_wrong : hyperparameters_perturbed) {
-    hyperparameter_wrong = uniform_double_for_wrong_hyperparameter(uniform_generator.engine);
-  }
-
-  CovarianceClass covariance_perturbed(dim, hyperparameters_perturbed[0], hyperparameters_perturbed.data() + 1);
+  CovarianceClass covariance_perturbed(dim, 1.0, 1.0);
+  FillRandomCovarianceHyperparameters(uniform_double_for_wrong_hyperparameter, &uniform_generator, &hyperparameters_perturbed, &covariance_perturbed);
 
   // Note: with random data generation, technically we already have the GP ready since
   // we have been progressively adding new points to it.  Still we will construct a new GP
