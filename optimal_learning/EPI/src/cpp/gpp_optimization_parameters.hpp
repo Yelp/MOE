@@ -15,6 +15,17 @@
 
 namespace optimal_learning {
 
+/*
+  Enum for the various optimizer types. Convenient for specifying which optimizer to use
+  in testing and also used by the Python interface to specify the optimizer (e.g., for EI
+  and hyperparameter optimization).
+*/
+enum class OptimizerTypes {
+  kNull = 0,  // NullOptimizer<>, used for evaluating objective at points
+  kGradientDescent = 1,  // GradientDescentOptimizer<>
+  kNewton = 2,  // NewtonOptimizer<>
+};
+
 // TODO(eliu): (#58807) do one of two things:
 // 1) ADD num_multistarts to NullParameters (since we multistart the "null" optimizer!)
 // 2) REMOVE num_multistarts from ALL OptimizerParameter structs. num_multistarts doesn't configure the
@@ -24,27 +35,30 @@ namespace optimal_learning {
 /*
   Empty container for optimizers that do not require any parameters (e.g., the null optimizer).
 */
-struct NullParameters final {
+struct NullParameters {
 };
 
 /*
   Container to hold parameters that specify the behavior of Gradient Descent
 */
-struct GradientDescentParameters final {
+struct GradientDescentParameters {
+  // Users must set parameters explicitly.
+  GradientDescentParameters() = delete;
+
   /*
     Construct a GradientDescentParameters object.  Default, copy, and assignment constructor are disallowed.
 
     INPUTS:
     See member declarations below for a description of each parameter.
   */
-  GradientDescentParameters(int num_multistarts_in, int max_num_steps_in, int max_num_restarts_in, double gamma_in, double pre_mult_in, double max_relative_change_in, double tolerance_in) noexcept :
-      num_multistarts(num_multistarts_in),
-      max_num_steps(max_num_steps_in),
-      max_num_restarts(max_num_restarts_in),
-      gamma(gamma_in),
-      pre_mult(pre_mult_in),
-      max_relative_change(max_relative_change_in),
-      tolerance(tolerance_in) {
+  GradientDescentParameters(int num_multistarts_in, int max_num_steps_in, int max_num_restarts_in, double gamma_in, double pre_mult_in, double max_relative_change_in, double tolerance_in)
+      : num_multistarts(num_multistarts_in),
+        max_num_steps(max_num_steps_in),
+        max_num_restarts(max_num_restarts_in),
+        gamma(gamma_in),
+        pre_mult(pre_mult_in),
+        max_relative_change(max_relative_change_in),
+        tolerance(tolerance_in) {
   }
 
   GradientDescentParameters(GradientDescentParameters&& OL_UNUSED(other)) = default;
@@ -73,14 +87,15 @@ struct GradientDescentParameters final {
 
   // Large tolerances run faster but may lead to high errors or false convergence (e.g., if the tolerance is 1.0e-3 and the learning
   // rate control forces steps to fall below 1.0e-3 quickly, then GD will quit "successfully" without genuinely converging.)
-
-  OL_DISALLOW_DEFAULT_AND_COPY_AND_ASSIGN(GradientDescentParameters);
 };
 
 /*
   Container to hold parameters that specify the behavior of Newton
 */
-struct NewtonParameters final {
+struct NewtonParameters {
+  // Users must set parameters explicitly.
+  NewtonParameters() = delete;
+
   /*
     Construct a NewtonParameters object.  Default, copy, and assignment constructor are disallowed.
 
@@ -92,13 +107,13 @@ struct NewtonParameters final {
     max_relative_change: max relative change allowed per iteration of newton (UNUSED)
     tolerance: when the magnitude of the gradient falls below this value, stop
   */
-  NewtonParameters(int num_multistarts_in, int max_num_steps_in, double gamma_in, double time_factor_in, double max_relative_change_in, double tolerance_in) noexcept :
-      num_multistarts(num_multistarts_in),
-      max_num_steps(max_num_steps_in),
-      gamma(gamma_in),
-      time_factor(time_factor_in),
-      max_relative_change(max_relative_change_in),
-      tolerance(tolerance_in) {
+  NewtonParameters(int num_multistarts_in, int max_num_steps_in, double gamma_in, double time_factor_in, double max_relative_change_in, double tolerance_in)
+      : num_multistarts(num_multistarts_in),
+        max_num_steps(max_num_steps_in),
+        gamma(gamma_in),
+        time_factor(time_factor_in),
+        max_relative_change(max_relative_change_in),
+        tolerance(tolerance_in) {
   }
 
   NewtonParameters(NewtonParameters&& OL_UNUSED(other)) = default;
@@ -126,8 +141,6 @@ struct NewtonParameters final {
   // tolerance control
   double max_relative_change;  // max change allowed per update (as a relative fraction of current distance to wall)
   double tolerance;  // when the magnitude of the gradient falls below this value, stop
-
-  OL_DISALLOW_DEFAULT_AND_COPY_AND_ASSIGN(NewtonParameters);
 };
 
 }  // end namespace optimal_learning

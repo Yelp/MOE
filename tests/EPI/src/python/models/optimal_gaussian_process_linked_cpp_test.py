@@ -5,7 +5,7 @@ import numpy
 import random
 
 from tests.EPI.src.python.gaussian_process_test_case import GaussianProcessTestCase
-import optimal_learning.EPI.src.cpp.GPP as C_GP
+import optimal_learning.EPI.src.cpp.build.GPP as C_GP
 import optimal_learning.EPI.src.python.lib.math
 from optimal_learning.EPI.src.python.models.sample_point import SamplePoint
 
