@@ -144,9 +144,14 @@ struct UniformRandomGenerator final {
   */
   void PrintState(std::ostream * out_stream) const OL_NONNULL_POINTERS;
 
-  EngineType engine;
+  bool operator==(const UniformRandomGenerator& other) const {
+    return (engine == other.engine) && (last_seed_ == other.last_seed_);
+  }
+  bool operator!=(const UniformRandomGenerator& other) const {
+    return !(*this == other);
+  }
 
-  OL_DISALLOW_COPY_AND_ASSIGN(UniformRandomGenerator);
+  EngineType engine;
 
  private:
   EngineType::result_type last_seed_;
@@ -268,8 +273,6 @@ struct NormalRNG final {
   UniformGeneratorType uniform_generator;
   EngineType& engine;
 
-  OL_DISALLOW_COPY_AND_ASSIGN(NormalRNG);
-
  private:
   boost::normal_distribution<double> normal_distribution_;
   boost::variate_generator<EngineType&, boost::normal_distribution<double> > normal_random_variable_;
@@ -324,7 +327,7 @@ OL_NONNULL_POINTERS void ComputeUniformPointsInUnitSimplex(int dim, int num_samp
   dim: the number of spatial dimensions
   uniform_generator[1]: a UniformRandomGenerator object providing the random engine for uniform random numbers
   OUTPUTS:
-  uniform_generator[1]:UniformRandomGenerator object will have its state changed due to random draws
+  uniform_generator[1]: UniformRandomGenerator object will have its state changed due to random draws
   random_point[dim]: array containing a random point inside the domain
 */
 inline OL_NONNULL_POINTERS void ComputeRandomPointInDomain(ClosedInterval const * restrict domain, int dim, UniformRandomGenerator * uniform_generator, double * restrict random_point) noexcept {

@@ -279,7 +279,7 @@ OL_WARN_UNUSED_RESULT int LimitUpdateTest(const DomainTestFixture& domain_test_c
   num_tests = domain.GenerateUniformPointsInDomain(num_tests, &uniform_generator, random_points.data());
 
   const int max_num_boundaries = domain.GetMaxNumberOfBoundaryPlanes();
-  std::vector<double> boundary_planes((kDim + 1) * max_num_boundaries);
+  std::vector<Plane> boundary_planes(max_num_boundaries, Plane(kDim));
   domain.GetBoundaryPlanes(boundary_planes.data());
 
   // test LimitUpdate when dealing with exiting boundaries
@@ -323,7 +323,7 @@ OL_WARN_UNUSED_RESULT int LimitUpdateTest(const DomainTestFixture& domain_test_c
     // build a fake update by traveling too far in the (general) direction of each face
     for (int j = 0; j < max_num_boundaries; ++j) {
       // normal vector is just the first dim entries of each boundary plane
-      std::copy(boundary_planes.begin() + (kDim + 1)*j, boundary_planes.begin() + (kDim + 1)*j + kDim, normal_vector_with_noise.begin());
+      std::copy(boundary_planes[j].unit_normal.begin(), boundary_planes[j].unit_normal.end(), normal_vector_with_noise.begin());
       // add a little noise (just so we are doing more "interesting" cases than say cartesian unit vectors)
       for (int k = 0; k < kDim; ++k) {
         normal_vector_with_noise[k] += uniform_double_normal_vector_noise(uniform_generator.engine);
@@ -334,7 +334,7 @@ OL_WARN_UNUSED_RESULT int LimitUpdateTest(const DomainTestFixture& domain_test_c
         normal_vector_with_noise[k] /= norm;
       }
 
-      double distance_to_boundary = DistanceToPlaneAlongVector(current_point, boundary_planes.data() + (kDim+1)*j, normal_vector_with_noise.data(), kDim);
+      double distance_to_boundary = boundary_planes[j].DistanceToPlaneAlongVector(current_point, normal_vector_with_noise.data());
 
       boost::uniform_real<double> uniform_double_long_dist(1.001*distance_to_boundary, 4.0*distance_to_boundary);
       double long_dist = uniform_double_long_dist(uniform_generator.engine);
@@ -443,7 +443,7 @@ OL_WARN_UNUSED_RESULT int InvalidDomainTests(DomainTypes domain_type) {
 
   // all intervals invalid
   std::vector<ClosedInterval> domain_bounds_invalid(domain_bounds_valid);
-  std::for_each(domain_bounds_invalid.begin(), domain_bounds_invalid.end(), [](ClosedInterval& interval) { std::swap(interval.min, interval.max); });
+  std::for_each(domain_bounds_invalid.begin(), domain_bounds_invalid.end(), [](ClosedInterval& interval) { std::swap(interval.min, interval.max); });  // NOLINT(runtime/references)
 
   // one interval invalid
   std::vector<ClosedInterval> domain_bounds_invalid2(domain_bounds_valid);

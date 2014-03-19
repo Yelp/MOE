@@ -1,4 +1,4 @@
-SUBDIRS=optimal_learning/EPI/src/cpp
+SUBDIRS=build
 PYTHON=PYTHONPATH="$(shell pwd)" python
 TESTIFY=YELPCODE="$(shell pwd)" testify
 

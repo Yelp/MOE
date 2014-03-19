@@ -34,7 +34,6 @@
 
 namespace optimal_learning {
 
-// forward declaration for a dummy state object for test classes that don't need state
 struct PolynomialState;
 
 /*
@@ -96,9 +95,9 @@ class PolynomialEvaluator {
 struct PolynomialState final {
   using EvaluatorType = PolynomialEvaluator;
 
-  PolynomialState(const EvaluatorType& quadratic_eval, double const * restrict current_point_in) :
-      dim(quadratic_eval.dim()),
-      current_point(current_point_in, current_point_in + dim) {
+  PolynomialState(const EvaluatorType& quadratic_eval, double const * restrict current_point_in)
+      : dim(quadratic_eval.dim()),
+        current_point(current_point_in, current_point_in + dim) {
   }
 
   int GetProblemSize() const noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {

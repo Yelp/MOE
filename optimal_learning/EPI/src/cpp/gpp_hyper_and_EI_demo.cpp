@@ -43,6 +43,7 @@
 #include "gpp_model_selection_and_hyperparameter_optimization.hpp"
 #include "gpp_optimization_parameters.hpp"
 #include "gpp_random.hpp"
+#include "gpp_test_utils.hpp"
 
 using namespace optimal_learning;  // NOLINT, i'm lazy in this file which has no external linkage anyway
 int main() {
@@ -86,11 +87,8 @@ int main() {
   std::vector<double> hyperparameters_original(1 + dim);
   // generate randomly
   boost::uniform_real<double> uniform_double_for_hyperparameter(0.5, 1.5);
-  for (auto& hyperparameter : hyperparameters_original) {
-    hyperparameter = uniform_double_for_hyperparameter(uniform_generator.engine);
-  }
-
-  CovarianceClass covariance_original(dim, hyperparameters_original[0], hyperparameters_original.data() + 1);
+  CovarianceClass covariance_original(dim, 1.0, 1.0);
+  FillRandomCovarianceHyperparameters(uniform_double_for_hyperparameter, &uniform_generator, &hyperparameters_original, &covariance_original);
 
   // Generate data that will be used to build the GP
   // set noise
@@ -101,27 +99,18 @@ int main() {
 
   // build an empty GP: since num_sampled (last arg) is 0, none of the data arrays will be used here
   GaussianProcess gp_generator(covariance_original, points_sampled.data(), points_sampled_value.data(), noise_variance.data(), dim, 0);
-
-  for (int j = 0; j < num_sampled; ++j) {
-    // draw function value from the GP
-    points_sampled_value.data()[j] = gp_generator.SamplePointFromGP(points_sampled.data() + dim*j, noise_variance.data()[j]);
-    // add function value back into the GP
-    gp_generator.AddPointToGP(points_sampled.data() + dim*j, points_sampled_value.data()[j], noise_variance.data()[j]);
-  }
+  // fill the GP with randomly generated data
+  FillRandomGaussianProcess(points_sampled.data(), noise_variance.data(), dim, num_sampled, points_sampled_value.data(), &gp_generator);
 
   // simulate not knowing the hyperparameters by choosing a new set randomly (start hyperparameter opt from here)
   std::vector<double> hyperparameters_perturbed(covariance_original.GetNumberOfHyperparameters());
-
   // choose from a small-ish range; for the demo we want hyperparameter opt to converge fairly quickly/robustly
   boost::uniform_real<double> uniform_double_for_perturbed_hyperparameter(4.0, 8.0);
-  for (auto& hyperparameter_wrong : hyperparameters_perturbed) {
-    hyperparameter_wrong = uniform_double_for_perturbed_hyperparameter(uniform_generator.engine);
-  }
+  CovarianceClass covariance_perturbed(dim, 1.0, 1.0);
+  FillRandomCovarianceHyperparameters(uniform_double_for_perturbed_hyperparameter, &uniform_generator, &hyperparameters_perturbed, &covariance_perturbed);
 
   std::vector<ClosedInterval> hyperparameter_domain_bounds(covariance_original.GetNumberOfHyperparameters(), {1.0e-10, 1.0e10});
   HyperparameterDomainType hyperparameter_domain(hyperparameter_domain_bounds.data(), covariance_original.GetNumberOfHyperparameters());
-
-  CovarianceClass covariance_perturbed(dim, hyperparameters_perturbed[0], hyperparameters_perturbed.data() + 1);
 
   // Log Likelihood eval
   using LogLikelihoodEvaluator = LogMarginalLikelihoodEvaluator;
@@ -218,11 +207,8 @@ int main() {
     // choose some wrong hyperparameters
     std::vector<double> hyperparameters_wrong(covariance_original.GetNumberOfHyperparameters());
     boost::uniform_real<double> uniform_double_for_wrong_hyperparameter(0.1, 0.5);
-    for (auto& hyperparameter_wrong : hyperparameters_wrong) {
-      hyperparameter_wrong = uniform_double_for_wrong_hyperparameter(uniform_generator.engine);
-    }
-
-    CovarianceClass covariance_wrong(dim, hyperparameters_wrong[0], hyperparameters_wrong.data() + 1);
+    CovarianceClass covariance_wrong(dim, 1.0, 1.0);
+    FillRandomCovarianceHyperparameters(uniform_double_for_wrong_hyperparameter, &uniform_generator, &hyperparameters_wrong, &covariance_wrong);
     GaussianProcess gp_wrong_hyper(covariance_wrong, points_sampled.data(), points_sampled_value.data(), noise_variance.data(), dim, num_sampled);
 
     bool found_flag = false;

@@ -56,11 +56,11 @@ class PingLogLikelihood final : public PingableMatrixInputVectorOutputInterface 
  public:
   using CovarianceType = CovarianceClass;
 
-  PingLogLikelihood(const CovarianceClass& covariance, double const * restrict points_sampled, double const * restrict points_sampled_value, double const * restrict noise_variance, int dim, int num_sampled) OL_NONNULL_POINTERS :
-      num_hyperparameters_(covariance.GetNumberOfHyperparameters()),
-      gradients_already_computed_(false),
-      log_likelihood_eval_(points_sampled, points_sampled_value, noise_variance, dim, num_sampled),
-      grad_log_marginal_likelihood_(num_hyperparameters_) {
+  PingLogLikelihood(const CovarianceClass& covariance, double const * restrict points_sampled, double const * restrict points_sampled_value, double const * restrict noise_variance, int dim, int num_sampled) OL_NONNULL_POINTERS
+      : num_hyperparameters_(covariance.GetNumberOfHyperparameters()),
+        gradients_already_computed_(false),
+        log_likelihood_eval_(points_sampled, points_sampled_value, noise_variance, dim, num_sampled),
+        grad_log_marginal_likelihood_(num_hyperparameters_) {
   }
 
   virtual void GetInputSizes(int * num_rows, int * num_cols) const noexcept override OL_NONNULL_POINTERS {
@@ -122,11 +122,11 @@ class PingHessianLogLikelihood final : public PingableMatrixInputVectorOutputInt
  public:
   using CovarianceType = CovarianceClass;
 
-  PingHessianLogLikelihood(const CovarianceClass& covariance, double const * restrict points_sampled, double const * restrict points_sampled_value, double const * restrict noise_variance, int dim, int num_sampled) OL_NONNULL_POINTERS :
-      num_hyperparameters_(covariance.GetNumberOfHyperparameters()),
-      gradients_already_computed_(false),
-      log_likelihood_eval_(points_sampled, points_sampled_value, noise_variance, dim, num_sampled),
-      hessian_log_marginal_likelihood_(Square(num_hyperparameters_)) {
+  PingHessianLogLikelihood(const CovarianceClass& covariance, double const * restrict points_sampled, double const * restrict points_sampled_value, double const * restrict noise_variance, int dim, int num_sampled) OL_NONNULL_POINTERS
+      : num_hyperparameters_(covariance.GetNumberOfHyperparameters()),
+        gradients_already_computed_(false),
+        log_likelihood_eval_(points_sampled, points_sampled_value, noise_variance, dim, num_sampled),
+        hessian_log_marginal_likelihood_(Square(num_hyperparameters_)) {
   }
 
   virtual void GetInputSizes(int * num_rows, int * num_cols) const noexcept override OL_NONNULL_POINTERS {
@@ -313,22 +313,17 @@ OL_WARN_UNUSED_RESULT int HyperparameterLikelihoodOptimizationTestCore(LogLikeli
   using DomainType = TensorProductDomain;
   using HyperparameterDomainType = TensorProductDomain;
   const int dim = 2;
-  const int num_points_to_draw = 100;
+  const int num_sampled = 40;
 
   double initial_likelihood;
   double final_likelihood;
-  std::vector<ClosedInterval> domain_bounds = {
-    {-1.21871, 2.189712},
-    {0.31411, 3.3818}};
-  DomainType domain(domain_bounds.data(), dim);
 
   // gradient descent parameters
   const double gamma = 0.5;
-  double pre_mult = 0.5;
+  const double pre_mult = 0.5;
   const double max_relative_change = 0.02;
   double tolerance = 1.0e-10;
   if (objective_mode == LogLikelihoodTypes::kLeaveOneOutLogLikelihood) {
-    pre_mult = 1.0;
     tolerance = 1.0e-7;  // less accurate b/c current implementation uses matrix inverse for speed
   }
   const int max_gradient_descent_steps = 600;
@@ -338,56 +333,35 @@ OL_WARN_UNUSED_RESULT int HyperparameterLikelihoodOptimizationTestCore(LogLikeli
   int total_errors = 0;
   int current_errors = 0;
 
-  std::vector<double> points_sampled(num_points_to_draw*dim);
-  std::vector<double> points_sampled_value(num_points_to_draw);
-  std::vector<double> noise_variance(num_points_to_draw, 0.1);
+  CovarianceClass covariance_wrong(dim, 1.0, 1.0);
+  int num_hyperparameters = covariance_wrong.GetNumberOfHyperparameters();
 
-  CovarianceClass covariance(dim, 1.0, 1.0);
-  int num_hyperparameters = covariance.GetNumberOfHyperparameters();
-
-  std::vector<double> hyperparameters(num_hyperparameters);  // hyperparameters used to generate data
   std::vector<double> hyperparameters_optimized(num_hyperparameters);  // optimized hyperparameters
   std::vector<double> hyperparameters_temp(num_hyperparameters);  // temp hyperparameters
   std::vector<double> hyperparameters_wrong(num_hyperparameters);  // wrong hyperparameters to start gradient descent
 
-  // re-seed randoms
-  UniformRandomGenerator uniform_generator(356423);
-  boost::uniform_real<double> uniform_double(1.0, 2.5);
+  // seed randoms
+  UniformRandomGenerator uniform_generator(3141);
+  boost::uniform_real<double> uniform_double_hyperparameter(1.0, 2.5);
+  boost::uniform_real<double> uniform_double_lower_bound(-2.0, 0.5);
+  boost::uniform_real<double> uniform_double_upper_bound(1.5, 2.7);
 
-  for (auto& hyperparameter : hyperparameters) {
-    hyperparameter = uniform_double(uniform_generator.engine);
-  }
+  ClosedInterval wrong_hyperparameter_range;
   if (objective_mode == LogLikelihoodTypes::kLogMarginalLikelihood) {
-    boost::uniform_real<double> uniform_wrong_hyperparameters(2.5, 5.0);
-    for (auto& hyperparameter_wrong : hyperparameters_wrong) {
-      hyperparameter_wrong = uniform_wrong_hyperparameters(uniform_generator.engine);
-    }
+    wrong_hyperparameter_range = {2.5, 5.0};
   } else {
-    boost::uniform_real<double> uniform_wrong_hyperparameters(0.3, 3.0);
-    for (auto& hyperparameter_wrong : hyperparameters_wrong) {
-      hyperparameter_wrong = uniform_wrong_hyperparameters(uniform_generator.engine);
-    }
+    wrong_hyperparameter_range = {0.3, 3.0};
   }
-
-  covariance.SetHyperparameters(hyperparameters.data());
-  CovarianceClass covariance_wrong(dim, hyperparameters_wrong[0], hyperparameters_wrong.data() + 1);
-#ifdef OL_VERBOSE_PRINT
-  PrintMatrix(hyperparameters.data(), 1, hyperparameters.size());
-#endif
+  boost::uniform_real<double> uniform_wrong_hyperparameters(wrong_hyperparameter_range.min, wrong_hyperparameter_range.max);
+  FillRandomCovarianceHyperparameters(uniform_wrong_hyperparameters, &uniform_generator, &hyperparameters_wrong, &covariance_wrong);
 
   std::vector<ClosedInterval> hyperparameter_domain_bounds(num_hyperparameters, {1.0e-10, 1.0e10});
   HyperparameterDomainType hyperparameter_domain(hyperparameter_domain_bounds.data(), num_hyperparameters);
 
-  // compute sample point locations
-  domain.GenerateUniformPointsInDomain(num_points_to_draw, &uniform_generator, points_sampled.data());
-  // draw function values from a GP using our pre-specified covariance/hyperparameters
-  GaussianProcess gp(covariance, points_sampled.data(), points_sampled_value.data(), noise_variance.data(), dim, 0);
-  for (int j = 0; j < num_points_to_draw; ++j) {
-    points_sampled_value.data()[j] = gp.SamplePointFromGP(points_sampled.data() + dim*j, noise_variance.data()[j]);
-    gp.AddPointToGP(points_sampled.data() + dim*j, points_sampled_value.data()[j], noise_variance.data()[j]);
-  }
+  std::vector<double> noise_variance(num_sampled, 0.1);
+  MockGaussianProcessPriorData<DomainType> mock_gp_data(covariance_wrong, noise_variance, dim, num_sampled, uniform_double_lower_bound, uniform_double_upper_bound, uniform_double_hyperparameter, &uniform_generator);
 
-  LogLikelihoodEvaluator log_likelihood_eval(points_sampled.data(), points_sampled_value.data(), noise_variance.data(), dim, num_points_to_draw);
+  LogLikelihoodEvaluator log_likelihood_eval(mock_gp_data.gaussian_process_ptr->points_sampled().data(), mock_gp_data.gaussian_process_ptr->points_sampled_value().data(), mock_gp_data.gaussian_process_ptr->noise_variance().data(), dim, num_sampled);
   typename LogLikelihoodEvaluator::StateType log_likelihood_state(log_likelihood_eval, covariance_wrong);
 
   initial_likelihood = log_likelihood_eval.ComputeLogLikelihood(log_likelihood_state);
@@ -484,15 +458,11 @@ template <typename LogLikelihoodEvaluator, typename CovarianceClass>
 OL_WARN_UNUSED_RESULT int HyperparameterLikelihoodNewtonOptimizationTestCore(LogLikelihoodTypes OL_UNUSED(objective_mode)) {
   using DomainType = TensorProductDomain;
   using HyperparameterDomainType = TensorProductDomain;
-  const int num_points_to_draw = 100;
+  const int num_sampled = 45;
   const int dim = 2;
 
   double initial_likelihood;
   double final_likelihood;
-  std::vector<ClosedInterval> domain_bounds = {
-    {-1.21871, 2.189712},
-    {0.31411, 3.3818}};
-  DomainType domain(domain_bounds.data(), dim);
 
   // gradient descent parameters
   const double gamma = 1.1;
@@ -500,60 +470,38 @@ OL_WARN_UNUSED_RESULT int HyperparameterLikelihoodNewtonOptimizationTestCore(Log
   const double max_relative_change = 1.0;
   const double tolerance = 1.0e-13;
   const int max_newton_steps = 1000;
+  NewtonParameters newton_parameters(1, max_newton_steps, gamma, pre_mult, max_relative_change, tolerance);
 
   int total_errors = 0;
   int current_errors = 0;
 
-  std::vector<double> points_sampled(num_points_to_draw*dim);
-  std::vector<double> points_sampled_value(num_points_to_draw);
-  std::vector<double> noise_variance(num_points_to_draw, 0.1);
+  CovarianceClass covariance_wrong(dim, 1.0, 1.0);
+  int num_hyperparameters = covariance_wrong.GetNumberOfHyperparameters();
 
-  CovarianceClass covariance(dim, 1.0, 1.0);
-  int num_hyperparameters = covariance.GetNumberOfHyperparameters();
-
-  std::vector<double> hyperparameters(num_hyperparameters);  // hyperparameters used to generate data
   std::vector<double> hyperparameters_optimized(num_hyperparameters);  // optimized hyperparameters
   std::vector<double> hyperparameters_temp(num_hyperparameters);  // temp hyperparameters
   std::vector<double> hyperparameters_wrong(num_hyperparameters);  // wrong hyperparameters to start gradient descent
 
-  // re-seed randoms
+  // seed randoms
   UniformRandomGenerator uniform_generator(5762);
-  boost::uniform_real<double> uniform_double_for_hyperparameter(1.0, 2.5);
+  boost::uniform_real<double> uniform_double_hyperparameter(1.0, 2.5);
+  boost::uniform_real<double> uniform_double_lower_bound(-2.0, 0.5);
+  boost::uniform_real<double> uniform_double_upper_bound(2.0, 3.5);
+
   boost::uniform_real<double> uniform_double_for_wrong_hyperparameter(10.0, 30.0);
-
-  for (auto& hyperparameter : hyperparameters) {
-    hyperparameter = uniform_double_for_hyperparameter(uniform_generator.engine);
-  }
-  for (auto& hyperparameter_wrong : hyperparameters_wrong) {
-    hyperparameter_wrong = uniform_double_for_wrong_hyperparameter(uniform_generator.engine);
-  }
-
-  covariance.SetHyperparameters(hyperparameters.data());
-  CovarianceClass covariance_wrong(dim, hyperparameters_wrong[0], hyperparameters_wrong.data() + 1);
-#ifdef OL_VERBOSE_PRINT
-  printf("Target Hyperparameters:\n");
-  PrintMatrix(hyperparameters.data(), 1, hyperparameters.size());
-#endif
-
+  FillRandomCovarianceHyperparameters(uniform_double_for_wrong_hyperparameter, &uniform_generator, &hyperparameters_wrong, &covariance_wrong);
   std::vector<ClosedInterval> hyperparameter_domain_bounds(num_hyperparameters, {1.0e-10, 1.0e10});
   HyperparameterDomainType hyperparameter_domain(hyperparameter_domain_bounds.data(), num_hyperparameters);
 
-  // compute sample point locations
-  domain.GenerateUniformPointsInDomain(num_points_to_draw, &uniform_generator, points_sampled.data());
-  // draw function values from a GP using our pre-specified covariance/hyperparameters
-  GaussianProcess gp(covariance, points_sampled.data(), points_sampled_value.data(), noise_variance.data(), dim, 0);
-  for (int j = 0; j < num_points_to_draw; ++j) {
-    points_sampled_value.data()[j] = gp.SamplePointFromGP(points_sampled.data() + dim*j, noise_variance.data()[j]);
-    gp.AddPointToGP(points_sampled.data() + dim*j, points_sampled_value.data()[j], noise_variance.data()[j]);
-  }
+  std::vector<double> noise_variance(num_sampled, 0.1);
+  MockGaussianProcessPriorData<DomainType> mock_gp_data(covariance_wrong, noise_variance, dim, num_sampled, uniform_double_lower_bound, uniform_double_upper_bound, uniform_double_hyperparameter, &uniform_generator);
 
-  LogLikelihoodEvaluator log_likelihood_eval(points_sampled.data(), points_sampled_value.data(), noise_variance.data(), dim, num_points_to_draw);
+  LogLikelihoodEvaluator log_likelihood_eval(mock_gp_data.gaussian_process_ptr->points_sampled().data(), mock_gp_data.gaussian_process_ptr->points_sampled_value().data(), mock_gp_data.gaussian_process_ptr->noise_variance().data(), dim, num_sampled);
   typename LogLikelihoodEvaluator::StateType log_likelihood_state(log_likelihood_eval, covariance_wrong);
 
   initial_likelihood = log_likelihood_eval.ComputeLogLikelihood(log_likelihood_state);
   OL_VERBOSE_PRINTF("initial likelihood: %.18E\n", initial_likelihood);
 
-  NewtonParameters newton_parameters(1, max_newton_steps, gamma, pre_mult, max_relative_change, tolerance);
   total_errors += NewtonHyperparameterOptimization(log_likelihood_eval, covariance_wrong, newton_parameters, hyperparameter_domain, hyperparameters_optimized.data());
   covariance_wrong.SetHyperparameters(hyperparameters_optimized.data());
   log_likelihood_state.UpdateHyperparameters(log_likelihood_eval, hyperparameters_optimized.data());
@@ -638,82 +586,57 @@ template <typename LogLikelihoodEvaluator, typename CovarianceClass>
 OL_WARN_UNUSED_RESULT int MultistartHyperparameterLikelihoodNewtonOptimizationTestCore(LogLikelihoodTypes OL_UNUSED(objective_mode)) {
   using DomainType = TensorProductDomain;
   using HyperparameterDomainType = TensorProductDomain;
-  const int num_points_to_draw = 100;
+  const int num_sampled = 42;
   const int dim = 2;
 
   double initial_likelihood;
   double final_likelihood;
-  std::vector<ClosedInterval> domain_bounds = {
-    {-1.21871, 2.189712},
-    {0.31411, 3.3818}};
-  DomainType domain(domain_bounds.data(), dim);
 
   // gradient descent parameters
   const double gamma = 1.1;
   const double pre_mult = 1.0e-1;
   const double max_relative_change = 1.0;
-  const double tolerance = 1.0e-13;
+  const double tolerance = 1.0e-14;
   const int max_newton_steps = 100;
   const int num_multistarts = 16;
   const int max_num_threads = 4;
+  NewtonParameters newton_parameters(num_multistarts, max_newton_steps, gamma, pre_mult, max_relative_change, tolerance);
 
   int total_errors = 0;
   int current_errors = 0;
 
-  std::vector<double> points_sampled(num_points_to_draw*dim);
-  std::vector<double> points_sampled_value(num_points_to_draw);
-  std::vector<double> noise_variance(num_points_to_draw, 0.1);
+  CovarianceClass covariance_wrong(dim, 1.0, 1.0);
+  int num_hyperparameters = covariance_wrong.GetNumberOfHyperparameters();
 
-  CovarianceClass covariance(dim, 1.0, 1.0);
-  CovarianceClass covariance_optimized(dim, 1.0, 1.0);
-  int num_hyperparameters = covariance.GetNumberOfHyperparameters();
-
-  std::vector<double> hyperparameters(num_hyperparameters);  // hyperparameters used to generate data
   std::vector<double> hyperparameters_truth(num_hyperparameters);  // truth hyperparameters
   std::vector<double> hyperparameters_optimized(num_hyperparameters);  // optimized hyperparameters
   std::vector<double> hyperparameters_temp(num_hyperparameters);  // temp hyperparameters
 
-  // re-seed randoms
-  UniformRandomGenerator uniform_generator(5762);
-  boost::uniform_real<double> uniform_double_for_hyperparameter(1.0, 2.5);
-
-  for (auto& hyperparameter : hyperparameters) {
-    hyperparameter = uniform_double_for_hyperparameter(uniform_generator.engine);
-  }
-
-  covariance.SetHyperparameters(hyperparameters.data());
-#ifdef OL_VERBOSE_PRINT
-  printf("Target Hyperparameters:\n");
-  PrintMatrix(hyperparameters.data(), 1, hyperparameters.size());
-#endif
-
-  // set up domain; allows initial guesses to range over [-0.01, 10]
+  // set up domain; allows initial guesses to range over [0.01, 10]
   std::vector<ClosedInterval> hyperparameter_log_domain_bounds(num_hyperparameters, {-2.0, 1.0});
   std::vector<ClosedInterval> hyperparameter_domain_bounds(hyperparameter_log_domain_bounds);
   for (auto& interval : hyperparameter_domain_bounds) {
-    interval.min = std::pow(10.0, interval.min);
-    interval.max = std::pow(10.0, interval.max);
+    interval = {std::pow(10.0, interval.min), std::pow(10.0, interval.max)};
   }
   HyperparameterDomainType hyperparameter_domain(hyperparameter_domain_bounds.data(), num_hyperparameters);
 
-  // compute sample point locations
-  domain.GenerateUniformPointsInDomain(num_points_to_draw, &uniform_generator, points_sampled.data());
-  // draw function values from a GP using our pre-specified covariance/hyperparameters
-  GaussianProcess gp(covariance, points_sampled.data(), points_sampled_value.data(), noise_variance.data(), dim, 0);
-  for (int j = 0; j < num_points_to_draw; ++j) {
-    points_sampled_value.data()[j] = gp.SamplePointFromGP(points_sampled.data() + dim*j, noise_variance.data()[j]);
-    gp.AddPointToGP(points_sampled.data() + dim*j, points_sampled_value.data()[j], noise_variance.data()[j]);
-  }
+  // seed randoms
+  UniformRandomGenerator uniform_generator(5762);
+  boost::uniform_real<double> uniform_double_hyperparameter(1.0, 2.5);
+  boost::uniform_real<double> uniform_double_lower_bound(-2.0, 0.5);
+  boost::uniform_real<double> uniform_double_upper_bound(2.0, 3.5);
 
-  LogLikelihoodEvaluator log_likelihood_eval(points_sampled.data(), points_sampled_value.data(), noise_variance.data(), dim, num_points_to_draw);
-  typename LogLikelihoodEvaluator::StateType log_likelihood_state(log_likelihood_eval, covariance);
+  std::vector<double> noise_variance(num_sampled, 0.1);
+  MockGaussianProcessPriorData<DomainType> mock_gp_data(covariance_wrong, noise_variance, dim, num_sampled, uniform_double_lower_bound, uniform_double_upper_bound, uniform_double_hyperparameter, &uniform_generator);
+
+  LogLikelihoodEvaluator log_likelihood_eval(mock_gp_data.gaussian_process_ptr->points_sampled().data(), mock_gp_data.gaussian_process_ptr->points_sampled_value().data(), mock_gp_data.gaussian_process_ptr->noise_variance().data(), dim, num_sampled);
+  typename LogLikelihoodEvaluator::StateType log_likelihood_state(log_likelihood_eval, covariance_wrong);
 
   initial_likelihood = log_likelihood_eval.ComputeLogLikelihood(log_likelihood_state);
   OL_VERBOSE_PRINTF("initial likelihood: %.18E\n", initial_likelihood);
 
-  NewtonParameters newton_parameters(num_multistarts, max_newton_steps, gamma, pre_mult, max_relative_change, tolerance);
   bool found_flag = false;
-  MultistartNewtonHyperparameterOptimization(log_likelihood_eval, covariance, newton_parameters, hyperparameter_log_domain_bounds.data(), max_num_threads, &found_flag, &uniform_generator, hyperparameters_optimized.data());
+  MultistartNewtonHyperparameterOptimization(log_likelihood_eval, covariance_wrong, newton_parameters, hyperparameter_log_domain_bounds.data(), max_num_threads, &found_flag, &uniform_generator, hyperparameters_optimized.data());
   if (!found_flag) {
     ++total_errors;
   }
@@ -741,7 +664,7 @@ OL_WARN_UNUSED_RESULT int MultistartHyperparameterLikelihoodNewtonOptimizationTe
   total_errors += current_errors;
 
   // verify that convergence occurred, start from the hyperparameters used to generate data (real solution should be nearby)
-  total_errors += NewtonHyperparameterOptimization(log_likelihood_eval, covariance, newton_parameters, hyperparameter_domain, hyperparameters_truth.data());
+  total_errors += NewtonHyperparameterOptimization(log_likelihood_eval, covariance_wrong, newton_parameters, hyperparameter_domain, hyperparameters_truth.data());
 #ifdef OL_VERBOSE_PRINT
   PrintMatrix(hyperparameters_truth.data(), 1, num_hyperparameters);
 #endif
@@ -784,7 +707,7 @@ OL_WARN_UNUSED_RESULT int MultistartHyperparameterLikelihoodNewtonOptimizationTe
 
     // build state vector
     std::vector<typename LogLikelihoodEvaluator::StateType> log_likelihood_state_vector;
-    SetupLogLikelihoodState(log_likelihood_eval, covariance, max_num_threads, &log_likelihood_state_vector);
+    SetupLogLikelihoodState(log_likelihood_eval, covariance_wrong, max_num_threads, &log_likelihood_state_vector);
 
     int chunk_size = 2;
 
@@ -879,40 +802,13 @@ int EvaluateLogLikelihoodAtPointListTest() {
 
   static const int kMaxNumThreads = 4;
 
-  SquareExponential covariance(dim, 1.0, 1.0);
-  std::vector<double> hyperparameters(covariance.GetNumberOfHyperparameters());
-  for (auto& entry : hyperparameters) {
-    entry = uniform_double_hyperparameter(uniform_generator.engine);
-  }
-  covariance.SetHyperparameters(hyperparameters.data());
-
-  std::vector<ClosedInterval> domain_bounds(dim);
-  for (int i = 0; i < dim; ++i) {
-    domain_bounds[i].min = uniform_double_lower_bound(uniform_generator.engine);
-    domain_bounds[i].max = uniform_double_upper_bound(uniform_generator.engine);
-  }
-  DomainType domain_gp_source(domain_bounds.data(), dim);
-
   int num_sampled = 11;  // arbitrary
-
-  std::vector<double> points_sampled(num_sampled*dim);
-  std::vector<double> points_sampled_value(num_sampled);
   std::vector<double> noise_variance(num_sampled, 0.002);
-
-  GaussianProcess gaussian_process(covariance, points_sampled.data(), points_sampled_value.data(), noise_variance.data(), dim, 0);
-
-  // generate random sampling points
-  domain_gp_source.GenerateUniformPointsInDomain(num_sampled, &uniform_generator, points_sampled.data());
-
-  // generate the "world"
-  for (int j = 0; j < num_sampled; ++j) {
-    points_sampled_value.data()[j] = gaussian_process.SamplePointFromGP(points_sampled.data() + dim*j, noise_variance[j]);
-    gaussian_process.AddPointToGP(points_sampled.data() + dim*j, points_sampled_value[j], noise_variance[j]);
-  }
+  MockGaussianProcessPriorData<DomainType> mock_gp_data(SquareExponential(dim, 1.0, 1.0), noise_variance, dim, num_sampled, uniform_double_lower_bound, uniform_double_upper_bound, uniform_double_hyperparameter, &uniform_generator);
 
   using LogLikelihoodEvaluator = LogMarginalLikelihoodEvaluator;
-  LogLikelihoodEvaluator log_marginal_eval(points_sampled.data(), points_sampled_value.data(), noise_variance.data(), dim, num_sampled);
-  int num_hyperparameters = covariance.GetNumberOfHyperparameters();
+  LogLikelihoodEvaluator log_marginal_eval(mock_gp_data.gaussian_process_ptr->points_sampled().data(), mock_gp_data.gaussian_process_ptr->points_sampled_value().data(), mock_gp_data.gaussian_process_ptr->noise_variance().data(), dim, num_sampled);
+  int num_hyperparameters = mock_gp_data.covariance_ptr->GetNumberOfHyperparameters();
   std::vector<ClosedInterval> hyperparameter_log_domain_bounds(num_hyperparameters, {-2.0, 1.0});
   HyperparameterDomainType hyperparameter_log_domain(hyperparameter_log_domain_bounds.data(), num_hyperparameters);
 
@@ -927,12 +823,13 @@ int EvaluateLogLikelihoodAtPointListTest() {
   // domain in linear-space
   std::vector<ClosedInterval> hyperparameter_domain_linearspace_bounds(hyperparameter_log_domain_bounds);
   for (auto& interval : hyperparameter_domain_linearspace_bounds) {
-    interval.min = std::pow(10.0, interval.min);
-    interval.max = std::pow(10.0, interval.max);
+    interval = {std::pow(10.0, interval.min), std::pow(10.0, interval.max)};
   }
   HyperparameterDomainType hyperparameter_domain_linearspace(hyperparameter_domain_linearspace_bounds.data(), num_hyperparameters);
 
-  EvaluateLogLikelihoodAtPointList(log_marginal_eval, covariance, hyperparameter_domain_linearspace, initial_guesses.data(), num_grid_search_points, kMaxNumThreads, function_values.data(), grid_search_best_point.data());
+  EvaluateLogLikelihoodAtPointList(log_marginal_eval, *mock_gp_data.covariance_ptr, hyperparameter_domain_linearspace, initial_guesses.data(), num_grid_search_points, kMaxNumThreads, function_values.data(), grid_search_best_point.data());
+
+  PrintMatrix(grid_search_best_point.data(), 1, num_hyperparameters);
 
   // find the max function_value and the index at which it occurs
   auto max_value_ptr = std::max_element(function_values.begin(), function_values.end());
@@ -950,7 +847,7 @@ int EvaluateLogLikelihoodAtPointListTest() {
     std::vector<double> grid_search_best_point_single_thread(num_hyperparameters);
     std::vector<double> function_values_single_thread(num_grid_search_points);
     int single_thread = 1;
-    EvaluateLogLikelihoodAtPointList(log_marginal_eval, covariance, hyperparameter_domain_linearspace, initial_guesses.data(), num_grid_search_points, single_thread, function_values_single_thread.data(), grid_search_best_point_single_thread.data());
+    EvaluateLogLikelihoodAtPointList(log_marginal_eval, *mock_gp_data.covariance_ptr, hyperparameter_domain_linearspace, initial_guesses.data(), num_grid_search_points, single_thread, function_values_single_thread.data(), grid_search_best_point_single_thread.data());
 
     // check against multi-threaded result matches single
     for (int i = 0; i < num_hyperparameters; ++i) {

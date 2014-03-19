@@ -309,17 +309,6 @@
 namespace optimal_learning {
 
 /*
-  Enum for the various optimizer types. Convenient for specifying which optimizer to use
-  in testing and also used by the Python interface to specify the optimizer (e.g., for EI
-  and hyperparameter optimization).
-*/
-enum class OptimizerTypes {
-  kNull = 0,  // NullOptimizer<>, used for evaluating objective at points
-  kGradientDescent = 1,  // GradientDescentOptimizer<>
-  kNewton = 2,  // NewtonOptimizer<>
-};
-
-/*
   This object holds the input/output fields for optimizers (maximization).  On input, this can be used to specify the current
   best known point (i.e., the optimizer will indicate no new optima found if it cannot beat this value).
   Upon completion, this struct should be read to determine the result of optimization.
@@ -406,7 +395,7 @@ struct OptimizationIOContainer final {
 
   We do not allow the step to take next_point out of the domain; if this happens, the update is limited.
   Thus the solution is guaranteed to lie within the region specified by "domain"; note that this may not be a
-  local optima (i.e., the gradient may be substantially nonzero).
+  true optima (i.e., the gradient may be substantially nonzero).
 
   We may also limit very large updates (controlled via max_relative_change).  Decreasing this value
   makes gradient descent (GD) more stable but also slower.  For very sensitive problems like hyperparameter
@@ -569,8 +558,9 @@ OL_NONNULL_POINTERS void GradientDescentOptimization(const ObjectiveFunctionEval
   is increased (by a constant factor) each iteration.  As time_Factor -> \infinity, \bar{H} -> H;
   hence we recover Newton's fast convergence properties.
 
-  Currently, recommend that initial hyperparameter values not differ from their true values by more than about 1 order of
-  magnitude.  This means a grid will probably be necessary to give a good enough initial guess.
+  Currently, during optimization, we recommend that the coordinates of the initial guesses not differ from the
+  coordinates of the optima by more than about 1 order of magnitude. This means a grid will probably be necessary
+  to give a good enough initial guess.
 
   Guaranteed execute AT MOST max_num_restarts newton steps.
 
@@ -619,7 +609,7 @@ OL_NONNULL_POINTERS void GradientDescentOptimization(const ObjectiveFunctionEval
   or an indeterminate result.  (TODO(eliu): #49119)
 
   Solution is guaranteed to lie within the region specified by "domain"; note that this may not be a
-  local optima (i.e., the gradient may be substantially nonzero).
+  true optima (i.e., the gradient may be substantially nonzero).
 
   Note: in general, you should not call/instantiate this function directly.  Instead, create a NewtonOptimizer object
          and call its ::Optimize() function.
@@ -817,7 +807,7 @@ class GradientDescentOptimizer final {
     * As opposed to say based on changes in the objective function.
 
     Solution is guaranteed to lie within the region specified by "domain"; note that this may not be a
-    local optima (i.e., the gradient may be substantially nonzero).
+    true optima (i.e., the gradient may be substantially nonzero).
 
     problem_size refers to objective_state->GetProblemSize(), the number of dimensions in a "point" aka the number of
     variables being optimized.  (This might be the spatial dimension for EI or the number of hyperparameters for log likelihood.)
@@ -902,7 +892,7 @@ class NewtonOptimizer final {
     See section 2b) and 3b, ii) in the header docs and the docs for NewtonOptimization<>() for more details.
 
     Solution is guaranteed to lie within the region specified by "domain"; note that this may not be a
-    local optima (i.e., the gradient may be substantially nonzero).
+    true optima (i.e., the gradient may be substantially nonzero).
 
     problem_size refers to objective_state->GetProblemSize(), the number of dimensions in a "point" aka the number of
     variables being optimized.  (This might be the spatial dimension for EI or the number of hyperparameters for log likelihood.)

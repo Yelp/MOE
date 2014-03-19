@@ -3,7 +3,7 @@ from pyramid.view import view_config
 
 import simplejson as json
 
-import optimal_learning.EPI.src.cpp.GPP as C_GP
+import build.GPP as C_GP
 from optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp import OptimalGaussianProcessLinkedCpp, ExpectedImprovementOptimizationParameters
 from optimal_learning.EPI.src.python.models.covariance_of_process import CovarianceOfProcess
 from optimal_learning.EPI.src.python.models.sample_point import SamplePoint

@@ -43,14 +43,14 @@ namespace {
 template <typename CovarianceClass>
 class PingCovarianceSpatialDerivatives final : public PingableMatrixInputVectorOutputInterface {
  public:
-  PingCovarianceSpatialDerivatives(double const * restrict lengths, double const * restrict reference_point, double alpha, int dim) OL_NONNULL_POINTERS :
-     dim_(dim),
-     gradients_already_computed_(false),
-     point_(dim),
-     point_delta_base_(dim),
-     reference_point_(reference_point, reference_point + dim),
-     grad_covariance_(dim),
-     covariance_(dim, alpha, lengths) {
+  PingCovarianceSpatialDerivatives(double const * restrict lengths, double const * restrict reference_point, double alpha, int dim) OL_NONNULL_POINTERS
+      : dim_(dim),
+        gradients_already_computed_(false),
+        point_(dim),
+        point_delta_base_(dim),
+        reference_point_(reference_point, reference_point + dim),
+        grad_covariance_(dim),
+        covariance_(dim, alpha, lengths) {
   }
 
   virtual void GetInputSizes(int * num_rows, int * num_cols) const noexcept override OL_NONNULL_POINTERS {
@@ -143,14 +143,14 @@ class PingCovarianceSpatialDerivatives final : public PingableMatrixInputVectorO
 template <typename CovarianceClass>
 class PingGradCovarianceHyperparameters final : public PingableMatrixInputVectorOutputInterface {
  public:
-  PingGradCovarianceHyperparameters(double const * restrict point1, double const * restrict point2, int dim) OL_NONNULL_POINTERS :
-     dim_(dim),
-     num_hyperparameters_(0),
-     gradients_already_computed_(false),
-     point1_(point1, point1 + dim),
-     point2_(point2, point2 + dim),
-     grad_hyperparameter_covariance_(dim+1),
-     covariance_(dim, 1.0, 1.0) {
+  PingGradCovarianceHyperparameters(double const * restrict point1, double const * restrict point2, int dim) OL_NONNULL_POINTERS
+      : dim_(dim),
+        num_hyperparameters_(0),
+        gradients_already_computed_(false),
+        point1_(point1, point1 + dim),
+        point2_(point2, point2 + dim),
+        grad_hyperparameter_covariance_(dim+1),
+        covariance_(dim, 1.0, 1.0) {
     num_hyperparameters_ = covariance_.GetNumberOfHyperparameters();
     grad_hyperparameter_covariance_.resize(num_hyperparameters_);
   }
@@ -229,14 +229,14 @@ class PingGradCovarianceHyperparameters final : public PingableMatrixInputVector
 template <typename CovarianceClass>
 class PingHessianCovarianceHyperparameters final : public PingableMatrixInputVectorOutputInterface {
  public:
-  PingHessianCovarianceHyperparameters(double const * restrict point1, double const * restrict point2, int dim) OL_NONNULL_POINTERS :
-     dim_(dim),
-     num_hyperparameters_(0),
-     gradients_already_computed_(false),
-     point1_(point1, point1 + dim),
-     point2_(point2, point2 + dim),
-     hessian_hyperparameter_covariance_(Square(dim+1)),
-     covariance_(dim, 1.0, 1.0) {
+  PingHessianCovarianceHyperparameters(double const * restrict point1, double const * restrict point2, int dim) OL_NONNULL_POINTERS
+      : dim_(dim),
+        num_hyperparameters_(0),
+        gradients_already_computed_(false),
+        point1_(point1, point1 + dim),
+        point2_(point2, point2 + dim),
+        hessian_hyperparameter_covariance_(Square(dim+1)),
+        covariance_(dim, 1.0, 1.0) {
     num_hyperparameters_ = covariance_.GetNumberOfHyperparameters();
     hessian_hyperparameter_covariance_.resize(Square(num_hyperparameters_));
   }
