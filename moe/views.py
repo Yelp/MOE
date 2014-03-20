@@ -29,6 +29,14 @@ def docs_page(request):
             'nav_active': 'docs',
             }
 
+@view_config(route_name='gp_plot', renderer='moe:templates/gp_plot.mako')
+def gp_plot_page(request):
+    default_text = pretty_default['gp_plot_page']
+    return {
+            'nav_active': 'demo',
+            'default_text': json.dumps(default_text),
+            }
+
 # Pretty inputs
 
 @view_config(route_name='gp_next_points_epi_pretty', renderer='moe:templates/pretty_input.mako')
@@ -71,8 +79,8 @@ def _make_gp_from_gp_info(gp_info):
     # Load up the info
     points_sampled = gp_info['points_sampled']
     domain = gp_info['domain']
-    signal_variance = gp_info.get('signal_variance', 1.0)
-    length = gp_info.get('length_scale', [0.5])
+    signal_variance = gp_info.get('signal_variance', 0.01)
+    length = gp_info.get('length_scale', [0.2])
 
     # Build the required objects
     covariance_of_process = _make_default_covariance_of_process(
@@ -105,7 +113,6 @@ def gp_next_points_epi_view(request):
 
     GP = _make_gp_from_gp_info(gp_info)
 
-    
     num_multistarts=5
     gd_iterations=1000
     max_num_restarts=3
