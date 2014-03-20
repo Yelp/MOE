@@ -51,22 +51,22 @@ class HyperparameterOptimizationParameters(object):
 
 class ExpectedImprovementOptimizationParameters(object):
 
-        """Container for parameters that specify the behavior of a expected improvement optimizer.
+    """Container for parameters that specify the behavior of a expected improvement optimizer.
 
-        We use slots to enforce a "type." Typo'ing a member name will error, not add a new field.
-        This class is passed to C++, so it is convenient to be strict about its structure.
+    We use slots to enforce a "type." Typo'ing a member name will error, not add a new field.
+    This class is passed to C++, so it is convenient to be strict about its structure.
 
-        Attributes:
-        domain_type: type of domain that we are optimizing expected improvement over (e.g., tensor, simplex)
-        optimizer_type: which optimizer to use (e.g., dumb search, gradient dsecent)
-        num_random_samples: number of samples to try if using 'dumb' search or if generating more
-          than one simultaneous sample with dumb search fallback enabled
-        optimizer_parameters: parameters to control derviative-based optimizers, e.g.,
-          step size control, number of steps tolerance, etc.
-        NOTE: this MUST be a C++ object whose type matches objective_type. e.g., if objective_type
-        is kGradientDescent, then this must be built via C_GP.GradientDescentParameters object
+    Attributes:
+    domain_type: type of domain that we are optimizing expected improvement over (e.g., tensor, simplex)
+    optimizer_type: which optimizer to use (e.g., dumb search, gradient dsecent)
+    num_random_samples: number of samples to try if using 'dumb' search or if generating more
+      than one simultaneous sample with dumb search fallback enabled
+    optimizer_parameters: parameters to control derviative-based optimizers, e.g.,
+      step size control, number of steps tolerance, etc.
+      NOTE: this MUST be a C++ object whose type matches objective_type. e.g., if objective_type
+      is kGradientDescent, then this must be built via C_GP.GradientDescentParameters object
 
-        """
+    """
 
     __slots__ = ('domain_type', 'optimizer_type', 'num_random_samples', 'optimizer_parameters', )
     def __init__(self, domain_type=None, optimizer_type=None, num_random_samples=None, optimizer_parameters=None):
