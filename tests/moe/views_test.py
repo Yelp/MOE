@@ -5,8 +5,8 @@ import simplejson as json
 from tests.EPI.src.python.gaussian_process_test_case import GaussianProcessTestCase
 from optimal_learning.EPI.src.python.lib.math import get_latin_hypercube_points
 from optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp import ExpectedImprovementOptimizationParameters
-import optimal_learning.EPI.src.cpp.GPP as C_GP
 from optimal_learning.EPI.src.python.constant import default_expected_improvement_parameters, default_ei_optimization_parameters
+import build.GPP as C_GP
 
 from moe.schemas import GpEiResponse, GpMeanVarResponse, GpNextPointsEpiResponse
 

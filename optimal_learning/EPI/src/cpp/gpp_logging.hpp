@@ -122,7 +122,6 @@ namespace optimal_learning {
 #define OL_PARTIAL_SUCCESS_PRINTF(...) std::printf(OL_ANSI_COLOR_GREEN "ok: " OL_ANSI_COLOR_RESET __VA_ARGS__)
 #define OL_PARTIAL_FAILURE_PRINTF(...) std::printf(OL_ANSI_COLOR_RED "fail: " OL_ANSI_COLOR_RESET __VA_ARGS__)
 
-// forward declarations
 struct ClosedInterval;
 
 /*

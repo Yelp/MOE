@@ -175,11 +175,7 @@ enum class LogLikelihoodTypes {
   kLeaveOneOutLogLikelihood = 1,  // LeaveOneOutLogLikelihoodEvaluator
 };
 
-// forward declaring classes from gpp_random
 struct UniformRandomGenerator;
-
-// forward declaration to use LogMarginalLikelihood/LeaveOneOutLogLikelihoodState pointers/references in
-// LogMarginalLikelihood/LeaveOneOutLogLikelihoodEvaluator classes
 struct LogMarginalLikelihoodState;
 struct LeaveOneOutLogLikelihoodState;
 
@@ -216,12 +212,12 @@ class LogMarginalLikelihoodEvaluator final {
     dim: the spatial dimension of a point (i.e., number of independent params in experiment)
     num_sampled: number of already-sampled points
   */
-  LogMarginalLikelihoodEvaluator(double const * restrict points_sampled_in, double const * restrict points_sampled_value_in, double const * restrict noise_variance_in, int dim_in, int num_sampled_in) OL_NONNULL_POINTERS :
-      dim_(dim_in),
-      num_sampled_(num_sampled_in),
-      points_sampled_(points_sampled_in, points_sampled_in + num_sampled_in*dim_in),
-      points_sampled_value_(points_sampled_value_in, points_sampled_value_in + num_sampled_in),
-      noise_variance_(noise_variance_in, noise_variance_in + num_sampled_) {
+  LogMarginalLikelihoodEvaluator(double const * restrict points_sampled_in, double const * restrict points_sampled_value_in, double const * restrict noise_variance_in, int dim_in, int num_sampled_in) OL_NONNULL_POINTERS
+      : dim_(dim_in),
+        num_sampled_(num_sampled_in),
+        points_sampled_(points_sampled_in, points_sampled_in + num_sampled_in*dim_in),
+        points_sampled_value_(points_sampled_value_in, points_sampled_value_in + num_sampled_in),
+        noise_variance_(noise_variance_in, noise_variance_in + num_sampled_) {
   }
 
   int dim() const noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
@@ -373,16 +369,16 @@ struct LogMarginalLikelihoodState final {
     log_likelihood_eval: LogMarginalLikelihoodEvaluator object that this state is being used with
     covariance_in: the CovarianceFunction object encoding assumptions about the GP's behavior on our data
   */
-  LogMarginalLikelihoodState(const EvaluatorType& log_likelihood_eval, const CovarianceInterface& covariance_in) :
-      dim(log_likelihood_eval.dim()),
-      num_sampled(log_likelihood_eval.num_sampled()),
-      num_hyperparameters(covariance_in.GetNumberOfHyperparameters()),
-      covariance_ptr(covariance_in.Clone()),
-      covariance(*covariance_ptr),
-      K_chol(num_sampled*num_sampled),
-      K_inv_y(num_sampled),
-      grad_hyperparameter_cov_matrix(num_hyperparameters*num_sampled*num_sampled),
-      temp_vec(num_sampled) {
+  LogMarginalLikelihoodState(const EvaluatorType& log_likelihood_eval, const CovarianceInterface& covariance_in)
+      : dim(log_likelihood_eval.dim()),
+        num_sampled(log_likelihood_eval.num_sampled()),
+        num_hyperparameters(covariance_in.GetNumberOfHyperparameters()),
+        covariance_ptr(covariance_in.Clone()),
+        covariance(*covariance_ptr),
+        K_chol(num_sampled*num_sampled),
+        K_inv_y(num_sampled),
+        grad_hyperparameter_cov_matrix(num_hyperparameters*num_sampled*num_sampled),
+        temp_vec(num_sampled) {
     std::vector<double> hyperparameters(num_hyperparameters);
     covariance.GetHyperparameters(hyperparameters.data());
     SetupState(log_likelihood_eval, hyperparameters.data());
@@ -513,12 +509,12 @@ class LeaveOneOutLogLikelihoodEvaluator final {
     dim: the spatial dimension of a point (i.e., number of independent params in experiment)
     num_sampled: number of already-sampled points
   */
-  LeaveOneOutLogLikelihoodEvaluator(double const * restrict points_sampled_in, double const * restrict points_sampled_value_in, double const * restrict noise_variance_in, int dim_in, int num_sampled_in) OL_NONNULL_POINTERS :
-      dim_(dim_in),
-      num_sampled_(num_sampled_in),
-      points_sampled_(points_sampled_in, points_sampled_in + num_sampled_in*dim_in),
-      points_sampled_value_(points_sampled_value_in, points_sampled_value_in + num_sampled_in),
-      noise_variance_(noise_variance_in, noise_variance_in + num_sampled_) {
+  LeaveOneOutLogLikelihoodEvaluator(double const * restrict points_sampled_in, double const * restrict points_sampled_value_in, double const * restrict noise_variance_in, int dim_in, int num_sampled_in) OL_NONNULL_POINTERS
+      : dim_(dim_in),
+        num_sampled_(num_sampled_in),
+        points_sampled_(points_sampled_in, points_sampled_in + num_sampled_in*dim_in),
+        points_sampled_value_(points_sampled_value_in, points_sampled_value_in + num_sampled_in),
+        noise_variance_(noise_variance_in, noise_variance_in + num_sampled_) {
   }
 
   int dim() const noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
@@ -651,18 +647,18 @@ struct LeaveOneOutLogLikelihoodState final {
     log_likelihood_eval: LogMarginalLikelihoodEvaluator object that this state is being used with
     covariance_in: the CovarianceFunction object encoding assumptions about the GP's behavior on our data
   */
-  LeaveOneOutLogLikelihoodState(const EvaluatorType& log_likelihood_eval, const CovarianceInterface& covariance_in) :
-      dim(log_likelihood_eval.dim()),
-      num_sampled(log_likelihood_eval.num_sampled()),
-      num_hyperparameters(covariance_in.GetNumberOfHyperparameters()),
-      covariance_ptr(covariance_in.Clone()),
-      covariance(*covariance_ptr),
-      K_chol(num_sampled*num_sampled),
-      K_inv(num_sampled*num_sampled),
-      K_inv_y(num_sampled),
-      grad_hyperparameter_cov_matrix(num_hyperparameters*num_sampled*num_sampled),
-      Z_alpha(num_sampled),
-      Z_K_inv(num_sampled*num_sampled) {
+  LeaveOneOutLogLikelihoodState(const EvaluatorType& log_likelihood_eval, const CovarianceInterface& covariance_in)
+      : dim(log_likelihood_eval.dim()),
+        num_sampled(log_likelihood_eval.num_sampled()),
+        num_hyperparameters(covariance_in.GetNumberOfHyperparameters()),
+        covariance_ptr(covariance_in.Clone()),
+        covariance(*covariance_ptr),
+        K_chol(num_sampled*num_sampled),
+        K_inv(num_sampled*num_sampled),
+        K_inv_y(num_sampled),
+        grad_hyperparameter_cov_matrix(num_hyperparameters*num_sampled*num_sampled),
+        Z_alpha(num_sampled),
+        Z_K_inv(num_sampled*num_sampled) {
     std::vector<double> hyperparameters(num_hyperparameters);
     covariance.GetHyperparameters(hyperparameters.data());
     SetupState(log_likelihood_eval, hyperparameters.data());
@@ -786,8 +782,7 @@ inline OL_NONNULL_POINTERS void ConvertFromLogToLinearDomainAndBuildInitialGuess
   }
   // domain in linear-space
   for (auto& interval : *domain_bounds) {
-    interval.min = std::pow(10.0, interval.min);
-    interval.max = std::pow(10.0, interval.max);
+    interval = {std::pow(10.0, interval.min), std::pow(10.0, interval.max)};
   }
 }
 
@@ -858,15 +853,16 @@ OL_NONNULL_POINTERS void InitializeBestKnownPoint(const LogLikelihoodEvaluator& 
 
   This function is just a simple wrapper that sets up the Evaluator's State and calls a general template for restarted GD.
 
-  Currently, recommend that initial hyperparameter values not differ from their true values by more than about 1 order of
-  magnitude.  This means a 'dumb'/grid will probably be necessary to give a good enough initial guess.
+  Currently, during optimization, we recommend that the coordinates of the initial guesses not differ from the
+  coordinates of the optima by more than about 1 order of magnitude. This is a very (VERY!) rough guideline implying
+  that this function should be backed by multistarting on a grid (or similar) to provide better chances of a good initial guess.
 
   The 'dumb' search component is provided through MultistartGradientDescentHyperparameterOptimization<...>(...) (see below).
   Generally, calling that function should be preferred.  This function is meant for 1) easier testing;
   2) if you really know what you're doing.
 
   Solution is guaranteed to lie within the region specified by "domain"; note that this may not be a
-  local optima (i.e., the gradient may be substantially nonzero).
+  true optima (i.e., the gradient may be substantially nonzero).
 
   Let n_hyper = covariance.GetNumberOfHyperparameters();
 
@@ -908,13 +904,14 @@ OL_NONNULL_POINTERS void RestartedGradientDescentHyperparameterOptimization(cons
   Log likelihood is computed in ComputeLogLikelihood() and its gradient in ComputeGradLogLikelihood(), which must be member
   functions of the LogLikelihoodEvaluator template parameter.
 
-  Currently, recommend that initial hyperparameter values not differ from their true values by more than about 1 order of
-  magnitude, so choose domain size and gd_parameters.num_multistarts accordingly.
+  Currently, during optimization, we recommend that the coordinates of the initial guesses not differ from the
+  coordinates of the optima by more than about 1 order of magnitude. This is a very (VERY!) rough guideline for
+  sizing the domain and gd_parameters.num_multistarts; i.e., be wary of sets of initial guesses that cover the space too sparsely.
 
   Note that the domain here must be specified in LOG-10 SPACE!
 
   Solution is guaranteed to lie within the region specified by "domain"; note that this may not be a
-  local optima (i.e., the gradient may be substantially nonzero).
+  true optima (i.e., the gradient may be substantially nonzero).
 
   *WARNING: this function fails if NO improvement can be found!  In that case,
   best_next_point will always be the first randomly chosen point.
@@ -972,8 +969,9 @@ OL_NONNULL_POINTERS void MultistartGradientDescentHyperparameterOptimization(con
   This function is just a simple wrapper that sets up the Evaluator's State and calls a general template for Newton,
   NewtonOptimization<...>(...) (in gpp_optimization.hpp).
 
-  Currently, recommend that initial hyperparameter values not differ from their true values by more than about 1 order of
-  magnitude.  This means a grid will probably be necessary to give a good enough initial guess.
+  Currently, during optimization, we recommend that the coordinates of the initial guesses not differ from the
+  coordinates of the optima by more than about 1 order of magnitude. This is a very (VERY!) rough guideline implying
+  that this function should be backed by multistarting on a grid (or similar) to provide better chances of a good initial guess.
 
   The 'dumb' search component is provided through MultistartNewtonHyperparameterOptimization<...>(...) (see below).
   Generally, calling that function should be preferred.  This is meant for 1) easier testing;
@@ -1022,13 +1020,14 @@ OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT int NewtonHyperparameterOptimization(c
   Log likelihood is computed in ComputeLogLikelihood(), its gradient in ComputeGradLogLikelihood(), and its hessian in
   ComputeHessianLogLikelihood(), which must be member functions of the LogLikelihoodEvaluator template parameter.
 
-  Currently, recommend that initial hyperparameter values not differ from their true values by more than about 1 order of
-  magnitude, so choose domain size and gd_parameters.num_multistarts accordingly.
+  Currently, during optimization, we recommend that the coordinates of the initial guesses not differ from the
+  coordinates of the optima by more than about 1 order of magnitude. This is a very (VERY!) rough guideline for
+  sizing the domain and gd_parameters.num_multistarts; i.e., be wary of sets of initial guesses that cover the space too sparsely.
 
   Note that the domain here must be specified in LOG-10 SPACE!
 
   Solution is guaranteed to lie within the region specified by "domain"; note that this may not be a
-  local optima (i.e., the gradient may be substantially nonzero).
+  true optima (i.e., the gradient may be substantially nonzero).
 
   *WARNING: this function fails if NO improvement can be found!  In that case,
   best_next_point will always be the first randomly chosen point.
@@ -1132,7 +1131,7 @@ void EvaluateLogLikelihoodAtPointList(const LogLikelihoodEvaluator& log_likeliho
   hyperparameters at which to evaluate log likelihood.
 
   Solution is guaranteed to lie within the region specified by "domain"; note that this may not be a
-  local optima (i.e., the gradient may be substantially nonzero).
+  true optima (i.e., the gradient may be substantially nonzero).
 
   Let n_hyper = covariance.GetNumberOfHyperparameters();
 

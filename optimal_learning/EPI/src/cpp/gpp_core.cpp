@@ -26,6 +26,8 @@
 #include "gpp_domain_test.hpp"
 #include "gpp_exception.hpp"
 #include "gpp_geometry_test.hpp"
+#include "gpp_heuristic_expected_improvement_optimization.hpp"
+#include "gpp_heuristic_expected_improvement_optimization_test.hpp"
 #include "gpp_linear_algebra_test.hpp"
 #include "gpp_logging.hpp"
 #include "gpp_math.hpp"
@@ -37,6 +39,8 @@
 #include "gpp_optimization_test.hpp"
 #include "gpp_random.hpp"
 #include "gpp_random_test.hpp"
+#include "gpp_test_utils.hpp"
+#include "gpp_test_utils_test.hpp"
 
 using namespace optimal_learning;  // NOLINT, i'm lazy in this file which has no external linkage anyway
 
@@ -155,6 +159,135 @@ int main() {
   double tolerance_newton = 1.0e-8;
   NewtonParameters newton_parameters(num_multistarts_newton, newton_max_num_steps, gamma_newton, pre_mult_newton, max_relative_change_newton, tolerance_newton);
 
+#define OL_TEST_CONSTANT_LIAR
+#ifdef OL_TEST_CONSTANT_LIAR
+  {
+    std::vector<double> new_newton_hyperparameters(num_hyperparameters);
+    int max_num_threads = 4;
+    bool found_flag = false;
+    uniform_generator.SetExplicitSeed(314);
+    MultistartNewtonHyperparameterOptimization(log_marginal_eval, covariance_original, newton_parameters, hyperparameter_log_domain_bounds.data(), max_num_threads, &found_flag, &uniform_generator, new_newton_hyperparameters.data());
+    printf("newton found = %d\n", found_flag);
+
+    PrintDomainBounds(hyperparameter_log_domain_bounds.data(), num_hyperparameters);
+    PrintMatrix(new_newton_hyperparameters.data(), 1.0, num_hyperparameters);
+
+    CovarianceClass covariance_final(dim, new_newton_hyperparameters[0], new_newton_hyperparameters.data() + 1);
+    typename LogLikelihoodEvaluator::StateType log_marginal_state_newton_optimized_hyper(log_marginal_eval, covariance_final);
+    double newton_log_marginal_opt = log_marginal_eval.ComputeLogLikelihood(log_marginal_state_newton_optimized_hyper);
+    printf("newton optimized log marginal likelihood = %.18E\n", newton_log_marginal_opt);
+
+    std::vector<double> grad_log_marginal_opt(num_hyperparameters);
+    log_marginal_eval.ComputeGradLogLikelihood(&log_marginal_state_newton_optimized_hyper, grad_log_marginal_opt.data());
+    printf("grad log likelihood: ");
+    PrintMatrix(grad_log_marginal_opt.data(), 1, num_hyperparameters);
+
+    // gradient descent parameters
+    const double gamma = 0.9;
+    const double pre_mult = 1.0;
+    const double max_relative_change = 1.0;
+    const double tolerance = 1.0e-7;
+    const int max_gradient_descent_steps = 1000;
+    const int max_num_restarts = 20;
+    const int num_multistarts = 100;
+    GradientDescentParameters gd_params(num_multistarts, max_gradient_descent_steps, max_num_restarts, gamma, pre_mult, max_relative_change, tolerance);
+
+    double best_so_far = *std::min_element(points_sampled_value.begin(), points_sampled_value.end());
+    // EI computation parameters
+    double lie_value = best_so_far;  // Uses the "CL-min" version of constant liar
+    double lie_noise_variance = 0.0;
+    ConstantLiarEstimationPolicy constant_liar_policy(lie_value, lie_noise_variance);
+
+    // number of simultaneous samples
+    const int num_samples_to_generate = 3;
+    std::vector<double> best_points_to_sample(dim*num_samples_to_generate);
+
+    GaussianProcess gaussian_process(covariance_final, points_sampled.data(), points_sampled_value.data(), noise_variance.data(), dim, num_sampled);
+
+    bool grid_search_only = false;
+    int num_grid_search_points = 10000;
+    found_flag = false;
+    uniform_generator.SetExplicitSeed(31415);
+    ComputeConstantLiarSetOfPointsToSample(gaussian_process, gd_params, domain, constant_liar_policy, best_so_far, max_num_threads, grid_search_only, num_grid_search_points, num_samples_to_generate, &found_flag, &uniform_generator, best_points_to_sample.data());
+    PrintMatrixTrans(best_points_to_sample.data(), num_samples_to_generate, dim);
+
+    printf("hi\n");
+    // test Estimation Policies
+    ConstantLiarEstimationPolicy constant_liar(2.0, 1.0);
+    FunctionValue cl_value;
+    cl_value = constant_liar.ComputeEstimate(gaussian_process, best_points_to_sample.data(), 0);
+    printf("value: %.18E, var = %.18E\n", cl_value.function_value, cl_value.noise_variance);
+
+    double std_deviation_coef = -0.2;
+    KrigingBelieverEstimationPolicy kriging_believer(std_deviation_coef, 1.2);
+    FunctionValue kb_value;
+    kb_value = kriging_believer.ComputeEstimate(gaussian_process, best_points_to_sample.data(), 0);
+    printf("value: %.18E, var = %.18E\n", kb_value.function_value, kb_value.noise_variance);
+
+    {
+      PointsToSampleState gaussian_process_state(gaussian_process, best_points_to_sample.data(), 1, false);
+
+      double kriging_noise_variance = 1.2;
+      double kriging_function_value;
+      gaussian_process.ComputeMeanOfPoints(gaussian_process_state, &kriging_function_value);
+      if (std_deviation_coef != 0.0) {
+        // Only compute variance (expensive) if we are going to use it.
+        double gp_variance;
+        gaussian_process.ComputeVarianceOfPoints(&gaussian_process_state, &gp_variance);
+        kriging_function_value += std_deviation_coef * std::sqrt(gp_variance);
+      }
+      printf("value: %.18E, var = %.18E\n", kriging_function_value, kriging_noise_variance);
+    }
+
+    {
+      SquareExponential covariance(dim, kPi, 0.2);
+      std::vector<ClosedInterval> domain_bounds(dim);
+      for (auto& bounds : domain_bounds) {
+        bounds = {0.0, 1.0};
+      }
+      DomainType domain_gp_source(domain_bounds.data(), dim);
+
+      int num_sampled = 20;  // need to keep this similar to the number of multistarts
+      std::vector<double> points_sampled(num_sampled*dim);
+      std::vector<double> points_sampled_value(num_sampled, 1.0);
+      std::vector<double> noise_variance(num_sampled, 0.0);
+
+      // generate random sampling points
+      domain_gp_source.GenerateUniformPointsInDomain(num_sampled, &uniform_generator, points_sampled.data());
+
+      GaussianProcess gaussian_process(covariance, points_sampled.data(), points_sampled_value.data(), noise_variance.data(), dim, num_sampled);
+
+      {
+        PointsToSampleState gaussian_process_state(gaussian_process, points_sampled.data(), 1, false);
+        double mean;
+        double variance;
+        gaussian_process.ComputeMeanOfPoints(gaussian_process_state, &mean);
+        gaussian_process.ComputeVarianceOfPoints(&gaussian_process_state, &variance);
+        printf("mean = %.18E, mean-1 = %.18E, variance = %.18E, variance-pi = %.18E\n", mean, mean - 1.0, variance, variance - kPi);
+      }
+
+      {
+        std::vector<double> point(dim, 0.5);
+        PointsToSampleState gaussian_process_state(gaussian_process, point.data(), 1, false);
+        double mean;
+        double variance;
+        gaussian_process.ComputeMeanOfPoints(gaussian_process_state, &mean);
+        gaussian_process.ComputeVarianceOfPoints(&gaussian_process_state, &variance);
+        printf("mean = %.18E, mean-1 = %.18E, variance = %.18E, variance-pi = %.18E\n", mean, mean - 1.0, variance, variance - kPi);
+      }
+
+      {
+        std::vector<double> point(dim, 3);
+        PointsToSampleState gaussian_process_state(gaussian_process, point.data(), 1, false);
+        double mean;
+        double variance;
+        gaussian_process.ComputeMeanOfPoints(gaussian_process_state, &mean);
+        gaussian_process.ComputeVarianceOfPoints(&gaussian_process_state, &variance);
+        printf("mean = %.18E, mean-1 = %.18E, variance = %.18E, variance-pi = %.18E\n", mean, mean - 1.0, variance, variance - kPi);
+      }
+    }
+  }
+#else
   {
     printf("TENSOR PRODUCT:\n");
     std::vector<double> new_newton_hyperparameters(num_hyperparameters);
@@ -297,7 +430,7 @@ int main() {
     printf("optimized EI: %.18E\n", ei_optimized);
     printf("grad_EI: "); PrintMatrix(grad_ei.data(), 1, dim);
   }
-
+#endif
   // double derp2[] = {0.15, 0.4, 0.2, 0.35, 0.05951614568196238, 0.4};
   // SimplexIntersectTensorProductDomain simplex_domain(derp2, dim);
 
@@ -941,24 +1074,25 @@ int main() {
   // error += RunCovarianceTests();
   // error += RunGPPingTests();
   // error += RunLogLikelihoodPingTests();
-  // error += MultithreadedEIOptimizationTest(0);
-  // error += MultithreadedEIOptimizationTest(1);
-  // error += HyperparameterLikelihoodNewtonOptimizationTest(0);
-  // error += HyperparameterLikelihoodNewtonOptimizationTest(2);
-  // error += HyperparameterLikelihoodOptimizationTest(0);
-  // error += HyperparameterLikelihoodOptimizationTest(1);
+  // error += HyperparameterLikelihoodOptimizationTest(OptimizerTypes::kNewton, LogLikelihoodTypes::kLogMarginalLikelihood);
+  // error += HyperparameterLikelihoodOptimizationTest(OptimizerTypes::kGradientDescent, LogLikelihoodTypes::kLogMarginalLikelihood);
+  // error += HyperparameterLikelihoodOptimizationTest(OptimizerTypes::kGradientDescent, LogLikelihoodTypes::kLeaveOneOutLogLikelihood);
+  // error += EvaluateLogLikelihoodAtPointListTest();
   // error = RandomNumberGeneratorContainerTest();
-  // error += ExpectedImprovementOptimizationTest(DomainTypes::kTensorProduct, ExpectedImprovementEvaluationMode::kAnalytic);
-  // error += ExpectedImprovementOptimizationTest(DomainTypes::kTensorProduct, ExpectedImprovementEvaluationMode::kMonteCarlo);
-  // error += ExpectedImprovementOptimizationTest(2);
-  // error += RunEIConsistencyTests();
   // error += RunOptimizationTests(0);
   // error += RunOptimizationTests(1);
   // error += DomainTests();
+  // error += RunEIConsistencyTests();
+  // error += MultithreadedEIOptimizationTest(ExpectedImprovementEvaluationMode::kAnalytic);
+  // error += MultithreadedEIOptimizationTest(ExpectedImprovementEvaluationMode::kMonteCarlo);
+  // error += ExpectedImprovementOptimizationTest(DomainTypes::kTensorProduct, ExpectedImprovementEvaluationMode::kAnalytic);
+  // error += ExpectedImprovementOptimizationTest(DomainTypes::kTensorProduct, ExpectedImprovementEvaluationMode::kMonteCarlo);
+  // error += ExpectedImprovementOptimizationMultipleSamplesTest();
   // error += ExpectedImprovementOptimizationTest(DomainTypes::kSimplex, ExpectedImprovementEvaluationMode::kAnalytic);
-  error += ExpectedImprovementOptimizationTest(DomainTypes::kSimplex, ExpectedImprovementEvaluationMode::kMonteCarlo);
+  // error += ExpectedImprovementOptimizationTest(DomainTypes::kSimplex, ExpectedImprovementEvaluationMode::kMonteCarlo);
   // error += EvaluateEIAtPointListTest();
-  // error += EvaluateLogLikelihoodAtPointListTest();
+  // error += EstimationPolicyTest();
+  error += HeuristicExpectedImprovementOptimizationTest();
 
   if (error != 0) {
     OL_FAILURE_PRINTF("%d errors\n", error);
@@ -1037,6 +1171,14 @@ int main() {
   }
 
 #elif OL_PINGMODE == 9  // all
+  error = TestUtilsTests();
+  if (error != 0) {
+    OL_FAILURE_PRINTF("test utils\n");
+  } else {
+    OL_SUCCESS_PRINTF("test utils\n");
+  }
+  total_errors += error;
+
   error = RunLinearAlgebraTests();
   if (error != 0) {
     OL_FAILURE_PRINTF("linear algebra\n");
@@ -1117,6 +1259,14 @@ int main() {
   }
   total_errors += error;
 
+  error += EstimationPolicyTest();
+  if (error != 0) {
+    OL_FAILURE_PRINTF("Estimation Policies\n");
+  } else {
+    OL_SUCCESS_PRINTF("Estimation Policies\n");
+  }
+  total_errors += error;
+
   error = RunOptimizationTests(OptimizerTypes::kGradientDescent);
   if (error != 0) {
     OL_FAILURE_PRINTF("quadratic mock gradient descent optimization\n");
@@ -1186,6 +1336,14 @@ int main() {
     OL_FAILURE_PRINTF("EI Optimization single/multithreaded consistency check\n");
   } else {
     OL_SUCCESS_PRINTF("EI single/multithreaded consistency check\n");
+  }
+  total_errors += error;
+
+  error += HeuristicExpectedImprovementOptimizationTest();
+  if (error != 0) {
+    OL_FAILURE_PRINTF("Heuristic EI Optimization\n");
+  } else {
+    OL_SUCCESS_PRINTF("Heuristic EI Optimization\n");
   }
   total_errors += error;
 

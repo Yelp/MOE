@@ -301,10 +301,31 @@ OL_WARN_UNUSED_RESULT int CheckPointInUnitSimplexTest() {
   return total_errors;
 }
 
-OL_WARN_UNUSED_RESULT int OrthogonalDistanceToPlaneTest() {
+/*
+  Utility for constructing a random unit vector.
+
+  INPUTS:
+  dim: number of spatial dimensions
+  uniform_double_distribution: range from which to draw random numbers
+  uniform_generator[1]: UniformRandomGenerator object providing the random engine for uniform random numbers
+  OUTPUTS:
+  uniform_generator[1]: UniformRandomGenerator object with it's state changed due to dim random draws
+  unit_vector[dim]: a unit vector w/random entries
+*/
+void BuildRandomUnitVector(int dim, const boost::uniform_real<double>& uniform_double_distribution, UniformRandomGenerator * uniform_generator, double * unit_vector) {
+  for (int k = 0; k < dim; ++k) {
+    unit_vector[k] = uniform_double_distribution(uniform_generator->engine);
+  }
+  // normalize the vector
+  double norm = VectorNorm(unit_vector, dim);
+  norm = 1.0/norm;
+  VectorScale(dim, norm, unit_vector);
+}
+
+OL_WARN_UNUSED_RESULT int OrthogonalDistanceToPointTest() {
   // idea: pick several random hyperplanes (unit normal + right hand side, \sum_i n_i*x_i = -a_0)
   // pick a point on the hyperplane (easy: x_i = -a_0 * n_i)
-  // pick random distances and the point-on-plane by distance*normal; check OrthogonalDistanceToPlane == distance
+  // pick random distances and the point-on-plane by distance*normal; check OrthogonalDistanceToPoint == distance
   const int dim = 5;
   const int num_planes = 10;
   const int num_points = 10;
@@ -312,25 +333,21 @@ OL_WARN_UNUSED_RESULT int OrthogonalDistanceToPlaneTest() {
   UniformRandomGenerator uniform_generator(314);
   boost::uniform_real<double> uniform_double_distribution(-2.5, 2.5);
 
-  std::vector<double> hyperplane(dim + 1);
+  double offset;
+  std::vector<double> unit_normal(dim);
   std::vector<double> point_on_plane(dim);
   std::vector<double> shifted_point(dim);
-  double distance_truth, distance_computed, norm;
+  double distance_truth, distance_computed;
 
   int total_errors = 0;
   for (int i = 0; i < num_planes; ++i) {
-    // generate random hyperplane
-    for (int k = 0; k < dim+1; ++k) {
-      hyperplane[k] = uniform_double_distribution(uniform_generator.engine);
-    }
-    // normalize the normal vector
-    norm = VectorNorm(hyperplane.data(), dim);
-    norm = 1.0/norm;
-    VectorScale(dim, norm, hyperplane.data());
+    BuildRandomUnitVector(dim, uniform_double_distribution, &uniform_generator, unit_normal.data());
+    offset = uniform_double_distribution(uniform_generator.engine);
+    Plane plane(unit_normal.data(), offset, dim);
 
     // generate random point
     for (int k = 0; k < dim; ++k) {
-      point_on_plane[k] = hyperplane[k] * (-hyperplane[dim]);
+      point_on_plane[k] = unit_normal[k] * (-offset);
     }
 
     // could also pick random point by generating dim-1 random coordinates, then computing the last one
@@ -340,10 +357,10 @@ OL_WARN_UNUSED_RESULT int OrthogonalDistanceToPlaneTest() {
     for (int j = 0; j < num_points; ++j) {
       distance_truth = uniform_double_distribution(uniform_generator.engine);
       for (int k = 0; k < dim; ++k) {
-        shifted_point[k] = point_on_plane[k] + distance_truth * hyperplane[k];
+        shifted_point[k] = point_on_plane[k] + distance_truth * unit_normal[k];
       }
 
-      distance_computed = OrthogonalDistanceToPlane(shifted_point.data(), hyperplane.data(), dim);
+      distance_computed = plane.OrthogonalDistanceToPoint(shifted_point.data());
 
       if (!CheckDoubleWithinRelative(distance_computed, distance_truth, 2.0e-14)) {
         ++total_errors;
@@ -356,7 +373,7 @@ OL_WARN_UNUSED_RESULT int OrthogonalDistanceToPlaneTest() {
 OL_WARN_UNUSED_RESULT int OrthogonalProjectionOntoPlaneTest() {
   // idea: pick several random hyperplanes (unit normal + right hand side, \sum_i n_i*x_i = -a_0)
   // pick random points
-  // project each point onto plane & verify that the resulting point's OrthogonalDistanceToPlane == 0
+  // project each point onto plane & verify that the resulting point's OrthogonalDistanceToPoint == 0
   const int dim = 5;
   const int num_planes = 10;
   const int num_points = 10;
@@ -364,23 +381,19 @@ OL_WARN_UNUSED_RESULT int OrthogonalProjectionOntoPlaneTest() {
   UniformRandomGenerator uniform_generator(314);
   boost::uniform_real<double> uniform_double_distribution(-2.5, 2.5);
 
-  std::vector<double> hyperplane(dim + 1);
+  double offset;
+  std::vector<double> unit_normal(dim);
   std::vector<double> point_on_plane(dim);
   std::vector<double> random_point(dim);
   std::vector<double> projected_point(dim);
   double distance_truth = 0.0;  // we're always projecting onto the plane
-  double distance_computed, norm;
+  double distance_computed;
 
   int total_errors = 0;
   for (int i = 0; i < num_planes; ++i) {
-    // generate random hyperplane
-    for (int k = 0; k < dim+1; ++k) {
-      hyperplane[k] = uniform_double_distribution(uniform_generator.engine);
-    }
-    // normalize the normal vector
-    norm = VectorNorm(hyperplane.data(), dim);
-    norm = 1.0/norm;
-    VectorScale(dim, norm, hyperplane.data());
+    BuildRandomUnitVector(dim, uniform_double_distribution, &uniform_generator, unit_normal.data());
+    offset = uniform_double_distribution(uniform_generator.engine);
+    Plane plane(unit_normal.data(), offset, dim);
 
     // pick random distances
     for (int j = 0; j < num_points; ++j) {
@@ -389,10 +402,16 @@ OL_WARN_UNUSED_RESULT int OrthogonalProjectionOntoPlaneTest() {
         projected_point[k] = random_point[k];
       }
 
-      OrthogonalProjectionOntoPlane(hyperplane.data(), dim, projected_point.data());
-      distance_computed = OrthogonalDistanceToPlane(projected_point.data(), hyperplane.data(), dim);
+      plane.OrthogonalProjectionOntoPlane(projected_point.data());
+      distance_computed = plane.OrthogonalDistanceToPoint(projected_point.data());
 
-      if (!CheckDoubleWithinRelative(distance_computed, distance_truth, 8*std::numeric_limits<double>::epsilon())) {
+      if (!CheckDoubleWithinRelative(distance_computed, distance_truth, 8.0*std::numeric_limits<double>::epsilon())) {
+        ++total_errors;
+      }
+
+      // consistency check: plane created w/projected_point and unit_normal has the same offset
+      Plane equivalent_plane(unit_normal.data(), projected_point.data(), dim);
+      if (!CheckDoubleWithinRelative(equivalent_plane.offset, plane.offset, 64.0*std::numeric_limits<double>::epsilon())) {
         ++total_errors;
       }
     }
@@ -404,7 +423,7 @@ OL_WARN_UNUSED_RESULT int OrthogonalProjectionOntoPlaneTest() {
   Outline:
   1) Pick several random hyperplanes (unit normal + right hand side, \sum_i n_i*x_i = -a_0)
   2) Pick random points & random vectors
-  3) Project each point onto plane (along vector) & verify that the resulting point's OrthogonalDistanceToPlane == 0
+  3) Project each point onto plane (along vector) & verify that the resulting point's OrthogonalDistanceToPoint == 0
 */
 OL_WARN_UNUSED_RESULT int DistanceToPlaneAlongVectorTest() {
   const int dim = 5;
@@ -414,24 +433,20 @@ OL_WARN_UNUSED_RESULT int DistanceToPlaneAlongVectorTest() {
   UniformRandomGenerator uniform_generator(314);
   boost::uniform_real<double> uniform_double_distribution(-2.5, 2.5);
 
-  std::vector<double> hyperplane(dim + 1);
+  double offset;
+  std::vector<double> unit_normal(dim);
   std::vector<double> point_on_plane(dim);
   std::vector<double> random_point(dim);
   std::vector<double> projected_point(dim);
   std::vector<double> random_vector(dim);
   double distance_truth = 0.0;  // we're always projecting onto the plane
-  double distance, distance_computed, norm;
+  double distance, distance_computed;
 
   int total_errors = 0;
   for (int i = 0; i < num_planes; ++i) {
-    // generate random hyperplane
-    for (int k = 0; k < dim+1; ++k) {
-      hyperplane[k] = uniform_double_distribution(uniform_generator.engine);
-    }
-    // normalize the normal vector
-    norm = VectorNorm(hyperplane.data(), dim);
-    norm = 1.0/norm;
-    VectorScale(dim, norm, hyperplane.data());
+    BuildRandomUnitVector(dim, uniform_double_distribution, &uniform_generator, unit_normal.data());
+    offset = uniform_double_distribution(uniform_generator.engine);
+    Plane plane(unit_normal.data(), offset, dim);
 
     // pick random distances
     for (int j = 0; j < num_points; ++j) {
@@ -440,12 +455,12 @@ OL_WARN_UNUSED_RESULT int DistanceToPlaneAlongVectorTest() {
         random_vector[k] = uniform_double_distribution(uniform_generator.engine);
       }
 
-      distance = DistanceToPlaneAlongVector(random_point.data(), hyperplane.data(), random_vector.data(), dim);
+      distance = plane.DistanceToPlaneAlongVector(random_point.data(), random_vector.data());
       for (int k = 0; k < dim; ++k) {
         projected_point[k] = random_point[k] + distance * random_vector[k];
       }
 
-      distance_computed = OrthogonalDistanceToPlane(projected_point.data(), hyperplane.data(), dim);
+      distance_computed = plane.OrthogonalDistanceToPoint(projected_point.data());
 
       if (!CheckDoubleWithinRelative(distance_computed, distance_truth, 4.0e-14)) {
         ++total_errors;
@@ -473,9 +488,9 @@ int GeometryToolsTests() {
   }
   total_errors += current_errors;
 
-  current_errors = OrthogonalDistanceToPlaneTest();
+  current_errors = OrthogonalDistanceToPointTest();
   if (current_errors != 0) {
-    OL_PARTIAL_FAILURE_PRINTF("OrthogonalDistanceToPlane failed with %d errors\n", current_errors);
+    OL_PARTIAL_FAILURE_PRINTF("OrthogonalDistanceToPoint failed with %d errors\n", current_errors);
   }
   total_errors += current_errors;
 

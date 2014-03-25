@@ -17,7 +17,6 @@
 
 namespace optimal_learning {
 
-// forward declaration of PRNG container
 struct UniformRandomGenerator;
 
 /*
@@ -100,7 +99,7 @@ OL_NONNULL_POINTERS void BuildOrthogonalSymmetricMatrix(int size, double * restr
   right_bound: upper bound for matrix_entries
   uniform_generator[1]: a UniformRandomGenerator object providing the random engine for uniform random numbers
   OUTPUTS:
-  uniform_generator[1]:UniformRandomGenerator object will have its state changed due to random draws
+  uniform_generator[1]: UniformRandomGenerator object will have its state changed due to random draws
   symmetric_matrix[size][size]: a random symmetric matrix
 */
 OL_NONNULL_POINTERS void BuildRandomSymmetricMatrix(int size, double left_bound, double right_bound, UniformRandomGenerator * uniform_generator, double * restrict symmetric_matrix)noexcept;
@@ -120,7 +119,7 @@ OL_NONNULL_POINTERS void BuildRandomSymmetricMatrix(int size, double left_bound,
   size: dimension of matrix
   uniform_generator[1]: a UniformRandomGenerator object providing the random engine for uniform random numbers
   OUTPUTS:
-  uniform_generator[1]:UniformRandomGenerator object will have its state changed due to random draws
+  uniform_generator[1]: UniformRandomGenerator object will have its state changed due to random draws
   lower_triangular_matrix[size][size]: a random, lower triangular matrix
 */
 OL_NONNULL_POINTERS void BuildRandomLowerTriangularMatrix(int size, UniformRandomGenerator * uniform_generator, double * restrict lower_triangular_matrix) noexcept;
@@ -137,7 +136,7 @@ OL_NONNULL_POINTERS void BuildRandomLowerTriangularMatrix(int size, UniformRando
   size: dimension of matrix
   uniform_generator[1]: a UniformRandomGenerator object providing the random engine for uniform random numbers
   OUTPUTS:
-  uniform_generator[1]:UniformRandomGenerator object will have its state changed due to random draws
+  uniform_generator[1]: UniformRandomGenerator object will have its state changed due to random draws
   spd_matrix[size][size]: a random, SPD matrix
 */
 OL_NONNULL_POINTERS void BuildRandomSPDMatrix(int size, UniformRandomGenerator * uniform_generator, double * restrict spd_matrix) noexcept;
@@ -169,7 +168,7 @@ OL_NONNULL_POINTERS void BuildHouseholderReflectorMatrix(double const * restrict
   size: number of elements in vector
   uniform_generator[1]: a UniformRandomGenerator object providing the random engine for uniform random numbers
   OUTPUTS:
-  uniform_generator[1]:UniformRandomGenerator object will have its state changed due to random draws
+  uniform_generator[1]: UniformRandomGenerator object will have its state changed due to random draws
   vector[size]: array filled with random entries
 */
 OL_NONNULL_POINTERS void BuildRandomVector(int size, double left_bound, double right_bound, UniformRandomGenerator * uniform_generator, double * restrict vector) noexcept;

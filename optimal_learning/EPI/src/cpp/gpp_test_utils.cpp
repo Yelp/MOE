@@ -7,12 +7,19 @@
 
 #include <cmath>
 
+#include <algorithm>
 #include <limits>
 #include <vector>
 
+#include <boost/random/uniform_real.hpp>  // NOLINT(build/include_order)
+
 #include "gpp_common.hpp"
+#include "gpp_covariance.hpp"
+#include "gpp_geometry.hpp"
 #include "gpp_linear_algebra.hpp"
 #include "gpp_logging.hpp"
+#include "gpp_math.hpp"
+#include "gpp_random.hpp"
 
 // Debugging macro for use with PingDerivative() in this file.
 // Define this macro to make PingDerivative() very verbose, printing details
@@ -26,6 +33,98 @@
 #endif
 
 namespace optimal_learning {
+
+MockExpectedImprovementEnvironment::MockExpectedImprovementEnvironment()
+    : dim(-1),
+      num_to_sample(-1),
+      num_sampled(-1),
+      points_to_sample_(20*4),
+      points_sampled_(20*4),
+      points_sampled_value_(20),
+      current_point_(4),
+      uniform_generator_(kDefaultSeed),
+      uniform_double_(range_min, range_max) {
+}
+
+void MockExpectedImprovementEnvironment::Initialize(int dim_in, int num_to_sample_in, int num_sampled_in, UniformRandomGenerator * uniform_generator) {
+  if (dim_in != dim || num_to_sample_in != num_to_sample || num_sampled_in != num_sampled) {
+    dim = dim_in;
+    num_to_sample = num_to_sample_in;
+    num_sampled = num_sampled_in;
+
+    points_to_sample_.resize(num_to_sample*dim);
+    points_sampled_.resize(num_sampled*dim);
+    points_sampled_value_.resize(num_sampled);
+    current_point_.resize(dim);
+  }
+
+  for (int i = 0; i < dim*num_to_sample; ++i) {
+    points_to_sample_[i] = uniform_double_(uniform_generator->engine);
+  }
+
+  for (int i = 0; i < dim*num_sampled; ++i) {
+    points_sampled_[i] = uniform_double_(uniform_generator->engine);
+  }
+
+  for (int i = 0; i < num_sampled; ++i) {
+    points_sampled_value_[i] = uniform_double_(uniform_generator->engine);
+  }
+
+  for (int i = 0; i < dim; ++i) {
+    current_point_[i] = uniform_double_(uniform_generator->engine);
+  }
+}
+
+template <typename DomainType>
+MockGaussianProcessPriorData<DomainType>::MockGaussianProcessPriorData(const CovarianceInterface& covariance, const std::vector<double>& noise_variance_in, int dim_in, int num_sampled_in)
+    : dim(dim_in),
+      num_sampled(num_sampled_in),
+      domain_bounds(dim),
+      covariance_ptr(covariance.Clone()),
+      hyperparameters(covariance_ptr->GetNumberOfHyperparameters()),
+      noise_variance(noise_variance_in),
+      best_so_far(0.0) {
+}
+
+template <typename DomainType>
+MockGaussianProcessPriorData<DomainType>::MockGaussianProcessPriorData(const CovarianceInterface& covariance, const std::vector<double>& noise_variance_in, int dim_in, int num_sampled_in, const boost::uniform_real<double>& uniform_double_domain_lower, const boost::uniform_real<double>& uniform_double_domain_upper, const boost::uniform_real<double>& uniform_double_hyperparameters, UniformRandomGenerator * uniform_generator)
+    : MockGaussianProcessPriorData<DomainType>(covariance, noise_variance_in, dim_in, num_sampled_in) {
+  InitializeHyperparameters(uniform_double_hyperparameters, uniform_generator);
+  InitializeDomain(uniform_double_domain_lower, uniform_double_domain_upper, uniform_generator);
+  InitializeGaussianProcess(uniform_generator);
+}
+
+template <typename DomainType>
+MockGaussianProcessPriorData<DomainType>::~MockGaussianProcessPriorData() = default;
+
+template <typename DomainType>
+void MockGaussianProcessPriorData<DomainType>::InitializeHyperparameters(const boost::uniform_real<double>& uniform_double_hyperparameters, UniformRandomGenerator * uniform_generator) {
+  FillRandomCovarianceHyperparameters(uniform_double_hyperparameters, uniform_generator, &hyperparameters, covariance_ptr.get());
+}
+
+template <typename DomainType>
+void MockGaussianProcessPriorData<DomainType>::InitializeDomain(const boost::uniform_real<double>& uniform_double_domain_lower, const boost::uniform_real<double>& uniform_double_domain_upper, UniformRandomGenerator * uniform_generator) {
+  FillRandomDomainBounds(uniform_double_domain_lower, uniform_double_domain_upper, uniform_generator, &domain_bounds);
+  domain_ptr.reset(new DomainType(domain_bounds.data(), dim));
+}
+
+template <typename DomainType>
+void MockGaussianProcessPriorData<DomainType>::InitializeGaussianProcess(UniformRandomGenerator * uniform_generator) {
+  covariance_ptr->SetHyperparameters(hyperparameters.data());
+
+  std::vector<double> points_sampled(dim*num_sampled);
+  std::vector<double> points_sampled_value(num_sampled);
+  gaussian_process_ptr.reset(new GaussianProcess(*covariance_ptr, points_sampled.data(), points_sampled_value.data(), noise_variance.data(), dim, 0));
+
+  // generate the "world"
+  num_sampled = domain_ptr->GenerateUniformPointsInDomain(num_sampled, uniform_generator, points_sampled.data());
+  FillRandomGaussianProcess(points_sampled.data(), noise_variance.data(), dim, num_sampled, points_sampled_value.data(), gaussian_process_ptr.get());
+  best_so_far = *std::min_element(points_sampled_value.begin(), points_sampled_value.end());
+}
+
+// template explicit instantiation declarations, see gpp_common.hpp header comments, item 6
+template struct MockGaussianProcessPriorData<TensorProductDomain>;
+template struct MockGaussianProcessPriorData<SimplexIntersectTensorProductDomain>;
 
 bool CheckIntEquals(int64_t value, int64_t truth) noexcept {
   bool passed = value == truth;
@@ -98,6 +197,26 @@ bool CheckMatrixNormWithin(double const * restrict matrix1, double const * restr
   VectorAXPY(size_m*size_n, -1.0, matrix2, difference_matrix.data());
   double norm = VectorNorm(difference_matrix.data(), size_m*size_n);  // Frobenius norm
   return norm <= tolerance;  // should this be adjusted to remove factor of size_m*size_n?
+}
+
+int CheckPointsAreDistinct(double const * restrict point_list, int num_points, int dim, double tolerance) noexcept {
+  int num_errors = 0;
+  std::vector<double> temp_point(dim);
+  for (int i = 0; i < num_points; ++i) {
+    for (int j = i + 1; j < num_points; ++j) {
+      // copy over i-th point
+      std::copy(point_list + i*dim, point_list + (i+1)*dim, temp_point.data());
+      // subtract out j-th point
+      VectorAXPY(dim, -1.0, point_list + j*dim, temp_point.data());
+      // norm to compute distance
+      double distance = VectorNorm(temp_point.data(), dim);
+      if (distance <= tolerance) {
+        ++num_errors;
+      }
+    }
+  }
+
+  return num_errors;
 }
 
 namespace {
@@ -332,7 +451,7 @@ int PingDerivative(const PingableMatrixInputVectorOutputInterface& function_and_
       for (int k = 0; k < num_outputs; ++k) {
         // Get a rough idea of how large the function (k-th output value) is at X_p, X_m. We don't use f_k(X) in case the
         // function is changing very rapidly. We want a measure the magnitudes that went into the f(X_p) - f(X_m) computation.
-        const double function_value_norm = sqrt(Square(function_p[num_outputs + k]) + Square(function_m[num_outputs + k])) + std::numeric_limits<double>::min();  // if both values are 0, adding ~1e-308 prevents division by 0 without negatively affecting any dependent computations
+        const double function_value_norm = std::sqrt(Square(function_p[num_outputs + k]) + Square(function_m[num_outputs + k])) + std::numeric_limits<double>::min();  // if both values are 0, adding ~1e-308 prevents division by 0 without negatively affecting any dependent computations
         const double grad_function_a = function_and_derivative_evaluator.GetAnalyticGradient(i_rows, i_cols, k);
         const double fabs_grad_function_a = std::fabs(grad_function_a);
 
@@ -435,6 +554,47 @@ int PingDerivative(const PingableMatrixInputVectorOutputInterface& function_and_
   }  // end for i_cols: num_cols
 
   return ping_failures;
+}
+
+void ExpandDomainBounds(double scale_factor, std::vector<ClosedInterval> * domain_bounds) {
+#ifdef OL_VERBOSE_PRINT
+  PrintDomainBounds(domain_bounds.data(), dim);  // domain before expansion
+#endif
+  for (auto& interval : *domain_bounds) {
+    double side_length = interval.Length();
+    double midpoint = 0.5*(interval.max + interval.min);
+    side_length *= scale_factor;
+    side_length *= 0.5;  // want half of side_length b/c we grow outward from the midpoint
+    interval = {midpoint - side_length, midpoint + side_length};
+  }
+#ifdef OL_VERBOSE_PRINT
+  PrintDomainBounds(domain_bounds.data(), dim);  // expanded domain
+#endif
+}
+
+void FillRandomCovarianceHyperparameters(const boost::uniform_real<double>& uniform_double_hyperparameter, UniformRandomGenerator * uniform_generator, std::vector<double> * hyperparameters, CovarianceInterface * covariance) {
+  std::generate(hyperparameters->begin(), hyperparameters->end(), [&uniform_double_hyperparameter, uniform_generator]() {
+    return uniform_double_hyperparameter(uniform_generator->engine);
+  });
+  covariance->SetHyperparameters(hyperparameters->data());
+}
+
+void FillRandomDomainBounds(const boost::uniform_real<double>& uniform_double_lower_bound, const boost::uniform_real<double>& uniform_double_upper_bound, UniformRandomGenerator * uniform_generator, std::vector<ClosedInterval> * domain_bounds) {
+  std::generate(domain_bounds->begin(), domain_bounds->end(), [&uniform_double_lower_bound, &uniform_double_upper_bound, uniform_generator]() {
+    double min = uniform_double_lower_bound(uniform_generator->engine);
+    double max = uniform_double_upper_bound(uniform_generator->engine);
+    return ClosedInterval(min, max);
+  });
+}
+
+void FillRandomGaussianProcess(double const * restrict points_to_sample, double const * restrict noise_variance, int dim, int num_to_sample, double * restrict points_to_sample_value, GaussianProcess * gaussian_process) {
+  for (int j = 0; j < num_to_sample; ++j) {
+    // draw function value from the GP
+    points_to_sample_value[j] = gaussian_process->SamplePointFromGP(points_to_sample, noise_variance[j]);
+    // add function value back into the GP
+    gaussian_process->AddPointToGP(points_to_sample, points_to_sample_value[j], noise_variance[j]);
+    points_to_sample += dim;
+  }
 }
 
 }  // end namespace optimal_learning
