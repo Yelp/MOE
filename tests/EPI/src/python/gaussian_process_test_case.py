@@ -8,12 +8,13 @@ from optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp 
 from optimal_learning.EPI.src.python.models.optimal_gaussian_process import OptimalGaussianProcess as OptimalGaussianProcessPython
 from optimal_learning.EPI.src.python.models.sample_point import SamplePoint
 import optimal_learning.EPI.src.python.lib.math
+from optimal_learning.EPI.src.python.constant import default_gaussian_process_parameters
 
 class GaussianProcessTestCase(T.TestCase):
 
     default_domain = [[-1.0, 1.0], [-1.0, 1.0]]
-    default_covariance_signal_variance = 1.0
-    default_covariance_length = [0.5]
+    default_covariance_signal_variance = default_gaussian_process_parameters.signal_variance
+    default_covariance_length = default_gaussian_process_parameters.length_scale
     default_gaussian_process_class = OptimalGaussianProcessLinkedCpp
     default_sample_variance = 0.01
     tol = 1e-12 # TODO eliu look into this ticket #43006
