@@ -37,6 +37,7 @@ $ pserve --reload development.ini
 ```
 
 CMake Tips:
+
 1. Do you have dependencies installed in non-standard places? e.g., did you build your own boost? Pass the `-DCMAKE_FIND_ROOT_PATH` option to cmake: `cmake -DCMAKE_FIND_ROOT_PATH=/path/to/stuff ...` (OS X users with MacPorts should set `/opt/local`)
 2. Are you using the right compiler? e.g., for `gcc`, prepend `CC=gcc CXX=g++`: `CC=gcc CXX=g++ cmake ...` (OS X users need to explicitly set this.)
 3. Once you run cmake, the compiler is set in stone. If you mis-specify the compiler, run `rm -fr *` in `build/` before re-running `cmake` (the build-tree must be empty). See: http://www.cmake.org/Wiki/CMake_FAQ#How_do_I_use_a_different_compiler.3F
