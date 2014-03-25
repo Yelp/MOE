@@ -13,8 +13,6 @@ def main(global_config, **settings):
 
     # Routes
     config.add_route('home', '/')
-    config.add_route('docs', '/docs')
-    config.add_route('about', '/about')
     config.add_route('gp_ei', '/gp/ei')
     config.add_route('gp_plot', '/gp/plot')
     config.add_route('gp_ei_pretty', '/gp/ei/pretty')

@@ -1,7 +1,7 @@
-function plot_graphs(gp_data, ei_raw_data, xvals, points_sampled) {
+function plot_graphs(gp_data, ei_raw_data, xvals, points_sampled, highest_ei_point) {
 
     var margin = {top: 20, right: 20, bottom: 30, left: 50},
-        width = 900 - margin.left - margin.right,
+        width = 750 - margin.left - margin.right,
         height = 300 - margin.top - margin.bottom;
 
     // ei-graph
@@ -29,10 +29,13 @@ function plot_graphs(gp_data, ei_raw_data, xvals, points_sampled) {
         return a.x-b.x
     });
 
+    highest_ei = d3.max(ei_data, function(d) { return d.y; });
+    var best_ei_data = [{'x': highest_ei_point, 'y': highest_ei}, {'x': highest_ei_point, 'y':0.0}]
+
     var y = d3.scale.linear()
         .domain([
                 0,
-                d3.max(ei_data, function(d) { return d.y; }),
+                highest_ei,
                 ]
                 )
         .range([height, 0]);
@@ -81,6 +84,13 @@ function plot_graphs(gp_data, ei_raw_data, xvals, points_sampled) {
         .attr("stroke-width", 1)
         .attr("fill", "none");
 
+    var best_ei_line_graph = svg_ei.append("path")
+        .attr("class", "line")
+        .attr("d", make_line(best_ei_data))
+        .attr("stroke", "red")
+        .attr("stroke-width", 1)
+        .attr("fill", "none");
+
     // gp-graph
 
     var svg = d3.select(".gp-graph").append("svg")
@@ -94,8 +104,8 @@ function plot_graphs(gp_data, ei_raw_data, xvals, points_sampled) {
         gp_var_upper_data.push({
             'x': xvals[xpoint][0],
             'y0': parseFloat(gp_data['mean'][xpoint]),
-            'y1': parseFloat(gp_data['mean'][xpoint]) + parseFloat(gp_data['var'][xpoint]),
-            'bound': parseFloat(gp_data['mean'][xpoint]) + parseFloat(gp_data['var'][xpoint]),
+            'y1': parseFloat(gp_data['mean'][xpoint]) + parseFloat(gp_data['var'][xpoint][xpoint]),
+            'bound': parseFloat(gp_data['mean'][xpoint]) + parseFloat(gp_data['var'][xpoint][xpoint]),
         });
     }
     gp_var_upper_data.sort(function(a,b){
@@ -106,9 +116,9 @@ function plot_graphs(gp_data, ei_raw_data, xvals, points_sampled) {
     for (xpoint in xvals) {
         gp_var_lower_data.push({
             'x': xvals[xpoint][0],
-            'y0': parseFloat(gp_data['mean'][xpoint]) - parseFloat(gp_data['var'][xpoint]),
+            'y0': parseFloat(gp_data['mean'][xpoint]) - parseFloat(gp_data['var'][xpoint][xpoint]),
             'y1': parseFloat(gp_data['mean'][xpoint]),
-            'bound': parseFloat(gp_data['mean'][xpoint]) - parseFloat(gp_data['var'][xpoint]),
+            'bound': parseFloat(gp_data['mean'][xpoint]) - parseFloat(gp_data['var'][xpoint][xpoint]),
         });
     }
     gp_var_lower_data.sort(function(a,b){

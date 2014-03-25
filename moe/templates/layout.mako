@@ -10,20 +10,20 @@
   <link rel="shortcut icon" href="${request.static_url('moe:static/ico/favicon.ico')}" />
   <!-- bootstrap -->
   <link rel="stylesheet" href="${request.static_url('moe:static/css/bootstrap.css')}" />
-  <link rel="script" href="${request.static_url('moe:static/js/bootstrap.js')}" />
   <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+  <link rel="script" href="${request.static_url('moe:static/js/bootstrap.js')}" />
   <!-- d3 -->
   <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.1/d3.js"></script>
   <link rel="stylesheet" href="${request.static_url('moe:static/css/d3.css')}" />
   <!-- background image -->
-  <!-- <style type='text/css'>
-      body {
+  <style type='text/css'>
+      .background-image {
           background-image: url("${request.static_url('moe:static/img/moe_standing.png')}");
-          background-position: right bottom;
+          background-position: right top;
           background-repeat: no-repeat;
+          min-height: 500px;
           }
   </style>
-  -->
 </head>
 <body>
     <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -39,9 +39,7 @@
         </div>
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li ${'class="active"' if nav_active == 'home' else '' | n }><a href="${request.route_url('home')}">Home</a></li>
-            <li ${'class="active"' if nav_active == 'about' else '' | n }><a href="${request.route_url('about')}">About</a></li>
-            <li ${'class="active"' if nav_active == 'docs' else '' | n }><a href="${request.route_url('docs')}">Docs</a></li>
+            <li ${'class="active"' if nav_active == 'home' else '' | n }><a href="${request.route_url('home')}">About</a></li>
             <li ${'class="active"' if nav_active == 'demo' else '' | n }><a href="${request.route_url('gp_plot')}">Demo</a></li>
           </ul>
         </div><!--/.nav-collapse -->
