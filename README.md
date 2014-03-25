@@ -74,7 +74,7 @@ Contributing
 ------------
 
 1. Fork it.
-2. Create a branch (`git checkout -b my_moe_branch`) (make sure to run `make test`)
+2. Create a branch (`git checkout -b my_moe_branch`) (make sure to run `make test` and `pyflakes`/`jslint`)
 3. Commit your changes (`git commit -am "Added Some Mathemagics"`)
 4. Push to the branch (`git push origin my_moe_branch`)
 5. Open a [Pull Request][1]
