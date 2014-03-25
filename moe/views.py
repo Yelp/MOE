@@ -68,8 +68,8 @@ def _make_gp_from_gp_info(gp_info):
     # Load up the info
     points_sampled = gp_info['points_sampled']
     domain = gp_info['domain']
-    signal_variance = gp_info.get('signal_variance', 0.01)
-    length = gp_info.get('length_scale', [0.2])
+    signal_variance = gp_info['signal_variance']
+    length = gp_info['length_scale']
 
     # Build the required objects
     covariance_of_process = _make_default_covariance_of_process(
@@ -105,7 +105,7 @@ def gp_next_points_epi_view(request):
 
     GP = _make_gp_from_gp_info(gp_info)
 
-    ei_optimization_parameters = ExpectedImprovementOptimizationParameters(
+    ei_optimization_parameters_cpp = ExpectedImprovementOptimizationParameters(
             domain_type=C_GP.DomainTypes.tensor_product,
             optimizer_type=C_GP.OptimizerTypes.gradient_descent,
             num_random_samples=0,
@@ -120,7 +120,7 @@ def gp_next_points_epi_view(request):
                 ),
             )
     next_points = GP.multistart_expected_improvement_optimization(
-            ei_optimization_parameters,
+            ei_optimization_parameters_cpp,
             num_samples_to_generate,
             )
     expected_improvement = GP.evaluate_expected_improvement_at_point_list(next_points)
@@ -168,7 +168,7 @@ def gp_ei_view(request):
     points_being_sampled = params.get('points_being_sampled')
     mc_iterations = params.get('mc_iterations')
 
-    gp_info = request.json_body.get('gp_info')
+    gp_info = params.get('gp_info')
     if not gp_info:
         raise(ValueError, "POST request to /gp/ei needs gp_info")
 

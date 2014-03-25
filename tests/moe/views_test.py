@@ -6,6 +6,7 @@ from tests.EPI.src.python.gaussian_process_test_case import GaussianProcessTestC
 from optimal_learning.EPI.src.python.lib.math import get_latin_hypercube_points
 from optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp import ExpectedImprovementOptimizationParameters
 import optimal_learning.EPI.src.cpp.GPP as C_GP
+from optimal_learning.EPI.src.python.constant import default_expected_improvement_parameters, default_ei_optimization_parameters
 
 from moe.schemas import GpEiResponse, GpMeanVarResponse, GpNextPointsEpiResponse
 
@@ -137,27 +138,19 @@ class TestGpNextPointsEiView(RestGaussianProcessTestCase):
 
             GP, _ = self._make_random_processes_from_latin_hypercube(domain, num_points_in_sample)
             # Next points from C++
-            num_multistarts=5
-            gd_iterations=1000
-            max_num_restarts=3
-            gamma=0.9
-            pre_mult=1.0
-            mc_iterations=1000
-            max_relative_change=1.0
-            tolerance=1.0e-7
 
             ei_optimization_parameters = ExpectedImprovementOptimizationParameters(
                     domain_type=C_GP.DomainTypes.tensor_product,
                     optimizer_type=C_GP.OptimizerTypes.gradient_descent,
                     num_random_samples=0,
                     optimizer_parameters=C_GP.GradientDescentParameters(
-                        num_multistarts,
-                        gd_iterations,
-                        max_num_restarts,
-                        gamma,
-                        pre_mult,
-                        max_relative_change,
-                        tolerance,
+                        default_ei_optimization_parameters.num_multistarts,
+                        default_ei_optimization_parameters.gd_iterations,
+                        default_ei_optimization_parameters.max_num_restarts,
+                        default_ei_optimization_parameters.gamma,
+                        default_ei_optimization_parameters.pre_mult,
+                        default_ei_optimization_parameters.max_relative_change,
+                        default_ei_optimization_parameters.tolerance,
                         ),
                     )
             next_points = GP.multistart_expected_improvement_optimization(
@@ -207,7 +200,7 @@ class TestGpEiView(RestGaussianProcessTestCase):
             'points_to_evaluate': points_to_evaluate,
             'gp_info': self._build_gp_info(GP),
             'points_being_sampled': [],
-            'mc_iterations': 1000,
+            'mc_iterations': default_expected_improvement_parameters.mc_iterations,
             })
         return json_payload
 
