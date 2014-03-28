@@ -333,6 +333,7 @@ OL_WARN_UNUSED_RESULT int HyperparameterLikelihoodOptimizationTestCore(LogLikeli
   int total_errors = 0;
   int current_errors = 0;
 
+  // covariance object that will be set with the wrong hyperparameters; used as an initial guess for optimization
   CovarianceClass covariance_wrong(dim, 1.0, 1.0);
   int num_hyperparameters = covariance_wrong.GetNumberOfHyperparameters();
 
@@ -475,6 +476,7 @@ OL_WARN_UNUSED_RESULT int HyperparameterLikelihoodNewtonOptimizationTestCore(Log
   int total_errors = 0;
   int current_errors = 0;
 
+  // covariance object that will be set with the wrong hyperparameters; used as an initial guess for optimization
   CovarianceClass covariance_wrong(dim, 1.0, 1.0);
   int num_hyperparameters = covariance_wrong.GetNumberOfHyperparameters();
 
@@ -605,8 +607,15 @@ OL_WARN_UNUSED_RESULT int MultistartHyperparameterLikelihoodNewtonOptimizationTe
   int total_errors = 0;
   int current_errors = 0;
 
-  CovarianceClass covariance_wrong(dim, 1.0, 1.0);
-  int num_hyperparameters = covariance_wrong.GetNumberOfHyperparameters();
+  // seed randoms
+  UniformRandomGenerator uniform_generator(5762);
+  boost::uniform_real<double> uniform_double_hyperparameter(1.0, 2.5);
+  boost::uniform_real<double> uniform_double_lower_bound(-2.0, 0.5);
+  boost::uniform_real<double> uniform_double_upper_bound(2.0, 3.5);
+
+  std::vector<double> noise_variance(num_sampled, 0.1);
+  MockGaussianProcessPriorData<DomainType> mock_gp_data(CovarianceClass(dim, 1.0, 1.0), noise_variance, dim, num_sampled, uniform_double_lower_bound, uniform_double_upper_bound, uniform_double_hyperparameter, &uniform_generator);
+  int num_hyperparameters = mock_gp_data.covariance_ptr->GetNumberOfHyperparameters();
 
   std::vector<double> hyperparameters_truth(num_hyperparameters);  // truth hyperparameters
   std::vector<double> hyperparameters_optimized(num_hyperparameters);  // optimized hyperparameters
@@ -620,23 +629,14 @@ OL_WARN_UNUSED_RESULT int MultistartHyperparameterLikelihoodNewtonOptimizationTe
   }
   HyperparameterDomainType hyperparameter_domain(hyperparameter_domain_bounds.data(), num_hyperparameters);
 
-  // seed randoms
-  UniformRandomGenerator uniform_generator(5762);
-  boost::uniform_real<double> uniform_double_hyperparameter(1.0, 2.5);
-  boost::uniform_real<double> uniform_double_lower_bound(-2.0, 0.5);
-  boost::uniform_real<double> uniform_double_upper_bound(2.0, 3.5);
-
-  std::vector<double> noise_variance(num_sampled, 0.1);
-  MockGaussianProcessPriorData<DomainType> mock_gp_data(covariance_wrong, noise_variance, dim, num_sampled, uniform_double_lower_bound, uniform_double_upper_bound, uniform_double_hyperparameter, &uniform_generator);
-
   LogLikelihoodEvaluator log_likelihood_eval(mock_gp_data.gaussian_process_ptr->points_sampled().data(), mock_gp_data.gaussian_process_ptr->points_sampled_value().data(), mock_gp_data.gaussian_process_ptr->noise_variance().data(), dim, num_sampled);
-  typename LogLikelihoodEvaluator::StateType log_likelihood_state(log_likelihood_eval, covariance_wrong);
+  typename LogLikelihoodEvaluator::StateType log_likelihood_state(log_likelihood_eval, *mock_gp_data.covariance_ptr);
 
   initial_likelihood = log_likelihood_eval.ComputeLogLikelihood(log_likelihood_state);
   OL_VERBOSE_PRINTF("initial likelihood: %.18E\n", initial_likelihood);
 
   bool found_flag = false;
-  MultistartNewtonHyperparameterOptimization(log_likelihood_eval, covariance_wrong, newton_parameters, hyperparameter_log_domain_bounds.data(), max_num_threads, &found_flag, &uniform_generator, hyperparameters_optimized.data());
+  MultistartNewtonHyperparameterOptimization(log_likelihood_eval, *mock_gp_data.covariance_ptr, newton_parameters, hyperparameter_log_domain_bounds.data(), max_num_threads, &found_flag, &uniform_generator, hyperparameters_optimized.data());
   if (!found_flag) {
     ++total_errors;
   }
@@ -664,7 +664,7 @@ OL_WARN_UNUSED_RESULT int MultistartHyperparameterLikelihoodNewtonOptimizationTe
   total_errors += current_errors;
 
   // verify that convergence occurred, start from the hyperparameters used to generate data (real solution should be nearby)
-  total_errors += NewtonHyperparameterOptimization(log_likelihood_eval, covariance_wrong, newton_parameters, hyperparameter_domain, hyperparameters_truth.data());
+  total_errors += NewtonHyperparameterOptimization(log_likelihood_eval, *mock_gp_data.covariance_ptr, newton_parameters, hyperparameter_domain, hyperparameters_truth.data());
 #ifdef OL_VERBOSE_PRINT
   PrintMatrix(hyperparameters_truth.data(), 1, num_hyperparameters);
 #endif
@@ -707,7 +707,7 @@ OL_WARN_UNUSED_RESULT int MultistartHyperparameterLikelihoodNewtonOptimizationTe
 
     // build state vector
     std::vector<typename LogLikelihoodEvaluator::StateType> log_likelihood_state_vector;
-    SetupLogLikelihoodState(log_likelihood_eval, covariance_wrong, max_num_threads, &log_likelihood_state_vector);
+    SetupLogLikelihoodState(log_likelihood_eval, *mock_gp_data.covariance_ptr, max_num_threads, &log_likelihood_state_vector);
 
     int chunk_size = 2;
 
