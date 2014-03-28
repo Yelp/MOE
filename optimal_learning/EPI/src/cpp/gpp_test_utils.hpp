@@ -276,7 +276,7 @@ struct MockGaussianProcessPriorData {
 
   /*
     Prevent inline destructor: the dtor of std::unique_ptr<T> needs access to T's dtor (b/c
-    unique_ptr's dtor basically calls delete on T*). But we want to foward-declare all of our
+    unique_ptr's dtor basically calls delete on T*). But we want to forward-declare all of our
     T objects, so the dtor must be defined in the cpp file where those defintions are visible.
   */
   ~MockGaussianProcessPriorData();
