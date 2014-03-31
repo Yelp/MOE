@@ -1,6 +1,5 @@
-SUBDIRS=build
-PYTHON=PYTHONPATH="$(shell pwd)" python
-TESTIFY=YELPCODE="$(shell pwd)" testify
+SUBDIRS=moe/build
+TESTIFY=testify
 
 all: production
 
@@ -8,7 +7,7 @@ production:
 		for SUBDIR in $(SUBDIRS); do if [ -e $$SUBDIR/Makefile ]; then ($(MAKE) -C $$SUBDIR $(MFLAGS)); fi; done
 
 test:
-		$(TESTIFY) -v tests
+		$(TESTIFY) -v moe.tests
 
 docs:
 		$(MAKE) -C doc doxygen

@@ -2,9 +2,9 @@
 
 import numpy # for sci comp
 
-import optimal_learning.EPI.src.python.models.sample_point
-import optimal_learning.EPI.src.python.models.covariance_of_process
-import optimal_learning.EPI.src.python.lib.math
+import moe.optimal_learning.EPI.src.python.models.sample_point
+import moe.optimal_learning.EPI.src.python.models.covariance_of_process
+import moe.optimal_learning.EPI.src.python.lib.math
 
 import logging
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -42,7 +42,7 @@ class GaussianProcess(object):
         self.best_so_far = initial_best_so_far # lowest value found thus far
 
         if not covariance_of_process:
-            self.cop = optimal_learning.EPI.src.python.models.covariance_of_process.CovarianceOfProcess()
+            self.cop = moe.optimal_learning.EPI.src.python.models.covariance_of_process.CovarianceOfProcess()
         else:
             #TODO type check
             self.cop = covariance_of_process
@@ -156,9 +156,9 @@ class GaussianProcess(object):
             sample_variance_matrix = numpy.diag(
                     [sample_var for sample_var in self.sample_variance_of_samples]
                     )
-            L = optimal_learning.EPI.src.python.lib.math.cholesky_decomp(K + sample_variance_matrix)
+            L = moe.optimal_learning.EPI.src.python.lib.math.cholesky_decomp(K + sample_variance_matrix)
         else:
-            L = optimal_learning.EPI.src.python.lib.math.cholesky_decomp(K)
+            L = moe.optimal_learning.EPI.src.python.lib.math.cholesky_decomp(K)
 
         # solve for (cholesky) alpha, K^-1 * y^T, see RW pg19
         y = numpy.zeros(len(self.points_sampled))
@@ -197,7 +197,7 @@ class GaussianProcess(object):
         n = len(y)
         K_inv_y = numpy.linalg.solve(K, y)
         log_det_K = 0
-        L = optimal_learning.EPI.src.python.lib.math.cholesky_decomp(K)
+        L = moe.optimal_learning.EPI.src.python.lib.math.cholesky_decomp(K)
         for i, mat_row in enumerate(L):
             log_det_K += 2.0 * numpy.log( mat_row[i] )
 
@@ -241,12 +241,12 @@ class GaussianProcess(object):
         :Returns: 1-D numpy array
         """
         # build grad_K_star
-        grad_K_star = optimal_learning.EPI.src.python.lib.math.make_empty_2D_list(len(points_to_sample),len(self.points_sampled))
+        grad_K_star = moe.optimal_learning.EPI.src.python.lib.math.make_empty_2D_list(len(points_to_sample),len(self.points_sampled))
         for i, to_sample in enumerate(points_to_sample):
             for j, sampled in enumerate(self.points_sampled):
                 grad_K_star[i][j] = numpy.array(self.cop.grad_cov(to_sample, sampled.point))
 
-        grad_mu = optimal_learning.EPI.src.python.lib.math.matrix_vector_multiply(
+        grad_mu = moe.optimal_learning.EPI.src.python.lib.math.matrix_vector_multiply(
                 numpy.array(grad_K_star),
                 numpy.linalg.solve(self.covariance_matrix, numpy.array(self.values_of_samples).T)
                 )
@@ -255,7 +255,7 @@ class GaussianProcess(object):
 
     def build_grad_K_star(self, points_to_sample):
         # build grad_K_star
-        grad_K_star = optimal_learning.EPI.src.python.lib.math.make_empty_2D_list(len(points_to_sample),len(self.points_sampled))
+        grad_K_star = moe.optimal_learning.EPI.src.python.lib.math.make_empty_2D_list(len(points_to_sample),len(self.points_sampled))
         for l, to_sample in enumerate(points_to_sample):
             for m, sampled in enumerate(self.points_sampled):
                 grad_K_star[l][m] = numpy.array(self.cop.grad_cov(to_sample, sampled.point))
@@ -324,7 +324,7 @@ class GaussianProcess(object):
 
         mu_star, var_star = self.get_mean_and_var_of_points(points_to_sample)
 
-        grad_cholesky_decomp = optimal_learning.EPI.src.python.lib.math.make_empty_2D_list(len(points_to_sample), len(points_to_sample))
+        grad_cholesky_decomp = moe.optimal_learning.EPI.src.python.lib.math.make_empty_2D_list(len(points_to_sample), len(points_to_sample))
 
         cholesky_decomp = var_star.copy() # Just to start!
 

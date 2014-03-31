@@ -3,12 +3,12 @@
 import testify as T
 import numpy
 
-from optimal_learning.EPI.src.python.models.covariance_of_process import CovarianceOfProcess
-from optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp import OptimalGaussianProcessLinkedCpp
-from optimal_learning.EPI.src.python.models.optimal_gaussian_process import OptimalGaussianProcess as OptimalGaussianProcessPython
-from optimal_learning.EPI.src.python.models.sample_point import SamplePoint
-import optimal_learning.EPI.src.python.lib.math
-from optimal_learning.EPI.src.python.constant import default_gaussian_process_parameters
+from moe.optimal_learning.EPI.src.python.models.covariance_of_process import CovarianceOfProcess
+from moe.optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp import OptimalGaussianProcessLinkedCpp
+from moe.optimal_learning.EPI.src.python.models.optimal_gaussian_process import OptimalGaussianProcess as OptimalGaussianProcessPython
+from moe.optimal_learning.EPI.src.python.models.sample_point import SamplePoint
+import moe.optimal_learning.EPI.src.python.lib.math
+from moe.optimal_learning.EPI.src.python.constant import default_gaussian_process_parameters
 
 class GaussianProcessTestCase(T.TestCase):
 
@@ -135,7 +135,7 @@ class GaussianProcessTestCase(T.TestCase):
                 )
 
         # A num_points_in_sample random latin hypercube points
-        stencil_points_to_sample = optimal_learning.EPI.src.python.lib.math.get_latin_hypercube_points(num_points_in_sample, domain)
+        stencil_points_to_sample = moe.optimal_learning.EPI.src.python.lib.math.get_latin_hypercube_points(num_points_in_sample, domain)
 
         # Sample stencil
         self._sample_points_from_gaussian_process(

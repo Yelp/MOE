@@ -4,10 +4,10 @@ import testify as T
 import numpy
 import random
 
-from tests.EPI.src.python.gaussian_process_test_case import GaussianProcessTestCase
-import build.GPP as C_GP
-import optimal_learning.EPI.src.python.lib.math
-from optimal_learning.EPI.src.python.models.sample_point import SamplePoint
+from moe.tests.EPI.src.python.gaussian_process_test_case import GaussianProcessTestCase
+import moe.build.GPP as C_GP
+import moe.optimal_learning.EPI.src.python.lib.math
+from moe.optimal_learning.EPI.src.python.models.sample_point import SamplePoint
 
 class CppUnitTestWrapperTest(GaussianProcessTestCase):
     # wrapper to invoke call a C++ function that runs unit tests written in C++
@@ -64,7 +64,7 @@ class Get1DAnalyticEIAndGradTest(GaussianProcessNumericalAnalysisTestCase):
 
             # select a stencil of num_points_to_test random latin hypercube points
             for _ in range(10):
-                points_to_sample = optimal_learning.EPI.src.python.lib.math.get_latin_hypercube_points(num_points_in_sample, domain)
+                points_to_sample = moe.optimal_learning.EPI.src.python.lib.math.get_latin_hypercube_points(num_points_in_sample, domain)
 
                 EI_c = cpp_GP.get_1D_analytic_expected_improvement(points_to_sample[0])
                 EI_p = python_GP.get_1D_analytic_expected_improvement(points_to_sample[0])
@@ -324,7 +324,7 @@ class GetMultistartBestTest(GaussianProcessTestCase):
                     )
 
             # select a stencil of num_points_to_test random latin hypercube points
-            stencil_points_to_sample = optimal_learning.EPI.src.python.lib.math.get_latin_hypercube_points(10, domain)
+            stencil_points_to_sample = moe.optimal_learning.EPI.src.python.lib.math.get_latin_hypercube_points(10, domain)
 
             # Sample stencil
             for point in stencil_points_to_sample:
