@@ -1,5 +1,4 @@
-MOE
-===
+# MOE
 
 Metric Optimization Engine.
 
@@ -7,8 +6,27 @@ Metric Optimization Engine.
 
 [2]: http://sc932.github.io/MOE/
 
-Install
--------
+## Running MOE
+
+### REST/web server and interactive demo
+
+from the directory MOE is installed:
+
+```bash
+$ pserve --reload development.ini
+```
+
+In your favorite browser go to: http://127.0.0.1:6543/
+
+### CLI
+
+```bash
+$ ipython
+> import moe.optimal_learning
+> # Do Stuff
+```
+
+# Install
 
 Requires:
 
@@ -20,36 +38,24 @@ Requires:
 6. `doxygen 1.8.5+` - http://www.stack.nl/~dimitri/doxygen/index.html
 7. We recommend using a virtualenv http://www.jontourage.com/2011/02/09/virtualenv-pip-basics/
 
-Install:
+## Install:
 
-Read "CMake Tips" (below) first if you are unfamiliar with CMake. OS X users in particular will probably need to modify their `cmake` command.
 ```bash
 $ git clone https://github.com/sc932/MOE.git
 $ cd MOE
-$ git pull origin master
-$ mkdir build
-$ cd build
-$ cmake ../optimal_learning/EPI/src/cpp `# This line may require extra options and/or env vars.`
-$ cd ..
-$ make
 $ pip install -e .
-$ pserve --reload development.ini
+$ python setup.py install
 ```
 
-CMake Tips:
-
-1. Do you have dependencies installed in non-standard places? e.g., did you build your own boost? Pass the `-DCMAKE_FIND_ROOT_PATH` option to cmake: `cmake -DCMAKE_FIND_ROOT_PATH=/path/to/stuff ...` (OS X users with MacPorts should set `/opt/local`)
-2. Are you using the right compiler? e.g., for `gcc`, prepend `CC=gcc CXX=g++`: `CC=gcc CXX=g++ cmake ...` (OS X users need to explicitly set this.)
-3. Once you run cmake, the compiler is set in stone. If you mis-specify the compiler, run `rm -fr *` in `build/` before re-running `cmake` (the build-tree must be empty). See: http://www.cmake.org/Wiki/CMake_FAQ#How_do_I_use_a_different_compiler.3F
-4. Using OS X with MacPorts? Your `cmake` command should probably read: `CC=gcc CXX=g++ cmake -DCMAKE_FIND_ROOT_PATH=/opt/local ../optimal_learning/EPI/src/cpp`
-
-OSX Tips:
+### OSX Tips:
 
 0. Are you sure you wouldn't rather be running linux?
 1. Download MacPorts - http://www.macports.org/install.php (If you change the install directory from `/opt/local`, don't forget to update the cmake invocation.)
 2. MacPorts can resolve most dependencies. Make sure you set your `PATH` env var.
 3. Download xQuartz (needed for X11, needed for matplotlib) - http://xquartz.macosforge.org/landing/ (Also available through MacPorts, see item 4.)
 4. Getting gcc, boost, matplotlib, and xQuartz (`xorg-server) reqs (before installing MOE):
+5. Make sure you create your virtualenv with the correct python `--python=/opt/local/bin/python` if you are using MacPorts
+6. If you are using another package manager (like homebrew) you may need to modify `opt/local` below to point to your `Cellar` directory.
 
 ```bash
 $ sudo port selfupdate
@@ -59,19 +65,21 @@ $ sudo port install boost
 $ sudo port install xorg-server
 $ sudo port install py-matplotlib
 $ sudo port install doxygen
+$ export MOE_CMAKE_OPTS=-DCMAKE_FIND_ROOT_PATH=/opt/local && export MOE_CC_PATH=/opt/local/bin/gcc && export MOE_CXX_PATH=/opt/local/bin/g++
 ```
 
-More OSX Tips:
-
-1. Make sure you create your virtualenv with the correct python `--python=/opt/local/bin/python` if you are using MacPorts
-
-Linux Tips:
+### Linux Tips:
 
 1. You can apt-get everything you need. Woo real package managers!
 2. Having trouble with matplotlib dependencies? `sudo apt-get install python-matplotlib`
 
-Contributing
-------------
+### CMake Tips:
+
+1. Do you have dependencies installed in non-standard places? e.g., did you build your own boost? Set the env var: `export MOE_CMAKE_OPTS=-DCMAKE_FIND_ROOT_PATH=/path/to/stuff ...` (OS X users with MacPorts should set `/opt/local`) This can be used to set any number of cmake arguments.
+2. Are you using the right compiler? e.g., for `gcc`, run `export MOE_CC_PATH=gcc && export MOE_CXX_PATH=g++` (OS X users need to explicitly set this.)
+
+
+# Contributing
 
 1. Fork it.
 2. Create a branch (`git checkout -b my_moe_branch`) (make sure to run `make test` and `pyflakes`/`jslint`)

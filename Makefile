@@ -1,4 +1,4 @@
-SUBDIRS=build
+SUBDIRS=moe/build
 PYTHON=PYTHONPATH="$(shell pwd)" python
 TESTIFY=YELPCODE="$(shell pwd)" testify
 
