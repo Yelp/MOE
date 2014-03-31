@@ -5,10 +5,10 @@ import numpy
 import logging
 import scipy.stats # for stats dists
 
-import optimal_learning.EPI.src.python.lib.mvncdf # multivariate normal cdf
-import optimal_learning.EPI.src.python.models.covariance_of_process
-import optimal_learning.EPI.src.python.lib.math
-from optimal_learning.EPI.src.python.models.gaussian_process import GaussianProcess
+import moe.optimal_learning.EPI.src.python.lib.mvncdf # multivariate normal cdf
+import moe.optimal_learning.EPI.src.python.models.covariance_of_process
+import moe.optimal_learning.EPI.src.python.lib.math
+from moe.optimal_learning.EPI.src.python.models.gaussian_process import GaussianProcess
 
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -58,7 +58,7 @@ class OptimalGaussianProcess(GaussianProcess):
         """
         mu_star, var_star = self.get_mean_and_var_of_points([point_to_sample])
 
-        if self.domain and optimal_learning.EPI.src.python.lib.math.not_in_domain(point_to_sample, self.domain):
+        if self.domain and moe.optimal_learning.EPI.src.python.lib.math.not_in_domain(point_to_sample, self.domain):
             return 0.0
 
         return numpy.max([0.0,(self.best_so_far - mu_star)*scipy.stats.norm.cdf((self.best_so_far - mu_star)/numpy.sqrt(abs(var_star))) + numpy.sqrt(abs(var_star))*scipy.stats.norm.pdf((self.best_so_far - mu_star)/numpy.sqrt(abs(var_star)))])
@@ -72,7 +72,7 @@ class OptimalGaussianProcess(GaussianProcess):
         """
 
         if self.domain:
-            if optimal_learning.EPI.src.python.lib.math.not_in_domain(point_one, self.domain) or optimal_learning.EPI.src.python.lib.math.not_in_domain(point_two, self.domain):
+            if moe.optimal_learning.EPI.src.python.lib.math.not_in_domain(point_one, self.domain) or moe.optimal_learning.EPI.src.python.lib.math.not_in_domain(point_two, self.domain):
                 return 0.0
 
         eps = 0.00001
@@ -107,7 +107,7 @@ class OptimalGaussianProcess(GaussianProcess):
         def D_func(m1, m2, s1, s2, c12, best):
             Gamma = numpy.array([[s1*s1, c12 - s1*s1],[c12 - s1*s1, s2*s2 + s1*s1 - 2.0*c12]])
 
-            return optimal_learning.EPI.src.python.lib.mvncdf.mvnormcdf(numpy.array([-numpy.inf,-numpy.inf]), numpy.array([best - m1, m1 - m2]), numpy.array([0.0,0.0]), Gamma)
+            return moe.optimal_learning.EPI.src.python.lib.mvncdf.mvnormcdf(numpy.array([-numpy.inf,-numpy.inf]), numpy.array([best - m1, m1 - m2]), numpy.array([0.0,0.0]), Gamma)
 
         return self.get_1D_analytic_expected_improvement(point_one) + self.get_1D_analytic_expected_improvement(point_two) + B_func(mu_one, mu_two, sigma_one, sigma_two, sigma_cross, self.best_so_far) + B_func(mu_two, mu_one, sigma_two, sigma_one, sigma_cross, self.best_so_far)
 
@@ -134,7 +134,7 @@ class OptimalGaussianProcess(GaussianProcess):
         # if we resrict the function to a domain there can be no improvement outside of it
         if self.domain:
             for point in points_to_sample:
-                if optimal_learning.EPI.src.python.lib.math.not_in_domain(point, self.domain):
+                if moe.optimal_learning.EPI.src.python.lib.math.not_in_domain(point, self.domain):
                     return 0.0
 
         # if we are sampling one or two points find the analytic result
@@ -169,7 +169,7 @@ class OptimalGaussianProcess(GaussianProcess):
                     if improvement[i] >= numpy.max(improvement) and improvement[i] > 0.0:
                         if i == 0:
                             aggregate_dx -= grad_mu[0]
-                        aggregate_dx -= optimal_learning.EPI.src.python.lib.math.matrix_vector_multiply(grad_chol_decomp, normals[it][:].T)[i]
+                        aggregate_dx -= moe.optimal_learning.EPI.src.python.lib.math.matrix_vector_multiply(grad_chol_decomp, normals[it][:].T)[i]
             else:
                 if improvement > 0.0:
                     aggregate_dx += -grad_mu[0] - grad_chol_decomp[0][0]*normals[it][0]
@@ -208,7 +208,7 @@ class OptimalGaussianProcess(GaussianProcess):
         best_point = None
         for starting_point in starting_points:
             x_path, x_hat, EI = self.get_next_step(starting_point, points_being_sampled, gamma=gamma, iterations=iterations, max_N=max_N)
-            if not self.domain or not optimal_learning.EPI.src.python.lib.math.not_in_domain(x_hat, self.domain):
+            if not self.domain or not moe.optimal_learning.EPI.src.python.lib.math.not_in_domain(x_hat, self.domain):
                 polyak_ruppert_paths.append([x_path, x_hat, EI])
                 if polyak_ruppert_paths[-1][2] > best_improvement:
                     best_improvement = polyak_ruppert_paths[-1][2]
@@ -218,11 +218,11 @@ class OptimalGaussianProcess(GaussianProcess):
 
     def get_multistart_best(self, random_restarts=5, points_being_sampled=[]):
         best_improvement = -numpy.inf
-        best_next_step = optimal_learning.EPI.src.python.lib.math.make_rand_point(self.domain)
+        best_next_step = moe.optimal_learning.EPI.src.python.lib.math.make_rand_point(self.domain)
         for _ in range(random_restarts):
-            path, next_step, improvement = self.get_next_step(optimal_learning.EPI.src.python.lib.math.make_rand_point(self.domain), points_being_sampled)
+            path, next_step, improvement = self.get_next_step(moe.optimal_learning.EPI.src.python.lib.math.make_rand_point(self.domain), points_being_sampled)
             #path, next_step, improvement = self.get_next_step(numpy.array([-2.141592, 11.274999]), [numpy.array([1.0,0.0])], [0,1])
-            if improvement > best_improvement and not optimal_learning.EPI.src.python.lib.math.not_in_domain(next_step, self.domain):
+            if improvement > best_improvement and not moe.optimal_learning.EPI.src.python.lib.math.not_in_domain(next_step, self.domain):
                 best_improvement = improvement
                 best_next_step = next_step
         return best_next_step

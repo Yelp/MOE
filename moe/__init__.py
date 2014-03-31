@@ -42,5 +42,12 @@ def main(global_config, **settings):
                 )
         config.registry.settings['mongodb_conn'] = conn
         config.add_subscriber(add_mongo_db, NewRequest)
-    config.scan()
+    config.scan(
+            ignore=[
+                'moe.optimal_learning.EPI.src.python.lib.cuda_linkers',
+                'moe.optimal_learning.EPI.src.python.lib.plotter',
+                'moe.optimal_learning.EPI.src.python.models.plottable_optimal_gaussian_process',
+                'moe.tests',
+                ],
+            )
     return config.make_wsgi_app()

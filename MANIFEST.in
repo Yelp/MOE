@@ -6,9 +6,9 @@ include *.ini
 # docs
 recursive-include doc *
 # optimal learning
-recursive-include moe/optimal_learning
+recursive-include moe/optimal_learning *
 # webapp
-recursive-include moe
+recursive-include moe *
 
 # remove what we don't want, kept in step with .gitignore
 # Logs
@@ -35,8 +35,8 @@ global-exclude *.lai
 global-exclude *.la
 global-exclude *.a
 # built doc files
-recursive-exclude doc/_*
-recursive-exclude doc/xml/*
-recursive-exclude doc/latex/*
-recursive-exclude doc/html/*
-recursive-exclude doc/.doctrees/*
+recursive-exclude doc/_* *
+recursive-exclude doc/xml/* *
+recursive-exclude doc/latex/* *
+recursive-exclude doc/html/* *
+recursive-exclude doc/.doctrees/* *

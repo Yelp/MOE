@@ -3,11 +3,11 @@
 import testify as T
 import numpy
 
-from tests.EPI.src.python.gaussian_process_test_case import GaussianProcessTestCase
-from optimal_learning.EPI.src.python.models.covariance_of_process import CovarianceOfProcess
-from optimal_learning.EPI.src.python.models.gaussian_process import GaussianProcess
-from optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp import OptimalGaussianProcessLinkedCpp
-from optimal_learning.EPI.src.python.lib.math import get_latin_hypercube_points
+from moe.tests.EPI.src.python.gaussian_process_test_case import GaussianProcessTestCase
+from moe.optimal_learning.EPI.src.python.models.covariance_of_process import CovarianceOfProcess
+from moe.optimal_learning.EPI.src.python.models.gaussian_process import GaussianProcess
+from moe.optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp import OptimalGaussianProcessLinkedCpp
+from moe.optimal_learning.EPI.src.python.lib.math import get_latin_hypercube_points
 
 MACHINE_PRECISION = 1e-8
 

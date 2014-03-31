@@ -3,7 +3,7 @@
 import testify as T
 import numpy
 
-import optimal_learning.EPI.src.python.lib.math
+import moe.optimal_learning.EPI.src.python.lib.math
 
 
 MACHINE_PRECISION = 1e-13
@@ -56,20 +56,20 @@ class PointGenerationTest(T.TestCase):
         """
         for domain in self.domains_to_test:
             for num_points in self.num_points_to_test:
-                points = optimal_learning.EPI.src.python.lib.math.get_latin_hypercube_points(num_points, domain)
+                points = moe.optimal_learning.EPI.src.python.lib.math.get_latin_hypercube_points(num_points, domain)
 
                 for point in points:
                     T.assert_equal(self._point_in_domain(point, domain), True)
-                    T.assert_equal(optimal_learning.EPI.src.python.lib.math.not_in_domain(point, domain), False)
+                    T.assert_equal(moe.optimal_learning.EPI.src.python.lib.math.not_in_domain(point, domain), False)
 
     def test_make_rand_point_within_domain(self):
         """Tests that make_rand_point(domain) returns a point in the domain
         """
         for domain in self.domains_to_test:
-            point = optimal_learning.EPI.src.python.lib.math.make_rand_point(domain)
+            point = moe.optimal_learning.EPI.src.python.lib.math.make_rand_point(domain)
 
             T.assert_equal(self._point_in_domain(point, domain), True)
-            T.assert_equal(optimal_learning.EPI.src.python.lib.math.not_in_domain(point, domain), False)
+            T.assert_equal(moe.optimal_learning.EPI.src.python.lib.math.not_in_domain(point, domain), False)
 
     def test_latin_hypercube_equally_spaced(self):
         """Sampling from a latin hypercube results in a set of points
@@ -78,7 +78,7 @@ class PointGenerationTest(T.TestCase):
         """
         for domain in self.domains_to_test:
             for num_points in self.num_points_to_test:
-                points = optimal_learning.EPI.src.python.lib.math.get_latin_hypercube_points(num_points, domain)
+                points = moe.optimal_learning.EPI.src.python.lib.math.get_latin_hypercube_points(num_points, domain)
 
                 for dim in range(len(domain)):
                     # This size of each slice
@@ -121,7 +121,7 @@ class MatrixOpsTest(T.TestCase):
                     numpy.random.uniform(1, 2, size=(size_of_matrix,size_of_matrix))
                     )
             matrix = numpy.dot(true_cholesky, true_cholesky.T)
-            calculated_cholesky = optimal_learning.EPI.src.python.lib.math.cholesky_decomp(matrix)
+            calculated_cholesky = moe.optimal_learning.EPI.src.python.lib.math.cholesky_decomp(matrix)
             self._assert_matrix_equal(
                     calculated_cholesky - true_cholesky,
                     numpy.zeros(shape=(size_of_matrix, size_of_matrix))
@@ -136,7 +136,7 @@ class MatrixOpsTest(T.TestCase):
                     numpy.random.uniform(1, 2, size=(size_of_matrix, size_of_matrix))
                     )
             A = numpy.dot(true_cholesky, true_cholesky.T)
-            A_inv = optimal_learning.EPI.src.python.lib.math.inverse_via_cholesky(A)
+            A_inv = moe.optimal_learning.EPI.src.python.lib.math.inverse_via_cholesky(A)
             self._assert_matrix_equal(
                     numpy.dot(A, A_inv),
                     numpy.diag(numpy.ones(size_of_matrix))
@@ -147,7 +147,7 @@ class MatrixOpsTest(T.TestCase):
         """
         for size_of_matrix in range(2,10):
             A = numpy.tril(numpy.random.uniform(1, 2, size=(size_of_matrix,size_of_matrix)))
-            A_inv = optimal_learning.EPI.src.python.lib.math.inverse_via_backwards_sub(A)
+            A_inv = moe.optimal_learning.EPI.src.python.lib.math.inverse_via_backwards_sub(A)
             self._assert_matrix_equal(
                     numpy.dot(A, A_inv),
                     numpy.diag(numpy.ones(size_of_matrix))
@@ -164,7 +164,7 @@ class MatrixOpsTest(T.TestCase):
             rand_diag_vec = numpy.random.normal(size=size)
             rand_diag_matrix = numpy.diag(rand_diag_vec)
 
-            method_result = optimal_learning.EPI.src.python.lib.math.vector_diag_vector_product(
+            method_result = moe.optimal_learning.EPI.src.python.lib.math.vector_diag_vector_product(
                     rand_vec_one,
                     rand_diag_vec,
                     rand_vec_two

@@ -109,22 +109,34 @@ class InstallCppComponents(install):
         if os.path.exists(build_dir):
             shutil.rmtree(build_dir)
         os.mkdir(build_dir)
+        local_build_dir = os.path.join(here, 'moe', 'build')
+        if os.path.exists(local_build_dir):
+            shutil.rmtree(local_build_dir)
+        os.mkdir(local_build_dir)
 
         cpp_location = os.path.join(here, 'moe', 'optimal_learning', 'EPI', 'src', 'cpp')
 
+        # Run cmake
         proc = subprocess.Popen(
                 [
                     cmake_path,
                     cmake_options,
                     cpp_location,
                     ],
-                cwd=build_dir,
+                cwd=local_build_dir,
                 env=env,
                 )
         proc.wait()
 
-        proc = subprocess.Popen(["make"], cwd=build_dir)
+        # Compile everything
+        proc = subprocess.Popen(["make"], cwd=local_build_dir, env=env)
         proc.wait()
+
+        GPP_so = os.path.join(local_build_dir, 'GPP.so')
+        build_init = os.path.join(local_build_dir, '__init__.py')
+
+        shutil.copyfile(GPP_so, os.path.join(build_dir, 'GPP.so'))
+        shutil.copyfile(build_init, os.path.join(build_dir, '__init__.py'))
 
 
 setup(name='MOE',

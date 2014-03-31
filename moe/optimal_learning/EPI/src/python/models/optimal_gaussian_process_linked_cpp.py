@@ -4,8 +4,8 @@ import collections
 import logging
 import numpy
 
-import build.GPP as C_GP
-from optimal_learning.EPI.src.python.models.optimal_gaussian_process import OptimalGaussianProcess
+import moe.build.GPP as C_GP
+from moe.optimal_learning.EPI.src.python.models.optimal_gaussian_process import OptimalGaussianProcess
 
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')

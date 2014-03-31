@@ -3,8 +3,8 @@
 import numpy
 import logging
 
-import optimal_learning.EPI.src.python.lib.math
-import optimal_learning.EPI.src.python.models.sample_point
+import moe.optimal_learning.EPI.src.python.lib.math
+import moe.optimal_learning.EPI.src.python.models.sample_point
 from scipy.optimize.optimize import fminbound
 from scipy.optimize.optimize import fmin_bfgs
 
@@ -59,7 +59,7 @@ class CovarianceOfProcess(object):
             length = self.hyperparameters[1:]
 
             covariance = alpha * numpy.exp( -0.5 *
-                    optimal_learning.EPI.src.python.lib.math.vector_diag_vector_product(
+                    moe.optimal_learning.EPI.src.python.lib.math.vector_diag_vector_product(
                         numpy.array(point_one),
                         1.0 / (numpy.array(length) * numpy.array(length)),
                         numpy.array(point_two)
@@ -71,7 +71,7 @@ class CovarianceOfProcess(object):
         def default_cov_grad_length_one_length_scale(point_one, point_two, length):
             """Return the gradient of the default covariance function wrt a single length scale
             """
-            return optimal_learning.EPI.src.python.lib.math.vector_diag_vector_product(
+            return moe.optimal_learning.EPI.src.python.lib.math.vector_diag_vector_product(
                     numpy.array(point_one),
                     1.0 / (numpy.array(length) * numpy.array(length) * numpy.array(length)),
                     numpy.array(point_two)
@@ -94,7 +94,7 @@ class CovarianceOfProcess(object):
             length_index_vector[kwargs['length_index']] = 1.0
             diag_vec = [1.0/length[kwargs['length_index']]**3]
 
-            return optimal_learning.EPI.src.python.lib.math.vector_diag_vector_product(
+            return moe.optimal_learning.EPI.src.python.lib.math.vector_diag_vector_product(
                     length_index_vector * numpy.array(point_one),
                     diag_vec,
                     length_index_vector * numpy.array(point_two)
