@@ -103,8 +103,12 @@ $ export MOE_CMAKE_OPTS=-DCMAKE_FIND_ROOT_PATH=/opt/local && export MOE_CC_PATH=
 
 ### Linux Tips:
 
-1. You can apt-get everything you need. Woo real package managers!
-2. Having trouble with matplotlib dependencies? `sudo apt-get install python-matplotlib`
+1. You can apt-get everything you need. Yay for real package managers!
+
+```bash
+$ apt-get update
+$ apt-get install python python-dev gcc cmake libboost-all-dev python-pip doxygen libblas-dev liblapack-dev gfortran git
+```
 
 ### CMake Tips:
 
