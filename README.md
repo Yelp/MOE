@@ -71,7 +71,7 @@ Requires:
 6. `doxygen 1.8.5+` - http://www.stack.nl/~dimitri/doxygen/index.html
 7. We recommend using a virtualenv http://www.jontourage.com/2011/02/09/virtualenv-pip-basics/
 
-## Install:
+## Install from source:
 
 ```bash
 $ git clone https://github.com/sc932/MOE.git
