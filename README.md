@@ -24,20 +24,39 @@ OR
 $ curl -X POST -H "Content-Type: application/json" -d '{"points_to_evaluate": [[0.06727463396075942], [0.5067300380945079], [0.9698763624056982], [0.6741416078606629], [0.3413945823872875], [0.8293462326458892], [0.1895850103202945], [0.29784241725123095], [0.7611434260204735], [0.4050181259320824]], "points_being_sampled": [], "gp_info": {"points_sampled": [{"value_var": 0.01, "value": -2.014556917682888, "point": [0.8356251271367201]}, {"value_var": 0.01, "value": -1.3556680509922945, "point": [0.5775274088974685]}, {"value_var": 0.01, "value": -0.17644452034270924, "point": [0.1299624124365485]}, {"value_var": 0.01, "value": 0.3125023458503953, "point": [0.02303611187965965]}, {"value_var": 0.01, "value": -0.5899125641251172, "point": [0.3938472181674687]}, {"value_var": 0.01, "value": -1.8568254250899945, "point": [0.9894680586912427]}, {"value_var": 0.01, "value": -1.0638344140121117, "point": [0.45444660991161895]}, {"value_var": 0.01, "value": -0.28576907668798884, "point": [0.20420919931329756]}, {"value_var": 0.01, "value": -1.568109287685418, "point": [0.6404744671911634]}, {"value_var": 0.01, "value": -1.8418398343184625, "point": [0.7168047658371041]}], "domain": [[0, 1]]}}' http://127.0.0.1:6543/gp/ei
 ```
 
-### CLI
+### From ipython
 
 ```bash
 $ ipython
-> import moe.optimal_learning
-> # Do Stuff
+> from moe.experiment import Experiment
+> from moe.simple_endpoint import gp_next_points
+> exp = Experiment([[0, 2], [0, 4]])
+> exp.add_point([0, 0], 1.0, 0.01)
+> next_point_to_sample = gp_next_points(exp)
+> print next_point_to_sample
 ```
 
-### Within your python file
+### Within python
 
 ```python
-import moe
+from moe.experiment import Experiment
+from moe.simple_endpoint import gp_next_points
 
-# Do MOE stuff
+import math, random
+def function_to_minimize(x):
+    """This function has a minimum near [1, 2.6]."""
+    return math.sin(x[0]) * math.cos(x[1]) + math.cos(x[0] + x[1]) + random.uniform(-0.02, 0.02)
+
+exp = Experiment([[0, 2], [0, 4]])
+exp.add_point([0, 0], 1.0, 0.01) # Bootstrap with some known or already sampled point
+
+# Sample 20 points
+for i in range(20):
+    next_point_to_sample = gp_next_points(exp)[0] # By default we only ask for one point
+    value_of_next_point = function_to_minimize(next_point_to_sample)
+    exp.add_point(next_point_to_sample, value_of_next_point, 0.01) # We can add some noise
+
+print exp.best_point
 ```
 
 # Install
