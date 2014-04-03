@@ -19,7 +19,7 @@ def gp_next_points(moe_experiment, num_samples_to_generate=1, method=MOE_NEXT_PO
 
     raw_payload = {}
     raw_payload['gp_info'] = moe_experiment.__dict__()
-    raw_payload['num_samples_to_generate'] = numsamples_to_generate
+    raw_payload['num_samples_to_generate'] = num_samples_to_generate
 
     json_payload = json.dumps(raw_payload)
     
