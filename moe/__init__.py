@@ -1,7 +1,6 @@
 from pyramid.config import Configurator
 from pyramid.events import subscriber
 from pyramid.events import NewRequest
-import pymongo
 
 from moe.resources import Root
 
@@ -23,6 +22,7 @@ def main(global_config, **settings):
 
     # MongoDB
     if settings['use_mongo'] == 'true':
+        import pymongo
         def add_mongo_db(event):
             settings = event.request.registry.settings
             url = settings['mongodb.url']
