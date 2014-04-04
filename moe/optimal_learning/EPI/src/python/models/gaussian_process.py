@@ -17,7 +17,7 @@ class GaussianProcess(object):
                default: *cop=CovarianceOfProcess()*
         - domain: the domain to optimize over,
             if no domain is passed in it will search over all real numbers
-        - initial_best_so_far: initial value of best_so_far: numpy.min(values_of_samples) if samples exist, o/w inf
+        - initial_best_so_far: initial value of best_so_far: numpy.min(values_of_samples) if samples exist, o/w max double
         - default_sample_variance: noise variance to use if no noise is explicitly specified
         - max_number_of_threads: max number of threads to use; only applicable to LinkedCpp subclass
 
@@ -29,7 +29,7 @@ class GaussianProcess(object):
         - values_of_samples: The values of points sampled thus far in a list
         - best_so_far: numpy.min(values_of_samples) or *initial_best_so_far* if no points sampled
     """
-    def __init__(self, domain=None, covariance_of_process=None, initial_best_so_far=numpy.inf, default_sample_variance=0.0, max_number_of_threads=1):
+    def __init__(self, domain=None, covariance_of_process=None, initial_best_so_far=numpy.finfo('d').max, default_sample_variance=0.0, max_number_of_threads=1):
         """Inits a GaussianProcess"""
         # the domain of the function [[x1_min, x2_max], ..., [xn_min, xn_max]]
         self.domain = domain

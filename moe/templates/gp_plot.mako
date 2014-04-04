@@ -95,12 +95,7 @@
 </div>
 
 <script>
-var points_sampled = [
-    {
-        'point': [0.5],
-        'value': -0.2,
-        'value_var': 0.1,
-    }];
+var points_sampled = [];
 
 function update_points_sampled(){
     $('#points-sampled ul').html('');
