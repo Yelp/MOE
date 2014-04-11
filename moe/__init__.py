@@ -1,7 +1,6 @@
 from pyramid.config import Configurator
 from pyramid.events import subscriber
 from pyramid.events import NewRequest
-import pymongo
 
 from moe.resources import Root
 
@@ -13,9 +12,8 @@ def main(global_config, **settings):
 
     # Routes
     config.add_route('home', '/')
-    config.add_route('docs', '/docs')
-    config.add_route('about', '/about')
     config.add_route('gp_ei', '/gp/ei')
+    config.add_route('gp_plot', '/gp/plot')
     config.add_route('gp_ei_pretty', '/gp/ei/pretty')
     config.add_route('gp_mean_var', '/gp/mean_var')
     config.add_route('gp_mean_var_pretty', '/gp/mean_var/pretty')
@@ -24,6 +22,7 @@ def main(global_config, **settings):
 
     # MongoDB
     if settings['use_mongo'] == 'true':
+        import pymongo
         def add_mongo_db(event):
             settings = event.request.registry.settings
             url = settings['mongodb.url']
@@ -43,5 +42,12 @@ def main(global_config, **settings):
                 )
         config.registry.settings['mongodb_conn'] = conn
         config.add_subscriber(add_mongo_db, NewRequest)
-    config.scan()
+    config.scan(
+            ignore=[
+                'moe.optimal_learning.EPI.src.python.lib.cuda_linkers',
+                'moe.optimal_learning.EPI.src.python.lib.plotter',
+                'moe.optimal_learning.EPI.src.python.models.plottable_optimal_gaussian_process',
+                'moe.tests',
+                ],
+            )
     return config.make_wsgi_app()

@@ -35,3 +35,6 @@ doc/xml/*
 doc/latex/*
 doc/html/*
 doc/.doctrees/*
+
+# built binaries
+build

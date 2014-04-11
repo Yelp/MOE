@@ -1,16 +1,18 @@
+import numpy
+
+import moe.build.GPP as C_GP
+import simplejson as json
+
+from moe.constant import pretty_default
+from moe.optimal_learning.EPI.src.python.constant import EIOptimizationParameters, GaussianProcessParameters, default_ei_optimization_parameters, default_gaussian_process_parameters
+from moe.optimal_learning.EPI.src.python.cpp_wrappers.optimization_parameters import ExpectedImprovementOptimizationParameters
+from moe.optimal_learning.EPI.src.python.data_containers import SamplePoint
+from moe.optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp import OptimalGaussianProcessLinkedCpp
+from moe.optimal_learning.EPI.src.python.models.covariance_of_process import CovarianceOfProcess
+from moe.schemas import GpMeanVarRequest, GpEiRequest, GpEiResponse, GpMeanVarResponse, GpNextPointsEpiRequest, GpNextPointsEpiResponse
 from pyramid.response import Response
 from pyramid.view import view_config
 
-import simplejson as json
-
-import build.GPP as C_GP
-from optimal_learning.EPI.src.python.cpp_wrappers.optimization_parameters import ExpectedImprovementOptimizationParameters
-from optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp import OptimalGaussianProcessLinkedCpp
-from optimal_learning.EPI.src.python.models.covariance_of_process import CovarianceOfProcess
-from optimal_learning.EPI.src.python.data_containers import SamplePoint
-
-from moe.schemas import GpMeanVarRequest, GpEiRequest, GpEiResponse, GpMeanVarResponse, GpNextPointsEpiRequest, GpNextPointsEpiResponse
-from moe.constant import pretty_default
 
 @view_config(route_name='home', renderer='moe:templates/index.mako')
 def index_page(request):
@@ -18,16 +20,12 @@ def index_page(request):
             'nav_active': 'home',
             }
 
-@view_config(route_name='about', renderer='moe:templates/about.mako')
-def about_page(request):
+@view_config(route_name='gp_plot', renderer='moe:templates/gp_plot.mako')
+def gp_plot_page(request):
     return {
-            'nav_active': 'about',
-            }
-
-@view_config(route_name='docs', renderer='moe:templates/docs.mako')
-def docs_page(request):
-    return {
-            'nav_active': 'docs',
+            'nav_active': 'demo',
+            'default_gaussian_process_parameters': default_gaussian_process_parameters,
+            'default_ei_optimization_parameters': default_ei_optimization_parameters,
             }
 
 # Pretty inputs
@@ -70,10 +68,10 @@ def _make_gp_from_gp_info(gp_info):
 
     """
     # Load up the info
-    points_sampled = gp_info['points_sampled']
+    points_sampled = numpy.array(gp_info['points_sampled'])
     domain = gp_info['domain']
-    signal_variance = gp_info.get('signal_variance', 1.0)
-    length = gp_info.get('length_scale', [0.5])
+    signal_variance = gp_info['signal_variance']
+    length = gp_info['length_scale']
 
     # Build the required objects
     covariance_of_process = _make_default_covariance_of_process(
@@ -103,46 +101,39 @@ def gp_next_points_epi_view(request):
 
     num_samples_to_generate = params.get('num_samples_to_generate')
     gp_info = params.get('gp_info')
+    
+    ei_optimization_parameters_dict = params.get('ei_optimization_parameters')
+    ei_optimization_parameters = EIOptimizationParameters(**ei_optimization_parameters_dict)
 
     GP = _make_gp_from_gp_info(gp_info)
 
-    
-    num_multistarts=5
-    gd_iterations=1000
-    max_num_restarts=3
-    gamma=0.9
-    pre_mult=1.0
-    mc_iterations=1000
-    max_relative_change=1.0
-    tolerance=1.0e-7
-
-    ei_optimization_parameters = ExpectedImprovementOptimizationParameters(
-            domain_type=C_GP.DomainTypes.tensor_product,
+    ei_optimization_parameters_cpp = ExpectedImprovementOptimizationParameters(
             optimizer_type=C_GP.OptimizerTypes.gradient_descent,
             num_random_samples=0,
             optimizer_parameters=C_GP.GradientDescentParameters(
-                num_multistarts,
-                gd_iterations,
-                max_num_restarts,
-                gamma,
-                pre_mult,
-                max_relative_change,
-                tolerance,
+                ei_optimization_parameters.num_multistarts,
+                ei_optimization_parameters.gd_iterations,
+                ei_optimization_parameters.max_num_restarts,
+                ei_optimization_parameters.gamma,
+                ei_optimization_parameters.pre_mult,
+                ei_optimization_parameters.max_relative_change,
+                ei_optimization_parameters.tolerance,
                 ),
             )
+    # TODO(eliu): domain_type should passed as part of the domain; this is a hack until I
+    # refactor these calls to use the new interface
+    ei_optimization_parameters_cpp.domain_type = C_GP.DomainTypes.tensor_product
     next_points = GP.multistart_expected_improvement_optimization(
-            ei_optimization_parameters,
+            ei_optimization_parameters_cpp,
             num_samples_to_generate,
             )
     expected_improvement = GP.evaluate_expected_improvement_at_point_list(next_points)
 
-    json_points_to_sample = list([list(row) for row in next_points])
-
     resp_schema = GpNextPointsEpiResponse()
     resp = resp_schema.serialize({
             'endpoint': 'gp_next_points_epi',
-            'points_to_sample': json_points_to_sample,
-            'expected_improvement': list(expected_improvement),
+            'points_to_sample': next_points.tolist(),
+            'expected_improvement': expected_improvement.tolist(),
             })
 
     return resp
@@ -152,20 +143,18 @@ def gp_mean_var_view(request):
     params_schema = GpMeanVarRequest()
     params = params_schema.deserialize(request.json_body)
 
-    points_to_sample = params.get('points_to_sample')
+    points_to_sample = numpy.array(params.get('points_to_sample'))
     gp_info = params.get('gp_info')
 
     GP = _make_gp_from_gp_info(gp_info)
 
     mean, var = GP.get_mean_and_var_of_points(points_to_sample)
 
-    json_var = list([list(row) for row in var])
-
     resp_schema = GpMeanVarResponse()
     resp = resp_schema.serialize({
             'endpoint': 'gp_mean_var',
-            'mean': list(mean),
-            'var': json_var,
+            'mean': mean.tolist(),
+            'var': var.tolist(),
             })
 
     return resp
@@ -175,11 +164,11 @@ def gp_ei_view(request):
     params_schema = GpEiRequest()
     params = params_schema.deserialize(request.json_body)
 
-    points_to_evaluate = params.get('points_to_evaluate')
-    points_being_sampled = params.get('points_being_sampled')
+    points_to_evaluate = numpy.array(params.get('points_to_evaluate'))
+    points_being_sampled = numpy.array(params.get('points_being_sampled'))
     mc_iterations = params.get('mc_iterations')
 
-    gp_info = request.json_body.get('gp_info')
+    gp_info = params.get('gp_info')
     if not gp_info:
         raise(ValueError, "POST request to /gp/ei needs gp_info")
 

@@ -1,0 +1,42 @@
+include README.md
+# top level scripts
+include setup.py
+# config files
+include *.ini
+# docs
+recursive-include doc *
+# optimal learning
+recursive-include moe/optimal_learning *
+# webapp
+recursive-include moe *
+
+# remove what we don't want, kept in step with .gitignore
+# Logs
+global-exclude *.log
+# Swap files
+global-exclude *.sw[nop]
+global-exclude *~
+# Data files
+global-exclude *.mat
+# OSX crap
+global-exclude *.DS_Store
+# Python setuptools
+global-exclude *.egg-info
+# Compiled Object files
+global-exclude *.slo
+global-exclude *.lo
+global-exclude *.o
+global-exclude *.pyc
+# Compiled Dynamic libraries
+global-exclude *.so
+global-exclude *.dylib
+# Compiled Static libraries
+global-exclude *.lai
+global-exclude *.la
+global-exclude *.a
+# built doc files
+recursive-exclude doc/_* *
+recursive-exclude doc/xml/* *
+recursive-exclude doc/latex/* *
+recursive-exclude doc/html/* *
+recursive-exclude doc/.doctrees/* *
