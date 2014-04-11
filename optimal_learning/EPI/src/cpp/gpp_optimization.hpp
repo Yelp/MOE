@@ -332,7 +332,7 @@ namespace optimal_learning {
   best_point = argmax_{x \in initial_guesses} f(x)
   best_objective_value = f(best_point)
   And then call multistart gradient descent (MGD).  Now, MGD will only change the best point/value if it converges to a better
-  solution.  If convergence fails or MGD settles on a *worse* local minima, found_flag will be SET to false, and the other
+  solution.  If convergence fails or MGD settles on a *worse* local maxima, found_flag will be SET to false, and the other
   fields of IOContainer will be *unmodified*.  If it finds a better solution, then found_flag will be SET to true and
   the other fields will report the new solution.
 */

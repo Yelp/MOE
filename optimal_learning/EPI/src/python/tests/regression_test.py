@@ -23,9 +23,9 @@ def _setup_GP():
     GP = src.python.models.optimal_gaussian_process.OptimalGaussianProcess(domain=[[0,2],[0,2]])
 
     # Add some points
-    sample_point = src.python.models.sample_point.SamplePoint([0,0], 1)
+    sample_point = src.python.data_containers.SamplePoint([0,0], 1)
     GP.add_sample_point(sample_point)
-    sample_point = src.python.models.sample_point.SamplePoint([1,0], 2)
+    sample_point = src.python.data_containers.SamplePoint([1,0], 2)
     GP.add_sample_point(sample_point)
     return GP
 

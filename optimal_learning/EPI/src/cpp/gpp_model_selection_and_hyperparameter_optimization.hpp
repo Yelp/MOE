@@ -12,6 +12,9 @@
   As a preface, you should read gpp_math.hpp's comments first (if not also gpp_math.cpp) to get an overview
   of Gaussian Processes (GPs) and how we are using them (Expected Improvement, EI).
 
+  .. NOTE:: These comments have been copied into interfaces/log_likelihood_interface.py (file comments) and
+     cpp_wrappers/log_likelihood.py (LogMarginalLikelihood and LeaveOneOutLogLikelihood class comments).
+
   This file deals with model selection via hyperparameter optimization, as the name implies.  In our discussion of GPs,
   we did not pay much attention to the underlying covariance function.  We noted that the covariance is extremely
   important since it encodes our assumptions about the objective function f(x) that we are trying to learn; i.e.,
@@ -26,7 +29,7 @@
   both of which follow the Evaluator/State "idiom" described in gpp_common.hpp.
 
   For selecting the best hyperparameters, this file provides two multistart optimization wrappers
-  for gradient descent and Newton, that minimize the previous log likelihood measures:
+  for gradient descent and Newton, that maximize the previous log likelihood measures:
   MultistartGradientDescentHyperparameterOptimization<LogLikelihoodEvaluator, Domain>()
   MultistartNewtonHyperparameterOptimization<LogLikelihoodEvaluator, Domain>()
   These functions are wrappers for templated code in gpp_optimization.hpp.  The wrappers just set up inputs for use
@@ -42,12 +45,12 @@
   Typically these will not be called directly.
 
   To better understand model selection, let's look at a common covariance used in our computation, square exponential:
-  cov(x_1, x_2) = \alpha * \exp(-0.5*r^2), where r = \sum_{i=1}^d (x_1_i - x_2_i)^2 / L_i^2.
-  Here, \alpha is \sigma_f^2, the signal variance, and the L_i are length scales.  The vector [\alpha, L_1, ... , L_d]
+  ``cov(x_1, x_2) = \alpha * \exp(-0.5*r^2), where r = \sum_{i=1}^d (x_1_i - x_2_i)^2 / L_i^2``.
+  Here, ``\alpha`` is ``\sigma_f^2``, the signal variance, and the ``L_i`` are length scales.  The vector ``[\alpha, L_1, ... , L_d]``
   are called the "hyperparameters" or "free parameters" (see gpp_covariance.hpp for more details).  There is nothing in
-  the covariance  that guides the choice of the hyperparameters; L_1 = 0.001 is just as valid as L_1 = 1000.0.
+  the covariance  that guides the choice of the hyperparameters; ``L_1 = 0.001`` is just as valid as ``L_1 = 1000.0.``
 
-  Clearly, the value of the covariance changes substantially if L_i varies by a factor of two, much less 6 orders of
+  Clearly, the value of the covariance changes substantially if ``L_i`` varies by a factor of two, much less 6 orders of
   magnitude.  That is the difference between saying variations of size \approx 1.0 in x_i, the first spatial dimension,
   are extremely important vs almost irrelevant.
 
@@ -56,7 +59,7 @@
   Rasmussen & Williams (Chapter 5 now) as a guide/reference.
 
   However, we will not spend much time discussing selection across different classes of covariance functions; e.g.,
-  Square Exponential vs Matern w/various \nu, etc.  We have yet to develop any experience/intuition with this problem
+  Square Exponential vs Matern w/various ``\nu``, etc.  We have yet to develop any experience/intuition with this problem
   and are temporarily punting it.  For now, we follow the observation in Rasmussen & Williams that Square Exponential
   is a popular choice and appears to work very well.  (This is still a very important problem; e.g., there may be
   scenarios when we would prefer a non-stationary or periodic covariance, and the methods discussed here do not cover
@@ -91,8 +94,8 @@
   The Log Marginal Likelihood measure comes from the ideas of Bayesian model selection, which use Bayesian inference
   to predict distributions over models and their parameters.  The cpp file comments explore this idea in more depth.
   For now, we will simply state the relevant result.  We can build up the notion of the "marginal likelihood":
-  probability(observed data GIVEN sampling points (X), model hyperparameters, model class (regression, GP, etc.)),
-  which is denoted: p(y|X,\theta,H_i) (see the cpp file comments for more).
+  probability(observed data GIVEN sampling points (``X``), model hyperparameters, model class (regression, GP, etc.)),
+  which is denoted: ``p(y|X,\theta,H_i)`` (see the cpp file comments for more).
 
   So the marginal likelihood deals with computing the probability that the observed data was generated from (another
   way: is easily explainable by) the given model.
@@ -121,19 +124,19 @@
   being the sole member of the validation set.  Then for each validation set, we compute a log pseudo-likelihood, measuring
   how probable that validation set is given the remaining training data and model hyperparameters.
 
-  Again, we can minimize this quanitity over hyperparameters to help us choose the "right" set for the GP.
+  Again, we can maximize this quanitity over hyperparameters to help us choose the "right" set for the GP.
 
   4) HYPERPARAMETER OPTIMIZATION OF LOG LIKELIHOOD:
   Now that we have discussed the Log Marginal Likelihood and Leave One Out Cross Validation log pseudo-likelihood measures
   of model quality, what do we do with them?  How do they help us choose hyperparameters?
 
-  From here, we can apply anyone's favorite optimization technique to minimize log likelihoods wrt hyperparameters.  The
-  hyperparameters that minimze log likelihood provide the model configuration that is most likely to have produced the
-  data observed so far, (X, f).
+  From here, we can apply anyone's favorite optimization technique to maximize log likelihoods wrt hyperparameters.  The
+  hyperparameters that maximize log likelihood provide the model configuration that is most likely to have produced the
+  data observed so far, ``(X, f)``.
 
   In principle, this approach always works.  But in practice it is often not that simple.  For example, suppose the underlying
   objective is periodic and we try to optimize hyperparameters for a class of covariance functions that cannot account
-  for the periodicity.  We can always* find the set of hyperparameters that minimize our chosen log likelihood measure
+  for the periodicity.  We can always* find the set of hyperparameters that maximize our chosen log likelihood measure
   (LML or LOO-CV), but if the covariance is mis-specified or we otherwise make invalid assumptions about the objective
   function, then the results are not meaningful at best and misleading at worst.  It becomes a case of garbage in,
   garbage out.
@@ -196,6 +199,8 @@ struct LeaveOneOutLogLikelihoodState;
   We can use the log marginal likelihood to determine how good our model is.  Additionally, we can maximize it by varying
   hyperparameters (or even changing covariance functions) to improve our model quality.  Hence this class provides access
   to functions for computing log marginal likelihood and its hyperparameter gradients.
+
+  .. Note:: These class comments are duplicated in Python: cpp_wrappers.log_likelihood.LogMarginalLikelihood
 */
 class LogMarginalLikelihoodEvaluator final {
  public:
@@ -493,6 +498,8 @@ struct LogMarginalLikelihoodState final {
   maximize it (via hyperparameter modifications or covariance function changes) to improve model performance.
   It has also been argued that LOO-CV is better at detecting model mis-specification (e.g., wrong covariance function)
   than log marginal measures (Rasmussen & Williams p118).
+
+  .. Note:: These class comments are duplicated in Python: cpp_wrappers.log_likelihood.LeaveOneOutLogLikelihood
 */
 class LeaveOneOutLogLikelihoodEvaluator final {
  public:
@@ -1082,7 +1089,7 @@ OL_NONNULL_POINTERS void MultistartNewtonHyperparameterOptimization(const LogLik
   Outputs the hyperparameters of the input set obtaining the maximum log likelihood value.
 
   Generally gradient descent is preferred but when they fail to converge this may be the only "robust" option.
-  This function is also useful for plotting or debugging purposes (just to get a bunch of EI values).
+  This function is also useful for plotting or debugging purposes (just to get a bunch of log likelihood values).
 
   This function is just a wrapper that builds the required state objects and a NullOptimizer object and calls
   MultistartOptimizer<...>::MultistartOptimize(...); see gpp_optimization.hpp.

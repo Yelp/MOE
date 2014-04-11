@@ -4,9 +4,10 @@ from pyramid.view import view_config
 import simplejson as json
 
 import build.GPP as C_GP
-from optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp import OptimalGaussianProcessLinkedCpp, ExpectedImprovementOptimizationParameters
+from optimal_learning.EPI.src.python.cpp_wrappers.optimization_parameters import ExpectedImprovementOptimizationParameters
+from optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp import OptimalGaussianProcessLinkedCpp
 from optimal_learning.EPI.src.python.models.covariance_of_process import CovarianceOfProcess
-from optimal_learning.EPI.src.python.models.sample_point import SamplePoint
+from optimal_learning.EPI.src.python.data_containers import SamplePoint
 
 from moe.schemas import GpMeanVarRequest, GpEiRequest, GpEiResponse, GpMeanVarResponse, GpNextPointsEpiRequest, GpNextPointsEpiResponse
 from moe.constant import pretty_default

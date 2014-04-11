@@ -88,6 +88,8 @@
   Note that if our GP has 10 dimensions (variables), then y contains 10 sample values.
 
   3c) EXPECTED IMPROVEMENT:
+  .. Note:: these comments are copied in Python: interfaces/expected_improvement_interface.py
+
   Then the improvement for this single sample is:
   I = { best_known - min(y)   if (best_known - min(y) > 0)      (Equation 5)
       {          0               else

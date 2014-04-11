@@ -3,10 +3,10 @@
 import testify as T
 import numpy
 
+from optimal_learning.EPI.src.python.data_containers import SamplePoint
 from optimal_learning.EPI.src.python.models.covariance_of_process import CovarianceOfProcess
 from optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp import OptimalGaussianProcessLinkedCpp
 from optimal_learning.EPI.src.python.models.optimal_gaussian_process import OptimalGaussianProcess as OptimalGaussianProcessPython
-from optimal_learning.EPI.src.python.models.sample_point import SamplePoint
 import optimal_learning.EPI.src.python.lib.math
 
 class GaussianProcessTestCase(T.TestCase):

@@ -30,10 +30,14 @@ class OptimalGaussianProcess(GaussianProcess):
         :Returns: double
         """
         mu_star, var_star = self.get_mean_and_var_of_points([point_to_sample])
+        mu_star = numpy.reshape(mu_star, ())
+        var_star = numpy.reshape(var_star, ())
 
-        cholesky_decomp, grad_cholesky_decomp = self.cholesky_decomp_and_grad([point_to_sample])
+        _, grad_cholesky_decomp = self.cholesky_decomp_and_grad([point_to_sample])
+        grad_cholesky_decomp = grad_cholesky_decomp[0][0]
 
         grad_mu = self.get_grad_mu([point_to_sample])
+        grad_mu = numpy.reshape(grad_mu, grad_mu.shape[1])
 
         sigma = numpy.sqrt(abs(var_star))
 

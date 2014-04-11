@@ -79,7 +79,7 @@
   log p(y|X,\theta) = -\frac{1}{2} * y^T * K^-1 * y - \frac{1}{2} * \log(det(K)) - \frac{n}{2} * \log(2*pi)  (Equation 1)
   where n is num_sampled, \theta are the hyperparameters, and \log is the natural logarithm.
 
-  To maximize p, we want to minimize log(p).
+  To maximize p, we can equivalently maximize log(p).
 
   Since we almost never work with noise-free priors, we drop the subscript y from K_y in future discussion; e.g,. in
   LogMarginalLikelihoodEvaluator::ComputeLogLikelihood().

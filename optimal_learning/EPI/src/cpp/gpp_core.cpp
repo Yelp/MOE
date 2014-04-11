@@ -44,6 +44,7 @@
 
 using namespace optimal_learning;  // NOLINT, i'm lazy in this file which has no external linkage anyway
 
+// -1: mirroring the "Within python" example currently at: https://github.com/sc932/MOE
 // 0: random GP prior, optimize hyperparameter, build GP, optimize EI
 // 1: runs Scott's Branin optimization
 // 2: tests get_expected_EI, ComputeMeanOfPoints, and get_var_of_points on simple input
@@ -54,7 +55,93 @@ using namespace optimal_learning;  // NOLINT, i'm lazy in this file which has no
 // 7: speed test multistart GD hyper
 // 8: speed test log likelihood eval
 
-#define OL_MODE 1
+#define OL_MODE -1
+#if OL_MODE == -1
+
+double function_to_minimize(double const * restrict point, UniformRandomGenerator * uniform_generator) {
+  boost::uniform_real<double> uniform_double(-0.02, 0.02);
+  return std::sin(point[0])*std::cos(point[1]) + std::cos(point[0] + point[1]) + uniform_double(uniform_generator->engine);
+}
+
+int main() {
+  using DomainType = TensorProductDomain;
+  using HyperparameterDomainType = TensorProductDomain;
+  using CovarianceClass = SquareExponential;  // see gpp_covariance.hpp for other options
+
+  int dim = 2;
+  int num_to_sample = 0;
+  int num_sampled = 21;
+
+  std::vector<double> points_sampled(num_sampled*dim);
+  std::vector<double> points_sampled_value(num_sampled);
+  std::vector<double> noise_variance(num_sampled, 0.01);  // each entry must be >= 0.0
+  std::vector<double> points_to_sample(num_to_sample*dim);  // each entry must be >= 0.0
+
+  std::vector<ClosedInterval> domain_bounds = {
+    {0.0, 2.0},
+    {0.0,  4.0}};
+  DomainType domain(domain_bounds.data(), dim);
+
+  int num_mc_iterations=100000;
+
+  UniformRandomGenerator uniform_generator(314);  // set to mode 0 to generate seeds automatically
+
+  // gradient descent parameters
+  const double gamma = 0.9;
+  const double pre_mult = 1.0;
+  const double max_relative_change = 1.0;
+  const double tolerance = 1.0e-7;
+  const int max_gradient_descent_steps = 1000;
+  const int max_num_restarts = 3;
+  const int num_multistarts = 40;
+  GradientDescentParameters gd_params(num_multistarts, max_gradient_descent_steps, max_num_restarts, gamma, pre_mult, max_relative_change, tolerance);
+
+  // booststrap w/some data
+  points_sampled[0] = 0.0; points_sampled[1] = 0.0;
+  points_sampled_value[0] = 1.0;
+
+  double default_signal_variance = 1.0;
+  double default_length_scale = 0.2;
+  CovarianceClass covariance(dim, default_signal_variance, default_length_scale);
+
+  // only 1 point sampled so far
+  GaussianProcess gaussian_process(covariance, points_sampled.data(), points_sampled_value.data(), noise_variance.data(), dim, 0);
+
+  // 20 more samples
+  double best_so_far = *std::min_element(points_sampled_value.begin(), points_sampled_value.begin() + 0 + 1);
+  int max_num_threads = 1;
+  bool lhc_search_only = false;
+  int num_lhc_samples = 0;
+  int num_samples_to_generate = 1;
+  bool found_flag = false;
+  std::vector<double> best_points_to_sample(num_samples_to_generate*dim);
+  for (int i = 1; i < num_sampled; ++i) {
+    // std::vector<double> temp(dim, 0.0);
+    // OnePotentialSampleExpectedImprovementEvaluator ei_evaluator(gaussian_process, best_so_far);
+    // OnePotentialSampleExpectedImprovementState ei_state(ei_evaluator, temp.data(), 1, true, nullptr);
+    // std::vector<double> grad_ei(dim);
+    // double ei = ei_evaluator.ComputeExpectedImprovement(&ei_state);
+    // printf("ei = %.18E\n", ei);
+    // ei_evaluator.ComputeGradExpectedImprovement(&ei_state, grad_ei.data());
+    // PrintMatrix(grad_ei.data(), 1, dim);
+
+    ComputeOptimalSetOfPointsToSample(gaussian_process, gd_params, domain, points_to_sample.data(), num_to_sample, best_so_far, num_mc_iterations, max_num_threads, lhc_search_only, num_lhc_samples, num_samples_to_generate, &found_flag, &uniform_generator, nullptr, best_points_to_sample.data());
+    printf("%d: found_flag = %d\n", i, found_flag);
+
+    points_sampled_value[i] = function_to_minimize(best_points_to_sample.data(), &uniform_generator);
+    // add function value back into the GP
+    gaussian_process.AddPointToGP(best_points_to_sample.data(), points_sampled_value[i], noise_variance[i]);
+
+    best_so_far = *std::min_element(points_sampled_value.begin(), points_sampled_value.begin() + i + 1);
+  }
+
+  PrintMatrix(best_points_to_sample.data(), 1, dim);
+
+  return 0;
+}
+
+#endif
+
 #if OL_MODE == 0
 
 int main() {
