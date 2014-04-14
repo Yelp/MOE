@@ -40,6 +40,12 @@ class ExpectedImprovementInterface(object):
     See file docs for a description of what EI is and an overview of how it can be computed.
 
     Implementers are responsible for dealing with PRNG state for any randomness needed in EI computation.
+    Implementers are also responsible for storing current_point and points_to_sample:
+
+    :param current_point: point at which to compute EI (i.e., q in q,p-EI)
+    :type current_point: 1d array[dim] of double
+    :param points_to_sample: array of points which are being sampled concurrently (i.e., p in q,p-EI)
+    :type points_to_sample: 2d array[num_to_sample][dim] of double
 
     """
 
@@ -51,7 +57,7 @@ class ExpectedImprovementInterface(object):
         pass
 
     @abstractmethod
-    def compute_expected_improvement(self, current_point, points_to_sample=numpy.array([]), **kwargs):
+    def compute_expected_improvement(self, **kwargs):
         r"""Compute the expected improvement at ``current_point``, with ``points_to_sample`` concurrent points being sampled.
 
         .. NOTE:: These comments were copied from ExpectedImprovementEvaluator::ComputeExpectedImprovement in gpp_math.hpp.
@@ -69,10 +75,6 @@ class ExpectedImprovementInterface(object):
 
         In general, the EI expression is complex and difficult to evaluate; hence we use Monte-Carlo simulation to approximate it.
 
-        :param current_point: point at which to compute EI (i.e., q in q,p-EI)
-        :type current_point: 1d array[dim] of double
-        :param points_to_sample: array of points which are being sampled concurrently (i.e., p in q,p-EI)
-        :type points_to_sample: 2d array[num_to_sample][dim] of double
         :return: value of EI evaluated at ``current_point``
         :rtype: double
 
@@ -80,7 +82,7 @@ class ExpectedImprovementInterface(object):
         pass
 
     @abstractmethod
-    def compute_grad_expected_improvement(self, current_point, points_to_sample=numpy.array([]), **kwargs):
+    def compute_grad_expected_improvement(self, **kwargs):
         r"""Compute the gradient of expected improvement at ``current_point`` wrt ``current_point``, with ``points_to_sample`` concurrent samples.
 
         .. NOTE:: These comments were copied from ExpectedImprovementEvaluator::ComputeGradExpectedImprovement in gpp_math.hpp
@@ -91,10 +93,7 @@ class ExpectedImprovementInterface(object):
         In general, the expressions for gradients of EI are complex and difficult to evaluate; hence we use
         Monte-Carlo simulation to approximate it.
 
-        :param current_point: point at which to compute EI (i.e., q in q,p-EI)
-        :type current_point: 1d array[dim] of double
-        :param points_to_sample: array of points which are being sampled concurrently (i.e., p in q,p-EI)
-        :type points_to_sample: 2d array[num_to_sample][dim] of double
+
         :return: gradient of EI, i-th entry is ``\pderiv{EI(x)}{x_i}`` where ``x`` is ``current_point``
         :rtype: 1d array[dim] of double
 

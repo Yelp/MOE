@@ -21,6 +21,10 @@ class OptimizableInterface(object):
     This interface is straightforward--we need the ability to compute the problem size (how many independent parameters to
     optimize) as well as the ability to compute ``f(x)`` and/or its various derivatives.
 
+    TODO(eliu): getter/setter for current_point. maybe following this?
+    http://google-styleguide.googlecode.com/svn/trunk/pyguide.html#Function_and_Method_Decorators
+    How to make it work with ABCs?
+
     """
 
     __metaclass__ = ABCMeta
@@ -31,11 +35,24 @@ class OptimizableInterface(object):
         pass
 
     @abstractmethod
-    def compute_objective_function(self, current_point, **kwargs):
+    def get_current_point(self):
+        """Get the current_point (1d array[problem_size]) at which this object is evaluating the objective function, ``f(x)``."""
+        pass
+
+    @abstractmethod
+    def set_current_point(self, current_point):
+        """Set current_point to the specified point; ordering must match.
+
+        :param current_point: current_point at which to evaluate the objective function, ``f(x)``
+        :type current_point: 1d array[problem_size] of double
+
+        """
+        pass
+
+    @abstractmethod
+    def compute_objective_function(self, **kwargs):
         r"""Compute ``f(current_point)``.
 
-        :param current_point: point at which to compute the objective
-        :type current_point: 1d array[problem_size] of double
         :return: value of objective function evaluated at ``current_point``
         :rtype: double
 
@@ -43,11 +60,9 @@ class OptimizableInterface(object):
         pass
 
     @abstractmethod
-    def compute_grad_objective_function(self, current_point, **kwargs):
+    def compute_grad_objective_function(self, **kwargs):
         r"""Compute the gradient of ``f(current_point)`` wrt ``current_point``.
 
-        :param current_point: point at which to compute the objective
-        :type current_point: 1d array[problem_size] of double
         :return: gradient of the objective, i-th entry is ``\pderiv{f(x)}{x_i}``
         :rtype: 1d array[problem_size] of double
 
@@ -55,14 +70,12 @@ class OptimizableInterface(object):
         pass
 
     @abstractmethod
-    def compute_hessian_objective_function(self, current_point, **kwargs):
+    def compute_hessian_objective_function(self, **kwargs):
         r"""Compute the hessian matrix of ``f(current_point)`` wrt ``current_point``.
 
         This matrix is symmetric as long as the mixed second derivatives of f(x) are continuous: Clairaut's Theorem.
         http://en.wikipedia.org/wiki/Symmetry_of_second_derivatives
 
-        :param current_point: point at which to compute the objective
-        :type current_point: 1d array[problem_size] of double
         :return: hessian of the objective, (i,j)th entry is ``\mixpderiv{f(x)}{x_i}{x_j}``
         :rtype: 2d array[problem_size][problem_size] of double
 

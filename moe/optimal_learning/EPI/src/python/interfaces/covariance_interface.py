@@ -57,7 +57,7 @@ class CovarianceInterface(object):
 
     @abstractmethod
     def get_hyperparameters(self):
-        """Get the hyperparameters (ndarray) of this covariance."""
+        """Get the hyperparameters (1d array[num_hyperparameters]) of this covariance."""
         pass
 
     @abstractmethod
@@ -65,7 +65,7 @@ class CovarianceInterface(object):
         """Set hyperparameters to the specified hyperparameters; ordering must match.
 
         :param hyperparameters: hyperparameters
-        :type hyperparameters: ndarray
+        :type hyperparameters: 1d array[num_hyperparameters] of double
 
         """
         pass
@@ -75,6 +75,7 @@ class CovarianceInterface(object):
         r"""Compute the covariance function of two points, cov(``point_one``, ``point_two``).
 
         .. Note:: comments are copied from the matching method comments of CovarianceInterface in gpp_covariance.hpp
+          and comments are copied to the matching method comments of SquareExponential in python_version/covariance.py
 
         The covariance function is guaranteed to be symmetric by definition: ``covariance(x, y) = covariance(y, x)``.
         This function is also positive definite by definition.
@@ -94,6 +95,7 @@ class CovarianceInterface(object):
         r"""Compute the gradient of self.covariance(point_one, point_two) with respect to the FIRST argument, point_one.
 
         .. Note:: comments are copied from the matching method comments of CovarianceInterface in gpp_covariance.hpp
+          and comments are copied to the matching method comments of SquareExponential in python_version/covariance.py
 
         This distinction is important for maintaining the desired symmetry.  ``Cov(x, y) = Cov(y, x)``.
         Additionally, ``\pderiv{Cov(x, y)}{x} = \pderiv{Cov(y, x)}{x}``.
@@ -116,6 +118,9 @@ class CovarianceInterface(object):
     def hyperparameter_grad_covariance(self, point_one, point_two):
         r"""Compute the gradient of self.covariance(point_one, point_two) with respect to its hyperparameters.
 
+        .. Note:: comments are copied from the matching method comments of CovarianceInterface in gpp_covariance.hpp
+          and comments are copied to the matching method comments of SquareExponential in python_version/covariance.py
+
         Unlike GradCovariance(), the order of point_one and point_two is irrelevant here (since we are not differentiating against
         either of them).  Thus the matrix of grad covariances (wrt hyperparameters) is symmetric.
 
@@ -131,7 +136,7 @@ class CovarianceInterface(object):
 
     @abstractmethod
     def hyperparameter_hessian_covariance(self, point_one, point_two):
-        r"""Compute the gradient of self.covariance(point_one, point_two) with respect to its hyperparameters.
+        r"""Compute the hessian of self.covariance(point_one, point_two) with respect to its hyperparameters.
 
         .. Note:: comments are copied from the matching method comments of CovarianceInterface in gpp_covariance.hpp
 

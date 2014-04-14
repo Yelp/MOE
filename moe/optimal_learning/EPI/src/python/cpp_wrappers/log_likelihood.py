@@ -213,7 +213,7 @@ class LogLikelihood(LogLikelihoodInterface, OptimizableInterface):
 
     def get_hyperparameters(self):
         """Get the hyperparameters (1d array[num_hyperparameters]) of this covariance."""
-        return self._covariance.get_hyperparameters
+        return self._covariance.get_hyperparameters()
 
     def set_hyperparameters(self, hyperparameters):
         """Set hyperparameters to the specified hyperparameters; ordering must match."""

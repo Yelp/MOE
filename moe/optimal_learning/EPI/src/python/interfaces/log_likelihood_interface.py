@@ -107,11 +107,24 @@ class LogLikelihoodInterface(object):
         pass
 
     @abstractmethod
-    def compute_log_likelihood(self, hyperparameters):
+    def get_hyperparameters(self):
+        """Get the hyperparameters (1d array[num_hyperparameters]) of this covariance."""
+        pass
+
+    @abstractmethod
+    def set_hyperparameters(self, hyperparameters):
+        """Set hyperparameters to the specified hyperparameters; ordering must match.
+
+        :param hyperparameters: hyperparameters
+        :type hyperparameters: 1d array[num_hyperparameters] of double
+
+        """
+        pass
+
+    @abstractmethod
+    def compute_log_likelihood(self):
         r"""Compute a log likelihood measure of model fit.
 
-        :param hyperparameters: hyperparameters with which to compute the desired log likelihood measure
-        :type hyperparameters: 1d array[num_hyperparameters] of double
         :return: value of log_likelihood evaluated at hyperparameters (``LL(y | X, \theta)``)
         :rtype: double
 
@@ -119,11 +132,9 @@ class LogLikelihoodInterface(object):
         pass
 
     @abstractmethod
-    def compute_grad_log_likelihood(self, hyperparameters):
+    def compute_grad_log_likelihood(self):
         r"""Compute the gradient (wrt hyperparameters) of this log likelihood measure of model fit.
 
-        :param hyperparameters: hyperparameters with which to compute the desired log likelihood measure
-        :type hyperparameters: 1d array[num_hyperparameters] of double
         :return: grad_log_likelihood: i-th entry is ``\pderiv{LL(y | X, \theta)}{\theta_i}``
         :rtype: 1d array[num_hyperparameters] of double
 
@@ -131,13 +142,11 @@ class LogLikelihoodInterface(object):
         pass
 
     @abstractmethod
-    def compute_hessian_log_likelihood(self, hyperparameters):
+    def compute_hessian_log_likelihood(self):
         r"""Compute the hessian (wrt hyperparameters) of this log likelihood measure of model fit.
 
         See CovarianceInterface.hyperparameter_hessian_covariance() in interfaces/covariance_interface.py for data ordering.
 
-        :param hyperparameters: hyperparameters with which to compute the desired log likelihood measure
-        :type hyperparameters: 1d array[num_hyperparameters] of double
         :return: hessian_log_likelihood: ``(i,j)``-th entry is ``\mixpderiv{LL(y | X, \theta)}{\theta_i}{\theta_j}``
         :rtype: 2d array[num_hyperparameters][num_hyperparameters] of double
 

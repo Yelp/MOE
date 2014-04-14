@@ -85,7 +85,7 @@ class OptimalGaussianProcessLinkedCpp(OptimalGaussianProcess):
             domain = self.domain
 
         gaussian_process = self._build_cpp_gaussian_process()
-        ei_evaluator = cpp_ei.ExpectedImprovement(gaussian_process, num_mc_iterations=mc_iterations, randomness=self.randomness)
+        ei_evaluator = cpp_ei.ExpectedImprovement(gaussian_process, numpy.array([]), points_to_sample=points_being_sampled, num_mc_iterations=mc_iterations, randomness=self.randomness)
         if ei_optimization_parameters.domain_type == C_GP.DomainTypes.tensor_product:
             new_domain = cpp_domain.TensorProductDomain(domain)
         else:
@@ -104,7 +104,7 @@ class OptimalGaussianProcessLinkedCpp(OptimalGaussianProcess):
             domain = self.domain
 
         gaussian_process = self._build_cpp_gaussian_process()
-        ei_evaluator = cpp_ei.ExpectedImprovement(gaussian_process, num_mc_iterations=0, randomness=self.randomness)
+        ei_evaluator = cpp_ei.ExpectedImprovement(gaussian_process, numpy.array([]), num_mc_iterations=0, randomness=self.randomness)
         if ei_optimization_parameters.domain_type == C_GP.DomainTypes.tensor_product:
             new_domain = cpp_domain.TensorProductDomain(domain)
         else:
@@ -165,7 +165,7 @@ class OptimalGaussianProcessLinkedCpp(OptimalGaussianProcess):
         """Calls into evaluate_EI_at_point_list_wrapper() in src/cpp/GPP_python.cpp
         """
         gaussian_process = self._build_cpp_gaussian_process()
-        ei_evaluator = cpp_ei.ExpectedImprovement(gaussian_process, num_mc_iterations=mc_iterations, randomness=self.randomness)
+        ei_evaluator = cpp_ei.ExpectedImprovement(gaussian_process, numpy.array([]), points_to_sample=points_being_sampled, num_mc_iterations=mc_iterations, randomness=self.randomness)
         return cpp_ei.evaluate_expected_improvement_at_point_list(ei_evaluator, points_to_evaluate, points_to_sample=points_being_sampled, randomness=self.randomness, max_num_threads=self.max_num_threads, status=status)
 
     def get_grad_mu(self, points_to_sample):
@@ -192,12 +192,10 @@ class OptimalGaussianProcessLinkedCpp(OptimalGaussianProcess):
         """
         gaussian_process = self._build_cpp_gaussian_process()
 
-        ei_evaluator = cpp_ei.ExpectedImprovement(gaussian_process, num_mc_iterations=mc_iterations, randomness=self.randomness)
         current_point = numpy.array(points_to_sample[-1])
         points_to_sample_temp = numpy.array(points_to_sample[:-1])
+        ei_evaluator = cpp_ei.ExpectedImprovement(gaussian_process, current_point, points_to_sample=points_to_sample_temp, num_mc_iterations=mc_iterations, randomness=self.randomness)
         return ei_evaluator.compute_expected_improvement(
-            current_point,
-            points_to_sample=points_to_sample_temp,
             force_monte_carlo=force_monte_carlo,
         )
 
@@ -210,14 +208,12 @@ class OptimalGaussianProcessLinkedCpp(OptimalGaussianProcess):
         """
         gaussian_process = self._build_cpp_gaussian_process()
 
-        ei_evaluator = cpp_ei.ExpectedImprovement(gaussian_process, num_mc_iterations=mc_iterations, randomness=self.randomness)
         # current point being sampled is the last point by convention
         current_point = numpy.array(points_to_sample[-1])
         # remaining points represented as concurrent experiments
         points_to_sample_temp = numpy.array(points_to_sample[:-1])
+        ei_evaluator = cpp_ei.ExpectedImprovement(gaussian_process, current_point, points_to_sample=points_to_sample_temp, num_mc_iterations=mc_iterations, randomness=self.randomness)
         return ei_evaluator.compute_grad_expected_improvement(
-            current_point,
-            points_to_sample=points_to_sample_temp,
             force_monte_carlo=force_monte_carlo,
         )
 
@@ -271,7 +267,7 @@ class OptimalGaussianProcessLinkedCpp(OptimalGaussianProcess):
         """
         cov, history = self._build_new_environment()
         log_likelihood_evaluator = cpp_log_likelihood.LogLikelihood(cov, history, log_likelihood_type=objective_type)
-        return log_likelihood_evaluator.compute_log_likelihood(cov.get_hyperparameters())
+        return log_likelihood_evaluator.compute_log_likelihood()
 
     def compute_hyperparam_grad_log_likelihood(self, objective_type=C_GP.LogLikelihoodTypes.log_marginal_likelihood):
         """Calls into compute_hyperparam_grad_log_likelihood in EPI/src/cpp/GPP_python.cpp to compute
@@ -279,7 +275,7 @@ class OptimalGaussianProcessLinkedCpp(OptimalGaussianProcess):
         """
         cov, history = self._build_new_environment()
         log_likelihood_evaluator = cpp_log_likelihood.LogLikelihood(cov, history, log_likelihood_type=objective_type)
-        return log_likelihood_evaluator.compute_grad_log_likelihood(cov.get_hyperparameters())
+        return log_likelihood_evaluator.compute_grad_log_likelihood()
 
     # TODO(eliu): this call is DEPRECATED; use compute_log_likelihood instead!
     # not deleting yet in case this screws up inheritance (since this overrides superclass member functions)
