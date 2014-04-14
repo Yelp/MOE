@@ -211,60 +211,75 @@ class LogLikelihood(LogLikelihoodInterface, OptimizableInterface):
         """Return the number of independent parameters to optimize."""
         return self.num_hyperparameters
 
-    def compute_log_likelihood(self, hyperparameters):
+    def get_hyperparameters(self):
+        """Get the hyperparameters (1d array[num_hyperparameters]) of this covariance."""
+        return self._covariance.get_hyperparameters
+
+    def set_hyperparameters(self, hyperparameters):
+        """Set hyperparameters to the specified hyperparameters; ordering must match."""
+        self._covariance.set_hyperparameters(hyperparameters)
+
+    def get_current_point(self):
+        """Get the current_point (1d array[problem_size]) at which this object is evaluating the objective function, ``f(x)``."""
+        return self.get_hyperparameters()
+
+    def set_current_point(self, current_point):
+        """Set current_point to the specified point; ordering must match.
+
+        :param current_point: current_point at which to evaluate the objective function, ``f(x)``
+        :type current_point: 1d array[problem_size] of double
+
+        """
+        self.set_hyperparameters(current_point)
+
+    def compute_log_likelihood(self):
         r"""Compute the _log_likelihood_type measure at the specified hyperparameters.
 
-        :param hyperparameters: hyperparameters with which to compute the desired log likelihood measure
-        :type current_point: 1d array[num_hyperparameters] of double
         :return: value of log_likelihood evaluated at hyperparameters (``LL(y | X, \theta)``)
         :rtype: double
 
         """
-        self._covariance.set_hyperparameters(hyperparameters)
         return C_GP.compute_log_likelihood(
             cpp_utils.cppify(self._historical_data.points_sampled), # points already sampled
             cpp_utils.cppify(self._historical_data.points_sampled_value), # objective value at each sampled point
             self.dim,
             self._historical_data.num_sampled,
             self._log_likelihood_type, # log likelihood measure to eval (e.g., LogLikelihoodTypes.log_marginal_likelihood, see gpp_python_common.cpp for enum declaration)
-            cpp_utils.cppify_hyperparameters(hyperparameters), # hyperparameters, e.g., [signal variance, [length scales]]; see _cppify_hyperparameter docs, C++ python interface docs
+            cpp_utils.cppify_hyperparameters(self._covariance._hyperparameters), # hyperparameters, e.g., [signal variance, [length scales]]; see _cppify_hyperparameter docs, C++ python interface docs
             cpp_utils.cppify(self._historical_data.noise_variance), # noise variance, one value per sampled point
         )
 
-    def compute_objective_function(self, current_point):
+    def compute_objective_function(self):
         """Wrapper for compute_log_likelihood; see that function's docstring."""
         return self.compute_log_likelihood(current_point)
 
-    def compute_grad_log_likelihood(self, hyperparameters):
+    def compute_grad_log_likelihood(self):
         r"""Compute the gradient (wrt hyperparameters) of the _log_likelihood_type measure at the specified hyperparameters.
 
-        :param hyperparameters: hyperparameters with which to compute the desired log likelihood measure
-        :type hyperparameters: 1d array[num_hyperparameters] of double
         :return: grad_log_likelihood: i-th entry is ``\pderiv{LL(y | X, \theta)}{\theta_i}``
         :rtype: 1d array[num_hyperparameters] of double
 
         """
-        self._covariance.set_hyperparameters(hyperparameters)
         grad_log_marginal = C_GP.compute_hyperparameter_grad_log_likelihood(
             cpp_utils.cppify(self._historical_data.points_sampled), # points already sampled
             cpp_utils.cppify(self._historical_data.points_sampled_value), # objective value at each sampled point
             self.dim,
             self._historical_data.num_sampled,
             self._log_likelihood_type, # log likelihood measure to eval (e.g., LogLikelihoodTypes.log_marginal_likelihood, see gpp_python_common.cpp for enum declaration)
-            cpp_utils.cppify_hyperparameters(hyperparameters), # hyperparameters, e.g., [signal variance, [length scales]]; see _cppify_hyperparameter docs, C++ python interface docs
+            cpp_utils.cppify_hyperparameters(self._covariance._hyperparameters), # hyperparameters, e.g., [signal variance, [length scales]]; see _cppify_hyperparameter docs, C++ python interface docs
             cpp_utils.cppify(self._historical_data.noise_variance), # noise variance, one value per sampled point
         )
         return numpy.array(grad_log_marginal)
 
-    def compute_grad_objective_function(self, current_point):
+    def compute_grad_objective_function(self):
         """Wrapper for compute_grad_log_likelihood; see that function's docstring."""
         return self.compute_grad_log_likelihood(current_point)
 
-    def compute_hessian_log_likelihood(self, hyperparameters):
+    def compute_hessian_log_likelihood(self):
         """We do not currently support computation of the (hyperparameter) hessian of log likelihood-like metrics."""
         raise NotImplementedError('Currently C++ does not expose Hessian computation of log likelihood-like metrics.')
 
-    def compute_hessian_objective_function(self, current_point):
+    def compute_hessian_objective_function(self):
         """Wrapper for compute_hessian_log_likelihood; see that function's docstring."""
         return self.compute_hessian_log_likelihood(current_point)
 

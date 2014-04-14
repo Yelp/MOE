@@ -275,8 +275,10 @@ OL_NONNULL_POINTERS void SpecialTensorVectorMultiply(double const * restrict ten
 }
 
 /*
-  Computes the covariance matrix of a list of points, X_i.  Matrix is computed as:
-  A_{i,j} = covariance(X_i, X_j).
+  .. NOTE:: These comments have been copied into build_covariance_matrix in python_version/python_utils.py.
+
+  Compute the covariance matrix, ``K``, of a list of points, ``X_i``.  Matrix is computed as:
+  ``A_{i,j} = covariance(X_i, X_j)``.
   Result is SPD assuming covariance operator is SPD and points are unique.
 
   Generally, this is called from other functions with "points_sampled" as the input and not any
@@ -320,8 +322,11 @@ OL_NONNULL_POINTERS void BuildCovarianceMatrixWithNoiseVariance(const Covariance
 }
 
 /*
-  Computes the "mix" covariance matrix of 2 lists of points, Xs and X.  Matrix is computed as:
-  A_{i,j} = covariance(Xs_i, X_j).
+  .. NOTE:: These comments have been copied into build_mix_covariance_matrix in python_version/python_utils.py.
+
+  Compute the "mix" covariance matrix, ``Ks``, of ``Xs`` and ``X`` (``points_to_sample`` and ``points_sampled``, respectively).
+  Matrix is computed as:
+  ``A_{i,j} = covariance(Xs_i, X_j).``
   Result is not guaranteed to be SPD and need not even be square.
 
   Generally, this is called from other functions with "points_sampled" and "points_to_sample" as the
@@ -337,7 +342,7 @@ OL_NONNULL_POINTERS void BuildCovarianceMatrixWithNoiseVariance(const Covariance
   dim: spatial dimension of a point
   num_to_sample: number of points in points_to_sample
   num_sampled: number of points in points_sampled
-  cov_matrix[num_sampled][num_sampled]: computed "mix" covariance matrix
+  cov_matrix[num_to_sample][num_sampled]: computed "mix" covariance matrix
 */
 // TODO(eliu): Do not re-compute symmetric part (either don't compute it or copy from already-computed value) (ticket 40552)
 OL_NONNULL_POINTERS void BuildMixCovarianceMatrix(const CovarianceInterface& covariance, double const * restrict points_to_sample, double const * restrict points_sampled, int dim, int num_to_sample, int num_sampled, double * restrict cov_matrix) noexcept {

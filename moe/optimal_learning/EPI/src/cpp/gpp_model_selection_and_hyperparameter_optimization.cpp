@@ -253,21 +253,21 @@ OL_NONNULL_POINTERS void BuildCovarianceMatrixWithNoiseVariance(const Covariance
 }
 
 /*
-  Builds A_{jik} = \pderiv{K_{ij}}{\theta_k}
+  Build ``A_{jik} = \pderiv{K_{ij}}{\theta_k}``
   Hence the outer loop structure is identical to BuildCovarianceMatrix().
 
-  Note the structure of the resulting tensor is num_hyperparameters blocks of size
-  num_sampled X num_sampled.  Consumers of this want dK/d\theta_k located sequentially.
+  Note the structure of the resulting tensor is ``num_hyperparameters`` blocks of size
+  ``num_sampled X num_sampled``.  Consumers of this want ``dK/d\theta_k`` located sequentially.
   However, for a given pair of points (x, y), it is more efficient to compute all
   hyperparameter derivatives at once.  Thus the innermost loop writes to all
-  num_hyperparameters blocks at once.
+  ``num_hyperparameters`` blocks at once.
 
   Consumers of this result generally require complete storage (i.e., will not take advantage
   of its symmetry), so instead of ignoring the upper triangles, we copy them from the
   (already-computed) lower triangles to avoid redundant work.
 
-  Since CovarianceInterface.HyperparameterGradCovariance() returns a vector of size |\theta_k|,
-  the inner loop writes all relevant entries of A_{jik} simultaneously to prevent recomputation.
+  Since CovarianceInterface.HyperparameterGradCovariance() returns a vector of size ``|\theta_k|``,
+  the inner loop writes all relevant entries of ``A_{jik}`` simultaneously to prevent recomputation.
 
   INPUTS:
   covariance: the CovarianceFunction object encoding assumptions about the GP's behavior on our data
@@ -386,18 +386,20 @@ void LogMarginalLikelihoodEvaluator::FillLogLikelihoodState(LogMarginalLikelihoo
 }
 
 /*
-  log p(y|X,\theta) = -\frac{1}{2} * y^T * K^-1 * y - \frac{1}{2} * \log(det(K)) - \frac{n}{2} * \log(2*pi)
-  where n is num_sampled, \theta are the hyperparameters, and \log is the natural logarithm.  In the following,
-  term1 = -\frac{1}{2} * y^T * K^-1 * y
-  term2 = -\frac{1}{2} * \log(det(K))
-  term3 = -\frac{n}{2} * \log(2*pi)
+  .. NOTE:: These comments have been copied into the matching method of LogMarginalLikelihood in python_version/log_likelihood.py.
 
-  For an SPD matrix K = L * L^T,
-  det(K) = \Pi_i L_ii^2
+  ``log p(y|X,\theta) = -\frac{1}{2} * y^T * K^-1 * y - \frac{1}{2} * \log(det(K)) - \frac{n}{2} * \log(2*pi)``
+  where n is ``num_sampled``, ``\theta`` are the hyperparameters, and ``\log`` is the natural logarithm.  In the following,
+  ``term1 = -\frac{1}{2} * y^T * K^-1 * y``
+  ``term2 = -\frac{1}{2} * \log(det(K))``
+  ``term3 = -\frac{n}{2} * \log(2*pi)``
+
+  For an SPD matrix ``K = L * L^T``,
+  ``det(K) = \Pi_i L_ii^2``
   We could compute this directly and then take a logarithm.  But we also know:
-  \log(det(K)) = 2 * \sum_i \log(L_ii)
-  The latter method is (currently) preferred for computing \log(det(K)) due to reduced chance for overflow and (possibly) better
-  numerical conditioning.
+  ``\log(det(K)) = 2 * \sum_i \log(L_ii)``
+  The latter method is (currently) preferred for computing ``\log(det(K))`` due to reduced chance for overflow
+  and (possibly) better numerical conditioning.
 */
 // TODO(eliu): explore the impact of computing det(K) using a sum of logarithms: how much slower is it?  Is it substantially more accurate?
 // (unticketed: general optimization)
@@ -421,10 +423,12 @@ double LogMarginalLikelihoodEvaluator::ComputeLogLikelihood(const LogMarginalLik
 }
 
 /*
-  Computes \pderiv{log(p(y|X,\theta))}{\theta_k} = \frac{1}{2} * y_i * \pderiv{K_{ij}}{\theta_k} * y_j - \frac{1}{2}
-  * trace(K^{-1}_{ij}\pderiv{K_{ij}}{\theta_k})
-  Or equivalently, = \frac{1}{2} * trace([\alpha_i \alpha_j - K^{-1}_{ij}]*\pderiv{K_{ij}}{\theta_k}),
-  where \alpha_i = K^{-1}_{ij} * y_j
+  .. NOTE:: These comments have been copied into the matching method of LogMarginalLikelihood in python_version/log_likelihood.py.
+
+  Computes ``\pderiv{log(p(y|X,\theta))}{\theta_k} = \frac{1}{2} * y_i * \pderiv{K_{ij}}{\theta_k} * y_j - \frac{1}{2}``
+  ``* trace(K^{-1}_{ij}\pderiv{K_{ij}}{\theta_k})``
+  Or equivalently, ``= \frac{1}{2} * trace([\alpha_i \alpha_j - K^{-1}_{ij}]*\pderiv{K_{ij}}{\theta_k})``,
+  where ``\alpha_i = K^{-1}_{ij} * y_j``
 */
 #define OL_USE_INVERSE 0
 void LogMarginalLikelihoodEvaluator::ComputeGradLogLikelihood(LogMarginalLikelihoodState * log_likelihood_state, double * restrict grad_log_marginal) const noexcept {

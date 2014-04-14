@@ -15,6 +15,8 @@ class SquareExponential(CovarianceInterface):
 
     r"""Implement the square exponential covariance function.
 
+    .. Note:: comments are copied in SquareExponential in python_version/covariance.py
+
     The function:
     ``cov(x_1, x_2) = \alpha * \exp(-1/2 * ((x_1 - x_2)^T * L * (x_1 - x_2)) )``
     where L is the diagonal matrix with i-th diagonal entry ``1/lengths[i]/lengths[i]``
@@ -39,7 +41,7 @@ class SquareExponential(CovarianceInterface):
         return self._hyperparameters.size
 
     def get_hyperparameters(self):
-        """Get the hyperparameters of this covariance."""
+        """Get the hyperparameters (1d array[num_hyperparameters]) of this covariance."""
         return numpy.copy(self._hyperparameters)
 
     def set_hyperparameters(self, hyperparameters):
@@ -71,7 +73,7 @@ class SquareExponential(CovarianceInterface):
         raise NotImplementedError("C++ wrapper currently does not support computing covariance quantities.")
 
     def hyperparameter_hessian_covariance(self, point_one, point_two):
-        r"""Compute the gradient of self.covariance(point_one, point_two) with respect to its hyperparameters.
+        r"""Compute the hessian of self.covariance(point_one, point_two) with respect to its hyperparameters.
 
         We do not currently expose a C++ endpoint for this call; see covariance_interface.py for interface specification.
 

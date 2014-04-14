@@ -69,8 +69,8 @@ def multistart_expected_improvement_optimization(ei_evaluator, ei_optimization_p
         ei_optimization_parameters, # ExpectedImprovementOptimizationParameters object (see MOE_driver.py)
         ei_evaluator._gaussian_process._gaussian_process, # C++ GaussianProcess object (e.g., from self._build_cpp_gaussian_process())
         cpp_utils.cppify(domain.domain_bounds), # [lower, upper] bound pairs for each dimension
-        cpp_utils.cppify(points_to_sample), # points being sampled concurrently
-        points_to_sample.shape[0], # number of points to sample
+        cpp_utils.cppify(ei_evaluator._points_to_sample), # points being sampled concurrently
+        ei_evaluator._points_to_sample.shape[0], # number of points to sample
         num_samples_to_generate, # how many simultaneous experiments you would like to run
         ei_evaluator._best_so_far, # best known value of objective so far
         ei_evaluator._num_mc_iterations, # number of MC integration points in EI
@@ -310,9 +310,9 @@ def evaluate_expected_improvement_at_point_list(ei_evaluator, points_to_evaluate
     ei_values = C_GP.evaluate_EI_at_point_list(
         ei_evaluator._gaussian_process._gaussian_process, # C++ GaussianProcess object (e.g., from self._build_cpp_gaussian_process())
         cpp_utils.cppify(points_to_evaluate), # points at which to evaluate EI
-        cpp_utils.cppify(points_to_sample), # points being sampled concurrently
+        cpp_utils.cppify(ei_evaluator._points_to_sample), # points being sampled concurrently
         points_to_evaluate.shape[0], # number of points to evaluate
-        points_to_sample.shape[0], # number of points to sample
+        ei_evaluator._points_to_sample.shape[0], # number of points to sample
         ei_evaluator._best_so_far, # best known value of objective so far
         ei_evaluator._num_mc_iterations, # number of MC integration points in EI
         max_num_threads,
@@ -334,11 +334,15 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
 
     """
 
-    def __init__(self, gaussian_process, num_mc_iterations=1000, randomness=None):
+    def __init__(self, gaussian_process, current_point, points_to_sample=numpy.array([]), num_mc_iterations=1000, randomness=None):
         """Construct an ExpectedImprovement object that knows how to call C++ for evaluation of member functions.
         
         :param gaussian_process: GaussianProcess describing 
         :type gaussian_process: cpp_wrappers.GaussianProcess object
+        :param current_point: point at which to compute EI (i.e., q in q,p-EI)
+        :type current_point: 1d array[dim] of double
+        :param points_to_sample: array of points which are being sampled concurrently (i.e., p in q,p-EI)
+        :type points_to_sample: 2d array[num_to_sample][dim] of double
         :param num_mc_iterations: number of monte-carlo iterations to use (when monte-carlo integration is used to compute EI)
         :type num_mc_iterations: int > 0
         :param randomness: RNGs used by C++ as the source of normal random numbers when monte-carlo is used
@@ -351,6 +355,9 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
             self._best_so_far = numpy.amin(gaussian_process._historical_data.points_sampled_value)
         else:
             self._best_so_far = numpy.finfo(numpy.float64).max
+
+        self._current_point = numpy.copy(current_point)
+        self._points_to_sample = numpy.copy(points_to_sample)
 
         if randomness is None:
             self._randomness = C_GP.RandomnessSourceContainer(1) # create randomness for only 1 thread
@@ -369,7 +376,20 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         """Return the number of independent parameters to optimize."""
         return self.dim
 
-    def compute_expected_improvement(self, current_point, points_to_sample=numpy.array([]), force_monte_carlo=False):
+    def get_current_point(self):
+        """Get the current_point (1d array[problem_size]) at which this object is evaluating the objective function, ``f(x)``."""
+        return numpy.copy(self._current_point)
+
+    def set_current_point(self, current_point):
+        """Set current_point to the specified point; ordering must match.
+
+        :param current_point: current_point at which to evaluate the objective function, ``f(x)``
+        :type current_point: 1d array[problem_size] of double
+
+        """
+        self._current_point = numpy.copy(current_point)
+
+    def compute_expected_improvement(self, force_monte_carlo=False):
         r"""Compute the expected improvement at ``current_point``, with ``points_to_sample`` concurrent points being sampled.
 
         .. Note:: These comments were copied from this's superclass in expected_improvement_interface.py.
@@ -386,16 +406,14 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
 
         In general, the EI expression is complex and difficult to evaluate; hence we use Monte-Carlo simulation to approximate it.
 
-        :param current_point: point at which to compute EI (i.e., q in q,p-EI)
-        :type current_point: 1d array[dim] of double
-        :param points_to_sample: array of points which are being sampled concurrently (i.e., p in q,p-EI)
-        :type points_to_sample: 2d array[num_to_sample][dim] of double
+        :param force_monte_carlo: whether to force monte carlo evaluation (vs using fast/accurate analytic eval when possible)
+        :type force_monte_carlo: boolean
         :return: value of EI evaluated at ``current_point``
         :rtype: double
 
         """
-        num_points = 1 + points_to_sample.shape[0]
-        union_of_points = numpy.reshape(numpy.append(current_point, points_to_sample), (num_points, self.dim))
+        num_points = 1 + self._points_to_sample.shape[0]
+        union_of_points = numpy.reshape(numpy.append(self._current_point, self._points_to_sample), (num_points, self.dim))
 
         return C_GP.compute_expected_improvement(
             self._gaussian_process._gaussian_process, # C++ GaussianProcess object (e.g., from self._build_cpp_gaussian_process())
@@ -407,11 +425,11 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
             self._randomness,
         )
 
-    def compute_objective_function(self, current_point, **kwargs):
+    def compute_objective_function(self, **kwargs):
         """Wrapper for compute_expected_improvement; see that function's docstring."""
-        return self.compute_expected_improvement(current_point, **kwargs)
+        return self.compute_expected_improvement(**kwargs)
 
-    def compute_grad_expected_improvement(self, current_point, points_to_sample=numpy.array([]), force_monte_carlo=False):
+    def compute_grad_expected_improvement(self, force_monte_carlo=False):
         r"""Compute the gradient of expected improvement at ``current_point`` wrt ``current_point``, with ``points_to_sample`` concurrent samples.
 
         .. Note:: These comments were copied from this's superclass in expected_improvement_interface.py.
@@ -421,30 +439,28 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         In general, the expressions for gradients of EI are complex and difficult to evaluate; hence we use
         Monte-Carlo simulation to approximate it.
 
-        :param current_point: point at which to compute EI (i.e., q in q,p-EI)
-        :type current_point: 1d array[dim] of double
-        :param points_to_sample: array of points which are being sampled concurrently (i.e., p in q,p-EI)
-        :type points_to_sample: 2d array[num_to_sample][dim] of double
+        :param force_monte_carlo: whether to force monte carlo evaluation (vs using fast/accurate analytic eval when possible)
+        :type force_monte_carlo: boolean
         :return: gradient of EI, i-th entry is ``\pderiv{EI(x)}{x_i}`` where ``x`` is ``current_point``
         :rtype: 1d array[dim] of double
 
         """
         grad_EI = C_GP.compute_grad_expected_improvement(
             self._gaussian_process._gaussian_process, # C++ GaussianProcess object (e.g., from self._build_cpp_gaussian_process())
-            cpp_utils.cppify(points_to_sample), # points to sample
-            points_to_sample.shape[0], # number of points to sample
+            cpp_utils.cppify(self._points_to_sample), # points to sample
+            self._points_to_sample.shape[0], # number of points to sample
             self._num_mc_iterations,
             self._best_so_far, # best known value of objective so far
             force_monte_carlo,
             self._randomness,
-            cpp_utils.cppify(current_point),
+            cpp_utils.cppify(self._current_point),
         )
         return numpy.array(grad_EI)
 
-    def compute_grad_objective_function(self, current_point, **kwargs):
+    def compute_grad_objective_function(self, **kwargs):
         """Wrapper for compute_grad_expected_improvement; see that function's docstring."""
-        return self.compute_grad_expected_improvement(current_point, **kwargs)
+        return self.compute_grad_expected_improvement(**kwargs)
 
-    def compute_hessian_objective_function(self, current_point, **kwargs):
+    def compute_hessian_objective_function(self, **kwargs):
         """We do not currently support computation of the (spatial) hessian of Expected Improvement."""
         raise NotImplementedError('Currently we cannot compute the hessian of expected improvement.')
