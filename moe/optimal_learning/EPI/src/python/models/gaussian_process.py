@@ -155,7 +155,7 @@ class GaussianProcess(object):
             sample_variance_matrix = numpy.diag(
                     [sample_var for sample_var in self.sample_variance_of_samples]
                     )
-            L = moe.optimal_learning.EPI.src.python.lib.math.cholesky_decomp(K + sample_variance_matrix)
+            L = moe.optimal_learning.EPI.src.python.lib.math.cholesky_decomp(K)
         else:
             L = moe.optimal_learning.EPI.src.python.lib.math.cholesky_decomp(K)
 
