@@ -119,10 +119,13 @@ $ apt-get install python python-dev gcc cmake libboost-all-dev python-pip doxyge
 # Contributing
 
 1. Fork it.
-2. Create a branch (`git checkout -b my_moe_branch`) (make sure to run `make test` and `pyflakes`/`jslint`)
-3. Commit your changes (`git commit -am "Added Some Mathemagics"`)
-4. Push to the branch (`git push origin my_moe_branch`)
-5. Open a [Pull Request][1]
-6. Optimize locally while you wait
+2. Create a branch (`git checkout -b my_moe_branch`)
+3. Develop your feature/fix (don't forget to add tests!)
+4. `make test`
+5. Test style (`pyflakes`, `pep8` and `pep257`, check out `git-hooks/pre-commit`)
+6. Commit your changes (`git commit -am "Added Some Mathemagics"`)
+7. Push to the branch (`git push origin my_moe_branch`)
+8. Open a [Pull Request][1]
+9. Optimize locally while you wait
 
 [1]: http://github.com/sc932/MOE/pulls

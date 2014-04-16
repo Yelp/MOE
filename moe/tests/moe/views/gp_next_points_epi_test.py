@@ -5,7 +5,7 @@ import simplejson as json
 
 from moe.tests.moe.views.rest_gaussian_process_test_case import RestGaussianProcessTestCase
 
-from moe.views.gp_next_points_epi import GpNextPointsEpiResponse
+from moe.views.gp_next_points import GpNextPointsEpiResponse
 
 
 class TestGpNextPointsEiView(RestGaussianProcessTestCase):
