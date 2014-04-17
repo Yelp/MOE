@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-r"""Interface for computation of log likelihood (and log likelihood-like) measures of model fit along with its gradient and hessian.
+r"""Interface for computation of log likelihood (and similar) measures of model fit (of a Gaussian Process) along with its gradient and hessian.
 
 As a preface, you should read gpp_math.hpp's comments first (if not also gpp_math.cpp) to get an overview
 of Gaussian Processes (GPs) and how we are using them (Expected Improvement, EI). Python readers can get the basic
@@ -54,8 +54,8 @@ where "generalization error" is defined as "the average error on unseen test exa
 as the training cases)."  So it's a measure of how well or poorly the model predicts reality.
 
 For further details and examples of log likelihood measures, see gpp_model_selection_and_hyperparameter_optimization.hpp.
-Overview of some log likelihood measures can be found in LogMarginalLikelihood and LeaveOneOutLogLikelihood in
-cpp_wrappers/log_likelihood.py.
+Overview of some log likelihood measures can be found in GaussianProcessLogMarginalLikelihood and
+GaussianProcessLeaveOneOutLogLikelihood in cpp_wrappers/log_likelihood.py.
 
 OPTIMIZATION:
 Now that we have discussed measures of model quality, what do we do with them?  How do they help us choose hyperparameters?
@@ -80,7 +80,8 @@ of one or more hyperparameters).
 """
 from abc import ABCMeta, abstractmethod, abstractproperty
 
-class LogLikelihoodInterface(object):
+
+class GaussianProcessLogLikelihoodInterface(object):
 
     r"""Interface for computation of log likelihood (and log likelihood-like) measures of model fit along with its gradient and hessian.
 
@@ -108,7 +109,7 @@ class LogLikelihoodInterface(object):
 
     @abstractmethod
     def get_hyperparameters(self):
-        """Get the hyperparameters (1d array[num_hyperparameters]) of this covariance."""
+        """Get the hyperparameters (array of float64 with shape (num_hyperparameters)) of this covariance."""
         pass
 
     @abstractmethod
@@ -116,7 +117,7 @@ class LogLikelihoodInterface(object):
         """Set hyperparameters to the specified hyperparameters; ordering must match.
 
         :param hyperparameters: hyperparameters
-        :type hyperparameters: 1d array[num_hyperparameters] of double
+        :type hyperparameters: array of float64 with shape (num_hyperparameters)
 
         """
         pass
@@ -126,7 +127,7 @@ class LogLikelihoodInterface(object):
         r"""Compute a log likelihood measure of model fit.
 
         :return: value of log_likelihood evaluated at hyperparameters (``LL(y | X, \theta)``)
-        :rtype: double
+        :rtype: float64
 
         """
         pass
@@ -136,7 +137,7 @@ class LogLikelihoodInterface(object):
         r"""Compute the gradient (wrt hyperparameters) of this log likelihood measure of model fit.
 
         :return: grad_log_likelihood: i-th entry is ``\pderiv{LL(y | X, \theta)}{\theta_i}``
-        :rtype: 1d array[num_hyperparameters] of double
+        :rtype: array of float64 with shape (num_hyperparameters)
 
         """
         pass
@@ -148,7 +149,7 @@ class LogLikelihoodInterface(object):
         See CovarianceInterface.hyperparameter_hessian_covariance() in interfaces/covariance_interface.py for data ordering.
 
         :return: hessian_log_likelihood: ``(i,j)``-th entry is ``\mixpderiv{LL(y | X, \theta)}{\theta_i}{\theta_j}``
-        :rtype: 2d array[num_hyperparameters][num_hyperparameters] of double
+        :rtype: array of float64 with shape (num_hyperparameters, num_hyperparameters)
 
         """
         pass

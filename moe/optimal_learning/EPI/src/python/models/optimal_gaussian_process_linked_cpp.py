@@ -266,7 +266,7 @@ class OptimalGaussianProcessLinkedCpp(OptimalGaussianProcess):
         the requested log_likelihood measure (e.g., log marginal or leave one out)
         """
         cov, history = self._build_new_environment()
-        log_likelihood_evaluator = cpp_log_likelihood.LogLikelihood(cov, history, log_likelihood_type=objective_type)
+        log_likelihood_evaluator = cpp_log_likelihood.GaussianProcessLogLikelihood(cov, history, log_likelihood_type=objective_type)
         return log_likelihood_evaluator.compute_log_likelihood()
 
     def compute_hyperparam_grad_log_likelihood(self, objective_type=C_GP.LogLikelihoodTypes.log_marginal_likelihood):
@@ -274,7 +274,7 @@ class OptimalGaussianProcessLinkedCpp(OptimalGaussianProcess):
         the gradient of the requested log_likelihood measure (e.g., log marginal or leave one out) wrt the hyperparameters
         """
         cov, history = self._build_new_environment()
-        log_likelihood_evaluator = cpp_log_likelihood.LogLikelihood(cov, history, log_likelihood_type=objective_type)
+        log_likelihood_evaluator = cpp_log_likelihood.GaussianProcessLogLikelihood(cov, history, log_likelihood_type=objective_type)
         return log_likelihood_evaluator.compute_grad_log_likelihood()
 
     # TODO(eliu): this call is DEPRECATED; use compute_log_likelihood instead!
@@ -305,12 +305,12 @@ class OptimalGaussianProcessLinkedCpp(OptimalGaussianProcess):
         See gpp_python.cpp for C++ enum declarations laying out the options for objective and optimizer types.
         """
         cov, history = self._build_new_environment()
-        log_likelihood_evaluator = cpp_log_likelihood.LogLikelihood(cov, history, log_likelihood_type=hyperparameter_optimization_parameters.objective_type)
+        log_likelihood_evaluator = cpp_log_likelihood.GaussianProcessLogLikelihood(cov, history, log_likelihood_type=hyperparameter_optimization_parameters.objective_type)
         return cpp_log_likelihood.multistart_hyperparameter_optimization(log_likelihood_evaluator, hyperparameter_optimization_parameters, hyperparameter_domain=hyperparameter_domain, randomness=self.randomness, max_num_threads=self.max_num_threads, status=status)
 
     def evaluate_log_likelihood_at_hyperparameter_list(self, hyperparameters_to_evaluate, objective_type=C_GP.LogLikelihoodTypes.log_marginal_likelihood):
         """ Calls into evaluate_log_likelihood_at_hyperparameter_list_wrapper() in src/cpp/GPP_python.cpp
         """
         cov, history = self._build_new_environment()
-        log_likelihood_evaluator = cpp_log_likelihood.LogLikelihood(cov, history, log_likelihood_type=objective_type)
+        log_likelihood_evaluator = cpp_log_likelihood.GaussianProcessLogLikelihood(cov, history, log_likelihood_type=objective_type)
         return cpp_log_likelihood.evaluate_log_likelihood_at_hyperparameter_list(log_likelihood_evaluator, hyperparameters_to_evaluate, max_num_threads=self.max_num_threads)

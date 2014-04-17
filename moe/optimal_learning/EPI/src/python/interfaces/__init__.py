@@ -48,7 +48,7 @@ The modules in this package provide the interface with interacting with all the 
   algorithm believes is the most likely outcome from sampling a particular point in parameter
   space (aka conducting a particular experiment).
 
-  See ExpectedImprovementInterface ABC and implementation docs for further details on computing EI. 
+  See ExpectedImprovementInterface ABC and implementation docs for further details on computing EI.
   Both support compute_expected_improvement() and compute_grad_expected_improvement().
 
   The dimension of the GP is equal to the number of simultaneous experiments being run;

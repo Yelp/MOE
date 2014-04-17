@@ -57,10 +57,10 @@ class GaussianProcess(GaussianProcessInterface):
 
         # C++ will maintain its own copy of the contents of hyperparameters and historical_data
         self._gaussian_process = C_GP.GaussianProcess(
-            cpp_utils.cppify_hyperparameters(self._covariance.get_hyperparameters()), # hyperparameters, e.g., [signal variance, [length scales]]; see cpp_utils.cppify_hyperparameter docs, C++ python interface docs
-            cpp_utils.cppify(historical_data.points_sampled), # points already sampled
-            cpp_utils.cppify(historical_data.points_sampled_value), # objective value at each sampled point
-            cpp_utils.cppify(historical_data.noise_variance), # noise variance, one value per sampled point
+            cpp_utils.cppify_hyperparameters(self._covariance.get_hyperparameters()),  # hyperparameters, e.g., [signal variance, [length scales]]; see cpp_utils.cppify_hyperparameter docs, C++ python interface docs
+            cpp_utils.cppify(historical_data.points_sampled),  # points already sampled
+            cpp_utils.cppify(historical_data.points_sampled_value),  # objective value at each sampled point
+            cpp_utils.cppify(historical_data.points_sampled_noise_variance),  # noise variance, one value per sampled point
             self.dim,
             self.num_sampled,
         )
@@ -82,16 +82,16 @@ class GaussianProcess(GaussianProcessInterface):
 
         .. Note: Comments in this class are copied from this's superclass in interfaces.gaussian_process_interface.py.
 
-        :param points_to_sample: list of num_to_sample points (in dim dimensions) being sampled from the GP
-        :type points_to_sample: 2d array[num_to_sample][dim] of double
+        :param points_to_sample: num_to_sample points (in dim dimensions) being sampled from the GP
+        :type points_to_sample: array of float64 with shape (num_to_sample, dim)
         :return: mean: where mean[i] is the mean at points_to_sample[i]
-        :rtype: 1d array[num_to_sample] of double
+        :rtype: array of float64 with shape (num_to_sample)
 
         """
         num_to_sample = len(points_to_sample)
         mu = C_GP.get_mean(
-            self._gaussian_process, # C++ GaussianProcess object
-            cpp_utils.cppify(points_to_sample), # points at which to compute mean
+            self._gaussian_process,  # C++ GaussianProcess object
+            cpp_utils.cppify(points_to_sample),  # points at which to compute mean
             num_to_sample,
         )
         return numpy.array(mu)
@@ -109,17 +109,17 @@ class GaussianProcess(GaussianProcessInterface):
 
         .. Note: Comments in this class are copied from this's superclass in interfaces.gaussian_process_interface.py.
 
-        :param points_to_sample: list of num_to_sample points (in dim dimensions) being sampled from the GP
-        :type points_to_sample: 2d array[num_to_sample][dim] of double
+        :param points_to_sample: num_to_sample points (in dim dimensions) being sampled from the GP
+        :type points_to_sample: array of float64 with shape (num_to_sample, dim)
         :return: grad_mu: gradient of the mean of the GP. ``grad_mu[i][d]`` is actually the gradient
           of ``\mu_i`` wrt ``x_{i,d}``, the d-th dim of the i-th entry of ``points_to_sample``.
-        :rtype: 2d array[num_to_sample][dim][ of double
+        :rtype: array of float64 with shape (num_to_sample, dim)
 
         """
         num_to_sample = len(points_to_sample)
         grad_mu = C_GP.get_grad_mean(
-            self._gaussian_process, # C++ GaussianProcess object
-            cpp_utils.cppify(points_to_sample), # points at which to compute grad mean
+            self._gaussian_process,  # C++ GaussianProcess object
+            cpp_utils.cppify(points_to_sample),  # points at which to compute grad mean
             num_to_sample,
         )
         return cpp_utils.uncppify(grad_mu, (num_to_sample, self.dim))
@@ -133,16 +133,16 @@ class GaussianProcess(GaussianProcessInterface):
 
         .. Note: Comments in this class are copied from this's superclass in interfaces.gaussian_process_interface.py.
 
-        :param points_to_sample: list of num_to_sample points (in dim dimensions) being sampled from the GP
-        :type points_to_sample: 2d array[num_to_sample][dim] of double
+        :param points_to_sample: num_to_sample points (in dim dimensions) being sampled from the GP
+        :type points_to_sample: array of float64 with shape (num_to_sample, dim)
         :return: var_star: variance matrix of this GP
-        :rtype: 2d array[num_to_sample][num_to_sample] of double
+        :rtype: array of float64 with shape (num_to_sample, num_to_sample)
 
         """
         num_to_sample = len(points_to_sample)
         variance = C_GP.get_var(
-            self._gaussian_process, # C++ GaussianProcess object
-            cpp_utils.cppify(points_to_sample), # points to sample
+            self._gaussian_process,  # C++ GaussianProcess object
+            cpp_utils.cppify(points_to_sample),  # points to sample
             num_to_sample,
         )
         return cpp_utils.uncppify(variance, (num_to_sample, num_to_sample))
@@ -152,16 +152,16 @@ class GaussianProcess(GaussianProcessInterface):
 
         ``points_to_sample`` may not contain duplicate points. Violating this results in singular covariance matrices.
 
-        :param points_to_sample: list of num_to_sample points (in dim dimensions) being sampled from the GP
-        :type points_to_sample: 2d array[num_to_sample][dim] of double
+        :param points_to_sample: num_to_sample points (in dim dimensions) being sampled from the GP
+        :type points_to_sample: array of float64 with shape (num_to_sample, dim)
         :return: cholesky factorization of the variance matrix of this GP
-        :rtype: 2d array[num_to_sample][num_to_sample] of double
+        :rtype: array of float64 with shape (num_to_sample, num_to_sample)
 
         """
         num_to_sample = len(points_to_sample)
         cholesky_variance = C_GP.get_chol_var(
-            self._gaussian_process, # C++ GaussianProcess object
-            cpp_utils.cppify(points_to_sample), # points to sample
+            self._gaussian_process,  # C++ GaussianProcess object
+            cpp_utils.cppify(points_to_sample),  # points to sample
             num_to_sample,
         )
         return cpp_utils.uncppify(cholesky_variance, (num_to_sample, num_to_sample))
@@ -176,12 +176,12 @@ class GaussianProcess(GaussianProcessInterface):
 
         .. Note: Comments in this class are copied from this's superclass in interfaces.gaussian_process_interface.py.
 
-        :param points_to_sample: list of num_to_sample points (in dim dimensions) being sampled from the GP
-        :type points_to_sample: 2d array[num_to_sample][dim] of double
+        :param points_to_sample: num_to_sample points (in dim dimensions) being sampled from the GP
+        :type points_to_sample: array of float64 with shape (num_to_sample, dim)
         :param var_of_grad: index of ``points_to_sample`` to be differentiated against
         :type var_of_grad: integer in {0, .. ``num_to_sample``-1}
         :return: grad_var: gradient of the variance matrix of this GP
-        :rtype: 3d array[num_to_sample][num_to_sample][dim] of double
+        :rtype: array of float64 with shape (num_to_sample, num_to_sample, dim)
 
         """
         raise NotImplementedError("C++ wrapper currently only supports the gradient of the cholesky factorization of variance.")
@@ -204,23 +204,23 @@ class GaussianProcess(GaussianProcessInterface):
 
         .. Note: Comments in this class are copied from this's superclass in interfaces.gaussian_process_interface.py.
 
-        :param points_to_sample: list of num_to_sample points (in dim dimensions) being sampled from the GP
-        :type points_to_sample: 2d array[num_to_sample][dim] of double
+        :param points_to_sample: num_to_sample points (in dim dimensions) being sampled from the GP
+        :type points_to_sample: array of float64 with shape (num_to_sample, dim)
         :param var_of_grad: index of ``points_to_sample`` to be differentiated against
         :type var_of_grad: integer in {0, .. ``num_to_sample``-1}
         :return: grad_chol: gradient of the cholesky factorization of the variance matrix of this GP.
           ``grad_chol[j][i][d]`` is actually the gradients of ``var_{j,i}`` with
           respect to ``x_{k,d}``, the d-th dimension of the k-th entry of ``points_to_sample``, where
           k = ``var_of_grad``
-        :rtype: 3d array[num_to_sample][num_to_sample][dim] of double
+        :rtype: array of float64 with shape (num_to_sample, num_to_sample, dim)
 
         """
         num_to_sample = len(points_to_sample)
         cholesky_variance = C_GP.get_grad_var(
-            self._gaussian_process, # C++ GaussianProcess object
-            cpp_utils.cppify(points_to_sample), # points to sample
+            self._gaussian_process,  # C++ GaussianProcess object
+            cpp_utils.cppify(points_to_sample),  # points to sample
             num_to_sample,
-            var_of_grad, # dimension to differentiate in
+            var_of_grad,  # dimension to differentiate in
         )
         return cpp_utils.uncppify(cholesky_variance, (num_to_sample, num_to_sample, self.dim))
 
@@ -239,13 +239,13 @@ class GaussianProcess(GaussianProcessInterface):
         self._historical_data.append(sampled_points)
 
         self._gaussian_process = C_GP.GaussianProcess(
-            cpp_utils.cppify_hyperparameters(self._covariance.get_hyperparameters()), # hyperparameters, e.g., [signal variance, [length scales]]; see cpp_utils.cppify_hyperparameter docs, C++ python interface docs
-            cpp_utils.cppify([p.point for p in self.points_sampled]), # points already sampled
-            cpp_utils.cppify(self.values_of_samples), # objective value at each sampled point
-            cpp_utils.cppify(self.sample_variance_of_samples), # noise variance, one value per sampled point
+            cpp_utils.cppify_hyperparameters(self._covariance.get_hyperparameters()),  # hyperparameters, e.g., [signal variance, [length scales]]; see cpp_utils.cppify_hyperparameter docs, C++ python interface docs
+            cpp_utils.cppify([p.point for p in self.points_sampled]),  # points already sampled
+            cpp_utils.cppify(self.values_of_samples),  # objective value at each sampled point
+            cpp_utils.cppify(self.sample_variance_of_samples),  # noise variance, one value per sampled point
             self.dim,
             self.num_sampled,
-        )        
+        )
 
     def sample_point_from_gp(self, point_to_sample, noise_variance=0.0):
         r"""Sample a function value from a Gaussian Process prior, provided a point at which to sample.
@@ -258,16 +258,16 @@ class GaussianProcess(GaussianProcessInterface):
         .. NOTE::
              Set noise_variance to 0 if you want "accurate" draws from the GP.
              BUT if the drawn (point, value) pair is meant to be added back into the GP (e.g., for testing), then this point
-             MUST be drawn with noise_variance equal to the noise associated with "point" as a member of "points_sampled"        
+             MUST be drawn with noise_variance equal to the noise associated with "point" as a member of "points_sampled"
 
         .. Note: Comments in this class are copied from this's superclass in interfaces.gaussian_process_interface.py.
 
         :param point_to_sample: point (in dim dimensions) at which to sample from this GP
-        :type points_to_sample: 1d array[dim] of double
+        :type points_to_sample: array of float64 with shape (dim)
         :param noise_variance: amount of noise to associate with the sample
-        :type noise_variance: double >= 0.0
+        :type noise_variance: float64 >= 0.0
         :return: sample_value: function value drawn from this GP
-        :rtype: double
+        :rtype: float64
 
         """
         # TODO(eliu): C++ has a native implementation of this function; make a wrapper and call that directly
@@ -275,4 +275,4 @@ class GaussianProcess(GaussianProcessInterface):
         mean = self.compute_mean_of_points(point)[0]
         variance = self.compute_variance_of_points(point)[0][0]
 
-        return mu + numpy.sqrt(variance)*numpy.random.normal() + numpy.sqrt(noise_variance)*numpy.random.normal()
+        return mean + numpy.sqrt(variance) * numpy.random.normal() + numpy.sqrt(noise_variance) * numpy.random.normal()

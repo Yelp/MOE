@@ -41,7 +41,7 @@ class SquareExponential(CovarianceInterface):
         return self._hyperparameters.size
 
     def get_hyperparameters(self):
-        """Get the hyperparameters (1d array[num_hyperparameters]) of this covariance."""
+        """Get the hyperparameters (array of float64 with shape (num_hyperparameters)) of this covariance."""
         return numpy.copy(self._hyperparameters)
 
     def set_hyperparameters(self, hyperparameters):

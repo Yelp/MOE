@@ -52,15 +52,15 @@ class TensorProductDomain(DomainInterface):
         """
         raise NotImplementedError("C++ wrapper currently does not support domain member functions.")
 
-    def generate_uniform_points_in_domain(self, num_points, random_source):
+    def generate_uniform_random_points_in_domain(self, num_points, random_source):
         r"""Generate ``num_points`` uniformly distributed points from the domain.
 
         We do not currently expose a C++ endpoint for this call; see domain_interface.py for interface specification.
-        
+
         """
         raise NotImplementedError("C++ wrapper currently does not support domain member functions.")
 
-    def limit_update(max_relative_change, current_point, update_vector):
+    def compute_update_restricted_to_domain(max_relative_change, current_point, update_vector):
         r"""Compute a new update so that CheckPointInside(``current_point`` + ``new_update``) is true.
 
         We do not currently expose a C++ endpoint for this call; see domain_interface.py for interface specification.
@@ -117,15 +117,15 @@ class SimplexIntersectTensorProductDomain(DomainInterface):
         """
         raise NotImplementedError("C++ wrapper currently does not support domain member functions.")
 
-    def generate_uniform_points_in_domain(self, num_points, random_source):
+    def generate_uniform_random_points_in_domain(self, num_points, random_source):
         r"""Generate AT MOST ``num_points`` uniformly distributed points from the domain.
 
         We do not currently expose a C++ endpoint for this call; see domain_interface.py for interface specification.
-        
+
         """
         raise NotImplementedError("C++ wrapper currently does not support domain member functions.")
 
-    def limit_update(max_relative_change, current_point, update_vector):
+    def compute_update_restricted_to_domain(max_relative_change, current_point, update_vector):
         r"""Compute a new update so that CheckPointInside(``current_point`` + ``new_update``) is true.
 
         We do not currently expose a C++ endpoint for this call; see domain_interface.py for interface specification.

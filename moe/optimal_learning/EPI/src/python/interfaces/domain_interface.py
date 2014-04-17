@@ -2,6 +2,7 @@
 """Interface for a domain: in/out test, random point generation, and update limiting (for constrained optimization)."""
 from abc import ABCMeta, abstractmethod, abstractproperty
 
+
 class DomainInterface(object):
 
     """Interface for a domain: in/out test, random point generation, and update limiting (for constrained optimization)."""
@@ -18,9 +19,9 @@ class DomainInterface(object):
         r"""Check if a point is inside the domain/on its boundary or outside.
 
         :param point: point to check
-        :type point: 1d array[dim] of double
-        :param points_to_sample: array of points which are being sampled concurrently (i.e., p in q,p-EI)
-        :type points_to_sample: 2d array[num_to_sample][dim] of double
+        :type point: array of float64 with shape (dim)
+        :param points_to_sample: points which are being sampled concurrently (i.e., p in q,p-EI)
+        :type points_to_sample: array of float64 with shape (num_to_sample, dim)
         :return: true if point is inside the domain
         :rtype: bool
 
@@ -28,7 +29,7 @@ class DomainInterface(object):
         pass
 
     @abstractmethod
-    def generate_uniform_points_in_domain(self, num_points, random_source):
+    def generate_uniform_random_points_in_domain(self, num_points, random_source):
         r"""Generate AT MOST ``num_points`` uniformly distributed points from the domain.
 
         .. NOTE::
@@ -43,13 +44,13 @@ class DomainInterface(object):
         :param random_source:
         :type random_source: callable yielding uniform random numbers in [0,1]
         :return: uniform random sampling of points from the domain; may be fewer than ``num_points``!
-        :rtype: 2d array[num_points_generated][dim] of double
-        
+        :rtype: array of float64 with shape (num_points_generated, dim)
+
         """
         pass
 
     @abstractmethod
-    def limit_update(max_relative_change, current_point, update_vector):
+    def compute_update_restricted_to_domain(max_relative_change, current_point, update_vector):
         r"""Compute a new update so that CheckPointInside(``current_point`` + ``new_update``) is true.
 
         Changes new_update_vector so that:
@@ -65,13 +66,13 @@ class DomainInterface(object):
             limiting/testing may be performed.
 
         :param max_relative_change: max change allowed per update (as a relative fraction of current distance to boundary)
-        :type max_relative_change: double in (0, 1]
+        :type max_relative_change: float64 in (0, 1]
         :param current_point: starting point
-        :type current_point: 1d array[dim] of double
+        :type current_point: array of float64 with shape (dim)
         :param update_vector: proposed update
-        :type update_vector: 1d array[dim] of double
+        :type update_vector: array of float64 with shape (dim)
         :return: new update so that the final point remains inside the domain
-        :rtype: 1d array[dim] of double
+        :rtype: array of float64 with shape (dim)
 
         """
         pass

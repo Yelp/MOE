@@ -41,13 +41,13 @@ def build_newton_parameters(num_multistarts, max_num_steps, gamma, time_factor, 
     :param max_num_steps: maximum number of newton iterations (per initial guess)
     :type max_num_steps: int > 0
     :param gamma: exponent controlling rate of time_factor growth (see function comments)
-    :type gamma: double > 1.0
+    :type gamma: float64 > 1.0
     :param time_factor: initial amount of additive diagonal dominance (see function comments)
-    :type time_factor: double > 0.0
+    :type time_factor: float64 > 0.0
     :param max_relative_change: max change allowed per update (as a relative fraction of current distance to wall)
-    :type max_relative_change: double in [0, 1]
+    :type max_relative_change: float64 in [0, 1]
     :param tolerance: when the magnitude of the gradient falls below this value, stop
-    :type tolerance: double >= 0.0
+    :type tolerance: float64 >= 0.0
 
     """
     newton_data = C_GP.NewtonParameters(
@@ -89,15 +89,15 @@ def build_gradient_descent_parameters(num_multistarts, max_num_steps, max_num_re
     :param max_num_restarts: maximum number of gradient descent restarts, the we are allowed to call gradient descent.  Should be >= 2 as a minimum (suggest: 10-20)
     :type max_num_restarts: int > 0
     :param gamma: exponent controlling rate of step size decrease (see struct docs or GradientDescentOptimizer) (suggest: 0.5-0.9)
-    :type gamma: double > 1.0
+    :type gamma: float64 > 1.0
     :param time_factor: scaling factor for step size (see struct docs or GradientDescentOptimizer) (suggest: 0.1-1.0)
-    :type time_factor: double > 0.0
+    :type time_factor: float64 > 0.0
     :param max_relative_change: max change allowed per GD iteration (as a relative fraction of current distance to wall)
            (suggest: 0.5-1.0 for less sensitive problems like EI; 0.02 for more sensitive problems like hyperparameter opt)
-    :type max_relative_change: double in [0, 1]
+    :type max_relative_change: float64 in [0, 1]
     :param tolerance: when the magnitude of the gradient falls below this value OR we will not move farther than tolerance
            (e.g., at a boundary), stop.  (suggest: 1.0e-7)
-    :type tolerance: double >= 0.0
+    :type tolerance: float64 >= 0.0
 
     """
     gd_data = C_GP.GradientDescentParameters(
@@ -133,13 +133,15 @@ class HyperparameterOptimizationParameters(object):
     """
 
     __slots__ = ('objective_type', 'optimizer_type', 'num_random_samples', 'optimizer_parameters', )
+
     def __init__(self, optimizer_type=None, num_random_samples=None, optimizer_parameters=None):
         """Construct HyperparameterOptimizationParameters that specifies hyperparameter optimization behavior."""
         # see gpp_python_common.cpp for .*_type enum definitions. .*_type variables must be from those enums (NOT integers)
-        self.objective_type = None # set via the LogLikelihood object passed to optimization
+        self.objective_type = None  # set via the LogLikelihood object passed to optimization
         self.optimizer_type = optimizer_type
-        self.num_random_samples = num_random_samples # number of samples to 'dumb' search over
-        self.optimizer_parameters = optimizer_parameters # must match the optimizer_type
+        self.num_random_samples = num_random_samples  # number of samples to 'dumb' search over
+        self.optimizer_parameters = optimizer_parameters  # must match the optimizer_type
+
 
 class ExpectedImprovementOptimizationParameters(object):
 
@@ -162,12 +164,13 @@ class ExpectedImprovementOptimizationParameters(object):
     """
 
     __slots__ = ('domain_type', 'optimizer_type', 'num_random_samples', 'optimizer_parameters', )
+
     def __init__(self, optimizer_type=None, num_random_samples=None, optimizer_parameters=None):
         """Construct ExpectedImprovementOptimizationParameters that specifies EI optimization behavior."""
         # see gpp_python_common.cpp for .*_type enum definitions. .*_type variables must be from those enums (NOT integers)
-        self.domain_type = None # set via the DomainInterface object passed to optimization
+        self.domain_type = None  # set via the DomainInterface object passed to optimization
         self.optimizer_type = optimizer_type
-        self.num_random_samples = num_random_samples # number of samples to 'dumb' search over
-        self.optimizer_parameters = optimizer_parameters # must match the optimizer_type
+        self.num_random_samples = num_random_samples  # number of samples to 'dumb' search over
+        self.optimizer_parameters = optimizer_parameters  # must match the optimizer_type
         # NOTE: need both num_random_samples AND optimizer_parameters if generating > 1 sample
         # using gradient descent optimization

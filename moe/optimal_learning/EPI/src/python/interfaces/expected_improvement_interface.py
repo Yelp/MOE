@@ -25,9 +25,8 @@ implies the need for all of the various "grad" functions, e.g., gaussian_process
 This is handled by coupling an implementation of ExpectedImprovementInterface to an optimizer (optimization_interface.py).
 
 """
-import numpy
-
 from abc import ABCMeta, abstractmethod, abstractproperty
+
 
 class ExpectedImprovementInterface(object):
 
@@ -43,9 +42,9 @@ class ExpectedImprovementInterface(object):
     Implementers are also responsible for storing current_point and points_to_sample:
 
     :param current_point: point at which to compute EI (i.e., q in q,p-EI)
-    :type current_point: 1d array[dim] of double
-    :param points_to_sample: array of points which are being sampled concurrently (i.e., p in q,p-EI)
-    :type points_to_sample: 2d array[num_to_sample][dim] of double
+    :type current_point: array of float64 with shape (dim)
+    :param points_to_sample: points which are being sampled concurrently (i.e., p in q,p-EI)
+    :type points_to_sample: array of float64 with shape (num_to_sample, dim)
 
     """
 
@@ -76,7 +75,7 @@ class ExpectedImprovementInterface(object):
         In general, the EI expression is complex and difficult to evaluate; hence we use Monte-Carlo simulation to approximate it.
 
         :return: value of EI evaluated at ``current_point``
-        :rtype: double
+        :rtype: float64
 
         """
         pass
@@ -95,7 +94,7 @@ class ExpectedImprovementInterface(object):
 
 
         :return: gradient of EI, i-th entry is ``\pderiv{EI(x)}{x_i}`` where ``x`` is ``current_point``
-        :rtype: 1d array[dim] of double
+        :rtype: array of float64 with shape (dim)
 
         """
         pass

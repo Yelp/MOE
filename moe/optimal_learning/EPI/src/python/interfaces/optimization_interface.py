@@ -11,15 +11,27 @@ through the C++ interface.
 """
 from abc import ABCMeta, abstractmethod, abstractproperty
 
+
 class OptimizableInterface(object):
 
     r"""Interface that an object must fulfill to be optimized by an implementation of OptimizationInterface.
 
     Below, ``f(x)`` is the scalar objective function represented by this object. ``x`` is a vector-valued input
-    with ``problem_size`` dimensions.
+    with ``problem_size`` dimensions. With ``f(x)`` (and/or its derivatives), a OptimizableInterface implementation
+    can be hooked up to a OptimizationInterface implementation to find the maximum value of ``f(x)`` and the input
+    ``x`` at which this maximum occurs.
 
     This interface is straightforward--we need the ability to compute the problem size (how many independent parameters to
-    optimize) as well as the ability to compute ``f(x)`` and/or its various derivatives.
+    optimize) as well as the ability to compute ``f(x)`` and/or its various derivatives. An implementation of ``f(x)`` is
+    required; this allows for derivative-free optimization methods. Providing derivatives opens the door to more
+    advanced/efficient techniques (e.g., gradient descent, BFGS, Newton).
+
+    This interface is meant to be generic. For example, when optimizing the log marginal likelihood of a GP model
+    (wrt hyperparameters of covariance; e.g., python_version.log_likelihood.GaussianProcessLogMarginalLikelihood)
+    ``f`` is the log marginal, ``x`` is the vector of hyperparameters, and ``problem_size`` is ``num_hyperparameters``.
+    Note that log marginal and covariance both have an associated spatial dimension, and this is NOT ``problem_size``.
+    For Expected Improvement (e.g., python_version.expected_improvement.ExpectedImprovement), ``f`` would be the EI,
+    ``x`` is the new experiment point (or points) being optimized, and ``problem_size`` is ``dim`` (or ``num_points*dim``).
 
     TODO(eliu): getter/setter for current_point. maybe following this?
     http://google-styleguide.googlecode.com/svn/trunk/pyguide.html#Function_and_Method_Decorators
@@ -36,7 +48,7 @@ class OptimizableInterface(object):
 
     @abstractmethod
     def get_current_point(self):
-        """Get the current_point (1d array[problem_size]) at which this object is evaluating the objective function, ``f(x)``."""
+        """Get the current_point (array of float64 with shape (problem_size)) at which this object is evaluating the objective function, ``f(x)``."""
         pass
 
     @abstractmethod
@@ -44,7 +56,7 @@ class OptimizableInterface(object):
         """Set current_point to the specified point; ordering must match.
 
         :param current_point: current_point at which to evaluate the objective function, ``f(x)``
-        :type current_point: 1d array[problem_size] of double
+        :type current_point: array of float64 with shape (problem_size)
 
         """
         pass
@@ -54,7 +66,7 @@ class OptimizableInterface(object):
         r"""Compute ``f(current_point)``.
 
         :return: value of objective function evaluated at ``current_point``
-        :rtype: double
+        :rtype: float64
 
         """
         pass
@@ -64,7 +76,7 @@ class OptimizableInterface(object):
         r"""Compute the gradient of ``f(current_point)`` wrt ``current_point``.
 
         :return: gradient of the objective, i-th entry is ``\pderiv{f(x)}{x_i}``
-        :rtype: 1d array[problem_size] of double
+        :rtype: array of float64 with shape (problem_size)
 
         """
         pass
@@ -77,7 +89,7 @@ class OptimizableInterface(object):
         http://en.wikipedia.org/wiki/Symmetry_of_second_derivatives
 
         :return: hessian of the objective, (i,j)th entry is ``\mixpderiv{f(x)}{x_i}{x_j}``
-        :rtype: 2d array[problem_size][problem_size] of double
+        :rtype: array of float64 with shape (problem_size, problem_size)
 
         """
         pass
@@ -105,8 +117,7 @@ class OptimizerInterface(object):
           and parameters controlling its behavior (e.g., tolerance, iterations, etc.)
         :type optimization_parameters: implementation-defined
         :return: point at which the objective function is maximized
-        :rtype: 1d array[optimizable.problem_size] of double
+        :rtype: array of float64 with shape (optimizable.problem_size)
 
         """
         pass
-

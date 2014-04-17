@@ -25,6 +25,7 @@ and evaluating model fit, respectively.
 """
 from abc import ABCMeta, abstractmethod, abstractproperty
 
+
 class CovarianceInterface(object):
 
     r"""Interface for a covariance function: covariance of two points and spatial/hyperparameter derivatives.
@@ -57,7 +58,7 @@ class CovarianceInterface(object):
 
     @abstractmethod
     def get_hyperparameters(self):
-        """Get the hyperparameters (1d array[num_hyperparameters]) of this covariance."""
+        """Get the hyperparameters (array of float64 with shape (num_hyperparameters)) of this covariance."""
         pass
 
     @abstractmethod
@@ -65,7 +66,7 @@ class CovarianceInterface(object):
         """Set hyperparameters to the specified hyperparameters; ordering must match.
 
         :param hyperparameters: hyperparameters
-        :type hyperparameters: 1d array[num_hyperparameters] of double
+        :type hyperparameters: array of float64 with shape (num_hyperparameters)
 
         """
         pass
@@ -80,12 +81,12 @@ class CovarianceInterface(object):
         The covariance function is guaranteed to be symmetric by definition: ``covariance(x, y) = covariance(y, x)``.
         This function is also positive definite by definition.
 
-        :param point_one: first input, the point "x"
-        :type point_one: 1d array[dim] of double
-        :param point_two: first input, the point "x"
-        :type point_two: 1d array[dim] of double
+        :param point_one: first input, the point ``x``
+        :type point_one: array of float64 with shape (dim)
+        :param point_two: second input, the point ``y``
+        :type point_two: array of float64 with shape (dim)
         :return: value of covariance between the input points
-        :rtype: double
+        :rtype: float64
 
         """
         pass
@@ -104,12 +105,12 @@ class CovarianceInterface(object):
         Hence to avoid separate implementations for differentiating against first vs second argument, this function only handles
         differentiation against the first argument.  If you need ``\pderiv{Cov(y, x)}{x}``, just swap points x and y.
 
-        :param point_one: first input, the point "x"
-        :type point_one: 1d array[dim] of double
-        :param point_two: first input, the point "x"
-        :type point_two: 1d array[dim] of double
+        :param point_one: first input, the point ``x``
+        :type point_one: array of float64 with shape (dim)
+        :param point_two: second input, the point ``y``
+        :type point_two: array of float64 with shape (dim)
         :return: grad_cov: i-th entry is ``\pderiv{cov(x_1, x_2)}{x_i}``
-        :rtype: 1d array[dim] of double
+        :rtype: array of float64 with shape (dim)
 
         """
         pass
@@ -124,12 +125,12 @@ class CovarianceInterface(object):
         Unlike GradCovariance(), the order of point_one and point_two is irrelevant here (since we are not differentiating against
         either of them).  Thus the matrix of grad covariances (wrt hyperparameters) is symmetric.
 
-        :param point_one: first input, the point "x"
-        :type point_one: 1d array[dim] of double
-        :param point_two: first input, the point "x"
-        :type point_two: 1d array[dim] of double
+        :param point_one: first input, the point ``x``
+        :type point_one: array of float64 with shape (dim)
+        :param point_two: second input, the point ``y``
+        :type point_two: array of float64 with shape (dim)
         :return: grad_hyperparameter_cov: i-th entry is ``\pderiv{cov(x_1, x_2)}{\theta_i}``
-        :rtype: 1d array[num_hyperparameters] of double
+        :rtype: array of float64 with shape (num_hyperparameters)
 
         """
         pass
@@ -151,16 +152,15 @@ class CovarianceInterface(object):
         f is twice continuously differentiable).
 
         Similarly to the gradients, the Hessian is independent of the order of ``x_1, x_2: H_{cov}(x_1, x_2) = H_{cov}(x_2, x_1)``
-        
+
         For further details: http://en.wikipedia.org/wiki/Hessian_matrix
 
-        :param point_one: first input, the point "x"
-        :type point_one: 1d array[dim] of double
-        :param point_two: first input, the point "x"
-        :type point_two: 1d array[dim] of double
+        :param point_one: first input, the point ``x``
+        :type point_one: array of float64 with shape(dim)
+        :param point_two: second input, the point ``y``
+        :type point_two: array of float64 with shape (dim)
         :return: hessian_hyperparameter_cov: ``(i,j)``-th entry is ``\mixpderiv{cov(x_1, x_2)}{\theta_i}{\theta_j}``
-        :rtype: 2d array[num_hyperparameters][num_hyperparameters] of double
+        :rtype: array of float64 with shape (num_hyperparameters, num_hyperparameters)
 
         """
         pass
-

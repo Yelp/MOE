@@ -10,6 +10,7 @@ See package docs in interfaces/__init__.py for an introduction to Gaussian Proce
 """
 from abc import ABCMeta, abstractmethod, abstractproperty
 
+
 class GaussianProcessInterface(object):
 
     r"""Interface for a GaussianProcess: mean, variance, gradients thereof, and data I/O.
@@ -35,7 +36,7 @@ class GaussianProcessInterface(object):
     | ComputeVarianceOfPoints: ``K(Xs, Xs) - K(Xs,X) * [K(X,X) + \sigma_n^2 I]^{-1} * K(X,Xs)``
 
     This (estimated) mean and variance characterize the predicted distributions of the actual \ms m(x), k(x,x')\me
-    functions that underly our GP.    
+    functions that underly our GP.
 
     """
 
@@ -59,10 +60,10 @@ class GaussianProcessInterface(object):
 
         .. Note: Comments in this class are copied from GaussianProcess in gpp_math.hpp and duplicated in cpp_wrappers.gaussian_process.
 
-        :param points_to_sample: list of num_to_sample points (in dim dimensions) being sampled from the GP
-        :type points_to_sample: 2d array[num_to_sample][dim] of double
+        :param points_to_sample: num_to_sample points (in dim dimensions) being sampled from the GP
+        :type points_to_sample: array of float64 with shape (num_to_sample, dim)
         :return: mean: where mean[i] is the mean at points_to_sample[i]
-        :rtype: 1d array[num_to_sample] of double
+        :rtype: array of float64 with shape (num_to_sample)
 
         """
         pass
@@ -81,11 +82,11 @@ class GaussianProcessInterface(object):
 
         .. Note: Comments in this class are copied from GaussianProcess in gpp_math.hpp and duplicated in cpp_wrappers.gaussian_process.
 
-        :param points_to_sample: list of num_to_sample points (in dim dimensions) being sampled from the GP
-        :type points_to_sample: 2d array[num_to_sample][dim] of double
+        :param points_to_sample: num_to_sample points (in dim dimensions) being sampled from the GP
+        :type points_to_sample: array of float64 with shape (num_to_sample, dim)
         :return: grad_mu: gradient of the mean of the GP. ``grad_mu[i][d]`` is actually the gradient
           of ``\mu_i`` wrt ``x_{i,d}``, the d-th dim of the i-th entry of ``points_to_sample``.
-        :rtype: 2d array[num_to_sample][dim][ of double
+        :rtype: array of float64 with shape (num_to_sample, dim)
 
         """
         pass
@@ -100,10 +101,10 @@ class GaussianProcessInterface(object):
 
         .. Note: Comments in this class are copied from GaussianProcess in gpp_math.hpp and duplicated in cpp_wrappers.gaussian_process.
 
-        :param points_to_sample: list of num_to_sample points (in dim dimensions) being sampled from the GP
-        :type points_to_sample: 2d array[num_to_sample][dim] of double
+        :param points_to_sample: num_to_sample points (in dim dimensions) being sampled from the GP
+        :type points_to_sample: array of float64 with shape (num_to_sample, dim)
         :return: var_star: variance matrix of this GP
-        :rtype: 2d array[num_to_sample][num_to_sample] of double
+        :rtype: array of float64 with shape (num_to_sample, num_to_sample)
 
         """
         pass
@@ -114,10 +115,10 @@ class GaussianProcessInterface(object):
 
         ``points_to_sample`` may not contain duplicate points. Violating this results in singular covariance matrices.
 
-        :param points_to_sample: list of num_to_sample points (in dim dimensions) being sampled from the GP
-        :type points_to_sample: 2d array[num_to_sample][dim] of double
+        :param points_to_sample: num_to_sample points (in dim dimensions) being sampled from the GP
+        :type points_to_sample: array of float64 with shape (num_to_sample, dim)
         :return: cholesky factorization of the variance matrix of this GP
-        :rtype: 2d array[num_to_sample][num_to_sample] of double
+        :rtype: array of float64 with shape (num_to_sample, num_to_sample)
 
         """
         pass
@@ -133,12 +134,12 @@ class GaussianProcessInterface(object):
 
         .. Note: Comments in this class are copied from GaussianProcess in gpp_math.hpp and duplicated in cpp_wrappers.gaussian_process.
 
-        :param points_to_sample: list of num_to_sample points (in dim dimensions) being sampled from the GP
-        :type points_to_sample: 2d array[num_to_sample][dim] of double
+        :param points_to_sample: num_to_sample points (in dim dimensions) being sampled from the GP
+        :type points_to_sample: array of float64 with shape (num_to_sample, dim)
         :param var_of_grad: index of ``points_to_sample`` to be differentiated against
         :type var_of_grad: integer in {0, .. ``num_to_sample``-1}
         :return: grad_var: gradient of the variance matrix of this GP
-        :rtype: 3d array[num_to_sample][num_to_sample][dim] of double
+        :rtype: array of float64 with shape (num_to_sample, num_to_sample, dim)
 
         """
         pass
@@ -162,15 +163,15 @@ class GaussianProcessInterface(object):
 
         .. Note: Comments in this class are copied from GaussianProcess in gpp_math.hpp and duplicated in cpp_wrappers.gaussian_process.
 
-        :param points_to_sample: list of num_to_sample points (in dim dimensions) being sampled from the GP
-        :type points_to_sample: 2d array[num_to_sample][dim] of double
+        :param points_to_sample: num_to_sample points (in dim dimensions) being sampled from the GP
+        :type points_to_sample: array of float64 with shape (num_to_sample, dim)
         :param var_of_grad: index of ``points_to_sample`` to be differentiated against
         :type var_of_grad: integer in {0, .. ``num_to_sample``-1}
         :return: grad_chol: gradient of the cholesky factorization of the variance matrix of this GP.
           ``grad_chol[j][i][d]`` is actually the gradients of ``var_{j,i}`` with
           respect to ``x_{k,d}``, the d-th dimension of the k-th entry of ``points_to_sample``, where
           k = ``var_of_grad``
-        :rtype: 3d array[num_to_sample][num_to_sample][dim] of double
+        :rtype: array of float64 with shape (num_to_sample, num_to_sample, dim)
 
         """
         pass
@@ -199,16 +200,16 @@ class GaussianProcessInterface(object):
         .. NOTE::
              Set noise_variance to 0 if you want "accurate" draws from the GP.
              BUT if the drawn (point, value) pair is meant to be added back into the GP (e.g., for testing), then this point
-             MUST be drawn with noise_variance equal to the noise associated with "point" as a member of "points_sampled"        
+             MUST be drawn with noise_variance equal to the noise associated with "point" as a member of "points_sampled"
 
         .. Note: Comments in this class are copied from GaussianProcess in gpp_math.hpp and duplicated in cpp_wrappers.gaussian_process.
 
         :param point_to_sample: point (in dim dimensions) at which to sample from this GP
-        :type points_to_sample: 1d array[dim] of double
+        :type points_to_sample: array of float64 with shape (dim)
         :param noise_variance: amount of noise to associate with the sample
-        :type noise_variance: double >= 0.0
+        :type noise_variance: float64 >= 0.0
         :return: sample_value: function value drawn from this GP
-        :rtype: double
+        :rtype: float64
 
         """
         pass

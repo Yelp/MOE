@@ -45,7 +45,7 @@ def multistart_expected_improvement_optimization(ei_evaluator, ei_optimization_p
     :param num_samples_to_generate: how many simultaneous experiments you would like to run (i.e., the q in q,p-EI)
     :type num_samples_to_generate: int >= 1
     :param points_to_sample: points that are being sampled concurrently from the GP (i.e., the p in q,p-EI)
-    :type points_to_sample: 2d array[num_to_sample][dim] of double
+    :type points_to_sample: array of float64 with shape (num_to_sample, dim)
     :param randomness: RNGs used by C++ to generate initial guesses and as the source of normal random numbers when monte-carlo is used
     :type randomness: RandomnessSourceContainer (C++ object; e.g., from C_GP.RandomnessSourceContainer())
     :param max_num_threads: maximum number of threads to use, >= 1
@@ -56,9 +56,9 @@ def multistart_expected_improvement_optimization(ei_evaluator, ei_optimization_p
     """
     # Create enough randomness sources if none are specified.
     if randomness is None:
-        randomness = C_GP.RandomnessSourceContainer(max_num_threads) # create randomness for max_num_threads
-        randomness.SetRandomizedUniformGeneratorSeed(0) # set seed based on less repeatable factors (e.g,. time)
-        randomness.SetRandomizedNormalRNGSeed(0) # set seed baesd on thread id & less repeatable factors (e.g,. time)
+        randomness = C_GP.RandomnessSourceContainer(max_num_threads)  # create randomness for max_num_threads
+        randomness.SetRandomizedUniformGeneratorSeed(0)  # set seed based on less repeatable factors (e.g,. time)
+        randomness.SetRandomizedNormalRNGSeed(0)  # set seed baesd on thread id & less repeatable factors (e.g,. time)
 
     # status must be an initialized dict for the call to C++.
     if status is None:
@@ -66,16 +66,16 @@ def multistart_expected_improvement_optimization(ei_evaluator, ei_optimization_p
 
     ei_optimization_parameters.domain_type = domain._domain_type
     best_points_to_sample = C_GP.multistart_expected_improvement_optimization(
-        ei_optimization_parameters, # ExpectedImprovementOptimizationParameters object (see MOE_driver.py)
-        ei_evaluator._gaussian_process._gaussian_process, # C++ GaussianProcess object (e.g., from self._build_cpp_gaussian_process())
-        cpp_utils.cppify(domain.domain_bounds), # [lower, upper] bound pairs for each dimension
-        cpp_utils.cppify(ei_evaluator._points_to_sample), # points being sampled concurrently
-        ei_evaluator._points_to_sample.shape[0], # number of points to sample
-        num_samples_to_generate, # how many simultaneous experiments you would like to run
-        ei_evaluator._best_so_far, # best known value of objective so far
-        ei_evaluator._num_mc_iterations, # number of MC integration points in EI
+        ei_optimization_parameters,  # ExpectedImprovementOptimizationParameters object (see MOE_driver.py)
+        ei_evaluator._gaussian_process._gaussian_process,  # C++ GaussianProcess object (e.g., from self._build_cpp_gaussian_process())
+        cpp_utils.cppify(domain.domain_bounds),  # [lower, upper] bound pairs for each dimension
+        cpp_utils.cppify(ei_evaluator._points_to_sample),  # points being sampled concurrently
+        ei_evaluator._points_to_sample.shape[0],  # number of points to sample
+        num_samples_to_generate,  # how many simultaneous experiments you would like to run
+        ei_evaluator._best_so_far,  # best known value of objective so far
+        ei_evaluator._num_mc_iterations,  # number of MC integration points in EI
         max_num_threads,
-        randomness, # C++ RandomnessSourceContainer that holds enough randomness sources for multithreading
+        randomness,  # C++ RandomnessSourceContainer that holds enough randomness sources for multithreading
         status,
     )
 
@@ -162,9 +162,9 @@ def _heuristic_expected_improvement_optimization(ei_evaluator, ei_optimization_p
     """
     # Create enough randomness sources if none are specified.
     if randomness is None:
-        randomness = C_GP.RandomnessSourceContainer(max_num_threads) # create randomness for max_num_threads
-        randomness.SetRandomizedUniformGeneratorSeed(0) # set seed based on less repeatable factors (e.g,. time)
-        randomness.SetRandomizedNormalRNGSeed(0) # set seed baesd on thread id & less repeatable factors (e.g,. time)
+        randomness = C_GP.RandomnessSourceContainer(max_num_threads)  # create randomness for max_num_threads
+        randomness.SetRandomizedUniformGeneratorSeed(0)  # set seed based on less repeatable factors (e.g,. time)
+        randomness.SetRandomizedNormalRNGSeed(0)  # set seed baesd on thread id & less repeatable factors (e.g,. time)
 
     # status must be an initialized dict for the call to C++.
     if status is None:
@@ -172,14 +172,14 @@ def _heuristic_expected_improvement_optimization(ei_evaluator, ei_optimization_p
 
     ei_optimization_parameters.domain_type = domain._domain_type
     best_points_to_sample = C_GP.heuristic_expected_improvement_optimization(
-        ei_optimization_parameters, # ExpectedImprovementOptimizationParameters object (see MOE_driver.py)
-        ei_evaluator._gaussian_process._gaussian_process, # C++ GaussianProcess object (e.g., from self._build_cpp_gaussian_process())
-        cpp_utils.cppify(domain.domain_bounds), # [lower, upper] bound pairs for each dimension
-        estimation_policy, # estimation policy to use for guessing objective function values (e.g., ConstantLiar, KrigingBeliever)
-        num_samples_to_generate, # how many simultaneous experiments you would like to run
-        ei_evaluator._best_so_far, # best known value of objective so far
+        ei_optimization_parameters,  # ExpectedImprovementOptimizationParameters object (see MOE_driver.py)
+        ei_evaluator._gaussian_process._gaussian_process,  # C++ GaussianProcess object (e.g., from self._build_cpp_gaussian_process())
+        cpp_utils.cppify(domain.domain_bounds),  # [lower, upper] bound pairs for each dimension
+        estimation_policy,  # estimation policy to use for guessing objective function values (e.g., ConstantLiar, KrigingBeliever)
+        num_samples_to_generate,  # how many simultaneous experiments you would like to run
+        ei_evaluator._best_so_far,  # best known value of objective so far
         max_num_threads,
-        randomness, # C++ RandomnessSourceContainer that holds enough randomness sources for multithreading
+        randomness,  # C++ RandomnessSourceContainer that holds enough randomness sources for multithreading
         status,
     )
 
@@ -216,9 +216,9 @@ def constant_liar_expected_improvement_optimization(ei_evaluator, ei_optimizatio
     :param num_samples_to_generate: how many simultaneous experiments you would like to run (i.e., the q in q,0-EI)
     :type num_samples_to_generate: int >= 1
     :param lie_value: the "constant lie" that this estimator should return
-    :type lie_value: double
+    :type lie_value: float64
     :param lie_noise_variance: the noise_variance to associate to the lie_value (MUST be >= 0.0)
-    :type lie_noise_variance: double
+    :type lie_noise_variance: float64
     :param randomness: RNGs used by C++ to generate initial guesses
     :type randomness: RandomnessSourceContainer (C++ object; e.g., from C_GP.RandomnessSourceContainer())
     :param max_num_threads: maximum number of threads to use, >= 1
@@ -262,9 +262,9 @@ def kriging_believer_expected_improvement_optimization(ei_evaluator, ei_optimiza
     :param num_samples_to_generate: how many simultaneous experiments you would like to run (i.e., the q in q,0-EI)
     :type num_samples_to_generate: int >= 1
     :param std_deviation_coef: the relative amount of bias (in units of GP std deviation) to introduce into the GP mean
-    :type std_deviation_coef: double
+    :type std_deviation_coef: float64
     :param kriging_noise_variance: the noise_variance to associate to each function value estimate (MUST be >= 0.0)
-    :type kriging_noise_variance: double
+    :type kriging_noise_variance: float64
     :param randomness: RNGs used by C++ to generate initial guesses
     :type randomness: RandomnessSourceContainer (C++ object; e.g., from C_GP.RandomnessSourceContainer())
     :param max_num_threads: maximum number of threads to use, >= 1
@@ -286,7 +286,7 @@ def evaluate_expected_improvement_at_point_list(ei_evaluator, points_to_evaluate
     :param ei_evaluator: object specifying how to evaluate the expected improvement
     :type ei_evaluator: cpp_wrappers.expected_improvement.ExpectedImprovement
     :param points_to_sample: points that are being sampled concurrently from the GP (i.e., the p in q,p-EI)
-    :type points_to_sample: 2d array[num_to_sample][dim] of double
+    :type points_to_sample: array of float64 with shape (num_to_sample, dim)
     :param randomness: RNGs used by C++ to generate initial guesses and as the source of normal random numbers when monte-carlo is used
     :type randomness: RandomnessSourceContainer (C++ object; e.g., from C_GP.RandomnessSourceContainer())
     :param max_num_threads: maximum number of threads to use, >= 1
@@ -294,29 +294,29 @@ def evaluate_expected_improvement_at_point_list(ei_evaluator, points_to_evaluate
     :param status: status messages from C++ (e.g., reporting on optimizer success, etc.)
     :type status: dict
     :return: EI evaluated at each of points_to_evaluate
-    :rtype: 1d array[points_to_evaluate.shape[0]] of double
+    :rtype: array of float64 with shape )points_to_evaluate.shape[0])
 
     """
     # Create enough randomness sources if none are specified.
     if randomness is None:
-        randomness = C_GP.RandomnessSourceContainer(max_num_threads) # create randomness for max_num_threads
-        randomness.SetRandomizedUniformGeneratorSeed(0) # set seed based on less repeatable factors (e.g,. time)
-        randomness.SetRandomizedNormalRNGSeed(0) # set seed baesd on thread id & less repeatable factors (e.g,. time)
+        randomness = C_GP.RandomnessSourceContainer(max_num_threads)  # create randomness for max_num_threads
+        randomness.SetRandomizedUniformGeneratorSeed(0)  # set seed based on less repeatable factors (e.g,. time)
+        randomness.SetRandomizedNormalRNGSeed(0)  # set seed baesd on thread id & less repeatable factors (e.g,. time)
 
     # status must be an initialized dict for the call to C++.
     if status is None:
         status = {}
 
     ei_values = C_GP.evaluate_EI_at_point_list(
-        ei_evaluator._gaussian_process._gaussian_process, # C++ GaussianProcess object (e.g., from self._build_cpp_gaussian_process())
-        cpp_utils.cppify(points_to_evaluate), # points at which to evaluate EI
-        cpp_utils.cppify(ei_evaluator._points_to_sample), # points being sampled concurrently
-        points_to_evaluate.shape[0], # number of points to evaluate
-        ei_evaluator._points_to_sample.shape[0], # number of points to sample
-        ei_evaluator._best_so_far, # best known value of objective so far
-        ei_evaluator._num_mc_iterations, # number of MC integration points in EI
+        ei_evaluator._gaussian_process._gaussian_process,  # C++ GaussianProcess object (e.g., from self._build_cpp_gaussian_process())
+        cpp_utils.cppify(points_to_evaluate),  # points at which to evaluate EI
+        cpp_utils.cppify(ei_evaluator._points_to_sample),  # points being sampled concurrently
+        points_to_evaluate.shape[0],  # number of points to evaluate
+        ei_evaluator._points_to_sample.shape[0],  # number of points to sample
+        ei_evaluator._best_so_far,  # best known value of objective so far
+        ei_evaluator._num_mc_iterations,  # number of MC integration points in EI
         max_num_threads,
-        randomness, # C++ RandomnessSourceContainer that holds enough randomness sources for multithreading
+        randomness,  # C++ RandomnessSourceContainer that holds enough randomness sources for multithreading
         status,
     )
     return numpy.array(ei_values)
@@ -336,13 +336,13 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
 
     def __init__(self, gaussian_process, current_point, points_to_sample=numpy.array([]), num_mc_iterations=1000, randomness=None):
         """Construct an ExpectedImprovement object that knows how to call C++ for evaluation of member functions.
-        
-        :param gaussian_process: GaussianProcess describing 
+
+        :param gaussian_process: GaussianProcess describing
         :type gaussian_process: cpp_wrappers.GaussianProcess object
         :param current_point: point at which to compute EI (i.e., q in q,p-EI)
-        :type current_point: 1d array[dim] of double
-        :param points_to_sample: array of points which are being sampled concurrently (i.e., p in q,p-EI)
-        :type points_to_sample: 2d array[num_to_sample][dim] of double
+        :type current_point: array of float64 with shape (dim)
+        :param points_to_sample: points which are being sampled concurrently (i.e., p in q,p-EI)
+        :type points_to_sample: array of float64 with shape (num_to_sample, dim)
         :param num_mc_iterations: number of monte-carlo iterations to use (when monte-carlo integration is used to compute EI)
         :type num_mc_iterations: int > 0
         :param randomness: RNGs used by C++ as the source of normal random numbers when monte-carlo is used
@@ -360,9 +360,9 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         self._points_to_sample = numpy.copy(points_to_sample)
 
         if randomness is None:
-            self._randomness = C_GP.RandomnessSourceContainer(1) # create randomness for only 1 thread
-            self._randomness.SetRandomizedUniformGeneratorSeed(0) # set seed based on less repeatable factors (e.g,. time)
-            self._randomness.SetRandomizedNormalRNGSeed(0) # set seed baesd on thread id & less repeatable factors (e.g,. time)
+            self._randomness = C_GP.RandomnessSourceContainer(1)  # create randomness for only 1 thread
+            self._randomness.SetRandomizedUniformGeneratorSeed(0)  # set seed based on less repeatable factors (e.g,. time)
+            self._randomness.SetRandomizedNormalRNGSeed(0)  # set seed baesd on thread id & less repeatable factors (e.g,. time)
         else:
             self._randomness = randomness
 
@@ -377,14 +377,14 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         return self.dim
 
     def get_current_point(self):
-        """Get the current_point (1d array[problem_size]) at which this object is evaluating the objective function, ``f(x)``."""
+        """Get the current_point (array of float64 with shape (problem_size)) at which this object is evaluating the objective function, ``f(x)``."""
         return numpy.copy(self._current_point)
 
     def set_current_point(self, current_point):
         """Set current_point to the specified point; ordering must match.
 
         :param current_point: current_point at which to evaluate the objective function, ``f(x)``
-        :type current_point: 1d array[problem_size] of double
+        :type current_point: array of float64 with shape (problem_size)
 
         """
         self._current_point = numpy.copy(current_point)
@@ -409,18 +409,18 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         :param force_monte_carlo: whether to force monte carlo evaluation (vs using fast/accurate analytic eval when possible)
         :type force_monte_carlo: boolean
         :return: value of EI evaluated at ``current_point``
-        :rtype: double
+        :rtype: float64
 
         """
         num_points = 1 + self._points_to_sample.shape[0]
         union_of_points = numpy.reshape(numpy.append(self._current_point, self._points_to_sample), (num_points, self.dim))
 
         return C_GP.compute_expected_improvement(
-            self._gaussian_process._gaussian_process, # C++ GaussianProcess object (e.g., from self._build_cpp_gaussian_process())
-            cpp_utils.cppify(union_of_points), # points to sample
-            num_points, # number of points to sample
+            self._gaussian_process._gaussian_process,  # C++ GaussianProcess object (e.g., from self._build_cpp_gaussian_process())
+            cpp_utils.cppify(union_of_points),  # points to sample
+            num_points,  # number of points to sample
             self._num_mc_iterations,
-            self._best_so_far, # best known value of objective so far
+            self._best_so_far,  # best known value of objective so far
             force_monte_carlo,
             self._randomness,
         )
@@ -442,15 +442,15 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         :param force_monte_carlo: whether to force monte carlo evaluation (vs using fast/accurate analytic eval when possible)
         :type force_monte_carlo: boolean
         :return: gradient of EI, i-th entry is ``\pderiv{EI(x)}{x_i}`` where ``x`` is ``current_point``
-        :rtype: 1d array[dim] of double
+        :rtype: array of float64 with shape (dim)
 
         """
         grad_EI = C_GP.compute_grad_expected_improvement(
-            self._gaussian_process._gaussian_process, # C++ GaussianProcess object (e.g., from self._build_cpp_gaussian_process())
-            cpp_utils.cppify(self._points_to_sample), # points to sample
-            self._points_to_sample.shape[0], # number of points to sample
+            self._gaussian_process._gaussian_process,  # C++ GaussianProcess object (e.g., from self._build_cpp_gaussian_process())
+            cpp_utils.cppify(self._points_to_sample),  # points to sample
+            self._points_to_sample.shape[0],  # number of points to sample
             self._num_mc_iterations,
-            self._best_so_far, # best known value of objective so far
+            self._best_so_far,  # best known value of objective so far
             force_monte_carlo,
             self._randomness,
             cpp_utils.cppify(self._current_point),
