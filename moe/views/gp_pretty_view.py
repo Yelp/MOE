@@ -33,7 +33,7 @@ class GpPrettyView(object):
         self.request = request
 
     def pretty_response(self):
-        """A pretty, browser interactable view for the interface. Includes form request and response."""
+        """A pretty, browser interactive view for the interface. Includes form request and response."""
         return {
                 'endpoint': self.route_name,
                 'default_text': json.dumps(self.pretty_default_request),

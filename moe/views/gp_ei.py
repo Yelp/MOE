@@ -57,7 +57,7 @@ class GpEiView(GpPrettyView):
 
     @view_config(route_name=pretty_route_name, renderer=GpPrettyView.pretty_renderer)
     def pretty_view(self):
-        """A pretty, browser interactable view for the interface. Includes form request and response."""
+        """A pretty, browser interactive view for the interface. Includes form request and response."""
         return self.pretty_response()
 
     @view_config(route_name=route_name, renderer='json', request_method='POST')
