@@ -3,7 +3,7 @@
 import urllib2
 import simplejson as json
 
-from moe.views.gp_next_points import GpNextPointsEpiResponse
+from moe.views.gp_next_points_pretty_view import GpNextPointsResponse
 
 
 DEFAULT_HOST = '127.0.0.1'
@@ -40,5 +40,5 @@ def gp_next_points(
     f.close()
 
     json_response = json.loads(response)
-    output = GpNextPointsEpiResponse().deserialize(json_response)
+    output = GpNextPointsResponse().deserialize(json_response)
     return output["points_to_sample"]

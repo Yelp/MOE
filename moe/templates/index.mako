@@ -17,5 +17,7 @@
         <li><a href="${request.route_url( 'gp_ei_pretty' )}">GP EI</a></li>
         <li><a href="${request.route_url( 'gp_mean_var_pretty' )}">GP mean and var</a></li>
         <li><a href="${request.route_url( 'gp_next_points_epi_pretty' )}">GP next points EPI</a></li>
+        <li><a href="${request.route_url( 'gp_next_points_kriging_pretty' )}">GP next points kriging</a></li>
+        <li><a href="${request.route_url( 'gp_next_points_constant_liar_pretty' )}">GP next points constant liar</a></li>
     </ul>
 </div>

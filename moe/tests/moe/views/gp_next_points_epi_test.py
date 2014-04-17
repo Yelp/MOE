@@ -5,12 +5,12 @@ import simplejson as json
 
 from moe.tests.moe.views.rest_gaussian_process_test_case import RestGaussianProcessTestCase
 
-from moe.views.gp_next_points import GpNextPointsEpiResponse
+from moe.views.gp_next_points_pretty_view import GpNextPointsResponse
 
 
-class TestGpNextPointsEiView(RestGaussianProcessTestCase):
+class TestGpNextPointsViews(RestGaussianProcessTestCase):
 
-    """Test that the /gp/ei endpoint does the same thing as the C++ interface."""
+    """Test that the /gp/next_points/* endpoints do the same thing as the C++ interface."""
 
     test_cases = [
             {
@@ -30,8 +30,14 @@ class TestGpNextPointsEiView(RestGaussianProcessTestCase):
                 },
             ]
 
+    endpoints = [
+            '/gp/next_points/epi',
+            '/gp/next_points/kriging',
+            '/gp/next_points/constant_liar',
+            ]
+
     def _build_json_payload(self, GP, num_samples_to_generate):
-        """Create a json_payload to POST to the /gp/next_points/epi endpoint with all needed info."""
+        """Create a json_payload to POST to the /gp/next_points/* endpoint with all needed info."""
         json_payload = json.dumps({
             'num_samples_to_generate': num_samples_to_generate,
             'gp_info': self._build_gp_info(GP),
@@ -39,24 +45,25 @@ class TestGpNextPointsEiView(RestGaussianProcessTestCase):
         return json_payload
 
     def test_interface_returns_same_as_cpp(self):
-        """Test that the /gp/next_points/epi endpoint does the same thing as the C++ interface."""
-        for test_case in self.test_cases:
-            num_points_in_sample = test_case['num_points_in_sample']
-            num_samples_to_generate = test_case['num_samples_to_generate']
-            domain = test_case['domain']
+        """Test that the /gp/next_points/* endpoints do the same thing as the C++ interface."""
+        for endpoint in self.endpoints:
+            for test_case in self.test_cases:
+                num_points_in_sample = test_case['num_points_in_sample']
+                num_samples_to_generate = test_case['num_samples_to_generate']
+                domain = test_case['domain']
 
-            GP, _ = self._make_random_processes_from_latin_hypercube(domain, num_points_in_sample)
+                GP, _ = self._make_random_processes_from_latin_hypercube(domain, num_points_in_sample)
 
-            # Next point from REST
-            json_payload = self._build_json_payload(GP, num_samples_to_generate)
-            resp = self.testapp.post('/gp/next_points/epi', json_payload)
-            resp_schema = GpNextPointsEpiResponse()
-            resp_dict = resp_schema.deserialize(json.loads(resp.body))
-            T.assert_in('points_to_sample', resp_dict)
-            T.assert_in('expected_improvement', resp_dict)
+                # Next point from REST
+                json_payload = self._build_json_payload(GP, num_samples_to_generate)
+                resp = self.testapp.post(endpoint, json_payload)
+                resp_schema = GpNextPointsResponse()
+                resp_dict = resp_schema.deserialize(json.loads(resp.body))
+                T.assert_in('points_to_sample', resp_dict)
+                T.assert_in('expected_improvement', resp_dict)
 
-            for ei in resp_dict['expected_improvement']:
-                T.assert_gte(ei, 0.0)
+                for ei in resp_dict['expected_improvement']:
+                    T.assert_gte(ei, 0.0)
 
 if __name__ == "__main__":
     T.run()
