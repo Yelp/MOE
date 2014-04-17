@@ -1,12 +1,12 @@
+"""Base pyramid app for MOE."""
 from pyramid.config import Configurator
-from pyramid.events import subscriber
 from pyramid.events import NewRequest
 
 from moe.resources import Root
 
+
 def main(global_config, **settings):
-    """ This function returns a WSGI application.
-    """
+    """Return a WSGI application."""
     config = Configurator(settings=settings, root_factory=Root)
     config.add_static_view('static', 'moe:static')
 
@@ -19,13 +19,17 @@ def main(global_config, **settings):
     config.add_route('gp_mean_var_pretty', '/gp/mean_var/pretty')
     config.add_route('gp_next_points_epi', '/gp/next_points/epi')
     config.add_route('gp_next_points_epi_pretty', '/gp/next_points/epi/pretty')
+    config.add_route('gp_next_points_kriging', '/gp/next_points/kriging')
+    config.add_route('gp_next_points_kriging_pretty', '/gp/next_points/kriging/pretty')
+    config.add_route('gp_next_points_constant_liar', '/gp/next_points/constant_liar')
+    config.add_route('gp_next_points_constant_liar_pretty', '/gp/next_points/constant_liar/pretty')
 
     # MongoDB
     if settings['use_mongo'] == 'true':
         import pymongo
+
         def add_mongo_db(event):
             settings = event.request.registry.settings
-            url = settings['mongodb.url']
             db_name = settings['mongodb.db_name']
             db = settings['mongodb_conn'][db_name]
             event.request.db = db
