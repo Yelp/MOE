@@ -6,7 +6,7 @@ Includes:
 """
 from pyramid.view import view_config
 
-from moe.views import _make_gp_from_gp_info
+from moe.views.utils import _make_gp_from_gp_info
 from moe.views.gp_pretty_view import GpPrettyView
 
 import colander

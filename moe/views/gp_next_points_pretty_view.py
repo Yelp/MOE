@@ -10,7 +10,7 @@ from moe.views.schemas import GpInfo, EiOptimizationParameters, ListOfPointsInDo
 from moe.optimal_learning.EPI.src.python.constant import default_ei_optimization_parameters
 
 from moe.views.gp_pretty_view import GpPrettyView
-from moe.views import _make_gp_from_gp_info
+from moe.views.utils import _make_gp_from_gp_info
 
 import moe.build.GPP as C_GP
 from moe.optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp import ExpectedImprovementOptimizationParameters
