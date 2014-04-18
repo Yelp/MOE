@@ -42,6 +42,27 @@ class SamplePoint(collections.namedtuple('SamplePoint', ['point', 'value', 'nois
         """Pretty print this object as a dict."""
         return pprint.pformat(dict(self._asdict()))
 
+    def validate(self, dim=None):
+        """Check this SamplePoint passes basic validity checks: dimension is expected, all values are finite.
+
+        :param dim: number of (expected) spatial dimensions; None to skip check
+        :type dim: int > 0
+        :raises ValueError: self.point does not have exactly dim entries
+        :raises ValueError: if any member data is non-finite or out of range
+
+        """
+        # check that dim of points matches specified dimension
+        if dim is not None and len(self.point) != dim:
+            raise ValueError('Input dim = %d and point dimension %d do not match!' % (dim, len(self.point)))
+
+        # check that all values are finite
+        if not numpy.isfinite(self.point).all():
+            raise ValueError('point = %s contains non-finite values!' % self.point)
+        if not numpy.isfinite(self.value):
+            raise ValueError('value = %f is non-finite!' % self.value)
+        if not numpy.isfinite(self.noise_variance) or self.noise_variance < 0.0:
+            raise ValueError('value = %f is non-finite or negative!' % self.noise_variance)
+
 
 class HistoricalData(object):
 
@@ -133,17 +154,7 @@ class HistoricalData(object):
 
         if num_sampled > 0:
             for sample_point in sample_points:
-                point, value, noise_variance = sample_point
-                # check that dim of points matches specified dimension
-                if len(point) != dim:
-                    raise ValueError('Input dim = %d and point dimension %d do not match!' % (dim, len(point)))
-                # check that all values are finite
-                if not numpy.isfinite(point).all():
-                    raise ValueError('point = %s contains non-finite values!' % point)
-                if not numpy.isfinite(value):
-                    raise ValueError('value = %f is non-finite!' % value)
-                if not numpy.isfinite(noise_variance) and noise_variance < 0.0:
-                    raise ValueError('value = %f is non-finite or negative!' % noise_variance)
+                sample_point.validate(dim=dim)
 
     @staticmethod
     def validate_historical_data(dim, points_sampled, points_sampled_value, points_sampled_noise_variance):
@@ -169,17 +180,9 @@ class HistoricalData(object):
             raise ValueError('Input arrays do not have the same leading dimension: (points_sampled, value, noise) = (%d, %d, %d)' % (points_sampled.shape[0], points_sampled_value.size, points_sampled_noise_variance.size))
 
         if points_sampled.shape[0] > 0:
-            # check that dim of points matches specified dimension
-            if points_sampled.shape[1] != dim:
-                raise ValueError('Input dim = %d and point dimension %d do not match!' % (dim, points_sampled.shape[1]))
-
-            # check that all values are finite
-            if not numpy.isfinite(points_sampled).all():
-                raise ValueError('points_sampled contains non-finite values!')
-            if not numpy.isfinite(points_sampled_value).all():
-                raise ValueError('points_sampled_value contains non-finite values!')
-            if not numpy.isfinite(points_sampled_noise_variance).all():
-                raise ValueError('points_sampled_noise_variance contains non-finite values!')
+            for i in range(points_sampled.shape[0]):
+                temp = SamplePoint(points_sampled[i], points_sampled_value[i], points_sampled_noise_variance[i])
+                temp.validate(dim=dim)
 
     def append_sample_points(self, sample_points, validate=False):
         """Append the contents of ``sample_points`` to the data members of this class.
