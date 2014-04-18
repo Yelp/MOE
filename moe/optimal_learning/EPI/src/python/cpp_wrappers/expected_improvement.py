@@ -12,7 +12,6 @@ import numpy
 
 import moe.build.GPP as C_GP
 import moe.optimal_learning.EPI.src.python.cpp_wrappers.cpp_utils as cpp_utils
-
 from moe.optimal_learning.EPI.src.python.interfaces.expected_improvement_interface import ExpectedImprovementInterface
 from moe.optimal_learning.EPI.src.python.interfaces.optimization_interface import OptimizableInterface
 

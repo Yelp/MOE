@@ -8,7 +8,6 @@ for C++ calls to construct the matching C++ domain object.
 import copy
 
 import moe.build.GPP as C_GP
-
 from moe.optimal_learning.EPI.src.python.interfaces.domain_interface import DomainInterface
 
 

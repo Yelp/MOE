@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+"""Some default configuration parameters for optimal_learning components."""
 from collections import namedtuple
 
 # EI Defaults

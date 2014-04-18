@@ -7,10 +7,11 @@ See interfaces.gaussian_process_interface.py for more details.
 
 """
 import copy
-import moe.build.GPP as C_GP
-import numpy
-import moe.optimal_learning.EPI.src.python.cpp_wrappers.cpp_utils as cpp_utils
 
+import numpy
+
+import moe.build.GPP as C_GP
+import moe.optimal_learning.EPI.src.python.cpp_wrappers.cpp_utils as cpp_utils
 from moe.optimal_learning.EPI.src.python.interfaces.gaussian_process_interface import GaussianProcessInterface
 
 

@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 """Test class for gp_next_points_epi view."""
-import testify as T
 import simplejson as json
+import testify as T
 
 from moe.tests.moe.views.rest_gaussian_process_test_case import RestGaussianProcessTestCase
-
 from moe.views.gp_next_points_pretty_view import GpNextPointsResponse
 
 

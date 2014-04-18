@@ -1,20 +1,19 @@
+# -*- coding: utf-8 -*-
 """A class to encapsulate 'pretty' views for gp_next_points_* endpoints.
 
 Include:
     1. Request and response schemas
     2. Class that extends GpPrettyView for next_points optimizers
 """
-
 import colander
 import numpy
-from moe.views.schemas import GpInfo, EiOptimizationParameters, ListOfPointsInDomain, ListOfExpectedImprovements
-from moe.optimal_learning.EPI.src.python.constant import default_ei_optimization_parameters
-
-from moe.views.gp_pretty_view import GpPrettyView
-from moe.views.utils import _make_gp_from_gp_info
 
 import moe.build.GPP as C_GP
+from moe.optimal_learning.EPI.src.python.constant import default_ei_optimization_parameters
 from moe.optimal_learning.EPI.src.python.cpp_wrappers.optimization_parameters import ExpectedImprovementOptimizationParameters
+from moe.views.gp_pretty_view import GpPrettyView
+from moe.views.schemas import GpInfo, EiOptimizationParameters, ListOfPointsInDomain, ListOfExpectedImprovements
+from moe.views.utils import _make_gp_from_gp_info
 
 
 class GpNextPointsRequest(colander.MappingSchema):

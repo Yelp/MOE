@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 """Geometry utilities. e.g., ClosedInterval, point-plane geometry."""
-
 import collections
 
 

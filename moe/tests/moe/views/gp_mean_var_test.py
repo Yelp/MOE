@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
 """Test class for gp_mean_var view."""
-import testify as T
 import simplejson as json
+import testify as T
 
-from moe.tests.moe.views.rest_gaussian_process_test_case import RestGaussianProcessTestCase
 from moe.optimal_learning.EPI.src.python.lib.math import get_latin_hypercube_points
-
+from moe.tests.moe.views.rest_gaussian_process_test_case import RestGaussianProcessTestCase
 from moe.views.gp_mean_var import GpMeanVarResponse
 
 

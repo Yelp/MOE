@@ -1,19 +1,18 @@
+# -*- coding: utf-8 -*-
 """Classes for gp_ei endpoints.
 
 Includes:
     1. request and response schemas
     2. pretty and backend views
 """
+import colander
 import numpy
-
 from pyramid.view import view_config
 
-from moe.views.utils import _make_gp_from_gp_info
-from moe.views.gp_pretty_view import GpPrettyView
-
-import colander
-from moe.views.schemas import ListOfPointsInDomain, GpInfo, ListOfExpectedImprovements
 from moe.optimal_learning.EPI.src.python.constant import default_expected_improvement_parameters
+from moe.views.gp_pretty_view import GpPrettyView
+from moe.views.schemas import ListOfPointsInDomain, GpInfo, ListOfExpectedImprovements
+from moe.views.utils import _make_gp_from_gp_info
 
 
 class GpEiRequest(colander.MappingSchema):

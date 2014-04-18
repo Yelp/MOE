@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """Classes for MOE optimizable experiments."""
-from collections import namedtuple
-import numpy
 import pprint
+from collections import namedtuple
 
+import numpy
 
 ExperimentPoint = namedtuple('ExperimentPoint', ['point', 'value', 'value_var'])
 

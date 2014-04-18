@@ -2,8 +2,9 @@
 """Data containers convenient for/used to interact with optimal_learning.EPI.src.python members."""
 import collections
 import logging
-import numpy
 import pprint
+
+import numpy
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 

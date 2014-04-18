@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Frontend views for the MOE app."""
 from pyramid.view import view_config
 

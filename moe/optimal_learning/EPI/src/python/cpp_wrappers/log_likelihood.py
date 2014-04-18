@@ -47,12 +47,12 @@ Again, we can maximize this quanitity over hyperparameters to help us choose the
 
 """
 import copy
+
 import numpy
 
 import moe.build.GPP as C_GP
 import moe.optimal_learning.EPI.src.python.cpp_wrappers.cpp_utils as cpp_utils
 import moe.optimal_learning.EPI.src.python.geometry_utils as geometry_utils
-
 from moe.optimal_learning.EPI.src.python.interfaces.log_likelihood_interface import GaussianProcessLogLikelihoodInterface
 from moe.optimal_learning.EPI.src.python.interfaces.optimization_interface import OptimizableInterface
 
