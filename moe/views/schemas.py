@@ -1,11 +1,27 @@
+"""Base level schemas for the response/request schemas of each MOE REST endpoint."""
 import colander
 
-from optimal_learning.EPI.src.python.constant import default_ei_optimization_parameters, default_gaussian_process_parameters, default_expected_improvement_parameters
+from moe.optimal_learning.EPI.src.python.constant import default_gaussian_process_parameters, default_ei_optimization_parameters
+
 
 class ListOfFloats(colander.SequenceSchema):
+
+    """Colander list of floats."""
+
     float_in_list = colander.SchemaNode(colander.Float())
 
+
 class SinglePoint(colander.MappingSchema):
+
+    """A point object.
+
+    Contains:
+        point - ListOfFloats
+        value - float
+        value_var - float >= 0.0
+
+    """
+
     point = ListOfFloats()
     value = colander.SchemaNode(colander.Float())
     value_var = colander.SchemaNode(
@@ -13,16 +29,40 @@ class SinglePoint(colander.MappingSchema):
             validator=colander.Range(min=0),
             )
 
+
 class PointsSampled(colander.SequenceSchema):
+
+    """A list of SinglePoint objects."""
+
     point_sampled = SinglePoint()
 
+
 class DomainCoordinate(colander.SequenceSchema):
+
+    """A single domain interval."""
+
     domain_coordinate = colander.SchemaNode(colander.Float())
 
+
 class Domain(colander.SequenceSchema):
+
+    """A list of domain interval DomainCoordinate objects."""
+
     domain_coordinates = DomainCoordinate()
 
+
 class GpInfo(colander.MappingSchema):
+
+    """The Gaussian Process info needed for every request.
+
+    Contains:
+        points_sampled - PointsSampled
+        domain - Domain
+        length_scale - ListOfFloats
+        signal_variance - float
+
+    """
+
     points_sampled = PointsSampled()
     domain = Domain()
     length_scale = ListOfFloats(
@@ -33,7 +73,11 @@ class GpInfo(colander.MappingSchema):
             missing=default_gaussian_process_parameters.signal_variance,
             )
 
+
 class EiOptimizationParameters(colander.MappingSchema):
+
+    """Optimization parameters."""
+
     num_multistarts = colander.SchemaNode(
             colander.Int(),
             missing=default_ei_optimization_parameters.num_multistarts,
@@ -75,54 +119,26 @@ class EiOptimizationParameters(colander.MappingSchema):
             validator=colander.Range(min=1.0e-15, max=1.0e-4),
             )
 
+
 class ListOfPointsInDomain(colander.SequenceSchema):
+
+    """A list of lists of floats."""
+
     point_in_domain = ListOfFloats()
 
-class GpMeanVarRequest(colander.MappingSchema):
-    points_to_sample = ListOfPointsInDomain()
-    gp_info = GpInfo()
-
-class GpNextPointsEpiRequest(colander.MappingSchema):
-    num_samples_to_generate = colander.SchemaNode(
-            colander.Int(),
-            validator=colander.Range(min=1),
-            )
-    gp_info = GpInfo()
-    ei_optimization_parameters = EiOptimizationParameters(
-            missing=default_ei_optimization_parameters._asdict(),
-            )
-
-class GpEiRequest(colander.MappingSchema):
-    points_to_evaluate = ListOfPointsInDomain()
-    points_being_sampled = ListOfPointsInDomain(
-            missing=[],
-            )
-    mc_iterations = colander.SchemaNode(
-            colander.Int(),
-            validator=colander.Range(min=1),
-            missing=default_expected_improvement_parameters.mc_iterations,
-            )
-    gp_info = GpInfo()
 
 class ListOfExpectedImprovements(colander.SequenceSchema):
+
+    """A list of floats all geq 0.0."""
+
     expected_improvement = colander.SchemaNode(
             colander.Float(),
             validator=colander.Range(min=0),
             )
 
-class GpNextPointsEpiResponse(colander.MappingSchema):
-    endpoint = colander.SchemaNode(colander.String())
-    points_to_sample = ListOfPointsInDomain()
-    expected_improvement = ListOfExpectedImprovements()
-
-class GpEiResponse(colander.MappingSchema):
-    endpoint = colander.SchemaNode(colander.String())
-    expected_improvement = ListOfExpectedImprovements()
 
 class MatrixOfFloats(colander.SequenceSchema):
-    row_of_matrix = ListOfFloats()
 
-class GpMeanVarResponse(colander.MappingSchema):
-    endpoint = colander.SchemaNode(colander.String())
-    mean = ListOfFloats()
-    var = MatrixOfFloats()
+    """A 2d list of floats."""
+
+    row_of_matrix = ListOfFloats()
