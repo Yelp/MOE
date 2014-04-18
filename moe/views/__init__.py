@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Views for the MOE frontend and REST interface.
 
 Contains:

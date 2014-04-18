@@ -7,7 +7,8 @@ import random
 from moe.tests.EPI.src.python.gaussian_process_test_case import GaussianProcessTestCase
 import moe.build.GPP as C_GP
 import moe.optimal_learning.EPI.src.python.lib.math
-from moe.optimal_learning.EPI.src.python.models.sample_point import SamplePoint
+from moe.optimal_learning.EPI.src.python.data_containers import SamplePoint
+
 
 class CppUnitTestWrapperTest(GaussianProcessTestCase):
     # wrapper to invoke call a C++ function that runs unit tests written in C++
@@ -73,7 +74,7 @@ class Get1DAnalyticEIAndGradTest(GaussianProcessNumericalAnalysisTestCase):
                 grad_EI_c = cpp_GP.get_1D_analytic_grad_EI(points_to_sample[0])
                 grad_EI_p = python_GP.get_1D_analytic_grad_EI(points_to_sample[0])
                 for i in range(len(domain)):
-                    self._assert_relative_diff_lte_tol(grad_EI_p[0][0][i], grad_EI_c[0][0][i])
+                    self._assert_relative_diff_lte_tol(grad_EI_p[i], grad_EI_c[i])
 
 class GetCholeskyDecompAndGradTest(GaussianProcessNumericalAnalysisTestCase):
     """Tests the python vs cpp implementations of .get_mean_and_var_of_points

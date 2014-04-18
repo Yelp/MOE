@@ -1,5 +1,6 @@
-// gpp_covariance.cpp
-/*
+/*!
+  \file gpp_covariance.cpp
+  \rst
   This file contains function definitions for the Covariance, GradCovariance, and HyperparameterGradCovariance member
   functions of CovarianceInterface subclasses.  It also contains a few utilities for computing common mathematical quantities
   and initialization.
@@ -11,7 +12,7 @@
 
   TODO(eliu): #48408 Check expression simplification of gradients/hessians (esp the latter) for the various covariance functions.
   Current math was done by hand and maybe I missed something.
-*/
+\endrst*/
 
 #include "gpp_covariance.hpp"
 
@@ -27,7 +28,7 @@ namespace optimal_learning {
 
 namespace {
 
-/*
+/*!\rst
   Computes \sum_{i=0}^{dim} (p1_i - p2_i) / W_i * (p1_i - p2_i), p1, p2 = point 1 & 2; W = weight.
   Equivalent to ||p1 - p2||_2 if all entries of W are 1.0.
 
@@ -36,7 +37,7 @@ namespace {
   point_two[size]: the vector p2
   weights[size]: the vector W, i.e., the scaling to apply to each term of the norm
   size: number of dimensions in point
-*/
+\endrst*/
 OL_PURE_FUNCTION OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT double NormSquaredWithInverseWeights(double const * restrict point_one, double const * restrict point_two, double const * restrict weights, int size) noexcept {
   // calculates the one norm of two vectors (point_one and point_two of size size)
   double norm = 0.0;
@@ -47,7 +48,7 @@ OL_PURE_FUNCTION OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT double NormSquaredWit
   return norm;
 }
 
-/*
+/*!\rst
   Validate and initialize covariance function data (sizes, hyperparameters).
 
   INPUTS:
@@ -57,7 +58,7 @@ OL_PURE_FUNCTION OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT double NormSquaredWit
   lengths_sq[dim]: pointer to an array of at least dim double
   OUTPUTS:
   lengths_sq[dim]: first dim entries overwritten with the square of the entries of lengths_in
-*/
+\endrst*/
 OL_NONNULL_POINTERS void InitializeCovariance(int dim, double alpha, const std::vector<double>& lengths_in, double * restrict lengths_sq) {
   // validate inputs
   if (dim < 0) {

@@ -9,6 +9,8 @@
 
   **1 OVERVIEW OF GAUSSIAN PROCESSES AND EXPECTED IMPROVEMENT; WHAT ARE WE TRYING TO DO?**
 
+  .. Note:: these comments are copied in Python: interfaces/__init__.py
+
   At a high level, this file optimizes an objective function \ms f(x)\me.  This operation
   requires data/uncertainties about prior and concurrent experiments as well as
   a covariance function describing how these data [are expected to] relate to each
@@ -238,6 +240,8 @@ struct PointsToSampleState;
   This (estimated) mean and variance characterize the predicted distributions of the actual \ms m(x), k(x,x')\me
   functions that underly our GP.
 
+  .. Note:: the preceding comments are copied in Python: interfaces/gaussian_process_interface.py
+
   For testing and experimental purposes, this class provides a framework for sampling points from the GP (i.e., given a
   point to sample and predicted measurement noise) as well as adding additional points to an already-formed GP.  Sampling
   points requires drawing from \ms N(0,1)\me so this class also holds PRNG state to do so via the NormalRNG object from gpp_random.
@@ -366,9 +370,12 @@ class GaussianProcess final {
   double SamplePointFromGP(double const * restrict point_to_sample, double noise_variance_this_point) noexcept OL_NONNULL_POINTERS;
 
   /*!\rst
-    Computes the mean of a GP.
+    Computes the mean of this GP at each of ``Xs`` (``points_to_sample``).
+
     ``points_to_sample`` and ``points_sampled`` are not allowed to contain duplicate points within
     themselves.  Violating this results in singular covariance matrices.
+
+    .. Note:: comments are copied in Python: interfaces/gaussian_process_interface.py
 
     \param
       :points_to_sample_state: a FULLY CONFIGURED PointsToSampleState (configure via PointsToSampleState::SetupState)
@@ -378,7 +385,8 @@ class GaussianProcess final {
   void ComputeMeanOfPoints(const StateType& points_to_sample_state, double * restrict mean_of_points) const noexcept OL_NONNULL_POINTERS;
 
   /*!\rst
-    Computes the gradient of the mean of a GP with respect to ``Xs``, ``points_to_sample``.
+    Computes the gradient of the mean of this GP at each of ``Xs`` (``points_to_sample``) wrt ``Xs``.
+
     ``points_to_sample`` and ``points_sampled`` are not allowed to contain duplicate points within
     themselves.  Violating this results in singular covariance matrices.
 
@@ -387,20 +395,25 @@ class GaussianProcess final {
     (See references or implementation for further details.)
     Thus, ``grad_mu`` is stored in a reduced form which only tracks the nonzero entries.
 
+    .. Note:: comments are copied in Python: interfaces/gaussian_process_interface.py
+
     \param
       :points_to_sample_state: a FULLY CONFIGURED PointsToSampleState (configure via PointsToSampleState::SetupState)
     \output
       :grad_mu[dim][num_to_sample]: gradient of the mean of the GP.  ``grad_mu[d][i]`` is
         actually the gradient of ``\mu_i`` with respect to ``x_{d,i}``, the d-th dimension of
-        the i-th entry of points_to_sample.
+        the i-th entry of ``points_to_sample``.
   \endrst*/
   void ComputeGradMeanOfPoints(const StateType& points_to_sample_state, double * restrict grad_mu) const noexcept OL_NONNULL_POINTERS;
 
   /*!\rst
-    Computes the variance (matrix) of a GP.
+    Computes the variance (matrix) of this GP at each point of ``Xs`` (``points_to_sample``).
+
     The variance matrix is symmetric and is stored in the LOWER TRIANGLE.
     ``points_to_sample`` and ``points_sampled`` are not allowed to contain duplicate points within
     themselves.  Violating this results in singular covariance matrices.
+
+    .. Note:: comments are copied in Python: interfaces/gaussian_process_interface.py
 
     \param
       :points_to_sample_state[1]: ptr to a FULLY CONFIGURED PointsToSampleState (configure via PointsToSampleState::SetupState)
@@ -417,8 +430,8 @@ class GaussianProcess final {
   void ComputeGradVarianceOfPoints(StateType * points_to_sample_state, int var_of_grad, double * restrict grad_var) const noexcept OL_NONNULL_POINTERS;
 
   /*!\rst
-    Computes the gradient of the variance of a GP with respect to ``points_to_sample``.
-    This function also accounts for the effect on the gradient resulting from
+    Computes the gradient of the cholesky factorization of the variance of this GP with respect to ``points_to_sample``.
+    This function accounts for the effect on the gradient resulting from
     cholesky-factoring the variance matrix.  See Smith 1995 for algorithm details.
 
     ``points_to_sample`` and ``points_sampled`` are not allowed to contain duplicate points within
@@ -432,6 +445,8 @@ class GaussianProcess final {
     Due to actual usage patterns, the full gradient tensor is never required simultaneously;
     thus only ``grad_chol[d][i][j]`` is formed with k (``var_of_grad``) as an input parameter to this function.
 
+    .. Note:: comments are copied in Python: interfaces/gaussian_process_interface.py
+
     \param
       :points_to_sample_state[1]: ptr to a FULLY CONFIGURED PointsToSampleState (configure via PointsToSampleState::SetupState)
       :var_of_grad: index of ``points_to_sample`` in {0, .. ``num_to_sample``-1} to be differentiated against
@@ -439,7 +454,7 @@ class GaussianProcess final {
       :points_to_sample_state[1]: ptr to a FULLY CONFIGURED PointsToSampleState; only temporary state may be mutated
       :grad_chol[dim][num_to_sample][num_to_sample]: gradient of the cholesky-factored
       :variance of the GP.  ``grad_chol[d][i][j]`` is actually the gradients of ``var_{i,j}`` with
-        respect to ``x_{d,k}``, the d-th dimension of the k-th entry of points_to_sample, where
+        respect to ``x_{d,k}``, the d-th dimension of the k-th entry of ``points_to_sample``, where
         k = ``var_of_grad``
   \endrst*/
   void ComputeGradCholeskyVarianceOfPoints(StateType * points_to_sample_state, int var_of_grad, double const * restrict chol_var, double * restrict grad_chol) const noexcept OL_NONNULL_POINTERS;
@@ -729,12 +744,14 @@ class ExpectedImprovementEvaluator final {
     Computes the expected improvement ``EI(Xs) = E_n[[f^*_n(X) - min(f(Xs_1),...,f(Xs_m))]^+]``, where ``Xs`` are potential points
     to sample and ``X`` are already sampled points.  The ``^+`` indicates that the expression in the expectation evaluates to 0
     if it is negative.  ``f^*(X)`` is the MINIMUM over all known function evaluations (``points_sampled_value``), whereas
-    ``f(Xs)`` are GP-predicted function evaluations.
+    ``f(Xs)`` are *GP-predicted* function evaluations.
 
     The EI is the expected improvement in the current best known objective function value that would result from sampling
     at ``points_to_sample``.
 
     In general, the EI expression is complex and difficult to evaluate; hence we use Monte-Carlo simulation to approximate it.
+
+    .. Note:: These comments were copied into ExpectedImprovementInterface.compute_expected_improvement() in interfaces/expected_improvement_interface.py.
 
     \param
       :ei_state[1]: properly configured state object
@@ -751,6 +768,8 @@ class ExpectedImprovementEvaluator final {
 
     In general, the expressions for gradients of EI are complex and difficult to evaluate; hence we use
     Monte-Carlo simulation to approximate it.
+
+    .. Note:: These comments were copied into ExpectedImprovementInterface.compute_expected_improvement() in interfaces/expected_improvement_interface.py.
 
     \param
       :ei_state[1]: properly configured state object
@@ -1523,6 +1542,8 @@ void ComputeOptimalPointToSampleViaLatinHypercubeSearch(const GaussianProcess& g
   In the INPUTS, note the difference between ``points_to_sample``/``num_to_sample`` and ``num_samples_to_generate``.
   ``points_to_sample`` are experiments that are ALREADY ongoing.  ``num_samples_to_generate`` tells this function how many NEW
   sample points to return.
+
+  .. NOTE:: These comments were copied into multistart_expected_improvement_optimization() in cpp_wrappers/expected_improvement.py.
 
   \param
     :gaussian_process: GaussianProcess object (holds ``points_sampled``, ``values``, ``noise_variance``, derived quantities)

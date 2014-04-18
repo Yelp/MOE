@@ -44,14 +44,6 @@ optimal_learning.EPI.src.python.models.plottable_optimal_gaussian_process module
     :undoc-members:
     :show-inheritance:
 
-optimal_learning.EPI.src.python.models.sample_point module
-----------------------------------------------------------
-
-.. automodule:: optimal_learning.EPI.src.python.models.sample_point
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 
 Module contents
 ---------------

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """A class to encapsulate 'pretty' views."""
 import simplejson as json
 

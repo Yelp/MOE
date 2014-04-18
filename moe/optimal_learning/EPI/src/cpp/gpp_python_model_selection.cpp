@@ -106,7 +106,7 @@ boost::python::list ComputeHyperparameterGradLogLikelihoodWrapper(const boost::p
   Let n_hyper = covariance.GetNumberOfHyperparameters();
 
   INPUTS:
-  optimization_parameters: round_generation/MOE_driver.MOERunner.HyperparameterOptimizationParameters
+  optimization_parameters: EPI/src/python/optimization_parameters.HyperparameterOptimizationParameters
       Python object containing the LogLikelihoodTypes objective_type and OptimizerTypes optimzer_typ
       to use as well as appropriate parameter structs e.g., NewtonParameters for type kNewton).
       See comments on the python interface for multistart_hyperparameter_optimization_wrapper
@@ -279,7 +279,7 @@ void ExportModelSelectionFunctions() {
     Optimize the specified log likelihood measure over the specified domain using the specified optimization method.
 
     The HyperparameterOptimizationParameters object is a python class defined in:
-    round_generation/MOE_driver.MOERunner.HyperparameterOptimizationParameters
+    EPI/src/python/optimization_parameters.HyperparameterOptimizationParameters
     See that class definition for more details.
 
     This function expects it to have the fields:

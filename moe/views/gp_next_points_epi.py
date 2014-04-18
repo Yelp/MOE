@@ -1,9 +1,9 @@
+# -*- coding: utf-8 -*-
 """Classes for gp_next_points_epi endpoints.
 
 Includes:
     1. pretty and backend views
 """
-
 from pyramid.view import view_config
 
 from moe.views.gp_next_points_pretty_view import GpNextPointsPrettyView

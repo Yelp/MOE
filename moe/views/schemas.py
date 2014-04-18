@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Base level schemas for the response/request schemas of each MOE REST endpoint."""
 import colander
 

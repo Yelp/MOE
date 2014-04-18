@@ -143,6 +143,8 @@ class ObjectiveEstimationPolicyInterface {
 
   He also points out that larger lie values (e.g., max of prior measurements) will lead methods like
   ComputeEstimatedSetOfPointsToSample() to be more explorative and vice versa.
+
+  .. Note:: These comments were copied into constant_liar_expected_improvement_optimization() in cpp_wrappers/expected_improvement.py.
 */
 class ConstantLiarEstimationPolicy final : public ObjectiveEstimationPolicyInterface {
  public:
@@ -188,6 +190,8 @@ class ConstantLiarEstimationPolicy final : public ObjectiveEstimationPolicyInter
   explorative and larger negative values are more exploitive.
 
   This object also allows users to associate a noise variance to the lie value.
+
+  .. Note:: These comments were copied into kriging_believer_expected_improvement_optimization() in cpp_wrappers/expected_improvement.py.
 */
 class KrigingBelieverEstimationPolicy final : public ObjectiveEstimationPolicyInterface {
  public:
@@ -271,6 +275,8 @@ class KrigingBelieverEstimationPolicy final : public ObjectiveEstimationPolicyIn
 
   WARNING: this function fails if any step fails to find improvement! In that case, the best_points output should not be
            read and found_flag will be false.
+
+  .. NOTE:: These comments were copied into _heuristic_expected_improvement_optimization() in cpp_wrappers/expected_improvement.py.
 
   INPUTS:
   gaussian_process: GaussianProcess object (holds points_sampled, values, noise_variance, derived quantities) that describes the

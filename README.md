@@ -86,7 +86,7 @@ $ python setup.py install
 1. Download MacPorts - http://www.macports.org/install.php (If you change the install directory from `/opt/local`, don't forget to update the cmake invocation.)
 2. MacPorts can resolve most dependencies. Make sure you set your `PATH` env var.
 3. Download xQuartz (needed for X11, needed for matplotlib) - http://xquartz.macosforge.org/landing/ (Also available through MacPorts, see item 4.)
-4. Getting gcc, boost, matplotlib, and xQuartz (`xorg-server) reqs (before installing MOE):
+4. Getting gcc, boost, matplotlib, and xQuartz (`xorg-server`) reqs (before installing MOE):
 5. Make sure you create your virtualenv with the correct python `--python=/opt/local/bin/python` if you are using MacPorts
 6. If you are using another package manager (like homebrew) you may need to modify `opt/local` below to point to your `Cellar` directory.
 

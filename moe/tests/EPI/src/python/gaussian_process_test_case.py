@@ -3,12 +3,13 @@
 import testify as T
 import numpy
 
+from moe.optimal_learning.EPI.src.python.data_containers import SamplePoint
 from moe.optimal_learning.EPI.src.python.models.covariance_of_process import CovarianceOfProcess
 from moe.optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp import OptimalGaussianProcessLinkedCpp
 from moe.optimal_learning.EPI.src.python.models.optimal_gaussian_process import OptimalGaussianProcess as OptimalGaussianProcessPython
-from moe.optimal_learning.EPI.src.python.models.sample_point import SamplePoint
 import moe.optimal_learning.EPI.src.python.lib.math
 from moe.optimal_learning.EPI.src.python.constant import default_gaussian_process_parameters
+
 
 class GaussianProcessTestCase(T.TestCase):
 

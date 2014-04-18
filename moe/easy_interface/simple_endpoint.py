@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Simple functions for hitting the REST endpoints of a MOE service."""
-import urllib2
 import simplejson as json
+import urllib2
 
 from moe.views.gp_next_points_pretty_view import GpNextPointsResponse
 

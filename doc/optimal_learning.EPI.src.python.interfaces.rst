@@ -1,0 +1,62 @@
+optimal_learning.EPI.src.python.interfaces package
+==================================================
+
+Submodules
+----------
+
+optimal_learning.EPI.src.python.interfaces.covariance_interface module
+----------------------------------------------------------------------
+
+.. automodule:: optimal_learning.EPI.src.python.interfaces.covariance_interface
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+optimal_learning.EPI.src.python.interfaces.domain_interface module
+------------------------------------------------------------------
+
+.. automodule:: optimal_learning.EPI.src.python.interfaces.domain_interface
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+optimal_learning.EPI.src.python.interfaces.expected_improvement_interface module
+--------------------------------------------------------------------------------
+
+.. automodule:: optimal_learning.EPI.src.python.interfaces.expected_improvement_interface
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+optimal_learning.EPI.src.python.interfaces.gaussian_process_interface module
+----------------------------------------------------------------------------
+
+.. automodule:: optimal_learning.EPI.src.python.interfaces.gaussian_process_interface
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+optimal_learning.EPI.src.python.interfaces.log_likelihood_interface module
+--------------------------------------------------------------------------
+
+.. automodule:: optimal_learning.EPI.src.python.interfaces.log_likelihood_interface
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+optimal_learning.EPI.src.python.interfaces.optimization_interface module
+------------------------------------------------------------------------
+
+.. automodule:: optimal_learning.EPI.src.python.interfaces.optimization_interface
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: optimal_learning.EPI.src.python.interfaces
+    :members:
+    :undoc-members:
+    :show-inheritance:

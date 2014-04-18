@@ -1,17 +1,18 @@
+# -*- coding: utf-8 -*-
 """Classes for gp_ei endpoints.
 
 Includes:
     1. request and response schemas
     2. pretty and backend views
 """
+import colander
+import numpy
 from pyramid.view import view_config
 
-from moe.views.utils import _make_gp_from_gp_info
-from moe.views.gp_pretty_view import GpPrettyView
-
-import colander
-from moe.views.schemas import ListOfPointsInDomain, GpInfo, ListOfExpectedImprovements
 from moe.optimal_learning.EPI.src.python.constant import default_expected_improvement_parameters
+from moe.views.gp_pretty_view import GpPrettyView
+from moe.views.schemas import ListOfPointsInDomain, GpInfo, ListOfExpectedImprovements
+from moe.views.utils import _make_gp_from_gp_info
 
 
 class GpEiRequest(colander.MappingSchema):
@@ -65,8 +66,8 @@ class GpEiView(GpPrettyView):
         """Endpoint for gp_ei POST requests."""
         params = self.get_params_from_request()
 
-        points_to_evaluate = params.get('points_to_evaluate')
-        points_being_sampled = params.get('points_being_sampled')
+        points_to_evaluate = numpy.array(params.get('points_to_evaluate'))
+        points_being_sampled = numpy.array(params.get('points_being_sampled'))
         gp_info = params.get('gp_info')
 
         GP = _make_gp_from_gp_info(gp_info)
@@ -78,5 +79,5 @@ class GpEiView(GpPrettyView):
 
         return self.form_response({
                 'endpoint': 'gp_ei',
-                'expected_improvement': expected_improvement,
+                'expected_improvement': expected_improvement.tolist(),
                 })
