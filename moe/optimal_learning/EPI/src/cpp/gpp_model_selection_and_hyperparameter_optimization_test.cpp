@@ -10,7 +10,7 @@
   2) Gradient Descent + Newton unit tests: using polynomials and other simple fucntions with analytically known optima
      to verify that the optimizers are performing correctly.
   3) Hyperparameter optimization: we run hyperparameter optimization on toy problems using LML and LOO-CV likelihood
-     as objective functions.  Convergence to at least local minima is verified for both gradient descent and newton optimizers.
+     as objective functions.  Convergence to at least local maxima is verified for both gradient descent and newton optimizers.
      These function as integration tests.
 */
 

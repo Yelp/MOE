@@ -4,6 +4,8 @@ Includes:
     1. request and response schemas
     2. pretty and backend views
 """
+import numpy
+
 from pyramid.view import view_config
 
 from moe.views.utils import _make_gp_from_gp_info
@@ -57,17 +59,15 @@ class GpMeanVarView(GpPrettyView):
         """Endpoint for gp_mean_var POST requests."""
         params = self.get_params_from_request()
 
-        points_to_sample = params.get('points_to_sample')
+        points_to_sample = numpy.array(params.get('points_to_sample'))
         gp_info = params.get('gp_info')
 
         GP = _make_gp_from_gp_info(gp_info)
 
         mean, var = GP.get_mean_and_var_of_points(points_to_sample)
 
-        json_var = list([list(row) for row in var])
-
         return self.form_response({
                 'endpoint': 'gp_mean_var',
-                'mean': list(mean),
-                'var': json_var,
+                'mean': mean.tolist(),
+                'var': var.tolist(),
                 })

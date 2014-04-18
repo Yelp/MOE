@@ -1,19 +1,19 @@
+# -*- coding: utf-8 -*-
 """A class to encapsulate 'pretty' views for gp_next_points_* endpoints.
 
 Include:
     1. Request and response schemas
     2. Class that extends GpPrettyView for next_points optimizers
 """
-
 import colander
-from moe.views.schemas import GpInfo, EiOptimizationParameters, ListOfPointsInDomain, ListOfExpectedImprovements
-from moe.optimal_learning.EPI.src.python.constant import default_ei_optimization_parameters
-
-from moe.views.gp_pretty_view import GpPrettyView
-from moe.views.utils import _make_gp_from_gp_info
+import numpy
 
 import moe.build.GPP as C_GP
-from moe.optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp import ExpectedImprovementOptimizationParameters
+from moe.optimal_learning.EPI.src.python.constant import default_ei_optimization_parameters
+from moe.optimal_learning.EPI.src.python.cpp_wrappers.optimization_parameters import ExpectedImprovementOptimizationParameters
+from moe.views.gp_pretty_view import GpPrettyView
+from moe.views.schemas import GpInfo, EiOptimizationParameters, ListOfPointsInDomain, ListOfExpectedImprovements
+from moe.views.utils import _make_gp_from_gp_info
 
 
 class GpNextPointsRequest(colander.MappingSchema):
@@ -75,12 +75,10 @@ class GpNextPointsPrettyView(GpPrettyView):
                 )
         expected_improvement = GP.evaluate_expected_improvement_at_point_list(next_points)
 
-        json_points_to_sample = list([list(row) for row in next_points])
-
         return self.form_response({
                 'endpoint': route_name,
-                'points_to_sample': json_points_to_sample,
-                'expected_improvement': list(expected_improvement),
+                'points_to_sample': next_points.tolist(),
+                'expected_improvement': expected_improvement.tolist(),
                 })
 
     @staticmethod
@@ -91,20 +89,24 @@ class GpNextPointsPrettyView(GpPrettyView):
 
     @staticmethod
     def get_optimization_parameters_cpp(params):
-        """Form a C++ conumable ExpectedImprovementOptimizationParameters object from params."""
+        """Form a C++ consumable ExpectedImprovementOptimizationParameters object from params."""
         ei_optimization_parameters = params.get('ei_optimization_parameters')
 
-        return ExpectedImprovementOptimizationParameters(
-                domain_type=C_GP.DomainTypes.tensor_product,
-                optimizer_type=C_GP.OptimizerTypes.gradient_descent,
-                num_random_samples=0,
-                optimizer_parameters=C_GP.GradientDescentParameters(
-                    ei_optimization_parameters.get('num_multistarts'),
-                    ei_optimization_parameters.get('gd_iterations'),
-                    ei_optimization_parameters.get('max_num_restarts'),
-                    ei_optimization_parameters.get('gamma'),
-                    ei_optimization_parameters.get('pre_mult'),
-                    ei_optimization_parameters.get('max_relative_change'),
-                    ei_optimization_parameters.get('tolerance'),
-                    ),
-                )
+        # Note: num_random_samples only has meaning when computing more than 1 points_to_sample simultaneously
+        new_params = ExpectedImprovementOptimizationParameters(
+            optimizer_type=C_GP.OptimizerTypes.gradient_descent,
+            num_random_samples=40000,  # TODO(sclark): move default value to config file (assuming it's reasonable) and expose in interface; see github #33.
+            optimizer_parameters=C_GP.GradientDescentParameters(
+                ei_optimization_parameters.get('num_multistarts'),
+                ei_optimization_parameters.get('gd_iterations'),
+                ei_optimization_parameters.get('max_num_restarts'),
+                ei_optimization_parameters.get('gamma'),
+                ei_optimization_parameters.get('pre_mult'),
+                ei_optimization_parameters.get('max_relative_change'),
+                ei_optimization_parameters.get('tolerance'),
+            ),
+        )
+        # TODO(eliu): domain_type should passed as part of the domain; this is a hack until I
+        # refactor these calls to use the new interface
+        new_params.domain_type = C_GP.DomainTypes.tensor_product
+        return new_params

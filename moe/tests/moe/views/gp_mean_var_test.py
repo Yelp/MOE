@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
 """Test class for gp_mean_var view."""
-import testify as T
 import simplejson as json
+import testify as T
 
-from moe.tests.moe.views.rest_gaussian_process_test_case import RestGaussianProcessTestCase
 from moe.optimal_learning.EPI.src.python.lib.math import get_latin_hypercube_points
-
+from moe.tests.moe.views.rest_gaussian_process_test_case import RestGaussianProcessTestCase
 from moe.views.gp_mean_var import GpMeanVarResponse
 
 
@@ -16,17 +15,17 @@ class TestGpMeanVarView(RestGaussianProcessTestCase):
     test_cases = [
             {
                 'domain': RestGaussianProcessTestCase.domain_1d,
-                'points_to_sample': list([list(p) for p in get_latin_hypercube_points(10, RestGaussianProcessTestCase.domain_1d)]),
+                'points_to_sample': get_latin_hypercube_points(10, RestGaussianProcessTestCase.domain_1d),
                 'num_points_in_sample': 10,
                 },
             {
                 'domain': RestGaussianProcessTestCase.domain_2d,
-                'points_to_sample': list([list(p) for p in get_latin_hypercube_points(10, RestGaussianProcessTestCase.domain_2d)]),
+                'points_to_sample': get_latin_hypercube_points(10, RestGaussianProcessTestCase.domain_2d),
                 'num_points_in_sample': 10,
                 },
             {
                 'domain': RestGaussianProcessTestCase.domain_3d,
-                'points_to_sample': list([list(p) for p in get_latin_hypercube_points(10, RestGaussianProcessTestCase.domain_3d)]),
+                'points_to_sample': get_latin_hypercube_points(10, RestGaussianProcessTestCase.domain_3d),
                 'num_points_in_sample': 10,
                 },
             ]
@@ -51,7 +50,7 @@ class TestGpMeanVarView(RestGaussianProcessTestCase):
             cpp_mean, cpp_var = GP.get_mean_and_var_of_points(points_to_sample)
 
             # EI from REST
-            json_payload = self._build_json_payload(GP, points_to_sample)
+            json_payload = self._build_json_payload(GP, points_to_sample.tolist())
             resp = self.testapp.post('/gp/mean_var', json_payload)
             resp_schema = GpMeanVarResponse()
             resp_dict = resp_schema.deserialize(json.loads(resp.body))

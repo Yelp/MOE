@@ -4,7 +4,6 @@ import numpy
 import logging
 
 import moe.optimal_learning.EPI.src.python.lib.math
-import moe.optimal_learning.EPI.src.python.models.sample_point
 from scipy.optimize.optimize import fminbound
 from scipy.optimize.optimize import fmin_bfgs
 

@@ -1,5 +1,6 @@
-// gpp_domain.hpp
-/*
+/*!
+  \file gpp_domain.hpp
+  \rst
   This file contains "DomainType" classes that specify different kinds of domains (e.g., TensorProduct, Simplex).  These are
   currently used to describe domain limits for optimizers (defined in gpp_optimization, used by gpp_math, gpp_model_selection).
 
@@ -9,7 +10,7 @@
   random points inside, and limit updates (from optimizers) so that a path stays inside the domain.
 
   See gpp_geometry.hpp for how to specify a plane.
-*/
+\endrst*/
 
 #ifndef OPTIMAL_LEARNING_EPI_SRC_CPP_GPP_DOMAIN_HPP_
 #define OPTIMAL_LEARNING_EPI_SRC_CPP_GPP_DOMAIN_HPP_
@@ -28,33 +29,33 @@
 
 namespace optimal_learning {
 
-/*
+/*!\rst
   Enumerating domains for convenience. Useful for selecting which tests to run and also
   used by the Python interface to communicate domain type to C++.
-*/
+\endrst*/
 enum class DomainTypes {
   kTensorProduct = 0,  // TensorProductDomain
   kSimplex = 1,  // SimplexIntersectTensorProductDomain
 };
 
-/*
+/*!\rst
   Domain type for a tensor product domain.
 
-  A d-dimensional tensor product domain is D = [x_0_{min}, x_0_{max}] X [x_1_{min}, x_1_{max}] X ... X [x_d_{min}, x_d_{max}]
-*/
+  A d-dimensional tensor product domain is ``D = [x_0_{min}, x_0_{max}] X [x_1_{min}, x_1_{max}] X ... X [x_d_{min}, x_d_{max}]``
+\endrst*/
 class TensorProductDomain {
   static constexpr double kInvalidStepScaleFactor = 0.5;  // attempt to scale down the step-size (or distance to wall) by this factor when a domain-exiting (i.e., invalid) step is requested
 
  public:
   TensorProductDomain() = delete;  // no default ctor; dim = 0 doesn't reallly make sense as a default
 
-  /*
+  /*!\rst
     Constructs a TensorProductDomain.
 
     INPUTS:
     domain[dim]: array of ClosedInterval specifying the boundaries of a dim-dimensional tensor-product domain.
     dim_in: number of spatial dimensions
-  */
+  \endrst*/
   TensorProductDomain(ClosedInterval const * restrict domain, int dim_in) : dim_(dim_in), domain_(domain, domain + dim_) {
     bool is_empty = std::any_of(domain_.begin(), domain_.end(), [](ClosedInterval interval) {
       return interval.IsEmpty();
@@ -72,17 +73,17 @@ class TensorProductDomain {
     return dim_;
   }
 
-  /*
+  /*!\rst
     Explicitly set the domain boundaries. Assumes specified domain is non-empty.
 
     INPUTS:
     domain[dim]: array of ClosedInterval specifying the boundaries of a dim-dimensional tensor-product domain.
-  */
+  \endrst*/
   void SetDomain(ClosedInterval const * restrict domain) OL_NONNULL_POINTERS {
     std::copy(domain, domain + dim_, domain_.begin());
   }
 
-  /*
+  /*!\rst
     Maximum number of planes that define the boundary of this domain.
     Used for testing.
 
@@ -90,12 +91,12 @@ class TensorProductDomain {
 
     RETURNS:
     max number of planes defining the boundary of this domain
-  */
+  \endrst*/
   int GetMaxNumberOfBoundaryPlanes() const OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
     return 2*dim_;
   }
 
-  /*
+  /*!\rst
     Fills an input array with all bounding planes of this domain.
     See struct Plane in gpp_geometry.hpp for how to specify a plane.
     Used for testing.
@@ -105,7 +106,7 @@ class TensorProductDomain {
     planes[max_num_bound]: properly allocated space: max_num_bound Plane objects in dim spatial dimensions
     OUTPUTS:
     planes[max_num_bound]: array of planes of this domain
-  */
+  \endrst*/
   void GetBoundaryPlanes(Plane * restrict planes) const OL_NONNULL_POINTERS {
     int num_planes = GetMaxNumberOfBoundaryPlanes();
     std::fill(planes, planes + num_planes, Plane(dim_));
@@ -119,19 +120,19 @@ class TensorProductDomain {
     }
   }
 
-  /*
-    Check if a point is inside the domain/on its domain or outside
+  /*!\rst
+    Check if a point is inside the domain/on its boundary or outside.
 
     INPUTS:
     point[dim_]: point to check
     RETURNS:
     true if point is inside the domain or on its boundary, false otherwise
-  */
+  \endrst*/
   bool CheckPointInside(double const * restrict point) const OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT {
     return CheckPointInHypercube(domain_.data(), point, dim_);
   }
 
-  /*
+  /*!\rst
     Generates "point" such that CheckPointInside(point) returns true.
 
     INPUTS:
@@ -142,13 +143,13 @@ class TensorProductDomain {
     random_point[dim_]: point with coordinates inside the domain (left in invalid state if fcn returns false)
     RETURNS:
     true if point generation succeeded
-  */
+  \endrst*/
   bool GeneratePointInDomain(UniformRandomGenerator * uniform_generator, double * restrict random_point) const OL_NONNULL_POINTERS {
     ComputeRandomPointInDomain(domain_.data(), dim_, uniform_generator, random_point);
     return true;
   }
 
-  /*
+  /*!\rst
     Generates num_points points in the domain (i.e., such that CheckPointInside(point) returns true).  The points
     will be uniformly distributed.
 
@@ -161,15 +162,15 @@ class TensorProductDomain {
     random_points[dim_][num_points]: point with coordinates inside the domain
     RETURNS:
     number of points generated (always num_points; ok to not use this result)
-  */
+  \endrst*/
   int GenerateUniformPointsInDomain(int num_points, UniformRandomGenerator * uniform_generator, double * restrict random_points) const OL_NONNULL_POINTERS {
     ComputeLatinHypercubePointsInDomain(domain_.data(), dim_, num_points, uniform_generator, random_points);
     return num_points;
   }
 
-  /*
+  /*!\rst
     Changes update_vector so that:
-      point_new = point + update_vector
+      ``point_new = point + update_vector``
     has coordinates such that CheckPointInside(point_new) returns true.
 
     update_vector is UNMODIFIED if point_new is already inside the domain.
@@ -183,7 +184,7 @@ class TensorProductDomain {
     update_vector[dim_]: proposed update
     OUTPUTS:
     update_vector[dim_]: modified update so that the final point remains inside the domain
-  */
+  \endrst*/
   void LimitUpdate(double max_relative_change, double const * restrict current_point, double * restrict update_vector) const OL_NONNULL_POINTERS {
     for (int j = 0; j < dim_; ++j) {
       double desired_step = update_vector[j];
@@ -227,40 +228,47 @@ class TensorProductDomain {
   }
 
  private:
+  //! the number of spatial dimensions of this domain
   int dim_;
+  //! the list of ClosedInterval that define the boundaries of this tensor product domain
   std::vector<ClosedInterval> domain_;
 };
 
-/*
+/*!\rst
   Domain class for the intersection of the unit simplex with an arbitrary tensor product domain.  To that end,
   this object has a TensorProductDomain object as a data member and uses its functions when possible.
 
   See TensorProductDomain for what that means.
-  The unit d-simplex is defined as the set of x_i such that:
-  1) x_i >= 0 \forall i  (i ranging over dimension)
-  2) \sum_i x_i <= 1
-  (Implying that x_i <= 1 \forall i)
+  The unit d-simplex is defined as the set of ``x_i`` such that:
+  1) ``x_i >= 0 \forall i  (i ranging over dimension)``
+  2) ``\sum_i x_i <= 1``
+  (Implying that ``x_i <= 1 \forall i``)
 
   ASSUMPTION: most of the volume of the tensor product region lies inside the simplex region.
-*/
+\endrst*/
 class SimplexIntersectTensorProductDomain {
-  static constexpr double kPointGenerationRatio = 0.9;  // GenerateUniformPointsInDomain() is happy if ratio*requested_points number of points is generated
-  static constexpr double kValidPointRatioFloor = 0.2;  // in GenerateUniformPointsInDomain(), if the ratio of valid points is > this, we retry requesting 1/ratio points. otherwise we retry with 5x the points (i.e., flooring ratio at 5)
-  static constexpr int kMaxPointRatioGrowth = 5;  // 1/kValidPointRatioFloor; the most we'll increase the number of requested points on a retry
-  static constexpr double kInvalidStepScaleFactor = 0.5;  // attempt to scale down the step-size (or distance to wall) by this factor when a domain-exiting (i.e., invalid) step is requested
-  static constexpr double kRelativeChangeEpsilonTweak = 4*std::numeric_limits<double>::epsilon();  // small tweak to relative_change (to prevent max_relative_change == 1.0 exactly; see LimitUpdate comments)
+  //! GenerateUniformPointsInDomain() is happy if ratio*requested_points number of points is generated
+  static constexpr double kPointGenerationRatio = 0.9;
+  //! in GenerateUniformPointsInDomain(), if the ratio of valid points is > this, we retry requesting 1/ratio points. otherwise we retry with 5x the points (i.e., flooring ratio at 5)
+  static constexpr double kValidPointRatioFloor = 0.2;
+  //! 1/kValidPointRatioFloor; the most we'll increase the number of requested points on a retry
+  static constexpr int kMaxPointRatioGrowth = 5;
+  //! attempt to scale down the step-size (or distance to wall) by this factor when a domain-exiting (i.e., invalid) step is requested
+  static constexpr double kInvalidStepScaleFactor = 0.5;
+  //! small tweak to relative_change (to prevent max_relative_change == 1.0 exactly; see LimitUpdate comments)
+  static constexpr double kRelativeChangeEpsilonTweak = 4*std::numeric_limits<double>::epsilon();
 
  public:
   SimplexIntersectTensorProductDomain() = delete;  // no default ctor; dim = 0 doesn't reallly make sense as a default
 
-  /*
+  /*!\rst
     Constructs a SimplexIntersectTensorProductDomain.  The bounds of the tensor product region are specified through
     the "domain" input, just as with TensorProductDomain.
 
     INPUTS:
     domain[dim]: array of ClosedInterval specifying the boundaries of a dim-dimensional tensor-product domain.
     dim_in: number of spatial dimensions
-  */
+  \endrst*/
   SimplexIntersectTensorProductDomain(ClosedInterval const * restrict domain, int dim_in) : dim_(dim_in), tensor_product_domain_(domain, dim_), simplex_plane_(dim_) {
     // Equation for the unit simplex plane is: -1/sqrt(dim) + \sum_i 1/sqrt(dim)*x_i = 0
     std::fill(simplex_plane_.unit_normal.begin(), simplex_plane_.unit_normal.end(), 1.0/std::sqrt(static_cast<double>(dim_)));
@@ -299,7 +307,7 @@ class SimplexIntersectTensorProductDomain {
     return dim_;
   }
 
-  /*
+  /*!\rst
     Maximum number of planes that define the boundary of this domain.
     Used for testing.
 
@@ -307,7 +315,7 @@ class SimplexIntersectTensorProductDomain {
 
     RETURNS:
     max number of planes defining the boundary of this domain
-  */
+  \endrst*/
   int GetMaxNumberOfBoundaryPlanes() const OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
     // The intersection of tensor product region and simplex can have at most
     // 2*dim + 1 faces. This maximum is achieved when:
@@ -322,7 +330,7 @@ class SimplexIntersectTensorProductDomain {
     return tensor_product_domain_.GetMaxNumberOfBoundaryPlanes() + 1;
   }
 
-  /*
+  /*!\rst
     Fills an input array with all bounding planes of this domain.
     See struct Plane in gpp_geometry.hpp for how to specify a plane.
     Used for testing.
@@ -332,7 +340,7 @@ class SimplexIntersectTensorProductDomain {
     planes[max_num_bound]: properly allocated space: max_num_bound Plane objects in dim spatial dimensions
     OUTPUTS:
     planes[max_num_bound]: array of planes of this domain
-  */
+  \endrst*/
   void GetBoundaryPlanes(Plane * restrict planes) const OL_NONNULL_POINTERS {
     int num_planes = GetMaxNumberOfBoundaryPlanes();
     // first, the planes from the tensor-product part of the domain
@@ -342,19 +350,19 @@ class SimplexIntersectTensorProductDomain {
     planes[num_planes - 1] = simplex_plane_;
   }
 
-  /*
+  /*!\rst
     Check if a point is inside the domain/on its domain or outside
 
     INPUTS:
     point[dim_]: point to check
     RETURNS:
     true if point is inside the domain or on its boundary, false otherwise
-  */
+  \endrst*/
   bool CheckPointInside(double const * restrict point) const OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT {
     return tensor_product_domain_.CheckPointInside(point) && CheckPointInUnitSimplex(point, dim_);
   }
 
-  /*
+  /*!\rst
     Generates "point" such that CheckPointInside(point) returns true.
 
     INPUTS:
@@ -365,7 +373,7 @@ class SimplexIntersectTensorProductDomain {
     random_point[dim_]: point with coordinates inside the domain (left in invalid state if fcn returns false)
     RETURNS:
     true if point generation succeeded
-  */
+  \endrst*/
   bool GeneratePointInDomain(UniformRandomGenerator * uniform_generator, double * restrict random_point) const OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT {
     bool point_found = false;
     // Attempt to generate a point via rejection sampling 10000 times, then give up.
@@ -378,7 +386,7 @@ class SimplexIntersectTensorProductDomain {
     return point_found;
   }
 
-  /*
+  /*!\rst
     Generates AT MOST num_points points in the domain (i.e., such that CheckPointInside(point) returns true).  The points
     will be uniformly distributed.
 
@@ -393,7 +401,7 @@ class SimplexIntersectTensorProductDomain {
     random_points[dim_][num_points]: point with coordinates inside the domain
     RETURNS:
     number of points actually generated
-  */
+  \endrst*/
   int GenerateUniformPointsInDomain(int num_points, UniformRandomGenerator * uniform_generator, double * restrict random_points) const OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT {
     // ASSUME: most of the tensor product domain lies inside the simplex domain
     // TODO(eliu): if the opposite is true (most of the simplex lies inside the tensor prod), then we need to reverse this
@@ -447,9 +455,9 @@ class SimplexIntersectTensorProductDomain {
     return num_points_generated;
   }
 
-  /*
+  /*!\rst
     Changes update_vector so that:
-      point_new = point + update_vector
+      ``point_new = point + update_vector``
     has coordinates such that CheckPointInside(point_new) returns true.
 
     update_vector is UNMODIFIED if point_new is already inside the domain.
@@ -463,7 +471,7 @@ class SimplexIntersectTensorProductDomain {
     update_vector[dim_]: proposed update
     OUTPUTS:
     update_vector[dim_]: modified update so that the final point remains inside the domain
-  */
+  \endrst*/
   void LimitUpdate(double max_relative_change, double const * restrict current_point, double * restrict update_vector) const OL_NONNULL_POINTERS {
     // if the first geometry check (over the hypercube domain) sees max_relative_change = 1.0, it will snap you "directly"
     // to the boundary (if you would have exited the boundary).  Quotes b/c you may be slightly off the boundary (in or outside)
@@ -518,8 +526,11 @@ class SimplexIntersectTensorProductDomain {
   }
 
  private:
+  //! the number of spatial dimensions of this domain
   int dim_;
+  //! the tensor product domain to intersect with
   TensorProductDomain tensor_product_domain_;
+  //! the plane defining the simplex
   Plane simplex_plane_;
 };
 

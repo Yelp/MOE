@@ -28,7 +28,7 @@ class RestGaussianProcessTestCase(GaussianProcessTestCase):
         json_points_sampled = []
         for i, point in enumerate(GP.points_sampled):
             json_points_sampled.append({
-                    'point': list(point.point),  # json needs the numpy array to be a list
+                    'point': point.point.tolist(),  # json needs the numpy array to be a list
                     'value': point.value,
                     'value_var': GP.sample_variance_of_samples[i],
                     })

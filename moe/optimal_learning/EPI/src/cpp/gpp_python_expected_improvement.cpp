@@ -86,7 +86,7 @@ boost::python::list ComputeGradExpectedImprovementWrapper(const GaussianProcess&
   This is just used to reduce copy-pasted code.
 
   INPUTS:
-  optimization_parameters: round_generation/MOE_driver.MOERunner.ExpectedImprovementOptimizationParameters
+  optimization_parameters: EPI/src/python/optimization_parameters.ExpectedImprovementOptimizationParameters
       Python object containing the DomainTypes domain_type and OptimizerTypes optimzer_type to use as well as
       appropriate parameter structs e.g., NewtonParameters for type kNewton).
       See comments on the python interface for multistart_expected_improvement_optimization_wrapper
@@ -197,7 +197,7 @@ boost::python::list MultistartExpectedImprovementOptimizationWrapper(const boost
   This is just used to reduce copy-pasted code.
 
   INPUTS:
-  optimization_parameters: round_generation/MOE_driver.MOERunner.ExpectedImprovementOptimizationParameters
+  optimization_parameters: EPI/src/python/optimization_parameters.ExpectedImprovementOptimizationParameters
       Python object containing the DomainTypes domain_type and OptimizerTypes optimzer_type to use as well as
       appropriate parameter structs e.g., NewtonParameters for type kNewton).
       See comments on the python interface for multistart_expected_improvement_optimization_wrapper
@@ -398,7 +398,7 @@ void ExportExpectedImprovementFunctions() {
     Allows the user to specify num_to_sample (aka "p") ongoing/concurrent experiments.
 
     The ExpectedImprovementOptimizationParameters object is a python class defined in:
-    round_generation/MOE_driver.MOERunner.ExpectedImprovementOptimizationParameters
+    EPI/src/python/optimization_parameters.ExpectedImprovementOptimizationParameters
     See that class definition for more details.
 
     This function expects it to have the fields:
@@ -448,7 +448,7 @@ void ExportExpectedImprovementFunctions() {
     See gpp_heuristic_expected_improvement_optimization.hpp for further details on the algorithm.
 
     The ExpectedImprovementOptimizationParameters object is a python class defined in:
-    round_generation/MOE_driver.MOERunner.ExpectedImprovementOptimizationParameters
+    EPI/src/python/optimization_parameters.ExpectedImprovementOptimizationParameters
     See that class definition for more details.
 
     This function expects it to have the fields:

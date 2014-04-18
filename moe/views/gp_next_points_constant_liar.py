@@ -1,9 +1,9 @@
+# -*- coding: utf-8 -*-
 """Classes for gp_next_points_constant_liar endpoints.
 
 Includes:
     1. pretty and backend views
 """
-
 import colander
 from pyramid.view import view_config
 
