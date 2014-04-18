@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Base pyramid app for MOE."""
 from pyramid.config import Configurator
 from pyramid.events import NewRequest
