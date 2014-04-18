@@ -14,6 +14,8 @@ class TestGpEiView(RestGaussianProcessTestCase):
 
     """Test that the /gp/ei endpoint does the same thing as the C++ interface."""
 
+    endpoint = '/gp/ei'
+
     test_cases = [
             {
                 'domain': RestGaussianProcessTestCase.domain_1d,
@@ -57,7 +59,7 @@ class TestGpEiView(RestGaussianProcessTestCase):
 
             # EI from REST
             json_payload = self._build_json_payload(GP, points_to_evaluate)
-            resp = self.testapp.post('/gp/ei', json_payload)
+            resp = self.testapp.post(self.endpoint, json_payload)
             resp_schema = GpEiResponse()
             resp_dict = resp_schema.deserialize(json.loads(resp.body))
             rest_expected_improvement = resp_dict.get('expected_improvement')

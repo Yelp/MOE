@@ -13,6 +13,8 @@ class TestGpMeanVarView(RestGaussianProcessTestCase):
 
     """Test that the /gp/mean_var endpoint does the same thing as the C++ interface."""
 
+    endpoint = '/gp/mean_var'
+
     test_cases = [
             {
                 'domain': RestGaussianProcessTestCase.domain_1d,
@@ -52,7 +54,7 @@ class TestGpMeanVarView(RestGaussianProcessTestCase):
 
             # EI from REST
             json_payload = self._build_json_payload(GP, points_to_sample)
-            resp = self.testapp.post('/gp/mean_var', json_payload)
+            resp = self.testapp.post(self.endpoint, json_payload)
             resp_schema = GpMeanVarResponse()
             resp_dict = resp_schema.deserialize(json.loads(resp.body))
             rest_mean = resp_dict.get('mean')

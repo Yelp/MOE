@@ -9,6 +9,8 @@ class RestGaussianProcessTestCase(GaussianProcessTestCase):
 
     """Base class for testing the REST interface against the C++ interface."""
 
+    endpoint = None
+
     domain_1d = [[0, 1]]
     domain_2d = [[0, 1], [0, 1]]
     domain_3d = [[0, 1], [0, 1], [0, 1]]
