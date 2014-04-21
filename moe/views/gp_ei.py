@@ -13,6 +13,7 @@ from moe.optimal_learning.EPI.src.python.constant import default_expected_improv
 from moe.views.gp_pretty_view import GpPrettyView
 from moe.views.schemas import ListOfPointsInDomain, GpInfo, ListOfExpectedImprovements
 from moe.views.utils import _make_gp_from_gp_info
+from moe.views.constant import GP_EI_ROUTE_NAME, GP_EI_PRETTY_ROUTE_NAME
 
 
 class GpEiRequest(colander.MappingSchema):
@@ -43,8 +44,8 @@ class GpEiView(GpPrettyView):
 
     """Views for gp_ei endpoints."""
 
-    route_name = 'gp_ei'
-    pretty_route_name = 'gp_ei_pretty'
+    route_name = GP_EI_ROUTE_NAME
+    pretty_route_name = GP_EI_PRETTY_ROUTE_NAME
 
     request_schema = GpEiRequest()
     response_schema = GpEiResponse()
@@ -78,6 +79,6 @@ class GpEiView(GpPrettyView):
                 )
 
         return self.form_response({
-                'endpoint': 'gp_ei',
+                'endpoint': self.route_name,
                 'expected_improvement': expected_improvement.tolist(),
                 })

@@ -4,6 +4,7 @@ from pyramid.config import Configurator
 from pyramid.events import NewRequest
 
 from moe.resources import Root
+from moe.views.constant import ALL_MOE_ROUTES
 
 
 def main(global_config, **settings):
@@ -13,17 +14,13 @@ def main(global_config, **settings):
 
     # Routes
     config.add_route('home', '/')
-    config.add_route('gp_ei', '/gp/ei')
     config.add_route('gp_plot', '/gp/plot')
-    config.add_route('gp_ei_pretty', '/gp/ei/pretty')
-    config.add_route('gp_mean_var', '/gp/mean_var')
-    config.add_route('gp_mean_var_pretty', '/gp/mean_var/pretty')
-    config.add_route('gp_next_points_epi', '/gp/next_points/epi')
-    config.add_route('gp_next_points_epi_pretty', '/gp/next_points/epi/pretty')
-    config.add_route('gp_next_points_kriging', '/gp/next_points/kriging')
-    config.add_route('gp_next_points_kriging_pretty', '/gp/next_points/kriging/pretty')
-    config.add_route('gp_next_points_constant_liar', '/gp/next_points/constant_liar')
-    config.add_route('gp_next_points_constant_liar_pretty', '/gp/next_points/constant_liar/pretty')
+    # MOE routes
+    for moe_route in ALL_MOE_ROUTES:
+        config.add_route(
+                moe_route.route_name,
+                moe_route.endpoint
+                )
 
     # MongoDB
     if settings['use_mongo'] == 'true':

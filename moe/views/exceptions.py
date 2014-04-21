@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Views for handling exceptions.
 
 Includes views that catch the following:
