@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 '''multivariate normal probabilities and cumulative distribution function
 a wrapper for scipy.stats.kde.mvndst
 

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Classes for gp_mean_var endpoints.
 
 Includes:

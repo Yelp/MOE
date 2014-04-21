@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Setup for the MOE webapp."""
 import os
 import shutil
