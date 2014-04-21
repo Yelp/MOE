@@ -16,8 +16,12 @@ $("#submit").click(function() {
             $("#json-out").val( JSON.stringify(data) );
         }
     );
-    jqxhr.fail(function() {
-        alert("500 error");
+    jqxhr.fail(function(jqXHR, textStatus, errorThrown) {
+        if (jqXHR.responseText.indexOf('DOCTYPE') !== -1){
+            alert("INTERNAL 500 ERROR\nCheck console.");
+        }else{
+            alert("500 ERROR\n" + jqXHR.responseText);
+        }
     });
 });
 </script>

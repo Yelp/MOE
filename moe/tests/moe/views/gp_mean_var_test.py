@@ -6,11 +6,14 @@ import testify as T
 from moe.optimal_learning.EPI.src.python.lib.math import get_latin_hypercube_points
 from moe.tests.moe.views.rest_gaussian_process_test_case import RestGaussianProcessTestCase
 from moe.views.gp_mean_var import GpMeanVarResponse
+from moe.views.constant import GP_MEAN_VAR_ENDPOINT
 
 
 class TestGpMeanVarView(RestGaussianProcessTestCase):
 
     """Test that the /gp/mean_var endpoint does the same thing as the C++ interface."""
+
+    endpoint = GP_MEAN_VAR_ENDPOINT
 
     test_cases = [
             {
@@ -51,7 +54,7 @@ class TestGpMeanVarView(RestGaussianProcessTestCase):
 
             # EI from REST
             json_payload = self._build_json_payload(GP, points_to_sample.tolist())
-            resp = self.testapp.post('/gp/mean_var', json_payload)
+            resp = self.testapp.post(self.endpoint, json_payload)
             resp_schema = GpMeanVarResponse()
             resp_dict = resp_schema.deserialize(json.loads(resp.body))
             rest_mean = resp_dict.get('mean')
