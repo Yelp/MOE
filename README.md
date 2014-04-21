@@ -6,6 +6,8 @@ Metric Optimization Engine.
 
 [2]: http://sc932.github.io/MOE/
 
+Or, build the documentation locally with `make docs`.
+
 ## Running MOE
 
 ### REST/web server and interactive demo

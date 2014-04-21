@@ -1,0 +1,94 @@
+moe.views package
+=================
+
+Submodules
+----------
+
+moe.views.frontend module
+-------------------------
+
+.. automodule:: moe.views.frontend
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+moe.views.gp_ei module
+----------------------
+
+.. automodule:: moe.views.gp_ei
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+moe.views.gp_mean_var module
+----------------------------
+
+.. automodule:: moe.views.gp_mean_var
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+moe.views.gp_next_points_constant_liar module
+---------------------------------------------
+
+.. automodule:: moe.views.gp_next_points_constant_liar
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+moe.views.gp_next_points_epi module
+-----------------------------------
+
+.. automodule:: moe.views.gp_next_points_epi
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+moe.views.gp_next_points_kriging module
+---------------------------------------
+
+.. automodule:: moe.views.gp_next_points_kriging
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+moe.views.gp_next_points_pretty_view module
+-------------------------------------------
+
+.. automodule:: moe.views.gp_next_points_pretty_view
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+moe.views.gp_pretty_view module
+-------------------------------
+
+.. automodule:: moe.views.gp_pretty_view
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+moe.views.schemas module
+------------------------
+
+.. automodule:: moe.views.schemas
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+moe.views.utils module
+----------------------
+
+.. automodule:: moe.views.utils
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: moe.views
+    :members:
+    :undoc-members:
+    :show-inheritance:

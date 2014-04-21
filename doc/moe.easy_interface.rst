@@ -1,0 +1,30 @@
+moe.easy_interface package
+==========================
+
+Submodules
+----------
+
+moe.easy_interface.experiment module
+------------------------------------
+
+.. automodule:: moe.easy_interface.experiment
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+moe.easy_interface.simple_endpoint module
+-----------------------------------------
+
+.. automodule:: moe.easy_interface.simple_endpoint
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: moe.easy_interface
+    :members:
+    :undoc-members:
+    :show-inheritance:

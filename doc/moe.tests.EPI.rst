@@ -1,17 +1,17 @@
-optimal_learning package
-========================
+moe.tests.EPI package
+=====================
 
 Subpackages
 -----------
 
 .. toctree::
 
-    optimal_learning.EPI
+    moe.tests.EPI.src
 
 Module contents
 ---------------
 
-.. automodule:: optimal_learning
+.. automodule:: moe.tests.EPI
     :members:
     :undoc-members:
     :show-inheritance:
