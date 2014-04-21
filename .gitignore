@@ -35,6 +35,7 @@ doc/xml/*
 doc/latex/*
 doc/html/*
 doc/.doctrees/*
+doc/moe.*.rst
 
 # built binaries
 build
