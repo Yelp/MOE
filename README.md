@@ -28,8 +28,8 @@ $ curl -X POST -H "Content-Type: application/json" -d '{"points_to_evaluate": [[
 
 ```bash
 $ ipython
-> from moe.experiment import Experiment
-> from moe.simple_endpoint import gp_next_points
+> from moe.easy_interface.experiment import Experiment
+> from moe.easy_interface.simple_endpoint import gp_next_points
 > exp = Experiment([[0, 2], [0, 4]])
 > exp.add_point([0, 0], 1.0, 0.01)
 > next_point_to_sample = gp_next_points(exp)
@@ -39,8 +39,8 @@ $ ipython
 ### Within python
 
 ```python
-from moe.experiment import Experiment
-from moe.simple_endpoint import gp_next_points
+from moe.easy_interface.experiment import Experiment
+from moe.easy_interface.simple_endpoint import gp_next_points
 
 import math, random
 def function_to_minimize(x):
