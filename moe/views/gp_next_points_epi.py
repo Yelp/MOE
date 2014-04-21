@@ -7,14 +7,15 @@ Includes:
 from pyramid.view import view_config
 
 from moe.views.gp_next_points_pretty_view import GpNextPointsPrettyView
+from moe.views.constant import GP_NEXT_POINTS_EPI_ROUTE_NAME, GP_NEXT_POINTS_EPI_PRETTY_ROUTE_NAME
 
 
 class GpNextPointsEpi(GpNextPointsPrettyView):
 
     """Views for gp_next_points_epi endpoints."""
 
-    route_name = 'gp_next_points_epi'
-    pretty_route_name = 'gp_next_points_epi_pretty'
+    route_name = GP_NEXT_POINTS_EPI_ROUTE_NAME
+    pretty_route_name = GP_NEXT_POINTS_EPI_PRETTY_ROUTE_NAME
 
     @view_config(route_name=pretty_route_name, renderer=GpNextPointsPrettyView.pretty_renderer)
     def pretty_view(self):

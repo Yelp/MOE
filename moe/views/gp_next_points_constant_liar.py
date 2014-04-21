@@ -8,6 +8,7 @@ import colander
 from pyramid.view import view_config
 
 from moe.views.gp_next_points_pretty_view import GpNextPointsPrettyView, GpNextPointsRequest
+from moe.views.constant import GP_NEXT_POINTS_CONSTANT_LIAR_ROUTE_NAME, GP_NEXT_POINTS_CONSTANT_LIAR_PRETTY_ROUTE_NAME
 
 
 class GpNextPointsConstantLiarRequest(GpNextPointsRequest):
@@ -63,8 +64,8 @@ class GpNextPointsconstant_liar(GpNextPointsPrettyView):
 
     """Views for gp_next_points_constant_liar endpoints."""
 
-    route_name = 'gp_next_points_constant_liar'
-    pretty_route_name = 'gp_next_points_constant_liar_pretty'
+    route_name = GP_NEXT_POINTS_CONSTANT_LIAR_ROUTE_NAME
+    pretty_route_name = GP_NEXT_POINTS_CONSTANT_LIAR_PRETTY_ROUTE_NAME
 
     request_schema = GpNextPointsConstantLiarRequest()
 

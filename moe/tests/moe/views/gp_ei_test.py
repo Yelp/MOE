@@ -7,11 +7,14 @@ from moe.optimal_learning.EPI.src.python.lib.math import get_latin_hypercube_poi
 from moe.optimal_learning.EPI.src.python.constant import default_expected_improvement_parameters
 from moe.tests.moe.views.rest_gaussian_process_test_case import RestGaussianProcessTestCase
 from moe.views.gp_ei import GpEiResponse
+from moe.views.constant import GP_EI_ENDPOINT
 
 
 class TestGpEiView(RestGaussianProcessTestCase):
 
     """Test that the /gp/ei endpoint does the same thing as the C++ interface."""
+
+    endpoint = GP_EI_ENDPOINT
 
     test_cases = [
             {
@@ -56,7 +59,7 @@ class TestGpEiView(RestGaussianProcessTestCase):
 
             # EI from REST
             json_payload = self._build_json_payload(GP, points_to_evaluate.tolist())
-            resp = self.testapp.post('/gp/ei', json_payload)
+            resp = self.testapp.post(self.endpoint, json_payload)
             resp_schema = GpEiResponse()
             resp_dict = resp_schema.deserialize(json.loads(resp.body))
             rest_expected_improvement = resp_dict.get('expected_improvement')

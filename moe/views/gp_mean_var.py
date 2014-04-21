@@ -14,6 +14,7 @@ from moe.views.gp_pretty_view import GpPrettyView
 
 import colander
 from moe.views.schemas import ListOfFloats, MatrixOfFloats, GpInfo, ListOfPointsInDomain
+from moe.views.constant import GP_MEAN_VAR_ROUTE_NAME, GP_MEAN_VAR_PRETTY_ROUTE_NAME
 
 
 class GpMeanVarRequest(colander.MappingSchema):
@@ -86,8 +87,8 @@ class GpMeanVarView(GpPrettyView):
 
     """Views for gp_mean_var endpoints."""
 
-    route_name = 'gp_mean_var'
-    pretty_route_name = 'gp_mean_var_pretty'
+    route_name = GP_MEAN_VAR_ROUTE_NAME
+    pretty_route_name = GP_MEAN_VAR_PRETTY_ROUTE_NAME
 
     request_schema = GpMeanVarRequest()
     response_schema = GpMeanVarResponse()
@@ -133,7 +134,7 @@ class GpMeanVarView(GpPrettyView):
         mean, var = GP.get_mean_and_var_of_points(points_to_sample)
 
         return self.form_response({
-                'endpoint': 'gp_mean_var',
+                'endpoint': self.route_name,
                 'mean': mean.tolist(),
                 'var': var.tolist(),
                 })

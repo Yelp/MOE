@@ -5,6 +5,7 @@ import testify as T
 
 from moe.tests.moe.views.rest_gaussian_process_test_case import RestGaussianProcessTestCase
 from moe.views.gp_next_points_pretty_view import GpNextPointsResponse
+from moe.views.constant import ALL_NEXT_POINTS_MOE_ROUTES, GP_NEXT_POINTS_CONSTANT_LIAR_ROUTE_NAME
 
 
 class TestGpNextPointsViews(RestGaussianProcessTestCase):
@@ -29,12 +30,6 @@ class TestGpNextPointsViews(RestGaussianProcessTestCase):
                 },
             ]
 
-    endpoints = [
-            '/gp/next_points/epi',
-            '/gp/next_points/kriging',
-            '/gp/next_points/constant_liar',
-            ]
-
     def _build_json_payload(self, GP, num_samples_to_generate, lie_value=None):
         """Create a json_payload to POST to the /gp/next_points/* endpoint with all needed info."""
         dict_to_dump = {
@@ -47,7 +42,7 @@ class TestGpNextPointsViews(RestGaussianProcessTestCase):
 
     def test_interface_returns_same_as_cpp(self):
         """Test that the /gp/next_points/* endpoints do the same thing as the C++ interface."""
-        for endpoint in self.endpoints:
+        for moe_route in ALL_NEXT_POINTS_MOE_ROUTES:
             for test_case in self.test_cases:
                 num_points_in_sample = test_case['num_points_in_sample']
                 num_samples_to_generate = test_case['num_samples_to_generate']
@@ -56,11 +51,11 @@ class TestGpNextPointsViews(RestGaussianProcessTestCase):
                 GP, _ = self._make_random_processes_from_latin_hypercube(domain, num_points_in_sample)
 
                 # Next point from REST
-                if endpoint == '/gp/next_points/constant_liar':
+                if moe_route.route_name == GP_NEXT_POINTS_CONSTANT_LIAR_ROUTE_NAME:
                     json_payload = self._build_json_payload(GP, num_samples_to_generate, lie_value=0.0)
                 else:
                     json_payload = self._build_json_payload(GP, num_samples_to_generate)
-                resp = self.testapp.post(endpoint, json_payload)
+                resp = self.testapp.post(moe_route.endpoint, json_payload)
                 resp_schema = GpNextPointsResponse()
                 resp_dict = resp_schema.deserialize(json.loads(resp.body))
                 T.assert_in('points_to_sample', resp_dict)

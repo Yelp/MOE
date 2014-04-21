@@ -8,6 +8,7 @@ import colander
 from pyramid.view import view_config
 
 from moe.views.gp_next_points_pretty_view import GpNextPointsPrettyView, GpNextPointsRequest
+from moe.views.constant import GP_NEXT_POINTS_KRIGING_ROUTE_NAME, GP_NEXT_POINTS_KRIGING_PRETTY_ROUTE_NAME
 
 
 class GpNextPointsKrigingRequest(GpNextPointsRequest):
@@ -64,8 +65,8 @@ class GpNextPointsKriging(GpNextPointsPrettyView):
 
     """Views for gp_next_points_kriging endpoints."""
 
-    route_name = 'gp_next_points_kriging'
-    pretty_route_name = 'gp_next_points_kriging_pretty'
+    route_name = GP_NEXT_POINTS_KRIGING_ROUTE_NAME
+    pretty_route_name = GP_NEXT_POINTS_KRIGING_PRETTY_ROUTE_NAME
 
     request_schema = GpNextPointsKrigingRequest()
 
