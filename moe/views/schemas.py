@@ -78,7 +78,7 @@ class GpInfo(colander.MappingSchema):
 class EiOptimizationParameters(colander.MappingSchema):
 
     """Optimization parameters.
-    
+
     **Optional fields**
 
         :param optimizer_type: the type of optimizer to use
@@ -93,8 +93,8 @@ class EiOptimizationParameters(colander.MappingSchema):
         :type max_num_restarts: int > 0
         :param gamma: exponent controlling rate of step size decrease (see struct docs or GradientDescentOptimizer) (suggest: 0.5-0.9)
         :type gamma: float64 > 1.0
-        :param time_factor: scaling factor for step size (see struct docs or GradientDescentOptimizer) (suggest: 0.1-1.0)
-        :type time_factor: float64 > 0.0
+        :param pre_mult: scaling factor for step size (see struct docs or GradientDescentOptimizer) (suggest: 0.1-1.0)
+        :type pre_mult: float64 > 0.0
         :param max_relative_change: max change allowed per GD iteration (as a relative fraction of current distance to wall)
                (suggest: 0.5-1.0 for less sensitive problems like EI; 0.02 for more sensitive problems like hyperparameter opt)
         :type max_relative_change: float64 in [0, 1]
@@ -119,7 +119,7 @@ class EiOptimizationParameters(colander.MappingSchema):
             'mc_iterations': 100000,
             'max_relative_change': 1.0,
             'tolerance': 1.0e-7,
-        } 
+        }
 
     """
 
