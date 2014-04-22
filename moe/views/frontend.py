@@ -7,7 +7,11 @@ from moe.optimal_learning.EPI.src.python.constant import default_gaussian_proces
 
 @view_config(route_name='home', renderer='moe:templates/index.mako')
 def index_page(request):
-    """The MOE index view."""
+    """The MOE index view.
+
+    .. http:get:: /
+
+    """
     return {
             'nav_active': 'home',
             }
@@ -15,7 +19,11 @@ def index_page(request):
 
 @view_config(route_name='gp_plot', renderer='moe:templates/gp_plot.mako')
 def gp_plot_page(request):
-    """The MOE demo view."""
+    """The MOE demo view.
+
+    .. http:get:: /demo
+
+    """
     return {
             'nav_active': 'demo',
             'default_gaussian_process_parameters': default_gaussian_process_parameters,

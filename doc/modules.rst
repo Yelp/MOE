@@ -1,7 +1,7 @@
-optimal_learning
-================
+moe
+===
 
 .. toctree::
    :maxdepth: 4
 
-   optimal_learning
+   moe

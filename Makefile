@@ -11,4 +11,5 @@ test:
 
 docs:
 		$(MAKE) -C doc doxygen
+		sphinx-apidoc -f -o doc moe
 		$(MAKE) -C doc html

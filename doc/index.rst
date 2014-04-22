@@ -102,9 +102,9 @@ Python Files
 ------------
 
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 4
 
-   optimal_learning.EPI.src.python
+   moe
 
 C++ Files
 ---------
