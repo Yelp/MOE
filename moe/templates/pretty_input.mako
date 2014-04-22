@@ -1,7 +1,8 @@
 <%inherit file="moe:templates/layout.mako"/>
 
 <div class="span12">
-    <h4>Pretty input for <strong>${ endpoint }</strong> endpoint</h4>
+    <h4>Pretty input for <strong><code>${ endpoint }</code></strong> endpoint</h4>
+    <p><a href="http://sc932.github.io/MOE/moe.views.html#module-moe.views.${ endpoint }">Documentation</a>
     <p><textarea class="form-control" id="json-body" rows="10">${ default_text }</textarea></p>
     <p><button id="submit" type="button" class="btn btn-success">Submit</button></p>
     <p><textarea class="form-control" id="json-out" rows="10" placeholder="Output JSON"></textarea></p>
@@ -16,8 +17,12 @@ $("#submit").click(function() {
             $("#json-out").val( JSON.stringify(data) );
         }
     );
-    jqxhr.fail(function() {
-        alert("500 error");
+    jqxhr.fail(function(jqXHR, textStatus, errorThrown) {
+        if (jqXHR.responseText.indexOf('DOCTYPE') !== -1){
+            alert("INTERNAL 500 ERROR\nCheck console.");
+        }else{
+            alert("500 ERROR\n" + jqXHR.responseText);
+        }
     });
 });
 </script>

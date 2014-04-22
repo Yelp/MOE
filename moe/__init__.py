@@ -1,32 +1,33 @@
+# -*- coding: utf-8 -*-
+"""Base pyramid app for MOE."""
 from pyramid.config import Configurator
-from pyramid.events import subscriber
 from pyramid.events import NewRequest
-import pymongo
 
 from moe.resources import Root
+from moe.views.constant import ALL_MOE_ROUTES
+
 
 def main(global_config, **settings):
-    """ This function returns a WSGI application.
-    """
+    """Return a WSGI application."""
     config = Configurator(settings=settings, root_factory=Root)
     config.add_static_view('static', 'moe:static')
 
     # Routes
     config.add_route('home', '/')
-    config.add_route('docs', '/docs')
-    config.add_route('about', '/about')
-    config.add_route('gp_ei', '/gp/ei')
-    config.add_route('gp_ei_pretty', '/gp/ei/pretty')
-    config.add_route('gp_mean_var', '/gp/mean_var')
-    config.add_route('gp_mean_var_pretty', '/gp/mean_var/pretty')
-    config.add_route('gp_next_points_epi', '/gp/next_points/epi')
-    config.add_route('gp_next_points_epi_pretty', '/gp/next_points/epi/pretty')
+    config.add_route('gp_plot', '/gp/plot')
+    # MOE routes
+    for moe_route in ALL_MOE_ROUTES:
+        config.add_route(
+                moe_route.route_name,
+                moe_route.endpoint
+                )
 
     # MongoDB
     if settings['use_mongo'] == 'true':
+        import pymongo
+
         def add_mongo_db(event):
             settings = event.request.registry.settings
-            url = settings['mongodb.url']
             db_name = settings['mongodb.db_name']
             db = settings['mongodb_conn'][db_name]
             event.request.db = db
@@ -43,5 +44,12 @@ def main(global_config, **settings):
                 )
         config.registry.settings['mongodb_conn'] = conn
         config.add_subscriber(add_mongo_db, NewRequest)
-    config.scan()
+    config.scan(
+            ignore=[
+                'moe.optimal_learning.EPI.src.python.lib.cuda_linkers',
+                'moe.optimal_learning.EPI.src.python.lib.plotter',
+                'moe.optimal_learning.EPI.src.python.models.plottable_optimal_gaussian_process',
+                'moe.tests',
+                ],
+            )
     return config.make_wsgi_app()
