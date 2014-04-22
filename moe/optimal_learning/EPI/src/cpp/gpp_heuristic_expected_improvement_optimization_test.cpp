@@ -114,23 +114,23 @@ OL_WARN_UNUSED_RESULT int ConstantLiarPolicyTest() {
 
   Proof of 1) for Xs = X_1, the first point of X.
   Let e_i be the column vector with a 1 in the i-th slot and 0s otherwise.
-  Let K be the covariance matrix, and let K_1, K_2, ... K_n denote its *rows*. Say we are using SquareExponential.
+  Let K be the covariance matrix, and let K_1, K_2, ... K_n denote its *columns*. Say we are using SquareExponential.
   Observe that Ks = K_1.
   and Kss = \alpha (the signal variance hyperparameter)
   From gpp_math.cpp's file comments:
-    mus = Ks * K^-1 * f,  (Equation 2, Rasmussen & Williams 2.19)
-    Vars = Kss - Ks * K^-1 * Ks^T, (Equation 3, Rasumussen & Williams 2.19)
-  Using Ks * K^{-1} = [K^{-1} * Ks^T]^T = [K^{-1} * K_1^T]^T = e_1^T,
+    mus = Ks^T * K^-1 * f,  (Equation 2, Rasmussen & Williams 2.19)
+    Vars = Kss - Ks^T * K^-1 * Ks, (Equation 3, Rasumussen & Williams 2.19)
+  Using Ks^T * K^{-1} = [K^{-1} * Ks]^T = [K^{-1} * K_1]^T = e_1^T,
   mus = e_1^T * f = f_1 (first entry of f)
-  Vars = Kss - Ks * K^{-1} * Ks^T = \alpha - e_1^T * K_1^T = \alpha - \alpha = 0.
+  Vars = Kss - Ks^T * K^{-1} * Ks = \alpha - e_1^T * K_1^T = \alpha - \alpha = 0.
 
   Proof of 2) for Xs = x_{far}, where ||x_{far} - X_i||_2 >> max L \forall i
   Observe Ks \approx 0_n (vector of all 0s).
     To see why, consider that cov(x, y) = \alpha * exp(-0.5*\sum_{i=0}^{dim} (x_i - y_i)^2/L_i^2).
     So for x = x_{far} and any y \in X, this is \alpha * exp(-LARGE) \approx 0.
   And Kss = \alpha (as before). Hence:
-  mus \approx 0_n * K^{-1} * f = 0
-  Vars \approx \alpha - 0_n * K^{-1} * 0_n^T = \alpha
+  mus \approx 0_n^T * K^{-1} * f = 0
+  Vars \approx \alpha - 0_n^T * K^{-1} * 0_n = \alpha
   The \approx become "equalities" in finite precision when dist(x, X) \approx
   20 * max(hyperparameter_length_scales). (Conservative estimate.)
 

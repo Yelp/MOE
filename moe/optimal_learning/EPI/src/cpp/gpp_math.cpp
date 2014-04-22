@@ -63,11 +63,11 @@
 
   In a noise-free setting (signal noise modifies K to become K + \sigma^2 * Id, Id being identity), the joint
   distribution of training inputs, f, and test outputs, fs, is:
-  [ f  ]  ~ N( 0, [ K(X,X)   K(X,Xs)  ]             (Equation 1, Rasmussen & Williams 2.18)
-  [ fs ]          [ K(Xs,X)  K(Xs,Xs) ]
+  [ f  ]  ~ N( 0, [ K(X,X)   K(X,Xs)  ]  = [ K     Ks  ]         (Equation 1, Rasmussen & Williams 2.18)
+  [ fs ]          [ K(Xs,X)  K(Xs,Xs) ]    [ Ks^T  Kss ]
   where the test outputs are drawn from the prior.
   K(X,X) and K(Xs,Xs) are computed in BuildCovarianceMatrix()
-  K(Xs,X) is computed by BuildMixCovarianceMatrix(); and K(X,Xs) is its transpose.
+  K(X,Xs) is computed by BuildMixCovarianceMatrix(); and K(Xs,X) is its transpose.
   K + \sigma^2 is computed in BuildCovarianceMatrixWithNoiseVariance(); almost all practical uses of GPs and EI will
   be over data with nonzero noise variance.  However this is immaterial to the rest of the discussion here.
 
@@ -77,9 +77,9 @@
 
   Instead, we can use math to compute the posterior by conditioning it on the prior:
   fs | Xs,X,f ~ N( mus, Vars)
-  where mus = K(Xs,X) * K(X,X)^-1 * f = Ks * K^-1 * f,  (Equation 2, Rasmussen & Williams 2.19)
+  where mus = K(Xs,X) * K(X,X)^-1 * f = Ks^T * K^-1 * f,  (Equation 2, Rasmussen & Williams 2.19)
   which is computed in GaussianProcess::ComputeMeanOfPoints.
-  and  Vars = K(Xs,Xs) - K(Xs,X) * K(X,X)^-1 * K(X,Xs) = Kss - Ks * K^-1 * Ks^T, (Equation 3, Rasumussen & Williams 2.19)
+  and  Vars = K(Xs,Xs) - K(Xs,X) * K(X,X)^-1 * K(X,Xs) = Kss - Ks^T * K^-1 * Ks, (Equation 3, Rasumussen & Williams 2.19)
   which is implemented in GaussianProcess::ComputeVarianceOfPoints (and provably SPD).
 
   Now we can draw from this multi-variate Gaussian by:
@@ -324,9 +324,9 @@ OL_NONNULL_POINTERS void BuildCovarianceMatrixWithNoiseVariance(const Covariance
 /*
   .. NOTE:: These comments have been copied into build_mix_covariance_matrix in python_version/python_utils.py.
 
-  Compute the "mix" covariance matrix, ``Ks``, of ``Xs`` and ``X`` (``points_to_sample`` and ``points_sampled``, respectively).
+  Compute the "mix" covariance matrix, ``Ks``, of ``X`` and ``Xs`` (``points_sampled`` and ``points_to_sample``, respectively).
   Matrix is computed as:
-  ``A_{i,j} = covariance(Xs_i, X_j).``
+  ``A_{i,j} = covariance(X_i, Xs_j).``
   Result is not guaranteed to be SPD and need not even be square.
 
   Generally, this is called from other functions with "points_sampled" and "points_to_sample" as the
@@ -337,29 +337,22 @@ OL_NONNULL_POINTERS void BuildCovarianceMatrixWithNoiseVariance(const Covariance
 
   INPUTS:
   covariance: the CovarianceFunction object encoding assumptions about the GP's behavior on our data
-  points_to_sample[dim][num_to_sample]: list of points
-  points_sampled[dim][num_sampled]: list of points
+  points_sampled[dim][num_sampled]: list of points, ``X``
+  points_to_sample[dim][num_to_sample]: list of points, ``Xs``
   dim: spatial dimension of a point
-  num_to_sample: number of points in points_to_sample
   num_sampled: number of points in points_sampled
-  cov_matrix[num_to_sample][num_sampled]: computed "mix" covariance matrix
+  num_to_sample: number of points in points_to_sample
+  cov_matrix[num_sampled][num_to_sample]: computed "mix" covariance matrix
 */
 // TODO(eliu): Do not re-compute symmetric part (either don't compute it or copy from already-computed value) (ticket 40552)
-OL_NONNULL_POINTERS void BuildMixCovarianceMatrix(const CovarianceInterface& covariance, double const * restrict points_to_sample, double const * restrict points_sampled, int dim, int num_to_sample, int num_sampled, double * restrict cov_matrix) noexcept {
+OL_NONNULL_POINTERS void BuildMixCovarianceMatrix(const CovarianceInterface& covariance, double const * restrict points_sampled, double const * restrict points_to_sample, int dim, int num_sampled, int num_to_sample, double * restrict cov_matrix) noexcept {
   // calculate the covariance matrix defined in gpp_covariance.hpp
-  for (int j = 0; j < num_sampled; ++j) {
-    for (int i = 0; i < num_to_sample; ++i) {
-      cov_matrix[i] = covariance.Covariance(points_to_sample + i*dim, points_sampled + j*dim);
+  for (int j = 0; j < num_to_sample; ++j) {
+    for (int i = 0; i < num_sampled; ++i) {
+      cov_matrix[i] = covariance.Covariance(points_sampled + i*dim, points_to_sample + j*dim);
     }
-    cov_matrix += num_to_sample;
+    cov_matrix += num_sampled;
   }
-
-  // for clarity, the matrix access pattern is:
-  //     for (int i = 0; i < num_to_sample; ++i) {
-  //       for (int j = 0; j < num_sampled; ++j) {
-  //         cov_matrix[i + j*num_to_sample] = covariance(points_to_sample + i*dim, points_sampled + j*dim, dim);
-  //       }
-  //     }
 }
 
 }  // end unnamed namespace
@@ -617,21 +610,21 @@ template void ComputeOptimalSetOfPointsToSample(const GaussianProcess& gaussian_
 
 /*
   Sets up precomputed quantities needed for mean, variance, and gradients thereof.  These quantities are:
-  Ks^T := Ks_{i,k}^T = cov(X_i, Xs_k) (used by mean, variance)
+  Ks := Ks_{k,i} = cov(X_k, Xs_i) (used by mean, variance)
   Then if we need gradients:
-  K^-1 * Ks^T := solution X of K_{i,j} * X_{j,k} = Ks^T_{i,k} (used by variance, grad variance)
-  gradient of Ks := C_{p,i,l} = \pderiv{Ks_{i,l}}{Xs_{p}} (used by grad mean, grad variance)
+  K^-1 * Ks := solution X of K_{k,l} * X_{l,i} = Ks{k,i} (used by variance, grad variance)
+  gradient of Ks := C_{d,k,i} = \pderiv{Ks_{k,i}}{Xs_{d,i}} (used by grad mean, grad variance)
 */
 void GaussianProcess::FillPointsToSampleState(StateType * points_to_sample_state, bool configure_for_gradients) const {
-  BuildMixCovarianceMatrixTrans(points_to_sample_state->points_to_sample.data(), points_to_sample_state->num_to_sample, points_to_sample_state->K_star_T.data());
+  BuildMixCovarianceMatrix(points_to_sample_state->points_to_sample.data(), points_to_sample_state->num_to_sample, points_to_sample_state->K_star.data());
 
   if (configure_for_gradients == true) {
-    // to save on duplicate storage, precompute K^-1 * Ks^T
-    std::copy(points_to_sample_state->K_star_T.begin(), points_to_sample_state->K_star_T.end(), points_to_sample_state->K_inv_times_K_star_T.begin());
-    CholeskyFactorLMatrixMatrixSolve(K_chol_.data(), num_sampled_, points_to_sample_state->num_to_sample, points_to_sample_state->K_inv_times_K_star_T.data());
+    // to save on duplicate storage, precompute K^-1 * Ks
+    std::copy(points_to_sample_state->K_star.begin(), points_to_sample_state->K_star.end(), points_to_sample_state->K_inv_times_K_star.begin());
+    CholeskyFactorLMatrixMatrixSolve(K_chol_.data(), num_sampled_, points_to_sample_state->num_to_sample, points_to_sample_state->K_inv_times_K_star.data());
 
     double * restrict gKs_temp = points_to_sample_state->grad_K_star.data();
-    // also precompute C_{p,i,l} = \pderiv{Ks_{i,l}}{Xs_{p}}, stored in grad_K_star_
+    // also precompute C_{d,k,i} = \pderiv{Ks_{k,i}}{Xs_{d,i}}, stored in grad_K_star_
     for (int i = 0; i < points_to_sample_state->num_to_sample; ++i) {
       for (int j = 0; j < num_sampled_; ++j) {
         covariance_.GradCovariance(points_to_sample_state->points_to_sample.data() + i*dim_, points_sampled_.data() + j*dim_, gKs_temp);
@@ -643,18 +636,18 @@ void GaussianProcess::FillPointsToSampleState(StateType * points_to_sample_state
 
 /*
   Calculates the mean (from the GPP) of a set of points:
-  mus = Ks * K^-1 * y
+  mus = Ks^T * K^-1 * y
   See Rasmussen and Willians page 19 alg 2.1
 */
 void GaussianProcess::ComputeMeanOfPoints(const StateType& points_to_sample_state, double * restrict mean_of_points) const noexcept {
-  GeneralMatrixVectorMultiply(points_to_sample_state.K_star_T.data(), 'T', K_inv_y_.data(), 1.0, 0.0, num_sampled_, points_to_sample_state.num_to_sample, num_sampled_, mean_of_points);
+  GeneralMatrixVectorMultiply(points_to_sample_state.K_star.data(), 'T', K_inv_y_.data(), 1.0, 0.0, num_sampled_, points_to_sample_state.num_to_sample, num_sampled_, mean_of_points);
 }
 
 /*
   Gradient of the mean of a GP.  Note that the output storage skips known zeros (see declaration docs for details).
   See Scott Clark's PhD thesis for more spelled out mathematical details, but this is a reasonably straightforward
   differentiation of:
-  mus = Ks*K^-1*y
+  mus = Ks^T * K^-1 * y
   wrt Xs (so only Ks contributes derivative terms)
 */
 void GaussianProcess::ComputeGradMeanOfPoints(const StateType& points_to_sample_state, double * restrict grad_mu) const noexcept {
@@ -665,7 +658,7 @@ void GaussianProcess::ComputeGradMeanOfPoints(const StateType& points_to_sample_
   Mathematically, we are computing Vars (Var_star), the GP variance.  Vars is defined at the top of this file (Equation 3)
   and in Rasmussen & Williams, Equation 2.19:
   L * L^T = K
-  V = L^-1 * Ks^T
+  V = L^-1 * Ks
   Vars = Kss - (V^T * V)
   This quantity is:
   Kss: the covariance between test points based on the prior distribution
@@ -675,8 +668,8 @@ void GaussianProcess::ComputeGradMeanOfPoints(const StateType& points_to_sample_
   Notice that Vars is clearly symmetric.  K_star_star is SPD. And
   V^T * V = (V^T * V)^T is symmetric (and is in fact SPD).
 
-  V^T * V = Ks * K^-1 * K_s^T is SPD because:
-  X * A * X^T is SPD when A is SPD AND X has full rank (X need not be square)
+  V^T * V = Ks^T * K^-1 * K_s is SPD because:
+  X^T * A * X is SPD when A is SPD AND X has full rank (X need not be square)
   Ks has full rank as long as K & Kss are SPD; K^-1 is SPD because K is SPD.
 
   It turns out that Vars is SPD.
@@ -699,17 +692,17 @@ void GaussianProcess::ComputeVarianceOfPoints(StateType * points_to_sample_state
   BuildCovarianceMatrix(covariance_, points_to_sample_state->points_to_sample.data(), dim_, num_to_sample, var_star);
   // following block computes Vars -= V^T*V, with the exact method depending on what quantities were precomputed
   if (unlikely(points_to_sample_state->configure_for_gradients == false)) {
-    std::copy(points_to_sample_state->K_star_T.begin(), points_to_sample_state->K_star_T.end(), points_to_sample_state->V.begin());
+    std::copy(points_to_sample_state->K_star.begin(), points_to_sample_state->K_star.end(), points_to_sample_state->V.begin());
     TriangularMatrixMatrixSolve(K_chol_.data(), 'N', num_sampled_, num_to_sample, num_sampled_, points_to_sample_state->V.data());
-    // now V := L^-1 * K_star^T
+    // now V := L^-1 * K_star
     // Would computing this as Ks * (K \ Ks^T) reduce numerical errors?  Is it worth the extra expense?
 
-    // compute V^T V = (L^-1 * Ks^T)^T * (L^-1 * Ks^T).
+    // compute V^T V = (L^-1 * Ks)^T * (L^-1 * Ks).
     GeneralMatrixMatrixMultiply(points_to_sample_state->V.data(), 'T', points_to_sample_state->V.data(), -1.0, 1.0, num_to_sample, num_sampled_, num_to_sample, var_star);
   } else {
-    // compute as Ks * (K\ Ks^T), the 2nd term of which has been precomputed
-    // this is cheaper than computing V^T * V when K \ Ks^T is already available
-    GeneralMatrixMatrixMultiply(points_to_sample_state->K_star_T.data(), 'T', points_to_sample_state->K_inv_times_K_star_T.data(), -1.0, 1.0, num_to_sample, num_sampled_, num_to_sample, var_star);
+    // compute as Ks^T * (K\ Ks), the 2nd term of which has been precomputed
+    // this is cheaper than computing V^T * V when K \ Ks is already available
+    GeneralMatrixMatrixMultiply(points_to_sample_state->K_star.data(), 'T', points_to_sample_state->K_inv_times_K_star.data(), -1.0, 1.0, num_to_sample, num_sampled_, num_to_sample, var_star);
   }
 }
 
@@ -717,7 +710,7 @@ void GaussianProcess::ComputeVarianceOfPoints(StateType * points_to_sample_state
   CORE IDEA:
   Similar to ComputeGradCholeskyVarianceOfPoints() below, except this function does not account for the cholesky decomposition.  That is,
   it produces derivatives wrt Xs_{d,p} (points_to_sample) of:
-  Vars = Kss - (V^T * V) = Kss - Ks * K^-1 * Ks^T (see ComputeVarianceOfPoints)
+  Vars = Kss - (V^T * V) = Kss - Ks^T * K^-1 * Ks (see ComputeVarianceOfPoints)
 
   NOTE: normally Xs_p would be the p-th point of Xs (all dimensions); here Xs_{d,p} more explicitly refers to the d-th
         spatial dimension of the p-th point.
@@ -725,22 +718,26 @@ void GaussianProcess::ComputeVarianceOfPoints(StateType * points_to_sample_state
   This function only returns the derivative wrt a single choice of p, as specified by var_of_grad.
 
   Expanded index notation:
-  Vars_{i,j} = Kss_{i,j} - Ks_{i,l} * K^-1_{l,k} * Ks^T_{k,j}
+  Vars_{i,j} = Kss_{i,j} - Ks^T_{i,l} * K^-1_{l,k} * Ks_{k,j}
 
-  Recall Ks_{i,k} = cov(Xs_i, X_k) = cov(X_k, Xs_i) where Xs is points_to_sample and X is points_sampled
-  (Note this is not equivalent to saying Ks = Ks^T, although this would be true if Ks |Xs| == |X|)
-  As a result of this symmetry, \pderiv{Ks_{i,k}}{Xs_i} = \pderiv{Ks_{k,i}}{Xs_i} (that's d(cov(Xs_i, X_k))/d(Xs_i))
+  Recall Ks_{k,i} = cov(X_k, Xs_i) = cov(Xs_i, Xs_k) where Xs is points_to_sample and X is points_sampled
+  (Note this is not equivalent to saying Ks = Ks^T, although this would be true if |Xs| == |X|)
+  As a result of this symmetry, \pderiv{Ks_{k,i}}{Xs_{d,i}} = \pderiv{Ks_{i,k}}{Xs_{d,i}} (that's d(cov(Xs_i, X_k))/d(Xs_i))
 
   We are being more strict with index labels than is standard to clearly specify tensor dimensions.  To be clear:
     1) i,j range over num_to_sample
     2) l,k are the only non-free indices; they range over num_sampled
-    3) d,p describe the point being differentiated against in Xs (points_to_sample): d over dimension, p over num_to_sample
+    3) d,p describe the SPECIFIC point being differentiated against in Xs (points_to_sample): d over dimension, p* over num_to_sample
+  *NOTE: p is *fixed*! Unlike all other indices, p refers to a *SPECIFIC* point in the range [0, ..., num_to_sample-1].
+         Thus, \pderiv{Ks_{k,i}}{Xs_{d,i}} is a 3-tensor (A_{d,k,i}) (repeated i is not summation since they notate
+         components of a derivative) while \pderiv{Ks_{i,l}}{Xs_{d,p}} is a 2-tensor (A_{d,l}) b/c only
+         \pderiv{Ks_{i=p,l}}{Xs_{d,p}} is nonzero, and {d,l} are the only remaining free indices.
 
-  Then differentiating against Xs_{d,p}:
+  Then differentiating against Xs_{d,p} (recall that this is a specific point b/c p is fixed):
   \pderiv{Vars_{i,j}}{Xs_{d,p}} = \pderiv{K_ss{i,j}}{Xs_{d,p}} -
   (\pderiv{Ks_{i,l}}{Xs_{d,p}} * K^-1_{l,k} * Ks_{k,j}   +  K_s{i,l} * K^-1_{l,k} * \pderiv{Ks_{k,j}}{Xs_{d,p}})
-  Many of these terms are analytically known to be 0: \pderiv{Ks_{i,l}}{Xs_{d,p}} = 0 when p != i.  A similar statement
-  holds for the other gradient term.
+  Many of these terms are analytically known to be 0: \pderiv{Ks_{i,l}}{Xs_{d,p}} = 0 when p != i (see NOTE above).
+  A similar statement holds for the other gradient term.
 
   Observe that the second term in the parens, Ks_{i,l} * K^-1_{l,k} * \pderiv{Ks_{k,j}}{Xs_{d,p}}, can be reordered
   to "look" like the first term.  We use three symmetries: K^-1{l,k} = K^-1{k,l}, Ks_{i,l} = Ks_{l,i}, and
@@ -763,20 +760,22 @@ void GaussianProcess::ComputeVarianceOfPoints(StateType * points_to_sample_state
   present in our implementation.
 
   The first thing to notice is that the result, \pderiv{Vars_{i,j}}{Xs_{d,p}}, has a lot of 0s.  In particular, only the
-  p-th row and p-th column have nonzero entries.  Currently, we will not be taking advantage of this sparsity because the
-  consumer of DVars, ComputeGradCholeskyVarianceOfPoints(), is not implemented with the sparsity in mind.
+  p-th block row and p-th block column have nonzero entries (blocks are size dim, indexed d).  Currently, we will not be
+  taking advantage of this sparsity because the consumer of DVars, ComputeGradCholeskyVarianceOfPoints(), is not implemented
+  with the sparsity in mind.
 
   Similarly, the next thing to notice is that if we ignore the case p == i == j, then we see that the expressions for
-  p == i and p == j are actually identical (e.g., take the p == j case and exchange j=i and k = l).  So think of DVars as a
-  block matrix; each block has dimension entries, and the blocks are index over i (rows), j (cols).  Then we see that
+  p == i and p == j are actually identical (e.g., take the p == j case and exchange j = i and k = l).  So think of DVars as a
+  block matrix; each block has dimension entries, and the blocks are indexed over i (rows), j (cols).  Then we see that
   the code is block-symmetric: DVars_{d,i,j} = Dvars_{d,j,i}.  So we can compute it by filling in the p-th block column
   and then copy that data into the p-th block row.
 
   Additionally, the derivative terms represent matrix-matrix products:
-  C_{l,j} = K^-1_{l,k} * Ks_{k,j} (and K^-1_{k,l} * Ks_{l,i}, which is just a change of index labels) is a matrix product.  In fact we
+  C_{l,j} = K^-1_{l,k} * Ks_{k,j} (and K^-1_{k,l} * Ks_{l,i}, which is just a change of index labels) is a matrix product.  We
   compute this using back-substitutions to avoid explicitly forming K^-1.  C_{l,j} is num_sampled X num_to_sample
   Then D_{d,i=p,j} = \pderiv{Ks_{i=p,l}}{Xs_{d,p}} * C_{l,j} is another matrix product (result size dim * num_to_sample)
   (i=p indicates that index i collapses out since this deriv term is zero if p != i).
+  Note that we store \pderiv{Ks_{i=p,l}}{Xs_{d,p}} = \pderiv{Ks_{l,i=p}}{Xs_{d,p}} as A_{d,l,i} and grab the i=p-th block.
 
   Again, only the p-th point of points_to_sample is differentiated against; p specfied in "var_of_grad"
 */
@@ -786,16 +785,19 @@ void GaussianProcess::ComputeGradVarianceOfPoints(StateType * points_to_sample_s
   // we only visit a small subset of the entries in this matrix; need to ensure the others are zero'd
   std::fill(grad_var, grad_var + dim_*Square(num_to_sample), 0.0);
 
-  // retrieve C_{l,j} = K^-1_{l,k} * Ks_{k,j}, from C stored in K_inv_times_K_star_T
-  // grab \pderiv{Ks_{i=p,l}}{Xs_{d,p}} from state struct, use in matrix product
+  // Compute: \pderiv{Ks_{i,l}}{Xs_{d,p}} * K^-1_{l,k} * Ks_{k,j} (the second term in DVvars, above).
+  // Retrieve C_{l,j} = K^-1_{l,k} * Ks_{k,j}, from C stored in K_inv_times_K_star
+  // Retrieve \pderiv{Ks_{l,i=p}}{Xs_{d,p}} from state struct (stored as A_{d,l,p}), use in matrix product
+  // Result is computed as: A_{d,l,p} * C_{l,j}.  (Again, recall that p is fixed, so this output is over a matrix indexed {d,j}.)
   double * restrict grad_var_target_column = grad_var + var_of_grad*dim_*num_to_sample;
-  GeneralMatrixMatrixMultiply(points_to_sample_state->grad_K_star.data() + var_of_grad*dim_*num_sampled_, 'N', points_to_sample_state->K_inv_times_K_star_T.data(), 1.0, 0.0, dim_, num_sampled_, num_to_sample, grad_var_target_column);
+  GeneralMatrixMatrixMultiply(points_to_sample_state->grad_K_star.data() + var_of_grad*dim_*num_sampled_, 'N', points_to_sample_state->K_inv_times_K_star.data(), 1.0, 0.0, dim_, num_sampled_, num_to_sample, grad_var_target_column);
 
-  for (int i = 0; i < num_to_sample; ++i) {
-    // compute the leading term: \pderiv{K_ss{i,j}}{Xs_{d,p}}
-    covariance_.GradCovariance(points_to_sample_state->points_to_sample.data() + var_of_grad*dim_, points_to_sample_state->points_to_sample.data() + i*dim_, points_to_sample_state->grad_cov.data());
-    // flip the sign, add leading term in
-    if (i == var_of_grad) {  // block diagonal term needs to be multiplied by 2
+  // Fill the p-th block column of the output (p = var_of_grad); we will then copy this into the p-th block column.
+  for (int j = 0; j < num_to_sample; ++j) {
+    // Compute the leading term: \pderiv{K_ss{i=p,j}}{Xs_{d,p}}.
+    covariance_.GradCovariance(points_to_sample_state->points_to_sample.data() + var_of_grad*dim_, points_to_sample_state->points_to_sample.data() + j*dim_, points_to_sample_state->grad_cov.data());
+    // Flip the sign, add leading term in.
+    if (j == var_of_grad) {  // Block diagonal term needs to be multiplied by 2.
       for (int m = 0; m < dim_; ++m) {
         grad_var_target_column[m] *= -2.0;
         grad_var_target_column[m] += points_to_sample_state->grad_cov[m];
@@ -810,13 +812,13 @@ void GaussianProcess::ComputeGradVarianceOfPoints(StateType * points_to_sample_s
   }
 
   grad_var_target_column -= dim_*num_to_sample;
-  // pointer to the first element of the block row we're filling
+  // Pointer to the first element of the block row we're filling.
   double * restrict grad_var_target_row = grad_var + var_of_grad*dim_;
-  // fill in the var_of_grad-th block row by copying from the var_of_grad-th block column
+  // Fill in the var_of_grad-th block row by copying from the var_of_grad-th block column.
   for (int j = 0; j < num_to_sample; ++j) {
-    // skip the diagonal block (we'd just be copying it onto itself)
+    // Skip the diagonal block (we'd just be copying it onto itself).
     if (j != var_of_grad) {
-      // from function comments, the matrix is block-symmetric so we just copy directly
+      // From function comments, the matrix is block-symmetric so we just copy directly.
       for (int m = 0; m < dim_; ++m) {
         grad_var_target_row[m] = grad_var_target_column[m];
       }
@@ -908,10 +910,7 @@ void GaussianProcess::BuildCovarianceMatrixWithNoiseVariance() noexcept {
   optimal_learning::BuildCovarianceMatrixWithNoiseVariance(covariance_, noise_variance_.data(), points_sampled_.data(), dim_, num_sampled_, K_chol_.data());
 }
 
-/*
-  build K_star_T directly by interchanging points sampled & to_sample instead of transposing
-*/
-void GaussianProcess::BuildMixCovarianceMatrixTrans(double const * restrict points_to_sample, int num_to_sample, double * restrict covariance_matrix) const noexcept {
+void GaussianProcess::BuildMixCovarianceMatrix(double const * restrict points_to_sample, int num_to_sample, double * restrict covariance_matrix) const noexcept {
   optimal_learning::BuildMixCovarianceMatrix(covariance_, points_sampled_.data(), points_to_sample, dim_, num_sampled_, num_to_sample, covariance_matrix);
 }
 

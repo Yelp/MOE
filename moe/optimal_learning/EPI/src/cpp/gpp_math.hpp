@@ -155,9 +155,9 @@
     - ``X = points_sampled``; this is the training data (size ``dim`` X ``num_sampled``), also called the design matrix
     - ``Xs = points_to_sample``; this is the test data (size ``dim`` X num_to_sample``)
     - ``y, f, f(x) = points_sampled_value``, the experimental results from sampling training points
-    - ``K, K(X,X) = covariance(X_i, X_j)``, covariance matrix between training inputs
-    - ``Ks, K(Xs,X) = covariance(X_i, Xs_j)``, covariance matrix between training and test inputs
-    - ``Kss, K(Xs,Xs) = covariance(Xs_i, Xs_j)``, covariance matrix between test inputs
+    - ``K, K_{ij}, K(X,X) = covariance(X_i, X_j)``, covariance matrix between training inputs (``num_sampled x num_sampled``)
+    - ``Ks, Ks_{ij}, K(X,Xs) = covariance(X_i, Xs_j)``, covariance matrix between training and test inputs (``num_sampled x num_to_sample``)
+    - ``Kss, Kss_{ij}, K(Xs,Xs) = covariance(Xs_i, Xs_j)``, covariance matrix between test inputs (``num_to_sample x num_to_sample``)
     - ``\theta``: (vector) of hyperparameters for a covariance function
 
   .. NOTE::
@@ -518,7 +518,7 @@ class GaussianProcess final {
 
  private:
   void BuildCovarianceMatrixWithNoiseVariance() noexcept;
-  void BuildMixCovarianceMatrixTrans(double const * restrict points_to_sample, int num_to_sample, double * restrict cov_mat) const noexcept OL_NONNULL_POINTERS;
+  void BuildMixCovarianceMatrix(double const * restrict points_to_sample, int num_to_sample, double * restrict cov_mat) const noexcept OL_NONNULL_POINTERS;
 
   /*!\rst
     Recomputes (including resizing as needed) the derived quantities in this class.
@@ -607,10 +607,10 @@ struct PointsToSampleState final {
         num_to_sample(num_to_sample_in),
         configure_for_gradients(configure_for_gradients_in),
         points_to_sample(dim*num_to_sample),
-        K_star_T(num_to_sample*num_sampled),
+        K_star(num_to_sample*num_sampled),
         grad_K_star(num_to_sample*num_sampled*dim),
         V(num_to_sample*num_sampled),
-        K_inv_times_K_star_T(num_to_sample*num_sampled),
+        K_inv_times_K_star(num_to_sample*num_sampled),
         grad_cov(dim),
         grad_mix_cov(num_sampled*dim) {
     SetupState(gaussian_process, points_to_sample_in, num_to_sample_in, configure_for_gradients_in);
@@ -644,19 +644,19 @@ struct PointsToSampleState final {
       num_to_sample = num_to_sample_in;  // update size
       // resize vectors
       points_to_sample.resize(dim*num_to_sample);
-      K_star_T.resize(num_to_sample*num_sampled);
+      K_star.resize(num_to_sample*num_sampled);
       grad_K_star.resize(num_to_sample*num_sampled*dim);
       V.resize(num_to_sample*num_sampled);
-      K_inv_times_K_star_T.resize(num_to_sample*num_sampled);
+      K_inv_times_K_star.resize(num_to_sample*num_sampled);
     }
 
     // resize data depending on sampled points
     if (unlikely(num_sampled != gaussian_process.num_sampled())) {
       num_sampled = gaussian_process.num_sampled();
-      K_star_T.resize(num_to_sample*num_sampled);
+      K_star.resize(num_to_sample*num_sampled);
       grad_K_star.resize(num_to_sample*num_sampled*dim);
       V.resize(num_to_sample*num_sampled);
-      K_inv_times_K_star_T.resize(num_to_sample*num_sampled);
+      K_inv_times_K_star.resize(num_to_sample*num_sampled);
       grad_mix_cov.resize(num_sampled*dim);
     }
 
@@ -681,10 +681,10 @@ struct PointsToSampleState final {
   std::vector<double> points_to_sample;
 
   // derived variables for predictive component
-  std::vector<double> K_star_T;
+  std::vector<double> K_star;
   std::vector<double> grad_K_star;
   std::vector<double> V;
-  std::vector<double> K_inv_times_K_star_T;
+  std::vector<double> K_inv_times_K_star;
   std::vector<double> grad_cov;
   std::vector<double> grad_mix_cov;
 
