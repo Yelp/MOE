@@ -22,12 +22,12 @@ class GpEiRequest(colander.MappingSchema):
 
     **Required fields**
 
-        :points_to_evaluate: list of points in domain to calculate Expected Improvement (EI) a
-        :gp_info: a GpInfo object of historical data
+        :points_to_evaluate: list of points in domain to calculate Expected Improvement (EI) at (moe.views.schemas.ListOfPointsInDomain)
+        :gp_info: a moe.views.schemas.GpInfo object of historical data
 
     **Optional fields**
 
-        :points_being_sampled: list of points in domain being sampled (default: [])
+        :points_being_sampled: list of points in domain being sampled (default: []) (moe.views.schemas.ListOfPointsInDomain)
         :mc_iterations: number of Monte Carlo (MC) iterations to perform in numerical integration to calculate EI (default: 1000)
 
     **Example Request**
@@ -73,7 +73,7 @@ class GpEiResponse(colander.MappingSchema):
     **Output fields**
 
         :endpoint: the endpoint that was called
-        :expected_improvement: list of calculated expected improvements
+        :expected_improvement: list of calculated expected improvements (moe.views.schemas.ListOfExpectedImprovements)
 
     **Example Response**
 

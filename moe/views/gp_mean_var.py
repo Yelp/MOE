@@ -23,8 +23,8 @@ class GpMeanVarRequest(colander.MappingSchema):
 
     **Required fields**
 
-        :points_to_sample: list of points in domain to calculate the Gaussian Process (GP) mean and covariance a
-        :gp_info: a GpInfo object of historical data
+        :points_to_sample: list of points in domain to calculate the Gaussian Process (GP) mean and covariance at (moe.views.schemas.ListOfPointsInDomain)
+        :gp_info: a moe.views.schemas.GpInfo object of historical data
 
     **Example Request**
 
@@ -59,8 +59,8 @@ class GpMeanVarResponse(colander.MappingSchema):
     **Output fields**
 
         :endpoint: the endpoint that was called
-        :mean: list of the means of the GP at the points sampled
-        :variance: matrix of covariance of the GP at the points sampled
+        :mean: list of the means of the GP at the points sampled (moe.views.schemas.ListOfFloats)
+        :variance: matrix of covariance of the GP at the points sampled (moe.views.schemas.MatrixOfFloats)
 
     **Example Response**
 

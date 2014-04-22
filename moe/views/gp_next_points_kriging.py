@@ -17,7 +17,7 @@ class GpNextPointsKrigingRequest(GpNextPointsRequest):
 
     **Required fields**
 
-        :gp_info: a GpInfo object of historical data
+        :gp_info: a moe.views.schemas.GpInfo object of historical data
 
     **Optional fields**
 

@@ -22,7 +22,7 @@ CLASSIFIERS = """
         Intended Audience :: Developers
         Programming Language :: C++
         Programming Language :: Python
-        Topic :: Software Developmen
+        Topic :: Software Development
         Topic :: Scientific/Engineering
         Operating System :: Unix
         Operating System :: MacOS
@@ -56,7 +56,7 @@ def find_path(moe_executable):
     2. Tries to find the executable in the system $PATH
 
     """
-    # First we see if the env var is se
+    # First we see if the env var is set
     path = os.environ.get(moe_executable.env_var, None)
     if path is not None:
         return path
@@ -111,7 +111,7 @@ class InstallCppComponents(install):
         else:
             print "MOE_CXX_PATH not set. Not passing a CXX env var to cmake."
 
-        # Set cmake if not already se
+        # Set cmake if not already set
 
         # rm the build directory if it exists
         if os.path.exists(build_dir):
@@ -162,7 +162,7 @@ setup(name='MOE',
       install_requires=requires,
       tests_require=requires,
       test_suite="moe",
-      entry_points = """
+      entry_points = """\
       [paste.app_factory]
       main = moe:main
       """,

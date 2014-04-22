@@ -11,6 +11,5 @@ test:
 
 docs:
 		$(MAKE) -C doc doxygen
-		sphinx-apidoc -o doc/autogen moe
-		mv doc/autogen/*.rst doc/.
+		sphinx-apidoc -f -o doc moe
 		$(MAKE) -C doc html

@@ -1,16 +1,6 @@
 #!/bin/bash
 failures=0
 
-ignorewhitespace=$(git config hooks.ignorewhitespace)
-if [ "$ignorewhitespace" != "true" ]; then
-	echo "Removing trailing whitespace..."
-	# Run sed script on all touched .py files
-	for file in $(exec git diff --staged --name-only | grep '\.py$'); do
-        sed -i 's/[[:space:]]*$//' "$file"
-        rm "{$file}-e"
-	done
-fi
-
 ignorepep8=$(git config hooks.ignorepep8)
 if [ "$ignorepep8" != "true" ]; then
 	echo "Checking pep8..."
