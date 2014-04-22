@@ -6,10 +6,8 @@ Include:
     2. Class that extends GpPrettyView for next_points optimizers
 """
 import colander
-import numpy
 
 import moe.build.GPP as C_GP
-from moe.optimal_learning.EPI.src.python.constant import default_ei_optimization_parameters
 from moe.optimal_learning.EPI.src.python.cpp_wrappers.optimization_parameters import ExpectedImprovementOptimizationParameters
 from moe.views.gp_pretty_view import GpPrettyView
 from moe.views.schemas import GpInfo, EiOptimizationParameters, ListOfPointsInDomain, ListOfExpectedImprovements
@@ -18,7 +16,38 @@ from moe.views.utils import _make_gp_from_gp_info
 
 class GpNextPointsRequest(colander.MappingSchema):
 
-    """A gp_next_points_* request colander schema."""
+    """A gp_next_points_* request colander schema.
+
+    **Required fields**
+
+        :gp_info: a moe.views.schemas.GpInfo object of historical data
+
+    **Optional fields**
+
+        :num_samples_to_generate: number of next points to generate (default: 1)
+        :ei_optimization_parameters: moe.views.schemas.EiOptimizationParameters() object containing optimization parameters (default: moe.optimal_learning.EPI.src.python.constant.default_ei_optimization_parameters)
+
+    **Example Request**
+
+    .. sourcecode:: http
+
+        Content-Type: text/javascript
+
+        {
+            'num_samples_to_generate': 1,
+            'gp_info': {
+                'points_sampled': [
+                        {'value_var': 0.01, 'value': 0.1, 'point': [0.0]},
+                        {'value_var': 0.01, 'value': 0.2, 'point': [1.0]}
+                    ],
+                'domain': [
+                    [0, 1],
+                    ]
+                },
+            },
+        }
+
+    """
 
     num_samples_to_generate = colander.SchemaNode(
             colander.Int(),
@@ -26,13 +55,31 @@ class GpNextPointsRequest(colander.MappingSchema):
             )
     gp_info = GpInfo()
     ei_optimization_parameters = EiOptimizationParameters(
-            missing=default_ei_optimization_parameters._asdict(),
+            missing=EiOptimizationParameters().deserialize({})
             )
 
 
 class GpNextPointsResponse(colander.MappingSchema):
 
-    """A gp_next_points_* response colander schema."""
+    """A gp_next_points_* response colander schema.
+
+    **Output fields**
+
+        :endpoint: the endpoint that was called
+        :points_to_sample: list of points in the domain to sample next (moe.views.schemas.ListOfPointsInDomain)
+        :expected_improvement: list of EI of points in points_to_sample (moe.views.schemas.ListOfExpectedImprovements)
+
+    **Example Response**
+
+    .. sourcecode:: http
+
+        {
+            "endpoint":"gp_ei",
+            "points_to_sample": [["0.478332304526"]],
+            "expected_improvement": ["0.443478498868"],
+        }
+
+    """
 
     endpoint = colander.SchemaNode(colander.String())
     points_to_sample = ListOfPointsInDomain()
@@ -94,8 +141,11 @@ class GpNextPointsPrettyView(GpPrettyView):
 
         # Note: num_random_samples only has meaning when computing more than 1 points_to_sample simultaneously
         new_params = ExpectedImprovementOptimizationParameters(
-            optimizer_type=C_GP.OptimizerTypes.gradient_descent,
-            num_random_samples=40000,  # TODO(sclark): move default value to config file (assuming it's reasonable) and expose in interface; see github #33.
+            optimizer_type=getattr(
+                C_GP.OptimizerTypes,
+                ei_optimization_parameters.get('optimizer_type')
+                ),
+            num_random_samples=ei_optimization_parameters.get('num_random_samples'),
             optimizer_parameters=C_GP.GradientDescentParameters(
                 ei_optimization_parameters.get('num_multistarts'),
                 ei_optimization_parameters.get('gd_iterations'),

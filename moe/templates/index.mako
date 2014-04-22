@@ -8,6 +8,7 @@
     <h4>Documentation</h4>
     <ul>
         <li><a href="http://sc932.github.io/MOE/">Full Documentation</a></li>
+        <li><a href="http://sc932.github.io/MOE/moe.views.html">REST Documentation</a></li>
         <li><a href="http://github.com/sc932/MOE/">Github repo</a></li>
         <li><a href="${request.route_url( 'gp_plot' )}">Demo</a></li>
     </ul>

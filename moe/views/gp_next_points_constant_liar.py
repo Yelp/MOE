@@ -13,11 +13,45 @@ from moe.views.constant import GP_NEXT_POINTS_CONSTANT_LIAR_ROUTE_NAME, GP_NEXT_
 
 class GpNextPointsConstantLiarRequest(GpNextPointsRequest):
 
-    """Extends the standard request with a lie value."""
+    """Extends the standard request moe.views.gp_next_points_pretty_view.GpNextPointsRequest() with a lie value.
+
+    **Required fields**
+
+        :gp_info: a GpInfo object of historical data
+        :lie_value: a float representing the 'lie' the Constant Liar heuristic will use
+
+    **Optional fields**
+
+        :num_samples_to_generate: number of next points to generate (default: 1)
+        :ei_optimization_parameters: moe.views.schemas.EiOptimizationParameters() object containing optimization parameters (default: moe.optimal_learning.EPI.src.python.constant.default_ei_optimization_parameters)
+        :lie_noise_variance: a positive (>= 0) float representing the noise variance of the 'lie' value (default: 0.0)
+
+    **Example Request**
+
+    .. sourcecode:: http
+
+        Content-Type: text/javascrip
+
+        {
+            'num_samples_to_generate': 1,
+            'lie_value': 0.0,
+            'lie_noise_variance': 0.0,
+            'gp_info': {
+                'points_sampled': [
+                        {'value_var': 0.01, 'value': 0.1, 'point': [0.0]},
+                        {'value_var': 0.01, 'value': 0.2, 'point': [1.0]}
+                    ],
+                'domain': [
+                    [0, 1],
+                    ]
+                },
+            },
+        }
+
+    """
 
     lie_value = colander.SchemaNode(
             colander.Float(),
-            missing=0.0,
             )
     lie_noise_variance = colander.SchemaNode(
             colander.Float(),
@@ -41,12 +75,28 @@ class GpNextPointsconstant_liar(GpNextPointsPrettyView):
 
     @view_config(route_name=pretty_route_name, renderer=GpNextPointsPrettyView.pretty_renderer)
     def pretty_view(self):
-        """A pretty, browser interactive view for the interface. Includes form request and response."""
+        """A pretty, browser interactive view for the interface. Includes form request and response.
+
+        .. http:get:: /gp/next_points/constant_liar/pretty
+
+        """
         return self.pretty_response()
 
     @view_config(route_name=route_name, renderer='json', request_method='POST')
     def gp_next_points_constant_liar_view(self):
-        """Endpoint for gp_next_points_constant_liar POST requests."""
+        """Endpoint for gp_next_points_constant_liar POST requests.
+
+        .. http:post:: /gp/next_points/constant_liar
+
+           Calculates the next best points to sample, given historical data, using Constant Liar (CL).
+
+           :input: moe.views.gp_next_points_constant_liar.GpNextPointsConstantLiarRequest()
+           :output: moe.views.gp_next_points_pretty_view.GpNextPointsResponse()
+
+           :status 200: returns a response
+           :status 500: server error
+
+        """
         params = self.get_params_from_request()
         return self.compute_next_points_to_sample_response(
                 params,

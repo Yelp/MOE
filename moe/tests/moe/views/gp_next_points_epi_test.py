@@ -5,7 +5,7 @@ import testify as T
 
 from moe.tests.moe.views.rest_gaussian_process_test_case import RestGaussianProcessTestCase
 from moe.views.gp_next_points_pretty_view import GpNextPointsResponse
-from moe.views.constant import ALL_NEXT_POINTS_MOE_ROUTES
+from moe.views.constant import ALL_NEXT_POINTS_MOE_ROUTES, GP_NEXT_POINTS_CONSTANT_LIAR_ROUTE_NAME
 
 
 class TestGpNextPointsViews(RestGaussianProcessTestCase):
@@ -30,13 +30,15 @@ class TestGpNextPointsViews(RestGaussianProcessTestCase):
                 },
             ]
 
-    def _build_json_payload(self, GP, num_samples_to_generate):
+    def _build_json_payload(self, GP, num_samples_to_generate, lie_value=None):
         """Create a json_payload to POST to the /gp/next_points/* endpoint with all needed info."""
-        json_payload = json.dumps({
+        dict_to_dump = {
             'num_samples_to_generate': num_samples_to_generate,
             'gp_info': self._build_gp_info(GP),
-            })
-        return json_payload
+            }
+        if lie_value is not None:
+            dict_to_dump['lie_value'] = lie_value
+        return json.dumps(dict_to_dump)
 
     def test_interface_returns_same_as_cpp(self):
         """Test that the /gp/next_points/* endpoints do the same thing as the C++ interface."""
@@ -49,7 +51,10 @@ class TestGpNextPointsViews(RestGaussianProcessTestCase):
                 GP, _ = self._make_random_processes_from_latin_hypercube(domain, num_points_in_sample)
 
                 # Next point from REST
-                json_payload = self._build_json_payload(GP, num_samples_to_generate)
+                if moe_route.route_name == GP_NEXT_POINTS_CONSTANT_LIAR_ROUTE_NAME:
+                    json_payload = self._build_json_payload(GP, num_samples_to_generate, lie_value=0.0)
+                else:
+                    json_payload = self._build_json_payload(GP, num_samples_to_generate)
                 resp = self.testapp.post(moe_route.endpoint, json_payload)
                 resp_schema = GpNextPointsResponse()
                 resp_dict = resp_schema.deserialize(json.loads(resp.body))
