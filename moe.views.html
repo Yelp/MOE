@@ -1,0 +1,338 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>moe.views package &mdash; MOE 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/breathe.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="MOE 0.1.0 documentation" href="index.html" />
+    <link rel="up" title="moe package" href="moe.html" />
+    <link rel="next" title="gpp_math.hpp" href="gpp_math_hpp.html" />
+    <link rel="prev" title="moe.tests.moe.views package" href="moe.tests.moe.views.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="http-routingtable.html" title="HTTP Routing Table"
+             >routing table</a> |</li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="gpp_math_hpp.html" title="gpp_math.hpp"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="moe.tests.moe.views.html" title="moe.tests.moe.views package"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">MOE 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="moe.html" accesskey="U">moe package</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="moe-views-package">
+<h1>moe.views package<a class="headerlink" href="#moe-views-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-moe.views.constant">
+<span id="moe-views-constant-module"></span><h2>moe.views.constant module<a class="headerlink" href="#module-moe.views.constant" title="Permalink to this headline">¶</a></h2>
+<p>Route names and endpoints for all MOE routes.</p>
+<dl class="class">
+<dt id="moe.views.constant.MoeRoute">
+<em class="property">class </em><tt class="descclassname">moe.views.constant.</tt><tt class="descname">MoeRoute</tt><a class="headerlink" href="#moe.views.constant.MoeRoute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">tuple</span></tt></p>
+<p>MoeRoute(route_name, endpoint)</p>
+<dl class="attribute">
+<dt id="moe.views.constant.MoeRoute.endpoint">
+<tt class="descname">endpoint</tt><a class="headerlink" href="#moe.views.constant.MoeRoute.endpoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 1</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="moe.views.constant.MoeRoute.route_name">
+<tt class="descname">route_name</tt><a class="headerlink" href="#moe.views.constant.MoeRoute.route_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 0</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-moe.views.exceptions">
+<span id="moe-views-exceptions-module"></span><h2>moe.views.exceptions module<a class="headerlink" href="#module-moe.views.exceptions" title="Permalink to this headline">¶</a></h2>
+<p>Views for handling exceptions.</p>
+<dl class="docutils">
+<dt>Includes views that catch the following:</dt>
+<dd><ol class="first last arabic simple">
+<li>SingularMatrixError</li>
+<li>colander.Invalid</li>
+</ol>
+</dd>
+</dl>
+<dl class="exception">
+<dt id="moe.views.exceptions.SingularMatrixError">
+<em class="property">exception </em><tt class="descclassname">moe.views.exceptions.</tt><tt class="descname">SingularMatrixError</tt><a class="reference internal" href="_modules/moe/views/exceptions.html#SingularMatrixError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.views.exceptions.SingularMatrixError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></tt></p>
+<p>Throw this exception when you have constructed a singular matrix.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="moe.views.exceptions.failed_validation">
+<tt class="descclassname">moe.views.exceptions.</tt><tt class="descname">failed_validation</tt><big>(</big><em>exception</em>, <em>request</em><big>)</big><a class="reference internal" href="_modules/moe/views/exceptions.html#failed_validation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.views.exceptions.failed_validation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Catch colander.Invalid and give an informative 500 response.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="moe.views.exceptions.linear_algebra_error">
+<tt class="descclassname">moe.views.exceptions.</tt><tt class="descname">linear_algebra_error</tt><big>(</big><em>exception</em>, <em>request</em><big>)</big><a class="reference internal" href="_modules/moe/views/exceptions.html#linear_algebra_error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.views.exceptions.linear_algebra_error" title="Permalink to this definition">¶</a></dt>
+<dd><p>Catch SingularMatrixError and give an informative 500 response.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-moe.views.frontend">
+<span id="moe-views-frontend-module"></span><h2>moe.views.frontend module<a class="headerlink" href="#module-moe.views.frontend" title="Permalink to this headline">¶</a></h2>
+<p>Frontend views for the MOE app.</p>
+<dl class="function">
+<dt id="moe.views.frontend.gp_plot_page">
+<tt class="descclassname">moe.views.frontend.</tt><tt class="descname">gp_plot_page</tt><big>(</big><em>request</em><big>)</big><a class="reference internal" href="_modules/moe/views/frontend.html#gp_plot_page"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.views.frontend.gp_plot_page" title="Permalink to this definition">¶</a></dt>
+<dd><p>The MOE demo view.</p>
+<dl class="get">
+<dt id="get--demo">
+<tt class="descname">GET </tt><tt class="descname">/demo</tt><a class="headerlink" href="#get--demo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="moe.views.frontend.index_page">
+<tt class="descclassname">moe.views.frontend.</tt><tt class="descname">index_page</tt><big>(</big><em>request</em><big>)</big><a class="reference internal" href="_modules/moe/views/frontend.html#index_page"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.views.frontend.index_page" title="Permalink to this definition">¶</a></dt>
+<dd><p>The MOE index view.</p>
+<dl class="get">
+<dt id="get--">
+<tt class="descname">GET </tt><tt class="descname">/</tt><a class="headerlink" href="#get--" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="moe-views-gp-ei-module">
+<h2>moe.views.gp_ei module<a class="headerlink" href="#moe-views-gp-ei-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="moe-views-gp-mean-var-module">
+<h2>moe.views.gp_mean_var module<a class="headerlink" href="#moe-views-gp-mean-var-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="moe-views-gp-next-points-constant-liar-module">
+<h2>moe.views.gp_next_points_constant_liar module<a class="headerlink" href="#moe-views-gp-next-points-constant-liar-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="moe-views-gp-next-points-epi-module">
+<h2>moe.views.gp_next_points_epi module<a class="headerlink" href="#moe-views-gp-next-points-epi-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="moe-views-gp-next-points-kriging-module">
+<h2>moe.views.gp_next_points_kriging module<a class="headerlink" href="#moe-views-gp-next-points-kriging-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="moe-views-gp-next-points-pretty-view-module">
+<h2>moe.views.gp_next_points_pretty_view module<a class="headerlink" href="#moe-views-gp-next-points-pretty-view-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-moe.views.gp_pretty_view">
+<span id="moe-views-gp-pretty-view-module"></span><h2>moe.views.gp_pretty_view module<a class="headerlink" href="#module-moe.views.gp_pretty_view" title="Permalink to this headline">¶</a></h2>
+<p>A class to encapsulate &#8216;pretty&#8217; views.</p>
+<dl class="class">
+<dt id="moe.views.gp_pretty_view.GpPrettyView">
+<em class="property">class </em><tt class="descclassname">moe.views.gp_pretty_view.</tt><tt class="descname">GpPrettyView</tt><big>(</big><em>request</em><big>)</big><a class="reference internal" href="_modules/moe/views/gp_pretty_view.html#GpPrettyView"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.views.gp_pretty_view.GpPrettyView" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>A class to encapsulate &#8216;pretty&#8217; views.</p>
+<dl class="docutils">
+<dt>These views have:</dt>
+<dd><ol class="first last arabic simple">
+<li>A backend endpoint</li>
+<li>A pretty, browser interactable view with forms to test the backend endpoint</li>
+</ol>
+</dd>
+</dl>
+<dl class="method">
+<dt id="moe.views.gp_pretty_view.GpPrettyView.form_response">
+<tt class="descname">form_response</tt><big>(</big><em>response_dict</em><big>)</big><a class="reference internal" href="_modules/moe/views/gp_pretty_view.html#GpPrettyView.form_response"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.views.gp_pretty_view.GpPrettyView.form_response" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the serialized response object from a dict.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.views.gp_pretty_view.GpPrettyView.get_params_from_request">
+<tt class="descname">get_params_from_request</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/views/gp_pretty_view.html#GpPrettyView.get_params_from_request"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.views.gp_pretty_view.GpPrettyView.get_params_from_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the deserialized parameters from the json_body of a request.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="moe.views.gp_pretty_view.GpPrettyView.pretty_default_gp_info">
+<tt class="descname">pretty_default_gp_info</tt><em class="property"> = {'points_sampled': [{'value_var': 0.01, 'value': 0.1, 'point': [0.0]}, {'value_var': 0.01, 'value': 0.2, 'point': [1.0]}], 'domain': [[0, 1]]}</em><a class="headerlink" href="#moe.views.gp_pretty_view.GpPrettyView.pretty_default_gp_info" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="moe.views.gp_pretty_view.GpPrettyView.pretty_default_request">
+<tt class="descname">pretty_default_request</tt><em class="property"> = None</em><a class="headerlink" href="#moe.views.gp_pretty_view.GpPrettyView.pretty_default_request" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="moe.views.gp_pretty_view.GpPrettyView.pretty_renderer">
+<tt class="descname">pretty_renderer</tt><em class="property"> = 'moe:templates/pretty_input.mako'</em><a class="headerlink" href="#moe.views.gp_pretty_view.GpPrettyView.pretty_renderer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="moe.views.gp_pretty_view.GpPrettyView.pretty_response">
+<tt class="descname">pretty_response</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/views/gp_pretty_view.html#GpPrettyView.pretty_response"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.views.gp_pretty_view.GpPrettyView.pretty_response" title="Permalink to this definition">¶</a></dt>
+<dd><p>A pretty, browser interactive view for the interface. Includes form request and response.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="moe.views.gp_pretty_view.GpPrettyView.pretty_route_name">
+<tt class="descname">pretty_route_name</tt><em class="property"> = None</em><a class="headerlink" href="#moe.views.gp_pretty_view.GpPrettyView.pretty_route_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="moe.views.gp_pretty_view.GpPrettyView.request_schema">
+<tt class="descname">request_schema</tt><em class="property"> = None</em><a class="headerlink" href="#moe.views.gp_pretty_view.GpPrettyView.request_schema" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="moe.views.gp_pretty_view.GpPrettyView.response_schema">
+<tt class="descname">response_schema</tt><em class="property"> = None</em><a class="headerlink" href="#moe.views.gp_pretty_view.GpPrettyView.response_schema" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="moe.views.gp_pretty_view.GpPrettyView.route_name">
+<tt class="descname">route_name</tt><em class="property"> = None</em><a class="headerlink" href="#moe.views.gp_pretty_view.GpPrettyView.route_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="moe-views-schemas-module">
+<h2>moe.views.schemas module<a class="headerlink" href="#moe-views-schemas-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-moe.views.utils">
+<span id="moe-views-utils-module"></span><h2>moe.views.utils module<a class="headerlink" href="#module-moe.views.utils" title="Permalink to this headline">¶</a></h2>
+<p>Utilities for MOE views.</p>
+</div>
+<div class="section" id="module-moe.views">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-moe.views" title="Permalink to this headline">¶</a></h2>
+<p>Views for the MOE frontend and REST interface.</p>
+<dl class="docutils">
+<dt>Contains:</dt>
+<dd>frontend.py - the frontend code
+gp_*.py - various REST endpoints</dd>
+</dl>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">moe.views package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-moe.views.constant">moe.views.constant module</a></li>
+<li><a class="reference internal" href="#module-moe.views.exceptions">moe.views.exceptions module</a></li>
+<li><a class="reference internal" href="#module-moe.views.frontend">moe.views.frontend module</a></li>
+<li><a class="reference internal" href="#moe-views-gp-ei-module">moe.views.gp_ei module</a></li>
+<li><a class="reference internal" href="#moe-views-gp-mean-var-module">moe.views.gp_mean_var module</a></li>
+<li><a class="reference internal" href="#moe-views-gp-next-points-constant-liar-module">moe.views.gp_next_points_constant_liar module</a></li>
+<li><a class="reference internal" href="#moe-views-gp-next-points-epi-module">moe.views.gp_next_points_epi module</a></li>
+<li><a class="reference internal" href="#moe-views-gp-next-points-kriging-module">moe.views.gp_next_points_kriging module</a></li>
+<li><a class="reference internal" href="#moe-views-gp-next-points-pretty-view-module">moe.views.gp_next_points_pretty_view module</a></li>
+<li><a class="reference internal" href="#module-moe.views.gp_pretty_view">moe.views.gp_pretty_view module</a></li>
+<li><a class="reference internal" href="#moe-views-schemas-module">moe.views.schemas module</a></li>
+<li><a class="reference internal" href="#module-moe.views.utils">moe.views.utils module</a></li>
+<li><a class="reference internal" href="#module-moe.views">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="moe.tests.moe.views.html"
+                        title="previous chapter">moe.tests.moe.views package</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="gpp_math_hpp.html"
+                        title="next chapter">gpp_math.hpp</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/moe.views.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="http-routingtable.html" title="HTTP Routing Table"
+             >routing table</a> |</li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="gpp_math_hpp.html" title="gpp_math.hpp"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="moe.tests.moe.views.html" title="moe.tests.moe.views package"
+             >previous</a> |</li>
+        <li><a href="index.html">MOE 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="moe.html" >moe package</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

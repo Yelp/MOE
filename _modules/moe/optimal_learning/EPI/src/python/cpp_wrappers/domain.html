@@ -1,0 +1,236 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>moe.optimal_learning.EPI.src.python.cpp_wrappers.domain &mdash; MOE 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../../../_static/breathe.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../../../',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../../../../../../../_static/favicon.ico"/>
+    <link rel="top" title="MOE 0.1.0 documentation" href="../../../../../../../index.html" />
+    <link rel="up" title="moe" href="../../../../../../moe.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../../../http-routingtable.html" title="HTTP Routing Table"
+             >routing table</a> |</li>
+        <li class="right" >
+          <a href="../../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../../index.html">MOE 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../../../../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../../../../../moe.html" accesskey="U">moe</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for moe.optimal_learning.EPI.src.python.cpp_wrappers.domain</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;Thin domain-related data containers that can be passed to cpp_wrappers.* functions/classes requiring domain data.</span>
+
+<span class="sd">C++ domain objects currently do not expose their members to Python. So the classes in this file track the data necessary</span>
+<span class="sd">for C++ calls to construct the matching C++ domain object.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+
+<span class="kn">import</span> <span class="nn">moe.build.GPP</span> <span class="kn">as</span> <span class="nn">C_GP</span>
+<span class="kn">from</span> <span class="nn">moe.optimal_learning.EPI.src.python.interfaces.domain_interface</span> <span class="kn">import</span> <span class="n">DomainInterface</span>
+
+
+<div class="viewcode-block" id="TensorProductDomain"><a class="viewcode-back" href="../../../../../../../moe.optimal_learning.EPI.src.python.cpp_wrappers.html#moe.optimal_learning.EPI.src.python.cpp_wrappers.domain.TensorProductDomain">[docs]</a><span class="k">class</span> <span class="nc">TensorProductDomain</span><span class="p">(</span><span class="n">DomainInterface</span><span class="p">):</span>
+
+    <span class="sd">r&quot;&quot;&quot;Domain type for a tensor product domain.</span>
+
+<span class="sd">    A d-dimensional tensor product domain is ``D = [x_0_{min}, x_0_{max}] X [x_1_{min}, x_1_{max}] X ... X [x_d_{min}, x_d_{max}]``</span>
+<span class="sd">    At the moment, this is just a dummy container for the domain boundaries, since the C++ object currently does not expose its</span>
+<span class="sd">    internals to Python.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">domain_bounds</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construct a TensorProductDomain that can be used with cpp_wrappers.* functions/classes.</span>
+
+<span class="sd">        :param domain_bounds: the boundaries of a dim-dimensional tensor-product domain</span>
+<span class="sd">        :type domain_bounds: iterable of dim ClosedInterval</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_domain_bounds</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">domain_bounds</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">domain_bounds</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_domain_type</span> <span class="o">=</span> <span class="n">C_GP</span><span class="o">.</span><span class="n">DomainTypes</span><span class="o">.</span><span class="n">tensor_product</span>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="TensorProductDomain.dim"><a class="viewcode-back" href="../../../../../../../moe.optimal_learning.EPI.src.python.cpp_wrappers.html#moe.optimal_learning.EPI.src.python.cpp_wrappers.domain.TensorProductDomain.dim">[docs]</a>    <span class="k">def</span> <span class="nf">dim</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the number of spatial dimensions.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dim</span>
+
+    <span class="c"># HACK: Until we can build C++ domain objects from Python, we need to be able to hand C++ enough data to reconstruct domains.</span></div>
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="TensorProductDomain.domain_bounds"><a class="viewcode-back" href="../../../../../../../moe.optimal_learning.EPI.src.python.cpp_wrappers.html#moe.optimal_learning.EPI.src.python.cpp_wrappers.domain.TensorProductDomain.domain_bounds">[docs]</a>    <span class="k">def</span> <span class="nf">domain_bounds</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the [min, max] bounds for each spatial dimension.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_domain_bounds</span>
+</div>
+<div class="viewcode-block" id="TensorProductDomain.check_point_inside"><a class="viewcode-back" href="../../../../../../../moe.optimal_learning.EPI.src.python.cpp_wrappers.html#moe.optimal_learning.EPI.src.python.cpp_wrappers.domain.TensorProductDomain.check_point_inside">[docs]</a>    <span class="k">def</span> <span class="nf">check_point_inside</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Check if a point is inside the domain/on its boundary or outside.</span>
+
+<span class="sd">        We do not currently expose a C++ endpoint for this call; see domain_interface.py for interface specification.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s">&quot;C++ wrapper currently does not support domain member functions.&quot;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="TensorProductDomain.generate_uniform_random_points_in_domain"><a class="viewcode-back" href="../../../../../../../moe.optimal_learning.EPI.src.python.cpp_wrappers.html#moe.optimal_learning.EPI.src.python.cpp_wrappers.domain.TensorProductDomain.generate_uniform_random_points_in_domain">[docs]</a>    <span class="k">def</span> <span class="nf">generate_uniform_random_points_in_domain</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_points</span><span class="p">,</span> <span class="n">random_source</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Generate ``num_points`` uniformly distributed points from the domain.</span>
+
+<span class="sd">        We do not currently expose a C++ endpoint for this call; see domain_interface.py for interface specification.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s">&quot;C++ wrapper currently does not support domain member functions.&quot;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="TensorProductDomain.compute_update_restricted_to_domain"><a class="viewcode-back" href="../../../../../../../moe.optimal_learning.EPI.src.python.cpp_wrappers.html#moe.optimal_learning.EPI.src.python.cpp_wrappers.domain.TensorProductDomain.compute_update_restricted_to_domain">[docs]</a>    <span class="k">def</span> <span class="nf">compute_update_restricted_to_domain</span><span class="p">(</span><span class="n">max_relative_change</span><span class="p">,</span> <span class="n">current_point</span><span class="p">,</span> <span class="n">update_vector</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Compute a new update so that CheckPointInside(``current_point`` + ``new_update``) is true.</span>
+
+<span class="sd">        We do not currently expose a C++ endpoint for this call; see domain_interface.py for interface specification.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s">&quot;C++ wrapper currently does not support domain member functions.&quot;</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="SimplexIntersectTensorProductDomain"><a class="viewcode-back" href="../../../../../../../moe.optimal_learning.EPI.src.python.cpp_wrappers.html#moe.optimal_learning.EPI.src.python.cpp_wrappers.domain.SimplexIntersectTensorProductDomain">[docs]</a><span class="k">class</span> <span class="nc">SimplexIntersectTensorProductDomain</span><span class="p">(</span><span class="n">DomainInterface</span><span class="p">):</span>
+
+    <span class="sd">r&quot;&quot;&quot;Domain class for the intersection of the unit simplex with an arbitrary tensor product domain.</span>
+
+<span class="sd">    At the moment, this is just a dummy container for the domain boundaries, since the C++ object currently does not expose its</span>
+<span class="sd">    internals to Python.</span>
+
+<span class="sd">    This object has a TensorProductDomain object as a data member and uses its functions when possible.</span>
+<span class="sd">    See TensorProductDomain for what that means.</span>
+
+<span class="sd">    The unit d-simplex is defined as the set of x_i such that:</span>
+<span class="sd">    1) ``x_i &gt;= 0 \forall i  (i ranging over dimension)``</span>
+<span class="sd">    2) ``\sum_i x_i &lt;= 1``</span>
+<span class="sd">    (Implying that ``x_i &lt;= 1 \forall i``)</span>
+
+<span class="sd">    ASSUMPTION: most of the volume of the tensor product region lies inside the simplex region.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">domain_bounds</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construct a SimplexIntersectTensorProductDomain that can be used with cpp_wrappers.* functions/classes.</span>
+
+<span class="sd">        :param domain_bounds: the boundaries of a dim-dimensional tensor-product domain.</span>
+<span class="sd">        :type domain_bounds: iterable of dim ClosedInterval</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tensor_product_domain</span> <span class="o">=</span> <span class="n">TensorProductDomain</span><span class="p">(</span><span class="n">domain_bounds</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_domain_type</span> <span class="o">=</span> <span class="n">C_GP</span><span class="o">.</span><span class="n">DomainTypes</span><span class="o">.</span><span class="n">simplex</span>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="SimplexIntersectTensorProductDomain.dim"><a class="viewcode-back" href="../../../../../../../moe.optimal_learning.EPI.src.python.cpp_wrappers.html#moe.optimal_learning.EPI.src.python.cpp_wrappers.domain.SimplexIntersectTensorProductDomain.dim">[docs]</a>    <span class="k">def</span> <span class="nf">dim</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the number of spatial dimensions.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tensor_product_domain</span><span class="o">.</span><span class="n">dim</span><span class="p">()</span>
+
+    <span class="c"># HACK: Until we can build C++ domain objects from Python, we need to be able to hand C++ enough data to reconstruct domains.</span></div>
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="SimplexIntersectTensorProductDomain.domain_bounds"><a class="viewcode-back" href="../../../../../../../moe.optimal_learning.EPI.src.python.cpp_wrappers.html#moe.optimal_learning.EPI.src.python.cpp_wrappers.domain.SimplexIntersectTensorProductDomain.domain_bounds">[docs]</a>    <span class="k">def</span> <span class="nf">domain_bounds</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the [min, max] bounds for each spatial dimension.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tensor_product_domain</span><span class="o">.</span><span class="n">_domain_bounds</span>
+</div>
+<div class="viewcode-block" id="SimplexIntersectTensorProductDomain.check_point_inside"><a class="viewcode-back" href="../../../../../../../moe.optimal_learning.EPI.src.python.cpp_wrappers.html#moe.optimal_learning.EPI.src.python.cpp_wrappers.domain.SimplexIntersectTensorProductDomain.check_point_inside">[docs]</a>    <span class="k">def</span> <span class="nf">check_point_inside</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Check if a point is inside the domain/on its boundary or outside.</span>
+
+<span class="sd">        We do not currently expose a C++ endpoint for this call; see domain_interface.py for interface specification.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s">&quot;C++ wrapper currently does not support domain member functions.&quot;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="SimplexIntersectTensorProductDomain.generate_uniform_random_points_in_domain"><a class="viewcode-back" href="../../../../../../../moe.optimal_learning.EPI.src.python.cpp_wrappers.html#moe.optimal_learning.EPI.src.python.cpp_wrappers.domain.SimplexIntersectTensorProductDomain.generate_uniform_random_points_in_domain">[docs]</a>    <span class="k">def</span> <span class="nf">generate_uniform_random_points_in_domain</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_points</span><span class="p">,</span> <span class="n">random_source</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Generate AT MOST ``num_points`` uniformly distributed points from the domain.</span>
+
+<span class="sd">        We do not currently expose a C++ endpoint for this call; see domain_interface.py for interface specification.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s">&quot;C++ wrapper currently does not support domain member functions.&quot;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="SimplexIntersectTensorProductDomain.compute_update_restricted_to_domain"><a class="viewcode-back" href="../../../../../../../moe.optimal_learning.EPI.src.python.cpp_wrappers.html#moe.optimal_learning.EPI.src.python.cpp_wrappers.domain.SimplexIntersectTensorProductDomain.compute_update_restricted_to_domain">[docs]</a>    <span class="k">def</span> <span class="nf">compute_update_restricted_to_domain</span><span class="p">(</span><span class="n">max_relative_change</span><span class="p">,</span> <span class="n">current_point</span><span class="p">,</span> <span class="n">update_vector</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Compute a new update so that CheckPointInside(``current_point`` + ``new_update``) is true.</span>
+
+<span class="sd">        We do not currently expose a C++ endpoint for this call; see domain_interface.py for interface specification.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s">&quot;C++ wrapper currently does not support domain member functions.&quot;</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../../../http-routingtable.html" title="HTTP Routing Table"
+             >routing table</a> |</li>
+        <li class="right" >
+          <a href="../../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../../index.html">MOE 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../../../../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../../../../../moe.html" >moe</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

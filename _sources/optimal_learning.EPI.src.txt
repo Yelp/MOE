@@ -6,7 +6,6 @@ Subpackages
 
 .. toctree::
 
-    optimal_learning.EPI.src.cpp
     optimal_learning.EPI.src.python
 
 Module contents

@@ -1,0 +1,247 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>moe.tests.EPI.src.python.lib package &mdash; MOE 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/breathe.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="MOE 0.1.0 documentation" href="index.html" />
+    <link rel="up" title="moe.tests.EPI.src.python package" href="moe.tests.EPI.src.python.html" />
+    <link rel="next" title="moe.tests.EPI.src.python.models package" href="moe.tests.EPI.src.python.models.html" />
+    <link rel="prev" title="moe.tests.EPI.src.python package" href="moe.tests.EPI.src.python.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="http-routingtable.html" title="HTTP Routing Table"
+             >routing table</a> |</li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="moe.tests.EPI.src.python.models.html" title="moe.tests.EPI.src.python.models package"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="moe.tests.EPI.src.python.html" title="moe.tests.EPI.src.python package"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">MOE 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="moe.html" >moe package</a> &raquo;</li>
+          <li><a href="moe.tests.html" >moe.tests package</a> &raquo;</li>
+          <li><a href="moe.tests.EPI.html" >moe.tests.EPI package</a> &raquo;</li>
+          <li><a href="moe.tests.EPI.src.html" >moe.tests.EPI.src package</a> &raquo;</li>
+          <li><a href="moe.tests.EPI.src.python.html" accesskey="U">moe.tests.EPI.src.python package</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="moe-tests-epi-src-python-lib-package">
+<h1>moe.tests.EPI.src.python.lib package<a class="headerlink" href="#moe-tests-epi-src-python-lib-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-moe.tests.EPI.src.python.lib.math_test">
+<span id="moe-tests-epi-src-python-lib-math-test-module"></span><h2>moe.tests.EPI.src.python.lib.math_test module<a class="headerlink" href="#module-moe.tests.EPI.src.python.lib.math_test" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="moe.tests.EPI.src.python.lib.math_test.MatrixOpsTest">
+<em class="property">class </em><tt class="descclassname">moe.tests.EPI.src.python.lib.math_test.</tt><tt class="descname">MatrixOpsTest</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/tests/EPI/src/python/lib/math_test.html#MatrixOpsTest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.EPI.src.python.lib.math_test.MatrixOpsTest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">testify.test_case.TestCase</span></tt></p>
+<p>Test the various matrix ops in optimal_learning.EPI.src.python.lib.math</p>
+<dl class="docutils">
+<dt>Tests:</dt>
+<dd>vector_diag_vector_product
+inverse_via_backwards_sub
+cholesky_decomp
+inverse_via_cholesky</dd>
+</dl>
+<dl class="method">
+<dt id="moe.tests.EPI.src.python.lib.math_test.MatrixOpsTest.test_cholesky_decomp">
+<tt class="descname">test_cholesky_decomp</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/EPI/src/python/lib/math_test.html#MatrixOpsTest.test_cholesky_decomp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.EPI.src.python.lib.math_test.MatrixOpsTest.test_cholesky_decomp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests cholesky_decomp</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.EPI.src.python.lib.math_test.MatrixOpsTest.test_inverse_via_backwards_sub">
+<tt class="descname">test_inverse_via_backwards_sub</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/EPI/src/python/lib/math_test.html#MatrixOpsTest.test_inverse_via_backwards_sub"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.EPI.src.python.lib.math_test.MatrixOpsTest.test_inverse_via_backwards_sub" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests inverse_via_backwards_sub</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.EPI.src.python.lib.math_test.MatrixOpsTest.test_inverse_via_cholesky">
+<tt class="descname">test_inverse_via_cholesky</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/EPI/src/python/lib/math_test.html#MatrixOpsTest.test_inverse_via_cholesky"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.EPI.src.python.lib.math_test.MatrixOpsTest.test_inverse_via_cholesky" title="Permalink to this definition">¶</a></dt>
+<dd><p>This tests inverse_via_cholesky and cholesky_decomp</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.EPI.src.python.lib.math_test.MatrixOpsTest.test_vector_diag_vector_product">
+<tt class="descname">test_vector_diag_vector_product</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/EPI/src/python/lib/math_test.html#MatrixOpsTest.test_vector_diag_vector_product"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.EPI.src.python.lib.math_test.MatrixOpsTest.test_vector_diag_vector_product" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests test_vector_diag_vector_product by doing the full matrix ops</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="moe.tests.EPI.src.python.lib.math_test.PointGenerationTest">
+<em class="property">class </em><tt class="descclassname">moe.tests.EPI.src.python.lib.math_test.</tt><tt class="descname">PointGenerationTest</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/tests/EPI/src/python/lib/math_test.html#PointGenerationTest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.EPI.src.python.lib.math_test.PointGenerationTest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">testify.test_case.TestCase</span></tt></p>
+<p>Test optimal_learning.EPI.src.python.lib.math.get_latin_hypercube_points(num_points, domains)
+also tests optimal_learning.EPI.src.python.lib.math.not_in_domain(point, domain)</p>
+<p><a class="reference external" href="http://en.wikipedia.org/wiki/Latin_hypercube_sampling">http://en.wikipedia.org/wiki/Latin_hypercube_sampling</a></p>
+<dl class="docutils">
+<dt>From wikipedia:</dt>
+<dd><p class="first">In the context of statistical sampling, a square grid containing sample positions
+is a Latin square if (and only if) there is only one sample in each row and each column.
+A Latin hypercube is the generalisation of this concept to an arbitrary number of dimensions,
+whereby each sample is the only one in each axis-aligned hyperplane containing it.</p>
+<p class="last">When sampling a function of N variables, the range of each variable is divided into
+M equally probable intervals. M sample points are then placed to satisfy the Latin hypercube requirements;
+note that this forces the number of divisions, M, to be equal for each variable.
+Also note that this sampling scheme does not require more samples for more dimensions (variables);
+this independence is one of the main advantages of this sampling scheme.
+Another advantage is that random samples can be taken one at a time,
+remembering which samples were taken so far.</p>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="moe.tests.EPI.src.python.lib.math_test.PointGenerationTest.domains_to_test">
+<tt class="descname">domains_to_test</tt><em class="property"> = [[[-1, 1]], [[-10, 10]], [[-500, -490]], [[6000, 6000.001]], [[-1, 1], [-1, 1]], [[-1, 1], [-1, 1], [-1, 1]], [[-7000, 10000], [-8000, -7999], [10000.06, 10000.0601]]]</em><a class="headerlink" href="#moe.tests.EPI.src.python.lib.math_test.PointGenerationTest.domains_to_test" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="moe.tests.EPI.src.python.lib.math_test.PointGenerationTest.num_points_to_test">
+<tt class="descname">num_points_to_test</tt><em class="property"> = [1, 2, 5, 10, 20]</em><a class="headerlink" href="#moe.tests.EPI.src.python.lib.math_test.PointGenerationTest.num_points_to_test" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.EPI.src.python.lib.math_test.PointGenerationTest.test_latin_hypercube_equally_spaced">
+<tt class="descname">test_latin_hypercube_equally_spaced</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/EPI/src/python/lib/math_test.html#PointGenerationTest.test_latin_hypercube_equally_spaced"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.EPI.src.python.lib.math_test.PointGenerationTest.test_latin_hypercube_equally_spaced" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sampling from a latin hypercube results in a set of points
+that in each dimension are drawn uniformly from sub-intervals of the domain
+this tests that every sub-interval in each dimension contains exactly one point</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.EPI.src.python.lib.math_test.PointGenerationTest.test_latin_hypercube_within_domain">
+<tt class="descname">test_latin_hypercube_within_domain</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/EPI/src/python/lib/math_test.html#PointGenerationTest.test_latin_hypercube_within_domain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.EPI.src.python.lib.math_test.PointGenerationTest.test_latin_hypercube_within_domain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests that get_latin_hypercube_points returns points within the domain</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.EPI.src.python.lib.math_test.PointGenerationTest.test_make_rand_point_within_domain">
+<tt class="descname">test_make_rand_point_within_domain</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/EPI/src/python/lib/math_test.html#PointGenerationTest.test_make_rand_point_within_domain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.EPI.src.python.lib.math_test.PointGenerationTest.test_make_rand_point_within_domain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests that make_rand_point(domain) returns a point in the domain</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-moe.tests.EPI.src.python.lib">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-moe.tests.EPI.src.python.lib" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">moe.tests.EPI.src.python.lib package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-moe.tests.EPI.src.python.lib.math_test">moe.tests.EPI.src.python.lib.math_test module</a></li>
+<li><a class="reference internal" href="#module-moe.tests.EPI.src.python.lib">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="moe.tests.EPI.src.python.html"
+                        title="previous chapter">moe.tests.EPI.src.python package</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="moe.tests.EPI.src.python.models.html"
+                        title="next chapter">moe.tests.EPI.src.python.models package</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/moe.tests.EPI.src.python.lib.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="http-routingtable.html" title="HTTP Routing Table"
+             >routing table</a> |</li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="moe.tests.EPI.src.python.models.html" title="moe.tests.EPI.src.python.models package"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="moe.tests.EPI.src.python.html" title="moe.tests.EPI.src.python package"
+             >previous</a> |</li>
+        <li><a href="index.html">MOE 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="moe.html" >moe package</a> &raquo;</li>
+          <li><a href="moe.tests.html" >moe.tests package</a> &raquo;</li>
+          <li><a href="moe.tests.EPI.html" >moe.tests.EPI package</a> &raquo;</li>
+          <li><a href="moe.tests.EPI.src.html" >moe.tests.EPI.src package</a> &raquo;</li>
+          <li><a href="moe.tests.EPI.src.python.html" >moe.tests.EPI.src.python package</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

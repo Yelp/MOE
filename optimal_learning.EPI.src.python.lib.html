@@ -26,9 +26,7 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="MOE 0.1.0 documentation" href="index.html" />
-    <link rel="next" title="gpp_math.hpp" href="gpp_math_hpp.html" />
-    <link rel="prev" title="optimal_learning.EPI.src.python.models package" href="optimal_learning.EPI.src.python.models.html" /> 
+    <link rel="top" title="MOE 0.1.0 documentation" href="index.html" /> 
   </head>
   <body>
     <div class="related">
@@ -37,15 +35,6 @@
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="gpp_math_hpp.html" title="gpp_math.hpp"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="optimal_learning.EPI.src.python.models.html" title="optimal_learning.EPI.src.python.models package"
-             accesskey="P">previous</a> |</li>
         <li><a href="index.html">MOE 0.1.0 documentation</a> &raquo;</li> 
       </ul>
     </div>  
@@ -63,319 +52,11 @@
 <div class="section" id="optimal-learning-epi-src-python-lib-cuda-linkers-module">
 <h2>optimal_learning.EPI.src.python.lib.cuda_linkers module<a class="headerlink" href="#optimal-learning-epi-src-python-lib-cuda-linkers-module" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-optimal_learning.EPI.src.python.lib.math">
-<span id="optimal-learning-epi-src-python-lib-math-module"></span><h2>optimal_learning.EPI.src.python.lib.math module<a class="headerlink" href="#module-optimal_learning.EPI.src.python.lib.math" title="Permalink to this headline">¶</a></h2>
-<dl class="function">
-<dt id="optimal_learning.EPI.src.python.lib.math.cholesky_decomp">
-<tt class="descclassname">optimal_learning.EPI.src.python.lib.math.</tt><tt class="descname">cholesky_decomp</tt><big>(</big><em>matrix</em>, <em>eps=1e-06</em><big>)</big><a class="reference internal" href="_modules/optimal_learning/EPI/src/python/lib/math.html#cholesky_decomp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#optimal_learning.EPI.src.python.lib.math.cholesky_decomp" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the cholesky decomposition of the variance</p>
-<p>see Smith 1995 or Trefethen, Bau 1997 or Golub, Van Loan 1983</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">2-D numpy array</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="optimal_learning.EPI.src.python.lib.math.get_latin_hypercube_points">
-<tt class="descclassname">optimal_learning.EPI.src.python.lib.math.</tt><tt class="descname">get_latin_hypercube_points</tt><big>(</big><em>num_points</em>, <em>domains</em><big>)</big><a class="reference internal" href="_modules/optimal_learning/EPI/src/python/lib/math.html#get_latin_hypercube_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#optimal_learning.EPI.src.python.lib.math.get_latin_hypercube_points" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute points to sample from a latin hypercube</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Args:</th><td class="field-body"><ul class="first simple">
-<li>num_points: number of samples</li>
-<li>domains: a list of tuples from which to sample ex. [(0,1),(0,1)] (the unit square)</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">list of numpy arrays corresponding to points to be sampled</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="optimal_learning.EPI.src.python.lib.math.inverse_via_backwards_sub">
-<tt class="descclassname">optimal_learning.EPI.src.python.lib.math.</tt><tt class="descname">inverse_via_backwards_sub</tt><big>(</big><em>matrix</em><big>)</big><a class="reference internal" href="_modules/optimal_learning/EPI/src/python/lib/math.html#inverse_via_backwards_sub"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#optimal_learning.EPI.src.python.lib.math.inverse_via_backwards_sub" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the inverse of a triangular matrix via backwards substitution O(n^3)</p>
-<p>via Cormen (CLRS)</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return:</th><td class="field-body">n-D numpy array</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="optimal_learning.EPI.src.python.lib.math.inverse_via_cholesky">
-<tt class="descclassname">optimal_learning.EPI.src.python.lib.math.</tt><tt class="descname">inverse_via_cholesky</tt><big>(</big><em>matrix</em>, <em>eps=1e-06</em><big>)</big><a class="reference internal" href="_modules/optimal_learning/EPI/src/python/lib/math.html#inverse_via_cholesky"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#optimal_learning.EPI.src.python.lib.math.inverse_via_cholesky" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the inverse of a pos, semi-def matrix via a cholesky decomp O(n^3)</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">2-D numpy array</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="optimal_learning.EPI.src.python.lib.math.main">
-<tt class="descclassname">optimal_learning.EPI.src.python.lib.math.</tt><tt class="descname">main</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/optimal_learning/EPI/src/python/lib/math.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#optimal_learning.EPI.src.python.lib.math.main" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="optimal_learning.EPI.src.python.lib.math.make_empty_1D_list">
-<tt class="descclassname">optimal_learning.EPI.src.python.lib.math.</tt><tt class="descname">make_empty_1D_list</tt><big>(</big><em>size_one</em><big>)</big><a class="reference internal" href="_modules/optimal_learning/EPI/src/python/lib/math.html#make_empty_1D_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#optimal_learning.EPI.src.python.lib.math.make_empty_1D_list" title="Permalink to this definition">¶</a></dt>
-<dd><p>Make a 1 (2) dim empty list</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="optimal_learning.EPI.src.python.lib.math.make_empty_2D_list">
-<tt class="descclassname">optimal_learning.EPI.src.python.lib.math.</tt><tt class="descname">make_empty_2D_list</tt><big>(</big><em>size_one</em>, <em>size_two</em><big>)</big><a class="reference internal" href="_modules/optimal_learning/EPI/src/python/lib/math.html#make_empty_2D_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#optimal_learning.EPI.src.python.lib.math.make_empty_2D_list" title="Permalink to this definition">¶</a></dt>
-<dd><p>Make a two (3) dim empty list</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="optimal_learning.EPI.src.python.lib.math.make_rand_point">
-<tt class="descclassname">optimal_learning.EPI.src.python.lib.math.</tt><tt class="descname">make_rand_point</tt><big>(</big><em>domain</em><big>)</big><a class="reference internal" href="_modules/optimal_learning/EPI/src/python/lib/math.html#make_rand_point"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#optimal_learning.EPI.src.python.lib.math.make_rand_point" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a random point in <em>domain</em></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">1-D numpy array</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="optimal_learning.EPI.src.python.lib.math.matrix_vector_multiply">
-<tt class="descclassname">optimal_learning.EPI.src.python.lib.math.</tt><tt class="descname">matrix_vector_multiply</tt><big>(</big><em>matrix</em>, <em>vector</em><big>)</big><a class="reference internal" href="_modules/optimal_learning/EPI/src/python/lib/math.html#matrix_vector_multiply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#optimal_learning.EPI.src.python.lib.math.matrix_vector_multiply" title="Permalink to this definition">¶</a></dt>
-<dd><p>Multiply nested arrays matrix_one and matrix_two</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="optimal_learning.EPI.src.python.lib.math.not_in_domain">
-<tt class="descclassname">optimal_learning.EPI.src.python.lib.math.</tt><tt class="descname">not_in_domain</tt><big>(</big><em>point</em>, <em>domain</em><big>)</big><a class="reference internal" href="_modules/optimal_learning/EPI/src/python/lib/math.html#not_in_domain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#optimal_learning.EPI.src.python.lib.math.not_in_domain" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return true if <em>point</em> is not in the <em>domain</em></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Boolean</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="optimal_learning.EPI.src.python.lib.math.vector_diag_vector_product">
-<tt class="descclassname">optimal_learning.EPI.src.python.lib.math.</tt><tt class="descname">vector_diag_vector_product</tt><big>(</big><em>vec_one</em>, <em>diag_vec</em>, <em>vec_two</em><big>)</big><a class="reference internal" href="_modules/optimal_learning/EPI/src/python/lib/math.html#vector_diag_vector_product"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#optimal_learning.EPI.src.python.lib.math.vector_diag_vector_product" title="Permalink to this definition">¶</a></dt>
-<dd><p>Computes (vec_one - vec_two) * diag_matrix * (vec_one - vec_two).T</p>
-</dd></dl>
-
+<div class="section" id="optimal-learning-epi-src-python-lib-math-module">
+<h2>optimal_learning.EPI.src.python.lib.math module<a class="headerlink" href="#optimal-learning-epi-src-python-lib-math-module" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-optimal_learning.EPI.src.python.lib.mvncdf">
-<span id="optimal-learning-epi-src-python-lib-mvncdf-module"></span><h2>optimal_learning.EPI.src.python.lib.mvncdf module<a class="headerlink" href="#module-optimal_learning.EPI.src.python.lib.mvncdf" title="Permalink to this headline">¶</a></h2>
-<p>multivariate normal probabilities and cumulative distribution function
-a wrapper for scipy.stats.kde.mvndst</p>
-<blockquote>
-<div><blockquote>
-<div>SUBROUTINE MVNDST( N, LOWER, UPPER, INFIN, CORREL, MAXPTS,</div></blockquote>
-<p>&amp;                   ABSEPS, RELEPS, ERROR, VALUE, INFORM )</p>
-</div></blockquote>
-<ul class="simple">
-<li></li>
-<li>A subroutine for computing multivariate normal probabilities.</li>
-<li>This subroutine uses an algorithm given in the paper</li>
-<li>&#8220;Numerical Computation of Multivariate Normal Probabilities&#8221;, in</li>
-<li><ol class="first upperalpha" start="10">
-<li>of Computational and Graphical Stat., 1(1992), pp. 141-149, by</li>
-</ol>
-</li>
-<li>Alan Genz</li>
-<li>Department of Mathematics</li>
-<li>Washington State University</li>
-<li>Pullman, WA 99164-3113</li>
-<li>Email : <a class="reference external" href="mailto:AlanGenz&#37;&#52;&#48;wsu&#46;edu">AlanGenz<span>&#64;</span>wsu<span>&#46;</span>edu</a></li>
-<li></li>
-<li>Parameters</li>
-<li></li>
-<li>N      INTEGER, the number of variables.</li>
-<li>LOWER  REAL, array of lower integration limits.</li>
-<li>UPPER  REAL, array of upper integration limits.</li>
-<li>INFIN  INTEGER, array of integration limits flags:</li>
-<li>if INFIN(I) &lt; 0, Ith limits are (-infinity, infinity);</li>
-<li>if INFIN(I) = 0, Ith limits are (-infinity, UPPER(I)];</li>
-<li>if INFIN(I) = 1, Ith limits are [LOWER(I), infinity);</li>
-<li>if INFIN(I) = 2, Ith limits are [LOWER(I), UPPER(I)].</li>
-<li>CORREL REAL, array of correlation coefficients; the correlation</li>
-<li>coefficient in row I column J of the correlation matrix</li>
-<li>should be stored in CORREL( J + ((I-2)*(I-1))/2 ), for J &lt; I.</li>
-<li>THe correlation matrix must be positive semidefinite.</li>
-<li>MAXPTS INTEGER, maximum number of function values allowed. This</li>
-<li>parameter can be used to limit the time. A sensible</li>
-<li>strategy is to start with MAXPTS = 1000*N, and then</li>
-<li>increase MAXPTS if ERROR is too large.</li>
-<li>ABSEPS REAL absolute error tolerance.</li>
-<li>RELEPS REAL relative error tolerance.</li>
-<li>ERROR  REAL estimated absolute error, with 99% confidence level.</li>
-<li>VALUE  REAL estimated value for the integral</li>
-<li>INFORM INTEGER, termination status parameter:</li>
-<li>if INFORM = 0, normal completion with ERROR &lt; EPS;</li>
-<li>if INFORM = 1, completion with ERROR &gt; EPS and MAXPTS</li>
-<li>function vaules used; increase MAXPTS to</li>
-<li>decrease ERROR;</li>
-<li>if INFORM = 2, N &gt; 500 or N &lt; 1.</li>
-<li></li>
-</ul>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">kde</span><span class="o">.</span><span class="n">mvn</span><span class="o">.</span><span class="n">mvndst</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">],[</span><span class="mf">10.0</span><span class="p">,</span><span class="mf">10.0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mf">0.5</span><span class="p">])</span>
-<span class="go">(2e-016, 1.0, 0)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">kde</span><span class="o">.</span><span class="n">mvn</span><span class="o">.</span><span class="n">mvndst</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">],[</span><span class="mf">100.0</span><span class="p">,</span><span class="mf">100.0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mf">0.0</span><span class="p">])</span>
-<span class="go">(2e-016, 1.0, 0)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">kde</span><span class="o">.</span><span class="n">mvn</span><span class="o">.</span><span class="n">mvndst</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">],[</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mf">0.0</span><span class="p">])</span>
-<span class="go">(2e-016, 0.70786098173714096, 0)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">kde</span><span class="o">.</span><span class="n">mvn</span><span class="o">.</span><span class="n">mvndst</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">],[</span><span class="mf">0.001</span><span class="p">,</span><span class="mf">1.0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mf">0.0</span><span class="p">])</span>
-<span class="go">(2e-016, 0.42100802096993045, 0)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">kde</span><span class="o">.</span><span class="n">mvn</span><span class="o">.</span><span class="n">mvndst</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">],[</span><span class="mf">0.001</span><span class="p">,</span><span class="mf">10.0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mf">0.0</span><span class="p">])</span>
-<span class="go">(2e-016, 0.50039894221391101, 0)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">kde</span><span class="o">.</span><span class="n">mvn</span><span class="o">.</span><span class="n">mvndst</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">],[</span><span class="mf">0.001</span><span class="p">,</span><span class="mf">100.0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mf">0.0</span><span class="p">])</span>
-<span class="go">(2e-016, 0.50039894221391101, 0)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">kde</span><span class="o">.</span><span class="n">mvn</span><span class="o">.</span><span class="n">mvndst</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">],[</span><span class="mf">0.01</span><span class="p">,</span><span class="mf">100.0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mf">0.0</span><span class="p">])</span>
-<span class="go">(2e-016, 0.5039893563146316, 0)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">kde</span><span class="o">.</span><span class="n">mvn</span><span class="o">.</span><span class="n">mvndst</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">],[</span><span class="mf">0.1</span><span class="p">,</span><span class="mf">100.0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mf">0.0</span><span class="p">])</span>
-<span class="go">(2e-016, 0.53982783727702899, 0)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">kde</span><span class="o">.</span><span class="n">mvn</span><span class="o">.</span><span class="n">mvndst</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">],[</span><span class="mf">0.1</span><span class="p">,</span><span class="mf">100.0</span><span class="p">],[</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">],[</span><span class="mf">0.0</span><span class="p">])</span>
-<span class="go">(2e-016, 0.019913918638514494, 0)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">kde</span><span class="o">.</span><span class="n">mvn</span><span class="o">.</span><span class="n">mvndst</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">],[</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mf">0.0</span><span class="p">])</span>
-<span class="go">(2e-016, 0.25, 0)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">kde</span><span class="o">.</span><span class="n">mvn</span><span class="o">.</span><span class="n">mvndst</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">],[</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">],[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mf">0.0</span><span class="p">])</span>
-<span class="go">(2e-016, 0.5, 0)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">kde</span><span class="o">.</span><span class="n">mvn</span><span class="o">.</span><span class="n">mvndst</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">],[</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">],[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mf">0.5</span><span class="p">])</span>
-<span class="go">(2e-016, 0.5, 0)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">kde</span><span class="o">.</span><span class="n">mvn</span><span class="o">.</span><span class="n">mvndst</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">],[</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mf">0.5</span><span class="p">])</span>
-<span class="go">(2e-016, 0.33333333333333337, 0)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">kde</span><span class="o">.</span><span class="n">mvn</span><span class="o">.</span><span class="n">mvndst</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">],[</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mf">0.99</span><span class="p">])</span>
-<span class="go">(2e-016, 0.47747329317779391, 0)</span>
-</pre></div>
-</div>
-<dl class="function">
-<dt id="optimal_learning.EPI.src.python.lib.mvncdf.mvnormcdf">
-<tt class="descclassname">optimal_learning.EPI.src.python.lib.mvncdf.</tt><tt class="descname">mvnormcdf</tt><big>(</big><em>lower</em>, <em>upper</em>, <em>mu</em>, <em>cov</em>, <em>**kwds</em><big>)</big><a class="reference internal" href="_modules/optimal_learning/EPI/src/python/lib/mvncdf.html#mvnormcdf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#optimal_learning.EPI.src.python.lib.mvncdf.mvnormcdf" title="Permalink to this definition">¶</a></dt>
-<dd><p>multivariate normal cumulative distribution function</p>
-<p>This is a wrapper for scipy.stats.kde.mvn.mvndst which calculates
-a rectangular integral over a multivariate normal distribution.</p>
-<dl class="docutils">
-<dt>lower, upper <span class="classifier-delimiter">:</span> <span class="classifier">array_like, 1d</span></dt>
-<dd>lower and upper integration limits with length equal to the number
-of dimensions of the multivariate normal distribution. It can contain
--np.inf or np.inf for open integration intervals</dd>
-<dt>mu <span class="classifier-delimiter">:</span> <span class="classifier">array_lik, 1d</span></dt>
-<dd>list or array of means</dd>
-<dt>cov <span class="classifier-delimiter">:</span> <span class="classifier">array_like, 2d</span></dt>
-<dd>specifies covariance matrix</dd>
-<dt>optional keyword parameters to influence integration</dt>
-<dd><ul class="first last">
-<li><dl class="first docutils">
-<dt>maxpts <span class="classifier-delimiter">:</span> <span class="classifier">int, maximum number of function values allowed. This</span></dt>
-<dd><p class="first last">parameter can be used to limit the time. A sensible
-strategy is to start with <cite>maxpts</cite> = 1000*N, and then
-increase <cite>maxpts</cite> if ERROR is too large.</p>
-</dd>
-</dl>
-</li>
-<li><p class="first">abseps : float absolute error tolerance.</p>
-</li>
-<li><p class="first">releps : float relative error tolerance.</p>
-</li>
-</ul>
-</dd>
-</dl>
-<dl class="docutils">
-<dt>cdfvalue <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
-<dd>value of the integral</dd>
-</dl>
-<p>This function normalizes the location and scale of the multivariate
-normal distribution and then uses <cite>mvstdnormcdf</cite> to call the integration.</p>
-<p>mvstdnormcdf : location and scale standardized multivariate normal cdf</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="optimal_learning.EPI.src.python.lib.mvncdf.mvstdnormcdf">
-<tt class="descclassname">optimal_learning.EPI.src.python.lib.mvncdf.</tt><tt class="descname">mvstdnormcdf</tt><big>(</big><em>lower</em>, <em>upper</em>, <em>corrcoef</em>, <em>**kwds</em><big>)</big><a class="reference internal" href="_modules/optimal_learning/EPI/src/python/lib/mvncdf.html#mvstdnormcdf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#optimal_learning.EPI.src.python.lib.mvncdf.mvstdnormcdf" title="Permalink to this definition">¶</a></dt>
-<dd><p>standardized multivariate normal cumulative distribution function</p>
-<p>This is a wrapper for scipy.stats.kde.mvn.mvndst which calculates
-a rectangular integral over a standardized multivariate normal
-distribution.</p>
-<p>This function assumes standardized scale, that is the variance in each dimension
-is one, but correlation can be arbitrary, covariance = correlation matrix</p>
-<dl class="docutils">
-<dt>lower, upper <span class="classifier-delimiter">:</span> <span class="classifier">array_like, 1d</span></dt>
-<dd>lower and upper integration limits with length equal to the number
-of dimensions of the multivariate normal distribution. It can contain
--np.inf or np.inf for open integration intervals</dd>
-<dt>corrcoef <span class="classifier-delimiter">:</span> <span class="classifier">float or array_like</span></dt>
-<dd>specifies correlation matrix in one of three ways, see notes</dd>
-<dt>optional keyword parameters to influence integration</dt>
-<dd><ul class="first last">
-<li><dl class="first docutils">
-<dt>maxpts <span class="classifier-delimiter">:</span> <span class="classifier">int, maximum number of function values allowed. This</span></dt>
-<dd><p class="first last">parameter can be used to limit the time. A sensible
-strategy is to start with <cite>maxpts</cite> = 1000*N, and then
-increase <cite>maxpts</cite> if ERROR is too large.</p>
-</dd>
-</dl>
-</li>
-<li><p class="first">abseps : float absolute error tolerance.</p>
-</li>
-<li><p class="first">releps : float relative error tolerance.</p>
-</li>
-</ul>
-</dd>
-</dl>
-<dl class="docutils">
-<dt>cdfvalue <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
-<dd>value of the integral</dd>
-</dl>
-<p>The correlation matrix corrcoef can be given in 3 different ways
-If the multivariate normal is two-dimensional than only the
-correlation coefficient needs to be provided.
-For general dimension the correlation matrix can be provided either
-as a one-dimensional array of the upper triangular correlation
-coefficients stacked by rows, or as full square correlation matrix</p>
-<dl class="docutils">
-<dt>mvnormcdf <span class="classifier-delimiter">:</span> <span class="classifier">cdf of multivariate normal distribution without</span></dt>
-<dd>standardization</dd>
-</dl>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">mvstdnormcdf</span><span class="p">([</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">],</span> <span class="mf">0.5</span><span class="p">)</span>
-<span class="go">0.5</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">corr</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mf">0.5</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">mvstdnormcdf</span><span class="p">([</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span><span class="o">-</span><span class="mf">100.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">],</span> <span class="n">corr</span><span class="p">,</span> <span class="n">abseps</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">)</span>
-<span class="go">0.166666399198</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">mvstdnormcdf</span><span class="p">([</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span><span class="o">-</span><span class="mf">100.0</span><span class="p">],[</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">],</span><span class="n">corr</span><span class="p">,</span> <span class="n">abseps</span><span class="o">=</span><span class="mf">1e-8</span><span class="p">)</span>
-<span class="go">something wrong completion with ERROR &gt; EPS and MAXPTS function values used;</span>
-<span class="go">                    increase MAXPTS to decrease ERROR; 1.048330348e-006</span>
-<span class="go">0.166666546218</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">mvstdnormcdf</span><span class="p">([</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span><span class="o">-</span><span class="mf">100.0</span><span class="p">],[</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">],</span> <span class="n">corr</span><span class="p">,</span>
-<span class="go">                        maxpts=100000, abseps=1e-8)</span>
-<span class="go">0.166666588293</span>
-</pre></div>
-</div>
-</dd></dl>
-
+<div class="section" id="optimal-learning-epi-src-python-lib-mvncdf-module">
+<h2>optimal_learning.EPI.src.python.lib.mvncdf module<a class="headerlink" href="#optimal-learning-epi-src-python-lib-mvncdf-module" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="optimal-learning-epi-src-python-lib-plotter-module">
 <h2>optimal_learning.EPI.src.python.lib.plotter module<a class="headerlink" href="#optimal-learning-epi-src-python-lib-plotter-module" title="Permalink to this headline">¶</a></h2>
@@ -386,8 +67,8 @@ coefficients stacked by rows, or as full square correlation matrix</p>
 <div class="section" id="optimal-learning-epi-src-python-lib-updater-module">
 <h2>optimal_learning.EPI.src.python.lib.updater module<a class="headerlink" href="#optimal-learning-epi-src-python-lib-updater-module" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-optimal_learning.EPI.src.python.lib">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-optimal_learning.EPI.src.python.lib" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-contents">
+<h2>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 
@@ -402,22 +83,16 @@ coefficients stacked by rows, or as full square correlation matrix</p>
 <li><a class="reference internal" href="#">optimal_learning.EPI.src.python.lib package</a><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
 <li><a class="reference internal" href="#optimal-learning-epi-src-python-lib-cuda-linkers-module">optimal_learning.EPI.src.python.lib.cuda_linkers module</a></li>
-<li><a class="reference internal" href="#module-optimal_learning.EPI.src.python.lib.math">optimal_learning.EPI.src.python.lib.math module</a></li>
-<li><a class="reference internal" href="#module-optimal_learning.EPI.src.python.lib.mvncdf">optimal_learning.EPI.src.python.lib.mvncdf module</a></li>
+<li><a class="reference internal" href="#optimal-learning-epi-src-python-lib-math-module">optimal_learning.EPI.src.python.lib.math module</a></li>
+<li><a class="reference internal" href="#optimal-learning-epi-src-python-lib-mvncdf-module">optimal_learning.EPI.src.python.lib.mvncdf module</a></li>
 <li><a class="reference internal" href="#optimal-learning-epi-src-python-lib-plotter-module">optimal_learning.EPI.src.python.lib.plotter module</a></li>
 <li><a class="reference internal" href="#optimal-learning-epi-src-python-lib-space-io-module">optimal_learning.EPI.src.python.lib.space_io module</a></li>
 <li><a class="reference internal" href="#optimal-learning-epi-src-python-lib-updater-module">optimal_learning.EPI.src.python.lib.updater module</a></li>
-<li><a class="reference internal" href="#module-optimal_learning.EPI.src.python.lib">Module contents</a></li>
+<li><a class="reference internal" href="#module-contents">Module contents</a></li>
 </ul>
 </li>
 </ul>
 
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="optimal_learning.EPI.src.python.models.html"
-                        title="previous chapter">optimal_learning.EPI.src.python.models package</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="gpp_math_hpp.html"
-                        title="next chapter">gpp_math.hpp</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="_sources/optimal_learning.EPI.src.python.lib.txt"
@@ -446,15 +121,6 @@ coefficients stacked by rows, or as full square correlation matrix</p>
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              >index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="gpp_math_hpp.html" title="gpp_math.hpp"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="optimal_learning.EPI.src.python.models.html" title="optimal_learning.EPI.src.python.models package"
-             >previous</a> |</li>
         <li><a href="index.html">MOE 0.1.0 documentation</a> &raquo;</li> 
       </ul>
     </div>

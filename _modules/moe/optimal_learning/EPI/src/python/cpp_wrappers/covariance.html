@@ -1,0 +1,184 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>moe.optimal_learning.EPI.src.python.cpp_wrappers.covariance &mdash; MOE 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../../../_static/breathe.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../../../',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../../../../../../../_static/favicon.ico"/>
+    <link rel="top" title="MOE 0.1.0 documentation" href="../../../../../../../index.html" />
+    <link rel="up" title="moe" href="../../../../../../moe.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../../../http-routingtable.html" title="HTTP Routing Table"
+             >routing table</a> |</li>
+        <li class="right" >
+          <a href="../../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../../index.html">MOE 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../../../../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../../../../../moe.html" accesskey="U">moe</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for moe.optimal_learning.EPI.src.python.cpp_wrappers.covariance</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;Thin covariance-related data containers that can be passed to cpp_wrappers.* functions/classes requiring covariance data.</span>
+
+<span class="sd">C++ covariance objects currently do not expose their members to Python. Additionally although C++ has several covariance</span>
+<span class="sd">functions available, runtime-selection is not yet implemented. The containers here just track the hyperparameters of</span>
+<span class="sd">covariance functions in a format that can be interpreted in C++ calls.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+<span class="kn">from</span> <span class="nn">moe.optimal_learning.EPI.src.python.interfaces.covariance_interface</span> <span class="kn">import</span> <span class="n">CovarianceInterface</span>
+
+
+<div class="viewcode-block" id="SquareExponential"><a class="viewcode-back" href="../../../../../../../moe.optimal_learning.EPI.src.python.cpp_wrappers.html#moe.optimal_learning.EPI.src.python.cpp_wrappers.covariance.SquareExponential">[docs]</a><span class="k">class</span> <span class="nc">SquareExponential</span><span class="p">(</span><span class="n">CovarianceInterface</span><span class="p">):</span>
+
+    <span class="sd">r&quot;&quot;&quot;Implement the square exponential covariance function.</span>
+
+<span class="sd">    .. Note:: comments are copied in SquareExponential in python_version/covariance.py</span>
+
+<span class="sd">    The function:</span>
+<span class="sd">    ``cov(x_1, x_2) = \alpha * \exp(-1/2 * ((x_1 - x_2)^T * L * (x_1 - x_2)) )``</span>
+<span class="sd">    where L is the diagonal matrix with i-th diagonal entry ``1/lengths[i]/lengths[i]``</span>
+
+<span class="sd">    This covariance object has ``dim+1`` hyperparameters: ``\alpha, lengths_i``</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hyperparameters</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Construct a square exponential covariance object that can be used with cpp_wrappers.* functions/classes.</span>
+
+<span class="sd">        :param hyperparameters: hyperparameters of the covariance function; index 0 is \alpha (signal variance, \sigma_f^2)</span>
+<span class="sd">          and index 1..dim are the per-dimension length scales.</span>
+<span class="sd">        :type hyperparameters: array-like of size dim+1</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_hyperparameters</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="SquareExponential.num_hyperparameters"><a class="viewcode-back" href="../../../../../../../moe.optimal_learning.EPI.src.python.cpp_wrappers.html#moe.optimal_learning.EPI.src.python.cpp_wrappers.covariance.SquareExponential.num_hyperparameters">[docs]</a>    <span class="k">def</span> <span class="nf">num_hyperparameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the number of hyperparameters of this covariance function.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hyperparameters</span><span class="o">.</span><span class="n">size</span>
+</div>
+<div class="viewcode-block" id="SquareExponential.get_hyperparameters"><a class="viewcode-back" href="../../../../../../../moe.optimal_learning.EPI.src.python.cpp_wrappers.html#moe.optimal_learning.EPI.src.python.cpp_wrappers.covariance.SquareExponential.get_hyperparameters">[docs]</a>    <span class="k">def</span> <span class="nf">get_hyperparameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the hyperparameters (array of float64 with shape (num_hyperparameters)) of this covariance.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hyperparameters</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="SquareExponential.set_hyperparameters"><a class="viewcode-back" href="../../../../../../../moe.optimal_learning.EPI.src.python.cpp_wrappers.html#moe.optimal_learning.EPI.src.python.cpp_wrappers.covariance.SquareExponential.set_hyperparameters">[docs]</a>    <span class="k">def</span> <span class="nf">set_hyperparameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hyperparameters</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set hyperparameters to the specified hyperparameters; ordering must match.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_hyperparameters</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="SquareExponential.covariance"><a class="viewcode-back" href="../../../../../../../moe.optimal_learning.EPI.src.python.cpp_wrappers.html#moe.optimal_learning.EPI.src.python.cpp_wrappers.covariance.SquareExponential.covariance">[docs]</a>    <span class="k">def</span> <span class="nf">covariance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point_one</span><span class="p">,</span> <span class="n">point_two</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Compute the covariance function of two points, cov(``point_one``, ``point_two``).</span>
+
+<span class="sd">        We do not currently expose a C++ endpoint for this call; see covariance_interface.py for interface specification.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s">&quot;C++ wrapper currently does not support computing covariance quantities.&quot;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="SquareExponential.grad_covariance"><a class="viewcode-back" href="../../../../../../../moe.optimal_learning.EPI.src.python.cpp_wrappers.html#moe.optimal_learning.EPI.src.python.cpp_wrappers.covariance.SquareExponential.grad_covariance">[docs]</a>    <span class="k">def</span> <span class="nf">grad_covariance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point_one</span><span class="p">,</span> <span class="n">point_two</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Compute the gradient of self.covariance(point_one, point_two) with respect to the FIRST argument, point_one.</span>
+
+<span class="sd">        We do not currently expose a C++ endpoint for this call; see covariance_interface.py for interface specification.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s">&quot;C++ wrapper currently does not support computing covariance quantities.&quot;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="SquareExponential.hyperparameter_grad_covariance"><a class="viewcode-back" href="../../../../../../../moe.optimal_learning.EPI.src.python.cpp_wrappers.html#moe.optimal_learning.EPI.src.python.cpp_wrappers.covariance.SquareExponential.hyperparameter_grad_covariance">[docs]</a>    <span class="k">def</span> <span class="nf">hyperparameter_grad_covariance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point_one</span><span class="p">,</span> <span class="n">point_two</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Compute the gradient of self.covariance(point_one, point_two) with respect to its hyperparameters.</span>
+
+<span class="sd">        We do not currently expose a C++ endpoint for this call; see covariance_interface.py for interface specification.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s">&quot;C++ wrapper currently does not support computing covariance quantities.&quot;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="SquareExponential.hyperparameter_hessian_covariance"><a class="viewcode-back" href="../../../../../../../moe.optimal_learning.EPI.src.python.cpp_wrappers.html#moe.optimal_learning.EPI.src.python.cpp_wrappers.covariance.SquareExponential.hyperparameter_hessian_covariance">[docs]</a>    <span class="k">def</span> <span class="nf">hyperparameter_hessian_covariance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point_one</span><span class="p">,</span> <span class="n">point_two</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Compute the hessian of self.covariance(point_one, point_two) with respect to its hyperparameters.</span>
+
+<span class="sd">        We do not currently expose a C++ endpoint for this call; see covariance_interface.py for interface specification.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s">&quot;C++ wrapper currently does not support computing covariance quantities.&quot;</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../../../http-routingtable.html" title="HTTP Routing Table"
+             >routing table</a> |</li>
+        <li class="right" >
+          <a href="../../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../../index.html">MOE 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../../../../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../../../../../moe.html" >moe</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

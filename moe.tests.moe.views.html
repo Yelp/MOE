@@ -1,0 +1,222 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>moe.tests.moe.views package &mdash; MOE 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/breathe.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="MOE 0.1.0 documentation" href="index.html" />
+    <link rel="up" title="moe.tests.moe package" href="moe.tests.moe.html" />
+    <link rel="next" title="moe.views package" href="moe.views.html" />
+    <link rel="prev" title="moe.tests.moe package" href="moe.tests.moe.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="http-routingtable.html" title="HTTP Routing Table"
+             >routing table</a> |</li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="moe.views.html" title="moe.views package"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="moe.tests.moe.html" title="moe.tests.moe package"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">MOE 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="moe.html" >moe package</a> &raquo;</li>
+          <li><a href="moe.tests.html" >moe.tests package</a> &raquo;</li>
+          <li><a href="moe.tests.moe.html" accesskey="U">moe.tests.moe package</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="moe-tests-moe-views-package">
+<h1>moe.tests.moe.views package<a class="headerlink" href="#moe-tests-moe-views-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-moe.tests.moe.views.exceptions_test">
+<span id="moe-tests-moe-views-exceptions-test-module"></span><h2>moe.tests.moe.views.exceptions_test module<a class="headerlink" href="#module-moe.tests.moe.views.exceptions_test" title="Permalink to this headline">¶</a></h2>
+<p>Various tests for checking exceptions in views.</p>
+<dl class="class">
+<dt id="moe.tests.moe.views.exceptions_test.RestGaussianProcessTestCaseWithExceptions">
+<em class="property">class </em><tt class="descclassname">moe.tests.moe.views.exceptions_test.</tt><tt class="descname">RestGaussianProcessTestCaseWithExceptions</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/tests/moe/views/exceptions_test.html#RestGaussianProcessTestCaseWithExceptions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.moe.views.exceptions_test.RestGaussianProcessTestCaseWithExceptions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#moe.tests.moe.views.rest_gaussian_process_test_case.RestGaussianProcessTestCase" title="moe.tests.moe.views.rest_gaussian_process_test_case.RestGaussianProcessTestCase"><tt class="xref py py-class docutils literal"><span class="pre">moe.tests.moe.views.rest_gaussian_process_test_case.RestGaussianProcessTestCase</span></tt></a></p>
+<p>Test that proper errors are thrown when endpoints get universally bad data.</p>
+<dl class="method">
+<dt id="moe.tests.moe.views.exceptions_test.RestGaussianProcessTestCaseWithExceptions.test_badly_formed_json_payload_invalid">
+<tt class="descname">test_badly_formed_json_payload_invalid</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/moe/views/exceptions_test.html#RestGaussianProcessTestCaseWithExceptions.test_badly_formed_json_payload_invalid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.moe.views.exceptions_test.RestGaussianProcessTestCaseWithExceptions.test_badly_formed_json_payload_invalid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test malformed json payload causes a ValueError.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.moe.views.exceptions_test.RestGaussianProcessTestCaseWithExceptions.test_empty_json_payload_invalid">
+<tt class="descname">test_empty_json_payload_invalid</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/moe/views/exceptions_test.html#RestGaussianProcessTestCaseWithExceptions.test_empty_json_payload_invalid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.moe.views.exceptions_test.RestGaussianProcessTestCaseWithExceptions.test_empty_json_payload_invalid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test empty json payload causes an AppError.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="moe-tests-moe-views-gp-ei-test-module">
+<h2>moe.tests.moe.views.gp_ei_test module<a class="headerlink" href="#moe-tests-moe-views-gp-ei-test-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="moe-tests-moe-views-gp-mean-var-test-module">
+<h2>moe.tests.moe.views.gp_mean_var_test module<a class="headerlink" href="#moe-tests-moe-views-gp-mean-var-test-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="moe-tests-moe-views-gp-next-points-epi-test-module">
+<h2>moe.tests.moe.views.gp_next_points_epi_test module<a class="headerlink" href="#moe-tests-moe-views-gp-next-points-epi-test-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-moe.tests.moe.views.rest_gaussian_process_test_case">
+<span id="moe-tests-moe-views-rest-gaussian-process-test-case-module"></span><h2>moe.tests.moe.views.rest_gaussian_process_test_case module<a class="headerlink" href="#module-moe.tests.moe.views.rest_gaussian_process_test_case" title="Permalink to this headline">¶</a></h2>
+<p>Base class for testing the REST interface against the C++ interface.</p>
+<dl class="class">
+<dt id="moe.tests.moe.views.rest_gaussian_process_test_case.RestGaussianProcessTestCase">
+<em class="property">class </em><tt class="descclassname">moe.tests.moe.views.rest_gaussian_process_test_case.</tt><tt class="descname">RestGaussianProcessTestCase</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/tests/moe/views/rest_gaussian_process_test_case.html#RestGaussianProcessTestCase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.moe.views.rest_gaussian_process_test_case.RestGaussianProcessTestCase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="moe.tests.EPI.src.python.html#moe.tests.EPI.src.python.gaussian_process_test_case.GaussianProcessTestCase" title="moe.tests.EPI.src.python.gaussian_process_test_case.GaussianProcessTestCase"><tt class="xref py py-class docutils literal"><span class="pre">moe.tests.EPI.src.python.gaussian_process_test_case.GaussianProcessTestCase</span></tt></a></p>
+<p>Base class for testing the REST interface against the C++ interface.</p>
+<dl class="method">
+<dt id="moe.tests.moe.views.rest_gaussian_process_test_case.RestGaussianProcessTestCase.create_webapp">
+<tt class="descname">create_webapp</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/moe/views/rest_gaussian_process_test_case.html#RestGaussianProcessTestCase.create_webapp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.moe.views.rest_gaussian_process_test_case.RestGaussianProcessTestCase.create_webapp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a mocked webapp and store it in self.testapp.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="moe.tests.moe.views.rest_gaussian_process_test_case.RestGaussianProcessTestCase.domain_1d">
+<tt class="descname">domain_1d</tt><em class="property"> = [[0, 1]]</em><a class="headerlink" href="#moe.tests.moe.views.rest_gaussian_process_test_case.RestGaussianProcessTestCase.domain_1d" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="moe.tests.moe.views.rest_gaussian_process_test_case.RestGaussianProcessTestCase.domain_2d">
+<tt class="descname">domain_2d</tt><em class="property"> = [[0, 1], [0, 1]]</em><a class="headerlink" href="#moe.tests.moe.views.rest_gaussian_process_test_case.RestGaussianProcessTestCase.domain_2d" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="moe.tests.moe.views.rest_gaussian_process_test_case.RestGaussianProcessTestCase.domain_3d">
+<tt class="descname">domain_3d</tt><em class="property"> = [[0, 1], [0, 1], [0, 1]]</em><a class="headerlink" href="#moe.tests.moe.views.rest_gaussian_process_test_case.RestGaussianProcessTestCase.domain_3d" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="moe.tests.moe.views.rest_gaussian_process_test_case.RestGaussianProcessTestCase.endpoint">
+<tt class="descname">endpoint</tt><em class="property"> = None</em><a class="headerlink" href="#moe.tests.moe.views.rest_gaussian_process_test_case.RestGaussianProcessTestCase.endpoint" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-moe.tests.moe.views">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-moe.tests.moe.views" title="Permalink to this headline">¶</a></h2>
+<p>Views tests.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">moe.tests.moe.views package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-moe.tests.moe.views.exceptions_test">moe.tests.moe.views.exceptions_test module</a></li>
+<li><a class="reference internal" href="#moe-tests-moe-views-gp-ei-test-module">moe.tests.moe.views.gp_ei_test module</a></li>
+<li><a class="reference internal" href="#moe-tests-moe-views-gp-mean-var-test-module">moe.tests.moe.views.gp_mean_var_test module</a></li>
+<li><a class="reference internal" href="#moe-tests-moe-views-gp-next-points-epi-test-module">moe.tests.moe.views.gp_next_points_epi_test module</a></li>
+<li><a class="reference internal" href="#module-moe.tests.moe.views.rest_gaussian_process_test_case">moe.tests.moe.views.rest_gaussian_process_test_case module</a></li>
+<li><a class="reference internal" href="#module-moe.tests.moe.views">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="moe.tests.moe.html"
+                        title="previous chapter">moe.tests.moe package</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="moe.views.html"
+                        title="next chapter">moe.views package</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/moe.tests.moe.views.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="http-routingtable.html" title="HTTP Routing Table"
+             >routing table</a> |</li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="moe.views.html" title="moe.views package"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="moe.tests.moe.html" title="moe.tests.moe package"
+             >previous</a> |</li>
+        <li><a href="index.html">MOE 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="moe.html" >moe package</a> &raquo;</li>
+          <li><a href="moe.tests.html" >moe.tests package</a> &raquo;</li>
+          <li><a href="moe.tests.moe.html" >moe.tests.moe package</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

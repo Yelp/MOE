@@ -1,0 +1,248 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>moe.views.schemas &mdash; MOE 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/breathe.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="top" title="MOE 0.1.0 documentation" href="../../../index.html" />
+    <link rel="up" title="moe" href="../../moe.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../http-routingtable.html" title="HTTP Routing Table"
+             >routing table</a> |</li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">MOE 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../moe.html" accesskey="U">moe</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for moe.views.schemas</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;Base level schemas for the response/request schemas of each MOE REST endpoint.&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">colander</span>
+
+<span class="kn">from</span> <span class="nn">moe.optimal_learning.EPI.src.python.constant</span> <span class="kn">import</span> <span class="n">default_gaussian_process_parameters</span><span class="p">,</span> <span class="n">default_ei_optimization_parameters</span>
+
+
+<div class="viewcode-block" id="ListOfFloats"><a class="viewcode-back" href="../../../moe.views.html#moe.views.schemas.ListOfFloats">[docs]</a><span class="k">class</span> <span class="nc">ListOfFloats</span><span class="p">(</span><span class="n">colander</span><span class="o">.</span><span class="n">SequenceSchema</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;Colander list of floats.&quot;&quot;&quot;</span>
+
+    <span class="n">float_in_list</span> <span class="o">=</span> <span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="p">(</span><span class="n">colander</span><span class="o">.</span><span class="n">Float</span><span class="p">())</span>
+
+</div>
+<div class="viewcode-block" id="SinglePoint"><a class="viewcode-back" href="../../../moe.views.html#moe.views.schemas.SinglePoint">[docs]</a><span class="k">class</span> <span class="nc">SinglePoint</span><span class="p">(</span><span class="n">colander</span><span class="o">.</span><span class="n">MappingSchema</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;A point object.</span>
+
+<span class="sd">    Contains:</span>
+<span class="sd">        * point - ListOfFloats</span>
+<span class="sd">        * value - floa</span>
+<span class="sd">        * value_var - float &gt;= 0.0</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">point</span> <span class="o">=</span> <span class="n">ListOfFloats</span><span class="p">()</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="p">(</span><span class="n">colander</span><span class="o">.</span><span class="n">Float</span><span class="p">())</span>
+    <span class="n">value_var</span> <span class="o">=</span> <span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="p">(</span>
+            <span class="n">colander</span><span class="o">.</span><span class="n">Float</span><span class="p">(),</span>
+            <span class="n">validator</span><span class="o">=</span><span class="n">colander</span><span class="o">.</span><span class="n">Range</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+            <span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="PointsSampled"><a class="viewcode-back" href="../../../moe.views.html#moe.views.schemas.PointsSampled">[docs]</a><span class="k">class</span> <span class="nc">PointsSampled</span><span class="p">(</span><span class="n">colander</span><span class="o">.</span><span class="n">SequenceSchema</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;A list of SinglePoint objects.&quot;&quot;&quot;</span>
+
+    <span class="n">point_sampled</span> <span class="o">=</span> <span class="n">SinglePoint</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="DomainCoordinate"><a class="viewcode-back" href="../../../moe.views.html#moe.views.schemas.DomainCoordinate">[docs]</a><span class="k">class</span> <span class="nc">DomainCoordinate</span><span class="p">(</span><span class="n">colander</span><span class="o">.</span><span class="n">SequenceSchema</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;A single domain interval.&quot;&quot;&quot;</span>
+
+    <span class="n">domain_coordinate</span> <span class="o">=</span> <span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="p">(</span><span class="n">colander</span><span class="o">.</span><span class="n">Float</span><span class="p">())</span>
+
+</div>
+<div class="viewcode-block" id="Domain"><a class="viewcode-back" href="../../../moe.views.html#moe.views.schemas.Domain">[docs]</a><span class="k">class</span> <span class="nc">Domain</span><span class="p">(</span><span class="n">colander</span><span class="o">.</span><span class="n">SequenceSchema</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;A list of domain interval DomainCoordinate objects.&quot;&quot;&quot;</span>
+
+    <span class="n">domain_coordinates</span> <span class="o">=</span> <span class="n">DomainCoordinate</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="GpInfo"><a class="viewcode-back" href="../../../moe.views.html#moe.views.schemas.GpInfo">[docs]</a><span class="k">class</span> <span class="nc">GpInfo</span><span class="p">(</span><span class="n">colander</span><span class="o">.</span><span class="n">MappingSchema</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;The Gaussian Process info needed for every request.</span>
+
+<span class="sd">    Contains:</span>
+<span class="sd">        * points_sampled - PointsSampled</span>
+<span class="sd">        * domain - Domain</span>
+<span class="sd">        * length_scale - ListOfFloats</span>
+<span class="sd">        * signal_variance - floa</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">points_sampled</span> <span class="o">=</span> <span class="n">PointsSampled</span><span class="p">()</span>
+    <span class="n">domain</span> <span class="o">=</span> <span class="n">Domain</span><span class="p">()</span>
+    <span class="n">length_scale</span> <span class="o">=</span> <span class="n">ListOfFloats</span><span class="p">(</span>
+            <span class="n">missing</span><span class="o">=</span><span class="n">default_gaussian_process_parameters</span><span class="o">.</span><span class="n">length_scale</span><span class="p">,</span>
+            <span class="p">)</span>
+    <span class="n">signal_variance</span> <span class="o">=</span> <span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="p">(</span>
+            <span class="n">colander</span><span class="o">.</span><span class="n">Float</span><span class="p">(),</span>
+            <span class="n">missing</span><span class="o">=</span><span class="n">default_gaussian_process_parameters</span><span class="o">.</span><span class="n">signal_variance</span><span class="p">,</span>
+            <span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="EiOptimizationParameters"><a class="viewcode-back" href="../../../moe.views.html#moe.views.schemas.EiOptimizationParameters">[docs]</a><span class="k">class</span> <span class="nc">EiOptimizationParameters</span><span class="p">(</span><span class="n">colander</span><span class="o">.</span><span class="n">MappingSchema</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;Optimization parameters.&quot;&quot;&quot;</span>
+
+    <span class="n">num_multistarts</span> <span class="o">=</span> <span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="p">(</span>
+            <span class="n">colander</span><span class="o">.</span><span class="n">Int</span><span class="p">(),</span>
+            <span class="n">missing</span><span class="o">=</span><span class="n">default_ei_optimization_parameters</span><span class="o">.</span><span class="n">num_multistarts</span><span class="p">,</span>
+            <span class="n">validator</span><span class="o">=</span><span class="n">colander</span><span class="o">.</span><span class="n">Range</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+            <span class="p">)</span>
+    <span class="n">gd_iterations</span> <span class="o">=</span> <span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="p">(</span>
+            <span class="n">colander</span><span class="o">.</span><span class="n">Int</span><span class="p">(),</span>
+            <span class="n">missing</span><span class="o">=</span><span class="n">default_ei_optimization_parameters</span><span class="o">.</span><span class="n">gd_iterations</span><span class="p">,</span>
+            <span class="n">validator</span><span class="o">=</span><span class="n">colander</span><span class="o">.</span><span class="n">Range</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">10</span><span class="p">),</span>
+            <span class="p">)</span>
+    <span class="n">max_num_restarts</span> <span class="o">=</span> <span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="p">(</span>
+            <span class="n">colander</span><span class="o">.</span><span class="n">Int</span><span class="p">(),</span>
+            <span class="n">missing</span><span class="o">=</span><span class="n">default_ei_optimization_parameters</span><span class="o">.</span><span class="n">max_num_restarts</span><span class="p">,</span>
+            <span class="n">validator</span><span class="o">=</span><span class="n">colander</span><span class="o">.</span><span class="n">Range</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+            <span class="p">)</span>
+    <span class="n">gamma</span> <span class="o">=</span> <span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="p">(</span>
+            <span class="n">colander</span><span class="o">.</span><span class="n">Float</span><span class="p">(),</span>
+            <span class="n">missing</span><span class="o">=</span><span class="n">default_ei_optimization_parameters</span><span class="o">.</span><span class="n">gamma</span><span class="p">,</span>
+            <span class="n">validator</span><span class="o">=</span><span class="n">colander</span><span class="o">.</span><span class="n">Range</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mf">1.0</span><span class="p">),</span>
+            <span class="p">)</span>
+    <span class="n">pre_mult</span> <span class="o">=</span> <span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="p">(</span>
+            <span class="n">colander</span><span class="o">.</span><span class="n">Float</span><span class="p">(),</span>
+            <span class="n">missing</span><span class="o">=</span><span class="n">default_ei_optimization_parameters</span><span class="o">.</span><span class="n">pre_mult</span><span class="p">,</span>
+            <span class="n">validator</span><span class="o">=</span><span class="n">colander</span><span class="o">.</span><span class="n">Range</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mf">0.0</span><span class="p">),</span>
+            <span class="p">)</span>
+    <span class="n">mc_iterations</span> <span class="o">=</span> <span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="p">(</span>
+            <span class="n">colander</span><span class="o">.</span><span class="n">Int</span><span class="p">(),</span>
+            <span class="n">missing</span><span class="o">=</span><span class="n">default_ei_optimization_parameters</span><span class="o">.</span><span class="n">mc_iterations</span><span class="p">,</span>
+            <span class="n">validator</span><span class="o">=</span><span class="n">colander</span><span class="o">.</span><span class="n">Range</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">100</span><span class="p">),</span>
+            <span class="p">)</span>
+    <span class="n">max_relative_change</span> <span class="o">=</span> <span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="p">(</span>
+            <span class="n">colander</span><span class="o">.</span><span class="n">Float</span><span class="p">(),</span>
+            <span class="n">missing</span><span class="o">=</span><span class="n">default_ei_optimization_parameters</span><span class="o">.</span><span class="n">max_relative_change</span><span class="p">,</span>
+            <span class="n">validator</span><span class="o">=</span><span class="n">colander</span><span class="o">.</span><span class="n">Range</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mf">1.0</span><span class="p">),</span>
+            <span class="p">)</span>
+    <span class="n">tolerance</span> <span class="o">=</span> <span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="p">(</span>
+            <span class="n">colander</span><span class="o">.</span><span class="n">Float</span><span class="p">(),</span>
+            <span class="n">missing</span><span class="o">=</span><span class="n">default_ei_optimization_parameters</span><span class="o">.</span><span class="n">tolerance</span><span class="p">,</span>
+            <span class="n">validator</span><span class="o">=</span><span class="n">colander</span><span class="o">.</span><span class="n">Range</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mf">1.0e-15</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mf">1.0e-4</span><span class="p">),</span>
+            <span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="ListOfPointsInDomain"><a class="viewcode-back" href="../../../moe.views.html#moe.views.schemas.ListOfPointsInDomain">[docs]</a><span class="k">class</span> <span class="nc">ListOfPointsInDomain</span><span class="p">(</span><span class="n">colander</span><span class="o">.</span><span class="n">SequenceSchema</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;A list of lists of floats.&quot;&quot;&quot;</span>
+
+    <span class="n">point_in_domain</span> <span class="o">=</span> <span class="n">ListOfFloats</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="ListOfExpectedImprovements"><a class="viewcode-back" href="../../../moe.views.html#moe.views.schemas.ListOfExpectedImprovements">[docs]</a><span class="k">class</span> <span class="nc">ListOfExpectedImprovements</span><span class="p">(</span><span class="n">colander</span><span class="o">.</span><span class="n">SequenceSchema</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;A list of floats all geq 0.0.&quot;&quot;&quot;</span>
+
+    <span class="n">expected_improvement</span> <span class="o">=</span> <span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="p">(</span>
+            <span class="n">colander</span><span class="o">.</span><span class="n">Float</span><span class="p">(),</span>
+            <span class="n">validator</span><span class="o">=</span><span class="n">colander</span><span class="o">.</span><span class="n">Range</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+            <span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="MatrixOfFloats"><a class="viewcode-back" href="../../../moe.views.html#moe.views.schemas.MatrixOfFloats">[docs]</a><span class="k">class</span> <span class="nc">MatrixOfFloats</span><span class="p">(</span><span class="n">colander</span><span class="o">.</span><span class="n">SequenceSchema</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;A 2d list of floats.&quot;&quot;&quot;</span>
+
+    <span class="n">row_of_matrix</span> <span class="o">=</span> <span class="n">ListOfFloats</span><span class="p">()</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../http-routingtable.html" title="HTTP Routing Table"
+             >routing table</a> |</li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">MOE 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../moe.html" >moe</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>moe.easy_interface.experiment &mdash; MOE 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/breathe.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="top" title="MOE 0.1.0 documentation" href="../../../index.html" />
+    <link rel="up" title="moe" href="../../moe.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../http-routingtable.html" title="HTTP Routing Table"
+             >routing table</a> |</li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">MOE 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../moe.html" accesskey="U">moe</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for moe.easy_interface.experiment</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;Classes for MOE optimizable experiments.&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">pprint</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+<span class="n">ExperimentPoint</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s">&#39;ExperimentPoint&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;point&#39;</span><span class="p">,</span> <span class="s">&#39;value&#39;</span><span class="p">,</span> <span class="s">&#39;value_var&#39;</span><span class="p">])</span>
+
+
+<div class="viewcode-block" id="Experiment"><a class="viewcode-back" href="../../../moe.easy_interface.html#moe.easy_interface.experiment.Experiment">[docs]</a><span class="k">class</span> <span class="nc">Experiment</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;A class for MOE optimizable experiments.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">domain</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construct a MOE optimizable experiment.</span>
+
+<span class="sd">        Required arguments:</span>
+<span class="sd">            domain - the domain of the experiment</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">domain</span> <span class="o">=</span> <span class="n">domain</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">points_sampled</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">best_point</span> <span class="o">=</span> <span class="bp">None</span>
+
+    <span class="k">def</span> <span class="nf">__dict__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construct a json serializeable and MOE REST recognizeable dictionary of the experiment.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span>
+                <span class="s">&#39;domain&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="p">,</span>
+                <span class="s">&#39;points_sampled&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">point</span><span class="o">.</span><span class="n">_asdict</span><span class="p">()</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">points_sampled</span><span class="p">],</span>
+                <span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a pprint formated version of the experiment dict.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">pprint</span><span class="o">.</span><span class="n">pformat</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="p">())</span>
+
+<div class="viewcode-block" id="Experiment.add_point"><a class="viewcode-back" href="../../../moe.easy_interface.html#moe.easy_interface.experiment.Experiment.add_point">[docs]</a>    <span class="k">def</span> <span class="nf">add_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point_in_domain</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">value_var</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add a point to the experiment.&quot;&quot;&quot;</span>
+        <span class="n">point</span> <span class="o">=</span> <span class="n">ExperimentPoint</span><span class="p">(</span><span class="n">point_in_domain</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">value_var</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">best_point</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">value</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">best_point</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">best_point</span> <span class="o">=</span> <span class="n">point</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">best_point</span> <span class="o">=</span> <span class="n">point</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">points_sampled</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Experiment.generate_uniform_stencil"><a class="viewcode-back" href="../../../moe.easy_interface.html#moe.easy_interface.experiment.Experiment.generate_uniform_stencil">[docs]</a>    <span class="k">def</span> <span class="nf">generate_uniform_stencil</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size_of_stencil</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Generate a uniform stencil to sample.</span>
+
+<span class="sd">        This makes the assumption that the domain is a hypercube.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">raw_grid</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">dim_domain</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="p">:</span>
+            <span class="n">raw_grid</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">numpy</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span>
+                        <span class="n">dim_domain</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                        <span class="n">dim_domain</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                        <span class="n">num</span><span class="o">=</span><span class="n">size_of_stencil</span>
+                        <span class="p">)</span>
+                    <span class="p">)</span>
+
+        <span class="n">mesh_grid</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="o">*</span><span class="n">raw_grid</span><span class="p">)</span>
+
+        <span class="n">points</span> <span class="o">=</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">size_of_stencil</span> <span class="o">**</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="p">))]</span>
+        <span class="k">for</span> <span class="n">dim_grid</span> <span class="ow">in</span> <span class="n">mesh_grid</span><span class="p">:</span>
+            <span class="n">flat_grid</span> <span class="o">=</span> <span class="n">dim_grid</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">point_idx</span><span class="p">,</span> <span class="n">point</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">flat_grid</span><span class="p">):</span>
+                <span class="n">points</span><span class="p">[</span><span class="n">point_idx</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">points</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../http-routingtable.html" title="HTTP Routing Table"
+             >routing table</a> |</li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">MOE 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../moe.html" >moe</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

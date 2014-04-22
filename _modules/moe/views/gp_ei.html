@@ -1,0 +1,252 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>moe.views.gp_ei &mdash; MOE 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/breathe.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="top" title="MOE 0.1.0 documentation" href="../../../index.html" />
+    <link rel="up" title="moe" href="../../moe.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../http-routingtable.html" title="HTTP Routing Table"
+             >routing table</a> |</li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">MOE 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../moe.html" accesskey="U">moe</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for moe.views.gp_ei</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;Classes for gp_ei endpoints.</span>
+
+<span class="sd">Includes:</span>
+<span class="sd">    1. request and response schemas</span>
+<span class="sd">    2. pretty and backend views</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">colander</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">from</span> <span class="nn">pyramid.view</span> <span class="kn">import</span> <span class="n">view_config</span>
+
+<span class="kn">from</span> <span class="nn">moe.optimal_learning.EPI.src.python.constant</span> <span class="kn">import</span> <span class="n">default_expected_improvement_parameters</span>
+<span class="kn">from</span> <span class="nn">moe.views.gp_pretty_view</span> <span class="kn">import</span> <span class="n">GpPrettyView</span>
+<span class="kn">from</span> <span class="nn">moe.views.schemas</span> <span class="kn">import</span> <span class="n">ListOfPointsInDomain</span><span class="p">,</span> <span class="n">GpInfo</span><span class="p">,</span> <span class="n">ListOfExpectedImprovements</span>
+<span class="kn">from</span> <span class="nn">moe.views.utils</span> <span class="kn">import</span> <span class="n">_make_gp_from_gp_info</span>
+
+
+<div class="viewcode-block" id="GpEiRequest"><a class="viewcode-back" href="../../../moe.views.html#moe.views.gp_ei.GpEiRequest">[docs]</a><span class="k">class</span> <span class="nc">GpEiRequest</span><span class="p">(</span><span class="n">colander</span><span class="o">.</span><span class="n">MappingSchema</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;A gp_ei request colander schema.</span>
+
+<span class="sd">    **Required fields**</span>
+
+<span class="sd">        :points_to_evaluate: list of points in domain to calculate Expected Improvement (EI) a</span>
+<span class="sd">        :gp_info: a GpInfo object of historical data</span>
+
+<span class="sd">    **Optional fields**</span>
+
+<span class="sd">        :points_being_sampled: list of points in domain being sampled (default: [])</span>
+<span class="sd">        :mc_iterations: number of Monte Carlo (MC) iterations to perform in numerical integration to calculate EI (default: 1000)</span>
+
+<span class="sd">    **Example Request**</span>
+
+<span class="sd">    .. sourcecode:: http</span>
+
+<span class="sd">        Content-Type: text/javascrip</span>
+
+<span class="sd">        {</span>
+<span class="sd">            &#39;points_to_evaluate&#39;: [[0.1], [0.5], [0.9]],</span>
+<span class="sd">            &#39;points_being_sampled&#39;: [],</span>
+<span class="sd">            &#39;mc_iterations&#39;: 1000,</span>
+<span class="sd">            &#39;gp_info&#39;: {</span>
+<span class="sd">                &#39;points_sampled&#39;: [</span>
+<span class="sd">                        {&#39;value_var&#39;: 0.01, &#39;value&#39;: 0.1, &#39;point&#39;: [0.0]},</span>
+<span class="sd">                        {&#39;value_var&#39;: 0.01, &#39;value&#39;: 0.2, &#39;point&#39;: [1.0]}</span>
+<span class="sd">                    ],</span>
+<span class="sd">                &#39;domain&#39;: [</span>
+<span class="sd">                    [0, 1],</span>
+<span class="sd">                    ]</span>
+<span class="sd">                },</span>
+<span class="sd">            },</span>
+<span class="sd">        }</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">points_to_evaluate</span> <span class="o">=</span> <span class="n">ListOfPointsInDomain</span><span class="p">()</span>
+    <span class="n">points_being_sampled</span> <span class="o">=</span> <span class="n">ListOfPointsInDomain</span><span class="p">(</span>
+            <span class="n">missing</span><span class="o">=</span><span class="p">[],</span>
+            <span class="p">)</span>
+    <span class="n">mc_iterations</span> <span class="o">=</span> <span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="p">(</span>
+            <span class="n">colander</span><span class="o">.</span><span class="n">Int</span><span class="p">(),</span>
+            <span class="n">validator</span><span class="o">=</span><span class="n">colander</span><span class="o">.</span><span class="n">Range</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+            <span class="n">missing</span><span class="o">=</span><span class="n">default_expected_improvement_parameters</span><span class="o">.</span><span class="n">mc_iterations</span><span class="p">,</span>
+            <span class="p">)</span>
+    <span class="n">gp_info</span> <span class="o">=</span> <span class="n">GpInfo</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="GpEiResponse"><a class="viewcode-back" href="../../../moe.views.html#moe.views.gp_ei.GpEiResponse">[docs]</a><span class="k">class</span> <span class="nc">GpEiResponse</span><span class="p">(</span><span class="n">colander</span><span class="o">.</span><span class="n">MappingSchema</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;A gp_ei response colander schema.</span>
+
+<span class="sd">    **Output fields**</span>
+
+<span class="sd">        :endpoint: the endpoint that was called</span>
+<span class="sd">        :expected_improvement: list of calculated expected improvements</span>
+
+<span class="sd">    **Example Response**</span>
+
+<span class="sd">    .. sourcecode:: http</span>
+
+<span class="sd">        {</span>
+<span class="sd">            &quot;endpoint&quot;:&quot;gp_ei&quot;,</span>
+<span class="sd">            &quot;expected_improvement&quot;:[&quot;0.197246898375&quot;,&quot;0.443163755117&quot;,&quot;0.155819546878&quot;]</span>
+<span class="sd">        }</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">endpoint</span> <span class="o">=</span> <span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="p">(</span><span class="n">colander</span><span class="o">.</span><span class="n">String</span><span class="p">())</span>
+    <span class="n">expected_improvement</span> <span class="o">=</span> <span class="n">ListOfExpectedImprovements</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="GpEiView"><a class="viewcode-back" href="../../../moe.views.html#moe.views.gp_ei.GpEiView">[docs]</a><span class="k">class</span> <span class="nc">GpEiView</span><span class="p">(</span><span class="n">GpPrettyView</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;Views for gp_ei endpoints.&quot;&quot;&quot;</span>
+
+    <span class="n">route_name</span> <span class="o">=</span> <span class="s">&#39;gp_ei&#39;</span>
+    <span class="n">pretty_route_name</span> <span class="o">=</span> <span class="s">&#39;gp_ei_pretty&#39;</span>
+
+    <span class="n">request_schema</span> <span class="o">=</span> <span class="n">GpEiRequest</span><span class="p">()</span>
+    <span class="n">response_schema</span> <span class="o">=</span> <span class="n">GpEiResponse</span><span class="p">()</span>
+
+    <span class="n">pretty_default_request</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&quot;points_to_evaluate&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="p">[</span><span class="mf">0.1</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.9</span><span class="p">],</span>
+                <span class="p">],</span>
+            <span class="s">&quot;gp_info&quot;</span><span class="p">:</span> <span class="n">GpPrettyView</span><span class="o">.</span><span class="n">pretty_default_gp_info</span><span class="p">,</span>
+            <span class="p">}</span>
+
+    <span class="nd">@view_config</span><span class="p">(</span><span class="n">route_name</span><span class="o">=</span><span class="n">pretty_route_name</span><span class="p">,</span> <span class="n">renderer</span><span class="o">=</span><span class="n">GpPrettyView</span><span class="o">.</span><span class="n">pretty_renderer</span><span class="p">)</span>
+<div class="viewcode-block" id="GpEiView.pretty_view"><a class="viewcode-back" href="../../../moe.views.html#moe.views.gp_ei.GpEiView.pretty_view">[docs]</a>    <span class="k">def</span> <span class="nf">pretty_view</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;A pretty, browser interactive view for the interface. Includes form request and response.</span>
+
+<span class="sd">        .. http:get:: /gp/ei/pretty</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pretty_response</span><span class="p">()</span>
+</div>
+    <span class="nd">@view_config</span><span class="p">(</span><span class="n">route_name</span><span class="o">=</span><span class="n">route_name</span><span class="p">,</span> <span class="n">renderer</span><span class="o">=</span><span class="s">&#39;json&#39;</span><span class="p">,</span> <span class="n">request_method</span><span class="o">=</span><span class="s">&#39;POST&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="GpEiView.gp_ei_view"><a class="viewcode-back" href="../../../moe.views.html#moe.views.gp_ei.GpEiView.gp_ei_view">[docs]</a>    <span class="k">def</span> <span class="nf">gp_ei_view</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Endpoint for gp_ei POST requests.</span>
+
+<span class="sd">        .. http:post:: /gp/ei</span>
+
+<span class="sd">           Calculates the Expected Improvement (EI) of a set of points, given historical data.</span>
+
+<span class="sd">           :input: moe.views.gp_ei.GpEiRequest()</span>
+<span class="sd">           :output: moe.views.gp_ei.GpEiResponse()</span>
+
+<span class="sd">           :status 200: returns a response</span>
+<span class="sd">           :status 500: server error</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_params_from_request</span><span class="p">()</span>
+
+        <span class="n">points_to_evaluate</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;points_to_evaluate&#39;</span><span class="p">))</span>
+        <span class="n">points_being_sampled</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;points_being_sampled&#39;</span><span class="p">))</span>
+        <span class="n">gp_info</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;gp_info&#39;</span><span class="p">)</span>
+
+        <span class="n">GP</span> <span class="o">=</span> <span class="n">_make_gp_from_gp_info</span><span class="p">(</span><span class="n">gp_info</span><span class="p">)</span>
+
+        <span class="n">expected_improvement</span> <span class="o">=</span> <span class="n">GP</span><span class="o">.</span><span class="n">evaluate_expected_improvement_at_point_list</span><span class="p">(</span>
+                <span class="n">points_to_evaluate</span><span class="p">,</span>
+                <span class="n">points_being_sampled</span><span class="o">=</span><span class="n">points_being_sampled</span><span class="p">,</span>
+                <span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">form_response</span><span class="p">({</span>
+                <span class="s">&#39;endpoint&#39;</span><span class="p">:</span> <span class="s">&#39;gp_ei&#39;</span><span class="p">,</span>
+                <span class="s">&#39;expected_improvement&#39;</span><span class="p">:</span> <span class="n">expected_improvement</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
+                <span class="p">})</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../http-routingtable.html" title="HTTP Routing Table"
+             >routing table</a> |</li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">MOE 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../moe.html" >moe</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

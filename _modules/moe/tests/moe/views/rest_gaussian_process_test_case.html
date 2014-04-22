@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>moe.tests.moe.views.rest_gaussian_process_test_case &mdash; MOE 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../_static/breathe.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../../../../../_static/favicon.ico"/>
+    <link rel="top" title="MOE 0.1.0 documentation" href="../../../../../index.html" />
+    <link rel="up" title="moe" href="../../../../moe.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../http-routingtable.html" title="HTTP Routing Table"
+             >routing table</a> |</li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../index.html">MOE 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../../../moe.html" accesskey="U">moe</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for moe.tests.moe.views.rest_gaussian_process_test_case</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;Base class for testing the REST interface against the C++ interface.&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">testify</span> <span class="kn">as</span> <span class="nn">T</span>
+
+<span class="kn">from</span> <span class="nn">moe.tests.EPI.src.python.gaussian_process_test_case</span> <span class="kn">import</span> <span class="n">GaussianProcessTestCase</span>
+
+
+<div class="viewcode-block" id="RestGaussianProcessTestCase"><a class="viewcode-back" href="../../../../../moe.tests.moe.views.html#moe.tests.moe.views.rest_gaussian_process_test_case.RestGaussianProcessTestCase">[docs]</a><span class="k">class</span> <span class="nc">RestGaussianProcessTestCase</span><span class="p">(</span><span class="n">GaussianProcessTestCase</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;Base class for testing the REST interface against the C++ interface.&quot;&quot;&quot;</span>
+
+    <span class="n">endpoint</span> <span class="o">=</span> <span class="bp">None</span>
+
+    <span class="n">domain_1d</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span>
+    <span class="n">domain_2d</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span>
+    <span class="n">domain_3d</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span>
+
+    <span class="nd">@T.class_setup</span>
+<div class="viewcode-block" id="RestGaussianProcessTestCase.create_webapp"><a class="viewcode-back" href="../../../../../moe.tests.moe.views.html#moe.tests.moe.views.rest_gaussian_process_test_case.RestGaussianProcessTestCase.create_webapp">[docs]</a>    <span class="k">def</span> <span class="nf">create_webapp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a mocked webapp and store it in self.testapp.&quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">moe</span> <span class="kn">import</span> <span class="n">main</span>
+        <span class="n">app</span> <span class="o">=</span> <span class="n">main</span><span class="p">({},</span> <span class="n">use_mongo</span><span class="o">=</span><span class="s">&#39;false&#39;</span><span class="p">)</span>
+        <span class="kn">from</span> <span class="nn">webtest</span> <span class="kn">import</span> <span class="n">TestApp</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">testapp</span> <span class="o">=</span> <span class="n">TestApp</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+</div>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_build_gp_info</span><span class="p">(</span><span class="n">GP</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create and return a gp_info dictionary from a GP object.&quot;&quot;&quot;</span>
+        <span class="c"># Convert sampled points</span>
+        <span class="n">json_points_sampled</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">point</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">GP</span><span class="o">.</span><span class="n">points_sampled</span><span class="p">):</span>
+            <span class="n">json_points_sampled</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+                    <span class="s">&#39;point&#39;</span><span class="p">:</span> <span class="n">point</span><span class="o">.</span><span class="n">point</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>  <span class="c"># json needs the numpy array to be a list</span>
+                    <span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="n">point</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                    <span class="s">&#39;value_var&#39;</span><span class="p">:</span> <span class="n">GP</span><span class="o">.</span><span class="n">sample_variance_of_samples</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                    <span class="p">})</span>
+
+        <span class="c"># Build entire gp_info dict</span>
+        <span class="n">gp_info</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s">&#39;points_sampled&#39;</span><span class="p">:</span> <span class="n">json_points_sampled</span><span class="p">,</span>
+                <span class="s">&#39;domain&#39;</span><span class="p">:</span> <span class="n">GP</span><span class="o">.</span><span class="n">domain</span><span class="p">,</span>
+                <span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">gp_info</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../http-routingtable.html" title="HTTP Routing Table"
+             >routing table</a> |</li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../index.html">MOE 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../../../moe.html" >moe</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

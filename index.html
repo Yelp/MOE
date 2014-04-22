@@ -27,7 +27,7 @@
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
     <link rel="top" title="MOE 0.1.0 documentation" href="#" />
-    <link rel="next" title="optimal_learning.EPI.src.python.models package" href="optimal_learning.EPI.src.python.models.html" /> 
+    <link rel="next" title="moe package" href="moe.html" /> 
   </head>
   <body>
     <div class="related">
@@ -37,10 +37,13 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
+          <a href="http-routingtable.html" title="HTTP Routing Table"
+             >routing table</a> |</li>
+        <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="optimal_learning.EPI.src.python.models.html" title="optimal_learning.EPI.src.python.models package"
+          <a href="moe.html" title="moe package"
              accesskey="N">next</a> |</li>
         <li><a href="#">MOE 0.1.0 documentation</a> &raquo;</li> 
       </ul>
@@ -114,7 +117,7 @@ the compiler, run <tt class="docutils literal"><span class="pre">rm</span> <span
 <li>Download MacPorts - <a class="reference external" href="http://www.macports.org/install.php">http://www.macports.org/install.php</a> (If you change the install directory from <tt class="docutils literal"><span class="pre">/opt/local</span></tt>, don&#8217;t forget to update the cmake invocation.)</li>
 <li>MacPorts can resolve most dependencies. Make sure you set your <tt class="docutils literal"><span class="pre">PATH</span></tt> env var.</li>
 <li>Download xQuartz (needed for X11, needed for matplotlib) - <a class="reference external" href="http://xquartz.macosforge.org/landing/">http://xquartz.macosforge.org/landing/</a> (Also available through MacPorts, see item 4.)</li>
-<li>Getting gcc, boost, matplotlib, and xQuartz (<a href="#id1"><span class="problematic" id="id2">`</span></a>xorg-server) reqs (before installing MOE):</li>
+<li>Getting gcc, boost, matplotlib, and xQuartz (<tt class="docutils literal"><span class="pre">xorg-server</span></tt>) reqs (before installing MOE):</li>
 </ol>
 <div class="highlight-python"><div class="highlight"><pre>$ sudo port selfupdate
 $ sudo port install gcc47
@@ -158,26 +161,51 @@ $ sudo port install doxygen
 <h2>Python Files<a class="headerlink" href="#python-files" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="optimal_learning.EPI.src.python.models.html">optimal_learning.EPI.src.python.models package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="optimal_learning.EPI.src.python.models.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="optimal_learning.EPI.src.python.models.html#module-optimal_learning.EPI.src.python.models.covariance_of_process">optimal_learning.EPI.src.python.models.covariance_of_process module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="optimal_learning.EPI.src.python.models.html#module-optimal_learning.EPI.src.python.models.gaussian_process">optimal_learning.EPI.src.python.models.gaussian_process module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="optimal_learning.EPI.src.python.models.html#module-optimal_learning.EPI.src.python.models.optimal_gaussian_process">optimal_learning.EPI.src.python.models.optimal_gaussian_process module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="optimal_learning.EPI.src.python.models.html#module-optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp">optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="optimal_learning.EPI.src.python.models.html#module-optimal_learning.EPI.src.python.models.plottable_optimal_gaussian_process">optimal_learning.EPI.src.python.models.plottable_optimal_gaussian_process module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="optimal_learning.EPI.src.python.models.html#module-optimal_learning.EPI.src.python.models.sample_point">optimal_learning.EPI.src.python.models.sample_point module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="optimal_learning.EPI.src.python.models.html#module-optimal_learning.EPI.src.python.models">Module contents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="moe.html">moe package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="moe.build.html">moe.build package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="moe.build.html#module-moe.build">Module contents</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="optimal_learning.EPI.src.python.lib.html">optimal_learning.EPI.src.python.lib package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="optimal_learning.EPI.src.python.lib.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="optimal_learning.EPI.src.python.lib.html#optimal-learning-epi-src-python-lib-cuda-linkers-module">optimal_learning.EPI.src.python.lib.cuda_linkers module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="optimal_learning.EPI.src.python.lib.html#module-optimal_learning.EPI.src.python.lib.math">optimal_learning.EPI.src.python.lib.math module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="optimal_learning.EPI.src.python.lib.html#module-optimal_learning.EPI.src.python.lib.mvncdf">optimal_learning.EPI.src.python.lib.mvncdf module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="optimal_learning.EPI.src.python.lib.html#optimal-learning-epi-src-python-lib-plotter-module">optimal_learning.EPI.src.python.lib.plotter module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="optimal_learning.EPI.src.python.lib.html#optimal-learning-epi-src-python-lib-space-io-module">optimal_learning.EPI.src.python.lib.space_io module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="optimal_learning.EPI.src.python.lib.html#optimal-learning-epi-src-python-lib-updater-module">optimal_learning.EPI.src.python.lib.updater module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="optimal_learning.EPI.src.python.lib.html#module-optimal_learning.EPI.src.python.lib">Module contents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="moe.easy_interface.html">moe.easy_interface package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="moe.easy_interface.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.easy_interface.html#module-moe.easy_interface.experiment">moe.easy_interface.experiment module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.easy_interface.html#moe-easy-interface-simple-endpoint-module">moe.easy_interface.simple_endpoint module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.easy_interface.html#module-moe.easy_interface">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="moe.optimal_learning.html">moe.optimal_learning package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="moe.optimal_learning.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.optimal_learning.html#module-moe.optimal_learning">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="moe.tests.html">moe.tests package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="moe.tests.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.tests.html#module-moe.tests">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="moe.views.html">moe.views package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="moe.views.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.views.html#module-moe.views.constant">moe.views.constant module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.views.html#module-moe.views.exceptions">moe.views.exceptions module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.views.html#module-moe.views.frontend">moe.views.frontend module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.views.html#moe-views-gp-ei-module">moe.views.gp_ei module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.views.html#moe-views-gp-mean-var-module">moe.views.gp_mean_var module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.views.html#moe-views-gp-next-points-constant-liar-module">moe.views.gp_next_points_constant_liar module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.views.html#moe-views-gp-next-points-epi-module">moe.views.gp_next_points_epi module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.views.html#moe-views-gp-next-points-kriging-module">moe.views.gp_next_points_kriging module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.views.html#moe-views-gp-next-points-pretty-view-module">moe.views.gp_next_points_pretty_view module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.views.html#module-moe.views.gp_pretty_view">moe.views.gp_pretty_view module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.views.html#moe-views-schemas-module">moe.views.schemas module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.views.html#module-moe.views.utils">moe.views.utils module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.views.html#module-moe.views">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#module-moe.resources">moe.resources module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#module-moe">Module contents</a></li>
 </ul>
 </li>
 </ul>
@@ -234,8 +262,8 @@ $ sudo port install doxygen
 </ul>
 
   <h4>Next topic</h4>
-  <p class="topless"><a href="optimal_learning.EPI.src.python.models.html"
-                        title="next chapter">optimal_learning.EPI.src.python.models package</a></p>
+  <p class="topless"><a href="moe.html"
+                        title="next chapter">moe package</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="_sources/index.txt"
@@ -265,10 +293,13 @@ $ sudo port install doxygen
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
+          <a href="http-routingtable.html" title="HTTP Routing Table"
+             >routing table</a> |</li>
+        <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="optimal_learning.EPI.src.python.models.html" title="optimal_learning.EPI.src.python.models package"
+          <a href="moe.html" title="moe package"
              >next</a> |</li>
         <li><a href="#">MOE 0.1.0 documentation</a> &raquo;</li> 
       </ul>

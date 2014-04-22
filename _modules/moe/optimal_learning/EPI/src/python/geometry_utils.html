@@ -1,0 +1,150 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>moe.optimal_learning.EPI.src.python.geometry_utils &mdash; MOE 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../../_static/breathe.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../../',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../../../../../../_static/favicon.ico"/>
+    <link rel="top" title="MOE 0.1.0 documentation" href="../../../../../../index.html" />
+    <link rel="up" title="moe" href="../../../../../moe.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../../http-routingtable.html" title="HTTP Routing Table"
+             >routing table</a> |</li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">MOE 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../../../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../../../../moe.html" accesskey="U">moe</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for moe.optimal_learning.EPI.src.python.geometry_utils</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;Geometry utilities. e.g., ClosedInterval, point-plane geometry.&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">collections</span>
+
+
+<div class="viewcode-block" id="ClosedInterval"><a class="viewcode-back" href="../../../../../../moe.optimal_learning.EPI.src.python.html#moe.optimal_learning.EPI.src.python.geometry_utils.ClosedInterval">[docs]</a><span class="k">class</span> <span class="nc">ClosedInterval</span><span class="p">(</span><span class="n">collections</span><span class="o">.</span><span class="n">namedtuple</span><span class="p">(</span><span class="s">&#39;ClosedInterval&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;min&#39;</span><span class="p">,</span> <span class="s">&#39;max&#39;</span><span class="p">])):</span>
+
+    <span class="sd">r&quot;&quot;&quot;Container to represent the mathematical notion of a closed interval, commonly written \ms [a,b]\me.</span>
+
+<span class="sd">    The closed interval \ms [a,b]\me is the set of all numbers \ms x \in \mathbb{R}\me such that \ms a \leq x \leq b\me.</span>
+<span class="sd">    Note that &quot;closed&quot; here indicates the interval *includes* both endpoints.</span>
+<span class="sd">    An interval with \ms a &gt; b\me is considered empty.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">__slots__</span> <span class="o">=</span> <span class="p">()</span>
+
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="ClosedInterval.build_closed_intervals_from_list"><a class="viewcode-back" href="../../../../../../moe.optimal_learning.EPI.src.python.html#moe.optimal_learning.EPI.src.python.geometry_utils.ClosedInterval.build_closed_intervals_from_list">[docs]</a>    <span class="k">def</span> <span class="nf">build_closed_intervals_from_list</span><span class="p">(</span><span class="n">bounds_list</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construct a list of dim ClosedInterval from an iterable structure of dim iterables with len = 2.</span>
+
+<span class="sd">        For example, [[1, 2], [3, 4]] becomes [ClosedInterval(min=1, max=2), ClosedInterval(min=3, max=4)].</span>
+
+<span class="sd">        :param bounds_list: bounds to convert</span>
+<span class="sd">        :type bounds_list: iterable of iterables, where the second dimension has len = 2</span>
+<span class="sd">        :return: bounds_list converted to list of ClosedInterval</span>
+<span class="sd">        :rtype: list of ClosedInterval</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">bounds</span> <span class="ow">in</span> <span class="n">bounds_list</span><span class="p">:</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ClosedInterval</span><span class="p">(</span><span class="n">bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+
+        <span class="k">return</span> <span class="n">result</span>
+</div>
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="ClosedInterval.length"><a class="viewcode-back" href="../../../../../../moe.optimal_learning.EPI.src.python.html#moe.optimal_learning.EPI.src.python.geometry_utils.ClosedInterval.length">[docs]</a>    <span class="k">def</span> <span class="nf">length</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute the length of this ClosedInterval.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">max</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">min</span>
+</div>
+<div class="viewcode-block" id="ClosedInterval.is_inside"><a class="viewcode-back" href="../../../../../../moe.optimal_learning.EPI.src.python.html#moe.optimal_learning.EPI.src.python.geometry_utils.ClosedInterval.is_inside">[docs]</a>    <span class="k">def</span> <span class="nf">is_inside</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Check if a value is inside this ClosedInterval.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">value</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">min</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">value</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="ClosedInterval.is_empty"><a class="viewcode-back" href="../../../../../../moe.optimal_learning.EPI.src.python.html#moe.optimal_learning.EPI.src.python.geometry_utils.ClosedInterval.is_empty">[docs]</a>    <span class="k">def</span> <span class="nf">is_empty</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Check whether this ClosedInterval is the emptyset: max &lt; min.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">max</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">min</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../../http-routingtable.html" title="HTTP Routing Table"
+             >routing table</a> |</li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">MOE 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../../../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../../../../moe.html" >moe</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

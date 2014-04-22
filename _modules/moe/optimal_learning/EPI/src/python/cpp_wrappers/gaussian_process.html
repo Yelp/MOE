@@ -1,0 +1,382 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>moe.optimal_learning.EPI.src.python.cpp_wrappers.gaussian_process &mdash; MOE 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../../../_static/breathe.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../../../',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../../../../../../../_static/favicon.ico"/>
+    <link rel="top" title="MOE 0.1.0 documentation" href="../../../../../../../index.html" />
+    <link rel="up" title="moe" href="../../../../../../moe.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../../../http-routingtable.html" title="HTTP Routing Table"
+             >routing table</a> |</li>
+        <li class="right" >
+          <a href="../../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../../index.html">MOE 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../../../../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../../../../../moe.html" accesskey="U">moe</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for moe.optimal_learning.EPI.src.python.cpp_wrappers.gaussian_process</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;Implementation of GaussianProcessInterface using C++ calls.</span>
+
+<span class="sd">This file contains a class to manipulate a Gaussian Process through the C++ implementation (gpp_math.hpp/cpp).</span>
+
+<span class="sd">See interfaces.gaussian_process_interface.py for more details.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+<span class="kn">import</span> <span class="nn">moe.build.GPP</span> <span class="kn">as</span> <span class="nn">C_GP</span>
+<span class="kn">import</span> <span class="nn">moe.optimal_learning.EPI.src.python.cpp_wrappers.cpp_utils</span> <span class="kn">as</span> <span class="nn">cpp_utils</span>
+<span class="kn">from</span> <span class="nn">moe.optimal_learning.EPI.src.python.interfaces.gaussian_process_interface</span> <span class="kn">import</span> <span class="n">GaussianProcessInterface</span>
+
+
+<div class="viewcode-block" id="GaussianProcess"><a class="viewcode-back" href="../../../../../../../moe.optimal_learning.EPI.src.python.cpp_wrappers.html#moe.optimal_learning.EPI.src.python.cpp_wrappers.gaussian_process.GaussianProcess">[docs]</a><span class="k">class</span> <span class="nc">GaussianProcess</span><span class="p">(</span><span class="n">GaussianProcessInterface</span><span class="p">):</span>
+
+    <span class="sd">r&quot;&quot;&quot;Implementation of a GaussianProcess via C++ wrappers: mean, variance, gradients thereof, and data I/O.</span>
+
+<span class="sd">    .. Note: Comments in this class are copied from this&#39;s superclass in interfaces.gaussian_process_interface.py.</span>
+
+<span class="sd">    Object that encapsulates Gaussian Process Priors (GPPs).  A GPP is defined by a set of</span>
+<span class="sd">    (sample point, function value, noise variance) triples along with a covariance function that relates the points.</span>
+<span class="sd">    Each point has dimension dim.  These are the training data; for example, each sample point might specify an experimental</span>
+<span class="sd">    cohort and the corresponding function value is the objective measured for that experiment.  There is one noise variance</span>
+<span class="sd">    value per function value; this is the measurement error and is treated as N(0, noise_variance) Gaussian noise.</span>
+
+<span class="sd">    GPPs estimate a real process \ms f(x) = GP(m(x), k(x,x&#39;))\me (see file docs).  This class deals with building an estimator</span>
+<span class="sd">    to the actual process using measurements taken from the actual process--the (sample point, function val, noise) triple.</span>
+<span class="sd">    Then predictions about unknown points can be made by sampling from the GPP--in particular, finding the (predicted)</span>
+<span class="sd">    mean and variance.  These functions (and their gradients) are provided in ComputeMeanOfPoints, ComputeVarianceOfPoints,</span>
+<span class="sd">    etc.</span>
+
+<span class="sd">    Further mathematical details are given in the implementation comments, but we are essentially computing:</span>
+
+<span class="sd">    | ComputeMeanOfPoints    : ``K(Xs, X) * [K(X,X) + \sigma_n^2 I]^{-1} * y``</span>
+<span class="sd">    | ComputeVarianceOfPoints: ``K(Xs, Xs) - K(Xs,X) * [K(X,X) + \sigma_n^2 I]^{-1} * K(X,Xs)``</span>
+
+<span class="sd">    This (estimated) mean and variance characterize the predicted distributions of the actual \ms m(x), k(x,x&#39;)\me</span>
+<span class="sd">    functions that underly our GP.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">covariance_function</span><span class="p">,</span> <span class="n">historical_data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construct a GaussianProcess object that knows how to call C++ for evaluation of member functions.</span>
+
+<span class="sd">        :param covariance_function: covariance object encoding assumptions about the GP&#39;s behavior on our data</span>
+<span class="sd">        :type covariance_function: Covariance object exposing hyperparameters (e.g., from cpp_wrappers.covariance)</span>
+<span class="sd">        :param historical_data: object specifying the already-sampled points, the objective value at those points, and the noise variance associated with each observation</span>
+<span class="sd">        :type historical_data: HistoricalData object</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_covariance</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">covariance_function</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_historical_data</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">historical_data</span><span class="p">)</span>
+
+        <span class="c"># C++ will maintain its own copy of the contents of hyperparameters and historical_data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_gaussian_process</span> <span class="o">=</span> <span class="n">C_GP</span><span class="o">.</span><span class="n">GaussianProcess</span><span class="p">(</span>
+            <span class="n">cpp_utils</span><span class="o">.</span><span class="n">cppify_hyperparameters</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_covariance</span><span class="o">.</span><span class="n">get_hyperparameters</span><span class="p">()),</span>  <span class="c"># hyperparameters, e.g., [signal variance, [length scales]]; see cpp_utils.cppify_hyperparameter docs, C++ python interface docs</span>
+            <span class="n">cpp_utils</span><span class="o">.</span><span class="n">cppify</span><span class="p">(</span><span class="n">historical_data</span><span class="o">.</span><span class="n">points_sampled</span><span class="p">),</span>  <span class="c"># points already sampled</span>
+            <span class="n">cpp_utils</span><span class="o">.</span><span class="n">cppify</span><span class="p">(</span><span class="n">historical_data</span><span class="o">.</span><span class="n">points_sampled_value</span><span class="p">),</span>  <span class="c"># objective value at each sampled point</span>
+            <span class="n">cpp_utils</span><span class="o">.</span><span class="n">cppify</span><span class="p">(</span><span class="n">historical_data</span><span class="o">.</span><span class="n">points_sampled_noise_variance</span><span class="p">),</span>  <span class="c"># noise variance, one value per sampled point</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">num_sampled</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="GaussianProcess.dim"><a class="viewcode-back" href="../../../../../../../moe.optimal_learning.EPI.src.python.cpp_wrappers.html#moe.optimal_learning.EPI.src.python.cpp_wrappers.gaussian_process.GaussianProcess.dim">[docs]</a>    <span class="k">def</span> <span class="nf">dim</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the number of spatial dimensions.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_historical_data</span><span class="o">.</span><span class="n">dim</span>
+</div>
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="GaussianProcess.num_sampled"><a class="viewcode-back" href="../../../../../../../moe.optimal_learning.EPI.src.python.cpp_wrappers.html#moe.optimal_learning.EPI.src.python.cpp_wrappers.gaussian_process.GaussianProcess.num_sampled">[docs]</a>    <span class="k">def</span> <span class="nf">num_sampled</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the number of sampled points.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_historical_data</span><span class="o">.</span><span class="n">num_sampled</span>
+</div>
+<div class="viewcode-block" id="GaussianProcess.compute_mean_of_points"><a class="viewcode-back" href="../../../../../../../moe.optimal_learning.EPI.src.python.cpp_wrappers.html#moe.optimal_learning.EPI.src.python.cpp_wrappers.gaussian_process.GaussianProcess.compute_mean_of_points">[docs]</a>    <span class="k">def</span> <span class="nf">compute_mean_of_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points_to_sample</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Compute the mean of this GP at each of point of ``Xs`` (``points_to_sample``).</span>
+
+<span class="sd">        ``points_to_sample`` may not contain duplicate points. Violating this results in singular covariance matrices.</span>
+
+<span class="sd">        .. Note: Comments in this class are copied from this&#39;s superclass in interfaces.gaussian_process_interface.py.</span>
+
+<span class="sd">        :param points_to_sample: num_to_sample points (in dim dimensions) being sampled from the GP</span>
+<span class="sd">        :type points_to_sample: array of float64 with shape (num_to_sample, dim)</span>
+<span class="sd">        :return: mean: where mean[i] is the mean at points_to_sample[i]</span>
+<span class="sd">        :rtype: array of float64 with shape (num_to_sample)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">num_to_sample</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">)</span>
+        <span class="n">mu</span> <span class="o">=</span> <span class="n">C_GP</span><span class="o">.</span><span class="n">get_mean</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_gaussian_process</span><span class="p">,</span>  <span class="c"># C++ GaussianProcess object</span>
+            <span class="n">cpp_utils</span><span class="o">.</span><span class="n">cppify</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">),</span>  <span class="c"># points at which to compute mean</span>
+            <span class="n">num_to_sample</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mu</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="GaussianProcess.compute_grad_mean_of_points"><a class="viewcode-back" href="../../../../../../../moe.optimal_learning.EPI.src.python.cpp_wrappers.html#moe.optimal_learning.EPI.src.python.cpp_wrappers.gaussian_process.GaussianProcess.compute_grad_mean_of_points">[docs]</a>    <span class="k">def</span> <span class="nf">compute_grad_mean_of_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points_to_sample</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Compute the gradient of the mean of this GP at each of point of ``Xs`` (``points_to_sample``) wrt ``Xs``.</span>
+
+<span class="sd">        ``points_to_sample`` may not contain duplicate points. Violating this results in singular covariance matrices.</span>
+
+<span class="sd">        Note that ``grad_mu`` is nominally sized: ``grad_mu[num_to_sample][num_to_sample][dim]``. This is</span>
+<span class="sd">        the the d-th component of the derivative evaluated at the i-th input wrt the j-th input.</span>
+<span class="sd">        However, for ``0 &lt;= i,j &lt; num_to_sample``, ``i != j``, ``grad_mu[j][i][d] = 0``.</span>
+<span class="sd">        (See references or implementation for further details.)</span>
+<span class="sd">        Thus, ``grad_mu`` is stored in a reduced form which only tracks the nonzero entries.</span>
+
+<span class="sd">        .. Note: Comments in this class are copied from this&#39;s superclass in interfaces.gaussian_process_interface.py.</span>
+
+<span class="sd">        :param points_to_sample: num_to_sample points (in dim dimensions) being sampled from the GP</span>
+<span class="sd">        :type points_to_sample: array of float64 with shape (num_to_sample, dim)</span>
+<span class="sd">        :return: grad_mu: gradient of the mean of the GP. ``grad_mu[i][d]`` is actually the gradient</span>
+<span class="sd">          of ``\mu_i`` wrt ``x_{i,d}``, the d-th dim of the i-th entry of ``points_to_sample``.</span>
+<span class="sd">        :rtype: array of float64 with shape (num_to_sample, dim)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">num_to_sample</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">)</span>
+        <span class="n">grad_mu</span> <span class="o">=</span> <span class="n">C_GP</span><span class="o">.</span><span class="n">get_grad_mean</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_gaussian_process</span><span class="p">,</span>  <span class="c"># C++ GaussianProcess object</span>
+            <span class="n">cpp_utils</span><span class="o">.</span><span class="n">cppify</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">),</span>  <span class="c"># points at which to compute grad mean</span>
+            <span class="n">num_to_sample</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">cpp_utils</span><span class="o">.</span><span class="n">uncppify</span><span class="p">(</span><span class="n">grad_mu</span><span class="p">,</span> <span class="p">(</span><span class="n">num_to_sample</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">))</span>
+</div>
+<div class="viewcode-block" id="GaussianProcess.compute_variance_of_points"><a class="viewcode-back" href="../../../../../../../moe.optimal_learning.EPI.src.python.cpp_wrappers.html#moe.optimal_learning.EPI.src.python.cpp_wrappers.gaussian_process.GaussianProcess.compute_variance_of_points">[docs]</a>    <span class="k">def</span> <span class="nf">compute_variance_of_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points_to_sample</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Compute the variance (matrix) of this GP at each point of ``Xs`` (``points_to_sample``).</span>
+
+<span class="sd">        ``points_to_sample`` may not contain duplicate points. Violating this results in singular covariance matrices.</span>
+
+<span class="sd">        The variance matrix is symmetric although we currently return the full representation.</span>
+
+<span class="sd">        .. Note: Comments in this class are copied from this&#39;s superclass in interfaces.gaussian_process_interface.py.</span>
+
+<span class="sd">        :param points_to_sample: num_to_sample points (in dim dimensions) being sampled from the GP</span>
+<span class="sd">        :type points_to_sample: array of float64 with shape (num_to_sample, dim)</span>
+<span class="sd">        :return: var_star: variance matrix of this GP</span>
+<span class="sd">        :rtype: array of float64 with shape (num_to_sample, num_to_sample)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">num_to_sample</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">)</span>
+        <span class="n">variance</span> <span class="o">=</span> <span class="n">C_GP</span><span class="o">.</span><span class="n">get_var</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_gaussian_process</span><span class="p">,</span>  <span class="c"># C++ GaussianProcess object</span>
+            <span class="n">cpp_utils</span><span class="o">.</span><span class="n">cppify</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">),</span>  <span class="c"># points to sample</span>
+            <span class="n">num_to_sample</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">cpp_utils</span><span class="o">.</span><span class="n">uncppify</span><span class="p">(</span><span class="n">variance</span><span class="p">,</span> <span class="p">(</span><span class="n">num_to_sample</span><span class="p">,</span> <span class="n">num_to_sample</span><span class="p">))</span>
+</div>
+<div class="viewcode-block" id="GaussianProcess.compute_cholesky_variance_of_points"><a class="viewcode-back" href="../../../../../../../moe.optimal_learning.EPI.src.python.cpp_wrappers.html#moe.optimal_learning.EPI.src.python.cpp_wrappers.gaussian_process.GaussianProcess.compute_cholesky_variance_of_points">[docs]</a>    <span class="k">def</span> <span class="nf">compute_cholesky_variance_of_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points_to_sample</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Compute the cholesky factorization of the variance (matrix) of this GP at each point of ``Xs`` (``points_to_sample``).</span>
+
+<span class="sd">        ``points_to_sample`` may not contain duplicate points. Violating this results in singular covariance matrices.</span>
+
+<span class="sd">        :param points_to_sample: num_to_sample points (in dim dimensions) being sampled from the GP</span>
+<span class="sd">        :type points_to_sample: array of float64 with shape (num_to_sample, dim)</span>
+<span class="sd">        :return: cholesky factorization of the variance matrix of this GP</span>
+<span class="sd">        :rtype: array of float64 with shape (num_to_sample, num_to_sample)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">num_to_sample</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">)</span>
+        <span class="n">cholesky_variance</span> <span class="o">=</span> <span class="n">C_GP</span><span class="o">.</span><span class="n">get_chol_var</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_gaussian_process</span><span class="p">,</span>  <span class="c"># C++ GaussianProcess object</span>
+            <span class="n">cpp_utils</span><span class="o">.</span><span class="n">cppify</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">),</span>  <span class="c"># points to sample</span>
+            <span class="n">num_to_sample</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">cpp_utils</span><span class="o">.</span><span class="n">uncppify</span><span class="p">(</span><span class="n">cholesky_variance</span><span class="p">,</span> <span class="p">(</span><span class="n">num_to_sample</span><span class="p">,</span> <span class="n">num_to_sample</span><span class="p">))</span>
+</div>
+<div class="viewcode-block" id="GaussianProcess.compute_grad_variance_of_points"><a class="viewcode-back" href="../../../../../../../moe.optimal_learning.EPI.src.python.cpp_wrappers.html#moe.optimal_learning.EPI.src.python.cpp_wrappers.gaussian_process.GaussianProcess.compute_grad_variance_of_points">[docs]</a>    <span class="k">def</span> <span class="nf">compute_grad_variance_of_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points_to_sample</span><span class="p">,</span> <span class="n">var_of_grad</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Compute the gradient of the variance (matrix) of this GP at each point of ``Xs`` (``points_to_sample``) wrt ``Xs``.</span>
+
+<span class="sd">        ``points_to_sample`` may not contain duplicate points. Violating this results in singular covariance matrices.</span>
+
+<span class="sd">        This function is similar to compute_grad_cholesky_variance_of_points() (below), except this does not include</span>
+<span class="sd">        gradient terms from the cholesky factorization. Description will not be duplicated here.</span>
+
+<span class="sd">        .. Note: Comments in this class are copied from this&#39;s superclass in interfaces.gaussian_process_interface.py.</span>
+
+<span class="sd">        :param points_to_sample: num_to_sample points (in dim dimensions) being sampled from the GP</span>
+<span class="sd">        :type points_to_sample: array of float64 with shape (num_to_sample, dim)</span>
+<span class="sd">        :param var_of_grad: index of ``points_to_sample`` to be differentiated against</span>
+<span class="sd">        :type var_of_grad: integer in {0, .. ``num_to_sample``-1}</span>
+<span class="sd">        :return: grad_var: gradient of the variance matrix of this GP</span>
+<span class="sd">        :rtype: array of float64 with shape (num_to_sample, num_to_sample, dim)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s">&quot;C++ wrapper currently only supports the gradient of the cholesky factorization of variance.&quot;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="GaussianProcess.compute_grad_cholesky_variance_of_points"><a class="viewcode-back" href="../../../../../../../moe.optimal_learning.EPI.src.python.cpp_wrappers.html#moe.optimal_learning.EPI.src.python.cpp_wrappers.gaussian_process.GaussianProcess.compute_grad_cholesky_variance_of_points">[docs]</a>    <span class="k">def</span> <span class="nf">compute_grad_cholesky_variance_of_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points_to_sample</span><span class="p">,</span> <span class="n">var_of_grad</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Compute the gradient of the cholesky factorization of the variance (matrix) of this GP at each point of ``Xs`` (``points_to_sample``) wrt ``Xs``.</span>
+
+<span class="sd">        ``points_to_sample`` may not contain duplicate points. Violating this results in singular covariance matrices.</span>
+
+<span class="sd">        This function accounts for the effect on the gradient resulting from</span>
+<span class="sd">        cholesky-factoring the variance matrix.  See Smith 1995 for algorithm details.</span>
+
+<span class="sd">        Note that ``grad_chol`` is nominally sized:</span>
+<span class="sd">        ``grad_chol[num_to_sample][num_to_sample][num_to_sample][dim]``.</span>
+<span class="sd">        Let this be indexed ``grad_chol[j][i][k][d]``, which is read the derivative of ``var[j][i]``</span>
+<span class="sd">        with respect to ``x_{k,d}`` (x = ``points_to_sample``)</span>
+
+<span class="sd">        Due to actual usage patterns, the full gradient tensor is never required simultaneously;</span>
+<span class="sd">        thus only ``grad_chol[j][i][d]`` is formed with k (``var_of_grad``) as an input parameter to this function.</span>
+
+<span class="sd">        .. Note: Comments in this class are copied from this&#39;s superclass in interfaces.gaussian_process_interface.py.</span>
+
+<span class="sd">        :param points_to_sample: num_to_sample points (in dim dimensions) being sampled from the GP</span>
+<span class="sd">        :type points_to_sample: array of float64 with shape (num_to_sample, dim)</span>
+<span class="sd">        :param var_of_grad: index of ``points_to_sample`` to be differentiated against</span>
+<span class="sd">        :type var_of_grad: integer in {0, .. ``num_to_sample``-1}</span>
+<span class="sd">        :return: grad_chol: gradient of the cholesky factorization of the variance matrix of this GP.</span>
+<span class="sd">          ``grad_chol[j][i][d]`` is actually the gradients of ``var_{j,i}`` with</span>
+<span class="sd">          respect to ``x_{k,d}``, the d-th dimension of the k-th entry of ``points_to_sample``, where</span>
+<span class="sd">          k = ``var_of_grad``</span>
+<span class="sd">        :rtype: array of float64 with shape (num_to_sample, num_to_sample, dim)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">num_to_sample</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">)</span>
+        <span class="n">cholesky_variance</span> <span class="o">=</span> <span class="n">C_GP</span><span class="o">.</span><span class="n">get_grad_var</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_gaussian_process</span><span class="p">,</span>  <span class="c"># C++ GaussianProcess object</span>
+            <span class="n">cpp_utils</span><span class="o">.</span><span class="n">cppify</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">),</span>  <span class="c"># points to sample</span>
+            <span class="n">num_to_sample</span><span class="p">,</span>
+            <span class="n">var_of_grad</span><span class="p">,</span>  <span class="c"># dimension to differentiate in</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">cpp_utils</span><span class="o">.</span><span class="n">uncppify</span><span class="p">(</span><span class="n">cholesky_variance</span><span class="p">,</span> <span class="p">(</span><span class="n">num_to_sample</span><span class="p">,</span> <span class="n">num_to_sample</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">))</span>
+</div>
+<div class="viewcode-block" id="GaussianProcess.add_sampled_points"><a class="viewcode-back" href="../../../../../../../moe.optimal_learning.EPI.src.python.cpp_wrappers.html#moe.optimal_learning.EPI.src.python.cpp_wrappers.gaussian_process.GaussianProcess.add_sampled_points">[docs]</a>    <span class="k">def</span> <span class="nf">add_sampled_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sampled_points</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Add sampled point(s) (point, value, noise) to the GP&#39;s prior data.</span>
+
+<span class="sd">        Also forces recomputation of all derived quantities for GP to remain consistent.</span>
+
+<span class="sd">        TOOD(eliu): figure out how to deal with single or list of points (or not deal with it)</span>
+
+<span class="sd">        :param sampled_points: SampledPoint objects to load into the GP (containing point, function value, and noise variance)</span>
+<span class="sd">        :type sampled_points: single SampledPoint or list of SampledPoint objects</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># TODO(eliu): add hook to actual C++ function to make this more efficient than rebuilding the whole GP object</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_historical_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sampled_points</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_gaussian_process</span> <span class="o">=</span> <span class="n">C_GP</span><span class="o">.</span><span class="n">GaussianProcess</span><span class="p">(</span>
+            <span class="n">cpp_utils</span><span class="o">.</span><span class="n">cppify_hyperparameters</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_covariance</span><span class="o">.</span><span class="n">get_hyperparameters</span><span class="p">()),</span>  <span class="c"># hyperparameters, e.g., [signal variance, [length scales]]; see cpp_utils.cppify_hyperparameter docs, C++ python interface docs</span>
+            <span class="n">cpp_utils</span><span class="o">.</span><span class="n">cppify</span><span class="p">([</span><span class="n">p</span><span class="o">.</span><span class="n">point</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">points_sampled</span><span class="p">]),</span>  <span class="c"># points already sampled</span>
+            <span class="n">cpp_utils</span><span class="o">.</span><span class="n">cppify</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">values_of_samples</span><span class="p">),</span>  <span class="c"># objective value at each sampled point</span>
+            <span class="n">cpp_utils</span><span class="o">.</span><span class="n">cppify</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sample_variance_of_samples</span><span class="p">),</span>  <span class="c"># noise variance, one value per sampled point</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">num_sampled</span><span class="p">,</span>
+        <span class="p">)</span>
+</div>
+<div class="viewcode-block" id="GaussianProcess.sample_point_from_gp"><a class="viewcode-back" href="../../../../../../../moe.optimal_learning.EPI.src.python.cpp_wrappers.html#moe.optimal_learning.EPI.src.python.cpp_wrappers.gaussian_process.GaussianProcess.sample_point_from_gp">[docs]</a>    <span class="k">def</span> <span class="nf">sample_point_from_gp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point_to_sample</span><span class="p">,</span> <span class="n">noise_variance</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Sample a function value from a Gaussian Process prior, provided a point at which to sample.</span>
+
+<span class="sd">        Uses the formula ``function_value = gpp_mean + sqrt(gpp_variance) * w1 + sqrt(noise_variance) * w2``, where ``w1, w2``</span>
+<span class="sd">        are draws from N(0,1).</span>
+
+<span class="sd">        Implementers are responsible for providing a N(0,1) source.</span>
+
+<span class="sd">        .. NOTE::</span>
+<span class="sd">             Set noise_variance to 0 if you want &quot;accurate&quot; draws from the GP.</span>
+<span class="sd">             BUT if the drawn (point, value) pair is meant to be added back into the GP (e.g., for testing), then this point</span>
+<span class="sd">             MUST be drawn with noise_variance equal to the noise associated with &quot;point&quot; as a member of &quot;points_sampled&quot;</span>
+
+<span class="sd">        .. Note: Comments in this class are copied from this&#39;s superclass in interfaces.gaussian_process_interface.py.</span>
+
+<span class="sd">        :param point_to_sample: point (in dim dimensions) at which to sample from this GP</span>
+<span class="sd">        :type points_to_sample: array of float64 with shape (dim)</span>
+<span class="sd">        :param noise_variance: amount of noise to associate with the sample</span>
+<span class="sd">        :type noise_variance: float64 &gt;= 0.0</span>
+<span class="sd">        :return: sample_value: function value drawn from this GP</span>
+<span class="sd">        :rtype: float64</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># TODO(eliu): C++ has a native implementation of this function; make a wrapper and call that directly</span>
+        <span class="n">point</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">point_to_sample</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">ndmin</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">mean</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_mean_of_points</span><span class="p">(</span><span class="n">point</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">variance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_variance_of_points</span><span class="p">(</span><span class="n">point</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">mean</span> <span class="o">+</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">variance</span><span class="p">)</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">()</span> <span class="o">+</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">noise_variance</span><span class="p">)</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">()</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../../../http-routingtable.html" title="HTTP Routing Table"
+             >routing table</a> |</li>
+        <li class="right" >
+          <a href="../../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../../index.html">MOE 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../../../../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../../../../../moe.html" >moe</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

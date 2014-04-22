@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>moe &mdash; MOE 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/breathe.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="MOE 0.1.0 documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../http-routingtable.html" title="HTTP Routing Table"
+             >routing table</a> |</li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">MOE 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for moe</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;Base pyramid app for MOE.&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">pyramid.config</span> <span class="kn">import</span> <span class="n">Configurator</span>
+<span class="kn">from</span> <span class="nn">pyramid.events</span> <span class="kn">import</span> <span class="n">NewRequest</span>
+
+<span class="kn">from</span> <span class="nn">moe.resources</span> <span class="kn">import</span> <span class="n">Root</span>
+<span class="kn">from</span> <span class="nn">moe.views.constant</span> <span class="kn">import</span> <span class="n">ALL_MOE_ROUTES</span>
+
+
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../moe.html#moe.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">global_config</span><span class="p">,</span> <span class="o">**</span><span class="n">settings</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return a WSGI application.&quot;&quot;&quot;</span>
+    <span class="n">config</span> <span class="o">=</span> <span class="n">Configurator</span><span class="p">(</span><span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">,</span> <span class="n">root_factory</span><span class="o">=</span><span class="n">Root</span><span class="p">)</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">add_static_view</span><span class="p">(</span><span class="s">&#39;static&#39;</span><span class="p">,</span> <span class="s">&#39;moe:static&#39;</span><span class="p">)</span>
+
+    <span class="c"># Routes</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">add_route</span><span class="p">(</span><span class="s">&#39;home&#39;</span><span class="p">,</span> <span class="s">&#39;/&#39;</span><span class="p">)</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">add_route</span><span class="p">(</span><span class="s">&#39;gp_plot&#39;</span><span class="p">,</span> <span class="s">&#39;/gp/plot&#39;</span><span class="p">)</span>
+    <span class="c"># MOE routes</span>
+    <span class="k">for</span> <span class="n">moe_route</span> <span class="ow">in</span> <span class="n">ALL_MOE_ROUTES</span><span class="p">:</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">add_route</span><span class="p">(</span>
+                <span class="n">moe_route</span><span class="o">.</span><span class="n">route_name</span><span class="p">,</span>
+                <span class="n">moe_route</span><span class="o">.</span><span class="n">endpoint</span>
+                <span class="p">)</span>
+
+    <span class="c"># MongoDB</span>
+    <span class="k">if</span> <span class="n">settings</span><span class="p">[</span><span class="s">&#39;use_mongo&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;true&#39;</span><span class="p">:</span>
+        <span class="kn">import</span> <span class="nn">pymongo</span>
+
+        <span class="k">def</span> <span class="nf">add_mongo_db</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
+            <span class="n">settings</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">registry</span><span class="o">.</span><span class="n">settings</span>
+            <span class="n">db_name</span> <span class="o">=</span> <span class="n">settings</span><span class="p">[</span><span class="s">&#39;mongodb.db_name&#39;</span><span class="p">]</span>
+            <span class="n">db</span> <span class="o">=</span> <span class="n">settings</span><span class="p">[</span><span class="s">&#39;mongodb_conn&#39;</span><span class="p">][</span><span class="n">db_name</span><span class="p">]</span>
+            <span class="n">event</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">db</span> <span class="o">=</span> <span class="n">db</span>
+        <span class="n">db_uri</span> <span class="o">=</span> <span class="n">settings</span><span class="p">[</span><span class="s">&#39;mongodb.url&#39;</span><span class="p">]</span>
+        <span class="n">db_port</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">settings</span><span class="p">[</span><span class="s">&#39;mongodb.port&#39;</span><span class="p">])</span>
+        <span class="n">MongoDB</span> <span class="o">=</span> <span class="n">pymongo</span><span class="o">.</span><span class="n">Connection</span>
+        <span class="k">if</span> <span class="s">&#39;pyramid_debugtoolbar&#39;</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
+            <span class="k">class</span> <span class="nc">MongoDB</span><span class="p">(</span><span class="n">pymongo</span><span class="o">.</span><span class="n">Connection</span><span class="p">):</span>
+                <span class="k">def</span> <span class="nf">__html__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="s">&#39;MongoDB: &lt;b&gt;{}&gt;&lt;/b&gt;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">conn</span> <span class="o">=</span> <span class="n">MongoDB</span><span class="p">(</span>
+                <span class="n">db_uri</span><span class="p">,</span>
+                <span class="n">db_port</span><span class="p">,</span>
+                <span class="p">)</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">registry</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s">&#39;mongodb_conn&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">conn</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">add_subscriber</span><span class="p">(</span><span class="n">add_mongo_db</span><span class="p">,</span> <span class="n">NewRequest</span><span class="p">)</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span>
+            <span class="n">ignore</span><span class="o">=</span><span class="p">[</span>
+                <span class="s">&#39;moe.optimal_learning.EPI.src.python.lib.cuda_linkers&#39;</span><span class="p">,</span>
+                <span class="s">&#39;moe.optimal_learning.EPI.src.python.lib.plotter&#39;</span><span class="p">,</span>
+                <span class="s">&#39;moe.optimal_learning.EPI.src.python.models.plottable_optimal_gaussian_process&#39;</span><span class="p">,</span>
+                <span class="s">&#39;moe.tests&#39;</span><span class="p">,</span>
+                <span class="p">],</span>
+            <span class="p">)</span>
+    <span class="k">return</span> <span class="n">config</span><span class="o">.</span><span class="n">make_wsgi_app</span><span class="p">()</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../http-routingtable.html" title="HTTP Routing Table"
+             >routing table</a> |</li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">MOE 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

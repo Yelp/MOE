@@ -1,0 +1,125 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>moe.tests.moe.views.exceptions_test &mdash; MOE 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../_static/breathe.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../../../../../_static/favicon.ico"/>
+    <link rel="top" title="MOE 0.1.0 documentation" href="../../../../../index.html" />
+    <link rel="up" title="moe" href="../../../../moe.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../http-routingtable.html" title="HTTP Routing Table"
+             >routing table</a> |</li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../index.html">MOE 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../../../moe.html" accesskey="U">moe</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for moe.tests.moe.views.exceptions_test</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;Various tests for checking exceptions in views.&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">testify</span> <span class="kn">as</span> <span class="nn">T</span>
+<span class="kn">from</span> <span class="nn">webtest.app</span> <span class="kn">import</span> <span class="n">AppError</span>
+
+<span class="kn">from</span> <span class="nn">moe.views.constant</span> <span class="kn">import</span> <span class="n">ALL_REST_MOE_ROUTES</span>
+<span class="kn">from</span> <span class="nn">moe.tests.moe.views.rest_gaussian_process_test_case</span> <span class="kn">import</span> <span class="n">RestGaussianProcessTestCase</span>
+
+
+<div class="viewcode-block" id="RestGaussianProcessTestCaseWithExceptions"><a class="viewcode-back" href="../../../../../moe.tests.moe.views.html#moe.tests.moe.views.exceptions_test.RestGaussianProcessTestCaseWithExceptions">[docs]</a><span class="k">class</span> <span class="nc">RestGaussianProcessTestCaseWithExceptions</span><span class="p">(</span><span class="n">RestGaussianProcessTestCase</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;Test that proper errors are thrown when endpoints get universally bad data.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="RestGaussianProcessTestCaseWithExceptions.test_empty_json_payload_invalid"><a class="viewcode-back" href="../../../../../moe.tests.moe.views.html#moe.tests.moe.views.exceptions_test.RestGaussianProcessTestCaseWithExceptions.test_empty_json_payload_invalid">[docs]</a>    <span class="k">def</span> <span class="nf">test_empty_json_payload_invalid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Test empty json payload causes an AppError.&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">moe_route</span> <span class="ow">in</span> <span class="n">ALL_REST_MOE_ROUTES</span><span class="p">:</span>
+            <span class="n">T</span><span class="o">.</span><span class="n">assert_raises</span><span class="p">(</span><span class="n">AppError</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">testapp</span><span class="o">.</span><span class="n">post</span><span class="p">,</span> <span class="n">moe_route</span><span class="o">.</span><span class="n">endpoint</span><span class="p">,</span> <span class="s">&#39;{}&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="RestGaussianProcessTestCaseWithExceptions.test_badly_formed_json_payload_invalid"><a class="viewcode-back" href="../../../../../moe.tests.moe.views.html#moe.tests.moe.views.exceptions_test.RestGaussianProcessTestCaseWithExceptions.test_badly_formed_json_payload_invalid">[docs]</a>    <span class="k">def</span> <span class="nf">test_badly_formed_json_payload_invalid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Test malformed json payload causes a ValueError.&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">moe_route</span> <span class="ow">in</span> <span class="n">ALL_REST_MOE_ROUTES</span><span class="p">:</span>
+            <span class="n">T</span><span class="o">.</span><span class="n">assert_raises</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">testapp</span><span class="o">.</span><span class="n">post</span><span class="p">,</span> <span class="n">moe_route</span><span class="o">.</span><span class="n">endpoint</span><span class="p">,</span> <span class="s">&#39;}&#39;</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../http-routingtable.html" title="HTTP Routing Table"
+             >routing table</a> |</li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../index.html">MOE 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../../../moe.html" >moe</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>
