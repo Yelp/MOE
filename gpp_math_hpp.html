@@ -1,129 +1,2519 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>gpp_math.hpp &mdash; MOE 0.1.0 documentation</title>
-    
-    <link rel="stylesheet" href="_static/default.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/breathe.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '0.1.0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>gpp_math.hpp &mdash; MOE 0.1.0 documentation</title>
+  
+
+  
+  
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="MOE 0.1.0 documentation" href="index.html" />
-    <link rel="next" title="gpp_geometry.hpp" href="gpp_geometry_hpp.html" />
-    <link rel="prev" title="moe.views package" href="moe.views.html" /> 
-  </head>
-  <body>
-    <div class="related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="http-routingtable.html" title="HTTP Routing Table"
-             >routing table</a> |</li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="gpp_geometry_hpp.html" title="gpp_geometry.hpp"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="moe.views.html" title="moe.views package"
-             accesskey="P">previous</a> |</li>
-        <li><a href="index.html">MOE 0.1.0 documentation</a> &raquo;</li> 
-      </ul>
-    </div>  
+  
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body">
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="_static/breathe.css" type="text/css" />
+  
+    <link rel="top" title="MOE 0.1.0 documentation" href="index.html"/>
+        <link rel="next" title="gpp_geometry.hpp" href="gpp_geometry_hpp.html"/>
+        <link rel="prev" title="moe.views package" href="moe.views.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="index.html" class="fa fa-home"> MOE</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul>
+<li class="toctree-l1"><a class="reference internal" href="moe.html">moe package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#module-moe.resources">moe.resources module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#module-moe">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="">gpp_math.hpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpp_geometry_hpp.html">gpp_geometry.hpp</a></li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">MOE</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>gpp_math.hpp</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="_sources/gpp_math_hpp.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
             
   <div class="section" id="gpp-math-hpp">
 <h1>gpp_math.hpp<a class="headerlink" href="#gpp-math-hpp" title="Permalink to this headline">¶</a></h1>
+<p></p>
+<p><ol class="arabic simple">
+<li>OVERVIEW OF GAUSSIAN PROCESSES AND EXPECTED IMPROVEMENT; WHAT ARE WE TRYING TO DO?</li>
+<li>FILE OVERVIEW</li>
+<li>IMPLEMENTATION NOTES</li>
+<li>NOTATION</li>
+<li>CITATIONS</li>
+</ol>
+<p><strong>1 OVERVIEW OF GAUSSIAN PROCESSES AND EXPECTED IMPROVEMENT; WHAT ARE WE TRYING TO DO?</strong></p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">these comments are copied in Python: interfaces/__init__.py</p>
+</div>
+<p>At a high level, this file optimizes an objective function <span class="math">\(\, f(x)\)</span>.  This operation
+requires data/uncertainties about prior and concurrent experiments as well as
+a covariance function describing how these data [are expected to] relate to each
+other.  The points x represent experiments. If <span class="math">\(\, f(x)\)</span> is say, survival rate for
+a drug test, the dimensions of x might include dosage amount, dosage frequency,
+and overall drug-use time-span.</p>
+<p>The objective function is not required in closed form; instead, only the ability
+to sample it at points of interest is needed.  Thus, the optimization process
+cannot work with <span class="math">\(\, f(x)\)</span> directly; instead a surrogate is built via interpolation
+with Gaussian Proccesses (GPs).</p>
+<p>Following Rasmussen &amp; Williams (2.2), a Gaussian Process is a collection of random
+variables, any finite number of which have a joint Gaussian distribution (Defn 2.1).
+Hence a GP is fully specified by its mean function, <span class="math">\(\, m(x)\)</span>, and covariance function,
+<span class="math">\(\, k(x,x')\)</span>.  Then we assume that a real process <span class="math">\(\, f(x)\)</span> (e.g., drug survival rate) is
+distributed like:</p>
+<div class="math">
+\[f(x) ~ GP(m(x), k(x,x'))\]</div>
+<p>with</p>
+<div class="math">
+\[m(x) = E[f(x)], k(x,x') = E[(f(x) - m(x))*(f(x') - m(x'))].\]</div>
+<p>Then sampling from <span class="math">\(\, f(x)\)</span> is simply drawing from a Gaussian with the appropriate mean
+and variance.</p>
+<p>However, since we do not know <span class="math">\(\, f(x)\)</span>, we cannot precisely build its corresponding GP.
+Instead, using samples from <span class="math">\(\, f(x)\)</span> (e.g., by measuring experimental outcomes), we can
+iteratively improve our estimate of <span class="math">\(\, f(x)\)</span>.  See GaussianProcess class docs
+and implementation docs for details on how this is done.</p>
+<p>The optimization process models the objective using a Gaussian process (GP) prior
+(also called a GP predictor) based on the specified covariance and the input
+data (e.g., through member functions ComputeMeanOfPoints, ComputeVarianceOfPoints).  Using the GP,
+we can compute the expected improvement (EI) from sampling any particular point.  EI
+is defined relative to the best currently known value, and it represents what the
+algorithm believes is the most likely outcome from sampling a particular point in parameter
+space (aka conducting a particular experiment).</p>
+<p>See ExpectedImprovementEvaluator and OnePotentialSampleExpectedImprovementEvaluator class
+docs for further details on computing EI.  Both support ComputeExpectedImprovement() and
+ComputeGradExpectedImprovement().</p>
+<p>The dimension of the GP is equal to the number of simultaneous experiments being run;
+i.e., the GP may be multivariate.  The behavior of the GP is controlled by its underlying
+covariance function and the data/uncertainty of prior points (experiments).</p>
+<p>With the ability the compute EI, the final step is to optimize
+to find the best EI.  This is done using multistart gradient descent (MGD), in
+ComputeOptimalPointToSampleWithRandomStarts().  This generates a uniform random
+sampling of points and calls ComputeOptimalPointToSampleViaMultistartGradientDescent(),
+which carries out the multistart process via templates from gpp_optimization.hpp.</p>
+<p>We can also evaluate EI at several points simultaneously; e.g., if we wanted to run 4 simultaneous
+experiments, we can use EI to select all 4 points at once. For reasons that we will not describe
+here, optimizing 4 points at once is <em>much</em> harder than optimizing 1 point 4 times. Solving for
+a set of new experimental points is implemented in ComputeOptimalSetOfPointsToSample().</p>
+<p>The literature (e.g., Ginsbourger 2008) refers to these problems collectively as q-EI, where q
+is a positive integer. So 1-EI is the originally dicussed usage, and the previous scenario
+would be called 4-EI.</p>
+<p>Additionally, there are use cases where we have existing experiments that are not yet complete but
+we have an opportunity to start some new trials. For example, maybe we are a drug company currently
+testing 2 combinations of dosage levels. We got some new funding, and can now afford to test
+3 more sets of dosage parameters. Ideally, the decision on the new experiments should depend on
+the existence of the 2 ongoing tests. We may not have any data from the ongoing experiments yet;
+e.g., they are [double]-blind trials. If nothing else, we would not want to duplicate any
+existing experiments! So we want to solve 3-EI using the knowledge of the 2 ongoing experiments.</p>
+<p>We call this q,p-EI, so the previous example would be 3,2-EI. The q-EI notation is equivalent to
+q,0-EI; if we do not explicitly write the value of p, it is 0. So q is the number of new
+(simultaneous) experiments to select. In code, this would be the size of the output from EI
+optimization (i.e., best_points_to_sample, of which there are q = num_samples_to_generate points).
+p is the number of ongoing/incomplete experiments to take into account (i.e., points_to_sample of
+which there are p = num_points_to_sample points).</p>
+<p>Back to optimization: the idea behind gradient descent is simple.  The gradient gives us the
+direction of steepest ascent (negative gradient is steepest descent).  So each iteration, we
+compute the gradient and take a step in that direction.  The size of the step is not specified
+by GD and is left to the specific implementation.  Basically if we take steps that are
+too large, we run the risk of over-shooting the solution and even diverging.  If we
+take steps that are too small, it may take an intractably long time to reach the solution.
+Thus the magic is in choosing the step size; we do not claim that our implementation is
+perfect, but it seems to work reasonably.  See <tt class="docutils literal"><span class="pre">gpp_optimization.hpp</span></tt> for more details about
+GD as well as the template definition.</p>
+<p>For particularly difficult problems or problems where gradient descent&#8217;s parameters are not
+well-chosen, GD can fail to converge.  If this happens, we can fall back to a &#8216;dumb&#8217; search
+(i.e., evaluate EI at a large number of random points and take the best one).  This
+functionality is accessed through: ComputeOptimalPointToSampleViaLatinHypercubeSearch&lt;&gt;().</p>
+<p><strong>2 FILE OVERVIEW</strong></p>
+<p>This file contains mathematical functions supporting optimal learning.
+These include functions to compute characteristics of Gaussian Processes
+(e.g., variance, mean) and the gradients of these quantities as well as functions to
+compute and optimize the expected improvement.</p>
+<p>Functions here generally require some combination of a CovarianceInterface object as well as
+data about prior and current (i.e., concurrent) experiments.  These data are encapsulated in
+the GaussianProcess class.  Then we build an ExpectedImprovementEvaluator object (with
+associated state, see <tt class="docutils literal"><span class="pre">gpp_common.hpp</span></tt> item 5 for (Evaluator, State) relations) on top of a
+GaussianProcess for computing and optimizing EI.</p>
+<p>For further theoretical details about Gaussian Processes, see
+Rasmussen and Williams, Gaussian Processes for Machine Learning (2006).
+A bare-bones summary is provided in <tt class="docutils literal"><span class="pre">gpp_math.cpp</span></tt>.</p>
+<p>For further details about expected improvement and the optimization thereof,
+see Scott Clark&#8217;s PhD thesis.  Again, a summary is provided in <tt class="docutils literal"><span class="pre">gpp_math.cpp</span></tt>&#8216;s file comments.</p>
+<p><strong>3 IMPLEMENTATION NOTES</strong></p>
+<ol class="loweralpha">
+<li><p class="first">This file has a few primary endpoints for EI optimization:
+i. ComputeOptimalPointToSampleWithRandomStarts&lt;&gt;()</p>
+<blockquote>
+<div><p>Solves the 1,p-EI problem.
+Takes in a covariance function and prior data, outputs the next best point (experiment)
+to sample (run). Uses gradient descent. Only produces a single new point to sample.</p>
+</div></blockquote>
+<ol class="lowerroman" start="2">
+<li><dl class="first docutils">
+<dt>ComputeOptimalPointToSampleViaLatinHypercubeSearch&lt;&gt;()</dt>
+<dd><p class="first last">Estimates the 1,p-EI problem.
+Takes in a covariance function and prior data, outputs the next best point (experiment)
+to sample (run). Uses &#8216;dumb&#8217; search. Only produces a single new point to sample.</p>
+</dd>
+</dl>
+</li>
+<li><p class="first">ComputeOptimalSetOfPointsToSample&lt;&gt;()
+Solves the q,p-EI problem.
+Takes in a covariance function and prior data, outputs the next best set of points (experiments)
+to sample (run). Uses gradient descent and/or &#8216;dumb&#8217; search. Produces a specified number of
+points for simultaneous sampling.</p>
+</li>
+</ol>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>See <tt class="docutils literal"><span class="pre">gpp_math.cpp</span></tt>&#8216;s header comments for more detailed implementation notes.</p>
+<p class="last">There are also several other functions with external linkage in this header; these
+are provided to ease testing and to permit lower level access from python.</p>
+</div>
+</li>
+<li><p class="first">See <tt class="docutils literal"><span class="pre">gpp_common.hpp</span></tt> header comments for additional implementation notes.</p>
+</li>
+</ol>
+<p><strong>4 NOTATION</strong></p>
+<dl class="docutils">
+<dt>And domain-specific notation, following Rasmussen, Williams:</dt>
+<dd><ul class="first last simple">
+<li><tt class="docutils literal"><span class="pre">X</span> <span class="pre">=</span> <span class="pre">points_sampled</span></tt>; this is the training data (size <tt class="docutils literal"><span class="pre">dim</span></tt> X <tt class="docutils literal"><span class="pre">num_sampled</span></tt>), also called the design matrix</li>
+<li><tt class="docutils literal"><span class="pre">Xs</span> <span class="pre">=</span> <span class="pre">points_to_sample</span></tt>; this is the test data (size <tt class="docutils literal"><span class="pre">dim</span></tt> X num_to_sample``)</li>
+<li><tt class="docutils literal"><span class="pre">y,</span> <span class="pre">f,</span> <span class="pre">f(x)</span> <span class="pre">=</span> <span class="pre">points_sampled_value</span></tt>, the experimental results from sampling training points</li>
+<li><tt class="docutils literal"><span class="pre">K,</span> <span class="pre">K_{ij},</span> <span class="pre">K(X,X)</span> <span class="pre">=</span> <span class="pre">covariance(X_i,</span> <span class="pre">X_j)</span></tt>, covariance matrix between training inputs (<tt class="docutils literal"><span class="pre">num_sampled</span> <span class="pre">x</span> <span class="pre">num_sampled</span></tt>)</li>
+<li><tt class="docutils literal"><span class="pre">Ks,</span> <span class="pre">Ks_{ij},</span> <span class="pre">K(X,Xs)</span> <span class="pre">=</span> <span class="pre">covariance(X_i,</span> <span class="pre">Xs_j)</span></tt>, covariance matrix between training and test inputs (<tt class="docutils literal"><span class="pre">num_sampled</span> <span class="pre">x</span> <span class="pre">num_to_sample</span></tt>)</li>
+<li><tt class="docutils literal"><span class="pre">Kss,</span> <span class="pre">Kss_{ij},</span> <span class="pre">K(Xs,Xs)</span> <span class="pre">=</span> <span class="pre">covariance(Xs_i,</span> <span class="pre">Xs_j)</span></tt>, covariance matrix between test inputs (<tt class="docutils literal"><span class="pre">num_to_sample</span> <span class="pre">x</span> <span class="pre">num_to_sample</span></tt>)</li>
+<li><tt class="docutils literal"><span class="pre">\theta</span></tt>: (vector) of hyperparameters for a covariance function</li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Due to confusion with multiplication (K_* looks awkward in code comments), Rasmussen &amp; Williams&#8217; <span class="math">\(\, K_*\)</span>
+notation has been repalced with <tt class="docutils literal"><span class="pre">Ks</span></tt> and <span class="math">\(\, K_{**}\)</span> is <tt class="docutils literal"><span class="pre">Kss</span></tt>.</p>
+</div>
+<p>Connecting to the q,p-EI notation, both the points represented by &#8220;q&#8221; and &#8220;p&#8221; are represented by <tt class="docutils literal"><span class="pre">Xs</span></tt>. Within
+the GP, there is no distinction between points being sampled by ongoing experiments and new points to sample.</p>
+<p><strong>5 CITATIONS</strong></p>
+<p>a. Gaussian Processes for Machine Learning.
+Carl Edward Rasmussen and Christopher K. I. Williams. 2006.
+Massachusetts Institute of Technology.  55 Hayward St., Cambridge, MA 02142.
+<a class="reference external" href="http://www.gaussianprocess.org/gpml/">http://www.gaussianprocess.org/gpml/</a> (free electronic copy)</p>
+<p>b. Parallel Machine Learning Algorithms In Bioinformatics and Global Optimization (PhD Dissertation).
+Part II, EPI: Expected Parallel Improvement
+Scott Clark. 2012.
+Cornell University, Center for Applied Mathematics.  Ithaca, NY.
+<a class="reference external" href="https://github.com/sc932/Thesis">https://github.com/sc932/Thesis</a>
+<a class="reference external" href="mailto:sclark&#37;&#52;&#48;yelp&#46;com">sclark<span>&#64;</span>yelp<span>&#46;</span>com</a></p>
+<p>c. Differentiation of the Cholesky Algorithm.
+S. P. Smith. 1995.
+Journal of Computational and Graphical Statistics. Volume 4. Number 2. p134-147</p>
+<p>d. A Multi-points Criterion for Deterministic Parallel Global Optimization based on Gaussian Processes.
+David Ginsbourger, Rodolphe Le Riche, and Laurent Carraro.  2008.
+D´epartement 3MI. Ecole Nationale Sup´erieure des Mines. 158 cours Fauriel, Saint-Etienne, France.
+{ginsbourger, leriche, <a class="reference external" href="mailto:carraro}&#37;&#52;&#48;emse&#46;fr">carraro}<span>&#64;</span>emse<span>&#46;</span>fr</a></p>
+<p>e. Efficient Global Optimization of Expensive Black-Box Functions.
+Jones, D.R., Schonlau, M., Welch, W.J. 1998.
+Journal of Global Optimization, 13, 455-492.</p>
+ </p>
+<p><p id="project0namespaceoptimal__learning"><em>namespace</em> <strong>optimal_learning</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+<em>Functions</em><blockquote>
+<div><p><span class="target" id="project0namespaceoptimal__learning_1a349b2b417f39d01939fcfdfcff8d1326"></span><div class="line-block">
+<div class="line">OL_NONNULL_POINTERS void <strong>SetupExpectedImprovementState</strong>(const  <a class="reference internal" href="#project0classoptimal__learning_1_1_one_potential_sample_expected_improvement_evaluator"><em>OnePotentialSampleExpectedImprovementEvaluator</em></a>  &amp; ei_evaluator, double const *restrict starting_point, int max_num_threads, bool configure_for_gradients, std::vector&lt; typename  <a class="reference internal" href="#project0structoptimal__learning_1_1_one_potential_sample_expected_improvement_state"><em>OnePotentialSampleExpectedImprovementEvaluator::StateType</em></a>  &gt; * state_vector)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Set up vector of OnePotentialSampleExpectedImprovementEvaluator::StateType.</p>
+<p>This is a utility function just for reducing code duplication.</p>
+<p>dim is the spatial dimension, <tt class="docutils literal"><span class="pre">ei_evaluator.dim()</span></tt>
+<strong>Parameters</strong>:</p>
+<blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">ei_evaluator:</th><td class="field-body">evaluator object associated w/the state objects being constructed</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">starting_point[dim]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">initial point to load into state (must be a valid point for the problem)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">max_num_threads:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">maximum number of threads for use by OpenMP (generally should be &lt;= # cores)</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">configure_for_gradients:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">true if these state objects will be used to compute gradients, false otherwise</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">state_vector[arbitrary]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">vector of state objects, arbitrary size (usually 0)</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<dl class="docutils">
+<dt><strong>Outputs</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">state_vector[max_num_threads]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">vector of states containing <tt class="docutils literal"><span class="pre">max_num_threads</span></tt> properly initialized state objects</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0namespaceoptimal__learning_1ac51c5542cac1f185c4fa8377dd96fc72"></span><div class="line-block">
+<div class="line">OL_NONNULL_POINTERS void <strong>SetupExpectedImprovementState</strong>(const  <a class="reference internal" href="#project0classoptimal__learning_1_1_expected_improvement_evaluator"><em>ExpectedImprovementEvaluator</em></a>  &amp; ei_evaluator, double const *restrict starting_point, double const *restrict points_to_sample, int num_to_sample, int dim, int max_num_threads, bool configure_for_gradients, NormalRNG  * normal_rng, std::vector&lt; typename  <a class="reference internal" href="#project0structoptimal__learning_1_1_expected_improvement_state"><em>ExpectedImprovementEvaluator::StateType</em></a>  &gt; * state_vector)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Set up vector of ExpectedImprovementEvaluator::StateType.</p>
+<p>This is a utility function just for reducing code duplication.</p>
+<p>TODO(eliu): this is pretty similar to the version directly above it for OnePotentialSampleExpectedImprovementEvaluator.
+I could merge them and use template-fu to pick the execution path (at compile-time), e.g.,</p>
+<div class="highlight-python"><div class="highlight"><pre>template &lt;typename ExpectedImprovementEvaluator&gt;
+void SetupExpectedImprovementState(const ExpectedImprovementEvaluator&amp; ei_evaluator, ...) {
+  for (...) {
+    if (std::is_same&lt;ExpectedImprovementEvaluator, OnePotentialSampleExpectedImprovementEvaluator&gt;::value) {
+      state_vector-&gt;emplace_back(ei_evaluator, starting_point, 1, configure_for_gradients, nullptr);
+    } else {
+      state_vector-&gt;emplace_back(ei_evaluator, union_of_points.data(), num_to_sample+1, configure_for_gradients, normal_rng + i);
+    }
+  }
+}
+</pre></div>
+</div>
+<p><tt class="docutils literal"><span class="pre">is_same&lt;&gt;::value</span></tt> resolves to &#8216;true&#8217; or &#8216;false&#8217; at compile-time, so the compiler will ditch the unused paths.  I&#8217;m not
+sure if there&#8217;s a nicer way to template-fu this.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">ei_evaluator:</th><td class="field-body">evaluator object associated w/the state objects being constructed</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">starting_point[dim]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">initial point to load into state (must be a valid point for the problem)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">points_to_sample[dim][num_to_sample]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">points that are being sampled concurrently from the GP</td>
+</tr>
+<tr class="field-even field"><th class="field-name">num_to_sample:</th><td class="field-body">number of points being sampled concurrently (i.e., the p in q,p-EI)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">dim:</th><td class="field-body">number of spatial dimensions (size of a point, <tt class="docutils literal"><span class="pre">ei_evaluator.dim()</span></tt>)</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">max_num_threads:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">maximum number of threads for use by OpenMP (generally should be &lt;= # cores)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">configure_for_gradients:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">true if these state objects will be used to compute gradients, false otherwise</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">state_vector[arbitrary]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">vector of state objects, arbitrary size (usually 0)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">normal_rng[max_num_threads]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">a vector of NormalRNG objects that provide the (pesudo)random source for MC integration</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Outputs</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">state_vector[max_num_threads]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">vector of states containing <tt class="docutils literal"><span class="pre">max_num_threads</span></tt> properly initialized state objects</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0namespaceoptimal__learning_1a2e2cccb054f626cae59c8bd0f7844a1f"></span><div class="line-block">
+<div class="line">template &lt; typename ExpectedImprovementEvaluator, typename DomainType &gt;</div>
+<div class="line">void <strong>RestartedGradientDescentEIOptimization</strong>(const  <a class="reference internal" href="#project0classoptimal__learning_1_1_expected_improvement_evaluator"><em>ExpectedImprovementEvaluator</em></a>  &amp; ei_evaluator, const  GradientDescentParameters  &amp; optimization_parameters, const DomainType &amp; domain, double const *restrict initial_point, double const *restrict points_to_sample, int num_to_sample, NormalRNG  * normal_rng, double *restrict next_point)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Optimize the Expected Improvement (to find the next best point to sample).  This method solves 1,p-EI as long as
+the initial guess is good enough.  Optimization is done using restarted Gradient Descent, via
+GradientDescentOptimizer&lt;...&gt;::Optimize() from <tt class="docutils literal"><span class="pre">gpp_optimization.hpp</span></tt>.  Please see that file for details on gradient
+descent and see gpp_optimization_parameters.hpp for the meanings of the GradientDescentParameters.</p>
+<p>This function is just a simple wrapper that sets up the Evaluator&#8217;s State and calls a general template for restarted GD.</p>
+<p>Currently, during optimization, we recommend that the coordinates of the initial guesses not differ from the
+coordinates of the optima by more than about 1 order of magnitude. This is a very (VERY!) rough guideline implying
+that this function should be backed by multistarting on a grid (or similar) to provide better chances of a good initial guess.</p>
+<p>The &#8216;dumb&#8217; search component is provided through ComputeOptimalPointToSampleViaMultistartGradientDescent() (see below).
+Generally, calling that function should be preferred.  This function is meant for 1) easier testing;
+2) if you really know what you&#8217;re doing.</p>
+<p>Solution is guaranteed to lie within the region specified by <tt class="docutils literal"><span class="pre">domain</span></tt>; note that this may not be a
+true optima (i.e., the gradient may be substantially nonzero).</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">ei_evaluator:</th><td class="field-body">reference to object that can compute ExpectedImprovement and its spatial gradient</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">optimization_parameters:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">GradientDescentParameters object that describes the parameters controlling EI optimization
+(e.g., number of iterations, tolerances, learning rate)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">domain:</th><td class="field-body">object specifying the domain to optimize over (see <tt class="docutils literal"><span class="pre">gpp_domain.hpp</span></tt>)</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">initial_point[dim]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">initial guess for gradient descent</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">points_to_sample[dim][num_to_sample]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">points that are being sampled concurrently from the GP</td>
+</tr>
+<tr class="field-even field"><th class="field-name">num_to_sample:</th><td class="field-body">number of points being sampled concurrently (i.e., the p in 1,p-EI)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">normal_rng[1]:</th><td class="field-body">a NormalRNG object that provides the (pesudo)random source for MC integration</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Outputs</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">normal_rng[1]:</th><td class="field-body">NormalRNG object will have its state changed due to random draws</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">next_point[dim]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">point yielding the best EI according to gradient descent</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0namespaceoptimal__learning_1adde349c96a4810097bdd11ea3f2824dd"></span><div class="line-block">
+<div class="line">template &lt; typename DomainType &gt;</div>
+<div class="line">OL_NONNULL_POINTERS void <strong>ComputeOptimalPointToSampleViaMultistartGradientDescent</strong>(const  <a class="reference internal" href="#project0classoptimal__learning_1_1_gaussian_process"><em>GaussianProcess</em></a>  &amp; gaussian_process, const  GradientDescentParameters  &amp; optimization_parameters, const DomainType &amp; domain, double const *restrict start_point_set, double const *restrict points_to_sample, int num_multistarts, int num_to_sample, double best_so_far, int max_int_steps, int max_num_threads, NormalRNG  * normal_rng, bool *restrict found_flag, double *restrict best_next_point)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Performs multistart gradient descent (MGD) to optimize 1,p-EI.  Starts a GD run from each
+point in <tt class="docutils literal"><span class="pre">start_point_set</span></tt>.  The point corresponding to the optimal EI* is stored in <tt class="docutils literal"><span class="pre">best_next_point</span></tt>.</p>
+<p>This function wraps MultistartOptimizer&lt;&gt;::MultistartOptimize() (see <tt class="docutils literal"><span class="pre">gpp_optimization.hpp</span></tt>), which provides the multistarting
+component. Optimization is done using restarted Gradient Descent, via GradientDescentOptimizer&lt;...&gt;::Optimize() from
+<tt class="docutils literal"><span class="pre">gpp_optimization.hpp</span></tt>. Please see that file for details on gradient descent and see <tt class="docutils literal"><span class="pre">gpp_optimization_parameters.hpp</span></tt>
+for the meanings of the GradientDescentParameters.</p>
+<p>Currently, during optimization, we recommend that the coordinates of the initial guesses not differ from the
+coordinates of the optima by more than about 1 order of magnitude. This is a very (VERY!) rough guideline for
+sizing the domain and num_multistarts; i.e., be wary of sets of initial guesses that cover the space too sparsely.</p>
+<p>Solution is guaranteed to lie within the region specified by <tt class="docutils literal"><span class="pre">domain</span></tt>; note that this may not be a
+true optima (i.e., the gradient may be substantially nonzero).</p>
+<p>See ComputeOptimalPointToSampleWithRandomStarts() for additional details on MGD and its use for optimizing EI.  Usually that
+endpoint is preferred.</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p class="last">doxygenfile: Cannot find file &#8220;gpp_math.hpp&#8221; in doxygen xml output for project &#8220;project0&#8221; from directory: xml/</p>
+<p class="last">This function fails ungracefully if NO improvement can be found!  In that case,
+<tt class="docutils literal"><span class="pre">best_next_point</span></tt> will always be the first point in <tt class="docutils literal"><span class="pre">start_point_set</span></tt>.
+<tt class="docutils literal"><span class="pre">found_flag</span></tt> will indicate whether this occured.</p>
 </div>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">gaussian_process:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">GaussianProcess object (holds <tt class="docutils literal"><span class="pre">points_sampled</span></tt>, <tt class="docutils literal"><span class="pre">values</span></tt>, <tt class="docutils literal"><span class="pre">noise_variance</span></tt>, derived quantities)
+that describes the underlying GP</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">optimization_parameters:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">GradientDescentParameters object that describes the parameters controlling EI optimization
+(e.g., number of iterations, tolerances, learning rate)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">domain:</th><td class="field-body">object specifying the domain to optimize over (see <tt class="docutils literal"><span class="pre">gpp_domain.hpp</span></tt>)</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">start_point_set[dim][num_multistarts]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">set of initial guesses for MGD</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">points_to_sample[dim][num_to_sample]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">points that are being sampled concurrently from the GP</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">num_multistarts:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">number of points in set of initial guesses</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">num_to_sample:</th><td class="field-body">number of points being sampled concurrently (i.e., the p in 1,p-EI)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">best_so_far:</th><td class="field-body">value of the best sample so far (must be <tt class="docutils literal"><span class="pre">min(points_sampled_value)</span></tt>)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">max_int_steps:</th><td class="field-body">maximum number of MC iterations</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">max_num_threads:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">maximum number of threads for use by OpenMP (generally should be &lt;= # cores)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">normal_rng[max_num_threads]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">a vector of NormalRNG objects that provide the (pesudo)random source for MC integration</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Outputs</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">normal_rng[max_num_threads]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">NormalRNG objects will have their state changed due to random draws</td>
+</tr>
+<tr class="field-even field"><th class="field-name">found_flag[1]:</th><td class="field-body">true if <tt class="docutils literal"><span class="pre">best_next_point</span></tt> corresponds to a nonzero EI</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">best_next_point[dim]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">point yielding the best EI according to MGD</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0namespaceoptimal__learning_1a373943f39ee9f492443f4e4ff71878d6"></span><div class="line-block">
+<div class="line">template &lt; typename DomainType &gt;</div>
+<div class="line">void <strong>ComputeOptimalPointToSampleWithRandomStarts</strong>(const  <a class="reference internal" href="#project0classoptimal__learning_1_1_gaussian_process"><em>GaussianProcess</em></a>  &amp; gaussian_process, const  GradientDescentParameters  &amp; optimization_parameters, const DomainType &amp; domain, double const *restrict points_to_sample, int num_to_sample, double best_so_far, int max_int_steps, int max_num_threads, bool *restrict found_flag, UniformRandomGenerator  * uniform_generator, NormalRNG  * normal_rng, double *restrict best_next_point)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Performs multistart (restarted) gradient descent (MGD) to optimize Expected Improvement (1,p-EI) starting from
+<tt class="docutils literal"><span class="pre">num_multistarts</span></tt> points selected randomly from the within th domain.
+The point corresponding to the optimal EI* is stored in <tt class="docutils literal"><span class="pre">best_next_point</span></tt>.</p>
+<p>This is the primary endpoint for expected improvement optimization using gradient descent.  It produces an uniform random
+sampling of initial guesses and wraps a series of calls:
+The heart of MGD is in ComputeOptimalPointToSampleViaMultistartGradientDescent(), which wraps
+MultistartOptimizer&lt;...&gt;::MultistartOptimize(...) (in gpp_optimization.hpp).
+The heart of restarted GD is in GradientDescentOptimizer&lt;...&gt;::Optimize() (in gpp_optimization.hpp).
+EI is computed in ComputeExpectedImprovement() and its gradient is in ComputeGradExpectedImprovement(), which are member
+functions of ExpectedImprovementEvaluator and OnePotentialSampleExpectedImprovementEvaluator.</p>
+<p>This function should be the primary entry-point into this optimal learning library.  It takes in a covariance function,
+points already sampled, and potential (future) points to sample as well as parameters for gradient descent and MC integration.
+Basically, the input is a full specification of the optimization problem.
+And the output is the &#8220;best&#8221; next point to sample.</p>
+<p>See file docs for this file for more high level description of how this works.  See the matching cpp file docs
+for more mathematical details.</p>
+<p>Currently, during optimization, we recommend that the coordinates of the initial guesses not differ from the
+coordinates of the optima by more than about 1 order of magnitude. This is a very (VERY!) rough guideline for
+sizing the domain and num_multistarts; i.e., be wary of sets of initial guesses that cover the space too sparsely.</p>
+<p>Solution is guaranteed to lie within the region specified by &#8220;domain&#8221;; note that this may not be a
+true optima (i.e., the gradient may be substantially nonzero).</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This function fails if NO improvement can be found!  In that case,
+<tt class="docutils literal"><span class="pre">best_next_point</span></tt> will always be the first randomly chosen point.
+<tt class="docutils literal"><span class="pre">found_flag</span></tt> will be set to false in this case.</p>
+</div>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">gaussian_process:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">GaussianProcess object (holds <tt class="docutils literal"><span class="pre">points_sampled</span></tt>, <tt class="docutils literal"><span class="pre">values</span></tt>, <tt class="docutils literal"><span class="pre">noise_variance</span></tt>, derived quantities)
+that describes the underlying GP</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">optimization_parameters:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">GradientDescentParameters object that describes the parameters controlling EI optimization
+(e.g., number of iterations, tolerances, learning rate)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">domain:</th><td class="field-body">object specifying the domain to optimize over (see <tt class="docutils literal"><span class="pre">gpp_domain.hpp</span></tt>)</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">points_to_sample[dim][num_to_sample]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">points that are being sampled concurrently from the GP</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">num_to_sample:</th><td class="field-body">number of points being sampled concurrently (i.e., the p in 1,p-EI)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">best_so_far:</th><td class="field-body">value of the best sample so far (must be <tt class="docutils literal"><span class="pre">min(points_sampled_value)</span></tt>)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">max_int_steps:</th><td class="field-body">maximum number of MC iterations</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">max_num_threads:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">maximum number of threads for use by OpenMP (generally should be &lt;= # cores)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">uniform_generator[1]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">a UniformRandomGenerator object providing the random engine for uniform random numbers</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">normal_rng[max_num_threads]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">a vector of NormalRNG objects that provide the (pesudo)random source for MC integration</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Outputs</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">found_flag[1]:</th><td class="field-body">true if best_next_point corresponds to a nonzero EI</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">uniform_generator[1]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">UniformRandomGenerator object will have its state changed due to random draws</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">normal_rng[max_num_threads]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">NormalRNG objects will have their state changed due to random draws</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">best_next_point[dim]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">point yielding the best EI according to MGD</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0namespaceoptimal__learning_1a779a984df28de359de4c91239c29ba34"></span><div class="line-block">
+<div class="line">template &lt; typename DomainType &gt;</div>
+<div class="line">void <strong>EvaluateEIAtPointList</strong>(const  <a class="reference internal" href="#project0classoptimal__learning_1_1_gaussian_process"><em>GaussianProcess</em></a>  &amp; gaussian_process, const DomainType &amp; domain, double const *restrict initial_guesses, double const *restrict points_to_sample, int num_multistarts, int num_to_sample, double best_so_far, int max_int_steps, int max_num_threads, bool *restrict found_flag, NormalRNG  * normal_rng, double *restrict function_values, double *restrict best_next_point)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Function to evaluate Expected Improvement (1,p-EI) over a specified list of <tt class="docutils literal"><span class="pre">num_multistarts</span></tt> points.
+Optionally outputs the EI at each of these points.
+Outputs the point of the set obtaining the maximum EI value.</p>
+<p>Generally gradient descent is preferred but when they fail to converge this may be the only &#8220;robust&#8221; option.
+This function is also useful for plotting or debugging purposes (just to get a bunch of EI values).</p>
+<p>This function is just a wrapper that builds the required state objects and a NullOptimizer object and calls
+MultistartOptimizer&lt;...&gt;::MultistartOptimize(...); see gpp_optimization.hpp.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">gaussian_process:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">GaussianProcess object (holds <tt class="docutils literal"><span class="pre">points_sampled</span></tt>, <tt class="docutils literal"><span class="pre">values</span></tt>, <tt class="docutils literal"><span class="pre">noise_variance</span></tt>, derived quantities)
+that describes the underlying GP</td>
+</tr>
+<tr class="field-even field"><th class="field-name">domain:</th><td class="field-body">object specifying the domain to optimize over (see <tt class="docutils literal"><span class="pre">gpp_domain.hpp</span></tt>)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">initial_guesses[dim][num_multistarts]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">list of points at which to compute EI</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">points_to_sample[dim][num_to_sample]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">points that are being sampled concurrently from the GP</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">num_multistarts:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">number of points to check</td>
+</tr>
+<tr class="field-even field"><th class="field-name">num_to_sample:</th><td class="field-body">number of points being sampled concurrently (i.e., the p in 1,p-EI)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">best_so_far:</th><td class="field-body">value of the best sample so far (must be <tt class="docutils literal"><span class="pre">min(points_sampled_value)</span></tt>)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">max_int_steps:</th><td class="field-body">maximum number of MC iterations</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">max_num_threads:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">maximum number of threads for use by OpenMP (generally should be &lt;= # cores)</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">normal_rng[max_num_threads]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">a vector of NormalRNG objects that provide the (pesudo)random source for MC integration</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Outputs</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">found_flag[1]:</th><td class="field-body">true if best_next_point corresponds to a nonzero EI</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">normal_rng[max_num_threads]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">NormalRNG objects will have their state changed due to random draws</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">function_values[num_multistarts]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">EI evaluated at each point of <tt class="docutils literal"><span class="pre">initial_guesses</span></tt>, in the same order as
+<tt class="docutils literal"><span class="pre">initial_guesses</span></tt>; never dereferenced if nullptr</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">best_next_point[dim]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">point yielding the best EI according to dumb search</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0namespaceoptimal__learning_1a410693a7585a7d476f9a8abc7c8909da"></span><div class="line-block">
+<div class="line">template &lt; typename DomainType &gt;</div>
+<div class="line">void <strong>ComputeOptimalPointToSampleViaLatinHypercubeSearch</strong>(const  <a class="reference internal" href="#project0classoptimal__learning_1_1_gaussian_process"><em>GaussianProcess</em></a>  &amp; gaussian_process, const DomainType &amp; domain, double const *restrict points_to_sample, int num_multistarts, int num_to_sample, double best_so_far, int max_int_steps, int max_num_threads, bool *restrict found_flag, UniformRandomGenerator  * uniform_generator, NormalRNG  * normal_rng, double *restrict best_next_point)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Brute force optimization (&#8220;dumb&#8221; search on a latin hypercube) over <tt class="docutils literal"><span class="pre">num_multistarts</span></tt> points to find the best point
+to sample next. This function searches for the point with the largest 1,p-EI value.</p>
+<p>Generally gradient descent is preferred but when they fail to converge this may be the only &#8220;robust&#8221; option.</p>
+<p>Solution is guaranteed to lie within the region specified by <tt class="docutils literal"><span class="pre">domain</span></tt>; note that this may not be a
+true optima (i.e., the gradient may be substantially nonzero).</p>
+<p>Wraps EvaluateEIAtPointList(); constructs the input point list with a uniform random sampling from the given Domain object.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">gaussian_process:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">GaussianProcess object (holds <tt class="docutils literal"><span class="pre">points_sampled</span></tt>, <tt class="docutils literal"><span class="pre">values</span></tt>, <tt class="docutils literal"><span class="pre">noise_variance</span></tt>, derived quantities)
+that describes the underlying GP</td>
+</tr>
+<tr class="field-even field"><th class="field-name">domain:</th><td class="field-body">object specifying the domain to optimize over (see <tt class="docutils literal"><span class="pre">gpp_domain.hpp</span></tt>)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">points_to_sample[dim][num_to_sample]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">points that are being sampled concurrently from the GP</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">num_multistarts:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">number of random points to check</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">num_to_sample:</th><td class="field-body">number of points being sampled concurrently (i.e., the p in 1,p-EI)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">best_so_far:</th><td class="field-body">value of the best sample so far (must be <tt class="docutils literal"><span class="pre">min(points_sampled_value)</span></tt>)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">max_int_steps:</th><td class="field-body">maximum number of MC iterations</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">max_num_threads:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">maximum number of threads for use by OpenMP (generally should be &lt;= # cores)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">uniform_generator[1]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">a UniformRandomGenerator object providing the random engine for uniform random numbers</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">normal_rng[max_num_threads]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">a vector of NormalRNG objects that provide the (pesudo)random source for MC integration</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Outputs</strong>:</dt>
+<dd>found_flag[1]: true if best_next_point corresponds to a nonzero EI
+:uniform_generator[1]: UniformRandomGenerator object will have its state changed due to random draws
+:normal_rng[max_num_threads]: NormalRNG objects will have their state changed due to random draws
+:best_next_point[dim]: point yielding the best EI according to dumb search</dd>
+</dl>
+ </p>
+</div></blockquote>
+</div></blockquote>
+<p><p id="project0classoptimal__learning_1_1_gaussian_process"><em>class</em> <strong>GaussianProcess</strong></p>
+<blockquote>
+<div><p></p>
+<p><p>Object that encapsulates Gaussian Process Priors (GPPs).  A GPP is defined by a set of
+(sample point, function value, noise variance) triples along with a covariance function that relates the points.
+Each point has dimension dim.  These are the training data; for example, each sample point might specify an experimental
+cohort and the corresponding function value is the objective measured for that experiment.  There is one noise variance
+value per function value; this is the measurement error and is treated as N(0, noise_variance) Gaussian noise.</p>
+<p>GPPs estimate a real process <span class="math">\(\, f(x) = GP(m(x), k(x,x'))\)</span> (see file docs).  This class deals with building an estimator
+to the actual process using measurements taken from the actual process&#8211;the (sample point, function val, noise) triple.
+Then predictions about unknown points can be made by sampling from the GPP&#8211;in particular, finding the (predicted)
+mean and variance.  These functions (and their gradients) are provided in ComputeMeanOfPoints, ComputeVarianceOfPoints,
+etc.</p>
+<p>Further mathematical details are given in the implementation comments, but we are essentially computing:</p>
+<div class="line-block">
+<div class="line">ComputeMeanOfPoints    : <tt class="docutils literal"><span class="pre">K(Xs,</span> <span class="pre">X)</span> <span class="pre">*</span> <span class="pre">[K(X,X)</span> <span class="pre">+</span> <span class="pre">\sigma_n^2</span> <span class="pre">I]^{-1}</span> <span class="pre">*</span> <span class="pre">y</span></tt></div>
+<div class="line">ComputeVarianceOfPoints: <tt class="docutils literal"><span class="pre">K(Xs,</span> <span class="pre">Xs)</span> <span class="pre">-</span> <span class="pre">K(Xs,X)</span> <span class="pre">*</span> <span class="pre">[K(X,X)</span> <span class="pre">+</span> <span class="pre">\sigma_n^2</span> <span class="pre">I]^{-1}</span> <span class="pre">*</span> <span class="pre">K(X,Xs)</span></tt></div>
+</div>
+<p>This (estimated) mean and variance characterize the predicted distributions of the actual <span class="math">\(\, m(x), k(x,x')\)</span>
+functions that underly our GP.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">the preceding comments are copied in Python: interfaces/gaussian_process_interface.py</p>
+</div>
+<p>For testing and experimental purposes, this class provides a framework for sampling points from the GP (i.e., given a
+point to sample and predicted measurement noise) as well as adding additional points to an already-formed GP.  Sampling
+points requires drawing from <span class="math">\(\, N(0,1)\)</span> so this class also holds PRNG state to do so via the NormalRNG object from gpp_random.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Functions that manipulate the PRNG directly or indirectly (changing state, generating points)
+are NOT THREAD-SAFE. All thread-safe functions are marked const.</p>
+</div>
+<p>These mean/variance methods require some external state: namely, the set of potential points to sample.  Additionally,
+temporaries and derived quantities depending on these &#8220;points to sample&#8221; eliminate redundant computation.  This external
+state is handled through PointsToSampleState objects, which are constructed separately and filled through
+PointsToSampleState::SetupState() which interacts with functions in this class.</p>
+ </p>
+<em>Public Type</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_gaussian_process_1a0a4f1f728c228534c56038bf27b0967e"></span>typedef <a class="reference internal" href="#project0structoptimal__learning_1_1_points_to_sample_state"><em>PointsToSampleState</em></a> <strong>StateType</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_gaussian_process_1a1ba20aed0f2dfdf3dd36e901d36cdb72"></span>typedef NormalRNG <strong>NormalGeneratorType</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_gaussian_process_1aa23b7ee98a2974b94ceade9227515b1a"></span>typedef NormalGeneratorType::EngineType <strong>EngineType</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Public Functions</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_gaussian_process_1a6648cad9df1dd7aa31aaa275fc375629"></span><div class="line-block">
+<div class="line"> <strong>GaussianProcess</strong>(const  CovarianceInterface  &amp; covariance_in, double const *restrict points_sampled_in, double const *restrict points_sampled_value_in, double const *restrict noise_variance_in, int dim_in, int num_sampled_in)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Constructs a GaussianProcess object.  All inputs are required; no default constructor nor copy/assignment are allowed.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">covariance:</th><td class="field-body">the CovarianceFunction object encoding assumptions about the GP&#8217;s behavior on our data</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">points_sampled[dim][num_sampled]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">points that have already been sampled</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">points_sampled_value[num_sampled]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">values of the already-sampled points</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">noise_variance[num_sampled]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">the <tt class="docutils literal"><span class="pre">\sigma_n^2</span></tt> (noise variance) associated w/observation, points_sampled_value</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">dim:</th><td class="field-body">the spatial dimension of a point (i.e., number of independent params in experiment)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">num_sampled:</th><td class="field-body">number of already-sampled points</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_gaussian_process_1a27747082cb20e7b38a6c9c777a96aeab"></span><div class="line-block">
+<div class="line">int <strong>dim</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_gaussian_process_1a036e4847fcadc3925795d01f42efe914"></span><div class="line-block">
+<div class="line">int <strong>num_sampled</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_gaussian_process_1a156210b8fb610a5a097287089c691ba8"></span><div class="line-block">
+<div class="line">const std::vector&lt; double &gt; &amp; <strong>points_sampled</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_gaussian_process_1a85a114af06e5ef937c4922d47ccb5db4"></span><div class="line-block">
+<div class="line">const std::vector&lt; double &gt; &amp; <strong>points_sampled_value</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_gaussian_process_1a792bf34690daaf4375d31d9781928937"></span><div class="line-block">
+<div class="line">const std::vector&lt; double &gt; &amp; <strong>noise_variance</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_gaussian_process_1ac009c7a6be7123ef11811eedb1d2c720"></span><div class="line-block">
+<div class="line">void <strong>SetCovarianceHyperparameters</strong>(double const *restrict hyperparameters_new)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Change the hyperparameters of this GP&#8217;s covariance function.
+Also forces recomputation of all derived quantities for GP to remain consistent.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Using this function invalidates any PointsToSampleState objects created with &#8220;this&#8221; object.
+For any such objects &#8220;state&#8221;, call state.SetupState(...) to restore them.</p>
+</div>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">hyperparameters_new[<a href="#id1"><span class="problematic" id="id2">covariance_</span></a>.GetNumberOfHyperparameters]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">new hyperparameter array</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_gaussian_process_1a39b46d2c68057407cc6af7483b28aa56"></span><div class="line-block">
+<div class="line">void <strong>FillPointsToSampleState</strong>(<a class="reference internal" href="#project0structoptimal__learning_1_1_points_to_sample_state"><em>StateType</em></a>  * points_to_sample_state, bool configure_for_gradients)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Sets up the PointsToSampleState object so that it can be used to compute GP mean, variance, and gradients thereof.
+ASSUMES all needed space is ALREADY ALLOCATED.</p>
+<p>This function should not be called directly; instead use PointsToSampleState::SetupState().</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">points_to_sample_state[1]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">pointer to a PointsToSampleState object where all space has been properly allocated</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">configure_for_gradients:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">whether the resulting PointsToSampleState object should be configured for gradient computation</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Outputs</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">points_to_sample_state[1]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">pointer to a fully configured PointsToSampleState object. overwrites input</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_gaussian_process_1abf09df3ce2d61e0401b3a9511e727776"></span><div class="line-block">
+<div class="line">void <strong>AddPointToGP</strong>(double const *restrict new_point, double new_point_value, double noise_variance)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Adds a single (point, fcn value) pair to the GP with the option of noise variance (set to 0.0 if undesired).</p>
+<p>Also forces recomputation of all derived quantities for GP to remain consistent.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">new_point[dim]:</th><td class="field-body">coordinates of the new point to add</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">new_point_value:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">function value at the new point</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">noise_variance:</th><td class="field-body">sigma_n^2 corresponding to the signal noise in measuring new_point_value</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_gaussian_process_1a72b8ea7d5de98271c11be61869bcff21"></span><div class="line-block">
+<div class="line">double <strong>SamplePointFromGP</strong>(double const *restrict point_to_sample, double noise_variance_this_point)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Sample a function value from a Gaussian Process prior, provided a point at which to sample.</p>
+<p>Uses the formula <tt class="docutils literal"><span class="pre">function_value</span> <span class="pre">=</span> <span class="pre">gpp_mean</span> <span class="pre">+</span> <span class="pre">sqrt(gpp_variance)</span> <span class="pre">*</span> <span class="pre">w1</span> <span class="pre">+</span> <span class="pre">sqrt(noise_variance)</span> <span class="pre">*</span> <span class="pre">w2</span></tt>, where <tt class="docutils literal"><span class="pre">w1,</span> <span class="pre">w2</span></tt>
+are draws from <span class="math">\(\, N(0,1)\)</span>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Set noise_variance to 0 if you want &#8220;accurate&#8221; draws from the GP.
+BUT if the drawn (point, value) pair is meant to be added back into the GP (e.g., for testing), then this point
+MUST be drawn with noise_variance equal to the noise associated with &#8220;point&#8221; as a member of &#8220;points_sampled&#8221;</p>
+</div>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">point_to_sample[dim]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">coordinates of the point at which to generate a function value (from GP)</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">noise_variance_this_point:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">if this point is to be added into the GP, it needs to be generated with its associated noise var</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd>function value drawn from this GP</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_gaussian_process_1a7873e09a46323767e62d0c2f5ba918ee"></span><div class="line-block">
+<div class="line">void <strong>ComputeMeanOfPoints</strong>(const  <a class="reference internal" href="#project0structoptimal__learning_1_1_points_to_sample_state"><em>StateType</em></a>  &amp; points_to_sample_state, double *restrict mean_of_points)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Computes the mean of this GP at each of <tt class="docutils literal"><span class="pre">Xs</span></tt> (<tt class="docutils literal"><span class="pre">points_to_sample</span></tt>).</p>
+<p><tt class="docutils literal"><span class="pre">points_to_sample</span></tt> and <tt class="docutils literal"><span class="pre">points_sampled</span></tt> are not allowed to contain duplicate points within
+themselves.  Violating this results in singular covariance matrices.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">comments are copied in Python: interfaces/gaussian_process_interface.py</p>
+</div>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">points_to_sample_state:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">a FULLY CONFIGURED PointsToSampleState (configure via PointsToSampleState::SetupState)</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Outputs</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">mean_of_points[num_to_sample]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">mean of GP, one per GP dimension</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_gaussian_process_1a7848596618461dc6e219b9dbd7099e4c"></span><div class="line-block">
+<div class="line">void <strong>ComputeGradMeanOfPoints</strong>(const  <a class="reference internal" href="#project0structoptimal__learning_1_1_points_to_sample_state"><em>StateType</em></a>  &amp; points_to_sample_state, double *restrict grad_mu)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Computes the gradient of the mean of this GP at each of <tt class="docutils literal"><span class="pre">Xs</span></tt> (<tt class="docutils literal"><span class="pre">points_to_sample</span></tt>) wrt <tt class="docutils literal"><span class="pre">Xs</span></tt>.</p>
+<p><tt class="docutils literal"><span class="pre">points_to_sample</span></tt> and <tt class="docutils literal"><span class="pre">points_sampled</span></tt> are not allowed to contain duplicate points within
+themselves.  Violating this results in singular covariance matrices.</p>
+<p>Note that <tt class="docutils literal"><span class="pre">grad_mu</span></tt> is nominally sized: <tt class="docutils literal"><span class="pre">grad_mu[dim][num_to_sample][num_to_sample]</span></tt>.
+However, for <tt class="docutils literal"><span class="pre">0</span> <span class="pre">&lt;=</span> <span class="pre">i,j</span> <span class="pre">&lt;</span> <span class="pre">num_to_sample</span></tt>, <tt class="docutils literal"><span class="pre">i</span> <span class="pre">!=</span> <span class="pre">j</span></tt>, <tt class="docutils literal"><span class="pre">grad_mu[d][i][j]</span> <span class="pre">=</span> <span class="pre">0</span></tt>.
+(See references or implementation for further details.)
+Thus, <tt class="docutils literal"><span class="pre">grad_mu</span></tt> is stored in a reduced form which only tracks the nonzero entries.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">comments are copied in Python: interfaces/gaussian_process_interface.py</p>
+</div>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">points_to_sample_state:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">a FULLY CONFIGURED PointsToSampleState (configure via PointsToSampleState::SetupState)</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Outputs</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">grad_mu[dim][num_to_sample]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">gradient of the mean of the GP.  <tt class="docutils literal"><span class="pre">grad_mu[d][i]</span></tt> is
+actually the gradient of <tt class="docutils literal"><span class="pre">\mu_i</span></tt> with respect to <tt class="docutils literal"><span class="pre">x_{d,i}</span></tt>, the d-th dimension of
+the i-th entry of <tt class="docutils literal"><span class="pre">points_to_sample</span></tt>.</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_gaussian_process_1a729b69525d8409dcfaeb6e9d83a3503f"></span><div class="line-block">
+<div class="line">void <strong>ComputeVarianceOfPoints</strong>(<a class="reference internal" href="#project0structoptimal__learning_1_1_points_to_sample_state"><em>StateType</em></a>  * points_to_sample_state, double *restrict var_star)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Computes the variance (matrix) of this GP at each point of <tt class="docutils literal"><span class="pre">Xs</span></tt> (<tt class="docutils literal"><span class="pre">points_to_sample</span></tt>).</p>
+<p>The variance matrix is symmetric and is stored in the LOWER TRIANGLE.
+<tt class="docutils literal"><span class="pre">points_to_sample</span></tt> and <tt class="docutils literal"><span class="pre">points_sampled</span></tt> are not allowed to contain duplicate points within
+themselves.  Violating this results in singular covariance matrices.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">comments are copied in Python: interfaces/gaussian_process_interface.py</p>
+</div>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">points_to_sample_state[1]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">ptr to a FULLY CONFIGURED PointsToSampleState (configure via PointsToSampleState::SetupState)</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Outputs</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">points_to_sample_state[1]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">ptr to a FULLY CONFIGURED PointsToSampleState; only temporary state may be mutated</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">var_star[num_to_sample][num_to_sample]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">variance of GP</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_gaussian_process_1aeb33b8008faf51ccd7078e9e9766459b"></span><div class="line-block">
+<div class="line">void <strong>ComputeGradVarianceOfPoints</strong>(<a class="reference internal" href="#project0structoptimal__learning_1_1_points_to_sample_state"><em>StateType</em></a>  * points_to_sample_state, int var_of_grad, double *restrict grad_var)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Similar to ComputeGradCholeskyVarianceOfPoints() except this does not include the gradient terms from
+the cholesky factorization.  Description will not be duplicated here.</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_gaussian_process_1aa9664b11768bfa2fcc76f27d3da760de"></span><div class="line-block">
+<div class="line">void <strong>ComputeGradCholeskyVarianceOfPoints</strong>(<a class="reference internal" href="#project0structoptimal__learning_1_1_points_to_sample_state"><em>StateType</em></a>  * points_to_sample_state, int var_of_grad, double const *restrict chol_var, double *restrict grad_chol)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Computes the gradient of the cholesky factorization of the variance of this GP with respect to <tt class="docutils literal"><span class="pre">points_to_sample</span></tt>.
+This function accounts for the effect on the gradient resulting from
+cholesky-factoring the variance matrix.  See Smith 1995 for algorithm details.</p>
+<p><tt class="docutils literal"><span class="pre">points_to_sample</span></tt> and <tt class="docutils literal"><span class="pre">points_sampled</span></tt> are not allowed to contain duplicate points within
+themselves.  Violating this results in singular covariance matrices.</p>
+<p>Note that <tt class="docutils literal"><span class="pre">grad_chol</span></tt> is nominally sized:
+<tt class="docutils literal"><span class="pre">grad_chol[dim][num_to_sample][num_to_sample][num_to_sample]</span></tt>.
+Let this be indexed <tt class="docutils literal"><span class="pre">grad_chol[d][k][i][j]</span></tt>, which is read the derivative of <tt class="docutils literal"><span class="pre">var[i][j]</span></tt>
+with respect to <tt class="docutils literal"><span class="pre">x_{d,k}</span></tt> (x = <tt class="docutils literal"><span class="pre">points_to_sample</span></tt>)</p>
+<p>Due to actual usage patterns, the full gradient tensor is never required simultaneously;
+thus only <tt class="docutils literal"><span class="pre">grad_chol[d][i][j]</span></tt> is formed with k (<tt class="docutils literal"><span class="pre">var_of_grad</span></tt>) as an input parameter to this function.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">comments are copied in Python: interfaces/gaussian_process_interface.py</p>
+</div>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">points_to_sample_state[1]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">ptr to a FULLY CONFIGURED PointsToSampleState (configure via PointsToSampleState::SetupState)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">var_of_grad:</th><td class="field-body">index of <tt class="docutils literal"><span class="pre">points_to_sample</span></tt> in {0, .. <tt class="docutils literal"><span class="pre">num_to_sample</span></tt>-1} to be differentiated against</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Outputs</strong>:</dt>
+<dd><table class="first docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">points_to_sample_state[1]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">ptr to a FULLY CONFIGURED PointsToSampleState; only temporary state may be mutated</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">grad_chol[dim][num_to_sample][num_to_sample]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">gradient of the cholesky-factored</td>
+</tr>
+</tbody>
+</table>
+<dl class="last docutils">
+<dt>:variance of the GP.  <tt class="docutils literal"><span class="pre">grad_chol[d][i][j]</span></tt> is actually the gradients of <tt class="docutils literal"><span class="pre">var_{i,j}</span></tt> with</dt>
+<dd>respect to <tt class="docutils literal"><span class="pre">x_{d,k}</span></tt>, the d-th dimension of the k-th entry of <tt class="docutils literal"><span class="pre">points_to_sample</span></tt>, where
+k = <tt class="docutils literal"><span class="pre">var_of_grad</span></tt></dd>
+</dl>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_gaussian_process_1a7657ac7fb2ca010363719b47b7fcaf83"></span><div class="line-block">
+<div class="line">void <strong>SetExplicitSeed</strong>(EngineType::result_type seed)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Re-seed the random number generator with the specified seed.
+See gpp_random, struct NormalRNG for details.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">seed:</th><td class="field-body">new seed to set</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_gaussian_process_1aeedfb07d87e00a116bab3ccf3308bd05"></span><div class="line-block">
+<div class="line">void <strong>SetRandommizedSeed</strong>(EngineType::result_type seed)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Re-seed the random number generator using a combination of the specified seed,
+current time, and potentially other factors.
+See gpp_random, struct NormalRNG for details.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">seed:</th><td class="field-body">base value for new seed</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_gaussian_process_1a5d473d09a07c5902d5f2fe78d86c1f03"></span><div class="line-block">
+<div class="line">void <strong>ResetToMostRecentSeed</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Reseeds the generator with its last used seed value.
+Useful for testing&#8211;e.g., can conduct multiple runs with the same initial conditions</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_gaussian_process_1afed0df459419720395d979ffaf1f19f6"></span><div class="line-block">
+<div class="line"><a class="reference internal" href="#project0classoptimal__learning_1_1_gaussian_process"><em>GaussianProcess</em></a>  * <strong>Clone</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Clones &#8220;this&#8221; GaussianProcess.</p>
+<dl class="docutils">
+<dt><strong>Returns</strong>:</dt>
+<dd>Pointer to a constructed object that is a copy of &#8220;this&#8221;</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_gaussian_process_1afed8cb9e4d8e2c99c9c7b5995b3ff4b2"></span><div class="line-block">
+<div class="line"> <strong>OL_DISALLOW_DEFAULT_AND_ASSIGN</strong>(<a class="reference internal" href="#project0classoptimal__learning_1_1_gaussian_process"><em>GaussianProcess</em></a>)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Public Static Attributes</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_gaussian_process_1a5e96979c452eb8ed29727e7c69f99c5e"></span>constexpr EngineType::result_type <strong>kDefaultSeed</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Protected Functions</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_gaussian_process_1a347b14458621dd3f16b7fa159cec8905"></span><div class="line-block">
+<div class="line"> <strong>GaussianProcess</strong>(const  <a class="reference internal" href="#project0classoptimal__learning_1_1_gaussian_process"><em>GaussianProcess</em></a>  &amp; source)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Private Functions</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_gaussian_process_1ae30fe08eb6c927b03890849d14484923"></span><div class="line-block">
+<div class="line">void <strong>BuildCovarianceMatrixWithNoiseVariance</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_gaussian_process_1acbe6a6e35387c4913b2969b520f63742"></span><div class="line-block">
+<div class="line">void <strong>BuildMixCovarianceMatrix</strong>(double const *restrict points_to_sample, int num_to_sample, double *restrict cov_mat)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_gaussian_process_1a525f3a2cae0a170b7925c7d3622749a7"></span><div class="line-block">
+<div class="line">void <strong>RecomputeDerivedVariables</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Recomputes (including resizing as needed) the derived quantities in this class.
+This function should be called any time state variables are changed.</p>
+ </p>
+</div></blockquote>
+</div></blockquote>
+<em>Private Members</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_gaussian_process_1ac1881908657eba98f40da476be0c6698"></span>int <strong>dim_</strong></p>
+<blockquote>
+<div><p>spatial dimension (e.g., entries per point of <tt class="docutils literal"><span class="pre">points_sampled</span></tt>) </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_gaussian_process_1ab7b228f4c03cf7700f3b8d3be9794873"></span>int <strong>num_sampled_</strong></p>
+<blockquote>
+<div><p>number of points in <tt class="docutils literal"><span class="pre">points_sampled</span></tt> </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_gaussian_process_1a430bc4ffcb629edb4bdc5766cbfffe54"></span>std::unique_ptr&lt;  CovarianceInterface  &gt; <strong>covariance_ptr_</strong></p>
+<blockquote>
+<div><p>covariance class (for computing covariance and its gradients) </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_gaussian_process_1a686c2e58e0074cd71acac1439720195b"></span>CovarianceInterface  &amp; <strong>covariance_</strong></p>
+<blockquote>
+<div><p>reference to <tt class="docutils literal"><span class="pre">*covariance_ptr_</span></tt> object for convenience </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_gaussian_process_1a0b4b241a7161698b50bcf462bc9f4a41"></span>std::vector&lt; double &gt; <strong>points_sampled_</strong></p>
+<blockquote>
+<div><p>coordinates of already-sampled points, <tt class="docutils literal"><span class="pre">X</span></tt> </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_gaussian_process_1abc1a69f726fd772cfc0daee807337943"></span>std::vector&lt; double &gt; <strong>points_sampled_value_</strong></p>
+<blockquote>
+<div><p>function values at points_sampled, <tt class="docutils literal"><span class="pre">y</span></tt> </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_gaussian_process_1a712e7db3eb82c29d2359edb40426a2de"></span>std::vector&lt; double &gt; <strong>noise_variance_</strong></p>
+<blockquote>
+<div><p><tt class="docutils literal"><span class="pre">\sigma_n^2</span></tt>, the noise variance </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_gaussian_process_1a7703f449267a1256f712af7722fadc57"></span>std::vector&lt; double &gt; <strong>K_chol_</strong></p>
+<blockquote>
+<div><p>cholesky factorization of <tt class="docutils literal"><span class="pre">K</span></tt> (i.e., <tt class="docutils literal"><span class="pre">K(X,X)</span></tt> covariance matrix (prior), includes noise variance) </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_gaussian_process_1af26b773eee0adfb2422d8de8cc76d400"></span>std::vector&lt; double &gt; <strong>K_inv_y_</strong></p>
+<blockquote>
+<div><p><tt class="docutils literal"><span class="pre">K^-1</span> <span class="pre">*</span> <span class="pre">y</span></tt>; computed WITHOUT forming <tt class="docutils literal"><span class="pre">K^-1</span></tt> </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_gaussian_process_1a196f018b2928a9e8fc2e9785831de110"></span>NormalGeneratorType <strong>normal_rng_</strong></p>
+<blockquote>
+<div><p>Normal PRNG for use with sampling points from GP. </p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</p>
+<p><p id="project0structoptimal__learning_1_1_points_to_sample_state"><em>class</em> <strong>PointsToSampleState</strong></p>
+<blockquote>
+<div><p></p>
+<p><p>This object holds the state needed for a GaussianProcess object characterize the distribution of function values arising from
+sampling the GP at a list of <tt class="docutils literal"><span class="pre">points_to_sample</span></tt>.  This object is required by the GaussianProcess to access functionality for
+computing the mean, variance, and spatial gradients thereof.</p>
+<p>The &#8220;independent variables&#8221; for this object are <tt class="docutils literal"><span class="pre">points_to_sample</span></tt>. These points are both the &#8220;p&#8221; and the &#8220;q&#8221; in q,p-EI;
+i.e., they are the parameters of both ongoing experiments and new predictions.</p>
+<p>Once constructed, this object provides the SetupState() function to update it for computations at different sets of
+potential points to sample.</p>
+<p>See general comments on State structs in <tt class="docutils literal"><span class="pre">gpp_common.hpp</span></tt>&#8216;s header docs.</p>
+ </p>
+<em>Public Functions</em><blockquote>
+<div><p><span class="target" id="project0structoptimal__learning_1_1_points_to_sample_state_1a61e4ed73d9cfb18595ee11d5de9e4fe2"></span><div class="line-block">
+<div class="line"> <strong>PointsToSampleState</strong>(const  <a class="reference internal" href="#project0classoptimal__learning_1_1_gaussian_process"><em>GaussianProcess</em></a>  &amp; gaussian_process, double const *restrict points_to_sample_in, int num_to_sample_in, bool configure_for_gradients_in)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Constructs a PointsToSampleState object with new <tt class="docutils literal"><span class="pre">points_to_sample</span></tt>.
+Ensures all state variables &amp; temporaries are properly sized.
+Properly sets all state variables so that GaussianProcess&#8217;s mean, variance (and gradients thereof) functions can be called.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This object&#8217;s state is INVALIDATED if the gaussian_process used in construction is mutated!
+SetupState() should be called again in such a situation.</p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Using this object to compute gradients when <tt class="docutils literal"><span class="pre">configure_for_gradients</span></tt> := false results in UNDEFINED BEHAVIOR.</p>
+</div>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">gaussian_process:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">GaussianProcess object (holds <tt class="docutils literal"><span class="pre">points_sampled</span></tt>, <tt class="docutils literal"><span class="pre">values</span></tt>, <tt class="docutils literal"><span class="pre">noise_variance</span></tt>, derived quantities)
+that describes the underlying GP</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">points_to_sample[dim][num_to_sample]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">points that are being sampled concurrently from the GP</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">num_to_sample:</th><td class="field-body">number of points being sampled concurrently</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">configure_for_gradients:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">true if this object will be used to compute gradients, false otherwise</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_points_to_sample_state_1a770b1c98740e579b97c93f1e371cee94"></span><div class="line-block">
+<div class="line"> <strong>PointsToSampleState</strong>(<a class="reference internal" href="#project0structoptimal__learning_1_1_points_to_sample_state"><em>PointsToSampleState</em></a>  &amp;&amp; OL_UNUSED)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_points_to_sample_state_1a36cb7694bab994719857060d6959dee0"></span><div class="line-block">
+<div class="line">void <strong>SetupState</strong>(const  <a class="reference internal" href="#project0classoptimal__learning_1_1_gaussian_process"><em>GaussianProcess</em></a>  &amp; gaussian_process, double const *restrict points_to_sample_in, int num_to_sample_in, bool configure_for_gradients_in)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Configures this object with new <tt class="docutils literal"><span class="pre">points_to_sample</span></tt>.
+Ensures all state variables &amp; temporaries are properly sized.
+Properly sets all state variables so that GaussianProcess&#8217;s mean, variance (and gradients thereof) functions can be called.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This object&#8217;s state is INVALIDATED if the gaussian_process used in SetupState is mutated!
+SetupState() should be called again in such a situation.</p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Using this object to compute gradients when <tt class="docutils literal"><span class="pre">configure_for_gradients</span></tt> := false results in UNDEFINED BEHAVIOR.</p>
+</div>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">gaussian_process:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">GaussianProcess object (holds <tt class="docutils literal"><span class="pre">points_sampled</span></tt>, <tt class="docutils literal"><span class="pre">values</span></tt>, <tt class="docutils literal"><span class="pre">noise_variance</span></tt>, derived quantities)
+that describes the underlying GP</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">points_to_sample[dim][num_to_sample]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">points that are being sampled concurrently from the GP</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">num_to_sample:</th><td class="field-body">number of points being sampled concurrently</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">configure_for_gradients:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">true if this object will be used to compute gradients, false otherwise</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_points_to_sample_state_1a7cd1191e1c9ca27124d4268269e44ab8"></span><div class="line-block">
+<div class="line"> <strong>OL_DISALLOW_DEFAULT_AND_COPY_AND_ASSIGN</strong>(<a class="reference internal" href="#project0structoptimal__learning_1_1_points_to_sample_state"><em>PointsToSampleState</em></a>)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Public Members</em><blockquote>
+<div><p><span class="target" id="project0structoptimal__learning_1_1_points_to_sample_state_1a9c8500d246a4ac913178cf5dad61d718"></span>const int <strong>dim</strong></p>
+<blockquote>
+<div><p>spatial dimension (e.g., entries per point of <tt class="docutils literal"><span class="pre">points_sampled</span></tt>) </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_points_to_sample_state_1a23af34de18e22733a6e22d9cdbac631b"></span>int <strong>num_sampled</strong></p>
+<blockquote>
+<div><p>number of points alerady sampled </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_points_to_sample_state_1a6f87cfa7d12f27bdc775131e42bdce55"></span>int <strong>num_to_sample</strong></p>
+<blockquote>
+<div><p>number of points currently being sampled </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_points_to_sample_state_1a06e67421e85ac39ab15988de3bf4db82"></span>bool <strong>configure_for_gradients</strong></p>
+<blockquote>
+<div><p>whether this object should be configured for gradient computation </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_points_to_sample_state_1a5a0c83654a0eb3d0f5b72637a88b3909"></span>std::vector&lt; double &gt; <strong>points_to_sample</strong></p>
+<blockquote>
+<div><p>points to make predictions about </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_points_to_sample_state_1a9806d4c1e0127e8a0a4bb4f52fe8086d"></span>std::vector&lt; double &gt; <strong>K_star</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_points_to_sample_state_1a4df6fcc744396efa177ea6d005e61915"></span>std::vector&lt; double &gt; <strong>grad_K_star</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_points_to_sample_state_1ac4c18c736a522efa0b496a84078fbc79"></span>std::vector&lt; double &gt; <strong>V</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_points_to_sample_state_1a7bb4768684ad59c0d1a3572b0f1a92f7"></span>std::vector&lt; double &gt; <strong>K_inv_times_K_star</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_points_to_sample_state_1a034f0b4c1b5ba46a58df2331fafc61d2"></span>std::vector&lt; double &gt; <strong>grad_cov</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_points_to_sample_state_1a986ca3a1f3d964d118ee029b53d0e7d5"></span>std::vector&lt; double &gt; <strong>grad_mix_cov</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</p>
+<p><p id="project0classoptimal__learning_1_1_expected_improvement_evaluator"><em>class</em> <strong>ExpectedImprovementEvaluator</strong></p>
+<blockquote>
+<div><p></p>
+<p><p>A class to encapsulate the computation of expected improvement and its spatial gradient. This class handles the
+general EI computation case using monte carlo integration; it can support q,p-EI optimization. It is designed to work
+with any GaussianProcess.  Additionally, this class has no state and within the context of EI optimization, it is
+meant to be accessed by const reference only.</p>
+<p>The random numbers needed for EI computation will be passed as parameters instead of contained as members to make
+multithreading more straightforward.</p>
+ </p>
+<em>Public Type</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_expected_improvement_evaluator_1a6c8cef236d5dc1e333259682d64bb009"></span>typedef <a class="reference internal" href="#project0structoptimal__learning_1_1_expected_improvement_state"><em>ExpectedImprovementState</em></a> <strong>StateType</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Public Functions</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_expected_improvement_evaluator_1afd269f7e4683ebf55214812a30297a32"></span><div class="line-block">
+<div class="line"> <strong>ExpectedImprovementEvaluator</strong>(const  <a class="reference internal" href="#project0classoptimal__learning_1_1_gaussian_process"><em>GaussianProcess</em></a>  &amp; gaussian_process_in, int num_mc_iterations, double best_so_far)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Constructs a ExpectedImprovementEvaluator object.  All inputs are required; no default constructor nor copy/assignment are allowed.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">gaussian_process:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">GaussianProcess object (holds <tt class="docutils literal"><span class="pre">points_sampled</span></tt>, <tt class="docutils literal"><span class="pre">values</span></tt>, <tt class="docutils literal"><span class="pre">noise_variance</span></tt>, derived quantities)
+that describes the underlying GP</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">num_mc_iterations:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">number of monte carlo iterations</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">best_so_far:</th><td class="field-body">best (minimum) objective function value (in <tt class="docutils literal"><span class="pre">points_sampled_value</span></tt>)</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_expected_improvement_evaluator_1af3e1fe673239fdbf08658647e6fc8b96"></span><div class="line-block">
+<div class="line">int <strong>dim</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_expected_improvement_evaluator_1a5d841afce79c2bf63cf55640e2338c8d"></span><div class="line-block">
+<div class="line">const  <a class="reference internal" href="#project0classoptimal__learning_1_1_gaussian_process"><em>GaussianProcess</em></a>  * <strong>gaussian_process</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_expected_improvement_evaluator_1a9d90bf2033121dc5deda0294a042a089"></span><div class="line-block">
+<div class="line">double <strong>ComputeObjectiveFunction</strong>(<a class="reference internal" href="#project0structoptimal__learning_1_1_expected_improvement_state"><em>StateType</em></a>  * ei_state)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Wrapper for ComputeExpectedImprovement(); see that function for details.</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_expected_improvement_evaluator_1aac254f730e701661b274f991fa6529cc"></span><div class="line-block">
+<div class="line">void <strong>ComputeGradObjectiveFunction</strong>(<a class="reference internal" href="#project0structoptimal__learning_1_1_expected_improvement_state"><em>StateType</em></a>  * ei_state, double *restrict grad_EI)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Wrapper for ComputeGradExpectedImprovement(); see that function for details.</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_expected_improvement_evaluator_1a1036d12576b0779c475ac3a993cdfa83"></span><div class="line-block">
+<div class="line">double <strong>ComputeExpectedImprovement</strong>(<a class="reference internal" href="#project0structoptimal__learning_1_1_expected_improvement_state"><em>StateType</em></a>  * ei_state)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Computes the expected improvement <tt class="docutils literal"><span class="pre">EI(Xs)</span> <span class="pre">=</span> <span class="pre">E_n[[f^*_n(X)</span> <span class="pre">-</span> <span class="pre">min(f(Xs_1),...,f(Xs_m))]^+]</span></tt>, where <tt class="docutils literal"><span class="pre">Xs</span></tt> are potential points
+to sample and <tt class="docutils literal"><span class="pre">X</span></tt> are already sampled points.  The <tt class="docutils literal"><span class="pre">^+</span></tt> indicates that the expression in the expectation evaluates to 0
+if it is negative.  <tt class="docutils literal"><span class="pre">f^*(X)</span></tt> is the MINIMUM over all known function evaluations (<tt class="docutils literal"><span class="pre">points_sampled_value</span></tt>), whereas
+<tt class="docutils literal"><span class="pre">f(Xs)</span></tt> are <em>GP-predicted</em> function evaluations.</p>
+<p>The EI is the expected improvement in the current best known objective function value that would result from sampling
+at <tt class="docutils literal"><span class="pre">points_to_sample</span></tt>.</p>
+<p>In general, the EI expression is complex and difficult to evaluate; hence we use Monte-Carlo simulation to approximate it.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">These comments were copied into ExpectedImprovementInterface.compute_expected_improvement() in interfaces/expected_improvement_interface.py.</p>
+</div>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">ei_state[1]:</th><td class="field-body">properly configured state object</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Outputs</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">ei_state[1]:</th><td class="field-body">state with temporary storage modified; <tt class="docutils literal"><span class="pre">normal_rng</span></tt> modified</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd>the expected improvement from sampling <tt class="docutils literal"><span class="pre">points_to_sample</span></tt></dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_expected_improvement_evaluator_1a67437cb2da0b5d7262c9fd4eaa61edca"></span><div class="line-block">
+<div class="line">void <strong>ComputeGradExpectedImprovement</strong>(<a class="reference internal" href="#project0structoptimal__learning_1_1_expected_improvement_state"><em>StateType</em></a>  * ei_state, double *restrict grad_EI)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Computes the (partial) derivatives of the expected improvement with respect to each component of the
+index_of_current_point-th point in <tt class="docutils literal"><span class="pre">points_to_sample</span></tt>.</p>
+<p>In general, the expressions for gradients of EI are complex and difficult to evaluate; hence we use
+Monte-Carlo simulation to approximate it.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">These comments were copied into ExpectedImprovementInterface.compute_expected_improvement() in interfaces/expected_improvement_interface.py.</p>
+</div>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">ei_state[1]:</th><td class="field-body">properly configured state object</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Outputs</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">ei_state[1]:</th><td class="field-body">state with temporary storage modified; <tt class="docutils literal"><span class="pre">normal_rng</span></tt> modified</td>
+</tr>
+<tr class="field-even field"><th class="field-name">grad_EI[dim]:</th><td class="field-body">gradient of expected improvement wrt each dimension of the index_of_current_point-th entry in <tt class="docutils literal"><span class="pre">points_to_sample</span></tt></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_expected_improvement_evaluator_1adcb50267f78ed0d340cc1554cc86d300"></span><div class="line-block">
+<div class="line"> <strong>OL_DISALLOW_DEFAULT_AND_COPY_AND_ASSIGN</strong>(<a class="reference internal" href="#project0classoptimal__learning_1_1_expected_improvement_evaluator"><em>ExpectedImprovementEvaluator</em></a>)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Private Members</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_expected_improvement_evaluator_1ae5df3ace2b63741c34e88636df0ecb11"></span>const int <strong>dim_</strong></p>
+<blockquote>
+<div><p>spatial dimension (e.g., entries per point of points_sampled) </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_expected_improvement_evaluator_1a108befbd557e2663e94c40bc49627deb"></span>int <strong>num_mc_iterations_</strong></p>
+<blockquote>
+<div><p>number of monte carlo iterations </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_expected_improvement_evaluator_1ae07d6698329fedd438e42203d697cf01"></span>double <strong>best_so_far_</strong></p>
+<blockquote>
+<div><p>best (minimum) objective function value (in points_sampled_value) </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_expected_improvement_evaluator_1a9bc5a98618aa671dc0c65c49f3d654b5"></span>const  <a class="reference internal" href="#project0classoptimal__learning_1_1_gaussian_process"><em>GaussianProcess</em></a>  * <strong>gaussian_process_</strong></p>
+<blockquote>
+<div><p>pointer to gaussian process used in EI computations </p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</p>
+<p><p id="project0structoptimal__learning_1_1_expected_improvement_state"><em>class</em> <strong>ExpectedImprovementState</strong></p>
+<blockquote>
+<div><p></p>
+<p><p>State object for ExpectedImprovementEvaluator.  This tracks the current set of potential samples (<tt class="docutils literal"><span class="pre">points_to_sample</span></tt>) ALONG
+with the current point being evaluated via expected improvement (called <tt class="docutils literal"><span class="pre">current_point</span></tt>); these are the p and q of q,p-EI,
+respectively.  <tt class="docutils literal"><span class="pre">current_point</span></tt> joined with <tt class="docutils literal"><span class="pre">points_to_sample</span></tt> is stored in <tt class="docutils literal"><span class="pre">union_of_points</span></tt>; <tt class="docutils literal"><span class="pre">current_point</span></tt> is
+assumed to be placed at <tt class="docutils literal"><span class="pre">index</span> <span class="pre">=</span> <span class="pre">kIndexOfCurrentPoint</span></tt>.</p>
+<p>This struct also tracks the state of the GaussianProcess that underlies the expected improvement computation: the GP state
+is built to handle the initial <tt class="docutils literal"><span class="pre">union_of_points</span></tt>, and subsequent updates to <tt class="docutils literal"><span class="pre">current_point</span></tt> in this object also update
+the GP state.</p>
+<p>This struct also holds a pointer to a random number generator needed for Monte Carlo integrated EI computations.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Users MUST guarantee that multiple state objects DO NOT point to the same RNG (in a multithreaded env).</p>
+</div>
+<p>See general comments on State structs in <tt class="docutils literal"><span class="pre">gpp_common.hpp</span></tt>&#8216;s header docs.</p>
+ </p>
+<em>Public Type</em><blockquote>
+<div><p><span class="target" id="project0structoptimal__learning_1_1_expected_improvement_state_1a92e59b1178926d318d5d09ad4b0fbb6a"></span>typedef <a class="reference internal" href="#project0classoptimal__learning_1_1_expected_improvement_evaluator"><em>ExpectedImprovementEvaluator</em></a> <strong>EvaluatorType</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Public Functions</em><blockquote>
+<div><p><span class="target" id="project0structoptimal__learning_1_1_expected_improvement_state_1aa6e9d613be5fe3bd8e9fa1519f5a3151"></span><div class="line-block">
+<div class="line"> <strong>ExpectedImprovementState</strong>(const  <a class="reference internal" href="#project0classoptimal__learning_1_1_expected_improvement_evaluator"><em>EvaluatorType</em></a>  &amp; ei_evaluator, double const *restrict points_to_sample, int num_to_sample_in, bool configure_for_gradients_in, NormalRNG  * normal_rng_in)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Constructs an ExpectedImprovementState object with a specified source of randomness for the purpose of computing EI
+(and its gradient) over the specified set of points to sample.
+This establishes properly sized/initialized temporaries for EI computation, including dependent state from the
+associated Gaussian Process (which arrives as part of the ei_evaluator).</p>
+<p>WARNING: This object is invalidated if the associated ei_evaluator is mutated.  SetupState() should be called to reset.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">ei_evaluator:</th><td class="field-body">expected improvement evaluator object that specifies the parameters &amp; GP for EI evaluation</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">points_to_sample[dim][num_to_sample]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">list of potential concurrent samples (i.e., test points for GP predictions)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">num_to_sample:</th><td class="field-body">number of potential samples (i.e., the &#8220;p&#8221; in q,p-EI)</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">configure_for_gradients:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">true if this object will be used to compute gradients, false otherwise</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">normal_rng[1]:</th><td class="field-body">pointer to a properly initialized* NormalRNG object</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<ul class="simple">
+<li>The NormalRNG object must already be seeded.  If multithreaded computation is used for EI, then every state object</li>
+</ul>
+<p class="last">must have a different NormalRNG (different seeds, not just different objects).</p>
+</div>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_expected_improvement_state_1af12d2f71fb04b31cfa0291c94f2d3df3"></span><div class="line-block">
+<div class="line"> <strong>ExpectedImprovementState</strong>(<a class="reference internal" href="#project0structoptimal__learning_1_1_expected_improvement_state"><em>ExpectedImprovementState</em></a>  &amp;&amp; OL_UNUSED)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_expected_improvement_state_1a11f244647c229e703269cf77bf899cca"></span><div class="line-block">
+<div class="line">int <strong>GetProblemSize</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_expected_improvement_state_1acc2686b5983b5c0cdbc227685b6ef345"></span><div class="line-block">
+<div class="line">void <strong>GetCurrentPoint</strong>(double *restrict current_point)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Get current point&#8211;potential sample whose EI is being evaluated</p>
+<dl class="docutils">
+<dt><strong>Outputs</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">current_point[dim]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">potential sample whose EI is being evaluted</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_expected_improvement_state_1a06fb0e405ce62fa5039c2074538e1ad2"></span><div class="line-block">
+<div class="line">void <strong>UpdateCurrentPoint</strong>(const  <a class="reference internal" href="#project0classoptimal__learning_1_1_expected_improvement_evaluator"><em>EvaluatorType</em></a>  &amp; ei_evaluator, double const *restrict current_point)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Change the current location of the potential sample whose EI is being evaluated.
+Update the state&#8217;s derived quantities to be consistent with the new point.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">ei_evaluator:</th><td class="field-body">expected improvement evaluator object that specifies the parameters &amp; GP for EI evaluation</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">current_point[dim]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">coordinates of new current_point</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_expected_improvement_state_1ae43972367ff5d99a076ccb35e16444a3"></span><div class="line-block">
+<div class="line">void <strong>SetupState</strong>(const  <a class="reference internal" href="#project0classoptimal__learning_1_1_expected_improvement_evaluator"><em>EvaluatorType</em></a>  &amp; ei_evaluator, double const *restrict current_point)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Configures this state object with a new <tt class="docutils literal"><span class="pre">current_point</span></tt>, the location of the potential sample whose EI is to be evaluated.
+Ensures all state variables &amp; temporaries are properly sized.
+Properly sets all dependent state variables (e.g., GaussianProcess&#8217;s state) for EI evaluation.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This object&#8217;s state is INVALIDATED if the <tt class="docutils literal"><span class="pre">ei_evaluator</span></tt> (including the GaussianProcess it depends on) used in
+SetupState is mutated! SetupState() should be called again in such a situation.</p>
+</div>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">ei_evaluator:</th><td class="field-body">expected improvement evaluator object that specifies the parameters &amp; GP for EI evaluation</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">current_point[dim]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">current point (ei evaluation location) to change to</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_expected_improvement_state_1ab75cdcdfb4d1d8d94333638a1ac0f7ca"></span><div class="line-block">
+<div class="line"> <strong>OL_DISALLOW_DEFAULT_AND_COPY_AND_ASSIGN</strong>(<a class="reference internal" href="#project0structoptimal__learning_1_1_expected_improvement_state"><em>ExpectedImprovementState</em></a>)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Public Members</em><blockquote>
+<div><p><span class="target" id="project0structoptimal__learning_1_1_expected_improvement_state_1a49ed2ac0194b515491f7d562bed403d1"></span>const int <strong>dim</strong></p>
+<blockquote>
+<div><p>spatial dimension (e.g., entries per point of <tt class="docutils literal"><span class="pre">points_sampled</span></tt>) </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_expected_improvement_state_1ab4d5ccffc908680cf16357bfa523d57c"></span>const int <strong>num_to_sample</strong></p>
+<blockquote>
+<div><p>number of points being sampled concurrently (i.e., the &#8220;p&#8221; in q,p-EI) </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_expected_improvement_state_1afac8deb62c7586dec21f2df0b5cab5b2"></span>const bool <strong>configure_for_gradients</strong></p>
+<blockquote>
+<div><p>whether this object should be configured for gradient computation </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_expected_improvement_state_1a16dec083b099aa9c888a06f01c291395"></span>std::vector&lt; double &gt; <strong>union_of_points</strong></p>
+<blockquote>
+<div><p>points currently being sampled; this is the union of the points represented by &#8220;p&#8221; and &#8220;q&#8221; in q,p-EI </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_expected_improvement_state_1af33ee514ca5c498e91ca38c1888ce28a"></span><a class="reference internal" href="#project0structoptimal__learning_1_1_points_to_sample_state"><em>GaussianProcess::StateType</em></a> <strong>points_to_sample_state</strong></p>
+<blockquote>
+<div><p>gaussian process state </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_expected_improvement_state_1a98a2be7c17bbb8067f824a4156168203"></span>NormalRNG  * <strong>normal_rng</strong></p>
+<blockquote>
+<div><p>random number generator </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_expected_improvement_state_1ad07bf7af213a02c229ebefc41f3c403a"></span>std::vector&lt; double &gt; <strong>to_sample_mean</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_expected_improvement_state_1a8c46e3e7b0b9689fa2897a1fbf247abd"></span>std::vector&lt; double &gt; <strong>grad_mu</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_expected_improvement_state_1ac2b4de23542dce28f26dea5960d4b3fe"></span>std::vector&lt; double &gt; <strong>cholesky_to_sample_var</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_expected_improvement_state_1aca6d60490bb2bb676b2294e91811ba42"></span>std::vector&lt; double &gt; <strong>grad_chol_decomp</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_expected_improvement_state_1a60af3363bd943243e6581868733e4ee7"></span>std::vector&lt; double &gt; <strong>EI_this_step_from_var</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_expected_improvement_state_1a78ce7e2df5a271e258cb65d2c2d66b5d"></span>std::vector&lt; double &gt; <strong>aggregate</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_expected_improvement_state_1aa0a172e911773e4908c1c95b8a66a4a2"></span>std::vector&lt; double &gt; <strong>normals</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Public Static Attributes</em><blockquote>
+<div><p><span class="target" id="project0structoptimal__learning_1_1_expected_improvement_state_1a1fd05e76f85ad51d682b96840dff839b"></span>constexpr int <strong>kIndexOfCurrentPoint</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</p>
+<p><p id="project0classoptimal__learning_1_1_one_potential_sample_expected_improvement_evaluator"><em>class</em> <strong>OnePotentialSampleExpectedImprovementEvaluator</strong></p>
+<blockquote>
+<div><p></p>
+<p><p>This is a specialization of the ExpectedImprovementEvaluator class for when the number of potential samples is 1; i.e.,
+<tt class="docutils literal"><span class="pre">num_to_sample</span> <span class="pre">==</span> <span class="pre">1</span></tt>.  This class only supports the computation of 1,0-EI.  In this case, we have analytic formulas
+for computing EI and its gradient.</p>
+<p>Thus this class does not perform any explicit numerical integration, nor do its EI functions require access to a
+random number generator.</p>
+<p>This class&#8217;s methods have some parameters that are unused or redundant.  This is so that the interface matches that of
+the more general ExpectedImprovementEvaluator.</p>
+<p>For other details, see ExpectedImprovementEvaluator for more complete description of what EI is and the outputs of
+EI and grad EI computations.</p>
+ </p>
+<em>Public Type</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_one_potential_sample_expected_improvement_evaluator_1a2ed126f0169d0b3cec7f351933632623"></span>typedef <a class="reference internal" href="#project0structoptimal__learning_1_1_one_potential_sample_expected_improvement_state"><em>OnePotentialSampleExpectedImprovementState</em></a> <strong>StateType</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Public Functions</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_one_potential_sample_expected_improvement_evaluator_1a2506f06621e4214a1ea661a8102f0b05"></span><div class="line-block">
+<div class="line"> <strong>OnePotentialSampleExpectedImprovementEvaluator</strong>(const  <a class="reference internal" href="#project0classoptimal__learning_1_1_gaussian_process"><em>GaussianProcess</em></a>  &amp; gaussian_process_in, double best_so_far)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Constructs a OnePotentialSampleExpectedImprovementEvaluator object.  All inputs are required; no default constructor nor copy/assignment are allowed.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">gaussian_process:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">GaussianProcess object (holds <tt class="docutils literal"><span class="pre">points_sampled</span></tt>, <tt class="docutils literal"><span class="pre">values</span></tt>, <tt class="docutils literal"><span class="pre">noise_variance</span></tt>, derived quantities)
+that describes the underlying GP</td>
+</tr>
+<tr class="field-even field"><th class="field-name">best_so_far:</th><td class="field-body">best (minimum) objective function value (in <tt class="docutils literal"><span class="pre">points_sampled_value</span></tt>)</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_one_potential_sample_expected_improvement_evaluator_1a74b2aec1b1771ce5f6670ded5bbc382f"></span><div class="line-block">
+<div class="line">int <strong>dim</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_one_potential_sample_expected_improvement_evaluator_1ace2769b5c292680fe0e0c0b976cf6c91"></span><div class="line-block">
+<div class="line">const  <a class="reference internal" href="#project0classoptimal__learning_1_1_gaussian_process"><em>GaussianProcess</em></a>  * <strong>gaussian_process</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_one_potential_sample_expected_improvement_evaluator_1a0d8f44fa9bcaf77493fc11f60c2ab199"></span><div class="line-block">
+<div class="line">double <strong>ComputeObjectiveFunction</strong>(<a class="reference internal" href="#project0structoptimal__learning_1_1_one_potential_sample_expected_improvement_state"><em>StateType</em></a>  * ei_state)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Wrapper for ComputeExpectedImprovement(); see that function for details.</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_one_potential_sample_expected_improvement_evaluator_1a1b5cfeeb3deeba17f68b0117a91eb11a"></span><div class="line-block">
+<div class="line">void <strong>ComputeGradObjectiveFunction</strong>(<a class="reference internal" href="#project0structoptimal__learning_1_1_one_potential_sample_expected_improvement_state"><em>StateType</em></a>  * ei_state, double *restrict grad_EI)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Wrapper for ComputeGradExpectedImprovement(); see that function for details.</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_one_potential_sample_expected_improvement_evaluator_1a1f0975ac8fbb28f24b73ff5ea26f3b45"></span><div class="line-block">
+<div class="line">double <strong>ComputeExpectedImprovement</strong>(<a class="reference internal" href="#project0structoptimal__learning_1_1_one_potential_sample_expected_improvement_state"><em>StateType</em></a>  * ei_state)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Computes the expected improvement <tt class="docutils literal"><span class="pre">EI(Xs)</span> <span class="pre">=</span> <span class="pre">E_n[[f^*_n(X)</span> <span class="pre">-</span> <span class="pre">min(f(Xs_1),...,f(Xs_m))]^+]</span></tt></p>
+<p>Uses analytic formulas to evaluate the expected improvement.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">ei_state[1]:</th><td class="field-body">properly configured state object</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Outputs</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">ei_state[1]:</th><td class="field-body">state with temporary storage modified</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd>:the expected improvement from sampling <tt class="docutils literal"><span class="pre">points_to_sample</span></tt></dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_one_potential_sample_expected_improvement_evaluator_1a56edea4e46e13a8fa99524e96ad75cc8"></span><div class="line-block">
+<div class="line">void <strong>ComputeGradExpectedImprovement</strong>(<a class="reference internal" href="#project0structoptimal__learning_1_1_one_potential_sample_expected_improvement_state"><em>StateType</em></a>  * ei_state, double *restrict grad_EI)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Computes the (partial) derivatives of the expected improvement with respect to the point to sample.</p>
+<p>Uses analytic formulas to evaluate the spatial gradient of the expected improvement.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">ei_state[1]:</th><td class="field-body">properly configured state object</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Outputs</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">ei_state[1]:</th><td class="field-body">state with temporary storage modified</td>
+</tr>
+<tr class="field-even field"><th class="field-name">grad_EI[dim]:</th><td class="field-body">gradient of expected improvement wrt each dimension of the <tt class="docutils literal"><span class="pre">index_of_current_point</span></tt>-th entry in <tt class="docutils literal"><span class="pre">points_to_sample</span></tt></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_one_potential_sample_expected_improvement_evaluator_1a4a6ff4a6ee72e4d3a73328edbd2f0c49"></span><div class="line-block">
+<div class="line"> <strong>OL_DISALLOW_DEFAULT_AND_COPY_AND_ASSIGN</strong>(<a class="reference internal" href="#project0classoptimal__learning_1_1_one_potential_sample_expected_improvement_evaluator"><em>OnePotentialSampleExpectedImprovementEvaluator</em></a>)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Private Members</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_one_potential_sample_expected_improvement_evaluator_1adddb667159b1f7cf7b757ab58af03408"></span>const int <strong>dim_</strong></p>
+<blockquote>
+<div><p>spatial dimension (e.g., entries per point of <tt class="docutils literal"><span class="pre">points_sampled</span></tt>) </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_one_potential_sample_expected_improvement_evaluator_1a1bbad8714558609caddbf245868504b3"></span>double <strong>best_so_far_</strong></p>
+<blockquote>
+<div><p>best (minimum) objective function value (in <tt class="docutils literal"><span class="pre">points_sampled_value</span></tt>) </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_one_potential_sample_expected_improvement_evaluator_1a4c0a40357072693dda0727116ce6f5b3"></span>const boost::math::normal_distribution&lt; double &gt; <strong>normal_</strong></p>
+<blockquote>
+<div><p>normal distribution object </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_one_potential_sample_expected_improvement_evaluator_1acfc1ec21fd9b674b0b1786ab0d04c938"></span>const  <a class="reference internal" href="#project0classoptimal__learning_1_1_gaussian_process"><em>GaussianProcess</em></a>  * <strong>gaussian_process_</strong></p>
+<blockquote>
+<div><p>pointer to gaussian process used in EI computations </p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</p>
+<p><p id="project0structoptimal__learning_1_1_one_potential_sample_expected_improvement_state"><em>class</em> <strong>OnePotentialSampleExpectedImprovementState</strong></p>
+<blockquote>
+<div><p></p>
+<p><p>State object for OnePotentialSampleExpectedImprovementEvaluator.  This tracks the current point being evaluated via
+expected improvement.</p>
+<p>This is just a special case of ExpectedImprovementState; see those class docs for more details.
+See general comments on State structs in <tt class="docutils literal"><span class="pre">gpp_common.hpp</span></tt>&#8216;s header docs.</p>
+ </p>
+<em>Public Type</em><blockquote>
+<div><p><span class="target" id="project0structoptimal__learning_1_1_one_potential_sample_expected_improvement_state_1ae2f889b14bc7ac84f78efe9077fd6121"></span>typedef <a class="reference internal" href="#project0classoptimal__learning_1_1_one_potential_sample_expected_improvement_evaluator"><em>OnePotentialSampleExpectedImprovementEvaluator</em></a> <strong>EvaluatorType</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Public Functions</em><blockquote>
+<div><p><span class="target" id="project0structoptimal__learning_1_1_one_potential_sample_expected_improvement_state_1a8082b39a125176a450c0dcbc51f43a6c"></span><div class="line-block">
+<div class="line"> <strong>num_to_sample</strong>(num_to_sample_in)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_one_potential_sample_expected_improvement_state_1aa8b1c7a79d48293ad880088ffd9a19a0"></span><div class="line-block">
+<div class="line"> <strong>configure_for_gradients</strong>(configure_for_gradients_in)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_one_potential_sample_expected_improvement_state_1ade6346e14e6e0553e90a84db47b5cea5"></span><div class="line-block">
+<div class="line"> <strong>current_point</strong>(points_to_sample, points_to_sample+ dim)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_one_potential_sample_expected_improvement_state_1a7c2c2f5c730723d531d29a046b1d6a21"></span><div class="line-block">
+<div class="line"><a class="reference internal" href="#project0structoptimal__learning_1_1_one_potential_sample_expected_improvement_state_1a36d27f8399557ded2c77e56e264aaa20"><em>points_to_sample_state</em></a>  * <strong>ei_evaluator</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_one_potential_sample_expected_improvement_state_1a27e3d90956713751164efca0cf2527f3"></span><div class="line-block">
+<div class="line"> <strong>OnePotentialSampleExpectedImprovementState</strong>(<a class="reference internal" href="#project0structoptimal__learning_1_1_one_potential_sample_expected_improvement_state"><em>OnePotentialSampleExpectedImprovementState</em></a>  &amp;&amp; OL_UNUSED)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_one_potential_sample_expected_improvement_state_1a07022fea0a1a3f04472e5f0d724d9cd3"></span><div class="line-block">
+<div class="line">int <strong>GetProblemSize</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_one_potential_sample_expected_improvement_state_1a51597fa779f4aad29b2c65e79cd1548f"></span><div class="line-block">
+<div class="line">void <strong>GetCurrentPoint</strong>(double *restrict current_point_out)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Get current point&#8211;potential sample whose EI is being evaluated</p>
+<dl class="docutils">
+<dt><strong>Outputs</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">current_point[dim]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">potential sample whose EI is being evaluted</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_one_potential_sample_expected_improvement_state_1af5f55120b0b3d218472ec26cd83ac67c"></span><div class="line-block">
+<div class="line">void <strong>UpdateCurrentPoint</strong>(const  <a class="reference internal" href="#project0classoptimal__learning_1_1_one_potential_sample_expected_improvement_evaluator"><em>EvaluatorType</em></a>  &amp; ei_evaluator, double const *restrict current_point_in)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Change the current location of the potential sample whose EI is being evaluated.
+Update the state&#8217;s derived quantities to be consistent with the new point.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">ei_evaluator:</th><td class="field-body">expected improvement evaluator object that specifies the parameters &amp; GP for EI evaluation</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">current_point[dim]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">coordinates of new current_point</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_one_potential_sample_expected_improvement_state_1a49c0886b1a83402916b0e0365d1ee2ec"></span><div class="line-block">
+<div class="line">void <strong>SetupState</strong>(const  <a class="reference internal" href="#project0classoptimal__learning_1_1_one_potential_sample_expected_improvement_evaluator"><em>EvaluatorType</em></a>  &amp; ei_evaluator, double const *restrict points_to_sample)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Configures this state object with a new current point, the location of the potential sample whose EI is to be evaluated.
+Ensures all state variables &amp; temporaries are properly sized.
+Properly sets all dependent state variables (e.g., GaussianProcess&#8217;s state) for EI evaluation.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This object&#8217;s state is INVALIDATED if the ei_evaluator (including the GaussianProcess it depends on) used in
+SetupState is mutated! SetupState() should be called again in such a situation.</p>
+</div>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">ei_evaluator:</th><td class="field-body">expected improvement evaluator object that specifies the parameters &amp; GP for EI evaluation</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">current_point[dim]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">current point (ei evaluation location) to change to</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_one_potential_sample_expected_improvement_state_1a96ba0a073d87443a1727e9f866516f23"></span><div class="line-block">
+<div class="line"> <strong>OL_DISALLOW_DEFAULT_AND_COPY_AND_ASSIGN</strong>(<a class="reference internal" href="#project0structoptimal__learning_1_1_one_potential_sample_expected_improvement_state"><em>OnePotentialSampleExpectedImprovementState</em></a>)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Public Members</em><blockquote>
+<div><p><span class="target" id="project0structoptimal__learning_1_1_one_potential_sample_expected_improvement_state_1aa6be0d5138b147ebfdad3e1f4b9c2496"></span> <strong>__pad0__</strong></p>
+<blockquote>
+<div><p></p>
+<p><p>Constructs an OnePotentialSampleExpectedImprovementState object for the purpose of computing EI
+(and its gradient) over the specified point to sample.
+This establishes properly sized/initialized temporaries for EI computation, including dependent state from the
+associated Gaussian Process (which arrives as part of the <tt class="docutils literal"><span class="pre">ei_evaluator</span></tt>).</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This object is invalidated if the associated ei_evaluator is mutated.  SetupState() should be called to reset.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><tt class="docutils literal"><span class="pre">num_to_sample</span> <span class="pre">=</span> <span class="pre">1</span></tt> by definition for this case (hence the sizing on <tt class="docutils literal"><span class="pre">grad_mu</span></tt> and <tt class="docutils literal"><span class="pre">grad_chol</span></tt>)</p>
+</div>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">ei_evaluator:</th><td class="field-body">expected improvement evaluator object that specifies the parameters &amp; GP for EI evaluation</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">points_to_sample[dim][num_to_sample]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">list of potential concurrent samples (i.e., test points for GP predictions)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">num_to_sample:</th><td class="field-body">number of potential samples</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">configure_for_gradients:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">true if this object will be used to compute gradients, false otherwise</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">normal_rng[1]:</th><td class="field-body">UNUSED (here to stay consistent with ExpectedImprovementState ctor)</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_one_potential_sample_expected_improvement_state_1a11186f208e36b48b4908921b22a3b7cc"></span>const int <strong>dim</strong></p>
+<blockquote>
+<div><p>spatial dimension (e.g., entries per point of <tt class="docutils literal"><span class="pre">points_sampled</span></tt>) </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_one_potential_sample_expected_improvement_state_1acfc843f8611f798663a831d3c701e22a"></span>const int <strong>num_to_sample</strong></p>
+<blockquote>
+<div><p>must be 1 </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_one_potential_sample_expected_improvement_state_1ae30d34c1b940ad865dcc02dbee9859f5"></span>const bool <strong>configure_for_gradients</strong></p>
+<blockquote>
+<div><p>whether this object should be configured for gradient computation </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_one_potential_sample_expected_improvement_state_1a6c335d569750f164838464e1d76c5cf1"></span>std::vector&lt; double &gt; <strong>current_point</strong></p>
+<blockquote>
+<div><p>points currently being sampled </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_one_potential_sample_expected_improvement_state_1a36d27f8399557ded2c77e56e264aaa20"></span><a class="reference internal" href="#project0structoptimal__learning_1_1_points_to_sample_state"><em>GaussianProcess::StateType</em></a> <strong>points_to_sample_state</strong></p>
+<blockquote>
+<div><p>gaussian process state </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_one_potential_sample_expected_improvement_state_1ae6ff5ee5c740086f668887b53c2300ef"></span>std::vector&lt; double &gt; <strong>grad_mu</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_one_potential_sample_expected_improvement_state_1a8262dba473a2c9c602201b7dc2f641b9"></span>std::vector&lt; double &gt; <strong>grad_chol_decomp</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Public Static Attributes</em><blockquote>
+<div><p><span class="target" id="project0structoptimal__learning_1_1_one_potential_sample_expected_improvement_state_1aa3eaa454fccb82798dd74f38fcaca9f9"></span>constexpr int <strong>kIndexOfCurrentPoint</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</p>
+</div></blockquote>
+</p>
 </div>
 
 
           </div>
-        </div>
-      </div>
-      <div class="sphinxsidebar">
-        <div class="sphinxsidebarwrapper">
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="moe.views.html"
-                        title="previous chapter">moe.views package</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="gpp_geometry_hpp.html"
-                        title="next chapter">gpp_geometry.hpp</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="_sources/gpp_math_hpp.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
-<div id="searchbox" style="display: none">
-  <h3>Quick search</h3>
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="gpp_geometry_hpp.html" class="btn btn-neutral float-right" title="gpp_geometry.hpp"/>Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="moe.views.html" class="btn btn-neutral" title="moe.views package"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
     </div>
-    <div class="related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="http-routingtable.html" title="HTTP Routing Table"
-             >routing table</a> |</li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="gpp_geometry_hpp.html" title="gpp_geometry.hpp"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="moe.views.html" title="moe.views package"
-             >previous</a> |</li>
-        <li><a href="index.html">MOE 0.1.0 documentation</a> &raquo;</li> 
-      </ul>
-    </div>
-    <div class="footer">
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
         &copy; Copyright 2014, Yelp and Cornell Collaboration.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
-    </div>
-  </body>
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
 </html>
