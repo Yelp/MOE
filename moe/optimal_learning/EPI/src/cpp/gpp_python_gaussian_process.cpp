@@ -148,7 +148,7 @@ void ExportGaussianProcessFunctions() {
 
   boost::python::def("get_mean", GetMeanWrapper, R"%%(
     Compute the (predicted) mean, mus, of the Gaussian Process posterior.
-    mus_i = Ks_{i,k} * K^-1_{k,l} * y_l
+    mus_i = Ks_{i,k} * K^-1_{k,l} * y_l = Ks^T * K^-1 * y
 
     INPUTS:
     GaussianProcess gaussian_process: GaussianProcess object (holds points_sampled, values, noise_variance, derived quantities)
@@ -163,7 +163,7 @@ void ExportGaussianProcessFunctions() {
     Compute the gradient of the (predicted) mean, mus, of the Gaussian Process posterior.
     Gradient is computed wrt each point in points_to_sample.
     Known zero terms are dropped (see below).
-    mus_i = Ks_{i,k} * K^-1_{k,l} * y_l
+    mus_i = Ks_{i,k} * K^-1_{k,l} * y_l = Ks^T * K^-1 * y
     In principle, we compute \pderiv{mus_i}{Xs_{d,p}}
     But this is zero unless p == i. So this method only returns the "block diagonal."
 
@@ -182,7 +182,7 @@ void ExportGaussianProcessFunctions() {
     V = L^-1 * Ks^T
     Vars = Kss - (V^T * V)
     Expanded index notation:
-    Vars_{i,j} = Kss_{i,j} - Ks_{i,l} * K^-1_{l,k} * Ks^T_{k,j}
+    Vars_{i,j} = Kss_{i,j} - Ks_{i,l} * K^-1_{l,k} * Ks_{k,j} = Kss - Ks^T * K^-1 * Ks
 
     INPUTS:
     GaussianProcess gaussian_process: GaussianProcess object (holds points_sampled, values, noise_variance, derived quantities)
@@ -216,7 +216,7 @@ void ExportGaussianProcessFunctions() {
     V = L^-1 * Ks^T
     Vars = Kss - (V^T * V)
     Expanded index notation:
-    Vars_{i,j} = Kss_{i,j} - Ks_{i,l} * K^-1_{l,k} * Ks^T_{k,j}
+    Vars_{i,j} = Kss_{i,j} - Ks_{i,l} * K^-1_{l,k} * Ks_{k,j} = Kss - Ks^T * K^-1 * Ks
     Then the Cholesky Decomposition is Ls * Ls^T = Vars
 
     General derivative expression: \pderiv{Ls_{i,j}}{Xs_{d,p}}

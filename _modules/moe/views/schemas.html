@@ -58,7 +58,7 @@
 <span class="sd">&quot;&quot;&quot;Base level schemas for the response/request schemas of each MOE REST endpoint.&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">colander</span>
 
-<span class="kn">from</span> <span class="nn">moe.optimal_learning.EPI.src.python.constant</span> <span class="kn">import</span> <span class="n">default_gaussian_process_parameters</span><span class="p">,</span> <span class="n">default_ei_optimization_parameters</span>
+<span class="kn">from</span> <span class="nn">moe.optimal_learning.EPI.src.python.constant</span> <span class="kn">import</span> <span class="n">default_gaussian_process_parameters</span><span class="p">,</span> <span class="n">default_ei_optimization_parameters</span><span class="p">,</span> <span class="n">default_optimizer_type</span><span class="p">,</span> <span class="n">default_num_random_samples</span><span class="p">,</span> <span class="n">ALL_OPTIMIZERS</span>
 
 
 <div class="viewcode-block" id="ListOfFloats"><a class="viewcode-back" href="../../../moe.views.html#moe.views.schemas.ListOfFloats">[docs]</a><span class="k">class</span> <span class="nc">ListOfFloats</span><span class="p">(</span><span class="n">colander</span><span class="o">.</span><span class="n">SequenceSchema</span><span class="p">):</span>
@@ -74,7 +74,7 @@
 
 <span class="sd">    Contains:</span>
 <span class="sd">        * point - ListOfFloats</span>
-<span class="sd">        * value - floa</span>
+<span class="sd">        * value - float</span>
 <span class="sd">        * value_var - float &gt;= 0.0</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -116,7 +116,7 @@
 <span class="sd">        * points_sampled - PointsSampled</span>
 <span class="sd">        * domain - Domain</span>
 <span class="sd">        * length_scale - ListOfFloats</span>
-<span class="sd">        * signal_variance - floa</span>
+<span class="sd">        * signal_variance - float</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -133,8 +133,62 @@
 </div>
 <div class="viewcode-block" id="EiOptimizationParameters"><a class="viewcode-back" href="../../../moe.views.html#moe.views.schemas.EiOptimizationParameters">[docs]</a><span class="k">class</span> <span class="nc">EiOptimizationParameters</span><span class="p">(</span><span class="n">colander</span><span class="o">.</span><span class="n">MappingSchema</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot;Optimization parameters.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Optimization parameters.</span>
 
+<span class="sd">    **Optional fields**</span>
+
+<span class="sd">        :param optimizer_type: the type of optimizer to use</span>
+<span class="sd">        :type optimizer_type: string in [&#39;gradient_descent&#39;]</span>
+<span class="sd">        :param num_random_samples: the number of random samples to try on top of the optimization method (failsafe)</span>
+<span class="sd">        :type num_random_samples: int &gt;= 0</span>
+<span class="sd">        :param num_multistarts: number of initial guesses to try in multistarted gradient descent (suggest: a few hundred)</span>
+<span class="sd">        :type num_multistarts: int &gt; 0</span>
+<span class="sd">        :param max_num_steps: maximum number of gradient descent iterations per restart (suggest: 200-1000)</span>
+<span class="sd">        :type max_num_steps: int &gt; 0</span>
+<span class="sd">        :param max_num_restarts: maximum number of gradient descent restarts, the we are allowed to call gradient descent.  Should be &gt;= 2 as a minimum (suggest: 10-20)</span>
+<span class="sd">        :type max_num_restarts: int &gt; 0</span>
+<span class="sd">        :param gamma: exponent controlling rate of step size decrease (see struct docs or GradientDescentOptimizer) (suggest: 0.5-0.9)</span>
+<span class="sd">        :type gamma: float64 &gt; 1.0</span>
+<span class="sd">        :param pre_mult: scaling factor for step size (see struct docs or GradientDescentOptimizer) (suggest: 0.1-1.0)</span>
+<span class="sd">        :type pre_mult: float64 &gt; 0.0</span>
+<span class="sd">        :param max_relative_change: max change allowed per GD iteration (as a relative fraction of current distance to wall)</span>
+<span class="sd">               (suggest: 0.5-1.0 for less sensitive problems like EI; 0.02 for more sensitive problems like hyperparameter opt)</span>
+<span class="sd">        :type max_relative_change: float64 in [0, 1]</span>
+<span class="sd">        :param tolerance: when the magnitude of the gradient falls below this value OR we will not move farther than tolerance</span>
+<span class="sd">               (e.g., at a boundary), stop.  (suggest: 1.0e-7)</span>
+<span class="sd">        :type tolerance: float64 &gt;= 0.0</span>
+
+<span class="sd">    ***Example Request** (default values in moe/optimal_learning/EPI/src/python/constant)</span>
+
+<span class="sd">    .. sourcecode:: http</span>
+
+<span class="sd">        Content-Type: text/javascript</span>
+
+<span class="sd">        {</span>
+<span class="sd">            &#39;optimizer_type&#39;: &#39;gradient_descent&#39;,</span>
+<span class="sd">            &#39;num_random_samples&#39;: 4000,</span>
+<span class="sd">            &#39;num_multistarts&#39;: 40,</span>
+<span class="sd">            &#39;gd_iterations&#39;: 1000,</span>
+<span class="sd">            &#39;max_num_restarts&#39;: 3,</span>
+<span class="sd">            &#39;gamma&#39;: 0.9,</span>
+<span class="sd">            &#39;pre_mult&#39;: 1.0,</span>
+<span class="sd">            &#39;mc_iterations&#39;: 100000,</span>
+<span class="sd">            &#39;max_relative_change&#39;: 1.0,</span>
+<span class="sd">            &#39;tolerance&#39;: 1.0e-7,</span>
+<span class="sd">        }</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">optimizer_type</span> <span class="o">=</span> <span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="p">(</span>
+            <span class="n">colander</span><span class="o">.</span><span class="n">String</span><span class="p">(),</span>
+            <span class="n">missing</span><span class="o">=</span><span class="n">default_optimizer_type</span><span class="p">,</span>
+            <span class="n">validator</span><span class="o">=</span><span class="n">colander</span><span class="o">.</span><span class="n">OneOf</span><span class="p">(</span><span class="n">ALL_OPTIMIZERS</span><span class="p">),</span>
+            <span class="p">)</span>
+    <span class="n">num_random_samples</span> <span class="o">=</span> <span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="p">(</span>
+            <span class="n">colander</span><span class="o">.</span><span class="n">Int</span><span class="p">(),</span>
+            <span class="n">missing</span><span class="o">=</span><span class="n">default_num_random_samples</span><span class="p">,</span>
+            <span class="n">validator</span><span class="o">=</span><span class="n">colander</span><span class="o">.</span><span class="n">Range</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+            <span class="p">)</span>
     <span class="n">num_multistarts</span> <span class="o">=</span> <span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="p">(</span>
             <span class="n">colander</span><span class="o">.</span><span class="n">Int</span><span class="p">(),</span>
             <span class="n">missing</span><span class="o">=</span><span class="n">default_ei_optimization_parameters</span><span class="o">.</span><span class="n">num_multistarts</span><span class="p">,</span>

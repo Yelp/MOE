@@ -8,54 +8,40 @@
     
     <title>moe.optimal_learning.EPI.src.python.interfaces package &mdash; MOE 0.1.0 documentation</title>
     
-    <link rel="stylesheet" href="_static/default.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/breathe.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/breathe.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
+        URL_ROOT:    '../',
         VERSION:     '0.1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
       };
     </script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="MOE 0.1.0 documentation" href="index.html" />
-    <link rel="up" title="moe.optimal_learning.EPI.src.python package" href="moe.optimal_learning.EPI.src.python.html" />
-    <link rel="next" title="moe.optimal_learning.EPI.src.python.lib package" href="moe.optimal_learning.EPI.src.python.lib.html" />
-    <link rel="prev" title="moe.optimal_learning.EPI.src.python.cpp_wrappers package" href="moe.optimal_learning.EPI.src.python.cpp_wrappers.html" /> 
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="MOE 0.1.0 documentation" href="../index.html" /> 
   </head>
   <body>
     <div class="related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
+          <a href="../genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="http-routingtable.html" title="HTTP Routing Table"
+          <a href="../http-routingtable.html" title="HTTP Routing Table"
              >routing table</a> |</li>
         <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
+          <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="right" >
-          <a href="moe.optimal_learning.EPI.src.python.lib.html" title="moe.optimal_learning.EPI.src.python.lib package"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="moe.optimal_learning.EPI.src.python.cpp_wrappers.html" title="moe.optimal_learning.EPI.src.python.cpp_wrappers package"
-             accesskey="P">previous</a> |</li>
-        <li><a href="index.html">MOE 0.1.0 documentation</a> &raquo;</li>
-          <li><a href="moe.html" >moe package</a> &raquo;</li>
-          <li><a href="moe.optimal_learning.html" >moe.optimal_learning package</a> &raquo;</li>
-          <li><a href="moe.optimal_learning.EPI.html" >moe.optimal_learning.EPI package</a> &raquo;</li>
-          <li><a href="moe.optimal_learning.EPI.src.html" >moe.optimal_learning.EPI.src package</a> &raquo;</li>
-          <li><a href="moe.optimal_learning.EPI.src.python.html" accesskey="U">moe.optimal_learning.EPI.src.python package</a> &raquo;</li> 
+        <li><a href="../index.html">MOE 0.1.0 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -93,7 +79,7 @@ the behavior of the GP. optimization_interface.py together with log_likelihood_i
 and evaluating model fit, respectively.</p>
 <dl class="class">
 <dt id="moe.optimal_learning.EPI.src.python.interfaces.covariance_interface.CovarianceInterface">
-<em class="property">class </em><tt class="descclassname">moe.optimal_learning.EPI.src.python.interfaces.covariance_interface.</tt><tt class="descname">CovarianceInterface</tt><a class="reference internal" href="_modules/moe/optimal_learning/EPI/src/python/interfaces/covariance_interface.html#CovarianceInterface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.covariance_interface.CovarianceInterface" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">moe.optimal_learning.EPI.src.python.interfaces.covariance_interface.</tt><tt class="descname">CovarianceInterface</tt><a class="reference internal" href="../_modules/moe/optimal_learning/EPI/src/python/interfaces/covariance_interface.html#CovarianceInterface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.covariance_interface.CovarianceInterface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <p>Interface for a covariance function: covariance of two points and spatial/hyperparameter derivatives.</p>
 <div class="admonition note">
@@ -112,7 +98,7 @@ the gradient operation should only take gradients wrt dim variables, where <tt c
 How to make it work with ABCs?</p>
 <dl class="method">
 <dt id="moe.optimal_learning.EPI.src.python.interfaces.covariance_interface.CovarianceInterface.covariance">
-<tt class="descname">covariance</tt><big>(</big><em>point_one</em>, <em>point_two</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/EPI/src/python/interfaces/covariance_interface.html#CovarianceInterface.covariance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.covariance_interface.CovarianceInterface.covariance" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">covariance</tt><big>(</big><em>point_one</em>, <em>point_two</em><big>)</big><a class="reference internal" href="../_modules/moe/optimal_learning/EPI/src/python/interfaces/covariance_interface.html#CovarianceInterface.covariance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.covariance_interface.CovarianceInterface.covariance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the covariance function of two points, cov(<tt class="docutils literal"><span class="pre">point_one</span></tt>, <tt class="docutils literal"><span class="pre">point_two</span></tt>).</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -143,13 +129,13 @@ This function is also positive definite by definition.</p>
 
 <dl class="method">
 <dt id="moe.optimal_learning.EPI.src.python.interfaces.covariance_interface.CovarianceInterface.get_hyperparameters">
-<tt class="descname">get_hyperparameters</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/EPI/src/python/interfaces/covariance_interface.html#CovarianceInterface.get_hyperparameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.covariance_interface.CovarianceInterface.get_hyperparameters" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">get_hyperparameters</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/moe/optimal_learning/EPI/src/python/interfaces/covariance_interface.html#CovarianceInterface.get_hyperparameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.covariance_interface.CovarianceInterface.get_hyperparameters" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the hyperparameters (array of float64 with shape (num_hyperparameters)) of this covariance.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="moe.optimal_learning.EPI.src.python.interfaces.covariance_interface.CovarianceInterface.grad_covariance">
-<tt class="descname">grad_covariance</tt><big>(</big><em>point_one</em>, <em>point_two</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/EPI/src/python/interfaces/covariance_interface.html#CovarianceInterface.grad_covariance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.covariance_interface.CovarianceInterface.grad_covariance" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">grad_covariance</tt><big>(</big><em>point_one</em>, <em>point_two</em><big>)</big><a class="reference internal" href="../_modules/moe/optimal_learning/EPI/src/python/interfaces/covariance_interface.html#CovarianceInterface.grad_covariance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.covariance_interface.CovarianceInterface.grad_covariance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the gradient of self.covariance(point_one, point_two) with respect to the FIRST argument, point_one.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -183,7 +169,7 @@ differentiation against the first argument.  If you need <tt class="docutils lit
 
 <dl class="method">
 <dt id="moe.optimal_learning.EPI.src.python.interfaces.covariance_interface.CovarianceInterface.hyperparameter_grad_covariance">
-<tt class="descname">hyperparameter_grad_covariance</tt><big>(</big><em>point_one</em>, <em>point_two</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/EPI/src/python/interfaces/covariance_interface.html#CovarianceInterface.hyperparameter_grad_covariance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.covariance_interface.CovarianceInterface.hyperparameter_grad_covariance" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">hyperparameter_grad_covariance</tt><big>(</big><em>point_one</em>, <em>point_two</em><big>)</big><a class="reference internal" href="../_modules/moe/optimal_learning/EPI/src/python/interfaces/covariance_interface.html#CovarianceInterface.hyperparameter_grad_covariance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.covariance_interface.CovarianceInterface.hyperparameter_grad_covariance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the gradient of self.covariance(point_one, point_two) with respect to its hyperparameters.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -214,7 +200,7 @@ either of them).  Thus the matrix of grad covariances (wrt hyperparameters) is s
 
 <dl class="method">
 <dt id="moe.optimal_learning.EPI.src.python.interfaces.covariance_interface.CovarianceInterface.hyperparameter_hessian_covariance">
-<tt class="descname">hyperparameter_hessian_covariance</tt><big>(</big><em>point_one</em>, <em>point_two</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/EPI/src/python/interfaces/covariance_interface.html#CovarianceInterface.hyperparameter_hessian_covariance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.covariance_interface.CovarianceInterface.hyperparameter_hessian_covariance" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">hyperparameter_hessian_covariance</tt><big>(</big><em>point_one</em>, <em>point_two</em><big>)</big><a class="reference internal" href="../_modules/moe/optimal_learning/EPI/src/python/interfaces/covariance_interface.html#CovarianceInterface.hyperparameter_hessian_covariance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.covariance_interface.CovarianceInterface.hyperparameter_hessian_covariance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the hessian of self.covariance(point_one, point_two) with respect to its hyperparameters.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -252,13 +238,13 @@ f is twice continuously differentiable).</p>
 
 <dl class="attribute">
 <dt id="moe.optimal_learning.EPI.src.python.interfaces.covariance_interface.CovarianceInterface.num_hyperparameters">
-<tt class="descname">num_hyperparameters</tt><a class="reference internal" href="_modules/moe/optimal_learning/EPI/src/python/interfaces/covariance_interface.html#CovarianceInterface.num_hyperparameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.covariance_interface.CovarianceInterface.num_hyperparameters" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">num_hyperparameters</tt><a class="reference internal" href="../_modules/moe/optimal_learning/EPI/src/python/interfaces/covariance_interface.html#CovarianceInterface.num_hyperparameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.covariance_interface.CovarianceInterface.num_hyperparameters" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the number of hyperparameters of this covariance function.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="moe.optimal_learning.EPI.src.python.interfaces.covariance_interface.CovarianceInterface.set_hyperparameters">
-<tt class="descname">set_hyperparameters</tt><big>(</big><em>hyperparameters</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/EPI/src/python/interfaces/covariance_interface.html#CovarianceInterface.set_hyperparameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.covariance_interface.CovarianceInterface.set_hyperparameters" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">set_hyperparameters</tt><big>(</big><em>hyperparameters</em><big>)</big><a class="reference internal" href="../_modules/moe/optimal_learning/EPI/src/python/interfaces/covariance_interface.html#CovarianceInterface.set_hyperparameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.covariance_interface.CovarianceInterface.set_hyperparameters" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set hyperparameters to the specified hyperparameters; ordering must match.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -278,12 +264,12 @@ f is twice continuously differentiable).</p>
 <p>Interface for a domain: in/out test, random point generation, and update limiting (for constrained optimization).</p>
 <dl class="class">
 <dt id="moe.optimal_learning.EPI.src.python.interfaces.domain_interface.DomainInterface">
-<em class="property">class </em><tt class="descclassname">moe.optimal_learning.EPI.src.python.interfaces.domain_interface.</tt><tt class="descname">DomainInterface</tt><a class="reference internal" href="_modules/moe/optimal_learning/EPI/src/python/interfaces/domain_interface.html#DomainInterface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.domain_interface.DomainInterface" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">moe.optimal_learning.EPI.src.python.interfaces.domain_interface.</tt><tt class="descname">DomainInterface</tt><a class="reference internal" href="../_modules/moe/optimal_learning/EPI/src/python/interfaces/domain_interface.html#DomainInterface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.domain_interface.DomainInterface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <p>Interface for a domain: in/out test, random point generation, and update limiting (for constrained optimization).</p>
 <dl class="method">
 <dt id="moe.optimal_learning.EPI.src.python.interfaces.domain_interface.DomainInterface.check_point_inside">
-<tt class="descname">check_point_inside</tt><big>(</big><em>point</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/EPI/src/python/interfaces/domain_interface.html#DomainInterface.check_point_inside"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.domain_interface.DomainInterface.check_point_inside" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">check_point_inside</tt><big>(</big><em>point</em><big>)</big><a class="reference internal" href="../_modules/moe/optimal_learning/EPI/src/python/interfaces/domain_interface.html#DomainInterface.check_point_inside"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.domain_interface.DomainInterface.check_point_inside" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check if a point is inside the domain/on its boundary or outside.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -307,7 +293,7 @@ f is twice continuously differentiable).</p>
 
 <dl class="method">
 <dt id="moe.optimal_learning.EPI.src.python.interfaces.domain_interface.DomainInterface.compute_update_restricted_to_domain">
-<tt class="descname">compute_update_restricted_to_domain</tt><big>(</big><em>max_relative_change</em>, <em>current_point</em>, <em>update_vector</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/EPI/src/python/interfaces/domain_interface.html#DomainInterface.compute_update_restricted_to_domain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.domain_interface.DomainInterface.compute_update_restricted_to_domain" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">compute_update_restricted_to_domain</tt><big>(</big><em>max_relative_change</em>, <em>current_point</em>, <em>update_vector</em><big>)</big><a class="reference internal" href="../_modules/moe/optimal_learning/EPI/src/python/interfaces/domain_interface.html#DomainInterface.compute_update_restricted_to_domain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.domain_interface.DomainInterface.compute_update_restricted_to_domain" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute a new update so that CheckPointInside(<tt class="docutils literal"><span class="pre">current_point</span></tt> + <tt class="docutils literal"><span class="pre">new_update</span></tt>) is true.</p>
 <dl class="docutils">
 <dt>Changes new_update_vector so that:</dt>
@@ -344,13 +330,13 @@ limiting/testing may be performed.</p>
 
 <dl class="attribute">
 <dt id="moe.optimal_learning.EPI.src.python.interfaces.domain_interface.DomainInterface.dim">
-<tt class="descname">dim</tt><a class="reference internal" href="_modules/moe/optimal_learning/EPI/src/python/interfaces/domain_interface.html#DomainInterface.dim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.domain_interface.DomainInterface.dim" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">dim</tt><a class="reference internal" href="../_modules/moe/optimal_learning/EPI/src/python/interfaces/domain_interface.html#DomainInterface.dim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.domain_interface.DomainInterface.dim" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the number of spatial dimensions.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="moe.optimal_learning.EPI.src.python.interfaces.domain_interface.DomainInterface.generate_uniform_random_points_in_domain">
-<tt class="descname">generate_uniform_random_points_in_domain</tt><big>(</big><em>num_points</em>, <em>random_source</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/EPI/src/python/interfaces/domain_interface.html#DomainInterface.generate_uniform_random_points_in_domain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.domain_interface.DomainInterface.generate_uniform_random_points_in_domain" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">generate_uniform_random_points_in_domain</tt><big>(</big><em>num_points</em>, <em>random_source</em><big>)</big><a class="reference internal" href="../_modules/moe/optimal_learning/EPI/src/python/interfaces/domain_interface.html#DomainInterface.generate_uniform_random_points_in_domain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.domain_interface.DomainInterface.generate_uniform_random_points_in_domain" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate AT MOST <tt class="docutils literal"><span class="pre">num_points</span></tt> uniformly distributed points from the domain.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -407,7 +393,7 @@ implies the need for all of the various &#8220;grad&#8221; functions, e.g., gaus
 This is handled by coupling an implementation of ExpectedImprovementInterface to an optimizer (optimization_interface.py).</p>
 <dl class="class">
 <dt id="moe.optimal_learning.EPI.src.python.interfaces.expected_improvement_interface.ExpectedImprovementInterface">
-<em class="property">class </em><tt class="descclassname">moe.optimal_learning.EPI.src.python.interfaces.expected_improvement_interface.</tt><tt class="descname">ExpectedImprovementInterface</tt><a class="reference internal" href="_modules/moe/optimal_learning/EPI/src/python/interfaces/expected_improvement_interface.html#ExpectedImprovementInterface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.expected_improvement_interface.ExpectedImprovementInterface" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">moe.optimal_learning.EPI.src.python.interfaces.expected_improvement_interface.</tt><tt class="descname">ExpectedImprovementInterface</tt><a class="reference internal" href="../_modules/moe/optimal_learning/EPI/src/python/interfaces/expected_improvement_interface.html#ExpectedImprovementInterface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.expected_improvement_interface.ExpectedImprovementInterface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <p>Interface for Expected Improvement computation: EI and its gradient at specified point(s) sampled from a GaussianProcess.</p>
 <p>A class to encapsulate the computation of expected improvement and its spatial gradient using points sampled from an
@@ -430,7 +416,7 @@ Implementers are also responsible for storing current_point and points_to_sample
 </table>
 <dl class="method">
 <dt id="moe.optimal_learning.EPI.src.python.interfaces.expected_improvement_interface.ExpectedImprovementInterface.compute_expected_improvement">
-<tt class="descname">compute_expected_improvement</tt><big>(</big><em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/EPI/src/python/interfaces/expected_improvement_interface.html#ExpectedImprovementInterface.compute_expected_improvement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.expected_improvement_interface.ExpectedImprovementInterface.compute_expected_improvement" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">compute_expected_improvement</tt><big>(</big><em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/moe/optimal_learning/EPI/src/python/interfaces/expected_improvement_interface.html#ExpectedImprovementInterface.compute_expected_improvement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.expected_improvement_interface.ExpectedImprovementInterface.compute_expected_improvement" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the expected improvement at <tt class="docutils literal"><span class="pre">current_point</span></tt>, with <tt class="docutils literal"><span class="pre">points_to_sample</span></tt> concurrent points being sampled.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -459,7 +445,7 @@ at <tt class="docutils literal"><span class="pre">points_to_sample</span></tt>.<
 
 <dl class="method">
 <dt id="moe.optimal_learning.EPI.src.python.interfaces.expected_improvement_interface.ExpectedImprovementInterface.compute_grad_expected_improvement">
-<tt class="descname">compute_grad_expected_improvement</tt><big>(</big><em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/EPI/src/python/interfaces/expected_improvement_interface.html#ExpectedImprovementInterface.compute_grad_expected_improvement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.expected_improvement_interface.ExpectedImprovementInterface.compute_grad_expected_improvement" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">compute_grad_expected_improvement</tt><big>(</big><em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/moe/optimal_learning/EPI/src/python/interfaces/expected_improvement_interface.html#ExpectedImprovementInterface.compute_grad_expected_improvement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.expected_improvement_interface.ExpectedImprovementInterface.compute_grad_expected_improvement" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the gradient of expected improvement at <tt class="docutils literal"><span class="pre">current_point</span></tt> wrt <tt class="docutils literal"><span class="pre">current_point</span></tt>, with <tt class="docutils literal"><span class="pre">points_to_sample</span></tt> concurrent samples.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -483,7 +469,7 @@ Monte-Carlo simulation to approximate it.</p>
 
 <dl class="attribute">
 <dt id="moe.optimal_learning.EPI.src.python.interfaces.expected_improvement_interface.ExpectedImprovementInterface.dim">
-<tt class="descname">dim</tt><a class="reference internal" href="_modules/moe/optimal_learning/EPI/src/python/interfaces/expected_improvement_interface.html#ExpectedImprovementInterface.dim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.expected_improvement_interface.ExpectedImprovementInterface.dim" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">dim</tt><a class="reference internal" href="../_modules/moe/optimal_learning/EPI/src/python/interfaces/expected_improvement_interface.html#ExpectedImprovementInterface.dim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.expected_improvement_interface.ExpectedImprovementInterface.dim" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the number of spatial dimensions.</p>
 </dd></dl>
 
@@ -499,7 +485,7 @@ Python currently does not natively support interfaces, so we are commandeering A
 <p>See package docs in interfaces/__init__.py for an introduction to Gaussian Processes.</p>
 <dl class="class">
 <dt id="moe.optimal_learning.EPI.src.python.interfaces.gaussian_process_interface.GaussianProcessInterface">
-<em class="property">class </em><tt class="descclassname">moe.optimal_learning.EPI.src.python.interfaces.gaussian_process_interface.</tt><tt class="descname">GaussianProcessInterface</tt><a class="reference internal" href="_modules/moe/optimal_learning/EPI/src/python/interfaces/gaussian_process_interface.html#GaussianProcessInterface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.gaussian_process_interface.GaussianProcessInterface" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">moe.optimal_learning.EPI.src.python.interfaces.gaussian_process_interface.</tt><tt class="descname">GaussianProcessInterface</tt><a class="reference internal" href="../_modules/moe/optimal_learning/EPI/src/python/interfaces/gaussian_process_interface.html#GaussianProcessInterface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.gaussian_process_interface.GaussianProcessInterface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <p>Interface for a GaussianProcess: mean, variance, gradients thereof, and data I/O.</p>
 <div class="admonition note">
@@ -519,14 +505,14 @@ mean and variance.  These functions (and their gradients) are provided in Comput
 etc.</p>
 <p>Further mathematical details are given in the implementation comments, but we are essentially computing:</p>
 <div class="line-block">
-<div class="line">ComputeMeanOfPoints    : <tt class="docutils literal"><span class="pre">K(Xs,</span> <span class="pre">X)</span> <span class="pre">*</span> <span class="pre">[K(X,X)</span> <span class="pre">+</span> <span class="pre">\sigma_n^2</span> <span class="pre">I]^{-1}</span> <span class="pre">*</span> <span class="pre">y</span> <span class="pre">=</span> <span class="pre">Ks^T</span> <span class="pre">*</span> <span class="pre">K^{-1}</span> <span class="pre">*</span> <span class="pre">y</span></tt></div>
-<div class="line">ComputeVarianceOfPoints: <tt class="docutils literal"><span class="pre">K(Xs,</span> <span class="pre">Xs)</span> <span class="pre">-</span> <span class="pre">K(Xs,X)</span> <span class="pre">*</span> <span class="pre">[K(X,X)</span> <span class="pre">+</span> <span class="pre">\sigma_n^2</span> <span class="pre">I]^{-1}</span> <span class="pre">*</span> <span class="pre">K(X,Xs)</span> <span class="pre">=</span> <span class="pre">Kss</span> <span class="pre">-</span> <span class="pre">Ks^T</span> <span class="pre">*</span> <span class="pre">K^{-1}</span> <span class="pre">*</span> <span class="pre">Ks</span></tt></div>
+<div class="line">ComputeMeanOfPoints    : <tt class="docutils literal"><span class="pre">K(Xs,</span> <span class="pre">X)</span> <span class="pre">*</span> <span class="pre">[K(X,X)</span> <span class="pre">+</span> <span class="pre">\sigma_n^2</span> <span class="pre">I]^{-1}</span> <span class="pre">*</span> <span class="pre">y</span></tt></div>
+<div class="line">ComputeVarianceOfPoints: <tt class="docutils literal"><span class="pre">K(Xs,</span> <span class="pre">Xs)</span> <span class="pre">-</span> <span class="pre">K(Xs,X)</span> <span class="pre">*</span> <span class="pre">[K(X,X)</span> <span class="pre">+</span> <span class="pre">\sigma_n^2</span> <span class="pre">I]^{-1}</span> <span class="pre">*</span> <span class="pre">K(X,Xs)</span></tt></div>
 </div>
 <p>This (estimated) mean and variance characterize the predicted distributions of the actual ms m(x), k(x,x&#8217;)me
 functions that underly our GP.</p>
 <dl class="method">
 <dt id="moe.optimal_learning.EPI.src.python.interfaces.gaussian_process_interface.GaussianProcessInterface.add_sampled_points">
-<tt class="descname">add_sampled_points</tt><big>(</big><em>sampled_points</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/EPI/src/python/interfaces/gaussian_process_interface.html#GaussianProcessInterface.add_sampled_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.gaussian_process_interface.GaussianProcessInterface.add_sampled_points" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">add_sampled_points</tt><big>(</big><em>sampled_points</em><big>)</big><a class="reference internal" href="../_modules/moe/optimal_learning/EPI/src/python/interfaces/gaussian_process_interface.html#GaussianProcessInterface.add_sampled_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.gaussian_process_interface.GaussianProcessInterface.add_sampled_points" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a sampled points (point, value, noise) to the GP&#8217;s prior data.</p>
 <p>Also forces recomputation of all derived quantities for GP to remain consistent.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -541,7 +527,7 @@ functions that underly our GP.</p>
 
 <dl class="method">
 <dt id="moe.optimal_learning.EPI.src.python.interfaces.gaussian_process_interface.GaussianProcessInterface.compute_cholesky_variance_of_points">
-<tt class="descname">compute_cholesky_variance_of_points</tt><big>(</big><em>points_to_sample</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/EPI/src/python/interfaces/gaussian_process_interface.html#GaussianProcessInterface.compute_cholesky_variance_of_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.gaussian_process_interface.GaussianProcessInterface.compute_cholesky_variance_of_points" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">compute_cholesky_variance_of_points</tt><big>(</big><em>points_to_sample</em><big>)</big><a class="reference internal" href="../_modules/moe/optimal_learning/EPI/src/python/interfaces/gaussian_process_interface.html#GaussianProcessInterface.compute_cholesky_variance_of_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.gaussian_process_interface.GaussianProcessInterface.compute_cholesky_variance_of_points" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the cholesky factorization of the variance (matrix) of this GP at each point of <tt class="docutils literal"><span class="pre">Xs</span></tt> (<tt class="docutils literal"><span class="pre">points_to_sample</span></tt>).</p>
 <p><tt class="docutils literal"><span class="pre">points_to_sample</span></tt> may not contain duplicate points. Violating this results in singular covariance matrices.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -560,7 +546,7 @@ functions that underly our GP.</p>
 
 <dl class="method">
 <dt id="moe.optimal_learning.EPI.src.python.interfaces.gaussian_process_interface.GaussianProcessInterface.compute_grad_cholesky_variance_of_points">
-<tt class="descname">compute_grad_cholesky_variance_of_points</tt><big>(</big><em>points_to_sample</em>, <em>var_of_grad</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/EPI/src/python/interfaces/gaussian_process_interface.html#GaussianProcessInterface.compute_grad_cholesky_variance_of_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.gaussian_process_interface.GaussianProcessInterface.compute_grad_cholesky_variance_of_points" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">compute_grad_cholesky_variance_of_points</tt><big>(</big><em>points_to_sample</em>, <em>var_of_grad</em><big>)</big><a class="reference internal" href="../_modules/moe/optimal_learning/EPI/src/python/interfaces/gaussian_process_interface.html#GaussianProcessInterface.compute_grad_cholesky_variance_of_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.gaussian_process_interface.GaussianProcessInterface.compute_grad_cholesky_variance_of_points" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the gradient of the cholesky factorization of the variance (matrix) of this GP at each point of <tt class="docutils literal"><span class="pre">Xs</span></tt> (<tt class="docutils literal"><span class="pre">points_to_sample</span></tt>) wrt <tt class="docutils literal"><span class="pre">Xs</span></tt>.</p>
 <p><tt class="docutils literal"><span class="pre">points_to_sample</span></tt> may not contain duplicate points. Violating this results in singular covariance matrices.</p>
 <p>This function accounts for the effect on the gradient resulting from
@@ -596,7 +582,7 @@ k = <tt class="docutils literal"><span class="pre">var_of_grad</span></tt></p>
 
 <dl class="method">
 <dt id="moe.optimal_learning.EPI.src.python.interfaces.gaussian_process_interface.GaussianProcessInterface.compute_grad_mean_of_points">
-<tt class="descname">compute_grad_mean_of_points</tt><big>(</big><em>points_to_sample</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/EPI/src/python/interfaces/gaussian_process_interface.html#GaussianProcessInterface.compute_grad_mean_of_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.gaussian_process_interface.GaussianProcessInterface.compute_grad_mean_of_points" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">compute_grad_mean_of_points</tt><big>(</big><em>points_to_sample</em><big>)</big><a class="reference internal" href="../_modules/moe/optimal_learning/EPI/src/python/interfaces/gaussian_process_interface.html#GaussianProcessInterface.compute_grad_mean_of_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.gaussian_process_interface.GaussianProcessInterface.compute_grad_mean_of_points" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the gradient of the mean of this GP at each of point of <tt class="docutils literal"><span class="pre">Xs</span></tt> (<tt class="docutils literal"><span class="pre">points_to_sample</span></tt>) wrt <tt class="docutils literal"><span class="pre">Xs</span></tt>.</p>
 <p><tt class="docutils literal"><span class="pre">points_to_sample</span></tt> may not contain duplicate points. Violating this results in singular covariance matrices.</p>
 <p>Note that <tt class="docutils literal"><span class="pre">grad_mu</span></tt> is nominally sized: <tt class="docutils literal"><span class="pre">grad_mu[num_to_sample][num_to_sample][dim]</span></tt>. This is
@@ -621,7 +607,7 @@ of <tt class="docutils literal"><span class="pre">\mu_i</span></tt> wrt <tt clas
 
 <dl class="method">
 <dt id="moe.optimal_learning.EPI.src.python.interfaces.gaussian_process_interface.GaussianProcessInterface.compute_grad_variance_of_points">
-<tt class="descname">compute_grad_variance_of_points</tt><big>(</big><em>points_to_sample</em>, <em>var_of_grad</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/EPI/src/python/interfaces/gaussian_process_interface.html#GaussianProcessInterface.compute_grad_variance_of_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.gaussian_process_interface.GaussianProcessInterface.compute_grad_variance_of_points" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">compute_grad_variance_of_points</tt><big>(</big><em>points_to_sample</em>, <em>var_of_grad</em><big>)</big><a class="reference internal" href="../_modules/moe/optimal_learning/EPI/src/python/interfaces/gaussian_process_interface.html#GaussianProcessInterface.compute_grad_variance_of_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.gaussian_process_interface.GaussianProcessInterface.compute_grad_variance_of_points" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the gradient of the variance (matrix) of this GP at each point of <tt class="docutils literal"><span class="pre">Xs</span></tt> (<tt class="docutils literal"><span class="pre">points_to_sample</span></tt>) wrt <tt class="docutils literal"><span class="pre">Xs</span></tt>.</p>
 <p><tt class="docutils literal"><span class="pre">points_to_sample</span></tt> may not contain duplicate points. Violating this results in singular covariance matrices.</p>
 <p>This function is similar to compute_grad_cholesky_variance_of_points() (below), except this does not include
@@ -648,7 +634,7 @@ gradient terms from the cholesky factorization. Description will not be duplicat
 
 <dl class="method">
 <dt id="moe.optimal_learning.EPI.src.python.interfaces.gaussian_process_interface.GaussianProcessInterface.compute_mean_of_points">
-<tt class="descname">compute_mean_of_points</tt><big>(</big><em>points_to_sample</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/EPI/src/python/interfaces/gaussian_process_interface.html#GaussianProcessInterface.compute_mean_of_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.gaussian_process_interface.GaussianProcessInterface.compute_mean_of_points" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">compute_mean_of_points</tt><big>(</big><em>points_to_sample</em><big>)</big><a class="reference internal" href="../_modules/moe/optimal_learning/EPI/src/python/interfaces/gaussian_process_interface.html#GaussianProcessInterface.compute_mean_of_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.gaussian_process_interface.GaussianProcessInterface.compute_mean_of_points" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the mean of this GP at each of point of <tt class="docutils literal"><span class="pre">Xs</span></tt> (<tt class="docutils literal"><span class="pre">points_to_sample</span></tt>).</p>
 <p><tt class="docutils literal"><span class="pre">points_to_sample</span></tt> may not contain duplicate points. Violating this results in singular covariance matrices.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -667,7 +653,7 @@ gradient terms from the cholesky factorization. Description will not be duplicat
 
 <dl class="method">
 <dt id="moe.optimal_learning.EPI.src.python.interfaces.gaussian_process_interface.GaussianProcessInterface.compute_variance_of_points">
-<tt class="descname">compute_variance_of_points</tt><big>(</big><em>points_to_sample</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/EPI/src/python/interfaces/gaussian_process_interface.html#GaussianProcessInterface.compute_variance_of_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.gaussian_process_interface.GaussianProcessInterface.compute_variance_of_points" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">compute_variance_of_points</tt><big>(</big><em>points_to_sample</em><big>)</big><a class="reference internal" href="../_modules/moe/optimal_learning/EPI/src/python/interfaces/gaussian_process_interface.html#GaussianProcessInterface.compute_variance_of_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.gaussian_process_interface.GaussianProcessInterface.compute_variance_of_points" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the variance (matrix) of this GP at each point of <tt class="docutils literal"><span class="pre">Xs</span></tt> (<tt class="docutils literal"><span class="pre">points_to_sample</span></tt>).</p>
 <p><tt class="docutils literal"><span class="pre">points_to_sample</span></tt> may not contain duplicate points. Violating this results in singular covariance matrices.</p>
 <p>The variance matrix is symmetric although we currently return the full representation.</p>
@@ -687,19 +673,19 @@ gradient terms from the cholesky factorization. Description will not be duplicat
 
 <dl class="attribute">
 <dt id="moe.optimal_learning.EPI.src.python.interfaces.gaussian_process_interface.GaussianProcessInterface.dim">
-<tt class="descname">dim</tt><a class="reference internal" href="_modules/moe/optimal_learning/EPI/src/python/interfaces/gaussian_process_interface.html#GaussianProcessInterface.dim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.gaussian_process_interface.GaussianProcessInterface.dim" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">dim</tt><a class="reference internal" href="../_modules/moe/optimal_learning/EPI/src/python/interfaces/gaussian_process_interface.html#GaussianProcessInterface.dim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.gaussian_process_interface.GaussianProcessInterface.dim" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the number of spatial dimensions.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="moe.optimal_learning.EPI.src.python.interfaces.gaussian_process_interface.GaussianProcessInterface.num_sampled">
-<tt class="descname">num_sampled</tt><a class="reference internal" href="_modules/moe/optimal_learning/EPI/src/python/interfaces/gaussian_process_interface.html#GaussianProcessInterface.num_sampled"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.gaussian_process_interface.GaussianProcessInterface.num_sampled" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">num_sampled</tt><a class="reference internal" href="../_modules/moe/optimal_learning/EPI/src/python/interfaces/gaussian_process_interface.html#GaussianProcessInterface.num_sampled"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.gaussian_process_interface.GaussianProcessInterface.num_sampled" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the number of sampled points.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="moe.optimal_learning.EPI.src.python.interfaces.gaussian_process_interface.GaussianProcessInterface.sample_point_from_gp">
-<tt class="descname">sample_point_from_gp</tt><big>(</big><em>point_to_sample</em>, <em>noise_variance=0.0</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/EPI/src/python/interfaces/gaussian_process_interface.html#GaussianProcessInterface.sample_point_from_gp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.gaussian_process_interface.GaussianProcessInterface.sample_point_from_gp" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">sample_point_from_gp</tt><big>(</big><em>point_to_sample</em>, <em>noise_variance=0.0</em><big>)</big><a class="reference internal" href="../_modules/moe/optimal_learning/EPI/src/python/interfaces/gaussian_process_interface.html#GaussianProcessInterface.sample_point_from_gp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.gaussian_process_interface.GaussianProcessInterface.sample_point_from_gp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sample a function value from a Gaussian Process prior, provided a point at which to sample.</p>
 <p>Uses the formula <tt class="docutils literal"><span class="pre">function_value</span> <span class="pre">=</span> <span class="pre">gpp_mean</span> <span class="pre">+</span> <span class="pre">sqrt(gpp_variance)</span> <span class="pre">*</span> <span class="pre">w1</span> <span class="pre">+</span> <span class="pre">sqrt(noise_variance)</span> <span class="pre">*</span> <span class="pre">w2</span></tt>, where <tt class="docutils literal"><span class="pre">w1,</span> <span class="pre">w2</span></tt>
 are draws from N(0,1).</p>
@@ -802,7 +788,7 @@ exist or cases where solutions lie on (lower-dimensional) manifold(s) (e.g., loc
 of one or more hyperparameters).</p>
 <dl class="class">
 <dt id="moe.optimal_learning.EPI.src.python.interfaces.log_likelihood_interface.GaussianProcessLogLikelihoodInterface">
-<em class="property">class </em><tt class="descclassname">moe.optimal_learning.EPI.src.python.interfaces.log_likelihood_interface.</tt><tt class="descname">GaussianProcessLogLikelihoodInterface</tt><a class="reference internal" href="_modules/moe/optimal_learning/EPI/src/python/interfaces/log_likelihood_interface.html#GaussianProcessLogLikelihoodInterface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.log_likelihood_interface.GaussianProcessLogLikelihoodInterface" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">moe.optimal_learning.EPI.src.python.interfaces.log_likelihood_interface.</tt><tt class="descname">GaussianProcessLogLikelihoodInterface</tt><a class="reference internal" href="../_modules/moe/optimal_learning/EPI/src/python/interfaces/log_likelihood_interface.html#GaussianProcessLogLikelihoodInterface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.log_likelihood_interface.GaussianProcessLogLikelihoodInterface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <p>Interface for computation of log likelihood (and log likelihood-like) measures of model fit along with its gradient and hessian.</p>
 <p>See module comments for an overview of log likelihood-like measures of model fit and their role in model selection.</p>
@@ -812,7 +798,7 @@ as data members by the implementation&#8217;s constructor.</p>
 <p>See gpp_model_selection_and_hyperparameter_optimization.hpp/cpp for further overview and in-depth discussion, respectively.</p>
 <dl class="method">
 <dt id="moe.optimal_learning.EPI.src.python.interfaces.log_likelihood_interface.GaussianProcessLogLikelihoodInterface.compute_grad_log_likelihood">
-<tt class="descname">compute_grad_log_likelihood</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/EPI/src/python/interfaces/log_likelihood_interface.html#GaussianProcessLogLikelihoodInterface.compute_grad_log_likelihood"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.log_likelihood_interface.GaussianProcessLogLikelihoodInterface.compute_grad_log_likelihood" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">compute_grad_log_likelihood</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/moe/optimal_learning/EPI/src/python/interfaces/log_likelihood_interface.html#GaussianProcessLogLikelihoodInterface.compute_grad_log_likelihood"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.log_likelihood_interface.GaussianProcessLogLikelihoodInterface.compute_grad_log_likelihood" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the gradient (wrt hyperparameters) of this log likelihood measure of model fit.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -828,7 +814,7 @@ as data members by the implementation&#8217;s constructor.</p>
 
 <dl class="method">
 <dt id="moe.optimal_learning.EPI.src.python.interfaces.log_likelihood_interface.GaussianProcessLogLikelihoodInterface.compute_hessian_log_likelihood">
-<tt class="descname">compute_hessian_log_likelihood</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/EPI/src/python/interfaces/log_likelihood_interface.html#GaussianProcessLogLikelihoodInterface.compute_hessian_log_likelihood"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.log_likelihood_interface.GaussianProcessLogLikelihoodInterface.compute_hessian_log_likelihood" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">compute_hessian_log_likelihood</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/moe/optimal_learning/EPI/src/python/interfaces/log_likelihood_interface.html#GaussianProcessLogLikelihoodInterface.compute_hessian_log_likelihood"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.log_likelihood_interface.GaussianProcessLogLikelihoodInterface.compute_hessian_log_likelihood" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the hessian (wrt hyperparameters) of this log likelihood measure of model fit.</p>
 <p>See CovarianceInterface.hyperparameter_hessian_covariance() in interfaces/covariance_interface.py for data ordering.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -845,7 +831,7 @@ as data members by the implementation&#8217;s constructor.</p>
 
 <dl class="method">
 <dt id="moe.optimal_learning.EPI.src.python.interfaces.log_likelihood_interface.GaussianProcessLogLikelihoodInterface.compute_log_likelihood">
-<tt class="descname">compute_log_likelihood</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/EPI/src/python/interfaces/log_likelihood_interface.html#GaussianProcessLogLikelihoodInterface.compute_log_likelihood"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.log_likelihood_interface.GaussianProcessLogLikelihoodInterface.compute_log_likelihood" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">compute_log_likelihood</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/moe/optimal_learning/EPI/src/python/interfaces/log_likelihood_interface.html#GaussianProcessLogLikelihoodInterface.compute_log_likelihood"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.log_likelihood_interface.GaussianProcessLogLikelihoodInterface.compute_log_likelihood" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute a log likelihood measure of model fit.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -861,25 +847,25 @@ as data members by the implementation&#8217;s constructor.</p>
 
 <dl class="attribute">
 <dt id="moe.optimal_learning.EPI.src.python.interfaces.log_likelihood_interface.GaussianProcessLogLikelihoodInterface.dim">
-<tt class="descname">dim</tt><a class="reference internal" href="_modules/moe/optimal_learning/EPI/src/python/interfaces/log_likelihood_interface.html#GaussianProcessLogLikelihoodInterface.dim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.log_likelihood_interface.GaussianProcessLogLikelihoodInterface.dim" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">dim</tt><a class="reference internal" href="../_modules/moe/optimal_learning/EPI/src/python/interfaces/log_likelihood_interface.html#GaussianProcessLogLikelihoodInterface.dim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.log_likelihood_interface.GaussianProcessLogLikelihoodInterface.dim" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the number of spatial dimensions.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="moe.optimal_learning.EPI.src.python.interfaces.log_likelihood_interface.GaussianProcessLogLikelihoodInterface.get_hyperparameters">
-<tt class="descname">get_hyperparameters</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/EPI/src/python/interfaces/log_likelihood_interface.html#GaussianProcessLogLikelihoodInterface.get_hyperparameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.log_likelihood_interface.GaussianProcessLogLikelihoodInterface.get_hyperparameters" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">get_hyperparameters</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/moe/optimal_learning/EPI/src/python/interfaces/log_likelihood_interface.html#GaussianProcessLogLikelihoodInterface.get_hyperparameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.log_likelihood_interface.GaussianProcessLogLikelihoodInterface.get_hyperparameters" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the hyperparameters (array of float64 with shape (num_hyperparameters)) of this covariance.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="moe.optimal_learning.EPI.src.python.interfaces.log_likelihood_interface.GaussianProcessLogLikelihoodInterface.num_hyperparameters">
-<tt class="descname">num_hyperparameters</tt><a class="reference internal" href="_modules/moe/optimal_learning/EPI/src/python/interfaces/log_likelihood_interface.html#GaussianProcessLogLikelihoodInterface.num_hyperparameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.log_likelihood_interface.GaussianProcessLogLikelihoodInterface.num_hyperparameters" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">num_hyperparameters</tt><a class="reference internal" href="../_modules/moe/optimal_learning/EPI/src/python/interfaces/log_likelihood_interface.html#GaussianProcessLogLikelihoodInterface.num_hyperparameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.log_likelihood_interface.GaussianProcessLogLikelihoodInterface.num_hyperparameters" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the number of hyperparameters.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="moe.optimal_learning.EPI.src.python.interfaces.log_likelihood_interface.GaussianProcessLogLikelihoodInterface.set_hyperparameters">
-<tt class="descname">set_hyperparameters</tt><big>(</big><em>hyperparameters</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/EPI/src/python/interfaces/log_likelihood_interface.html#GaussianProcessLogLikelihoodInterface.set_hyperparameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.log_likelihood_interface.GaussianProcessLogLikelihoodInterface.set_hyperparameters" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">set_hyperparameters</tt><big>(</big><em>hyperparameters</em><big>)</big><a class="reference internal" href="../_modules/moe/optimal_learning/EPI/src/python/interfaces/log_likelihood_interface.html#GaussianProcessLogLikelihoodInterface.set_hyperparameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.log_likelihood_interface.GaussianProcessLogLikelihoodInterface.set_hyperparameters" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set hyperparameters to the specified hyperparameters; ordering must match.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -904,7 +890,7 @@ minimizing g(x) is equivalent to maximizing f(x) = -1 * g(x).)</p>
 through the C++ interface.</p>
 <dl class="class">
 <dt id="moe.optimal_learning.EPI.src.python.interfaces.optimization_interface.OptimizableInterface">
-<em class="property">class </em><tt class="descclassname">moe.optimal_learning.EPI.src.python.interfaces.optimization_interface.</tt><tt class="descname">OptimizableInterface</tt><a class="reference internal" href="_modules/moe/optimal_learning/EPI/src/python/interfaces/optimization_interface.html#OptimizableInterface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.optimization_interface.OptimizableInterface" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">moe.optimal_learning.EPI.src.python.interfaces.optimization_interface.</tt><tt class="descname">OptimizableInterface</tt><a class="reference internal" href="../_modules/moe/optimal_learning/EPI/src/python/interfaces/optimization_interface.html#OptimizableInterface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.optimization_interface.OptimizableInterface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <p>Interface that an object must fulfill to be optimized by an implementation of OptimizationInterface.</p>
 <p>Below, <tt class="docutils literal"><span class="pre">f(x)</span></tt> is the scalar objective function represented by this object. <tt class="docutils literal"><span class="pre">x</span></tt> is a vector-valued input
@@ -926,7 +912,7 @@ For Expected Improvement (e.g., python_version.expected_improvement.ExpectedImpr
 How to make it work with ABCs?</p>
 <dl class="method">
 <dt id="moe.optimal_learning.EPI.src.python.interfaces.optimization_interface.OptimizableInterface.compute_grad_objective_function">
-<tt class="descname">compute_grad_objective_function</tt><big>(</big><em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/EPI/src/python/interfaces/optimization_interface.html#OptimizableInterface.compute_grad_objective_function"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.optimization_interface.OptimizableInterface.compute_grad_objective_function" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">compute_grad_objective_function</tt><big>(</big><em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/moe/optimal_learning/EPI/src/python/interfaces/optimization_interface.html#OptimizableInterface.compute_grad_objective_function"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.optimization_interface.OptimizableInterface.compute_grad_objective_function" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the gradient of <tt class="docutils literal"><span class="pre">f(current_point)</span></tt> wrt <tt class="docutils literal"><span class="pre">current_point</span></tt>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -942,7 +928,7 @@ How to make it work with ABCs?</p>
 
 <dl class="method">
 <dt id="moe.optimal_learning.EPI.src.python.interfaces.optimization_interface.OptimizableInterface.compute_hessian_objective_function">
-<tt class="descname">compute_hessian_objective_function</tt><big>(</big><em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/EPI/src/python/interfaces/optimization_interface.html#OptimizableInterface.compute_hessian_objective_function"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.optimization_interface.OptimizableInterface.compute_hessian_objective_function" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">compute_hessian_objective_function</tt><big>(</big><em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/moe/optimal_learning/EPI/src/python/interfaces/optimization_interface.html#OptimizableInterface.compute_hessian_objective_function"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.optimization_interface.OptimizableInterface.compute_hessian_objective_function" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the hessian matrix of <tt class="docutils literal"><span class="pre">f(current_point)</span></tt> wrt <tt class="docutils literal"><span class="pre">current_point</span></tt>.</p>
 <p>This matrix is symmetric as long as the mixed second derivatives of f(x) are continuous: Clairaut&#8217;s Theorem.
 <a class="reference external" href="http://en.wikipedia.org/wiki/Symmetry_of_second_derivatives">http://en.wikipedia.org/wiki/Symmetry_of_second_derivatives</a></p>
@@ -960,7 +946,7 @@ How to make it work with ABCs?</p>
 
 <dl class="method">
 <dt id="moe.optimal_learning.EPI.src.python.interfaces.optimization_interface.OptimizableInterface.compute_objective_function">
-<tt class="descname">compute_objective_function</tt><big>(</big><em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/EPI/src/python/interfaces/optimization_interface.html#OptimizableInterface.compute_objective_function"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.optimization_interface.OptimizableInterface.compute_objective_function" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">compute_objective_function</tt><big>(</big><em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/moe/optimal_learning/EPI/src/python/interfaces/optimization_interface.html#OptimizableInterface.compute_objective_function"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.optimization_interface.OptimizableInterface.compute_objective_function" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute <tt class="docutils literal"><span class="pre">f(current_point)</span></tt>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -976,19 +962,19 @@ How to make it work with ABCs?</p>
 
 <dl class="method">
 <dt id="moe.optimal_learning.EPI.src.python.interfaces.optimization_interface.OptimizableInterface.get_current_point">
-<tt class="descname">get_current_point</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/EPI/src/python/interfaces/optimization_interface.html#OptimizableInterface.get_current_point"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.optimization_interface.OptimizableInterface.get_current_point" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">get_current_point</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/moe/optimal_learning/EPI/src/python/interfaces/optimization_interface.html#OptimizableInterface.get_current_point"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.optimization_interface.OptimizableInterface.get_current_point" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the current_point (array of float64 with shape (problem_size)) at which this object is evaluating the objective function, <tt class="docutils literal"><span class="pre">f(x)</span></tt>.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="moe.optimal_learning.EPI.src.python.interfaces.optimization_interface.OptimizableInterface.problem_size">
-<tt class="descname">problem_size</tt><a class="reference internal" href="_modules/moe/optimal_learning/EPI/src/python/interfaces/optimization_interface.html#OptimizableInterface.problem_size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.optimization_interface.OptimizableInterface.problem_size" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">problem_size</tt><a class="reference internal" href="../_modules/moe/optimal_learning/EPI/src/python/interfaces/optimization_interface.html#OptimizableInterface.problem_size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.optimization_interface.OptimizableInterface.problem_size" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the number of independent parameters to optimize.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="moe.optimal_learning.EPI.src.python.interfaces.optimization_interface.OptimizableInterface.set_current_point">
-<tt class="descname">set_current_point</tt><big>(</big><em>current_point</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/EPI/src/python/interfaces/optimization_interface.html#OptimizableInterface.set_current_point"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.optimization_interface.OptimizableInterface.set_current_point" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">set_current_point</tt><big>(</big><em>current_point</em><big>)</big><a class="reference internal" href="../_modules/moe/optimal_learning/EPI/src/python/interfaces/optimization_interface.html#OptimizableInterface.set_current_point"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.optimization_interface.OptimizableInterface.set_current_point" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set current_point to the specified point; ordering must match.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1004,12 +990,12 @@ How to make it work with ABCs?</p>
 
 <dl class="class">
 <dt id="moe.optimal_learning.EPI.src.python.interfaces.optimization_interface.OptimizerInterface">
-<em class="property">class </em><tt class="descclassname">moe.optimal_learning.EPI.src.python.interfaces.optimization_interface.</tt><tt class="descname">OptimizerInterface</tt><a class="reference internal" href="_modules/moe/optimal_learning/EPI/src/python/interfaces/optimization_interface.html#OptimizerInterface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.optimization_interface.OptimizerInterface" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">moe.optimal_learning.EPI.src.python.interfaces.optimization_interface.</tt><tt class="descname">OptimizerInterface</tt><a class="reference internal" href="../_modules/moe/optimal_learning/EPI/src/python/interfaces/optimization_interface.html#OptimizerInterface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.optimization_interface.OptimizerInterface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <p>Interface to <em>maximize</em> any object implementing OptimizableInterface (defined above).</p>
 <dl class="method">
 <dt id="moe.optimal_learning.EPI.src.python.interfaces.optimization_interface.OptimizerInterface.optimize">
-<tt class="descname">optimize</tt><big>(</big><em>optimizable</em>, <em>optimization_parameters</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/EPI/src/python/interfaces/optimization_interface.html#OptimizerInterface.optimize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.optimization_interface.OptimizerInterface.optimize" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">optimize</tt><big>(</big><em>optimizable</em>, <em>optimization_parameters</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/moe/optimal_learning/EPI/src/python/interfaces/optimization_interface.html#OptimizerInterface.optimize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.EPI.src.python.interfaces.optimization_interface.OptimizerInterface.optimize" title="Permalink to this definition">¶</a></dt>
 <dd><p>Maximize a function f(x), represented by an implementation of OptimizableInterface.</p>
 <p>If an initial guess is required (vs optimizer auto-selects starting point(s)), passing via an <tt class="docutils literal"><span class="pre">initial_guess</span></tt>
 kwarg is suggested.</p>
@@ -1132,7 +1118,7 @@ functionality is accessed through: multistart_expected_improvement_optimization(
       </div>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table Of Contents</a></h3>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">moe.optimal_learning.EPI.src.python.interfaces package</a><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
@@ -1147,20 +1133,14 @@ functionality is accessed through: multistart_expected_improvement_optimization(
 </li>
 </ul>
 
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="moe.optimal_learning.EPI.src.python.cpp_wrappers.html"
-                        title="previous chapter">moe.optimal_learning.EPI.src.python.cpp_wrappers package</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="moe.optimal_learning.EPI.src.python.lib.html"
-                        title="next chapter">moe.optimal_learning.EPI.src.python.lib package</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
-    <li><a href="_sources/moe.optimal_learning.EPI.src.python.interfaces.txt"
+    <li><a href="../_sources/autogen/moe.optimal_learning.EPI.src.python.interfaces.txt"
            rel="nofollow">Show Source</a></li>
   </ul>
 <div id="searchbox" style="display: none">
   <h3>Quick search</h3>
-    <form class="search" action="search.html" method="get">
+    <form class="search" action="../search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
@@ -1179,26 +1159,15 @@ functionality is accessed through: multistart_expected_improvement_optimization(
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
+          <a href="../genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="http-routingtable.html" title="HTTP Routing Table"
+          <a href="../http-routingtable.html" title="HTTP Routing Table"
              >routing table</a> |</li>
         <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
+          <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="right" >
-          <a href="moe.optimal_learning.EPI.src.python.lib.html" title="moe.optimal_learning.EPI.src.python.lib package"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="moe.optimal_learning.EPI.src.python.cpp_wrappers.html" title="moe.optimal_learning.EPI.src.python.cpp_wrappers package"
-             >previous</a> |</li>
-        <li><a href="index.html">MOE 0.1.0 documentation</a> &raquo;</li>
-          <li><a href="moe.html" >moe package</a> &raquo;</li>
-          <li><a href="moe.optimal_learning.html" >moe.optimal_learning package</a> &raquo;</li>
-          <li><a href="moe.optimal_learning.EPI.html" >moe.optimal_learning.EPI package</a> &raquo;</li>
-          <li><a href="moe.optimal_learning.EPI.src.html" >moe.optimal_learning.EPI.src package</a> &raquo;</li>
-          <li><a href="moe.optimal_learning.EPI.src.python.html" >moe.optimal_learning.EPI.src.python package</a> &raquo;</li> 
+        <li><a href="../index.html">MOE 0.1.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">

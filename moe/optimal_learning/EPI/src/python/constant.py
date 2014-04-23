@@ -24,8 +24,8 @@ GaussianProcessParameters = namedtuple(
         )
 
 default_gaussian_process_parameters = GaussianProcessParameters(
-    length_scale = [0.2],
-    signal_variance = 1.0,
+    length_scale=[0.2],
+    signal_variance=1.0,
     )
 
 # EI Optimization defaults
@@ -42,6 +42,15 @@ EIOptimizationParameters = namedtuple(
         'tolerance',
         ],
     )
+
+GRADIENT_DESCENT_OPTIMIZER = 'gradient_descent'
+
+ALL_OPTIMIZERS = [
+        GRADIENT_DESCENT_OPTIMIZER,
+        ]
+
+default_optimizer_type = GRADIENT_DESCENT_OPTIMIZER
+default_num_random_samples = 4000
 
 default_ei_optimization_parameters = EIOptimizationParameters(
     num_multistarts=40,

@@ -54,6 +54,7 @@
           <div class="body">
             
   <h1>Source code for moe.views.gp_mean_var</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
 <span class="sd">&quot;&quot;&quot;Classes for gp_mean_var endpoints.</span>
 
 <span class="sd">Includes:</span>
@@ -69,6 +70,7 @@
 
 <span class="kn">import</span> <span class="nn">colander</span>
 <span class="kn">from</span> <span class="nn">moe.views.schemas</span> <span class="kn">import</span> <span class="n">ListOfFloats</span><span class="p">,</span> <span class="n">MatrixOfFloats</span><span class="p">,</span> <span class="n">GpInfo</span><span class="p">,</span> <span class="n">ListOfPointsInDomain</span>
+<span class="kn">from</span> <span class="nn">moe.views.constant</span> <span class="kn">import</span> <span class="n">GP_MEAN_VAR_ROUTE_NAME</span><span class="p">,</span> <span class="n">GP_MEAN_VAR_PRETTY_ROUTE_NAME</span>
 
 
 <div class="viewcode-block" id="GpMeanVarRequest"><a class="viewcode-back" href="../../../moe.views.html#moe.views.gp_mean_var.GpMeanVarRequest">[docs]</a><span class="k">class</span> <span class="nc">GpMeanVarRequest</span><span class="p">(</span><span class="n">colander</span><span class="o">.</span><span class="n">MappingSchema</span><span class="p">):</span>
@@ -77,8 +79,8 @@
 
 <span class="sd">    **Required fields**</span>
 
-<span class="sd">        :points_to_sample: list of points in domain to calculate the Gaussian Process (GP) mean and covariance a</span>
-<span class="sd">        :gp_info: a GpInfo object of historical data</span>
+<span class="sd">        :points_to_sample: list of points in domain to calculate the Gaussian Process (GP) mean and covariance at (moe.views.schemas.ListOfPointsInDomain)</span>
+<span class="sd">        :gp_info: a moe.views.schemas.GpInfo object of historical data</span>
 
 <span class="sd">    **Example Request**</span>
 
@@ -113,8 +115,8 @@
 <span class="sd">    **Output fields**</span>
 
 <span class="sd">        :endpoint: the endpoint that was called</span>
-<span class="sd">        :mean: list of the means of the GP at the points sampled</span>
-<span class="sd">        :variance: matrix of covariance of the GP at the points sampled</span>
+<span class="sd">        :mean: list of the means of the GP at the points sampled (moe.views.schemas.ListOfFloats)</span>
+<span class="sd">        :variance: matrix of covariance of the GP at the points sampled (moe.views.schemas.MatrixOfFloats)</span>
 
 <span class="sd">    **Example Response**</span>
 
@@ -141,8 +143,8 @@
 
     <span class="sd">&quot;&quot;&quot;Views for gp_mean_var endpoints.&quot;&quot;&quot;</span>
 
-    <span class="n">route_name</span> <span class="o">=</span> <span class="s">&#39;gp_mean_var&#39;</span>
-    <span class="n">pretty_route_name</span> <span class="o">=</span> <span class="s">&#39;gp_mean_var_pretty&#39;</span>
+    <span class="n">route_name</span> <span class="o">=</span> <span class="n">GP_MEAN_VAR_ROUTE_NAME</span>
+    <span class="n">pretty_route_name</span> <span class="o">=</span> <span class="n">GP_MEAN_VAR_PRETTY_ROUTE_NAME</span>
 
     <span class="n">request_schema</span> <span class="o">=</span> <span class="n">GpMeanVarRequest</span><span class="p">()</span>
     <span class="n">response_schema</span> <span class="o">=</span> <span class="n">GpMeanVarResponse</span><span class="p">()</span>
@@ -188,7 +190,7 @@
         <span class="n">mean</span><span class="p">,</span> <span class="n">var</span> <span class="o">=</span> <span class="n">GP</span><span class="o">.</span><span class="n">get_mean_and_var_of_points</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">form_response</span><span class="p">({</span>
-                <span class="s">&#39;endpoint&#39;</span><span class="p">:</span> <span class="s">&#39;gp_mean_var&#39;</span><span class="p">,</span>
+                <span class="s">&#39;endpoint&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">route_name</span><span class="p">,</span>
                 <span class="s">&#39;mean&#39;</span><span class="p">:</span> <span class="n">mean</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
                 <span class="s">&#39;var&#39;</span><span class="p">:</span> <span class="n">var</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
                 <span class="p">})</span></div></div>

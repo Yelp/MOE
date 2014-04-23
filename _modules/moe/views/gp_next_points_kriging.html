@@ -64,6 +64,7 @@
 <span class="kn">from</span> <span class="nn">pyramid.view</span> <span class="kn">import</span> <span class="n">view_config</span>
 
 <span class="kn">from</span> <span class="nn">moe.views.gp_next_points_pretty_view</span> <span class="kn">import</span> <span class="n">GpNextPointsPrettyView</span><span class="p">,</span> <span class="n">GpNextPointsRequest</span>
+<span class="kn">from</span> <span class="nn">moe.views.constant</span> <span class="kn">import</span> <span class="n">GP_NEXT_POINTS_KRIGING_ROUTE_NAME</span><span class="p">,</span> <span class="n">GP_NEXT_POINTS_KRIGING_PRETTY_ROUTE_NAME</span>
 
 
 <div class="viewcode-block" id="GpNextPointsKrigingRequest"><a class="viewcode-back" href="../../../moe.views.html#moe.views.gp_next_points_kriging.GpNextPointsKrigingRequest">[docs]</a><span class="k">class</span> <span class="nc">GpNextPointsKrigingRequest</span><span class="p">(</span><span class="n">GpNextPointsRequest</span><span class="p">):</span>
@@ -72,7 +73,7 @@
 
 <span class="sd">    **Required fields**</span>
 
-<span class="sd">        :gp_info: a GpInfo object of historical data</span>
+<span class="sd">        :gp_info: a moe.views.schemas.GpInfo object of historical data</span>
 
 <span class="sd">    **Optional fields**</span>
 
@@ -120,8 +121,8 @@
 
     <span class="sd">&quot;&quot;&quot;Views for gp_next_points_kriging endpoints.&quot;&quot;&quot;</span>
 
-    <span class="n">route_name</span> <span class="o">=</span> <span class="s">&#39;gp_next_points_kriging&#39;</span>
-    <span class="n">pretty_route_name</span> <span class="o">=</span> <span class="s">&#39;gp_next_points_kriging_pretty&#39;</span>
+    <span class="n">route_name</span> <span class="o">=</span> <span class="n">GP_NEXT_POINTS_KRIGING_ROUTE_NAME</span>
+    <span class="n">pretty_route_name</span> <span class="o">=</span> <span class="n">GP_NEXT_POINTS_KRIGING_PRETTY_ROUTE_NAME</span>
 
     <span class="n">request_schema</span> <span class="o">=</span> <span class="n">GpNextPointsKrigingRequest</span><span class="p">()</span>
 

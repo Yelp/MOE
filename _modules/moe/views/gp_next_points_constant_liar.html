@@ -64,6 +64,7 @@
 <span class="kn">from</span> <span class="nn">pyramid.view</span> <span class="kn">import</span> <span class="n">view_config</span>
 
 <span class="kn">from</span> <span class="nn">moe.views.gp_next_points_pretty_view</span> <span class="kn">import</span> <span class="n">GpNextPointsPrettyView</span><span class="p">,</span> <span class="n">GpNextPointsRequest</span>
+<span class="kn">from</span> <span class="nn">moe.views.constant</span> <span class="kn">import</span> <span class="n">GP_NEXT_POINTS_CONSTANT_LIAR_ROUTE_NAME</span><span class="p">,</span> <span class="n">GP_NEXT_POINTS_CONSTANT_LIAR_PRETTY_ROUTE_NAME</span>
 
 
 <div class="viewcode-block" id="GpNextPointsConstantLiarRequest"><a class="viewcode-back" href="../../../moe.views.html#moe.views.gp_next_points_constant_liar.GpNextPointsConstantLiarRequest">[docs]</a><span class="k">class</span> <span class="nc">GpNextPointsConstantLiarRequest</span><span class="p">(</span><span class="n">GpNextPointsRequest</span><span class="p">):</span>
@@ -119,8 +120,8 @@
 
     <span class="sd">&quot;&quot;&quot;Views for gp_next_points_constant_liar endpoints.&quot;&quot;&quot;</span>
 
-    <span class="n">route_name</span> <span class="o">=</span> <span class="s">&#39;gp_next_points_constant_liar&#39;</span>
-    <span class="n">pretty_route_name</span> <span class="o">=</span> <span class="s">&#39;gp_next_points_constant_liar_pretty&#39;</span>
+    <span class="n">route_name</span> <span class="o">=</span> <span class="n">GP_NEXT_POINTS_CONSTANT_LIAR_ROUTE_NAME</span>
+    <span class="n">pretty_route_name</span> <span class="o">=</span> <span class="n">GP_NEXT_POINTS_CONSTANT_LIAR_PRETTY_ROUTE_NAME</span>
 
     <span class="n">request_schema</span> <span class="o">=</span> <span class="n">GpNextPointsConstantLiarRequest</span><span class="p">()</span>
 

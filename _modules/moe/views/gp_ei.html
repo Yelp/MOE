@@ -69,6 +69,7 @@
 <span class="kn">from</span> <span class="nn">moe.views.gp_pretty_view</span> <span class="kn">import</span> <span class="n">GpPrettyView</span>
 <span class="kn">from</span> <span class="nn">moe.views.schemas</span> <span class="kn">import</span> <span class="n">ListOfPointsInDomain</span><span class="p">,</span> <span class="n">GpInfo</span><span class="p">,</span> <span class="n">ListOfExpectedImprovements</span>
 <span class="kn">from</span> <span class="nn">moe.views.utils</span> <span class="kn">import</span> <span class="n">_make_gp_from_gp_info</span>
+<span class="kn">from</span> <span class="nn">moe.views.constant</span> <span class="kn">import</span> <span class="n">GP_EI_ROUTE_NAME</span><span class="p">,</span> <span class="n">GP_EI_PRETTY_ROUTE_NAME</span>
 
 
 <div class="viewcode-block" id="GpEiRequest"><a class="viewcode-back" href="../../../moe.views.html#moe.views.gp_ei.GpEiRequest">[docs]</a><span class="k">class</span> <span class="nc">GpEiRequest</span><span class="p">(</span><span class="n">colander</span><span class="o">.</span><span class="n">MappingSchema</span><span class="p">):</span>
@@ -77,12 +78,12 @@
 
 <span class="sd">    **Required fields**</span>
 
-<span class="sd">        :points_to_evaluate: list of points in domain to calculate Expected Improvement (EI) a</span>
-<span class="sd">        :gp_info: a GpInfo object of historical data</span>
+<span class="sd">        :points_to_evaluate: list of points in domain to calculate Expected Improvement (EI) at (moe.views.schemas.ListOfPointsInDomain)</span>
+<span class="sd">        :gp_info: a moe.views.schemas.GpInfo object of historical data</span>
 
 <span class="sd">    **Optional fields**</span>
 
-<span class="sd">        :points_being_sampled: list of points in domain being sampled (default: [])</span>
+<span class="sd">        :points_being_sampled: list of points in domain being sampled (default: []) (moe.views.schemas.ListOfPointsInDomain)</span>
 <span class="sd">        :mc_iterations: number of Monte Carlo (MC) iterations to perform in numerical integration to calculate EI (default: 1000)</span>
 
 <span class="sd">    **Example Request**</span>
@@ -128,7 +129,7 @@
 <span class="sd">    **Output fields**</span>
 
 <span class="sd">        :endpoint: the endpoint that was called</span>
-<span class="sd">        :expected_improvement: list of calculated expected improvements</span>
+<span class="sd">        :expected_improvement: list of calculated expected improvements (moe.views.schemas.ListOfExpectedImprovements)</span>
 
 <span class="sd">    **Example Response**</span>
 
@@ -149,8 +150,8 @@
 
     <span class="sd">&quot;&quot;&quot;Views for gp_ei endpoints.&quot;&quot;&quot;</span>
 
-    <span class="n">route_name</span> <span class="o">=</span> <span class="s">&#39;gp_ei&#39;</span>
-    <span class="n">pretty_route_name</span> <span class="o">=</span> <span class="s">&#39;gp_ei_pretty&#39;</span>
+    <span class="n">route_name</span> <span class="o">=</span> <span class="n">GP_EI_ROUTE_NAME</span>
+    <span class="n">pretty_route_name</span> <span class="o">=</span> <span class="n">GP_EI_PRETTY_ROUTE_NAME</span>
 
     <span class="n">request_schema</span> <span class="o">=</span> <span class="n">GpEiRequest</span><span class="p">()</span>
     <span class="n">response_schema</span> <span class="o">=</span> <span class="n">GpEiResponse</span><span class="p">()</span>
@@ -200,7 +201,7 @@
                 <span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">form_response</span><span class="p">({</span>
-                <span class="s">&#39;endpoint&#39;</span><span class="p">:</span> <span class="s">&#39;gp_ei&#39;</span><span class="p">,</span>
+                <span class="s">&#39;endpoint&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">route_name</span><span class="p">,</span>
                 <span class="s">&#39;expected_improvement&#39;</span><span class="p">:</span> <span class="n">expected_improvement</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
                 <span class="p">})</span></div></div>
 </pre></div>

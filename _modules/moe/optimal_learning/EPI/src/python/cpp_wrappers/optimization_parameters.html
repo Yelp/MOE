@@ -145,9 +145,9 @@
 <span class="sd">    :param max_num_restarts: maximum number of gradient descent restarts, the we are allowed to call gradient descent.  Should be &gt;= 2 as a minimum (suggest: 10-20)</span>
 <span class="sd">    :type max_num_restarts: int &gt; 0</span>
 <span class="sd">    :param gamma: exponent controlling rate of step size decrease (see struct docs or GradientDescentOptimizer) (suggest: 0.5-0.9)</span>
-<span class="sd">    :type gamma: float64 &gt; 1.0</span>
-<span class="sd">    :param time_factor: scaling factor for step size (see struct docs or GradientDescentOptimizer) (suggest: 0.1-1.0)</span>
-<span class="sd">    :type time_factor: float64 &gt; 0.0</span>
+<span class="sd">    :type gamma: double &gt; 1.0</span>
+<span class="sd">    :param pre_mult: scaling factor for step size (see struct docs or GradientDescentOptimizer) (suggest: 0.1-1.0)</span>
+<span class="sd">    :type pre_mult: double &gt; 0.0</span>
 <span class="sd">    :param max_relative_change: max change allowed per GD iteration (as a relative fraction of current distance to wall)</span>
 <span class="sd">           (suggest: 0.5-1.0 for less sensitive problems like EI; 0.02 for more sensitive problems like hyperparameter opt)</span>
 <span class="sd">    :type max_relative_change: float64 in [0, 1]</span>

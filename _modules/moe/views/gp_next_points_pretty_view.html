@@ -64,7 +64,6 @@
 <span class="kn">import</span> <span class="nn">colander</span>
 
 <span class="kn">import</span> <span class="nn">moe.build.GPP</span> <span class="kn">as</span> <span class="nn">C_GP</span>
-<span class="kn">from</span> <span class="nn">moe.optimal_learning.EPI.src.python.constant</span> <span class="kn">import</span> <span class="n">default_ei_optimization_parameters</span>
 <span class="kn">from</span> <span class="nn">moe.optimal_learning.EPI.src.python.cpp_wrappers.optimization_parameters</span> <span class="kn">import</span> <span class="n">ExpectedImprovementOptimizationParameters</span>
 <span class="kn">from</span> <span class="nn">moe.views.gp_pretty_view</span> <span class="kn">import</span> <span class="n">GpPrettyView</span>
 <span class="kn">from</span> <span class="nn">moe.views.schemas</span> <span class="kn">import</span> <span class="n">GpInfo</span><span class="p">,</span> <span class="n">EiOptimizationParameters</span><span class="p">,</span> <span class="n">ListOfPointsInDomain</span><span class="p">,</span> <span class="n">ListOfExpectedImprovements</span>
@@ -77,7 +76,7 @@
 
 <span class="sd">    **Required fields**</span>
 
-<span class="sd">        :gp_info: a GpInfo object of historical data</span>
+<span class="sd">        :gp_info: a moe.views.schemas.GpInfo object of historical data</span>
 
 <span class="sd">    **Optional fields**</span>
 
@@ -88,7 +87,7 @@
 
 <span class="sd">    .. sourcecode:: http</span>
 
-<span class="sd">        Content-Type: text/javascrip</span>
+<span class="sd">        Content-Type: text/javascript</span>
 
 <span class="sd">        {</span>
 <span class="sd">            &#39;num_samples_to_generate&#39;: 1,</span>
@@ -112,7 +111,7 @@
             <span class="p">)</span>
     <span class="n">gp_info</span> <span class="o">=</span> <span class="n">GpInfo</span><span class="p">()</span>
     <span class="n">ei_optimization_parameters</span> <span class="o">=</span> <span class="n">EiOptimizationParameters</span><span class="p">(</span>
-            <span class="n">missing</span><span class="o">=</span><span class="n">default_ei_optimization_parameters</span><span class="o">.</span><span class="n">_asdict</span><span class="p">(),</span>
+            <span class="n">missing</span><span class="o">=</span><span class="n">EiOptimizationParameters</span><span class="p">()</span><span class="o">.</span><span class="n">deserialize</span><span class="p">({})</span>
             <span class="p">)</span>
 
 </div>
@@ -123,8 +122,8 @@
 <span class="sd">    **Output fields**</span>
 
 <span class="sd">        :endpoint: the endpoint that was called</span>
-<span class="sd">        :points_to_sample: list of points in the domain to sample nex</span>
-<span class="sd">        :expected_improvement: list of EI of points in points_to_sample</span>
+<span class="sd">        :points_to_sample: list of points in the domain to sample next (moe.views.schemas.ListOfPointsInDomain)</span>
+<span class="sd">        :expected_improvement: list of EI of points in points_to_sample (moe.views.schemas.ListOfExpectedImprovements)</span>
 
 <span class="sd">    **Example Response**</span>
 
@@ -198,8 +197,11 @@
 
         <span class="c"># Note: num_random_samples only has meaning when computing more than 1 points_to_sample simultaneously</span>
         <span class="n">new_params</span> <span class="o">=</span> <span class="n">ExpectedImprovementOptimizationParameters</span><span class="p">(</span>
-            <span class="n">optimizer_type</span><span class="o">=</span><span class="n">C_GP</span><span class="o">.</span><span class="n">OptimizerTypes</span><span class="o">.</span><span class="n">gradient_descent</span><span class="p">,</span>
-            <span class="n">num_random_samples</span><span class="o">=</span><span class="mi">40000</span><span class="p">,</span>  <span class="c"># TODO(sclark): move default value to config file (assuming it&#39;s reasonable) and expose in interface; see github #33.</span>
+            <span class="n">optimizer_type</span><span class="o">=</span><span class="nb">getattr</span><span class="p">(</span>
+                <span class="n">C_GP</span><span class="o">.</span><span class="n">OptimizerTypes</span><span class="p">,</span>
+                <span class="n">ei_optimization_parameters</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;optimizer_type&#39;</span><span class="p">)</span>
+                <span class="p">),</span>
+            <span class="n">num_random_samples</span><span class="o">=</span><span class="n">ei_optimization_parameters</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;num_random_samples&#39;</span><span class="p">),</span>
             <span class="n">optimizer_parameters</span><span class="o">=</span><span class="n">C_GP</span><span class="o">.</span><span class="n">GradientDescentParameters</span><span class="p">(</span>
                 <span class="n">ei_optimization_parameters</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;num_multistarts&#39;</span><span class="p">),</span>
                 <span class="n">ei_optimization_parameters</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;gd_iterations&#39;</span><span class="p">),</span>

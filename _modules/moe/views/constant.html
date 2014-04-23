@@ -120,6 +120,10 @@
 <span class="n">ALL_MOE_ROUTES</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="n">ALL_MOE_ROUTES</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">ALL_REST_MOE_ROUTES</span><span class="p">)</span>
 <span class="n">ALL_MOE_ROUTES</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">ALL_PRETTY_MOE_ROUTES</span><span class="p">)</span>
+
+<span class="n">ALL_REST_ROUTES_ROUTE_NAME_TO_ENDPOINT</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">moe_route</span> <span class="ow">in</span> <span class="n">ALL_REST_MOE_ROUTES</span><span class="p">:</span>
+    <span class="n">ALL_REST_ROUTES_ROUTE_NAME_TO_ENDPOINT</span><span class="p">[</span><span class="n">moe_route</span><span class="o">.</span><span class="n">route_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">moe_route</span><span class="o">.</span><span class="n">endpoint</span>
 </pre></div>
 
           </div>

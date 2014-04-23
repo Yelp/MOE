@@ -91,8 +91,8 @@
 
 <span class="sd">    Further mathematical details are given in the implementation comments, but we are essentially computing:</span>
 
-<span class="sd">    | ComputeMeanOfPoints    : ``K(Xs, X) * [K(X,X) + \sigma_n^2 I]^{-1} * y``</span>
-<span class="sd">    | ComputeVarianceOfPoints: ``K(Xs, Xs) - K(Xs,X) * [K(X,X) + \sigma_n^2 I]^{-1} * K(X,Xs)``</span>
+<span class="sd">    | ComputeMeanOfPoints    : ``K(Xs, X) * [K(X,X) + \sigma_n^2 I]^{-1} * y = Ks^T * K^{-1} * y``</span>
+<span class="sd">    | ComputeVarianceOfPoints: ``K(Xs, Xs) - K(Xs,X) * [K(X,X) + \sigma_n^2 I]^{-1} * K(X,Xs) = Kss - Ks^T * K^{-1} * Ks``</span>
 
 <span class="sd">    This (estimated) mean and variance characterize the predicted distributions of the actual \ms m(x), k(x,x&#39;)\me</span>
 <span class="sd">    functions that underly our GP.</span>
