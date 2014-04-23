@@ -35,8 +35,8 @@ class GaussianProcess(GaussianProcessInterface):
 
     Further mathematical details are given in the implementation comments, but we are essentially computing:
 
-    | ComputeMeanOfPoints    : ``K(Xs, X) * [K(X,X) + \sigma_n^2 I]^{-1} * y``
-    | ComputeVarianceOfPoints: ``K(Xs, Xs) - K(Xs,X) * [K(X,X) + \sigma_n^2 I]^{-1} * K(X,Xs)``
+    | ComputeMeanOfPoints    : ``K(Xs, X) * [K(X,X) + \sigma_n^2 I]^{-1} * y = Ks^T * K^{-1} * y``
+    | ComputeVarianceOfPoints: ``K(Xs, Xs) - K(Xs,X) * [K(X,X) + \sigma_n^2 I]^{-1} * K(X,Xs) = Kss - Ks^T * K^{-1} * Ks``
 
     This (estimated) mean and variance characterize the predicted distributions of the actual \ms m(x), k(x,x')\me
     functions that underly our GP.
