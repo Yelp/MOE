@@ -53,7 +53,7 @@ exp = Experiment([[0, 2], [0, 4]])
 exp.add_point([0, 0], 1.0, 0.01) # Bootstrap with some known or already sampled point
 
 # Sample 20 points
-for i in range(20):
+for i in xrange(20):
     next_point_to_sample = gp_next_points(exp)[0] # By default we only ask for one point
     value_of_next_point = function_to_minimize(next_point_to_sample)
     exp.add_point(next_point_to_sample, value_of_next_point, 0.01) # We can add some noise

@@ -948,6 +948,8 @@ class NewtonOptimizer final {
   fall-back when more advanced (e.g., gradient descent) techniques fail.
 
   This class provides just one method (for now), MultistartOptimize(); see below.
+
+  .. Note: comments copied to MultistartOptimizer in python_version/optimization.py.
 */
 template <typename Optimizer_>
 class MultistartOptimizer final {
@@ -967,6 +969,8 @@ class MultistartOptimizer final {
     The method allows you to specify what the current best is, so that if optimization cannot beat it, no improvement will be
     reported.  It will otherwise report the overall best improvement (through io_container) as well as the result of every
     individual multistart run if desired (through function_values).
+
+    .. Note: comments copied to MultistartOptimizer.optimize() in python_version/optimization.py.
 
     Generally, you will not call this function directly.  Instead, it is intended to be used in wrappers that set up state,
     chunk_size, etc. for the specific optimization problem at hand.  For examples with Expected Improvement (EI), see gpp_math:
@@ -1010,7 +1014,6 @@ class MultistartOptimizer final {
     let you choose that parameter programmatically :(  Need to demonstrate a need for it though, otherwise guided might be good
     enough
   */
-  template <typename Optimizer>
   void MultistartOptimize(const Optimizer& optimizer, const ObjectiveFunctionEvaluator& objective_evaluator, const ParameterStruct& optimizer_parameters, const DomainType& domain, double const * restrict initial_guesses, int num_multistarts, int max_num_threads, int chunk_size, typename ObjectiveFunctionEvaluator::StateType * objective_state_vector, double * restrict function_values, OptimizationIOContainer * restrict io_container) {
     const int problem_size = objective_state_vector[0].GetProblemSize();
 

@@ -6,6 +6,7 @@ in model selection. This file provides hooks to implementations of two such metr
 Leave One Out Cross Validation Log Pseudo-Likelihood.
 
 .. Note: This is a copy of the file comments in gpp_model_selection_and_hyperparameter_optimization.hpp.
+  These comments are copied in python_version/log_likelihood.py.
   See this file's comments and interfaces.log_likelihood_interface for more details as well as the hpp and corresponding .cpp file.
 
 a) LOG MARGINAL LIKELIHOOD (LML):

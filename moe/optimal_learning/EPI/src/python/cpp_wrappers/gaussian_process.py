@@ -19,7 +19,7 @@ class GaussianProcess(GaussianProcessInterface):
 
     r"""Implementation of a GaussianProcess via C++ wrappers: mean, variance, gradients thereof, and data I/O.
 
-    .. Note: Comments in this class are copied from this's superclass in interfaces.gaussian_process_interface.py.
+    .. Note: Comments in this class are copied from this object's superclass in interfaces.gaussian_process_interface.py.
 
     Object that encapsulates Gaussian Process Priors (GPPs).  A GPP is defined by a set of
     (sample point, function value, noise variance) triples along with a covariance function that relates the points.
@@ -155,8 +155,8 @@ class GaussianProcess(GaussianProcessInterface):
 
         :param points_to_sample: num_to_sample points (in dim dimensions) being sampled from the GP
         :type points_to_sample: array of float64 with shape (num_to_sample, dim)
-        :return: cholesky factorization of the variance matrix of this GP
-        :rtype: array of float64 with shape (num_to_sample, num_to_sample)
+        :return: cholesky factorization of the variance matrix of this GP, lower triangular
+        :rtype: array of float64 with shape (num_to_sample, num_to_sample), only lower triangle filled in
 
         """
         num_to_sample = len(points_to_sample)
@@ -237,7 +237,7 @@ class GaussianProcess(GaussianProcessInterface):
 
         """
         # TODO(eliu): add hook to actual C++ function to make this more efficient than rebuilding the whole GP object
-        self._historical_data.append(sampled_points)
+        self._historical_data.append_sample_points(sampled_points)
 
         self._gaussian_process = C_GP.GaussianProcess(
             cpp_utils.cppify_hyperparameters(self._covariance.get_hyperparameters()),  # hyperparameters, e.g., [signal variance, [length scales]]; see cpp_utils.cppify_hyperparameter docs, C++ python interface docs

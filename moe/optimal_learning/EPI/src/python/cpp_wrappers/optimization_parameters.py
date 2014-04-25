@@ -66,6 +66,7 @@ def build_gradient_descent_parameters(num_multistarts, max_num_steps, max_num_re
 
     .. Note:: See gpp_optimization_parameters.hpp for more details.
        The following comments are copied from GradientDescentParameters struct in gpp_optimization_parameters.hpp.
+       And they are copied to python_version.optimization.GradientDescentParameters.
 
     Iterations:
     The total number of gradient descent steps is at most ``num_multistarts * max_num_steps * max_num_restarts``
@@ -89,9 +90,9 @@ def build_gradient_descent_parameters(num_multistarts, max_num_steps, max_num_re
     :param max_num_restarts: maximum number of gradient descent restarts, the we are allowed to call gradient descent.  Should be >= 2 as a minimum (suggest: 10-20)
     :type max_num_restarts: int > 0
     :param gamma: exponent controlling rate of step size decrease (see struct docs or GradientDescentOptimizer) (suggest: 0.5-0.9)
-    :type gamma: double > 1.0
+    :type gamma: float64 > 1.0
     :param pre_mult: scaling factor for step size (see struct docs or GradientDescentOptimizer) (suggest: 0.1-1.0)
-    :type pre_mult: double > 0.0
+    :type pre_mult: float64 > 0.0
     :param max_relative_change: max change allowed per GD iteration (as a relative fraction of current distance to wall)
            (suggest: 0.5-1.0 for less sensitive problems like EI; 0.02 for more sensitive problems like hyperparameter opt)
     :type max_relative_change: float64 in [0, 1]

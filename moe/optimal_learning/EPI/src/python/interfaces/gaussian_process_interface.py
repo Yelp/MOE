@@ -16,7 +16,7 @@ class GaussianProcessInterface(object):
     r"""Interface for a GaussianProcess: mean, variance, gradients thereof, and data I/O.
 
     .. Note:: comments in this class are copied from GaussianProcess in gpp_math.hpp and duplicated in cpp_wrappers.gaussian_process
-       and duplicated in cpp_wrappers/gaussian_process.py
+       and duplicated in cpp_wrappers/gaussian_process.py and python_version/gaussian_process.py.
 
     Object that encapsulates Gaussian Process Priors (GPPs).  A GPP is defined by a set of
     (sample point, function value, noise variance) triples along with a covariance function that relates the points.
@@ -117,8 +117,8 @@ class GaussianProcessInterface(object):
 
         :param points_to_sample: num_to_sample points (in dim dimensions) being sampled from the GP
         :type points_to_sample: array of float64 with shape (num_to_sample, dim)
-        :return: cholesky factorization of the variance matrix of this GP
-        :rtype: array of float64 with shape (num_to_sample, num_to_sample)
+        :return: cholesky factorization of the variance matrix of this GP, lower triangular
+        :rtype: array of float64 with shape (num_to_sample, num_to_sample), lower triangle filled in
 
         """
         pass

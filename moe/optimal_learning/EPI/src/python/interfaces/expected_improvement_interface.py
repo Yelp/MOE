@@ -92,7 +92,6 @@ class ExpectedImprovementInterface(object):
         In general, the expressions for gradients of EI are complex and difficult to evaluate; hence we use
         Monte-Carlo simulation to approximate it.
 
-
         :return: gradient of EI, i-th entry is ``\pderiv{EI(x)}{x_i}`` where ``x`` is ``current_point``
         :rtype: array of float64 with shape (dim)
 
