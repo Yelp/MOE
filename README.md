@@ -123,8 +123,8 @@ $ apt-get install python python-dev gcc cmake libboost-all-dev python-pip doxyge
 1. Fork it.
 2. Create a branch (`git checkout -b my_moe_branch`)
 3. Develop your feature/fix (don't forget to add tests!)
-4. `make test`
-5. Test style (`pyflakes`, `pep8` and `pep257`, or, automatically: `cp git-hooks/pre-commit .git/hooks/.`)
+4. Run tests (`tox`)
+5. Test against styleguide (`tox -e pep8 && tox -e pep257`)
 6. Commit your changes (`git commit -am "Added Some Mathemagics"`)
 7. Push to the branch (`git push origin my_moe_branch`)
 8. Open a [Pull Request][1]

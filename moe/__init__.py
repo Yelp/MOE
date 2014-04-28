@@ -46,9 +46,7 @@ def main(global_config, **settings):
         config.add_subscriber(add_mongo_db, NewRequest)
     config.scan(
             ignore=[
-                'moe.optimal_learning.EPI.src.python.lib.cuda_linkers',
-                'moe.optimal_learning.EPI.src.python.lib.plotter',
-                'moe.optimal_learning.EPI.src.python.models.plottable_optimal_gaussian_process',
+                'moe.optimal_learning.python.lib.cuda_linkers',
                 'moe.tests',
                 ],
             )
