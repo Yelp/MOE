@@ -11,6 +11,7 @@ from setuptools.command.install import install
 here = os.path.abspath(os.path.dirname(__file__))
 README = open(os.path.join(here, 'README.md')).read()
 
+# Following the versioning system at http://semver.org/
 MAJOR = 0
 MINOR = 1
 MICRO = 0
@@ -34,8 +35,7 @@ requires = [
     'WebError',
     'testify',
     'webtest',
-    'nose',
-    'yolk',
+    'tox',
     'numpy',
     'scipy',
     'simplejson',
@@ -123,7 +123,7 @@ class InstallCppComponents(install):
             shutil.rmtree(local_build_dir)
         os.mkdir(local_build_dir)
 
-        cpp_location = os.path.join(here, 'moe', 'optimal_learning', 'EPI', 'src', 'cpp')
+        cpp_location = os.path.join(here, 'moe', 'optimal_learning', 'cpp')
 
         # Run cmake
         proc = subprocess.Popen(

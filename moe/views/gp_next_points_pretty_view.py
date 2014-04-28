@@ -8,7 +8,7 @@ Include:
 import colander
 
 import moe.build.GPP as C_GP
-from moe.optimal_learning.EPI.src.python.cpp_wrappers.optimization_parameters import ExpectedImprovementOptimizationParameters
+from moe.optimal_learning.python.cpp_wrappers.optimization_parameters import ExpectedImprovementOptimizationParameters
 from moe.views.gp_pretty_view import GpPrettyView
 from moe.views.schemas import GpInfo, EiOptimizationParameters, ListOfPointsInDomain, ListOfExpectedImprovements
 from moe.views.utils import _make_gp_from_gp_info

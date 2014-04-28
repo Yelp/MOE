@@ -9,7 +9,7 @@ import colander
 import numpy
 from pyramid.view import view_config
 
-from moe.optimal_learning.EPI.src.python.constant import default_expected_improvement_parameters
+from moe.optimal_learning.python.constant import default_expected_improvement_parameters
 from moe.views.gp_pretty_view import GpPrettyView
 from moe.views.schemas import ListOfPointsInDomain, GpInfo, ListOfExpectedImprovements
 from moe.views.utils import _make_gp_from_gp_info
