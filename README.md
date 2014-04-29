@@ -6,6 +6,8 @@ Metric Optimization Engine.
 
 [2]: http://sc932.github.io/MOE/
 
+Or, build the documentation locally with `make docs`.
+
 ## Running MOE
 
 ### REST/web server and interactive demo
@@ -28,8 +30,8 @@ $ curl -X POST -H "Content-Type: application/json" -d '{"points_to_evaluate": [[
 
 ```bash
 $ ipython
-> from moe.experiment import Experiment
-> from moe.simple_endpoint import gp_next_points
+> from moe.easy_interface.experiment import Experiment
+> from moe.easy_interface.simple_endpoint import gp_next_points
 > exp = Experiment([[0, 2], [0, 4]])
 > exp.add_point([0, 0], 1.0, 0.01)
 > next_point_to_sample = gp_next_points(exp)
@@ -39,8 +41,8 @@ $ ipython
 ### Within python
 
 ```python
-from moe.experiment import Experiment
-from moe.simple_endpoint import gp_next_points
+from moe.easy_interface.experiment import Experiment
+from moe.easy_interface.simple_endpoint import gp_next_points
 
 import math, random
 def function_to_minimize(x):
@@ -121,8 +123,8 @@ $ apt-get install python python-dev gcc cmake libboost-all-dev python-pip doxyge
 1. Fork it.
 2. Create a branch (`git checkout -b my_moe_branch`)
 3. Develop your feature/fix (don't forget to add tests!)
-4. `make test`
-5. Test style (`pyflakes`, `pep8` and `pep257`, or, automatically: `cp git-hooks/pre-commit .git/hooks/.`)
+4. Run tests (`tox`)
+5. Test against styleguide (`tox -e pep8 && tox -e pep257`)
 6. Commit your changes (`git commit -am "Added Some Mathemagics"`)
 7. Push to the branch (`git push origin my_moe_branch`)
 8. Open a [Pull Request][1]

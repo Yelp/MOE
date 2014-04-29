@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+"""Setup for the MOE webapp."""
 import os
 import shutil
 import subprocess
@@ -9,12 +11,13 @@ from setuptools.command.install import install
 here = os.path.abspath(os.path.dirname(__file__))
 README = open(os.path.join(here, 'README.md')).read()
 
-MAJOR    = 0
-MINOR    = 1
-MICRO    = 0
-VERSION  = "%d.%d.%d" % (MAJOR, MINOR, MICRO)
+# Following the versioning system at http://semver.org/
+MAJOR = 0
+MINOR = 1
+MICRO = 0
+VERSION = "%d.%d.%d" % (MAJOR, MINOR, MICRO)
 
-CLASSIFIERS = """\
+CLASSIFIERS = """
         Development Status :: 4 - Beta
         Intended Audience :: Science/Research
         Intended Audience :: Developers
@@ -32,20 +35,22 @@ requires = [
     'WebError',
     'testify',
     'webtest',
-    'nose',
-    'yolk',
+    'tox',
     'numpy',
     'scipy',
     'simplejson',
     'colander',
     'sphinx',
     'breathe',
+    'sphinxcontrib-httpdomain',
+    'sphinx_rtd_theme',
     ]
 
 MoeExecutable = namedtuple('MoeExecutable', ['env_var', 'exe_name'])
 
+
 def find_path(moe_executable):
-    """Returns the path for an executable, or None if it cannot be found.
+    """Return the path for an executable, or None if it cannot be found.
 
     Performs the search in the following way:
     1. Check the env var MOE_<EXECUTABLE>
@@ -67,9 +72,13 @@ def find_path(moe_executable):
 
     return path
 
+
 class InstallCppComponents(install):
+
     """Install required C++ components."""
+
     def run(self):
+        """Run the install."""
         install.run(self)
 
         package_dir = os.path.join(self.install_lib, 'moe')
@@ -114,7 +123,7 @@ class InstallCppComponents(install):
             shutil.rmtree(local_build_dir)
         os.mkdir(local_build_dir)
 
-        cpp_location = os.path.join(here, 'moe', 'optimal_learning', 'EPI', 'src', 'cpp')
+        cpp_location = os.path.join(here, 'moe', 'optimal_learning', 'cpp')
 
         # Run cmake
         proc = subprocess.Popen(
@@ -163,4 +172,3 @@ setup(name='MOE',
           'install': InstallCppComponents,
           },
       )
-
