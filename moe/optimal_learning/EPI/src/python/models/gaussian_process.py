@@ -313,6 +313,30 @@ class GaussianProcess(object):
 
         return comp
 
+    def grad_variance_of_points(self, points_to_sample, var_of_grad=0):
+        grad_cholesky_decomp = moe.optimal_learning.EPI.src.python.lib.math.make_empty_2D_list(len(points_to_sample), len(points_to_sample))
+        # Step 1 of Appendix 2
+        for i, point_one in enumerate(points_to_sample):
+            for j, point_two in enumerate(points_to_sample):
+                if var_of_grad == i and var_of_grad == j:
+                    grad_cholesky_decomp[i][j] = self.cop.grad_cov(point_one, point_two)
+                    for idx_one, sampled_one in enumerate(self.points_sampled):
+                        for idx_two, sampled_two in enumerate(self.points_sampled):
+                            grad_cholesky_decomp[i][j] -= 2*self.K_inv[idx_two][idx_one]*self.cop.cov(point_one, sampled_one.point)*self.cop.grad_cov(point_one, sampled_two.point)
+                elif var_of_grad == i:
+                    grad_cholesky_decomp[i][j] = self.cop.grad_cov(point_one, point_two)
+                    for idx_one, sampled_one in enumerate(self.points_sampled):
+                        for idx_two, sampled_two in enumerate(self.points_sampled):
+                            grad_cholesky_decomp[i][j] -= self.K_inv[idx_two][idx_one]*self.cop.cov(point_two, sampled_one.point)*self.cop.grad_cov(point_one, sampled_two.point)
+                elif var_of_grad == j:
+                    grad_cholesky_decomp[i][j] = self.cop.grad_cov(point_two, point_one)
+                    for idx_one, sampled_one in enumerate(self.points_sampled):
+                        for idx_two, sampled_two in enumerate(self.points_sampled):
+                            grad_cholesky_decomp[i][j] -= self.K_inv[idx_two][idx_one]*self.cop.cov(point_one, sampled_two.point)*self.cop.grad_cov(point_two, sampled_one.point)
+                else:
+                    grad_cholesky_decomp[i][j] = numpy.zeros(len(points_to_sample[0]))
+        return grad_cholesky_decomp
+
     def cholesky_decomp_and_grad(self, points_to_sample, var_of_grad=0, eps=0.000001):
         """Get the cholesky decomposition of the variance and its gradient
 
@@ -325,7 +349,8 @@ class GaussianProcess(object):
 
         grad_cholesky_decomp = moe.optimal_learning.EPI.src.python.lib.math.make_empty_2D_list(len(points_to_sample), len(points_to_sample))
 
-        cholesky_decomp = var_star.copy() # Just to start!
+        # cholesky_decomp = var_star.copy() # Just to start!
+        cholesky_decomp = numpy.linalg.cholesky(var_star)
 
         # Step 1 of Appendix 2
         for i, point_one in enumerate(points_to_sample):
@@ -353,20 +378,20 @@ class GaussianProcess(object):
         for i in range(len(points_to_sample)):
             for j in range(len(points_to_sample)):
                 if i < j:
-                    cholesky_decomp[i][j] = 0.0
+                    # cholesky_decomp[i][j] = 0.0
                     grad_cholesky_decomp[i][j] = numpy.zeros(len(points_to_sample[0]))
 
         # Step 2 of Appendix 2
         for k in range(len(points_to_sample)):
             if cholesky_decomp[k][k] > eps:
-                cholesky_decomp[k][k] = numpy.sqrt(abs(cholesky_decomp[k][k]))
+                # cholesky_decomp[k][k] = numpy.sqrt(abs(cholesky_decomp[k][k]))
                 grad_cholesky_decomp[k][k] = 0.5*grad_cholesky_decomp[k][k]/cholesky_decomp[k][k]
                 for j in range(k+1, len(points_to_sample)):
-                    cholesky_decomp[j][k] = cholesky_decomp[j][k]/cholesky_decomp[k][k]
+                    # cholesky_decomp[j][k] = cholesky_decomp[j][k]/cholesky_decomp[k][k]
                     grad_cholesky_decomp[j][k] = (grad_cholesky_decomp[j][k] - cholesky_decomp[j][k]*grad_cholesky_decomp[k][k])/cholesky_decomp[k][k]
                 for j in range(k+1, len(points_to_sample)):
                     for i in range(j, len(points_to_sample)):
-                        cholesky_decomp[i][j] = cholesky_decomp[i][j] - cholesky_decomp[i][k]*cholesky_decomp[j][k]
+                        # cholesky_decomp[i][j] = cholesky_decomp[i][j] - cholesky_decomp[i][k]*cholesky_decomp[j][k]
                         grad_cholesky_decomp[i][j] = grad_cholesky_decomp[i][j] - grad_cholesky_decomp[i][k]*cholesky_decomp[j][k] - cholesky_decomp[i][k]*grad_cholesky_decomp[j][k]
 
         return cholesky_decomp, grad_cholesky_decomp

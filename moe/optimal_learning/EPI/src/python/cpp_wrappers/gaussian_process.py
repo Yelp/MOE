@@ -185,7 +185,14 @@ class GaussianProcess(GaussianProcessInterface):
         :rtype: array of float64 with shape (num_to_sample, num_to_sample, dim)
 
         """
-        raise NotImplementedError("C++ wrapper currently only supports the gradient of the cholesky factorization of variance.")
+        num_to_sample = len(points_to_sample)
+        grad_variance = C_GP.get_grad_var(
+            self._gaussian_process,
+            cpp_utils.cppify(points_to_sample),
+            num_to_sample,
+            var_of_grad,
+        )
+        return cpp_utils.uncppify(grad_variance, (num_to_sample, num_to_sample, self.dim))
 
     def compute_grad_cholesky_variance_of_points(self, points_to_sample, var_of_grad):
         r"""Compute the gradient of the cholesky factorization of the variance (matrix) of this GP at each point of ``Xs`` (``points_to_sample``) wrt ``Xs``.
@@ -217,13 +224,13 @@ class GaussianProcess(GaussianProcessInterface):
 
         """
         num_to_sample = len(points_to_sample)
-        cholesky_variance = C_GP.get_grad_var(
+        cholesky_grad_variance = C_GP.get_grad_chol_var(
             self._gaussian_process,  # C++ GaussianProcess object
             cpp_utils.cppify(points_to_sample),  # points to sample
             num_to_sample,
             var_of_grad,  # dimension to differentiate in
         )
-        return cpp_utils.uncppify(cholesky_variance, (num_to_sample, num_to_sample, self.dim))
+        return cpp_utils.uncppify(cholesky_grad_variance, (num_to_sample, num_to_sample, self.dim))
 
     def add_sampled_points(self, sampled_points):
         r"""Add sampled point(s) (point, value, noise) to the GP's prior data.

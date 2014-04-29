@@ -839,7 +839,7 @@ void GaussianProcess::ComputeGradVarianceOfPoints(StateType * points_to_sample_s
   This function differentiates C wrt the p-th point of points_to_sample; p specfied in "var_of_grad"
 
   Just as users of a lower triangular matrix L[i][j] should not access the upper triangle (j > i), users of
-  the result of this function, grad_chol[i][j][d], should not access the "upper triangle" with j > i.
+  the result of this function, grad_chol[d][i][j], should not access the "upper triangle" with j > i.
 
   See Smith 1995 for full details of computing gradients of the cholesky factorization
 */

@@ -510,8 +510,7 @@ BOOST_PYTHON_MODULE(GPP) {
       These endpoints are provided for testing core C++ functionality as well as exploring the behaviors of
       Gaussian Processes, Expected Improvement, etc.  GP and EI functions require a GaussianProcess object.
       <> Log Likelihood (model fit): compute_log_likelihood, compute_hyperparameter_grad_log_likelihood
-      <> GPs: get_mean, get_grad_mean, get_var, get_chol_var, get_grad_var
-              Note: get_grad_var is the gradient of get_chol_var; the gradient of get_var is not currently provided.
+      <> GPs: get_mean, get_grad_mean, get_var, get_chol_var, get_grad_var, get_grad_chol_var
       <> EI: compute_expected_improvement, compute_grad_expected_improvement
 
     Plotting:

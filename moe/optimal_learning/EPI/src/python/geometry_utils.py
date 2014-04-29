@@ -27,7 +27,7 @@ def generate_latin_hypercube_points(num_points, domain_bounds):
     points = numpy.zeros((num_points, len(domain_bounds)), dtype=numpy.float64)
     for i, interval in enumerate(domain_bounds):
         # Cut the range into num_points slices
-        subcube_edge_length = interval.length() / float(num_points)
+        subcube_edge_length = interval.length / float(num_points)
 
         # Create random ordering for slices
         ordering = numpy.arange(num_points)

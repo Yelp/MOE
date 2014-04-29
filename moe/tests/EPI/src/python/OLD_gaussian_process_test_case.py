@@ -11,7 +11,7 @@ import moe.optimal_learning.EPI.src.python.lib.math
 from moe.optimal_learning.EPI.src.python.constant import default_gaussian_process_parameters
 
 
-class GaussianProcessTestCase(T.TestCase):
+class OLDGaussianProcessTestCase(T.TestCase):
 
     default_domain = [[-1.0, 1.0], [-1.0, 1.0]]
     default_covariance_signal_variance = default_gaussian_process_parameters.signal_variance
