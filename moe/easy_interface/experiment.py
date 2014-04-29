@@ -63,7 +63,7 @@ class Experiment(object):
 
         mesh_grid = numpy.meshgrid(*raw_grid)
 
-        points = [[] for _ in range(size_of_stencil ** len(self.domain))]
+        points = [[] for _ in xrange(size_of_stencil ** len(self.domain))]
         for dim_grid in mesh_grid:
             flat_grid = dim_grid.flatten()
             for point_idx, point in enumerate(flat_grid):

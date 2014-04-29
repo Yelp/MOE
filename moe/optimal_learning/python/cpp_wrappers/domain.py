@@ -29,13 +29,12 @@ class TensorProductDomain(DomainInterface):
 
         """
         self._domain_bounds = copy.deepcopy(domain_bounds)
-        self._dim = len(domain_bounds)
         self._domain_type = C_GP.DomainTypes.tensor_product
 
     @property
     def dim(self):
         """Return the number of spatial dimensions."""
-        return self._dim
+        return len(self._domain_bounds)
 
     # HACK: Until we can build C++ domain objects from Python, we need to be able to hand C++ enough data to reconstruct domains.
     @property

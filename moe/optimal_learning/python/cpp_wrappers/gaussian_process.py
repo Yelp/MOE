@@ -58,10 +58,10 @@ class GaussianProcess(GaussianProcessInterface):
 
         # C++ will maintain its own copy of the contents of hyperparameters and historical_data
         self._gaussian_process = C_GP.GaussianProcess(
-            cpp_utils.cppify_hyperparameters(self._covariance.get_hyperparameters()),  # hyperparameters, e.g., [signal variance, [length scales]]; see cpp_utils.cppify_hyperparameter docs, C++ python interface docs
-            cpp_utils.cppify(historical_data.points_sampled),  # points already sampled
-            cpp_utils.cppify(historical_data.points_sampled_value),  # objective value at each sampled point
-            cpp_utils.cppify(historical_data.points_sampled_noise_variance),  # noise variance, one value per sampled point
+            cpp_utils.cppify_hyperparameters(self._covariance.get_hyperparameters()),
+            cpp_utils.cppify(historical_data.points_sampled),
+            cpp_utils.cppify(historical_data.points_sampled_value),
+            cpp_utils.cppify(historical_data.points_sampled_noise_variance),
             self.dim,
             self.num_sampled,
         )
@@ -91,8 +91,8 @@ class GaussianProcess(GaussianProcessInterface):
         """
         num_to_sample = len(points_to_sample)
         mu = C_GP.get_mean(
-            self._gaussian_process,  # C++ GaussianProcess object
-            cpp_utils.cppify(points_to_sample),  # points at which to compute mean
+            self._gaussian_process,
+            cpp_utils.cppify(points_to_sample),
             num_to_sample,
         )
         return numpy.array(mu)
@@ -119,8 +119,8 @@ class GaussianProcess(GaussianProcessInterface):
         """
         num_to_sample = len(points_to_sample)
         grad_mu = C_GP.get_grad_mean(
-            self._gaussian_process,  # C++ GaussianProcess object
-            cpp_utils.cppify(points_to_sample),  # points at which to compute grad mean
+            self._gaussian_process,
+            cpp_utils.cppify(points_to_sample),
             num_to_sample,
         )
         return cpp_utils.uncppify(grad_mu, (num_to_sample, self.dim))
@@ -142,8 +142,8 @@ class GaussianProcess(GaussianProcessInterface):
         """
         num_to_sample = len(points_to_sample)
         variance = C_GP.get_var(
-            self._gaussian_process,  # C++ GaussianProcess object
-            cpp_utils.cppify(points_to_sample),  # points to sample
+            self._gaussian_process,
+            cpp_utils.cppify(points_to_sample),
             num_to_sample,
         )
         return cpp_utils.uncppify(variance, (num_to_sample, num_to_sample))
@@ -161,8 +161,8 @@ class GaussianProcess(GaussianProcessInterface):
         """
         num_to_sample = len(points_to_sample)
         cholesky_variance = C_GP.get_chol_var(
-            self._gaussian_process,  # C++ GaussianProcess object
-            cpp_utils.cppify(points_to_sample),  # points to sample
+            self._gaussian_process,
+            cpp_utils.cppify(points_to_sample),
             num_to_sample,
         )
         return cpp_utils.uncppify(cholesky_variance, (num_to_sample, num_to_sample))
@@ -218,10 +218,10 @@ class GaussianProcess(GaussianProcessInterface):
         """
         num_to_sample = len(points_to_sample)
         cholesky_variance = C_GP.get_grad_var(
-            self._gaussian_process,  # C++ GaussianProcess object
-            cpp_utils.cppify(points_to_sample),  # points to sample
+            self._gaussian_process,
+            cpp_utils.cppify(points_to_sample),
             num_to_sample,
-            var_of_grad,  # dimension to differentiate in
+            var_of_grad,
         )
         return cpp_utils.uncppify(cholesky_variance, (num_to_sample, num_to_sample, self.dim))
 
@@ -240,10 +240,10 @@ class GaussianProcess(GaussianProcessInterface):
         self._historical_data.append(sampled_points)
 
         self._gaussian_process = C_GP.GaussianProcess(
-            cpp_utils.cppify_hyperparameters(self._covariance.get_hyperparameters()),  # hyperparameters, e.g., [signal variance, [length scales]]; see cpp_utils.cppify_hyperparameter docs, C++ python interface docs
-            cpp_utils.cppify([p.point for p in self.points_sampled]),  # points already sampled
-            cpp_utils.cppify(self.values_of_samples),  # objective value at each sampled point
-            cpp_utils.cppify(self.sample_variance_of_samples),  # noise variance, one value per sampled point
+            cpp_utils.cppify_hyperparameters(self._covariance.get_hyperparameters()),
+            cpp_utils.cppify([p.point for p in self.points_sampled]),
+            cpp_utils.cppify(self.values_of_samples),
+            cpp_utils.cppify(self.sample_variance_of_samples),
             self.dim,
             self.num_sampled,
         )
