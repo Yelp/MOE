@@ -69,7 +69,7 @@ def build_gradient_descent_parameters(
     pre_mult,
     max_relative_change,
     tolerance,
-    ):
+):
     r"""Build a GradientDescentParameters (C++ object) via its ctor; this object specifies multistarted GD behavior and is required by C++ GD optimization.
 
     .. Note:: See gpp_optimization_parameters.hpp for more details.

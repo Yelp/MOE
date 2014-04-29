@@ -25,7 +25,7 @@ def multistart_expected_improvement_optimization(
     randomness=None,
     max_num_threads=1,
     status=None,
-    ):
+):
     """Solve the q,p-EI problem, returning the optimal set of q points to sample CONCURRENTLY in future experiments.
 
     When points_to_sample.size == 0 && num_samples_to_generate == 1, this function will use (fast) analytic EI computations.
@@ -101,7 +101,7 @@ def _heuristic_expected_improvement_optimization(
     randomness=None,
     max_num_threads=1,
     status=None,
-    ):
+):
     """Heuristically solve the q,0-EI problem (estimating multistart_expected_improvement_optimization()) using 1,0-EI solves.
 
     Consider this as an alternative when multistart_expected_improvement_optimization() is too expensive. Since this function
@@ -216,7 +216,7 @@ def constant_liar_expected_improvement_optimization(
     randomness=None,
     max_num_threads=1,
     status=None,
-    ):
+):
     """Heuristically solves q,0-EI using the Constant Liar policy; this wraps heuristic_expected_improvement_optimization().
 
     Note that this optimizer only uses the analytic 1,0-EI, so it is fast.
@@ -260,7 +260,17 @@ def constant_liar_expected_improvement_optimization(
     return _heuristic_expected_improvement_optimization(ei_evaluator, ei_optimization_parameters, domain, num_samples_to_generate, estimation_policy, randomness=randomness, max_num_threads=max_num_threads, status=status)
 
 
-def kriging_believer_expected_improvement_optimization(ei_evaluator, ei_optimization_parameters, domain, num_samples_to_generate, std_deviation_coef=0.0, kriging_noise_variance=0.0, randomness=None, max_num_threads=1, status=None):
+def kriging_believer_expected_improvement_optimization(
+    ei_evaluator,
+    ei_optimization_parameters,
+    domain,
+    num_samples_to_generate,
+    std_deviation_coef=0.0,
+    kriging_noise_variance=0.0,
+    randomness=None,
+    max_num_threads=1,
+    status=None,
+):
     """Heuristically solves q,0-EI using the Kriging Believer policy; this wraps heuristic_expected_improvement_optimization().
 
     Note that this optimizer only uses the analytic 1,0-EI, so it is fast.
@@ -322,7 +332,7 @@ def evaluate_expected_improvement_at_point_list(
     randomness=None,
     max_num_threads=1,
     status=None,
-    ):
+):
     """Evaluate Expected Improvement (1,p-EI) over a specified list of ``points_to_evaluate``.
 
     Generally gradient descent is preferred but when they fail to converge this may be the only "robust" option.

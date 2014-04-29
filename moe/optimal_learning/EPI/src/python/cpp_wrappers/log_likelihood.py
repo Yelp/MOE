@@ -64,7 +64,7 @@ def multistart_hyperparameter_optimization(
     randomness=None,
     max_num_threads=1,
     status=None,
-    ):
+):
     r"""Select the hyperparameters that maximize the specified log likelihood measure of model fit (over the historical data) within the specified domain.
 
     See GaussianProcessLogMarginalLikelihood and GaussianProcessLeaveOneOutLogLikelihood for an overview of some
