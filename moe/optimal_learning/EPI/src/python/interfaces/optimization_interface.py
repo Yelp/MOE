@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Interfaces for optimization (maximization): OptimizableInterface for things that can be optimized and OptimizerInterface to perform the optimizattion.
+"""Interfaces for optimization (maximization): OptimizableInterface for things that can be optimized and OptimizerInterface to perform the optimization.
 
 First, implementation of these interfaces should be MAXIMIZERS.  We also use the term "optima," and unless we specifically
 state otherwise, "optima" and "optimization" refer to "maxima" and "maximization," respectively.  (Note that

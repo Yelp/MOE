@@ -61,7 +61,15 @@ def build_newton_parameters(num_multistarts, max_num_steps, gamma, time_factor, 
     return newton_data
 
 
-def build_gradient_descent_parameters(num_multistarts, max_num_steps, max_num_restarts, gamma, pre_mult, max_relative_change, tolerance):
+def build_gradient_descent_parameters(
+    num_multistarts,
+    max_num_steps,
+    max_num_restarts,
+    gamma,
+    pre_mult,
+    max_relative_change,
+    tolerance,
+    ):
     r"""Build a GradientDescentParameters (C++ object) via its ctor; this object specifies multistarted GD behavior and is required by C++ GD optimization.
 
     .. Note:: See gpp_optimization_parameters.hpp for more details.
@@ -139,8 +147,8 @@ class HyperparameterOptimizationParameters(object):
         # see gpp_python_common.cpp for .*_type enum definitions. .*_type variables must be from those enums (NOT integers)
         self.objective_type = None  # set via the LogLikelihood object passed to optimization
         self.optimizer_type = optimizer_type
-        self.num_random_samples = num_random_samples  # number of samples to 'dumb' search over
-        self.optimizer_parameters = optimizer_parameters  # must match the optimizer_type
+        self.num_random_samples = num_random_samples
+        self.optimizer_parameters = optimizer_parameters
 
 
 class ExpectedImprovementOptimizationParameters(object):
@@ -170,7 +178,7 @@ class ExpectedImprovementOptimizationParameters(object):
         # see gpp_python_common.cpp for .*_type enum definitions. .*_type variables must be from those enums (NOT integers)
         self.domain_type = None  # set via the DomainInterface object passed to optimization
         self.optimizer_type = optimizer_type
-        self.num_random_samples = num_random_samples  # number of samples to 'dumb' search over
-        self.optimizer_parameters = optimizer_parameters  # must match the optimizer_type
+        self.num_random_samples = num_random_samples
+        self.optimizer_parameters = optimizer_parameters
         # NOTE: need both num_random_samples AND optimizer_parameters if generating > 1 sample
         # using gradient descent optimization

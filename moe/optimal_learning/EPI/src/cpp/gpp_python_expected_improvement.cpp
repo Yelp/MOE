@@ -437,7 +437,7 @@ void ExportExpectedImprovementFunctions() {
 
     Computing q,p-EI for q > 1 or p > 1 is expensive. To avoid that cost, this method "solves" q,0-EI by repeatedly
     optimizing 1,0-EI. We do the following (in C++):
-    for i in range(num_samples_to_generate)
+    for i in xrange(num_samples_to_generate)
       new_point = optimize_1_EI(gaussian_process, ...)
       new_function_value, new_noise_variance = estimation_policy.compute_estimate(new_point, gaussian_process, i)
       gaussian_process.add_point(new_point, new_function_value, new_noise_variance)

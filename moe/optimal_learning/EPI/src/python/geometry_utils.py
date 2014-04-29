@@ -3,13 +3,20 @@
 import collections
 
 
-class ClosedInterval(collections.namedtuple('ClosedInterval', ['min', 'max'])):
+# See ClosedInterval (below) for docstring.
+_BaseClosedInterval = collections.namedtuple('ClosedInterval', ['min', 'max'])
+
+
+class ClosedInterval(_BaseClosedInterval):
 
     r"""Container to represent the mathematical notion of a closed interval, commonly written \ms [a,b]\me.
 
     The closed interval \ms [a,b]\me is the set of all numbers \ms x \in \mathbb{R}\me such that \ms a \leq x \leq b\me.
     Note that "closed" here indicates the interval *includes* both endpoints.
     An interval with \ms a > b\me is considered empty.
+
+    :ivar min: (*float64*) the "left" bound of the domain, ``a``
+    :ivar max: (*float64*) the "right" bound of the domain, ``b``
 
     """
 
@@ -27,11 +34,7 @@ class ClosedInterval(collections.namedtuple('ClosedInterval', ['min', 'max'])):
         :rtype: list of ClosedInterval
 
         """
-        result = []
-        for bounds in bounds_list:
-            result.append(ClosedInterval(bounds[0], bounds[1]))
-
-        return result
+        return [ClosedInterval(min, max) for (min, max) in bounds_list]
 
     @property
     def length(self):
@@ -40,7 +43,7 @@ class ClosedInterval(collections.namedtuple('ClosedInterval', ['min', 'max'])):
 
     def is_inside(self, value):
         """Check if a value is inside this ClosedInterval."""
-        return (value >= self.min) & (value <= self.max)
+        return self.min <= value <= self.max
 
     def is_empty(self):
         """Check whether this ClosedInterval is the emptyset: max < min."""
