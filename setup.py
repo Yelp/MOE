@@ -35,23 +35,6 @@ with open('requirements.txt') as requirements_file:
     for req in requirements_file:
         requires.append(req.strip())
 
-requires = [
-    'pyramid',
-    'pyramid_mako',
-    'WebError',
-    'testify',
-    'webtest',
-    'tox',
-    'numpy',
-    'scipy',
-    'simplejson',
-    'colander',
-    'sphinx',
-    'breathe',
-    'sphinxcontrib-httpdomain',
-    'sphinx_rtd_theme',
-    ]
-
 MoeExecutable = namedtuple('MoeExecutable', ['env_var', 'exe_name'])
 
 
