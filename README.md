@@ -70,6 +70,8 @@ This is the recommended way to run the MOE REST server. All dependencies and bui
 Docker (http://docs.docker.io/) is a container based virtualization framework. Unlike traditional virtualization Docker is fast, lightweight and easy to use. Docker allows you to create containers holding all the dependencies for an application. Each container is kept isolated from any other, and nothing gets shared.
 
 ```bash
+$ git clone https://github.com/sc932/MOE.git
+$ cd MOE
 $ docker build -t moe_container
 $ docker run -t -i -p 6543:6543 -u="app" -w="/home/app/MOE" sclark_moe_dev pserve --reload development.ini
 ```
