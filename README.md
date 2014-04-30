@@ -82,6 +82,18 @@ $ pip install -e .
 $ python setup.py install
 ```
 
+## Install in docker:
+
+```bash
+$ docker build -t moe_container
+$ docker run -t -i -p 6543:6543 moe_container /bin/bash
+$ cd /home/app/MOE
+$ pserve --reload development.ini &
+$ exit
+```
+
+The webserver and REST interface is now running on port 6543 from within the container.
+
 ### OSX Tips:
 
 0. Are you sure you wouldn't rather be running linux?

@@ -32,6 +32,7 @@ CLASSIFIERS = """
 
 requires = [
     'pyramid',
+    'pyramid_mako',
     'WebError',
     'testify',
     'webtest',
@@ -80,6 +81,9 @@ class InstallCppComponents(install):
     def run(self):
         """Run the install."""
         install.run(self)
+        
+        if os.environ.get('MOE_NO_BUILD', 'False') == 'True':
+            return
 
         package_dir = os.path.join(self.install_lib, 'moe')
         build_dir = os.path.join(package_dir, 'build')
