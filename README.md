@@ -73,7 +73,7 @@ Docker (http://docs.docker.io/) is a container based virtualization framework. U
 $ git clone https://github.com/sc932/MOE.git
 $ cd MOE
 $ docker build -t moe_container
-$ docker run -t -i -p 6543:6543 -u="app" -w="/home/app/MOE" moe_container pserve --reload development.ini
+$ docker run -p 6543:6543 moe_container
 ```
 
 The webserver and REST interface is now running on port 6543 from within the container.

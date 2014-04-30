@@ -1,6 +1,5 @@
-# This is based upon http://phusion.github.io/baseimage-docker/ with some
-# inspiration from https://github.com/phusion/passenger-docker
 FROM ubuntu:14.04
+MAINTAINER Scott Clark <sclark@yelp.com> and Eric Liu <eliu@yelp.com>
 
 # Configure a non-privileged user named app. It is highly suggested you do not
 # run your application as root.
@@ -43,6 +42,8 @@ RUN chown -R app:app /home/app/MOE && chmod -R a+r /home/app/MOE
 # END: Build MOE.
 
 # Configure docker container.
-USER root
 EXPOSE 22 80 443 6543
-CMD ["/sbin/my_init"]
+
+USER app
+WORKDIR /home/app/MOE
+CMD ["pserve", "--reload", "development.ini"]
