@@ -1,4 +1,5 @@
 pyramid
+pyramid_mako
 WebError
 testify
 webtest

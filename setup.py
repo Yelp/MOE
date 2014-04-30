@@ -30,6 +30,11 @@ CLASSIFIERS = """
 
         """
 
+requires = []
+with open('requirements.txt') as requirements_file:
+    for req in requirements_file:
+        requires.append(req.strip())
+
 requires = [
     'pyramid',
     'pyramid_mako',
@@ -82,7 +87,8 @@ class InstallCppComponents(install):
         """Run the install."""
         install.run(self)
         
-        if os.environ.get('MOE_NO_BUILD', 'False') == 'True':
+        # Sometimes we want to manually build the C++ (like in Docker)
+        if os.environ.get('MOE_NO_BUILD_CPP', 'False') == 'True':
             return
 
         package_dir = os.path.join(self.install_lib, 'moe')

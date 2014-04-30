@@ -63,6 +63,21 @@ print exp.best_point
 
 # Install
 
+## Install in docker:
+
+This is the recommended way to run the MOE REST server. All dependencies and building is done automatically and in an isolated container.
+
+Docker (http://docs.docker.io/) is a container based virtualization framework. Unlike traditional virtualization Docker is fast, lightweight and easy to use. Docker allows you to create containers holding all the dependencies for an application. Each container is kept isolated from any other, and nothing gets shared.
+
+```bash
+$ docker build -t moe_container
+$ docker run -t -i -p 6543:6543 -u="app" -w="/home/app/MOE" sclark_moe_dev pserve --reload development.ini
+```
+
+The webserver and REST interface is now running on port 6543 from within the container.
+
+## Install from source:
+
 Requires:
 
 1. `python 2.6.7+` - http://python.org/download/
@@ -73,26 +88,12 @@ Requires:
 6. `doxygen 1.8.5+` - http://www.stack.nl/~dimitri/doxygen/index.html
 7. We recommend using a virtualenv http://www.jontourage.com/2011/02/09/virtualenv-pip-basics/
 
-## Install from source:
-
 ```bash
 $ git clone https://github.com/sc932/MOE.git
 $ cd MOE
 $ pip install -e .
 $ python setup.py install
 ```
-
-## Install in docker:
-
-```bash
-$ docker build -t moe_container
-$ docker run -t -i -p 6543:6543 moe_container /bin/bash
-$ cd /home/app/MOE
-$ pserve --reload development.ini &
-$ exit
-```
-
-The webserver and REST interface is now running on port 6543 from within the container.
 
 ### OSX Tips:
 
