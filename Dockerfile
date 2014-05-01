@@ -25,7 +25,7 @@ WORKDIR /home/app/MOE
 
 # Install the python
 ENV MOE_NO_BUILD_CPP True
-RUN pip install -e . && python setup.py install
+RUN pip install -e .
 
 # Build the C++
 WORKDIR /home/app/MOE/moe
