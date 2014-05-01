@@ -1,8 +1,7 @@
 FROM ubuntu:14.04
 MAINTAINER Scott Clark <sclark@yelp.com> and Eric Liu <eliu@yelp.com>
 
-# Configure a non-privileged user named app. It is highly suggested you do not
-# run your application as root.
+# Create a non-privileged user named app to run MOE
 RUN addgroup --gid 9999 app &&\
     adduser --uid 9999 --gid 9999 --disabled-password --gecos "Application" app &&\
     usermod -L app
