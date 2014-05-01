@@ -29,7 +29,7 @@ New next_points routes have the form:
     GP_NEXT_POINTS_<NAME>_PRETTY_ROUTE_NAME = 'gp_next_points_<name>_pretty'
     GP_NEXT_POINTS_<NAME>_PRETTY_ENDPOINT = '/gp/next_points/<name>/pretty'
     GP_NEXT_POINTS_<NAME>_PRETTY_MOE_ROUTE = MoeRoute(GP_NEXT_POINTS_<NAME>_PRETTY_ROUTE_NAME, GP_NEXT_POINTS_<NAME>_PRETTY_ENDPOINT)
-    GP_NEXT_POINTS_EPI_OPTIMIZATION_METHOD_NAME = <method name from moe.optimal_learning.python.models.optimal_gaussian_process_linked_cpp.py>
+    GP_NEXT_POINTS_<NAME>_OPTIMIZATION_METHOD_NAME = <method name from moe.optimal_learning.python.models.optimal_gaussian_process_linked_cpp.py>
 
 """
 from collections import namedtuple
