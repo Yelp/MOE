@@ -109,7 +109,7 @@ class GpNextPointsPrettyView(GpPrettyView):
         """Compute the next points to sample (and their expected improvement) using optimization_method_name from params in the request.
 
         :param deserialized_request_params: the deserialized REST request, containing ei_optimization_parameters and gp_info
-        :type deserialized_request_params: a deserialized self.request_schema object
+        :type deserialized_request_params: a deserialized self.request_schema object as a dict
         :param optimization_method_name: the optimization method to use
         :type optimization_method_name: string in moe.views.constant.OPTIMIZATION_METHOD_NAMES
         :param route_name: name of the route being called
