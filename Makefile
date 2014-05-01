@@ -1,18 +1,18 @@
-SUBDIRS=moe/build
-TESTIFY=testify
-
 all: production
 
 clean:
 		find . -name '*.pyc' -delete
+		rm -rf moe/build
 
 production:
-		for SUBDIR in $(SUBDIRS); do if [ -e $$SUBDIR/Makefile ]; then ($(MAKE) -C $$SUBDIR $(MFLAGS)); fi; done
+		python setup.py install
+
+test-no-tox:
+		testify -v moe.tests
 
 test:
-		$(TESTIFY) -v moe.tests
+		tox
+		tox -e pep8
 
 docs:
-		$(MAKE) -C docs doxygen
-		sphinx-apidoc -f -o docs moe
-		$(MAKE) -C docs html
+		tox -e docs
