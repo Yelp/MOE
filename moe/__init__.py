@@ -10,6 +10,7 @@ from moe.views.constant import ALL_MOE_ROUTES
 def main(global_config, **settings):
     """Return a WSGI application."""
     config = Configurator(settings=settings, root_factory=Root)
+    config.include('pyramid_mako')
     config.add_static_view('static', 'moe:static')
 
     # Routes

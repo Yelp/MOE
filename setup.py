@@ -30,8 +30,10 @@ CLASSIFIERS = """
 
         """
 
+# If you change something here, change it in requirements.txt
 requires = [
     'pyramid',
+    'pyramid_mako',
     'WebError',
     'testify',
     'webtest',
@@ -80,6 +82,10 @@ class InstallCppComponents(install):
     def run(self):
         """Run the install."""
         install.run(self)
+        
+        # Sometimes we want to manually build the C++ (like in Docker)
+        if os.environ.get('MOE_NO_BUILD_CPP', 'False') == 'True':
+            return
 
         package_dir = os.path.join(self.install_lib, 'moe')
         build_dir = os.path.join(package_dir, 'build')
