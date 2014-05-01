@@ -72,7 +72,7 @@ Docker (http://docs.docker.io/) is a container based virtualization framework. U
 ```bash
 $ git clone https://github.com/sc932/MOE.git
 $ cd MOE
-$ docker build -t moe_container
+$ docker build -t moe_container .
 $ docker run -p 6543:6543 moe_container
 ```
 
