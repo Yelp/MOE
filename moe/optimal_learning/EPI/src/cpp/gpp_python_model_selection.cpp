@@ -106,7 +106,7 @@ boost::python::list ComputeHyperparameterGradLogLikelihoodWrapper(const boost::p
   Let n_hyper = covariance.GetNumberOfHyperparameters();
 
   INPUTS:
-  optimization_parameters: EPI/src/python/optimization_parameters.HyperparameterOptimizationParameters
+  optimization_parameters: python/cpp_wrappers/optimization._CppOptimizationParameters
       Python object containing the LogLikelihoodTypes objective_type and OptimizerTypes optimzer_typ
       to use as well as appropriate parameter structs e.g., NewtonParameters for type kNewton).
       See comments on the python interface for multistart_hyperparameter_optimization_wrapper
@@ -278,8 +278,8 @@ void ExportModelSelectionFunctions() {
   boost::python::def("multistart_hyperparameter_optimization", MultistartHyperparameterOptimizationWrapper, R"%%(
     Optimize the specified log likelihood measure over the specified domain using the specified optimization method.
 
-    The HyperparameterOptimizationParameters object is a python class defined in:
-    EPI/src/python/optimization_parameters.HyperparameterOptimizationParameters
+    The _CppOptimizationParameters object is a python class defined in:
+    python/cpp_wrappers/optimization._CppOptimizationParameters
     See that class definition for more details.
 
     This function expects it to have the fields:
@@ -292,7 +292,7 @@ void ExportModelSelectionFunctions() {
     n_hyper denotes the number of hyperparameters.
 
     INPUTS:
-    HyperparameterOptimizationParameters optimization_parameters:
+    _CppOptimizationParameters optimization_parameters:
         python object containing the LogLikelihoodTypes objective to use, OptimizerTypes optimzer_type
         to use as well as appropriate parameter structs e.g., NewtonParameters for type kNewton
     pylist hyperparameter_domain[2*n_hyper]: [lower, upper] bound pairs for each hyperparameter dimension in LOG-10 SPACE

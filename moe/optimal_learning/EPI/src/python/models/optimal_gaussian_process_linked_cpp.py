@@ -12,7 +12,7 @@ from moe.optimal_learning.EPI.src.python.cpp_wrappers.covariance import SquareEx
 from moe.optimal_learning.EPI.src.python.cpp_wrappers.gaussian_process import GaussianProcess
 import moe.optimal_learning.EPI.src.python.cpp_wrappers.expected_improvement as cpp_ei
 import moe.optimal_learning.EPI.src.python.cpp_wrappers.log_likelihood as cpp_log_likelihood
-from moe.optimal_learning.EPI.src.python.cpp_wrappers.optimization_parameters import build_gradient_descent_parameters, ExpectedImprovementOptimizationParameters
+from moe.optimal_learning.EPI.src.python.cpp_wrappers.optimization import GradientDescentParameters, GradientDescentOptimizer
 from moe.optimal_learning.EPI.src.python.data_containers import SamplePoint, HistoricalData
 from moe.optimal_learning.EPI.src.python.models.optimal_gaussian_process import OptimalGaussianProcess
 
@@ -77,7 +77,7 @@ class OptimalGaussianProcessLinkedCpp(OptimalGaussianProcess):
         cov, history = self._build_new_environment()
         return GaussianProcess(cov, history)
 
-    def multistart_expected_improvement_optimization(self, ei_optimization_parameters, num_samples_to_generate, domain=None, points_being_sampled=numpy.array([]), mc_iterations=1000, status=None):
+    def multistart_expected_improvement_optimization(self, optimizer_type, optimization_parameters, domain_type, num_random_samples, num_samples_to_generate, domain=None, points_being_sampled=numpy.array([]), mc_iterations=1000, status=None):
         """Calls into multistart_expected_improvement_optimization_wrapper in EPI/src/cpp/GPP_python.cpp (solving q,p-EI)
         """
 
@@ -86,14 +86,16 @@ class OptimalGaussianProcessLinkedCpp(OptimalGaussianProcess):
 
         gaussian_process = self._build_cpp_gaussian_process()
         ei_evaluator = cpp_ei.ExpectedImprovement(gaussian_process, numpy.array([]), points_to_sample=points_being_sampled, num_mc_iterations=mc_iterations, randomness=self.randomness)
-        if ei_optimization_parameters.domain_type == C_GP.DomainTypes.tensor_product:
+        if domain_type == C_GP.DomainTypes.tensor_product:
             new_domain = cpp_domain.TensorProductDomain(domain)
         else:
             new_domain = cpp_domain.SimplexIntersectTensorProductDomain(domain)
 
-        return cpp_ei.multistart_expected_improvement_optimization(ei_evaluator, ei_optimization_parameters, new_domain, num_samples_to_generate, points_to_sample=points_being_sampled, randomness=self.randomness, max_num_threads=self.max_num_threads, status=status)
+        ei_optimizer = optimizer_type(new_domain, ei_evaluator, optimization_parameters, num_random_samples=num_random_samples)
 
-    def _heuristic_expected_improvement_optimization(self, ei_optimization_parameters, num_samples_to_generate, estimation_policy, domain=None, status=None):
+        return cpp_ei.multistart_expected_improvement_optimization(ei_optimizer, None, num_samples_to_generate, randomness=self.randomness, max_num_threads=self.max_num_threads, status=status)
+
+    def _heuristic_expected_improvement_optimization(self, optimizer_type, optimization_parameters, domain_type, num_random_samples, num_samples_to_generate, estimation_policy, domain=None, status=None):
         """
         Calls into heuristic_expected_improvement_optimization_wrapper in EPI/src/cpp/GPP_python.cpp
 
@@ -105,14 +107,16 @@ class OptimalGaussianProcessLinkedCpp(OptimalGaussianProcess):
 
         gaussian_process = self._build_cpp_gaussian_process()
         ei_evaluator = cpp_ei.ExpectedImprovement(gaussian_process, numpy.array([]), num_mc_iterations=0, randomness=self.randomness)
-        if ei_optimization_parameters.domain_type == C_GP.DomainTypes.tensor_product:
+        if domain_type == C_GP.DomainTypes.tensor_product:
             new_domain = cpp_domain.TensorProductDomain(domain)
         else:
             new_domain = cpp_domain.SimplexIntersectTensorProductDomain(domain)
 
-        return cpp_ei._heuristic_expected_improvement_optimization(ei_evaluator, ei_optimization_parameters, new_domain, num_samples_to_generate, estimation_policy, randomness=self.randomness, max_num_threads=self.max_num_threads, status=status)
+        ei_optimizer = optimizer_type(new_domain, ei_evaluator, optimization_parameters, num_random_samples=num_random_samples)
 
-    def constant_liar_expected_improvement_optimization(self, ei_optimization_parameters, num_samples_to_generate, lie_value, lie_noise_variance=0.0, domain=None, status=None):
+        return cpp_ei._heuristic_expected_improvement_optimization(ei_optimizer, None, num_samples_to_generate, estimation_policy, randomness=self.randomness, max_num_threads=self.max_num_threads, status=status)
+
+    def constant_liar_expected_improvement_optimization(self, optimizer_type, optimization_parameters, domain_type, num_random_samples, num_samples_to_generate, lie_value, lie_noise_variance=0.0, domain=None, status=None):
         """
         Calls into heuristic_expected_improvement_optimization_wrapper in EPI/src/cpp/GPP_python.cpp (solving q,0-EI)
         with the ConstantLiarEstimationPolicy.
@@ -121,9 +125,9 @@ class OptimalGaussianProcessLinkedCpp(OptimalGaussianProcess):
         double lie_noise_variance: the noise_variance to associate to the lie_value (MUST be >= 0.0)
         """
         estimation_policy = C_GP.ConstantLiarEstimationPolicy(lie_value, lie_noise_variance)
-        return self._heuristic_expected_improvement_optimization(ei_optimization_parameters, num_samples_to_generate, estimation_policy, domain, status)
+        return self._heuristic_expected_improvement_optimization(optimizer_type, optimization_parameters, domain_type, num_random_samples, num_samples_to_generate, estimation_policy, domain, status)
 
-    def kriging_believer_expected_improvement_optimization(self, ei_optimization_parameters, num_samples_to_generate, std_deviation_coef=0.0, kriging_noise_variance=0.0, domain=None, status=None):
+    def kriging_believer_expected_improvement_optimization(self, optimizer_type, optimization_parameters, domain_type, num_random_samples, num_samples_to_generate, std_deviation_coef=0.0, kriging_noise_variance=0.0, domain=None, status=None):
         """
         Calls into heuristic_expected_improvement_optimization_wrapper in EPI/src/cpp/GPP_python.cpp (solving q,0-EI)
         with the KrigingBelieverEstimationPolicy.
@@ -132,19 +136,14 @@ class OptimalGaussianProcessLinkedCpp(OptimalGaussianProcess):
         double kriging_noise_variance: the noise_variance to associate to each function value estimate (MUST be >= 0.0)
         """
         estimation_policy = C_GP.KrigingBelieverEstimationPolicy(std_deviation_coef, kriging_noise_variance)
-        return self._heuristic_expected_improvement_optimization(ei_optimization_parameters, num_samples_to_generate, estimation_policy, domain, status)
+        return self._heuristic_expected_improvement_optimization(optimizer_type, optimization_parameters, domain_type, num_random_samples, num_samples_to_generate, estimation_policy, domain, status)
 
     # TODO(eliu): this call is DEPRECATED; use multistart_expected_improvement_optimization instead!
     # not deleting yet in case this screws up inheritance (since this overrides superclass member functions)
     def get_multistart_best(self, starting_points=None, points_being_sampled=numpy.array([]), gamma=0.9, gd_iterations=1000, mc_iterations=1000, num_multistarts=5, max_num_restarts=3, max_relative_change=1.0, tolerance=1.0e-7, status=None):
         """Wrapper for multistart_expected_improvement_optimization
         """
-
-        ei_gradient_descent_optimization_parameters = ExpectedImprovementOptimizationParameters()
-        ei_gradient_descent_optimization_parameters.domain_type = C_GP.DomainTypes.tensor_product
-        ei_gradient_descent_optimization_parameters.optimizer_type = C_GP.OptimizerTypes.gradient_descent
-        ei_gradient_descent_optimization_parameters.num_random_samples = 0
-        ei_gradient_descent_optimization_parameters.optimizer_parameters = build_gradient_descent_parameters(
+        optimization_parameters = GradientDescentParameters(
             num_multistarts, # num_multistarts
             gd_iterations, # max_num_steps
             max_num_restarts, # max_num_restarts
@@ -154,19 +153,23 @@ class OptimalGaussianProcessLinkedCpp(OptimalGaussianProcess):
             tolerance, #tolerance
         )
 
+        optimizer_type = GradientDescentOptimizer
+        num_random_samples = 0
+
+        domain_type = C_GP.DomainTypes.tensor_product
         num_samples_to_generate = 1 # the deprecated form of this was written with only the 1 sample to generate case in mind
         # uncppify b/c users of get_multistart_best expect a list of size len(self.domain)
         # with the coordinates
         # multistart_expected_improvement_optimization will return a list of num_samples_to_generate
         # lists, each of size len(self.domain)
-        return cpp_utils.uncppify(self.multistart_expected_improvement_optimization(ei_gradient_descent_optimization_parameters, num_samples_to_generate, domain=None, points_being_sampled=points_being_sampled, mc_iterations=mc_iterations, status=status), len(self.domain))
+        return cpp_utils.uncppify(self.multistart_expected_improvement_optimization(optimizer_type, optimization_parameters, domain_type, num_random_samples, num_samples_to_generate, domain=None, points_being_sampled=points_being_sampled, mc_iterations=mc_iterations, status=status), len(self.domain))
 
     def evaluate_expected_improvement_at_point_list(self, points_to_evaluate, points_being_sampled=numpy.array([]), mc_iterations=1000, status=None):
         """Calls into evaluate_EI_at_point_list_wrapper() in src/cpp/GPP_python.cpp
         """
         gaussian_process = self._build_cpp_gaussian_process()
         ei_evaluator = cpp_ei.ExpectedImprovement(gaussian_process, numpy.array([]), points_to_sample=points_being_sampled, num_mc_iterations=mc_iterations, randomness=self.randomness)
-        return cpp_ei.evaluate_expected_improvement_at_point_list(ei_evaluator, points_to_evaluate, points_to_sample=points_being_sampled, randomness=self.randomness, max_num_threads=self.max_num_threads, status=status)
+        return cpp_ei.evaluate_expected_improvement_at_point_list(ei_evaluator, points_to_evaluate, randomness=self.randomness, max_num_threads=self.max_num_threads, status=status)
 
     def get_grad_mu(self, points_to_sample):
         """Calls into get_grad_mean_wrapper in src/cpp/GPP_python.cpp
@@ -291,7 +294,7 @@ class OptimalGaussianProcessLinkedCpp(OptimalGaussianProcess):
         """
         return self.compute_hyperparam_grad_log_likelihood(objective_type=C_GP.LogLikelihoodTypes.log_marginal_likelihood)
 
-    def multistart_hyperparameter_optimization(self, hyperparameter_optimization_parameters, hyperparameter_domain=None, status=None):
+    def multistart_hyperparameter_optimization(self, optimizer_type, optimization_parameters, hyperparameter_domain=None, status=None):
         """ Optimizes hyperparameters based on maximizing the log likelihood-like measures using a multistart optimizer:
         log_marginal_likelihood     : log marginal likelihood (that the data comes from the model, p(y | X, \theta).
         leave_one_out_log_likelihood: leave-one-out log pseudo-likelihood, which evaluates the ability of the
@@ -306,7 +309,14 @@ class OptimalGaussianProcessLinkedCpp(OptimalGaussianProcess):
         """
         cov, history = self._build_new_environment()
         log_likelihood_evaluator = cpp_log_likelihood.GaussianProcessLogLikelihood(cov, history, log_likelihood_type=hyperparameter_optimization_parameters.objective_type)
-        return cpp_log_likelihood.multistart_hyperparameter_optimization(log_likelihood_evaluator, hyperparameter_optimization_parameters, hyperparameter_domain=hyperparameter_domain, randomness=self.randomness, max_num_threads=self.max_num_threads, status=status)
+        # Guess "reasonable" hyperparameter constraints if none are given.
+        if not hyperparameter_domain:
+            hyperparameter_domain = cpp_domain.TensorProductDomain([ClosedInterval(0.01, 10.0)] * log_likelihood_evaluator.num_hyperparameters)
+
+        num_random_samples = 0
+        log_likelihood_optimizer = optimizer_type(hyperparameter_domain, log_likelihood_evaluator, optimization_parameters)
+
+        return cpp_log_likelihood.multistart_hyperparameter_optimization(log_likelihood_optimizer, optimization_parameters, num_random_samples, hyperparameter_domain=hyperparameter_domain, randomness=self.randomness, max_num_threads=self.max_num_threads, status=status)
 
     def evaluate_log_likelihood_at_hyperparameter_list(self, hyperparameters_to_evaluate, objective_type=C_GP.LogLikelihoodTypes.log_marginal_likelihood):
         """ Calls into evaluate_log_likelihood_at_hyperparameter_list_wrapper() in src/cpp/GPP_python.cpp

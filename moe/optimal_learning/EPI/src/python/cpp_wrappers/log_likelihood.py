@@ -54,11 +54,18 @@ import numpy
 import moe.build.GPP as C_GP
 import moe.optimal_learning.EPI.src.python.cpp_wrappers.cpp_utils as cpp_utils
 import moe.optimal_learning.EPI.src.python.geometry_utils as geometry_utils
+from moe.optimal_learning.EPI.src.python.cpp_wrappers.domain import TensorProductDomain
 from moe.optimal_learning.EPI.src.python.interfaces.log_likelihood_interface import GaussianProcessLogLikelihoodInterface
 from moe.optimal_learning.EPI.src.python.interfaces.optimization_interface import OptimizableInterface
 
 
-def multistart_hyperparameter_optimization(log_likelihood_evaluator, hyperparameter_optimization_parameters, hyperparameter_domain=None, randomness=None, max_num_threads=1, status=None):
+def multistart_hyperparameter_optimization(
+        log_likelihood_optimizer,
+        num_multistarts,
+        randomness=None,
+        max_num_threads=1,
+        status=None,
+):
     r"""Select the hyperparameters that maximize the specified log likelihood measure of model fit (over the historical data) within the specified domain.
 
     See GaussianProcessLogMarginalLikelihood and GaussianProcessLeaveOneOutLogLikelihood for an overview of some
@@ -70,7 +77,7 @@ def multistart_hyperparameter_optimization(log_likelihood_evaluator, hyperparame
     'dumb' search means this will just evaluate the objective log likelihood measure at num_multistarts 'points'
     (hyperparameters) in the domain, uniformly sampled using latin hypercube sampling.
     The hyperparameter_optimization_parameters input specifies the desired optimization technique as well as parameters controlling
-    its behavior (see cpp_wrappers.optimization_parameters.py).
+    its behavior (see cpp_wrappers.optimization.py).
 
     See gpp_python_common.cpp for C++ enum declarations laying out the options for objective and optimizer types.
 
@@ -86,50 +93,46 @@ def multistart_hyperparameter_optimization(log_likelihood_evaluator, hyperparame
     .. WARNING:: this function fails if NO improvement can be found!  In that case,
        the output will always be the first randomly chosen point. status will report failure.
 
-    :param log_likelihood_evaluator: object specifying which log likelihood measure to optimize
-    :type log_likelihood_evaluator: cpp_wrappers.log_likelihood.LogLikelihood
-    :param hyperparameter_optimization_parameters: object specifying the desired optimization method and parameters controlling its behavior (e.g., tolerance, iterations, etc.)
-    :type hyperparameter_optimization_parameters: cpp_wrappers.optimization_parameters.HyperparameterOptimizationParameters
-    :param hyperparameter_domain: log10-space [min, max] bounds for each hyperparameter (e.g., [-2, 1] means the hyperparameter is restricted to [0.01, 10])
-    :type hyperparameter_domain: iterable of num_hyperparameters ClosedInterval
+    :param ei_optimizer: object that optimizes (e.g., gradient descent, newton) log likelihood over a domain
+    :type ei_optimizer: cpp_wrappers.optimization.*Optimizer object
+    :param num_multistarts: number of times to multistart ``ei_optimizer`` (UNUSED, data is in log_likelihood_optimizer.optimization_parameters)
+    :type num_multistarts: int > 0
     :param randomness: RNGs used by C++ to generate initial guesses
     :type randomness: RandomnessSourceContainer (C++ object; e.g., from C_GP.RandomnessSourceContainer())
     :param max_num_threads: maximum number of threads to use, >= 1
-    :type max_num_threads: int
+    :type max_num_threads: int > 0
     :param status: status messages from C++ (e.g., reporting on optimizer success, etc.)
     :type status: dict
     :return: hyperparameters that maximize the specified log likelihood measure within the specified domain
-    :rtype: array of float64 with shape (log_likelihood_evaluator.num_hyperparameters)
+    :rtype: array of float64 with shape (log_likelihood_optimizer.objective_function.num_hyperparameters)
 
     """
-    # Guess "reasonable" hyperparameter constraints if none are given.
-    if not hyperparameter_domain:
-        hyperparameter_domain = []
-        for i in range(log_likelihood_evaluator.num_hyperparameters):
-            hyperparameter_domain.append(geometry_utils.ClosedInterval(-2.0, 1.0))
-
     # Create enough randomness sources if none are specified.
     if randomness is None:
-        randomness = C_GP.RandomnessSourceContainer(max_num_threads)  # create randomness for max_num_threads
-        randomness.SetRandomizedUniformGeneratorSeed(0)  # set seed based on less repeatable factors (e.g,. time)
-        randomness.SetRandomizedNormalRNGSeed(0)  # set seed baesd on thread id & less repeatable factors (e.g,. time)
+        randomness = C_GP.RandomnessSourceContainer(max_num_threads)
+        # Set seed based on less repeatable factors (e.g,. time)
+        randomness.SetRandomizedUniformGeneratorSeed(0)
+        randomness.SetRandomizedNormalRNGSeed(0)
 
     # status must be an initialized dict for the call to C++.
     if status is None:
         status = {}
 
-    hyperparameter_optimization_parameters.objective_type = log_likelihood_evaluator._log_likelihood_type
+    # C++ expects the domain in log10 space
+    domain_bounds_log10 = numpy.log10(log_likelihood_optimizer.domain._domain_bounds)
+    domain_log10 = TensorProductDomain(geometry_utils.ClosedInterval.build_closed_intervals_from_list(domain_bounds_log10))
+
     hyperparameters_opt = C_GP.multistart_hyperparameter_optimization(
-        hyperparameter_optimization_parameters,  # HyperparameterOptimizationParameters object (see cpp_wrappers.optimization_parameters)
-        cpp_utils.cppify(hyperparameter_domain),  # domain of hyperparameters in LOG-10 SPACE
-        cpp_utils.cppify(log_likelihood_evaluator._historical_data.points_sampled),  # points already sampled
-        cpp_utils.cppify(log_likelihood_evaluator._historical_data.points_sampled_value),  # objective value at each sampled point
-        log_likelihood_evaluator._historical_data.dim,
-        log_likelihood_evaluator._historical_data.num_sampled,
-        cpp_utils.cppify_hyperparameters(log_likelihood_evaluator._covariance.get_hyperparameters()),  # hyperparameters, e.g., [signal variance, [length scales]]; see cppify_hyperparameter docs, C++ python interface docs
-        cpp_utils.cppify(log_likelihood_evaluator._historical_data.points_sampled_noise_variance),  # noise variance, one value per sampled point
+        log_likelihood_optimizer.optimization_parameters,
+        cpp_utils.cppify(domain_log10),
+        cpp_utils.cppify(log_likelihood_optimizer.objective_function._historical_data.points_sampled),
+        cpp_utils.cppify(log_likelihood_optimizer.objective_function._historical_data.points_sampled_value),
+        log_likelihood_optimizer.objective_function._historical_data.dim,
+        log_likelihood_optimizer.objective_function._historical_data.num_sampled,
+        cpp_utils.cppify_hyperparameters(log_likelihood_optimizer.objective_function._covariance.get_hyperparameters()),
+        cpp_utils.cppify(log_likelihood_optimizer.objective_function._historical_data.points_sampled_noise_variance),
         max_num_threads,
-        randomness,  # C++ RandomnessSourceContainer that holds a UniformRandomGenerator object
+        randomness,
         status,
     )
     return numpy.array(hyperparameters_opt)
@@ -138,7 +141,7 @@ def multistart_hyperparameter_optimization(log_likelihood_evaluator, hyperparame
 def evaluate_log_likelihood_at_hyperparameter_list(log_likelihood_evaluator, hyperparameters_to_evaluate, max_num_threads=1):
     """Compute the specified log likelihood measure at each input set of hyperparameters.
 
-    Generally gradient descent is preferred but when they fail to converge this may be the only "robust" option.
+    Generally Newton or gradient descent is preferred but when they fail to converge this may be the only "robust" option.
     This function is also useful for plotting or debugging purposes (just to get a bunch of log likelihood values).
 
     Calls into evaluate_log_likelihood_at_hyperparameter_list() in src/cpp/GPP_python_model_selection.cpp.
@@ -148,7 +151,7 @@ def evaluate_log_likelihood_at_hyperparameter_list(log_likelihood_evaluator, hyp
     :param hyperparameters_to_evaluate: the hyperparameters at which to compute the specified log likelihood
     :type hyperparameters_to_evaluate: array of float64 with shape (num_to_eval, log_likelihood_evaluator.num_hyperparameters)
     :param max_num_threads: maximum number of threads to use, >= 1
-    :type max_num_threads: int
+    :type max_num_threads: int > 0
     :return: log likelihood value at each specified set of hyperparameters
     :rtype: array of float64 with shape (hyperparameters_to_evaluate.shape[0])
 
@@ -156,15 +159,15 @@ def evaluate_log_likelihood_at_hyperparameter_list(log_likelihood_evaluator, hyp
     # We could just call log_likelihood_evaluator.compute_log_likelihood() in a loop, but instead we do
     # the looping in C++ where it can be multithreaded.
     log_likelihood_list = C_GP.evaluate_log_likelihood_at_hyperparameter_list(
-        cpp_utils.cppify(hyperparameters_to_evaluate),  # hyperparameters at which to compute log likelihood
-        cpp_utils.cppify(log_likelihood_evaluator._historical_data.points_sampled),  # points already sampled
-        cpp_utils.cppify(log_likelihood_evaluator._historical_data.points_sampled_value),  # objective value at each sampled point
+        cpp_utils.cppify(hyperparameters_to_evaluate),
+        cpp_utils.cppify(log_likelihood_evaluator._historical_data.points_sampled),
+        cpp_utils.cppify(log_likelihood_evaluator._historical_data.points_sampled_value),
         log_likelihood_evaluator._historical_data.dim,
         log_likelihood_evaluator._historical_data.num_sampled,
-        log_likelihood_evaluator._log_likelihood_type,  # log likelihood measure to eval (e.g., LogLikelihoodTypes.log_marginal_likelihood, see gpp_python_common.cpp for enum declaration)
-        cpp_utils.cppify_hyperparameters(log_likelihood_evaluator._covariance.get_hyperparameters()),  # hyperparameters, e.g., [signal variance, [length scales]]; see cppify_hyperparameter docs, C++ python interface docs
-        cpp_utils.cppify(log_likelihood_evaluator._historical_data.points_sampled_noise_variance),  # noise variance, one value per sampled point
-        hyperparameters_to_evaluate.shape[0],  # number of hyperparameter points to evaluate
+        log_likelihood_evaluator.objective_type,
+        cpp_utils.cppify_hyperparameters(log_likelihood_evaluator._covariance.get_hyperparameters()),
+        cpp_utils.cppify(log_likelihood_evaluator._historical_data.points_sampled_noise_variance),
+        hyperparameters_to_evaluate.shape[0],
         max_num_threads,
     )
     return numpy.array(log_likelihood_list)
@@ -197,7 +200,7 @@ class GaussianProcessLogLikelihood(GaussianProcessLogLikelihoodInterface, Optimi
         self._covariance = copy.deepcopy(covariance_function)
         self._historical_data = copy.deepcopy(historical_data)
 
-        self._log_likelihood_type = log_likelihood_type
+        self.objective_type = log_likelihood_type
 
     @property
     def dim(self):
@@ -236,7 +239,7 @@ class GaussianProcessLogLikelihood(GaussianProcessLogLikelihoodInterface, Optimi
         self.set_hyperparameters(current_point)
 
     def compute_log_likelihood(self):
-        r"""Compute the _log_likelihood_type measure at the specified hyperparameters.
+        r"""Compute the objective_type measure at the specified hyperparameters.
 
         :return: value of log_likelihood evaluated at hyperparameters (``LL(y | X, \theta)``)
         :rtype: float64
@@ -247,7 +250,7 @@ class GaussianProcessLogLikelihood(GaussianProcessLogLikelihoodInterface, Optimi
             cpp_utils.cppify(self._historical_data.points_sampled_value),  # objective value at each sampled point
             self.dim,
             self._historical_data.num_sampled,
-            self._log_likelihood_type,  # log likelihood measure to eval (e.g., LogLikelihoodTypes.log_marginal_likelihood, see gpp_python_common.cpp for enum declaration)
+            self.objective_type,  # log likelihood measure to eval (e.g., LogLikelihoodTypes.log_marginal_likelihood, see gpp_python_common.cpp for enum declaration)
             cpp_utils.cppify_hyperparameters(self._covariance._hyperparameters),  # hyperparameters, e.g., [signal variance, [length scales]]; see _cppify_hyperparameter docs, C++ python interface docs
             cpp_utils.cppify(self._historical_data.points_sampled_noise_variance),  # noise variance, one value per sampled point
         )
@@ -257,7 +260,7 @@ class GaussianProcessLogLikelihood(GaussianProcessLogLikelihoodInterface, Optimi
         return self.compute_log_likelihood()
 
     def compute_grad_log_likelihood(self):
-        r"""Compute the gradient (wrt hyperparameters) of the _log_likelihood_type measure at the specified hyperparameters.
+        r"""Compute the gradient (wrt hyperparameters) of the objective_type measure at the specified hyperparameters.
 
         :return: grad_log_likelihood: i-th entry is ``\pderiv{LL(y | X, \theta)}{\theta_i}``
         :rtype: array of float64 with shape (num_hyperparameters)
@@ -268,7 +271,7 @@ class GaussianProcessLogLikelihood(GaussianProcessLogLikelihoodInterface, Optimi
             cpp_utils.cppify(self._historical_data.points_sampled_value),  # objective value at each sampled point
             self.dim,
             self._historical_data.num_sampled,
-            self._log_likelihood_type,  # log likelihood measure to eval (e.g., LogLikelihoodTypes.log_marginal_likelihood, see gpp_python_common.cpp for enum declaration)
+            self.objective_type,  # log likelihood measure to eval (e.g., LogLikelihoodTypes.log_marginal_likelihood, see gpp_python_common.cpp for enum declaration)
             cpp_utils.cppify_hyperparameters(self._covariance._hyperparameters),  # hyperparameters, e.g., [signal variance, [length scales]]; see _cppify_hyperparameter docs, C++ python interface docs
             cpp_utils.cppify(self._historical_data.points_sampled_noise_variance),  # noise variance, one value per sampled point
         )
