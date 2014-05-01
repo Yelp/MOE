@@ -24,7 +24,7 @@ WORKDIR /home/app/MOE
 
 # Install the python
 ENV MOE_NO_BUILD_CPP True
-RUN pip install -e .
+RUN python setup.py install
 
 # Build the C++
 WORKDIR /home/app/MOE/moe
@@ -34,7 +34,7 @@ RUN cmake /home/app/MOE/moe/optimal_learning/cpp/
 RUN make
 
 # Copy the built C++ into the python
-RUN cp -r /home/app/MOE/moe/build /usr/local/lib/python2.7/dist-packages/moe/.
+RUN cp -r /home/app/MOE/moe/build $(python -c "import site; print(site.getsitepackages()[0])")/moe/.
 
 RUN chown -R app:app /home/app/MOE && chmod -R a+r /home/app/MOE
 WORKDIR /home/app/MOE
