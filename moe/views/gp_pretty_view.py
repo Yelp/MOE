@@ -36,9 +36,9 @@ class GpPrettyView(object):
 
     def pretty_response(self):
         """A pretty, browser interactive view for the interface. Includes form request and response.
-        
+
         :returns: A dictionary with 'endpoint' and 'default_text' keys.
-        
+
         """
         return {
                 'endpoint': self._route_name,
@@ -47,7 +47,7 @@ class GpPrettyView(object):
 
     def get_params_from_request(self):
         """Return the deserialized parameters from the json_body of a request.
-        
+
         :returns: A deserialized self.request_schema object
 
         """
@@ -55,7 +55,7 @@ class GpPrettyView(object):
 
     def form_response(self, response_dict):
         """Return the serialized response object from a dict.
-        
+
         :param response_dict: a dict that can be serialized by self.response_schema
         :type response_dict: dict
         :returns: a serialized self.response_schema object

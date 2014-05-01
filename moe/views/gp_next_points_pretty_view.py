@@ -107,7 +107,7 @@ class GpNextPointsPrettyView(GpPrettyView):
 
     def compute_next_points_to_sample_response(self, params, optimization_method_name, route_name, *args, **kwargs):
         """Compute the next points to sample (and their expected improvement) using optimization_method_name from params in the request.
-        
+
         :param deserialized_request_params: the deserialized REST request, containing ei_optimization_parameters and gp_info
         :type deserialized_request_params: a deserialized self.request_schema object
         :param optimization_method_name: the optimization method to use

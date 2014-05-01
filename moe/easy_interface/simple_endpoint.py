@@ -17,7 +17,7 @@ def gp_next_points(
         method_route_name=GP_NEXT_POINTS_EPI_ROUTE_NAME,
         rest_host=DEFAULT_HOST,
         rest_port=DEFAULT_PORT,
-        **kwargs,
+        **kwargs
 ):
     """Hit the rest endpoint for finding next point of highest EI at rest_host:rest_port corresponding to the method with the given experiment."""
     raw_payload = kwargs.copy()
