@@ -8,6 +8,9 @@
 # Data files
 *.mat
 
+# Tox files
+.tox
+
 # OSX crap
 *.DS_Store
 
@@ -29,13 +32,15 @@
 *.la
 *.a
 
-# built doc files
-doc/_*
-doc/xml/*
-doc/latex/*
-doc/html/*
-doc/.doctrees/*
-doc/moe.*.rst
+# built docs files
+docs/_*
+docs/xml/*
+docs/latex/*
+docs/html/*
+docs/.doctrees/*
+docs/moe.*.rst
+docs/gpp_*.rst
+docs/cpp_tree.rst
 
 # built binaries
 build

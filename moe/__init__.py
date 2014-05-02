@@ -10,6 +10,7 @@ from moe.views.constant import ALL_MOE_ROUTES
 def main(global_config, **settings):
     """Return a WSGI application."""
     config = Configurator(settings=settings, root_factory=Root)
+    config.include('pyramid_mako')
     config.add_static_view('static', 'moe:static')
 
     # Routes
@@ -46,9 +47,7 @@ def main(global_config, **settings):
         config.add_subscriber(add_mongo_db, NewRequest)
     config.scan(
             ignore=[
-                'moe.optimal_learning.EPI.src.python.lib.cuda_linkers',
-                'moe.optimal_learning.EPI.src.python.lib.plotter',
-                'moe.optimal_learning.EPI.src.python.models.plottable_optimal_gaussian_process',
+                'moe.optimal_learning.python.lib.cuda_linkers',
                 'moe.tests',
                 ],
             )

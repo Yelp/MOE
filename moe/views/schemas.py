@@ -2,7 +2,7 @@
 """Base level schemas for the response/request schemas of each MOE REST endpoint."""
 import colander
 
-from moe.optimal_learning.EPI.src.python.constant import default_gaussian_process_parameters, default_ei_optimization_parameters, default_optimizer_type, default_num_random_samples, ALL_OPTIMIZERS
+from moe.optimal_learning.python.constant import default_gaussian_process_parameters, default_ei_optimization_parameters, default_optimizer_type, default_num_random_samples, ALL_OPTIMIZERS
 
 
 class ListOfFloats(colander.SequenceSchema):

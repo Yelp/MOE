@@ -2,9 +2,9 @@
 """Utilities for MOE views."""
 from numpy.linalg import LinAlgError
 
-from moe.optimal_learning.EPI.src.python.data_containers import SamplePoint
-from moe.optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp import OptimalGaussianProcessLinkedCpp
-from moe.optimal_learning.EPI.src.python.models.covariance_of_process import CovarianceOfProcess
+from moe.optimal_learning.python.data_containers import SamplePoint
+from moe.optimal_learning.python.models.optimal_gaussian_process_linked_cpp import OptimalGaussianProcessLinkedCpp
+from moe.optimal_learning.python.models.covariance_of_process import CovarianceOfProcess
 from moe.views.exceptions import SingularMatrixError
 
 

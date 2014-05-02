@@ -18,7 +18,7 @@ def gp_next_points(
         rest_host=DEFAULT_HOST,
         rest_port=DEFAULT_PORT,
         **kwargs
-        ):
+):
     """Hit the rest endpoint for finding next point of highest EI at rest_host:rest_port corresponding to the method with the given experiment."""
     raw_payload = kwargs.copy()
     raw_payload['gp_info'] = moe_experiment.__dict__()
