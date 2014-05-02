@@ -10,7 +10,7 @@ import numpy
 from pyramid.view import view_config
 
 from moe.views.utils import _make_gp_from_gp_info
-from moe.views.gp_pretty_view import GpPrettyView
+from moe.views.gp_pretty_view import GpPrettyView, PRETTY_RENDERER
 
 import colander
 from moe.views.schemas import ListOfFloats, MatrixOfFloats, GpInfo, ListOfPointsInDomain
@@ -87,20 +87,20 @@ class GpMeanVarView(GpPrettyView):
 
     """Views for gp_mean_var endpoints."""
 
-    route_name = GP_MEAN_VAR_ROUTE_NAME
-    pretty_route_name = GP_MEAN_VAR_PRETTY_ROUTE_NAME
+    _route_name = GP_MEAN_VAR_ROUTE_NAME
+    _pretty_route_name = GP_MEAN_VAR_PRETTY_ROUTE_NAME
 
     request_schema = GpMeanVarRequest()
     response_schema = GpMeanVarResponse()
 
-    pretty_default_request = {
+    _pretty_default_request = {
             "points_to_sample": [
                 [0.1], [0.5], [0.9],
                 ],
-            "gp_info": GpPrettyView.pretty_default_gp_info,
+            "gp_info": GpPrettyView._pretty_default_gp_info,
             }
 
-    @view_config(route_name=pretty_route_name, renderer=GpPrettyView.pretty_renderer)
+    @view_config(route_name=_pretty_route_name, renderer=PRETTY_RENDERER)
     def pretty_view(self):
         """A pretty, browser interactive view for the interface. Includes form request and response.
 
@@ -109,7 +109,7 @@ class GpMeanVarView(GpPrettyView):
         """
         return self.pretty_response()
 
-    @view_config(route_name=route_name, renderer='json', request_method='POST')
+    @view_config(route_name=_route_name, renderer='json', request_method='POST')
     def gp_mean_var_view(self):
         """Endpoint for gp_mean_var POST requests.
 
@@ -134,7 +134,7 @@ class GpMeanVarView(GpPrettyView):
         mean, var = GP.get_mean_and_var_of_points(points_to_sample)
 
         return self.form_response({
-                'endpoint': self.route_name,
+                'endpoint': self._route_name,
                 'mean': mean.tolist(),
                 'var': var.tolist(),
                 })

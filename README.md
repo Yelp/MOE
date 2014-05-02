@@ -63,6 +63,23 @@ print exp.best_point
 
 # Install
 
+## Install in docker:
+
+This is the recommended way to run the MOE REST server. All dependencies and building is done automatically and in an isolated container.
+
+Docker (http://docs.docker.io/) is a container based virtualization framework. Unlike traditional virtualization Docker is fast, lightweight and easy to use. Docker allows you to create containers holding all the dependencies for an application. Each container is kept isolated from any other, and nothing gets shared.
+
+```bash
+$ git clone https://github.com/sc932/MOE.git
+$ cd MOE
+$ docker build -t moe_container .
+$ docker run -p 6543:6543 moe_container
+```
+
+The webserver and REST interface is now running on port 6543 from within the container.
+
+## Install from source:
+
 Requires:
 
 1. `python 2.6.7+` - http://python.org/download/
@@ -72,8 +89,6 @@ Requires:
 5. `pip 1.2.1+` - http://pip.readthedocs.org/en/latest/installing.html
 6. `doxygen 1.8.5+` - http://www.stack.nl/~dimitri/doxygen/index.html
 7. We recommend using a virtualenv http://www.jontourage.com/2011/02/09/virtualenv-pip-basics/
-
-## Install from source:
 
 ```bash
 $ git clone https://github.com/sc932/MOE.git
@@ -123,8 +138,8 @@ $ apt-get install python python-dev gcc cmake libboost-all-dev python-pip doxyge
 1. Fork it.
 2. Create a branch (`git checkout -b my_moe_branch`)
 3. Develop your feature/fix (don't forget to add tests!)
-4. `make test`
-5. Test style (`pyflakes`, `pep8` and `pep257`, or, automatically: `cp git-hooks/pre-commit .git/hooks/.`)
+4. Run tests (`tox`)
+5. Test against styleguide (`tox -e pep8 && tox -e pep257`)
 6. Commit your changes (`git commit -am "Added Some Mathemagics"`)
 7. Push to the branch (`git push origin my_moe_branch`)
 8. Open a [Pull Request][1]

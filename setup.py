@@ -11,6 +11,7 @@ from setuptools.command.install import install
 here = os.path.abspath(os.path.dirname(__file__))
 README = open(os.path.join(here, 'README.md')).read()
 
+# Following the versioning system at http://semver.org/
 MAJOR = 0
 MINOR = 1
 MICRO = 0
@@ -29,13 +30,14 @@ CLASSIFIERS = """
 
         """
 
+# If you change something here, change it in requirements.txt
 requires = [
     'pyramid',
+    'pyramid_mako',
     'WebError',
     'testify',
     'webtest',
-    'nose',
-    'yolk',
+    'tox',
     'numpy',
     'scipy',
     'simplejson',
@@ -43,6 +45,7 @@ requires = [
     'sphinx',
     'breathe',
     'sphinxcontrib-httpdomain',
+    'sphinx_rtd_theme',
     ]
 
 MoeExecutable = namedtuple('MoeExecutable', ['env_var', 'exe_name'])
@@ -79,6 +82,10 @@ class InstallCppComponents(install):
     def run(self):
         """Run the install."""
         install.run(self)
+        
+        # Sometimes we want to manually build the C++ (like in Docker)
+        if os.environ.get('MOE_NO_BUILD_CPP', 'False') == 'True':
+            return
 
         package_dir = os.path.join(self.install_lib, 'moe')
         build_dir = os.path.join(package_dir, 'build')
@@ -122,7 +129,7 @@ class InstallCppComponents(install):
             shutil.rmtree(local_build_dir)
         os.mkdir(local_build_dir)
 
-        cpp_location = os.path.join(here, 'moe', 'optimal_learning', 'EPI', 'src', 'cpp')
+        cpp_location = os.path.join(here, 'moe', 'optimal_learning', 'cpp')
 
         # Run cmake
         proc = subprocess.Popen(

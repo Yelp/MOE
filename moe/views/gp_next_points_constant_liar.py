@@ -8,7 +8,8 @@ import colander
 from pyramid.view import view_config
 
 from moe.views.gp_next_points_pretty_view import GpNextPointsPrettyView, GpNextPointsRequest
-from moe.views.constant import GP_NEXT_POINTS_CONSTANT_LIAR_ROUTE_NAME, GP_NEXT_POINTS_CONSTANT_LIAR_PRETTY_ROUTE_NAME
+from moe.views.gp_pretty_view import PRETTY_RENDERER
+from moe.views.constant import GP_NEXT_POINTS_CONSTANT_LIAR_ROUTE_NAME, GP_NEXT_POINTS_CONSTANT_LIAR_PRETTY_ROUTE_NAME, GP_NEXT_POINTS_CONSTANT_LIAR_OPTIMIZATION_METHOD_NAME
 
 
 class GpNextPointsConstantLiarRequest(GpNextPointsRequest):
@@ -64,16 +65,16 @@ class GpNextPointsconstant_liar(GpNextPointsPrettyView):
 
     """Views for gp_next_points_constant_liar endpoints."""
 
-    route_name = GP_NEXT_POINTS_CONSTANT_LIAR_ROUTE_NAME
-    pretty_route_name = GP_NEXT_POINTS_CONSTANT_LIAR_PRETTY_ROUTE_NAME
+    _route_name = GP_NEXT_POINTS_CONSTANT_LIAR_ROUTE_NAME
+    _pretty_route_name = GP_NEXT_POINTS_CONSTANT_LIAR_PRETTY_ROUTE_NAME
 
     request_schema = GpNextPointsConstantLiarRequest()
 
-    pretty_default_request = GpNextPointsPrettyView.pretty_default_request.copy()
-    pretty_default_request['lie_value'] = 0.0
-    pretty_default_request['lie_noise_variance'] = 0.0
+    _pretty_default_request = GpNextPointsPrettyView._pretty_default_request.copy()
+    _pretty_default_request['lie_value'] = 0.0
+    _pretty_default_request['lie_noise_variance'] = 0.0
 
-    @view_config(route_name=pretty_route_name, renderer=GpNextPointsPrettyView.pretty_renderer)
+    @view_config(route_name=_pretty_route_name, renderer=PRETTY_RENDERER)
     def pretty_view(self):
         """A pretty, browser interactive view for the interface. Includes form request and response.
 
@@ -82,7 +83,7 @@ class GpNextPointsconstant_liar(GpNextPointsPrettyView):
         """
         return self.pretty_response()
 
-    @view_config(route_name=route_name, renderer='json', request_method='POST')
+    @view_config(route_name=_route_name, renderer='json', request_method='POST')
     def gp_next_points_constant_liar_view(self):
         """Endpoint for gp_next_points_constant_liar POST requests.
 
@@ -100,7 +101,7 @@ class GpNextPointsconstant_liar(GpNextPointsPrettyView):
         params = self.get_params_from_request()
         return self.compute_next_points_to_sample_response(
                 params,
-                'constant_liar_expected_improvement_optimization',
-                self.route_name,
+                GP_NEXT_POINTS_CONSTANT_LIAR_OPTIMIZATION_METHOD_NAME,
+                self._route_name,
                 params.get('lie_value'),
                 )

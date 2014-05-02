@@ -8,7 +8,7 @@ Include:
 import colander
 
 import moe.build.GPP as C_GP
-from moe.optimal_learning.EPI.src.python.cpp_wrappers.optimization import GradientDescentParameters, GradientDescentOptimizer, NullOptimizer
+from moe.optimal_learning.python.cpp_wrappers.optimization import GradientDescentParameters, GradientDescentOptimizer, NullOptimizer
 from moe.views.gp_pretty_view import GpPrettyView
 from moe.views.schemas import GpInfo, EiOptimizationParameters, ListOfPointsInDomain, ListOfExpectedImprovements
 from moe.views.utils import _make_gp_from_gp_info
@@ -100,13 +100,24 @@ class GpNextPointsPrettyView(GpPrettyView):
     request_schema = GpNextPointsRequest()
     response_schema = GpNextPointsResponse()
 
-    pretty_default_request = {
+    _pretty_default_request = {
             "num_samples_to_generate": 1,
-            "gp_info": GpPrettyView.pretty_default_gp_info,
+            "gp_info": GpPrettyView._pretty_default_gp_info,
             }
 
     def compute_next_points_to_sample_response(self, params, optimization_method_name, route_name, *args, **kwargs):
-        """Compute the next points to sample (and their expected improvement) using optimization_method_name from params in the request."""
+        """Compute the next points to sample (and their expected improvement) using optimization_method_name from params in the request.
+
+        :param deserialized_request_params: the deserialized REST request, containing ei_optimization_parameters and gp_info
+        :type deserialized_request_params: a deserialized self.request_schema object as a dict
+        :param optimization_method_name: the optimization method to use
+        :type optimization_method_name: string in moe.views.constant.OPTIMIZATION_METHOD_NAMES
+        :param route_name: name of the route being called
+        :type route_name: string in moe.views.constant.ALL_REST_ROUTES_ROUTE_NAME_TO_ENDPOINT.keys()
+        :param *args: extra args to be passed to optimization method
+        :param **kwargs: extra kwargs to be passed to optimization method
+
+        """
         num_samples_to_generate = params.get('num_samples_to_generate')
 
         GP = self.make_gp(params)
@@ -132,15 +143,25 @@ class GpNextPointsPrettyView(GpPrettyView):
                 })
 
     @staticmethod
-    def make_gp(params):
-        """Create a GP object from params."""
-        gp_info = params.get('gp_info')
+    def make_gp(deserialized_request_params):
+        """Create a GP object from deserialized request params.
+
+        :param deserialized_request_params: the deserialized params of a REST request, containing gp_info
+        :type deserialized_request_params: a dictionary with a key 'gp_info' containing a deserialized moe.views.schemas.GpInfo object of historical data.
+
+        """
+        gp_info = deserialized_request_params.get('gp_info')
         return _make_gp_from_gp_info(gp_info)
 
     @staticmethod
-    def get_optimization_parameters_cpp(params):
-        """Figure out which cpp_wrappers.* objects to construct from params."""
-        ei_optimization_parameters = params.get('ei_optimization_parameters')
+    def get_optimization_parameters_cpp(deserialized_request_params):
+        """Figure out which cpp_wrappers.* objects to construct from params.
+
+        :param deserialized_request_params: the deserialized REST request, containing ei_optimization_parameters
+        :type deserialized_request_params: a dictionary with a key ei_optimization_parameters containing a moe.views.schemas.EiOptimizationParameters() object with optimization parameters
+
+        """
+        ei_optimization_parameters = deserialized_request_params.get('ei_optimization_parameters')
 
         # TODO(eliu): clean this up!
         # TODO(sclark): should this endpoint also support 'dumb' search optimization?

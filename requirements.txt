@@ -1,0 +1,14 @@
+pyramid
+pyramid_mako
+WebError
+testify
+webtest
+tox
+numpy
+scipy
+simplejson
+colander
+sphinx
+breathe
+sphinxcontrib-httpdomain
+sphinx_rtd_theme

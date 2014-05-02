@@ -1,15 +1,24 @@
-SUBDIRS=moe/build
-TESTIFY=testify
-
 all: production
 
+clean:
+		find . -name '*.pyc' -delete
+		rm -rf moe/build
+
 production:
-		for SUBDIR in $(SUBDIRS); do if [ -e $$SUBDIR/Makefile ]; then ($(MAKE) -C $$SUBDIR $(MFLAGS)); fi; done
+		python setup.py install
+
+test-no-tox:
+		testify -v moe.tests
 
 test:
-		$(TESTIFY) -v moe.tests
+		tox
+		tox -e pep8
+
+docs-no-tox:
+		python docs/cpp_rst_maker.py
+		doxygen docs/doxygen_config
+		sphinx-apidoc -f -o docs moe
+		sphinx-build -b html docs docs/_build/html
 
 docs:
-		$(MAKE) -C doc doxygen
-		sphinx-apidoc -f -o doc moe
-		$(MAKE) -C doc html
+		tox -e docs
