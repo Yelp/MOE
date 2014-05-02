@@ -4,10 +4,10 @@ r"""Tools to compute log likelihood-like measures of model fit and optimize them
 See the file comments in interfaces/log_likelihood_interface.py for an overview of log likelihood-like metrics and their role
 in model selection. This file provides an implementation of the Log Marginal Likelihood.
 
-.. Note: This is a copy of the file comments in cpp_wrappers/log_likelihood.py.
+.. Note:: This is a copy of the file comments in cpp_wrappers/log_likelihood.py.
   See this file's comments and interfaces.log_likelihood_interface for more details as well as the cpp_wrappers version.
 
-a) LOG MARGINAL LIKELIHOOD (LML):
+LOG MARGINAL LIKELIHOOD (LML):
 (Rasmussen & Williams, 5.4.1)
 The Log Marginal Likelihood measure comes from the ideas of Bayesian model selection, which use Bayesian inference
 to predict distributions over models and their parameters.  The cpp file comments explore this idea in more depth.
@@ -74,16 +74,15 @@ def multistart_hyperparameter_optimization(
     coordinates of the optima by more than about 1 order of magnitude. This is a very (VERY!) rough guideline for
     sizing the domain and gd_parameters.num_multistarts; i.e., be wary of sets of initial guesses that cover the space too sparsely.
 
-    Note that the domain here must be specified in LOG-10 SPACE!
-
     Solution is guaranteed to lie within the region specified by "domain"; note that this may not be a
     true optima (i.e., the gradient may be substantially nonzero).
 
     .. WARNING:: this function fails if NO improvement can be found!  In that case,
        the output will always be the first randomly chosen point. status will report failure.
 
-    :param hyperparameter_optimizer: ??
-    :type hyperparameter_optimizer:
+    :param hyperparameter_optimizer: object that optimizes (e.g., gradient descent, newton) the desired log_likelihood
+        measure over a domain (wrt the hyperparameters of covariance)
+    :type hyperparameter_optimizer: interfaces.optimization_interfaces.OptimizerInterface subclass
     :param num_multistarts: number of times to multistart ``hyperparameter_optimizer``
     :type num_multistarts: int > 0
     :param randomness: ?? (UNUSED)
@@ -104,7 +103,7 @@ def multistart_hyperparameter_optimization(
 
     best_hyperparameters, _ = multistart_optimize(hyperparameter_optimizer, starting_points=random_starts)
 
-    # TODO(eliu): have GD actually indicate whether updates were found
+    # TODO(eliu): have GD actually indicate whether updates were found (GH-59)
     found_flag = True
     if status is not None:
         status["gradient_descent_found_update"] = found_flag
@@ -142,7 +141,7 @@ class GaussianProcessLogMarginalLikelihood(GaussianProcessLogLikelihoodInterface
 
     This is a measure of how likely it is that the observed values came from our Gaussian Process Prior.
 
-    .. Note: This is a copy of GaussianProcessLogMarginalLikelihood's class comments in cpp_wrappers/log_likelihood.py.
+    .. Note:: This is a copy of GaussianProcessLogMarginalLikelihood's class comments in cpp_wrappers/log_likelihood.py.
       See this file's comments and interfaces.log_likelihood_interface for more details as well as the cpp_wrappers version.
 
     Given a particular covariance function (including hyperparameters) and

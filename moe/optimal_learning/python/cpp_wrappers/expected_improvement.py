@@ -216,7 +216,7 @@ def constant_liar_expected_improvement_optimization(
     See heuristic_expected_improvement_optimization() docs for general notes on how the heuristic optimization works.
     In this specific instance, we use the Constant Liar estimation policy.
 
-    .. Note: comments copied from ConstantLiarEstimationPolicy in gpp_heuristic_expected_improvement_optimization.hpp.
+    .. Note:: comments copied from ConstantLiarEstimationPolicy in gpp_heuristic_expected_improvement_optimization.hpp.
 
     The "Constant Liar" objective function estimation policy is the simplest: it always returns the same value
     (Ginsbourger 2008). We call this the "lie. This object also allows users to associate a noise variance to
@@ -277,7 +277,7 @@ def kriging_believer_expected_improvement_optimization(
     See heuristic_expected_improvement_optimization() docs for general notes on how the heuristic optimization works.
     In this specific instance, we use the Kriging Believer estimation policy.
 
-    .. Note: comments copied from KrigingBelieverEstimationPolicy in gpp_heuristic_expected_improvement_optimization.hpp.
+    .. Note:: comments copied from KrigingBelieverEstimationPolicy in gpp_heuristic_expected_improvement_optimization.hpp.
 
     The "Kriging Believer" objective function estimation policy uses the Gaussian Process (i.e., the prior)
     to produce objective function estimates. The simplest method is to trust the GP completely:

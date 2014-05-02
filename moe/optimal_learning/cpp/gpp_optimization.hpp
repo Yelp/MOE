@@ -286,7 +286,7 @@
      * Reports the best result overall (and optionally each individual result)
      * Proxy for finding the global maximum since it is difficult/impossible to guarantee an optimum is global
         in general. See function comments (below) and header comments (above, 2c) for details.
-     .. NOTE: uses OptimizationIOContainer class (see declaration below for details) for inputting/outputting
+     .. NOTE:: uses OptimizationIOContainer class (see declaration below for details) for inputting/outputting
         information about currently best-known objective values/points and the optimization result.
 \endrst*/
 
@@ -893,7 +893,7 @@ class NewtonOptimizer final {
   /*!\rst
     Uses Newton's Method to optimize the value of an objective function, f (e.g., log marginal likelihood).
 
-    .. NOTE: this function wraps NewtonOptimization(), see above.  It first calls that function directly, then calls it again
+    .. NOTE:: this function wraps NewtonOptimization(), see above.  It first calls that function directly, then calls it again
         with a modified newton_parameters struct: the param struct is modified to run newton with a small number
         of iterations at a huge time_factor (to remove the diagonal dominance adjustment entirely).  We do this
         to ensure that Newton has converged.
@@ -958,7 +958,7 @@ class NewtonOptimizer final {
 
   This class provides just one method (for now), MultistartOptimize(); see below.
 
-  .. Note: comments copied to MultistartOptimizer in python_version/optimization.py.
+  .. Note:: comments copied to MultistartOptimizer in python_version/optimization.py.
 \endrst*/
 template <typename Optimizer_>
 class MultistartOptimizer final {
@@ -979,7 +979,7 @@ class MultistartOptimizer final {
     reported.  It will otherwise report the overall best improvement (through io_container) as well as the result of every
     individual multistart run if desired (through function_values).
 
-    .. Note: comments copied to MultistartOptimizer.optimize() in python_version/optimization.py.
+    .. Note:: comments copied to MultistartOptimizer.optimize() in python_version/optimization.py.
 
     Generally, you will not call this function directly.  Instead, it is intended to be used in wrappers that set up state,
     chunk_size, etc. for the specific optimization problem at hand.  For examples with Expected Improvement (EI), see gpp_math:

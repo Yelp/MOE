@@ -68,7 +68,7 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
         We use a fairly low number of monte-carlo iterations since we are not
         trying to converge; just check for consistency.
 
-        .. Note: this is not a particularly good test. It relies on the "naive"
+        .. Note:: this is not a particularly good test. It relies on the "naive"
           version being easier to verify manually and only checks for consistency
           between the naive and vectorized versions.
 

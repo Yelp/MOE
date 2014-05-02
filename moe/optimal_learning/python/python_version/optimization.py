@@ -169,7 +169,7 @@ def multistart_optimize(optimizer, starting_points=None, num_multistarts=None):
     """Multistart the specified optimizer randomly or from the specified list of initial guesses.
 
     If ``starting_points`` is specified, this will always multistart from those points.
-    If ``starting_points`` is not specified and ``num_multistarts`` IS specified, we start from a random set of points.
+    If ``starting_points`` is not specified and ``num_multistarts`` is specified, we start from a random set of points.
     If ``starting_points`` is not specified and ``num_multistarts`` is not specified, an exception is raised.
 
     This is a simple wrapper around MultistartOptimizer.
@@ -199,11 +199,23 @@ class NullParameters(collections.namedtuple('NullParameters', [])):
     __slots__ = ()
 
 
-class GradientDescentParameters(collections.namedtuple('GradientDescentParameters', ['max_num_steps', 'max_num_restarts', 'num_steps_averaged', 'gamma', 'pre_mult', 'max_relative_change', 'tolerance'])):
+# See GradientDescentParameters (below) for docstring.
+_BaseGradientDescentParameters = collections.namedtuple('_BaseGradientDescentParameters', [
+    'max_num_steps',
+    'max_num_restarts',
+    'num_steps_averaged',
+    'gamma',
+    'pre_mult',
+    'max_relative_change',
+    'tolerance',
+])
+
+
+class GradientDescentParameters(_BaseGradientDescentParameters):
 
     r"""Container to hold parameters that specify the behavior of Gradient Descent.
 
-    .. Note: the following comments are copied from cpp_wrappers.optimization.GradientDescentParameters
+    .. Note:: the following comments are copied from cpp_wrappers.optimization.GradientDescentParameters
 
     Iterations:
     The total number of gradient descent steps is at most ``num_multistarts * max_num_steps * max_num_restarts``
@@ -272,7 +284,7 @@ class GradientDescentOptimizer(OptimizerInterface):
 
     """Optimizes an objective function over the specified domain with the gradient descent method.
 
-    See optimize() docstring for more details.
+    .. Note:: See optimize() docstring for more details.
 
     """
 
@@ -324,7 +336,7 @@ class GradientDescentOptimizer(OptimizerInterface):
 
         .. Note:: comments in this method are copied from the function comments of GradientDescentOptimization() in cpp/gpp_optimization.hpp.
 
-        Additional high-level discussion is provided in section 2a) in the header docs of this file.
+        .. Note:: Additional high-level discussion is provided in section 2a) in the header docs of this file.
 
         Basic gradient descent (GD) to optimize objective function ``f(x)``:
         ::
@@ -371,7 +383,7 @@ class GradientDescentOptimizer(OptimizerInterface):
         Finally, GD terminates if updates are very small.
 
         """
-        # TODO(eliu): implement restarts like in the C++ code
+        # TODO(eliu): implement restarts like in the C++ code (GH-59)
         initial_guess = self.objective_function.get_current_point()
         x_hat = initial_guess
         x_path = numpy.empty((self.optimization_parameters.max_num_steps + 1, initial_guess.size))
@@ -394,7 +406,7 @@ class GradientDescentOptimizer(OptimizerInterface):
             x_path[step_counter, ...] = fixed_step + x_path[step_counter - 1, ...]
 
             step_counter += 1
-            # TODO(eliu): tolerance control: if step is too small, stop (??). This goes at the loop's end, AFTER incrementing step_counter!
+            # TODO(eliu): tolerance control: if step is too small, stop (??). This goes at the loop's end, AFTER incrementing step_counter! (GH-59)
 
         # Polyak-Ruppert averaging: postprocessing step where we replace x_n with:
         # \overbar{x} = \frac{1}{n - n_0} \sum_{t=n_0 + 1}^n x_t
@@ -408,7 +420,7 @@ class MultistartOptimizer(OptimizerInterface):
 
     r"""A general class for multistarting any class that implements interfaces.optimization_interface.OptimizerInterface (except itself).
 
-    .. Note: comments copied from MultistartOptimizer in gpp_optimization.hpp.
+    .. Note:: comments copied from MultistartOptimizer in gpp_optimization.hpp.
 
     The use with GradientDescentOptimizer, NewtonOptimizer, etc. are standard practice in nonlinear optimization.  In particular,
     without special properties like convexity, single-start optimizers can converge to local optima.  In general, a nonlinear
@@ -441,7 +453,7 @@ class MultistartOptimizer(OptimizerInterface):
     def optimize(self, random_starts=None, **kwargs):
         """Perform multistart optimization with self.optimizer.
 
-        .. Note: comments copied from MultistartOptimizer::MultistartOptimize in gpp_optimization.hpp.
+        .. Note:: comments copied from MultistartOptimizer::MultistartOptimize in gpp_optimization.hpp.
 
         Performs multistart optimization with the specified Optimizer (instance variable) to optimize the specified
         OptimizableInterface (objective function) over the specified DomainInterface. Optimizer behavior is controlled
@@ -458,7 +470,7 @@ class MultistartOptimizer(OptimizerInterface):
         :rtype: tuple: (array of float64 with shape (self.optimizer.dim), array of float64 with shape (self.num_multistarts))
 
         """
-        # TODO(eliu): pass the best point, fcn value, etc. in thru an IOContainer-like structure
+        # TODO(eliu): pass the best point, fcn value, etc. in thru an IOContainer-like structure (GH-59)
         if random_starts is None:
             random_starts = self.optimizer.domain.generate_uniform_random_points_in_domain(self.num_multistarts, None)
 

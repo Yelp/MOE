@@ -5,7 +5,7 @@ See the file comments in interfaces/log_likelihood_interface.py for an overview 
 in model selection. This file provides hooks to implementations of two such metrics in C++: Log Marginal Likelihood and
 Leave One Out Cross Validation Log Pseudo-Likelihood.
 
-.. Note: This is a copy of the file comments in gpp_model_selection_and_hyperparameter_optimization.hpp.
+.. Note:: This is a copy of the file comments in gpp_model_selection_and_hyperparameter_optimization.hpp.
   These comments are copied in python_version/log_likelihood.py.
   See this file's comments and interfaces.log_likelihood_interface for more details as well as the hpp and corresponding .cpp file.
 
@@ -301,7 +301,7 @@ class GaussianProcessLogMarginalLikelihood(GaussianProcessLogLikelihood):
 
     This is a measure of how likely it is that the observed values came from our Gaussian Process Prior.
 
-    .. Note: This is a copy of LogMarginalLikelihoodEvaluator's class comments in gpp_model_selection_and_hyperparameter_optimization.hpp.
+    .. Note:: This is a copy of LogMarginalLikelihoodEvaluator's class comments in gpp_model_selection_and_hyperparameter_optimization.hpp.
       See this file's comments and interfaces.log_likelihood_interface for more details as well as the hpp and corresponding .cpp file.
 
     Given a particular covariance function (including hyperparameters) and
@@ -336,7 +336,7 @@ class GaussianProcessLeaveOneOutLogLikelihood(GaussianProcessLogLikelihood):
     Given a particular covariance function (including hyperparameters) and training data ((point, function value, measurement noise)
     tuples), the log LOO-CV pseudo-likelihood expresses how well the model explains itself.
 
-    .. Note: This is a copy of LeaveOneOutLogLikelihoodEvaluator's class comments in gpp_model_selection_and_hyperparameter_optimization.hpp.
+    .. Note:: This is a copy of LeaveOneOutLogLikelihoodEvaluator's class comments in gpp_model_selection_and_hyperparameter_optimization.hpp.
       See this file's comments and interfaces.log_likelihood_interface for more details as well as the hpp and corresponding .cpp file.
 
     That is, cross validation involves splitting the training set into a sub-training set and a validation set.  Then we measure

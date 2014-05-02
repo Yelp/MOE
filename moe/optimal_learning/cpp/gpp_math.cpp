@@ -374,7 +374,7 @@ OL_NONNULL_POINTERS void BuildMixCovarianceMatrix(const CovarianceInterface& cov
 
   See Scott's PhD thesis, sec 6.2.
 
-  .. Note: comments here are copied to _compute_expected_improvement_monte_carlo() in python_version/expected_improvement.py
+  .. Note:: comments here are copied to _compute_expected_improvement_monte_carlo() in python_version/expected_improvement.py
   */
 double ExpectedImprovementEvaluator::ComputeExpectedImprovement(StateType * ei_state) const {
   int num_to_sample = ei_state->num_to_sample;
@@ -420,7 +420,7 @@ double ExpectedImprovementEvaluator::ComputeExpectedImprovement(StateType * ei_s
   ``grad_mu``) and has a more complex structure (rank 3 tensor), so the derivative wrt ``x_j`` is computed fully, and
   the relevant submatrix (indexed by the current ``winner``) is accessed each iteration.
 
-  .. Note: comments here are copied to _compute_grad_expected_improvement_monte_carlo() in python_version/expected_improvement.py
+  .. Note:: comments here are copied to _compute_grad_expected_improvement_monte_carlo() in python_version/expected_improvement.py
 */
 void ExpectedImprovementEvaluator::ComputeGradExpectedImprovement(StateType * ei_state, double * restrict grad_EI) const {
   const int index_of_current_point = StateType::kIndexOfCurrentPoint;

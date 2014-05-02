@@ -19,7 +19,7 @@ class GaussianProcess(GaussianProcessInterface):
 
     r"""Implementation of a GaussianProcess strictly in Python.
 
-    .. Note: Comments in this class are copied from this object's superclass in interfaces.gaussian_process_interface.py.
+    .. Note:: Comments in this class are copied from this object's superclass in interfaces.gaussian_process_interface.py.
 
     Object that encapsulates Gaussian Process Priors (GPPs).  A GPP is defined by a set of
     (sample point, function value, noise variance) triples along with a covariance function that relates the points.
@@ -46,7 +46,7 @@ class GaussianProcess(GaussianProcessInterface):
     def __init__(self, covariance_function, historical_data):
         """Construct a GaussianProcess object that knows how to call C++ for evaluation of member functions.
 
-        TODO(eliu): have a way to set private RNG state for self.sample_point_from_gp()
+        TODO(eliu): have a way to set private RNG state for self.sample_point_from_gp() (GH-56)
 
         :param covariance_function: covariance object encoding assumptions about the GP's behavior on our data
         :type covariance_function: Covariance object exposing hyperparameters (e.g., from cpp_wrappers.covariance)
@@ -81,9 +81,9 @@ class GaussianProcess(GaussianProcessInterface):
     def compute_mean_of_points(self, points_to_sample):
         r"""Compute the mean of this GP at each of point of ``Xs`` (``points_to_sample``).
 
-        ``points_to_sample`` may not contain duplicate points. Violating this results in singular covariance matrices.
+        .. Warning:: ``points_to_sample`` may not contain duplicate points.
 
-        .. Note: Comments in this class are copied from this's superclass in interfaces.gaussian_process_interface.py.
+        .. Note:: Comments in this class are copied from this's superclass in interfaces.gaussian_process_interface.py.
 
         :param points_to_sample: num_to_sample points (in dim dimensions) being sampled from the GP
         :type points_to_sample: array of float64 with shape (num_to_sample, dim)
@@ -101,15 +101,15 @@ class GaussianProcess(GaussianProcessInterface):
     def compute_grad_mean_of_points(self, points_to_sample):
         r"""Compute the gradient of the mean of this GP at each of point of ``Xs`` (``points_to_sample``) wrt ``Xs``.
 
-        ``points_to_sample`` may not contain duplicate points. Violating this results in singular covariance matrices.
+        .. Warning:: ``points_to_sample`` may not contain duplicate points.
 
-        Note that ``grad_mu`` is nominally sized: ``grad_mu[num_to_sample][num_to_sample][dim]``. This is
+        Observe that ``grad_mu`` is nominally sized: ``grad_mu[num_to_sample][num_to_sample][dim]``. This is
         the the d-th component of the derivative evaluated at the i-th input wrt the j-th input.
         However, for ``0 <= i,j < num_to_sample``, ``i != j``, ``grad_mu[j][i][d] = 0``.
         (See references or implementation for further details.)
         Thus, ``grad_mu`` is stored in a reduced form which only tracks the nonzero entries.
 
-        .. Note: Comments in this class are copied from this's superclass in interfaces.gaussian_process_interface.py.
+        .. Note:: Comments in this class are copied from this's superclass in interfaces.gaussian_process_interface.py.
 
         :param points_to_sample: num_to_sample points (in dim dimensions) being sampled from the GP
         :type points_to_sample: array of float64 with shape (num_to_sample, dim)
@@ -130,11 +130,11 @@ class GaussianProcess(GaussianProcessInterface):
     def compute_variance_of_points(self, points_to_sample):
         r"""Compute the variance (matrix) of this GP at each point of ``Xs`` (``points_to_sample``).
 
-        ``points_to_sample`` may not contain duplicate points. Violating this results in singular covariance matrices.
+        .. Warning:: ``points_to_sample`` may not contain duplicate points. Violating this may result in singular covariance matrices.
 
         The variance matrix is symmetric although we currently return the full representation.
 
-        .. Note: Comments in this class are copied from this's superclass in interfaces.gaussian_process_interface.py.
+        .. Note:: Comments in this class are copied from this's superclass in interfaces.gaussian_process_interface.py.
 
         :param points_to_sample: num_to_sample points (in dim dimensions) being sampled from the GP
         :type points_to_sample: array of float64 with shape (num_to_sample, dim)
@@ -157,7 +157,7 @@ class GaussianProcess(GaussianProcessInterface):
     def compute_cholesky_variance_of_points(self, points_to_sample):
         r"""Compute the cholesky factorization of the variance (matrix) of this GP at each point of ``Xs`` (``points_to_sample``).
 
-        ``points_to_sample`` may not contain duplicate points. Violating this results in singular covariance matrices.
+        .. Warning:: ``points_to_sample`` may not contain duplicate points. Violating this may result in singular covariance matrices.
 
         :param points_to_sample: num_to_sample points (in dim dimensions) being sampled from the GP
         :type points_to_sample: array of float64 with shape (num_to_sample, dim)
@@ -170,12 +170,12 @@ class GaussianProcess(GaussianProcessInterface):
     def compute_grad_variance_of_points(self, points_to_sample, var_of_grad):
         r"""Compute the gradient of the variance (matrix) of this GP at each point of ``Xs`` (``points_to_sample``) wrt ``Xs``.
 
-        ``points_to_sample`` may not contain duplicate points. Violating this results in singular covariance matrices.
+        .. Warning:: ``points_to_sample`` may not contain duplicate points.
 
         This function is similar to compute_grad_cholesky_variance_of_points() (below), except this does not include
         gradient terms from the cholesky factorization. Description will not be duplicated here.
 
-        .. Note: Comments in this class are copied from this's superclass in interfaces.gaussian_process_interface.py.
+        .. Note:: Comments in this class are copied from this's superclass in interfaces.gaussian_process_interface.py.
 
         :param points_to_sample: num_to_sample points (in dim dimensions) being sampled from the GP
         :type points_to_sample: array of float64 with shape (num_to_sample, dim)
@@ -185,7 +185,7 @@ class GaussianProcess(GaussianProcessInterface):
         :rtype: array of float64 with shape (num_to_sample, num_to_sample, dim)
 
         """
-        # TODO(eliu): this can be improved/optimized VASTLY. see: gpp_math.cpp, GaussianProcess::ComputeGradVarianceOfPoints
+        # TODO(eliu): this can be improved/optimized. see: gpp_math.cpp, GaussianProcess::ComputeGradVarianceOfPoints (GH-62)
         num_to_sample = points_to_sample.shape[0]
 
         # Compute grad variance
@@ -213,12 +213,12 @@ class GaussianProcess(GaussianProcessInterface):
     def compute_grad_cholesky_variance_of_points(self, points_to_sample, var_of_grad):
         r"""Compute the gradient of the cholesky factorization of the variance (matrix) of this GP at each point of ``Xs`` (``points_to_sample``) wrt ``Xs``.
 
-        ``points_to_sample`` may not contain duplicate points. Violating this results in singular covariance matrices.
+        .. Warning:: ``points_to_sample`` may not contain duplicate points. Violating this may result in singular covariance matrices.
 
         This function accounts for the effect on the gradient resulting from
         cholesky-factoring the variance matrix.  See Smith 1995 for algorithm details.
 
-        Note that ``grad_chol`` is nominally sized:
+        Observe that ``grad_chol`` is nominally sized:
         ``grad_chol[num_to_sample][num_to_sample][num_to_sample][dim]``.
         Let this be indexed ``grad_chol[j][i][k][d]``, which is read the derivative of ``var[j][i]``
         with respect to ``x_{k,d}`` (x = ``points_to_sample``)
@@ -226,7 +226,7 @@ class GaussianProcess(GaussianProcessInterface):
         Due to actual usage patterns, the full gradient tensor is never required simultaneously;
         thus only ``grad_chol[j][i][d]`` is formed with k (``var_of_grad``) as an input parameter to this function.
 
-        .. Note: Comments in this class are copied from this's superclass in interfaces.gaussian_process_interface.py.
+        .. Note:: Comments in this class are copied from this's superclass in interfaces.gaussian_process_interface.py.
 
         :param points_to_sample: num_to_sample points (in dim dimensions) being sampled from the GP
         :type points_to_sample: array of float64 with shape (num_to_sample, dim)
@@ -239,7 +239,7 @@ class GaussianProcess(GaussianProcessInterface):
         :rtype: array of float64 with shape (num_to_sample, num_to_sample, dim)
 
         """
-        # TODO(eliu): this can be improved/optimized VASTLY. see: gpp_math.cpp, GaussianProcess::ComputeGradCholeskyVarianceOfPoints
+        # TODO(eliu): this can be improved/optimized. see: gpp_math.cpp, GaussianProcess::ComputeGradCholeskyVarianceOfPoints (GH-62)
         num_to_sample = points_to_sample.shape[0]
 
         var_star = self.compute_variance_of_points(points_to_sample)
@@ -268,20 +268,20 @@ class GaussianProcess(GaussianProcessInterface):
 
         return grad_chol
 
-    def add_sampled_points(self, sampled_points):
+    def add_sampled_points(self, sampled_points, validate=False):
         r"""Add sampled point(s) (point, value, noise) to the GP's prior data.
 
         Also forces recomputation of all derived quantities for GP to remain consistent.
 
-        TOOD(eliu): figure out how to deal with single or list of points (or not deal with it)
-
         :param sampled_points: SampledPoint objects to load into the GP (containing point, function value, and noise variance)
-        :type sampled_points: single SampledPoint or list of SampledPoint objects
+        :type sampled_points: list of SampledPoint objects
+        :param validate: whether to sanity-check the input sample_points
+        :type validate: boolean
 
         """
         # TODO(eliu): make this more efficient than rebuilding all precomputed data (e.g., can update the existing K_chol
-        # instead of recomputing it from scratch.
-        self._historical_data.append_sample_points(sampled_points)
+        # instead of recomputing it from scratch. (ADS-3583)
+        self._historical_data.append_sample_points(sampled_points, validate=validate)
         self._build_precomputed_data()
 
     def sample_point_from_gp(self, point_to_sample, noise_variance=0.0):
@@ -290,14 +290,12 @@ class GaussianProcess(GaussianProcessInterface):
         Uses the formula ``function_value = gpp_mean + sqrt(gpp_variance) * w1 + sqrt(noise_variance) * w2``, where ``w1, w2``
         are draws from N(0,1).
 
-        Implementers are responsible for providing a N(0,1) source.
-
         .. NOTE::
              Set noise_variance to 0 if you want "accurate" draws from the GP.
              BUT if the drawn (point, value) pair is meant to be added back into the GP (e.g., for testing), then this point
              MUST be drawn with noise_variance equal to the noise associated with "point" as a member of "points_sampled"
 
-        .. Note: Comments in this class are copied from this's superclass in interfaces.gaussian_process_interface.py.
+        .. Note:: Comments in this class are copied from this's superclass in interfaces.gaussian_process_interface.py.
 
         :param point_to_sample: point (in dim dimensions) at which to sample from this GP
         :type points_to_sample: array of float64 with shape (dim)

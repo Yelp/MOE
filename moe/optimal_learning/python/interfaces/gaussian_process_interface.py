@@ -58,7 +58,7 @@ class GaussianProcessInterface(object):
 
         ``points_to_sample`` may not contain duplicate points. Violating this results in singular covariance matrices.
 
-        .. Note: Comments in this class are copied from GaussianProcess in gpp_math.hpp and duplicated in cpp_wrappers.gaussian_process.
+        .. Note:: Comments in this class are copied from GaussianProcess in gpp_math.hpp and duplicated in cpp_wrappers.gaussian_process.
 
         :param points_to_sample: num_to_sample points (in dim dimensions) being sampled from the GP
         :type points_to_sample: array of float64 with shape (num_to_sample, dim)
@@ -80,7 +80,7 @@ class GaussianProcessInterface(object):
         (See references or implementation for further details.)
         Thus, ``grad_mu`` is stored in a reduced form which only tracks the nonzero entries.
 
-        .. Note: Comments in this class are copied from GaussianProcess in gpp_math.hpp and duplicated in cpp_wrappers.gaussian_process.
+        .. Note:: Comments in this class are copied from GaussianProcess in gpp_math.hpp and duplicated in cpp_wrappers.gaussian_process.
 
         :param points_to_sample: num_to_sample points (in dim dimensions) being sampled from the GP
         :type points_to_sample: array of float64 with shape (num_to_sample, dim)
@@ -99,7 +99,7 @@ class GaussianProcessInterface(object):
 
         The variance matrix is symmetric although we currently return the full representation.
 
-        .. Note: Comments in this class are copied from GaussianProcess in gpp_math.hpp and duplicated in cpp_wrappers.gaussian_process.
+        .. Note:: Comments in this class are copied from GaussianProcess in gpp_math.hpp and duplicated in cpp_wrappers.gaussian_process.
 
         :param points_to_sample: num_to_sample points (in dim dimensions) being sampled from the GP
         :type points_to_sample: array of float64 with shape (num_to_sample, dim)
@@ -132,7 +132,7 @@ class GaussianProcessInterface(object):
         This function is similar to compute_grad_cholesky_variance_of_points() (below), except this does not include
         gradient terms from the cholesky factorization. Description will not be duplicated here.
 
-        .. Note: Comments in this class are copied from GaussianProcess in gpp_math.hpp and duplicated in cpp_wrappers.gaussian_process.
+        .. Note:: Comments in this class are copied from GaussianProcess in gpp_math.hpp and duplicated in cpp_wrappers.gaussian_process.
 
         :param points_to_sample: num_to_sample points (in dim dimensions) being sampled from the GP
         :type points_to_sample: array of float64 with shape (num_to_sample, dim)
@@ -161,7 +161,7 @@ class GaussianProcessInterface(object):
         Due to actual usage patterns, the full gradient tensor is never required simultaneously;
         thus only ``grad_chol[j][i][d]`` is formed with k (``var_of_grad``) as an input parameter to this function.
 
-        .. Note: Comments in this class are copied from GaussianProcess in gpp_math.hpp and duplicated in cpp_wrappers.gaussian_process.
+        .. Note:: Comments in this class are copied from GaussianProcess in gpp_math.hpp and duplicated in cpp_wrappers.gaussian_process.
 
         :param points_to_sample: num_to_sample points (in dim dimensions) being sampled from the GP
         :type points_to_sample: array of float64 with shape (num_to_sample, dim)
@@ -202,7 +202,7 @@ class GaussianProcessInterface(object):
              BUT if the drawn (point, value) pair is meant to be added back into the GP (e.g., for testing), then this point
              MUST be drawn with noise_variance equal to the noise associated with "point" as a member of "points_sampled"
 
-        .. Note: Comments in this class are copied from GaussianProcess in gpp_math.hpp and duplicated in cpp_wrappers.gaussian_process.
+        .. Note:: Comments in this class are copied from GaussianProcess in gpp_math.hpp and duplicated in cpp_wrappers.gaussian_process.
 
         :param point_to_sample: point (in dim dimensions) at which to sample from this GP
         :type points_to_sample: array of float64 with shape (dim)

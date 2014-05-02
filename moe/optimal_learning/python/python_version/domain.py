@@ -52,13 +52,17 @@ class TensorProductDomain(DomainInterface):
         :rtype: bool
 
         """
+        # Generate a list of bool; i-th entry is True if i-th coordinate is inside the i-th bounds.
+        # Then check that all entries are True.
         return all([interval.is_inside(point[i]) for i, interval in enumerate(self._domain_bounds)])
 
     def generate_random_point_in_domain(self, random_source=None):
-        """Generate ``point`` such that ``self.check_point_inside(point)`` is True.
+        """Generate ``point`` uniformly at random such that ``self.check_point_inside(point)`` is True.
 
-        .. Note: if you need multiple points, use generate_uniform_random_points_in_domain instead; it
-          yields better distributions over many points.
+        .. Note:: if you need multiple points, use generate_uniform_random_points_in_domain instead; it
+          yields better distributions over many points (via latin hypercube samplling) b/c it guarantees
+          that no non-uniform clusters may arise (in subspaces) versus this method which treats all draws
+          independently.
 
         :return: point in domain
         :rtype: array of float64 with shape (dim)
@@ -67,7 +71,7 @@ class TensorProductDomain(DomainInterface):
         return numpy.array([numpy.random.uniform(interval.min, interval.max) for interval in self._domain_bounds])
 
     def generate_uniform_random_points_in_domain(self, num_points, random_source=None):
-        r"""Generate ``num_points`` uniformly distributed points from the domain.
+        r"""Generate ``num_points`` on a latin-hypercube (i.e., like a checkerboard).
 
         :param num_points: max number of points to generate
         :type num_points: integer >= 0
@@ -77,7 +81,7 @@ class TensorProductDomain(DomainInterface):
         :rtype: array of float64 with shape (num_points, dim)
 
         """
-        # TODO(eliu): actually allow users to pass in a random source
+        # TODO(eliu): actually allow users to pass in a random source (GH-56)
         return generate_latin_hypercube_points(num_points, self._domain_bounds)
 
     def compute_update_restricted_to_domain(self, max_relative_change, current_point, update_vector):
@@ -86,7 +90,8 @@ class TensorProductDomain(DomainInterface):
         Changes new_update_vector so that:
           ``point_new = point + new_update_vector``
 
-        has coordinates such that ``CheckPointInside(point_new)`` returns true.
+        has coordinates such that ``CheckPointInside(point_new)`` returns true. We select ``point_new``
+        by projecting ``point + update_vector`` to the nearest point on the domain.
 
         ``new_update_vector`` is a function of ``update_vector``.
         ``new_update_vector`` is just a copy of ``update_vector`` if ``current_point`` is already inside the domain.
@@ -105,15 +110,20 @@ class TensorProductDomain(DomainInterface):
         :rtype: array of float64 with shape (dim)
 
         """
-        # TODO(eliu): vectorize this
+        # TODO(eliu): vectorize this (GH-58)
         output_update = numpy.empty(self.dim)
+        # Note: since all boundary planes are axis-aligned, projecting becomes very simple.
         for j, step in enumerate(update_vector):
+            # Distance to the nearest boundary in the j-th dimension
             distance_to_boundary = numpy.fmin(
                 current_point[j] - self._domain_bounds[j].min,
                 self._domain_bounds[j].max - current_point[j])
 
             desired_step = step
+            # If we are close to a boundary, optionally (via max_relative_change) limit the step size
+            # 0 < max_relative_change <= 1 so at worst we reach the boundary.
             if numpy.fabs(step) > max_relative_change * distance_to_boundary:
+                # Move the max allowed distance, in the original direction of travel (obtained via copy-sign)
                 desired_step = numpy.copysign(max_relative_change * distance_to_boundary, step)
 
             output_update[j] = desired_step

@@ -33,8 +33,8 @@ def multistart_expected_improvement_optimization(
     (requires monte-carlo iteration), so this method is usually very expensive.
 
     Compared to ComputeHeuristicSetOfPointsToSample() (``gpp_heuristic_expected_improvement_optimization.hpp``), this function
-    makes no external assumptions about the underlying objective function. Instead, it utilizes a feature of the
-    GaussianProcess that allows the GP to account for ongoing/incomplete experiments.
+    makes no external assumptions about the underlying objective function. Instead, it utilizes the Expected (Parallel)
+    Improvement, allowing the GP to account for ongoing/incomplete experiments.
 
     If ``num_samples_to_generate = 1``, this is the same as ComputeOptimalPointToSampleWithRandomStarts().
 
@@ -54,14 +54,14 @@ def multistart_expected_improvement_optimization(
     :rtype: array of float64 with shape (num_samples_to_generate, ei_evaluator.dim)
 
     """
-    # TODO(eliu): implement code to generate a set of points to sample instead of only 1
+    # TODO(eliu): implement code to generate a set of points to sample instead of only 1 (ADS-3094)
     if num_samples_to_generate != 1:
         raise ValueError('num_samples_to_generate = %s must be 1. Other cases not implemented yet.' % num_samples_to_generate)
 
     random_starts = ei_optimizer.domain.generate_uniform_random_points_in_domain(num_points=num_multistarts)
     best_point, _ = multistart_optimize(ei_optimizer, starting_points=random_starts)
 
-    # TODO(eliu): have GD actually indicate whether updates were found
+    # TODO(eliu): have GD actually indicate whether updates were found (GH-59)
     found_flag = True
     if status is not None:
         status["gradient_descent_found_update"] = found_flag
@@ -78,7 +78,7 @@ def evaluate_expected_improvement_at_point_list(
 ):
     """Evaluate Expected Improvement (1,p-EI) over a specified list of ``points_to_evaluate``.
 
-    Generally gradient descent is preferred but when they fail to converge this may be the only "robust" option.
+    Generally gradient descent is preferred but when it fails to converge this may be the only "robust" option.
     This function is also useful for plotting or debugging purposes (just to get a bunch of EI values).
 
     :param ei_evaluator: object specifying how to evaluate the expected improvement
@@ -98,7 +98,7 @@ def evaluate_expected_improvement_at_point_list(
     null_optimizer = NullOptimizer(None, ei_evaluator)
     _, values = multistart_optimize(null_optimizer, starting_points=points_to_evaluate)
 
-    # TODO(eliu): have multistart actually indicate whether updates were found
+    # TODO(eliu): have multistart actually indicate whether updates were found (GH-59)
     found_flag = True
     if status is not None:
         status["evaluate_EI_at_point_list"] = found_flag
@@ -268,7 +268,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         This function cal support the computation of q,p-EI.
         This function requires access to a random number generator.
 
-        .. Note: comments here are copied from gpp_math.cpp, ExpectedImprovementEvaluator::ComputeExpectedImprovement().
+        .. Note:: comments here are copied from gpp_math.cpp, ExpectedImprovementEvaluator::ComputeExpectedImprovement().
 
         Let ``Ls * Ls^T = Vars`` and ``w`` = vector of IID normal(0,1) variables
         Then:
@@ -305,7 +305,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
 
         # TODO(eliu): might be worth breaking num_mc_iterations up into smaller blocks
         # so that we don't waste as much mem bandwidth (since each entry of normals is
-        # only used once)
+        # only used once) (GH-60)
         mu_star = self._best_so_far - mu_star
         # Compute Ls * w; note the shape is (self._num_mc_iterations, num_points)
         improvement_each_iter = numpy.einsum('kj, ij', chol_var, normals)
@@ -370,7 +370,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         This function cal support the computation of q,p-EI.
         This function requires access to a random number generator.
 
-        .. Note: comments here are copied from gpp_math.cpp, ExpectedImprovementEvaluator::ComputeGradExpectedImprovement().
+        .. Note:: comments here are copied from gpp_math.cpp, ExpectedImprovementEvaluator::ComputeGradExpectedImprovement().
 
         Computes gradient of EI (see ExpectedImprovementEvaluator::ComputeGradExpectedImprovement) wrt current_point.
 
@@ -410,7 +410,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
 
         # TODO(eliu): might be worth breaking num_mc_iterations up into smaller blocks
         # so that we don't waste as much mem bandwidth (since each entry of normals is
-        # only used once)
+        # only used once) (GH-60)
         mu_star = self._best_so_far - mu_star
         # Compute Ls * w; note the shape is (self._num_mc_iterations, num_points)
         improvement_each_iter = numpy.einsum('kj, ij', chol_var, normals)
@@ -443,7 +443,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         winner_indexes_compressed = numpy.ma.compressed(winner_indexes)
 
         # Mask rows of normals that did not show positive improvement
-        # TODO(eliu): can I do this with numpy.tile, numpy.repeat or something more sensical?
+        # TODO(eliu): can this be done with numpy.tile, numpy.repeat or something more sensical? (GH-61)
         normals_mask = numpy.empty(normals.shape, dtype=bool)
         normals_mask[...] = best_improvement_each_iter.mask[:, numpy.newaxis]
         # Compress out the masked data
@@ -472,11 +472,11 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
 
             # Expand winner_indexes_equal_to_i.mask to cover the full shape of grad_chol_decomp_tiled
             # This is the same idea as normals_mask above
-            # TODO(eliu): can I do this with numpy.tile, numpy.repeat or something more sensical?
+            # TODO(eliu): can I do this with numpy.tile, numpy.repeat or something more sensical? (GH-61)
             grad_chol_decomp_block_i_tile_mask = numpy.empty(grad_chol_decomp_tiled.shape, dtype=bool)
             grad_chol_decomp_block_i_tile_mask[...] = winner_indexes_equal_to_i.mask[:, numpy.newaxis, numpy.newaxis]
 
-            # TODO(eliu): there has to be smarter way to do this!
+            # TODO(eliu): there has to be smarter way to do this! (GH-61)
             # Tile the appropriate block of grad_chol_decomp to *FILL* all blocks
             grad_chol_decomp_block_i_tile = numpy.tile(grad_chol_decomp[i, ...], (normals_compressed.shape[0], 1)).reshape((normals_compressed.shape[0], num_points, aggregate_dx.size))
             # Zero out blocks where the winner was not point i
