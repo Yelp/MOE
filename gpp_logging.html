@@ -1,0 +1,387 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>gpp_logging &mdash; MOE 0.1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="_static/breathe.css" type="text/css" />
+  
+    <link rel="top" title="MOE 0.1.0 documentation" href="index.html"/>
+        <link rel="up" title="C++ Files" href="cpp_tree.html"/>
+        <link rel="next" title="gpp_covariance" href="gpp_covariance.html"/>
+        <link rel="prev" title="gpp_test_utils" href="gpp_test_utils.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="index.html" class="fa fa-home"> MOE</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul>
+<li class="toctree-l1"><a class="reference internal" href="moe.html">moe package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#module-moe.resources">moe.resources module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#module-moe">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="cpp_tree.html">C++ Files</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimization_test.html">gpp_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_domain_test.html">gpp_domain_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_random_test.html">gpp_random_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_exception.html">gpp_exception</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_geometry.html">gpp_geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_test_utils.html">gpp_test_utils</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">gpp_logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_covariance.html">gpp_covariance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_math-inl.html">gpp_math-inl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_domain.html">gpp_domain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_common.html">gpp_python_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_hyperparameter_optimization_demo.html">gpp_hyperparameter_optimization_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_test_utils_test.html">gpp_test_utils_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_math_test.html">gpp_math_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_model_selection.html">gpp_python_model_selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_math.html">gpp_math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_test.html">gpp_python_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_random.html">gpp_random</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra.html">gpp_linear_algebra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_core.html">gpp_core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_covariance_test.html">gpp_covariance_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python.html">gpp_python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_and_hyperparameter_optimization.html">gpp_model_selection_and_hyperparameter_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimization_parameters.html">gpp_optimization_parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_common.html">gpp_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_and_hyperparameter_optimization_test.html">gpp_model_selection_and_hyperparameter_optimization_test</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">MOE</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="cpp_tree.html">C++ Files</a> &raquo;</li>
+      
+    <li>gpp_logging</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="_sources/gpp_logging.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <div class="section" id="gpp-logging">
+<h1>gpp_logging<a class="headerlink" href="#gpp-logging" title="Permalink to this headline">¶</a></h1>
+<p><strong>Contents:</strong></p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><a class="reference internal" href="#gpp-logging-hpp">gpp_logging.hpp</a></li>
+<li><a class="reference internal" href="#gpp-logging-cpp">gpp_logging.cpp</a></li>
+</ol>
+</div></blockquote>
+<div class="section" id="gpp-logging-hpp">
+<h2>gpp_logging.hpp<a class="headerlink" href="#gpp-logging-hpp" title="Permalink to this headline">¶</a></h2>
+<p></p>
+<p></p>
+<em>Defines</em><blockquote>
+<div><p><span class="target" id="project0gpp__logging_8hpp_1ae6613a791e24a87a619fa3812b75d299"></span><strong>OL_DEBUG_PRINTF</strong>(...)</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0gpp__logging_8hpp_1ac35d386fe7353120f894c8d34bc2f3ea"></span><strong>OL_VERBOSE_PRINTF</strong>(...)</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0gpp__logging_8hpp_1a45d80ba97209f7827bdc60d72bb2ef73"></span><strong>OL_WARNING_PRINTF</strong>(...)</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0gpp__logging_8hpp_1ac8bba834d2e0618ae48931d76f973a1f"></span><strong>OL_ERROR_PRINTF</strong>(...)</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0gpp__logging_8hpp_1aa2a2f1767350e077028e6daf0de87e3b"></span><strong>OL_ANSI_COLOR_RESET</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0gpp__logging_8hpp_1a0a1523099b182eeb8f980dc1ee7da820"></span><strong>OL_ANSI_COLOR_RED</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0gpp__logging_8hpp_1a55c91d4c17d03e7e64594e7d85f9bbc2"></span><strong>OL_ANSI_COLOR_BLACK</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0gpp__logging_8hpp_1aa1185bba03bbc2cbb34df1677c05526d"></span><strong>OL_ANSI_COLOR_GREEN</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0gpp__logging_8hpp_1a311d8d97fedf6e9ffd27acce20898dae"></span><strong>OL_ANSI_COLOR_YELLOW</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0gpp__logging_8hpp_1a8f2ae8d985d7ac6ba85cd3905d07e84b"></span><strong>OL_ANSI_COLOR_BLUE</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0gpp__logging_8hpp_1a028d039e6c9a8fb9107d318f4ac172f1"></span><strong>OL_ANSI_COLOR_MAGENTA</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0gpp__logging_8hpp_1a68271c1bcbed049837b87e5f2a20f305"></span><strong>OL_ANSI_COLOR_CYAN</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0gpp__logging_8hpp_1a018c72d0728ba4e3554fd320165acc64"></span><strong>OL_ANSI_COLOR_WHITE</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0gpp__logging_8hpp_1a6247558253e748611d3bee99d8b328fa"></span><strong>OL_ANSI_COLOR_BOLDBLACK</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0gpp__logging_8hpp_1a4ef57a7aea8177b6be7d94bf12e019d8"></span><strong>OL_ANSI_COLOR_BOLDRED</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0gpp__logging_8hpp_1a9fc4374e41cbe21d848af221dd68e95f"></span><strong>OL_ANSI_COLOR_BOLDGREEN</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0gpp__logging_8hpp_1a0e7837113f418f44c88b9d4b72836c97"></span><strong>OL_ANSI_COLOR_BOLDYELLOW</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0gpp__logging_8hpp_1a9e076ead8172fe08dcc9fb2877deec8b"></span><strong>OL_ANSI_COLOR_BOLDBLUE</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0gpp__logging_8hpp_1a3735f2435894d778ed2f4ca644e50d29"></span><strong>OL_ANSI_COLOR_BOLDMAGENTA</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0gpp__logging_8hpp_1a25d5ebec4142ba070bb4dfbaf73e44fd"></span><strong>OL_ANSI_COLOR_BOLDCYAN</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0gpp__logging_8hpp_1aef0b18982832e910869f4bf1071eeab9"></span><strong>OL_ANSI_COLOR_BOLDWHITE</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0gpp__logging_8hpp_1a0a72d9b4a0c15b355a2cf5f1602eddd2"></span><strong>OL_SUCCESS_PRINTF</strong>(...)</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0gpp__logging_8hpp_1a90075d2e1dad079a12a74ca621d45195"></span><strong>OL_FAILURE_PRINTF</strong>(...)</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0gpp__logging_8hpp_1a63129df0959505fb3e0d575a02e4c31d"></span><strong>OL_PARTIAL_SUCCESS_PRINTF</strong>(...)</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0gpp__logging_8hpp_1a7c1453accdeaae9ee22f794f30316ded"></span><strong>OL_PARTIAL_FAILURE_PRINTF</strong>(...)</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<p><p id="project0namespaceoptimal__learning"><em>namespace</em> <strong>optimal_learning</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</p>
+</div>
+<div class="section" id="gpp-logging-cpp">
+<h2>gpp_logging.cpp<a class="headerlink" href="#gpp-logging-cpp" title="Permalink to this headline">¶</a></h2>
+<p></p>
+<p></p>
+<p><p id="project0namespaceoptimal__learning"><em>namespace</em> <strong>optimal_learning</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+<em>Functions</em><blockquote>
+<div><p><span class="target" id="project0namespaceoptimal__learning_1a41a3c7a60e9396b7519a3d8d4e47686c"></span><div class="line-block">
+<div class="line">void <strong>PrintDomainBounds</strong>(<a class="reference internal" href="gpp_geometry.html#project0structoptimal__learning_1_1_closed_interval"><em>ClosedInterval</em></a>  const *restrict domain_bounds, int dim)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</p>
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="gpp_covariance.html" class="btn btn-neutral float-right" title="gpp_covariance"/>Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="gpp_test_utils.html" class="btn btn-neutral" title="gpp_test_utils"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

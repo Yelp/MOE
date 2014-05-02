@@ -6,7 +6,8 @@ Subpackages
 
 .. toctree::
 
-    moe.optimal_learning.EPI
+    moe.optimal_learning.cpp
+    moe.optimal_learning.python
 
 Module contents
 ---------------

@@ -1,0 +1,20 @@
+gpp_python_common
+=====
+
+**Contents:**
+
+    1. `gpp_python_common.hpp`_
+    2. `gpp_python_common.cpp`_
+
+
+gpp_python_common.hpp
+------
+
+.. doxygenfile:: gpp_python_common.hpp
+
+
+gpp_python_common.cpp
+------
+
+.. doxygenfile:: gpp_python_common.cpp
+

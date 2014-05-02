@@ -54,7 +54,7 @@ def create_rst_file(file_base, files):
     fout = open(
             join(
                 'docs',
-                '%s.rst' % file_base, 
+                '%s.rst' % file_base,
                 ),
             'w'
             )

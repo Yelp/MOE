@@ -1,0 +1,13 @@
+gpp_math-inl
+=====
+
+**Contents:**
+
+    1. `gpp_math-inl.hpp`_
+
+
+gpp_math-inl.hpp
+------
+
+.. doxygenfile:: gpp_math-inl.hpp
+

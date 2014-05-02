@@ -1,0 +1,20 @@
+gpp_linear_algebra_test
+=====
+
+**Contents:**
+
+    1. `gpp_linear_algebra_test.hpp`_
+    2. `gpp_linear_algebra_test.cpp`_
+
+
+gpp_linear_algebra_test.hpp
+------
+
+.. doxygenfile:: gpp_linear_algebra_test.hpp
+
+
+gpp_linear_algebra_test.cpp
+------
+
+.. doxygenfile:: gpp_linear_algebra_test.cpp
+

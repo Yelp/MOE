@@ -1,0 +1,20 @@
+gpp_random
+=====
+
+**Contents:**
+
+    1. `gpp_random.hpp`_
+    2. `gpp_random.cpp`_
+
+
+gpp_random.hpp
+------
+
+.. doxygenfile:: gpp_random.hpp
+
+
+gpp_random.cpp
+------
+
+.. doxygenfile:: gpp_random.cpp
+

@@ -1,0 +1,465 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>moe.optimal_learning.python.lib.mvncdf &mdash; MOE 0.1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../../../_static/favicon.ico"/>
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../../../_static/breathe.css" type="text/css" />
+  
+    <link rel="top" title="MOE 0.1.0 documentation" href="../../../../../index.html"/>
+        <link rel="up" title="moe" href="../../../../moe.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="../../../../../index.html" class="fa fa-home"> MOE</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../moe.html">moe package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe.html#module-moe.resources">moe.resources module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe.html#module-moe">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../cpp_tree.html">C++ Files</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_optimization_test.html">gpp_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_domain_test.html">gpp_domain_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_random_test.html">gpp_random_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_exception.html">gpp_exception</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_geometry.html">gpp_geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_test_utils.html">gpp_test_utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_logging.html">gpp_logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_covariance.html">gpp_covariance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_math-inl.html">gpp_math-inl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_domain.html">gpp_domain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python_common.html">gpp_python_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_hyperparameter_optimization_demo.html">gpp_hyperparameter_optimization_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_test_utils_test.html">gpp_test_utils_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_math_test.html">gpp_math_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python_model_selection.html">gpp_python_model_selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_math.html">gpp_math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python_test.html">gpp_python_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_random.html">gpp_random</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_geometry_test.html">gpp_geometry_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_linear_algebra.html">gpp_linear_algebra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_core.html">gpp_core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_covariance_test.html">gpp_covariance_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python.html">gpp_python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_model_selection_and_hyperparameter_optimization.html">gpp_model_selection_and_hyperparameter_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_optimization_parameters.html">gpp_optimization_parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_common.html">gpp_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_model_selection_and_hyperparameter_optimization_test.html">gpp_model_selection_and_hyperparameter_optimization_test</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../../../index.html">MOE</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../../../index.html">Module code</a> &raquo;</li>
+      
+          <li><a href="../../../../moe.html">moe</a> &raquo;</li>
+      
+    <li>moe.optimal_learning.python.lib.mvncdf</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <h1>Source code for moe.optimal_learning.python.lib.mvncdf</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="sd">&#39;&#39;&#39;multivariate normal probabilities and cumulative distribution function</span>
+<span class="sd">a wrapper for scipy.stats.kde.mvndst</span>
+
+
+<span class="sd">      SUBROUTINE MVNDST( N, LOWER, UPPER, INFIN, CORREL, MAXPTS,</span>
+<span class="sd">     &amp;                   ABSEPS, RELEPS, ERROR, VALUE, INFORM )</span>
+<span class="sd">*</span>
+<span class="sd">*     A subroutine for computing multivariate normal probabilities.</span>
+<span class="sd">*     This subroutine uses an algorithm given in the paper</span>
+<span class="sd">*     &quot;Numerical Computation of Multivariate Normal Probabilities&quot;, in</span>
+<span class="sd">*     J. of Computational and Graphical Stat., 1(1992), pp. 141-149, by</span>
+<span class="sd">*          Alan Genz</span>
+<span class="sd">*          Department of Mathematics</span>
+<span class="sd">*          Washington State University</span>
+<span class="sd">*          Pullman, WA 99164-3113</span>
+<span class="sd">*          Email : AlanGenz@wsu.edu</span>
+<span class="sd">*</span>
+<span class="sd">*  Parameters</span>
+<span class="sd">*</span>
+<span class="sd">*     N      INTEGER, the number of variables.</span>
+<span class="sd">*     LOWER  REAL, array of lower integration limits.</span>
+<span class="sd">*     UPPER  REAL, array of upper integration limits.</span>
+<span class="sd">*     INFIN  INTEGER, array of integration limits flags:</span>
+<span class="sd">*            if INFIN(I) &lt; 0, Ith limits are (-infinity, infinity);</span>
+<span class="sd">*            if INFIN(I) = 0, Ith limits are (-infinity, UPPER(I)];</span>
+<span class="sd">*            if INFIN(I) = 1, Ith limits are [LOWER(I), infinity);</span>
+<span class="sd">*            if INFIN(I) = 2, Ith limits are [LOWER(I), UPPER(I)].</span>
+<span class="sd">*     CORREL REAL, array of correlation coefficients; the correlation</span>
+<span class="sd">*            coefficient in row I column J of the correlation matrix</span>
+<span class="sd">*            should be stored in CORREL( J + ((I-2)*(I-1))/2 ), for J &lt; I.</span>
+<span class="sd">*            THe correlation matrix must be positive semidefinite.</span>
+<span class="sd">*     MAXPTS INTEGER, maximum number of function values allowed. This</span>
+<span class="sd">*            parameter can be used to limit the time. A sensible</span>
+<span class="sd">*            strategy is to start with MAXPTS = 1000*N, and then</span>
+<span class="sd">*            increase MAXPTS if ERROR is too large.</span>
+<span class="sd">*     ABSEPS REAL absolute error tolerance.</span>
+<span class="sd">*     RELEPS REAL relative error tolerance.</span>
+<span class="sd">*     ERROR  REAL estimated absolute error, with 99% confidence level.</span>
+<span class="sd">*     VALUE  REAL estimated value for the integral</span>
+<span class="sd">*     INFORM INTEGER, termination status parameter:</span>
+<span class="sd">*            if INFORM = 0, normal completion with ERROR &lt; EPS;</span>
+<span class="sd">*            if INFORM = 1, completion with ERROR &gt; EPS and MAXPTS</span>
+<span class="sd">*                           function vaules used; increase MAXPTS to</span>
+<span class="sd">*                           decrease ERROR;</span>
+<span class="sd">*            if INFORM = 2, N &gt; 500 or N &lt; 1.</span>
+<span class="sd">*</span>
+
+
+
+<span class="sd">&gt;&gt;&gt; scipy.stats.kde.mvn.mvndst([0.0,0.0],[10.0,10.0],[0,0],[0.5])</span>
+<span class="sd">(2e-016, 1.0, 0)</span>
+<span class="sd">&gt;&gt;&gt; scipy.stats.kde.mvn.mvndst([0.0,0.0],[100.0,100.0],[0,0],[0.0])</span>
+<span class="sd">(2e-016, 1.0, 0)</span>
+<span class="sd">&gt;&gt;&gt; scipy.stats.kde.mvn.mvndst([0.0,0.0],[1.0,1.0],[0,0],[0.0])</span>
+<span class="sd">(2e-016, 0.70786098173714096, 0)</span>
+<span class="sd">&gt;&gt;&gt; scipy.stats.kde.mvn.mvndst([0.0,0.0],[0.001,1.0],[0,0],[0.0])</span>
+<span class="sd">(2e-016, 0.42100802096993045, 0)</span>
+<span class="sd">&gt;&gt;&gt; scipy.stats.kde.mvn.mvndst([0.0,0.0],[0.001,10.0],[0,0],[0.0])</span>
+<span class="sd">(2e-016, 0.50039894221391101, 0)</span>
+<span class="sd">&gt;&gt;&gt; scipy.stats.kde.mvn.mvndst([0.0,0.0],[0.001,100.0],[0,0],[0.0])</span>
+<span class="sd">(2e-016, 0.50039894221391101, 0)</span>
+<span class="sd">&gt;&gt;&gt; scipy.stats.kde.mvn.mvndst([0.0,0.0],[0.01,100.0],[0,0],[0.0])</span>
+<span class="sd">(2e-016, 0.5039893563146316, 0)</span>
+<span class="sd">&gt;&gt;&gt; scipy.stats.kde.mvn.mvndst([0.0,0.0],[0.1,100.0],[0,0],[0.0])</span>
+<span class="sd">(2e-016, 0.53982783727702899, 0)</span>
+<span class="sd">&gt;&gt;&gt; scipy.stats.kde.mvn.mvndst([0.0,0.0],[0.1,100.0],[2,2],[0.0])</span>
+<span class="sd">(2e-016, 0.019913918638514494, 0)</span>
+<span class="sd">&gt;&gt;&gt; scipy.stats.kde.mvn.mvndst([0.0,0.0],[0.0,0.0],[0,0],[0.0])</span>
+<span class="sd">(2e-016, 0.25, 0)</span>
+<span class="sd">&gt;&gt;&gt; scipy.stats.kde.mvn.mvndst([0.0,0.0],[0.0,0.0],[-1,0],[0.0])</span>
+<span class="sd">(2e-016, 0.5, 0)</span>
+<span class="sd">&gt;&gt;&gt; scipy.stats.kde.mvn.mvndst([0.0,0.0],[0.0,0.0],[-1,0],[0.5])</span>
+<span class="sd">(2e-016, 0.5, 0)</span>
+<span class="sd">&gt;&gt;&gt; scipy.stats.kde.mvn.mvndst([0.0,0.0],[0.0,0.0],[0,0],[0.5])</span>
+<span class="sd">(2e-016, 0.33333333333333337, 0)</span>
+<span class="sd">&gt;&gt;&gt; scipy.stats.kde.mvn.mvndst([0.0,0.0],[0.0,0.0],[0,0],[0.99])</span>
+<span class="sd">(2e-016, 0.47747329317779391, 0)</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">scipy</span>
+<span class="kn">import</span> <span class="nn">scipy.stats</span>
+
+<span class="n">informcode</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s">&#39;normal completion with ERROR &lt; EPS&#39;</span><span class="p">,</span>
+              <span class="mi">1</span><span class="p">:</span> <span class="s">&#39;&#39;&#39;completion with ERROR &gt; EPS and MAXPTS function values used;</span>
+<span class="s">                    increase MAXPTS to decrease ERROR;&#39;&#39;&#39;</span><span class="p">,</span>
+              <span class="mi">2</span><span class="p">:</span> <span class="s">&#39;N &gt; 500 or N &lt; 1&#39;</span><span class="p">}</span>
+
+<div class="viewcode-block" id="mvstdnormcdf"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.lib.html#moe.optimal_learning.python.lib.mvncdf.mvstdnormcdf">[docs]</a><span class="k">def</span> <span class="nf">mvstdnormcdf</span><span class="p">(</span><span class="n">lower</span><span class="p">,</span> <span class="n">upper</span><span class="p">,</span> <span class="n">corrcoef</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;standardized multivariate normal cumulative distribution function</span>
+
+<span class="sd">    This is a wrapper for scipy.stats.kde.mvn.mvndst which calculates</span>
+<span class="sd">    a rectangular integral over a standardized multivariate normal</span>
+<span class="sd">    distribution.</span>
+
+<span class="sd">    This function assumes standardized scale, that is the variance in each dimension</span>
+<span class="sd">    is one, but correlation can be arbitrary, covariance = correlation matrix</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    lower, upper : array_like, 1d</span>
+<span class="sd">       lower and upper integration limits with length equal to the number</span>
+<span class="sd">       of dimensions of the multivariate normal distribution. It can contain</span>
+<span class="sd">       -np.inf or np.inf for open integration intervals</span>
+<span class="sd">    corrcoef : float or array_like</span>
+<span class="sd">       specifies correlation matrix in one of three ways, see notes</span>
+<span class="sd">    optional keyword parameters to influence integration</span>
+<span class="sd">        * maxpts : int, maximum number of function values allowed. This</span>
+<span class="sd">             parameter can be used to limit the time. A sensible</span>
+<span class="sd">             strategy is to start with `maxpts` = 1000*N, and then</span>
+<span class="sd">             increase `maxpts` if ERROR is too large.</span>
+<span class="sd">        * abseps : float absolute error tolerance.</span>
+<span class="sd">        * releps : float relative error tolerance.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    cdfvalue : float</span>
+<span class="sd">        value of the integral</span>
+
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The correlation matrix corrcoef can be given in 3 different ways</span>
+<span class="sd">    If the multivariate normal is two-dimensional than only the</span>
+<span class="sd">    correlation coefficient needs to be provided.</span>
+<span class="sd">    For general dimension the correlation matrix can be provided either</span>
+<span class="sd">    as a one-dimensional array of the upper triangular correlation</span>
+<span class="sd">    coefficients stacked by rows, or as full square correlation matrix</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    mvnormcdf : cdf of multivariate normal distribution without</span>
+<span class="sd">        standardization</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    &gt;&gt;&gt; print mvstdnormcdf([-np.inf,-np.inf], [0.0,np.inf], 0.5)</span>
+<span class="sd">    0.5</span>
+<span class="sd">    &gt;&gt;&gt; corr = [[1.0, 0, 0.5],[0,1,0],[0.5,0,1]]</span>
+<span class="sd">    &gt;&gt;&gt; print mvstdnormcdf([-np.inf,-np.inf,-100.0], [0.0,0.0,0.0], corr, abseps=1e-6)</span>
+<span class="sd">    0.166666399198</span>
+<span class="sd">    &gt;&gt;&gt; print mvstdnormcdf([-np.inf,-np.inf,-100.0],[0.0,0.0,0.0],corr, abseps=1e-8)</span>
+<span class="sd">    something wrong completion with ERROR &gt; EPS and MAXPTS function values used;</span>
+<span class="sd">                        increase MAXPTS to decrease ERROR; 1.048330348e-006</span>
+<span class="sd">    0.166666546218</span>
+<span class="sd">    &gt;&gt;&gt; print mvstdnormcdf([-np.inf,-np.inf,-100.0],[0.0,0.0,0.0], corr,</span>
+<span class="sd">                            maxpts=100000, abseps=1e-8)</span>
+<span class="sd">    0.166666588293</span>
+
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">lower</span><span class="p">)</span>
+    <span class="c">#don&#39;t know if converting to array is necessary,</span>
+    <span class="c">#but it makes ndim check possible</span>
+    <span class="n">lower</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">lower</span><span class="p">)</span>
+    <span class="n">upper</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">upper</span><span class="p">)</span>
+    <span class="n">corrcoef</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">corrcoef</span><span class="p">)</span>
+
+    <span class="n">correl</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="o">*</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="mf">2.0</span><span class="p">)</span>  <span class="c">#dtype necessary?</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">lower</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">upper</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">,</span> <span class="s">&#39;can handle only 1D bounds&#39;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">upper</span><span class="p">)</span> <span class="o">!=</span> <span class="n">n</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">,</span> <span class="s">&#39;bounds have different lengths&#39;</span>
+    <span class="k">if</span> <span class="n">n</span><span class="o">==</span><span class="mi">2</span> <span class="ow">and</span> <span class="n">corrcoef</span><span class="o">.</span><span class="n">size</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span>
+        <span class="n">correl</span> <span class="o">=</span> <span class="n">corrcoef</span>
+        <span class="c">#print &#39;case scalar rho&#39;, n</span>
+    <span class="k">elif</span> <span class="n">corrcoef</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">corrcoef</span><span class="p">)</span> <span class="o">==</span> <span class="n">n</span><span class="o">*</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="mf">2.0</span><span class="p">:</span>
+        <span class="c">#print &#39;case flat corr&#39;, corrcoeff.shape</span>
+        <span class="n">correl</span> <span class="o">=</span> <span class="n">corrcoef</span>
+    <span class="k">elif</span> <span class="n">corrcoef</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">):</span>
+        <span class="c">#print &#39;case square corr&#39;,  correl.shape</span>
+        <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">jj</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ii</span><span class="p">):</span>
+                <span class="n">correl</span><span class="p">[</span> <span class="n">jj</span> <span class="o">+</span> <span class="p">((</span><span class="n">ii</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">ii</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span><span class="o">/</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">corrcoef</span><span class="p">[</span><span class="n">ii</span><span class="p">,</span><span class="n">jj</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">,</span> <span class="s">&#39;corrcoef has incorrect dimension&#39;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="s">&#39;maxpts&#39;</span> <span class="ow">in</span> <span class="n">kwds</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;</span><span class="mi">2</span><span class="p">:</span>
+            <span class="n">kwds</span><span class="p">[</span><span class="s">&#39;maxpts&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10000</span><span class="o">*</span><span class="n">n</span>
+
+    <span class="n">lowinf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isneginf</span><span class="p">(</span><span class="n">lower</span><span class="p">)</span>
+    <span class="n">uppinf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isposinf</span><span class="p">(</span><span class="n">upper</span><span class="p">)</span>
+    <span class="n">infin</span> <span class="o">=</span> <span class="mf">2.0</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+    <span class="n">np</span><span class="o">.</span><span class="n">putmask</span><span class="p">(</span><span class="n">infin</span><span class="p">,</span><span class="n">lowinf</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span><span class="c"># infin.putmask(0,lowinf)</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">putmask</span><span class="p">(</span><span class="n">infin</span><span class="p">,</span><span class="n">uppinf</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="c">#infin.putmask(1,uppinf)</span>
+    <span class="c">#this has to be last</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">putmask</span><span class="p">(</span><span class="n">infin</span><span class="p">,</span><span class="n">lowinf</span><span class="o">*</span><span class="n">uppinf</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c">##    #remove infs</span>
+<span class="c">##    np.putmask(lower,lowinf,-100)# infin.putmask(0,lowinf)</span>
+<span class="c">##    np.putmask(upper,uppinf,100) #infin.putmask(1,uppinf)</span>
+
+    <span class="c">#print lower,&#39;,&#39;,upper,&#39;,&#39;,infin,&#39;,&#39;,correl</span>
+    <span class="c">#print correl.shape</span>
+    <span class="c">#print kwds.items()</span>
+    <span class="n">error</span><span class="p">,</span> <span class="n">cdfvalue</span><span class="p">,</span> <span class="n">inform</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">kde</span><span class="o">.</span><span class="n">mvn</span><span class="o">.</span><span class="n">mvndst</span><span class="p">(</span><span class="n">lower</span><span class="p">,</span><span class="n">upper</span><span class="p">,</span><span class="n">infin</span><span class="p">,</span><span class="n">correl</span><span class="p">,</span><span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">inform</span><span class="p">:</span>
+        <span class="k">print</span> <span class="s">&#39;something wrong&#39;</span><span class="p">,</span> <span class="n">informcode</span><span class="p">[</span><span class="n">inform</span><span class="p">],</span> <span class="n">error</span>
+    <span class="k">return</span> <span class="n">cdfvalue</span>
+
+</div>
+<div class="viewcode-block" id="mvnormcdf"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.lib.html#moe.optimal_learning.python.lib.mvncdf.mvnormcdf">[docs]</a><span class="k">def</span> <span class="nf">mvnormcdf</span><span class="p">(</span><span class="n">lower</span><span class="p">,</span> <span class="n">upper</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">cov</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;multivariate normal cumulative distribution function</span>
+
+<span class="sd">    This is a wrapper for scipy.stats.kde.mvn.mvndst which calculates</span>
+<span class="sd">    a rectangular integral over a multivariate normal distribution.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    lower, upper : array_like, 1d</span>
+<span class="sd">       lower and upper integration limits with length equal to the number</span>
+<span class="sd">       of dimensions of the multivariate normal distribution. It can contain</span>
+<span class="sd">       -np.inf or np.inf for open integration intervals</span>
+<span class="sd">    mu : array_lik, 1d</span>
+<span class="sd">       list or array of means</span>
+<span class="sd">    cov : array_like, 2d</span>
+<span class="sd">       specifies covariance matrix</span>
+<span class="sd">    optional keyword parameters to influence integration</span>
+<span class="sd">        * maxpts : int, maximum number of function values allowed. This</span>
+<span class="sd">             parameter can be used to limit the time. A sensible</span>
+<span class="sd">             strategy is to start with `maxpts` = 1000*N, and then</span>
+<span class="sd">             increase `maxpts` if ERROR is too large.</span>
+<span class="sd">        * abseps : float absolute error tolerance.</span>
+<span class="sd">        * releps : float relative error tolerance.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    cdfvalue : float</span>
+<span class="sd">        value of the integral</span>
+
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This function normalizes the location and scale of the multivariate</span>
+<span class="sd">    normal distribution and then uses `mvstdnormcdf` to call the integration.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    mvstdnormcdf : location and scale standardized multivariate normal cdf</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">lower</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">lower</span><span class="p">)</span>
+    <span class="n">upper</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">upper</span><span class="p">)</span>
+    <span class="n">cov</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cov</span><span class="p">)</span>
+    <span class="n">stdev</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">cov</span><span class="p">))</span> <span class="c"># standard deviation vector</span>
+    <span class="c">#do I need to make sure stdev is float and not int?</span>
+    <span class="c">#is this correct to normalize to corr?</span>
+    <span class="n">lower</span> <span class="o">=</span> <span class="p">(</span><span class="n">lower</span> <span class="o">-</span> <span class="n">mu</span><span class="p">)</span><span class="o">/</span><span class="n">stdev</span>
+    <span class="n">upper</span> <span class="o">=</span> <span class="p">(</span><span class="n">upper</span> <span class="o">-</span> <span class="n">mu</span><span class="p">)</span><span class="o">/</span><span class="n">stdev</span>
+    <span class="n">divrow</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">stdev</span><span class="p">)</span>
+    <span class="n">corr</span> <span class="o">=</span> <span class="n">cov</span><span class="o">/</span><span class="n">divrow</span><span class="o">/</span><span class="n">divrow</span><span class="o">.</span><span class="n">T</span>
+    <span class="c">#v/np.sqrt(np.atleast_2d(np.diag(covv)))/np.sqrt(np.atleast_2d(np.diag(covv))).T</span>
+
+    <span class="k">return</span> <span class="n">mvstdnormcdf</span><span class="p">(</span><span class="n">lower</span><span class="p">,</span> <span class="n">upper</span><span class="p">,</span> <span class="n">corr</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

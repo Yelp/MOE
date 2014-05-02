@@ -70,8 +70,46 @@
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../gpp_math_hpp.html">gpp_math.hpp</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../gpp_geometry_hpp.html">gpp_geometry.hpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cpp_tree.html">C++ Files</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_optimization_test.html">gpp_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_domain_test.html">gpp_domain_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_random_test.html">gpp_random_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_exception.html">gpp_exception</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_geometry.html">gpp_geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_test_utils.html">gpp_test_utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_logging.html">gpp_logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_covariance.html">gpp_covariance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_math-inl.html">gpp_math-inl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_domain.html">gpp_domain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_python_common.html">gpp_python_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_hyperparameter_optimization_demo.html">gpp_hyperparameter_optimization_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_test_utils_test.html">gpp_test_utils_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_math_test.html">gpp_math_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_python_model_selection.html">gpp_python_model_selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_math.html">gpp_math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_python_test.html">gpp_python_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_random.html">gpp_random</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_geometry_test.html">gpp_geometry_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_linear_algebra.html">gpp_linear_algebra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_core.html">gpp_core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_covariance_test.html">gpp_covariance_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_python.html">gpp_python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_model_selection_and_hyperparameter_optimization.html">gpp_model_selection_and_hyperparameter_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_optimization_parameters.html">gpp_optimization_parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_common.html">gpp_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_model_selection_and_hyperparameter_optimization_test.html">gpp_model_selection_and_hyperparameter_optimization_test</a></li>
+</ul>
+</li>
 </ul>
 
         
@@ -110,7 +148,39 @@
             
   <h1>Source code for moe.views.constant</h1><div class="highlight"><pre>
 <span class="c"># -*- coding: utf-8 -*-</span>
-<span class="sd">&quot;&quot;&quot;Route names and endpoints for all MOE routes.&quot;&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot;Route names and endpoints for all MOE routes.</span>
+
+<span class="sd">Regular GP REST routes:</span>
+
+<span class="sd">    * ei - compute the Expected Improvement at a set of points</span>
+<span class="sd">    * mean_var - compute the mean and variance of the gaussian process for a set of points</span>
+
+<span class="sd">Next Points GP REST routes:</span>
+
+<span class="sd">    * epi - compute the next points to sample using Expected Parallel Improvement</span>
+<span class="sd">    * kriging - compute the next points to sample using Kriging Believer</span>
+<span class="sd">    * constant_liar - compute the next points to sample using Constant Liar</span>
+
+<span class="sd">New routes have the form:</span>
+
+<span class="sd">    GP_&lt;NAME&gt;_ROUTE_NAME = &#39;gp_&lt;name&gt;&#39;</span>
+<span class="sd">    GP_&lt;NAME&gt;_ENDPOINT = &#39;/gp/&lt;name&gt;&#39;</span>
+<span class="sd">    GP_&lt;NAME&gt;_MOE_ROUTE = MoeRoute(GP_&lt;NAME&gt;_ROUTE_NAME, GP_&lt;NAME&gt;_ENDPOINT)</span>
+<span class="sd">    GP_&lt;NAME&gt;_PRETTY_ROUTE_NAME = &#39;gp_&lt;name&gt;_pretty&#39;</span>
+<span class="sd">    GP_&lt;NAME&gt;_PRETTY_ENDPOINT = &#39;/gp/&lt;name&gt;/pretty&#39;</span>
+<span class="sd">    GP_&lt;NAME&gt;_PRETTY_MOE_ROUTE = MoeRoute(GP_&lt;NAME&gt;_PRETTY_ROUTE_NAME, GP_&lt;NAME&gt;_PRETTY_ENDPOINT)</span>
+
+<span class="sd">New next_points routes have the form:</span>
+
+<span class="sd">    GP_NEXT_POINTS_&lt;NAME&gt;_ROUTE_NAME = &#39;gp_next_points_&lt;name&gt;&#39;</span>
+<span class="sd">    GP_NEXT_POINTS_&lt;NAME&gt;_ENDPOINT = &#39;/gp/next_points/&lt;name&gt;&#39;</span>
+<span class="sd">    GP_NEXT_POINTS_&lt;NAME&gt;_MOE_ROUTE = MoeRoute(GP_NEXT_POINTS_&lt;NAME&gt;_ROUTE_NAME, GP_NEXT_POINTS_&lt;NAME&gt;_ENDPOINT)</span>
+<span class="sd">    GP_NEXT_POINTS_&lt;NAME&gt;_PRETTY_ROUTE_NAME = &#39;gp_next_points_&lt;name&gt;_pretty&#39;</span>
+<span class="sd">    GP_NEXT_POINTS_&lt;NAME&gt;_PRETTY_ENDPOINT = &#39;/gp/next_points/&lt;name&gt;/pretty&#39;</span>
+<span class="sd">    GP_NEXT_POINTS_&lt;NAME&gt;_PRETTY_MOE_ROUTE = MoeRoute(GP_NEXT_POINTS_&lt;NAME&gt;_PRETTY_ROUTE_NAME, GP_NEXT_POINTS_&lt;NAME&gt;_PRETTY_ENDPOINT)</span>
+<span class="sd">    GP_NEXT_POINTS_&lt;NAME&gt;_OPTIMIZATION_METHOD_NAME = &lt;method name from moe.optimal_learning.python.models.optimal_gaussian_process_linked_cpp.py&gt;</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
 
 <span class="n">MoeRoute</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s">&#39;MoeRoute&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;route_name&#39;</span><span class="p">,</span> <span class="s">&#39;endpoint&#39;</span><span class="p">])</span>
@@ -135,6 +205,7 @@
 <span class="n">GP_NEXT_POINTS_EPI_PRETTY_ROUTE_NAME</span> <span class="o">=</span> <span class="s">&#39;gp_next_points_epi_pretty&#39;</span>
 <span class="n">GP_NEXT_POINTS_EPI_PRETTY_ENDPOINT</span> <span class="o">=</span> <span class="s">&#39;/gp/next_points/epi/pretty&#39;</span>
 <span class="n">GP_NEXT_POINTS_EPI_PRETTY_MOE_ROUTE</span> <span class="o">=</span> <span class="n">MoeRoute</span><span class="p">(</span><span class="n">GP_NEXT_POINTS_EPI_PRETTY_ROUTE_NAME</span><span class="p">,</span> <span class="n">GP_NEXT_POINTS_EPI_PRETTY_ENDPOINT</span><span class="p">)</span>
+<span class="n">GP_NEXT_POINTS_EPI_OPTIMIZATION_METHOD_NAME</span> <span class="o">=</span> <span class="s">&#39;multistart_expected_improvement_optimization&#39;</span>
 
 <span class="n">GP_NEXT_POINTS_KRIGING_ROUTE_NAME</span> <span class="o">=</span> <span class="s">&#39;gp_next_points_kriging&#39;</span>
 <span class="n">GP_NEXT_POINTS_KRIGING_ENDPOINT</span> <span class="o">=</span> <span class="s">&#39;/gp/next_points/kriging&#39;</span>
@@ -142,6 +213,7 @@
 <span class="n">GP_NEXT_POINTS_KRIGING_PRETTY_ROUTE_NAME</span> <span class="o">=</span> <span class="s">&#39;gp_next_points_kriging_pretty&#39;</span>
 <span class="n">GP_NEXT_POINTS_KRIGING_PRETTY_ENDPOINT</span> <span class="o">=</span> <span class="s">&#39;/gp/next_points/kriging/pretty&#39;</span>
 <span class="n">GP_NEXT_POINTS_KRIGING_PRETTY_MOE_ROUTE</span> <span class="o">=</span> <span class="n">MoeRoute</span><span class="p">(</span><span class="n">GP_NEXT_POINTS_KRIGING_PRETTY_ROUTE_NAME</span><span class="p">,</span> <span class="n">GP_NEXT_POINTS_KRIGING_PRETTY_ENDPOINT</span><span class="p">)</span>
+<span class="n">GP_NEXT_POINTS_KRIGING_OPTIMIZATION_METHOD_NAME</span> <span class="o">=</span> <span class="s">&#39;kriging_believer_expected_improvement_optimization&#39;</span>
 
 <span class="n">GP_NEXT_POINTS_CONSTANT_LIAR_ROUTE_NAME</span> <span class="o">=</span> <span class="s">&#39;gp_next_points_constant_liar_route_name&#39;</span>
 <span class="n">GP_NEXT_POINTS_CONSTANT_LIAR_ENDPOINT</span> <span class="o">=</span> <span class="s">&#39;/gp/next_points/constant_liar&#39;</span>
@@ -149,6 +221,13 @@
 <span class="n">GP_NEXT_POINTS_CONSTANT_LIAR_PRETTY_ROUTE_NAME</span> <span class="o">=</span> <span class="s">&#39;gp_next_points_constant_liar_pretty&#39;</span>
 <span class="n">GP_NEXT_POINTS_CONSTANT_LIAR_PRETTY_ENDPOINT</span> <span class="o">=</span> <span class="s">&#39;/gp/next_points/constant_liar/pretty&#39;</span>
 <span class="n">GP_NEXT_POINTS_CONSTANT_LIAR_PRETTY_MOE_ROUTE</span> <span class="o">=</span> <span class="n">MoeRoute</span><span class="p">(</span><span class="n">GP_NEXT_POINTS_CONSTANT_LIAR_PRETTY_ROUTE_NAME</span><span class="p">,</span> <span class="n">GP_NEXT_POINTS_CONSTANT_LIAR_PRETTY_ENDPOINT</span><span class="p">)</span>
+<span class="n">GP_NEXT_POINTS_CONSTANT_LIAR_OPTIMIZATION_METHOD_NAME</span> <span class="o">=</span> <span class="s">&#39;constant_liar_expected_improvement_optimization&#39;</span>
+
+<span class="n">OPTIMIZATION_METHOD_NAMES</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">GP_NEXT_POINTS_EPI_OPTIMIZATION_METHOD_NAME</span><span class="p">,</span>
+        <span class="n">GP_NEXT_POINTS_KRIGING_OPTIMIZATION_METHOD_NAME</span><span class="p">,</span>
+        <span class="n">GP_NEXT_POINTS_CONSTANT_LIAR_OPTIMIZATION_METHOD_NAME</span><span class="p">,</span>
+        <span class="p">]</span>
 
 <span class="n">ALL_REST_MOE_ROUTES</span> <span class="o">=</span> <span class="p">[</span>
         <span class="n">GP_EI_MOE_ROUTE</span><span class="p">,</span>

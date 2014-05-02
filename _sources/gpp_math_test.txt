@@ -1,0 +1,20 @@
+gpp_math_test
+=====
+
+**Contents:**
+
+    1. `gpp_math_test.hpp`_
+    2. `gpp_math_test.cpp`_
+
+
+gpp_math_test.hpp
+------
+
+.. doxygenfile:: gpp_math_test.hpp
+
+
+gpp_math_test.cpp
+------
+
+.. doxygenfile:: gpp_math_test.cpp
+

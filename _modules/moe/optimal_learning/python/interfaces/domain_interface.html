@@ -1,0 +1,286 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>moe.optimal_learning.python.interfaces.domain_interface &mdash; MOE 0.1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../../../_static/favicon.ico"/>
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../../../_static/breathe.css" type="text/css" />
+  
+    <link rel="top" title="MOE 0.1.0 documentation" href="../../../../../index.html"/>
+        <link rel="up" title="moe" href="../../../../moe.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="../../../../../index.html" class="fa fa-home"> MOE</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../moe.html">moe package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe.html#module-moe.resources">moe.resources module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe.html#module-moe">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../cpp_tree.html">C++ Files</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_optimization_test.html">gpp_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_domain_test.html">gpp_domain_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_random_test.html">gpp_random_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_exception.html">gpp_exception</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_geometry.html">gpp_geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_test_utils.html">gpp_test_utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_logging.html">gpp_logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_covariance.html">gpp_covariance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_math-inl.html">gpp_math-inl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_domain.html">gpp_domain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python_common.html">gpp_python_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_hyperparameter_optimization_demo.html">gpp_hyperparameter_optimization_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_test_utils_test.html">gpp_test_utils_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_math_test.html">gpp_math_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python_model_selection.html">gpp_python_model_selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_math.html">gpp_math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python_test.html">gpp_python_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_random.html">gpp_random</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_geometry_test.html">gpp_geometry_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_linear_algebra.html">gpp_linear_algebra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_core.html">gpp_core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_covariance_test.html">gpp_covariance_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python.html">gpp_python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_model_selection_and_hyperparameter_optimization.html">gpp_model_selection_and_hyperparameter_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_optimization_parameters.html">gpp_optimization_parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_common.html">gpp_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_model_selection_and_hyperparameter_optimization_test.html">gpp_model_selection_and_hyperparameter_optimization_test</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../../../index.html">MOE</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../../../index.html">Module code</a> &raquo;</li>
+      
+          <li><a href="../../../../moe.html">moe</a> &raquo;</li>
+      
+    <li>moe.optimal_learning.python.interfaces.domain_interface</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <h1>Source code for moe.optimal_learning.python.interfaces.domain_interface</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;Interface for a domain: in/out test, random point generation, and update limiting (for constrained optimization).&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABCMeta</span><span class="p">,</span> <span class="n">abstractmethod</span><span class="p">,</span> <span class="n">abstractproperty</span>
+
+
+<div class="viewcode-block" id="DomainInterface"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.interfaces.html#moe.optimal_learning.python.interfaces.domain_interface.DomainInterface">[docs]</a><span class="k">class</span> <span class="nc">DomainInterface</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;Interface for a domain: in/out test, random point generation, and update limiting (for constrained optimization).&quot;&quot;&quot;</span>
+
+    <span class="n">__metaclass__</span> <span class="o">=</span> <span class="n">ABCMeta</span>
+
+    <span class="nd">@abstractproperty</span>
+<div class="viewcode-block" id="DomainInterface.dim"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.interfaces.html#moe.optimal_learning.python.interfaces.domain_interface.DomainInterface.dim">[docs]</a>    <span class="k">def</span> <span class="nf">dim</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the number of spatial dimensions.&quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+</div>
+    <span class="nd">@abstractmethod</span>
+<div class="viewcode-block" id="DomainInterface.check_point_inside"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.interfaces.html#moe.optimal_learning.python.interfaces.domain_interface.DomainInterface.check_point_inside">[docs]</a>    <span class="k">def</span> <span class="nf">check_point_inside</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Check if a point is inside the domain/on its boundary or outside.</span>
+
+<span class="sd">        :param point: point to check</span>
+<span class="sd">        :type point: array of float64 with shape (dim)</span>
+<span class="sd">        :param points_to_sample: points which are being sampled concurrently (i.e., p in q,p-EI)</span>
+<span class="sd">        :type points_to_sample: array of float64 with shape (num_to_sample, dim)</span>
+<span class="sd">        :return: true if point is inside the domain</span>
+<span class="sd">        :rtype: bool</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+</div>
+    <span class="nd">@abstractmethod</span>
+<div class="viewcode-block" id="DomainInterface.generate_uniform_random_points_in_domain"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.interfaces.html#moe.optimal_learning.python.interfaces.domain_interface.DomainInterface.generate_uniform_random_points_in_domain">[docs]</a>    <span class="k">def</span> <span class="nf">generate_uniform_random_points_in_domain</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_points</span><span class="p">,</span> <span class="n">random_source</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Generate AT MOST ``num_points`` uniformly distributed points from the domain.</span>
+
+<span class="sd">        .. NOTE::</span>
+<span class="sd">             The number of points returned may be LESS THAN ``num_points``!</span>
+
+<span class="sd">        Implementations may use rejection sampling. In such cases, generating the requested</span>
+<span class="sd">        number of points may be unreasonably slow, so implementers are allowed to generate</span>
+<span class="sd">        fewer than ``num_points`` results.</span>
+
+<span class="sd">        :param num_points: max number of points to generate</span>
+<span class="sd">        :type num_points: integer &gt;= 0</span>
+<span class="sd">        :param random_source:</span>
+<span class="sd">        :type random_source: callable yielding uniform random numbers in [0,1]</span>
+<span class="sd">        :return: uniform random sampling of points from the domain; may be fewer than ``num_points``!</span>
+<span class="sd">        :rtype: array of float64 with shape (num_points_generated, dim)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+</div>
+    <span class="nd">@abstractmethod</span>
+<div class="viewcode-block" id="DomainInterface.compute_update_restricted_to_domain"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.interfaces.html#moe.optimal_learning.python.interfaces.domain_interface.DomainInterface.compute_update_restricted_to_domain">[docs]</a>    <span class="k">def</span> <span class="nf">compute_update_restricted_to_domain</span><span class="p">(</span><span class="n">max_relative_change</span><span class="p">,</span> <span class="n">current_point</span><span class="p">,</span> <span class="n">update_vector</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Compute a new update so that CheckPointInside(``current_point`` + ``new_update``) is true.</span>
+
+<span class="sd">        Changes new_update_vector so that:</span>
+<span class="sd">          ``point_new = point + new_update_vector``</span>
+
+<span class="sd">        has coordinates such that ``CheckPointInside(point_new)`` returns true.</span>
+
+<span class="sd">        ``new_update_vector`` is a function of ``update_vector``.</span>
+<span class="sd">        ``new_update_vector`` is just a copy of ``update_vector`` if ``current_point`` is already inside the domain.</span>
+
+<span class="sd">        .. NOTE::</span>
+<span class="sd">            We modify update_vector (instead of returning point_new) so that further update</span>
+<span class="sd">            limiting/testing may be performed.</span>
+
+<span class="sd">        :param max_relative_change: max change allowed per update (as a relative fraction of current distance to boundary)</span>
+<span class="sd">        :type max_relative_change: float64 in (0, 1]</span>
+<span class="sd">        :param current_point: starting point</span>
+<span class="sd">        :type current_point: array of float64 with shape (dim)</span>
+<span class="sd">        :param update_vector: proposed update</span>
+<span class="sd">        :type update_vector: array of float64 with shape (dim)</span>
+<span class="sd">        :return: new update so that the final point remains inside the domain</span>
+<span class="sd">        :rtype: array of float64 with shape (dim)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div></div>
+</pre></div>
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,461 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>gpp_heuristic_expected_improvement_optimization &mdash; MOE 0.1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="_static/breathe.css" type="text/css" />
+  
+    <link rel="top" title="MOE 0.1.0 documentation" href="index.html"/>
+        <link rel="up" title="C++ Files" href="cpp_tree.html"/>
+        <link rel="next" title="gpp_linear_algebra-inl" href="gpp_linear_algebra-inl.html"/>
+        <link rel="prev" title="gpp_geometry" href="gpp_geometry.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="index.html" class="fa fa-home"> MOE</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul>
+<li class="toctree-l1"><a class="reference internal" href="moe.html">moe package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#module-moe.resources">moe.resources module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#module-moe">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="cpp_tree.html">C++ Files</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimization_test.html">gpp_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_domain_test.html">gpp_domain_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_random_test.html">gpp_random_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_exception.html">gpp_exception</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_geometry.html">gpp_geometry</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_test_utils.html">gpp_test_utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_logging.html">gpp_logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_covariance.html">gpp_covariance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_math-inl.html">gpp_math-inl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_domain.html">gpp_domain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_common.html">gpp_python_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_hyperparameter_optimization_demo.html">gpp_hyperparameter_optimization_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_test_utils_test.html">gpp_test_utils_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_math_test.html">gpp_math_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_model_selection.html">gpp_python_model_selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_math.html">gpp_math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_test.html">gpp_python_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_random.html">gpp_random</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra.html">gpp_linear_algebra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_core.html">gpp_core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_covariance_test.html">gpp_covariance_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python.html">gpp_python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_and_hyperparameter_optimization.html">gpp_model_selection_and_hyperparameter_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimization_parameters.html">gpp_optimization_parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_common.html">gpp_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_and_hyperparameter_optimization_test.html">gpp_model_selection_and_hyperparameter_optimization_test</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">MOE</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="cpp_tree.html">C++ Files</a> &raquo;</li>
+      
+    <li>gpp_heuristic_expected_improvement_optimization</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="_sources/gpp_heuristic_expected_improvement_optimization.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <div class="section" id="gpp-heuristic-expected-improvement-optimization">
+<h1>gpp_heuristic_expected_improvement_optimization<a class="headerlink" href="#gpp-heuristic-expected-improvement-optimization" title="Permalink to this headline">¶</a></h1>
+<p><strong>Contents:</strong></p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><a class="reference internal" href="#gpp-heuristic-expected-improvement-optimization-hpp">gpp_heuristic_expected_improvement_optimization.hpp</a></li>
+<li><a class="reference internal" href="#gpp-heuristic-expected-improvement-optimization-cpp">gpp_heuristic_expected_improvement_optimization.cpp</a></li>
+</ol>
+</div></blockquote>
+<div class="section" id="gpp-heuristic-expected-improvement-optimization-hpp">
+<h2>gpp_heuristic_expected_improvement_optimization.hpp<a class="headerlink" href="#gpp-heuristic-expected-improvement-optimization-hpp" title="Permalink to this headline">¶</a></h2>
+<p></p>
+<p></p>
+<p><p id="project0namespaceoptimal__learning"><em>namespace</em> <strong>optimal_learning</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+<em>Enums</em><blockquote>
+<div><p><span class="target" id="project0namespaceoptimal__learning_1a660d50b78a0fa26cadcaf532b2fae1db"></span><strong>EstimationPolicyTypes enum</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+<p><em>Values:</em></p>
+<ul class="breatheenumvalues">
+<li><tt class="first docutils literal"><span class="pre">kConstantLiar</span></tt><tt class="docutils literal"> <span class="pre">=</span> <span class="pre">=</span> <span class="pre">0</span></tt> - </li>
+<li><tt class="first docutils literal"><span class="pre">kKrigingBeliever</span></tt><tt class="docutils literal"> <span class="pre">=</span> <span class="pre">=</span> <span class="pre">1</span></tt> - </li>
+</ul>
+</div></blockquote>
+</div></blockquote>
+<p><p id="project0structoptimal__learning_1_1_function_value"><em>class</em> <strong>FunctionValue</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+<em>Public Functions</em><blockquote>
+<div><p><span class="target" id="project0structoptimal__learning_1_1_function_value_1aa6be1ebbc0743e5c8ab9aa318aeb3ffa"></span><div class="line-block">
+<div class="line"> <strong>FunctionValue</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_function_value_1ab949f73d9cf3bf463b63571dedc719fe"></span><div class="line-block">
+<div class="line"> <strong>FunctionValue</strong>(double function_value_in)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_function_value_1a0dbdf049ce58188e21bfff914efff706"></span><div class="line-block">
+<div class="line"> <strong>FunctionValue</strong>(double function_value_in, double noise_variance_in)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Public Members</em><blockquote>
+<div><p><span class="target" id="project0structoptimal__learning_1_1_function_value_1ac96ebf0b8ed440b707f5733344597799"></span>double <strong>function_value</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_function_value_1aa19a5a8405c23dd04aab703c5d9317d6"></span>double <strong>noise_variance</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</p>
+<p><p id="project0classoptimal__learning_1_1_objective_estimation_policy_interface"><em>class</em> <strong>ObjectiveEstimationPolicyInterface</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+<em>Public Functions</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_objective_estimation_policy_interface_1af88c15849f5cf4a5994be0925c86d3d8"></span><div class="line-block">
+<div class="line"> <strong>~ObjectiveEstimationPolicyInterface</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_objective_estimation_policy_interface_1a5d435bd7802bcdf742c78659d1f217ce"></span><div class="line-block">
+<div class="line"><a class="reference internal" href="#project0structoptimal__learning_1_1_function_value"><em>FunctionValue</em></a> <strong>ComputeEstimate</strong>(const  <a class="reference internal" href="gpp_math.html#project0classoptimal__learning_1_1_gaussian_process"><em>GaussianProcess</em></a>  &amp; gaussian_process, double const *restrict point, int iteration)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</p>
+<p><p id="project0classoptimal__learning_1_1_constant_liar_estimation_policy"><em>class</em> <strong>ConstantLiarEstimationPolicy</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+<em>Public Functions</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_constant_liar_estimation_policy_1a1d1d21f59e657739cc20e6abd4c2c3fc"></span><div class="line-block">
+<div class="line"> <strong>ConstantLiarEstimationPolicy</strong>(double lie_value)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_constant_liar_estimation_policy_1a5b9b0209a8fbdeb0617e91c254a7f012"></span><div class="line-block">
+<div class="line"> <strong>ConstantLiarEstimationPolicy</strong>(double lie_value, double lie_noise_variance)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_constant_liar_estimation_policy_1ac36acbb3b8200ccbd55f62650aec47a1"></span><div class="line-block">
+<div class="line"><a class="reference internal" href="#project0structoptimal__learning_1_1_function_value"><em>FunctionValue</em></a> <strong>ComputeEstimate</strong>(const  <a class="reference internal" href="gpp_math.html#project0classoptimal__learning_1_1_gaussian_process"><em>GaussianProcess</em></a>  &amp; OL_UNUSED, double const *restrict  OL_UNUSED, int  OL_UNUSED)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_constant_liar_estimation_policy_1a55ccfe0bbe63c49c2122cdc0073e9a4f"></span><div class="line-block">
+<div class="line"> <strong>ConstantLiarEstimationPolicy</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Private Members</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_constant_liar_estimation_policy_1afa201cc251ffc56e8676efbf38728b8d"></span>double <strong>lie_value_</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_constant_liar_estimation_policy_1ac39a5334f688ae9b2f7f04dc67871ab1"></span>double <strong>lie_noise_variance_</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</p>
+<p><p id="project0classoptimal__learning_1_1_kriging_believer_estimation_policy"><em>class</em> <strong>KrigingBelieverEstimationPolicy</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+<em>Public Functions</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_kriging_believer_estimation_policy_1aba524ab1f18a4ad99368e36492c3bb54"></span><div class="line-block">
+<div class="line"> <strong>KrigingBelieverEstimationPolicy</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_kriging_believer_estimation_policy_1a4f99ac6f2c0e6a39bc9af8066b8bed8f"></span><div class="line-block">
+<div class="line"> <strong>KrigingBelieverEstimationPolicy</strong>(double std_deviation_coef)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_kriging_believer_estimation_policy_1ac3b756e60b4e383408f432f79e734b96"></span><div class="line-block">
+<div class="line"> <strong>KrigingBelieverEstimationPolicy</strong>(double std_deviation_coef, double kriging_noise_variance)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_kriging_believer_estimation_policy_1ac2a86a0aef28fc9a4632a7e8360bd5f5"></span><div class="line-block">
+<div class="line"><a class="reference internal" href="#project0structoptimal__learning_1_1_function_value"><em>FunctionValue</em></a> <strong>ComputeEstimate</strong>(const  <a class="reference internal" href="gpp_math.html#project0classoptimal__learning_1_1_gaussian_process"><em>GaussianProcess</em></a>  &amp; gaussian_process, double const *restrict point, int  OL_UNUSED)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Private Members</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_kriging_believer_estimation_policy_1a42b74662e7a9ffdf8438f9892e8e47dd"></span>double <strong>std_deviation_coef_</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_kriging_believer_estimation_policy_1a428c365c9f97c5dcace97bf122dce629"></span>double <strong>kriging_noise_variance_</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</p>
+</div></blockquote>
+</p>
+</div>
+<div class="section" id="gpp-heuristic-expected-improvement-optimization-cpp">
+<h2>gpp_heuristic_expected_improvement_optimization.cpp<a class="headerlink" href="#gpp-heuristic-expected-improvement-optimization-cpp" title="Permalink to this headline">¶</a></h2>
+<p></p>
+<p></p>
+<p><p id="project0namespaceoptimal__learning"><em>namespace</em> <strong>optimal_learning</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+<em>Functions</em><blockquote>
+<div><p><span class="target" id="project0namespaceoptimal__learning_1af2b4f0717eaf09b17af9517b3e3a0989"></span><div class="line-block">
+<div class="line">template &lt; typename DomainType &gt;</div>
+<div class="line">void <strong>ComputeHeuristicSetOfPointsToSample</strong>(const  <a class="reference internal" href="gpp_math.html#project0classoptimal__learning_1_1_gaussian_process"><em>GaussianProcess</em></a>  &amp; gaussian_process, const  <a class="reference internal" href="gpp_optimization_parameters.html#project0structoptimal__learning_1_1_gradient_descent_parameters"><em>GradientDescentParameters</em></a>  &amp; optimization_parameters, const DomainType &amp; domain, const  <a class="reference internal" href="#project0classoptimal__learning_1_1_objective_estimation_policy_interface"><em>ObjectiveEstimationPolicyInterface</em></a>  &amp; estimation_policy, double best_so_far, int max_num_threads, bool lhc_search_only, int num_lhc_samples, int num_samples_to_generate, bool *restrict found_flag, <a class="reference internal" href="gpp_random.html#project0structoptimal__learning_1_1_uniform_random_generator"><em>UniformRandomGenerator</em></a>  * uniform_generator, double *restrict best_points_to_sample)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0namespaceoptimal__learning_1a9b4c557bab4ee146310ac4d4e9966253"></span><div class="line-block">
+<div class="line">template void <strong>ComputeHeuristicSetOfPointsToSample</strong>(const  <a class="reference internal" href="gpp_math.html#project0classoptimal__learning_1_1_gaussian_process"><em>GaussianProcess</em></a>  &amp; gaussian_process, const  <a class="reference internal" href="gpp_optimization_parameters.html#project0structoptimal__learning_1_1_gradient_descent_parameters"><em>GradientDescentParameters</em></a>  &amp; optimization_parameters, const  <a class="reference internal" href="gpp_domain.html#project0classoptimal__learning_1_1_tensor_product_domain"><em>TensorProductDomain</em></a>  &amp; domain, const  <a class="reference internal" href="#project0classoptimal__learning_1_1_objective_estimation_policy_interface"><em>ObjectiveEstimationPolicyInterface</em></a>  &amp; estimation_policy, double best_so_far, int max_num_threads, bool lhc_search_only, int num_lhc_samples, int num_samples_to_generate, bool *restrict found_flag, <a class="reference internal" href="gpp_random.html#project0structoptimal__learning_1_1_uniform_random_generator"><em>UniformRandomGenerator</em></a>  * uniform_generator, double *restrict best_points_to_sample)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0namespaceoptimal__learning_1afbd7d233ea900e1dc6407cf3cf0a8b42"></span><div class="line-block">
+<div class="line">template void <strong>ComputeHeuristicSetOfPointsToSample</strong>(const  <a class="reference internal" href="gpp_math.html#project0classoptimal__learning_1_1_gaussian_process"><em>GaussianProcess</em></a>  &amp; gaussian_process, const  <a class="reference internal" href="gpp_optimization_parameters.html#project0structoptimal__learning_1_1_gradient_descent_parameters"><em>GradientDescentParameters</em></a>  &amp; optimization_parameters, const  <a class="reference internal" href="gpp_domain.html#project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain"><em>SimplexIntersectTensorProductDomain</em></a>  &amp; domain, const  <a class="reference internal" href="#project0classoptimal__learning_1_1_objective_estimation_policy_interface"><em>ObjectiveEstimationPolicyInterface</em></a>  &amp; estimation_policy, double best_so_far, int max_num_threads, bool lhc_search_only, int num_lhc_samples, int num_samples_to_generate, bool *restrict found_flag, <a class="reference internal" href="gpp_random.html#project0structoptimal__learning_1_1_uniform_random_generator"><em>UniformRandomGenerator</em></a>  * uniform_generator, double *restrict best_points_to_sample)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</p>
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="gpp_linear_algebra-inl.html" class="btn btn-neutral float-right" title="gpp_linear_algebra-inl"/>Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="gpp_geometry.html" class="btn btn-neutral" title="gpp_geometry"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

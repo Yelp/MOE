@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>gpp_math.hpp &mdash; MOE 0.1.0 documentation</title>
+  <title>gpp_math &mdash; MOE 0.1.0 documentation</title>
   
 
   
@@ -71,7 +71,11 @@
 </li>
 </ul>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="">gpp_math.hpp</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">gpp_math</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#gpp-math-hpp">gpp_math.hpp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#gpp-math-cpp">gpp_math.cpp</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="gpp_geometry_hpp.html">gpp_geometry.hpp</a></li>
 </ul>
 
@@ -96,7 +100,7 @@
   <ul class="wy-breadcrumbs">
     <li><a href="index.html">Docs</a> &raquo;</li>
       
-    <li>gpp_math.hpp</li>
+    <li>gpp_math</li>
       <li class="wy-breadcrumbs-aside">
         
           <a href="_sources/gpp_math_hpp.txt" rel="nofollow"> View page source</a>
@@ -107,8 +111,17 @@
 </div>
           <div role="main">
             
-  <div class="section" id="gpp-math-hpp">
-<h1>gpp_math.hpp<a class="headerlink" href="#gpp-math-hpp" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="gpp-math">
+<h1>gpp_math<a class="headerlink" href="#gpp-math" title="Permalink to this headline">¶</a></h1>
+<p><strong>Contents:</strong></p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><a class="reference internal" href="#gpp-math-hpp">gpp_math.hpp</a></li>
+<li><a class="reference internal" href="#gpp-math-cpp">gpp_math.cpp</a></li>
+</ol>
+</div></blockquote>
+<div class="section" id="gpp-math-hpp">
+<h2>gpp_math.hpp<a class="headerlink" href="#gpp-math-hpp" title="Permalink to this headline">¶</a></h2>
 <p></p>
 <p><ol class="arabic simple">
 <li>OVERVIEW OF GAUSSIAN PROCESSES AND EXPECTED IMPROVEMENT; WHAT ARE WE TRYING TO DO?</li>
@@ -2448,6 +2461,140 @@ associated Gaussian Process (which arrives as part of the <tt class="docutils li
 </p>
 </div></blockquote>
 </p>
+</div>
+<div class="section" id="gpp-math-cpp">
+<h2>gpp_math.cpp<a class="headerlink" href="#gpp-math-cpp" title="Permalink to this headline">¶</a></h2>
+<p></p>
+<p></p>
+<em>Defines</em><blockquote>
+<div><p><span class="target" id="project0gpp__math_8cpp_1acee0e2f7c2e99fe8c3ee4201e3d08939"></span><strong>OL_CHOL_VAR</strong>(i, j)</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0gpp__math_8cpp_1a766817843cda6ab78b324f06aa0c2faf"></span><strong>OL_GRAD_CHOL</strong>(m, i, j)</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<p><p id="project0namespaceoptimal__learning"><em>namespace</em> <strong>optimal_learning</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+<em>Functions</em><blockquote>
+<div><p><span class="target" id="project0namespaceoptimal__learning_1a69efbd8ca7d98e17939fd262c8b47139"></span><div class="line-block">
+<div class="line">template &lt; typename DomainType &gt;</div>
+<div class="line">void <strong>ComputeOptimalSetOfPointsToSample</strong>(const  <a class="reference internal" href="#project0classoptimal__learning_1_1_gaussian_process"><em>GaussianProcess</em></a>  &amp; gaussian_process, const  GradientDescentParameters  &amp; optimization_parameters, const DomainType &amp; domain, double const *restrict points_to_sample, int num_to_sample, double best_so_far, int max_int_steps, int max_num_threads, bool lhc_search_only, int num_lhc_samples, int num_samples_to_generate, bool *restrict found_flag, UniformRandomGenerator  * uniform_generator, NormalRNG  * normal_rng, double *restrict best_points_to_sample)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Returns the optimal set of q points to sample CONCURRENTLY by solving the q,p-EI problem.  That is, we may want to run 4
+experiments at the same time and maximize the EI across all 4 experiments at once while knowing of 2 ongoing experiments
+(4,2-EI). This function handles this use case. Evaluation of q,p-EI (and its gradient) for q &gt; 1 or p &gt; 1 is expensive
+(requires monte-carlo iteration), so this method is usually very expensive.</p>
+<p>Compared to ComputeHeuristicSetOfPointsToSample() (<tt class="docutils literal"><span class="pre">gpp_heuristic_expected_improvement_optimization.hpp</span></tt>), this function
+makes no external assumptions about the underlying objective function. Instead, it utilizes a feature of the
+GaussianProcess that allows the GP to account for ongoing/incomplete experiments.</p>
+<p>If <tt class="docutils literal"><span class="pre">num_samples_to_generate</span> <span class="pre">=</span> <span class="pre">1</span></tt>, this is the same as ComputeOptimalPointToSampleWithRandomStarts().</p>
+<p>With <tt class="docutils literal"><span class="pre">lhc_search_only</span> <span class="pre">:=</span> <span class="pre">false</span></tt> and <tt class="docutils literal"><span class="pre">num_samples_to_generate</span> <span class="pre">:=</span> <span class="pre">1</span></tt>, this is equivalent to
+ComputeOptimalPointToSampleWithRandomStarts() (i.e., 1,p-EI).</p>
+<p>In the INPUTS, note the difference between <tt class="docutils literal"><span class="pre">points_to_sample</span></tt>/<tt class="docutils literal"><span class="pre">num_to_sample</span></tt> and <tt class="docutils literal"><span class="pre">num_samples_to_generate</span></tt>.
+<tt class="docutils literal"><span class="pre">points_to_sample</span></tt> are experiments that are ALREADY ongoing.  <tt class="docutils literal"><span class="pre">num_samples_to_generate</span></tt> tells this function how many NEW
+sample points to return.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">These comments were copied into multistart_expected_improvement_optimization() in cpp_wrappers/expected_improvement.py.</p>
+</div>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">gaussian_process:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">GaussianProcess object (holds <tt class="docutils literal"><span class="pre">points_sampled</span></tt>, <tt class="docutils literal"><span class="pre">values</span></tt>, <tt class="docutils literal"><span class="pre">noise_variance</span></tt>, derived quantities)
+that describes the underlying GP</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">optimization_parameters:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">GradientDescentParameters object that describes the parameters controlling EI optimization
+(e.g., number of iterations, tolerances, learning rate)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">domain:</th><td class="field-body">object specifying the domain to optimize over (see <tt class="docutils literal"><span class="pre">gpp_domain.hpp</span></tt>)</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">points_to_sample[dim][num_to_sample]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">points that are being sampled concurrently from the GP</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">num_to_sample:</th><td class="field-body">number of points being sampled concurrently (i.e., the p in q,p-EI)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">best_so_far:</th><td class="field-body">value of the best sample so far (must be <tt class="docutils literal"><span class="pre">min(points_sampled_value)</span></tt>)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">max_int_steps:</th><td class="field-body">maximum number of MC iterations</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">max_num_threads:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">maximum number of threads for use by OpenMP (generally should be &lt;= # cores)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">lhc_search_only:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">whether to ONLY use latin hypercube search (and skip gradient descent EI opt)</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">num_lhc_samples:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">number of samples to draw if/when doing latin hypercube search</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">num_samples_to_generate:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">how many simultaneous experiments you would like to run (i.e., the q in q,p-EI)</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">uniform_generator[1]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">a UniformRandomGenerator object providing the random engine for uniform random numbers</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">normal_rng[max_num_threads]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">a vector of NormalRNG objects that provide the (pesudo)random source for MC integration</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Outputs</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">found_flag[1]:</th><td class="field-body">true if best_points_to_sample corresponds to a nonzero EI if sampled simultaneously</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">uniform_generator[1]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">UniformRandomGenerator object will have its state changed due to random draws</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">normal_rng[max_num_threads]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">NormalRNG objects will have their state changed due to random draws</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">best_points_to_sample[num_samples_to_generate*dim]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">point yielding the best EI according to MGD</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0namespaceoptimal__learning_1a970dbcc30fcbf6e1723d046d5dde5607"></span><div class="line-block">
+<div class="line">template void <strong>ComputeOptimalSetOfPointsToSample</strong>(const  <a class="reference internal" href="#project0classoptimal__learning_1_1_gaussian_process"><em>GaussianProcess</em></a>  &amp; gaussian_process, const  GradientDescentParameters  &amp; optimization_parameters, const  TensorProductDomain  &amp; domain, double const *restrict points_to_sample, int num_to_sample, double best_so_far, int max_int_steps, int max_num_threads, bool lhc_search_only, int num_lhc_samples, int num_samples_to_generate, bool *restrict found_flag, UniformRandomGenerator  * uniform_generator, NormalRNG  * normal_rng, double *restrict best_points_to_sample)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0namespaceoptimal__learning_1a6a91d74574afbe1e9096b7a3beb0a7b9"></span><div class="line-block">
+<div class="line">template void <strong>ComputeOptimalSetOfPointsToSample</strong>(const  <a class="reference internal" href="#project0classoptimal__learning_1_1_gaussian_process"><em>GaussianProcess</em></a>  &amp; gaussian_process, const  GradientDescentParameters  &amp; optimization_parameters, const  SimplexIntersectTensorProductDomain  &amp; domain, double const *restrict points_to_sample, int num_to_sample, double best_so_far, int max_int_steps, int max_num_threads, bool lhc_search_only, int num_lhc_samples, int num_samples_to_generate, bool *restrict found_flag, UniformRandomGenerator  * uniform_generator, NormalRNG  * normal_rng, double *restrict best_points_to_sample)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</p>
+</div>
 </div>
 
 

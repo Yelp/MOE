@@ -1,0 +1,13 @@
+gpp_linear_algebra-inl
+=====
+
+**Contents:**
+
+    1. `gpp_linear_algebra-inl.hpp`_
+
+
+gpp_linear_algebra-inl.hpp
+------
+
+.. doxygenfile:: gpp_linear_algebra-inl.hpp
+

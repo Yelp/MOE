@@ -1,0 +1,13 @@
+gpp_core
+=====
+
+**Contents:**
+
+    1. `gpp_core.cpp`_
+
+
+gpp_core.cpp
+------
+
+.. doxygenfile:: gpp_core.cpp
+

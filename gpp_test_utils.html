@@ -1,0 +1,700 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>gpp_test_utils &mdash; MOE 0.1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="_static/breathe.css" type="text/css" />
+  
+    <link rel="top" title="MOE 0.1.0 documentation" href="index.html"/>
+        <link rel="up" title="C++ Files" href="cpp_tree.html"/>
+        <link rel="next" title="gpp_logging" href="gpp_logging.html"/>
+        <link rel="prev" title="gpp_linear_algebra-inl" href="gpp_linear_algebra-inl.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="index.html" class="fa fa-home"> MOE</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul>
+<li class="toctree-l1"><a class="reference internal" href="moe.html">moe package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#module-moe.resources">moe.resources module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#module-moe">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="cpp_tree.html">C++ Files</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimization_test.html">gpp_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_domain_test.html">gpp_domain_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_random_test.html">gpp_random_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_exception.html">gpp_exception</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_geometry.html">gpp_geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">gpp_test_utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_logging.html">gpp_logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_covariance.html">gpp_covariance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_math-inl.html">gpp_math-inl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_domain.html">gpp_domain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_common.html">gpp_python_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_hyperparameter_optimization_demo.html">gpp_hyperparameter_optimization_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_test_utils_test.html">gpp_test_utils_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_math_test.html">gpp_math_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_model_selection.html">gpp_python_model_selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_math.html">gpp_math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_test.html">gpp_python_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_random.html">gpp_random</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra.html">gpp_linear_algebra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_core.html">gpp_core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_covariance_test.html">gpp_covariance_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python.html">gpp_python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_and_hyperparameter_optimization.html">gpp_model_selection_and_hyperparameter_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimization_parameters.html">gpp_optimization_parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_common.html">gpp_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_and_hyperparameter_optimization_test.html">gpp_model_selection_and_hyperparameter_optimization_test</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">MOE</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="cpp_tree.html">C++ Files</a> &raquo;</li>
+      
+    <li>gpp_test_utils</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="_sources/gpp_test_utils.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <div class="section" id="gpp-test-utils">
+<h1>gpp_test_utils<a class="headerlink" href="#gpp-test-utils" title="Permalink to this headline">¶</a></h1>
+<p><strong>Contents:</strong></p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><a class="reference internal" href="#gpp-test-utils-hpp">gpp_test_utils.hpp</a></li>
+<li><a class="reference internal" href="#gpp-test-utils-cpp">gpp_test_utils.cpp</a></li>
+</ol>
+</div></blockquote>
+<div class="section" id="gpp-test-utils-hpp">
+<h2>gpp_test_utils.hpp<a class="headerlink" href="#gpp-test-utils-hpp" title="Permalink to this headline">¶</a></h2>
+<p></p>
+<p></p>
+<p><p id="project0namespaceboost"><em>namespace</em> <strong>boost</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+<p><p id="project0classboost_1_1uniform__real"><em>class</em> <strong>uniform_real</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</p>
+</div></blockquote>
+</p>
+<p><p id="project0namespaceoptimal__learning"><em>namespace</em> <strong>optimal_learning</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+<em>Functions</em><blockquote>
+<div><p><span class="target" id="project0namespaceoptimal__learning_1a6a5f25bfb867646bf7665b1263290013"></span><div class="line-block">
+<div class="line">template &lt; typename DomainType &gt;</div>
+<div class="line">OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT int <strong>CheckPointsInDomain</strong>(const DomainType &amp; domain, double const *restrict point_list, int num_points)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<p><p id="project0classoptimal__learning_1_1_pingable_matrix_input_vector_output_interface"><em>class</em> <strong>PingableMatrixInputVectorOutputInterface</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+<em>Public Functions</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_pingable_matrix_input_vector_output_interface_1aae2e0fa3e2ab70de89abac30458f8b52"></span><div class="line-block">
+<div class="line">void <strong>GetInputSizes</strong>(int * num_rows, int * num_cols)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_pingable_matrix_input_vector_output_interface_1a618a890a7f5e9059b88499963277bc96"></span><div class="line-block">
+<div class="line">int <strong>GetOutputSize</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_pingable_matrix_input_vector_output_interface_1afe065587368c70b5de0da86792f72f3c"></span><div class="line-block">
+<div class="line">int <strong>GetGradientsSize</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_pingable_matrix_input_vector_output_interface_1a238a21daa3611c30580534a90bf75534"></span><div class="line-block">
+<div class="line">void <strong>EvaluateAndStoreAnalyticGradient</strong>(double const *restrict input_matrix, double *restrict gradients)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_pingable_matrix_input_vector_output_interface_1a3d99731d1cb8b1d0d1d4bb85338dabba"></span><div class="line-block">
+<div class="line">double <strong>GetAnalyticGradient</strong>(int row_index, int column_index, int output_index)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_pingable_matrix_input_vector_output_interface_1af5990c6775d5cfca73692a544f146e3a"></span><div class="line-block">
+<div class="line">void <strong>EvaluateFunction</strong>(double const *restrict input_matrix, double *restrict function_values)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_pingable_matrix_input_vector_output_interface_1a9e1d28ce8619c73a680989bc2756ed40"></span><div class="line-block">
+<div class="line"> <strong>OL_DISALLOW_COPY_AND_ASSIGN</strong>(<a class="reference internal" href="#project0classoptimal__learning_1_1_pingable_matrix_input_vector_output_interface"><em>PingableMatrixInputVectorOutputInterface</em></a>)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Protected Functions</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_pingable_matrix_input_vector_output_interface_1a663c67662a7a6a971aaf0123efa865e2"></span><div class="line-block">
+<div class="line"> <strong>PingableMatrixInputVectorOutputInterface</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_pingable_matrix_input_vector_output_interface_1adeae44f38006ae39e4f4afbc9544b909"></span><div class="line-block">
+<div class="line"> <strong>~PingableMatrixInputVectorOutputInterface</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</p>
+<p><p id="project0classoptimal__learning_1_1_mock_expected_improvement_environment"><em>class</em> <strong>MockExpectedImprovementEnvironment</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+<em>Public Type</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_mock_expected_improvement_environment_1abc0846411620ad518bf34ae22d1bc181"></span>typedef UniformRandomGenerator::EngineType <strong>EngineType</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Public Functions</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_mock_expected_improvement_environment_1ae46330f988942c0e7ad421d95fda54e3"></span><div class="line-block">
+<div class="line"> <strong>MockExpectedImprovementEnvironment</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_mock_expected_improvement_environment_1a1e7fc973cac68aadd12578ac3989a8fc"></span><div class="line-block">
+<div class="line">void <strong>Initialize</strong>(int dim_in, int num_to_sample_in, int num_sampled_in)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_mock_expected_improvement_environment_1ab73c89a1918bd68205103912c236d195"></span><div class="line-block">
+<div class="line">void <strong>Initialize</strong>(int dim_in, int num_to_sample_in, int num_sampled_in, <a class="reference internal" href="gpp_random.html#project0structoptimal__learning_1_1_uniform_random_generator"><em>UniformRandomGenerator</em></a>  * uniform_generator)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_mock_expected_improvement_environment_1a48ea3a4642da4b0a4bf49f5fb6f5d2ca"></span><div class="line-block">
+<div class="line">double * <strong>points_to_sample</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_mock_expected_improvement_environment_1a145abcc2dee50e16ae146abfac91a791"></span><div class="line-block">
+<div class="line">double * <strong>points_sampled</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_mock_expected_improvement_environment_1a34fdbc12b6b6c45f3933fa05cca2283e"></span><div class="line-block">
+<div class="line">double * <strong>points_sampled_value</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_mock_expected_improvement_environment_1a7b334435b033a54310cb6d48933279e0"></span><div class="line-block">
+<div class="line">double * <strong>current_point</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_mock_expected_improvement_environment_1ae813b6752bf6039696170cc27a9a399a"></span><div class="line-block">
+<div class="line"> <strong>OL_DISALLOW_COPY_AND_ASSIGN</strong>(<a class="reference internal" href="#project0classoptimal__learning_1_1_mock_expected_improvement_environment"><em>MockExpectedImprovementEnvironment</em></a>)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Public Members</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_mock_expected_improvement_environment_1a58ade07993ea2973e10ba383c6bf2e00"></span>int <strong>dim</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_mock_expected_improvement_environment_1ac7e71fce85c9fd2a459262d90c81bf7e"></span>int <strong>num_to_sample</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_mock_expected_improvement_environment_1a63a0ffcfccc159dc4bf8dac65232d1de"></span>int <strong>num_sampled</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Public Static Attributes</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_mock_expected_improvement_environment_1ad0e638620f0873e2fdefdddc20ba59b1"></span>constexpr EngineType::result_type <strong>kDefaultSeed</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_mock_expected_improvement_environment_1a691f587aea22c681ee51cf5982840084"></span>constexpr double <strong>range_min</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_mock_expected_improvement_environment_1afcbc2126d71e9ff718740356e7bd31b0"></span>constexpr double <strong>range_max</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Private Members</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_mock_expected_improvement_environment_1a7ede8d188d94e60e2fd4bf642707354c"></span>std::vector&lt; double &gt; <strong>points_to_sample_</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_mock_expected_improvement_environment_1a6a7876be37cd27893441d28ae9f89dda"></span>std::vector&lt; double &gt; <strong>points_sampled_</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_mock_expected_improvement_environment_1ad3f89cc5c64d18b67530211b099e6fb8"></span>std::vector&lt; double &gt; <strong>points_sampled_value_</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_mock_expected_improvement_environment_1a5285362fd284a20992ea3239f091b5fb"></span>std::vector&lt; double &gt; <strong>current_point_</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_mock_expected_improvement_environment_1a7e6d95a95716357126af88fd53f2f477"></span><a class="reference internal" href="gpp_random.html#project0structoptimal__learning_1_1_uniform_random_generator"><em>UniformRandomGenerator</em></a> <strong>uniform_generator_</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_mock_expected_improvement_environment_1a1168e3a4dfad600aa1cfbacc2023573c"></span><a class="reference internal" href="#project0classboost_1_1uniform__real"><em>boost::uniform_real</em></a> &lt; double &gt; <strong>uniform_double_</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</p>
+<p><p id="project0structoptimal__learning_1_1_mock_gaussian_process_prior_data"><em>class</em> <strong>MockGaussianProcessPriorData</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+<em>Public Functions</em><blockquote>
+<div><p><span class="target" id="project0structoptimal__learning_1_1_mock_gaussian_process_prior_data_1a62a6ce6a1efb7739abfef2aa9f97d468"></span><div class="line-block">
+<div class="line"> <strong>MockGaussianProcessPriorData</strong>(const  <a class="reference internal" href="gpp_covariance.html#project0classoptimal__learning_1_1_covariance_interface"><em>CovarianceInterface</em></a>  &amp; covariance, const std::vector&lt; double &gt; &amp; noise_variance_in, int dim_in, int num_sampled_in)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_mock_gaussian_process_prior_data_1a0cd419fe647014bae72e7c4c26ec8617"></span><div class="line-block">
+<div class="line"> <strong>MockGaussianProcessPriorData</strong>(const  <a class="reference internal" href="gpp_covariance.html#project0classoptimal__learning_1_1_covariance_interface"><em>CovarianceInterface</em></a>  &amp; covariance, const std::vector&lt; double &gt; &amp; noise_variance_in, int dim_in, int num_sampled_in, const  <a class="reference internal" href="#project0classboost_1_1uniform__real"><em>boost::uniform_real</em></a> &lt; double &gt; &amp; uniform_double_domain_lower, const  <a class="reference internal" href="#project0classboost_1_1uniform__real"><em>boost::uniform_real</em></a> &lt; double &gt; &amp; uniform_double_domain_upper, const  <a class="reference internal" href="#project0classboost_1_1uniform__real"><em>boost::uniform_real</em></a> &lt; double &gt; &amp; uniform_double_hyperparameters, <a class="reference internal" href="gpp_random.html#project0structoptimal__learning_1_1_uniform_random_generator"><em>UniformRandomGenerator</em></a>  * uniform_generator)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_mock_gaussian_process_prior_data_1a5c85b4f61053e3bb5a66566a3a07cac5"></span><div class="line-block">
+<div class="line"> <strong>~MockGaussianProcessPriorData</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_mock_gaussian_process_prior_data_1a7bef8667f1cafab1d3d336522a254a39"></span><div class="line-block">
+<div class="line">void <strong>InitializeHyperparameters</strong>(const  <a class="reference internal" href="#project0classboost_1_1uniform__real"><em>boost::uniform_real</em></a> &lt; double &gt; &amp; uniform_double_hyperparameters, <a class="reference internal" href="gpp_random.html#project0structoptimal__learning_1_1_uniform_random_generator"><em>UniformRandomGenerator</em></a>  * uniform_generator)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_mock_gaussian_process_prior_data_1a13d28b3559285cc46fe6081f9b281e0f"></span><div class="line-block">
+<div class="line">void <strong>InitializeDomain</strong>(const  <a class="reference internal" href="#project0classboost_1_1uniform__real"><em>boost::uniform_real</em></a> &lt; double &gt; &amp; uniform_double_domain_lower, const  <a class="reference internal" href="#project0classboost_1_1uniform__real"><em>boost::uniform_real</em></a> &lt; double &gt; &amp; uniform_double_domain_upper, <a class="reference internal" href="gpp_random.html#project0structoptimal__learning_1_1_uniform_random_generator"><em>UniformRandomGenerator</em></a>  * uniform_generator)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_mock_gaussian_process_prior_data_1a994b275757d1cde9be7fd083f09fefbc"></span><div class="line-block">
+<div class="line">void <strong>InitializeGaussianProcess</strong>(<a class="reference internal" href="gpp_random.html#project0structoptimal__learning_1_1_uniform_random_generator"><em>UniformRandomGenerator</em></a>  * uniform_generator)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Public Members</em><blockquote>
+<div><p><span class="target" id="project0structoptimal__learning_1_1_mock_gaussian_process_prior_data_1a8a2099dce947d2cad25a8139c88bc7a2"></span>int <strong>dim</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_mock_gaussian_process_prior_data_1aa72bb012f18fb702d4847c4c7326de8a"></span>int <strong>num_sampled</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_mock_gaussian_process_prior_data_1a454dc42f50804cadb5f29cb22cc99e62"></span>std::vector&lt;  <a class="reference internal" href="gpp_geometry.html#project0structoptimal__learning_1_1_closed_interval"><em>ClosedInterval</em></a>  &gt; <strong>domain_bounds</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_mock_gaussian_process_prior_data_1a8910746cf6e0bf5361525500bba9dbef"></span>std::unique_ptr&lt; DomainType &gt; <strong>domain_ptr</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_mock_gaussian_process_prior_data_1a0886273e48708e2858de019c916ec203"></span>std::unique_ptr&lt;  <a class="reference internal" href="gpp_covariance.html#project0classoptimal__learning_1_1_covariance_interface"><em>CovarianceInterface</em></a>  &gt; <strong>covariance_ptr</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_mock_gaussian_process_prior_data_1a78f29cd4c76c1d65a214eee1cef13e9a"></span>std::vector&lt; double &gt; <strong>hyperparameters</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_mock_gaussian_process_prior_data_1a2cc90ab69b1f0833e54a01f7ea108e87"></span>std::vector&lt; double &gt; <strong>noise_variance</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_mock_gaussian_process_prior_data_1ad58c6df728049f5543079ef6fd5f0264"></span>double <strong>best_so_far</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_mock_gaussian_process_prior_data_1a6637ed98416882b49c2c7b976004ca7a"></span>std::unique_ptr&lt;  <a class="reference internal" href="gpp_math.html#project0classoptimal__learning_1_1_gaussian_process"><em>GaussianProcess</em></a>  &gt; <strong>gaussian_process_ptr</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</p>
+</div></blockquote>
+</p>
+</div>
+<div class="section" id="gpp-test-utils-cpp">
+<h2>gpp_test_utils.cpp<a class="headerlink" href="#gpp-test-utils-cpp" title="Permalink to this headline">¶</a></h2>
+<p></p>
+<p></p>
+<em>Defines</em><blockquote>
+<div><p><span class="target" id="project0gpp__test__utils_8cpp_1a108c0140270b524f13500dfc29e694e6"></span><strong>OL_PING_TEST_DEBUG_PRINTF</strong>(...)</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<p><p id="project0namespaceoptimal__learning"><em>namespace</em> <strong>optimal_learning</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+<em>Functions</em><blockquote>
+<div><p><span class="target" id="project0namespaceoptimal__learning_1a8df0aa011ffe9ea21befe72ff9cbce64"></span><div class="line-block">
+<div class="line">bool <strong>CheckIntEquals</strong>(int64_t value, int64_t truth)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0namespaceoptimal__learning_1a6d85b76c7a0fbcfc071d2d29fee21b8c"></span><div class="line-block">
+<div class="line">double <strong>ResidualNorm</strong>(double const *restrict A, double const *restrict x, double const *restrict b, int size)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0namespaceoptimal__learning_1aa994e861df161318e2bb293315196c36"></span><div class="line-block">
+<div class="line">bool <strong>CheckDoubleWithin</strong>(double value, double truth, double tolerance)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0namespaceoptimal__learning_1a17833a2fec9cb99b6096b523428d7242"></span><div class="line-block">
+<div class="line">bool <strong>CheckDoubleWithinRelative</strong>(double value, double truth, double tolerance)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0namespaceoptimal__learning_1a8bbccaa783a662f9b1f9dc27afd86e86"></span><div class="line-block">
+<div class="line">bool <strong>CheckMatrixNormWithin</strong>(double const *restrict matrix1, double const *restrict matrix2, int size_m, int size_n, double tolerance)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0namespaceoptimal__learning_1a4a0bd16bb7e2fb31905a436560f95438"></span><div class="line-block">
+<div class="line">int <strong>CheckPointsAreDistinct</strong>(double const *restrict point_list, int num_points, int dim, double tolerance)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0namespaceoptimal__learning_1a027ab5d71d7f3c9c892f012e84dd396f"></span><div class="line-block">
+<div class="line">int <strong>PingDerivative</strong>(const  <a class="reference internal" href="#project0classoptimal__learning_1_1_pingable_matrix_input_vector_output_interface"><em>PingableMatrixInputVectorOutputInterface</em></a>  &amp; function_and_derivative_evaluator, double const *restrict points, double epsilon, double rate_tolerance_fine, double rate_tolerance_relaxed, double input_output_ratio)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0namespaceoptimal__learning_1aa98be88ad6451f04352cdd79258cee68"></span><div class="line-block">
+<div class="line">void <strong>ExpandDomainBounds</strong>(double scale_factor, std::vector&lt;  <a class="reference internal" href="gpp_geometry.html#project0structoptimal__learning_1_1_closed_interval"><em>ClosedInterval</em></a>  &gt; * domain_bounds)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0namespaceoptimal__learning_1adcf5a3c01f12386d963b1d8486f9ead4"></span><div class="line-block">
+<div class="line">void <strong>FillRandomCovarianceHyperparameters</strong>(const  <a class="reference internal" href="#project0classboost_1_1uniform__real"><em>boost::uniform_real</em></a> &lt; double &gt; &amp; uniform_double_hyperparameter, <a class="reference internal" href="gpp_random.html#project0structoptimal__learning_1_1_uniform_random_generator"><em>UniformRandomGenerator</em></a>  * uniform_generator, std::vector&lt; double &gt; * hyperparameters, <a class="reference internal" href="gpp_covariance.html#project0classoptimal__learning_1_1_covariance_interface"><em>CovarianceInterface</em></a>  * covariance)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0namespaceoptimal__learning_1af9947e8fe0f02ae4dbd2f607e4d6986b"></span><div class="line-block">
+<div class="line">void <strong>FillRandomDomainBounds</strong>(const  <a class="reference internal" href="#project0classboost_1_1uniform__real"><em>boost::uniform_real</em></a> &lt; double &gt; &amp; uniform_double_lower_bound, const  <a class="reference internal" href="#project0classboost_1_1uniform__real"><em>boost::uniform_real</em></a> &lt; double &gt; &amp; uniform_double_upper_bound, <a class="reference internal" href="gpp_random.html#project0structoptimal__learning_1_1_uniform_random_generator"><em>UniformRandomGenerator</em></a>  * uniform_generator, std::vector&lt;  <a class="reference internal" href="gpp_geometry.html#project0structoptimal__learning_1_1_closed_interval"><em>ClosedInterval</em></a>  &gt; * domain_bounds)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0namespaceoptimal__learning_1af5f74598a1558bb9d5810c73fe35f316"></span><div class="line-block">
+<div class="line">void <strong>FillRandomGaussianProcess</strong>(double const *restrict points_to_sample, double const *restrict noise_variance, int dim, int num_to_sample, double *restrict points_to_sample_value, <a class="reference internal" href="gpp_math.html#project0classoptimal__learning_1_1_gaussian_process"><em>GaussianProcess</em></a>  * gaussian_process)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</p>
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="gpp_logging.html" class="btn btn-neutral float-right" title="gpp_logging"/>Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="gpp_linear_algebra-inl.html" class="btn btn-neutral" title="gpp_linear_algebra-inl"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

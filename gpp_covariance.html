@@ -1,0 +1,1297 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>gpp_covariance &mdash; MOE 0.1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="_static/breathe.css" type="text/css" />
+  
+    <link rel="top" title="MOE 0.1.0 documentation" href="index.html"/>
+        <link rel="up" title="C++ Files" href="cpp_tree.html"/>
+        <link rel="next" title="gpp_math-inl" href="gpp_math-inl.html"/>
+        <link rel="prev" title="gpp_logging" href="gpp_logging.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="index.html" class="fa fa-home"> MOE</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul>
+<li class="toctree-l1"><a class="reference internal" href="moe.html">moe package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#module-moe.resources">moe.resources module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#module-moe">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="cpp_tree.html">C++ Files</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimization_test.html">gpp_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_domain_test.html">gpp_domain_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_random_test.html">gpp_random_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_exception.html">gpp_exception</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_geometry.html">gpp_geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_test_utils.html">gpp_test_utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_logging.html">gpp_logging</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">gpp_covariance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_math-inl.html">gpp_math-inl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_domain.html">gpp_domain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_common.html">gpp_python_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_hyperparameter_optimization_demo.html">gpp_hyperparameter_optimization_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_test_utils_test.html">gpp_test_utils_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_math_test.html">gpp_math_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_model_selection.html">gpp_python_model_selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_math.html">gpp_math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_test.html">gpp_python_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_random.html">gpp_random</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra.html">gpp_linear_algebra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_core.html">gpp_core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_covariance_test.html">gpp_covariance_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python.html">gpp_python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_and_hyperparameter_optimization.html">gpp_model_selection_and_hyperparameter_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimization_parameters.html">gpp_optimization_parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_common.html">gpp_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_and_hyperparameter_optimization_test.html">gpp_model_selection_and_hyperparameter_optimization_test</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">MOE</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="cpp_tree.html">C++ Files</a> &raquo;</li>
+      
+    <li>gpp_covariance</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="_sources/gpp_covariance.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <div class="section" id="gpp-covariance">
+<h1>gpp_covariance<a class="headerlink" href="#gpp-covariance" title="Permalink to this headline">¶</a></h1>
+<p><strong>Contents:</strong></p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><a class="reference internal" href="#gpp-covariance-hpp">gpp_covariance.hpp</a></li>
+<li><a class="reference internal" href="#gpp-covariance-cpp">gpp_covariance.cpp</a></li>
+</ol>
+</div></blockquote>
+<div class="section" id="gpp-covariance-hpp">
+<h2>gpp_covariance.hpp<a class="headerlink" href="#gpp-covariance-hpp" title="Permalink to this headline">¶</a></h2>
+<p></p>
+<p><p>This file specifies CovarianceInterface, the interface for all covariance functions used by the optimal learning
+code base.  It defines three main covariance functions subclassing this interface, Square Exponential, Matern
+with nu = 1.5 and Matern with nu = 2.5.  There is also a special isotropic Square Exponential function (i.e., uses
+the same length scale in all dimensions).  We denote a generic covariance function as: <tt class="docutils literal"><span class="pre">k(x,x')</span></tt></p>
+<p>Covariance functions have a few fundamental properties (see references at the bottom for full details).  In short,
+they are SPSD (symmetric positive semi-definite): <tt class="docutils literal"><span class="pre">k(x,x')</span> <span class="pre">=</span> <span class="pre">k(x',</span> <span class="pre">x)</span></tt> for any <tt class="docutils literal"><span class="pre">x,x'</span></tt> and <tt class="docutils literal"><span class="pre">k(x,x)</span> <span class="pre">&gt;=</span> <span class="pre">0</span></tt> for all <tt class="docutils literal"><span class="pre">x</span></tt>.
+As a consequence, covariance matrices are SPD as long as the input points are all distinct.</p>
+<p>Additionally, the Square Exponential and Matern covariances (as well as other functions) are stationary. In essence,
+this means they can be written as <tt class="docutils literal"><span class="pre">k(r)</span> <span class="pre">=</span> <span class="pre">k(|x</span> <span class="pre">-</span> <span class="pre">x'|)</span> <span class="pre">=</span> <span class="pre">k(x,</span> <span class="pre">x')</span> <span class="pre">=</span> <span class="pre">k(x',</span> <span class="pre">x)</span></tt>.  So they operate on distances between
+points as opposed to the points themselves.  The name stationary arises because the covariance is the same
+modulo linear shifts: <tt class="docutils literal"><span class="pre">k(x+a,</span> <span class="pre">x'+a)</span> <span class="pre">=</span> <span class="pre">k(x,</span> <span class="pre">x').</span></tt></p>
+<p>Covariance functions are a fundamental component of gaussian processes: as noted in the gpp_math.hpp header comments,
+gaussian processes are defined by a mean function and a covariance function.  Covariance functions describe how
+two random variables change in relation to each other&#8211;more explicitly, in a GP they specify how similar two points are.
+The choice of covariance function is important because it encodes our assumptions about how the &#8220;world&#8221; behaves.</p>
+<p>Currently, all covariance functions in this file require dim+1 hyperparameters: alpha, L_1, ... L_d.  alpha
+is sigma_f^2, the signal variance.  L_1, ... , L_d are the length scales, one per spatial dimension.  We do not
+currently support non-axis-aligned anisotropy.</p>
+<p>Specifying hyperparameters is tricky because changing them fundamentally changes the behavior of the GP.
+gpp_model_selection_and_hyperparameter_optimization.hpp provides some functions for optimizing
+hyperparameters based on the current training data.</p>
+<p>For more details, see:
+<a class="reference external" href="http://en.wikipedia.org/wiki/Covariance_function">http://en.wikipedia.org/wiki/Covariance_function</a>
+Rasmussen &amp; Williams Chapter 4</p>
+ </p>
+<p><p id="project0namespaceoptimal__learning"><em>namespace</em> <strong>optimal_learning</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+<p><p id="project0classoptimal__learning_1_1_covariance_interface"><em>class</em> <strong>CovarianceInterface</strong></p>
+<blockquote>
+<div><p></p>
+<p><p>Abstract class to enable evaluation of covariance functions&#8211;supports the evaluation of the covariance between two
+points, as well as the gradient with respect to those coordinates and gradient/hessian with respect to the
+hyperparameters of the covariance function.</p>
+<p>Covariance operaters, <tt class="docutils literal"><span class="pre">cov(x_1,</span> <span class="pre">x_2)</span></tt> are SPD.  Due to the symmetry, there is no need to differentiate wrt x_1 and x_2; hence
+the gradient operation should only take gradients wrt dim variables, where <tt class="docutils literal"><span class="pre">dim</span> <span class="pre">=</span> <span class="pre">|x_1|</span></tt></p>
+<p>Hyperparameters (denoted <tt class="docutils literal"><span class="pre">\theta_j</span></tt>) are stored as class member data by subclasses.</p>
+<p>This class has <em>only</em> pure virtual functions, making it abstract. Users cannot instantiate this class directly.</p>
+ </p>
+<em>Public Functions</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_covariance_interface_1afffe1d71f93098602621f59892bf0871"></span><div class="line-block">
+<div class="line"> <strong>~CovarianceInterface</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_covariance_interface_1a0f241683ea90dd853fb92b64190180a6"></span><div class="line-block">
+<div class="line">double <strong>Covariance</strong>(double const *restrict point_one, double const *restrict point_two)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Computes the covariance function of two points, cov(<tt class="docutils literal"><span class="pre">point_one</span></tt>, <tt class="docutils literal"><span class="pre">point_two</span></tt>).  Points must be arrays with length dim.</p>
+<p>The covariance function is guaranteed to be symmetric by definition: <tt class="docutils literal"><span class="pre">Covariance(x,</span> <span class="pre">y)</span> <span class="pre">=</span> <span class="pre">Covariance(y,</span> <span class="pre">x)</span></tt>.
+This function is also positive definite by definition.</p>
+<p>INPUTS:
+point_one[dim]: first spatial coordinate
+point_two[dim]: second spatial coordinate
+RETURNS:
+value of covariance between the input points</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_covariance_interface_1a1a21e0e6f0a1be80f9cb1c936d5fedcd"></span><div class="line-block">
+<div class="line">void <strong>GradCovariance</strong>(double const *restrict point_one, double const *restrict point_two, double *restrict grad_cov)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Computes the gradient of this.Covariance(point_one, point_two) with respect to the FIRST argument, point_one.</p>
+<p>This distinction is important for maintaining the desired symmetry.  <tt class="docutils literal"><span class="pre">Cov(x,</span> <span class="pre">y)</span> <span class="pre">=</span> <span class="pre">Cov(y,</span> <span class="pre">x)</span></tt>.
+Additionally, <tt class="docutils literal"><span class="pre">\pderiv{Cov(x,</span> <span class="pre">y)}{x}</span> <span class="pre">=</span> <span class="pre">\pderiv{Cov(y,</span> <span class="pre">x)}{x}</span></tt>.
+However, in general, <tt class="docutils literal"><span class="pre">\pderiv{Cov(x,</span> <span class="pre">y)}{x}</span> <span class="pre">!=</span> <span class="pre">\pderiv{Cov(y,</span> <span class="pre">x)}{y}</span></tt> (NOT equal!  These may differ by a negative sign)</p>
+<p>Hence to avoid separate implementations for differentiating against first vs second argument, this function only handles
+differentiation against the first argument.  If you need <tt class="docutils literal"><span class="pre">\pderiv{Cov(y,</span> <span class="pre">x)}{x}</span></tt>, just swap points x and y.</p>
+<p>INPUTS:
+point_one[dim]: first spatial coordinate
+point_two[dim]: second spatial coordinate
+OUTPUTS:
+grad_cov[dim]: i-th entry is <tt class="docutils literal"><span class="pre">\pderiv{cov(x_1,</span> <span class="pre">x_2)}{x_i}</span></tt></p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_covariance_interface_1a8db344481fe34a2e7671bbfaba822ebd"></span><div class="line-block">
+<div class="line">int <strong>GetNumberOfHyperparameters</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Returns the number of hyperparameters.  This base class only allows for a maximum of dim + 1 hyperparameters but
+subclasses may implement additional ones.</p>
+<p>RETURNS:
+The number of hyperparameters.  Return 0 to disable hyperparameter-related gradients, optimizations.</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_covariance_interface_1a3632e6a95d8d158d25168e629bf46b6e"></span><div class="line-block">
+<div class="line">void <strong>HyperparameterGradCovariance</strong>(double const *restrict point_one, double const *restrict point_two, double *restrict grad_hyperparameter_cov)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Similar to GradCovariance(), except gradients are computed wrt the hyperparameters.</p>
+<p>Unlike GradCovariance(), the order of point_one and point_two is irrelevant here (since we are not differentiating against
+either of them).  Thus the matrix of grad covariances (wrt hyperparameters) is symmetric.</p>
+<p>INPUTS:
+point_one[dim]: first spatial coordinate
+point_two[dim]: second spatial coordinate
+OUTPUTS:
+grad_hyperparameter_cov[this.GetNumberOfHyperparameters()]: i-th entry is <tt class="docutils literal"><span class="pre">\pderiv{cov(x_1,</span> <span class="pre">x_2)}{\theta_i}</span></tt></p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_covariance_interface_1ad9c866c4c86ec742303c31c524b772b2"></span><div class="line-block">
+<div class="line">void <strong>HyperparameterHessianCovariance</strong>(double const *restrict point_one, double const *restrict point_two, double *restrict hessian_hyperparameter_cov)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>The Hessian matrix of the covariance evaluated at x_1, x_2 with respect to the hyperparameters.  The Hessian is defined as:
+<tt class="docutils literal"><span class="pre">[</span> <span class="pre">\ppderiv{cov}{\theta_0^2}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">\mixpderiv{cov}{\theta_0}{\theta_1}</span>&nbsp;&nbsp;&nbsp; <span class="pre">...</span> <span class="pre">\mixpderiv{cov}{\theta_0}{\theta_{n-1}}</span> <span class="pre">]</span></tt>
+<tt class="docutils literal"><span class="pre">[</span> <span class="pre">\mixpderiv{cov}{\theta_1}{\theta_0}</span>&nbsp;&nbsp;&nbsp; <span class="pre">\ppderiv{cov}{\theta_1^2</span> <span class="pre">}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">...</span> <span class="pre">\mixpderiv{cov}{\theta_1}{\theta_{n-1}}</span> <span class="pre">]</span></tt>
+<tt class="docutils literal"><span class="pre">[</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">...</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">...</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">]</span></tt>
+<tt class="docutils literal"><span class="pre">[</span> <span class="pre">\mixpderiv{cov}{\theta_{n-1}{\theta_0}</span> <span class="pre">\mixpderiv{cov}{\theta_{n-1}{\theta_1}</span> <span class="pre">...</span> <span class="pre">\ppderiv{cov}{\theta_{n-1}^2}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">]</span></tt>
+where &#8220;cov&#8221; abbreviates covariance(x_1, x_2) and &#8220;n&#8221; refers to the number of hyperparameters.</p>
+<p>Unless noted otherwise in subclasses, the Hessian is symmetric (due to the equality of mixed derivatives when a function
+f is twice continuously differentiable).</p>
+<p>Similarly to the gradients, the Hessian is independent of the order of x_1, x_2: H_{cov}(x_1, x_2) = H_{cov}(x_2, x_1)</p>
+<p>For further details: <a class="reference external" href="http://en.wikipedia.org/wiki/Hessian_matrix">http://en.wikipedia.org/wiki/Hessian_matrix</a></p>
+<p>Let n_hyper = this.GetNumberOfHyperparameters()
+INPUTS:
+point_one[dim]: first spatial coordinate
+point_two[dim]: second spatial coordinate
+OUTPUTS:
+hessian_hyperparameter_cov[n_hyper][n_hyper]: <tt class="docutils literal"><span class="pre">(i,j)</span></tt>-th entry is <tt class="docutils literal"><span class="pre">\mixpderiv{cov(x_1,</span> <span class="pre">x_2)}{\theta_i}{\theta_j}</span></tt></p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_covariance_interface_1add39074bc02c06a071cc04a1b34c784e"></span><div class="line-block">
+<div class="line">void <strong>SetHyperparameters</strong>(double const *restrict hyperparameters)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Sets the hyperparameters.  Hyperparameter ordering is defined implicitly by GetHyperparameters: <tt class="docutils literal"><span class="pre">[alpha=\sigma_f^2,</span> <span class="pre">length_0,</span> <span class="pre">...,</span> <span class="pre">length_{n-1}]</span></tt></p>
+<p>INPUTS:
+hyperparameters[this.GetNumberOfHyperparameters()]: hyperparameters to set</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_covariance_interface_1ae909b5ed6835ee0307da75f4ca8c9f9d"></span><div class="line-block">
+<div class="line">void <strong>GetHyperparameters</strong>(double *restrict hyperparameters)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Gets the hyperparameters.  Ordering is <tt class="docutils literal"><span class="pre">[alpha=\sigma_f^2,</span> <span class="pre">length_0,</span> <span class="pre">...,</span> <span class="pre">length_{n-1}]</span></tt></p>
+<p>OUTPUTS:
+hyperparameters[this.GetNumberOfHyperparameters()]: values of current hyperparameters</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_covariance_interface_1ab0cf755dda4fb6489b158d927345ea51"></span><div class="line-block">
+<div class="line"><a class="reference internal" href="#project0classoptimal__learning_1_1_covariance_interface"><em>CovarianceInterface</em></a>  * <strong>Clone</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>For implementing the virtual (copy) constructor idiom.</p>
+<p>RETURNS:
+Pointer to a constructed object that is a subclass of CovarianceInterface</p>
+ </p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</p>
+<p><p id="project0classoptimal__learning_1_1_square_exponential"><em>class</em> <strong>SquareExponential</strong></p>
+<blockquote>
+<div><p></p>
+<p><p>Implements the square exponential covariance function:
+<tt class="docutils literal"><span class="pre">cov(x_1,</span> <span class="pre">x_2)</span> <span class="pre">=</span> <span class="pre">\alpha</span> <span class="pre">*</span> <span class="pre">\exp(-1/2</span> <span class="pre">*</span> <span class="pre">((x_1</span> <span class="pre">-</span> <span class="pre">x_2)^T</span> <span class="pre">*</span> <span class="pre">L</span> <span class="pre">*</span> <span class="pre">(x_1</span> <span class="pre">-</span> <span class="pre">x_2))</span> <span class="pre">)</span></tt>
+where L is the diagonal matrix with i-th diagonal entry <tt class="docutils literal"><span class="pre">1/lengths[i]/lengths[i]</span></tt></p>
+<p>This covariance object has <tt class="docutils literal"><span class="pre">dim+1</span></tt> hyperparameters: <tt class="docutils literal"><span class="pre">\alpha,</span> <span class="pre">lengths_i</span></tt></p>
+<p>See CovarianceInterface for descriptions of the virtual functions.</p>
+ </p>
+<em>Public Functions</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_square_exponential_1a6ec679d51a4cca780270d75bc2289342"></span><div class="line-block">
+<div class="line"> <strong>SquareExponential</strong>(int dim, double alpha, double length)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Constructs a SquareExponential object with constant length-scale across all dimensions.</p>
+<p>INPUTS:
+dim: the number of spatial dimensions
+alpha: the hyperparameter <tt class="docutils literal"><span class="pre">\alpha</span></tt> (e.g., signal variance, <tt class="docutils literal"><span class="pre">\sigma_f^2</span></tt>)
+length: the constant length scale to use for all hyperparameter length scales</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_square_exponential_1a51278e6a108f02109359dc588f361469"></span><div class="line-block">
+<div class="line"> <strong>SquareExponential</strong>(int dim, double alpha, double const *restrict lengths)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Constructs a SquareExponential object with the specified hyperparameters.</p>
+<p>INPUTS:
+dim: the number of spatial dimensions
+alpha: the hyperparameter <tt class="docutils literal"><span class="pre">\alpha</span></tt>, (e.g., signal variance, <tt class="docutils literal"><span class="pre">\sigma_f^2</span></tt>)
+lengths[dim]: the hyperparameter length scales, one per spatial dimension</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_square_exponential_1a9402bd50cc9a8158ca575ef6ef370486"></span><div class="line-block">
+<div class="line"> <strong>SquareExponential</strong>(int dim, double alpha, std::vector&lt; double &gt; lengths)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Constructs a SquareExponential object with the specified hyperparameters.</p>
+<p>INPUTS:
+dim: the number of spatial dimensions
+alpha: the hyperparameter <tt class="docutils literal"><span class="pre">\alpha</span></tt>, (e.g., signal variance, <tt class="docutils literal"><span class="pre">\sigma_f^2</span></tt>)
+lengths: the hyperparameter length scales, one per spatial dimension</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_square_exponential_1a8a3e20771669f3de026bf48bfcb34311"></span><div class="line-block">
+<div class="line">double <strong>Covariance</strong>(double const *restrict point_one, double const *restrict point_two)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Computes the covariance function of two points, cov(<tt class="docutils literal"><span class="pre">point_one</span></tt>, <tt class="docutils literal"><span class="pre">point_two</span></tt>).  Points must be arrays with length dim.</p>
+<p>The covariance function is guaranteed to be symmetric by definition: <tt class="docutils literal"><span class="pre">Covariance(x,</span> <span class="pre">y)</span> <span class="pre">=</span> <span class="pre">Covariance(y,</span> <span class="pre">x)</span></tt>.
+This function is also positive definite by definition.</p>
+<p>INPUTS:
+point_one[dim]: first spatial coordinate
+point_two[dim]: second spatial coordinate
+RETURNS:
+value of covariance between the input points</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_square_exponential_1ad4330dc738b9bee346607233f10693b8"></span><div class="line-block">
+<div class="line">void <strong>GradCovariance</strong>(double const *restrict point_one, double const *restrict point_two, double *restrict grad_cov)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Computes the gradient of this.Covariance(point_one, point_two) with respect to the FIRST argument, point_one.</p>
+<p>This distinction is important for maintaining the desired symmetry.  <tt class="docutils literal"><span class="pre">Cov(x,</span> <span class="pre">y)</span> <span class="pre">=</span> <span class="pre">Cov(y,</span> <span class="pre">x)</span></tt>.
+Additionally, <tt class="docutils literal"><span class="pre">\pderiv{Cov(x,</span> <span class="pre">y)}{x}</span> <span class="pre">=</span> <span class="pre">\pderiv{Cov(y,</span> <span class="pre">x)}{x}</span></tt>.
+However, in general, <tt class="docutils literal"><span class="pre">\pderiv{Cov(x,</span> <span class="pre">y)}{x}</span> <span class="pre">!=</span> <span class="pre">\pderiv{Cov(y,</span> <span class="pre">x)}{y}</span></tt> (NOT equal!  These may differ by a negative sign)</p>
+<p>Hence to avoid separate implementations for differentiating against first vs second argument, this function only handles
+differentiation against the first argument.  If you need <tt class="docutils literal"><span class="pre">\pderiv{Cov(y,</span> <span class="pre">x)}{x}</span></tt>, just swap points x and y.</p>
+<p>INPUTS:
+point_one[dim]: first spatial coordinate
+point_two[dim]: second spatial coordinate
+OUTPUTS:
+grad_cov[dim]: i-th entry is <tt class="docutils literal"><span class="pre">\pderiv{cov(x_1,</span> <span class="pre">x_2)}{x_i}</span></tt></p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_square_exponential_1a9da332e564535853ccc9a58a1ea9de6b"></span><div class="line-block">
+<div class="line">int <strong>GetNumberOfHyperparameters</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Returns the number of hyperparameters.  This base class only allows for a maximum of dim + 1 hyperparameters but
+subclasses may implement additional ones.</p>
+<p>RETURNS:
+The number of hyperparameters.  Return 0 to disable hyperparameter-related gradients, optimizations.</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_square_exponential_1a7d31fbc70a4fb76bbff9600f9b299a04"></span><div class="line-block">
+<div class="line">void <strong>HyperparameterGradCovariance</strong>(double const *restrict point_one, double const *restrict point_two, double *restrict grad_hyperparameter_cov)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Similar to GradCovariance(), except gradients are computed wrt the hyperparameters.</p>
+<p>Unlike GradCovariance(), the order of point_one and point_two is irrelevant here (since we are not differentiating against
+either of them).  Thus the matrix of grad covariances (wrt hyperparameters) is symmetric.</p>
+<p>INPUTS:
+point_one[dim]: first spatial coordinate
+point_two[dim]: second spatial coordinate
+OUTPUTS:
+grad_hyperparameter_cov[this.GetNumberOfHyperparameters()]: i-th entry is <tt class="docutils literal"><span class="pre">\pderiv{cov(x_1,</span> <span class="pre">x_2)}{\theta_i}</span></tt></p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_square_exponential_1a564919a96f6dcc5ffa73935d7e6108ca"></span><div class="line-block">
+<div class="line">void <strong>HyperparameterHessianCovariance</strong>(double const *restrict point_one, double const *restrict point_two, double *restrict hessian_hyperparameter_cov)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>The Hessian matrix of the covariance evaluated at x_1, x_2 with respect to the hyperparameters.  The Hessian is defined as:
+<tt class="docutils literal"><span class="pre">[</span> <span class="pre">\ppderiv{cov}{\theta_0^2}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">\mixpderiv{cov}{\theta_0}{\theta_1}</span>&nbsp;&nbsp;&nbsp; <span class="pre">...</span> <span class="pre">\mixpderiv{cov}{\theta_0}{\theta_{n-1}}</span> <span class="pre">]</span></tt>
+<tt class="docutils literal"><span class="pre">[</span> <span class="pre">\mixpderiv{cov}{\theta_1}{\theta_0}</span>&nbsp;&nbsp;&nbsp; <span class="pre">\ppderiv{cov}{\theta_1^2</span> <span class="pre">}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">...</span> <span class="pre">\mixpderiv{cov}{\theta_1}{\theta_{n-1}}</span> <span class="pre">]</span></tt>
+<tt class="docutils literal"><span class="pre">[</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">...</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">...</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">]</span></tt>
+<tt class="docutils literal"><span class="pre">[</span> <span class="pre">\mixpderiv{cov}{\theta_{n-1}{\theta_0}</span> <span class="pre">\mixpderiv{cov}{\theta_{n-1}{\theta_1}</span> <span class="pre">...</span> <span class="pre">\ppderiv{cov}{\theta_{n-1}^2}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">]</span></tt>
+where &#8220;cov&#8221; abbreviates covariance(x_1, x_2) and &#8220;n&#8221; refers to the number of hyperparameters.</p>
+<p>Unless noted otherwise in subclasses, the Hessian is symmetric (due to the equality of mixed derivatives when a function
+f is twice continuously differentiable).</p>
+<p>Similarly to the gradients, the Hessian is independent of the order of x_1, x_2: H_{cov}(x_1, x_2) = H_{cov}(x_2, x_1)</p>
+<p>For further details: <a class="reference external" href="http://en.wikipedia.org/wiki/Hessian_matrix">http://en.wikipedia.org/wiki/Hessian_matrix</a></p>
+<p>Let n_hyper = this.GetNumberOfHyperparameters()
+INPUTS:
+point_one[dim]: first spatial coordinate
+point_two[dim]: second spatial coordinate
+OUTPUTS:
+hessian_hyperparameter_cov[n_hyper][n_hyper]: <tt class="docutils literal"><span class="pre">(i,j)</span></tt>-th entry is <tt class="docutils literal"><span class="pre">\mixpderiv{cov(x_1,</span> <span class="pre">x_2)}{\theta_i}{\theta_j}</span></tt></p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_square_exponential_1abb1dce115666b51990451b26992bb78f"></span><div class="line-block">
+<div class="line">void <strong>SetHyperparameters</strong>(double const *restrict hyperparameters)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Sets the hyperparameters.  Hyperparameter ordering is defined implicitly by GetHyperparameters: <tt class="docutils literal"><span class="pre">[alpha=\sigma_f^2,</span> <span class="pre">length_0,</span> <span class="pre">...,</span> <span class="pre">length_{n-1}]</span></tt></p>
+<p>INPUTS:
+hyperparameters[this.GetNumberOfHyperparameters()]: hyperparameters to set</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_square_exponential_1a89a3ded5142e7f38f0854299933b3951"></span><div class="line-block">
+<div class="line">void <strong>GetHyperparameters</strong>(double *restrict hyperparameters)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Gets the hyperparameters.  Ordering is <tt class="docutils literal"><span class="pre">[alpha=\sigma_f^2,</span> <span class="pre">length_0,</span> <span class="pre">...,</span> <span class="pre">length_{n-1}]</span></tt></p>
+<p>OUTPUTS:
+hyperparameters[this.GetNumberOfHyperparameters()]: values of current hyperparameters</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_square_exponential_1a72dc52da23f0aa257e512baf500f3de2"></span><div class="line-block">
+<div class="line"><a class="reference internal" href="#project0classoptimal__learning_1_1_covariance_interface"><em>CovarianceInterface</em></a>  * <strong>Clone</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>For implementing the virtual (copy) constructor idiom.</p>
+<p>RETURNS:
+Pointer to a constructed object that is a subclass of CovarianceInterface</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_square_exponential_1a9007a3fad7e83c61aa59f21017e6d07a"></span><div class="line-block">
+<div class="line"> <strong>OL_DISALLOW_DEFAULT_AND_ASSIGN</strong>(<a class="reference internal" href="#project0classoptimal__learning_1_1_square_exponential"><em>SquareExponential</em></a>)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Private Functions</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_square_exponential_1ab95166c1cb0140e4cfa5c007b1ec64f6"></span><div class="line-block">
+<div class="line"> <strong>SquareExponential</strong>(const  <a class="reference internal" href="#project0classoptimal__learning_1_1_square_exponential"><em>SquareExponential</em></a>  &amp; OL_UNUSED)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_square_exponential_1a6da8e563b526dcc92e9f90974ba584d9"></span><div class="line-block">
+<div class="line">void <strong>Initialize</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Validate and initialize class data members.</p>
+ </p>
+</div></blockquote>
+</div></blockquote>
+<em>Private Members</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_square_exponential_1a3857ca399c38ef75a04ae203cc176d68"></span>int <strong>dim_</strong></p>
+<blockquote>
+<div><p>dimension of the problem </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_square_exponential_1a978c3ab57e616ec6a3e8af9c79d8b90b"></span>double <strong>alpha_</strong></p>
+<blockquote>
+<div><p><tt class="docutils literal"><span class="pre">\sigma_f^2</span></tt>, signal variance </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_square_exponential_1a815be28b8c612169189a7455c4d9f230"></span>std::vector&lt; double &gt; <strong>lengths_</strong></p>
+<blockquote>
+<div><p>length scales, one per dimension </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_square_exponential_1a26caabbb67d7614ac99a9d859a8d8bbc"></span>std::vector&lt; double &gt; <strong>lengths_sq_</strong></p>
+<blockquote>
+<div><p>square of the length scales, one per dimension </p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</p>
+<p><p id="project0classoptimal__learning_1_1_square_exponential_single_length"><em>class</em> <strong>SquareExponentialSingleLength</strong></p>
+<blockquote>
+<div><p></p>
+<p><p>Special case of the square exponential covariance function where all entries of L must be the same; i.e., all
+length scales are equal.</p>
+<p>This exists only for testing hyperparameter optimization (since two is an easy number of parameters to work with); in general
+this class should not be used.</p>
+<p>This covariance object has 2 hyperparameters: <tt class="docutils literal"><span class="pre">\alpha,</span> <span class="pre">length</span></tt></p>
+<p>See CovarianceInterface for descriptions of the virtual functions.</p>
+ </p>
+<em>Public Functions</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_square_exponential_single_length_1ad7434574e603043a6df7ca4a6db21bda"></span><div class="line-block">
+<div class="line"> <strong>SquareExponentialSingleLength</strong>(int dim, double alpha, double length)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Constructs a SquareExponentialSingleLength object. We provide three constructors with signatures matching other
+covariance classes for convenience.</p>
+<p>INPUTS:
+dim: the number of spatial dimensions
+alpha: the hyperparameter <tt class="docutils literal"><span class="pre">\alpha</span></tt> (e.g., signal variance, <tt class="docutils literal"><span class="pre">\sigma_f^2</span></tt>)
+length: the constant length scale to use for all hyperparameter length scales</p>
+<p>Note: for pointer or vector length, length[0] must be a valid expression.</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_square_exponential_single_length_1aab27913db3d7b3fcc655cf5529ca2806"></span><div class="line-block">
+<div class="line"> <strong>SquareExponentialSingleLength</strong>(int dim, double alpha, double const *restrict length)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_square_exponential_single_length_1a0cbe03368fa279bbed3744b6d0afdcc1"></span><div class="line-block">
+<div class="line"> <strong>SquareExponentialSingleLength</strong>(int dim, double alpha, std::vector&lt; double &gt; length)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_square_exponential_single_length_1a3fdf667120421c771643d7e366084476"></span><div class="line-block">
+<div class="line">double <strong>Covariance</strong>(double const *restrict point_one, double const *restrict point_two)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Computes the covariance function of two points, cov(<tt class="docutils literal"><span class="pre">point_one</span></tt>, <tt class="docutils literal"><span class="pre">point_two</span></tt>).  Points must be arrays with length dim.</p>
+<p>The covariance function is guaranteed to be symmetric by definition: <tt class="docutils literal"><span class="pre">Covariance(x,</span> <span class="pre">y)</span> <span class="pre">=</span> <span class="pre">Covariance(y,</span> <span class="pre">x)</span></tt>.
+This function is also positive definite by definition.</p>
+<p>INPUTS:
+point_one[dim]: first spatial coordinate
+point_two[dim]: second spatial coordinate
+RETURNS:
+value of covariance between the input points</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_square_exponential_single_length_1a31abb6b57e3300c57e9c5743ab64db10"></span><div class="line-block">
+<div class="line">void <strong>GradCovariance</strong>(double const *restrict point_one, double const *restrict point_two, double *restrict grad_cov)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Computes the gradient of this.Covariance(point_one, point_two) with respect to the FIRST argument, point_one.</p>
+<p>This distinction is important for maintaining the desired symmetry.  <tt class="docutils literal"><span class="pre">Cov(x,</span> <span class="pre">y)</span> <span class="pre">=</span> <span class="pre">Cov(y,</span> <span class="pre">x)</span></tt>.
+Additionally, <tt class="docutils literal"><span class="pre">\pderiv{Cov(x,</span> <span class="pre">y)}{x}</span> <span class="pre">=</span> <span class="pre">\pderiv{Cov(y,</span> <span class="pre">x)}{x}</span></tt>.
+However, in general, <tt class="docutils literal"><span class="pre">\pderiv{Cov(x,</span> <span class="pre">y)}{x}</span> <span class="pre">!=</span> <span class="pre">\pderiv{Cov(y,</span> <span class="pre">x)}{y}</span></tt> (NOT equal!  These may differ by a negative sign)</p>
+<p>Hence to avoid separate implementations for differentiating against first vs second argument, this function only handles
+differentiation against the first argument.  If you need <tt class="docutils literal"><span class="pre">\pderiv{Cov(y,</span> <span class="pre">x)}{x}</span></tt>, just swap points x and y.</p>
+<p>INPUTS:
+point_one[dim]: first spatial coordinate
+point_two[dim]: second spatial coordinate
+OUTPUTS:
+grad_cov[dim]: i-th entry is <tt class="docutils literal"><span class="pre">\pderiv{cov(x_1,</span> <span class="pre">x_2)}{x_i}</span></tt></p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_square_exponential_single_length_1ae544ca45c5dcbb5df79d8e363ad5cfa0"></span><div class="line-block">
+<div class="line">int <strong>GetNumberOfHyperparameters</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Returns the number of hyperparameters.  This base class only allows for a maximum of dim + 1 hyperparameters but
+subclasses may implement additional ones.</p>
+<p>RETURNS:
+The number of hyperparameters.  Return 0 to disable hyperparameter-related gradients, optimizations.</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_square_exponential_single_length_1aece8f8f4cb5d0c44877fcbc38a3945f9"></span><div class="line-block">
+<div class="line">void <strong>HyperparameterGradCovariance</strong>(double const *restrict point_one, double const *restrict point_two, double *restrict grad_hyperparameter_cov)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Similar to GradCovariance(), except gradients are computed wrt the hyperparameters.</p>
+<p>Unlike GradCovariance(), the order of point_one and point_two is irrelevant here (since we are not differentiating against
+either of them).  Thus the matrix of grad covariances (wrt hyperparameters) is symmetric.</p>
+<p>INPUTS:
+point_one[dim]: first spatial coordinate
+point_two[dim]: second spatial coordinate
+OUTPUTS:
+grad_hyperparameter_cov[this.GetNumberOfHyperparameters()]: i-th entry is <tt class="docutils literal"><span class="pre">\pderiv{cov(x_1,</span> <span class="pre">x_2)}{\theta_i}</span></tt></p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_square_exponential_single_length_1aa62ee7e8d91e5446eec431dc6bdea9ce"></span><div class="line-block">
+<div class="line">void <strong>HyperparameterHessianCovariance</strong>(double const *restrict point_one, double const *restrict point_two, double *restrict hessian_hyperparameter_cov)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>The Hessian matrix of the covariance evaluated at x_1, x_2 with respect to the hyperparameters.  The Hessian is defined as:
+<tt class="docutils literal"><span class="pre">[</span> <span class="pre">\ppderiv{cov}{\theta_0^2}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">\mixpderiv{cov}{\theta_0}{\theta_1}</span>&nbsp;&nbsp;&nbsp; <span class="pre">...</span> <span class="pre">\mixpderiv{cov}{\theta_0}{\theta_{n-1}}</span> <span class="pre">]</span></tt>
+<tt class="docutils literal"><span class="pre">[</span> <span class="pre">\mixpderiv{cov}{\theta_1}{\theta_0}</span>&nbsp;&nbsp;&nbsp; <span class="pre">\ppderiv{cov}{\theta_1^2</span> <span class="pre">}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">...</span> <span class="pre">\mixpderiv{cov}{\theta_1}{\theta_{n-1}}</span> <span class="pre">]</span></tt>
+<tt class="docutils literal"><span class="pre">[</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">...</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">...</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">]</span></tt>
+<tt class="docutils literal"><span class="pre">[</span> <span class="pre">\mixpderiv{cov}{\theta_{n-1}{\theta_0}</span> <span class="pre">\mixpderiv{cov}{\theta_{n-1}{\theta_1}</span> <span class="pre">...</span> <span class="pre">\ppderiv{cov}{\theta_{n-1}^2}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">]</span></tt>
+where &#8220;cov&#8221; abbreviates covariance(x_1, x_2) and &#8220;n&#8221; refers to the number of hyperparameters.</p>
+<p>Unless noted otherwise in subclasses, the Hessian is symmetric (due to the equality of mixed derivatives when a function
+f is twice continuously differentiable).</p>
+<p>Similarly to the gradients, the Hessian is independent of the order of x_1, x_2: H_{cov}(x_1, x_2) = H_{cov}(x_2, x_1)</p>
+<p>For further details: <a class="reference external" href="http://en.wikipedia.org/wiki/Hessian_matrix">http://en.wikipedia.org/wiki/Hessian_matrix</a></p>
+<p>Let n_hyper = this.GetNumberOfHyperparameters()
+INPUTS:
+point_one[dim]: first spatial coordinate
+point_two[dim]: second spatial coordinate
+OUTPUTS:
+hessian_hyperparameter_cov[n_hyper][n_hyper]: <tt class="docutils literal"><span class="pre">(i,j)</span></tt>-th entry is <tt class="docutils literal"><span class="pre">\mixpderiv{cov(x_1,</span> <span class="pre">x_2)}{\theta_i}{\theta_j}</span></tt></p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_square_exponential_single_length_1a23133762da775c61970a81bb90a3b3cb"></span><div class="line-block">
+<div class="line">void <strong>SetHyperparameters</strong>(double const *restrict hyperparameters)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Sets the hyperparameters.  Hyperparameter ordering is defined implicitly by GetHyperparameters: <tt class="docutils literal"><span class="pre">[alpha=\sigma_f^2,</span> <span class="pre">length_0,</span> <span class="pre">...,</span> <span class="pre">length_{n-1}]</span></tt></p>
+<p>INPUTS:
+hyperparameters[this.GetNumberOfHyperparameters()]: hyperparameters to set</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_square_exponential_single_length_1ab5128327bfacfb1e92ba9579c9706cf1"></span><div class="line-block">
+<div class="line">void <strong>GetHyperparameters</strong>(double *restrict hyperparameters)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Gets the hyperparameters.  Ordering is <tt class="docutils literal"><span class="pre">[alpha=\sigma_f^2,</span> <span class="pre">length_0,</span> <span class="pre">...,</span> <span class="pre">length_{n-1}]</span></tt></p>
+<p>OUTPUTS:
+hyperparameters[this.GetNumberOfHyperparameters()]: values of current hyperparameters</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_square_exponential_single_length_1a7691f704e2b494bce96ae510125b6377"></span><div class="line-block">
+<div class="line"><a class="reference internal" href="#project0classoptimal__learning_1_1_covariance_interface"><em>CovarianceInterface</em></a>  * <strong>Clone</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>For implementing the virtual (copy) constructor idiom.</p>
+<p>RETURNS:
+Pointer to a constructed object that is a subclass of CovarianceInterface</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_square_exponential_single_length_1a79f553bbd55831f1d3dfb04204279c8f"></span><div class="line-block">
+<div class="line"> <strong>OL_DISALLOW_DEFAULT_AND_ASSIGN</strong>(<a class="reference internal" href="#project0classoptimal__learning_1_1_square_exponential_single_length"><em>SquareExponentialSingleLength</em></a>)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Private Functions</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_square_exponential_single_length_1a2087fbda030c0126cb36d586609d3236"></span><div class="line-block">
+<div class="line"> <strong>SquareExponentialSingleLength</strong>(const  <a class="reference internal" href="#project0classoptimal__learning_1_1_square_exponential_single_length"><em>SquareExponentialSingleLength</em></a>  &amp; OL_UNUSED)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Private Members</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_square_exponential_single_length_1ac59a3375b2ac14a90db2415b8c3ef746"></span>int <strong>dim_</strong></p>
+<blockquote>
+<div><p>dimension of the problem </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_square_exponential_single_length_1a71d0f55c41df417812c7994e07a278e1"></span>double <strong>alpha_</strong></p>
+<blockquote>
+<div><p><tt class="docutils literal"><span class="pre">\sigma_f^2</span></tt>, signal variance </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_square_exponential_single_length_1aae57674c4353b04add3ba29a9cf3e96f"></span>double <strong>length_</strong></p>
+<blockquote>
+<div><p>length scale, one for all dimensions </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_square_exponential_single_length_1a7904144c34b1796458e42e51f5ade844"></span>double <strong>length_sq_</strong></p>
+<blockquote>
+<div><p>square of the length scale </p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</p>
+<p><p id="project0classoptimal__learning_1_1_matern_nu1p5"><em>class</em> <strong>MaternNu1p5</strong></p>
+<blockquote>
+<div><p></p>
+<p><p>Implements a case of the Matern class of covariance functions:
+<tt class="docutils literal"><span class="pre">cov_{matern}(r)</span> <span class="pre">=</span> <span class="pre">\alpha</span> <span class="pre">[\frac{2^{1-\nu}}{\Gamma(\nu)}\left(</span> <span class="pre">\frac{\sqrt{2\nu}r}{l}</span> <span class="pre">\right)^{\nu}</span> <span class="pre">B_{\nu}\left(</span> <span class="pre">\frac{\sqrt{2\nu}r}{l}</span> <span class="pre">\right)]</span></tt>
+where nu is the &#8220;smoothness parameter&#8221;, <tt class="docutils literal"><span class="pre">l</span></tt> is the length-scale, <tt class="docutils literal"><span class="pre">r</span> <span class="pre">=</span> <span class="pre">x_1</span> <span class="pre">-</span> <span class="pre">x_2</span></tt>, and <tt class="docutils literal"><span class="pre">B_{\nu}</span></tt> is a modified Bessel Function.</p>
+<p>Note that for nonconstant (over dimensions) length scales, <tt class="docutils literal"><span class="pre">r_i</span> <span class="pre">=</span> <span class="pre">(x_1_i</span> <span class="pre">-</span> <span class="pre">x_2_i)/l_i</span></tt>.  The quantity <tt class="docutils literal"><span class="pre">\frac{r}{l}</span></tt> will implicitly
+represent this component-wise division.</p>
+<p>This class implements nu = 3/2, which simplifies the previous expression to:
+<tt class="docutils literal"><span class="pre">cov_{\nu=3/2}(r)</span> <span class="pre">=</span> <span class="pre">(1</span> <span class="pre">+</span> <span class="pre">\sqrt{3}\frac{r}[l})\exp(-\sqrt{3}\frac{r}{l})</span></tt></p>
+<p>This covariance object has <tt class="docutils literal"><span class="pre">dim+1</span></tt> hyperparameters: <tt class="docutils literal"><span class="pre">\alpha,</span> <span class="pre">lengths_i</span></tt></p>
+<p>See CovarianceInterface for descriptions of the virtual functions.</p>
+ </p>
+<em>Public Functions</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_matern_nu1p5_1a220958a01163e4a37714200958bf7b1c"></span><div class="line-block">
+<div class="line"> <strong>MaternNu1p5</strong>(int dim, double alpha, double length)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Constructs a MaternNu1p5 object with constant length-scale across all dimensions.</p>
+<p>INPUTS:
+dim: the number of spatial dimensions
+alpha: the hyperparameter <tt class="docutils literal"><span class="pre">\alpha</span></tt> (e.g., signal variance, <tt class="docutils literal"><span class="pre">\sigma_f^2</span></tt>)
+length: the constant length scale to use for all hyperparameter length scales</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_matern_nu1p5_1a1a4a871727f2332ff1d0803bc8c1e1e3"></span><div class="line-block">
+<div class="line"> <strong>MaternNu1p5</strong>(int dim, double alpha, double const *restrict lengths)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Constructs a MaternNu1p5 object with the specified hyperparameters.</p>
+<p>INPUTS:
+dim: the number of spatial dimensions
+alpha: the hyperparameter <tt class="docutils literal"><span class="pre">\alpha</span></tt>, (e.g., signal variance, <tt class="docutils literal"><span class="pre">\sigma_f^2</span></tt>)
+lengths[dim]: the hyperparameter length scales, one per spatial dimension</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_matern_nu1p5_1a2b7dfa550f7f742042119d85c9ec2bc9"></span><div class="line-block">
+<div class="line"> <strong>MaternNu1p5</strong>(int dim, double alpha, std::vector&lt; double &gt; lengths)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Constructs a MaternNu1p5 object with the specified hyperparameters.</p>
+<p>INPUTS:
+dim: the number of spatial dimensions
+alpha: the hyperparameter <tt class="docutils literal"><span class="pre">\alpha</span></tt>, (e.g., signal variance, <tt class="docutils literal"><span class="pre">\sigma_f^2</span></tt>)
+lengths: the hyperparameter length scales, one per spatial dimension</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_matern_nu1p5_1ae7f24e70dff86f799f9cfae180d1b01a"></span><div class="line-block">
+<div class="line">double <strong>Covariance</strong>(double const *restrict point_one, double const *restrict point_two)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Computes the covariance function of two points, cov(<tt class="docutils literal"><span class="pre">point_one</span></tt>, <tt class="docutils literal"><span class="pre">point_two</span></tt>).  Points must be arrays with length dim.</p>
+<p>The covariance function is guaranteed to be symmetric by definition: <tt class="docutils literal"><span class="pre">Covariance(x,</span> <span class="pre">y)</span> <span class="pre">=</span> <span class="pre">Covariance(y,</span> <span class="pre">x)</span></tt>.
+This function is also positive definite by definition.</p>
+<p>INPUTS:
+point_one[dim]: first spatial coordinate
+point_two[dim]: second spatial coordinate
+RETURNS:
+value of covariance between the input points</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_matern_nu1p5_1a88943df705447eb23e69f2dd2e580442"></span><div class="line-block">
+<div class="line">void <strong>GradCovariance</strong>(double const *restrict point_one, double const *restrict point_two, double *restrict grad_cov)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Computes the gradient of this.Covariance(point_one, point_two) with respect to the FIRST argument, point_one.</p>
+<p>This distinction is important for maintaining the desired symmetry.  <tt class="docutils literal"><span class="pre">Cov(x,</span> <span class="pre">y)</span> <span class="pre">=</span> <span class="pre">Cov(y,</span> <span class="pre">x)</span></tt>.
+Additionally, <tt class="docutils literal"><span class="pre">\pderiv{Cov(x,</span> <span class="pre">y)}{x}</span> <span class="pre">=</span> <span class="pre">\pderiv{Cov(y,</span> <span class="pre">x)}{x}</span></tt>.
+However, in general, <tt class="docutils literal"><span class="pre">\pderiv{Cov(x,</span> <span class="pre">y)}{x}</span> <span class="pre">!=</span> <span class="pre">\pderiv{Cov(y,</span> <span class="pre">x)}{y}</span></tt> (NOT equal!  These may differ by a negative sign)</p>
+<p>Hence to avoid separate implementations for differentiating against first vs second argument, this function only handles
+differentiation against the first argument.  If you need <tt class="docutils literal"><span class="pre">\pderiv{Cov(y,</span> <span class="pre">x)}{x}</span></tt>, just swap points x and y.</p>
+<p>INPUTS:
+point_one[dim]: first spatial coordinate
+point_two[dim]: second spatial coordinate
+OUTPUTS:
+grad_cov[dim]: i-th entry is <tt class="docutils literal"><span class="pre">\pderiv{cov(x_1,</span> <span class="pre">x_2)}{x_i}</span></tt></p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_matern_nu1p5_1af10a2e28af44431ca513a41f3ef1375d"></span><div class="line-block">
+<div class="line">int <strong>GetNumberOfHyperparameters</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Returns the number of hyperparameters.  This base class only allows for a maximum of dim + 1 hyperparameters but
+subclasses may implement additional ones.</p>
+<p>RETURNS:
+The number of hyperparameters.  Return 0 to disable hyperparameter-related gradients, optimizations.</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_matern_nu1p5_1aa47a2d8072c8df366969ba14ebf1f0bf"></span><div class="line-block">
+<div class="line">void <strong>HyperparameterGradCovariance</strong>(double const *restrict point_one, double const *restrict point_two, double *restrict grad_hyperparameter_cov)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Similar to GradCovariance(), except gradients are computed wrt the hyperparameters.</p>
+<p>Unlike GradCovariance(), the order of point_one and point_two is irrelevant here (since we are not differentiating against
+either of them).  Thus the matrix of grad covariances (wrt hyperparameters) is symmetric.</p>
+<p>INPUTS:
+point_one[dim]: first spatial coordinate
+point_two[dim]: second spatial coordinate
+OUTPUTS:
+grad_hyperparameter_cov[this.GetNumberOfHyperparameters()]: i-th entry is <tt class="docutils literal"><span class="pre">\pderiv{cov(x_1,</span> <span class="pre">x_2)}{\theta_i}</span></tt></p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_matern_nu1p5_1aa1934a560356c0c5efdda312fd060e08"></span><div class="line-block">
+<div class="line">void <strong>HyperparameterHessianCovariance</strong>(double const *restrict point_one, double const *restrict point_two, double *restrict hessian_hyperparameter_cov)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>The Hessian matrix of the covariance evaluated at x_1, x_2 with respect to the hyperparameters.  The Hessian is defined as:
+<tt class="docutils literal"><span class="pre">[</span> <span class="pre">\ppderiv{cov}{\theta_0^2}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">\mixpderiv{cov}{\theta_0}{\theta_1}</span>&nbsp;&nbsp;&nbsp; <span class="pre">...</span> <span class="pre">\mixpderiv{cov}{\theta_0}{\theta_{n-1}}</span> <span class="pre">]</span></tt>
+<tt class="docutils literal"><span class="pre">[</span> <span class="pre">\mixpderiv{cov}{\theta_1}{\theta_0}</span>&nbsp;&nbsp;&nbsp; <span class="pre">\ppderiv{cov}{\theta_1^2</span> <span class="pre">}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">...</span> <span class="pre">\mixpderiv{cov}{\theta_1}{\theta_{n-1}}</span> <span class="pre">]</span></tt>
+<tt class="docutils literal"><span class="pre">[</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">...</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">...</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">]</span></tt>
+<tt class="docutils literal"><span class="pre">[</span> <span class="pre">\mixpderiv{cov}{\theta_{n-1}{\theta_0}</span> <span class="pre">\mixpderiv{cov}{\theta_{n-1}{\theta_1}</span> <span class="pre">...</span> <span class="pre">\ppderiv{cov}{\theta_{n-1}^2}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">]</span></tt>
+where &#8220;cov&#8221; abbreviates covariance(x_1, x_2) and &#8220;n&#8221; refers to the number of hyperparameters.</p>
+<p>Unless noted otherwise in subclasses, the Hessian is symmetric (due to the equality of mixed derivatives when a function
+f is twice continuously differentiable).</p>
+<p>Similarly to the gradients, the Hessian is independent of the order of x_1, x_2: H_{cov}(x_1, x_2) = H_{cov}(x_2, x_1)</p>
+<p>For further details: <a class="reference external" href="http://en.wikipedia.org/wiki/Hessian_matrix">http://en.wikipedia.org/wiki/Hessian_matrix</a></p>
+<p>Let n_hyper = this.GetNumberOfHyperparameters()
+INPUTS:
+point_one[dim]: first spatial coordinate
+point_two[dim]: second spatial coordinate
+OUTPUTS:
+hessian_hyperparameter_cov[n_hyper][n_hyper]: <tt class="docutils literal"><span class="pre">(i,j)</span></tt>-th entry is <tt class="docutils literal"><span class="pre">\mixpderiv{cov(x_1,</span> <span class="pre">x_2)}{\theta_i}{\theta_j}</span></tt></p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_matern_nu1p5_1aa401560b75d71d7c3d6a992a9dcd0a44"></span><div class="line-block">
+<div class="line">void <strong>SetHyperparameters</strong>(double const *restrict hyperparameters)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Sets the hyperparameters.  Hyperparameter ordering is defined implicitly by GetHyperparameters: <tt class="docutils literal"><span class="pre">[alpha=\sigma_f^2,</span> <span class="pre">length_0,</span> <span class="pre">...,</span> <span class="pre">length_{n-1}]</span></tt></p>
+<p>INPUTS:
+hyperparameters[this.GetNumberOfHyperparameters()]: hyperparameters to set</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_matern_nu1p5_1ac3ca6a076a43cdf7c6ec6ee535adaa69"></span><div class="line-block">
+<div class="line">void <strong>GetHyperparameters</strong>(double *restrict hyperparameters)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Gets the hyperparameters.  Ordering is <tt class="docutils literal"><span class="pre">[alpha=\sigma_f^2,</span> <span class="pre">length_0,</span> <span class="pre">...,</span> <span class="pre">length_{n-1}]</span></tt></p>
+<p>OUTPUTS:
+hyperparameters[this.GetNumberOfHyperparameters()]: values of current hyperparameters</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_matern_nu1p5_1ab3ccdfc78d23fbf0d39cfa99eefbfe11"></span><div class="line-block">
+<div class="line"><a class="reference internal" href="#project0classoptimal__learning_1_1_covariance_interface"><em>CovarianceInterface</em></a>  * <strong>Clone</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>For implementing the virtual (copy) constructor idiom.</p>
+<p>RETURNS:
+Pointer to a constructed object that is a subclass of CovarianceInterface</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_matern_nu1p5_1a22910235ce373297efbae62f802a08b4"></span><div class="line-block">
+<div class="line"> <strong>OL_DISALLOW_DEFAULT_AND_ASSIGN</strong>(<a class="reference internal" href="#project0classoptimal__learning_1_1_matern_nu1p5"><em>MaternNu1p5</em></a>)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Private Functions</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_matern_nu1p5_1a9271ffcf0ca08377684a30ec7ba1591f"></span><div class="line-block">
+<div class="line"> <strong>MaternNu1p5</strong>(const  <a class="reference internal" href="#project0classoptimal__learning_1_1_matern_nu1p5"><em>MaternNu1p5</em></a>  &amp; OL_UNUSED)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_matern_nu1p5_1a2500d30f52f53b118e9e31c408d00082"></span><div class="line-block">
+<div class="line">void <strong>Initialize</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Validate and initialize class data members.</p>
+ </p>
+</div></blockquote>
+</div></blockquote>
+<em>Private Members</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_matern_nu1p5_1a4e5987a1cef9fc82eaaa198715289819"></span>int <strong>dim_</strong></p>
+<blockquote>
+<div><p>dimension of the problem </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_matern_nu1p5_1abda0f493a20c79b737b352343a6814b5"></span>double <strong>alpha_</strong></p>
+<blockquote>
+<div><p>^2, signal variance </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_matern_nu1p5_1a041d28b157d79def23edc10aa948ce18"></span>std::vector&lt; double &gt; <strong>lengths_</strong></p>
+<blockquote>
+<div><p>length scales, one per dimension </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_matern_nu1p5_1a8229f28ea7782d8e0bd5da18ab04dd08"></span>std::vector&lt; double &gt; <strong>lengths_sq_</strong></p>
+<blockquote>
+<div><p>square of the length scales, one per dimension </p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</p>
+<p><p id="project0classoptimal__learning_1_1_matern_nu2p5"><em>class</em> <strong>MaternNu2p5</strong></p>
+<blockquote>
+<div><p></p>
+<p><p>Implements a case of the Matern class of covariance functions with nu = 5/2 (smoothness parameter).
+See docs for <tt class="docutils literal"><span class="pre">MaternNu1p5</span></tt> for more details on the Matern class of covariance fucntions.</p>
+<p><tt class="docutils literal"><span class="pre">cov_{\nu=5/2}(r)</span> <span class="pre">=</span> <span class="pre">(1</span> <span class="pre">+</span> <span class="pre">\sqrt{5}\frac{r}[l}</span> <span class="pre">+</span> <span class="pre">\frac{5}{3}\frac{r^2}{l^2})\exp(-\sqrt{5}\frac{r}{l})</span></tt></p>
+<p>See CovarianceInterface for descriptions of the virtual functions.</p>
+ </p>
+<em>Public Functions</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_matern_nu2p5_1ac25c089a76e16ca74eba1ee08ec8013f"></span><div class="line-block">
+<div class="line"> <strong>MaternNu2p5</strong>(int dim, double alpha, double length)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Constructs a MaternNu2p5 object with constant length-scale across all dimensions.</p>
+<p>INPUTS:
+dim: the number of spatial dimensions
+alpha: the hyperparameter <tt class="docutils literal"><span class="pre">\alpha</span></tt> (e.g., signal variance, <tt class="docutils literal"><span class="pre">\sigma_f^2</span></tt>)
+length: the constant length scale to use for all hyperparameter length scales</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_matern_nu2p5_1a522203814be0a711f8bd3f625e346b13"></span><div class="line-block">
+<div class="line"> <strong>MaternNu2p5</strong>(int dim, double alpha, double const *restrict lengths)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Constructs a MaternNu2p5 object with the specified hyperparameters.</p>
+<p>INPUTS:
+dim: the number of spatial dimensions
+alpha: the hyperparameter <tt class="docutils literal"><span class="pre">\alpha</span></tt>, (e.g., signal variance, <tt class="docutils literal"><span class="pre">\sigma_f^2</span></tt>)
+lengths[dim]: the hyperparameter length scales, one per spatial dimension</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_matern_nu2p5_1a680819b258018afded31d2b4e5b6e2f6"></span><div class="line-block">
+<div class="line"> <strong>MaternNu2p5</strong>(int dim, double alpha, std::vector&lt; double &gt; lengths)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Constructs a MaternNu2p5 object with the specified hyperparameters.</p>
+<p>INPUTS:
+dim: the number of spatial dimensions
+alpha: the hyperparameter <tt class="docutils literal"><span class="pre">\alpha</span></tt>, (e.g., signal variance, <tt class="docutils literal"><span class="pre">\sigma_f^2</span></tt>)
+lengths: the hyperparameter length scales, one per spatial dimension</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_matern_nu2p5_1a9c77bfd959451750c279ff9c6b38fccf"></span><div class="line-block">
+<div class="line">double <strong>Covariance</strong>(double const *restrict point_one, double const *restrict point_two)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Computes the covariance function of two points, cov(<tt class="docutils literal"><span class="pre">point_one</span></tt>, <tt class="docutils literal"><span class="pre">point_two</span></tt>).  Points must be arrays with length dim.</p>
+<p>The covariance function is guaranteed to be symmetric by definition: <tt class="docutils literal"><span class="pre">Covariance(x,</span> <span class="pre">y)</span> <span class="pre">=</span> <span class="pre">Covariance(y,</span> <span class="pre">x)</span></tt>.
+This function is also positive definite by definition.</p>
+<p>INPUTS:
+point_one[dim]: first spatial coordinate
+point_two[dim]: second spatial coordinate
+RETURNS:
+value of covariance between the input points</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_matern_nu2p5_1a5113eb1c07806ba67cf760cf4fbf0665"></span><div class="line-block">
+<div class="line">void <strong>GradCovariance</strong>(double const *restrict point_one, double const *restrict point_two, double *restrict grad_cov)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Computes the gradient of this.Covariance(point_one, point_two) with respect to the FIRST argument, point_one.</p>
+<p>This distinction is important for maintaining the desired symmetry.  <tt class="docutils literal"><span class="pre">Cov(x,</span> <span class="pre">y)</span> <span class="pre">=</span> <span class="pre">Cov(y,</span> <span class="pre">x)</span></tt>.
+Additionally, <tt class="docutils literal"><span class="pre">\pderiv{Cov(x,</span> <span class="pre">y)}{x}</span> <span class="pre">=</span> <span class="pre">\pderiv{Cov(y,</span> <span class="pre">x)}{x}</span></tt>.
+However, in general, <tt class="docutils literal"><span class="pre">\pderiv{Cov(x,</span> <span class="pre">y)}{x}</span> <span class="pre">!=</span> <span class="pre">\pderiv{Cov(y,</span> <span class="pre">x)}{y}</span></tt> (NOT equal!  These may differ by a negative sign)</p>
+<p>Hence to avoid separate implementations for differentiating against first vs second argument, this function only handles
+differentiation against the first argument.  If you need <tt class="docutils literal"><span class="pre">\pderiv{Cov(y,</span> <span class="pre">x)}{x}</span></tt>, just swap points x and y.</p>
+<p>INPUTS:
+point_one[dim]: first spatial coordinate
+point_two[dim]: second spatial coordinate
+OUTPUTS:
+grad_cov[dim]: i-th entry is <tt class="docutils literal"><span class="pre">\pderiv{cov(x_1,</span> <span class="pre">x_2)}{x_i}</span></tt></p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_matern_nu2p5_1ad74300c0cf82f40411f75d0f780fa6ae"></span><div class="line-block">
+<div class="line">int <strong>GetNumberOfHyperparameters</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Returns the number of hyperparameters.  This base class only allows for a maximum of dim + 1 hyperparameters but
+subclasses may implement additional ones.</p>
+<p>RETURNS:
+The number of hyperparameters.  Return 0 to disable hyperparameter-related gradients, optimizations.</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_matern_nu2p5_1a441148c004e4230156c48a143b75f42c"></span><div class="line-block">
+<div class="line">void <strong>HyperparameterGradCovariance</strong>(double const *restrict point_one, double const *restrict point_two, double *restrict grad_hyperparameter_cov)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Similar to GradCovariance(), except gradients are computed wrt the hyperparameters.</p>
+<p>Unlike GradCovariance(), the order of point_one and point_two is irrelevant here (since we are not differentiating against
+either of them).  Thus the matrix of grad covariances (wrt hyperparameters) is symmetric.</p>
+<p>INPUTS:
+point_one[dim]: first spatial coordinate
+point_two[dim]: second spatial coordinate
+OUTPUTS:
+grad_hyperparameter_cov[this.GetNumberOfHyperparameters()]: i-th entry is <tt class="docutils literal"><span class="pre">\pderiv{cov(x_1,</span> <span class="pre">x_2)}{\theta_i}</span></tt></p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_matern_nu2p5_1af8c77372b381780c3f38ab9e474f0af6"></span><div class="line-block">
+<div class="line">void <strong>HyperparameterHessianCovariance</strong>(double const *restrict point_one, double const *restrict point_two, double *restrict hessian_hyperparameter_cov)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>The Hessian matrix of the covariance evaluated at x_1, x_2 with respect to the hyperparameters.  The Hessian is defined as:
+<tt class="docutils literal"><span class="pre">[</span> <span class="pre">\ppderiv{cov}{\theta_0^2}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">\mixpderiv{cov}{\theta_0}{\theta_1}</span>&nbsp;&nbsp;&nbsp; <span class="pre">...</span> <span class="pre">\mixpderiv{cov}{\theta_0}{\theta_{n-1}}</span> <span class="pre">]</span></tt>
+<tt class="docutils literal"><span class="pre">[</span> <span class="pre">\mixpderiv{cov}{\theta_1}{\theta_0}</span>&nbsp;&nbsp;&nbsp; <span class="pre">\ppderiv{cov}{\theta_1^2</span> <span class="pre">}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">...</span> <span class="pre">\mixpderiv{cov}{\theta_1}{\theta_{n-1}}</span> <span class="pre">]</span></tt>
+<tt class="docutils literal"><span class="pre">[</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">...</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">...</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">]</span></tt>
+<tt class="docutils literal"><span class="pre">[</span> <span class="pre">\mixpderiv{cov}{\theta_{n-1}{\theta_0}</span> <span class="pre">\mixpderiv{cov}{\theta_{n-1}{\theta_1}</span> <span class="pre">...</span> <span class="pre">\ppderiv{cov}{\theta_{n-1}^2}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">]</span></tt>
+where &#8220;cov&#8221; abbreviates covariance(x_1, x_2) and &#8220;n&#8221; refers to the number of hyperparameters.</p>
+<p>Unless noted otherwise in subclasses, the Hessian is symmetric (due to the equality of mixed derivatives when a function
+f is twice continuously differentiable).</p>
+<p>Similarly to the gradients, the Hessian is independent of the order of x_1, x_2: H_{cov}(x_1, x_2) = H_{cov}(x_2, x_1)</p>
+<p>For further details: <a class="reference external" href="http://en.wikipedia.org/wiki/Hessian_matrix">http://en.wikipedia.org/wiki/Hessian_matrix</a></p>
+<p>Let n_hyper = this.GetNumberOfHyperparameters()
+INPUTS:
+point_one[dim]: first spatial coordinate
+point_two[dim]: second spatial coordinate
+OUTPUTS:
+hessian_hyperparameter_cov[n_hyper][n_hyper]: <tt class="docutils literal"><span class="pre">(i,j)</span></tt>-th entry is <tt class="docutils literal"><span class="pre">\mixpderiv{cov(x_1,</span> <span class="pre">x_2)}{\theta_i}{\theta_j}</span></tt></p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_matern_nu2p5_1a8ec2e29bcbbefd038eba2d9df834dc82"></span><div class="line-block">
+<div class="line">void <strong>SetHyperparameters</strong>(double const *restrict hyperparameters)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Sets the hyperparameters.  Hyperparameter ordering is defined implicitly by GetHyperparameters: <tt class="docutils literal"><span class="pre">[alpha=\sigma_f^2,</span> <span class="pre">length_0,</span> <span class="pre">...,</span> <span class="pre">length_{n-1}]</span></tt></p>
+<p>INPUTS:
+hyperparameters[this.GetNumberOfHyperparameters()]: hyperparameters to set</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_matern_nu2p5_1ae8e81c4c5ddf655e5249cdb99a4d91e7"></span><div class="line-block">
+<div class="line">void <strong>GetHyperparameters</strong>(double *restrict hyperparameters)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Gets the hyperparameters.  Ordering is <tt class="docutils literal"><span class="pre">[alpha=\sigma_f^2,</span> <span class="pre">length_0,</span> <span class="pre">...,</span> <span class="pre">length_{n-1}]</span></tt></p>
+<p>OUTPUTS:
+hyperparameters[this.GetNumberOfHyperparameters()]: values of current hyperparameters</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_matern_nu2p5_1afef227f1e295fe5eac5ff093e8576c93"></span><div class="line-block">
+<div class="line"><a class="reference internal" href="#project0classoptimal__learning_1_1_covariance_interface"><em>CovarianceInterface</em></a>  * <strong>Clone</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>For implementing the virtual (copy) constructor idiom.</p>
+<p>RETURNS:
+Pointer to a constructed object that is a subclass of CovarianceInterface</p>
+ </p>
+</div></blockquote>
+</div></blockquote>
+<em>Private Functions</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_matern_nu2p5_1ac0e236b2637afc9e511120289387a694"></span><div class="line-block">
+<div class="line"> <strong>MaternNu2p5</strong>(const  <a class="reference internal" href="#project0classoptimal__learning_1_1_matern_nu2p5"><em>MaternNu2p5</em></a>  &amp; OL_UNUSED)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_matern_nu2p5_1aa45dc7691228df598eeb3fca02d44c0c"></span><div class="line-block">
+<div class="line">void <strong>Initialize</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Validate and initialize class data members.</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_matern_nu2p5_1a7f2eea5bd7bfdf4e62d0a41828f1bbb8"></span><div class="line-block">
+<div class="line"> <strong>OL_DISALLOW_DEFAULT_AND_ASSIGN</strong>(<a class="reference internal" href="#project0classoptimal__learning_1_1_matern_nu2p5"><em>MaternNu2p5</em></a>)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Private Members</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_matern_nu2p5_1adbca8c372fb48406692679fed2eee59b"></span>int <strong>dim_</strong></p>
+<blockquote>
+<div><p>dimension of the problem </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_matern_nu2p5_1adf2114875711959655dee85b39cf8853"></span>double <strong>alpha_</strong></p>
+<blockquote>
+<div><p>^2, signal variance </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_matern_nu2p5_1aaf7c3c80cf30fffde2fdbd7d54b7b5d6"></span>std::vector&lt; double &gt; <strong>lengths_</strong></p>
+<blockquote>
+<div><p>length scales, one per dimension </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_matern_nu2p5_1a4681c0ef496fa12fc63ff715302dd70a"></span>std::vector&lt; double &gt; <strong>lengths_sq_</strong></p>
+<blockquote>
+<div><p>square of the length scales, one per dimension </p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</p>
+</div></blockquote>
+</p>
+</div>
+<div class="section" id="gpp-covariance-cpp">
+<h2>gpp_covariance.cpp<a class="headerlink" href="#gpp-covariance-cpp" title="Permalink to this headline">¶</a></h2>
+<p></p>
+<p><p>This file contains function definitions for the Covariance, GradCovariance, and HyperparameterGradCovariance member
+functions of CovarianceInterface subclasses.  It also contains a few utilities for computing common mathematical quantities
+and initialization.</p>
+<p>Gradient (spatial and hyperparameter) functions return all derivatives at once because there is substantial shared computation.
+The shared results are by far the most expensive part of gradient computations; they typically involve exponentiation and are
+further at least partially shared with the base covariance computation.   In fact, we could improve performance further by
+caching [certain] components of the covariance computation for use with the derivative computations. (TODO(eliu): #44010)</p>
+<p>TODO(eliu): #48408 Check expression simplification of gradients/hessians (esp the latter) for the various covariance functions.
+Current math was done by hand and maybe I missed something.</p>
+ </p>
+<p><p id="project0namespaceoptimal__learning"><em>namespace</em> <strong>optimal_learning</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</p>
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="gpp_math-inl.html" class="btn btn-neutral float-right" title="gpp_math-inl"/>Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="gpp_logging.html" class="btn btn-neutral" title="gpp_logging"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

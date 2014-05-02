@@ -1,0 +1,48 @@
+moe.optimal_learning.python package
+===================================
+
+Subpackages
+-----------
+
+.. toctree::
+
+    moe.optimal_learning.python.cpp_wrappers
+    moe.optimal_learning.python.interfaces
+    moe.optimal_learning.python.lib
+    moe.optimal_learning.python.models
+
+Submodules
+----------
+
+moe.optimal_learning.python.constant module
+-------------------------------------------
+
+.. automodule:: moe.optimal_learning.python.constant
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+moe.optimal_learning.python.data_containers module
+--------------------------------------------------
+
+.. automodule:: moe.optimal_learning.python.data_containers
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+moe.optimal_learning.python.geometry_utils module
+-------------------------------------------------
+
+.. automodule:: moe.optimal_learning.python.geometry_utils
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: moe.optimal_learning.python
+    :members:
+    :undoc-members:
+    :show-inheritance:

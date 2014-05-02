@@ -1,0 +1,522 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>gpp_optimization &mdash; MOE 0.1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="_static/breathe.css" type="text/css" />
+  
+    <link rel="top" title="MOE 0.1.0 documentation" href="index.html"/>
+        <link rel="up" title="C++ Files" href="cpp_tree.html"/>
+        <link rel="next" title="gpp_covariance_test" href="gpp_covariance_test.html"/>
+        <link rel="prev" title="gpp_core" href="gpp_core.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="index.html" class="fa fa-home"> MOE</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul>
+<li class="toctree-l1"><a class="reference internal" href="moe.html">moe package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#module-moe.resources">moe.resources module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#module-moe">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="cpp_tree.html">C++ Files</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimization_test.html">gpp_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_domain_test.html">gpp_domain_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_random_test.html">gpp_random_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_exception.html">gpp_exception</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_geometry.html">gpp_geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_test_utils.html">gpp_test_utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_logging.html">gpp_logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_covariance.html">gpp_covariance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_math-inl.html">gpp_math-inl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_domain.html">gpp_domain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_common.html">gpp_python_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_hyperparameter_optimization_demo.html">gpp_hyperparameter_optimization_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_test_utils_test.html">gpp_test_utils_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_math_test.html">gpp_math_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_model_selection.html">gpp_python_model_selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_math.html">gpp_math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_test.html">gpp_python_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_random.html">gpp_random</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra.html">gpp_linear_algebra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_core.html">gpp_core</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_covariance_test.html">gpp_covariance_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python.html">gpp_python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_and_hyperparameter_optimization.html">gpp_model_selection_and_hyperparameter_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimization_parameters.html">gpp_optimization_parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_common.html">gpp_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_and_hyperparameter_optimization_test.html">gpp_model_selection_and_hyperparameter_optimization_test</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">MOE</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="cpp_tree.html">C++ Files</a> &raquo;</li>
+      
+    <li>gpp_optimization</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="_sources/gpp_optimization.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <div class="section" id="gpp-optimization">
+<h1>gpp_optimization<a class="headerlink" href="#gpp-optimization" title="Permalink to this headline">¶</a></h1>
+<p><strong>Contents:</strong></p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><a class="reference internal" href="#gpp-optimization-hpp">gpp_optimization.hpp</a></li>
+</ol>
+</div></blockquote>
+<div class="section" id="gpp-optimization-hpp">
+<h2>gpp_optimization.hpp<a class="headerlink" href="#gpp-optimization-hpp" title="Permalink to this headline">¶</a></h2>
+<p></p>
+<p></p>
+<p><p id="project0namespaceoptimal__learning"><em>namespace</em> <strong>optimal_learning</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+<em>Functions</em><blockquote>
+<div><p><span class="target" id="project0namespaceoptimal__learning_1acffe49185559b8bbcdbee2853fbbbece"></span><div class="line-block">
+<div class="line">template &lt; typename ObjectiveFunctionEvaluator, typename DomainType &gt;</div>
+<div class="line">OL_NONNULL_POINTERS void <strong>GradientDescentOptimization</strong>(const ObjectiveFunctionEvaluator &amp; objective_evaluator, const  <a class="reference internal" href="gpp_optimization_parameters.html#project0structoptimal__learning_1_1_gradient_descent_parameters"><em>GradientDescentParameters</em></a>  &amp; gd_parameters, const DomainType &amp; domain, typename ObjectiveFunctionEvaluator::StateType * objective_state, double *restrict next_point)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0namespaceoptimal__learning_1a4c118ee2a894733f0aacd04a68e34da7"></span><div class="line-block">
+<div class="line">template &lt; typename ObjectiveFunctionEvaluator, typename DomainType &gt;</div>
+<div class="line">OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT int <strong>NewtonOptimization</strong>(const ObjectiveFunctionEvaluator &amp; objective_evaluator, const  <a class="reference internal" href="gpp_optimization_parameters.html#project0structoptimal__learning_1_1_newton_parameters"><em>NewtonParameters</em></a>  &amp; newton_parameters, const DomainType &amp; domain, typename ObjectiveFunctionEvaluator::StateType * objective_state)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<p><p id="project0structoptimal__learning_1_1_optimization_i_o_container"><em>class</em> <strong>OptimizationIOContainer</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+<em>Public Functions</em><blockquote>
+<div><p><span class="target" id="project0structoptimal__learning_1_1_optimization_i_o_container_1aa422a9f9544c977325546d46bd5ff883"></span><div class="line-block">
+<div class="line"> <strong>OptimizationIOContainer</strong>(int problem_size_in)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_optimization_i_o_container_1a5163c056fc667cfad92098d71c32e69c"></span><div class="line-block">
+<div class="line"> <strong>OptimizationIOContainer</strong>(int problem_size_in, double best_objective_value, double const *restrict best_point_in)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_optimization_i_o_container_1aa1917fdf59d9e9e999277adb836a04f1"></span><div class="line-block">
+<div class="line"> <strong>OptimizationIOContainer</strong>(<a class="reference internal" href="#project0structoptimal__learning_1_1_optimization_i_o_container"><em>OptimizationIOContainer</em></a>  &amp;&amp; OL_UNUSED)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_optimization_i_o_container_1a89e992046a295e03e468d9e337042837"></span><div class="line-block">
+<div class="line"> <strong>OL_DISALLOW_DEFAULT_AND_COPY_AND_ASSIGN</strong>(<a class="reference internal" href="#project0structoptimal__learning_1_1_optimization_i_o_container"><em>OptimizationIOContainer</em></a>)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Public Members</em><blockquote>
+<div><p><span class="target" id="project0structoptimal__learning_1_1_optimization_i_o_container_1a7c655df775b996490aa126db11ca77d1"></span>const int <strong>problem_size</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_optimization_i_o_container_1a2a77d6c1e747cf874626f2721dcac165"></span>double <strong>best_objective_value_so_far</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_optimization_i_o_container_1a4d97c311ea60e84e1c578569f8fa3a0b"></span>std::vector&lt; double &gt; <strong>best_point</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_optimization_i_o_container_1ae9cd7a94c530c34d4a9faf9d5fb9eb51"></span>bool <strong>found_flag</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</p>
+<p><p id="project0classoptimal__learning_1_1_null_optimizer"><em>class</em> <strong>NullOptimizer</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+<em>Public Type</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_null_optimizer_1a785b3c37a1b2cd8d2c8bbd08f96435a6"></span>typedef ObjectiveFunctionEvaluator_ <strong>ObjectiveFunctionEvaluator</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_null_optimizer_1a5fcf5d9ecdc73c735015d3d1bcd094a2"></span>typedef DomainType_ <strong>DomainType</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_null_optimizer_1ae28c9502f94afd88e2087bb544ff0ac2"></span>typedef <a class="reference internal" href="gpp_optimization_parameters.html#project0structoptimal__learning_1_1_null_parameters"><em>NullParameters</em></a> <strong>ParameterStruct</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Public Functions</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_null_optimizer_1a0a44fda7b7fd06fc0ac7863739ab7c53"></span><div class="line-block">
+<div class="line"> <strong>NullOptimizer</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_null_optimizer_1ab7a27ee7863466bcb954d6ee34d448d0"></span><div class="line-block">
+<div class="line">int <strong>Optimize</strong>(const ObjectiveFunctionEvaluator &amp; OL_UNUSED, const  <a class="reference internal" href="gpp_optimization_parameters.html#project0structoptimal__learning_1_1_null_parameters"><em>ParameterStruct</em></a>  &amp; OL_UNUSED, const DomainType &amp; OL_UNUSED, typename ObjectiveFunctionEvaluator::StateType * OL_UNUSED)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_null_optimizer_1ab4a4798a291ca4e435ef43ad84beb1c8"></span><div class="line-block">
+<div class="line"> <strong>OL_DISALLOW_COPY_AND_ASSIGN</strong>(<a class="reference internal" href="#project0classoptimal__learning_1_1_null_optimizer"><em>NullOptimizer</em></a>)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</p>
+<p><p id="project0classoptimal__learning_1_1_gradient_descent_optimizer"><em>class</em> <strong>GradientDescentOptimizer</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+<em>Public Type</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_gradient_descent_optimizer_1a6fed47dd785041f085659250e69b9367"></span>typedef ObjectiveFunctionEvaluator_ <strong>ObjectiveFunctionEvaluator</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_gradient_descent_optimizer_1adf9bb78287d628579f0de84a5bd2b949"></span>typedef DomainType_ <strong>DomainType</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_gradient_descent_optimizer_1a19d35e11ee0400f716659f58e5c28106"></span>typedef <a class="reference internal" href="gpp_optimization_parameters.html#project0structoptimal__learning_1_1_gradient_descent_parameters"><em>GradientDescentParameters</em></a> <strong>ParameterStruct</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Public Functions</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_gradient_descent_optimizer_1aa289b7f8394996b53de30a1d49bb79b9"></span><div class="line-block">
+<div class="line"> <strong>GradientDescentOptimizer</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_gradient_descent_optimizer_1a765cd72296fd7e08755fe9c2bde1b083"></span><div class="line-block">
+<div class="line">int <strong>Optimize</strong>(const ObjectiveFunctionEvaluator &amp; objective_evaluator, const  <a class="reference internal" href="gpp_optimization_parameters.html#project0structoptimal__learning_1_1_gradient_descent_parameters"><em>ParameterStruct</em></a>  &amp; gd_parameters, const DomainType &amp; domain, typename ObjectiveFunctionEvaluator::StateType * objective_state)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_gradient_descent_optimizer_1a3d0c7d17f7b629c9acb5fbd6f917c4c3"></span><div class="line-block">
+<div class="line"> <strong>OL_DISALLOW_COPY_AND_ASSIGN</strong>(<a class="reference internal" href="#project0classoptimal__learning_1_1_gradient_descent_optimizer"><em>GradientDescentOptimizer</em></a>)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</p>
+<p><p id="project0classoptimal__learning_1_1_newton_optimizer"><em>class</em> <strong>NewtonOptimizer</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+<em>Public Type</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_newton_optimizer_1a726c4bd21a58acee61799bd854ec9141"></span>typedef ObjectiveFunctionEvaluator_ <strong>ObjectiveFunctionEvaluator</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_newton_optimizer_1a2c8ff4c1c3c3a1e53b10cfafe9833c01"></span>typedef DomainType_ <strong>DomainType</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_newton_optimizer_1aa6d382182350c4331c7c8d7afb42359e"></span>typedef <a class="reference internal" href="gpp_optimization_parameters.html#project0structoptimal__learning_1_1_newton_parameters"><em>NewtonParameters</em></a> <strong>ParameterStruct</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Public Functions</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_newton_optimizer_1aac39f5f8d2403ef2d29f3a44dd2106f2"></span><div class="line-block">
+<div class="line"> <strong>NewtonOptimizer</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_newton_optimizer_1a04edf0db5fdc61589ae0e73ef2de01df"></span><div class="line-block">
+<div class="line">int <strong>Optimize</strong>(const ObjectiveFunctionEvaluator &amp; objective_evaluator, const  <a class="reference internal" href="gpp_optimization_parameters.html#project0structoptimal__learning_1_1_newton_parameters"><em>ParameterStruct</em></a>  &amp; newton_parameters, const DomainType &amp; domain, typename ObjectiveFunctionEvaluator::StateType * objective_state)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_newton_optimizer_1a0f96ea38c80aece003c386b620e01c7f"></span><div class="line-block">
+<div class="line"> <strong>OL_DISALLOW_COPY_AND_ASSIGN</strong>(<a class="reference internal" href="#project0classoptimal__learning_1_1_newton_optimizer"><em>NewtonOptimizer</em></a>)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</p>
+<p><p id="project0classoptimal__learning_1_1_multistart_optimizer"><em>class</em> <strong>MultistartOptimizer</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+<em>Public Type</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_multistart_optimizer_1a15e8c90a62a64d2aaaab6da92f35f163"></span>typedef Optimizer_ <strong>Optimizer</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_multistart_optimizer_1a382af82d271291b91cc55ce28ffb7b19"></span>typedef typename Optimizer::ObjectiveFunctionEvaluator <strong>ObjectiveFunctionEvaluator</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_multistart_optimizer_1aa29854a073beb8a670e0bc3f6ed1b3e1"></span>typedef typename Optimizer::DomainType <strong>DomainType</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_multistart_optimizer_1aee1cd111d26952655fde24ee34fbf389"></span>typedef typename Optimizer::ParameterStruct <strong>ParameterStruct</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Public Functions</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_multistart_optimizer_1ad8385ef4ae561dc3eb2e084af35e6212"></span><div class="line-block">
+<div class="line"> <strong>MultistartOptimizer</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_multistart_optimizer_1aa5e10e49de2c316cfd792d8fc8b23c25"></span><div class="line-block">
+<div class="line">template &lt; typename Optimizer &gt;</div>
+<div class="line">void <strong>MultistartOptimize</strong>(const Optimizer &amp; optimizer, const ObjectiveFunctionEvaluator &amp; objective_evaluator, const ParameterStruct &amp; optimizer_parameters, const DomainType &amp; domain, double const *restrict initial_guesses, int num_multistarts, int max_num_threads, int chunk_size, typename ObjectiveFunctionEvaluator::StateType * objective_state_vector, double *restrict function_values, <a class="reference internal" href="#project0structoptimal__learning_1_1_optimization_i_o_container"><em>OptimizationIOContainer</em></a>  *restrict io_container)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_multistart_optimizer_1aea5884c0885f955dc290d2b0a73aeac5"></span><div class="line-block">
+<div class="line"> <strong>OL_DISALLOW_COPY_AND_ASSIGN</strong>(<a class="reference internal" href="#project0classoptimal__learning_1_1_multistart_optimizer"><em>MultistartOptimizer</em></a>)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</p>
+</div></blockquote>
+</p>
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="gpp_covariance_test.html" class="btn btn-neutral float-right" title="gpp_covariance_test"/>Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="gpp_core.html" class="btn btn-neutral" title="gpp_core"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

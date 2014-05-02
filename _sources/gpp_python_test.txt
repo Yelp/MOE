@@ -1,0 +1,20 @@
+gpp_python_test
+=====
+
+**Contents:**
+
+    1. `gpp_python_test.hpp`_
+    2. `gpp_python_test.cpp`_
+
+
+gpp_python_test.hpp
+------
+
+.. doxygenfile:: gpp_python_test.hpp
+
+
+gpp_python_test.cpp
+------
+
+.. doxygenfile:: gpp_python_test.cpp
+

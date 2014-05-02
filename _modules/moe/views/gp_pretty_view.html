@@ -70,8 +70,46 @@
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../gpp_math_hpp.html">gpp_math.hpp</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../gpp_geometry_hpp.html">gpp_geometry.hpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cpp_tree.html">C++ Files</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_optimization_test.html">gpp_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_domain_test.html">gpp_domain_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_random_test.html">gpp_random_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_exception.html">gpp_exception</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_geometry.html">gpp_geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_test_utils.html">gpp_test_utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_logging.html">gpp_logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_covariance.html">gpp_covariance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_math-inl.html">gpp_math-inl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_domain.html">gpp_domain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_python_common.html">gpp_python_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_hyperparameter_optimization_demo.html">gpp_hyperparameter_optimization_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_test_utils_test.html">gpp_test_utils_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_math_test.html">gpp_math_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_python_model_selection.html">gpp_python_model_selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_math.html">gpp_math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_python_test.html">gpp_python_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_random.html">gpp_random</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_geometry_test.html">gpp_geometry_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_linear_algebra.html">gpp_linear_algebra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_core.html">gpp_core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_covariance_test.html">gpp_covariance_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_python.html">gpp_python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_model_selection_and_hyperparameter_optimization.html">gpp_model_selection_and_hyperparameter_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_optimization_parameters.html">gpp_optimization_parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_common.html">gpp_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_model_selection_and_hyperparameter_optimization_test.html">gpp_model_selection_and_hyperparameter_optimization_test</a></li>
+</ul>
+</li>
 </ul>
 
         
@@ -113,6 +151,8 @@
 <span class="sd">&quot;&quot;&quot;A class to encapsulate &#39;pretty&#39; views.&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">simplejson</span> <span class="kn">as</span> <span class="nn">json</span>
 
+<span class="n">PRETTY_RENDERER</span> <span class="o">=</span> <span class="s">&#39;moe:templates/pretty_input.mako&#39;</span>
+
 
 <div class="viewcode-block" id="GpPrettyView"><a class="viewcode-back" href="../../../moe.views.html#moe.views.gp_pretty_view.GpPrettyView">[docs]</a><span class="k">class</span> <span class="nc">GpPrettyView</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
@@ -124,39 +164,51 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">route_name</span> <span class="o">=</span> <span class="bp">None</span>
-    <span class="n">pretty_route_name</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="n">_route_name</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="n">_pretty_route_name</span> <span class="o">=</span> <span class="bp">None</span>
 
-    <span class="n">request_schema</span> <span class="o">=</span> <span class="bp">None</span>
-    <span class="n">response_schema</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="n">request_schema</span> <span class="o">=</span> <span class="bp">None</span>  <span class="c"># Define in a subclass</span>
+    <span class="n">response_schema</span> <span class="o">=</span> <span class="bp">None</span>  <span class="c"># Define in a subclass</span>
 
-    <span class="n">pretty_default_request</span> <span class="o">=</span> <span class="bp">None</span>
-    <span class="n">pretty_default_gp_info</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">_pretty_default_request</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="n">_pretty_default_gp_info</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s">&quot;points_sampled&quot;</span><span class="p">:</span> <span class="p">[</span>
                 <span class="p">{</span><span class="s">&quot;value_var&quot;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span> <span class="s">&quot;value&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="s">&quot;point&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">]},</span>
                 <span class="p">{</span><span class="s">&quot;value_var&quot;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span> <span class="s">&quot;value&quot;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span> <span class="s">&quot;point&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">]},</span>
                 <span class="p">],</span>
             <span class="s">&quot;domain&quot;</span><span class="p">:</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span>
             <span class="p">}</span>
-    <span class="n">pretty_renderer</span> <span class="o">=</span> <span class="s">&#39;moe:templates/pretty_input.mako&#39;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Store the request for the view.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">request</span> <span class="o">=</span> <span class="n">request</span>
 
 <div class="viewcode-block" id="GpPrettyView.pretty_response"><a class="viewcode-back" href="../../../moe.views.html#moe.views.gp_pretty_view.GpPrettyView.pretty_response">[docs]</a>    <span class="k">def</span> <span class="nf">pretty_response</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;A pretty, browser interactive view for the interface. Includes form request and response.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;A pretty, browser interactive view for the interface. Includes form request and response.</span>
+
+<span class="sd">        :returns: A dictionary with &#39;endpoint&#39; and &#39;default_text&#39; keys.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">{</span>
-                <span class="s">&#39;endpoint&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">route_name</span><span class="p">,</span>
-                <span class="s">&#39;default_text&#39;</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pretty_default_request</span><span class="p">),</span>
+                <span class="s">&#39;endpoint&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_route_name</span><span class="p">,</span>
+                <span class="s">&#39;default_text&#39;</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pretty_default_request</span><span class="p">),</span>
                 <span class="p">}</span>
 </div>
 <div class="viewcode-block" id="GpPrettyView.get_params_from_request"><a class="viewcode-back" href="../../../moe.views.html#moe.views.gp_pretty_view.GpPrettyView.get_params_from_request">[docs]</a>    <span class="k">def</span> <span class="nf">get_params_from_request</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return the deserialized parameters from the json_body of a request.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Return the deserialized parameters from the json_body of a request.</span>
+
+<span class="sd">        :returns: A deserialized self.request_schema object</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">request_schema</span><span class="o">.</span><span class="n">deserialize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">json_body</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="GpPrettyView.form_response"><a class="viewcode-back" href="../../../moe.views.html#moe.views.gp_pretty_view.GpPrettyView.form_response">[docs]</a>    <span class="k">def</span> <span class="nf">form_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response_dict</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return the serialized response object from a dict.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Return the serialized response object from a dict.</span>
+
+<span class="sd">        :param response_dict: a dict that can be serialized by self.response_schema</span>
+<span class="sd">        :type response_dict: dict</span>
+<span class="sd">        :returns: a serialized self.response_schema object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">response_schema</span><span class="o">.</span><span class="n">serialize</span><span class="p">(</span><span class="n">response_dict</span><span class="p">)</span></div></div>
 </pre></div>
 

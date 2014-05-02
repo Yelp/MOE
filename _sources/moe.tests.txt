@@ -6,8 +6,8 @@ Subpackages
 
 .. toctree::
 
-    moe.tests.EPI
-    moe.tests.moe
+    moe.tests.optimal_learning
+    moe.tests.views
 
 Module contents
 ---------------

@@ -1,0 +1,616 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>gpp_domain &mdash; MOE 0.1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="_static/breathe.css" type="text/css" />
+  
+    <link rel="top" title="MOE 0.1.0 documentation" href="index.html"/>
+        <link rel="up" title="C++ Files" href="cpp_tree.html"/>
+        <link rel="next" title="gpp_python_common" href="gpp_python_common.html"/>
+        <link rel="prev" title="gpp_math-inl" href="gpp_math-inl.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="index.html" class="fa fa-home"> MOE</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul>
+<li class="toctree-l1"><a class="reference internal" href="moe.html">moe package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#module-moe.resources">moe.resources module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#module-moe">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="cpp_tree.html">C++ Files</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimization_test.html">gpp_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_domain_test.html">gpp_domain_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_random_test.html">gpp_random_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_exception.html">gpp_exception</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_geometry.html">gpp_geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_test_utils.html">gpp_test_utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_logging.html">gpp_logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_covariance.html">gpp_covariance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_math-inl.html">gpp_math-inl</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">gpp_domain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_common.html">gpp_python_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_hyperparameter_optimization_demo.html">gpp_hyperparameter_optimization_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_test_utils_test.html">gpp_test_utils_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_math_test.html">gpp_math_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_model_selection.html">gpp_python_model_selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_math.html">gpp_math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_test.html">gpp_python_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_random.html">gpp_random</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra.html">gpp_linear_algebra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_core.html">gpp_core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_covariance_test.html">gpp_covariance_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python.html">gpp_python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_and_hyperparameter_optimization.html">gpp_model_selection_and_hyperparameter_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimization_parameters.html">gpp_optimization_parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_common.html">gpp_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_and_hyperparameter_optimization_test.html">gpp_model_selection_and_hyperparameter_optimization_test</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">MOE</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="cpp_tree.html">C++ Files</a> &raquo;</li>
+      
+    <li>gpp_domain</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="_sources/gpp_domain.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <div class="section" id="gpp-domain">
+<h1>gpp_domain<a class="headerlink" href="#gpp-domain" title="Permalink to this headline">¶</a></h1>
+<p><strong>Contents:</strong></p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><a class="reference internal" href="#gpp-domain-hpp">gpp_domain.hpp</a></li>
+</ol>
+</div></blockquote>
+<div class="section" id="gpp-domain-hpp">
+<h2>gpp_domain.hpp<a class="headerlink" href="#gpp-domain-hpp" title="Permalink to this headline">¶</a></h2>
+<p></p>
+<p><p>This file contains &#8220;DomainType&#8221; classes that specify different kinds of domains (e.g., TensorProduct, Simplex).  These are
+currently used to describe domain limits for optimizers (defined in gpp_optimization, used by gpp_math, gpp_model_selection).</p>
+<p>Currently, we only support domains with planar (linear) boundaries.</p>
+<p>Each domain provides functions to describe the set of boundary planes, check whether a point is inside/outside, generate
+random points inside, and limit updates (from optimizers) so that a path stays inside the domain.</p>
+<p>See gpp_geometry.hpp for how to specify a plane.</p>
+ </p>
+<p><p id="project0namespaceoptimal__learning"><em>namespace</em> <strong>optimal_learning</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+<em>Enums</em><blockquote>
+<div><p><span class="target" id="project0namespaceoptimal__learning_1aaab94bf682a813bcaa6bf84904e2aeb1"></span><strong>DomainTypes enum</strong></p>
+<blockquote>
+<div><p></p>
+<p><p>Enumerating domains for convenience. Useful for selecting which tests to run and also
+used by the Python interface to communicate domain type to C++.</p>
+ </p>
+<p><em>Values:</em></p>
+<ul class="breatheenumvalues">
+<li><tt class="first docutils literal"><span class="pre">kTensorProduct</span></tt><tt class="docutils literal"> <span class="pre">=</span> <span class="pre">=</span> <span class="pre">0</span></tt> - </li>
+<li><tt class="first docutils literal"><span class="pre">kSimplex</span></tt><tt class="docutils literal"> <span class="pre">=</span> <span class="pre">=</span> <span class="pre">1</span></tt> - </li>
+</ul>
+</div></blockquote>
+</div></blockquote>
+<p><p id="project0classoptimal__learning_1_1_tensor_product_domain"><em>class</em> <strong>TensorProductDomain</strong></p>
+<blockquote>
+<div><p></p>
+<p><p>Domain type for a tensor product domain.</p>
+<p>A d-dimensional tensor product domain is <tt class="docutils literal"><span class="pre">D</span> <span class="pre">=</span> <span class="pre">[x_0_{min},</span> <span class="pre">x_0_{max}]</span> <span class="pre">X</span> <span class="pre">[x_1_{min},</span> <span class="pre">x_1_{max}]</span> <span class="pre">X</span> <span class="pre">...</span> <span class="pre">X</span> <span class="pre">[x_d_{min},</span> <span class="pre">x_d_{max}]</span></tt></p>
+ </p>
+<em>Public Functions</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_tensor_product_domain_1a184fca10f7f4317ea27344c926519a8d"></span><div class="line-block">
+<div class="line"> <strong>TensorProductDomain</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_tensor_product_domain_1ae9b0997723d89bed042d9338bbeeb6bc"></span><div class="line-block">
+<div class="line"> <strong>TensorProductDomain</strong>(<a class="reference internal" href="gpp_geometry.html#project0structoptimal__learning_1_1_closed_interval"><em>ClosedInterval</em></a>  const *restrict domain, int dim_in)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Constructs a TensorProductDomain.</p>
+<p>INPUTS:
+domain[dim]: array of ClosedInterval specifying the boundaries of a dim-dimensional tensor-product domain.
+dim_in: number of spatial dimensions</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_tensor_product_domain_1aeb91f69de83514c7c4df8a93a4e29fe3"></span><div class="line-block">
+<div class="line">int <strong>dim</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_tensor_product_domain_1ae9fb5627bd5fd6421cc9596d1f46467f"></span><div class="line-block">
+<div class="line">void <strong>SetDomain</strong>(<a class="reference internal" href="gpp_geometry.html#project0structoptimal__learning_1_1_closed_interval"><em>ClosedInterval</em></a>  const *restrict domain)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Explicitly set the domain boundaries. Assumes specified domain is non-empty.</p>
+<p>INPUTS:
+domain[dim]: array of ClosedInterval specifying the boundaries of a dim-dimensional tensor-product domain.</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_tensor_product_domain_1af5735ab89504aacd15344d8bde5f129d"></span><div class="line-block">
+<div class="line">int <strong>GetMaxNumberOfBoundaryPlanes</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Maximum number of planes that define the boundary of this domain.
+Used for testing.</p>
+<p>This result is exact.</p>
+<p>RETURNS:
+max number of planes defining the boundary of this domain</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_tensor_product_domain_1a3293a05c7ccf894be2bb32c6c8379133"></span><div class="line-block">
+<div class="line">void <strong>GetBoundaryPlanes</strong>(<a class="reference internal" href="gpp_geometry.html#project0structoptimal__learning_1_1_plane"><em>Plane</em></a>  *restrict planes)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Fills an input array with all bounding planes of this domain.
+See struct Plane in gpp_geometry.hpp for how to specify a plane.
+Used for testing.</p>
+<p>Let max_num_bound = GetMaxNumberOfBoundaryPlanes()
+INPUTS:
+planes[max_num_bound]: properly allocated space: max_num_bound Plane objects in dim spatial dimensions
+OUTPUTS:
+planes[max_num_bound]: array of planes of this domain</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_tensor_product_domain_1a136f4b59d5fe705e7862ebc1c50c2b14"></span><div class="line-block">
+<div class="line">bool <strong>CheckPointInside</strong>(double const *restrict point)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Check if a point is inside the domain/on its boundary or outside.</p>
+<p>INPUTS:
+point[<a href="#id1"><span class="problematic" id="id2">dim_</span></a>]: point to check
+RETURNS:
+true if point is inside the domain or on its boundary, false otherwise</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_tensor_product_domain_1a6d15ffaaeb66856713b688519daf12a4"></span><div class="line-block">
+<div class="line">bool <strong>GeneratePointInDomain</strong>(<a class="reference internal" href="gpp_random.html#project0structoptimal__learning_1_1_uniform_random_generator"><em>UniformRandomGenerator</em></a>  * uniform_generator, double *restrict random_point)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Generates &#8220;point&#8221; such that CheckPointInside(point) returns true.</p>
+<p>INPUTS:
+uniform_generator[1]: a UniformRandomGenerator object providing the random engine for uniform random numbers
+random_point[<a href="#id3"><span class="problematic" id="id4">dim_</span></a>]: properly sized array
+OUTPUTS:
+uniform_generator[1]: UniformRandomGenerator object will have its state changed due to random draws
+random_point[<a href="#id5"><span class="problematic" id="id6">dim_</span></a>]: point with coordinates inside the domain (left in invalid state if fcn returns false)
+RETURNS:
+true if point generation succeeded</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_tensor_product_domain_1a81ac402428fd923b14f38f0a6193831e"></span><div class="line-block">
+<div class="line">int <strong>GenerateUniformPointsInDomain</strong>(int num_points, <a class="reference internal" href="gpp_random.html#project0structoptimal__learning_1_1_uniform_random_generator"><em>UniformRandomGenerator</em></a>  * uniform_generator, double *restrict random_points)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Generates num_points points in the domain (i.e., such that CheckPointInside(point) returns true).  The points
+will be uniformly distributed.</p>
+<p>INPUTS:
+num_points: number of random points to generate
+uniform_generator[1]: a UniformRandomGenerator object providing the random engine for uniform random numbers
+random_points[<a href="#id7"><span class="problematic" id="id8">dim_</span></a>]: properly sized array
+OUTPUTS:
+uniform_generator[1]: UniformRandomGenerator object will have its state changed due to random draws
+random_points[<a href="#id9"><span class="problematic" id="id10">dim_</span></a>][num_points]: point with coordinates inside the domain
+RETURNS:
+number of points generated (always num_points; ok to not use this result)</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_tensor_product_domain_1a1c9140e57d6307685ebb71c86bce5ae0"></span><div class="line-block">
+<div class="line">void <strong>LimitUpdate</strong>(double max_relative_change, double const *restrict current_point, double *restrict update_vector)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><dl class="docutils">
+<dt>Changes update_vector so that:</dt>
+<dd><tt class="docutils literal"><span class="pre">point_new</span> <span class="pre">=</span> <span class="pre">point</span> <span class="pre">+</span> <span class="pre">update_vector</span></tt></dd>
+</dl>
+<p>has coordinates such that CheckPointInside(point_new) returns true.</p>
+<p>update_vector is UNMODIFIED if point_new is already inside the domain.</p>
+<p>Note: we modify update_vector (instead of returning point_new) so that further update
+limiting/testing may be performed.</p>
+<p>INPUTS:
+max_relative_change: max change allowed per update (as a relative fraction of current distance to boundary)
+current_point[<a href="#id11"><span class="problematic" id="id12">dim_</span></a>]: starting point
+update_vector[<a href="#id13"><span class="problematic" id="id14">dim_</span></a>]: proposed update
+OUTPUTS:
+update_vector[<a href="#id15"><span class="problematic" id="id16">dim_</span></a>]: modified update so that the final point remains inside the domain</p>
+ </p>
+</div></blockquote>
+</div></blockquote>
+<em>Private Members</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_tensor_product_domain_1aebf0b7c7c0dec6bec5aaecfba54e3ed4"></span>int <strong>dim_</strong></p>
+<blockquote>
+<div><p>the number of spatial dimensions of this domain </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_tensor_product_domain_1a103b536392402ed27914e7182fd51c18"></span>std::vector&lt;  <a class="reference internal" href="gpp_geometry.html#project0structoptimal__learning_1_1_closed_interval"><em>ClosedInterval</em></a>  &gt; <strong>domain_</strong></p>
+<blockquote>
+<div><p>the list of <a class="reference internal" href="gpp_geometry.html#project0structoptimal__learning_1_1_closed_interval"><em>ClosedInterval</em></a> that define the boundaries of this tensor product domain </p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Private Static Attributes</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_tensor_product_domain_1ad151aeafe9473a8f7729d19866991acf"></span>constexpr double <strong>kInvalidStepScaleFactor</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</p>
+<p><p id="project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain"><em>class</em> <strong>SimplexIntersectTensorProductDomain</strong></p>
+<blockquote>
+<div><p></p>
+<p><p>Domain class for the intersection of the unit simplex with an arbitrary tensor product domain.  To that end,
+this object has a TensorProductDomain object as a data member and uses its functions when possible.</p>
+<p>See TensorProductDomain for what that means.
+The unit d-simplex is defined as the set of <tt class="docutils literal"><span class="pre">x_i</span></tt> such that:
+1) <tt class="docutils literal"><span class="pre">x_i</span> <span class="pre">&gt;=</span> <span class="pre">0</span> <span class="pre">\forall</span> <span class="pre">i</span>&nbsp; <span class="pre">(i</span> <span class="pre">ranging</span> <span class="pre">over</span> <span class="pre">dimension)</span></tt>
+2) <tt class="docutils literal"><span class="pre">\sum_i</span> <span class="pre">x_i</span> <span class="pre">&lt;=</span> <span class="pre">1</span></tt>
+(Implying that <tt class="docutils literal"><span class="pre">x_i</span> <span class="pre">&lt;=</span> <span class="pre">1</span> <span class="pre">\forall</span> <span class="pre">i</span></tt>)</p>
+<p>ASSUMPTION: most of the volume of the tensor product region lies inside the simplex region.</p>
+ </p>
+<em>Public Functions</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain_1a5c54bdaaf7c14f2813d46ede90034624"></span><div class="line-block">
+<div class="line"> <strong>SimplexIntersectTensorProductDomain</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain_1a31237c843950d0072d869206b2f5ca35"></span><div class="line-block">
+<div class="line"> <strong>SimplexIntersectTensorProductDomain</strong>(<a class="reference internal" href="gpp_geometry.html#project0structoptimal__learning_1_1_closed_interval"><em>ClosedInterval</em></a>  const *restrict domain, int dim_in)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Constructs a SimplexIntersectTensorProductDomain.  The bounds of the tensor product region are specified through
+the &#8220;domain&#8221; input, just as with TensorProductDomain.</p>
+<p>INPUTS:
+domain[dim]: array of ClosedInterval specifying the boundaries of a dim-dimensional tensor-product domain.
+dim_in: number of spatial dimensions</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain_1acbbbb145e0fcb38aed32421f8a8a040f"></span><div class="line-block">
+<div class="line">int <strong>dim</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain_1add3942fe923ab2bfa0096cd4b0eb4592"></span><div class="line-block">
+<div class="line">int <strong>GetMaxNumberOfBoundaryPlanes</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Maximum number of planes that define the boundary of this domain.
+Used for testing.</p>
+<p>This result is NOT exact.</p>
+<p>RETURNS:
+max number of planes defining the boundary of this domain</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain_1a5de47fa5d56e1a0bc00a246d75e75371"></span><div class="line-block">
+<div class="line">void <strong>GetBoundaryPlanes</strong>(<a class="reference internal" href="gpp_geometry.html#project0structoptimal__learning_1_1_plane"><em>Plane</em></a>  *restrict planes)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Fills an input array with all bounding planes of this domain.
+See struct Plane in gpp_geometry.hpp for how to specify a plane.
+Used for testing.</p>
+<p>Let max_num_bound = GetMaxNumberOfBoundaryPlanes()
+INPUTS:
+planes[max_num_bound]: properly allocated space: max_num_bound Plane objects in dim spatial dimensions
+OUTPUTS:
+planes[max_num_bound]: array of planes of this domain</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain_1a520917fdcc8b2278c90111b33b94c4f8"></span><div class="line-block">
+<div class="line">bool <strong>CheckPointInside</strong>(double const *restrict point)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Check if a point is inside the domain/on its domain or outside</p>
+<p>INPUTS:
+point[<a href="#id17"><span class="problematic" id="id18">dim_</span></a>]: point to check
+RETURNS:
+true if point is inside the domain or on its boundary, false otherwise</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain_1ac0aa2546efb658e18a78674c05701f64"></span><div class="line-block">
+<div class="line">bool <strong>GeneratePointInDomain</strong>(<a class="reference internal" href="gpp_random.html#project0structoptimal__learning_1_1_uniform_random_generator"><em>UniformRandomGenerator</em></a>  * uniform_generator, double *restrict random_point)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Generates &#8220;point&#8221; such that CheckPointInside(point) returns true.</p>
+<p>INPUTS:
+uniform_generator[1]: a UniformRandomGenerator object providing the random engine for uniform random numbers
+random_point[<a href="#id19"><span class="problematic" id="id20">dim_</span></a>]: properly sized array
+OUTPUTS:
+uniform_generator[1]: UniformRandomGenerator object will have its state changed due to random draws
+random_point[<a href="#id21"><span class="problematic" id="id22">dim_</span></a>]: point with coordinates inside the domain (left in invalid state if fcn returns false)
+RETURNS:
+true if point generation succeeded</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain_1a5d541da3e23d425fee508e556f8dfde6"></span><div class="line-block">
+<div class="line">int <strong>GenerateUniformPointsInDomain</strong>(int num_points, <a class="reference internal" href="gpp_random.html#project0structoptimal__learning_1_1_uniform_random_generator"><em>UniformRandomGenerator</em></a>  * uniform_generator, double *restrict random_points)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Generates AT MOST num_points points in the domain (i.e., such that CheckPointInside(point) returns true).  The points
+will be uniformly distributed.</p>
+<p>Uses rejection sampling so we are not guaranteed to generate num_points samples.</p>
+<p>INPUTS:
+num_points: number of random points to generate
+uniform_generator[1]: a UniformRandomGenerator object providing the random engine for uniform random numbers
+random_points[<a href="#id23"><span class="problematic" id="id24">dim_</span></a>]: properly sized array
+OUTPUTS:
+uniform_generator[1]: UniformRandomGenerator object will have its state changed due to random draws
+random_points[<a href="#id25"><span class="problematic" id="id26">dim_</span></a>][num_points]: point with coordinates inside the domain
+RETURNS:
+number of points actually generated</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain_1aa6a464a992d7c4aabfdd07fdc9a79300"></span><div class="line-block">
+<div class="line">void <strong>LimitUpdate</strong>(double max_relative_change, double const *restrict current_point, double *restrict update_vector)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><dl class="docutils">
+<dt>Changes update_vector so that:</dt>
+<dd><tt class="docutils literal"><span class="pre">point_new</span> <span class="pre">=</span> <span class="pre">point</span> <span class="pre">+</span> <span class="pre">update_vector</span></tt></dd>
+</dl>
+<p>has coordinates such that CheckPointInside(point_new) returns true.</p>
+<p>update_vector is UNMODIFIED if point_new is already inside the domain.</p>
+<p>Note: we modify update_vector (instead of returning point_new) so that further update
+limiting/testing may be performed.</p>
+<p>INPUTS:
+max_relative_change: max change allowed per update (as a relative fraction of current distance to boundary)
+current_point[<a href="#id27"><span class="problematic" id="id28">dim_</span></a>]: starting point
+update_vector[<a href="#id29"><span class="problematic" id="id30">dim_</span></a>]: proposed update
+OUTPUTS:
+update_vector[<a href="#id31"><span class="problematic" id="id32">dim_</span></a>]: modified update so that the final point remains inside the domain</p>
+ </p>
+</div></blockquote>
+</div></blockquote>
+<em>Private Members</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain_1a237a37b352d3e6c4f022a1170ed81fa8"></span>int <strong>dim_</strong></p>
+<blockquote>
+<div><p>the number of spatial dimensions of this domain </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain_1aec22b3824a3faaf517c06c6423f026c1"></span><a class="reference internal" href="#project0classoptimal__learning_1_1_tensor_product_domain"><em>TensorProductDomain</em></a> <strong>tensor_product_domain_</strong></p>
+<blockquote>
+<div><p>the tensor product domain to intersect with </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain_1aa0ae8ab25a3baa08691fceef865ab16b"></span><a class="reference internal" href="gpp_geometry.html#project0structoptimal__learning_1_1_plane"><em>Plane</em></a> <strong>simplex_plane_</strong></p>
+<blockquote>
+<div><p>the plane defining the simplex </p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Private Static Attributes</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain_1a8f4cb7108ee68bf86ff5fe1f7fa65674"></span>constexpr double <strong>kPointGenerationRatio</strong></p>
+<blockquote>
+<div><p><a class="reference internal" href="#project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain_1a5d541da3e23d425fee508e556f8dfde6"><em>GenerateUniformPointsInDomain()</em></a> is happy if ratio*requested_points number of points is generated. </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain_1a0621c1d1cb2e26c1e0a22112200ff68d"></span>constexpr double <strong>kValidPointRatioFloor</strong></p>
+<blockquote>
+<div><p>in <a class="reference internal" href="#project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain_1a5d541da3e23d425fee508e556f8dfde6"><em>GenerateUniformPointsInDomain()</em></a>, if the ratio of valid points is &gt; this, we retry requesting 1/ratio points. otherwise we retry with 5x the points (i.e., flooring ratio at 5) </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain_1a15c2f2f4a5d38dadd98662065a5da91d"></span>constexpr int <strong>kMaxPointRatioGrowth</strong></p>
+<blockquote>
+<div><p>1/kValidPointRatioFloor; the most we&#8217;ll increase the number of requested points on a retry </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain_1abd9869ad18f8f66cd1c36b0c5f24e40f"></span>constexpr double <strong>kInvalidStepScaleFactor</strong></p>
+<blockquote>
+<div><p>attempt to scale down the step-size (or distance to wall) by this factor when a domain-exiting (i.e., invalid) step is requested </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain_1a6036f749075cb1d03b7ef155cc4f3f1b"></span>constexpr double <strong>kRelativeChangeEpsilonTweak</strong></p>
+<blockquote>
+<div><p>small tweak to relative_change (to prevent max_relative_change == 1.0 exactly; see LimitUpdate comments) </p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</p>
+</div></blockquote>
+</p>
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="gpp_python_common.html" class="btn btn-neutral float-right" title="gpp_python_common"/>Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="gpp_math-inl.html" class="btn btn-neutral" title="gpp_math-inl"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

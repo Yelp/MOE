@@ -82,7 +82,7 @@ class InstallCppComponents(install):
     def run(self):
         """Run the install."""
         install.run(self)
-        
+
         # Sometimes we want to manually build the C++ (like in Docker)
         if os.environ.get('MOE_NO_BUILD_CPP', 'False') == 'True':
             return

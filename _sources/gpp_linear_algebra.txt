@@ -1,0 +1,20 @@
+gpp_linear_algebra
+=====
+
+**Contents:**
+
+    1. `gpp_linear_algebra.hpp`_
+    2. `gpp_linear_algebra.cpp`_
+
+
+gpp_linear_algebra.hpp
+------
+
+.. doxygenfile:: gpp_linear_algebra.hpp
+
+
+gpp_linear_algebra.cpp
+------
+
+.. doxygenfile:: gpp_linear_algebra.cpp
+

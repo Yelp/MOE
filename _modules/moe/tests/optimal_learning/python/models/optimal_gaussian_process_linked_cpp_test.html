@@ -1,0 +1,559 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>moe.tests.optimal_learning.python.models.optimal_gaussian_process_linked_cpp_test &mdash; MOE 0.1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../../../../_static/favicon.ico"/>
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../../../../_static/breathe.css" type="text/css" />
+  
+    <link rel="top" title="MOE 0.1.0 documentation" href="../../../../../../index.html"/>
+        <link rel="up" title="moe" href="../../../../../moe.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="../../../../../../index.html" class="fa fa-home"> MOE</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../moe.html">moe package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../moe.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../moe.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../moe.html#module-moe.resources">moe.resources module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../moe.html#module-moe">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../cpp_tree.html">C++ Files</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_optimization_test.html">gpp_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_domain_test.html">gpp_domain_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_random_test.html">gpp_random_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_exception.html">gpp_exception</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_geometry.html">gpp_geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_test_utils.html">gpp_test_utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_logging.html">gpp_logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_covariance.html">gpp_covariance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_math-inl.html">gpp_math-inl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_domain.html">gpp_domain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_python_common.html">gpp_python_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_hyperparameter_optimization_demo.html">gpp_hyperparameter_optimization_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_test_utils_test.html">gpp_test_utils_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_math_test.html">gpp_math_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_python_model_selection.html">gpp_python_model_selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_math.html">gpp_math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_python_test.html">gpp_python_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_random.html">gpp_random</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_geometry_test.html">gpp_geometry_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_linear_algebra.html">gpp_linear_algebra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_core.html">gpp_core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_covariance_test.html">gpp_covariance_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_python.html">gpp_python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_model_selection_and_hyperparameter_optimization.html">gpp_model_selection_and_hyperparameter_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_optimization_parameters.html">gpp_optimization_parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_common.html">gpp_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_model_selection_and_hyperparameter_optimization_test.html">gpp_model_selection_and_hyperparameter_optimization_test</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../../../../index.html">MOE</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../../../../index.html">Module code</a> &raquo;</li>
+      
+          <li><a href="../../../../../moe.html">moe</a> &raquo;</li>
+      
+    <li>moe.tests.optimal_learning.python.models.optimal_gaussian_process_linked_cpp_test</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <h1>Source code for moe.tests.optimal_learning.python.models.optimal_gaussian_process_linked_cpp_test</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">testify</span> <span class="kn">as</span> <span class="nn">T</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">random</span>
+
+<span class="kn">from</span> <span class="nn">moe.tests.optimal_learning.python.gaussian_process_test_case</span> <span class="kn">import</span> <span class="n">GaussianProcessTestCase</span>
+<span class="kn">import</span> <span class="nn">moe.build.GPP</span> <span class="kn">as</span> <span class="nn">C_GP</span>
+<span class="kn">import</span> <span class="nn">moe.optimal_learning.python.lib.math</span>
+<span class="kn">from</span> <span class="nn">moe.optimal_learning.python.data_containers</span> <span class="kn">import</span> <span class="n">SamplePoint</span>
+
+
+<div class="viewcode-block" id="CppUnitTestWrapperTest"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.models.html#moe.tests.optimal_learning.python.models.optimal_gaussian_process_linked_cpp_test.CppUnitTestWrapperTest">[docs]</a><span class="k">class</span> <span class="nc">CppUnitTestWrapperTest</span><span class="p">(</span><span class="n">GaussianProcessTestCase</span><span class="p">):</span>
+    <span class="c"># wrapper to invoke call a C++ function that runs unit tests written in C++</span>
+    <span class="c"># this is a hack and will be changed pending deciding on a permanent unit test framework</span>
+    <span class="c"># for C++ (ticket 40203)</span>
+
+<div class="viewcode-block" id="CppUnitTestWrapperTest.test_run_cpp_unit_tests"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.models.html#moe.tests.optimal_learning.python.models.optimal_gaussian_process_linked_cpp_test.CppUnitTestWrapperTest.test_run_cpp_unit_tests">[docs]</a>    <span class="k">def</span> <span class="nf">test_run_cpp_unit_tests</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">number_of_cpp_test_errors</span> <span class="o">=</span> <span class="n">C_GP</span><span class="o">.</span><span class="n">run_cpp_tests</span><span class="p">()</span>
+        <span class="n">T</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span><span class="n">number_of_cpp_test_errors</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</div></div>
+<div class="viewcode-block" id="GaussianProcessNumericalAnalysisTestCase"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.models.html#moe.tests.optimal_learning.python.models.optimal_gaussian_process_linked_cpp_test.GaussianProcessNumericalAnalysisTestCase">[docs]</a><span class="k">class</span> <span class="nc">GaussianProcessNumericalAnalysisTestCase</span><span class="p">(</span><span class="n">GaussianProcessTestCase</span><span class="p">):</span>
+    <span class="n">tol</span> <span class="o">=</span> <span class="mf">1e-12</span> <span class="c"># TODO eliu look into this ticket #43006</span>
+    <span class="n">rel_tol</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span><span class="o">.</span><span class="n">tiny</span> <span class="c"># 1e-308</span>
+
+    <span class="k">def</span> <span class="nf">_assert_relative_diff_lte_tol</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val_one</span><span class="p">,</span> <span class="n">val_two</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">val_one</span> <span class="o">==</span> <span class="n">val_two</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">elif</span> <span class="n">val_one</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">rel_tol</span> <span class="ow">and</span> <span class="n">val_two</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">rel_tol</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">True</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assert_relatively_equal</span><span class="p">(</span>
+                <span class="n">val_one</span><span class="p">,</span>
+                <span class="n">val_two</span><span class="p">,</span>
+                <span class="n">tol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tol</span>
+                <span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Get1DAnalyticEIAndGradTest"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.models.html#moe.tests.optimal_learning.python.models.optimal_gaussian_process_linked_cpp_test.Get1DAnalyticEIAndGradTest">[docs]</a><span class="k">class</span> <span class="nc">Get1DAnalyticEIAndGradTest</span><span class="p">(</span><span class="n">GaussianProcessNumericalAnalysisTestCase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Tests the python vs cpp implementations of .get_mean_and_var_of_points</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">tol</span> <span class="o">=</span> <span class="mf">1e-10</span> <span class="c"># TODO eliu look into this ticket #43006</span>
+
+<div class="viewcode-block" id="Get1DAnalyticEIAndGradTest.test_random_process_returns_same_1D_EI_and_grad"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.models.html#moe.tests.optimal_learning.python.models.optimal_gaussian_process_linked_cpp_test.Get1DAnalyticEIAndGradTest.test_random_process_returns_same_1D_EI_and_grad">[docs]</a>    <span class="k">def</span> <span class="nf">test_random_process_returns_same_1D_EI_and_grad</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Test that that cpp and python return similar results for</span>
+<span class="sd">        EI and grad_EI in the analytic setting for random points</span>
+<span class="sd">        drawn from a random prior</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">test_cases</span> <span class="o">=</span> <span class="p">[</span> <span class="c"># [num_points_to_test, length_scale, [domain]]</span>
+                <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="p">[[</span><span class="o">-</span><span class="mf">5.0</span><span class="p">,</span> <span class="mf">15.0</span><span class="p">]]],</span>
+                <span class="p">[</span><span class="mi">13</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="p">[[</span><span class="o">-</span><span class="mf">10.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">10.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">10.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">]]],</span>
+                <span class="p">[</span><span class="mi">11</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="p">[[</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]]],</span>
+                <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="p">[[</span><span class="mf">50.0</span><span class="p">,</span> <span class="mf">55.0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">80.1</span><span class="p">,</span> <span class="o">-</span><span class="mf">76.4</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">15005.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">15000.0</span><span class="p">]]],</span>
+                <span class="p">]</span>
+
+        <span class="k">for</span> <span class="p">[</span><span class="n">num_points_in_sample</span><span class="p">,</span> <span class="n">length_scale</span><span class="p">,</span> <span class="n">domain</span><span class="p">]</span> <span class="ow">in</span> <span class="n">test_cases</span><span class="p">:</span>
+            <span class="n">covariance_of_process</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_default_covariance_of_process</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="p">[</span><span class="n">length_scale</span><span class="p">])</span>
+
+            <span class="c"># make the gaussian processes</span>
+            <span class="n">cpp_GP</span><span class="p">,</span> <span class="n">python_GP</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_random_processes_from_latin_hypercube</span><span class="p">(</span>
+                    <span class="n">domain</span><span class="p">,</span>
+                    <span class="n">num_points_in_sample</span><span class="p">,</span>
+                    <span class="n">covariance_of_process</span><span class="o">=</span><span class="n">covariance_of_process</span><span class="p">,</span>
+                    <span class="n">default_sample_variance</span><span class="o">=</span><span class="mf">0.0</span>
+                    <span class="p">)</span>
+
+            <span class="c"># select a stencil of num_points_to_test random latin hypercube points</span>
+            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+                <span class="n">points_to_sample</span> <span class="o">=</span> <span class="n">moe</span><span class="o">.</span><span class="n">optimal_learning</span><span class="o">.</span><span class="n">python</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">get_latin_hypercube_points</span><span class="p">(</span><span class="n">num_points_in_sample</span><span class="p">,</span> <span class="n">domain</span><span class="p">)</span>
+
+                <span class="n">EI_c</span> <span class="o">=</span> <span class="n">cpp_GP</span><span class="o">.</span><span class="n">get_1D_analytic_expected_improvement</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="n">EI_p</span> <span class="o">=</span> <span class="n">python_GP</span><span class="o">.</span><span class="n">get_1D_analytic_expected_improvement</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_assert_relative_diff_lte_tol</span><span class="p">(</span><span class="n">EI_p</span><span class="p">,</span> <span class="n">EI_c</span><span class="p">)</span>
+
+                <span class="n">grad_EI_c</span> <span class="o">=</span> <span class="n">cpp_GP</span><span class="o">.</span><span class="n">get_1D_analytic_grad_EI</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="n">grad_EI_p</span> <span class="o">=</span> <span class="n">python_GP</span><span class="o">.</span><span class="n">get_1D_analytic_grad_EI</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">domain</span><span class="p">)):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_assert_relative_diff_lte_tol</span><span class="p">(</span><span class="n">grad_EI_p</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">grad_EI_c</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+</div></div>
+<div class="viewcode-block" id="GetCholeskyDecompAndGradTest"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.models.html#moe.tests.optimal_learning.python.models.optimal_gaussian_process_linked_cpp_test.GetCholeskyDecompAndGradTest">[docs]</a><span class="k">class</span> <span class="nc">GetCholeskyDecompAndGradTest</span><span class="p">(</span><span class="n">GaussianProcessNumericalAnalysisTestCase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Tests the python vs cpp implementations of .get_mean_and_var_of_points</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">tol</span> <span class="o">=</span> <span class="mf">1e-10</span> <span class="c"># TODO eliu look into this ticket #43006</span>
+    <span class="n">rel_tol</span> <span class="o">=</span> <span class="mf">1e-16</span>
+
+    <span class="k">def</span> <span class="nf">_assert_var_and_grad_var_equal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">var_one</span><span class="p">,</span> <span class="n">grad_var_one</span><span class="p">,</span> <span class="n">var_two</span><span class="p">,</span> <span class="n">grad_var_two</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">point_on</span><span class="p">,</span> <span class="n">var_one_row</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">var_one</span><span class="p">):</span>
+            <span class="n">var_two_row</span> <span class="o">=</span> <span class="n">var_two</span><span class="p">[</span><span class="n">point_on</span><span class="p">][:]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">var_one_row</span><span class="p">)):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_assert_relative_diff_lte_tol</span><span class="p">(</span><span class="n">var_one_row</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">var_two_row</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+                <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">grad_var_one</span><span class="p">[</span><span class="n">point_on</span><span class="p">][</span><span class="n">i</span><span class="p">])):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_assert_relative_diff_lte_tol</span><span class="p">(</span><span class="n">grad_var_one</span><span class="p">[</span><span class="n">point_on</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="n">d</span><span class="p">],</span> <span class="n">grad_var_two</span><span class="p">[</span><span class="n">point_on</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="n">d</span><span class="p">])</span>
+
+<div class="viewcode-block" id="GetCholeskyDecompAndGradTest.test_random_process_returns_same_chol_var_and_grad_chol_var"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.models.html#moe.tests.optimal_learning.python.models.optimal_gaussian_process_linked_cpp_test.GetCholeskyDecompAndGradTest.test_random_process_returns_same_chol_var_and_grad_chol_var">[docs]</a>    <span class="k">def</span> <span class="nf">test_random_process_returns_same_chol_var_and_grad_chol_var</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Test that the python and cpp return similar values for</span>
+<span class="sd">        the cholesky decomp of the variance and the associated gradient</span>
+<span class="sd">        for random points drawn from a random process</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">test_cases</span> <span class="o">=</span> <span class="p">[</span> <span class="c"># [num_points_to_test, length_scale, [domain]]</span>
+                <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="p">[[</span><span class="o">-</span><span class="mf">5.0</span><span class="p">,</span> <span class="mf">15.0</span><span class="p">]]],</span>
+                <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="p">[[</span><span class="o">-</span><span class="mf">10.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">10.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">10.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">]]],</span>
+                <span class="p">[</span><span class="mi">9</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="p">[[</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]]],</span>
+                <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="p">[[</span><span class="mf">50.0</span><span class="p">,</span> <span class="mf">55.0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">80.1</span><span class="p">,</span> <span class="o">-</span><span class="mf">76.4</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">15005.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">15000.0</span><span class="p">]]],</span>
+                <span class="p">]</span>
+
+        <span class="k">for</span> <span class="p">[</span><span class="n">num_points_to_test</span><span class="p">,</span> <span class="n">num_points_in_sample</span><span class="p">,</span> <span class="n">length_scale</span><span class="p">,</span> <span class="n">domain</span><span class="p">]</span> <span class="ow">in</span> <span class="n">test_cases</span><span class="p">:</span>
+            <span class="n">covariance_of_process</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_default_covariance_of_process</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="p">[</span><span class="n">length_scale</span><span class="p">])</span>
+            <span class="n">cpp_GP</span><span class="p">,</span> <span class="n">python_GP</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_random_processes_from_latin_hypercube</span><span class="p">(</span>
+                    <span class="n">domain</span><span class="p">,</span>
+                    <span class="n">num_points_in_sample</span><span class="p">,</span>
+                    <span class="n">covariance_of_process</span><span class="o">=</span><span class="n">covariance_of_process</span><span class="p">,</span>
+                    <span class="n">default_sample_variance</span><span class="o">=</span><span class="mf">0.0</span>
+                    <span class="p">)</span>
+
+            <span class="c"># select 4 points to perturb from our stencil as points to sample</span>
+            <span class="n">points_to_sample</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">points_sampled</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">point</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">cpp_GP</span><span class="o">.</span><span class="n">points_sampled</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">point_on</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">num_points_in_sample</span><span class="p">),</span> <span class="n">num_points_to_test</span><span class="p">)):</span>
+                <span class="n">points_to_sample</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="n">points_sampled</span><span class="p">[</span><span class="n">point_on</span><span class="p">]</span> <span class="o">+</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span>
+                            <span class="o">-</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">length_scale</span><span class="p">,</span> <span class="c"># min val</span>
+                            <span class="n">length_scale</span><span class="p">,</span> <span class="c"># max val</span>
+                            <span class="n">size</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">domain</span><span class="p">)</span>
+                            <span class="p">)</span>
+                        <span class="p">)</span>
+            <span class="n">points_to_sample</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">)</span>
+
+            <span class="c"># get chol_var and grad_chol_var via cpp and python for each potential point_to_sample</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">)):</span>
+                <span class="n">chol_var_c</span><span class="p">,</span> <span class="n">grad_chol_var_c</span> <span class="o">=</span> <span class="n">cpp_GP</span><span class="o">.</span><span class="n">cholesky_decomp_and_grad</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">,</span> <span class="n">var_of_grad</span><span class="o">=</span><span class="n">i</span><span class="p">)</span>
+                <span class="n">chol_var_p</span><span class="p">,</span> <span class="n">grad_chol_var_p</span> <span class="o">=</span> <span class="n">python_GP</span><span class="o">.</span><span class="n">cholesky_decomp_and_grad</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">,</span> <span class="n">var_of_grad</span><span class="o">=</span><span class="n">i</span><span class="p">)</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">_assert_var_and_grad_var_equal</span><span class="p">(</span><span class="n">chol_var_p</span><span class="p">,</span> <span class="n">grad_chol_var_p</span><span class="p">,</span> <span class="n">chol_var_c</span><span class="p">,</span> <span class="n">grad_chol_var_c</span><span class="p">)</span>
+</div></div>
+<div class="viewcode-block" id="GetMeanAndVarOfPointsTest"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.models.html#moe.tests.optimal_learning.python.models.optimal_gaussian_process_linked_cpp_test.GetMeanAndVarOfPointsTest">[docs]</a><span class="k">class</span> <span class="nc">GetMeanAndVarOfPointsTest</span><span class="p">(</span><span class="n">GaussianProcessNumericalAnalysisTestCase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Tests the python vs cpp implementations of .get_mean_and_var_of_points</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">tol</span> <span class="o">=</span> <span class="mf">1e-11</span> <span class="c"># TODO eliu look into this ticket #43006</span>
+
+    <span class="k">def</span> <span class="nf">_assert_mean_and_var_equal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mean_one</span><span class="p">,</span> <span class="n">var_one</span><span class="p">,</span> <span class="n">mean_two</span><span class="p">,</span> <span class="n">var_two</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">point_on</span><span class="p">,</span> <span class="n">var_one_row</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">var_one</span><span class="p">):</span>
+            <span class="n">var_two_row</span> <span class="o">=</span> <span class="n">var_two</span><span class="p">[</span><span class="n">point_on</span><span class="p">][:]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_assert_relative_diff_lte_tol</span><span class="p">(</span><span class="n">mean_one</span><span class="p">[</span><span class="n">point_on</span><span class="p">],</span> <span class="n">mean_two</span><span class="p">[</span><span class="n">point_on</span><span class="p">])</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">var_one_row</span><span class="p">)):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_assert_relative_diff_lte_tol</span><span class="p">(</span><span class="n">var_one_row</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">var_two_row</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+<div class="viewcode-block" id="GetMeanAndVarOfPointsTest.test_random_process_returns_same_mu_and_var"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.models.html#moe.tests.optimal_learning.python.models.optimal_gaussian_process_linked_cpp_test.GetMeanAndVarOfPointsTest.test_random_process_returns_same_mu_and_var">[docs]</a>    <span class="k">def</span> <span class="nf">test_random_process_returns_same_mu_and_var</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Test that the python and cpp return similar values for</span>
+<span class="sd">        the mean and variance of a process</span>
+<span class="sd">        for random points drawn from a random process</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">test_cases</span> <span class="o">=</span> <span class="p">[</span> <span class="c"># [num_points_to_test, length_scale, [domain]]</span>
+                <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="p">[[</span><span class="o">-</span><span class="mf">5.0</span><span class="p">,</span> <span class="mf">15.0</span><span class="p">]]],</span>
+                <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="p">[[</span><span class="o">-</span><span class="mf">10.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">10.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">10.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">]]],</span>
+                <span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="p">[[</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]]],</span>
+                <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="p">[[</span><span class="mf">50.0</span><span class="p">,</span> <span class="mf">51.0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">80.1</span><span class="p">,</span> <span class="o">-</span><span class="mf">76.4</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">15000.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">15000.0</span><span class="p">]]],</span>
+                <span class="p">]</span>
+
+        <span class="k">for</span> <span class="p">[</span><span class="n">num_points_in_sample</span><span class="p">,</span> <span class="n">length_scale</span><span class="p">,</span> <span class="n">domain</span><span class="p">]</span> <span class="ow">in</span> <span class="n">test_cases</span><span class="p">:</span>
+            <span class="n">covariance_of_process</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_default_covariance_of_process</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="p">[</span><span class="n">length_scale</span><span class="p">])</span>
+            <span class="n">cpp_GP</span><span class="p">,</span> <span class="n">python_GP</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_random_processes_from_latin_hypercube</span><span class="p">(</span>
+                    <span class="n">domain</span><span class="p">,</span>
+                    <span class="n">num_points_in_sample</span><span class="p">,</span>
+                    <span class="n">covariance_of_process</span><span class="o">=</span><span class="n">covariance_of_process</span><span class="p">,</span>
+                    <span class="n">default_sample_variance</span><span class="o">=</span><span class="mf">0.0</span>
+                    <span class="p">)</span>
+
+            <span class="n">points_to_sample</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">points_sampled</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">point</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">cpp_GP</span><span class="o">.</span><span class="n">points_sampled</span><span class="p">]</span>
+
+            <span class="c"># Sample stencil</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_points_in_sample</span><span class="p">):</span>
+                <span class="n">points_to_sample</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">points_sampled</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span>
+                        <span class="o">-</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">length_scale</span><span class="p">,</span> <span class="c"># min val</span>
+                        <span class="n">length_scale</span><span class="p">,</span> <span class="c"># max val</span>
+                        <span class="n">size</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">domain</span><span class="p">)</span>
+                        <span class="p">))</span>
+
+            <span class="c"># get mean and variance via cpp and python</span>
+            <span class="n">mu_c</span><span class="p">,</span> <span class="n">var_c</span> <span class="o">=</span> <span class="n">cpp_GP</span><span class="o">.</span><span class="n">get_mean_and_var_of_points</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">)</span>
+            <span class="n">mu_p</span><span class="p">,</span> <span class="n">var_p</span> <span class="o">=</span> <span class="n">python_GP</span><span class="o">.</span><span class="n">get_mean_and_var_of_points</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_assert_mean_and_var_equal</span><span class="p">(</span><span class="n">mu_p</span><span class="p">,</span> <span class="n">var_p</span><span class="p">,</span> <span class="n">mu_c</span><span class="p">,</span> <span class="n">var_c</span><span class="p">)</span>
+</div></div>
+<div class="viewcode-block" id="GetGradMuTest"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.models.html#moe.tests.optimal_learning.python.models.optimal_gaussian_process_linked_cpp_test.GetGradMuTest">[docs]</a><span class="k">class</span> <span class="nc">GetGradMuTest</span><span class="p">(</span><span class="n">GaussianProcessNumericalAnalysisTestCase</span><span class="p">):</span>
+
+<div class="viewcode-block" id="GetGradMuTest.test_random_process_returns_same_grad_mu"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.models.html#moe.tests.optimal_learning.python.models.optimal_gaussian_process_linked_cpp_test.GetGradMuTest.test_random_process_returns_same_grad_mu">[docs]</a>    <span class="k">def</span> <span class="nf">test_random_process_returns_same_grad_mu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Test that the python and cpp return similar values for</span>
+<span class="sd">        the gradient of the mean</span>
+<span class="sd">        for random points drawn from a random process</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">test_cases</span> <span class="o">=</span> <span class="p">[</span> <span class="c"># [num_points_to_test, length_scale, [domain]]</span>
+                <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="p">[[</span><span class="o">-</span><span class="mf">5.0</span><span class="p">,</span> <span class="mf">15.0</span><span class="p">]]],</span>
+                <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="p">[[</span><span class="o">-</span><span class="mf">10.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">10.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">10.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">]]],</span>
+                <span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="p">[[</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]]],</span>
+                <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="p">[[</span><span class="mf">50.0</span><span class="p">,</span> <span class="mf">51.0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">80.1</span><span class="p">,</span> <span class="o">-</span><span class="mf">76.4</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">15000.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">15000.0</span><span class="p">]]],</span>
+                <span class="p">]</span>
+
+        <span class="k">for</span> <span class="p">[</span><span class="n">num_points_in_sample</span><span class="p">,</span> <span class="n">length_scale</span><span class="p">,</span> <span class="n">domain</span><span class="p">]</span> <span class="ow">in</span> <span class="n">test_cases</span><span class="p">:</span>
+            <span class="n">covariance_of_process</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_default_covariance_of_process</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="p">[</span><span class="n">length_scale</span><span class="p">])</span>
+            <span class="n">cpp_GP</span><span class="p">,</span> <span class="n">python_GP</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_random_processes_from_latin_hypercube</span><span class="p">(</span>
+                    <span class="n">domain</span><span class="p">,</span>
+                    <span class="n">num_points_in_sample</span><span class="p">,</span>
+                    <span class="n">covariance_of_process</span><span class="o">=</span><span class="n">covariance_of_process</span><span class="p">,</span>
+                    <span class="n">default_sample_variance</span><span class="o">=</span><span class="mf">0.0</span>
+                    <span class="p">)</span>
+
+            <span class="n">points_to_sample</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">points_sampled</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">point</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">cpp_GP</span><span class="o">.</span><span class="n">points_sampled</span><span class="p">]</span>
+
+            <span class="c"># Sample stencil</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_points_in_sample</span><span class="p">):</span>
+                <span class="n">points_to_sample</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">points_sampled</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span>
+                        <span class="o">-</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">length_scale</span><span class="p">,</span> <span class="c"># min val</span>
+                        <span class="n">length_scale</span><span class="p">,</span> <span class="c"># max val</span>
+                        <span class="n">size</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">domain</span><span class="p">)</span>
+                        <span class="p">))</span>
+
+            <span class="c"># get grad_mu via cpp and python</span>
+            <span class="n">grad_mu_c</span> <span class="o">=</span> <span class="n">cpp_GP</span><span class="o">.</span><span class="n">get_grad_mu</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">)</span>
+            <span class="n">grad_mu_p</span> <span class="o">=</span> <span class="n">python_GP</span><span class="o">.</span><span class="n">get_grad_mu</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">point_on</span><span class="p">,</span> <span class="n">point_grad_mu_p</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">grad_mu_p</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">domain</span><span class="p">)):</span>
+                    <span class="n">py_ans</span> <span class="o">=</span> <span class="n">point_grad_mu_p</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                    <span class="n">cpp_ans</span> <span class="o">=</span> <span class="n">grad_mu_c</span><span class="p">[</span><span class="n">point_on</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_assert_relative_diff_lte_tol</span><span class="p">(</span><span class="n">py_ans</span><span class="p">,</span> <span class="n">cpp_ans</span><span class="p">)</span>
+</div></div>
+<div class="viewcode-block" id="GetMultistartBestTest"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.models.html#moe.tests.optimal_learning.python.models.optimal_gaussian_process_linked_cpp_test.GetMultistartBestTest">[docs]</a><span class="k">class</span> <span class="nc">GetMultistartBestTest</span><span class="p">(</span><span class="n">GaussianProcessTestCase</span><span class="p">):</span>
+
+<div class="viewcode-block" id="GetMultistartBestTest.test_one_dimensional_get_multistart_best_from_prior_within_domain"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.models.html#moe.tests.optimal_learning.python.models.optimal_gaussian_process_linked_cpp_test.GetMultistartBestTest.test_one_dimensional_get_multistart_best_from_prior_within_domain">[docs]</a>    <span class="k">def</span> <span class="nf">test_one_dimensional_get_multistart_best_from_prior_within_domain</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Test that get_multistart_best returns a point within the domain</span>
+<span class="sd">        for various 1D functions drawn from the prior over different domains</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">domains_to_test</span> <span class="o">=</span> <span class="p">[[</span><span class="o">-</span><span class="mf">10.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">50.0</span><span class="p">,</span> <span class="mf">51.0</span><span class="p">]]</span>
+
+        <span class="k">for</span> <span class="n">domain_min</span><span class="p">,</span> <span class="n">domain_max</span> <span class="ow">in</span> <span class="n">domains_to_test</span><span class="p">:</span>
+            <span class="n">domain</span> <span class="o">=</span> <span class="p">[[</span><span class="n">domain_min</span><span class="p">,</span> <span class="n">domain_max</span><span class="p">]]</span>
+            <span class="n">GP</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_default_gaussian_process</span><span class="p">(</span>
+                    <span class="n">domain</span><span class="o">=</span><span class="n">domain</span><span class="p">,</span>
+                    <span class="n">default_sample_variance</span><span class="o">=</span><span class="mf">0.0</span>
+                    <span class="p">)</span>
+
+            <span class="c"># The edges and the middle</span>
+            <span class="c"># shift stencil off of domain boundaries to prevent singular matrices</span>
+            <span class="n">stencil_points_to_sample</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">domain_min</span> <span class="o">+</span> <span class="mf">1.e-4</span><span class="p">]),</span>
+                    <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([(</span><span class="n">domain_max</span> <span class="o">+</span> <span class="n">domain_min</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">]),</span>
+                    <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">domain_max</span> <span class="o">-</span> <span class="mf">1.0e-4</span><span class="p">]),</span>
+                    <span class="p">]</span>
+
+            <span class="c"># Sample stencil</span>
+            <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">stencil_points_to_sample</span><span class="p">:</span>
+                <span class="n">point_val</span> <span class="o">=</span> <span class="n">GP</span><span class="o">.</span><span class="n">sample_from_process</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
+                <span class="n">sample_point</span> <span class="o">=</span> <span class="n">SamplePoint</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">point_val</span><span class="p">)</span>
+                <span class="n">GP</span><span class="o">.</span><span class="n">add_sample_point</span><span class="p">(</span><span class="n">sample_point</span><span class="p">)</span>
+
+            <span class="n">next_step</span> <span class="o">=</span> <span class="n">GP</span><span class="o">.</span><span class="n">get_multistart_best</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="c"># only one point is returned</span>
+
+            <span class="c"># The next step must be within the domain</span>
+            <span class="n">T</span><span class="o">.</span><span class="n">assert_gte</span><span class="p">(</span><span class="n">next_step</span><span class="p">,</span> <span class="n">domain_min</span><span class="p">)</span>
+            <span class="n">T</span><span class="o">.</span><span class="n">assert_lte</span><span class="p">(</span><span class="n">next_step</span><span class="p">,</span> <span class="n">domain_max</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="GetMultistartBestTest.test_two_dimensional_get_multistart_best_from_prior_within_domain"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.models.html#moe.tests.optimal_learning.python.models.optimal_gaussian_process_linked_cpp_test.GetMultistartBestTest.test_two_dimensional_get_multistart_best_from_prior_within_domain">[docs]</a>    <span class="k">def</span> <span class="nf">test_two_dimensional_get_multistart_best_from_prior_within_domain</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Test that get_multistart_best returns a point within the domain</span>
+<span class="sd">        for various 2D functions drawn from the prior over different domains</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">domains_to_test</span> <span class="o">=</span> <span class="p">[[[</span><span class="o">-</span><span class="mf">10.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">10.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">]],</span> <span class="p">[[</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]],</span> <span class="p">[[</span><span class="mf">50.0</span><span class="p">,</span> <span class="mf">51.0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">80.1</span><span class="p">,</span> <span class="o">-</span><span class="mf">76.4</span><span class="p">]]]</span>
+
+        <span class="k">for</span> <span class="n">domain</span> <span class="ow">in</span> <span class="n">domains_to_test</span><span class="p">:</span>
+            <span class="n">GP</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_default_gaussian_process</span><span class="p">(</span>
+                    <span class="n">domain</span><span class="o">=</span><span class="n">domain</span><span class="p">,</span>
+                    <span class="n">default_sample_variance</span><span class="o">=</span><span class="mf">0.0</span>
+                    <span class="p">)</span>
+
+            <span class="c"># The edges and the middle</span>
+            <span class="n">x1_min</span> <span class="o">=</span> <span class="n">domain</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">x1_max</span> <span class="o">=</span> <span class="n">domain</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">x1_mid</span> <span class="o">=</span> <span class="p">(</span><span class="n">x1_min</span> <span class="o">+</span> <span class="n">x1_max</span><span class="p">)</span><span class="o">/</span><span class="mf">2.0</span>
+            <span class="n">x2_min</span> <span class="o">=</span> <span class="n">domain</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">x2_max</span> <span class="o">=</span> <span class="n">domain</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">x2_mid</span> <span class="o">=</span> <span class="p">(</span><span class="n">x2_min</span> <span class="o">+</span> <span class="n">x2_max</span><span class="p">)</span><span class="o">/</span><span class="mf">2.0</span>
+            <span class="n">stencil_points_to_sample</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x1_min</span><span class="p">,</span> <span class="n">x2_min</span><span class="p">]),</span> <span class="c"># lower left</span>
+                    <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x1_min</span><span class="p">,</span> <span class="n">x2_mid</span><span class="p">]),</span> <span class="c"># mid left</span>
+                    <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x1_min</span><span class="p">,</span> <span class="n">x2_max</span><span class="p">]),</span> <span class="c"># top left</span>
+                    <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x1_mid</span><span class="p">,</span> <span class="n">x2_min</span><span class="p">]),</span> <span class="c"># mid middle</span>
+                    <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x1_mid</span><span class="p">,</span> <span class="n">x2_mid</span><span class="p">]),</span> <span class="c"># center</span>
+                    <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x1_mid</span><span class="p">,</span> <span class="n">x2_max</span><span class="p">]),</span> <span class="c"># mid top</span>
+                    <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x1_max</span><span class="p">,</span> <span class="n">x2_min</span><span class="p">]),</span> <span class="c"># lower right</span>
+                    <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x1_max</span><span class="p">,</span> <span class="n">x2_mid</span><span class="p">]),</span> <span class="c"># mid right</span>
+                    <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x1_max</span><span class="p">,</span> <span class="n">x2_max</span><span class="p">]),</span> <span class="c"># top right</span>
+                    <span class="p">]</span>
+
+            <span class="c"># Sample stencil</span>
+            <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">stencil_points_to_sample</span><span class="p">:</span>
+                <span class="n">point_val</span> <span class="o">=</span> <span class="n">GP</span><span class="o">.</span><span class="n">sample_from_process</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
+                <span class="n">sample_point</span> <span class="o">=</span> <span class="n">SamplePoint</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">point_val</span><span class="p">)</span>
+                <span class="n">GP</span><span class="o">.</span><span class="n">add_sample_point</span><span class="p">(</span><span class="n">sample_point</span><span class="p">)</span>
+
+            <span class="n">next_step</span> <span class="o">=</span> <span class="n">GP</span><span class="o">.</span><span class="n">get_multistart_best</span><span class="p">()</span> <span class="c"># only one point is returned</span>
+
+            <span class="c"># The next step must be within the domain</span>
+            <span class="n">T</span><span class="o">.</span><span class="n">assert_gte</span><span class="p">(</span><span class="n">next_step</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x1_min</span><span class="p">)</span>
+            <span class="n">T</span><span class="o">.</span><span class="n">assert_lte</span><span class="p">(</span><span class="n">next_step</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x1_max</span><span class="p">)</span>
+            <span class="n">T</span><span class="o">.</span><span class="n">assert_gte</span><span class="p">(</span><span class="n">next_step</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">x2_min</span><span class="p">)</span>
+            <span class="n">T</span><span class="o">.</span><span class="n">assert_lte</span><span class="p">(</span><span class="n">next_step</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">x2_max</span><span class="p">)</span>
+</div>
+    <span class="k">def</span> <span class="nf">_three_dimensional_get_multistart_best_from_prior_within_domain</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_number_of_threads</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Test that get_multistart_best returns a point within the domain</span>
+<span class="sd">        for various 2D functions drawn from the prior over different domains</span>
+
+<span class="sd">        Can run with more than 1 thread</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">domains_to_test</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="p">[[</span><span class="o">-</span><span class="mf">10.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">10.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">10.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">]],</span>
+                <span class="p">[[</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]],</span>
+                <span class="p">[[</span><span class="mf">50.0</span><span class="p">,</span> <span class="mf">51.0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">80.1</span><span class="p">,</span> <span class="o">-</span><span class="mf">76.4</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">15000.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">15000.0</span><span class="p">]],</span>
+                <span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">domain</span> <span class="ow">in</span> <span class="n">domains_to_test</span><span class="p">:</span>
+            <span class="n">GP</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_default_gaussian_process</span><span class="p">(</span>
+                    <span class="n">domain</span><span class="o">=</span><span class="n">domain</span><span class="p">,</span>
+                    <span class="n">default_sample_variance</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+                    <span class="n">max_number_of_threads</span><span class="o">=</span><span class="n">max_number_of_threads</span><span class="p">,</span>
+                    <span class="p">)</span>
+
+            <span class="c"># select a stencil of num_points_to_test random latin hypercube points</span>
+            <span class="n">stencil_points_to_sample</span> <span class="o">=</span> <span class="n">moe</span><span class="o">.</span><span class="n">optimal_learning</span><span class="o">.</span><span class="n">python</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">get_latin_hypercube_points</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">domain</span><span class="p">)</span>
+
+            <span class="c"># Sample stencil</span>
+            <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">stencil_points_to_sample</span><span class="p">:</span>
+                <span class="n">point_val</span> <span class="o">=</span> <span class="n">GP</span><span class="o">.</span><span class="n">sample_from_process</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
+                <span class="n">sample_point</span> <span class="o">=</span> <span class="n">SamplePoint</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">point_val</span><span class="p">)</span>
+                <span class="n">GP</span><span class="o">.</span><span class="n">add_sample_point</span><span class="p">(</span><span class="n">sample_point</span><span class="p">)</span>
+
+            <span class="n">next_step</span> <span class="o">=</span> <span class="n">GP</span><span class="o">.</span><span class="n">get_multistart_best</span><span class="p">()</span> <span class="c"># only one point is returned</span>
+
+            <span class="c"># The next step must be within the domain</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">sub_domain</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">domain</span><span class="p">):</span>
+                <span class="n">T</span><span class="o">.</span><span class="n">assert_gte</span><span class="p">(</span><span class="n">next_step</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">sub_domain</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="n">T</span><span class="o">.</span><span class="n">assert_lte</span><span class="p">(</span><span class="n">next_step</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">sub_domain</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+<div class="viewcode-block" id="GetMultistartBestTest.test_three_dimensional_get_multistart_best_from_prior_within_domain"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.models.html#moe.tests.optimal_learning.python.models.optimal_gaussian_process_linked_cpp_test.GetMultistartBestTest.test_three_dimensional_get_multistart_best_from_prior_within_domain">[docs]</a>    <span class="k">def</span> <span class="nf">test_three_dimensional_get_multistart_best_from_prior_within_domain</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_three_dimensional_get_multistart_best_from_prior_within_domain</span><span class="p">(</span><span class="n">max_number_of_threads</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="GetMultistartBestTest.test_three_dimensional_get_multistart_best_from_prior_within_domain_multithreaded"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.models.html#moe.tests.optimal_learning.python.models.optimal_gaussian_process_linked_cpp_test.GetMultistartBestTest.test_three_dimensional_get_multistart_best_from_prior_within_domain_multithreaded">[docs]</a>    <span class="k">def</span> <span class="nf">test_three_dimensional_get_multistart_best_from_prior_within_domain_multithreaded</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_three_dimensional_get_multistart_best_from_prior_within_domain</span><span class="p">(</span><span class="n">max_number_of_threads</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+</div></div>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">T</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

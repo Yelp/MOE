@@ -1,0 +1,20 @@
+gpp_optimization_test
+=====
+
+**Contents:**
+
+    1. `gpp_optimization_test.hpp`_
+    2. `gpp_optimization_test.cpp`_
+
+
+gpp_optimization_test.hpp
+------
+
+.. doxygenfile:: gpp_optimization_test.hpp
+
+
+gpp_optimization_test.cpp
+------
+
+.. doxygenfile:: gpp_optimization_test.cpp
+

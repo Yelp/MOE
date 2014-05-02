@@ -1,0 +1,30 @@
+moe.tests.optimal_learning.python package
+=========================================
+
+Subpackages
+-----------
+
+.. toctree::
+
+    moe.tests.optimal_learning.python.lib
+    moe.tests.optimal_learning.python.models
+
+Submodules
+----------
+
+moe.tests.optimal_learning.python.gaussian_process_test_case module
+-------------------------------------------------------------------
+
+.. automodule:: moe.tests.optimal_learning.python.gaussian_process_test_case
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: moe.tests.optimal_learning.python
+    :members:
+    :undoc-members:
+    :show-inheritance:

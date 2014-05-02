@@ -1,0 +1,731 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>moe.optimal_learning.python.cpp_wrappers.expected_improvement &mdash; MOE 0.1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../../../_static/favicon.ico"/>
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../../../_static/breathe.css" type="text/css" />
+  
+    <link rel="top" title="MOE 0.1.0 documentation" href="../../../../../index.html"/>
+        <link rel="up" title="moe" href="../../../../moe.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="../../../../../index.html" class="fa fa-home"> MOE</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../moe.html">moe package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe.html#module-moe.resources">moe.resources module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe.html#module-moe">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../cpp_tree.html">C++ Files</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_optimization_test.html">gpp_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_domain_test.html">gpp_domain_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_random_test.html">gpp_random_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_exception.html">gpp_exception</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_geometry.html">gpp_geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_test_utils.html">gpp_test_utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_logging.html">gpp_logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_covariance.html">gpp_covariance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_math-inl.html">gpp_math-inl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_domain.html">gpp_domain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python_common.html">gpp_python_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_hyperparameter_optimization_demo.html">gpp_hyperparameter_optimization_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_test_utils_test.html">gpp_test_utils_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_math_test.html">gpp_math_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python_model_selection.html">gpp_python_model_selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_math.html">gpp_math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python_test.html">gpp_python_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_random.html">gpp_random</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_geometry_test.html">gpp_geometry_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_linear_algebra.html">gpp_linear_algebra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_core.html">gpp_core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_covariance_test.html">gpp_covariance_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python.html">gpp_python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_model_selection_and_hyperparameter_optimization.html">gpp_model_selection_and_hyperparameter_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_optimization_parameters.html">gpp_optimization_parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_common.html">gpp_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_model_selection_and_hyperparameter_optimization_test.html">gpp_model_selection_and_hyperparameter_optimization_test</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../../../index.html">MOE</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../../../index.html">Module code</a> &raquo;</li>
+      
+          <li><a href="../../../../moe.html">moe</a> &raquo;</li>
+      
+    <li>moe.optimal_learning.python.cpp_wrappers.expected_improvement</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <h1>Source code for moe.optimal_learning.python.cpp_wrappers.expected_improvement</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;Tools to compute ExpectedImprovement and optimize the next best point(s) to sample using EI through C++ calls.</span>
+
+<span class="sd">This file contains a class to compute Expected Improvement + derivatives and a functions to solve the q,p-EI optimization problem.</span>
+<span class="sd">The ExpectedImprovement class implements interfaces.ExpectedImproventInterface. The optimization functions are convenient</span>
+<span class="sd">wrappers around the matching C++ calls.</span>
+
+<span class="sd">See interfaces/expected_improvement_interface.py or gpp_math.hpp/cpp for further details on expected improvement.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+<span class="kn">import</span> <span class="nn">moe.build.GPP</span> <span class="kn">as</span> <span class="nn">C_GP</span>
+<span class="kn">import</span> <span class="nn">moe.optimal_learning.python.cpp_wrappers.cpp_utils</span> <span class="kn">as</span> <span class="nn">cpp_utils</span>
+<span class="kn">from</span> <span class="nn">moe.optimal_learning.python.interfaces.expected_improvement_interface</span> <span class="kn">import</span> <span class="n">ExpectedImprovementInterface</span>
+<span class="kn">from</span> <span class="nn">moe.optimal_learning.python.interfaces.optimization_interface</span> <span class="kn">import</span> <span class="n">OptimizableInterface</span>
+
+
+<div class="viewcode-block" id="multistart_expected_improvement_optimization"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.expected_improvement.multistart_expected_improvement_optimization">[docs]</a><span class="k">def</span> <span class="nf">multistart_expected_improvement_optimization</span><span class="p">(</span>
+    <span class="n">ei_evaluator</span><span class="p">,</span>
+    <span class="n">ei_optimization_parameters</span><span class="p">,</span>
+    <span class="n">domain</span><span class="p">,</span>
+    <span class="n">num_samples_to_generate</span><span class="p">,</span>
+    <span class="n">points_to_sample</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([]),</span>
+    <span class="n">randomness</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+    <span class="n">max_num_threads</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">status</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Solve the q,p-EI problem, returning the optimal set of q points to sample CONCURRENTLY in future experiments.</span>
+
+<span class="sd">    When points_to_sample.size == 0 &amp;&amp; num_samples_to_generate == 1, this function will use (fast) analytic EI computations.</span>
+
+<span class="sd">    .. NOTE:: The following comments are copied from gpp_math.hpp, ComputeOptimalSetOfPointsToSample().</span>
+
+<span class="sd">    Returns the optimal set of q points to sample CONCURRENTLY by solving the q,p-EI problem.  That is, we may want to run 4</span>
+<span class="sd">    experiments at the same time and maximize the EI across all 4 experiments at once while knowing of 2 ongoing experiments</span>
+<span class="sd">    (4,2-EI). This function handles this use case. Evaluation of q,p-EI (and its gradient) for q &gt; 1 or p &gt; 1 is expensive</span>
+<span class="sd">    (requires monte-carlo iteration), so this method is usually very expensive.</span>
+
+<span class="sd">    Compared to ComputeHeuristicSetOfPointsToSample() (``gpp_heuristic_expected_improvement_optimization.hpp``), this function</span>
+<span class="sd">    makes no external assumptions about the underlying objective function. Instead, it utilizes a feature of the</span>
+<span class="sd">    GaussianProcess that allows the GP to account for ongoing/incomplete experiments.</span>
+
+<span class="sd">    If ``num_samples_to_generate = 1``, this is the same as ComputeOptimalPointToSampleWithRandomStarts().</span>
+
+<span class="sd">    :param ei_evaluator: object specifying how to evaluate the expected improvement</span>
+<span class="sd">    :type ei_evaluator: cpp_wrappers.expected_improvement.ExpectedImprovement</span>
+<span class="sd">    :param ei_optimization_parameters: object specifying the desired optimization method (e.g., gradient descent, random search)</span>
+<span class="sd">      and parameters controlling its behavior (e.g., tolerance, iterations, etc.)</span>
+<span class="sd">    :type ei_optimization_parameters: cpp_wrappers.optimization_parameters.ExpectedImprovementOptimizationParameters</span>
+<span class="sd">    :param domain: the domain over which to optimize (for the next best point(s) to sample)</span>
+<span class="sd">    :type domain: DomainInterface, e.g., from cpp_wrappers/domain.py (TensorProductDomain, SimplexIntersectTensorProductDomain)</span>
+<span class="sd">    :param num_samples_to_generate: how many simultaneous experiments you would like to run (i.e., the q in q,p-EI)</span>
+<span class="sd">    :type num_samples_to_generate: int &gt;= 1</span>
+<span class="sd">    :param points_to_sample: points that are being sampled concurrently from the GP (i.e., the p in q,p-EI)</span>
+<span class="sd">    :type points_to_sample: array of float64 with shape (num_to_sample, dim)</span>
+<span class="sd">    :param randomness: RNGs used by C++ to generate initial guesses and as the source of normal random numbers when monte-carlo is used</span>
+<span class="sd">    :type randomness: RandomnessSourceContainer (C++ object; e.g., from C_GP.RandomnessSourceContainer())</span>
+<span class="sd">    :param max_num_threads: maximum number of threads to use, &gt;= 1</span>
+<span class="sd">    :type max_num_threads: int</span>
+<span class="sd">    :param status: status messages from C++ (e.g., reporting on optimizer success, etc.)</span>
+<span class="sd">    :type status: dict</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c"># Create enough randomness sources if none are specified.</span>
+    <span class="k">if</span> <span class="n">randomness</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">randomness</span> <span class="o">=</span> <span class="n">C_GP</span><span class="o">.</span><span class="n">RandomnessSourceContainer</span><span class="p">(</span><span class="n">max_num_threads</span><span class="p">)</span>
+        <span class="c"># Set seeds based on less repeatable factors (e.g,. time)</span>
+        <span class="n">randomness</span><span class="o">.</span><span class="n">SetRandomizedUniformGeneratorSeed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">randomness</span><span class="o">.</span><span class="n">SetRandomizedNormalRNGSeed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="c"># status must be an initialized dict for the call to C++.</span>
+    <span class="k">if</span> <span class="n">status</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">status</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="n">ei_optimization_parameters</span><span class="o">.</span><span class="n">domain_type</span> <span class="o">=</span> <span class="n">domain</span><span class="o">.</span><span class="n">_domain_type</span>
+    <span class="n">best_points_to_sample</span> <span class="o">=</span> <span class="n">C_GP</span><span class="o">.</span><span class="n">multistart_expected_improvement_optimization</span><span class="p">(</span>
+        <span class="n">ei_optimization_parameters</span><span class="p">,</span>
+        <span class="n">ei_evaluator</span><span class="o">.</span><span class="n">_gaussian_process</span><span class="o">.</span><span class="n">_gaussian_process</span><span class="p">,</span>
+        <span class="n">cpp_utils</span><span class="o">.</span><span class="n">cppify</span><span class="p">(</span><span class="n">domain</span><span class="o">.</span><span class="n">domain_bounds</span><span class="p">),</span>
+        <span class="n">cpp_utils</span><span class="o">.</span><span class="n">cppify</span><span class="p">(</span><span class="n">ei_evaluator</span><span class="o">.</span><span class="n">_points_to_sample</span><span class="p">),</span>
+        <span class="n">ei_evaluator</span><span class="o">.</span><span class="n">_points_to_sample</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="n">num_samples_to_generate</span><span class="p">,</span>
+        <span class="n">ei_evaluator</span><span class="o">.</span><span class="n">_best_so_far</span><span class="p">,</span>
+        <span class="n">ei_evaluator</span><span class="o">.</span><span class="n">_num_mc_iterations</span><span class="p">,</span>
+        <span class="n">max_num_threads</span><span class="p">,</span>
+        <span class="n">randomness</span><span class="p">,</span>
+        <span class="n">status</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c"># reform output to be a list of dim-dimensional points, dim = len(self.domain)</span>
+    <span class="k">return</span> <span class="n">cpp_utils</span><span class="o">.</span><span class="n">uncppify</span><span class="p">(</span><span class="n">best_points_to_sample</span><span class="p">,</span> <span class="p">(</span><span class="n">num_samples_to_generate</span><span class="p">,</span> <span class="n">ei_evaluator</span><span class="o">.</span><span class="n">dim</span><span class="p">))</span>
+
+</div>
+<span class="k">def</span> <span class="nf">_heuristic_expected_improvement_optimization</span><span class="p">(</span>
+    <span class="n">ei_evaluator</span><span class="p">,</span>
+    <span class="n">ei_optimization_parameters</span><span class="p">,</span>
+    <span class="n">domain</span><span class="p">,</span>
+    <span class="n">num_samples_to_generate</span><span class="p">,</span>
+    <span class="n">estimation_policy</span><span class="p">,</span>
+    <span class="n">randomness</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+    <span class="n">max_num_threads</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">status</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Heuristically solve the q,0-EI problem (estimating multistart_expected_improvement_optimization()) using 1,0-EI solves.</span>
+
+<span class="sd">    Consider this as an alternative when multistart_expected_improvement_optimization() is too expensive. Since this function</span>
+<span class="sd">    kernalizes 1,0-EI, it always hits the analytic case; hence it is much faster than q,0-EI which requires monte-carlo.</span>
+<span class="sd">    Users will probably call one of this function&#39;s wrappers (e.g., constant_liar_expected_improvement_optimization() or</span>
+<span class="sd">    kriging_believer_expected_improvement_optimization()) instead of accessing this directly.</span>
+
+<span class="sd">    Calls into heuristic_expected_improvement_optimization_wrapper in cpp/GPP_python_expected_improvement.cpp.</span>
+
+<span class="sd">    .. NOTE:: The following comments are copied from gpp_heuristic_expected_improvement_optimization.hpp, ComputeHeuristicSetOfPointsToSample().</span>
+
+<span class="sd">    It heuristically solves the q,0-EI optimization problem. As a reminder, that problem is finding the set of q points</span>
+<span class="sd">    that maximizes the Expected Improvement (saved in the output, best_points_to_sample). Solving for q points simultaneously</span>
+<span class="sd">    usually requires monte-carlo iteration and is expensive. The heuristic here solves q-EI as a sequence of 1-EI problems.</span>
+<span class="sd">    We solve 1-EI, and then we *ASSUME* an objective function value at the resulting optima. This process is repeated q times.</span>
+<span class="sd">    It is perhaps more clear in pseudocode:</span>
+<span class="sd">    points_to_sample = {}  // This stays empty! We are only working with 1,0-EI solves</span>
+<span class="sd">    for i = 0:num_samples_to_generate-1 {</span>
+<span class="sd">      // First, solve the 1,0-EI problem*</span>
+<span class="sd">      new_point = ComputeOptimalPointToSampleWithRandomStarts(gaussian_process, points_to_sample, other_parameters)</span>
+<span class="sd">      // *Estimate* the objective function value at new_point</span>
+<span class="sd">      new_function_value = ESTIMATED_OBJECTIVE_FUNCTION_VALUE(new_point, other_args)</span>
+<span class="sd">      new_function_value_noise = ESTIMATED_NOISE_VARIANCE(new_point, other_args)</span>
+<span class="sd">      // Write the estimated objective values to the GP as *truth*</span>
+<span class="sd">      gaussian_process.AddPoint(new_point, new_function_value, new_function_value_noise)</span>
+<span class="sd">      optimal_points_to_sample.append(new_point)</span>
+<span class="sd">    }</span>
+<span class="sd">    *Recall: each call to ComputeOptimalPointToSampleWithRandomStarts() (gpp_math.hpp) kicks off a round of MGD optimization of 1-EI.</span>
+
+<span class="sd">    Note that ideally the estimated objective function value (and noise) would be measured from the real-world (e.g.,</span>
+<span class="sd">    by running an experiment). Then this algorithm would be optimal. However, the estimate probably is not accurately</span>
+<span class="sd">    representating of the true objective.</span>
+
+<span class="sd">    The estimation is handled through the &quot;estimation_policy&quot; input. Passing a ConstantLiarEstimationPolicy or</span>
+<span class="sd">    KrigingBelieverEstimationPolicy object to this function will produce the &quot;Constant Liar&quot; and &quot;Kriging Believer&quot;</span>
+<span class="sd">    heuristics described in Ginsbourger 2008. The interface for estimation_policy is generic so users may specify</span>
+<span class="sd">    other estimators as well.</span>
+
+<span class="sd">    Contrast this appraoch with ComputeOptimalSetOfPointsToSample() (gpp_math.hpp) which solves all outputs of the q,0-EI</span>
+<span class="sd">    problem simultaneously instead of one point (i.e., points_to_sample) at a time. This method is more accurate (b/c it</span>
+<span class="sd">    does not attempt to estimate the behavior of the underlying objective function) but much more expensive (because it</span>
+<span class="sd">    requires monte-carlo iteration).</span>
+
+<span class="sd">    If num_samples_to_generate = 1, this is exactly the same as ComputeOptimalPointToSampleWithRandomStarts(); i.e.,</span>
+<span class="sd">    both methods solve the 1-EI optimization problem the same way.</span>
+
+<span class="sd">    Currently, during optimization, we recommend that the coordinates of the initial guesses not differ from the</span>
+<span class="sd">    coordinates of the optima by more than about 1 order of magnitude. This is a very (VERY!) rough guideline for</span>
+<span class="sd">    sizing the domain and num_multistarts; i.e., be wary of sets of initial guesses that cover the space too sparsely.</span>
+
+<span class="sd">    Solution is guaranteed to lie within the region specified by &quot;domain&quot;; note that this may not be a</span>
+<span class="sd">    local optima (i.e., the gradient may be substantially nonzero).</span>
+
+<span class="sd">    .. WARNING:: this function fails if any step fails to find improvement! In that case, the return should not be</span>
+<span class="sd">           read and status will report false.</span>
+
+<span class="sd">    :param ei_evaluator: object specifying how to evaluate the expected improvement</span>
+<span class="sd">    :type ei_evaluator: cpp_wrappers.expected_improvement.ExpectedImprovement</span>
+<span class="sd">    :param ei_optimization_parameters: object specifying the desired optimization method and parameters controlling its behavior (e.g., tolerance, iterations, etc.)</span>
+<span class="sd">    :type ei_optimization_parameters: cpp_wrappers.optimization_parameters.ExpectedImprovementOptimizationParameters</span>
+<span class="sd">    :param domain: the domain over which to optimize (for the next best point(s) to sample)</span>
+<span class="sd">    :type domain: DomainInterface, e.g., from cpp_wrappers/domain.py (TensorProductDomain, SimplexIntersectTensorProductDomain)</span>
+<span class="sd">    :param num_samples_to_generate: how many simultaneous experiments you would like to run (i.e., the q in q,0-EI)</span>
+<span class="sd">    :type num_samples_to_generate: int &gt;= 1</span>
+<span class="sd">    :param estimation_policy: the policy to use to produce (heuristic) objective function estimates during q,0-EI optimization</span>
+<span class="sd">    :type estimation_policy: subclass of ObjectiveEstimationPolicyInterface (C++ pure abstract class)</span>
+<span class="sd">       e.g., C_GP.KrigingBelieverEstimationPolicy, C_GP.ConstantLiarEstimationPolicy</span>
+<span class="sd">       See gpp_heuristic_expected_improvement_optimization.hpp</span>
+<span class="sd">    :param randomness: RNGs used by C++ to generate initial guesses</span>
+<span class="sd">    :type randomness: RandomnessSourceContainer (C++ object; e.g., from C_GP.RandomnessSourceContainer())</span>
+<span class="sd">    :param max_num_threads: maximum number of threads to use, &gt;= 1</span>
+<span class="sd">    :type max_num_threads: int</span>
+<span class="sd">    :param status: status messages from C++ (e.g., reporting on optimizer success, etc.)</span>
+<span class="sd">    :type status: dict</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c"># Create enough randomness sources if none are specified.</span>
+    <span class="k">if</span> <span class="n">randomness</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">randomness</span> <span class="o">=</span> <span class="n">C_GP</span><span class="o">.</span><span class="n">RandomnessSourceContainer</span><span class="p">(</span><span class="n">max_num_threads</span><span class="p">)</span>
+        <span class="c"># Set seed based on less repeatable factors (e.g,. time)</span>
+        <span class="n">randomness</span><span class="o">.</span><span class="n">SetRandomizedUniformGeneratorSeed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">randomness</span><span class="o">.</span><span class="n">SetRandomizedNormalRNGSeed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="c"># status must be an initialized dict for the call to C++.</span>
+    <span class="k">if</span> <span class="n">status</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">status</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="n">ei_optimization_parameters</span><span class="o">.</span><span class="n">domain_type</span> <span class="o">=</span> <span class="n">domain</span><span class="o">.</span><span class="n">_domain_type</span>
+    <span class="n">best_points_to_sample</span> <span class="o">=</span> <span class="n">C_GP</span><span class="o">.</span><span class="n">heuristic_expected_improvement_optimization</span><span class="p">(</span>
+        <span class="n">ei_optimization_parameters</span><span class="p">,</span>
+        <span class="n">ei_evaluator</span><span class="o">.</span><span class="n">_gaussian_process</span><span class="o">.</span><span class="n">_gaussian_process</span><span class="p">,</span>
+        <span class="n">cpp_utils</span><span class="o">.</span><span class="n">cppify</span><span class="p">(</span><span class="n">domain</span><span class="o">.</span><span class="n">domain_bounds</span><span class="p">),</span>
+        <span class="n">estimation_policy</span><span class="p">,</span>
+        <span class="n">num_samples_to_generate</span><span class="p">,</span>
+        <span class="n">ei_evaluator</span><span class="o">.</span><span class="n">_best_so_far</span><span class="p">,</span>
+        <span class="n">max_num_threads</span><span class="p">,</span>
+        <span class="n">randomness</span><span class="p">,</span>
+        <span class="n">status</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c"># reform output to be a list of dim-dimensional points, dim = len(self.domain)</span>
+    <span class="k">return</span> <span class="n">cpp_utils</span><span class="o">.</span><span class="n">uncppify</span><span class="p">(</span><span class="n">best_points_to_sample</span><span class="p">,</span> <span class="p">(</span><span class="n">num_samples_to_generate</span><span class="p">,</span> <span class="n">ei_evaluator</span><span class="o">.</span><span class="n">dim</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="constant_liar_expected_improvement_optimization"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.expected_improvement.constant_liar_expected_improvement_optimization">[docs]</a><span class="k">def</span> <span class="nf">constant_liar_expected_improvement_optimization</span><span class="p">(</span>
+    <span class="n">ei_evaluator</span><span class="p">,</span>
+    <span class="n">ei_optimization_parameters</span><span class="p">,</span>
+    <span class="n">domain</span><span class="p">,</span>
+    <span class="n">num_samples_to_generate</span><span class="p">,</span>
+    <span class="n">lie_value</span><span class="p">,</span>
+    <span class="n">lie_noise_variance</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+    <span class="n">randomness</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+    <span class="n">max_num_threads</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">status</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Heuristically solves q,0-EI using the Constant Liar policy; this wraps heuristic_expected_improvement_optimization().</span>
+
+<span class="sd">    Note that this optimizer only uses the analytic 1,0-EI, so it is fast.</span>
+
+<span class="sd">    See heuristic_expected_improvement_optimization() docs for general notes on how the heuristic optimization works.</span>
+<span class="sd">    In this specific instance, we use the Constant Liar estimation policy.</span>
+
+<span class="sd">    .. Note: comments copied from ConstantLiarEstimationPolicy in gpp_heuristic_expected_improvement_optimization.hpp.</span>
+
+<span class="sd">    The &quot;Constant Liar&quot; objective function estimation policy is the simplest: it always returns the same value</span>
+<span class="sd">    (Ginsbourger 2008). We call this the &quot;lie. This object also allows users to associate a noise variance to</span>
+<span class="sd">    the lie value.</span>
+
+<span class="sd">    In Ginsbourger&#39;s work, the most common lie values have been the min and max of all previously observed objective</span>
+<span class="sd">    function values; i.e., min, max of GP.points_sampled_value. The mean has also been considered.</span>
+
+<span class="sd">    He also points out that larger lie values (e.g., max of prior measurements) will lead methods like</span>
+<span class="sd">    ComputeEstimatedSetOfPointsToSample() to be more explorative and vice versa.</span>
+
+<span class="sd">    :param ei_evaluator: object specifying how to evaluate the expected improvement</span>
+<span class="sd">    :type ei_evaluator: cpp_wrappers.expected_improvement.ExpectedImprovement</span>
+<span class="sd">    :param ei_optimization_parameters: object specifying the desired optimization method and parameters controlling its behavior (e.g., tolerance, iterations, etc.)</span>
+<span class="sd">    :type ei_optimization_parameters: cpp_wrappers.optimization_parameters.ExpectedImprovementOptimizationParameters</span>
+<span class="sd">    :param domain: the domain over which to optimize (for the next best point(s) to sample)</span>
+<span class="sd">    :type domain: DomainInterface, e.g., from cpp_wrappers/domain.py (TensorProductDomain, SimplexIntersectTensorProductDomain)</span>
+<span class="sd">    :param num_samples_to_generate: how many simultaneous experiments you would like to run (i.e., the q in q,0-EI)</span>
+<span class="sd">    :type num_samples_to_generate: int &gt;= 1</span>
+<span class="sd">    :param lie_value: the &quot;constant lie&quot; that this estimator should return</span>
+<span class="sd">    :type lie_value: float64</span>
+<span class="sd">    :param lie_noise_variance: the noise_variance to associate to the lie_value (MUST be &gt;= 0.0)</span>
+<span class="sd">    :type lie_noise_variance: float64</span>
+<span class="sd">    :param randomness: RNGs used by C++ to generate initial guesses</span>
+<span class="sd">    :type randomness: RandomnessSourceContainer (C++ object; e.g., from C_GP.RandomnessSourceContainer())</span>
+<span class="sd">    :param max_num_threads: maximum number of threads to use, &gt;= 1</span>
+<span class="sd">    :type max_num_threads: int</span>
+<span class="sd">    :param status: status messages from C++ (e.g., reporting on optimizer success, etc.)</span>
+<span class="sd">    :type status: dict</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">estimation_policy</span> <span class="o">=</span> <span class="n">C_GP</span><span class="o">.</span><span class="n">ConstantLiarEstimationPolicy</span><span class="p">(</span><span class="n">lie_value</span><span class="p">,</span> <span class="n">lie_noise_variance</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_heuristic_expected_improvement_optimization</span><span class="p">(</span><span class="n">ei_evaluator</span><span class="p">,</span> <span class="n">ei_optimization_parameters</span><span class="p">,</span> <span class="n">domain</span><span class="p">,</span> <span class="n">num_samples_to_generate</span><span class="p">,</span> <span class="n">estimation_policy</span><span class="p">,</span> <span class="n">randomness</span><span class="o">=</span><span class="n">randomness</span><span class="p">,</span> <span class="n">max_num_threads</span><span class="o">=</span><span class="n">max_num_threads</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="kriging_believer_expected_improvement_optimization"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.expected_improvement.kriging_believer_expected_improvement_optimization">[docs]</a><span class="k">def</span> <span class="nf">kriging_believer_expected_improvement_optimization</span><span class="p">(</span>
+    <span class="n">ei_evaluator</span><span class="p">,</span>
+    <span class="n">ei_optimization_parameters</span><span class="p">,</span>
+    <span class="n">domain</span><span class="p">,</span>
+    <span class="n">num_samples_to_generate</span><span class="p">,</span>
+    <span class="n">std_deviation_coef</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+    <span class="n">kriging_noise_variance</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+    <span class="n">randomness</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+    <span class="n">max_num_threads</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">status</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Heuristically solves q,0-EI using the Kriging Believer policy; this wraps heuristic_expected_improvement_optimization().</span>
+
+<span class="sd">    Note that this optimizer only uses the analytic 1,0-EI, so it is fast.</span>
+
+<span class="sd">    See heuristic_expected_improvement_optimization() docs for general notes on how the heuristic optimization works.</span>
+<span class="sd">    In this specific instance, we use the Kriging Believer estimation policy.</span>
+
+<span class="sd">    .. Note: comments copied from KrigingBelieverEstimationPolicy in gpp_heuristic_expected_improvement_optimization.hpp.</span>
+
+<span class="sd">    The &quot;Kriging Believer&quot; objective function estimation policy uses the Gaussian Process (i.e., the prior)</span>
+<span class="sd">    to produce objective function estimates. The simplest method is to trust the GP completely:</span>
+<span class="sd">    estimate = GP.mean(point)</span>
+<span class="sd">    This follows the usage in Ginsbourger 2008. Users may also want the estimate to depend on the GP variance</span>
+<span class="sd">    at the evaluation point, so that the estimate reflects how confident the GP is in the prediction. Users may</span>
+<span class="sd">    also specify std_devation_ceof:</span>
+<span class="sd">    estimate = GP.mean(point) + std_deviation_coef * GP.variance(point)</span>
+<span class="sd">    Note that the coefficient is signed, and analogously to ConstantLiar, larger positive values are more</span>
+<span class="sd">    explorative and larger negative values are more exploitive.</span>
+
+<span class="sd">    This object also allows users to associate a noise variance to the lie value.</span>
+
+<span class="sd">    :param ei_evaluator: object specifying how to evaluate the expected improvement</span>
+<span class="sd">    :type ei_evaluator: cpp_wrappers.expected_improvement.ExpectedImprovement</span>
+<span class="sd">    :param ei_optimization_parameters: object specifying the desired optimization method and parameters controlling its behavior (e.g., tolerance, iterations, etc.)</span>
+<span class="sd">    :type ei_optimization_parameters: cpp_wrappers.optimization_parameters.ExpectedImprovementOptimizationParameters</span>
+<span class="sd">    :param domain: the domain over which to optimize (for the next best point(s) to sample)</span>
+<span class="sd">    :type domain: DomainInterface, e.g., from cpp_wrappers/domain.py (TensorProductDomain, SimplexIntersectTensorProductDomain)</span>
+<span class="sd">    :param num_samples_to_generate: how many simultaneous experiments you would like to run (i.e., the q in q,0-EI)</span>
+<span class="sd">    :type num_samples_to_generate: int &gt;= 1</span>
+<span class="sd">    :param std_deviation_coef: the relative amount of bias (in units of GP std deviation) to introduce into the GP mean</span>
+<span class="sd">    :type std_deviation_coef: float64</span>
+<span class="sd">    :param kriging_noise_variance: the noise_variance to associate to each function value estimate (MUST be &gt;= 0.0)</span>
+<span class="sd">    :type kriging_noise_variance: float64</span>
+<span class="sd">    :param randomness: RNGs used by C++ to generate initial guesses</span>
+<span class="sd">    :type randomness: RandomnessSourceContainer (C++ object; e.g., from C_GP.RandomnessSourceContainer())</span>
+<span class="sd">    :param max_num_threads: maximum number of threads to use, &gt;= 1</span>
+<span class="sd">    :type max_num_threads: int</span>
+<span class="sd">    :param status: status messages from C++ (e.g., reporting on optimizer success, etc.)</span>
+<span class="sd">    :type status: dict</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">estimation_policy</span> <span class="o">=</span> <span class="n">C_GP</span><span class="o">.</span><span class="n">KrigingBelieverEstimationPolicy</span><span class="p">(</span><span class="n">std_deviation_coef</span><span class="p">,</span> <span class="n">kriging_noise_variance</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_heuristic_expected_improvement_optimization</span><span class="p">(</span>
+        <span class="n">ei_evaluator</span><span class="p">,</span>
+        <span class="n">ei_optimization_parameters</span><span class="p">,</span>
+        <span class="n">domain</span><span class="p">,</span>
+        <span class="n">num_samples_to_generate</span><span class="p">,</span>
+        <span class="n">estimation_policy</span><span class="p">,</span>
+        <span class="n">randomness</span><span class="o">=</span><span class="n">randomness</span><span class="p">,</span>
+        <span class="n">max_num_threads</span><span class="o">=</span><span class="n">max_num_threads</span><span class="p">,</span>
+        <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="p">,</span>
+        <span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="evaluate_expected_improvement_at_point_list"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.expected_improvement.evaluate_expected_improvement_at_point_list">[docs]</a><span class="k">def</span> <span class="nf">evaluate_expected_improvement_at_point_list</span><span class="p">(</span>
+    <span class="n">ei_evaluator</span><span class="p">,</span>
+    <span class="n">points_to_evaluate</span><span class="p">,</span>
+    <span class="n">points_to_sample</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([]),</span>
+    <span class="n">randomness</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+    <span class="n">max_num_threads</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">status</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Evaluate Expected Improvement (1,p-EI) over a specified list of ``points_to_evaluate``.</span>
+
+<span class="sd">    Generally gradient descent is preferred but when they fail to converge this may be the only &quot;robust&quot; option.</span>
+<span class="sd">    This function is also useful for plotting or debugging purposes (just to get a bunch of EI values).</span>
+
+<span class="sd">    :param ei_evaluator: object specifying how to evaluate the expected improvement</span>
+<span class="sd">    :type ei_evaluator: cpp_wrappers.expected_improvement.ExpectedImprovement</span>
+<span class="sd">    :param points_to_sample: points that are being sampled concurrently from the GP (i.e., the p in q,p-EI)</span>
+<span class="sd">    :type points_to_sample: array of float64 with shape (num_to_sample, dim)</span>
+<span class="sd">    :param randomness: RNGs used by C++ to generate initial guesses and as the source of normal random numbers when monte-carlo is used</span>
+<span class="sd">    :type randomness: RandomnessSourceContainer (C++ object; e.g., from C_GP.RandomnessSourceContainer())</span>
+<span class="sd">    :param max_num_threads: maximum number of threads to use, &gt;= 1</span>
+<span class="sd">    :type max_num_threads: int</span>
+<span class="sd">    :param status: status messages from C++ (e.g., reporting on optimizer success, etc.)</span>
+<span class="sd">    :type status: dict</span>
+<span class="sd">    :return: EI evaluated at each of points_to_evaluate</span>
+<span class="sd">    :rtype: array of float64 with shape )points_to_evaluate.shape[0])</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c"># Create enough randomness sources if none are specified.</span>
+    <span class="k">if</span> <span class="n">randomness</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">randomness</span> <span class="o">=</span> <span class="n">C_GP</span><span class="o">.</span><span class="n">RandomnessSourceContainer</span><span class="p">(</span><span class="n">max_num_threads</span><span class="p">)</span>
+        <span class="c"># Set seed based on less repeatable factors (e.g,. time)</span>
+        <span class="n">randomness</span><span class="o">.</span><span class="n">SetRandomizedUniformGeneratorSeed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">randomness</span><span class="o">.</span><span class="n">SetRandomizedNormalRNGSeed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="c"># status must be an initialized dict for the call to C++.</span>
+    <span class="k">if</span> <span class="n">status</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">status</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="n">ei_values</span> <span class="o">=</span> <span class="n">C_GP</span><span class="o">.</span><span class="n">evaluate_EI_at_point_list</span><span class="p">(</span>
+        <span class="n">ei_evaluator</span><span class="o">.</span><span class="n">_gaussian_process</span><span class="o">.</span><span class="n">_gaussian_process</span><span class="p">,</span>
+        <span class="n">cpp_utils</span><span class="o">.</span><span class="n">cppify</span><span class="p">(</span><span class="n">points_to_evaluate</span><span class="p">),</span>
+        <span class="n">cpp_utils</span><span class="o">.</span><span class="n">cppify</span><span class="p">(</span><span class="n">ei_evaluator</span><span class="o">.</span><span class="n">_points_to_sample</span><span class="p">),</span>
+        <span class="n">points_to_evaluate</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="n">ei_evaluator</span><span class="o">.</span><span class="n">_points_to_sample</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="n">ei_evaluator</span><span class="o">.</span><span class="n">_best_so_far</span><span class="p">,</span>
+        <span class="n">ei_evaluator</span><span class="o">.</span><span class="n">_num_mc_iterations</span><span class="p">,</span>
+        <span class="n">max_num_threads</span><span class="p">,</span>
+        <span class="n">randomness</span><span class="p">,</span>
+        <span class="n">status</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ei_values</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="ExpectedImprovement"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.expected_improvement.ExpectedImprovement">[docs]</a><span class="k">class</span> <span class="nc">ExpectedImprovement</span><span class="p">(</span><span class="n">ExpectedImprovementInterface</span><span class="p">,</span> <span class="n">OptimizableInterface</span><span class="p">):</span>
+
+    <span class="sd">r&quot;&quot;&quot;Implementation of Expected Improvement computation via C++ wrappers: EI and its gradient at specified point(s) sampled from a GaussianProcess.</span>
+
+<span class="sd">    A class to encapsulate the computation of expected improvement and its spatial gradient using points sampled from an</span>
+<span class="sd">    associated GaussianProcess. The general EI computation requires monte-carlo integration; it can support q,p-EI optimization.</span>
+<span class="sd">    It is designed to work with any GaussianProcess.</span>
+
+<span class="sd">    See interfaces/expected_improvement_interface.py docs for further details.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gaussian_process</span><span class="p">,</span> <span class="n">current_point</span><span class="p">,</span> <span class="n">points_to_sample</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([]),</span> <span class="n">num_mc_iterations</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">randomness</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construct an ExpectedImprovement object that knows how to call C++ for evaluation of member functions.</span>
+
+<span class="sd">        :param gaussian_process: GaussianProcess describing</span>
+<span class="sd">        :type gaussian_process: cpp_wrappers.GaussianProcess object</span>
+<span class="sd">        :param current_point: point at which to compute EI (i.e., q in q,p-EI)</span>
+<span class="sd">        :type current_point: array of float64 with shape (dim)</span>
+<span class="sd">        :param points_to_sample: points which are being sampled concurrently (i.e., p in q,p-EI)</span>
+<span class="sd">        :type points_to_sample: array of float64 with shape (num_to_sample, dim)</span>
+<span class="sd">        :param num_mc_iterations: number of monte-carlo iterations to use (when monte-carlo integration is used to compute EI)</span>
+<span class="sd">        :type num_mc_iterations: int &gt; 0</span>
+<span class="sd">        :param randomness: RNGs used by C++ as the source of normal random numbers when monte-carlo is used</span>
+<span class="sd">        :type randomness: RandomnessSourceContainer (C++ object; e.g., from C_GP.RandomnessSourceContainer())</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_num_mc_iterations</span> <span class="o">=</span> <span class="n">num_mc_iterations</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_gaussian_process</span> <span class="o">=</span> <span class="n">gaussian_process</span>
+        <span class="k">if</span> <span class="n">gaussian_process</span><span class="o">.</span><span class="n">_historical_data</span><span class="o">.</span><span class="n">points_sampled_value</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_best_so_far</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">amin</span><span class="p">(</span><span class="n">gaussian_process</span><span class="o">.</span><span class="n">_historical_data</span><span class="o">.</span><span class="n">points_sampled_value</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_best_so_far</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span><span class="o">.</span><span class="n">max</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_current_point</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">current_point</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_points_to_sample</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">randomness</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_randomness</span> <span class="o">=</span> <span class="n">C_GP</span><span class="o">.</span><span class="n">RandomnessSourceContainer</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>  <span class="c"># create randomness for only 1 thread</span>
+            <span class="c"># Set seed based on less repeatable factors (e.g,. time)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_randomness</span><span class="o">.</span><span class="n">SetRandomizedUniformGeneratorSeed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_randomness</span><span class="o">.</span><span class="n">SetRandomizedNormalRNGSeed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_randomness</span> <span class="o">=</span> <span class="n">randomness</span>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="ExpectedImprovement.dim"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.expected_improvement.ExpectedImprovement.dim">[docs]</a>    <span class="k">def</span> <span class="nf">dim</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the number of spatial dimensions.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gaussian_process</span><span class="o">.</span><span class="n">dim</span>
+</div>
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="ExpectedImprovement.problem_size"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.expected_improvement.ExpectedImprovement.problem_size">[docs]</a>    <span class="k">def</span> <span class="nf">problem_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the number of independent parameters to optimize.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span>
+</div>
+<div class="viewcode-block" id="ExpectedImprovement.get_current_point"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.expected_improvement.ExpectedImprovement.get_current_point">[docs]</a>    <span class="k">def</span> <span class="nf">get_current_point</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the current_point (array of float64 with shape (problem_size)) at which this object is evaluating the objective function, ``f(x)``.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_current_point</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="ExpectedImprovement.set_current_point"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.expected_improvement.ExpectedImprovement.set_current_point">[docs]</a>    <span class="k">def</span> <span class="nf">set_current_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">current_point</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set current_point to the specified point; ordering must match.</span>
+
+<span class="sd">        :param current_point: current_point at which to evaluate the objective function, ``f(x)``</span>
+<span class="sd">        :type current_point: array of float64 with shape (problem_size)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_current_point</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">current_point</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="ExpectedImprovement.compute_expected_improvement"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.expected_improvement.ExpectedImprovement.compute_expected_improvement">[docs]</a>    <span class="k">def</span> <span class="nf">compute_expected_improvement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">force_monte_carlo</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Compute the expected improvement at ``current_point``, with ``points_to_sample`` concurrent points being sampled.</span>
+
+<span class="sd">        .. Note:: These comments were copied from this object&#39;s superclass in expected_improvement_interface.py.</span>
+
+<span class="sd">        ``current_points`` is the q and points_to_sample is the p in q,p-EI.</span>
+
+<span class="sd">        We compute ``EI(Xs) = E_n[[f^*_n(X) - min(f(Xs_1),...,f(Xs_m))]^+]``, where ``Xs`` are potential points</span>
+<span class="sd">        to sample and ``X`` are already sampled points.  The ``^+`` indicates that the expression in the expectation evaluates to 0</span>
+<span class="sd">        if it is negative.  ``f^*(X)`` is the MINIMUM over all known function evaluations (``points_sampled_value``), whereas</span>
+<span class="sd">        ``f(Xs)`` are *GP-predicted* function evaluations.</span>
+
+<span class="sd">        The EI is the expected improvement in the current best known objective function value that would result from sampling</span>
+<span class="sd">        at ``points_to_sample``.</span>
+
+<span class="sd">        In general, the EI expression is complex and difficult to evaluate; hence we use Monte-Carlo simulation to approximate it.</span>
+
+<span class="sd">        :param force_monte_carlo: whether to force monte carlo evaluation (vs using fast/accurate analytic eval when possible)</span>
+<span class="sd">        :type force_monte_carlo: boolean</span>
+<span class="sd">        :return: value of EI evaluated at ``current_point``</span>
+<span class="sd">        :rtype: float64</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">num_points</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_points_to_sample</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">union_of_points</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_current_point</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_points_to_sample</span><span class="p">),</span> <span class="p">(</span><span class="n">num_points</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">C_GP</span><span class="o">.</span><span class="n">compute_expected_improvement</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_gaussian_process</span><span class="o">.</span><span class="n">_gaussian_process</span><span class="p">,</span>
+            <span class="n">cpp_utils</span><span class="o">.</span><span class="n">cppify</span><span class="p">(</span><span class="n">union_of_points</span><span class="p">),</span>
+            <span class="n">num_points</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_num_mc_iterations</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_best_so_far</span><span class="p">,</span>
+            <span class="n">force_monte_carlo</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_randomness</span><span class="p">,</span>
+        <span class="p">)</span>
+</div>
+<div class="viewcode-block" id="ExpectedImprovement.compute_objective_function"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.expected_improvement.ExpectedImprovement.compute_objective_function">[docs]</a>    <span class="k">def</span> <span class="nf">compute_objective_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Wrapper for compute_expected_improvement; see that function&#39;s docstring.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_expected_improvement</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="ExpectedImprovement.compute_grad_expected_improvement"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.expected_improvement.ExpectedImprovement.compute_grad_expected_improvement">[docs]</a>    <span class="k">def</span> <span class="nf">compute_grad_expected_improvement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">force_monte_carlo</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Compute the gradient of expected improvement at ``current_point`` wrt ``current_point``, with ``points_to_sample`` concurrent samples.</span>
+
+<span class="sd">        .. Note:: These comments were copied from this&#39;s superclass in expected_improvement_interface.py.</span>
+
+<span class="sd">        ``current_points`` is the q and points_to_sample is the p in q,p-EI.</span>
+
+<span class="sd">        In general, the expressions for gradients of EI are complex and difficult to evaluate; hence we use</span>
+<span class="sd">        Monte-Carlo simulation to approximate it.</span>
+
+<span class="sd">        :param force_monte_carlo: whether to force monte carlo evaluation (vs using fast/accurate analytic eval when possible)</span>
+<span class="sd">        :type force_monte_carlo: boolean</span>
+<span class="sd">        :return: gradient of EI, i-th entry is ``\pderiv{EI(x)}{x_i}`` where ``x`` is ``current_point``</span>
+<span class="sd">        :rtype: array of float64 with shape (dim)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">grad_EI</span> <span class="o">=</span> <span class="n">C_GP</span><span class="o">.</span><span class="n">compute_grad_expected_improvement</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_gaussian_process</span><span class="o">.</span><span class="n">_gaussian_process</span><span class="p">,</span>
+            <span class="n">cpp_utils</span><span class="o">.</span><span class="n">cppify</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_points_to_sample</span><span class="p">),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_points_to_sample</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_num_mc_iterations</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_best_so_far</span><span class="p">,</span>
+            <span class="n">force_monte_carlo</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_randomness</span><span class="p">,</span>
+            <span class="n">cpp_utils</span><span class="o">.</span><span class="n">cppify</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_current_point</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">grad_EI</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="ExpectedImprovement.compute_grad_objective_function"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.expected_improvement.ExpectedImprovement.compute_grad_objective_function">[docs]</a>    <span class="k">def</span> <span class="nf">compute_grad_objective_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Wrapper for compute_grad_expected_improvement; see that function&#39;s docstring.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_grad_expected_improvement</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="ExpectedImprovement.compute_hessian_objective_function"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.expected_improvement.ExpectedImprovement.compute_hessian_objective_function">[docs]</a>    <span class="k">def</span> <span class="nf">compute_hessian_objective_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;We do not currently support computation of the (spatial) hessian of Expected Improvement.&quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s">&#39;Currently we cannot compute the hessian of expected improvement.&#39;</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,54 @@
+moe.tests.views package
+=======================
+
+Submodules
+----------
+
+moe.tests.views.exceptions_test module
+--------------------------------------
+
+.. automodule:: moe.tests.views.exceptions_test
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+moe.tests.views.gp_ei_test module
+---------------------------------
+
+.. automodule:: moe.tests.views.gp_ei_test
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+moe.tests.views.gp_mean_var_test module
+---------------------------------------
+
+.. automodule:: moe.tests.views.gp_mean_var_test
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+moe.tests.views.gp_next_points_epi_test module
+----------------------------------------------
+
+.. automodule:: moe.tests.views.gp_next_points_epi_test
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+moe.tests.views.rest_gaussian_process_test_case module
+------------------------------------------------------
+
+.. automodule:: moe.tests.views.rest_gaussian_process_test_case
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: moe.tests.views
+    :members:
+    :undoc-members:
+    :show-inheritance:

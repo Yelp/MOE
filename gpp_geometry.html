@@ -1,0 +1,698 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>gpp_geometry &mdash; MOE 0.1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="_static/breathe.css" type="text/css" />
+  
+    <link rel="top" title="MOE 0.1.0 documentation" href="index.html"/>
+        <link rel="up" title="C++ Files" href="cpp_tree.html"/>
+        <link rel="next" title="gpp_heuristic_expected_improvement_optimization" href="gpp_heuristic_expected_improvement_optimization.html"/>
+        <link rel="prev" title="gpp_exception" href="gpp_exception.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="index.html" class="fa fa-home"> MOE</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul>
+<li class="toctree-l1"><a class="reference internal" href="moe.html">moe package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#module-moe.resources">moe.resources module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#module-moe">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="cpp_tree.html">C++ Files</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimization_test.html">gpp_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_domain_test.html">gpp_domain_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_random_test.html">gpp_random_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_exception.html">gpp_exception</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">gpp_geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_test_utils.html">gpp_test_utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_logging.html">gpp_logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_covariance.html">gpp_covariance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_math-inl.html">gpp_math-inl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_domain.html">gpp_domain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_common.html">gpp_python_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_hyperparameter_optimization_demo.html">gpp_hyperparameter_optimization_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_test_utils_test.html">gpp_test_utils_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_math_test.html">gpp_math_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_model_selection.html">gpp_python_model_selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_math.html">gpp_math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_test.html">gpp_python_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_random.html">gpp_random</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra.html">gpp_linear_algebra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_core.html">gpp_core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_covariance_test.html">gpp_covariance_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python.html">gpp_python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_and_hyperparameter_optimization.html">gpp_model_selection_and_hyperparameter_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimization_parameters.html">gpp_optimization_parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_common.html">gpp_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_and_hyperparameter_optimization_test.html">gpp_model_selection_and_hyperparameter_optimization_test</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">MOE</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="cpp_tree.html">C++ Files</a> &raquo;</li>
+      
+    <li>gpp_geometry</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="_sources/gpp_geometry.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <div class="section" id="gpp-geometry">
+<h1>gpp_geometry<a class="headerlink" href="#gpp-geometry" title="Permalink to this headline">¶</a></h1>
+<p><strong>Contents:</strong></p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><a class="reference internal" href="#gpp-geometry-hpp">gpp_geometry.hpp</a></li>
+</ol>
+</div></blockquote>
+<div class="section" id="gpp-geometry-hpp">
+<h2>gpp_geometry.hpp<a class="headerlink" href="#gpp-geometry-hpp" title="Permalink to this headline">¶</a></h2>
+<p></p>
+<p><dl class="docutils">
+<dt>This file contains classes and utilities to help with (planar) geometry operations.</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt>Functions:</dt>
+<dd><ul class="first last simple">
+<li>CheckPointInHypercube: checks whether a point is in the domain <span class="math">\(\, [x_{1,min}, x_{1,max}] X ... X [x_{dim,min}, x_{dim,max}]\)</span></li>
+<li>CheckPointInUnitSimplex: checks whether a point is in the unit simplex</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Structs:</dt>
+<dd><ul class="first last">
+<li><p class="first">ClosedInterval: represents the closed interval <span class="math">\(\, [a, b]\)</span> with utilities for length, in/out test etc.</p>
+</li>
+<li><dl class="first docutils">
+<dt>Plane: represents a dim-dimensional plane as its &#8220;outward&#8221; unit normal and the signed distance from the origin.</dt>
+<dd><p class="first last">Contains functions for distance, projection, etc.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+ </p>
+<p><p id="project0namespaceoptimal__learning"><em>namespace</em> <strong>optimal_learning</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+<em>Functions</em><blockquote>
+<div><p><span class="target" id="project0namespaceoptimal__learning_1a505b3db82ef10677c4cd73af3116b27d"></span><div class="line-block">
+<div class="line">OL_WARN_UNUSED_RESULT OL_NONNULL_POINTERS bool <strong>CheckPointInHypercube</strong>(<a class="reference internal" href="#project0structoptimal__learning_1_1_closed_interval"><em>ClosedInterval</em></a>  const *restrict domain, double const *restrict point, int dim)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Simple auxilliary function that checks if a point is within the given hypercube.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">domain[dim]:</th><td class="field-body">array of ClosedInterval specifying the boundaries of a dim-dimensional tensor-product domain.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">point[dim]:</th><td class="field-body">the point to check</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">dim:</th><td class="field-body">the number of spatial dimensions</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd>true if the point is inside the specified tensor-product domain</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0namespaceoptimal__learning_1a258edfb802ce7c5fa2c98bf09b7f14a3"></span><div class="line-block">
+<div class="line">OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT bool <strong>CheckPointInUnitSimplex</strong>(double const *restrict point, int dim)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><dl class="docutils">
+<dt>Checks if a point is inside/on the unit d-simplex.  A point <span class="math">\(\, x_i\)</span> lies inside the unit d-simplex if:</dt>
+<dd><ol class="first last arabic simple">
+<li><span class="math">\(\, x_i \geq 0 \ \forall i\)</span>  (i ranging over dimension)</li>
+<li><span class="math">\(\, \sum_i x_i \leq 1\)</span></li>
+</ol>
+</dd>
+</dl>
+<p>Implying that <span class="math">\(\, x_i \leq 1 \ \forall i\)</span>.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">point[dim]:</th><td class="field-body">point to check</td>
+</tr>
+<tr class="field-even field"><th class="field-name">dim:</th><td class="field-body">number of dimensions</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd>true if the point lies inside/on the unit d-simplex</dd>
+</dl>
+ </p>
+</div></blockquote>
+</div></blockquote>
+<p><p id="project0structoptimal__learning_1_1_closed_interval"><em>class</em> <strong>ClosedInterval</strong></p>
+<blockquote>
+<div><p></p>
+<p><p>Container to represent the mathematical notion of a closed interval, commonly written <span class="math">\(\, [a,b]\)</span>.
+The closed interval <span class="math">\(\, [a,b]\)</span> is the set of all numbers <span class="math">\(\, x \in \mathbb{R}\)</span> such that <span class="math">\(\, a \leq x \leq b\)</span>.
+Note that &#8220;closed&#8221; here indicates the interval <em>includes</em> both endpoints.
+An interval with <span class="math">\(\, a &gt; b\)</span> is considered empty.</p>
+<dl class="docutils">
+<dt>This struct is &#8220;trivial&#8221; and &#8220;standard layout&#8221; and thus &#8220;POD&#8221; (in the C++11 sense).</dt>
+<dd><ul class="first last simple">
+<li><a class="reference external" href="http://en.cppreference.com/w/cpp/types/is_pod">http://en.cppreference.com/w/cpp/types/is_pod</a></li>
+<li><a class="reference external" href="http://stackoverflow.com/questions/4178175/what-are-aggregates-and-pods-and-how-why-are-they-special/7189821#7189821">http://stackoverflow.com/questions/4178175/what-are-aggregates-and-pods-and-how-why-are-they-special/7189821#7189821</a></li>
+</ul>
+</dd>
+</dl>
+<p>This struct is not an aggregate; list (aka brace) initialization and a 2-argument constructor are both available:</p>
+<div class="highlight-python"><div class="highlight"><pre>ClosedInterval tmp(1.0, 2.0);  // this ctor makes it non-aggregate
+ClosedInterval tmp{1.0, 2.0};  // and brace-style (aka initializer list) inits also work
+</pre></div>
+</div>
+ </p>
+<em>Public Functions</em><blockquote>
+<div><p><span class="target" id="project0structoptimal__learning_1_1_closed_interval_1a3380d2e30aaeb649ceaca4c5c77071e6"></span><div class="line-block">
+<div class="line"> <strong>ClosedInterval</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Explicitly defaulted default constructor.
+Defining a custom ctor (below) disables the default ctor, so we explicitly default it.
+This is needed to maintain POD-ness.</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_closed_interval_1a09e945f4dcc8def69ebf58455e779cba"></span><div class="line-block">
+<div class="line"> <strong>ClosedInterval</strong>(double min_in, double max_in)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Constructs a ClosedInterval object with specified <tt class="docutils literal"><span class="pre">min</span></tt>, <tt class="docutils literal"><span class="pre">max</span></tt>.</p>
+<p>The presence of this ctor makes this object a non-aggregate, so brace-initialization
+follow list initialization rules (not aggregate initialization):</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference external" href="http://en.cppreference.com/w/cpp/language/list_initialization">http://en.cppreference.com/w/cpp/language/list_initialization</a></li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">min_in:</th><td class="field-body">left bound of the interval</td>
+</tr>
+<tr class="field-even field"><th class="field-name">max_in:</th><td class="field-body">right bound of the interval</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_closed_interval_1ae81057ce96042e18a218523b14d9a742"></span><div class="line-block">
+<div class="line">bool <strong>IsInside</strong>(double value)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Check if a value is inside this ClosedInterval.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">value:</th><td class="field-body">the value to check</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd>true if <tt class="docutils literal"><span class="pre">min</span></tt> <span class="math">\(\,\leq\)</span> <tt class="docutils literal"><span class="pre">value</span></tt> <span class="math">\(\,\leq\)</span> <tt class="docutils literal"><span class="pre">max</span></tt></dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_closed_interval_1ab7a6893d70f7f81a9206a4283b1b3fb8"></span><div class="line-block">
+<div class="line">double <strong>Length</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Compute the length of this ClosedInterval; result can be negative (i.e., an empty interval).</p>
+<dl class="docutils">
+<dt><strong>Returns</strong>:</dt>
+<dd>length of the interval</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_closed_interval_1a690e3b92e62cd36e3bd3ecf8034033bb"></span><div class="line-block">
+<div class="line">bool <strong>IsEmpty</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Checks whether the interval is <span class="math">\(\,\emptyset\)</span> (i.e., <tt class="docutils literal"><span class="pre">max</span></tt> &lt; <tt class="docutils literal"><span class="pre">min</span></tt>).
+Equivalent to Length() <span class="math">\(\,\geq\)</span> 0.0.</p>
+<dl class="docutils">
+<dt><strong>Returns</strong>:</dt>
+<dd>true if the interval is non-empty: <tt class="docutils literal"><span class="pre">max</span></tt> <span class="math">\(\,\geq\)</span> <tt class="docutils literal"><span class="pre">min</span></tt></dd>
+</dl>
+ </p>
+</div></blockquote>
+</div></blockquote>
+<em>Public Members</em><blockquote>
+<div><p><span class="target" id="project0structoptimal__learning_1_1_closed_interval_1aa86783e6aa16ee8d849d92b149307792"></span>double <strong>min</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_closed_interval_1a1a4ed748c50ae8fb3b6715dec4745909"></span>double <strong>max</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</p>
+<p><p id="project0structoptimal__learning_1_1_plane"><em>class</em> <strong>Plane</strong></p>
+<blockquote>
+<div><p></p>
+<p><dl class="docutils">
+<dt>We specify a plane in dim-space using the Hesse (or Hessian) Normal Form:</dt>
+<dd><ul class="first last simple">
+<li><a class="reference external" href="http://mathworld.wolfram.com/HessianNormalForm.html">http://mathworld.wolfram.com/HessianNormalForm.html</a></li>
+</ul>
+</dd>
+</dl>
+<p>The equation of plane requires dim + 1 real numbers:
+<span class="math">\(\, a_0 + \sum_{i=0}^{dim} n_i x_i = 0\)</span></p>
+<p>Hence we can describe any plane as a vector, <span class="math">\(\, [n_0, n_2, ..., n_{dim-1}]\)</span>, and a real number, <span class="math">\(\, a_0\)</span>.</p>
+<p>Let <span class="math">\(\, n_{vec} = [n_0, ..., n_{dim-1}]\)</span> be the (outward) <em>unit</em> normal vector. By convention, <span class="math">\(\, \|n_{vec}\|_2 = 1\)</span>.
+<span class="math">\(\, a_0\)</span> is the <em>signed</em> distance to the origin. This is the distance from the plane to the origin in the direction of
+<span class="math">\(\, n_{vec}\)</span>. Put another way, <span class="math">\(\, a_0\)</span> is positive if the origin is in the same half-space &#8220;pointed to&#8221; by
+<span class="math">\(\, n_{vec}\)</span> and negative otherwise.
+Note: <span class="math">\(\, a_0\)</span> is measured in units of <span class="math">\(\, \|n_{vec}\|\)</span>, so if it is <em>not</em> an unit vector, that is analogous to scaling :math:<a href="#id1"><span class="problematic" id="id2">`</span></a>, a_0nme.</p>
+<dl class="docutils">
+<dt>As an example, let&#8217;s consider 4 planes with dim = 2:</dt>
+<dd><ul class="first last simple">
+<li><span class="math">\(\, a_0\)</span> = -1, and <span class="math">\(\, n_{vec}\)</span> = { 1.0, 0.0}: the plane x =  1 with rightward pointing normal.</li>
+<li><span class="math">\(\, a_0\)</span> = -1, and <span class="math">\(\, n_{vec}\)</span> = {-1.0, 0.0}: the plane x = -1 with leftward  pointing normal.</li>
+<li><span class="math">\(\, a_0\)</span> =  1, and <span class="math">\(\, n_{vec}\)</span> = { 1.0, 0.0}: the plane x = -1 with rightward pointing normal.</li>
+<li><span class="math">\(\, a_0\)</span> =  1, and <span class="math">\(\, n_{vec}\)</span> = {-1.0, 0.0}: the plane x =  1 with leftward  pointing normal.</li>
+</ul>
+</dd>
+</dl>
+<p>Be careful with the signs.</p>
+<p>Another common way of specifying a plane is via a point <span class="math">\(\, x_0\)</span> and an unit normal, <span class="math">\(\, n_{vec}\)</span>. A point x is in the plane
+if and only if <span class="math">\(\, (x-x_0) \cdot n_{vec} = 0\)</span>. Since <span class="math">\(\, x_0\)</span> is constant, we can precompute and store
+<span class="math">\(\, ms x_0 \cdot n_{vec} = -a_0\)</span>, yielding: <span class="math">\(\, x \cdot n_{vec} - x_0 \cdot n_{vec} = x \cdot n_{vec} + a_0\)</span>, which is our
+original equation of a plane.</p>
+ </p>
+<em>Public Functions</em><blockquote>
+<div><p><span class="target" id="project0structoptimal__learning_1_1_plane_1a9522f9e3a0ebe5c5b46f9b4354772a47"></span><div class="line-block">
+<div class="line"> <strong>Plane</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_plane_1a0c2f0a05764bc117806385c5fc932a87"></span><div class="line-block">
+<div class="line"> <strong>Plane</strong>(int dim_in)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Creates a zero-initialized plane object with enough space for dim-dimensions.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This plane is invalid (<tt class="docutils literal"><span class="pre">unit_normal</span></tt> := zero is not a unit vector) and needs to have its members initialized.
+That said, no member functions will fail even without complete initialization.</p>
+</div>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">dim:</th><td class="field-body">the number of spatial dimensions</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_plane_1aae0e65cc41b6b101b59c92a4237a84bb"></span><div class="line-block">
+<div class="line"> <strong>Plane</strong>(double const *restrict unit_normal_in, double offset_in, int dim_in)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Creates a plane in dim-dimensions with the specified unit normal (<span class="math">\(\, n_i\)</span>) and offset (<span class="math">\(\, a_0\)</span>):
+<span class="math">\(\, a_0 + \sum_{i=0}^{dim} n_i * x_i = 0\)</span></p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Failure to specify a unit normal will result in surprising behavior. <span class="math">\(\, a_0\)</span> is really in units of
+<span class="math">\(\,\|n_{vec}\|\)</span>, so if <span class="math">\(\,\|n_{vec}\| = 3.5\)</span>, then the actual distance to the origin is <span class="math">\(\, 3.5 a_0\)</span>.</p>
+</div>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">dim:</th><td class="field-body">the number of spatial dimensions</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">unit_normal[dim]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">the unit normal vector. VectorNorm(unit_normal, dim) must be 1.0</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">offset:</th><td class="field-body">a_0, the signed distance to the origin (see class docs)</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_plane_1a9360050fd0bab065e7d34c938af8e2a0"></span><div class="line-block">
+<div class="line"> <strong>Plane</strong>(double const *restrict unit_normal_in, double const *restrict point, int dim_in)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Creates a plane in dim-dimensions that contains &#8220;point,&#8221; with the specified unit normal.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">dim:</th><td class="field-body">the number of spatial dimensions</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">unit_normal[dim]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">the unit normal vector. VectorNorm(unit_normal, dim) must be 1.0</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">point[dim]:</th><td class="field-body">a point contained in the plane</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_plane_1a25f8926eda0c5dde38cecfe73c798c64"></span><div class="line-block">
+<div class="line">int <strong>dim</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><dl class="docutils">
+<dt><strong>Returns</strong>:</dt>
+<dd>the number of spatial dimensions (that this plane lives in)</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_plane_1a020073e0e4ea6c131abb2967ed870ddc"></span><div class="line-block">
+<div class="line">double <strong>OrthogonalDistanceToPoint</strong>(double const *restrict point)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Computes the signed, shortest distance from this plane to point: positive means the point is in the half-space
+determined by the direction of <tt class="docutils literal"><span class="pre">unit_normal</span></tt>.</p>
+<p>Note: if point is the origin, this yields precisely <span class="math">\(\, a_0\)</span> (<tt class="docutils literal"><span class="pre">offset</span></tt>).</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">point[dim]:</th><td class="field-body">point to compute distance to</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd>signed, shortest distance from this plane to point, where positive means the point and normal are in the same half-space</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_plane_1a2f3b514077dd38ff809a64b86ac9da9a"></span><div class="line-block">
+<div class="line">void <strong>OrthogonalProjectionOntoPlane</strong>(double *restrict point)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Projects a point (orthogonally) onto a plane; i.e., finds the point on the plane that is closest to the input point.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">point[dim]:</th><td class="field-body">point to project onto plane</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Outputs</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">point[dim]:</th><td class="field-body">point projected onto plane</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_plane_1ad4281939e7ac7d694ac6f5affde5dc6b"></span><div class="line-block">
+<div class="line">double <strong>DistanceToPlaneAlongVector</strong>(double const *restrict point, double const *restrict vector)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Computes the signed distance from the specified <tt class="docutils literal"><span class="pre">point</span></tt> to this plane along the specified <tt class="docutils literal"><span class="pre">vector</span></tt>. This result
+is computed in units of <span class="math">\(\,\|vector\|_2\)</span>. That is, a distance of 3.14 means if we compute:
+new_point = 3.14*vector + point,
+then new_point will be on this plane.</p>
+<p>A negative distance means the plane is &#8220;behind&#8221; the ray.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">point[dim]:</th><td class="field-body">point to compute distance from</td>
+</tr>
+<tr class="field-even field"><th class="field-name">vector[dim]:</th><td class="field-body">vector to compute distance along</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd>Signed distance along the given vector; positive means the intersection is in the same direction as the vector.
+This result is in units of <span class="math">\(\,\|vector\|_2\)</span>; normalize vector if you want an actual distance.</dd>
+</dl>
+ </p>
+</div></blockquote>
+</div></blockquote>
+<em>Public Members</em><blockquote>
+<div><p><span class="target" id="project0structoptimal__learning_1_1_plane_1a89e6b486140f2f255dfbb8ffec000da2"></span>double <strong>offset</strong></p>
+<blockquote>
+<div><p>the scalar a_0: the distance from the plane to the origin </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_plane_1a7b40a9b48185c0ebcfa17334d8a3d2fe"></span>std::vector&lt; double &gt; <strong>unit_normal</strong></p>
+<blockquote>
+<div><p>the vector n_i: the &#8220;outward&#8221; unit normal vector </p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</p>
+</div></blockquote>
+</p>
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="gpp_heuristic_expected_improvement_optimization.html" class="btn btn-neutral float-right" title="gpp_heuristic_expected_improvement_optimization"/>Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="gpp_exception.html" class="btn btn-neutral" title="gpp_exception"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

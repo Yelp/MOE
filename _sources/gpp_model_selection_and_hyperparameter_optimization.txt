@@ -1,0 +1,20 @@
+gpp_model_selection_and_hyperparameter_optimization
+=====
+
+**Contents:**
+
+    1. `gpp_model_selection_and_hyperparameter_optimization.hpp`_
+    2. `gpp_model_selection_and_hyperparameter_optimization.cpp`_
+
+
+gpp_model_selection_and_hyperparameter_optimization.hpp
+------
+
+.. doxygenfile:: gpp_model_selection_and_hyperparameter_optimization.hpp
+
+
+gpp_model_selection_and_hyperparameter_optimization.cpp
+------
+
+.. doxygenfile:: gpp_model_selection_and_hyperparameter_optimization.cpp
+

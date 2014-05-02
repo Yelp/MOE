@@ -1,0 +1,672 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>gpp_exception &mdash; MOE 0.1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="_static/breathe.css" type="text/css" />
+  
+    <link rel="top" title="MOE 0.1.0 documentation" href="index.html"/>
+        <link rel="up" title="C++ Files" href="cpp_tree.html"/>
+        <link rel="next" title="gpp_geometry" href="gpp_geometry.html"/>
+        <link rel="prev" title="gpp_random_test" href="gpp_random_test.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="index.html" class="fa fa-home"> MOE</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul>
+<li class="toctree-l1"><a class="reference internal" href="moe.html">moe package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#module-moe.resources">moe.resources module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#module-moe">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="cpp_tree.html">C++ Files</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimization_test.html">gpp_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_domain_test.html">gpp_domain_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_random_test.html">gpp_random_test</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">gpp_exception</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_geometry.html">gpp_geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_test_utils.html">gpp_test_utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_logging.html">gpp_logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_covariance.html">gpp_covariance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_math-inl.html">gpp_math-inl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_domain.html">gpp_domain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_common.html">gpp_python_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_hyperparameter_optimization_demo.html">gpp_hyperparameter_optimization_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_test_utils_test.html">gpp_test_utils_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_math_test.html">gpp_math_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_model_selection.html">gpp_python_model_selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_math.html">gpp_math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_test.html">gpp_python_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_random.html">gpp_random</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra.html">gpp_linear_algebra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_core.html">gpp_core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_covariance_test.html">gpp_covariance_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python.html">gpp_python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_and_hyperparameter_optimization.html">gpp_model_selection_and_hyperparameter_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimization_parameters.html">gpp_optimization_parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_common.html">gpp_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_and_hyperparameter_optimization_test.html">gpp_model_selection_and_hyperparameter_optimization_test</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">MOE</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="cpp_tree.html">C++ Files</a> &raquo;</li>
+      
+    <li>gpp_exception</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="_sources/gpp_exception.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <div class="section" id="gpp-exception">
+<h1>gpp_exception<a class="headerlink" href="#gpp-exception" title="Permalink to this headline">¶</a></h1>
+<p><strong>Contents:</strong></p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><a class="reference internal" href="#gpp-exception-hpp">gpp_exception.hpp</a></li>
+<li><a class="reference internal" href="#gpp-exception-cpp">gpp_exception.cpp</a></li>
+</ol>
+</div></blockquote>
+<div class="section" id="gpp-exception-hpp">
+<h2>gpp_exception.hpp<a class="headerlink" href="#gpp-exception-hpp" title="Permalink to this headline">¶</a></h2>
+<p></p>
+<p></p>
+<em>Defines</em><blockquote>
+<div><p><span class="target" id="project0gpp__exception_8hpp_1a45cc5e93c72eb2f9f99a482484cb182a"></span><strong>OL_STRINGIFY_EXPANSION_INNER</strong>(x)</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0gpp__exception_8hpp_1a376002376659e962ee38782139b790b8"></span><strong>OL_STRINGIFY_EXPANSION</strong>(x)</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0gpp__exception_8hpp_1af21a0bb790bf224ce2004f552bc9968c"></span><strong>OL_STRINGIFY_FILE_AND_LINE</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0gpp__exception_8hpp_1afc7f45be93dbd536c0376cb7a9df30d3"></span><strong>OL_THROW_EXCEPTION</strong>(ExceptionType, Args...)</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<p><p id="project0namespaceoptimal__learning"><em>namespace</em> <strong>optimal_learning</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+<em>Functions</em><blockquote>
+<div><p><span class="target" id="project0namespaceoptimal__learning_1a342b86a4fae8ef81b2c0716fbc5270a7"></span><div class="line-block">
+<div class="line">template &lt; typename ExceptionType &gt;</div>
+<div class="line">OL_NORETURN void <strong>ThrowException</strong>(const ExceptionType &amp; except)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<p><p id="project0classoptimal__learning_1_1_runtime_exception"><em>class</em> <strong>RuntimeException</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+<em>Public Functions</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_runtime_exception_1adad351177e0b4588cdd57002a8adbe38"></span><div class="line-block">
+<div class="line"> <strong>RuntimeException</strong>(char const * line_info, char const * func_info, char const * custom_message)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_runtime_exception_1a698794d233a3418bda82ee8fbb82ce21"></span><div class="line-block">
+<div class="line">const char * <strong>what</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_runtime_exception_1a9bc26f38cddbfd6c5f2e2fae2799423a"></span><div class="line-block">
+<div class="line"> <strong>RuntimeException</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Public Static Attributes</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_runtime_exception_1a5c466bd452e27ff59c1e1b1eec17e152"></span>constexpr char const *const <strong>kName</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Private Members</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_runtime_exception_1a89397a76a5c041eb6755729c3f0b7ac5"></span>std::string <strong>message_</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</p>
+<p><p id="project0classoptimal__learning_1_1_bounds_exception"><em>class</em> <strong>BoundsException</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+<em>Public Functions</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_bounds_exception_1aae0c786274e1b2c805f59f63a14ff4a4"></span><div class="line-block">
+<div class="line"> <strong>BoundsException</strong>(char const * line_info, char const * func_info, char const * custom_message, ValueType value_in, ValueType min_in, ValueType max_in)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_bounds_exception_1a719026792eb425942e176551892120cf"></span><div class="line-block">
+<div class="line">const char * <strong>what</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_bounds_exception_1a7e4ecdf9f2e5b6e1a8f97924a81ed134"></span><div class="line-block">
+<div class="line">ValueType <strong>value</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_bounds_exception_1a6cec49c027661240273b27349477c601"></span><div class="line-block">
+<div class="line">ValueType <strong>max</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_bounds_exception_1aa466d7625a1809e562dd6ed70e319471"></span><div class="line-block">
+<div class="line">ValueType <strong>min</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_bounds_exception_1a92b5ffeed6f4d09d0363edb4e76d7e43"></span><div class="line-block">
+<div class="line"> <strong>OL_DISALLOW_DEFAULT_AND_ASSIGN</strong>(<a class="reference internal" href="#project0classoptimal__learning_1_1_bounds_exception"><em>BoundsException</em></a>)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Public Static Attributes</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_bounds_exception_1aa95eeefe2f6d2eaae67512b3a3505634"></span>constexpr char const *const <strong>kName</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Protected Functions</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_bounds_exception_1aa086c3b6a4c03c56a0edfabd74161852"></span><div class="line-block">
+<div class="line"> <strong>BoundsException</strong>(char const * name_in, char const * line_info, char const * func_info, char const * custom_message, ValueType value_in, ValueType min_in, ValueType max_in)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Private Members</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_bounds_exception_1a406d10eafe98537208eb09322999551b"></span>ValueType <strong>value_</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_bounds_exception_1afa0aad2643c270d680378abf167b9648"></span>ValueType <strong>min_</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_bounds_exception_1ab08df5d96a1d2abd64d7c15cbe62921b"></span>ValueType <strong>max_</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_bounds_exception_1a7f0e74d9acb6a901c4994548595e76df"></span>std::string <strong>message_</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</p>
+<p><p id="project0classoptimal__learning_1_1_lower_bound_exception"><em>class</em> <strong>LowerBoundException</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+<em>Public Functions</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_lower_bound_exception_1ab12184cc6490aadec3e919fc901290a2"></span><div class="line-block">
+<div class="line"> <strong>LowerBoundException</strong>(char const * line_info, char const * func_info, char const * custom_message, ValueType value_in, ValueType min_in)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_lower_bound_exception_1a972efd727a7d5485a5c01836e1699876"></span><div class="line-block">
+<div class="line"> <strong>OL_DISALLOW_DEFAULT_AND_ASSIGN</strong>(<a class="reference internal" href="#project0classoptimal__learning_1_1_lower_bound_exception"><em>LowerBoundException</em></a>)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Public Static Attributes</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_lower_bound_exception_1a5d863d66afcc23571d4e4f84aaac549c"></span>constexpr char const *const <strong>kName</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</p>
+<p><p id="project0classoptimal__learning_1_1_upper_bound_exception"><em>class</em> <strong>UpperBoundException</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+<em>Public Functions</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_upper_bound_exception_1a406be466e2c455e165b6529c4d15e97f"></span><div class="line-block">
+<div class="line"> <strong>UpperBoundException</strong>(char const * line_info, char const * func_info, char const * custom_message, ValueType value_in, ValueType max_in)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_upper_bound_exception_1a9b5cd529ca90d718b628018ce3424bce"></span><div class="line-block">
+<div class="line"> <strong>OL_DISALLOW_DEFAULT_AND_ASSIGN</strong>(<a class="reference internal" href="#project0classoptimal__learning_1_1_upper_bound_exception"><em>UpperBoundException</em></a>)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Public Static Attributes</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_upper_bound_exception_1ad90a782dbec0bfc7c0e274e41a8ff809"></span>constexpr char const *const <strong>kName</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</p>
+<p><p id="project0classoptimal__learning_1_1_invalid_value_exception"><em>class</em> <strong>InvalidValueException</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+<em>Public Functions</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_invalid_value_exception_1a89cac78e544315e3335c47a562b5351f"></span><div class="line-block">
+<div class="line"> <strong>InvalidValueException</strong>(char const * line_info, char const * func_info, char const * custom_message, ValueType value_in, ValueType truth_in)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_invalid_value_exception_1a2d8b3ea2f30037e2eaf538ff7c784adb"></span><div class="line-block">
+<div class="line">template &lt; typename ValueTypeIn = ValueType, class = typename std::enable_if&lt;std::is_floating_point&lt;ValueType&gt;::value, ValueTypeIn&gt;::type &gt;</div>
+<div class="line"> <strong>InvalidValueException</strong>(char const * line_info, char const * func_info, char const * custom_message, ValueType value_in, ValueType truth_in, ValueType tolerance_in)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_invalid_value_exception_1ac39adf1280ca8552fe048397a10f1679"></span><div class="line-block">
+<div class="line">const char * <strong>what</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_invalid_value_exception_1a1ff902e1e49e7182c0398c6a1d594e3c"></span><div class="line-block">
+<div class="line">ValueType <strong>value</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_invalid_value_exception_1abca9610820d49953584ca7daafd685fb"></span><div class="line-block">
+<div class="line">ValueType <strong>truth</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_invalid_value_exception_1a88c3e5e4fd4176c3d8990220c998fa31"></span><div class="line-block">
+<div class="line">ValueType <strong>tolerance</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_invalid_value_exception_1a29f6ae56db47cb5f1de9d1ee7c897a36"></span><div class="line-block">
+<div class="line"> <strong>OL_DISALLOW_DEFAULT_AND_ASSIGN</strong>(<a class="reference internal" href="#project0classoptimal__learning_1_1_invalid_value_exception"><em>InvalidValueException</em></a>)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Public Static Attributes</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_invalid_value_exception_1aa2e936ab742953a3f114bead3816173a"></span>constexpr char const *const <strong>kName</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Private Members</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_invalid_value_exception_1ae1af6550f4ace2e2fc9dfb65251f6c85"></span>ValueType <strong>value_</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_invalid_value_exception_1acec385798bd84951cd37e8afe42ed31f"></span>ValueType <strong>truth_</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_invalid_value_exception_1a3d75c8e4ee38ff605ad99237ccdc0c14"></span>ValueType <strong>tolerance_</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_invalid_value_exception_1ab7c12a23eee0ddf6329e2df4e2285684"></span>std::string <strong>message_</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</p>
+<p><p id="project0classoptimal__learning_1_1_singular_matrix_exception"><em>class</em> <strong>SingularMatrixException</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+<em>Public Functions</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_singular_matrix_exception_1a0bce7c398429c689f39a5e896eabf00f"></span><div class="line-block">
+<div class="line"> <strong>SingularMatrixException</strong>(char const * line_info, char const * func_info, char const * custom_message, double const * matrix_in, int num_rows_in, int num_cols_in)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_singular_matrix_exception_1aa195d5a2069532272d06451bcc940817"></span><div class="line-block">
+<div class="line">const char * <strong>what</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_singular_matrix_exception_1a7315758c8155355c6a556f594dc7df2b"></span><div class="line-block">
+<div class="line">int <strong>num_rows</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_singular_matrix_exception_1a219b5e9986203a0cd1852ca074fa40c1"></span><div class="line-block">
+<div class="line">int <strong>num_cols</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_singular_matrix_exception_1a5522e2f3f0a116e4a668dffb43f227a5"></span><div class="line-block">
+<div class="line">const std::vector&lt; double &gt; &amp; <strong>matrix</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_singular_matrix_exception_1ac4795838dd059522e8dc7a9178478912"></span><div class="line-block">
+<div class="line"> <strong>OL_DISALLOW_DEFAULT_AND_ASSIGN</strong>(<a class="reference internal" href="#project0classoptimal__learning_1_1_singular_matrix_exception"><em>SingularMatrixException</em></a>)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Public Static Attributes</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_singular_matrix_exception_1a819c03ea6c03b60bfb41d2772cc45085"></span>constexpr char const *const <strong>kName</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Private Members</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_singular_matrix_exception_1a56da0d8400ae1591bee71922a437482b"></span>int <strong>num_rows_</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_singular_matrix_exception_1a8d39d9a05eb9adf84cc9264dd912c93b"></span>int <strong>num_cols_</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_singular_matrix_exception_1ab1c5465882896d2369ce383b8baae197"></span>std::vector&lt; double &gt; <strong>matrix_</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_singular_matrix_exception_1a14ebea738b91026d5b5e86368863eff5"></span>std::string <strong>message_</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</p>
+</div></blockquote>
+</p>
+</div>
+<div class="section" id="gpp-exception-cpp">
+<h2>gpp_exception.cpp<a class="headerlink" href="#gpp-exception-cpp" title="Permalink to this headline">¶</a></h2>
+<p></p>
+<p></p>
+<em>Defines</em><blockquote>
+<div><p><span class="target" id="project0gpp__exception_8cpp_1a014669cd17d60e55db118a84c6113aa8"></span><strong>BOOST_LEXICAL_CAST_ASSUME_C_LOCALE</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<p><p id="project0namespaceoptimal__learning"><em>namespace</em> <strong>optimal_learning</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</p>
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="gpp_geometry.html" class="btn btn-neutral float-right" title="gpp_geometry"/>Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="gpp_random_test.html" class="btn btn-neutral" title="gpp_random_test"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

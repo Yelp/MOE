@@ -1,0 +1,328 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>moe.tests.optimal_learning.python.lib package &mdash; MOE 0.1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="_static/breathe.css" type="text/css" />
+  
+    <link rel="top" title="MOE 0.1.0 documentation" href="index.html"/>
+        <link rel="up" title="moe.tests.optimal_learning.python package" href="moe.tests.optimal_learning.python.html"/>
+        <link rel="next" title="moe.tests.optimal_learning.python.models package" href="moe.tests.optimal_learning.python.models.html"/>
+        <link rel="prev" title="moe.tests.optimal_learning.python package" href="moe.tests.optimal_learning.python.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="index.html" class="fa fa-home"> MOE</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="moe.html">moe package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="moe.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#module-moe.resources">moe.resources module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#module-moe">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="cpp_tree.html">C++ Files</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimization_test.html">gpp_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_domain_test.html">gpp_domain_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_random_test.html">gpp_random_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_exception.html">gpp_exception</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_geometry.html">gpp_geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_test_utils.html">gpp_test_utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_logging.html">gpp_logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_covariance.html">gpp_covariance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_math-inl.html">gpp_math-inl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_domain.html">gpp_domain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_common.html">gpp_python_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_hyperparameter_optimization_demo.html">gpp_hyperparameter_optimization_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_test_utils_test.html">gpp_test_utils_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_math_test.html">gpp_math_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_model_selection.html">gpp_python_model_selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_math.html">gpp_math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_test.html">gpp_python_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_random.html">gpp_random</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra.html">gpp_linear_algebra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_core.html">gpp_core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_covariance_test.html">gpp_covariance_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python.html">gpp_python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_and_hyperparameter_optimization.html">gpp_model_selection_and_hyperparameter_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimization_parameters.html">gpp_optimization_parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_common.html">gpp_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_and_hyperparameter_optimization_test.html">gpp_model_selection_and_hyperparameter_optimization_test</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">MOE</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="moe.html">moe package</a> &raquo;</li>
+      
+          <li><a href="moe.tests.html">moe.tests package</a> &raquo;</li>
+      
+          <li><a href="moe.tests.optimal_learning.html">moe.tests.optimal_learning package</a> &raquo;</li>
+      
+          <li><a href="moe.tests.optimal_learning.python.html">moe.tests.optimal_learning.python package</a> &raquo;</li>
+      
+    <li>moe.tests.optimal_learning.python.lib package</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="_sources/moe.tests.optimal_learning.python.lib.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <div class="section" id="moe-tests-optimal-learning-python-lib-package">
+<h1>moe.tests.optimal_learning.python.lib package<a class="headerlink" href="#moe-tests-optimal-learning-python-lib-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-moe.tests.optimal_learning.python.lib.math_test">
+<span id="moe-tests-optimal-learning-python-lib-math-test-module"></span><h2>moe.tests.optimal_learning.python.lib.math_test module<a class="headerlink" href="#module-moe.tests.optimal_learning.python.lib.math_test" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="moe.tests.optimal_learning.python.lib.math_test.MatrixOpsTest">
+<em class="property">class </em><tt class="descclassname">moe.tests.optimal_learning.python.lib.math_test.</tt><tt class="descname">MatrixOpsTest</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/lib/math_test.html#MatrixOpsTest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.lib.math_test.MatrixOpsTest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">testify.test_case.TestCase</span></tt></p>
+<p>Test the various matrix ops in optimal_learning.python.lib.math</p>
+<dl class="docutils">
+<dt>Tests:</dt>
+<dd>vector_diag_vector_product
+inverse_via_backwards_sub
+cholesky_decomp
+inverse_via_cholesky</dd>
+</dl>
+<dl class="method">
+<dt id="moe.tests.optimal_learning.python.lib.math_test.MatrixOpsTest.test_cholesky_decomp">
+<tt class="descname">test_cholesky_decomp</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/lib/math_test.html#MatrixOpsTest.test_cholesky_decomp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.lib.math_test.MatrixOpsTest.test_cholesky_decomp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests cholesky_decomp</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.optimal_learning.python.lib.math_test.MatrixOpsTest.test_inverse_via_backwards_sub">
+<tt class="descname">test_inverse_via_backwards_sub</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/lib/math_test.html#MatrixOpsTest.test_inverse_via_backwards_sub"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.lib.math_test.MatrixOpsTest.test_inverse_via_backwards_sub" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests inverse_via_backwards_sub</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.optimal_learning.python.lib.math_test.MatrixOpsTest.test_inverse_via_cholesky">
+<tt class="descname">test_inverse_via_cholesky</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/lib/math_test.html#MatrixOpsTest.test_inverse_via_cholesky"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.lib.math_test.MatrixOpsTest.test_inverse_via_cholesky" title="Permalink to this definition">¶</a></dt>
+<dd><p>This tests inverse_via_cholesky and cholesky_decomp</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.optimal_learning.python.lib.math_test.MatrixOpsTest.test_vector_diag_vector_product">
+<tt class="descname">test_vector_diag_vector_product</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/lib/math_test.html#MatrixOpsTest.test_vector_diag_vector_product"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.lib.math_test.MatrixOpsTest.test_vector_diag_vector_product" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests test_vector_diag_vector_product by doing the full matrix ops</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="moe.tests.optimal_learning.python.lib.math_test.PointGenerationTest">
+<em class="property">class </em><tt class="descclassname">moe.tests.optimal_learning.python.lib.math_test.</tt><tt class="descname">PointGenerationTest</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/lib/math_test.html#PointGenerationTest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.lib.math_test.PointGenerationTest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">testify.test_case.TestCase</span></tt></p>
+<p>Test optimal_learning.python.lib.math.get_latin_hypercube_points(num_points, domains)
+also tests optimal_learning.python.lib.math.not_in_domain(point, domain)</p>
+<p><a class="reference external" href="http://en.wikipedia.org/wiki/Latin_hypercube_sampling">http://en.wikipedia.org/wiki/Latin_hypercube_sampling</a></p>
+<dl class="docutils">
+<dt>From wikipedia:</dt>
+<dd><p class="first">In the context of statistical sampling, a square grid containing sample positions
+is a Latin square if (and only if) there is only one sample in each row and each column.
+A Latin hypercube is the generalisation of this concept to an arbitrary number of dimensions,
+whereby each sample is the only one in each axis-aligned hyperplane containing it.</p>
+<p class="last">When sampling a function of N variables, the range of each variable is divided into
+M equally probable intervals. M sample points are then placed to satisfy the Latin hypercube requirements;
+note that this forces the number of divisions, M, to be equal for each variable.
+Also note that this sampling scheme does not require more samples for more dimensions (variables);
+this independence is one of the main advantages of this sampling scheme.
+Another advantage is that random samples can be taken one at a time,
+remembering which samples were taken so far.</p>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="moe.tests.optimal_learning.python.lib.math_test.PointGenerationTest.domains_to_test">
+<tt class="descname">domains_to_test</tt><em class="property"> = [[[-1, 1]], [[-10, 10]], [[-500, -490]], [[6000, 6000.001]], [[-1, 1], [-1, 1]], [[-1, 1], [-1, 1], [-1, 1]], [[-7000, 10000], [-8000, -7999], [10000.06, 10000.0601]]]</em><a class="headerlink" href="#moe.tests.optimal_learning.python.lib.math_test.PointGenerationTest.domains_to_test" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="moe.tests.optimal_learning.python.lib.math_test.PointGenerationTest.num_points_to_test">
+<tt class="descname">num_points_to_test</tt><em class="property"> = [1, 2, 5, 10, 20]</em><a class="headerlink" href="#moe.tests.optimal_learning.python.lib.math_test.PointGenerationTest.num_points_to_test" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.optimal_learning.python.lib.math_test.PointGenerationTest.test_latin_hypercube_equally_spaced">
+<tt class="descname">test_latin_hypercube_equally_spaced</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/lib/math_test.html#PointGenerationTest.test_latin_hypercube_equally_spaced"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.lib.math_test.PointGenerationTest.test_latin_hypercube_equally_spaced" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sampling from a latin hypercube results in a set of points
+that in each dimension are drawn uniformly from sub-intervals of the domain
+this tests that every sub-interval in each dimension contains exactly one point</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.optimal_learning.python.lib.math_test.PointGenerationTest.test_latin_hypercube_within_domain">
+<tt class="descname">test_latin_hypercube_within_domain</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/lib/math_test.html#PointGenerationTest.test_latin_hypercube_within_domain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.lib.math_test.PointGenerationTest.test_latin_hypercube_within_domain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests that get_latin_hypercube_points returns points within the domain</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.optimal_learning.python.lib.math_test.PointGenerationTest.test_make_rand_point_within_domain">
+<tt class="descname">test_make_rand_point_within_domain</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/lib/math_test.html#PointGenerationTest.test_make_rand_point_within_domain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.lib.math_test.PointGenerationTest.test_make_rand_point_within_domain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests that make_rand_point(domain) returns a point in the domain</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-moe.tests.optimal_learning.python.lib">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-moe.tests.optimal_learning.python.lib" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="moe.tests.optimal_learning.python.models.html" class="btn btn-neutral float-right" title="moe.tests.optimal_learning.python.models package"/>Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="moe.tests.optimal_learning.python.html" class="btn btn-neutral" title="moe.tests.optimal_learning.python package"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

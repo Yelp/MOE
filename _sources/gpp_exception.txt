@@ -1,0 +1,20 @@
+gpp_exception
+=====
+
+**Contents:**
+
+    1. `gpp_exception.hpp`_
+    2. `gpp_exception.cpp`_
+
+
+gpp_exception.hpp
+------
+
+.. doxygenfile:: gpp_exception.hpp
+
+
+gpp_exception.cpp
+------
+
+.. doxygenfile:: gpp_exception.cpp
+

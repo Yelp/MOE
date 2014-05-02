@@ -36,6 +36,14 @@ moe.views.gp_ei module
     :undoc-members:
     :show-inheritance:
 
+moe.views.gp_hyperparameter_update module
+-----------------------------------------
+
+.. automodule:: moe.views.gp_hyperparameter_update
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 moe.views.gp_mean_var module
 ----------------------------
 

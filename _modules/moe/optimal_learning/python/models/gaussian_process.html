@@ -1,0 +1,580 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>moe.optimal_learning.python.models.gaussian_process &mdash; MOE 0.1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../../../_static/favicon.ico"/>
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../../../_static/breathe.css" type="text/css" />
+  
+    <link rel="top" title="MOE 0.1.0 documentation" href="../../../../../index.html"/>
+        <link rel="up" title="moe" href="../../../../moe.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="../../../../../index.html" class="fa fa-home"> MOE</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../moe.html">moe package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe.html#module-moe.resources">moe.resources module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe.html#module-moe">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../cpp_tree.html">C++ Files</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_optimization_test.html">gpp_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_domain_test.html">gpp_domain_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_random_test.html">gpp_random_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_exception.html">gpp_exception</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_geometry.html">gpp_geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_test_utils.html">gpp_test_utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_logging.html">gpp_logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_covariance.html">gpp_covariance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_math-inl.html">gpp_math-inl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_domain.html">gpp_domain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python_common.html">gpp_python_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_hyperparameter_optimization_demo.html">gpp_hyperparameter_optimization_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_test_utils_test.html">gpp_test_utils_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_math_test.html">gpp_math_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python_model_selection.html">gpp_python_model_selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_math.html">gpp_math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python_test.html">gpp_python_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_random.html">gpp_random</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_geometry_test.html">gpp_geometry_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_linear_algebra.html">gpp_linear_algebra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_core.html">gpp_core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_covariance_test.html">gpp_covariance_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python.html">gpp_python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_model_selection_and_hyperparameter_optimization.html">gpp_model_selection_and_hyperparameter_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_optimization_parameters.html">gpp_optimization_parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_common.html">gpp_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_model_selection_and_hyperparameter_optimization_test.html">gpp_model_selection_and_hyperparameter_optimization_test</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../../../index.html">MOE</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../../../index.html">Module code</a> &raquo;</li>
+      
+          <li><a href="../../../../moe.html">moe</a> &raquo;</li>
+      
+    <li>moe.optimal_learning.python.models.gaussian_process</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <h1>Source code for moe.optimal_learning.python.models.gaussian_process</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="c"># for sci comp</span>
+
+<span class="kn">import</span> <span class="nn">moe.optimal_learning.python.models.covariance_of_process</span>
+<span class="kn">import</span> <span class="nn">moe.optimal_learning.python.lib.math</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">,</span> <span class="n">format</span><span class="o">=</span><span class="s">&#39;</span><span class="si">%(asctime)s</span><span class="s"> - </span><span class="si">%(levelname)s</span><span class="s"> - </span><span class="si">%(message)s</span><span class="s">&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="GaussianProcess"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.models.html#moe.optimal_learning.python.models.gaussian_process.GaussianProcess">[docs]</a><span class="k">class</span> <span class="nc">GaussianProcess</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A gaussian process of a sample function</span>
+
+<span class="sd">    :Attributes:</span>
+<span class="sd">        - cop: The *covariance_of_process* a CovarianceOfProcess object</span>
+<span class="sd">               default: *cop=CovarianceOfProcess()*</span>
+<span class="sd">        - domain: the domain to optimize over,</span>
+<span class="sd">            if no domain is passed in it will search over all real numbers</span>
+<span class="sd">        - initial_best_so_far: initial value of best_so_far: numpy.min(values_of_samples) if samples exist, o/w max double</span>
+<span class="sd">        - default_sample_variance: noise variance to use if no noise is explicitly specified</span>
+<span class="sd">        - max_number_of_threads: max number of threads to use; only applicable to LinkedCpp subclass</span>
+
+<span class="sd">    :Internal state variables:</span>
+<span class="sd">        - domain: the domain of the function</span>
+<span class="sd">        - cholesky_L: see paper</span>
+<span class="sd">        - cholesky_alpha: see paper</span>
+<span class="sd">        - points_sampled: The SamplePoint(s) sampled thus far</span>
+<span class="sd">        - values_of_samples: The values of points sampled thus far in a list</span>
+<span class="sd">        - best_so_far: numpy.min(values_of_samples) or *initial_best_so_far* if no points sampled</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">covariance_of_process</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">initial_best_so_far</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="s">&#39;d&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">,</span> <span class="n">default_sample_variance</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">max_number_of_threads</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Inits a GaussianProcess&quot;&quot;&quot;</span>
+        <span class="c"># the domain of the function [[x1_min, x2_max], ..., [xn_min, xn_max]]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">domain</span> <span class="o">=</span> <span class="n">domain</span>
+
+        <span class="c"># information about the points sampled and their values and noises</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">points_sampled</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">values_of_samples</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sample_variance_of_samples</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_sample_variance</span> <span class="o">=</span> <span class="n">default_sample_variance</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">best_so_far</span> <span class="o">=</span> <span class="n">initial_best_so_far</span> <span class="c"># lowest value found thus far</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">covariance_of_process</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cop</span> <span class="o">=</span> <span class="n">moe</span><span class="o">.</span><span class="n">optimal_learning</span><span class="o">.</span><span class="n">python</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">covariance_of_process</span><span class="o">.</span><span class="n">CovarianceOfProcess</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c">#TODO type check</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cop</span> <span class="o">=</span> <span class="n">covariance_of_process</span>
+
+        <span class="c"># internal state of several important matricies</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cholesky_L</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cholesky_alpha</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">covariance_matrix</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_covariance_matrix</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">K_inv</span> <span class="o">=</span> <span class="bp">None</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="s">&#39;Points Sampled:</span><span class="se">\n</span><span class="s">&#39;</span>
+        <span class="k">for</span> <span class="n">sample</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">points_sampled</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">+=</span> <span class="s">&quot;</span><span class="si">%s</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">sample</span><span class="o">.</span><span class="n">__str__</span><span class="p">()</span>
+        <span class="n">data</span> <span class="o">+=</span> <span class="s">&quot;cholesky_L:</span><span class="se">\n</span><span class="s">&quot;</span>
+        <span class="n">data</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cholesky_L</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">+=</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">cholesky_alpha:</span><span class="se">\n</span><span class="s">&quot;</span>
+        <span class="n">data</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cholesky_alpha</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">data</span>
+
+<div class="viewcode-block" id="GaussianProcess.update_cop"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.models.html#moe.optimal_learning.python.models.gaussian_process.GaussianProcess.update_cop">[docs]</a>    <span class="k">def</span> <span class="nf">update_cop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cop</span><span class="o">.</span><span class="n">update_hyper_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_state</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="GaussianProcess.update_state"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.models.html#moe.optimal_learning.python.models.gaussian_process.GaussianProcess.update_state">[docs]</a>    <span class="k">def</span> <span class="nf">update_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Updates the state variables&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">covariance_matrix</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_covariance_matrix</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_chol_parts</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">K_inv</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">covariance_matrix</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="GaussianProcess.add_sample_point"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.models.html#moe.optimal_learning.python.models.gaussian_process.GaussianProcess.add_sample_point">[docs]</a>    <span class="k">def</span> <span class="nf">add_sample_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sample_point</span><span class="p">,</span> <span class="n">sample_variance</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add a SamplePoint *sample_point* to the GPP&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">sample_variance</span><span class="p">:</span>
+            <span class="n">sample_variance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_sample_variance</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">points_sampled</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sample_point</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sample_variance_of_samples</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sample_variance</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">values_of_samples</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sample_point</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+
+        <span class="c"># update best_so_far</span>
+        <span class="k">if</span> <span class="n">sample_point</span><span class="o">.</span><span class="n">value</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">best_so_far</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">best_so_far</span> <span class="o">=</span> <span class="n">sample_point</span><span class="o">.</span><span class="n">value</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_state</span><span class="p">()</span>
+
+    <span class="c">###################################</span>
+    <span class="c">### MEAN and VARIANCE UTILITIES ###</span>
+    <span class="c">###################################</span>
+</div>
+<div class="viewcode-block" id="GaussianProcess.build_covariance_matrix"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.models.html#moe.optimal_learning.python.models.gaussian_process.GaussianProcess.build_covariance_matrix">[docs]</a>    <span class="k">def</span> <span class="nf">build_covariance_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grad_function</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="p">{}):</span>
+        <span class="sd">&quot;&quot;&quot;build covariance matrix for inputs, see paper</span>
+
+<span class="sd">        :Returns: 2-D numpy array</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">grad_function</span><span class="p">:</span>
+            <span class="n">cov_func</span> <span class="o">=</span> <span class="n">grad_function</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">cov_func</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cop</span><span class="o">.</span><span class="n">cov</span>
+        <span class="n">K</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points_sampled</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points_sampled</span><span class="p">)))</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">sample_one</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points_sampled</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">sample_two</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points_sampled</span><span class="p">):</span>
+                <span class="n">K</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">cov_func</span><span class="p">(</span><span class="n">sample_one</span><span class="o">.</span><span class="n">point</span><span class="p">,</span> <span class="n">sample_two</span><span class="o">.</span><span class="n">point</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">grad_function</span><span class="p">:</span>
+            <span class="n">K</span> <span class="o">=</span> <span class="n">K</span> <span class="o">+</span> <span class="n">numpy</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sample_variance_of_samples</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">K</span>
+</div>
+<div class="viewcode-block" id="GaussianProcess.build_mix_covariance_matrix"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.models.html#moe.optimal_learning.python.models.gaussian_process.GaussianProcess.build_mix_covariance_matrix">[docs]</a>    <span class="k">def</span> <span class="nf">build_mix_covariance_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points_to_sample</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Covariance matrix of points to sample vs points sampled already, see paper</span>
+
+<span class="sd">        :Returns: 2-D numpy array</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">K_star</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">),</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points_sampled</span><span class="p">)))</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">point_to_sample</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">sampled</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points_sampled</span><span class="p">):</span>
+                <span class="n">K_star</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cop</span><span class="o">.</span><span class="n">cov</span><span class="p">(</span><span class="n">point_to_sample</span><span class="p">,</span> <span class="n">sampled</span><span class="o">.</span><span class="n">point</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">K_star</span>
+</div>
+<div class="viewcode-block" id="GaussianProcess.build_grad_sample_covariance_matrix"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.models.html#moe.optimal_learning.python.models.gaussian_process.GaussianProcess.build_grad_sample_covariance_matrix">[docs]</a>    <span class="k">def</span> <span class="nf">build_grad_sample_covariance_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points_to_sample</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Grad covariance of points to sample, see paper</span>
+
+<span class="sd">        :Returns: 3-D list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">grad_K_star_star</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">point_one</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">):</span>
+            <span class="n">grad_K_star_star</span><span class="o">.</span><span class="n">append</span><span class="p">([])</span>
+            <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">point_two</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">):</span>
+                <span class="n">grad_K_star_star</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cop</span><span class="o">.</span><span class="n">grad_cov</span><span class="p">(</span><span class="n">point_one</span><span class="p">,</span> <span class="n">point_two</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">grad_K_star_star</span>
+</div>
+<div class="viewcode-block" id="GaussianProcess.build_sample_covariance_matrix"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.models.html#moe.optimal_learning.python.models.gaussian_process.GaussianProcess.build_sample_covariance_matrix">[docs]</a>    <span class="k">def</span> <span class="nf">build_sample_covariance_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points_to_sample</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Covariance of points to sample, see paper</span>
+
+<span class="sd">        :Returns: 2-D numpy array</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">K_star_star</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">)))</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">point_one</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">point_two</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">):</span>
+                <span class="n">K_star_star</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cop</span><span class="o">.</span><span class="n">cov</span><span class="p">(</span><span class="n">point_one</span><span class="p">,</span> <span class="n">point_two</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">K_star_star</span>
+</div>
+<div class="viewcode-block" id="GaussianProcess.update_chol_parts"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.models.html#moe.optimal_learning.python.models.gaussian_process.GaussianProcess.update_chol_parts">[docs]</a>    <span class="k">def</span> <span class="nf">update_chol_parts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">include_sample_variance</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the cholesky parts of the GP</span>
+
+<span class="sd">        See page 19 of *Gaussian Processes for Machine Learning* by Rasmussen and Williams.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># build covariance matrix for inputs</span>
+        <span class="n">K</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">covariance_matrix</span>
+
+        <span class="c"># build chol decomp</span>
+        <span class="k">if</span> <span class="n">include_sample_variance</span><span class="p">:</span>
+            <span class="n">sample_variance_matrix</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span>
+                    <span class="p">[</span><span class="n">sample_var</span> <span class="k">for</span> <span class="n">sample_var</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_variance_of_samples</span><span class="p">]</span>
+                    <span class="p">)</span>
+            <span class="n">L</span> <span class="o">=</span> <span class="n">moe</span><span class="o">.</span><span class="n">optimal_learning</span><span class="o">.</span><span class="n">python</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">cholesky_decomp</span><span class="p">(</span><span class="n">K</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">L</span> <span class="o">=</span> <span class="n">moe</span><span class="o">.</span><span class="n">optimal_learning</span><span class="o">.</span><span class="n">python</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">cholesky_decomp</span><span class="p">(</span><span class="n">K</span><span class="p">)</span>
+
+        <span class="c"># solve for (cholesky) alpha, K^-1 * y^T, see RW pg19</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points_sampled</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">sample</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points_sampled</span><span class="p">):</span>
+            <span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">alpha</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">L</span><span class="o">.</span><span class="n">T</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">L</span><span class="p">,</span><span class="n">y</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">cholesky_L</span> <span class="o">=</span> <span class="n">L</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cholesky_alpha</span> <span class="o">=</span> <span class="n">alpha</span>
+</div>
+<div class="viewcode-block" id="GaussianProcess.sample_from_process"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.models.html#moe.optimal_learning.python.models.gaussian_process.GaussianProcess.sample_from_process">[docs]</a>    <span class="k">def</span> <span class="nf">sample_from_process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point_to_sample</span><span class="p">,</span> <span class="n">random_normal</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">sample_variance</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">sample_variance_normal</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a sample value from the process at a given point</span>
+
+<span class="sd">        Returns the mean at that point plus the variance multipled by a random normal variable (or one provided)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">sample_variance</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">sample_variance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_sample_variance</span>
+
+        <span class="c"># get the mean and variance at the point to sample</span>
+        <span class="n">mu</span><span class="p">,</span> <span class="n">var</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_mean_and_var_of_points</span><span class="p">([</span><span class="n">point_to_sample</span><span class="p">])</span>
+
+        <span class="c"># draw the normals if needed</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">random_normal</span><span class="p">:</span>
+            <span class="n">random_normal</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">sample_variance_normal</span><span class="p">:</span>
+            <span class="n">sample_variance_normal</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">mu</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">var</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span><span class="o">*</span><span class="n">random_normal</span> <span class="o">+</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">sample_variance</span><span class="p">)</span><span class="o">*</span><span class="n">sample_variance_normal</span>
+</div>
+    <span class="k">def</span> <span class="nf">_neg_log_marginal_likelihood</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c"># Eq 5.8 pg 113 of RW</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">values_of_samples</span><span class="p">:</span>
+            <span class="k">raise</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="s">&quot;There is no marginal if no values have been sampled&quot;</span><span class="p">)</span>
+        <span class="n">K</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_covariance_matrix</span><span class="p">()</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">values_of_samples</span><span class="p">)</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+        <span class="n">K_inv_y</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="n">log_det_K</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">L</span> <span class="o">=</span> <span class="n">moe</span><span class="o">.</span><span class="n">optimal_learning</span><span class="o">.</span><span class="n">python</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">cholesky_decomp</span><span class="p">(</span><span class="n">K</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">mat_row</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">L</span><span class="p">):</span>
+            <span class="n">log_det_K</span> <span class="o">+=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">log</span><span class="p">(</span> <span class="n">mat_row</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="p">)</span>
+
+        <span class="k">return</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">K_inv_y</span><span class="p">)</span> <span class="o">+</span> \
+                <span class="mf">0.5</span> <span class="o">*</span> <span class="n">log_det_K</span> <span class="o">+</span> \
+                <span class="mf">0.5</span> <span class="o">*</span> <span class="n">n</span><span class="o">*</span><span class="n">numpy</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">numpy</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+
+<div class="viewcode-block" id="GaussianProcess.get_log_marginal_likelihood"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.models.html#moe.optimal_learning.python.models.gaussian_process.GaussianProcess.get_log_marginal_likelihood">[docs]</a>    <span class="k">def</span> <span class="nf">get_log_marginal_likelihood</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">_neg_log_marginal_likelihood</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="GaussianProcess.get_mean_and_var_of_points"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.models.html#moe.optimal_learning.python.models.gaussian_process.GaussianProcess.get_mean_and_var_of_points">[docs]</a>    <span class="k">def</span> <span class="nf">get_mean_and_var_of_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points_to_sample</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Given a set of points to sample compute their mean and variance from the current state of the GPP</span>
+
+<span class="sd">        follows algorithm 2.1 (pg 19) of *Gaussian Processes for Machine Learning* by Rasmussen and Williams</span>
+
+<span class="sd">        :Returns: 1-D numpy array, 2-D numpy array</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># variance for points to sample</span>
+        <span class="n">K_star_star</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_sample_covariance_matrix</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">)</span>
+
+        <span class="c"># check if any points have been sampled yet and return with prior if not</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">points_sampled</span><span class="p">:</span>
+            <span class="n">mu_star</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">mu_star</span><span class="p">,</span> <span class="n">K_star_star</span>
+
+        <span class="c"># build covariance matrix for test data</span>
+        <span class="n">K_star</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_mix_covariance_matrix</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">)</span>
+
+        <span class="c"># calculate means</span>
+        <span class="n">mu_star</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">K_star</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">cholesky_alpha</span><span class="p">)</span>
+
+        <span class="c"># calculate variance matrix</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cholesky_L</span><span class="p">,</span> <span class="n">K_star</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+        <span class="n">var_star</span> <span class="o">=</span> <span class="n">K_star_star</span> <span class="o">-</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">T</span><span class="p">,</span><span class="n">v</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">mu_star</span><span class="p">,</span> <span class="n">var_star</span>
+</div>
+<div class="viewcode-block" id="GaussianProcess.get_grad_mu"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.models.html#moe.optimal_learning.python.models.gaussian_process.GaussianProcess.get_grad_mu">[docs]</a>    <span class="k">def</span> <span class="nf">get_grad_mu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points_to_sample</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns the gradient of the mean of the GPP at *points_to_sample*</span>
+
+<span class="sd">        :Returns: 1-D numpy array</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># build grad_K_star</span>
+        <span class="n">grad_K_star</span> <span class="o">=</span> <span class="n">moe</span><span class="o">.</span><span class="n">optimal_learning</span><span class="o">.</span><span class="n">python</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">make_empty_2D_list</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">),</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points_sampled</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">to_sample</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">sampled</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points_sampled</span><span class="p">):</span>
+                <span class="n">grad_K_star</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cop</span><span class="o">.</span><span class="n">grad_cov</span><span class="p">(</span><span class="n">to_sample</span><span class="p">,</span> <span class="n">sampled</span><span class="o">.</span><span class="n">point</span><span class="p">))</span>
+
+        <span class="n">grad_mu</span> <span class="o">=</span> <span class="n">moe</span><span class="o">.</span><span class="n">optimal_learning</span><span class="o">.</span><span class="n">python</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">matrix_vector_multiply</span><span class="p">(</span>
+                <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">grad_K_star</span><span class="p">),</span>
+                <span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">covariance_matrix</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">values_of_samples</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+                <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">grad_mu</span>
+</div>
+<div class="viewcode-block" id="GaussianProcess.build_grad_K_star"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.models.html#moe.optimal_learning.python.models.gaussian_process.GaussianProcess.build_grad_K_star">[docs]</a>    <span class="k">def</span> <span class="nf">build_grad_K_star</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points_to_sample</span><span class="p">):</span>
+        <span class="c"># build grad_K_star</span>
+        <span class="n">grad_K_star</span> <span class="o">=</span> <span class="n">moe</span><span class="o">.</span><span class="n">optimal_learning</span><span class="o">.</span><span class="n">python</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">make_empty_2D_list</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">),</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points_sampled</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">l</span><span class="p">,</span> <span class="n">to_sample</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">m</span><span class="p">,</span> <span class="n">sampled</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points_sampled</span><span class="p">):</span>
+                <span class="n">grad_K_star</span><span class="p">[</span><span class="n">l</span><span class="p">][</span><span class="n">m</span><span class="p">]</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cop</span><span class="o">.</span><span class="n">grad_cov</span><span class="p">(</span><span class="n">to_sample</span><span class="p">,</span> <span class="n">sampled</span><span class="o">.</span><span class="n">point</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">grad_K_star</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="GaussianProcess.get_grad_cov_component"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.models.html#moe.optimal_learning.python.models.gaussian_process.GaussianProcess.get_grad_cov_component">[docs]</a>    <span class="k">def</span> <span class="nf">get_grad_cov_component</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points_to_sample</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">var</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get a specific component (i,j) of the grad cholesky decomposition of the variance</span>
+<span class="sd">        w.r.t the variable (in points_to_sample) var</span>
+
+<span class="sd">        This is expensive to do for all combos O(2*L^2*N^2) and should be offloaded to C (length = size points_to_sample, N = size_of_sampled)</span>
+
+<span class="sd">        see S.P.Smith; *Differentiation of the Cholesky Algorithm*; 1995</span>
+
+<span class="sd">        :Returns: 2-D numpy array, n-D numpy array</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">print</span> <span class="s">&quot;WHAT AM I DOING???&quot;</span>
+        <span class="k">raise</span><span class="p">(</span><span class="ne">NotImplementedError</span><span class="p">)</span>
+        <span class="n">point_one</span> <span class="o">=</span> <span class="n">points_to_sample</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">point_two</span> <span class="o">=</span> <span class="n">points_to_sample</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">var</span> <span class="o">==</span> <span class="n">i</span><span class="p">:</span>
+            <span class="n">comp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cop</span><span class="o">.</span><span class="n">grad_cov</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">points_to_sample</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">var</span> <span class="o">==</span> <span class="n">j</span><span class="p">:</span>
+            <span class="n">comp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cop</span><span class="o">.</span><span class="n">grad_cov</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">points_to_sample</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mf">0.0</span>
+
+        <span class="n">grad_K_star</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">build_grad_K_star</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">))[:,:,</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">K_star</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">build_mix_covariance_matrix</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">))</span>
+
+        <span class="n">o_comp</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">grad_K_star</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">K_inv</span><span class="p">,</span> <span class="n">K_star</span><span class="o">.</span><span class="n">T</span><span class="p">))[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+
+        <span class="n">comp2</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c"># TODO This can be sped up considerably...</span>
+        <span class="k">if</span> <span class="n">var</span> <span class="o">==</span> <span class="n">i</span> <span class="ow">and</span> <span class="n">var</span> <span class="o">==</span> <span class="n">j</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">idx_one</span><span class="p">,</span> <span class="n">sampled_one</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points_sampled</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">idx_two</span><span class="p">,</span> <span class="n">sampled_two</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points_sampled</span><span class="p">):</span>
+                    <span class="n">comp</span> <span class="o">-=</span> <span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">K_inv</span><span class="p">[</span><span class="n">idx_two</span><span class="p">][</span><span class="n">idx_one</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">cop</span><span class="o">.</span><span class="n">cov</span><span class="p">(</span><span class="n">point_one</span><span class="p">,</span> <span class="n">sampled_one</span><span class="o">.</span><span class="n">point</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">cop</span><span class="o">.</span><span class="n">grad_cov</span><span class="p">(</span><span class="n">point_one</span><span class="p">,</span> <span class="n">sampled_two</span><span class="o">.</span><span class="n">point</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">comp</span>
+        <span class="k">elif</span> <span class="n">var</span> <span class="o">==</span> <span class="n">i</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">idx_one</span><span class="p">,</span> <span class="n">sampled_one</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points_sampled</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">idx_two</span><span class="p">,</span> <span class="n">sampled_two</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points_sampled</span><span class="p">):</span>
+                    <span class="n">comp</span> <span class="o">-=</span> <span class="bp">self</span><span class="o">.</span><span class="n">K_inv</span><span class="p">[</span><span class="n">idx_two</span><span class="p">][</span><span class="n">idx_one</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">cop</span><span class="o">.</span><span class="n">cov</span><span class="p">(</span><span class="n">point_two</span><span class="p">,</span> <span class="n">sampled_one</span><span class="o">.</span><span class="n">point</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">cop</span><span class="o">.</span><span class="n">grad_cov</span><span class="p">(</span><span class="n">point_one</span><span class="p">,</span> <span class="n">sampled_two</span><span class="o">.</span><span class="n">point</span><span class="p">)</span>
+                    <span class="n">comp2</span> <span class="o">-=</span> <span class="bp">self</span><span class="o">.</span><span class="n">K_inv</span><span class="p">[</span><span class="n">idx_two</span><span class="p">][</span><span class="n">idx_one</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">cop</span><span class="o">.</span><span class="n">cov</span><span class="p">(</span><span class="n">point_two</span><span class="p">,</span> <span class="n">sampled_one</span><span class="o">.</span><span class="n">point</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">cop</span><span class="o">.</span><span class="n">grad_cov</span><span class="p">(</span><span class="n">point_one</span><span class="p">,</span> <span class="n">sampled_two</span><span class="o">.</span><span class="n">point</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">comp2</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="n">o_comp</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">var</span> <span class="o">==</span> <span class="n">j</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">idx_one</span><span class="p">,</span> <span class="n">sampled_one</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points_sampled</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">idx_two</span><span class="p">,</span> <span class="n">sampled_two</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points_sampled</span><span class="p">):</span>
+                    <span class="n">comp</span> <span class="o">-=</span> <span class="bp">self</span><span class="o">.</span><span class="n">K_inv</span><span class="p">[</span><span class="n">idx_two</span><span class="p">][</span><span class="n">idx_one</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">cop</span><span class="o">.</span><span class="n">cov</span><span class="p">(</span><span class="n">point_one</span><span class="p">,</span> <span class="n">sampled_two</span><span class="o">.</span><span class="n">point</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">cop</span><span class="o">.</span><span class="n">grad_cov</span><span class="p">(</span><span class="n">point_two</span><span class="p">,</span> <span class="n">sampled_one</span><span class="o">.</span><span class="n">point</span><span class="p">)</span>
+
+
+
+        <span class="k">return</span> <span class="n">comp</span>
+</div>
+<div class="viewcode-block" id="GaussianProcess.cholesky_decomp_and_grad"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.models.html#moe.optimal_learning.python.models.gaussian_process.GaussianProcess.cholesky_decomp_and_grad">[docs]</a>    <span class="k">def</span> <span class="nf">cholesky_decomp_and_grad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points_to_sample</span><span class="p">,</span> <span class="n">var_of_grad</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">0.000001</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the cholesky decomposition of the variance and its gradient</span>
+
+<span class="sd">        see S.P.Smith; *Differentiation of the Cholesky Algorithm*; 1995</span>
+
+<span class="sd">        :Returns: 2-D numpy array, n-D numpy array</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">mu_star</span><span class="p">,</span> <span class="n">var_star</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_mean_and_var_of_points</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">)</span>
+
+        <span class="n">grad_cholesky_decomp</span> <span class="o">=</span> <span class="n">moe</span><span class="o">.</span><span class="n">optimal_learning</span><span class="o">.</span><span class="n">python</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">make_empty_2D_list</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">))</span>
+
+        <span class="n">cholesky_decomp</span> <span class="o">=</span> <span class="n">var_star</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="c"># Just to start!</span>
+
+        <span class="c"># Step 1 of Appendix 2</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">point_one</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">point_two</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">var_of_grad</span> <span class="o">==</span> <span class="n">i</span> <span class="ow">and</span> <span class="n">var_of_grad</span> <span class="o">==</span> <span class="n">j</span><span class="p">:</span>
+                    <span class="n">grad_cholesky_decomp</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cop</span><span class="o">.</span><span class="n">grad_cov</span><span class="p">(</span><span class="n">point_one</span><span class="p">,</span> <span class="n">point_two</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">idx_one</span><span class="p">,</span> <span class="n">sampled_one</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points_sampled</span><span class="p">):</span>
+                        <span class="k">for</span> <span class="n">idx_two</span><span class="p">,</span> <span class="n">sampled_two</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points_sampled</span><span class="p">):</span>
+                            <span class="n">grad_cholesky_decomp</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">-=</span> <span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">K_inv</span><span class="p">[</span><span class="n">idx_two</span><span class="p">][</span><span class="n">idx_one</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">cop</span><span class="o">.</span><span class="n">cov</span><span class="p">(</span><span class="n">point_one</span><span class="p">,</span> <span class="n">sampled_one</span><span class="o">.</span><span class="n">point</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">cop</span><span class="o">.</span><span class="n">grad_cov</span><span class="p">(</span><span class="n">point_one</span><span class="p">,</span> <span class="n">sampled_two</span><span class="o">.</span><span class="n">point</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">var_of_grad</span> <span class="o">==</span> <span class="n">i</span><span class="p">:</span>
+                    <span class="n">grad_cholesky_decomp</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cop</span><span class="o">.</span><span class="n">grad_cov</span><span class="p">(</span><span class="n">point_one</span><span class="p">,</span> <span class="n">point_two</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">idx_one</span><span class="p">,</span> <span class="n">sampled_one</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points_sampled</span><span class="p">):</span>
+                        <span class="k">for</span> <span class="n">idx_two</span><span class="p">,</span> <span class="n">sampled_two</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points_sampled</span><span class="p">):</span>
+                            <span class="n">grad_cholesky_decomp</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">-=</span> <span class="bp">self</span><span class="o">.</span><span class="n">K_inv</span><span class="p">[</span><span class="n">idx_two</span><span class="p">][</span><span class="n">idx_one</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">cop</span><span class="o">.</span><span class="n">cov</span><span class="p">(</span><span class="n">point_two</span><span class="p">,</span> <span class="n">sampled_one</span><span class="o">.</span><span class="n">point</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">cop</span><span class="o">.</span><span class="n">grad_cov</span><span class="p">(</span><span class="n">point_one</span><span class="p">,</span> <span class="n">sampled_two</span><span class="o">.</span><span class="n">point</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">var_of_grad</span> <span class="o">==</span> <span class="n">j</span><span class="p">:</span>
+                    <span class="n">grad_cholesky_decomp</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cop</span><span class="o">.</span><span class="n">grad_cov</span><span class="p">(</span><span class="n">point_two</span><span class="p">,</span> <span class="n">point_one</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">idx_one</span><span class="p">,</span> <span class="n">sampled_one</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points_sampled</span><span class="p">):</span>
+                        <span class="k">for</span> <span class="n">idx_two</span><span class="p">,</span> <span class="n">sampled_two</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points_sampled</span><span class="p">):</span>
+                            <span class="n">grad_cholesky_decomp</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">-=</span> <span class="bp">self</span><span class="o">.</span><span class="n">K_inv</span><span class="p">[</span><span class="n">idx_two</span><span class="p">][</span><span class="n">idx_one</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">cop</span><span class="o">.</span><span class="n">cov</span><span class="p">(</span><span class="n">point_one</span><span class="p">,</span> <span class="n">sampled_two</span><span class="o">.</span><span class="n">point</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">cop</span><span class="o">.</span><span class="n">grad_cov</span><span class="p">(</span><span class="n">point_two</span><span class="p">,</span> <span class="n">sampled_one</span><span class="o">.</span><span class="n">point</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">grad_cholesky_decomp</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+
+        <span class="c"># TODO make more pythonic</span>
+        <span class="c"># zero out the upper half of the matrix</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">)):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">j</span><span class="p">:</span>
+                    <span class="n">cholesky_decomp</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+                    <span class="n">grad_cholesky_decomp</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+
+        <span class="c"># Step 2 of Appendix 2</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="n">cholesky_decomp</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">k</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">eps</span><span class="p">:</span>
+                <span class="n">cholesky_decomp</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">cholesky_decomp</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">k</span><span class="p">]))</span>
+                <span class="n">grad_cholesky_decomp</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">grad_cholesky_decomp</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">k</span><span class="p">]</span><span class="o">/</span><span class="n">cholesky_decomp</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">k</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">)):</span>
+                    <span class="n">cholesky_decomp</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">cholesky_decomp</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">k</span><span class="p">]</span><span class="o">/</span><span class="n">cholesky_decomp</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">k</span><span class="p">]</span>
+                    <span class="n">grad_cholesky_decomp</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">grad_cholesky_decomp</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">k</span><span class="p">]</span> <span class="o">-</span> <span class="n">cholesky_decomp</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">grad_cholesky_decomp</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">k</span><span class="p">])</span><span class="o">/</span><span class="n">cholesky_decomp</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">k</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">)):</span>
+                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">)):</span>
+                        <span class="n">cholesky_decomp</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">cholesky_decomp</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="n">cholesky_decomp</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">cholesky_decomp</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">k</span><span class="p">]</span>
+                        <span class="n">grad_cholesky_decomp</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">grad_cholesky_decomp</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="n">grad_cholesky_decomp</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">cholesky_decomp</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">k</span><span class="p">]</span> <span class="o">-</span> <span class="n">cholesky_decomp</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">grad_cholesky_decomp</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">k</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">cholesky_decomp</span><span class="p">,</span> <span class="n">grad_cholesky_decomp</span></div></div>
+</pre></div>
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

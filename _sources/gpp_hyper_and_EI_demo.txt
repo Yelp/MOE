@@ -1,0 +1,13 @@
+gpp_hyper_and_EI_demo
+=====
+
+**Contents:**
+
+    1. `gpp_hyper_and_EI_demo.cpp`_
+
+
+gpp_hyper_and_EI_demo.cpp
+------
+
+.. doxygenfile:: gpp_hyper_and_EI_demo.cpp
+
