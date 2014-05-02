@@ -14,7 +14,9 @@ from moe.optimal_learning.python.python_version.gaussian_process import Gaussian
 
 
 def fill_random_covariance_hyperparameters(hyperparameter_interval, num_hyperparameters, covariance_type=SquareExponential):
-    """Generate random hyperparameters and returns a covariance object with those hyperparameters.
+    """Generate random hyperparameters (drawn uniformly from the input interval) and returns a covariance object with those hyperparameters.
+
+    This is mainly useful for testing or when "random" data is needed so that we get more varied cases than hyperparameters = 1.0.
 
     :param hyperparameter_interval: range, [min, max], from which to draw the hyperparameters
     :type hyperparameter_interval: ClosedInterval
@@ -26,7 +28,8 @@ def fill_random_covariance_hyperparameters(hyperparameter_interval, num_hyperpar
     :rtype: covariance_type object
 
     """
-    hyper = [numpy.random.uniform(hyperparameter_interval.min, hyperparameter_interval.max) for _ in xrange(num_hyperparameters)]
+    hyper = [numpy.random.uniform(hyperparameter_interval.min, hyperparameter_interval.max)
+             for _ in xrange(num_hyperparameters)]
     return covariance_type(hyper)
 
 
@@ -34,8 +37,10 @@ def fill_random_domain_bounds(lower_bound_interval, upper_bound_interval, dim):
     r"""Generate a random list of dim ``[min_i, max_i]`` pairs.
 
     The data is organized such that:
-    ``min_i \in [uniform_double_lower_bound.a(), uniform_double_lower_bound.b()]``
-    ``max_i \in [uniform_double_upper_bound.a(), uniform_double_upper_bound.b()]``
+    ``min_i \in [lower_bound_interval.min, lower_bound_interval.max]``
+    ``max_i \in [upper_bound_interval.min, upper_bound_interval.max]``
+
+    This is mainly useful for testing or when "random" data is needed so that we get more varied cases than the unit hypercube.
 
     :param lower_bound_interval: an uniform range, ``[min, max]``, from which to draw the domain lower bounds, ``min_i``
     :type lower_bound_interval: ClosedInterval
@@ -47,14 +52,16 @@ def fill_random_domain_bounds(lower_bound_interval, upper_bound_interval, dim):
     :rtype: list of ClosedInterval
 
     """
-    temp = numpy.empty((dim, 2))
-    temp[..., 0] = numpy.random.uniform(lower_bound_interval.min, lower_bound_interval.max)
-    temp[..., 1] = numpy.random.uniform(upper_bound_interval.min, upper_bound_interval.max)
-    return ClosedInterval.build_closed_intervals_from_list(temp)
+    domain_bounds = numpy.empty((dim, 2))
+    domain_bounds[..., 0] = numpy.random.uniform(lower_bound_interval.min, lower_bound_interval.max)
+    domain_bounds[..., 1] = numpy.random.uniform(upper_bound_interval.min, upper_bound_interval.max)
+    return ClosedInterval.build_closed_intervals_from_list(domain_bounds)
 
 
 def build_random_gaussian_process(points_sampled, covariance, noise_variance=None, gaussian_process_type=GaussianProcess):
-    r"""Utility to draw ``points_sampled.shape[0]`` points from a GaussianProcess and add those values to the prior.
+    r"""Utility to draw ``points_sampled.shape[0]`` points from a GaussianProcess prior, add those values to the GP, and return the GP.
+
+    This is mainly useful for testing or when "random" data is needed that will produce reasonably well-behaved GPs.
 
     :param points_sampled: points at which to draw from the GP
     :type points_sampled: array of float64 with shape (num_sampled, dim)

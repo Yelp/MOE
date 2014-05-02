@@ -23,7 +23,7 @@ def generate_latin_hypercube_points(num_points, domain_bounds):
     :rtype: array of float64 with shape (num_points, dim)
 
     """
-    # TODO(eliu): actually allow users to pass in a random source
+    # TODO(eliu): actually allow users to pass in a random source (GH-56)
     points = numpy.zeros((num_points, len(domain_bounds)), dtype=numpy.float64)
     for i, interval in enumerate(domain_bounds):
         # Cut the range into num_points slices
