@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Data containers convenient for/used to interact with optimal_learning.EPI.src.python members."""
+"""Data containers convenient for/used to interact with optimal_learning.python members."""
 import collections
 import pprint
 

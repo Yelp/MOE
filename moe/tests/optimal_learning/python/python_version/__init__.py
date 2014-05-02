@@ -7,7 +7,7 @@ High-level functions (e.g., optimization of EI or log likelihood) are only loose
 are valid (vs trying to verify them).
 
 Note that the Python implementation is additionally tested against the C++ (same inputs, same results for the various
-optimal_learning features) implementation (see moe/tests/EPI/src/python/cpp_wrappers).
+optimal_learning features) implementation (see moe/tests/optimal_learning/python/cpp_wrappers).
 
 TODO(eliu): in general, the Python test suite is lacking and we rely on comparison against the more extensively tested
 C++ implementation to check the Python.

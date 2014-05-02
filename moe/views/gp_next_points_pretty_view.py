@@ -25,7 +25,7 @@ class GpNextPointsRequest(colander.MappingSchema):
     **Optional fields**
 
         :num_samples_to_generate: number of next points to generate (default: 1)
-        :ei_optimization_parameters: moe.views.schemas.EiOptimizationParameters() object containing optimization parameters (default: moe.optimal_learning.EPI.src.python.constant.default_ei_optimization_parameters)
+        :ei_optimization_parameters: moe.views.schemas.EiOptimizationParameters() object containing optimization parameters (default: moe.optimal_learning.python.constant.default_ei_optimization_parameters)
 
     **Example Request**
 

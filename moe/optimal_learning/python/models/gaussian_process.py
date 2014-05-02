@@ -314,7 +314,7 @@ class GaussianProcess(object):
         return comp
 
     def grad_variance_of_points(self, points_to_sample, var_of_grad=0):
-        grad_cholesky_decomp = moe.optimal_learning.EPI.src.python.lib.math.make_empty_2D_list(len(points_to_sample), len(points_to_sample))
+        grad_cholesky_decomp = moe.optimal_learning.python.lib.math.make_empty_2D_list(len(points_to_sample), len(points_to_sample))
         # Step 1 of Appendix 2
         for i, point_one in enumerate(points_to_sample):
             for j, point_two in enumerate(points_to_sample):
