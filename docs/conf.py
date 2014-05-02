@@ -36,10 +36,10 @@ extensions = [
     'sphinxcontrib.httpdomain',
 ]
 
-breathe_projects = { "myproject": "xml/" }
+breathe_projects = { "myproject": "docs/xml/" }
 breathe_default_project = "myproject"
 breathe_projects_source = {
-        'gpp_random': "../moe/optimal_learning/EPI/src/cpp",
+        'gpp_random': "moe/optimal_learning/cpp",
         }
 
 # Add any paths that contain templates here, relative to this directory.
