@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-'
+# -*- coding: utf-8 -*-
 """Base test case for tests that manipulate Gaussian Process data and supporting structures."""
 import collections
 
