@@ -29,6 +29,7 @@ def multistart_expected_improvement_optimization(
     When points_to_sample.shape[0] == 0 && num_samples_to_generate == 1, this function will use (fast) analytic EI computations.
 
     .. NOTE:: The following comments are copied from gpp_math.hpp, ComputeOptimalSetOfPointsToSample().
+        These comments are copied into multistart_expected_improvement_optimization() in python_version/expected_improvement.py
 
     Returns the optimal set of q points to sample CONCURRENTLY by solving the q,p-EI problem.  That is, we may want to run 4
     experiments at the same time and maximize the EI across all 4 experiments at once while knowing of 2 ongoing experiments
