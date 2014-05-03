@@ -1,12 +1,13 @@
 # MOE
 
-Metric Optimization Engine.
+Metric Optimization Engine. A global, black box optimization engine for real world metric optimization.
 
-[Full documentation here.][2]
+  * [15 min video introduction][0]
+  * [Full documentation][1]
+  * [REST documentation][2]
 
-[2]: http://sc932.github.io/MOE/
 
-Or, build the documentation locally with `make docs`.
+Or, build the documentation locally with `make docs-no-tox`.
 
 ## Running MOE
 
@@ -25,6 +26,7 @@ OR
 ```bash
 $ curl -X POST -H "Content-Type: application/json" -d '{"points_to_evaluate": [[0.06727463396075942], [0.5067300380945079], [0.9698763624056982], [0.6741416078606629], [0.3413945823872875], [0.8293462326458892], [0.1895850103202945], [0.29784241725123095], [0.7611434260204735], [0.4050181259320824]], "points_being_sampled": [], "gp_info": {"points_sampled": [{"value_var": 0.01, "value": -2.014556917682888, "point": [0.8356251271367201]}, {"value_var": 0.01, "value": -1.3556680509922945, "point": [0.5775274088974685]}, {"value_var": 0.01, "value": -0.17644452034270924, "point": [0.1299624124365485]}, {"value_var": 0.01, "value": 0.3125023458503953, "point": [0.02303611187965965]}, {"value_var": 0.01, "value": -0.5899125641251172, "point": [0.3938472181674687]}, {"value_var": 0.01, "value": -1.8568254250899945, "point": [0.9894680586912427]}, {"value_var": 0.01, "value": -1.0638344140121117, "point": [0.45444660991161895]}, {"value_var": 0.01, "value": -0.28576907668798884, "point": [0.20420919931329756]}, {"value_var": 0.01, "value": -1.568109287685418, "point": [0.6404744671911634]}, {"value_var": 0.01, "value": -1.8418398343184625, "point": [0.7168047658371041]}], "domain": [[0, 1]]}}' http://127.0.0.1:6543/gp/ei
 ```
+[`gp_ei` endpoint documentation.][4]
 
 ### From ipython
 
@@ -37,6 +39,7 @@ $ ipython
 > next_point_to_sample = gp_next_points(exp)
 > print next_point_to_sample
 ```
+[`easy_interface` documentation.][5]
 
 ### Within python
 
@@ -67,7 +70,7 @@ print exp.best_point
 
 This is the recommended way to run the MOE REST server. All dependencies and building is done automatically and in an isolated container.
 
-Docker (http://docs.docker.io/) is a container based virtualization framework. Unlike traditional virtualization Docker is fast, lightweight and easy to use. Docker allows you to create containers holding all the dependencies for an application. Each container is kept isolated from any other, and nothing gets shared.
+[Docker (http://docs.docker.io/)][6] is a container based virtualization framework. Unlike traditional virtualization Docker is fast, lightweight and easy to use. Docker allows you to create containers holding all the dependencies for an application. Each container is kept isolated from any other, and nothing gets shared.
 
 ```bash
 $ git clone https://github.com/sc932/MOE.git
@@ -139,10 +142,16 @@ $ apt-get install python python-dev gcc cmake libboost-all-dev python-pip doxyge
 2. Create a branch (`git checkout -b my_moe_branch`)
 3. Develop your feature/fix (don't forget to add tests!)
 4. Run tests (`tox`)
-5. Test against styleguide (`tox -e pep8 && tox -e pep257`)
+5. Test against styleguide (`tox -e pep8`)
 6. Commit your changes (`git commit -am "Added Some Mathemagics"`)
 7. Push to the branch (`git push origin my_moe_branch`)
-8. Open a [Pull Request][1]
+8. Open a [Pull Request][3]
 9. Optimize locally while you wait
 
-[1]: http://github.com/sc932/MOE/pulls
+[0]: https://www.youtube.com/watch?v=qAN6iyYPbEE
+[1]: http://sc932.github.io/MOE/
+[2]: http://sc932.github.io/MOE/moe.views.html
+[3]: http://github.com/sc932/MOE/pulls
+[4]: http://sc932.github.io/MOE/moe.views.html#module-moe.views.gp_ei
+[5]: http://sc932.github.io/MOE/moe.easy_interface.html
+[6]: http://docs.docker.io/
