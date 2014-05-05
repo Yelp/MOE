@@ -150,8 +150,8 @@ $ apt-get install python python-dev gcc cmake libboost-all-dev python-pip doxyge
 
 [0]: https://www.youtube.com/watch?v=qAN6iyYPbEE
 [1]: http://sc932.github.io/MOE/
-[2]: http://sc932.github.io/MOE/moe.views.html
+[2]: http://sc932.github.io/MOE/moe.views.rest.html
 [3]: http://github.com/sc932/MOE/pulls
-[4]: http://sc932.github.io/MOE/moe.views.html#module-moe.views.gp_ei
+[4]: http://sc932.github.io/MOE/moe.views.rest.html#module-moe.views.rest.gp_ei
 [5]: http://sc932.github.io/MOE/moe.easy_interface.html
 [6]: http://docs.docker.io/

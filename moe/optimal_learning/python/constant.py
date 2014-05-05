@@ -43,6 +43,16 @@ EIOptimizationParameters = namedtuple(
         ],
     )
 
+CONSTANT_LIAR_MIN = 'constant_liar_min'
+CONSTANT_LIAR_MAX = 'constant_liar_max'
+CONSTANT_LIAR_MEAN = 'constant_liar_mean'
+
+CONSTANT_LIAR_METHODS = [
+        CONSTANT_LIAR_MIN,
+        CONSTANT_LIAR_MAX,
+        CONSTANT_LIAR_MEAN,
+        ]
+
 GRADIENT_DESCENT_OPTIMIZER = 'gradient_descent'
 
 ALL_OPTIMIZERS = [

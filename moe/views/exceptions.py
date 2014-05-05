@@ -6,11 +6,12 @@ Includes views that catch the following:
     2. colander.Invalid
 
 """
-from pyramid.response import Response
-from pyramid.view import view_config
+import pprint
 
 import colander
-import pprint
+
+from pyramid.response import Response
+from pyramid.view import view_config
 
 
 class SingularMatrixError(Exception):

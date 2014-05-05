@@ -6,9 +6,9 @@ Includes:
 """
 from pyramid.view import view_config
 
+from moe.views.constant import GP_NEXT_POINTS_EPI_ROUTE_NAME, GP_NEXT_POINTS_EPI_PRETTY_ROUTE_NAME, GP_NEXT_POINTS_EPI_OPTIMIZATION_METHOD_NAME
 from moe.views.gp_next_points_pretty_view import GpNextPointsPrettyView
 from moe.views.gp_pretty_view import PRETTY_RENDERER
-from moe.views.constant import GP_NEXT_POINTS_EPI_ROUTE_NAME, GP_NEXT_POINTS_EPI_PRETTY_ROUTE_NAME, GP_NEXT_POINTS_EPI_OPTIMIZATION_METHOD_NAME
 
 
 class GpNextPointsEpi(GpNextPointsPrettyView):
@@ -35,8 +35,8 @@ class GpNextPointsEpi(GpNextPointsPrettyView):
 
            Calculates the next best points to sample, given historical data, using Expected Parallel Improvement (EPI).
 
-           :input: moe.views.gp_next_points_pretty_view.GpNextPointsRequest()
-           :output: moe.views.gp_next_points_pretty_view.GpNextPointsResponse()
+           :input: :class:`moe.views.gp_next_points_pretty_view.GpNextPointsRequest`
+           :output: :class:`moe.views.gp_next_points_pretty_view.GpNextPointsResponse`
 
            :status 200: returns a response
            :status 500: server error

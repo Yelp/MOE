@@ -5,25 +5,26 @@ Includes:
     1. pretty and backend views
 """
 import colander
+
 from pyramid.view import view_config
 
+from moe.views.constant import GP_NEXT_POINTS_KRIGING_ROUTE_NAME, GP_NEXT_POINTS_KRIGING_PRETTY_ROUTE_NAME, GP_NEXT_POINTS_KRIGING_OPTIMIZATION_METHOD_NAME
 from moe.views.gp_next_points_pretty_view import GpNextPointsPrettyView, GpNextPointsRequest
 from moe.views.gp_pretty_view import PRETTY_RENDERER
-from moe.views.constant import GP_NEXT_POINTS_KRIGING_ROUTE_NAME, GP_NEXT_POINTS_KRIGING_PRETTY_ROUTE_NAME, GP_NEXT_POINTS_KRIGING_OPTIMIZATION_METHOD_NAME
 
 
 class GpNextPointsKrigingRequest(GpNextPointsRequest):
 
-    """Extends the standard request moe.views.gp_next_points_pretty_view.GpNextPointsRequest() with kriging parameters.
+    """Extends the standard request :class:`moe.views.gp_next_points_pretty_view.GpNextPointsRequest` with kriging parameters.
 
     **Required fields**
 
-        :gp_info: a moe.views.schemas.GpInfo object of historical data
+        :gp_info: a :class:`moe.views.schemas.GpInfo` object of historical data
 
     **Optional fields**
 
         :num_samples_to_generate: number of next points to generate (default: 1)
-        :ei_optimization_parameters: moe.views.schemas.EiOptimizationParameters() object containing optimization parameters (default: moe.optimal_learning.EPI.src.python.constant.default_ei_optimization_parameters)
+        :ei_optimization_parameters: :class:`moe.views.schemas.EiOptimizationParameters` object containing optimization parameters (default: moe.optimal_learning.EPI.src.python.constant.default_ei_optimization_parameters)
         :std_deviation_coef: a float used in Kriging, see Kriging implementation docs (default: 0.0)
         :kriging_noise_variance: a positive (>= 0) float used in Kriging, see Kriging implementation docs (default: 0.0)
 
@@ -82,7 +83,19 @@ class GpNextPointsKriging(GpNextPointsPrettyView):
 
     @view_config(route_name=_route_name, renderer='json', request_method='POST')
     def gp_next_points_kriging_view(self):
-        """Endpoint for gp_next_points_kriging POST requests."""
+        """Endpoint for gp_next_points_kriging POST requests.
+
+        .. http:post:: /gp/next_points/kriging
+
+           Calculates the next best points to sample, given historical data, using Kriging.
+
+           :input: :class:`moe.views.rest.gp_next_points_kriging.GpNextPointsKrigingRequest`
+           :output: :class:`moe.views.gp_next_points_pretty_view.GpNextPointsResponse`
+
+           :status 200: returns a response
+           :status 500: server error
+
+        """
         params = self.get_params_from_request()
         return self.compute_next_points_to_sample_response(
                 params,
