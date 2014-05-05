@@ -119,9 +119,9 @@ class GpNextPointsConstantLiar(GpNextPointsPrettyView):
         points_sampled_values = [point.value for point in gaussian_process.points_sampled]
 
         if params.get('lie_method') == CONSTANT_LIAR_MIN:
-            return min(points_sampled_values)
+            return numpy.amin(points_sampled_values)
         elif params.get('lie_method') == CONSTANT_LIAR_MAX:
-            return max(points_sampled_values)
+            return numpy.amax(points_sampled_values)
         elif params.get('lie_method') == CONSTANT_LIAR_MEAN:
             return numpy.mean(points_sampled_values)
         else:

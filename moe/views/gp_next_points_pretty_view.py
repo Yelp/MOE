@@ -7,7 +7,7 @@ Include:
 """
 import colander
 
-import moe.build.GPP as cpp_gaussian_process
+import moe.build.GPP as cpp_optimal_learning
 from moe.optimal_learning.python.cpp_wrappers.optimization_parameters import ExpectedImprovementOptimizationParameters
 from moe.views.gp_pretty_view import GpPrettyView
 from moe.views.schemas import GpInfo, EiOptimizationParameters, ListOfPointsInDomain, ListOfExpectedImprovements
@@ -111,9 +111,9 @@ class GpNextPointsPrettyView(GpPrettyView):
         :param deserialized_request_params: the deserialized REST request, containing ei_optimization_parameters and gp_info
         :type deserialized_request_params: a deserialized self.request_schema object as a dict
         :param optimization_method_name: the optimization method to use
-        :type optimization_method_name: string in `moe.views.constant.OPTIMIZATION_METHOD_NAMES`
+        :type optimization_method_name: string in ``moe.views.constant.OPTIMIZATION_METHOD_NAMES``
         :param route_name: name of the route being called
-        :type route_name: string in `moe.views.constant.ALL_REST_ROUTES_ROUTE_NAME_TO_ENDPOINT.keys()`
+        :type route_name: string in ``moe.views.constant.ALL_REST_ROUTES_ROUTE_NAME_TO_ENDPOINT.keys()``
         :param *args: extra args to be passed to optimization method
         :param **kwargs: extra kwargs to be passed to optimization method
 
@@ -163,11 +163,11 @@ class GpNextPointsPrettyView(GpPrettyView):
         # Note: num_random_samples only has meaning when computing more than 1 points_to_sample simultaneously
         new_params = ExpectedImprovementOptimizationParameters(
             optimizer_type=getattr(
-                cpp_gaussian_process.OptimizerTypes,
+                cpp_optimal_learning.OptimizerTypes,
                 ei_optimization_parameters.get('optimizer_type')
                 ),
             num_random_samples=ei_optimization_parameters.get('num_random_samples'),
-            optimizer_parameters=cpp_gaussian_process.GradientDescentParameters(
+            optimizer_parameters=cpp_optimal_learning.GradientDescentParameters(
                 ei_optimization_parameters.get('num_multistarts'),
                 ei_optimization_parameters.get('gd_iterations'),
                 ei_optimization_parameters.get('max_num_restarts'),
@@ -179,5 +179,5 @@ class GpNextPointsPrettyView(GpPrettyView):
         )
         # TODO(eliu): domain_type should passed as part of the domain; this is a hack until I
         # refactor these calls to use the new interface
-        new_params.domain_type = cpp_gaussian_process.DomainTypes.tensor_product
+        new_params.domain_type = cpp_optimal_learning.DomainTypes.tensor_product
         return new_params
