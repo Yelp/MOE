@@ -5,16 +5,16 @@ Includes:
     1. request and response schemas
     2. pretty and backend views
 """
+import colander
+
 import numpy
 
 from pyramid.view import view_config
 
-from moe.views.utils import _make_gp_from_gp_info
-from moe.views.gp_pretty_view import GpPrettyView, PRETTY_RENDERER
-
-import colander
-from moe.views.schemas import ListOfFloats, MatrixOfFloats, GpInfo, ListOfPointsInDomain
 from moe.views.constant import GP_MEAN_VAR_ROUTE_NAME, GP_MEAN_VAR_PRETTY_ROUTE_NAME
+from moe.views.gp_pretty_view import GpPrettyView, PRETTY_RENDERER
+from moe.views.schemas import ListOfFloats, MatrixOfFloats, GpInfo, ListOfPointsInDomain
+from moe.views.utils import _make_gp_from_gp_info
 
 
 class GpMeanVarRequest(colander.MappingSchema):
@@ -23,14 +23,14 @@ class GpMeanVarRequest(colander.MappingSchema):
 
     **Required fields**
 
-        :points_to_sample: list of points in domain to calculate the Gaussian Process (GP) mean and covariance at (moe.views.schemas.ListOfPointsInDomain)
-        :gp_info: a moe.views.schemas.GpInfo object of historical data
+        :points_to_sample: list of points in domain to calculate the Gaussian Process (GP) mean and covariance at (:class:`moe.views.schemas.ListOfPointsInDomain`)
+        :gp_info: a :class:`moe.views.schemas.GpInfo` object of historical data
 
     **Example Request**
 
     .. sourcecode:: http
 
-        Content-Type: text/javascrip
+        Content-Type: text/javascript
 
         {
             'points_to_sample': [[0.1], [0.5], [0.9]],
@@ -59,8 +59,8 @@ class GpMeanVarResponse(colander.MappingSchema):
     **Output fields**
 
         :endpoint: the endpoint that was called
-        :mean: list of the means of the GP at the points sampled (moe.views.schemas.ListOfFloats)
-        :variance: matrix of covariance of the GP at the points sampled (moe.views.schemas.MatrixOfFloats)
+        :mean: list of the means of the GP at the points sampled (:class:`moe.views.schemas.ListOfFloats`)
+        :variance: matrix of covariance of the GP at the points sampled (:class:`moe.views.schemas.MatrixOfFloats`)
 
     **Example Response**
 
@@ -117,8 +117,8 @@ class GpMeanVarView(GpPrettyView):
 
            Calculates the GP mean and covariance of a set of points, given historical data.
 
-           :input: moe.views.gp_ei.GpMeanVarRequest()
-           :output: moe.views.gp_ei.GpMeanVarResponse()
+           :input: :class:`moe.views.gp_ei.GpMeanVarRequest`
+           :output: :class:`moe.views.gp_ei.GpMeanVarResponse`
 
            :status 200: returns a response
            :status 500: server error
@@ -129,9 +129,9 @@ class GpMeanVarView(GpPrettyView):
         points_to_sample = numpy.array(params.get('points_to_sample'))
         gp_info = params.get('gp_info')
 
-        GP = _make_gp_from_gp_info(gp_info)
+        gaussian_process = _make_gp_from_gp_info(gp_info)
 
-        mean, var = GP.get_mean_and_var_of_points(points_to_sample)
+        mean, var = gaussian_process.get_mean_and_var_of_points(points_to_sample)
 
         return self.form_response({
                 'endpoint': self._route_name,

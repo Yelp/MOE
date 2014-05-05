@@ -7,7 +7,7 @@ Include:
 """
 import colander
 
-import moe.build.GPP as C_GP
+import moe.build.GPP as cpp_optimal_learning
 from moe.optimal_learning.python.cpp_wrappers.optimization_parameters import ExpectedImprovementOptimizationParameters
 from moe.views.gp_pretty_view import GpPrettyView
 from moe.views.schemas import GpInfo, EiOptimizationParameters, ListOfPointsInDomain, ListOfExpectedImprovements
@@ -20,12 +20,12 @@ class GpNextPointsRequest(colander.MappingSchema):
 
     **Required fields**
 
-        :gp_info: a moe.views.schemas.GpInfo object of historical data
+        :gp_info: a :class:`moe.views.schemas.GpInfo` object of historical data
 
     **Optional fields**
 
         :num_samples_to_generate: number of next points to generate (default: 1)
-        :ei_optimization_parameters: moe.views.schemas.EiOptimizationParameters() object containing optimization parameters (default: moe.optimal_learning.EPI.src.python.constant.default_ei_optimization_parameters)
+        :ei_optimization_parameters: :class:`moe.views.schemas.EiOptimizationParameters` object containing optimization parameters (default: moe.optimal_learning.EPI.src.python.constant.default_ei_optimization_parameters)
 
     **Example Request**
 
@@ -66,8 +66,8 @@ class GpNextPointsResponse(colander.MappingSchema):
     **Output fields**
 
         :endpoint: the endpoint that was called
-        :points_to_sample: list of points in the domain to sample next (moe.views.schemas.ListOfPointsInDomain)
-        :expected_improvement: list of EI of points in points_to_sample (moe.views.schemas.ListOfExpectedImprovements)
+        :points_to_sample: list of points in the domain to sample next (:class:`moe.views.schemas.ListOfPointsInDomain`)
+        :expected_improvement: list of EI of points in points_to_sample (:class:`moe.views.schemas.ListOfExpectedImprovements`)
 
     **Example Response**
 
@@ -91,9 +91,9 @@ class GpNextPointsPrettyView(GpPrettyView):
     """A class to encapsulate 'pretty' gp_next_points_* views.
 
     Extends GpPrettyView with:
-        1. GP generation from params
+        1. gaussian_process generation from params
         2. Converting params into a C++ consumable set of optimization parameters
-        3. A method (compute_next_points_to_sample_response) for computing the next best points to sample from a GP
+        3. A method (compute_next_points_to_sample_response) for computing the next best points to sample from a gaussian_process
 
     """
 
@@ -111,19 +111,19 @@ class GpNextPointsPrettyView(GpPrettyView):
         :param deserialized_request_params: the deserialized REST request, containing ei_optimization_parameters and gp_info
         :type deserialized_request_params: a deserialized self.request_schema object as a dict
         :param optimization_method_name: the optimization method to use
-        :type optimization_method_name: string in moe.views.constant.OPTIMIZATION_METHOD_NAMES
+        :type optimization_method_name: string in ``moe.views.constant.OPTIMIZATION_METHOD_NAMES``
         :param route_name: name of the route being called
-        :type route_name: string in moe.views.constant.ALL_REST_ROUTES_ROUTE_NAME_TO_ENDPOINT.keys()
+        :type route_name: string in ``moe.views.constant.ALL_REST_ROUTES_ROUTE_NAME_TO_ENDPOINT.keys()``
         :param *args: extra args to be passed to optimization method
         :param **kwargs: extra kwargs to be passed to optimization method
 
         """
         num_samples_to_generate = params.get('num_samples_to_generate')
 
-        GP = self.make_gp(params)
+        gaussian_process = self.make_gp(params)
         ei_optimization_parameters_cpp = self.get_optimization_parameters_cpp(params)
 
-        optimization_method = getattr(GP, optimization_method_name)
+        optimization_method = getattr(gaussian_process, optimization_method_name)
 
         next_points = optimization_method(
                 ei_optimization_parameters_cpp,
@@ -131,7 +131,7 @@ class GpNextPointsPrettyView(GpPrettyView):
                 *args,
                 **kwargs
                 )
-        expected_improvement = GP.evaluate_expected_improvement_at_point_list(next_points)
+        expected_improvement = gaussian_process.evaluate_expected_improvement_at_point_list(next_points)
 
         return self.form_response({
                 'endpoint': route_name,
@@ -141,10 +141,10 @@ class GpNextPointsPrettyView(GpPrettyView):
 
     @staticmethod
     def make_gp(deserialized_request_params):
-        """Create a GP object from deserialized request params.
+        """Create a gaussian_process object from deserialized request params.
 
         :param deserialized_request_params: the deserialized params of a REST request, containing gp_info
-        :type deserialized_request_params: a dictionary with a key 'gp_info' containing a deserialized moe.views.schemas.GpInfo object of historical data.
+        :type deserialized_request_params: a dictionary with a key 'gp_info' containing a deserialized :class:`moe.views.schemas.GpInfo` object of historical data.
 
         """
         gp_info = deserialized_request_params.get('gp_info')
@@ -155,7 +155,7 @@ class GpNextPointsPrettyView(GpPrettyView):
         """Form a C++ consumable ExpectedImprovementOptimizationParameters object from deserialized request params.
 
         :param deserialized_request_params: the deserialized REST request, containing ei_optimization_parameters
-        :type deserialized_request_params: a dictionary with a key ei_optimization_parameters containing a moe.views.schemas.EiOptimizationParameters() object with optimization parameters
+        :type deserialized_request_params: a dictionary with a key ei_optimization_parameters containing a :class:`moe.views.schemas.EiOptimizationParameters()` object with optimization parameters
 
         """
         ei_optimization_parameters = deserialized_request_params.get('ei_optimization_parameters')
@@ -163,11 +163,11 @@ class GpNextPointsPrettyView(GpPrettyView):
         # Note: num_random_samples only has meaning when computing more than 1 points_to_sample simultaneously
         new_params = ExpectedImprovementOptimizationParameters(
             optimizer_type=getattr(
-                C_GP.OptimizerTypes,
+                cpp_optimal_learning.OptimizerTypes,
                 ei_optimization_parameters.get('optimizer_type')
                 ),
             num_random_samples=ei_optimization_parameters.get('num_random_samples'),
-            optimizer_parameters=C_GP.GradientDescentParameters(
+            optimizer_parameters=cpp_optimal_learning.GradientDescentParameters(
                 ei_optimization_parameters.get('num_multistarts'),
                 ei_optimization_parameters.get('gd_iterations'),
                 ei_optimization_parameters.get('max_num_restarts'),
@@ -179,5 +179,5 @@ class GpNextPointsPrettyView(GpPrettyView):
         )
         # TODO(eliu): domain_type should passed as part of the domain; this is a hack until I
         # refactor these calls to use the new interface
-        new_params.domain_type = C_GP.DomainTypes.tensor_product
+        new_params.domain_type = cpp_optimal_learning.DomainTypes.tensor_product
         return new_params

@@ -2,7 +2,7 @@
 
 <div class="span12">
     <h4>Pretty input for <strong><code>${ endpoint }</code></strong> endpoint</h4>
-    <p><a href="http://sc932.github.io/MOE/moe.views.html#module-moe.views.${ endpoint }">Documentation</a>
+    <p><a href="http://sc932.github.io/MOE/moe.views.rest.html#module-moe.views.rest.${ endpoint }">Documentation</a>
     <p><textarea class="form-control" id="json-body" rows="10">${ default_text }</textarea></p>
     <p><button id="submit" type="button" class="btn btn-success">Submit</button></p>
     <p><textarea class="form-control" id="json-out" rows="10" placeholder="Output JSON"></textarea></p>

@@ -6,7 +6,7 @@ import testify as T
 from moe.optimal_learning.python.lib.math import get_latin_hypercube_points
 from moe.optimal_learning.python.constant import default_expected_improvement_parameters
 from moe.tests.views.rest_gaussian_process_test_case import RestGaussianProcessTestCase
-from moe.views.gp_ei import GpEiResponse
+from moe.views.rest.gp_ei import GpEiResponse
 from moe.views.constant import GP_EI_ENDPOINT
 
 
