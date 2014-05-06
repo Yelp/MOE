@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 """Various tests for checking exceptions in views."""
 import testify as T
+
 from webtest.app import AppError
 
-from moe.views.constant import ALL_REST_MOE_ROUTES
 from moe.tests.views.rest_gaussian_process_test_case import RestGaussianProcessTestCase
+from moe.views.constant import ALL_REST_MOE_ROUTES
 
 
 class RestGaussianProcessTestCaseWithExceptions(RestGaussianProcessTestCase):

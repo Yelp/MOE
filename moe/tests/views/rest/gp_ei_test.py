@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 """Test class for gp_mean_var view."""
 import simplejson as json
+
 import testify as T
 
-from moe.optimal_learning.python.lib.math import get_latin_hypercube_points
 from moe.optimal_learning.python.constant import default_expected_improvement_parameters
+from moe.optimal_learning.python.lib.math import get_latin_hypercube_points
 from moe.tests.views.rest_gaussian_process_test_case import RestGaussianProcessTestCase
-from moe.views.rest.gp_ei import GpEiResponse
 from moe.views.constant import GP_EI_ENDPOINT
+from moe.views.rest.gp_ei import GpEiResponse
 
 
 class TestGpEiView(RestGaussianProcessTestCase):
@@ -34,11 +35,11 @@ class TestGpEiView(RestGaussianProcessTestCase):
                 },
             ]
 
-    def _build_json_payload(self, GP, points_to_evaluate):
+    def _build_json_payload(self, gaussian_process, points_to_evaluate):
         """Create a json_payload to POST to the /gp/ei endpoint with all needed info."""
         json_payload = json.dumps({
             'points_to_evaluate': points_to_evaluate,
-            'gp_info': self._build_gp_info(GP),
+            'gp_info': self._build_gp_info(gaussian_process),
             'points_being_sampled': [],
             'mc_iterations': default_expected_improvement_parameters.mc_iterations,
             })
@@ -51,14 +52,14 @@ class TestGpEiView(RestGaussianProcessTestCase):
             num_points_in_sample = test_case['num_points_in_sample']
             domain = test_case['domain']
 
-            GP, _ = self._make_random_processes_from_latin_hypercube(domain, num_points_in_sample)
+            gaussian_process, _ = self._make_random_processes_from_latin_hypercube(domain, num_points_in_sample)
             # EI from C++
-            cpp_expected_improvement = GP.evaluate_expected_improvement_at_point_list(
+            cpp_expected_improvement = gaussian_process.evaluate_expected_improvement_at_point_list(
                     points_to_evaluate,
                     )
 
             # EI from REST
-            json_payload = self._build_json_payload(GP, points_to_evaluate.tolist())
+            json_payload = self._build_json_payload(gaussian_process, points_to_evaluate.tolist())
             resp = self.testapp.post(self.endpoint, json_payload)
             resp_schema = GpEiResponse()
             resp_dict = resp_schema.deserialize(json.loads(resp.body))
