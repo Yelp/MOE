@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 """Test class for gp_next_points_epi view."""
 import simplejson as json
+
 import testify as T
 
 from moe.tests.views.rest_gaussian_process_test_case import RestGaussianProcessTestCase
-from moe.views.gp_next_points_pretty_view import GpNextPointsResponse
 from moe.views.constant import ALL_NEXT_POINTS_MOE_ROUTES, GP_NEXT_POINTS_CONSTANT_LIAR_ROUTE_NAME
+from moe.views.gp_next_points_pretty_view import GpNextPointsResponse
 
 
 class TestGpNextPointsViews(RestGaussianProcessTestCase):
@@ -30,11 +31,11 @@ class TestGpNextPointsViews(RestGaussianProcessTestCase):
                 },
             ]
 
-    def _build_json_payload(self, GP, num_samples_to_generate, lie_value=None):
+    def _build_json_payload(self, gaussian_process, num_samples_to_generate, lie_value=None):
         """Create a json_payload to POST to the /gp/next_points/* endpoint with all needed info."""
         dict_to_dump = {
             'num_samples_to_generate': num_samples_to_generate,
-            'gp_info': self._build_gp_info(GP),
+            'gp_info': self._build_gp_info(gaussian_process),
             }
         if lie_value is not None:
             dict_to_dump['lie_value'] = lie_value
@@ -48,13 +49,13 @@ class TestGpNextPointsViews(RestGaussianProcessTestCase):
                 num_samples_to_generate = test_case['num_samples_to_generate']
                 domain = test_case['domain']
 
-                GP, _ = self._make_random_processes_from_latin_hypercube(domain, num_points_in_sample)
+                gaussian_process, _ = self._make_random_processes_from_latin_hypercube(domain, num_points_in_sample)
 
                 # Next point from REST
                 if moe_route.route_name == GP_NEXT_POINTS_CONSTANT_LIAR_ROUTE_NAME:
-                    json_payload = self._build_json_payload(GP, num_samples_to_generate, lie_value=0.0)
+                    json_payload = self._build_json_payload(gaussian_process, num_samples_to_generate, lie_value=0.0)
                 else:
-                    json_payload = self._build_json_payload(GP, num_samples_to_generate)
+                    json_payload = self._build_json_payload(gaussian_process, num_samples_to_generate)
                 resp = self.testapp.post(moe_route.endpoint, json_payload)
                 resp_schema = GpNextPointsResponse()
                 resp_dict = resp_schema.deserialize(json.loads(resp.body))

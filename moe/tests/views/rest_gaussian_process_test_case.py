@@ -24,21 +24,21 @@ class RestGaussianProcessTestCase(OLDGaussianProcessTestCase):
         self.testapp = TestApp(app)
 
     @staticmethod
-    def _build_gp_info(GP):
+    def _build_gp_info(gaussian_process):
         """Create and return a gp_info dictionary from a GP object."""
         # Convert sampled points
         json_points_sampled = []
-        for i, point in enumerate(GP.points_sampled):
+        for i, point in enumerate(gaussian_process.points_sampled):
             json_points_sampled.append({
                     'point': point.point.tolist(),  # json needs the numpy array to be a list
                     'value': point.value,
-                    'value_var': GP.sample_variance_of_samples[i],
+                    'value_var': gaussian_process.sample_variance_of_samples[i],
                     })
 
         # Build entire gp_info dict
         gp_info = {
                 'points_sampled': json_points_sampled,
-                'domain': GP.domain,
+                'domain': gaussian_process.domain,
                 }
 
         return gp_info
