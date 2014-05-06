@@ -3,8 +3,8 @@
 from numpy.linalg import LinAlgError
 
 from moe.optimal_learning.python.data_containers import SamplePoint
-from moe.optimal_learning.python.models.optimal_gaussian_process_linked_cpp import OptimalGaussianProcessLinkedCpp
 from moe.optimal_learning.python.models.covariance_of_process import CovarianceOfProcess
+from moe.optimal_learning.python.models.optimal_gaussian_process_linked_cpp import OptimalGaussianProcessLinkedCpp
 from moe.views.exceptions import SingularMatrixError
 
 
@@ -17,7 +17,7 @@ def _make_default_covariance_of_process(signal_variance=None, length=None):
 
 
 def _make_gp_from_gp_info(gp_info):
-    """Create and return a C++ backed GP from a gp_info dict.
+    """Create and return a C++ backed gaussian_process from a gp_info dict.
 
     gp_info has the form of GpInfo in moe/schemas.py
 
@@ -33,7 +33,7 @@ def _make_gp_from_gp_info(gp_info):
             signal_variance=signal_variance,
             length=length,
             )
-    GP = OptimalGaussianProcessLinkedCpp(
+    gaussian_process = OptimalGaussianProcessLinkedCpp(
             domain=domain,
             covariance_of_process=covariance_of_process,
             )
@@ -46,8 +46,8 @@ def _make_gp_from_gp_info(gp_info):
                 point['value_var'],
                 )
         try:
-            GP.add_sample_point(sample_point, point['value_var'])
+            gaussian_process.add_sample_point(sample_point, point['value_var'])
         except LinAlgError:
             raise(SingularMatrixError)
 
-    return GP
+    return gaussian_process

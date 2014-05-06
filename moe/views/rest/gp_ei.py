@@ -6,14 +6,16 @@ Includes:
     2. pretty and backend views
 """
 import colander
+
 import numpy
+
 from pyramid.view import view_config
 
 from moe.optimal_learning.python.constant import default_expected_improvement_parameters
+from moe.views.constant import GP_EI_ROUTE_NAME, GP_EI_PRETTY_ROUTE_NAME
 from moe.views.gp_pretty_view import GpPrettyView, PRETTY_RENDERER
 from moe.views.schemas import ListOfPointsInDomain, GpInfo, ListOfExpectedImprovements
 from moe.views.utils import _make_gp_from_gp_info
-from moe.views.constant import GP_EI_ROUTE_NAME, GP_EI_PRETTY_ROUTE_NAME
 
 
 class GpEiRequest(colander.MappingSchema):
@@ -22,12 +24,12 @@ class GpEiRequest(colander.MappingSchema):
 
     **Required fields**
 
-        :points_to_evaluate: list of points in domain to calculate Expected Improvement (EI) at (moe.views.schemas.ListOfPointsInDomain)
-        :gp_info: a moe.views.schemas.GpInfo object of historical data
+        :points_to_evaluate: list of points in domain to calculate Expected Improvement (EI) at (:class:`moe.views.schemas.ListOfPointsInDomain`)
+        :gp_info: a :class:`moe.views.schemas.GpInfo` object of historical data
 
     **Optional fields**
 
-        :points_being_sampled: list of points in domain being sampled (default: []) (moe.views.schemas.ListOfPointsInDomain)
+        :points_being_sampled: list of points in domain being sampled (default: []) (:class:`moe.views.schemas.ListOfPointsInDomain`)
         :mc_iterations: number of Monte Carlo (MC) iterations to perform in numerical integration to calculate EI (default: 1000)
 
     **Example Request**
@@ -73,7 +75,7 @@ class GpEiResponse(colander.MappingSchema):
     **Output fields**
 
         :endpoint: the endpoint that was called
-        :expected_improvement: list of calculated expected improvements (moe.views.schemas.ListOfExpectedImprovements)
+        :expected_improvement: list of calculated expected improvements (:class:`moe.views.schemas.ListOfExpectedImprovements`)
 
     **Example Response**
 
@@ -124,8 +126,8 @@ class GpEiView(GpPrettyView):
 
            Calculates the Expected Improvement (EI) of a set of points, given historical data.
 
-           :input: moe.views.gp_ei.GpEiRequest()
-           :output: moe.views.gp_ei.GpEiResponse()
+           :input: :class:`moe.views.gp_ei.GpEiRequest`
+           :output: :class:`moe.views.gp_ei.GpEiResponse`
 
            :status 200: returns a response
            :status 500: server error
@@ -137,9 +139,9 @@ class GpEiView(GpPrettyView):
         points_being_sampled = numpy.array(params.get('points_being_sampled'))
         gp_info = params.get('gp_info')
 
-        GP = _make_gp_from_gp_info(gp_info)
+        gaussian_process = _make_gp_from_gp_info(gp_info)
 
-        expected_improvement = GP.evaluate_expected_improvement_at_point_list(
+        expected_improvement = gaussian_process.evaluate_expected_improvement_at_point_list(
                 points_to_evaluate,
                 points_being_sampled=points_being_sampled,
                 )
