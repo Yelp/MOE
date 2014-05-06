@@ -182,3 +182,7 @@ class ClosedIntervalTest(OptimalLearningTestCase):
         truth = [False, False, True, False]
         for i, case in enumerate(self.test_cases):
             T.assert_equal(case.is_empty(), truth[i])
+
+
+if __name__ == "__main__":
+    T.run()
