@@ -385,7 +385,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         """Construct an ExpectedImprovement object that knows how to call C++ for evaluation of member functions.
 
         :param gaussian_process: GaussianProcess describing
-        :type gaussian_process: cpp_wrappers.GaussianProcess object
+        :type gaussian_process: cpp_wrappers.gaussian_process.GaussianProcess object
         :param current_point: point at which to compute EI (i.e., q in q,p-EI)
         :type current_point: array of float64 with shape (dim)
         :param points_to_sample: points which are being sampled concurrently (i.e., p in q,p-EI)
@@ -495,7 +495,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         :rtype: array of float64 with shape (dim)
 
         """
-        grad_EI = C_GP.compute_grad_expected_improvement(
+        grad_ei = C_GP.compute_grad_expected_improvement(
             self._gaussian_process._gaussian_process,
             cpp_utils.cppify(self._points_to_sample),
             self._points_to_sample.shape[0],
@@ -505,7 +505,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
             self._randomness,
             cpp_utils.cppify(self._current_point),
         )
-        return numpy.array(grad_EI)
+        return numpy.array(grad_ei)
 
     def compute_grad_objective_function(self, **kwargs):
         """Wrapper for compute_grad_expected_improvement; see that function's docstring."""

@@ -3,15 +3,19 @@
 
 These are currently used to describe domain limits for optimizers (i.e., implementations of interfaces/optimization_interface.py)
 
-Each domain provides functions to describe the set of boundary planes, check whether a point is inside/outside, generate
-random points inside, and limit updates (from optimizers) so that a path stays inside the domain.
+Each domain provides functions to:
+* Describe the set of boundary planes
+* Check whether a point is inside/outside
+* Generate random point(s) inside
+* Generate points on a fixed grid
+* Limit updates (from optimizers) so that a path stays inside the domain
 
 """
 import copy
 
 import numpy
 
-from moe.optimal_learning.python.geometry_utils import generate_latin_hypercube_points
+from moe.optimal_learning.python.geometry_utils import generate_grid_points, generate_latin_hypercube_points
 from moe.optimal_learning.python.interfaces.domain_interface import DomainInterface
 
 
@@ -24,7 +28,7 @@ class TensorProductDomain(DomainInterface):
     """
 
     def __init__(self, domain_bounds):
-        """Construct a TensorProductDomain that can be used with cpp_wrappers.* functions/classes.
+        """Construct a TensorProductDomain with the specified bounds.
 
         :param domain_bounds: the boundaries of a dim-dimensional tensor-product domain
         :type domain_bounds: iterable of dim ClosedInterval
@@ -73,9 +77,11 @@ class TensorProductDomain(DomainInterface):
     def generate_uniform_random_points_in_domain(self, num_points, random_source=None):
         r"""Generate ``num_points`` on a latin-hypercube (i.e., like a checkerboard).
 
+        See python.geometry_utils.generate_latin_hypercube_points for more details.
+
         :param num_points: max number of points to generate
         :type num_points: integer >= 0
-        :param random_source:
+        :param random_source: random source producing uniform random numbers (e.g., numpy.random.uniform) (UNUSED)
         :type random_source: callable yielding uniform random numbers in [0,1]
         :return: uniform random sampling of points from the domain
         :rtype: array of float64 with shape (num_points, dim)
@@ -83,6 +89,22 @@ class TensorProductDomain(DomainInterface):
         """
         # TODO(eliu): actually allow users to pass in a random source (GH-56)
         return generate_latin_hypercube_points(num_points, self._domain_bounds)
+
+    def generate_grid_points_in_domain(self, points_per_dimension, random_source=None):
+        """Generate a grid of ``N_0 by N_1 by ... by N_{dim-1}`` points, with each dimension uniformly spaced along the domain boundary.
+
+        See python.geometry_utils.generate_grid_points for more details.
+
+        :param points_per_dimension: (n_1, n_2, ... n_{dim}) number of stencil points per spatial dimension.
+            If len(points_per_dimension) == 1, then n_i = len(points_per_dimension)
+        :type points_per_dimension: tuple or scalar
+        :param random_source: random source producing uniform random numbers (e.g., numpy.random.uniform) (UNUSED)
+        :type random_source: callable yielding uniform random numbers in [0,1]
+        :return: uniform random sampling of points from the domain
+
+        """
+        # TODO(eliu): actually allow users to pass in a random source (GH-56)
+        return generate_grid_points(points_per_dimension, self._domain_bounds)
 
     def compute_update_restricted_to_domain(self, max_relative_change, current_point, update_vector):
         r"""Compute a new update so that CheckPointInside(``current_point`` + ``new_update``) is true.

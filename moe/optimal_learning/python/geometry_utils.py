@@ -40,6 +40,44 @@ def generate_latin_hypercube_points(num_points, domain_bounds):
     return points
 
 
+def generate_grid_points(points_per_dimension, domain_bounds):
+    r"""Generate a uniform grid of points on a tensor product region; exponential runtime.
+
+    This can be useful for producing a reasonable set of initial samples when bootstrapping optimal_learning.
+    Grid sampling (as opposed to a random sampling, e.g., latin hypercube) is not random. It also guarantees
+    sampling of the domain corners.
+
+    .. Note:: This operation is like an outer-product, so 4 points per dimension in 10 dimensions produces
+        4^{10} points. This could be built as an iterator instead, but the typical use
+        case involves function evaluations at every point, so generating the points is
+        not the limiting factor.
+
+    :param points_per_dimension: (n_1, n_2, ... n_{dim}) number of stencil points per spatial dimension.
+        If len(points_per_dimension) == 1, then n_i = len(points_per_dimension)
+    :type points_per_dimension: tuple or scalar
+    :param domain_bounds: the boundaries of a dim-dimensional tensor-product domain
+    :type domain_bounds: iterable of dim ClosedInterval
+    :return: stencil point coordinates
+    :rtype: array of float64 with shape (\Pi_i n_i, dim)
+
+    """
+    points_per_dimension = numpy.asarray(points_per_dimension)
+    if points_per_dimension.size == 1:
+        # resize fills new entries with copies of the original
+        points_per_dimension = numpy.resize(points_per_dimension, len(domain_bounds))
+    # List of 1D grids w/the specified number of points per dimension
+    per_axis_grid = [numpy.linspace(bounds.min, bounds.max, points_per_dimension[i])
+                     for i, bounds in enumerate(domain_bounds)]
+    # meshgrid produces a list of ndarray that is used to evaluate functions on a grid.
+    # The i-th output array has the coordinate of *every* grid point in the i-th dimension.
+    mesh_grid = numpy.meshgrid(*per_axis_grid)
+    # ravel flattens the input (same as numpy.flatten but it tries to avoid copying)
+    # vstack stacks inputs vertically: so for our 1D arrays, the i-th input becomes
+    # the i-th row in a matrix. And since each mesh_grid output has *every* coordinate
+    # of the grid in that dimension, the *columns* of the stack contain every grid point.
+    return numpy.vstack(map(numpy.ravel, mesh_grid)).T
+
+
 # See ClosedInterval (below) for docstring.
 _BaseClosedInterval = collections.namedtuple('ClosedInterval', ['min', 'max'])
 

@@ -1174,8 +1174,8 @@ inline OL_NONNULL_POINTERS void SetupExpectedImprovementState(const OnePotential
   This is a utility function just for reducing code duplication.
 
   TODO(eliu): this is pretty similar to the version directly above it for OnePotentialSampleExpectedImprovementEvaluator.
-  I could merge them and use template-fu to pick the execution path (at compile-time), e.g.,
-  ::
+  I could merge them and use template-fu to pick the execution path (at compile-time), e.g., ::
+
     template <typename ExpectedImprovementEvaluator>
     void SetupExpectedImprovementState(const ExpectedImprovementEvaluator& ei_evaluator, ...) {
       for (...) {
@@ -1186,6 +1186,7 @@ inline OL_NONNULL_POINTERS void SetupExpectedImprovementState(const OnePotential
         }
       }
     }
+
   ``is_same<>::value`` resolves to 'true' or 'false' at compile-time, so the compiler will ditch the unused paths.  I'm not
   sure if there's a nicer way to template-fu this.
 

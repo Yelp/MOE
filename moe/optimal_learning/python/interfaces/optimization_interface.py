@@ -97,27 +97,34 @@ class OptimizableInterface(object):
 
 class OptimizerInterface(object):
 
-    r"""Interface to *maximize* any object implementing OptimizableInterface (defined above)."""
+    r"""Interface to *maximize* any object implementing OptimizableInterface (defined above).
+
+    Implementations are responsible for tracking an OptimizableInterface subclass (the objective being optimized),
+    a DomainInterface subclass (the domain that the objective lives in), and any parameters needed for controlling
+    optimization behavior\*.
+
+    \* Examples include iteration counts, tolerances, learning rate, etc. It is suggested that implementers define a
+       FooParameters container class for their FooOptimizer implementation of this interface.
+
+    """
 
     __metaclass__ = ABCMeta
 
     @abstractmethod
-    def optimize(self, optimizable, optimization_parameters, **kwargs):
+    def optimize(self, **kwargs):
         r"""Maximize a function f(x), represented by an implementation of OptimizableInterface.
 
-        If an initial guess is required (vs optimizer auto-selects starting point(s)), passing via an ``initial_guess``
-        kwarg is suggested.
+        The initial guess is set through calling the ``set_current_point`` method of this object's
+        OptimizableInterface data member.
 
         In general, kwargs not specifically consumed by the implementation of optimize() should be passed down to
         member functions of the ``optimizable`` input.
 
-        :param optimizable: point at which to compute the objective
-        :type optimizable: OptimizableInterface
-        :param optimization_parameters: object specifying the desired optimization method (e.g., gradient descent, random search)
-          and parameters controlling its behavior (e.g., tolerance, iterations, etc.)
-        :type optimization_parameters: implementation-defined
-        :return: point at which the objective function is maximized
-        :rtype: array of float64 with shape (optimizable.problem_size)
+        This method is not required to have a return value; implementers may use one for convenience. The
+        optimal point (as determined by optimization) should be available through the OptimizableInterface data
+        member's ``get_current_point`` method.
+
+        # TODO(eliu): pass the best point, fcn value, etc. in thru an IOContainer-like structure (GH-59)
 
         """
         pass

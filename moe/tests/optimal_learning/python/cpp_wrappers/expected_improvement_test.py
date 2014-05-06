@@ -1,16 +1,18 @@
 # -*- coding: utf-8 -*-
 """Test the C++ implementation of expected improvement against the Python implementation."""
 import numpy
+
 import testify as T
 
-import moe.optimal_learning.python.cpp_wrappers.covariance as cpp_covariance
-import moe.optimal_learning.python.cpp_wrappers.expected_improvement as cpp_expected_improvement
-import moe.optimal_learning.python.cpp_wrappers.gaussian_process as cpp_gaussian_process
-import moe.optimal_learning.python.python_version.covariance as python_covariance
-import moe.optimal_learning.python.python_version.expected_improvement as python_expected_improvement
-import moe.optimal_learning.python.python_version.gaussian_process as python_gaussian_process
+from moe.optimal_learning.python import cpp_wrappers
+from moe.optimal_learning.python import python_version
+import moe.optimal_learning.python.cpp_wrappers.covariance
+import moe.optimal_learning.python.cpp_wrappers.expected_improvement
+import moe.optimal_learning.python.cpp_wrappers.gaussian_process
 from moe.optimal_learning.python.geometry_utils import ClosedInterval
+import moe.optimal_learning.python.python_version.covariance
 from moe.optimal_learning.python.python_version.domain import TensorProductDomain
+import moe.optimal_learning.python.python_version.expected_improvement
 from moe.tests.optimal_learning.python.gaussian_process_test_case import GaussianProcessTestCase, GaussianProcessTestEnvironmentInput
 
 
@@ -38,10 +40,10 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
         hyperparameter_interval=ClosedInterval(0.1, 0.3),
         lower_bound_interval=ClosedInterval(-1.0, 0.5),
         upper_bound_interval=ClosedInterval(2.0, 3.5),
-        covariance_class=python_covariance.SquareExponential,
+        covariance_class=python_version.covariance.SquareExponential,
         spatial_domain_class=TensorProductDomain,
         hyperparameter_domain_class=TensorProductDomain,
-        gaussian_process_class=python_gaussian_process.GaussianProcess,
+        gaussian_process_class=python_version.gaussian_process.GaussianProcess,
     )
 
     num_sampled_list = [1, 2, 5, 10, 16, 20, 42, 50]
@@ -57,7 +59,7 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
         numpy.random.seed(8794)
         super(ExpectedImprovementTest, self).base_setup()
 
-    def test_python_and_cpp_return_same_1D_analytic_ei_and_gradient(self):
+    def test_python_and_cpp_return_same_1d_analytic_ei_and_gradient(self):
         """Compare the 1D analytic EI/grad EI results from Python & C++, checking several random points per test case."""
         num_tests_per_case = 10
         ei_tolerance = 6.0e-14
@@ -66,11 +68,11 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
         for test_case in self.gp_test_environments:
             domain, python_cov, python_gp = test_case
             current_point = domain.generate_random_point_in_domain()
-            python_ei_eval = python_expected_improvement.ExpectedImprovement(python_gp, current_point)
+            python_ei_eval = python_version.expected_improvement.ExpectedImprovement(python_gp, current_point)
 
-            cpp_cov = cpp_covariance.SquareExponential(python_cov.get_hyperparameters())
-            cpp_gp = cpp_gaussian_process.GaussianProcess(cpp_cov, python_gp._historical_data)
-            cpp_ei_eval = cpp_expected_improvement.ExpectedImprovement(cpp_gp, current_point)
+            cpp_cov = cpp_wrappers.covariance.SquareExponential(python_cov.get_hyperparameters())
+            cpp_gp = cpp_wrappers.gaussian_process.GaussianProcess(cpp_cov, python_gp._historical_data)
+            cpp_ei_eval = cpp_wrappers.expected_improvement.ExpectedImprovement(cpp_gp, current_point)
 
             for _ in xrange(num_tests_per_case):
                 current_point = domain.generate_random_point_in_domain()

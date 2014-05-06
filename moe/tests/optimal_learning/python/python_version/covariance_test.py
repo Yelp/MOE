@@ -10,6 +10,7 @@ TODO(eliu): make test structure general enough to support other covariance funct
 
 """
 import numpy
+
 import testify as T
 
 import moe.optimal_learning.python.gaussian_process_test_utils as gp_utils

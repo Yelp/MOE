@@ -338,8 +338,8 @@ class GradientDescentOptimizer(OptimizerInterface):
 
         .. Note:: Additional high-level discussion is provided in section 2a) in the header docs of this file.
 
-        Basic gradient descent (GD) to optimize objective function ``f(x)``:
-        ::
+        Basic gradient descent (GD) to optimize objective function ``f(x)``::
+
           input: initial_guess
 
           next_point = initial_guess
@@ -354,6 +354,7 @@ class GradientDescentOptimizer(OptimizerInterface):
           if (averaging) {
             next_point = average(previous_points, average_range_start, average_range_end)
           }
+
         See GradientDescentParameters docstring or the GD code for more information on averaging.
 
         So it marches along the direction of largest gradient (so the steepest descent) for some distance.  The distance

@@ -34,7 +34,7 @@ class SquareExponential(CovarianceInterface):
     """
 
     def __init__(self, hyperparameters):
-        r"""Construct a square exponential covariance object that can be used with cpp_wrappers.* functions/classes.
+        r"""Construct a square exponential covariance object with the specified hyperparameters.
 
         :param hyperparameters: hyperparameters of the covariance function; index 0 is \alpha (signal variance, \sigma_f^2)
           and index 1..dim are the per-dimension length scales.

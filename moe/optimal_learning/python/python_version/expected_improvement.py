@@ -8,6 +8,7 @@ import numpy
 import scipy.linalg
 import scipy.stats
 
+from moe.optimal_learning.python.constant import default_expected_improvement_parameters
 from moe.optimal_learning.python.interfaces.expected_improvement_interface import ExpectedImprovementInterface
 from moe.optimal_learning.python.interfaces.optimization_interface import OptimizableInterface
 from moe.optimal_learning.python.python_version.optimization import multistart_optimize, NullOptimizer
@@ -38,14 +39,16 @@ def multistart_expected_improvement_optimization(
 
     If ``num_samples_to_generate = 1``, this is the same as ComputeOptimalPointToSampleWithRandomStarts().
 
+    TODO(eliu): allow callers to pass in a source of randomness (GH-56)
+
     :param ei_optimizer: object that optimizes (e.g., gradient descent, newton) EI over a domain
     :type ei_optimizer: interfaces.optimization_interfaces.OptimizerInterface subclass
     :param num_multistarts: number of times to multistart ``ei_optimizer``
     :type num_multistarts: int > 0
     :param num_samples_to_generate: how many simultaneous experiments you would like to run (i.e., the q in q,p-EI)
     :type num_samples_to_generate: int >= 1
-    :param randomness: ?? (UNUSED)
-    :type randomness: ?? (UNUSED)
+    :param randomness: random source(s) used to generate multistart points and perform monte-carlo integration (when applicable) (UNUSED)
+    :type randomness: (UNUSED)
     :param max_num_threads: maximum number of threads to use, >= 1 (UNUSED)
     :type max_num_threads: int > 0
     :param status: status messages from C++ (e.g., reporting on optimizer success, etc.)
@@ -81,12 +84,14 @@ def evaluate_expected_improvement_at_point_list(
     Generally gradient descent is preferred but when it fails to converge this may be the only "robust" option.
     This function is also useful for plotting or debugging purposes (just to get a bunch of EI values).
 
+    TODO(eliu): allow callers to pass in a source of randomness (GH-56)
+
     :param ei_evaluator: object specifying how to evaluate the expected improvement
-    :type ei_evaluator: cpp_wrappers.expected_improvement.ExpectedImprovement
+    :type ei_evaluator: interfaces.expected_improvement_interface.ExpectedImprovementInterface subclass
     :param points_to_evaluate: points at which to compute EI
     :type points_to_evaluate: array of float64 with shape (num_to_evaluate, ei_evaluator.dim)
-    :param randomness: ??? (UNUSED)
-    :type randomness: ???
+    :param randomness: random source(s) used for monte-carlo integration (when applicable) (UNUSED)
+    :type randomness: (UNUSED)
     :param max_num_threads: maximum number of threads to use, >= 1 (UNUSED)
     :type max_num_threads: int > 0
     :param status: status messages from C++ (e.g., reporting on optimizer success, etc.)
@@ -120,19 +125,28 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
 
     """
 
-    def __init__(self, gaussian_process, current_point, points_to_sample=numpy.array([]), num_mc_iterations=1000, randomness=None):
+    def __init__(
+            self,
+            gaussian_process,
+            current_point,
+            points_to_sample=numpy.array([]),
+            num_mc_iterations=default_expected_improvement_parameters.mc_iterations,
+            randomness=None,
+    ):
         """Construct an ExpectedImprovement object that supports q,p-EI.
 
+        TODO(eliu): allow callers to pass in a source of randomness (GH-56)
+
         :param gaussian_process: GaussianProcess describing
-        :type gaussian_process: cpp_wrappers.GaussianProcess object
+        :type gaussian_process: interfaces.gaussian_process_interface.GaussianProcessInterface subclass
         :param current_point: point at which to compute EI (i.e., q in q,p-EI)
         :type current_point: array of float64 with shape (dim)
         :param points_to_sample: points which are being sampled concurrently (i.e., p in q,p-EI)
         :type points_to_sample: array of float64 with shape (num_to_sample, dim)
         :param num_mc_iterations: number of monte-carlo iterations to use (when monte-carlo integration is used to compute EI)
         :type num_mc_iterations: int > 0
-        :param randomness: ???
-        :type randomness: ???
+        :param randomness: random source(s) used for monte-carlo integration (when applicable) (UNUSED)
+        :type randomness: (UNUSED)
 
         """
         self._num_mc_iterations = num_mc_iterations
@@ -144,9 +158,6 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
 
         self._current_point = numpy.copy(current_point)
         self._points_to_sample = numpy.copy(points_to_sample)
-
-        if randomness is None:
-            pass  # TODO(eliu): WHAT TO DO HERE
 
     @property
     def dim(self):
@@ -171,7 +182,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         """
         self._current_point = numpy.copy(current_point)
 
-    def _compute_expected_improvement_1D_analytic(self, mu_star, var_star):
+    def _compute_expected_improvement_1d_analytic(self, mu_star, var_star):
         """Compute EI when the number of potential samples is 1 (i.e., points_to_sample.size = 0) using *fast* analytic methods.
 
         This function can only support the computation of 1,0-EI. In this case, we have analytic formulas
@@ -192,10 +203,10 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         """
         sigma_star = numpy.sqrt(var_star)
         temp = self._best_so_far - mu_star
-        EI = temp * scipy.stats.norm.cdf(temp / sigma_star) + sigma_star * scipy.stats.norm.pdf(temp / sigma_star)
-        return numpy.fmax(0.0, EI)
+        expected_improvement = temp * scipy.stats.norm.cdf(temp / sigma_star) + sigma_star * scipy.stats.norm.pdf(temp / sigma_star)
+        return numpy.fmax(0.0, expected_improvement)
 
-    def _compute_grad_expected_improvement_1D_analytic(self, mu_star, var_star, grad_mu, grad_chol_decomp):
+    def _compute_grad_expected_improvement_1d_analytic(self, mu_star, var_star, grad_mu, grad_chol_decomp):
         """Compute the gradient of EI when the number of potential samples is 1 (i.e., points_to_sample.size = 0) using *fast* analytic methods.
 
         This function can only support the computation of 1,0-EI. In this case, we have analytic formulas
@@ -220,16 +231,16 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         """
         sigma_star = numpy.sqrt(var_star)
         mu_diff = self._best_so_far - mu_star
-        C = mu_diff / sigma_star
-        pdf_C = scipy.stats.norm.pdf(C)
-        cdf_C = scipy.stats.norm.cdf(C)
+        c = mu_diff / sigma_star
+        pdf_c = scipy.stats.norm.pdf(c)
+        cdf_c = scipy.stats.norm.cdf(c)
 
-        d_C = (-sigma_star * grad_mu - grad_chol_decomp * mu_diff) / var_star
-        d_A = -grad_mu * cdf_C + mu_diff * pdf_C * d_C
-        d_B = grad_chol_decomp * pdf_C - sigma_star * C * pdf_C * d_C
+        d_c = (-sigma_star * grad_mu - grad_chol_decomp * mu_diff) / var_star
+        d_a = -grad_mu * cdf_c + mu_diff * pdf_c * d_c
+        d_b = grad_chol_decomp * pdf_c - sigma_star * c * pdf_c * d_c
 
-        d_A += d_B
-        return d_A
+        d_a += d_b
+        return d_a
 
     def _compute_expected_improvement_monte_carlo_naive(self, num_points, mu_star, var_star):
         """Compute EI using (naive) monte carlo integration.
@@ -325,7 +336,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
     def _compute_grad_expected_improvement_monte_carlo_naive(self, num_points, mu_star, var_star, grad_mu, grad_chol_decomp):
         """Compute the gradient of EI using (naive) monte carlo integration.
 
-        See _compute_grad_expected_improvement_monte_carlo (below) for more details on EI.
+        See _compute_grad_expected_improvement_monte_carlo (below) for more details on grad EI and how it is computed.
 
         This function produces the *exact* same output as the vectorized version. But
         since the loop over num_mc_iterations runs in Python, it is > 100x slower.
@@ -527,7 +538,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         var_star = self._gaussian_process.compute_variance_of_points(union_of_points)
 
         if num_points == 1 and force_monte_carlo is False:
-            return self._compute_expected_improvement_1D_analytic(mu_star[0], var_star[0, 0])
+            return self._compute_expected_improvement_1d_analytic(mu_star[0], var_star[0, 0])
         else:
             return self._compute_expected_improvement_monte_carlo(num_points, mu_star, var_star)
 
@@ -560,7 +571,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         grad_chol_decomp = self._gaussian_process.compute_grad_cholesky_variance_of_points(union_of_points, 0)
 
         if num_points == 1 and force_monte_carlo is False:
-            return self._compute_grad_expected_improvement_1D_analytic(
+            return self._compute_grad_expected_improvement_1d_analytic(
                 mu_star[0],
                 var_star[0, 0],
                 grad_mu[0, ...],

@@ -231,8 +231,8 @@
   calls with code that sets up state, initial guesses, etc. for your specific problem.
   See usage in gpp_math and gpp_model_selection.
 
-  At present, the an Optimizer class promises:
-  ::
+  At present, the an Optimizer class promises::
+
     template <typename ObjectiveFunctionEvaluator, typename DomainType>
     class Optimizer final {
       using ParameterStruct = OptimizerParameters;  // e.g., NewtonParameters
@@ -382,8 +382,8 @@ struct OptimizationIOContainer final {
   Implements gradient-descrent to to find a locally optimal (maximal here) value of the specified objective function.
   Additional high-level discussion is provided in section 2a) in the header docs of this file.
 
-  Basic gradient descent (GD) to optimize objective function ``f(x)``:
-  ::
+  Basic gradient descent (GD) to optimize objective function ``f(x)``::
+
     input: initial_guess
 
     next_point = initial_guess
@@ -574,8 +574,8 @@ OL_NONNULL_POINTERS void GradientDescentOptimization(const ObjectiveFunctionEval
 
   We also allow an under/over-relaxation factor, allowing the update to be scaled up/down.
 
-  Thus the basic structure for optimizing f(\theta) is:
-  ::
+  Thus the basic structure for optimizing f(\theta) is::
+
     \theta_i = initial guess
     for i = 0:max_iterations {
       compute gradient of f: \nabla f(\theta_i)

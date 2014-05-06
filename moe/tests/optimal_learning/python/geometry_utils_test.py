@@ -3,7 +3,7 @@
 import numpy
 import testify as T
 
-from moe.optimal_learning.python.geometry_utils import generate_latin_hypercube_points, ClosedInterval
+from moe.optimal_learning.python.geometry_utils import ClosedInterval, generate_grid_points, generate_latin_hypercube_points
 from moe.optimal_learning.python.python_version.domain import TensorProductDomain
 from moe.tests.optimal_learning.python.optimal_learning_test_case import OptimalLearningTestCase
 
@@ -86,6 +86,45 @@ class LatinHypercubeRandomPointGenerationTest(OptimalLearningTestCase):
                         max_val = min_val + sub_domain_width
                         T.assert_gte(point[dim], min_val)
                         T.assert_lte(point[dim], max_val)
+
+
+class GridPointGenerationTest(OptimalLearningTestCase):
+
+    """Test the generation of an evenly spaced, axis-aligned grid on a hypercube."""
+
+    def test_grid_generation(self):
+        """Test that ``generate_grid_points`` generates a uniform grid.
+
+        Test makes assumptions about the ordering of the output that may be invalidated by
+        changes to numpy.meshgrid.
+
+        """
+        domain_bounds = ClosedInterval.build_closed_intervals_from_list([[0.0, 1.0], [-2.0, 3.0], [2.71, 3.14]])
+        points_per_dimension = [7, 11, 8]
+
+        # Test that all points are present
+        grid = generate_grid_points(points_per_dimension, domain_bounds)
+
+        per_axis_grid = [numpy.linspace(bounds.min, bounds.max, points_per_dimension[i])
+                         for i, bounds in enumerate(domain_bounds)]
+
+        # Loop ordering assumes the output is ordered a certain way.
+        for i, y_coord in enumerate(per_axis_grid[1]):
+            for j, x_coord in enumerate(per_axis_grid[0]):
+                for k, z_coord in enumerate(per_axis_grid[2]):
+                    truth = numpy.array([x_coord, y_coord, z_coord])
+                    index = i * len(per_axis_grid[2]) * len(per_axis_grid[0]) + j * len(per_axis_grid[2]) + k
+                    test = grid[index, ...]
+                    self.assert_vector_within_relative(test, truth, 0.0)
+
+        # Also test that scalar points_per_dimension works
+        points_per_dimension = [5, 5, 5]
+        grid_truth = generate_grid_points(points_per_dimension, domain_bounds)
+
+        points_per_dimension = 5
+        grid_test = generate_grid_points(points_per_dimension, domain_bounds)
+
+        self.assert_vector_within_relative(grid_test, grid_truth, 0.0)
 
 
 class ClosedIntervalTest(OptimalLearningTestCase):

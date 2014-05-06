@@ -52,8 +52,8 @@ import copy
 import numpy
 
 import moe.build.GPP as C_GP
-import moe.optimal_learning.python.cpp_wrappers.cpp_utils as cpp_utils
-import moe.optimal_learning.python.geometry_utils as geometry_utils
+from moe.optimal_learning.python import geometry_utils
+from moe.optimal_learning.python.cpp_wrappers import cpp_utils
 from moe.optimal_learning.python.cpp_wrappers.domain import TensorProductDomain
 from moe.optimal_learning.python.interfaces.log_likelihood_interface import GaussianProcessLogLikelihoodInterface
 from moe.optimal_learning.python.interfaces.optimization_interface import OptimizableInterface

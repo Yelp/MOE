@@ -1,14 +1,17 @@
 # -*- coding: utf-8 -*-
 """Test the C++ implementation of Gaussian Process properties (mean, var, gradients thereof) against the Python version."""
 import numpy
+
 import testify as T
 
-import moe.optimal_learning.python.cpp_wrappers.covariance as cpp_covariance
-import moe.optimal_learning.python.cpp_wrappers.gaussian_process as cpp_gaussian_process
-import moe.optimal_learning.python.python_version.covariance as python_covariance
-import moe.optimal_learning.python.python_version.gaussian_process as python_gaussian_process
+from moe.optimal_learning.python import cpp_wrappers
+from moe.optimal_learning.python import python_version
+import moe.optimal_learning.python.cpp_wrappers.covariance
+import moe.optimal_learning.python.cpp_wrappers.gaussian_process
 from moe.optimal_learning.python.geometry_utils import ClosedInterval
+import moe.optimal_learning.python.python_version.covariance
 from moe.optimal_learning.python.python_version.domain import TensorProductDomain
+import moe.optimal_learning.python.python_version.gaussian_process
 from moe.tests.optimal_learning.python.gaussian_process_test_case import GaussianProcessTestCase, GaussianProcessTestEnvironmentInput
 
 
@@ -35,10 +38,10 @@ class GaussianProcessTest(GaussianProcessTestCase):
         hyperparameter_interval=ClosedInterval(0.1, 1.3),
         lower_bound_interval=ClosedInterval(-2.0, 0.5),
         upper_bound_interval=ClosedInterval(2.0, 3.5),
-        covariance_class=python_covariance.SquareExponential,
+        covariance_class=python_version.covariance.SquareExponential,
         spatial_domain_class=TensorProductDomain,
         hyperparameter_domain_class=TensorProductDomain,
-        gaussian_process_class=python_gaussian_process.GaussianProcess,
+        gaussian_process_class=python_version.gaussian_process.GaussianProcess,
     )
 
     num_sampled_list = [1, 2, 3, 5, 10, 16, 20, 42]
@@ -64,8 +67,8 @@ class GaussianProcessTest(GaussianProcessTestCase):
         for test_case in self.gp_test_environments:
             domain, python_cov, python_gp = test_case
 
-            cpp_cov = cpp_covariance.SquareExponential(python_cov.get_hyperparameters())
-            cpp_gp = cpp_gaussian_process.GaussianProcess(cpp_cov, python_gp._historical_data)
+            cpp_cov = cpp_wrappers.covariance.SquareExponential(python_cov.get_hyperparameters())
+            cpp_gp = cpp_wrappers.gaussian_process.GaussianProcess(cpp_cov, python_gp._historical_data)
 
             for num_to_sample in self.num_to_sample_list:
                 for _ in xrange(num_tests_per_case):
@@ -88,8 +91,8 @@ class GaussianProcessTest(GaussianProcessTestCase):
         for test_case in self.gp_test_environments:
             domain, python_cov, python_gp = test_case
 
-            cpp_cov = cpp_covariance.SquareExponential(python_cov.get_hyperparameters())
-            cpp_gp = cpp_gaussian_process.GaussianProcess(cpp_cov, python_gp._historical_data)
+            cpp_cov = cpp_wrappers.covariance.SquareExponential(python_cov.get_hyperparameters())
+            cpp_gp = cpp_wrappers.gaussian_process.GaussianProcess(cpp_cov, python_gp._historical_data)
 
             for num_to_sample in self.num_to_sample_list:
                 for _ in xrange(num_tests_per_case):
@@ -113,8 +116,8 @@ class GaussianProcessTest(GaussianProcessTestCase):
         for test_case in self.gp_test_environments:
             domain, python_cov, python_gp = test_case
 
-            cpp_cov = cpp_covariance.SquareExponential(python_cov.get_hyperparameters())
-            cpp_gp = cpp_gaussian_process.GaussianProcess(cpp_cov, python_gp._historical_data)
+            cpp_cov = cpp_wrappers.covariance.SquareExponential(python_cov.get_hyperparameters())
+            cpp_gp = cpp_wrappers.gaussian_process.GaussianProcess(cpp_cov, python_gp._historical_data)
 
             for num_to_sample in self.num_to_sample_list:
                 for _ in xrange(num_tests_per_case):

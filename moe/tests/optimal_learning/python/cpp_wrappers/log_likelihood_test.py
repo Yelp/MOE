@@ -2,12 +2,14 @@
 """Test cases to check that C++ and Python implementations of interfaces/log_likelihood.py match."""
 import testify as T
 
-import moe.optimal_learning.python.cpp_wrappers.covariance as cpp_covariance
-import moe.optimal_learning.python.cpp_wrappers.log_likelihood as cpp_log_likelihood
-import moe.optimal_learning.python.python_version.covariance as python_covariance
-import moe.optimal_learning.python.python_version.log_likelihood as python_log_likelihood
+from moe.optimal_learning.python import cpp_wrappers
+from moe.optimal_learning.python import python_version
+import moe.optimal_learning.python.cpp_wrappers.covariance
+import moe.optimal_learning.python.cpp_wrappers.log_likelihood
 from moe.optimal_learning.python.geometry_utils import ClosedInterval
+import moe.optimal_learning.python.python_version.covariance
 from moe.optimal_learning.python.python_version.domain import TensorProductDomain
+import moe.optimal_learning.python.python_version.log_likelihood
 from moe.tests.optimal_learning.python.gaussian_process_test_case import GaussianProcessTestCase, GaussianProcessTestEnvironmentInput
 
 
@@ -29,7 +31,7 @@ class LogLikelihoodTest(GaussianProcessTestCase):
         hyperparameter_interval=ClosedInterval(0.2, 1.5),
         lower_bound_interval=ClosedInterval(-2.0, 0.5),
         upper_bound_interval=ClosedInterval(2.0, 3.5),
-        covariance_class=python_covariance.SquareExponential,
+        covariance_class=python_version.covariance.SquareExponential,
         spatial_domain_class=TensorProductDomain,
         hyperparameter_domain_class=TensorProductDomain,
     )
@@ -44,9 +46,9 @@ class LogLikelihoodTest(GaussianProcessTestCase):
         for num_sampled in self.num_sampled_list:
             self.gp_test_environment_input.num_sampled = num_sampled
             _, python_cov, python_gp = self._build_gaussian_process_test_data(self.gp_test_environment_input)
-            python_lml = python_log_likelihood.GaussianProcessLogMarginalLikelihood(python_cov, python_gp._historical_data)
-            cpp_cov = cpp_covariance.SquareExponential(python_cov.get_hyperparameters())
-            cpp_lml = cpp_log_likelihood.GaussianProcessLogMarginalLikelihood(cpp_cov, python_gp._historical_data)
+            python_lml = python_version.log_likelihood.GaussianProcessLogMarginalLikelihood(python_cov, python_gp._historical_data)
+            cpp_cov = cpp_wrappers.covariance.SquareExponential(python_cov.get_hyperparameters())
+            cpp_lml = cpp_wrappers.log_likelihood.GaussianProcessLogMarginalLikelihood(cpp_cov, python_gp._historical_data)
 
             python_log_like = python_lml.compute_log_likelihood()
             cpp_log_like = cpp_lml.compute_log_likelihood()

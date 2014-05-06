@@ -38,10 +38,10 @@ import copy
 import numpy
 import scipy.linalg
 
-import moe.optimal_learning.python.python_version.python_utils as python_utils
 from moe.optimal_learning.python.geometry_utils import ClosedInterval
 from moe.optimal_learning.python.interfaces.log_likelihood_interface import GaussianProcessLogLikelihoodInterface
 from moe.optimal_learning.python.interfaces.optimization_interface import OptimizableInterface
+from moe.optimal_learning.python.python_version import python_utils
 from moe.optimal_learning.python.python_version.domain import TensorProductDomain
 from moe.optimal_learning.python.python_version.optimization import multistart_optimize, NullOptimizer
 
@@ -61,12 +61,12 @@ def multistart_hyperparameter_optimization(
     example log likelihood-like measures.
 
     Optimizers are: null ('dumb' search), gradient descent, newton
-    Newton is the suggested optimizer.
+    Newton is the suggested optimizer, which is not presently available in Python (use the C++ interface). In Python,
+    gradient descent is suggested.
+    TODO(eliu): implement hessians and newton's method (GH-57)
 
     'dumb' search means this will just evaluate the objective log likelihood measure at num_multistarts 'points'
     (hyperparameters) in the domain, uniformly sampled using latin hypercube sampling.
-    The hyperparameter_optimization_parameters input specifies the desired optimization technique as well as parameters controlling
-    its behavior (see cpp_wrappers.optimization.py).
 
     See gpp_python_common.cpp for C++ enum declarations laying out the options for objective and optimizer types.
 
@@ -80,13 +80,15 @@ def multistart_hyperparameter_optimization(
     .. WARNING:: this function fails if NO improvement can be found!  In that case,
        the output will always be the first randomly chosen point. status will report failure.
 
+    TODO(eliu): allow callers to pass in a source of randomness (GH-56)
+
     :param hyperparameter_optimizer: object that optimizes (e.g., gradient descent, newton) the desired log_likelihood
         measure over a domain (wrt the hyperparameters of covariance)
     :type hyperparameter_optimizer: interfaces.optimization_interfaces.OptimizerInterface subclass
     :param num_multistarts: number of times to multistart ``hyperparameter_optimizer``
     :type num_multistarts: int > 0
-    :param randomness: ?? (UNUSED)
-    :type randomness: ?? (UNUSED)
+    :param randomness: random source used to generate multistart points (UNUSED)
+    :type randomness: (UNUSED)
     :param max_num_threads: maximum number of threads to use, >= 1 (UNUSED)
     :type max_num_threads: int > 0
     :param status: status messages (e.g., reporting on optimizer success, etc.)
@@ -118,7 +120,7 @@ def evaluate_log_likelihood_at_hyperparameter_list(log_likelihood_evaluator, hyp
     This function is also useful for plotting or debugging purposes (just to get a bunch of log likelihood values).
 
     :param log_likelihood_evaluator: object specifying which log likelihood measure to evaluate
-    :type log_likelihood_evaluator: cpp_wrappers.log_likelihood.LogLikelihood
+    :type log_likelihood_evaluator: interfaces.log_likelihood_interface.LogLikelihoodInterface subclass
     :param hyperparameters_to_evaluate: the hyperparameters at which to compute the specified log likelihood
     :type hyperparameters_to_evaluate: array of float64 with shape (num_to_eval, log_likelihood_evaluator.num_hyperparameters)
     :param max_num_threads: maximum number of threads to use, >= 1 (UNUSED)
@@ -164,7 +166,7 @@ class GaussianProcessLogMarginalLikelihood(GaussianProcessLogLikelihoodInterface
         """Construct a LogLikelihood object that knows how to call C++ for evaluation of member functions.
 
         :param covariance_function: covariance object encoding assumptions about the GP's behavior on our data
-        :type covariance_function: Covariance object exposing hyperparameters (e.g., from cpp_wrappers.covariance)
+        :type covariance_function: Covariance object exposing hyperparameters (e.g., from python_version.covariance)
         :param historical_data: object specifying the already-sampled points, the objective value at those points, and the noise variance associated with each observation
         :type historical_data: HistoricalData object
 
@@ -265,7 +267,8 @@ class GaussianProcessLogMarginalLikelihood(GaussianProcessLogLikelihoodInterface
 
         grad_hyperparameter_cov_matrix = python_utils.build_hyperparameter_grad_covariance_matrix(self._covariance, self._historical_data.points_sampled)
         grad_log_marginal = numpy.empty(self._covariance.num_hyperparameters)
-        for k, grad_cov_block in enumerate(grad_hyperparameter_cov_matrix):
+        for k in xrange(self._covariance.num_hyperparameters):
+            grad_cov_block = grad_hyperparameter_cov_matrix[..., k]
             # computing 0.5 * \alpha^T * grad_hyperparameter_cov_matrix * \alpha, where \alpha = K^-1 * y (aka K_inv_y)
             # temp_vec := grad_hyperparameter_cov_matrix * K_inv_y
             temp_vec = numpy.dot(grad_cov_block, K_inv_y)
@@ -273,8 +276,7 @@ class GaussianProcessLogMarginalLikelihood(GaussianProcessLogLikelihoodInterface
             grad_log_marginal[k] = 0.5 * numpy.dot(K_inv_y, temp_vec)
 
             # compute -0.5 * tr(K^-1 * dK/d\theta)
-            # TODO(eliu): can overwrite here
-            temp = scipy.linalg.cho_solve(K_chol, grad_cov_block)
+            temp = scipy.linalg.cho_solve(K_chol, grad_cov_block, overwrite_b=True)
             grad_log_marginal[k] -= 0.5 * temp.trace()
             # TODO(eliu): this can be much faster if we form K^-1 explicitly (see below), but that is less accurate
             # grad_log_marginal[k] -= 0.5 * numpy.einsum('ij,ji', K_inv, grad_cov_block)

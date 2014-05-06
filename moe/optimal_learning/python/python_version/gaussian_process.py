@@ -11,8 +11,8 @@ import copy
 import numpy
 import scipy.linalg
 
-import moe.optimal_learning.python.python_version.python_utils as python_utils
 from moe.optimal_learning.python.interfaces.gaussian_process_interface import GaussianProcessInterface
+from moe.optimal_learning.python.python_version import python_utils
 
 
 class GaussianProcess(GaussianProcessInterface):
@@ -49,7 +49,7 @@ class GaussianProcess(GaussianProcessInterface):
         TODO(eliu): have a way to set private RNG state for self.sample_point_from_gp() (GH-56)
 
         :param covariance_function: covariance object encoding assumptions about the GP's behavior on our data
-        :type covariance_function: Covariance object exposing hyperparameters (e.g., from cpp_wrappers.covariance)
+        :type covariance_function: Covariance object exposing hyperparameters (e.g., from python_version.covariance)
         :param historical_data: object specifying the already-sampled points, the objective value at those points, and the noise variance associated with each observation
         :type historical_data: HistoricalData object
 
@@ -81,7 +81,7 @@ class GaussianProcess(GaussianProcessInterface):
     def compute_mean_of_points(self, points_to_sample):
         r"""Compute the mean of this GP at each of point of ``Xs`` (``points_to_sample``).
 
-        .. Warning:: ``points_to_sample`` may not contain duplicate points.
+        .. Warning:: ``points_to_sample`` should not contain duplicate points.
 
         .. Note:: Comments in this class are copied from this's superclass in interfaces.gaussian_process_interface.py.
 
@@ -101,7 +101,7 @@ class GaussianProcess(GaussianProcessInterface):
     def compute_grad_mean_of_points(self, points_to_sample):
         r"""Compute the gradient of the mean of this GP at each of point of ``Xs`` (``points_to_sample``) wrt ``Xs``.
 
-        .. Warning:: ``points_to_sample`` may not contain duplicate points.
+        .. Warning:: ``points_to_sample`` should not contain duplicate points.
 
         Observe that ``grad_mu`` is nominally sized: ``grad_mu[num_to_sample][num_to_sample][dim]``. This is
         the the d-th component of the derivative evaluated at the i-th input wrt the j-th input.
@@ -130,7 +130,7 @@ class GaussianProcess(GaussianProcessInterface):
     def compute_variance_of_points(self, points_to_sample):
         r"""Compute the variance (matrix) of this GP at each point of ``Xs`` (``points_to_sample``).
 
-        .. Warning:: ``points_to_sample`` may not contain duplicate points. Violating this may result in singular covariance matrices.
+        .. Warning:: ``points_to_sample`` should not contain duplicate points.
 
         The variance matrix is symmetric although we currently return the full representation.
 
@@ -147,8 +147,12 @@ class GaussianProcess(GaussianProcessInterface):
             return numpy.diag(numpy.diag(var_star))
 
         K_star = python_utils.build_mix_covariance_matrix(self._covariance, self._historical_data.points_sampled, points_to_sample)
-        # can overwrite K_star here
-        V = scipy.linalg.solve_triangular(self._K_chol[0], K_star, lower=self._K_chol[1])
+        V = scipy.linalg.solve_triangular(
+            self._K_chol[0],
+            K_star,
+            lower=self._K_chol[1],
+            overwrite_b=True,
+        )
 
         # cheaper to go through scipy.linalg.get_blas_funcs() which can compute A = alpha*B*C + beta*A in one pass
         var_star -= numpy.dot(V.T, V)
@@ -157,7 +161,7 @@ class GaussianProcess(GaussianProcessInterface):
     def compute_cholesky_variance_of_points(self, points_to_sample):
         r"""Compute the cholesky factorization of the variance (matrix) of this GP at each point of ``Xs`` (``points_to_sample``).
 
-        .. Warning:: ``points_to_sample`` may not contain duplicate points. Violating this may result in singular covariance matrices.
+        .. Warning:: ``points_to_sample`` should not contain duplicate points.
 
         :param points_to_sample: num_to_sample points (in dim dimensions) being sampled from the GP
         :type points_to_sample: array of float64 with shape (num_to_sample, dim)
@@ -165,12 +169,16 @@ class GaussianProcess(GaussianProcessInterface):
         :rtype: array of float64 with shape (num_to_sample, num_to_sample), lower triangle filled in
 
         """
-        return scipy.linalg.cholesky(self.compute_variance_of_points(points_to_sample), lower=True)
+        return scipy.linalg.cholesky(
+            self.compute_variance_of_points(points_to_sample),
+            lower=True,
+            overwrite_a=True,
+        )
 
     def compute_grad_variance_of_points(self, points_to_sample, var_of_grad):
         r"""Compute the gradient of the variance (matrix) of this GP at each point of ``Xs`` (``points_to_sample``) wrt ``Xs``.
 
-        .. Warning:: ``points_to_sample`` may not contain duplicate points.
+        .. Warning:: ``points_to_sample`` should not contain duplicate points.
 
         This function is similar to compute_grad_cholesky_variance_of_points() (below), except this does not include
         gradient terms from the cholesky factorization. Description will not be duplicated here.
@@ -192,8 +200,7 @@ class GaussianProcess(GaussianProcessInterface):
         grad_var = numpy.zeros((num_to_sample, num_to_sample, self.dim))
 
         K_star = python_utils.build_mix_covariance_matrix(self._covariance, self._historical_data.points_sampled, points_to_sample)
-        # TODO(eliu): can overwrite K_star here
-        K_inv_times_K_star = scipy.linalg.cho_solve(self._K_chol, K_star)
+        K_inv_times_K_star = scipy.linalg.cho_solve(self._K_chol, K_star, overwrite_b=True)
         for i, point_one in enumerate(points_to_sample):
             for j, point_two in enumerate(points_to_sample):
                 if var_of_grad == i and var_of_grad == j:
@@ -213,7 +220,7 @@ class GaussianProcess(GaussianProcessInterface):
     def compute_grad_cholesky_variance_of_points(self, points_to_sample, var_of_grad):
         r"""Compute the gradient of the cholesky factorization of the variance (matrix) of this GP at each point of ``Xs`` (``points_to_sample``) wrt ``Xs``.
 
-        .. Warning:: ``points_to_sample`` may not contain duplicate points. Violating this may result in singular covariance matrices.
+        .. Warning:: ``points_to_sample`` should not contain duplicate points.
 
         This function accounts for the effect on the gradient resulting from
         cholesky-factoring the variance matrix.  See Smith 1995 for algorithm details.
@@ -243,9 +250,8 @@ class GaussianProcess(GaussianProcessInterface):
         num_to_sample = points_to_sample.shape[0]
 
         var_star = self.compute_variance_of_points(points_to_sample)
-        # TODO(eliu): can overwrite var_star here
         # Note: only access the lower triangle of chol_var; upper triangle is garbage
-        chol_var = scipy.linalg.cho_factor(var_star, lower=True)[0]
+        chol_var = scipy.linalg.cho_factor(var_star, lower=True, overwrite_a=True)[0]
 
         # Compute grad cholesky
         # Zero out the upper half of the matrix

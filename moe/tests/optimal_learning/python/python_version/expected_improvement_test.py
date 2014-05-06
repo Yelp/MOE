@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """Test the Python implementation of Expected Improvement and its gradient."""
 import numpy
+
 import testify as T
 
 from moe.optimal_learning.python.geometry_utils import ClosedInterval

@@ -107,8 +107,8 @@ struct UniformRandomGenerator final {
     the input seed value, the current time, and the thread_id.
 
     This function is meant to initialize unique UniformRandomGenerator objects for
-    each computation thread:
-    ::
+    each computation thread::
+
       std::vector<UniformRandomGenerator> uniform_generator_vector(num_threads);
       for (int i = 0; i < num_threads; ++i) {
         uniform_generator_vector.SetRandomizedSeed(base_seed, i);

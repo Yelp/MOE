@@ -28,6 +28,10 @@ def build_covariance_matrix(covariance, points_sampled, noise_variance=None):
     :return: covariance matrix
     :rtype: array of float64 with shape(points_sampled.shape[0], points_sampled.shape[0]), order='F'
 
+    .. Note:: Fortran ordering is important here; scipy.linalg factor/solve methods
+        (e.g., cholesky, solve_triangular) implicitly require order='F' to enable
+        overwriting. This output is commonly overwritten.
+
     """
     cov_mat = numpy.zeros((points_sampled.shape[0], points_sampled.shape[0]), order='F')
     # Only form the lower triangle; matrix is symmetric.
@@ -69,6 +73,10 @@ def build_mix_covariance_matrix(covariance, points_sampled, points_to_sample):
     :return: "mix" covariance matrix
     :rtype: array of float64 with shape (points_sampled.shape[0], points_to_sample.shape[0]), order='F'
 
+    .. Note:: Fortran ordering is important here; scipy.linalg factor/solve methods
+        (e.g., cholesky, solve_triangular) implicitly require order='F' to enable
+        overwriting. This output is commonly overwritten.
+
     """
     cov_mat = numpy.empty((points_sampled.shape[0], points_to_sample.shape[0]), order='F')
     for j, point_two in enumerate(points_to_sample):
@@ -79,11 +87,11 @@ def build_mix_covariance_matrix(covariance, points_sampled, points_to_sample):
 
 
 def build_hyperparameter_grad_covariance_matrix(covariance, points_sampled):
-    r"""Build ``A_{kij} = \pderiv{K_{ij}}{\theta_k}``.
+    r"""Build ``A_{jik} = \pderiv{K_{ij}}{\theta_k}``.
 
     .. NOTE:: These comments are copied from BuildHyperparameterGradCovarianceMatrix() in gpp_model_selection_and_hyperparameter_optimization.cpp.
 
-    Build ``A_{kij} = \pderiv{K_{ij}}{\theta_k}``
+    Build ``A_{jik} = \pderiv{K_{ij}}{\theta_k}``
     Hence the outer loop structure is identical to BuildCovarianceMatrix().
 
     Note the structure of the resulting tensor is ``num_hyperparameters`` blocks of size
@@ -97,19 +105,23 @@ def build_hyperparameter_grad_covariance_matrix(covariance, points_sampled):
     (already-computed) lower triangles to avoid redundant work.
 
     Since CovarianceInterface.HyperparameterGradCovariance() returns a vector of size ``|\theta_k|``,
-    the inner loop writes all relevant entries of ``A_{kij}`` simultaneously to prevent recomputation.
+    the inner loop writes all relevant entries of ``A_{jik}`` simultaneously to prevent recomputation.
 
     :param covariance: the covariance function encoding assumptions about the GP's behavior on our data
     :type covariance: interfaces.covariance_interface.CovarianceInterface subclass
     :param points_sampled: points, ``X_i``
     :type points_sampled: array of float64 with shape (points_sampled.shape[0], dim)
     :return: gradient of covariance matrix wrt hyperparameters
-    :rtype: array of float64 with shape (num_hyperparameters, points_sampled.shape[0], points_sampled.shape[0])
+    :rtype: array of float64 with shape (points_sampled.shape[0], points_sampled.shape[0], num_hyperparameters), order='F'
+
+    .. Note:: Fortran ordering is important here; scipy.linalg factor/solve methods
+        (e.g., cholesky, solve_triangular) implicitly require order='F' to enable
+        overwriting. This output is commonly overwritten.
 
     """
-    cov_mat = numpy.empty((covariance.num_hyperparameters, points_sampled.shape[0], points_sampled.shape[0]))
+    cov_mat = numpy.empty((points_sampled.shape[0], points_sampled.shape[0], covariance.num_hyperparameters), order='F')
     for i, point_one in enumerate(points_sampled):
         for j, point_two in enumerate(points_sampled):
-            cov_mat[..., i, j] = covariance.hyperparameter_grad_covariance(point_one, point_two)
+            cov_mat[j, i, ...] = covariance.hyperparameter_grad_covariance(point_one, point_two)
 
     return cov_mat
