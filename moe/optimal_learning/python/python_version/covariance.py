@@ -1,17 +1,20 @@
 # -*- coding: utf-8 -*-
 """Implementations of covariance functions for use with python_version/log_likelihood.py and gaussian_process.py.
 
-This file contains implementations of CovarianceInterface. Currently, we have SquareExponential, supporting:
+This file contains implementations of CovarianceInterface. Currently, we have
+SquareExponential, supporting:
 * covariance
 * grad_covariance
 * hyperparameter_grad_covariance
-It also contains a few utilities for computing common mathematical quantities and initialization. Note that the hessian
-is not yet implemented (use C++ for that feature).
+It also contains a few utilities for computing common mathematical quantities and
+initialization. Note that the hessian is not yet implemented (use C++ for that feature).
 
-Gradient (spatial and hyperparameter) functions return all derivatives at once because there is substantial shared computation.
-The shared results are by far the most expensive part of gradient computations; they typically involve exponentiation and are
-further at least partially shared with the base covariance computation.   In fact, we could improve performance further by
-caching [certain] components of the covariance computation for use with the derivative computations.
+Gradient (spatial and hyperparameter) functions return all derivatives at once
+because there is substantial shared computation. The shared results are by far the
+most expensive part of gradient computations; they typically involve exponentiation
+and are further at least partially shared with the base covariance computation. In
+fact, we could improve performance further by caching [certain] components of the
+covariance computation for use with the derivative computations.
 
 """
 import numpy
