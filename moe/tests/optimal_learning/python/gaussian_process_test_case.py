@@ -1,149 +1,162 @@
 # -*- coding: utf-8 -*-
+"""Base test case for tests that manipulate Gaussian Process data and supporting structures."""
+import collections
 
-import testify as T
 import numpy
+import testify as T
 
-from moe.optimal_learning.python.data_containers import SamplePoint
-from moe.optimal_learning.python.models.covariance_of_process import CovarianceOfProcess
-from moe.optimal_learning.python.models.optimal_gaussian_process_linked_cpp import OptimalGaussianProcessLinkedCpp
-from moe.optimal_learning.python.models.optimal_gaussian_process import OptimalGaussianProcess as OptimalGaussianProcessPython
-import moe.optimal_learning.python.lib.math
-from moe.optimal_learning.python.constant import default_gaussian_process_parameters
+import moe.optimal_learning.python.gaussian_process_test_utils as gp_utils
+from moe.optimal_learning.python.geometry_utils import ClosedInterval
+from moe.optimal_learning.python.python_version.covariance import SquareExponential
+from moe.optimal_learning.python.python_version.domain import TensorProductDomain
+from moe.optimal_learning.python.python_version.gaussian_process import GaussianProcess
+from moe.tests.optimal_learning.python.optimal_learning_test_case import OptimalLearningTestCase
 
 
-class GaussianProcessTestCase(T.TestCase):
+# See GaussianProcessTestEnvironment (below) for docstring.
+_BaseGaussianProcessTestEnvironment = collections.namedtuple('GaussianProcessTestEnvironment', [
+    'domain',
+    'covariance',
+    'gaussian_process',
+])
 
-    default_domain = [[-1.0, 1.0], [-1.0, 1.0]]
-    default_covariance_signal_variance = default_gaussian_process_parameters.signal_variance
-    default_covariance_length = default_gaussian_process_parameters.length_scale
-    default_gaussian_process_class = OptimalGaussianProcessLinkedCpp
-    default_sample_variance = 0.01
-    tol = 1e-12 # TODO eliu look into this ticket #43006
 
-    def assert_relatively_equal(self, value_one, value_two, tol=None):
-        """Assert that two values are relatively equal,
-        |value_one - value_two|/|value_one| <= eps
+class GaussianProcessTestEnvironment(_BaseGaussianProcessTestEnvironment):
+
+    """An object for representing a (randomly generated) Gaussian Process.
+
+    :ivar domain: (*interfaces.domain_interface.DomainInterface subclass*) domain the GP was built on
+    :ivar covariance: (*interfaces.covariance_interface.CovarianceInterface subclass*) covariance function of the GP
+    :ivar gaussian_process: (*interfaces.gaussian_process_interface.GaussianProcessInterface subclass*) the constructed GP
+
+    """
+
+    pass
+
+
+class GaussianProcessTestEnvironmentInput(object):
+
+    """A test environment for constructing randomly generated Gaussian Process priors within GaussianProcessTestCase.
+
+    This is used only in testing. The intended use-case is that subclasses of GaussianProcessTestCase (below) will
+    define one of these objects, and then GaussianProcessTestCase has some simple logic to precompute the requested
+    GaussianProcess-derived test case(s).
+
+    """
+
+    def __init__(self, dim, num_hyperparameters, num_sampled, noise_variance_base=0.0, hyperparameter_interval=ClosedInterval(0.2, 1.3), lower_bound_interval=ClosedInterval(-2.0, 0.5), upper_bound_interval=ClosedInterval(2.0, 3.5), covariance_class=SquareExponential, spatial_domain_class=TensorProductDomain, hyperparameter_domain_class=TensorProductDomain, gaussian_process_class=GaussianProcess):
+        """Create a test environment: object with enough info to construct a Gaussian Process prior from repeated random draws.
+
+        :param dim: number of (expected) spatial dimensions; None to skip check
+        :type dim: int > 0
+        :param num_hyperparameters: number of hyperparemeters of the covariance function
+        :type num_hyperparameters: int > 0
+        :param num_sampled: number of ``points_sampled`` to generate from the GP prior
+        :type num_sampled: int > 0
+        :param noise_variance_base: noise variance to associate with each sampled point
+        :type noise_variance_base: float64 >= 0.0
+        :param hyperparameter_interval: interval from which to draw hyperparameters (uniform random)
+        :type hyperparameter_interval: non-empty ClosedInterval
+        :param lower_bound_interval: interval from which to draw domain lower bounds (uniform random)
+        :type lower_bound_interval: non-empty ClosedInterval; cannot overlap with upper_bound_interval
+        :param upper_bound_interval: interval from which to draw domain upper bounds (uniform random)
+        :type upper_bound_interval: non-empty ClosedInterval; cannot overlap with lower_bound_interval
+        :param covariance_class: the type of covariance to use when building the GP
+        :type covariance_class: type object of covariance_interface.CovarianceInterface (or one of its subclasses)
+        :param spatial_domain_class: the type of the domain that the GP lives in
+        :type spatial_domain_class: type object of domain_interface.DomainInterface (or one of its subclasses)
+        :param hyperparameter_domain_class: the type of the domain that the hyperparameters live in
+        :type hyperparameter_domain_class: type object of domain_interface.DomainInterface (or one of its subclasses)
+        :param gaussian_process_class: the type of the Gaussian Process to draw from
+        :type gaussian_process_class: type object of gaussian_process_interface.GaussianProcessInterface (or one of its subclasses)
+
         """
-        if tol is None:
-            tol = self.tol
-        denom = abs(value_one)
-        if (denom == 0.0):
-            denom = 1.0;
-        T.assert_lte(abs(value_one - value_two)/denom,
-                 tol,
-                 )
+        self.dim = dim
+        self.num_hyperparameters = num_hyperparameters
 
-    def assert_lists_relatively_equal(self, list_one, list_two, tol=None):
-        """Assert two lists are relatively equal."""
-        T.assert_length(list_one, len(list_two))
-        for i, list_one_item in enumerate(list_one):
-            list_two_item = list_two[i]
-            self.assert_relatively_equal(list_one_item, list_two_item, tol)
+        self.noise_variance_base = noise_variance_base
+        self.num_sampled = num_sampled
 
-    def assert_matrix_relatively_equal(self, matrix_one, matrix_two, tol=None):
-        """Assert two matrices are relatively equal."""
-        for row_idx, row_matrix_one in enumerate(matrix_one):
-            row_matrix_two = matrix_two[row_idx]
-            self.assert_lists_relatively_equal(row_matrix_one, row_matrix_two, tol)
+        self.hyperparameter_interval = hyperparameter_interval
+        self.lower_bound_interval = lower_bound_interval
+        self.upper_bound_interval = upper_bound_interval
 
-    def _make_default_covariance_of_process(self, signal_variance=None, length=None):
-        """Make a default covariance of process with optional parameters
+        self.covariance_class = covariance_class
+        self.spatial_domain_class = spatial_domain_class
+        self.hyperparameter_domain_class = hyperparameter_domain_class
+        self.gaussian_process_class = gaussian_process_class
+
+    @property
+    def num_sampled(self):
+        """Return the number of ``points_sampled`` that test GPs should be built with."""
+        return self._num_sampled
+
+    @num_sampled.setter
+    def num_sampled(self, value):
+        """Set num_sampled and resize dependent quantities (e.g., noise_variance)."""
+        self._num_sampled = value
+        self.noise_variance = numpy.full(self.num_sampled, self.noise_variance_base)
+
+
+class GaussianProcessTestCase(OptimalLearningTestCase):
+
+    """Base test case for tests that want to use random data generated from Gaussian Process(es).
+
+    Users are required to set the *class variable* ``precompute_gaussian_process_data`` flag and define *class variables*:
+    ``gp_test_environment_input`` and ``num_sampled_list`` (see base_setup() docstring).
+
+    Using that info, base_setup will create the required test cases (in ``gp_test_environments``) for use in testing.
+
+    The idea is that base_setup is run once per test class, so the (expensive) work of building GPs can be shared across
+    numerous individual tests.
+
+    """
+
+    precompute_gaussian_process_data = False
+
+    @T.class_setup
+    def base_setup(self):
+        """Build a Gaussian Process prior for each problem size in ``self.num_sampled_list`` if precomputation is desired.
+
+        Requires:
+        self.num_sampled_list: (*list of int*) problem sizes to consider
+        self.gp_test_environment_input: (*GaussianProcessTestEnvironmentInput*) specification of how to build the
+          gaussian process prior
+
+        Outputs:
+        self.gp_test_environments: (*list of GaussianProcessTestEnvironment*) gaussian process data for each of the
+          specified problem sizes (``self.num_sampled_list``)
+
         """
-        if signal_variance is None:
-            signal_variance = self.default_covariance_signal_variance
-        if length is None:
-            length = self.default_covariance_length
-        hyperparameters = [signal_variance]
-        hyperparameters.extend(length)
+        if self.precompute_gaussian_process_data:
+            self.gp_test_environments = []
+            for num_sampled in self.num_sampled_list:
+                self.gp_test_environment_input.num_sampled = num_sampled
+                self.gp_test_environments.append(self._build_gaussian_process_test_data(self.gp_test_environment_input))
 
-        return CovarianceOfProcess(hyperparameters=hyperparameters)
+    def _build_gaussian_process_test_data(self, test_environment):
+        """Build up a Gaussian Process randomly by repeatedly drawing from and then adding to the prior.
 
-    def _make_default_gaussian_process(self, gaussian_process_class=None, domain=None, default_sample_variance=None, signal_variance=None, length=None, covariance_of_process=None, max_number_of_threads=1):
-        """Make a default gaussian process with optional parameters
-        using a default covariance of process
+        :param test_environment: parameters describing how to construct a GP prior
+        :type test_environment: GaussianProcessTestEnvironmentInput
+        :return: gaussian process environments that can be used to run tests
+        :rtype: GaussianProcessTestEnvironment
+
         """
-        if domain is None:
-            domain = self.default_domain
-        if gaussian_process_class is None:
-            gaussian_process_class = self.default_gaussian_process_class
-        if default_sample_variance is None:
-            default_sample_variance = self.default_sample_variance
+        covariance = gp_utils.fill_random_covariance_hyperparameters(
+            test_environment.hyperparameter_interval,
+            test_environment.num_hyperparameters,
+            covariance_type=test_environment.covariance_class,
+        )
 
-        # build the covariance_of_process object
-        if covariance_of_process is None:
-            covariance_of_process = self._make_default_covariance_of_process(
-                    signal_variance=signal_variance,
-                    length=length,
-                    )
+        domain_bounds = gp_utils.fill_random_domain_bounds(test_environment.lower_bound_interval, test_environment.upper_bound_interval, test_environment.dim)
+        domain = test_environment.spatial_domain_class(ClosedInterval.build_closed_intervals_from_list(domain_bounds))
+        points_sampled = domain.generate_uniform_random_points_in_domain(test_environment.num_sampled)
 
-        return gaussian_process_class(
-            domain=domain,
-            covariance_of_process=covariance_of_process,
-            default_sample_variance=default_sample_variance,
-            max_number_of_threads=max_number_of_threads,
-            )
-
-    def _sample_points_from_gaussian_process(self, gaussian_process, points_to_sample, random_normal_values=None, extra_gaussian_process=None, default_sample_variance=None):
-        """Samples the points in points_to_sample by drawing them from the gaussian_process
-        and them adding them to gaussian_process, and also to extra_gaussian_process if it is provided
-        will use the values provided in random_normal_values for drawing the points if given need 2 per point
-        see gaussian_process.sample_from_process for details
-        """
-        if default_sample_variance is None:
-                default_sample_variance = self.default_sample_variance
-
-        for point_on, point_to_sample in enumerate(points_to_sample):
-            # wrap the point in a numpy array
-            point_point = numpy.array(point_to_sample)
-
-            # grab the normal values we need (or not)
-            if random_normal_values:
-                random_normal = random_normal_values[point_on * 2]
-                sample_variance_normal = random_normal_values[point_on * 2 + 1]
-            else:
-                random_normal = None
-                sample_variance_normal = default_sample_variance
-
-            # draw a value from gaussian_process at point_point
-            point_val = gaussian_process.sample_from_process(
-                    point_point,
-                    random_normal=random_normal,
-                    )
-
-            # wrap the point in the SamplePoint class
-            sample_point = SamplePoint(point_point, point_val, default_sample_variance)
-
-            # add the point to the GPs
-            gaussian_process.add_sample_point(sample_point)
-            if extra_gaussian_process:
-                extra_gaussian_process.add_sample_point(sample_point)
-
-    def _make_random_processes_from_latin_hypercube(self, domain, num_points_in_sample, default_sample_variance=None, covariance_of_process=None, default_signal_variance=None):
-        if default_sample_variance is None:
-            default_sample_variance = self.default_sample_variance
-
-        cpp_GP = self._make_default_gaussian_process(
-                gaussian_process_class=OptimalGaussianProcessLinkedCpp,
-                domain=domain,
-                covariance_of_process=covariance_of_process,
-                default_sample_variance=default_sample_variance,
-                )
-        python_GP = self._make_default_gaussian_process(
-                gaussian_process_class=OptimalGaussianProcessPython,
-                domain=domain,
-                covariance_of_process=covariance_of_process,
-                default_sample_variance=default_sample_variance,
-                )
-
-        # A num_points_in_sample random latin hypercube points
-        stencil_points_to_sample = moe.optimal_learning.python.lib.math.get_latin_hypercube_points(num_points_in_sample, domain)
-
-        # Sample stencil
-        self._sample_points_from_gaussian_process(
-                gaussian_process=cpp_GP,
-                points_to_sample=stencil_points_to_sample,
-                extra_gaussian_process=python_GP,
-                default_sample_variance=default_sample_variance,
-                )
-
-        return cpp_GP, python_GP
+        gaussian_process = gp_utils.build_random_gaussian_process(
+            points_sampled,
+            covariance,
+            noise_variance=test_environment.noise_variance,
+            gaussian_process_type=test_environment.gaussian_process_class,
+        )
+        return GaussianProcessTestEnvironment(domain, covariance, gaussian_process)

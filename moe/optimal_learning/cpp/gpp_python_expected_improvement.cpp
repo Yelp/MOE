@@ -86,7 +86,7 @@ boost::python::list ComputeGradExpectedImprovementWrapper(const GaussianProcess&
   This is just used to reduce copy-pasted code.
 
   INPUTS:
-  optimization_parameters: EPI/src/python/optimization_parameters.ExpectedImprovementOptimizationParameters
+  optimization_parameters: python/cpp_wrappers/optimization._CppOptimizationParameters
       Python object containing the DomainTypes domain_type and OptimizerTypes optimzer_type to use as well as
       appropriate parameter structs e.g., NewtonParameters for type kNewton).
       See comments on the python interface for multistart_expected_improvement_optimization_wrapper
@@ -197,7 +197,7 @@ boost::python::list MultistartExpectedImprovementOptimizationWrapper(const boost
   This is just used to reduce copy-pasted code.
 
   INPUTS:
-  optimization_parameters: EPI/src/python/optimization_parameters.ExpectedImprovementOptimizationParameters
+  optimization_parameters: python/cpp_wrappers/optimization._CppOptimizationParameters
       Python object containing the DomainTypes domain_type and OptimizerTypes optimzer_type to use as well as
       appropriate parameter structs e.g., NewtonParameters for type kNewton).
       See comments on the python interface for multistart_expected_improvement_optimization_wrapper
@@ -397,8 +397,8 @@ void ExportExpectedImprovementFunctions() {
     Can optimize for num_samples_to_generate new points to sample (i.e., aka "q", experiments to run) simultaneously.
     Allows the user to specify num_to_sample (aka "p") ongoing/concurrent experiments.
 
-    The ExpectedImprovementOptimizationParameters object is a python class defined in:
-    EPI/src/python/optimization_parameters.ExpectedImprovementOptimizationParameters
+    The _CppOptimizationParameters object is a python class defined in:
+    python/cpp_wrappers/optimization._CppOptimizationParameters
     See that class definition for more details.
 
     This function expects it to have the fields:
@@ -412,7 +412,7 @@ void ExportExpectedImprovementFunctions() {
     WARNING: this function FAILS and returns an EMPTY LIST if the number of random sources < max_num_threads
 
     INPUTS:
-    ExpectedImprovementOptimizationParameters optimization_parameters:
+    _CppOptimizationParameters optimization_parameters:
         python object containing the DomainTypes domain_type and OptimizerTypes optimzer_type to use as well as
         appropriate parameter structs e.g., NewtonParameters for type kNewton)
     GaussianProcess gaussian_process: GaussianProcess object (holds points_sampled, values, noise_variance, derived quantities)
@@ -447,8 +447,8 @@ void ExportExpectedImprovementFunctions() {
 
     See gpp_heuristic_expected_improvement_optimization.hpp for further details on the algorithm.
 
-    The ExpectedImprovementOptimizationParameters object is a python class defined in:
-    EPI/src/python/optimization_parameters.ExpectedImprovementOptimizationParameters
+    The _CppOptimizationParameters object is a python class defined in:
+    python/cpp_wrappers/optimization._CppOptimizationParameters
     See that class definition for more details.
 
     This function expects it to have the fields:
@@ -462,7 +462,7 @@ void ExportExpectedImprovementFunctions() {
     WARNING: this function FAILS and returns an EMPTY LIST if the number of random sources < max_num_threads
 
     INPUTS:
-    ExpectedImprovementOptimizationParameters optimization_parameters:
+    _CppOptimizationParameters optimization_parameters:
         python object containing the DomainTypes domain_type and OptimizerTypes optimzer_type to use as well as
         appropriate parameter structs e.g., NewtonParameters for type kNewton)
     GaussianProcess gaussian_process: GaussianProcess object (holds points_sampled, values, noise_variance, derived quantities)

@@ -2,10 +2,10 @@
 """Base class for testing the REST interface against the C++ interface."""
 import testify as T
 
-from moe.tests.optimal_learning.python.gaussian_process_test_case import GaussianProcessTestCase
+from moe.tests.optimal_learning.python.OLD_gaussian_process_test_case import OLDGaussianProcessTestCase
 
 
-class RestGaussianProcessTestCase(GaussianProcessTestCase):
+class RestGaussianProcessTestCase(OLDGaussianProcessTestCase):
 
     """Base class for testing the REST interface against the C++ interface."""
 

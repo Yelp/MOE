@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """The REST interface for the MOE webapp.
 
 **Internal Gaussian Process (GP) endpoints:**

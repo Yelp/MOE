@@ -3,7 +3,7 @@
 import testify as T
 import numpy
 
-from moe.tests.optimal_learning.python.gaussian_process_test_case import GaussianProcessTestCase
+from moe.tests.optimal_learning.python.OLD_gaussian_process_test_case import OLDGaussianProcessTestCase
 from moe.optimal_learning.python.models.covariance_of_process import CovarianceOfProcess
 from moe.optimal_learning.python.models.gaussian_process import GaussianProcess
 from moe.optimal_learning.python.models.optimal_gaussian_process_linked_cpp import OptimalGaussianProcessLinkedCpp
@@ -11,7 +11,7 @@ from moe.optimal_learning.python.lib.math import get_latin_hypercube_points
 
 MACHINE_PRECISION = 1e-8
 
-class HyperparameterUpdateTest(GaussianProcessTestCase):
+class HyperparameterUpdateTest(OLDGaussianProcessTestCase):
     """Tests optimal_learning.python.models.covariance_of_process.update_hyper_parameters
     """
 
@@ -231,10 +231,10 @@ class HyperparameterUpdateTest(GaussianProcessTestCase):
             python_grad_marginal = python_GP.cop._gradient_of_marginal_wrt_hyperparameters(python_GP.cop.hyperparameters)
             cpp_grad_marginal = cpp_GP.get_hyperparam_grad_log_marginal_likelihood()
             for i in range(len(cpp_grad_marginal)):
-                self.assert_relatively_equal(python_grad_marginal[i], cpp_grad_marginal[i], 5.0e-13)
+                self.assert_relatively_equal(python_grad_marginal[i], cpp_grad_marginal[i], 1.0e-12)
 
 
-class CovarianceOfProcessTest(GaussianProcessTestCase):
+class CovarianceOfProcessTest(OLDGaussianProcessTestCase):
 
     one_dim_test_sets = [
                 [1.0, [0.1]], # default

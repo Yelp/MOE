@@ -102,7 +102,7 @@ class EiOptimizationParameters(colander.MappingSchema):
                (e.g., at a boundary), stop.  (suggest: 1.0e-7)
         :type tolerance: float64 >= 0.0
 
-    ***Example Request** (default values in moe/optimal_learning/EPI/src/python/constant)
+    ***Example Request** (default values in moe/optimal_learning/python/constant)
 
     .. sourcecode:: http
 

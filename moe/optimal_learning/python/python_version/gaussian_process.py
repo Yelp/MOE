@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-"""Implementation of GaussianProcessInterface using C++ calls.
+"""Implementation (Python) of GaussianProcessInterface.
 
-This file contains a class to manipulate a Gaussian Process through the C++ implementation (gpp_math.hpp/cpp).
+This file contains a class to manipulate a Gaussian Process through numpy/scipy.
 
 See interfaces.gaussian_process_interface.py for more details.
 
@@ -9,15 +9,15 @@ See interfaces.gaussian_process_interface.py for more details.
 import copy
 
 import numpy
+import scipy.linalg
 
-import moe.build.GPP as C_GP
-import moe.optimal_learning.python.cpp_wrappers.cpp_utils as cpp_utils
 from moe.optimal_learning.python.interfaces.gaussian_process_interface import GaussianProcessInterface
+from moe.optimal_learning.python.python_version import python_utils
 
 
 class GaussianProcess(GaussianProcessInterface):
 
-    r"""Implementation of a GaussianProcess via C++ wrappers: mean, variance, gradients thereof, and data I/O.
+    r"""Implementation of a GaussianProcess strictly in Python.
 
     .. Note:: Comments in this class are copied from this object's superclass in interfaces.gaussian_process_interface.py.
 
@@ -46,25 +46,17 @@ class GaussianProcess(GaussianProcessInterface):
     def __init__(self, covariance_function, historical_data):
         """Construct a GaussianProcess object that knows how to call C++ for evaluation of member functions.
 
+        TODO(eliu): have a way to set private RNG state for self.sample_point_from_gp() (GH-56)
+
         :param covariance_function: covariance object encoding assumptions about the GP's behavior on our data
-        :type covariance_function: Covariance object exposing hyperparameters (e.g., from cpp_wrappers.covariance)
+        :type covariance_function: Covariance object exposing hyperparameters (e.g., from python_version.covariance)
         :param historical_data: object specifying the already-sampled points, the objective value at those points, and the noise variance associated with each observation
         :type historical_data: HistoricalData object
 
         """
         self._covariance = copy.deepcopy(covariance_function)
-
         self._historical_data = copy.deepcopy(historical_data)
-
-        # C++ will maintain its own copy of the contents of hyperparameters and historical_data
-        self._gaussian_process = C_GP.GaussianProcess(
-            cpp_utils.cppify_hyperparameters(self._covariance.get_hyperparameters()),
-            cpp_utils.cppify(historical_data.points_sampled),
-            cpp_utils.cppify(historical_data.points_sampled_value),
-            cpp_utils.cppify(historical_data.points_sampled_noise_variance),
-            self.dim,
-            self.num_sampled,
-        )
+        self._build_precomputed_data()
 
     @property
     def dim(self):
@@ -76,10 +68,20 @@ class GaussianProcess(GaussianProcessInterface):
         """Return the number of sampled points."""
         return self._historical_data.num_sampled
 
+    def _build_precomputed_data(self):
+        """Set up precomputed data (cholesky factorization of K and K^-1 * y)."""
+        if self.num_sampled == 0:
+            self._K_chol = numpy.array([])
+            self._K_inv_y = numpy.array([])
+        else:
+            covariance_matrix = python_utils.build_covariance_matrix(self._covariance, self._historical_data.points_sampled, noise_variance=self._historical_data.points_sampled_noise_variance)
+            self._K_chol = scipy.linalg.cho_factor(covariance_matrix, lower=True, overwrite_a=True)
+            self._K_inv_y = scipy.linalg.cho_solve(self._K_chol, self._historical_data.points_sampled_value)
+
     def compute_mean_of_points(self, points_to_sample):
         r"""Compute the mean of this GP at each of point of ``Xs`` (``points_to_sample``).
 
-        ``points_to_sample`` may not contain duplicate points. Violating this results in singular covariance matrices.
+        .. Warning:: ``points_to_sample`` should not contain duplicate points.
 
         .. Note:: Comments in this class are copied from this's superclass in interfaces.gaussian_process_interface.py.
 
@@ -89,20 +91,19 @@ class GaussianProcess(GaussianProcessInterface):
         :rtype: array of float64 with shape (num_to_sample)
 
         """
-        num_to_sample = len(points_to_sample)
-        mu = C_GP.get_mean(
-            self._gaussian_process,
-            cpp_utils.cppify(points_to_sample),
-            num_to_sample,
-        )
-        return numpy.array(mu)
+        if self.num_sampled == 0:
+            return numpy.zeros(points_to_sample.shape[0])
+
+        K_star = python_utils.build_mix_covariance_matrix(self._covariance, self._historical_data.points_sampled, points_to_sample)
+        mu_star = numpy.dot(K_star.T, self._K_inv_y)
+        return mu_star
 
     def compute_grad_mean_of_points(self, points_to_sample):
         r"""Compute the gradient of the mean of this GP at each of point of ``Xs`` (``points_to_sample``) wrt ``Xs``.
 
-        ``points_to_sample`` may not contain duplicate points. Violating this results in singular covariance matrices.
+        .. Warning:: ``points_to_sample`` should not contain duplicate points.
 
-        Note that ``grad_mu`` is nominally sized: ``grad_mu[num_to_sample][num_to_sample][dim]``. This is
+        Observe that ``grad_mu`` is nominally sized: ``grad_mu[num_to_sample][num_to_sample][dim]``. This is
         the the d-th component of the derivative evaluated at the i-th input wrt the j-th input.
         However, for ``0 <= i,j < num_to_sample``, ``i != j``, ``grad_mu[j][i][d] = 0``.
         (See references or implementation for further details.)
@@ -117,18 +118,19 @@ class GaussianProcess(GaussianProcessInterface):
         :rtype: array of float64 with shape (num_to_sample, dim)
 
         """
-        num_to_sample = len(points_to_sample)
-        grad_mu = C_GP.get_grad_mean(
-            self._gaussian_process,
-            cpp_utils.cppify(points_to_sample),
-            num_to_sample,
-        )
-        return cpp_utils.uncppify(grad_mu, (num_to_sample, self.dim))
+        grad_K_star = numpy.empty((points_to_sample.shape[0], self._historical_data.points_sampled.shape[0], self.dim))
+        for i, point_one in enumerate(points_to_sample):
+            for j, point_two in enumerate(self._historical_data.points_sampled):
+                grad_K_star[i, j, ...] = self._covariance.grad_covariance(point_one, point_two)
+
+        # y_{k,i} = A_{k,j,i} * x_j
+        grad_mu_star = numpy.einsum('ijk, j', grad_K_star, self._K_inv_y)
+        return grad_mu_star
 
     def compute_variance_of_points(self, points_to_sample):
         r"""Compute the variance (matrix) of this GP at each point of ``Xs`` (``points_to_sample``).
 
-        ``points_to_sample`` may not contain duplicate points. Violating this results in singular covariance matrices.
+        .. Warning:: ``points_to_sample`` should not contain duplicate points.
 
         The variance matrix is symmetric although we currently return the full representation.
 
@@ -140,37 +142,43 @@ class GaussianProcess(GaussianProcessInterface):
         :rtype: array of float64 with shape (num_to_sample, num_to_sample)
 
         """
-        num_to_sample = len(points_to_sample)
-        variance = C_GP.get_var(
-            self._gaussian_process,
-            cpp_utils.cppify(points_to_sample),
-            num_to_sample,
+        var_star = python_utils.build_covariance_matrix(self._covariance, points_to_sample)  # this is K_star_star
+        if self.num_sampled == 0:
+            return numpy.diag(numpy.diag(var_star))
+
+        K_star = python_utils.build_mix_covariance_matrix(self._covariance, self._historical_data.points_sampled, points_to_sample)
+        V = scipy.linalg.solve_triangular(
+            self._K_chol[0],
+            K_star,
+            lower=self._K_chol[1],
+            overwrite_b=True,
         )
-        return cpp_utils.uncppify(variance, (num_to_sample, num_to_sample))
+
+        # cheaper to go through scipy.linalg.get_blas_funcs() which can compute A = alpha*B*C + beta*A in one pass
+        var_star -= numpy.dot(V.T, V)
+        return var_star
 
     def compute_cholesky_variance_of_points(self, points_to_sample):
         r"""Compute the cholesky factorization of the variance (matrix) of this GP at each point of ``Xs`` (``points_to_sample``).
 
-        ``points_to_sample`` may not contain duplicate points. Violating this results in singular covariance matrices.
+        .. Warning:: ``points_to_sample`` should not contain duplicate points.
 
         :param points_to_sample: num_to_sample points (in dim dimensions) being sampled from the GP
         :type points_to_sample: array of float64 with shape (num_to_sample, dim)
         :return: cholesky factorization of the variance matrix of this GP, lower triangular
-        :rtype: array of float64 with shape (num_to_sample, num_to_sample), only lower triangle filled in
+        :rtype: array of float64 with shape (num_to_sample, num_to_sample), lower triangle filled in
 
         """
-        num_to_sample = len(points_to_sample)
-        cholesky_variance = C_GP.get_chol_var(
-            self._gaussian_process,
-            cpp_utils.cppify(points_to_sample),
-            num_to_sample,
+        return scipy.linalg.cholesky(
+            self.compute_variance_of_points(points_to_sample),
+            lower=True,
+            overwrite_a=True,
         )
-        return cpp_utils.uncppify(cholesky_variance, (num_to_sample, num_to_sample))
 
     def compute_grad_variance_of_points(self, points_to_sample, var_of_grad):
         r"""Compute the gradient of the variance (matrix) of this GP at each point of ``Xs`` (``points_to_sample``) wrt ``Xs``.
 
-        ``points_to_sample`` may not contain duplicate points. Violating this results in singular covariance matrices.
+        .. Warning:: ``points_to_sample`` should not contain duplicate points.
 
         This function is similar to compute_grad_cholesky_variance_of_points() (below), except this does not include
         gradient terms from the cholesky factorization. Description will not be duplicated here.
@@ -185,24 +193,39 @@ class GaussianProcess(GaussianProcessInterface):
         :rtype: array of float64 with shape (num_to_sample, num_to_sample, dim)
 
         """
-        num_to_sample = len(points_to_sample)
-        grad_variance = C_GP.get_grad_var(
-            self._gaussian_process,
-            cpp_utils.cppify(points_to_sample),
-            num_to_sample,
-            var_of_grad,
-        )
-        return cpp_utils.uncppify(grad_variance, (num_to_sample, num_to_sample, self.dim))
+        # TODO(eliu): this can be improved/optimized. see: gpp_math.cpp, GaussianProcess::ComputeGradVarianceOfPoints (GH-62)
+        num_to_sample = points_to_sample.shape[0]
+
+        # Compute grad variance
+        grad_var = numpy.zeros((num_to_sample, num_to_sample, self.dim))
+
+        K_star = python_utils.build_mix_covariance_matrix(self._covariance, self._historical_data.points_sampled, points_to_sample)
+        K_inv_times_K_star = scipy.linalg.cho_solve(self._K_chol, K_star, overwrite_b=True)
+        for i, point_one in enumerate(points_to_sample):
+            for j, point_two in enumerate(points_to_sample):
+                if var_of_grad == i and var_of_grad == j:
+                    grad_var[i, j, ...] = self._covariance.grad_covariance(point_one, point_two)
+                    for idx_two, sampled_two in enumerate(self._historical_data.points_sampled):
+                        grad_var[i, j, ...] -= 2.0 * K_inv_times_K_star[idx_two, i] * self._covariance.grad_covariance(point_one, sampled_two)
+                elif var_of_grad == i:
+                    grad_var[i, j, ...] = self._covariance.grad_covariance(point_one, point_two)
+                    for idx_two, sampled_two in enumerate(self._historical_data.points_sampled):
+                        grad_var[i, j, ...] -= K_inv_times_K_star[idx_two, j] * self._covariance.grad_covariance(point_one, sampled_two)
+                elif var_of_grad == j:
+                    grad_var[i, j, ...] = self._covariance.grad_covariance(point_two, point_one)
+                    for idx_one, sampled_one in enumerate(self._historical_data.points_sampled):
+                        grad_var[i, j, ...] -= K_inv_times_K_star[idx_one, i] * self._covariance.grad_covariance(point_two, sampled_one)
+        return grad_var
 
     def compute_grad_cholesky_variance_of_points(self, points_to_sample, var_of_grad):
         r"""Compute the gradient of the cholesky factorization of the variance (matrix) of this GP at each point of ``Xs`` (``points_to_sample``) wrt ``Xs``.
 
-        ``points_to_sample`` may not contain duplicate points. Violating this results in singular covariance matrices.
+        .. Warning:: ``points_to_sample`` should not contain duplicate points.
 
         This function accounts for the effect on the gradient resulting from
         cholesky-factoring the variance matrix.  See Smith 1995 for algorithm details.
 
-        Note that ``grad_chol`` is nominally sized:
+        Observe that ``grad_chol`` is nominally sized:
         ``grad_chol[num_to_sample][num_to_sample][num_to_sample][dim]``.
         Let this be indexed ``grad_chol[j][i][k][d]``, which is read the derivative of ``var[j][i]``
         with respect to ``x_{k,d}`` (x = ``points_to_sample``)
@@ -223,45 +246,55 @@ class GaussianProcess(GaussianProcessInterface):
         :rtype: array of float64 with shape (num_to_sample, num_to_sample, dim)
 
         """
-        num_to_sample = len(points_to_sample)
-        cholesky_grad_variance = C_GP.get_grad_chol_var(
-            self._gaussian_process,
-            cpp_utils.cppify(points_to_sample),
-            num_to_sample,
-            var_of_grad,
-        )
-        return cpp_utils.uncppify(cholesky_grad_variance, (num_to_sample, num_to_sample, self.dim))
+        # TODO(eliu): this can be improved/optimized. see: gpp_math.cpp, GaussianProcess::ComputeGradCholeskyVarianceOfPoints (GH-62)
+        num_to_sample = points_to_sample.shape[0]
 
-    def add_sampled_points(self, sampled_points):
+        var_star = self.compute_variance_of_points(points_to_sample)
+        # Note: only access the lower triangle of chol_var; upper triangle is garbage
+        chol_var = scipy.linalg.cho_factor(var_star, lower=True, overwrite_a=True)[0]
+
+        # Compute grad cholesky
+        # Zero out the upper half of the matrix
+        grad_chol = self.compute_grad_variance_of_points(points_to_sample, var_of_grad)
+        for i in xrange(num_to_sample):
+            for j in xrange(num_to_sample):
+                if i < j:
+                    grad_chol[i, j, ...] = numpy.zeros(self.dim)
+
+        # Step 2 of Appendix 2
+        for k in xrange(num_to_sample):
+            L_kk = chol_var[k, k]
+            if L_kk > 1.0e-16:
+                grad_chol[k, k, ...] *= 0.5 / L_kk
+                for j in xrange(k + 1, num_to_sample):
+                    grad_chol[j, k, ...] = (grad_chol[j, k, ...] - chol_var[j, k] * grad_chol[k, k, ...]) / L_kk
+                for j in xrange(k + 1, num_to_sample):
+                    for i in xrange(j, num_to_sample):
+                        grad_chol[i, j, ...] += -grad_chol[i, k, ...] * chol_var[j, k] - chol_var[i, k] * grad_chol[j, k, ...]
+
+        return grad_chol
+
+    def add_sampled_points(self, sampled_points, validate=False):
         r"""Add sampled point(s) (point, value, noise) to the GP's prior data.
 
         Also forces recomputation of all derived quantities for GP to remain consistent.
 
-        TOOD(eliu): figure out how to deal with single or list of points (or not deal with it)
-
         :param sampled_points: SampledPoint objects to load into the GP (containing point, function value, and noise variance)
-        :type sampled_points: single SampledPoint or list of SampledPoint objects
+        :type sampled_points: list of SampledPoint objects
+        :param validate: whether to sanity-check the input sample_points
+        :type validate: boolean
 
         """
-        # TODO(eliu): add hook to actual C++ function to make this more efficient than rebuilding the whole GP object
-        self._historical_data.append_sample_points(sampled_points)
-
-        self._gaussian_process = C_GP.GaussianProcess(
-            cpp_utils.cppify_hyperparameters(self._covariance.get_hyperparameters()),
-            cpp_utils.cppify([p.point for p in self.points_sampled]),
-            cpp_utils.cppify(self.values_of_samples),
-            cpp_utils.cppify(self.sample_variance_of_samples),
-            self.dim,
-            self.num_sampled,
-        )
+        # TODO(eliu): make this more efficient than rebuilding all precomputed data (e.g., can update the existing K_chol
+        # instead of recomputing it from scratch. (ADS-3583)
+        self._historical_data.append_sample_points(sampled_points, validate=validate)
+        self._build_precomputed_data()
 
     def sample_point_from_gp(self, point_to_sample, noise_variance=0.0):
         r"""Sample a function value from a Gaussian Process prior, provided a point at which to sample.
 
         Uses the formula ``function_value = gpp_mean + sqrt(gpp_variance) * w1 + sqrt(noise_variance) * w2``, where ``w1, w2``
         are draws from N(0,1).
-
-        Implementers are responsible for providing a N(0,1) source.
 
         .. NOTE::
              Set noise_variance to 0 if you want "accurate" draws from the GP.
@@ -278,9 +311,8 @@ class GaussianProcess(GaussianProcessInterface):
         :rtype: float64
 
         """
-        # TODO(eliu): C++ has a native implementation of this function; make a wrapper and call that directly
         point = numpy.array(point_to_sample, copy=False, ndmin=2)
         mean = self.compute_mean_of_points(point)[0]
-        variance = self.compute_variance_of_points(point)[0][0]
+        variance = self.compute_variance_of_points(point)[0, 0]
 
         return mean + numpy.sqrt(variance) * numpy.random.normal() + numpy.sqrt(noise_variance) * numpy.random.normal()

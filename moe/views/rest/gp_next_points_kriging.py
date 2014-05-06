@@ -24,7 +24,7 @@ class GpNextPointsKrigingRequest(GpNextPointsRequest):
     **Optional fields**
 
         :num_samples_to_generate: number of next points to generate (default: 1)
-        :ei_optimization_parameters: :class:`moe.views.schemas.EiOptimizationParameters` object containing optimization parameters (default: moe.optimal_learning.EPI.src.python.constant.default_ei_optimization_parameters)
+        :ei_optimization_parameters: :class:`moe.views.schemas.EiOptimizationParameters` object containing optimization parameters (default: moe.optimal_learning.python.constant.default_ei_optimization_parameters)
         :std_deviation_coef: a float used in Kriging, see Kriging implementation docs (default: 0.0)
         :kriging_noise_variance: a positive (>= 0) float used in Kriging, see Kriging implementation docs (default: 0.0)
 

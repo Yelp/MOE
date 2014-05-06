@@ -358,21 +358,23 @@ OL_NONNULL_POINTERS void BuildMixCovarianceMatrix(const CovarianceInterface& cov
 }  // end unnamed namespace
 
 /*
-  Let Ls * Ls^T = Vars and w = vector of IID normal(0,1) variables
+  Let ``Ls * Ls^T = Vars`` and ``w`` = vector of IID normal(0,1) variables
   Then:
-  y = mus + Ls * w  (Equation 4, from file docs)
+  ``y = mus + Ls * w``  (Equation 4, from file docs)
   simulates drawing from our GP with mean mus and variance Vars.
 
   Then as given in the file docs, we compute the improvement:
   Then the improvement for this single sample is:
-  I = { best_known - min(y)   if (best_known - min(y) > 0)      (Equation 5 from file docs)
-      {          0               else
-  This is implemented as max_{y} (best_known - y).  Notice that improvement takes the value 0 if it would be negative.
+  ``I = { best_known - min(y)   if (best_known - min(y) > 0)      (Equation 5 from file docs)``
+  ``    {          0               else``
+  This is implemented as ``max_{y} (best_known - y)``.  Notice that improvement takes the value 0 if it would be negative.
 
-  Since we cannot compute min(y) directly, we do so via monte-carlo (MC) integration.  That is, we draw from the GP
+  Since we cannot compute ``min(y)`` directly, we do so via monte-carlo (MC) integration.  That is, we draw from the GP
   repeatedly, computing improvement during each iteration, and averaging the result.
 
   See Scott's PhD thesis, sec 6.2.
+
+  .. Note:: comments here are copied to _compute_expected_improvement_monte_carlo() in python_version/expected_improvement.py
   */
 double ExpectedImprovementEvaluator::ComputeExpectedImprovement(StateType * ei_state) const {
   int num_to_sample = ei_state->num_to_sample;
@@ -409,14 +411,16 @@ double ExpectedImprovementEvaluator::ComputeExpectedImprovement(StateType * ei_s
   Computes gradient of EI (see ExpectedImprovementEvaluator::ComputeGradExpectedImprovement) wrt current_point.
 
   Mechanism is similar to the computation of EI, where points' contributions to the gradient are thrown out of their
-  corresponding improvement is <= 0.0.  There is some additional subtlety here because we are only computing the gradient
-  of EI with respect to the current point (stored at index "index_of_current_point").
+  corresponding ``improvement <= 0.0``.  There is some additional subtlety here because we are only computing the gradient
+  of EI with respect to the current point (stored at index ``index_of_current_point``).
 
-  Thus \nabla(\mu) only contributes when the "winner" (point w/best improvement this iteration) is the current point.  That is,
-  the gradient of mu at x_i wrt x_j is 0 unless i == j (and only this result is stored in ei_state->grad_mu).  The interaction
-  with ei_state->grad_chol_decomp is harder to know a priori (like with grad mu) and has a more complex structure
-  (rank 3 tensor), so the derivative wrt x_j is computed fully, and the relevant submatrix (indexed by the current "winner") is
-  accessed each iteration.
+  Thus ``\nabla(\mu)`` only contributes when the ``winner`` (point w/best improvement this iteration) is the current point.
+  That is, the gradient of ``\mu`` at ``x_i`` wrt ``x_j`` is 0 unless ``i == j`` (and only this result is stored in
+  ``ei_state->grad_mu``).  The interaction with ``ei_state->grad_chol_decomp`` is harder to know a priori (like with
+  ``grad_mu``) and has a more complex structure (rank 3 tensor), so the derivative wrt ``x_j`` is computed fully, and
+  the relevant submatrix (indexed by the current ``winner``) is accessed each iteration.
+
+  .. Note:: comments here are copied to _compute_grad_expected_improvement_monte_carlo() in python_version/expected_improvement.py
 */
 void ExpectedImprovementEvaluator::ComputeGradExpectedImprovement(StateType * ei_state, double * restrict grad_EI) const {
   const int index_of_current_point = StateType::kIndexOfCurrentPoint;
@@ -482,7 +486,7 @@ void ExpectedImprovementEvaluator::ComputeGradExpectedImprovement(StateType * ei
   In this case, the single-parameter (posterior) GP is just a Gaussian.  So the integral in EI (previously eval'd with MC)
   can be computed 'exactly' using high-accuracy routines for the pdf & cdf of a Gaussian random variable.
 
-  See Ginsbourger, Le Riche and, Carraro.
+  See Ginsbourger, Le Riche, and Carraro.
 */
 double OnePotentialSampleExpectedImprovementEvaluator::ComputeExpectedImprovement(StateType * ei_state) const {
   double to_sample_mean;
@@ -729,7 +733,7 @@ void GaussianProcess::ComputeVarianceOfPoints(StateType * points_to_sample_state
     2) l,k are the only non-free indices; they range over num_sampled
     3) d,p describe the SPECIFIC point being differentiated against in Xs (points_to_sample): d over dimension, p* over num_to_sample
   *NOTE: p is *fixed*! Unlike all other indices, p refers to a *SPECIFIC* point in the range [0, ..., num_to_sample-1].
-         Thus, \pderiv{Ks_{k,i}}{Xs_{d,i}} is a 3-tensor (A_{d,k,i}) (repeated i is not summation since they notate
+         Thus, \pderiv{Ks_{k,i}}{Xs_{d,i}} is a 3-tensor (A_{d,k,i}) (repeated i is not summation since they denote
          components of a derivative) while \pderiv{Ks_{i,l}}{Xs_{d,p}} is a 2-tensor (A_{d,l}) b/c only
          \pderiv{Ks_{i=p,l}}{Xs_{d,p}} is nonzero, and {d,l} are the only remaining free indices.
 
@@ -762,7 +766,7 @@ void GaussianProcess::ComputeVarianceOfPoints(StateType * points_to_sample_state
   The first thing to notice is that the result, \pderiv{Vars_{i,j}}{Xs_{d,p}}, has a lot of 0s.  In particular, only the
   p-th block row and p-th block column have nonzero entries (blocks are size dim, indexed d).  Currently, we will not be
   taking advantage of this sparsity because the consumer of DVars, ComputeGradCholeskyVarianceOfPoints(), is not implemented
-  with the sparsity in mind.
+  with sparsity in mind.
 
   Similarly, the next thing to notice is that if we ignore the case p == i == j, then we see that the expressions for
   p == i and p == j are actually identical (e.g., take the p == j case and exchange j = i and k = l).  So think of DVars as a
@@ -774,8 +778,8 @@ void GaussianProcess::ComputeVarianceOfPoints(StateType * points_to_sample_state
   C_{l,j} = K^-1_{l,k} * Ks_{k,j} (and K^-1_{k,l} * Ks_{l,i}, which is just a change of index labels) is a matrix product.  We
   compute this using back-substitutions to avoid explicitly forming K^-1.  C_{l,j} is num_sampled X num_to_sample
   Then D_{d,i=p,j} = \pderiv{Ks_{i=p,l}}{Xs_{d,p}} * C_{l,j} is another matrix product (result size dim * num_to_sample)
-  (i=p indicates that index i collapses out since this deriv term is zero if p != i).
-  Note that we store \pderiv{Ks_{i=p,l}}{Xs_{d,p}} = \pderiv{Ks_{l,i=p}}{Xs_{d,p}} as A_{d,l,i} and grab the i=p-th block.
+  (i = p indicates that index i collapses out since this deriv term is zero if p != i).
+  Note that we store \pderiv{Ks_{i=p,l}}{Xs_{d,p}} = \pderiv{Ks_{l,i=p}}{Xs_{d,p}} as A_{d,l,i} and grab the i = p-th block.
 
   Again, only the p-th point of points_to_sample is differentiated against; p specfied in "var_of_grad"
 */
@@ -835,7 +839,7 @@ void GaussianProcess::ComputeGradVarianceOfPoints(StateType * points_to_sample_s
   This function differentiates C wrt the p-th point of points_to_sample; p specfied in "var_of_grad"
 
   Just as users of a lower triangular matrix L[i][j] should not access the upper triangle (j > i), users of
-  the result of this function, grad_chol[i][j][d], should not access the "upper triangle" with j > i.
+  the result of this function, grad_chol[d][i][j], should not access the "upper triangle" with j > i.
 
   See Smith 1995 for full details of computing gradients of the cholesky factorization
 */

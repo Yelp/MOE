@@ -17,20 +17,19 @@ from moe.optimal_learning.python.interfaces.optimization_interface import Optimi
 
 
 def multistart_expected_improvement_optimization(
-    ei_evaluator,
-    ei_optimization_parameters,
-    domain,
-    num_samples_to_generate,
-    points_to_sample=numpy.array([]),
-    randomness=None,
-    max_num_threads=1,
-    status=None,
+        ei_optimizer,
+        num_multistarts,
+        num_samples_to_generate,
+        randomness=None,
+        max_num_threads=1,
+        status=None,
 ):
     """Solve the q,p-EI problem, returning the optimal set of q points to sample CONCURRENTLY in future experiments.
 
     When points_to_sample.size == 0 && num_samples_to_generate == 1, this function will use (fast) analytic EI computations.
 
     .. NOTE:: The following comments are copied from gpp_math.hpp, ComputeOptimalSetOfPointsToSample().
+        These comments are copied into multistart_expected_improvement_optimization() in python_version/expected_improvement.py
 
     Returns the optimal set of q points to sample CONCURRENTLY by solving the q,p-EI problem.  That is, we may want to run 4
     experiments at the same time and maximize the EI across all 4 experiments at once while knowing of 2 ongoing experiments
@@ -43,23 +42,20 @@ def multistart_expected_improvement_optimization(
 
     If ``num_samples_to_generate = 1``, this is the same as ComputeOptimalPointToSampleWithRandomStarts().
 
-    :param ei_evaluator: object specifying how to evaluate the expected improvement
-    :type ei_evaluator: cpp_wrappers.expected_improvement.ExpectedImprovement
-    :param ei_optimization_parameters: object specifying the desired optimization method (e.g., gradient descent, random search)
-      and parameters controlling its behavior (e.g., tolerance, iterations, etc.)
-    :type ei_optimization_parameters: cpp_wrappers.optimization_parameters.ExpectedImprovementOptimizationParameters
-    :param domain: the domain over which to optimize (for the next best point(s) to sample)
-    :type domain: DomainInterface, e.g., from cpp_wrappers/domain.py (TensorProductDomain, SimplexIntersectTensorProductDomain)
+    :param ei_optimizer: object that optimizes (e.g., gradient descent, newton) EI over a domain
+    :type ei_optimizer: cpp_wrappers.optimization.*Optimizer object
+    :param num_multistarts: number of times to multistart ``ei_optimizer`` (UNUSED, data is in ei_optimizer.optimization_parameters)
+    :type num_multistarts: int > 0
     :param num_samples_to_generate: how many simultaneous experiments you would like to run (i.e., the q in q,p-EI)
     :type num_samples_to_generate: int >= 1
-    :param points_to_sample: points that are being sampled concurrently from the GP (i.e., the p in q,p-EI)
-    :type points_to_sample: array of float64 with shape (num_to_sample, dim)
     :param randomness: RNGs used by C++ to generate initial guesses and as the source of normal random numbers when monte-carlo is used
     :type randomness: RandomnessSourceContainer (C++ object; e.g., from C_GP.RandomnessSourceContainer())
     :param max_num_threads: maximum number of threads to use, >= 1
-    :type max_num_threads: int
+    :type max_num_threads: int > 0
     :param status: status messages from C++ (e.g., reporting on optimizer success, etc.)
     :type status: dict
+    :return: point(s) that maximize the expected improvement (solving the q,p-EI problem)
+    :rtype: array of float64 with shape (num_samples_to_generate, ei_optimizer.objective_function.dim)
 
     """
     # Create enough randomness sources if none are specified.
@@ -73,34 +69,32 @@ def multistart_expected_improvement_optimization(
     if status is None:
         status = {}
 
-    ei_optimization_parameters.domain_type = domain._domain_type
     best_points_to_sample = C_GP.multistart_expected_improvement_optimization(
-        ei_optimization_parameters,
-        ei_evaluator._gaussian_process._gaussian_process,
-        cpp_utils.cppify(domain.domain_bounds),
-        cpp_utils.cppify(ei_evaluator._points_to_sample),
-        ei_evaluator._points_to_sample.shape[0],
+        ei_optimizer.optimization_parameters,
+        ei_optimizer.objective_function._gaussian_process._gaussian_process,
+        cpp_utils.cppify(ei_optimizer.domain.domain_bounds),
+        cpp_utils.cppify(ei_optimizer.objective_function._points_to_sample),
+        ei_optimizer.objective_function._points_to_sample.shape[0],
         num_samples_to_generate,
-        ei_evaluator._best_so_far,
-        ei_evaluator._num_mc_iterations,
+        ei_optimizer.objective_function._best_so_far,
+        ei_optimizer.objective_function._num_mc_iterations,
         max_num_threads,
         randomness,
         status,
     )
 
     # reform output to be a list of dim-dimensional points, dim = len(self.domain)
-    return cpp_utils.uncppify(best_points_to_sample, (num_samples_to_generate, ei_evaluator.dim))
+    return cpp_utils.uncppify(best_points_to_sample, (num_samples_to_generate, ei_optimizer.objective_function.dim))
 
 
 def _heuristic_expected_improvement_optimization(
-    ei_evaluator,
-    ei_optimization_parameters,
-    domain,
-    num_samples_to_generate,
-    estimation_policy,
-    randomness=None,
-    max_num_threads=1,
-    status=None,
+        ei_optimizer,
+        num_multistarts,
+        num_samples_to_generate,
+        estimation_policy,
+        randomness=None,
+        max_num_threads=1,
+        status=None,
 ):
     """Heuristically solve the q,0-EI problem (estimating multistart_expected_improvement_optimization()) using 1,0-EI solves.
 
@@ -158,12 +152,10 @@ def _heuristic_expected_improvement_optimization(
     .. WARNING:: this function fails if any step fails to find improvement! In that case, the return should not be
            read and status will report false.
 
-    :param ei_evaluator: object specifying how to evaluate the expected improvement
-    :type ei_evaluator: cpp_wrappers.expected_improvement.ExpectedImprovement
-    :param ei_optimization_parameters: object specifying the desired optimization method and parameters controlling its behavior (e.g., tolerance, iterations, etc.)
-    :type ei_optimization_parameters: cpp_wrappers.optimization_parameters.ExpectedImprovementOptimizationParameters
-    :param domain: the domain over which to optimize (for the next best point(s) to sample)
-    :type domain: DomainInterface, e.g., from cpp_wrappers/domain.py (TensorProductDomain, SimplexIntersectTensorProductDomain)
+    :param ei_optimizer: object that optimizes (e.g., gradient descent, newton) EI over a domain
+    :type ei_optimizer: cpp_wrappers.optimization.*Optimizer object
+    :param num_multistarts: number of times to multistart ``ei_optimizer`` (UNUSED, data is in ei_optimizer.optimization_parameters)
+    :type num_multistarts: int > 0
     :param num_samples_to_generate: how many simultaneous experiments you would like to run (i.e., the q in q,0-EI)
     :type num_samples_to_generate: int >= 1
     :param estimation_policy: the policy to use to produce (heuristic) objective function estimates during q,0-EI optimization
@@ -173,9 +165,11 @@ def _heuristic_expected_improvement_optimization(
     :param randomness: RNGs used by C++ to generate initial guesses
     :type randomness: RandomnessSourceContainer (C++ object; e.g., from C_GP.RandomnessSourceContainer())
     :param max_num_threads: maximum number of threads to use, >= 1
-    :type max_num_threads: int
+    :type max_num_threads: int > 0
     :param status: status messages from C++ (e.g., reporting on optimizer success, etc.)
     :type status: dict
+    :return: point(s) that approximately maximize the expected improvement (solving the q,0-EI problem)
+    :rtype: array of float64 with shape (num_samples_to_generate, ei_optimizer.objective_function.dim)
 
     """
     # Create enough randomness sources if none are specified.
@@ -189,33 +183,31 @@ def _heuristic_expected_improvement_optimization(
     if status is None:
         status = {}
 
-    ei_optimization_parameters.domain_type = domain._domain_type
     best_points_to_sample = C_GP.heuristic_expected_improvement_optimization(
-        ei_optimization_parameters,
-        ei_evaluator._gaussian_process._gaussian_process,
-        cpp_utils.cppify(domain.domain_bounds),
+        ei_optimizer.optimization_parameters,
+        ei_optimizer.objective_function._gaussian_process._gaussian_process,
+        cpp_utils.cppify(ei_optimizer.domain._domain_bounds),
         estimation_policy,
         num_samples_to_generate,
-        ei_evaluator._best_so_far,
+        ei_optimizer.objective_function._best_so_far,
         max_num_threads,
         randomness,
         status,
     )
 
     # reform output to be a list of dim-dimensional points, dim = len(self.domain)
-    return cpp_utils.uncppify(best_points_to_sample, (num_samples_to_generate, ei_evaluator.dim))
+    return cpp_utils.uncppify(best_points_to_sample, (num_samples_to_generate, ei_optimizer.objective_function.dim))
 
 
 def constant_liar_expected_improvement_optimization(
-    ei_evaluator,
-    ei_optimization_parameters,
-    domain,
-    num_samples_to_generate,
-    lie_value,
-    lie_noise_variance=0.0,
-    randomness=None,
-    max_num_threads=1,
-    status=None,
+        ei_optimizer,
+        num_multistarts,
+        num_samples_to_generate,
+        lie_value,
+        lie_noise_variance=0.0,
+        randomness=None,
+        max_num_threads=1,
+        status=None,
 ):
     """Heuristically solves q,0-EI using the Constant Liar policy; this wraps heuristic_expected_improvement_optimization().
 
@@ -224,7 +216,7 @@ def constant_liar_expected_improvement_optimization(
     See heuristic_expected_improvement_optimization() docs for general notes on how the heuristic optimization works.
     In this specific instance, we use the Constant Liar estimation policy.
 
-    .. Note: comments copied from ConstantLiarEstimationPolicy in gpp_heuristic_expected_improvement_optimization.hpp.
+    .. Note:: comments copied from ConstantLiarEstimationPolicy in gpp_heuristic_expected_improvement_optimization.hpp.
 
     The "Constant Liar" objective function estimation policy is the simplest: it always returns the same value
     (Ginsbourger 2008). We call this the "lie. This object also allows users to associate a noise variance to
@@ -236,12 +228,10 @@ def constant_liar_expected_improvement_optimization(
     He also points out that larger lie values (e.g., max of prior measurements) will lead methods like
     ComputeEstimatedSetOfPointsToSample() to be more explorative and vice versa.
 
-    :param ei_evaluator: object specifying how to evaluate the expected improvement
-    :type ei_evaluator: cpp_wrappers.expected_improvement.ExpectedImprovement
-    :param ei_optimization_parameters: object specifying the desired optimization method and parameters controlling its behavior (e.g., tolerance, iterations, etc.)
-    :type ei_optimization_parameters: cpp_wrappers.optimization_parameters.ExpectedImprovementOptimizationParameters
-    :param domain: the domain over which to optimize (for the next best point(s) to sample)
-    :type domain: DomainInterface, e.g., from cpp_wrappers/domain.py (TensorProductDomain, SimplexIntersectTensorProductDomain)
+    :param ei_optimizer: object that optimizes (e.g., gradient descent, newton) EI over a domain
+    :type ei_optimizer: cpp_wrappers.optimization.*Optimizer object
+    :param num_multistarts: number of times to multistart ``ei_optimizer`` (UNUSED, data is in ei_optimizer.optimization_parameters)
+    :type num_multistarts: int > 0
     :param num_samples_to_generate: how many simultaneous experiments you would like to run (i.e., the q in q,0-EI)
     :type num_samples_to_generate: int >= 1
     :param lie_value: the "constant lie" that this estimator should return
@@ -251,25 +241,34 @@ def constant_liar_expected_improvement_optimization(
     :param randomness: RNGs used by C++ to generate initial guesses
     :type randomness: RandomnessSourceContainer (C++ object; e.g., from C_GP.RandomnessSourceContainer())
     :param max_num_threads: maximum number of threads to use, >= 1
-    :type max_num_threads: int
+    :type max_num_threads: int > 0
     :param status: status messages from C++ (e.g., reporting on optimizer success, etc.)
     :type status: dict
+    :return: point(s) that approximately maximize the expected improvement (solving the q,0-EI problem)
+    :rtype: array of float64 with shape (num_samples_to_generate, ei_optimizer.objective_function.dim)
 
     """
     estimation_policy = C_GP.ConstantLiarEstimationPolicy(lie_value, lie_noise_variance)
-    return _heuristic_expected_improvement_optimization(ei_evaluator, ei_optimization_parameters, domain, num_samples_to_generate, estimation_policy, randomness=randomness, max_num_threads=max_num_threads, status=status)
+    return _heuristic_expected_improvement_optimization(
+        ei_optimizer,
+        num_multistarts,
+        num_samples_to_generate,
+        estimation_policy,
+        randomness=randomness,
+        max_num_threads=max_num_threads,
+        status=status,
+    )
 
 
 def kriging_believer_expected_improvement_optimization(
-    ei_evaluator,
-    ei_optimization_parameters,
-    domain,
-    num_samples_to_generate,
-    std_deviation_coef=0.0,
-    kriging_noise_variance=0.0,
-    randomness=None,
-    max_num_threads=1,
-    status=None,
+        ei_optimizer,
+        num_multistarts,
+        num_samples_to_generate,
+        std_deviation_coef=0.0,
+        kriging_noise_variance=0.0,
+        randomness=None,
+        max_num_threads=1,
+        status=None,
 ):
     """Heuristically solves q,0-EI using the Kriging Believer policy; this wraps heuristic_expected_improvement_optimization().
 
@@ -278,7 +277,7 @@ def kriging_believer_expected_improvement_optimization(
     See heuristic_expected_improvement_optimization() docs for general notes on how the heuristic optimization works.
     In this specific instance, we use the Kriging Believer estimation policy.
 
-    .. Note: comments copied from KrigingBelieverEstimationPolicy in gpp_heuristic_expected_improvement_optimization.hpp.
+    .. Note:: comments copied from KrigingBelieverEstimationPolicy in gpp_heuristic_expected_improvement_optimization.hpp.
 
     The "Kriging Believer" objective function estimation policy uses the Gaussian Process (i.e., the prior)
     to produce objective function estimates. The simplest method is to trust the GP completely:
@@ -292,12 +291,10 @@ def kriging_believer_expected_improvement_optimization(
 
     This object also allows users to associate a noise variance to the lie value.
 
-    :param ei_evaluator: object specifying how to evaluate the expected improvement
-    :type ei_evaluator: cpp_wrappers.expected_improvement.ExpectedImprovement
-    :param ei_optimization_parameters: object specifying the desired optimization method and parameters controlling its behavior (e.g., tolerance, iterations, etc.)
-    :type ei_optimization_parameters: cpp_wrappers.optimization_parameters.ExpectedImprovementOptimizationParameters
-    :param domain: the domain over which to optimize (for the next best point(s) to sample)
-    :type domain: DomainInterface, e.g., from cpp_wrappers/domain.py (TensorProductDomain, SimplexIntersectTensorProductDomain)
+    :param ei_optimizer: object that optimizes (e.g., gradient descent, newton) EI over a domain
+    :type ei_optimizer: cpp_wrappers.optimization.*Optimizer object
+    :param num_multistarts: number of times to multistart ``ei_optimizer`` (UNUSED, data is in ei_optimizer.optimization_parameters)
+    :type num_multistarts: int > 0
     :param num_samples_to_generate: how many simultaneous experiments you would like to run (i.e., the q in q,0-EI)
     :type num_samples_to_generate: int >= 1
     :param std_deviation_coef: the relative amount of bias (in units of GP std deviation) to introduce into the GP mean
@@ -307,32 +304,26 @@ def kriging_believer_expected_improvement_optimization(
     :param randomness: RNGs used by C++ to generate initial guesses
     :type randomness: RandomnessSourceContainer (C++ object; e.g., from C_GP.RandomnessSourceContainer())
     :param max_num_threads: maximum number of threads to use, >= 1
-    :type max_num_threads: int
+    :type max_num_threads: int > 0
     :param status: status messages from C++ (e.g., reporting on optimizer success, etc.)
     :type status: dict
+    :return: point(s) that approximately maximize the expected improvement (solving the q,0-EI problem)
+    :rtype: array of float64 with shape (num_samples_to_generate, ei_optimizer.objective_function.dim)
 
     """
     estimation_policy = C_GP.KrigingBelieverEstimationPolicy(std_deviation_coef, kriging_noise_variance)
     return _heuristic_expected_improvement_optimization(
-        ei_evaluator,
-        ei_optimization_parameters,
-        domain,
+        ei_optimizer,
+        num_multistarts,
         num_samples_to_generate,
         estimation_policy,
         randomness=randomness,
         max_num_threads=max_num_threads,
         status=status,
-        )
+    )
 
 
-def evaluate_expected_improvement_at_point_list(
-    ei_evaluator,
-    points_to_evaluate,
-    points_to_sample=numpy.array([]),
-    randomness=None,
-    max_num_threads=1,
-    status=None,
-):
+def evaluate_expected_improvement_at_point_list(ei_evaluator, points_to_evaluate, randomness=None, max_num_threads=1, status=None):
     """Evaluate Expected Improvement (1,p-EI) over a specified list of ``points_to_evaluate``.
 
     Generally gradient descent is preferred but when they fail to converge this may be the only "robust" option.
@@ -340,16 +331,16 @@ def evaluate_expected_improvement_at_point_list(
 
     :param ei_evaluator: object specifying how to evaluate the expected improvement
     :type ei_evaluator: cpp_wrappers.expected_improvement.ExpectedImprovement
-    :param points_to_sample: points that are being sampled concurrently from the GP (i.e., the p in q,p-EI)
-    :type points_to_sample: array of float64 with shape (num_to_sample, dim)
+    :param points_to_evaluate: points at which to compute EI
+    :type points_to_evaluate: array of float64 with shape (num_to_evaluate, ei_evaluator.dim)
     :param randomness: RNGs used by C++ to generate initial guesses and as the source of normal random numbers when monte-carlo is used
     :type randomness: RandomnessSourceContainer (C++ object; e.g., from C_GP.RandomnessSourceContainer())
     :param max_num_threads: maximum number of threads to use, >= 1
-    :type max_num_threads: int
+    :type max_num_threads: int > 0
     :param status: status messages from C++ (e.g., reporting on optimizer success, etc.)
     :type status: dict
     :return: EI evaluated at each of points_to_evaluate
-    :rtype: array of float64 with shape )points_to_evaluate.shape[0])
+    :rtype: array of float64 with shape (points_to_evaluate.shape[0])
 
     """
     # Create enough randomness sources if none are specified.
@@ -394,7 +385,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         """Construct an ExpectedImprovement object that knows how to call C++ for evaluation of member functions.
 
         :param gaussian_process: GaussianProcess describing
-        :type gaussian_process: cpp_wrappers.GaussianProcess object
+        :type gaussian_process: cpp_wrappers.gaussian_process.GaussianProcess object
         :param current_point: point at which to compute EI (i.e., q in q,p-EI)
         :type current_point: array of float64 with shape (dim)
         :param points_to_sample: points which are being sampled concurrently (i.e., p in q,p-EI)
@@ -422,6 +413,8 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
             self._randomness.SetRandomizedNormalRNGSeed(0)
         else:
             self._randomness = randomness
+
+        self.objective_type = None  # Not used for EI, but the field is expected in C++
 
     @property
     def dim(self):
@@ -502,7 +495,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         :rtype: array of float64 with shape (dim)
 
         """
-        grad_EI = C_GP.compute_grad_expected_improvement(
+        grad_ei = C_GP.compute_grad_expected_improvement(
             self._gaussian_process._gaussian_process,
             cpp_utils.cppify(self._points_to_sample),
             self._points_to_sample.shape[0],
@@ -512,7 +505,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
             self._randomness,
             cpp_utils.cppify(self._current_point),
         )
-        return numpy.array(grad_EI)
+        return numpy.array(grad_ei)
 
     def compute_grad_objective_function(self, **kwargs):
         """Wrapper for compute_grad_expected_improvement; see that function's docstring."""

@@ -88,11 +88,18 @@ void SquareExponential::Initialize() {
   InitializeCovariance(dim_, alpha_, lengths_, lengths_sq_.data());
 }
 
+/*
+  Square Exponential: ``cov(x_1, x_2) = \alpha * \exp(-1/2 * ((x_1 - x_2)^T * L * (x_1 - x_2)) )``
+*/
 double SquareExponential::Covariance(double const * restrict point_one, double const * restrict point_two) const noexcept {
   const double norm_val = NormSquaredWithInverseWeights(point_one, point_two, lengths_sq_.data(), dim_);
   return alpha_*std::exp(-0.5*norm_val);
 }
 
+/*
+  Gradient of Square Exponential (wrt ``x_1``):
+  ``\pderiv{cov(x_1, x_2)}{x_{1,i}} = (x_{2,i} - x_{1,i}) / L_{i}^2 * cov(x_1, x_2)``
+*/
 void SquareExponential::GradCovariance(double const * restrict point_one, double const * restrict point_two, double * restrict grad_cov) const noexcept {
   const double cov = Covariance(point_one, point_two);
 
@@ -101,6 +108,12 @@ void SquareExponential::GradCovariance(double const * restrict point_one, double
   }
 }
 
+/*
+  Gradient of Square Exponential (wrt hyperparameters (``alpha, L``)):
+  ``\pderiv{cov(x_1, x_2)}{\theta_0} = cov(x_1, x_2) / \theta_0``
+  ``\pderiv{cov(x_1, x_2)}{\theta_0} = [(x_{1,i} - x_{2,i}) / L_i]^2 / L_i * cov(x_1, x_2)``
+  Note: ``\theta_0 = \alpha`` and ``\theta_{1:d} = L_{0:d-1}``
+*/
 void SquareExponential::HyperparameterGradCovariance(double const * restrict point_one, double const * restrict point_two, double * restrict grad_hyperparameter_cov) const noexcept {
   const double cov = Covariance(point_one, point_two);
 

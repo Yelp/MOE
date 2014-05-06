@@ -58,7 +58,7 @@ class TensorProductDomain(DomainInterface):
         """
         raise NotImplementedError("C++ wrapper currently does not support domain member functions.")
 
-    def compute_update_restricted_to_domain(max_relative_change, current_point, update_vector):
+    def compute_update_restricted_to_domain(self, max_relative_change, current_point, update_vector):
         r"""Compute a new update so that CheckPointInside(``current_point`` + ``new_update``) is true.
 
         We do not currently expose a C++ endpoint for this call; see domain_interface.py for interface specification.
@@ -123,7 +123,7 @@ class SimplexIntersectTensorProductDomain(DomainInterface):
         """
         raise NotImplementedError("C++ wrapper currently does not support domain member functions.")
 
-    def compute_update_restricted_to_domain(max_relative_change, current_point, update_vector):
+    def compute_update_restricted_to_domain(self, max_relative_change, current_point, update_vector):
         r"""Compute a new update so that CheckPointInside(``current_point`` + ``new_update``) is true.
 
         We do not currently expose a C++ endpoint for this call; see domain_interface.py for interface specification.

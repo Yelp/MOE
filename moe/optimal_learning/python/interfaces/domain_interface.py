@@ -50,7 +50,7 @@ class DomainInterface(object):
         pass
 
     @abstractmethod
-    def compute_update_restricted_to_domain(max_relative_change, current_point, update_vector):
+    def compute_update_restricted_to_domain(self, max_relative_change, current_point, update_vector):
         r"""Compute a new update so that CheckPointInside(``current_point`` + ``new_update``) is true.
 
         Changes new_update_vector so that:

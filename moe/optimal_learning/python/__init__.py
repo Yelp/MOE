@@ -22,8 +22,6 @@ users hoping to learn about optimal_learning. Additionally, development time in 
 to test new ideas here before fully implementing them in C++. For example, developers could test a new OptimizationInterface
 implementation in Python while connecting it to C++ evaluation of objective functions.
 
-.. Note:: Not implemented yet: ADS-3789
-
 * models:
 A deprecated package containing the old C++ and Python implementations. This package (and associated tests) will be deleted
 after python_version is implemented: ADS-3987.
