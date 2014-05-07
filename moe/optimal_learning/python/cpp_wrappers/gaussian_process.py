@@ -248,9 +248,9 @@ class GaussianProcess(GaussianProcessInterface):
 
         self._gaussian_process = C_GP.GaussianProcess(
             cpp_utils.cppify_hyperparameters(self._covariance.get_hyperparameters()),
-            cpp_utils.cppify([p.point for p in self.points_sampled]),
-            cpp_utils.cppify(self.values_of_samples),
-            cpp_utils.cppify(self.sample_variance_of_samples),
+            cpp_utils.cppify(self._historical_data.points_sampled),
+            cpp_utils.cppify(self._historical_data.points_sampled_value),
+            cpp_utils.cppify(self._historical_data.points_sampled_noise_variance),
             self.dim,
             self.num_sampled,
         )
