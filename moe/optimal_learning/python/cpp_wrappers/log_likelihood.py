@@ -52,9 +52,7 @@ import copy
 import numpy
 
 import moe.build.GPP as C_GP
-from moe.optimal_learning.python import geometry_utils
-from moe.optimal_learning.python.cpp_wrappers import cpp_utils
-from moe.optimal_learning.python.cpp_wrappers.domain import TensorProductDomain
+from moe.optima_llearning.python.cpp_wrappers import cpp_utils
 from moe.optimal_learning.python.interfaces.log_likelihood_interface import GaussianProcessLogLikelihoodInterface
 from moe.optimal_learning.python.interfaces.optimization_interface import OptimizableInterface
 
@@ -120,13 +118,12 @@ def multistart_hyperparameter_optimization(
     if status is None:
         status = {}
 
-    # C++ expects the domain in log10 space
+    # C++ expects the domain in log10 space and in list form
     domain_bounds_log10 = numpy.log10(log_likelihood_optimizer.domain._domain_bounds)
-    domain_log10 = TensorProductDomain(geometry_utils.ClosedInterval.build_closed_intervals_from_list(domain_bounds_log10))
 
     hyperparameters_opt = C_GP.multistart_hyperparameter_optimization(
         log_likelihood_optimizer.optimization_parameters,
-        cpp_utils.cppify(domain_log10),
+        cpp_utils.cppify(domain_bounds_log10),
         cpp_utils.cppify(log_likelihood_optimizer.objective_function._historical_data.points_sampled),
         cpp_utils.cppify(log_likelihood_optimizer.objective_function._historical_data.points_sampled_value),
         log_likelihood_optimizer.objective_function._historical_data.dim,

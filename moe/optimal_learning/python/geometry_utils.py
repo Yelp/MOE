@@ -24,6 +24,9 @@ def generate_latin_hypercube_points(num_points, domain_bounds):
 
     """
     # TODO(eliu): actually allow users to pass in a random source (GH-56)
+    if num_points == 0:
+        return numpy.array([])
+
     points = numpy.zeros((num_points, len(domain_bounds)), dtype=numpy.float64)
     for i, interval in enumerate(domain_bounds):
         # Cut the range into num_points slices
@@ -62,6 +65,10 @@ def generate_grid_points(points_per_dimension, domain_bounds):
 
     """
     points_per_dimension = numpy.asarray(points_per_dimension)
+    # Empty input OR at least 1 dimension has 0 points
+    if points_per_dimension.size == 0 or not points_per_dimension.all():
+        return numpy.array([])
+
     if points_per_dimension.size == 1:
         # resize fills new entries with copies of the original
         points_per_dimension = numpy.resize(points_per_dimension, len(domain_bounds))
