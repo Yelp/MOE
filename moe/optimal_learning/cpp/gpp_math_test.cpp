@@ -100,7 +100,7 @@ class PingGPPMean final : public PingableMatrixInputVectorOutputInterface {
     gradients_already_computed_ = true;
 
     GaussianProcess::StateType points_to_sample_state(gaussian_process_, points_to_sample, num_to_sample_, true);
-    gaussian_process_.ComputeGradMeanOfPoints(points_to_sample_state, grad_mu_.data());
+    gaussian_process_.ComputeGradMeanOfPoints(points_to_sample_state, points_to_sample_state.num_to_sample, grad_mu_.data());
 
     if (gradients != nullptr) {
       // Since ComputeGradMeanOfPoints does not store known zeros in the gradient, we need to resconstruct the more general
@@ -161,12 +161,6 @@ class PingGPPMean final : public PingableMatrixInputVectorOutputInterface {
 
   The output is a matrix of dimension num_to_sample.  To fit into the PingMatrix...Interface, this is treated as a vector
   of length num_to_sample^2.
-
-  Also, ComputeGradVarianceOfPoints() takes col_index (i.e., 0 .. num_to_sample-1) as input.  Thus it must be called
-  num_to_sample times to get all GetGradientsSize() entries of the gradient.
-
-  EvaluateAndStoreAnalyticGradient and GetAnalyticGradient deal with grad_var's API appropriately; all num_to_sample
-  calls to ComputeGradVarianceOfPoints() are saved off.
 */
 class PingGPPVariance final : public PingableMatrixInputVectorOutputInterface {
  public:
@@ -179,7 +173,7 @@ class PingGPPVariance final : public PingableMatrixInputVectorOutputInterface {
         gradients_already_computed_(false),
         noise_variance_(num_sampled_, 0.0),
         points_sampled_(points_sampled, points_sampled + dim_*num_sampled_),
-        grad_variance_(num_to_sample_),
+        grad_variance_(dim_*Square(num_to_sample_)*num_to_sample_),
         sqexp_covariance_(dim_, alpha, lengths),
         gaussian_process_(sqexp_covariance_, points_sampled_.data(), std::vector<double>(num_sampled_, 0.0).data(), noise_variance_.data(), dim_, num_sampled_) {
   }
@@ -203,12 +197,8 @@ class PingGPPVariance final : public PingableMatrixInputVectorOutputInterface {
     }
     gradients_already_computed_ = true;
 
-    for (int i = 0; i < num_to_sample_; ++i) {
-      grad_variance_[i].resize(dim_*Square(num_to_sample_));
-
-      GaussianProcess::StateType points_to_sample_state(gaussian_process_, points_to_sample, num_to_sample_, true);
-      gaussian_process_.ComputeGradVarianceOfPoints(&points_to_sample_state, i, grad_variance_[i].data());
-    }
+    GaussianProcess::StateType points_to_sample_state(gaussian_process_, points_to_sample, num_to_sample_, true);
+    gaussian_process_.ComputeGradVarianceOfPoints(&points_to_sample_state, num_to_sample_, grad_variance_.data());
 
     if (gradients != nullptr) {
       OL_THROW_EXCEPTION(RuntimeException, "PingGPPVariance::EvaluateAndStoreAnalyticGradient() does not support direct gradient output.");
@@ -220,7 +210,7 @@ class PingGPPVariance final : public PingableMatrixInputVectorOutputInterface {
       OL_THROW_EXCEPTION(RuntimeException, "PingGPPVariance::GetAnalyticGradient() called BEFORE EvaluateAndStoreAnalyticGradient. NO DATA!");
     }
 
-    return grad_variance_[column_index][output_index*dim_ + row_index];
+    return grad_variance_[column_index*Square(num_to_sample_)*dim_ + output_index*dim_ + row_index];
   }
 
   virtual void EvaluateFunction(double const * restrict points_to_sample, double * restrict function_values) const noexcept override OL_NONNULL_POINTERS {
@@ -243,7 +233,7 @@ class PingGPPVariance final : public PingableMatrixInputVectorOutputInterface {
 
   std::vector<double> noise_variance_;
   std::vector<double> points_sampled_;
-  std::vector<std::vector<double> > grad_variance_;
+  std::vector<double> grad_variance_;
 
   SquareExponential sqexp_covariance_;
   GaussianProcess gaussian_process_;
@@ -261,12 +251,6 @@ class PingGPPVariance final : public PingableMatrixInputVectorOutputInterface {
   The output is a matrix of dimension num_to_sample.  To fit into the PingMatrix...Interface, this is treated as a vector
   of length num_to_sample^2.
 
-  Also, ComputeGradCholeskyVarianceOfPoints() takes col_index (i.e., 0 .. num_to_sample-1) as input.  Thus it must be called
-  num_to_sample times to get all GetGradientsSize() entries of the gradient.
-
-  EvaluateAndStoreAnalyticGradient and GetAnalyticGradient deal with grad_var's API appropriately; all num_to_sample
-  calls to ComputeGradCholeskyVarianceOfPoints() are saved off.
-
   WARNING: this class is NOT THREAD SAFE.
 */
 class PingGPPCholeskyVariance final : public PingableMatrixInputVectorOutputInterface {
@@ -281,7 +265,7 @@ class PingGPPCholeskyVariance final : public PingableMatrixInputVectorOutputInte
         noise_variance_(num_sampled_, 0.0),
         points_sampled_(points_sampled, points_sampled + dim_*num_sampled_),
         chol_temp_(Square(num_to_sample_)),
-        grad_variance_(num_to_sample_),
+        grad_variance_(dim_*Square(num_to_sample_)*num_to_sample_),
         sqexp_covariance_(dim_, alpha, lengths),
         gaussian_process_(sqexp_covariance_, points_sampled_.data(), std::vector<double>(num_sampled_, 0.0).data(), noise_variance_.data(), dim_, num_sampled_) {
   }
@@ -307,13 +291,10 @@ class PingGPPCholeskyVariance final : public PingableMatrixInputVectorOutputInte
 
     GaussianProcess::StateType points_to_sample_state(gaussian_process_, points_to_sample, num_to_sample_, true);
     std::vector<double> variance_of_points(Square(num_to_sample_));
-    for (int i = 0; i < num_to_sample_; ++i) {
-      grad_variance_[i].resize(dim_*Square(num_to_sample_));
+    gaussian_process_.ComputeVarianceOfPoints(&points_to_sample_state, variance_of_points.data());
+    ComputeCholeskyFactorL(num_to_sample_, variance_of_points.data());
 
-      gaussian_process_.ComputeVarianceOfPoints(&points_to_sample_state, variance_of_points.data());
-      ComputeCholeskyFactorL(num_to_sample_, variance_of_points.data());
-      gaussian_process_.ComputeGradCholeskyVarianceOfPoints(&points_to_sample_state, i, variance_of_points.data(), grad_variance_[i].data());
-    }
+    gaussian_process_.ComputeGradCholeskyVarianceOfPoints(&points_to_sample_state, num_to_sample_, variance_of_points.data(), grad_variance_.data());
 
     if (gradients != nullptr) {
       OL_THROW_EXCEPTION(RuntimeException, "PingGPPCholeskyVariance::EvaluateAndStoreAnalyticGradient() does not support direct gradient output.");
@@ -325,7 +306,7 @@ class PingGPPCholeskyVariance final : public PingableMatrixInputVectorOutputInte
       OL_THROW_EXCEPTION(RuntimeException, "PingGPPCholeskyVariance::GetAnalyticGradient() called BEFORE EvaluateAndStoreAnalyticGradient. NO DATA!");
     }
 
-    return grad_variance_[column_index][output_index*dim_ + row_index];
+    return grad_variance_[column_index*Square(num_to_sample_)*dim_ + output_index*dim_ + row_index];
   }
 
   OL_NONNULL_POINTERS void EvaluateFunction(double const * restrict points_to_sample, double * restrict function_values) const noexcept override {
@@ -345,7 +326,7 @@ class PingGPPCholeskyVariance final : public PingableMatrixInputVectorOutputInte
   std::vector<double> noise_variance_;
   std::vector<double> points_sampled_;
   mutable std::vector<double> chol_temp_;  // temporary storage used by the class
-  std::vector<std::vector<double> > grad_variance_;
+  std::vector<double> grad_variance_;
 
   SquareExponential sqexp_covariance_;
   GaussianProcess gaussian_process_;

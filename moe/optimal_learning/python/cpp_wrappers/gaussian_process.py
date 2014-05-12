@@ -187,17 +187,13 @@ class GaussianProcess(GaussianProcessInterface):
         num_derivatives = self._clamp_num_derivatives(points_to_sample.shape[0], num_derivatives)
         num_to_sample = points_to_sample.shape[0]
 
-        # TODO(eliu): remove this after cpp returns all gradients at once (ADS-3094)
-        grad_variance = numpy.empty((num_derivatives, points_to_sample.shape[0], points_to_sample.shape[0], self.dim))
-        for i in xrange(num_derivatives):
-            grad_variance_block = C_GP.get_grad_var(
-                self._gaussian_process,
-                cpp_utils.cppify(points_to_sample),
-                num_to_sample,
-                i,
-            )
-            grad_variance[i, ...] = cpp_utils.uncppify(grad_variance_block, (num_to_sample, num_to_sample, self.dim))
-        return grad_variance
+        grad_variance = C_GP.get_grad_var(
+            self._gaussian_process,
+            cpp_utils.cppify(points_to_sample),
+            num_to_sample,
+            num_derivatives,
+        )
+        return cpp_utils.uncppify(grad_variance, (num_derivatives, num_to_sample, num_to_sample, self.dim))
 
     def compute_grad_cholesky_variance_of_points(self, points_to_sample, num_derivatives=-1):
         r"""Compute the gradient of the cholesky factorization of the variance (matrix) of this GP at each point of ``Xs`` (``points_to_sample``) wrt ``Xs``.
@@ -227,17 +223,13 @@ class GaussianProcess(GaussianProcessInterface):
         num_derivatives = self._clamp_num_derivatives(points_to_sample.shape[0], num_derivatives)
         num_to_sample = points_to_sample.shape[0]
 
-        # TODO(eliu): remove this after cpp returns all gradients at once (ADS-3094)
-        grad_chol_decomp = numpy.empty((num_derivatives, points_to_sample.shape[0], points_to_sample.shape[0], self.dim))
-        for i in xrange(num_derivatives):
-            grad_chol_decomp_block = C_GP.get_grad_chol_var(
-                self._gaussian_process,
-                cpp_utils.cppify(points_to_sample),
-                num_to_sample,
-                i,
-            )
-            grad_chol_decomp[i, ...] = cpp_utils.uncppify(grad_chol_decomp_block, (num_to_sample, num_to_sample, self.dim))
-        return grad_chol_decomp
+        grad_chol_decomp = C_GP.get_grad_chol_var(
+            self._gaussian_process,
+            cpp_utils.cppify(points_to_sample),
+            num_to_sample,
+            num_derivatives,
+        )
+        return cpp_utils.uncppify(grad_chol_decomp, (num_derivatives, num_to_sample, num_to_sample, self.dim))
 
     def add_sampled_points(self, sampled_points):
         r"""Add sampled point(s) (point, value, noise) to the GP's prior data.
