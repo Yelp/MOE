@@ -347,8 +347,8 @@ struct OptimizationIOContainer final {
     Build an empty OptimizationIOContainer.  best_objective_value and best_point are initialized to zero; THIS MAY
     BE AN INVALID STATE.  See class docs for details.
 
-    INPUTS:
-    problem_size: number of dimensions in the optimization problem (e.g., size of best_point)
+    \param
+      :problem_size: number of dimensions in the optimization problem (e.g., size of best_point)
   \endrst*/
   explicit OptimizationIOContainer(int problem_size_in) : problem_size(problem_size_in), best_objective_value_so_far(0.0), best_point(problem_size), found_flag(false) {
   }
@@ -356,10 +356,10 @@ struct OptimizationIOContainer final {
   /*!\rst
     Build and fully initialize a OptimizationIOContainer.  See class docs for details.
 
-    INPUTS:
-    problem_size: number of dimensions in the optimization problem (e.g., size of best_point)
-    best_objective_value: the best objective function value seen so far
-    best_point: the point to associate with best_objective_value
+    \param
+      :problem_size: number of dimensions in the optimization problem (e.g., size of best_point)
+      :best_objective_value: the best objective function value seen so far
+      :best_point: the point to associate with best_objective_value
   \endrst*/
   OptimizationIOContainer(int problem_size_in, double best_objective_value, double const * restrict best_point_in) : problem_size(problem_size_in), best_objective_value_so_far(best_objective_value), best_point(best_point_in, best_point_in + problem_size), found_flag(false) {
   }
@@ -430,19 +430,19 @@ struct OptimizationIOContainer final {
 
   .. Note:: these comments are are copied to GradientDescentOptimizer.optimize() in python/python_version/optimization.py.
 
-  INPUTS:
-  objective_evaluator: reference to object that can compute the objective function and its gradient
-  gd_parameters: GradientDescentParameters object that describes the parameters controlling gradient descent optimization
-    (e.g., number of iterations, tolerances, learning rate)
-  domain: object specifying the domain to optimize over (see gpp_domain.hpp)
-  objective_state[1]: a properly configured state object for the ObjectiveFunctionEvaluator template parameter
-                      objective_state.GetCurrentPoint() will be used to obtain the initial guess
-  OUTPUTS:
-  objective_state[1]: a state object whose temporary data members may have been modified
-                      objective_state.GetCurrentPoint() will return the point yielding the best objective function value
-                      according to gradient descent
-  next_point[problem_size]: point yielding the best objective function value according to gradient descent, SAME as
-                            objective_state.GetCurrentPoint() (see previous item)
+  \param
+    :objective_evaluator: reference to object that can compute the objective function and its gradient
+    :gd_parameters: GradientDescentParameters object that describes the parameters controlling gradient descent optimization
+      (e.g., number of iterations, tolerances, learning rate)
+    :domain: object specifying the domain to optimize over (see gpp_domain.hpp)
+    :objective_state[1]: a properly configured state object for the ObjectiveFunctionEvaluator template parameter
+                         objective_state.GetCurrentPoint() will be used to obtain the initial guess
+  \output
+    :objective_state[1]: a state object whose temporary data members may have been modified
+                         objective_state.GetCurrentPoint() will return the point yielding the best objective function value
+                         according to gradient descent
+    :next_point[problem_size]: point yielding the best objective function value according to gradient descent, SAME as
+                               objective_state.GetCurrentPoint() (see previous item)
 
   TODO(eliu): much like in the Optimizer classes (where this is now fixed), the next_point output is redundant. It just has
   the same data as objective_state.GetCurrentPoint().  I should remove it.
@@ -626,19 +626,19 @@ OL_NONNULL_POINTERS void GradientDescentOptimization(const ObjectiveFunctionEval
   problem_size refers to objective_state->GetProblemSize(), the number of dimensions in a "point" aka the number of
   variables being optimized.  (This might be the spatial dimension for EI or the number of hyperparameters for log likelihood.)
 
-  INPUTS:
-  objective_evaluator: reference to object that can compute the objective function and its gradient
-  newton_parameters: NewtonParameters object that describes the parameters newton optimization
-    (e.g., number of iterations, tolerances, additional diagonal dominance)
-  domain: object specifying the domain to optimize over (see gpp_domain.hpp)
-  objective_state[1]: a properly configured state object for the ObjectiveFunctionEvaluator template parameter
-                      objective_state.GetCurrentPoint() will be used to obtain the initial guess
-  OUTPUTS:
-  objective_state[1]: a state object whose temporary data members may have been modified
-                      objective_state.GetCurrentPoint() will return the point yielding the best objective function value
-                      according to newton
-  RETURNS:
-  number of errors
+  \param
+    :objective_evaluator: reference to object that can compute the objective function and its gradient
+    :newton_parameters: NewtonParameters object that describes the parameters newton optimization
+      (e.g., number of iterations, tolerances, additional diagonal dominance)
+    :domain: object specifying the domain to optimize over (see gpp_domain.hpp)
+    :objective_state[1]: a properly configured state object for the ObjectiveFunctionEvaluator template parameter
+                         objective_state.GetCurrentPoint() will be used to obtain the initial guess
+  \output
+    :objective_state[1]: a state object whose temporary data members may have been modified
+                         objective_state.GetCurrentPoint() will return the point yielding the best objective function value
+                         according to newton
+  \return
+    number of errors
 \endrst*/
 template <typename ObjectiveFunctionEvaluator, typename DomainType>
 OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT int NewtonOptimization(const ObjectiveFunctionEvaluator& objective_evaluator, const NewtonParameters& newton_parameters, const DomainType& domain, typename ObjectiveFunctionEvaluator::StateType * objective_state) {
@@ -766,15 +766,14 @@ class NullOptimizer final {
   /*!\rst
     Perform a null optimization: this does nothing.
 
-    INPUTS:
-    mostly
-    objective_state[1]: a properly configured state object for the ObjectiveFunctionEvaluator template parameter
-                        objective_state.GetCurrentPoint() will be used to obtain the initial guess
-    OUTPUTS:
-    objective_state[1]: a state object whose temporary data members may have been modified
-                        objective_state.GetCurrentPoint() will return the point as the intial guess
-    RETURNS:
-    number of errors, always 0
+    \param
+      :objective_state[1]: a properly configured state object for the ObjectiveFunctionEvaluator template parameter
+                           objective_state.GetCurrentPoint() will be used to obtain the initial guess
+    \output
+      :objective_state[1]: a state object whose temporary data members may have been modified
+                           objective_state.GetCurrentPoint() will return the point as the intial guess
+    \return
+      number of errors, always 0
   \endrst*/
   int Optimize(const ObjectiveFunctionEvaluator& OL_UNUSED(objective_evaluator), const ParameterStruct& OL_UNUSED(parameters), const DomainType& OL_UNUSED(domain), typename ObjectiveFunctionEvaluator::StateType * OL_UNUSED(objective_state)) const noexcept OL_NONNULL_POINTERS OL_PURE_FUNCTION {
     return 0;
@@ -821,19 +820,19 @@ class GradientDescentOptimizer final {
     problem_size refers to objective_state->GetProblemSize(), the number of dimensions in a "point" aka the number of
     variables being optimized.  (This might be the spatial dimension for EI or the number of hyperparameters for log likelihood.)
 
-    INPUTS:
-    objective_evaluator: reference to object that can compute the objective function and its gradient
-    gd_parameters: GradientDescentParameters object that describes the parameters controlling gradient descent optimization
-    (e.g., number of iterations, tolerances, learning rate)
-    domain: object specifying the domain to optimize over (see gpp_domain.hpp)
-    objective_state[1]: a properly configured state object for the ObjectiveFunctionEvaluator template parameter
-                        objective_state.GetCurrentPoint() will be used to obtain the initial guess
-    OUTPUTS:
-    objective_state[1]: a state object whose temporary data members may have been modified
-                        objective_state.GetCurrentPoint() will return the point yielding the best objective function value
-                        according to gradient descent
-    RETURNS:
-    number of errors, always 0
+    \param
+      :objective_evaluator: reference to object that can compute the objective function and its gradient
+      :gd_parameters: GradientDescentParameters object that describes the parameters controlling gradient descent optimization
+        (e.g., number of iterations, tolerances, learning rate)
+      :domain: object specifying the domain to optimize over (see gpp_domain.hpp)
+      :objective_state[1]: a properly configured state object for the ObjectiveFunctionEvaluator template parameter
+                           objective_state.GetCurrentPoint() will be used to obtain the initial guess
+    \output
+      :objective_state[1]: a state object whose temporary data members may have been modified
+                           objective_state.GetCurrentPoint() will return the point yielding the best objective function value
+                           according to gradient descent
+    \return
+      number of errors, always 0
   \endrst*/
   int Optimize(const ObjectiveFunctionEvaluator& objective_evaluator, const ParameterStruct& gd_parameters, const DomainType& domain, typename ObjectiveFunctionEvaluator::StateType * objective_state) const OL_NONNULL_POINTERS {
     if (unlikely(gd_parameters.max_num_restarts <= 0)) {
@@ -906,19 +905,19 @@ class NewtonOptimizer final {
     problem_size refers to objective_state->GetProblemSize(), the number of dimensions in a "point" aka the number of
     variables being optimized.  (This might be the spatial dimension for EI or the number of hyperparameters for log likelihood.)
 
-    INPUTS:
-    objective_evaluator: reference to object that can compute the objective function and its gradient
-    newton_parameters: NewtonParameters object that describes the parameters newton optimization
-    (e.g., number of iterations, tolerances, additional diagonal dominance)
-    domain: object specifying the domain to optimize over (see gpp_domain.hpp)
-    objective_state[1]: a properly configured state object for the ObjectiveFunctionEvaluator template parameter
-    objective_state.GetCurrentPoint() will be used to obtain the initial guess
-    OUTPUTS:
-    objective_state[1]: a state object whose temporary data members may have been modified
-                        objective_state.GetCurrentPoint() will return the point yielding the best objective function value
-                        according to newton
-    RETURNS:
-    number of errors
+    \param
+      :objective_evaluator: reference to object that can compute the objective function and its gradient
+      :newton_parameters: NewtonParameters object that describes the parameters newton optimization
+        (e.g., number of iterations, tolerances, additional diagonal dominance)
+      :domain: object specifying the domain to optimize over (see gpp_domain.hpp)
+      :objective_state[1]: a properly configured state object for the ObjectiveFunctionEvaluator template parameter
+                           objective_state.GetCurrentPoint() will be used to obtain the initial guess
+    \output
+      :objective_state[1]: a state object whose temporary data members may have been modified
+                          objective_state.GetCurrentPoint() will return the point yielding the best objective function value
+                          according to newton
+    \return
+      number of errors
   \endrst*/
   int Optimize(const ObjectiveFunctionEvaluator& objective_evaluator, const ParameterStruct& newton_parameters, const DomainType& domain, typename ObjectiveFunctionEvaluator::StateType * objective_state) const OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT {
     int total_errors = 0;
@@ -983,41 +982,41 @@ class MultistartOptimizer final {
 
     Generally, you will not call this function directly.  Instead, it is intended to be used in wrappers that set up state,
     chunk_size, etc. for the specific optimization problem at hand.  For examples with Expected Improvement (EI), see gpp_math:
-    EvaluateEIAtPointList()
-    ComputeOptimalPointToSampleViaMultistartGradientDescent()
+    * ``EvaluateEIAtPointList()``
+    * ``ComputeOptimalPointToSampleViaMultistartGradientDescent()``
     or gpp_model_selection:
-    EvaluateLogLikelihoodAtPointList()
-    MultistartGradientDescentHyperparameterOptimization()
-    MultistartNewtonHyperparameterOptimization()
+    * ``EvaluateLogLikelihoodAtPointList()``
+    * ``MultistartGradientDescentHyperparameterOptimization()``
+    * ``MultistartNewtonHyperparameterOptimization()``
 
     problem_size refers to objective_state->GetProblemSize(), the number of dimensions in a "point" aka the number of
     variables being optimized.  (This might be the spatial dimension for EI or the number of hyperparameters for log likelihood.)
 
-    INPUTS:
-    optimizer: object with the desired Optimize() functionality (e.g., do nothing for 'dumb' search, gradient descent, etc.)
-    objective_evaluator: reference to object that can compute the objective function, its gradient, and/or its hessian,
-                         depending on the needs of optimizer
-    optimizer_parameters: Optimizer::ParameterStruct object that describes the parameters for optimization
-    (e.g., number of iterations, tolerances, scale factors, etc.)
-    domain: object specifying the domain to optimize over (see gpp_domain.hpp)
-    initial_guesses[problem_size][num_multistarts]: list of points at which to start optimization runs; all points must lie
-                                                          INSIDE the specified domain
-    num_multistarts: number of random points to use from initial guesses
-    max_num_threads: maximum number of threads for use by OpenMP (generally should be <= # cores)
-    chunk_size: (a guide to) how much work to give each thread at a time, see gpp_common.hpp header comments, item 7
-    objective_state_vector[max_num_threads]: properly constructed/configured ObjectiveFunctionEvaluator::State objects,
-                                             at least one per thread
-    objective_state.GetCurrentPoint() will be used to obtain the initial guess
-    io_container[1]: object with best_objective_value_so_far and corresponding best_point properly initialized.
-                     See struct docs in gpp_optimization.hpp for details.
-    OUTPUTS:
-    objective_state_vector[max_num_threads]: internal states of state objects may be modified
-    function_values[num_multistarts]: objective fcn value at the end of each optimization run, in the same order as
-                                            initial_guesses. Can be used to check what each optimization run converged to.
-                                            More commonly used only with NullOptimizer to get a list of objective values
-                                            at each point of initial_guesses.  Never dereferenced if nullptr
-    io_container[1]: object container new best_objective_value_so_far and corresponding best_point IF found_flag is true.
-                     unchanged from input otherwise. See struct docs in gpp_optimization.hpp for details.
+    \param
+      :optimizer: object with the desired Optimize() functionality (e.g., do nothing for 'dumb' search, gradient descent, etc.)
+      :objective_evaluator: reference to object that can compute the objective function, its gradient, and/or its hessian,
+                            depending on the needs of optimizer
+      :optimizer_parameters: Optimizer::ParameterStruct object that describes the parameters for optimization
+        (e.g., number of iterations, tolerances, scale factors, etc.)
+      :domain: object specifying the domain to optimize over (see gpp_domain.hpp)
+      :initial_guesses[problem_size][num_multistarts]: list of points at which to start optimization runs; all points must lie
+                                                       INSIDE the specified domain
+      :num_multistarts: number of random points to use from initial guesses
+      :max_num_threads: maximum number of threads for use by OpenMP (generally should be <= # cores)
+      :chunk_size: (a guide to) how much work to give each thread at a time, see gpp_common.hpp header comments, item 7
+      :objective_state_vector[max_num_threads]: properly constructed/configured ObjectiveFunctionEvaluator::State objects,
+                                                at least one per thread
+                                                objective_state.GetCurrentPoint() will be used to obtain the initial guess
+      :io_container[1]: object with best_objective_value_so_far and corresponding best_point properly initialized.
+                        See struct docs in gpp_optimization.hpp for details.
+    \output
+      :objective_state_vector[max_num_threads]: internal states of state objects may be modified
+      :function_values[num_multistarts]: objective fcn value at the end of each optimization run, in the same order as
+                                         initial_guesses. Can be used to check what each optimization run converged to.
+                                         More commonly used only with NullOptimizer to get a list of objective values
+                                         at each point of initial_guesses.  Never dereferenced if nullptr
+      :io_container[1]: object container new best_objective_value_so_far and corresponding best_point IF found_flag is true.
+                        unchanged from input otherwise. See struct docs in gpp_optimization.hpp for details.
 
     TODO(eliu): consider having multiple versions of this for static/guided/dynamic scheduling. unforutnately openmp doesn't
     let you choose that parameter programmatically :(  Need to demonstrate a need for it though, otherwise guided might be good
