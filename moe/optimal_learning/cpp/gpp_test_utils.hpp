@@ -81,17 +81,17 @@ class PingableMatrixInputVectorOutputInterface {
     For example, the input might be a ``N_d X N_i`` matrix, ``points_to_sample``, where ``N_d`` = spatial dimension (rows)
     and ``N_i`` = number of points (columns).
 
-    OUTPUTS:
-    num_rows[1]: the number of rows of the input matrix ``X``
-    num_cols[1]: the number of columns of the input matrix ``X``
+    \output
+      :num_rows[1]: the number of rows of the input matrix ``X``
+      :num_cols[1]: the number of columns of the input matrix ``X``
   \endrst*/
   virtual void GetInputSizes(int * num_rows, int * num_cols) const noexcept OL_NONNULL_POINTERS = 0;
 
   /*!\rst
     Number of outputs of the function ``f_k = f(X_{d,i})``; i.e., ``length(f_k)``
 
-    RETURNS:
-    The number of entries in ``f_k`` aka number of outputs of ``f()``
+    \return
+      The number of entries in ``f_k`` aka number of outputs of ``f()``
   \endrst*/
   virtual int GetOutputSize() const noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT = 0;
 
@@ -100,8 +100,8 @@ class PingableMatrixInputVectorOutputInterface {
 
     This should generally not be used unless you require direct access to the analytic gradient.
 
-    RETURNS:
-    MUST be ``num_rows*num_cols*GetOutputSize()`` or undefined behavior may result.
+    \return
+      MUST be ``num_rows*num_cols*GetOutputSize()`` or undefined behavior may result.
   \endrst*/
   virtual int GetGradientsSize() const noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT = 0;
 
@@ -114,11 +114,11 @@ class PingableMatrixInputVectorOutputInterface {
 
     MUST BE CALLED before using GetAnalyticGradient!
 
-    INPUTS:
-    input_matrix[num_rows][num_cols]: the input, ``X_{d,i}``
-    OUTPUTS:
-    gradients[num_rows][num_cols][num_outputs]: filled with the gradient evaluated at
-      input_matrix.  Ignored if nullptr.  IMPLEMENTATION NOT REQUIRED.
+    \param
+      :input_matrix[num_rows][num_cols]: the input, ``X_{d,i}``
+    \output
+      :gradients[num_rows][num_cols][num_outputs]: filled with the gradient evaluated at
+        input_matrix.  Ignored if nullptr.  IMPLEMENTATION NOT REQUIRED.
   \endrst*/
   virtual void EvaluateAndStoreAnalyticGradient(double const * restrict input_matrix, double * restrict gradients) noexcept OL_NONNULL_POINTERS_LIST(2) = 0;
 
@@ -128,23 +128,23 @@ class PingableMatrixInputVectorOutputInterface {
 
     Returns the gradient computed/stored by EvaluateAndStoreAnalyticGradient().
 
-    INPUTS:
-    row_index: row_index (``d``) of the input to be differentiated with respect to
-    column_index: column_index (``i``) of the input to be differentiated with respect to
-    output_index: (flat) index into the output
-    RETURNS:
-    The ``[row_index][column_index][output_index]'th`` entry of the analytic gradient evaluated at input_matrix (where
-    input matrix was specified in EvaluateAndStoreAnalyticGradient()).
+    \param
+      :row_index: row_index (``d``) of the input to be differentiated with respect to
+      :column_index: column_index (``i``) of the input to be differentiated with respect to
+      :output_index: (flat) index into the output
+    \return
+      The ``[row_index][column_index][output_index]'th`` entry of the analytic gradient evaluated at input_matrix (where
+      input matrix was specified in EvaluateAndStoreAnalyticGradient()).
   \endrst*/
   virtual double GetAnalyticGradient(int row_index, int column_index, int output_index) const OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT = 0;
 
   /*!\rst
     Evalutes ``f_k = f(X_{d,i})``.  ``X_{d,i}`` is the "input_matrix" and ``f_k`` is in "function_values."
 
-    INPUTS:
-    input_matrix[num_rows][num_cols]: the matrix of inputs
-    OUTPUTS:
-    function_values[num_outputs]: vector of outputs of ``f()``
+    \param
+      :input_matrix[num_rows][num_cols]: the matrix of inputs
+    \output
+      :function_values[num_outputs]: vector of outputs of ``f()``
   \endrst*/
   virtual void EvaluateFunction(double const * restrict input_matrix, double * restrict function_values) const noexcept OL_NONNULL_POINTERS = 0;
 
@@ -193,10 +193,10 @@ class MockExpectedImprovementEnvironment {
     Then it re-draws another set of uniform random points (in [-5, 5]) for the member arrays points_to_sample,
     points_sampled, points_sampled_value, and current_point.
 
-    INPUTS:
-    dim: the spatial dimension of a point (i.e., number of independent params in experiment)
-    num_to_sample: number of points being sampled concurrently
-    num_sampled: number of already-sampled points
+    \param
+      :dim: the spatial dimension of a point (i.e., number of independent params in experiment)
+      :num_to_sample: number of points being sampled concurrently
+      :num_sampled: number of already-sampled points
   \endrst*/
   void Initialize(int dim_in, int num_to_sample_in, int num_sampled_in) {
     Initialize(dim_in, num_to_sample_in, num_sampled_in, &uniform_generator_);
@@ -264,11 +264,11 @@ struct MockGaussianProcessPriorData {
     BUT domain_ptr and gaussian_process_ptr ARE NOT initialized. Use this class's member
     functions to properly initialize these more complex data.
 
-    INPUTS:
-    covariance: the CovarianceInterface object encoding assumptions about the GP's behavior on our data
-    noise_variance: the ``\sigma_n^2`` (noise variance) associated w/observation, i-th entry will be associated with the i-th point generated by the GP
-    dim: the spatial dimension of a point (i.e., number of independent params in experiment)
-    num_sampled: number of already-sampled points (that we want the GP to hold)
+    \param
+      :covariance: the CovarianceInterface object encoding assumptions about the GP's behavior on our data
+      :noise_variance: the ``\sigma_n^2`` (noise variance) associated w/observation, i-th entry will be associated with the i-th point generated by the GP
+      :dim: the spatial dimension of a point (i.e., number of independent params in experiment)
+      :num_sampled: number of already-sampled points (that we want the GP to hold)
   \endrst*/
   MockGaussianProcessPriorData(const CovarianceInterface& covariance, const std::vector<double>& noise_variance_in, int dim_in, int num_sampled_in);
 
@@ -276,17 +276,17 @@ struct MockGaussianProcessPriorData {
     Completely constructs a MockGaussianProcessPriorData, initializing all fields.
     Builds a GP based on a randomly generated domain and hyperparameters.
 
-    INPUTS:
-    covariance: the CovarianceInterface object encoding assumptions about the GP's behavior on our data
-    noise_variance: the ``\sigma_n^2`` (noise variance) associated w/observation, i-th entry will be associated with the i-th point generated by the GP
-    dim: the spatial dimension of a point (i.e., number of independent params in experiment)
-    num_sampled: number of already-sampled points (that we want the GP to hold)
-    uniform_double_domain_lower: ``[min, max]`` range from which to draw domain lower bounds
-    uniform_double_domain_upper: ``[min, max]`` range from which to draw domain upper bounds
-    uniform_double_hyperparameters: ``[min, max]`` range from which to draw hyperparameters
-    uniform_generator[1]: a UniformRandomGenerator object providing the random engine for uniform random numbers
-    OUTPUTS:
-    uniform_generator[1]: UniformRandomGenerator object will have its state changed due to random draws
+    \param
+      :covariance: the CovarianceInterface object encoding assumptions about the GP's behavior on our data
+      :noise_variance: the ``\sigma_n^2`` (noise variance) associated w/observation, i-th entry will be associated with the i-th point generated by the GP
+      :dim: the spatial dimension of a point (i.e., number of independent params in experiment)
+      :num_sampled: number of already-sampled points (that we want the GP to hold)
+      :uniform_double_domain_lower: ``[min, max]`` range from which to draw domain lower bounds
+      :uniform_double_domain_upper: ``[min, max]`` range from which to draw domain upper bounds
+      :uniform_double_hyperparameters: ``[min, max]`` range from which to draw hyperparameters
+      :uniform_generator[1]: a UniformRandomGenerator object providing the random engine for uniform random numbers
+    \output
+      :uniform_generator[1]: UniformRandomGenerator object will have its state changed due to random draws
   \endrst*/
   MockGaussianProcessPriorData(const CovarianceInterface& covariance, const std::vector<double>& noise_variance_in, int dim_in, int num_sampled_in, const boost::uniform_real<double>& uniform_double_domain_lower, const boost::uniform_real<double>& uniform_double_domain_upper, const boost::uniform_real<double>& uniform_double_hyperparameters, UniformRandomGenerator * uniform_generator);
 
@@ -301,11 +301,11 @@ struct MockGaussianProcessPriorData {
     Sets hyperparameters of covariance with random draws from the specified interval.
     Modifies: hyperparameters, covariance_ptr
 
-    INPUTS:
-    uniform_double_hyperparameters: ``[min, max]`` range from which to draw hyperparameters
-    uniform_generator[1]: a UniformRandomGenerator object providing the random engine for uniform random numbers
-    OUTPUTS:
-    uniform_generator[1]: UniformRandomGenerator object will have its state changed due to random draws
+    \param
+      :uniform_double_hyperparameters: ``[min, max]`` range from which to draw hyperparameters
+      :uniform_generator[1]: a UniformRandomGenerator object providing the random engine for uniform random numbers
+    \output
+      :uniform_generator[1]: UniformRandomGenerator object will have its state changed due to random draws
   \endrst*/
   void InitializeHyperparameters(const boost::uniform_real<double>& uniform_double_hyperparameters, UniformRandomGenerator * uniform_generator);
 
@@ -314,12 +314,12 @@ struct MockGaussianProcessPriorData {
     we draw ``[min, max]`` bounds (domain_bounds); then we construct a domain object.
     Modifies: domain_bounds, domain_ptr
 
-    INPUTS:
-    uniform_double_domain_lower: ``[min, max]`` range from which to draw domain lower bounds
-    uniform_double_domain_upper: ``[min, max]`` range from which to draw domain upper bounds
-    uniform_generator[1]: a UniformRandomGenerator object providing the random engine for uniform random numbers
-    OUTPUTS:
-    uniform_generator[1]: UniformRandomGenerator object will have its state changed due to random draws
+    \param
+      :uniform_double_domain_lower: ``[min, max]`` range from which to draw domain lower bounds
+      :uniform_double_domain_upper: ``[min, max]`` range from which to draw domain upper bounds
+      :uniform_generator[1]: a UniformRandomGenerator object providing the random engine for uniform random numbers
+    \output
+      :uniform_generator[1]: UniformRandomGenerator object will have its state changed due to random draws
   \endrst*/
   void InitializeDomain(const boost::uniform_real<double>& uniform_double_domain_lower, const boost::uniform_real<double>& uniform_double_domain_upper, UniformRandomGenerator * uniform_generator);
 
@@ -330,10 +330,10 @@ struct MockGaussianProcessPriorData {
     hyperparameters and domain_ptr) before calling this function.
     Modifies: covariance_ptr, best_so_far, gaussian_procss_ptr
 
-    INPUTS:
-    uniform_generator[1]: a UniformRandomGenerator object providing the random engine for uniform random numbers
-    OUTPUTS:
-    uniform_generator[1]: UniformRandomGenerator object will have its state changed due to random draws
+    \param
+      :uniform_generator[1]: a UniformRandomGenerator object providing the random engine for uniform random numbers
+    \output
+      :uniform_generator[1]: UniformRandomGenerator object will have its state changed due to random draws
   \endrst*/
   void InitializeGaussianProcess(UniformRandomGenerator * uniform_generator);
 
@@ -367,11 +367,11 @@ extern template struct MockGaussianProcessPriorData<SimplexIntersectTensorProduc
 /*!\rst
   Checks if ``|value - truth| == 0``
 
-  INPUTS:
-  value: number to be tested
-  truth: the exact/desired result
-  RETURNS:
-  true if value, truth are equal.
+  \param
+    :value: number to be tested
+    :truth: the exact/desired result
+  \return
+    true if value, truth are equal.
 \endrst*/
 bool CheckIntEquals(int64_t value, int64_t truth) noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT;
 
@@ -387,25 +387,25 @@ bool CheckIntEquals(int64_t value, int64_t truth) noexcept OL_PURE_FUNCTION OL_W
   This norm is what is minimzied in least squares problems.  However here we
   are not working with least squares solutions and require that ``A`` is square.
 
-  INPUTS:
-  A[size][size]: the linear system
-  x[size}: the solution vector
-  b[size]: the RHS vector
-  size: the dimension of the problem
-  OUTPUTS:
-  the 2-norm of b-A*x
+  \param
+    :A[size][size]: the linear system
+    :x[size}: the solution vector
+    :b[size]: the RHS vector
+    :size: the dimension of the problem
+  \return
+    the 2-norm of b-A*x
 \endrst*/
 double ResidualNorm(double const * restrict A, double const * restrict x, double const * restrict b, int size) noexcept OL_PURE_FUNCTION OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT;
 
 /*!\rst
   Checks if ``|value - truth| <= tolerance`` (error)
 
-  INPUTS:
-  value: number to be tested
-  truth: the exact/desired result
-  tolerance: permissible difference
-  RETURNS:
-  true if value, truth differ by no more than tolerance.
+  \param
+    :value: number to be tested
+    :truth: the exact/desired result
+    :tolerance: permissible difference
+  \return
+    true if value, truth differ by no more than tolerance.
 \endrst*/
 bool CheckDoubleWithin(double value, double truth, double tolerance) noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT;
 
@@ -414,12 +414,12 @@ bool CheckDoubleWithin(double value, double truth, double tolerance) noexcept OL
 
   If truth = 0.0, CheckDoubleWithin() is performed.
 
-  INPUTS:
-  value: number to be tested
-  truth: the exact/desired result
-  tolerance: permissible relative difference
-  RETURNS:
-  true if value, truth differ relatively by no more than tolerance.
+  \param
+    :value: number to be tested
+    :truth: the exact/desired result
+    :tolerance: permissible relative difference
+  \return
+    true if value, truth differ relatively by no more than tolerance.
 \endrst*/
 bool CheckDoubleWithinRelative(double value, double truth, double tolerance) noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT;
 
@@ -429,26 +429,26 @@ bool CheckDoubleWithinRelative(double value, double truth, double tolerance) noe
   Note: the user may want to scale this norm by \sqrt(size) because ||I||_F = \sqrt(size),
   and we may desire that the norm of the idenity be 1.
 
-  INPUTS:
-  matrix1[size_m][size_n]: matrix A
-  matrix2[size_m][size_n]: matrix B
-  size_m: rows of A, B
-  size_n: columns of A, B
-  tolerance: largest permissible norm of the difference A - B
-  RETURNS:
-  true if A - B are "close"
+  \param
+    :matrix1[size_m][size_n]: matrix A
+    :matrix2[size_m][size_n]: matrix B
+    :size_m: rows of A, B
+    :size_n: columns of A, B
+    :tolerance: largest permissible norm of the difference A - B
+  \return
+    true if A - B are "close"
 \endrst*/
 bool CheckMatrixNormWithin(double const * restrict matrix1, double const * restrict matrix2, int size_m, int size_n, double tolerance) noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT;
 
 /*!\rst
   Check if each point in point_list is inside the specified domain.
 
-  INPUTS:
-  domain: the domain providing the inside/outside test
-  point_list[dim][num_points]: list of points to check
-  num_points: number of points in point_list
-  RETURNS:
-  number of points outside the domain
+  \param
+    :domain: the domain providing the inside/outside test
+    :point_list[dim][num_points]: list of points to check
+    :num_points: number of points in point_list
+  \return
+    number of points outside the domain
 \endrst*/
 template <typename DomainType>
 OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT int CheckPointsInDomain(const DomainType& domain, double const * restrict point_list, int num_points) noexcept {
@@ -467,13 +467,13 @@ OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT int CheckPointsInDomain(const DomainType&
 /*!\rst
   Check whether the distance between every pair of points is larger than tolerance.
 
-  INPUTS:
-  point_list[dim][num_points]: list of points to check
-  dim: number of coordinates in each point
-  num_points: number of points
-  tolerance: the minimum allowed distance between points
-  RETURNS:
-  the number of pairs of points whose inter-point distance is less than tolerance
+  \param
+    :point_list[dim][num_points]: list of points to check
+    :dim: number of coordinates in each point
+    :num_points: number of points
+    :tolerance: the minimum allowed distance between points
+  \return
+    the number of pairs of points whose inter-point distance is less than tolerance
 \endrst*/
 int CheckPointsAreDistinct(double const * restrict point_list, int num_points, int dim, double tolerance) noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT;
 
@@ -504,24 +504,24 @@ int CheckPointsAreDistinct(double const * restrict point_list, int num_points, i
   WARNING: this function generates ~10 lines of output (to stdout) PER FAILURE. If your implementation
   is incorrect, expect a large number of lines printed to stdout.
 
-  INPUTS:
-  function_and_derivative_evaluator: an object that inherits from
-    PingableMatrixInputVectorOutputInterface. This object must define all
-    virtual functions in that interface.
-  points[num_cols][num_rows]: num_cols points, each with dimension
-    num_rows. Assumed that the coordinate-wise magnitues are "around 1.0": say [1.0e-3, 1.0e1].
-  epsilon[2]: ``array[h1, h2]`` of step sizes to use for finite differencing.
-    These should not be too small/too large; 5.0e-3, 1.0e-3 are suggested
-    starting values.
-    Note that the more ill-conditioned computing f_k is, the larger the tolerances
-    will need to be.  For example, "complex" functions (e.g., many math ops) may
-    be ill-conditioned.
-  rate_tolerance_fine: desired amount of deviation from the exact rate
-  rate_tolerance_relaxed: maximum allowable abmount of deviation from the exact rate
-  input_output_ratio: for ``||analytic_gradient||/||input|| < input_output_ratio``, ping testing is not performed
-    Suggest values around 1.0e-15 to 1.0e-18 (around machine preciscion).
-  RETURNS:
-  The number of gradient entries that failed pinging.  Expected to be 0.
+  \param
+    :function_and_derivative_evaluator: an object that inherits from
+      PingableMatrixInputVectorOutputInterface. This object must define all
+      virtual functions in that interface.
+    :points[num_cols][num_rows]: num_cols points, each with dimension
+      num_rows. Assumed that the coordinate-wise magnitues are "around 1.0": say [1.0e-3, 1.0e1].
+    :epsilon[2]: ``array[h1, h2]`` of step sizes to use for finite differencing.
+      These should not be too small/too large; 5.0e-3, 1.0e-3 are suggested
+      starting values.
+      Note that the more ill-conditioned computing f_k is, the larger the tolerances
+      will need to be.  For example, "complex" functions (e.g., many math ops) may
+      be ill-conditioned.
+    :rate_tolerance_fine: desired amount of deviation from the exact rate
+    :rate_tolerance_relaxed: maximum allowable abmount of deviation from the exact rate
+    :input_output_ratio: for ``||analytic_gradient||/||input|| < input_output_ratio``, ping testing is not performed
+      Suggest values around 1.0e-15 to 1.0e-18 (around machine preciscion).
+  \return
+    The number of gradient entries that failed pinging.  Expected to be 0.
 \endrst*/
 int PingDerivative(const PingableMatrixInputVectorOutputInterface& function_and_derivative_evaluator, double const * restrict points, double epsilon[2], double rate_tolerance_fine, double rate_tolerance_relaxed, double input_output_ratio) noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT;
 
@@ -533,11 +533,11 @@ int PingDerivative(const PingableMatrixInputVectorOutputInterface& function_and_
   but not a domain that is so large that constraint satisfaction is irrelevant. Hence we
   scale the side-lengths by some "reasonable" amount.
 
-  INPUTS:
-  scale_factor: relative amount by which to expand each ClosedInterval
-  domain_bounds[1]: input list of valid ClosedInterval
-  OUTPUTS:
-  domain_bounds[1]: input ClosedIntervals expanded by scale_factor
+  \param
+    :scale_factor: relative amount by which to expand each ClosedInterval
+    :domain_bounds[1]: input list of valid ClosedInterval
+  \output
+    :domain_bounds[1]: input ClosedIntervals expanded by scale_factor
 \endrst*/
 void ExpandDomainBounds(double scale_factor, std::vector<ClosedInterval> * domain_bounds);
 
@@ -545,15 +545,15 @@ void ExpandDomainBounds(double scale_factor, std::vector<ClosedInterval> * domai
   Generates random hyperparameters and sets a covariance object's hyperparameters to the new values.
 
   Let ``n_hyper = covariance->GetNumberOfHyperparameters()``;
-  INPUTS:
-  uniform_double_hyperparameter: an uniform range, [min, max], from which to draw the hyperparameters
-  uniform_generator[1]: a UniformRandomGenerator object providing the random engine for uniform random numbers
-  hyperparameters[1]: vector initialized to hold n_hyper items
-  covariance[1]: appropriately initialized covariance object that can accept n_hyper hyperparameters
-  OUTPUTS:
-  uniform_generator[1]: UniformRandomGenerator object will have its state changed due to hyperparameters->size() random draws
-  hyperparameters[1]: vector set to the newly generated hyperparameters
-  covariance[1]: covariance object with its hyperparameters set to "hyperparameters"
+  \param
+    :uniform_double_hyperparameter: an uniform range, [min, max], from which to draw the hyperparameters
+    :uniform_generator[1]: a UniformRandomGenerator object providing the random engine for uniform random numbers
+    :hyperparameters[1]: vector initialized to hold n_hyper items
+    :covariance[1]: appropriately initialized covariance object that can accept n_hyper hyperparameters
+  \output
+    :uniform_generator[1]: UniformRandomGenerator object will have its state changed due to hyperparameters->size() random draws
+    :hyperparameters[1]: vector set to the newly generated hyperparameters
+    :covariance[1]: covariance object with its hyperparameters set to "hyperparameters"
 \endrst*/
 void FillRandomCovarianceHyperparameters(const boost::uniform_real<double>& uniform_double_hyperparameter, UniformRandomGenerator * uniform_generator, std::vector<double> * hyperparameters, CovarianceInterface * covariance);
 
@@ -562,30 +562,30 @@ void FillRandomCovarianceHyperparameters(const boost::uniform_real<double>& unif
   ``min_i \in [uniform_double_lower_bound.a(), uniform_double_lower_bound.b()]``
   ``max_i \in [uniform_double_upper_bound.a(), uniform_double_upper_bound.b()]``
 
-  INPUTS:
-  uniform_double_lower_bound: an uniform range, ``[min, max]``, from which to draw the domain lower bounds, ``min_i``
-  uniform_double_upper_bound: an uniform range, ``[min, max]``, from which to draw the domain upper bounds, ``max_i``
-  uniform_generator[1]: a UniformRandomGenerator object providing the random engine for uniform random numbers
-  domain_bounds[1]: vector of ClosedInterval objects to initialize
-  OUTPUTS:
-  uniform_generator[1]: UniformRandomGenerator object will have its state changed due to ``2*domain_bounds->size()`` random draws
-  domain_bounds[1]: vector of ClosedInterval objects with their min, max members initialized as described
+  \param
+    :uniform_double_lower_bound: an uniform range, ``[min, max]``, from which to draw the domain lower bounds, ``min_i``
+    :uniform_double_upper_bound: an uniform range, ``[min, max]``, from which to draw the domain upper bounds, ``max_i``
+    :uniform_generator[1]: a UniformRandomGenerator object providing the random engine for uniform random numbers
+    :domain_bounds[1]: vector of ClosedInterval objects to initialize
+  \output
+    :uniform_generator[1]: UniformRandomGenerator object will have its state changed due to ``2*domain_bounds->size()`` random draws
+    :domain_bounds[1]: vector of ClosedInterval objects with their min, max members initialized as described
 \endrst*/
 void FillRandomDomainBounds(const boost::uniform_real<double>& uniform_double_lower_bound, const boost::uniform_real<double>& uniform_double_upper_bound, UniformRandomGenerator * uniform_generator, std::vector<ClosedInterval> * domain_bounds);
 
 /*!\rst
   Utility to draw num_sampled points from a GaussianProcess and add those values to the prior.
 
-  INPUTS:
-  points_sampled[dim][num_to_sample]: points at which to draw from the GP
-  noise_variance[num_to_sample]: the ``\sigma_n^2`` (noise variance) associated w/the new observations, ``points_sampled_value``
-  dim: the spatial dimension of a point (i.e., number of independent params in experiment)
-  num_to_sampled number of points add to the GP
-  gaussian_process[1]: a properly initialized GaussianProcess
-  OUTPUTS:
-  points_to_sample_value[num_to_sample]: values of the newly sampled points
-  gaussian_process[1]: the input GP with num_sampled additional points added to it; its internal state is modified to match
-                       the new data; and its internal PRNG state is modified
+  \param
+    :points_sampled[dim][num_to_sample]: points at which to draw from the GP
+    :noise_variance[num_to_sample]: the ``\sigma_n^2`` (noise variance) associated w/the new observations, ``points_sampled_value``
+    :dim: the spatial dimension of a point (i.e., number of independent params in experiment)
+    :num_to_sampled number of points add to the GP
+    :gaussian_process[1]: a properly initialized GaussianProcess
+  \output
+    :points_to_sample_value[num_to_sample]: values of the newly sampled points
+    :gaussian_process[1]: the input GP with num_sampled additional points added to it; its internal state is modified to match
+                          the new data; and its internal PRNG state is modified
 \endrst*/
 void FillRandomGaussianProcess(double const * restrict points_to_sample, double const * restrict noise_variance, int dim, int num_to_sample, double * restrict points_to_sample_value, GaussianProcess * gaussian_process);
 

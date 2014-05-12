@@ -52,9 +52,9 @@ class TensorProductDomain {
   /*!\rst
     Constructs a TensorProductDomain.
 
-    INPUTS:
-    domain[dim]: array of ClosedInterval specifying the boundaries of a dim-dimensional tensor-product domain.
-    dim_in: number of spatial dimensions
+    \param
+      :domain[dim]: array of ClosedInterval specifying the boundaries of a dim-dimensional tensor-product domain.
+      :dim_in: number of spatial dimensions
   \endrst*/
   TensorProductDomain(ClosedInterval const * restrict domain, int dim_in) : dim_(dim_in), domain_(domain, domain + dim_) {
     bool is_empty = std::any_of(domain_.begin(), domain_.end(), [](ClosedInterval interval) {
@@ -76,8 +76,8 @@ class TensorProductDomain {
   /*!\rst
     Explicitly set the domain boundaries. Assumes specified domain is non-empty.
 
-    INPUTS:
-    domain[dim]: array of ClosedInterval specifying the boundaries of a dim-dimensional tensor-product domain.
+    \param
+       :domain[dim]: array of ClosedInterval specifying the boundaries of a dim-dimensional tensor-product domain.
   \endrst*/
   void SetDomain(ClosedInterval const * restrict domain) OL_NONNULL_POINTERS {
     std::copy(domain, domain + dim_, domain_.begin());
@@ -89,8 +89,8 @@ class TensorProductDomain {
 
     This result is exact.
 
-    RETURNS:
-    max number of planes defining the boundary of this domain
+    \return
+      max number of planes defining the boundary of this domain
   \endrst*/
   int GetMaxNumberOfBoundaryPlanes() const OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
     return 2*dim_;
@@ -102,10 +102,10 @@ class TensorProductDomain {
     Used for testing.
 
     Let max_num_bound = GetMaxNumberOfBoundaryPlanes()
-    INPUTS:
-    planes[max_num_bound]: properly allocated space: max_num_bound Plane objects in dim spatial dimensions
-    OUTPUTS:
-    planes[max_num_bound]: array of planes of this domain
+    \param
+      :planes[max_num_bound]: properly allocated space: max_num_bound Plane objects in dim spatial dimensions
+    \output
+      :planes[max_num_bound]: array of planes of this domain
   \endrst*/
   void GetBoundaryPlanes(Plane * restrict planes) const OL_NONNULL_POINTERS {
     int num_planes = GetMaxNumberOfBoundaryPlanes();
@@ -123,10 +123,10 @@ class TensorProductDomain {
   /*!\rst
     Check if a point is inside the domain/on its boundary or outside.
 
-    INPUTS:
-    point[dim_]: point to check
-    RETURNS:
-    true if point is inside the domain or on its boundary, false otherwise
+    \param
+      :point[dim_]: point to check
+    \return
+      true if point is inside the domain or on its boundary, false otherwise
   \endrst*/
   bool CheckPointInside(double const * restrict point) const OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT {
     return CheckPointInHypercube(domain_.data(), point, dim_);
@@ -135,14 +135,14 @@ class TensorProductDomain {
   /*!\rst
     Generates "point" such that CheckPointInside(point) returns true.
 
-    INPUTS:
-    uniform_generator[1]: a UniformRandomGenerator object providing the random engine for uniform random numbers
-    random_point[dim_]: properly sized array
-    OUTPUTS:
-    uniform_generator[1]: UniformRandomGenerator object will have its state changed due to random draws
-    random_point[dim_]: point with coordinates inside the domain (left in invalid state if fcn returns false)
-    RETURNS:
-    true if point generation succeeded
+    \param
+      :uniform_generator[1]: a UniformRandomGenerator object providing the random engine for uniform random numbers
+      :random_point[dim_]: properly sized array
+    \output
+      :uniform_generator[1]: UniformRandomGenerator object will have its state changed due to random draws
+      :random_point[dim_]: point with coordinates inside the domain (left in invalid state if fcn returns false)
+    \return
+      true if point generation succeeded
   \endrst*/
   bool GeneratePointInDomain(UniformRandomGenerator * uniform_generator, double * restrict random_point) const OL_NONNULL_POINTERS {
     ComputeRandomPointInDomain(domain_.data(), dim_, uniform_generator, random_point);
@@ -153,15 +153,15 @@ class TensorProductDomain {
     Generates num_points points in the domain (i.e., such that CheckPointInside(point) returns true).  The points
     will be uniformly distributed.
 
-    INPUTS:
-    num_points: number of random points to generate
-    uniform_generator[1]: a UniformRandomGenerator object providing the random engine for uniform random numbers
-    random_points[dim_]: properly sized array
-    OUTPUTS:
-    uniform_generator[1]: UniformRandomGenerator object will have its state changed due to random draws
-    random_points[dim_][num_points]: point with coordinates inside the domain
-    RETURNS:
-    number of points generated (always num_points; ok to not use this result)
+    \param
+      :num_points: number of random points to generate
+      :uniform_generator[1]: a UniformRandomGenerator object providing the random engine for uniform random numbers
+      :random_points[dim_]: properly sized array
+    \output
+      :uniform_generator[1]: UniformRandomGenerator object will have its state changed due to random draws
+      :random_points[dim_][num_points]: point with coordinates inside the domain
+    \return
+      number of points generated (always num_points; ok to not use this result)
   \endrst*/
   int GenerateUniformPointsInDomain(int num_points, UniformRandomGenerator * uniform_generator, double * restrict random_points) const OL_NONNULL_POINTERS {
     ComputeLatinHypercubePointsInDomain(domain_.data(), dim_, num_points, uniform_generator, random_points);
@@ -178,12 +178,12 @@ class TensorProductDomain {
     Note: we modify update_vector (instead of returning point_new) so that further update
     limiting/testing may be performed.
 
-    INPUTS:
-    max_relative_change: max change allowed per update (as a relative fraction of current distance to boundary)
-    current_point[dim_]: starting point
-    update_vector[dim_]: proposed update
-    OUTPUTS:
-    update_vector[dim_]: modified update so that the final point remains inside the domain
+    \param
+      :max_relative_change: max change allowed per update (as a relative fraction of current distance to boundary)
+      :current_point[dim_]: starting point
+      :update_vector[dim_]: proposed update
+    \output
+      :update_vector[dim_]: modified update so that the final point remains inside the domain
   \endrst*/
   void LimitUpdate(double max_relative_change, double const * restrict current_point, double * restrict update_vector) const OL_NONNULL_POINTERS {
     for (int j = 0; j < dim_; ++j) {
@@ -265,9 +265,9 @@ class SimplexIntersectTensorProductDomain {
     Constructs a SimplexIntersectTensorProductDomain.  The bounds of the tensor product region are specified through
     the "domain" input, just as with TensorProductDomain.
 
-    INPUTS:
-    domain[dim]: array of ClosedInterval specifying the boundaries of a dim-dimensional tensor-product domain.
-    dim_in: number of spatial dimensions
+    \param
+      :domain[dim]: array of ClosedInterval specifying the boundaries of a dim-dimensional tensor-product domain.
+      :dim_in: number of spatial dimensions
   \endrst*/
   SimplexIntersectTensorProductDomain(ClosedInterval const * restrict domain, int dim_in) : dim_(dim_in), tensor_product_domain_(domain, dim_), simplex_plane_(dim_) {
     // Equation for the unit simplex plane is: -1/sqrt(dim) + \sum_i 1/sqrt(dim)*x_i = 0
@@ -313,8 +313,8 @@ class SimplexIntersectTensorProductDomain {
 
     This result is NOT exact.
 
-    RETURNS:
-    max number of planes defining the boundary of this domain
+    \return
+      max number of planes defining the boundary of this domain
   \endrst*/
   int GetMaxNumberOfBoundaryPlanes() const OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
     // The intersection of tensor product region and simplex can have at most
@@ -336,10 +336,10 @@ class SimplexIntersectTensorProductDomain {
     Used for testing.
 
     Let max_num_bound = GetMaxNumberOfBoundaryPlanes()
-    INPUTS:
-    planes[max_num_bound]: properly allocated space: max_num_bound Plane objects in dim spatial dimensions
-    OUTPUTS:
-    planes[max_num_bound]: array of planes of this domain
+    \param
+      :planes[max_num_bound]: properly allocated space: max_num_bound Plane objects in dim spatial dimensions
+    \output
+      :planes[max_num_bound]: array of planes of this domain
   \endrst*/
   void GetBoundaryPlanes(Plane * restrict planes) const OL_NONNULL_POINTERS {
     int num_planes = GetMaxNumberOfBoundaryPlanes();
@@ -353,10 +353,10 @@ class SimplexIntersectTensorProductDomain {
   /*!\rst
     Check if a point is inside the domain/on its domain or outside
 
-    INPUTS:
-    point[dim_]: point to check
-    RETURNS:
-    true if point is inside the domain or on its boundary, false otherwise
+    \param
+      :point[dim_]: point to check
+    \return
+      true if point is inside the domain or on its boundary, false otherwise
   \endrst*/
   bool CheckPointInside(double const * restrict point) const OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT {
     return tensor_product_domain_.CheckPointInside(point) && CheckPointInUnitSimplex(point, dim_);
@@ -365,14 +365,14 @@ class SimplexIntersectTensorProductDomain {
   /*!\rst
     Generates "point" such that CheckPointInside(point) returns true.
 
-    INPUTS:
-    uniform_generator[1]: a UniformRandomGenerator object providing the random engine for uniform random numbers
-    random_point[dim_]: properly sized array
-    OUTPUTS:
-    uniform_generator[1]: UniformRandomGenerator object will have its state changed due to random draws
-    random_point[dim_]: point with coordinates inside the domain (left in invalid state if fcn returns false)
-    RETURNS:
-    true if point generation succeeded
+    \param
+      :uniform_generator[1]: a UniformRandomGenerator object providing the random engine for uniform random numbers
+      :random_point[dim_]: properly sized array
+    \output
+      :uniform_generator[1]: UniformRandomGenerator object will have its state changed due to random draws
+      :random_point[dim_]: point with coordinates inside the domain (left in invalid state if fcn returns false)
+    \return
+      true if point generation succeeded
   \endrst*/
   bool GeneratePointInDomain(UniformRandomGenerator * uniform_generator, double * restrict random_point) const OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT {
     bool point_found = false;
@@ -392,15 +392,15 @@ class SimplexIntersectTensorProductDomain {
 
     Uses rejection sampling so we are not guaranteed to generate num_points samples.
 
-    INPUTS:
-    num_points: number of random points to generate
-    uniform_generator[1]: a UniformRandomGenerator object providing the random engine for uniform random numbers
-    random_points[dim_]: properly sized array
-    OUTPUTS:
-    uniform_generator[1]: UniformRandomGenerator object will have its state changed due to random draws
-    random_points[dim_][num_points]: point with coordinates inside the domain
-    RETURNS:
-    number of points actually generated
+    \param
+      :num_points: number of random points to generate
+      :uniform_generator[1]: a UniformRandomGenerator object providing the random engine for uniform random numbers
+      :random_points[dim_]: properly sized array
+    \output
+      :uniform_generator[1]: UniformRandomGenerator object will have its state changed due to random draws
+      :random_points[dim_][num_points]: point with coordinates inside the domain
+    \return
+      number of points actually generated
   \endrst*/
   int GenerateUniformPointsInDomain(int num_points, UniformRandomGenerator * uniform_generator, double * restrict random_points) const OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT {
     // ASSUME: most of the tensor product domain lies inside the simplex domain
@@ -465,12 +465,12 @@ class SimplexIntersectTensorProductDomain {
     Note: we modify update_vector (instead of returning point_new) so that further update
     limiting/testing may be performed.
 
-    INPUTS:
-    max_relative_change: max change allowed per update (as a relative fraction of current distance to boundary)
-    current_point[dim_]: starting point
-    update_vector[dim_]: proposed update
-    OUTPUTS:
-    update_vector[dim_]: modified update so that the final point remains inside the domain
+    \param
+      :max_relative_change: max change allowed per update (as a relative fraction of current distance to boundary)
+      :current_point[dim_]: starting point
+      :update_vector[dim_]: proposed update
+    \output
+      :update_vector[dim_]: modified update so that the final point remains inside the domain
   \endrst*/
   void LimitUpdate(double max_relative_change, double const * restrict current_point, double * restrict update_vector) const OL_NONNULL_POINTERS {
     // if the first geometry check (over the hypercube domain) sees max_relative_change = 1.0, it will snap you "directly"
