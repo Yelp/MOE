@@ -50,6 +50,14 @@ class TensorProductDomain(DomainInterface):
         """
         raise NotImplementedError("C++ wrapper currently does not support domain member functions.")
 
+    def generate_random_point_in_domain(self, random_source=None):
+        """Generate ``point`` uniformly at random such that ``self.check_point_inside(point)`` is True.
+
+        We do not currently expose a C++ endpoint for this call; see domain_interface.py for interface specification.
+
+        """
+        raise NotImplementedError("C++ wrapper currently does not support domain member functions.")
+
     def generate_uniform_random_points_in_domain(self, num_points, random_source):
         r"""Generate ``num_points`` uniformly distributed points from the domain.
 

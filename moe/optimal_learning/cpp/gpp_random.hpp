@@ -66,8 +66,8 @@ struct UniformRandomGenerator final {
     Construct a UniformRandomGenerator, seeding with the specified seed.
     See UniformRandomGenerator::SetExplicitSeed for details.
 
-    INPUTS:
-    seed: new seed to set
+    \param
+      :seed: new seed to set
   \endrst*/
   explicit UniformRandomGenerator(EngineType::result_type seed) noexcept : engine(seed), last_seed_(seed) {
     SetExplicitSeed(seed);
@@ -77,9 +77,9 @@ struct UniformRandomGenerator final {
     Construct a UniformRandomGenerator, seeding with an automatically selected seed based on time, thread_id, etc.
     See UniformRandomGenerator::SetRandomizedSeed for details.
 
-    INPUTS:
-    base_seed: base value for the new seed
-    thread_id: id of the thread using this object
+    \param
+      :base_seed: base value for the new seed
+      :thread_id: id of the thread using this object
   \endrst*/
   UniformRandomGenerator(EngineType::result_type seed, int thread_id) noexcept : engine(seed), last_seed_(seed) {
     SetRandomizedSeed(seed, thread_id);
@@ -94,8 +94,8 @@ struct UniformRandomGenerator final {
     The main purpose of this function is for testing--to allow seeding the RNG with
     a known value for repeatability.
 
-    INPUTS:
-    seed: new seed to set
+    \param
+      :seed: new seed to set
   \endrst*/
   void SetExplicitSeed(EngineType::result_type seed) noexcept {
     engine.seed(seed);
@@ -122,9 +122,9 @@ struct UniformRandomGenerator final {
     Item 2) is important for minimizing the probability that we run EI computations
     (see gpp_math.hpp) with the "same" randomness.
 
-    INPUTS:
-    base_seed: base value for the new seed
-    thread_id: id of the thread using this object
+    \param
+      :base_seed: base value for the new seed
+      :thread_id: id of the thread using this object
   \endrst*/
   void SetRandomizedSeed(EngineType::result_type base_seed, int thread_id) noexcept;
 
@@ -139,10 +139,10 @@ struct UniformRandomGenerator final {
   /*!\rst
     Prints the state of the generator to specified ostream.  For testing.
 
-    INPUTS:
-    out_stream[1]: a ``std::ostream`` object ready for `operator<<`` use
-    OUTPUTS:
-    out_stream[1]: ``std::ostream`` with the engine state "written" to its ``operator<<``
+    \param
+      :out_stream[1]: a ``std::ostream`` object ready for `operator<<`` use
+    \output
+      :out_stream[1]: ``std::ostream`` with the engine state "written" to its ``operator<<``
   \endrst*/
   void PrintState(std::ostream * out_stream) const OL_NONNULL_POINTERS;
 
@@ -188,8 +188,8 @@ struct NormalRNG final {
     Construct a NormalRNG, seeding with the specified seed.
     See NormalRNG::SetExplicitSeed for details.
 
-    INPUTS:
-    seed: new seed to set
+    \param
+      :seed: new seed to set
   \endrst*/
   explicit NormalRNG(EngineType::result_type seed) noexcept : uniform_generator(seed), engine(uniform_generator.engine), normal_distribution_(0.0, 1.0), normal_random_variable_(engine, normal_distribution_) {
     SetExplicitSeed(seed);
@@ -199,9 +199,9 @@ struct NormalRNG final {
     Construct a NormalRNG, seeding with an automatically selected seed based on time, thread_id, etc.
     See NormalRNG::SetRandomizedSeed for details.
 
-    INPUTS:
-    base_seed: base value for the new seed
-    thread_id: id of the thread using this object
+    \param
+      :base_seed: base value for the new seed
+      :thread_id: id of the thread using this object
   \endrst*/
   NormalRNG(EngineType::result_type seed, int thread_id) noexcept : uniform_generator(seed), engine(uniform_generator.engine), normal_distribution_(0.0, 1.0), normal_random_variable_(engine, normal_distribution_) {
     SetRandomizedSeed(seed, thread_id);
@@ -228,8 +228,8 @@ struct NormalRNG final {
     Seed the random number generator with the input value.
     See UniformRandomGenerator::SetExplicitSeed() for more information.
 
-    INPUTS:
-    seed: new seed to set
+    \param
+      :seed: new seed to set
   \endrst*/
   void SetExplicitSeed(EngineType::result_type seed) noexcept {
     uniform_generator.SetExplicitSeed(seed);
@@ -243,9 +243,9 @@ struct NormalRNG final {
     the input seed value, the current time, and the thread_id.
     See UniformRandomGenerator::SetExplicitSeed() for more information.
 
-    INPUTS:
-    seed: base value for the new seed
-    thread_id: id of the thread using this object
+    \param
+      :seed: base value for the new seed
+      :thread_id: id of the thread using this object
   \endrst*/
   void SetRandomizedSeed(EngineType::result_type seed, int thread_id) noexcept {
     uniform_generator.SetRandomizedSeed(seed, thread_id);
@@ -268,10 +268,10 @@ struct NormalRNG final {
   /*!\rst
     Prints the state of the generator to specified ostream.  For testing.
 
-    INPUTS:
-    out_stream[1]: a std::ostream object ready for operator<< use
-    OUTPUTS:
-    out_stream[1]: std::ostream with engine state <<'d to it
+    \param
+      :out_stream[1]: a std::ostream object ready for operator<< use
+    \output
+      :out_stream[1]: std::ostream with engine state <<'d to it
   \endrst*/
   void PrintState(std::ostream * out_stream) const OL_NONNULL_POINTERS;
 
@@ -295,14 +295,14 @@ struct NormalRNG final {
   See wikipedia: http://en.wikipedia.org/wiki/Latin_hypercube_sampling
   for more details on the latin hypercube sampling process.
 
-  INPUTS:
-  domain[dim]: array of ClosedInterval specifying the boundaries of a dim-dimensional tensor-product domain.
-  dim: the number of spatial dimensions
-  num_samples: number of random points desired
-  uniform_generator[1]: a UniformRandomGenerator object providing the random engine for uniform random numbers
-  OUTPUTS:
-  uniform_generator[1]: UniformRandomGenerator object will have changed state due to random draws
-  random_points[num_samples][dim]: array containing random points inside the domain
+  \param
+    :domain[dim]: array of ClosedInterval specifying the boundaries of a dim-dimensional tensor-product domain.
+    :dim: the number of spatial dimensions
+    :num_samples: number of random points desired
+    :uniform_generator[1]: a UniformRandomGenerator object providing the random engine for uniform random numbers
+  \output
+    :uniform_generator[1]: UniformRandomGenerator object will have changed state due to random draws
+    :random_points[num_samples][dim]: array containing random points inside the domain
 \endrst*/
 OL_NONNULL_POINTERS void ComputeLatinHypercubePointsInDomain(ClosedInterval const * restrict domain, int dim, int num_samples, UniformRandomGenerator * uniform_generator, double * restrict random_points);
 
@@ -310,13 +310,13 @@ OL_NONNULL_POINTERS void ComputeLatinHypercubePointsInDomain(ClosedInterval cons
   Computes a set of random points that lie inside a dim-dimensional simplex or d-simplex.
   The points are uniformly-distributed by volume.
 
-  INPUTS:
-  dim: the number of spatial dimensions
-  num_samples: number of random points desired
-  uniform_generator[1]: a UniformRandomGenerator object providing the random engine for uniform random numbers
-  OUTPUTS:
-  uniform_generator[1]: UniformRandomGenerator object will have changed state due to random draws
-  random_points[num_samples][dim]: array containing random points inside the domain
+  \param
+    :dim: the number of spatial dimensions
+    :num_samples: number of random points desired
+    :uniform_generator[1]: a UniformRandomGenerator object providing the random engine for uniform random numbers
+  \output
+    :uniform_generator[1]: UniformRandomGenerator object will have changed state due to random draws
+    :random_points[num_samples][dim]: array containing random points inside the domain
 \endrst*/
 OL_NONNULL_POINTERS void ComputeUniformPointsInUnitSimplex(int dim, int num_samples, UniformRandomGenerator * uniform_generator, double * restrict random_points);
 
@@ -331,13 +331,13 @@ OL_NONNULL_POINTERS void ComputeUniformPointsInUnitSimplex(int dim, int num_samp
 
   WARNING: this function is NOT THREAD-SAFE.
 
-  INPUTS:
-  domain[dim]: array of ClosedInterval specifying the boundaries of a dim-dimensional tensor-product domain.
-  dim: the number of spatial dimensions
-  uniform_generator[1]: a UniformRandomGenerator object providing the random engine for uniform random numbers
-  OUTPUTS:
-  uniform_generator[1]: UniformRandomGenerator object will have its state changed due to random draws
-  random_point[dim]: array containing a random point inside the domain
+  \param
+    :domain[dim]: array of ClosedInterval specifying the boundaries of a dim-dimensional tensor-product domain.
+    :dim: the number of spatial dimensions
+    :uniform_generator[1]: a UniformRandomGenerator object providing the random engine for uniform random numbers
+  \output
+    :uniform_generator[1]: UniformRandomGenerator object will have its state changed due to random draws
+    :random_point[dim]: array containing a random point inside the domain
 \endrst*/
 inline OL_NONNULL_POINTERS void ComputeRandomPointInDomain(ClosedInterval const * restrict domain, int dim, UniformRandomGenerator * uniform_generator, double * restrict random_point) noexcept {
   for (int i = 0; i < dim; ++i) {

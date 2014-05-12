@@ -403,7 +403,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         else:
             self._best_so_far = numpy.finfo(numpy.float64).max
 
-        self._current_point = numpy.copy(current_point)
+        self.set_current_point(current_point)
         self._points_to_sample = numpy.copy(points_to_sample)
 
         if randomness is None:
@@ -422,6 +422,16 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         return self._gaussian_process.dim
 
     @property
+    def num_points_q(self):
+        """Number of points at which to compute/optimize EI; i.e., the ``q`` in ``q,p-EI``."""
+        return self._current_point.shape[0]
+
+    @property
+    def num_points_p(self):
+        """Number of points which are being sampled concurrently; i.e., the ``p`` in ``q,p-EI``."""
+        return self._points_to_sample.shape[0]
+
+    @property
     def problem_size(self):
         """Return the number of independent parameters to optimize."""
         return self.dim
@@ -437,7 +447,10 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         :type current_point: array of float64 with shape (problem_size)
 
         """
-        self._current_point = numpy.copy(current_point)
+        self._current_point = numpy.copy(numpy.atleast_2d(current_point))
+        # TODO(eliu): remove this after cpp can compute all EI gradients (ADS-3094)
+        if self._current_point.shape[0] != 1:
+            raise ValueError('cpp_wrappers ExpectedImprovement can only handle 1,p-EI; current point can only be a single point.')
 
     def compute_expected_improvement(self, force_monte_carlo=False):
         r"""Compute the expected improvement at ``current_point``, with ``points_to_sample`` concurrent points being sampled.
@@ -462,7 +475,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         :rtype: float64
 
         """
-        num_points = 1 + self._points_to_sample.shape[0]
+        num_points = self.num_points_q + self.num_points_p
         union_of_points = numpy.reshape(numpy.append(self._current_point, self._points_to_sample), (num_points, self.dim))
 
         return C_GP.compute_expected_improvement(
@@ -503,9 +516,10 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
             self._best_so_far,
             force_monte_carlo,
             self._randomness,
-            cpp_utils.cppify(self._current_point),
+            cpp_utils.cppify(self._current_point[0]),
         )
-        return numpy.array(grad_ei)
+        # TODO(eliu): remove this after cpp can compute all EI gradients (ADS-3094)
+        return numpy.atleast_2d(numpy.array(grad_ei))
 
     def compute_grad_objective_function(self, **kwargs):
         """Wrapper for compute_grad_expected_improvement; see that function's docstring."""

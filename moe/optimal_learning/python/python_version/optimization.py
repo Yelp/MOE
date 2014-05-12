@@ -387,7 +387,7 @@ class GradientDescentOptimizer(OptimizerInterface):
         # TODO(eliu): implement restarts like in the C++ code (GH-59)
         initial_guess = self.objective_function.get_current_point()
         x_hat = initial_guess
-        x_path = numpy.empty((self.optimization_parameters.max_num_steps + 1, initial_guess.size))
+        x_path = numpy.empty((self.optimization_parameters.max_num_steps + 1, ) + initial_guess.shape)
         x_path[0, ...] = initial_guess
 
         step_counter = 1

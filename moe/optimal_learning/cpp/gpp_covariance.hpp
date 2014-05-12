@@ -64,11 +64,11 @@ class CovarianceInterface {
     The covariance function is guaranteed to be symmetric by definition: ``Covariance(x, y) = Covariance(y, x)``.
     This function is also positive definite by definition.
 
-    INPUTS:
-    point_one[dim]: first spatial coordinate
-    point_two[dim]: second spatial coordinate
-    RETURNS:
-    value of covariance between the input points
+    \param
+      :point_one[dim]: first spatial coordinate
+      :point_two[dim]: second spatial coordinate
+    \return
+      value of covariance between the input points
   \endrst*/
   virtual double Covariance(double const * restrict point_one, double const * restrict point_two) const noexcept OL_PURE_FUNCTION OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT = 0;
 
@@ -82,11 +82,11 @@ class CovarianceInterface {
     Hence to avoid separate implementations for differentiating against first vs second argument, this function only handles
     differentiation against the first argument.  If you need ``\pderiv{Cov(y, x)}{x}``, just swap points x and y.
 
-    INPUTS:
-    point_one[dim]: first spatial coordinate
-    point_two[dim]: second spatial coordinate
-    OUTPUTS:
-    grad_cov[dim]: i-th entry is ``\pderiv{cov(x_1, x_2)}{x_i}``
+    \param
+      :point_one[dim]: first spatial coordinate
+      :point_two[dim]: second spatial coordinate
+    \output
+      grad_cov[dim]: i-th entry is ``\pderiv{cov(x_1, x_2)}{x_i}``
   \endrst*/
   virtual void GradCovariance(double const * restrict point_one, double const * restrict point_two, double * restrict grad_cov) const noexcept OL_NONNULL_POINTERS = 0;
 
@@ -94,8 +94,8 @@ class CovarianceInterface {
     Returns the number of hyperparameters.  This base class only allows for a maximum of dim + 1 hyperparameters but
     subclasses may implement additional ones.
 
-    RETURNS:
-    The number of hyperparameters.  Return 0 to disable hyperparameter-related gradients, optimizations.
+    \return
+      The number of hyperparameters.  Return 0 to disable hyperparameter-related gradients, optimizations.
   \endrst*/
   virtual int GetNumberOfHyperparameters() const noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT = 0;
 
@@ -105,11 +105,11 @@ class CovarianceInterface {
     Unlike GradCovariance(), the order of point_one and point_two is irrelevant here (since we are not differentiating against
     either of them).  Thus the matrix of grad covariances (wrt hyperparameters) is symmetric.
 
-    INPUTS:
-    point_one[dim]: first spatial coordinate
-    point_two[dim]: second spatial coordinate
-    OUTPUTS:
-    grad_hyperparameter_cov[this.GetNumberOfHyperparameters()]: i-th entry is ``\pderiv{cov(x_1, x_2)}{\theta_i}``
+    \param
+      :point_one[dim]: first spatial coordinate
+      :point_two[dim]: second spatial coordinate
+    \output
+      :grad_hyperparameter_cov[this.GetNumberOfHyperparameters()]: i-th entry is ``\pderiv{cov(x_1, x_2)}{\theta_i}``
   \endrst*/
   virtual void HyperparameterGradCovariance(double const * restrict point_one, double const * restrict point_two, double * restrict grad_hyperparameter_cov) const noexcept OL_NONNULL_POINTERS = 0;
 
@@ -129,35 +129,35 @@ class CovarianceInterface {
     For further details: http://en.wikipedia.org/wiki/Hessian_matrix
 
     Let n_hyper = this.GetNumberOfHyperparameters()
-    INPUTS:
-    point_one[dim]: first spatial coordinate
-    point_two[dim]: second spatial coordinate
-    OUTPUTS:
-    hessian_hyperparameter_cov[n_hyper][n_hyper]: ``(i,j)``-th entry is ``\mixpderiv{cov(x_1, x_2)}{\theta_i}{\theta_j}``
+    \param
+      :point_one[dim]: first spatial coordinate
+      :point_two[dim]: second spatial coordinate
+    \output
+      :hessian_hyperparameter_cov[n_hyper][n_hyper]: ``(i,j)``-th entry is ``\mixpderiv{cov(x_1, x_2)}{\theta_i}{\theta_j}``
   \endrst*/
   virtual void HyperparameterHessianCovariance(double const * restrict point_one, double const * restrict point_two, double * restrict hessian_hyperparameter_cov) const noexcept OL_NONNULL_POINTERS = 0;
 
   /*!\rst
     Sets the hyperparameters.  Hyperparameter ordering is defined implicitly by GetHyperparameters: ``[alpha=\sigma_f^2, length_0, ..., length_{n-1}]``
 
-    INPUTS:
-    hyperparameters[this.GetNumberOfHyperparameters()]: hyperparameters to set
+    \param
+      :hyperparameters[this.GetNumberOfHyperparameters()]: hyperparameters to set
   \endrst*/
   virtual void SetHyperparameters(double const * restrict hyperparameters) noexcept OL_NONNULL_POINTERS = 0;
 
   /*!\rst
     Gets the hyperparameters.  Ordering is ``[alpha=\sigma_f^2, length_0, ..., length_{n-1}]``
 
-    OUTPUTS:
-    hyperparameters[this.GetNumberOfHyperparameters()]: values of current hyperparameters
+    \output
+      :hyperparameters[this.GetNumberOfHyperparameters()]: values of current hyperparameters
   \endrst*/
   virtual void GetHyperparameters(double * restrict hyperparameters) const noexcept OL_NONNULL_POINTERS = 0;
 
   /*!\rst
     For implementing the virtual (copy) constructor idiom.
 
-    RETURNS:
-    Pointer to a constructed object that is a subclass of CovarianceInterface
+    \return
+      :Pointer to a constructed object that is a subclass of CovarianceInterface
   \endrst*/
   virtual CovarianceInterface * Clone() const OL_WARN_UNUSED_RESULT = 0;
 };
@@ -176,10 +176,10 @@ class SquareExponential final : public CovarianceInterface {
   /*!\rst
     Constructs a SquareExponential object with constant length-scale across all dimensions.
 
-    INPUTS:
-    dim: the number of spatial dimensions
-    alpha: the hyperparameter ``\alpha`` (e.g., signal variance, ``\sigma_f^2``)
-    length: the constant length scale to use for all hyperparameter length scales
+    \param
+      :dim: the number of spatial dimensions
+      :alpha: the hyperparameter ``\alpha`` (e.g., signal variance, ``\sigma_f^2``)
+      :length: the constant length scale to use for all hyperparameter length scales
   \endrst*/
   SquareExponential(int dim, double alpha, double length) : SquareExponential(dim, alpha, std::vector<double>(dim, length)) {
   }
@@ -187,10 +187,10 @@ class SquareExponential final : public CovarianceInterface {
   /*!\rst
     Constructs a SquareExponential object with the specified hyperparameters.
 
-    INPUTS:
-    dim: the number of spatial dimensions
-    alpha: the hyperparameter ``\alpha``, (e.g., signal variance, ``\sigma_f^2``)
-    lengths[dim]: the hyperparameter length scales, one per spatial dimension
+    \param
+      :dim: the number of spatial dimensions
+      :alpha: the hyperparameter ``\alpha``, (e.g., signal variance, ``\sigma_f^2``)
+      :lengths[dim]: the hyperparameter length scales, one per spatial dimension
   \endrst*/
   SquareExponential(int dim, double alpha, double const * restrict lengths) OL_NONNULL_POINTERS : SquareExponential(dim, alpha, std::vector<double>(lengths, lengths + dim)) {
   }
@@ -198,10 +198,10 @@ class SquareExponential final : public CovarianceInterface {
   /*!\rst
     Constructs a SquareExponential object with the specified hyperparameters.
 
-    INPUTS:
-    dim: the number of spatial dimensions
-    alpha: the hyperparameter ``\alpha``, (e.g., signal variance, ``\sigma_f^2``)
-    lengths: the hyperparameter length scales, one per spatial dimension
+    \param
+      :dim: the number of spatial dimensions
+      :alpha: the hyperparameter ``\alpha``, (e.g., signal variance, ``\sigma_f^2``)
+      :lengths: the hyperparameter length scales, one per spatial dimension
   \endrst*/
   SquareExponential(int dim, double alpha, std::vector<double> lengths) : dim_(dim), alpha_(alpha), lengths_(lengths), lengths_sq_(dim) {
     Initialize();
@@ -278,10 +278,10 @@ class SquareExponentialSingleLength final : public CovarianceInterface {
     Constructs a SquareExponentialSingleLength object. We provide three constructors with signatures matching other
     covariance classes for convenience.
 
-    INPUTS:
-    dim: the number of spatial dimensions
-    alpha: the hyperparameter ``\alpha`` (e.g., signal variance, ``\sigma_f^2``)
-    length: the constant length scale to use for all hyperparameter length scales
+    \param
+      :dim: the number of spatial dimensions
+      :alpha: the hyperparameter ``\alpha`` (e.g., signal variance, ``\sigma_f^2``)
+      :length: the constant length scale to use for all hyperparameter length scales
 
     Note: for pointer or vector length, length[0] must be a valid expression.
   \endrst*/
@@ -356,10 +356,10 @@ class MaternNu1p5 final : public CovarianceInterface {
   /*!\rst
     Constructs a MaternNu1p5 object with constant length-scale across all dimensions.
 
-    INPUTS:
-    dim: the number of spatial dimensions
-    alpha: the hyperparameter ``\alpha`` (e.g., signal variance, ``\sigma_f^2``)
-    length: the constant length scale to use for all hyperparameter length scales
+    \param
+      :dim: the number of spatial dimensions
+      :alpha: the hyperparameter ``\alpha`` (e.g., signal variance, ``\sigma_f^2``)
+      :length: the constant length scale to use for all hyperparameter length scales
   \endrst*/
   MaternNu1p5(int dim, double alpha, double length) : MaternNu1p5(dim, alpha, std::vector<double>(dim, length)) {
   }
@@ -367,10 +367,10 @@ class MaternNu1p5 final : public CovarianceInterface {
   /*!\rst
     Constructs a MaternNu1p5 object with the specified hyperparameters.
 
-    INPUTS:
-    dim: the number of spatial dimensions
-    alpha: the hyperparameter ``\alpha``, (e.g., signal variance, ``\sigma_f^2``)
-    lengths[dim]: the hyperparameter length scales, one per spatial dimension
+    \param
+      :dim: the number of spatial dimensions
+      :alpha: the hyperparameter ``\alpha``, (e.g., signal variance, ``\sigma_f^2``)
+      :lengths[dim]: the hyperparameter length scales, one per spatial dimension
   \endrst*/
   MaternNu1p5(int dim, double alpha, double const * restrict lengths) OL_NONNULL_POINTERS : MaternNu1p5(dim, alpha, std::vector<double>(lengths, lengths + dim)) {
   }
@@ -378,10 +378,10 @@ class MaternNu1p5 final : public CovarianceInterface {
   /*!\rst
     Constructs a MaternNu1p5 object with the specified hyperparameters.
 
-    INPUTS:
-    dim: the number of spatial dimensions
-    alpha: the hyperparameter ``\alpha``, (e.g., signal variance, ``\sigma_f^2``)
-    lengths: the hyperparameter length scales, one per spatial dimension
+    \param
+      :dim: the number of spatial dimensions
+      :alpha: the hyperparameter ``\alpha``, (e.g., signal variance, ``\sigma_f^2``)
+      :lengths: the hyperparameter length scales, one per spatial dimension
   \endrst*/
   MaternNu1p5(int dim, double alpha, std::vector<double> lengths) : dim_(dim), alpha_(alpha), lengths_(lengths), lengths_sq_(dim) {
     Initialize();
@@ -454,10 +454,10 @@ class MaternNu2p5 final : public CovarianceInterface {
   /*!\rst
     Constructs a MaternNu2p5 object with constant length-scale across all dimensions.
 
-    INPUTS:
-    dim: the number of spatial dimensions
-    alpha: the hyperparameter ``\alpha`` (e.g., signal variance, ``\sigma_f^2``)
-    length: the constant length scale to use for all hyperparameter length scales
+    \param
+      :dim: the number of spatial dimensions
+      :alpha: the hyperparameter ``\alpha`` (e.g., signal variance, ``\sigma_f^2``)
+      :length: the constant length scale to use for all hyperparameter length scales
   \endrst*/
   MaternNu2p5(int dim, double alpha, double length) : MaternNu2p5(dim, alpha, std::vector<double>(dim, length)) {
   }
@@ -465,10 +465,10 @@ class MaternNu2p5 final : public CovarianceInterface {
   /*!\rst
     Constructs a MaternNu2p5 object with the specified hyperparameters.
 
-    INPUTS:
-    dim: the number of spatial dimensions
-    alpha: the hyperparameter ``\alpha``, (e.g., signal variance, ``\sigma_f^2``)
-    lengths[dim]: the hyperparameter length scales, one per spatial dimension
+    \param
+      :dim: the number of spatial dimensions
+      :alpha: the hyperparameter ``\alpha``, (e.g., signal variance, ``\sigma_f^2``)
+      :lengths[dim]: the hyperparameter length scales, one per spatial dimension
   \endrst*/
   MaternNu2p5(int dim, double alpha, double const * restrict lengths) OL_NONNULL_POINTERS : MaternNu2p5(dim, alpha, std::vector<double>(lengths, lengths + dim)) {
   }
@@ -476,10 +476,10 @@ class MaternNu2p5 final : public CovarianceInterface {
   /*!\rst
     Constructs a MaternNu2p5 object with the specified hyperparameters.
 
-    INPUTS:
-    dim: the number of spatial dimensions
-    alpha: the hyperparameter ``\alpha``, (e.g., signal variance, ``\sigma_f^2``)
-    lengths: the hyperparameter length scales, one per spatial dimension
+    \param
+      :dim: the number of spatial dimensions
+      :alpha: the hyperparameter ``\alpha``, (e.g., signal variance, ``\sigma_f^2``)
+      :lengths: the hyperparameter length scales, one per spatial dimension
   \endrst*/
   MaternNu2p5(int dim, double alpha, std::vector<double> lengths) : dim_(dim), alpha_(alpha), lengths_(lengths), lengths_sq_(dim) {
     Initialize();

@@ -17,12 +17,7 @@ from moe.tests.optimal_learning.python.gaussian_process_test_case import Gaussia
 
 class GaussianProcessTest(GaussianProcessTestCase):
 
-    """Test C++ vs Python implementations of Gaussian Process properties (mean, variance, cholesky variance, and their gradients).
-
-    TODO(eliu): check several points_to_sample per computation
-    TODO(eliu): check grad var & grad chol var with each possible value ovar_of_grad
-
-    """
+    """Test C++ vs Python implementations of Gaussian Process properties (mean, variance, cholesky variance, and their gradients)."""
 
     precompute_gaussian_process_data = True
 
@@ -102,10 +97,9 @@ class GaussianProcessTest(GaussianProcessTestCase):
                     python_var = python_gp.compute_variance_of_points(current_points)
                     self.assert_vector_within_relative(python_var, cpp_var, var_tolerance)
 
-                    for i in xrange(num_to_sample):
-                        cpp_grad_var = cpp_gp.compute_grad_variance_of_points(current_points, i)
-                        python_grad_var = python_gp.compute_grad_variance_of_points(current_points, i)
-                        self.assert_vector_within_relative(python_grad_var, cpp_grad_var, grad_var_tolerance)
+                    cpp_grad_var = cpp_gp.compute_grad_variance_of_points(current_points)
+                    python_grad_var = python_gp.compute_grad_variance_of_points(current_points)
+                    self.assert_vector_within_relative(python_grad_var, cpp_grad_var, grad_var_tolerance)
 
     def test_python_and_cpp_return_same_cholesky_variance_and_gradient(self):
         """Compare chol_var/grad chol_var results from Python & C++, checking seeral random points per test case."""
@@ -127,10 +121,9 @@ class GaussianProcessTest(GaussianProcessTestCase):
                     python_var = python_gp.compute_cholesky_variance_of_points(current_points)
                     self.assert_vector_within_relative(python_var, cpp_var, var_tolerance)
 
-                    for i in xrange(num_to_sample):
-                        cpp_grad_var = cpp_gp.compute_grad_cholesky_variance_of_points(current_points, i)
-                        python_grad_var = python_gp.compute_grad_cholesky_variance_of_points(current_points, i)
-                        self.assert_vector_within_relative(python_grad_var, cpp_grad_var, grad_var_tolerance)
+                    cpp_grad_var = cpp_gp.compute_grad_cholesky_variance_of_points(current_points)
+                    python_grad_var = python_gp.compute_grad_cholesky_variance_of_points(current_points)
+                    self.assert_vector_within_relative(python_grad_var, cpp_grad_var, grad_var_tolerance)
 
 
 if __name__ == "__main__":
