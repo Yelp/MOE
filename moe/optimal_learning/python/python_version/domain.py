@@ -50,8 +50,6 @@ class TensorProductDomain(DomainInterface):
 
         :param point: point to check
         :type point: array of float64 with shape (dim)
-        :param points_to_sample: points which are being sampled concurrently (i.e., p in q,p-EI)
-        :type points_to_sample: array of float64 with shape (num_to_sample, dim)
         :return: true if point is inside the domain
         :rtype: bool
 

@@ -113,7 +113,7 @@ class GridPointGenerationTest(OptimalLearningTestCase):
             for j, x_coord in enumerate(per_axis_grid[0]):
                 for k, z_coord in enumerate(per_axis_grid[2]):
                     truth = numpy.array([x_coord, y_coord, z_coord])
-                    index = i * len(per_axis_grid[2]) * len(per_axis_grid[0]) + j * len(per_axis_grid[2]) + k
+                    index = i * per_axis_grid[2].size * per_axis_grid[0].size + j * per_axis_grid[2].size + k
                     test = grid[index, ...]
                     self.assert_vector_within_relative(test, truth, 0.0)
 
