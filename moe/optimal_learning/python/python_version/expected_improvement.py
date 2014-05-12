@@ -45,7 +45,7 @@ def multistart_expected_improvement_optimization(
     :type ei_optimizer: interfaces.optimization_interfaces.OptimizerInterface subclass
     :param num_multistarts: number of times to multistart ``ei_optimizer``
     :type num_multistarts: int > 0
-    :param num_samples_to_generate: how many simultaneous experiments you would like to run (i.e., the q in q,p-EI)
+    :param num_samples_to_generate: how many simultaneous experiments you would like to run (i.e., the q in q,p-EI) (UNUSED, specify through ei_optimizer)
     :type num_samples_to_generate: int >= 1
     :param randomness: random source(s) used to generate multistart points and perform monte-carlo integration (when applicable) (UNUSED)
     :type randomness: (UNUSED)
@@ -57,10 +57,6 @@ def multistart_expected_improvement_optimization(
     :rtype: array of float64 with shape (num_samples_to_generate, ei_evaluator.dim)
 
     """
-    # TODO(eliu): implement code to generate a set of points to sample instead of only 1 (ADS-3094)
-    if num_samples_to_generate != 1:
-        raise ValueError('num_samples_to_generate = %s must be 1. Other cases not implemented yet.' % num_samples_to_generate)
-
     random_starts = ei_optimizer.domain.generate_uniform_random_points_in_domain(num_points=num_multistarts)
     best_point, _ = multistart_optimize(ei_optimizer, starting_points=random_starts)
 
@@ -156,7 +152,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         else:
             self._best_so_far = numpy.finfo(numpy.float64).max
 
-        self._current_point = numpy.copy(current_point)
+        self.set_current_point(current_point)
         self._points_to_sample = numpy.copy(points_to_sample)
 
     @property
@@ -165,9 +161,19 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         return self._gaussian_process.dim
 
     @property
+    def num_points_q(self):
+        """Number of points at which to compute/optimize EI; i.e., the ``q`` in ``q,p-EI``."""
+        return self._current_point.shape[0]
+
+    @property
+    def num_points_p(self):
+        """Number of points which are being sampled concurrently; i.e., the ``p`` in ``q,p-EI``."""
+        return self._points_to_sample.shape[0]
+
+    @property
     def problem_size(self):
         """Return the number of independent parameters to optimize."""
-        return self.dim
+        return self.num_points_q * self.dim
 
     def get_current_point(self):
         """Get the current_point (array of float64 with shape (problem_size)) at which this object is evaluating the objective function, ``f(x)``."""
@@ -180,7 +186,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         :type current_point: array of float64 with shape (problem_size)
 
         """
-        self._current_point = numpy.copy(current_point)
+        self._current_point = numpy.copy(numpy.atleast_2d(current_point))
 
     def _compute_expected_improvement_1d_analytic(self, mu_star, var_star):
         """Compute EI when the number of potential samples is 1 (i.e., points_to_sample.size = 0) using *fast* analytic methods.
@@ -240,9 +246,9 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         d_b = grad_chol_decomp * pdf_c - sigma_star * c * pdf_c * d_c
 
         d_a += d_b
-        return d_a
+        return numpy.atleast_2d(d_a)
 
-    def _compute_expected_improvement_monte_carlo_naive(self, num_points, mu_star, var_star):
+    def _compute_expected_improvement_monte_carlo_naive(self, mu_star, var_star):
         """Compute EI using (naive) monte carlo integration.
 
         See _compute_expected_improvement_monte_carlo (below) for more details on EI.
@@ -252,8 +258,6 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         However, this code is easy to verify b/c it follows the algorithmic description
         faithfully. We use it only for verification.
 
-        :param num_points: number of points (q + p) at which EI is being computed
-        :type num_points: int > 1
         :param mu_star: self._gaussian_process.compute_mean_of_points(union_of_points)
         :type mu_star: array of float64 with shape (num_points)
         :param var_star: self._gaussian_process.compute_variance_of_points(union_of_points)
@@ -262,6 +266,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         :rtype: float64
 
         """
+        num_points = self.num_points_q + self.num_points_p
         chol_var = scipy.linalg.cholesky(var_star, lower=True)
 
         normals = numpy.random.normal(size=(self._num_mc_iterations, num_points))
@@ -273,7 +278,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
                 aggregate += improvement_this_iter
         return aggregate / float(self._num_mc_iterations)
 
-    def _compute_expected_improvement_monte_carlo(self, num_points, mu_star, var_star):
+    def _compute_expected_improvement_monte_carlo(self, mu_star, var_star):
         r"""Compute EI using (vectorized) monte-carlo integration; this is a general method that works for any input.
 
         This function cal support the computation of q,p-EI.
@@ -300,8 +305,6 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         For performance, this function vectorizes the monte-carlo integration loop, using numpy's mask feature to skip
         iterations where the improvement is not positive.
 
-        :param num_points: number of points (q + p) at which EI is being computed
-        :type num_points: int > 1
         :param mu_star: self._gaussian_process.compute_mean_of_points(union_of_points)
         :type mu_star: array of float64 with shape (num_points)
         :param var_star: self._gaussian_process.compute_variance_of_points(union_of_points)
@@ -310,6 +313,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         :rtype: float64
 
         """
+        num_points = self.num_points_q + self.num_points_p
         chol_var = -scipy.linalg.cholesky(var_star, lower=True)
 
         normals = numpy.random.normal(size=(self._num_mc_iterations, num_points))
@@ -333,7 +337,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         else:
             return result
 
-    def _compute_grad_expected_improvement_monte_carlo_naive(self, num_points, mu_star, var_star, grad_mu, grad_chol_decomp):
+    def _compute_grad_expected_improvement_monte_carlo_naive(self, mu_star, var_star, grad_mu, grad_chol_decomp):
         """Compute the gradient of EI using (naive) monte carlo integration.
 
         See _compute_grad_expected_improvement_monte_carlo (below) for more details on grad EI and how it is computed.
@@ -343,39 +347,38 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         However, this code is easy to verify b/c it follows the algorithmic description
         faithfully. We use it only for verification.
 
-        :param num_points: number of points (q + p) at which EI is being computed
-        :type num_points: int > 1
         :param mu_star: self._gaussian_process.compute_mean_of_points(union_of_points)
         :type mu_star: array of float64 with shape (num_points)
         :param var_star: self._gaussian_process.compute_variance_of_points(union_of_points)
         :type var_star: array of float64 with shape (num_points, num_points)
         :param grad_mu: self._gaussian_process.compute_grad_mean_of_points(union_of_points)
         :type grad_mu: array of float64 with shape (num_points, self.dim)
-        :param grad_chol_decomp: self._gaussian_process.compute_grad_cholesky_variance_of_points(union_of_points, 0)
-        :type grad_chol_decomp: array of float64 with shape (num_points, num_points, self.dim)
+        :param grad_chol_decomp: self._gaussian_process.compute_grad_cholesky_variance_of_points(union_of_points)
+        :type grad_chol_decomp: array of float64 with shape (self.num_points_q, num_points, num_points, self.dim)
         :return: gradient of EI evaluated at ``current_point`` wrt ``current_point``
         :rtype: array of float64 with shape (self.dim)
 
         """
-        # Differentiating wrt point 0 in self._current_point
-        diff_index = 0
+        num_points = self.num_points_q + self.num_points_p
         chol_var = scipy.linalg.cholesky(var_star, lower=True)
 
         normals = numpy.random.normal(size=(self._num_mc_iterations, num_points))
 
-        aggregate_dx = numpy.zeros(self.dim)
+        # Differentiating wrt each point of self._current_point
+        aggregate_dx = numpy.zeros_like(self._current_point)
         for normal_draws in normals:
             improvements_this_iter = self._best_so_far - mu_star - numpy.dot(chol_var, normal_draws.T)
             if numpy.amax(improvements_this_iter) > 0.0:
                 winner = numpy.argmax(improvements_this_iter)
-                if winner == diff_index:
-                    aggregate_dx -= grad_mu[diff_index, ...]
-                # grad_chol_decomp_{winner, i, j} * normal_draws_{i}
-                aggregate_dx -= numpy.dot(grad_chol_decomp[winner, ...].T, normal_draws)
+                if winner < self.num_points_q:
+                    aggregate_dx[winner, ...] -= grad_mu[winner, ...]
+                for diff_index in xrange(self.num_points_q):
+                    # grad_chol_decomp_{diff_index, winner, i, j} * normal_draws_{i}
+                    aggregate_dx[diff_index, ...] -= numpy.dot(grad_chol_decomp[diff_index, winner, ...].T, normal_draws)
 
         return aggregate_dx / float(self._num_mc_iterations)
 
-    def _compute_grad_expected_improvement_monte_carlo(self, num_points, mu_star, var_star, grad_mu, grad_chol_decomp):
+    def _compute_grad_expected_improvement_monte_carlo(self, mu_star, var_star, grad_mu, grad_chol_decomp):
         r"""Compute the gradient of EI using (vectorized) monte-carlo integration; this is a general method that works for any input.
 
         This function cal support the computation of q,p-EI.
@@ -399,22 +402,19 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         iterations where the improvement is not positive. Some additional cleverness is required to vectorize the
         accesses into grad_chol_decomp, since we cannot afford to run a loop (even over ``normals_compressed``) in Python.
 
-        :param num_points: number of points (q + p) at which EI is being computed
-        :type num_points: int > 1
         :param mu_star: self._gaussian_process.compute_mean_of_points(union_of_points)
         :type mu_star: array of float64 with shape (num_points)
         :param var_star: self._gaussian_process.compute_variance_of_points(union_of_points)
         :type var_star: array of float64 with shape (num_points, num_points)
         :param grad_mu: self._gaussian_process.compute_grad_mean_of_points(union_of_points)
         :type grad_mu: array of float64 with shape (num_points, self.dim)
-        :param grad_chol_decomp: self._gaussian_process.compute_grad_cholesky_variance_of_points(union_of_points, 0)
-        :type grad_chol_decomp: array of float64 with shape (num_points, num_points, self.dim)
+        :param grad_chol_decomp: self._gaussian_process.compute_grad_cholesky_variance_of_points(union_of_points)
+        :type grad_chol_decomp: array of float64 with shape (self.num_points_q, num_points, num_points, self.dim)
         :return: gradient of EI evaluated at ``current_point`` wrt ``current_point``
-        :rtype: array of float64 with shape (self.dim)
+        :rtype: array of float64 with shape (self.num_points_q, self.dim)
 
         """
-        # Differentiating wrt point 0 in self._current_point
-        diff_index = 0
+        num_points = self.num_points_q + self.num_points_p
         chol_var = -scipy.linalg.cholesky(var_star, lower=True)
 
         normals = numpy.random.normal(size=(self._num_mc_iterations, num_points))
@@ -441,18 +441,20 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
 
         # Keep only the indexes with positive improvement
         winner_indexes = numpy.ma.array(winner_indexes, mask=best_improvement_each_iter.mask, copy=False)
-
-        # Indexes where the winner was point 0 (the point we're differentiating against)
-        winner_indexes_equal_to_diff_index = numpy.ma.masked_not_equal(winner_indexes, diff_index)
-
-        # Handle derivative terms from grad_mu
-        total_winners_equal_to_diff_index = numpy.ma.count(winner_indexes_equal_to_diff_index)
-        aggregate_dx = -grad_mu[diff_index, ...] * total_winners_equal_to_diff_index
-
-        # Handle derivative terms from grad_chol_decomp
         # Drop the masked terms
         winner_indexes_compressed = numpy.ma.compressed(winner_indexes)
 
+        winner_indexes_tiled = numpy.tile(winner_indexes_compressed, (num_points, 1))
+        # Indexes where the winner was point diff_index (the point we're differentiating against)
+        # for each possible diff_index value
+        winner_indexes_tiled_equal_to_diff_index = numpy.ma.masked_not_equal(winner_indexes_tiled.T, numpy.arange(num_points)).T
+
+        # Differentiating wrt each point of self._current_point
+        # Handle derivative terms from grad_mu; only grab terms from winners 0:self.num_points_q
+        aggregate_dx = (-grad_mu[:self.num_points_q, ...].T *
+                        numpy.ma.count(winner_indexes_tiled_equal_to_diff_index[:self.num_points_q, ...], axis=1)).T
+
+        # Handle derivative terms from grad_chol_decomp
         # Mask rows of normals that did not show positive improvement
         # TODO(eliu): can this be done with numpy.tile, numpy.repeat or something more sensical? (GH-61)
         normals_mask = numpy.empty(normals.shape, dtype=bool)
@@ -460,48 +462,65 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         # Compress out the masked data
         normals_compressed = numpy.ma.array(normals, mask=normals_mask)
         # We'd like to use numpy.ma.compress_rows but somehow that is REALLY slow, like N^2 slow
-        normals_compressed = normals_compressed[~normals_compressed.mask].reshape((numpy.ma.count(winner_indexes), num_points))
+        normals_compressed = normals_compressed[~normals_compressed.mask].reshape((winner_indexes_compressed.size, num_points))
 
         # We now want to compute: grad_chol_decomp[winner_index, i, j] * normals[k, i]
-        # And sum over k.
+        # And sum over k for each winner_index.
         # To do this loop in numpy, we have to create grad_chol_decomp_tiled:
         # for k in xrange(self._num_mc_iterations):
-        #   grad_chol_decomp_tiled[k, ...] = grad_chol_decomp[winner_indexes[k], ...]
+        #   grad_chol_decomp_tiled[k, ...] = grad_chol_decomp[diff_index, winner_indexes[k], ...]
+        # for each diff_index = 0:self.num_points_q.
         # Except we make two optimizations:
         # 1) We skip all the masked terms (so we use the compressed arrays)
         # 2) We vectorize the tiling process.
-        grad_chol_decomp_tiled = numpy.zeros((normals_compressed.shape[0], grad_chol_decomp.shape[1], grad_chol_decomp.shape[2]))
-        for i in xrange(num_points):
-            # Only track the iterations where point i had the best improvement (winner)
-            winner_indexes_equal_to_i = numpy.ma.masked_not_equal(winner_indexes_compressed, i)
+        # Do not vectorize the loop over self.num_points_q: the extra memory cost hurts performance. We store self.num_points_q
+        # times more copies but each copy is only used once. Not vectorizing produces better locality and self.num_points_q
+        # will never be very large.
+        # This tradeoff may change when GH-60 is done.
+        grad_chol_decomp_tiled = numpy.empty((normals_compressed.shape[0], grad_chol_decomp.shape[2], grad_chol_decomp.shape[3]))
+        for diff_index in xrange(self.num_points_q):
+            grad_chol_decomp_tiled[...] = 0.0
+            for i in xrange(num_points):
+                # Only track the iterations where point i had the best improvement (winner)
+                winner_indexes_equal_to_i = winner_indexes_tiled_equal_to_diff_index[i, ...]
 
-            # If all winners were index i, then the mask is a scalar.
-            # We want to expand the mask into a full vector so that subsequent code will work. Kind of hacky.
-            if winner_indexes_equal_to_i.mask is numpy.False_:
-                # In fact we could stop here b/c this means index i won every time
-                winner_indexes_equal_to_i.mask = [False]
+                # If all winners were index i, then the mask is a scalar.
+                # We want to expand the mask into a full vector so that subsequent code will work. Kind of hacky.
+                if winner_indexes_equal_to_i.mask is numpy.False_:
+                    # In fact we could stop here b/c this means index i won every time
+                    winner_indexes_equal_to_i.mask = [False]
 
-            # Expand winner_indexes_equal_to_i.mask to cover the full shape of grad_chol_decomp_tiled
-            # This is the same idea as normals_mask above
-            # TODO(eliu): can I do this with numpy.tile, numpy.repeat or something more sensical? (GH-61)
-            grad_chol_decomp_block_i_tile_mask = numpy.empty(grad_chol_decomp_tiled.shape, dtype=bool)
-            grad_chol_decomp_block_i_tile_mask[...] = winner_indexes_equal_to_i.mask[:, numpy.newaxis, numpy.newaxis]
+                # Expand winner_indexes_equal_to_i.mask to cover the full shape of grad_chol_decomp_tiled
+                # This is the same idea as normals_mask above
+                # TODO(eliu): can I do this with numpy.tile, numpy.repeat or something more sensical? (GH-61)
+                grad_chol_decomp_block_i_tile_mask = numpy.empty(grad_chol_decomp_tiled.shape, dtype=bool)
+                grad_chol_decomp_block_i_tile_mask[...] = winner_indexes_equal_to_i.mask[:, numpy.newaxis, numpy.newaxis]
 
-            # TODO(eliu): there has to be smarter way to do this! (GH-61)
-            # Tile the appropriate block of grad_chol_decomp to *FILL* all blocks
-            grad_chol_decomp_block_i_tile = numpy.tile(grad_chol_decomp[i, ...], (normals_compressed.shape[0], 1)).reshape((normals_compressed.shape[0], num_points, aggregate_dx.size))
-            # Zero out blocks where the winner was not point i
-            grad_chol_decomp_block_i_tile = numpy.ma.filled(numpy.ma.array(grad_chol_decomp_block_i_tile, mask=grad_chol_decomp_block_i_tile_mask), fill_value=0.0)
-            # Add the tiles for this index into grad_chol_decomp_tiled
-            # Note that since we zero all irrelevant blocks, we are never overwriting anything
-            grad_chol_decomp_tiled += grad_chol_decomp_block_i_tile
+                # TODO(eliu): there has to be smarter way to do this! (GH-61)
+                # Tile the appropriate block of grad_chol_decomp to *FILL* all blocks
+                grad_chol_decomp_block_i_tile = numpy.tile(
+                    grad_chol_decomp[diff_index, i, ...],
+                    (normals_compressed.shape[0], 1),
+                ).reshape(grad_chol_decomp_tiled.shape)
+                # Zero out blocks where the winner was not point i
+                grad_chol_decomp_block_i_tile = numpy.ma.filled(
+                    numpy.ma.array(
+                        grad_chol_decomp_block_i_tile,
+                        mask=grad_chol_decomp_block_i_tile_mask,
+                    ),
+                    fill_value=0.0,
+                )
+                # Add the tiles for this index into grad_chol_decomp_tiled
+                # Note that since we zero all irrelevant blocks, we are never overwriting anything
+                grad_chol_decomp_tiled += grad_chol_decomp_block_i_tile
 
-        # Now we can compute the contribution from the variance in a fast C loop.
-        aggregate_dx -= numpy.einsum('ki, kij', normals_compressed, grad_chol_decomp_tiled)
+            # Now we can compute the contribution from the variance in a fast C loop.
+            aggregate_dx[diff_index, ...] -= numpy.einsum('ki, kij', normals_compressed, grad_chol_decomp_tiled)
 
         # For reference, the above block replaces the following code:
         # for it, normal in enumerate(normals_compressed):
-        #     aggregate_dx -= numpy.dot(normal, grad_chol_decomp[winner_indexes_compressed[it], ...])
+        #     for diff_index in xrange(self.num_points_q):
+        #         aggregate_dx[diff_index, ...] -= numpy.dot(normal, grad_chol_decomp[diff_index, winner_indexes_compressed[it], ...])
         # The vectorized version performs exactly the same number of arithmetic operations in exactly the same order but
         # is at least 30x faster (difference grows with self._num_mc_iterations). Looping in Python is REALLY slow.
 
@@ -531,7 +550,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         :rtype: float64
 
         """
-        num_points = 1 + self._points_to_sample.shape[0]
+        num_points = self.num_points_q + self.num_points_p
         union_of_points = numpy.reshape(numpy.append(self._current_point, self._points_to_sample), (num_points, self.dim))
 
         mu_star = self._gaussian_process.compute_mean_of_points(union_of_points)
@@ -540,7 +559,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         if num_points == 1 and force_monte_carlo is False:
             return self._compute_expected_improvement_1d_analytic(mu_star[0], var_star[0, 0])
         else:
-            return self._compute_expected_improvement_monte_carlo(num_points, mu_star, var_star)
+            return self._compute_expected_improvement_monte_carlo(mu_star, var_star)
 
     def compute_objective_function(self, **kwargs):
         """Wrapper for compute_expected_improvement; see that function's docstring."""
@@ -562,24 +581,23 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         :rtype: array of float64 with shape (dim)
 
         """
-        num_points = 1 + self._points_to_sample.shape[0]
+        num_points = self.num_points_q + self.num_points_p
         union_of_points = numpy.reshape(numpy.append(self._current_point, self._points_to_sample), (num_points, self.dim))
 
         mu_star = self._gaussian_process.compute_mean_of_points(union_of_points)
         var_star = self._gaussian_process.compute_variance_of_points(union_of_points)
-        grad_mu = self._gaussian_process.compute_grad_mean_of_points(union_of_points)
-        grad_chol_decomp = self._gaussian_process.compute_grad_cholesky_variance_of_points(union_of_points, 0)
+        grad_mu = self._gaussian_process.compute_grad_mean_of_points(union_of_points, self.num_points_q)
+        grad_chol_decomp = self._gaussian_process.compute_grad_cholesky_variance_of_points(union_of_points, self.num_points_q)
 
         if num_points == 1 and force_monte_carlo is False:
             return self._compute_grad_expected_improvement_1d_analytic(
                 mu_star[0],
                 var_star[0, 0],
                 grad_mu[0, ...],
-                grad_chol_decomp[0, 0, ...],
+                grad_chol_decomp[0, 0, 0, ...],
             )
         else:
             return self._compute_grad_expected_improvement_monte_carlo(
-                num_points,
                 mu_star,
                 var_star,
                 grad_mu,

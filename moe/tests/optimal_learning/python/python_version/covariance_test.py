@@ -111,13 +111,27 @@ class SquareExponentialTest(OptimalLearningTestCase):
             )
 
             self.assert_scalar_within_relative(
-                covariance.covariance(numpy.array([0.0, 0.0, 0.0]), numpy.array([numpy.sqrt(3) / 3.0 * length[0], numpy.sqrt(3) / 3.0 * length[1], numpy.sqrt(3) / 3.0 * length[2]])),
+                covariance.covariance(
+                    numpy.array([0.0, 0.0, 0.0]),
+                    numpy.array([
+                        numpy.sqrt(3) / 3.0 * length[0],
+                        numpy.sqrt(3) / 3.0 * length[1],
+                        numpy.sqrt(3) / 3.0 * length[2],
+                    ]),
+                ),
                 signal_variance * numpy.exp(-0.5),
                 self.epsilon,
             )
             # Sym
             self.assert_scalar_within_relative(
-                covariance.covariance(numpy.array([numpy.sqrt(3) / 3.0 * length[0], numpy.sqrt(3) / 3.0 * length[1], numpy.sqrt(3) / 3.0 * length[2]]), numpy.array([0.0, 0.0, 0.0])),
+                covariance.covariance(
+                    numpy.array([
+                        numpy.sqrt(3) / 3.0 * length[0],
+                        numpy.sqrt(3) / 3.0 * length[1],
+                        numpy.sqrt(3) / 3.0 * length[2],
+                    ]),
+                    numpy.array([0.0, 0.0, 0.0]),
+                ),
                 signal_variance * numpy.exp(-0.5),
                 self.epsilon,
             )
@@ -134,7 +148,11 @@ class SquareExponentialTest(OptimalLearningTestCase):
             self.assert_vector_within_relative(grad_cov, truth, 0.0)
 
             # One length away
-            truth1 = numpy.array([0.0, 0.0, 1.0 / length[2] * covariance.covariance(numpy.array([0.0, 0.0, 0.0]), numpy.array([0.0, 0.0, length[2]]))])
+            truth1 = numpy.array([
+                0.0,
+                0.0,
+                1.0 / length[2] * covariance.covariance(numpy.array([0.0, 0.0, 0.0]), numpy.array([0.0, 0.0, length[2]])),
+            ])
             grad_cov1 = covariance.grad_covariance(numpy.array([0.0, 0.0, 0.0]), numpy.array([0.0, 0.0, length[2]]))
             self.assert_vector_within_relative(grad_cov1, truth1, self.epsilon)
 

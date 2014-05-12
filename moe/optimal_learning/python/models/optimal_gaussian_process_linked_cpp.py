@@ -174,14 +174,24 @@ class OptimalGaussianProcessLinkedCpp(OptimalGaussianProcess):
         """Calls into get_grad_mean_wrapper in src/cpp/GPP_python.cpp
         """
         gaussian_process = self._build_cpp_gaussian_process()
-        return gaussian_process.compute_grad_mean_of_points(points_to_sample)
+        return gaussian_process.compute_grad_mean_of_points(numpy.asarray(points_to_sample))
 
     def cholesky_decomp_and_grad(self, points_to_sample, var_of_grad=0):
         """Calls into get_chol_var and get_grad_var in src/cpp/GPP_python.cpp
         """
         gaussian_process = self._build_cpp_gaussian_process()
+        points_to_sample = numpy.asarray(points_to_sample)
         python_cholesky_var = gaussian_process.compute_cholesky_variance_of_points(points_to_sample)
-        python_grad_cholesky_var = gaussian_process.compute_grad_cholesky_variance_of_points(points_to_sample, var_of_grad)
+        # python_grad_cholesky_var = gaussian_process.compute_grad_cholesky_variance_of_points(points_to_sample, var_of_grad)
+
+        num_to_sample = points_to_sample.shape[0]
+        grad_chol_decomp = C_GP.get_grad_chol_var(
+            gaussian_process._gaussian_process,
+            cpp_utils.cppify(points_to_sample),
+            num_to_sample,
+            var_of_grad,
+        )
+        python_grad_cholesky_var = cpp_utils.uncppify(grad_chol_decomp, (num_to_sample, num_to_sample, gaussian_process.dim))
 
         return python_cholesky_var, python_grad_cholesky_var
 
@@ -217,7 +227,7 @@ class OptimalGaussianProcessLinkedCpp(OptimalGaussianProcess):
         ei_evaluator = cpp_ei.ExpectedImprovement(gaussian_process, current_point, points_to_sample=points_to_sample_temp, num_mc_iterations=mc_iterations, randomness=self.randomness)
         return ei_evaluator.compute_grad_expected_improvement(
             force_monte_carlo=force_monte_carlo,
-        )
+        )[0]
 
     # TODO(eliu): this call is DEPRECATED; use compute_grad_expected_improvement instead!
     # not deleting yet in case this screws up inheritance (since this overrides superclass member functions)
@@ -259,8 +269,8 @@ class OptimalGaussianProcessLinkedCpp(OptimalGaussianProcess):
         """Calls into get_mean and get_var wrapper in src/cpp/GPP_python.cpp
         """
         gaussian_process = self._build_cpp_gaussian_process()
-        python_mu = gaussian_process.compute_mean_of_points(points_to_sample)
-        python_var = gaussian_process.compute_variance_of_points(points_to_sample)
+        python_mu = gaussian_process.compute_mean_of_points(numpy.asarray(points_to_sample))
+        python_var = gaussian_process.compute_variance_of_points(numpy.asarray(points_to_sample))
         return python_mu, python_var
 
     def compute_log_likelihood(self, objective_type=C_GP.LogLikelihoodTypes.log_marginal_likelihood):

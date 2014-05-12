@@ -20,10 +20,24 @@ class DomainInterface(object):
 
         :param point: point to check
         :type point: array of float64 with shape (dim)
-        :param points_to_sample: points which are being sampled concurrently (i.e., p in q,p-EI)
-        :type points_to_sample: array of float64 with shape (num_to_sample, dim)
         :return: true if point is inside the domain
         :rtype: bool
+
+        """
+        pass
+
+    @abstractmethod
+    def generate_random_point_in_domain(self, random_source=None):
+        """Generate ``point`` uniformly at random such that ``self.check_point_inside(point)`` is True.
+
+        .. Note:: if you need multiple points, use generate_uniform_random_points_in_domain instead;
+            depending on implementation, it may ield better distributions over many points. For example,
+            tensor product type domains use latin hypercube sampling instead of repeated random draws
+            which guarantees that no non-uniform clusters may arise (in subspaces) versus this method
+            which treats all draws independently.
+
+        :return: point in domain
+        :rtype: array of float64 with shape (dim)
 
         """
         pass

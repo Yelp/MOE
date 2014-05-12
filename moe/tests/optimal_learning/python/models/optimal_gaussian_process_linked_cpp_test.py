@@ -10,16 +10,6 @@ import moe.optimal_learning.python.lib.math
 from moe.optimal_learning.python.data_containers import SamplePoint
 
 
-class CppUnitTestWrapperTest(OLDGaussianProcessTestCase):
-    # wrapper to invoke call a C++ function that runs unit tests written in C++
-    # this is a hack and will be changed pending deciding on a permanent unit test framework
-    # for C++ (ticket 40203)
-
-    def test_run_cpp_unit_tests(self):
-        # number_of_cpp_test_errors = C_GP.run_cpp_tests()
-        number_of_cpp_test_errors = 0
-        T.assert_equal(number_of_cpp_test_errors, 0)
-
 class GaussianProcessNumericalAnalysisTestCase(OLDGaussianProcessTestCase):
     tol = 1e-12 # TODO eliu look into this ticket #43006
     rel_tol = numpy.finfo(numpy.float64).tiny # 1e-308
