@@ -374,7 +374,7 @@ class GaussianProcess final {
   /*!\rst
     Computes the mean of this GP at each of ``Xs`` (``points_to_sample``).
 
-    ``points_to_sample`` should not contain duplicate points.
+    .. Note:: ``points_to_sample`` should not contain duplicate points.
 
     .. Note:: comments are copied in Python: interfaces/gaussian_process_interface.py
 
@@ -388,7 +388,7 @@ class GaussianProcess final {
   /*!\rst
     Computes the gradient of the mean of this GP at each of ``Xs`` (``points_to_sample``) wrt ``Xs``.
 
-    ``points_to_sample`` should not contain duplicate points.
+    .. Note:: ``points_to_sample`` should not contain duplicate points.
 
     Note that ``grad_mu`` is nominally sized: ``grad_mu[dim][num_to_sample][num_to_sample]``.
     However, for ``0 <= i,j < num_to_sample``, ``i != j``, ``grad_mu[d][i][j] = 0``.
@@ -410,7 +410,8 @@ class GaussianProcess final {
     Computes the variance (matrix) of this GP at each point of ``Xs`` (``points_to_sample``).
 
     The variance matrix is symmetric and is stored in the LOWER TRIANGLE.
-    ``points_to_sample`` should not contain duplicate points.
+
+    .. Note:: ``points_to_sample`` should not contain duplicate points.
 
     .. Note:: comments are copied in Python: interfaces/gaussian_process_interface.py
 
@@ -1193,8 +1194,9 @@ struct OnePotentialSampleExpectedImprovementState final {
 \endrst*/
 inline OL_NONNULL_POINTERS void SetupExpectedImprovementState(const OnePotentialSampleExpectedImprovementEvaluator& ei_evaluator, double const * restrict starting_point, int max_num_threads, int num_derivatives, std::vector<typename OnePotentialSampleExpectedImprovementEvaluator::StateType> * state_vector) {
   state_vector->reserve(max_num_threads);
+  const int num_to_sample = 1;
   for (int i = 0; i < max_num_threads; ++i) {
-    state_vector->emplace_back(ei_evaluator, starting_point, 1, num_derivatives, nullptr);
+    state_vector->emplace_back(ei_evaluator, starting_point, num_to_sample, num_derivatives, nullptr);
   }
 }
 
@@ -1208,11 +1210,12 @@ inline OL_NONNULL_POINTERS void SetupExpectedImprovementState(const OnePotential
 
     template <typename ExpectedImprovementEvaluator>
     void SetupExpectedImprovementState(const ExpectedImprovementEvaluator& ei_evaluator, ...) {
+      int num_to_sample = 1;
       for (...) {
         if (std::is_same<ExpectedImprovementEvaluator, OnePotentialSampleExpectedImprovementEvaluator>::value) {
-          state_vector->emplace_back(ei_evaluator, starting_point, 1, num_derivatives, nullptr);
+          state_vector->emplace_back(ei_evaluator, starting_point, num_to_sample, num_derivatives, nullptr);
         } else {
-          state_vector->emplace_back(ei_evaluator, union_of_points.data(), num_to_sample+1, num_derivatives, normal_rng + i);
+          state_vector->emplace_back(ei_evaluator, union_of_points.data(), num_being_sampled + num_to_sample, num_derivatives, normal_rng + i);
         }
       }
     }
@@ -1290,7 +1293,7 @@ void RestartedGradientDescentEIOptimization(const ExpectedImprovementEvaluator& 
   std::copy(initial_point, initial_point + dim, union_of_points.begin() + ExpectedImprovementEvaluator::StateType::kIndexOfCurrentPoint*dim);
   std::copy(points_to_sample, points_to_sample + dim*num_to_sample, union_of_points.begin() + (ExpectedImprovementEvaluator::StateType::kIndexOfCurrentPoint+1)*dim);
 
-  int num_derivatives = 1;  // HACK HACK HACK. TODO(eliu): fix this when EI class properly supports q,p-EI
+  int num_derivatives = 1;  // HACK HACK HACK. TODO(eliu): fix this when EI class properly supports q,p-EI (ADS-3094)
   typename ExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, union_of_points.data(), num_to_sample+1, num_derivatives, normal_rng);
 
   GradientDescentOptimizer<ExpectedImprovementEvaluator, DomainType> gd_opt;
@@ -1346,7 +1349,7 @@ OL_NONNULL_POINTERS void ComputeOptimalPointToSampleViaMultistartGradientDescent
   // set chunk_size; see gpp_common.hpp header comments, item 7
   const int chunk_size = std::max(std::min(4, std::max(1, num_multistarts/max_num_threads)), num_multistarts/(max_num_threads*10));
 
-  int num_derivatives = 1;  // HACK HACK HACK. TODO(eliu): fix this when EI class properly supports q,p-EI
+  int num_derivatives = 1;  // HACK HACK HACK. TODO(eliu): fix this when EI class properly supports q,p-EI (ADS-3094)
   if (num_to_sample == 0) {
     // special analytic case when we are not using (or not accounting for) multiple, simultaneous experiments
     OnePotentialSampleExpectedImprovementEvaluator ei_evaluator(gaussian_process, best_so_far);

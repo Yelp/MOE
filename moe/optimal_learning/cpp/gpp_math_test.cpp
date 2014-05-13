@@ -390,7 +390,7 @@ class PingExpectedImprovement final : public PingableMatrixInputVectorOutputInte
 
     NormalRNG normal_rng(3141);
     std::copy(current_point, current_point + dim_, union_of_points.data());
-    int num_derivatives = 1;  // HACK HACK HACK. TODO(eliu): fix this when EI class properly supports q,p-EI
+    int num_derivatives = 1;  // HACK HACK HACK. TODO(eliu): fix this when EI class properly supports q,p-EI (ADS-3094)
     ExpectedImprovementEvaluator::StateType ei_state(ei_evaluator_, union_of_points.data(), num_to_sample_+1, num_derivatives, &normal_rng);
     ei_evaluator_.ComputeGradExpectedImprovement(&ei_state, grad_EI_.data());
 
@@ -481,7 +481,7 @@ class PingOnePotentialSampleExpectedImprovement final : public PingableMatrixInp
     }
     gradients_already_computed_ = true;
 
-    int num_derivatives = 1;  // HACK HACK HACK. TODO(eliu): fix this when EI class properly supports q,p-EI
+    int num_derivatives = 1;  // HACK HACK HACK. TODO(eliu): fix this when EI class properly supports q,p-EI (ADS-3094)
     OnePotentialSampleExpectedImprovementEvaluator::StateType ei_state(ei_evaluator_, current_point, num_to_sample_, num_derivatives, nullptr);
     ei_evaluator_.ComputeGradExpectedImprovement(&ei_state, grad_EI_.data());
 
@@ -1105,7 +1105,7 @@ OL_WARN_UNUSED_RESULT int ExpectedImprovementOptimizationTestCore(ExpectedImprov
   std::copy(points_to_sample.begin(), points_to_sample.end(), union_of_points_grid_search.begin() + dim);
 
   double tolerance_result = tolerance;
-  int num_derivatives = 1;  // HACK HACK HACK. TODO(eliu): fix this when EI class properly supports q,p-EI
+  int num_derivatives = 1;  // HACK HACK HACK. TODO(eliu): fix this when EI class properly supports q,p-EI (ADS-3094)
   if (ei_mode == ExpectedImprovementEvaluationMode::kAnalytic) {
     OnePotentialSampleExpectedImprovementEvaluator ei_evaluator(*mock_gp_data.gaussian_process_ptr, mock_gp_data.best_so_far);
     OnePotentialSampleExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, union_of_points.data(), num_to_sample + 1, num_derivatives, nullptr);
@@ -1281,7 +1281,7 @@ OL_WARN_UNUSED_RESULT int ExpectedImprovementOptimizationSimplexTestCore(Expecte
   std::copy(points_to_sample.begin(), points_to_sample.end(), union_of_points_grid_search.begin() + dim);
 
   double tolerance_result = tolerance;
-  int num_derivatives = 1;  // HACK HACK HACK. TODO(eliu): fix this when EI class properly supports q,p-EI
+  int num_derivatives = 1;  // HACK HACK HACK. TODO(eliu): fix this when EI class properly supports q,p-EI (ADS-3094)
   if (ei_mode == ExpectedImprovementEvaluationMode::kAnalytic) {
     OnePotentialSampleExpectedImprovementEvaluator ei_evaluator(*mock_gp_data.gaussian_process_ptr, mock_gp_data.best_so_far);
     OnePotentialSampleExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, union_of_points.data(), num_to_sample + 1, num_derivatives, nullptr);
@@ -1445,7 +1445,7 @@ int ExpectedImprovementOptimizationMultipleSamplesTest() {
     tolerance_result = 3.0e-4;  // reduce b/c we cannot achieve full accuracy in the monte-carlo case
     // while still having this test run in a reasonable amt of time
     ExpectedImprovementEvaluator ei_evaluator(*mock_gp_data.gaussian_process_ptr, max_int_steps, mock_gp_data.best_so_far);
-    int num_derivatives = 1;  // HACK HACK HACK. TODO(eliu): fix this when EI class properly supports q,p-EI
+    int num_derivatives = 1;  // HACK HACK HACK. TODO(eliu): fix this when EI class properly supports q,p-EI (ADS-3094)
     ExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, union_of_points.data(), num_to_sample + 1, num_derivatives, normal_rng_vec.data());
 
     ei_optimized = ei_evaluator.ComputeExpectedImprovement(&ei_state);
