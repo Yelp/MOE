@@ -182,18 +182,9 @@ class OptimalGaussianProcessLinkedCpp(OptimalGaussianProcess):
         gaussian_process = self._build_cpp_gaussian_process()
         points_to_sample = numpy.asarray(points_to_sample)
         python_cholesky_var = gaussian_process.compute_cholesky_variance_of_points(points_to_sample)
-        # python_grad_cholesky_var = gaussian_process.compute_grad_cholesky_variance_of_points(points_to_sample, var_of_grad)
+        python_grad_cholesky_var = gaussian_process.compute_grad_cholesky_variance_of_points(points_to_sample, var_of_grad + 1)
 
-        num_to_sample = points_to_sample.shape[0]
-        grad_chol_decomp = C_GP.get_grad_chol_var(
-            gaussian_process._gaussian_process,
-            cpp_utils.cppify(points_to_sample),
-            num_to_sample,
-            var_of_grad,
-        )
-        python_grad_cholesky_var = cpp_utils.uncppify(grad_chol_decomp, (num_to_sample, num_to_sample, gaussian_process.dim))
-
-        return python_cholesky_var, python_grad_cholesky_var
+        return python_cholesky_var, python_grad_cholesky_var[var_of_grad, ...]
 
     def compute_expected_improvement(self, points_to_sample, force_monte_carlo=False, mc_iterations=1000):
         """Compute expected improvement. Calls into src/cpp/GPP_python.cpp

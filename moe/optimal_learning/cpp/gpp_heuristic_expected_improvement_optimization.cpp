@@ -32,8 +32,8 @@ namespace optimal_learning {
 */
 FunctionValue KrigingBelieverEstimationPolicy::ComputeEstimate(const GaussianProcess& gaussian_process, double const * restrict point, int OL_UNUSED(iteration)) const {
   const int num_points = 1;
-  const int configure_for_gradients = false;
-  PointsToSampleState gaussian_process_state(gaussian_process, point, num_points, configure_for_gradients);
+  const int num_derivatives = 0;
+  PointsToSampleState gaussian_process_state(gaussian_process, point, num_points, num_derivatives);
 
   double kriging_function_value;
   gaussian_process.ComputeMeanOfPoints(gaussian_process_state, &kriging_function_value);

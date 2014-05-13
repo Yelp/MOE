@@ -49,7 +49,8 @@ boost::python::list GetMeanWrapper(const GaussianProcess& gaussian_process, cons
   PythonInterfaceInputContainer input_container(points_to_sample, gaussian_process.dim(), num_to_sample);
 
   std::vector<double> to_sample_mean(input_container.num_to_sample);
-  GaussianProcess::StateType points_to_sample_state(gaussian_process, input_container.points_to_sample.data(), input_container.num_to_sample, false);
+  int num_derivatives = 0;
+  GaussianProcess::StateType points_to_sample_state(gaussian_process, input_container.points_to_sample.data(), input_container.num_to_sample, num_derivatives);
   gaussian_process.ComputeMeanOfPoints(points_to_sample_state, to_sample_mean.data());
 
   return VectorToPylist(to_sample_mean);
@@ -59,7 +60,8 @@ boost::python::list GetGradMeanWrapper(const GaussianProcess& gaussian_process, 
   PythonInterfaceInputContainer input_container(points_to_sample, gaussian_process.dim(), num_to_sample);
 
   std::vector<double> to_sample_grad_mean(input_container.dim*input_container.num_to_sample);
-  GaussianProcess::StateType points_to_sample_state(gaussian_process, input_container.points_to_sample.data(), input_container.num_to_sample, true);
+  int num_derivatives = num_to_sample;
+  GaussianProcess::StateType points_to_sample_state(gaussian_process, input_container.points_to_sample.data(), input_container.num_to_sample, num_derivatives);
   gaussian_process.ComputeGradMeanOfPoints(points_to_sample_state, to_sample_grad_mean.data());
 
   return VectorToPylist(to_sample_grad_mean);
@@ -69,7 +71,8 @@ boost::python::list GetVarWrapper(const GaussianProcess& gaussian_process, const
   PythonInterfaceInputContainer input_container(points_to_sample, gaussian_process.dim(), num_to_sample);
 
   std::vector<double> to_sample_var(Square(input_container.num_to_sample));
-  GaussianProcess::StateType points_to_sample_state(gaussian_process, input_container.points_to_sample.data(), input_container.num_to_sample, false);
+  int num_derivatives = 0;
+  GaussianProcess::StateType points_to_sample_state(gaussian_process, input_container.points_to_sample.data(), input_container.num_to_sample, num_derivatives);
   gaussian_process.ComputeVarianceOfPoints(&points_to_sample_state, to_sample_var.data());
 
   boost::python::list result;
@@ -94,7 +97,8 @@ boost::python::list GetCholVarWrapper(const GaussianProcess& gaussian_process, c
   PythonInterfaceInputContainer input_container(points_to_sample, gaussian_process.dim(), num_to_sample);
 
   std::vector<double> chol_var(Square(input_container.num_to_sample));
-  GaussianProcess::StateType points_to_sample_state(gaussian_process, input_container.points_to_sample.data(), input_container.num_to_sample, false);
+  int num_derivatives = 0;
+  GaussianProcess::StateType points_to_sample_state(gaussian_process, input_container.points_to_sample.data(), input_container.num_to_sample, num_derivatives);
   gaussian_process.ComputeVarianceOfPoints(&points_to_sample_state, chol_var.data());
   ComputeCholeskyFactorL(num_to_sample, chol_var.data());
 
@@ -116,25 +120,25 @@ boost::python::list GetCholVarWrapper(const GaussianProcess& gaussian_process, c
   return result;
 }
 
-boost::python::list GetGradVarWrapper(const GaussianProcess& gaussian_process, const boost::python::list& points_to_sample, int num_to_sample, int var_of_grad) {
+boost::python::list GetGradVarWrapper(const GaussianProcess& gaussian_process, const boost::python::list& points_to_sample, int num_to_sample, int num_derivatives) {
   PythonInterfaceInputContainer input_container(points_to_sample, gaussian_process.dim(), num_to_sample);
 
-  std::vector<double> to_sample_grad_var(input_container.dim*Square(input_container.num_to_sample));
-  GaussianProcess::StateType points_to_sample_state(gaussian_process, input_container.points_to_sample.data(), input_container.num_to_sample, true);
-  gaussian_process.ComputeGradVarianceOfPoints(&points_to_sample_state, var_of_grad, to_sample_grad_var.data());
+  std::vector<double> to_sample_grad_var(input_container.dim*Square(input_container.num_to_sample)*num_derivatives);
+  GaussianProcess::StateType points_to_sample_state(gaussian_process, input_container.points_to_sample.data(), input_container.num_to_sample, num_derivatives);
+  gaussian_process.ComputeGradVarianceOfPoints(&points_to_sample_state, to_sample_grad_var.data());
 
   return VectorToPylist(to_sample_grad_var);
 }
 
-boost::python::list GetGradCholVarWrapper(const GaussianProcess& gaussian_process, const boost::python::list& points_to_sample, int num_to_sample, int var_of_grad) {
+boost::python::list GetGradCholVarWrapper(const GaussianProcess& gaussian_process, const boost::python::list& points_to_sample, int num_to_sample, int num_derivatives) {
   PythonInterfaceInputContainer input_container(points_to_sample, gaussian_process.dim(), num_to_sample);
 
-  std::vector<double> to_sample_grad_var(input_container.dim*Square(input_container.num_to_sample));
+  std::vector<double> to_sample_grad_var(input_container.dim*Square(input_container.num_to_sample)*num_derivatives);
   std::vector<double> chol_var(Square(input_container.num_to_sample));
-  GaussianProcess::StateType points_to_sample_state(gaussian_process, input_container.points_to_sample.data(), input_container.num_to_sample, true);
+  GaussianProcess::StateType points_to_sample_state(gaussian_process, input_container.points_to_sample.data(), input_container.num_to_sample, num_derivatives);
   gaussian_process.ComputeVarianceOfPoints(&points_to_sample_state, chol_var.data());
   ComputeCholeskyFactorL(input_container.num_to_sample, chol_var.data());
-  gaussian_process.ComputeGradCholeskyVarianceOfPoints(&points_to_sample_state, var_of_grad, chol_var.data(), to_sample_grad_var.data());
+  gaussian_process.ComputeGradCholeskyVarianceOfPoints(&points_to_sample_state, chol_var.data(), to_sample_grad_var.data());
 
   return VectorToPylist(to_sample_grad_var);
 }
@@ -226,7 +230,7 @@ void ExportGaussianProcessFunctions() {
 
   boost::python::def("get_grad_chol_var", GetGradCholVarWrapper, R"%%(
     Compute gradient of the Cholesky Factorization of the (predicted) variance, Vars, of the Gaussian Process posterior.
-    Gradient is computed wrt the point with index var_of_grad in points_to_sample.
+    Gradient is computed wrt points_to_sample[0:num_derivatives].
     L * L^T = K
     V = L^-1 * Ks^T
     Vars = Kss - (V^T * V)
@@ -235,16 +239,16 @@ void ExportGaussianProcessFunctions() {
     Then the Cholesky Decomposition is Ls * Ls^T = Vars
 
     General derivative expression: \pderiv{Ls_{i,j}}{Xs_{d,p}}
-    We compute this for p = var_of_grad
+    We compute this for p = 0, 1, ..., num_derivatives-1.
 
     INPUTS:
     GaussianProcess gaussian_process: GaussianProcess object (holds points_sampled, values, noise_variance, derived quantities)
     pylist points_to_sample[num_to_sample][dim]: points to sample
     int num_to_sample: number of points to sample
-    int var_of_grad: dimension to differentiate in
+    int num_derivatives: return derivatives wrt points_to_sample[0:num_derivatives]
 
     RETURNS:
-    pylist result[num_to_sample][num_to_sample][dim]:
+    pylist result[num_derivatives][num_to_sample][num_to_sample][dim]:
       tensor of cholesky factorized variance gradients, ordered as num_to_sample blocks, each having
       num_to_sample rows with length dim
     )%%");
