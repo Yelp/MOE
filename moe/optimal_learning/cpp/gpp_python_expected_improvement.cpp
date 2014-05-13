@@ -65,7 +65,7 @@ boost::python::list ComputeGradExpectedImprovementWrapper(const GaussianProcess&
   CopyPylistToVector(current_point, input_container.dim, union_of_points);
 
   std::vector<double> grad_EI(input_container.dim);
-  int num_derivatives = 1;  // HACK HACK HACK. TODO(eliu): fix this when EI class properly supports q,p-EI
+  int num_derivatives = 1;  // HACK HACK HACK. TODO(eliu): fix this when EI class properly supports q,p-EI (ADS-3094)
   if ((num_to_sample == 0) && (force_monte_carlo == false)) {
     OnePotentialSampleExpectedImprovementEvaluator ei_evaluator(gaussian_process, best_so_far);
     // here num_to_sample = 0, so union_of_points contains just current_point
