@@ -195,25 +195,24 @@ class MockExpectedImprovementEnvironment {
 
     \param
       :dim: the spatial dimension of a point (i.e., number of independent params in experiment)
-      :num_to_sample: number of points being sampled concurrently
+      :num_to_sample: number of points to be sampled in future experiments
+      :num_being_sampled: number of points being sampled concurrently
       :num_sampled: number of already-sampled points
   \endrst*/
-  void Initialize(int dim_in, int num_to_sample_in, int num_sampled_in) {
-    Initialize(dim_in, num_to_sample_in, num_sampled_in, &uniform_generator_);
+  void Initialize(int dim_in, int num_to_sample_in, int num_being_sampled_in, int num_sampled_in) {
+    Initialize(dim_in, num_to_sample_in, num_being_sampled_in, num_sampled_in, &uniform_generator_);
   }
 
-  void Initialize(int dim_in, int num_to_sample_in, int num_sampled_in, UniformRandomGenerator * uniform_generator);
+  void Initialize(int dim_in, int num_to_sample_in, int num_being_sampled_in, int num_sampled_in, UniformRandomGenerator * uniform_generator);
 
   //! spatial dimension (e.g., entries per point of points_sampled)
   int dim;
-  //! number of points currently being sampled
-  int num_to_sample;
   //! number of points in points_sampled (history)
   int num_sampled;
-
-  double * points_to_sample() {
-    return points_to_sample_.data();
-  }
+  //! number of points to be sampled in future experiments (i.e., the q in q,p-EI)
+  int num_to_sample;
+  //! number of points currently being sampled (i.e., the p in q,p-EI)
+  int num_being_sampled;
 
   double * points_sampled() {
     return points_sampled_.data();
@@ -223,21 +222,25 @@ class MockExpectedImprovementEnvironment {
     return points_sampled_value_.data();
   }
 
-  double * current_point() {
-    return current_point_.data();
+  double * points_to_sample() {
+    return points_to_sample_.data();
+  }
+
+  double * points_being_sampled() {
+    return points_being_sampled_.data();
   }
 
   OL_DISALLOW_COPY_AND_ASSIGN(MockExpectedImprovementEnvironment);
 
  private:
-  //! points to make predictions about
-  std::vector<double> points_to_sample_;
   //! coordinates of already-sampled points, ``X``
   std::vector<double> points_sampled_;
   //! function values at points_sampled, ``y``
   std::vector<double> points_sampled_value_;
-  //! current point to differentiate against
-  std::vector<double> current_point_;
+  //! points to be sampled in experiments (i.e., the q in q,p-EI)
+  std::vector<double> points_to_sample_;
+  //! points being sampled in concurrent experiments (i.e., the p in q,p-EI)
+  std::vector<double> points_being_sampled_;
 
   //! uniform random number generator for generating coordinates
   UniformRandomGenerator uniform_generator_;
@@ -580,7 +583,7 @@ void FillRandomDomainBounds(const boost::uniform_real<double>& uniform_double_lo
     :points_sampled[dim][num_to_sample]: points at which to draw from the GP
     :noise_variance[num_to_sample]: the ``\sigma_n^2`` (noise variance) associated w/the new observations, ``points_sampled_value``
     :dim: the spatial dimension of a point (i.e., number of independent params in experiment)
-    :num_to_sampled number of points add to the GP
+    :num_to_sample: number of points add to the GP
     :gaussian_process[1]: a properly initialized GaussianProcess
   \output
     :points_to_sample_value[num_to_sample]: values of the newly sampled points

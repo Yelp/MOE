@@ -153,7 +153,7 @@ int main() {
   static const int dim = 3;  // > 0
 
   // number of concurrent samples running alongside the optimization
-  static const int num_to_sample = 0;  // >= 0
+  static const int num_being_sampled = 0;  // >= 0
 
   // number of points that we have already sampled; i.e., size of the training set
   static const int num_sampled = 10;  // >= 0
@@ -411,7 +411,7 @@ int main() {
     found_flag = false;
     int max_int_steps = 1000;
     std::vector<double> next_point(dim);
-    std::vector<double> points_to_sample;
+    std::vector<double> points_being_sampled;
 
     GaussianProcess gaussian_process(covariance_final, points_sampled.data(), points_sampled_value.data(), noise_variance.data(), dim, num_sampled);
 
@@ -421,7 +421,7 @@ int main() {
       {0.2, 0.35},
       {0.05951614568196238, 0.4}};
     TensorProductDomain ei_domain(derp2, dim);
-    ComputeOptimalPointToSampleWithRandomStarts(gaussian_process, gd_params, ei_domain, points_to_sample.data(), num_to_sample, best_so_far, max_int_steps, max_num_threads, &found_flag, &uniform_generator, nullptr, next_point.data());
+    ComputeOptimalPointToSampleWithRandomStarts(gaussian_process, gd_params, ei_domain, points_being_sampled.data(), num_being_sampled, best_so_far, max_int_steps, max_num_threads, &found_flag, &uniform_generator, nullptr, next_point.data());
     printf("EI found: %d\n", found_flag);
     printf("next best point  : "); PrintMatrix(next_point.data(), 1, dim);
 
@@ -429,14 +429,14 @@ int main() {
     std::vector<double> grad_ei(dim);
 
     // set up evaluators and state to check results
-    std::vector<double> union_of_points((num_to_sample+1)*dim);
+    std::vector<double> union_of_points((num_being_sampled+1)*dim);
     std::copy(next_point.begin(), next_point.end(), union_of_points.begin());
-    std::copy(points_to_sample.begin(), points_to_sample.end(), union_of_points.begin() + dim);
+    std::copy(points_being_sampled.begin(), points_being_sampled.end(), union_of_points.begin() + dim);
 
     double tolerance_result = tolerance;
     if (1) {
       OnePotentialSampleExpectedImprovementEvaluator ei_evaluator(gaussian_process, best_so_far);
-      OnePotentialSampleExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, union_of_points.data(), num_to_sample + 1, true, nullptr);
+      OnePotentialSampleExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, union_of_points.data(), num_being_sampled + 1, true, nullptr);
 
       ei_optimized = ei_evaluator.ComputeExpectedImprovement(&ei_state);
       ei_evaluator.ComputeGradExpectedImprovement(&ei_state, grad_ei.data());
@@ -483,7 +483,7 @@ int main() {
     found_flag = false;
     int max_int_steps = 1000;
     std::vector<double> next_point(dim);
-    std::vector<double> points_to_sample;
+    std::vector<double> points_being_sampled;
 
     GaussianProcess gaussian_process(covariance_final, points_sampled.data(), points_sampled_value.data(), noise_variance.data(), dim, num_sampled);
 
@@ -493,7 +493,7 @@ int main() {
       {0.2, 0.35},
       {0.05951614568196238, 0.4}};
     SimplexIntersectTensorProductDomain ei_domain(derp2, dim);
-    ComputeOptimalPointToSampleWithRandomStarts(gaussian_process, gd_params, ei_domain, points_to_sample.data(), num_to_sample, best_so_far, max_int_steps, max_num_threads, &found_flag, &uniform_generator, nullptr, next_point.data());
+    ComputeOptimalPointToSampleWithRandomStarts(gaussian_process, gd_params, ei_domain, points_being_sampled.data(), num_being_sampled, best_so_far, max_int_steps, max_num_threads, &found_flag, &uniform_generator, nullptr, next_point.data());
     printf("EI found: %d\n", found_flag);
     printf("next best point  : "); PrintMatrix(next_point.data(), 1, dim);
 
@@ -501,14 +501,14 @@ int main() {
     std::vector<double> grad_ei(dim);
 
     // set up evaluators and state to check results
-    std::vector<double> union_of_points((num_to_sample+1)*dim);
+    std::vector<double> union_of_points((num_being_sampled+1)*dim);
     std::copy(next_point.begin(), next_point.end(), union_of_points.begin());
-    std::copy(points_to_sample.begin(), points_to_sample.end(), union_of_points.begin() + dim);
+    std::copy(points_being_sampled.begin(), points_being_sampled.end(), union_of_points.begin() + dim);
 
     double tolerance_result = tolerance;
     if (1) {
       OnePotentialSampleExpectedImprovementEvaluator ei_evaluator(gaussian_process, best_so_far);
-      OnePotentialSampleExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, union_of_points.data(), num_to_sample + 1, true, nullptr);
+      OnePotentialSampleExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, union_of_points.data(), num_being_sampled + 1, true, nullptr);
 
       ei_optimized = ei_evaluator.ComputeExpectedImprovement(&ei_state);
       ei_evaluator.ComputeGradExpectedImprovement(&ei_state, grad_ei.data());
@@ -857,7 +857,7 @@ int main() {
   static const int dim = 2;  // > 0
 
   // number of concurrent samples running alongside the optimization
-  static const int num_to_sample = 0;  // >= 0
+  static const int num_being_sampled = 0;  // >= 0
 
   // number of points that we have already sampled; i.e., size of the training set
   static const int num_sampled = 3;  // >= 0
@@ -869,7 +869,7 @@ int main() {
   TensorProductDomain domain(domain_bounds.data(), dim);
 
   // now we allocate point sets; ALL POINTS MUST LIE INSIDE THE DOMAIN!
-  std::vector<double> points_to_sample(num_to_sample*dim);
+  std::vector<double> points_being_sampled(num_being_sampled*dim);
 
   std::vector<double> points_sampled(dim*num_sampled);
   points_sampled[0] = 2.0; points_sampled[1] = 3.0; points_sampled[2] = 3.0; points_sampled[3] = 2.5; points_sampled[4] = 4.0; points_sampled[5] = 3.5;
@@ -962,7 +962,7 @@ int main() {
     {
       std::vector<double> next_point_winner(dim);
       bool found_flag = false;
-      ComputeOptimalPointToSampleWithRandomStarts(gp_model, gd_params, domain, points_to_sample.data(), num_to_sample, best_so_far, max_int_steps, max_num_threads, &found_flag, &uniform_generator, normal_rng_vec.data(), next_point_winner.data());
+      ComputeOptimalPointToSampleWithRandomStarts(gp_model, gd_params, domain, points_being_sampled.data(), num_being_sampled, best_so_far, max_int_steps, max_num_threads, &found_flag, &uniform_generator, normal_rng_vec.data(), next_point_winner.data());
       // printf(OL_ANSI_COLOR_CYAN "EI OPTIMIZATION FINISHED (optimized hyperparameters).\n" OL_ANSI_COLOR_RESET);
       printf("Next best sample point according to EI (opt hyper):\n");
       PrintMatrix(next_point_winner.data(), 1, dim);
@@ -993,7 +993,7 @@ int main() {
   int num_grid_search_points = 100000;
 
   // EI computation parameters
-  int num_to_sample = 0;
+  int num_being_sampled = 0;
   int max_int_steps = 1000;
 
   // random number generators
@@ -1073,27 +1073,27 @@ int main() {
 
   // set up parallel experiments, if any
   if (objective_mode == 0) {
-    num_to_sample = 0;
+    num_being_sampled = 0;
   } else {
     // using MC integration
-    num_to_sample = 2;
+    num_being_sampled = 2;
     max_int_steps = 1000;
 
     gd_params.max_num_steps = 200;
     gd_params.tolerance = 1.0e-5;
   }
-  std::vector<double> points_to_sample(dim*num_to_sample);
+  std::vector<double> points_being_sampled(dim*num_being_sampled);
 
   if (objective_mode == 1) {
     // generate two non-trivial parallel samples
     // picking these randomly could place them in regions where EI is 0, which means errors in the computation would
     // likely be masked (making for a bad test)
     bool found_flag = false;
-    for (int j = 0; j < num_to_sample; j++) {
-      ComputeOptimalPointToSampleWithRandomStarts(gaussian_process, gd_params, domain, points_to_sample.data(), j, best_so_far, max_int_steps, kMaxNumThreads, &found_flag, &uniform_generator, normal_rng_vec.data(), points_to_sample.data() + j*dim);
+    for (int j = 0; j < num_being_sampled; j++) {
+      ComputeOptimalPointToSampleWithRandomStarts(gaussian_process, gd_params, domain, points_being_sampled.data(), j, best_so_far, max_int_steps, kMaxNumThreads, &found_flag, &uniform_generator, normal_rng_vec.data(), points_being_sampled.data() + j*dim);
     }
-    printf("setup complete, points_to_sample:\n");
-    PrintMatrixTrans(points_to_sample.data(), num_to_sample, dim);
+    printf("setup complete, points_being_sampled:\n");
+    PrintMatrixTrans(points_being_sampled.data(), num_being_sampled, dim);
   }
 
   struct timeval tv0, tv1;
@@ -1106,13 +1106,13 @@ int main() {
   std::vector<double> next_point(dim);
   bool found_flag = false;
   std::vector<double> grid_search_best_point(dim);
-  // ComputeOptimalPointToSampleViaLatinHypercubeSearch(gaussian_process, domain, points_to_sample.data(), num_grid_search_points, num_to_sample, best_so_far, max_int_steps, kMaxNumThreads, &found_flag, &uniform_generator, normal_rng_vec.data(), grid_search_best_point.data());
+  // ComputeOptimalPointToSampleViaLatinHypercubeSearch(gaussian_process, domain, points_being_sampled.data(), num_grid_search_points, num_being_sampled, best_so_far, max_int_steps, kMaxNumThreads, &found_flag, &uniform_generator, normal_rng_vec.data(), grid_search_best_point.data());
 
   std::vector<double> function_values(num_grid_search_points);
   std::vector<double> initial_guesses(dim*num_grid_search_points);
   num_grid_search_points = domain.GenerateUniformPointsInDomain(num_grid_search_points, &uniform_generator, initial_guesses.data());
 
-  EvaluateEIAtPointList(gaussian_process, domain, initial_guesses.data(), points_to_sample.data(), num_grid_search_points, num_to_sample, best_so_far, max_int_steps, kMaxNumThreads, &found_flag, normal_rng_vec.data(), function_values.data(), grid_search_best_point.data());
+  EvaluateEIAtPointList(gaussian_process, domain, initial_guesses.data(), points_being_sampled.data(), num_grid_search_points, num_being_sampled, best_so_far, max_int_steps, kMaxNumThreads, &found_flag, normal_rng_vec.data(), function_values.data(), grid_search_best_point.data());
 
   gettimeofday(&tv1, nullptr);
   c1 = clock();
@@ -1954,10 +1954,6 @@ int main() {
 
   // grid search parameters
   int num_grid_search_points = 100000;
-
-  // EI computation parameters
-  int num_to_sample = 0;
-  int max_int_steps = 1000;
 
   // random number generators
   UniformRandomGenerator uniform_generator(314);
