@@ -267,7 +267,7 @@ int EstimationPolicyTest() {
 namespace {
 
 /*
-  This test assumes that ComputeOptimalPointToSampleWithRandomStarts() with num_to_sample = 0 (analytic case)
+  This test assumes that ComputeOptimalPointToSampleWithRandomStarts() with num_being_sampled = 0 (analytic case)
   is working properly, and it assumes EstimationPolicyTest() passes. It checks:
   1) ComputeHeuristicSetOfPointsToSample() is working correctly (found_flag is true)
   2) points returned are all inside the specified domain

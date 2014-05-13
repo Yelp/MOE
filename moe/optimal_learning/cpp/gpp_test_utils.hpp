@@ -577,10 +577,10 @@ void FillRandomCovarianceHyperparameters(const boost::uniform_real<double>& unif
 void FillRandomDomainBounds(const boost::uniform_real<double>& uniform_double_lower_bound, const boost::uniform_real<double>& uniform_double_upper_bound, UniformRandomGenerator * uniform_generator, std::vector<ClosedInterval> * domain_bounds);
 
 /*!\rst
-  Utility to draw num_sampled points from a GaussianProcess and add those values to the prior.
+  Utility to draw num_to_sample points from a GaussianProcess and add those values to the prior.
 
   \param
-    :points_sampled[dim][num_to_sample]: points at which to draw from the GP
+    :points_to_sample[dim][num_to_sample]: points at which to draw/sample from the GP
     :noise_variance[num_to_sample]: the ``\sigma_n^2`` (noise variance) associated w/the new observations, ``points_sampled_value``
     :dim: the spatial dimension of a point (i.e., number of independent params in experiment)
     :num_to_sample: number of points add to the GP
