@@ -86,8 +86,8 @@
   q,0-EI; if we do not explicitly write the value of p, it is 0. So q is the number of new
   (simultaneous) experiments to select. In code, this would be the size of the output from EI
   optimization (i.e., best_points_to_sample, of which there are q = num_samples_to_generate points).
-  p is the number of ongoing/incomplete experiments to take into account (i.e., points_to_sample of
-  which there are p = num_points_to_sample points).
+  p is the number of ongoing/incomplete experiments to take into account (i.e., points_being_sampled of
+  which there are p = num_points_being_sampled points).
 
   Back to optimization: the idea behind gradient descent is simple.  The gradient gives us the
   direction of steepest ascent (negative gradient is steepest descent).  So each iteration, we
@@ -574,7 +574,9 @@ class GaussianProcess final {
   computing the mean, variance, and spatial gradients thereof.
 
   The "independent variables" for this object are ``points_to_sample``. These points are both the "p" and the "q" in q,p-EI;
-  i.e., they are the parameters of both ongoing experiments and new predictions.
+  i.e., they are the parameters of both ongoing experiments and new predictions. Recall that in q,p-EI, the q points are
+  called ``points_to_sample`` and the p points are called ``points_being_sampled.`` Here, we need to make predictions about
+  both point sets with the GP, so we simply call the union of point sets ``points_to_sample.``
 
   Once constructed, this object provides the SetupState() function to update it for computations at different sets of
   potential points to sample.
@@ -747,7 +749,7 @@ class ExpectedImprovementEvaluator final {
     ``f(Xs)`` are *GP-predicted* function evaluations.
 
     The EI is the expected improvement in the current best known objective function value that would result from sampling
-    at ``points_to_sample``.
+    at ``points_to_sample``. This computation can account for ``points_being_sampled`` concurrent experiments.
 
     In general, the EI expression is complex and difficult to evaluate; hence we use Monte-Carlo simulation to approximate it.
 
@@ -763,8 +765,9 @@ class ExpectedImprovementEvaluator final {
   double ComputeExpectedImprovement(StateType * ei_state) const OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT;
 
   /*!\rst
-    Computes the (partial) derivatives of the expected improvement with respect to each component of the
-    index_of_current_point-th point in ``points_to_sample``.
+    Computes the (partial) derivatives of the expected improvement with respect to each point of ``points_to_sample``.
+    As with ComputeExpectedImprovement(), this computation accounts for the effect of ``points_being_sampled``
+    concurrent experiments.
 
     In general, the expressions for gradients of EI are complex and difficult to evaluate; hence we use
     Monte-Carlo simulation to approximate it.
@@ -775,7 +778,7 @@ class ExpectedImprovementEvaluator final {
       :ei_state[1]: properly configured state object
     \output
       :ei_state[1]: state with temporary storage modified; ``normal_rng`` modified
-      :grad_EI[dim]: gradient of expected improvement wrt each dimension of the index_of_current_point-th entry in ``points_to_sample``
+      :grad_EI[dim][num_to_sample]: gradient of expected improvement wrt each dimension of the points in ``points_to_sample``
   \endrst*/
   void ComputeGradExpectedImprovement(StateType * ei_state, double * restrict grad_EI) const OL_NONNULL_POINTERS;
 
@@ -793,10 +796,10 @@ class ExpectedImprovementEvaluator final {
 };
 
 /*!\rst
-  State object for ExpectedImprovementEvaluator.  This tracks the current set of potential samples (``points_to_sample``) ALONG
-  with the current point being evaluated via expected improvement (called ``current_point``); these are the p and q of q,p-EI,
-  respectively.  ``current_point`` joined with ``points_to_sample`` is stored in ``union_of_points``; ``current_point`` is
-  assumed to be placed at ``index = kIndexOfCurrentPoint``.
+  State object for ExpectedImprovementEvaluator.  This tracks the points being sampled in concurrent experiments
+  (``points_being_sampled``) ALONG with the points currently being evaluated via expected improvement for future experiments
+  (called ``current_point``); these are the p and q of q,p-EI, respectively.  ``current_point`` joined with
+  ``points_being_sampled`` is stored in ``union_of_points``.
 
   This struct also tracks the state of the GaussianProcess that underlies the expected improvement computation: the GP state
   is built to handle the initial ``union_of_points``, and subsequent updates to ``current_point`` in this object also update
