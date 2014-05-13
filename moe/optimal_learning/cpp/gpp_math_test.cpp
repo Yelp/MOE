@@ -99,7 +99,8 @@ class PingGPPMean final : public PingableMatrixInputVectorOutputInterface {
     }
     gradients_already_computed_ = true;
 
-    GaussianProcess::StateType points_to_sample_state(gaussian_process_, points_to_sample, num_to_sample_, true);
+    int num_derivatives = num_to_sample_;
+    GaussianProcess::StateType points_to_sample_state(gaussian_process_, points_to_sample, num_to_sample_, num_derivatives);
     gaussian_process_.ComputeGradMeanOfPoints(points_to_sample_state, grad_mu_.data());
 
     if (gradients != nullptr) {
@@ -132,7 +133,8 @@ class PingGPPMean final : public PingableMatrixInputVectorOutputInterface {
   }
 
   virtual void EvaluateFunction(double const * restrict points_to_sample, double * restrict function_values) const noexcept override OL_NONNULL_POINTERS {
-    GaussianProcess::StateType points_to_sample_state(gaussian_process_, points_to_sample, num_to_sample_, false);
+    int num_derivatives = 0;
+    GaussianProcess::StateType points_to_sample_state(gaussian_process_, points_to_sample, num_to_sample_, num_derivatives);
     gaussian_process_.ComputeMeanOfPoints(points_to_sample_state, function_values);
   }
 
@@ -161,12 +163,6 @@ class PingGPPMean final : public PingableMatrixInputVectorOutputInterface {
 
   The output is a matrix of dimension num_to_sample.  To fit into the PingMatrix...Interface, this is treated as a vector
   of length num_to_sample^2.
-
-  Also, ComputeGradVarianceOfPoints() takes col_index (i.e., 0 .. num_to_sample-1) as input.  Thus it must be called
-  num_to_sample times to get all GetGradientsSize() entries of the gradient.
-
-  EvaluateAndStoreAnalyticGradient and GetAnalyticGradient deal with grad_var's API appropriately; all num_to_sample
-  calls to ComputeGradVarianceOfPoints() are saved off.
 */
 class PingGPPVariance final : public PingableMatrixInputVectorOutputInterface {
  public:
@@ -179,7 +175,7 @@ class PingGPPVariance final : public PingableMatrixInputVectorOutputInterface {
         gradients_already_computed_(false),
         noise_variance_(num_sampled_, 0.0),
         points_sampled_(points_sampled, points_sampled + dim_*num_sampled_),
-        grad_variance_(num_to_sample_),
+        grad_variance_(dim_*Square(num_to_sample_)*num_to_sample_),
         sqexp_covariance_(dim_, alpha, lengths),
         gaussian_process_(sqexp_covariance_, points_sampled_.data(), std::vector<double>(num_sampled_, 0.0).data(), noise_variance_.data(), dim_, num_sampled_) {
   }
@@ -203,12 +199,9 @@ class PingGPPVariance final : public PingableMatrixInputVectorOutputInterface {
     }
     gradients_already_computed_ = true;
 
-    for (int i = 0; i < num_to_sample_; ++i) {
-      grad_variance_[i].resize(dim_*Square(num_to_sample_));
-
-      GaussianProcess::StateType points_to_sample_state(gaussian_process_, points_to_sample, num_to_sample_, true);
-      gaussian_process_.ComputeGradVarianceOfPoints(&points_to_sample_state, i, grad_variance_[i].data());
-    }
+    int num_derivatives = num_to_sample_;
+    GaussianProcess::StateType points_to_sample_state(gaussian_process_, points_to_sample, num_to_sample_, num_derivatives);
+    gaussian_process_.ComputeGradVarianceOfPoints(&points_to_sample_state, grad_variance_.data());
 
     if (gradients != nullptr) {
       OL_THROW_EXCEPTION(RuntimeException, "PingGPPVariance::EvaluateAndStoreAnalyticGradient() does not support direct gradient output.");
@@ -220,11 +213,12 @@ class PingGPPVariance final : public PingableMatrixInputVectorOutputInterface {
       OL_THROW_EXCEPTION(RuntimeException, "PingGPPVariance::GetAnalyticGradient() called BEFORE EvaluateAndStoreAnalyticGradient. NO DATA!");
     }
 
-    return grad_variance_[column_index][output_index*dim_ + row_index];
+    return grad_variance_[column_index*Square(num_to_sample_)*dim_ + output_index*dim_ + row_index];
   }
 
   virtual void EvaluateFunction(double const * restrict points_to_sample, double * restrict function_values) const noexcept override OL_NONNULL_POINTERS {
-    GaussianProcess::StateType points_to_sample_state(gaussian_process_, points_to_sample, num_to_sample_, false);
+    int num_derivatives = 0;
+    GaussianProcess::StateType points_to_sample_state(gaussian_process_, points_to_sample, num_to_sample_, num_derivatives);
     gaussian_process_.ComputeVarianceOfPoints(&points_to_sample_state, function_values);
 
     // var_of_points outputs only to the lower triangle.  Copy it into the upper triangle to get a symmetric matrix
@@ -243,7 +237,7 @@ class PingGPPVariance final : public PingableMatrixInputVectorOutputInterface {
 
   std::vector<double> noise_variance_;
   std::vector<double> points_sampled_;
-  std::vector<std::vector<double> > grad_variance_;
+  std::vector<double> grad_variance_;
 
   SquareExponential sqexp_covariance_;
   GaussianProcess gaussian_process_;
@@ -261,12 +255,6 @@ class PingGPPVariance final : public PingableMatrixInputVectorOutputInterface {
   The output is a matrix of dimension num_to_sample.  To fit into the PingMatrix...Interface, this is treated as a vector
   of length num_to_sample^2.
 
-  Also, ComputeGradCholeskyVarianceOfPoints() takes col_index (i.e., 0 .. num_to_sample-1) as input.  Thus it must be called
-  num_to_sample times to get all GetGradientsSize() entries of the gradient.
-
-  EvaluateAndStoreAnalyticGradient and GetAnalyticGradient deal with grad_var's API appropriately; all num_to_sample
-  calls to ComputeGradCholeskyVarianceOfPoints() are saved off.
-
   WARNING: this class is NOT THREAD SAFE.
 */
 class PingGPPCholeskyVariance final : public PingableMatrixInputVectorOutputInterface {
@@ -281,7 +269,7 @@ class PingGPPCholeskyVariance final : public PingableMatrixInputVectorOutputInte
         noise_variance_(num_sampled_, 0.0),
         points_sampled_(points_sampled, points_sampled + dim_*num_sampled_),
         chol_temp_(Square(num_to_sample_)),
-        grad_variance_(num_to_sample_),
+        grad_variance_(dim_*Square(num_to_sample_)*num_to_sample_),
         sqexp_covariance_(dim_, alpha, lengths),
         gaussian_process_(sqexp_covariance_, points_sampled_.data(), std::vector<double>(num_sampled_, 0.0).data(), noise_variance_.data(), dim_, num_sampled_) {
   }
@@ -305,15 +293,13 @@ class PingGPPCholeskyVariance final : public PingableMatrixInputVectorOutputInte
     }
     gradients_already_computed_ = true;
 
-    GaussianProcess::StateType points_to_sample_state(gaussian_process_, points_to_sample, num_to_sample_, true);
+    int num_derivatives = num_to_sample_;
+    GaussianProcess::StateType points_to_sample_state(gaussian_process_, points_to_sample, num_to_sample_, num_derivatives);
     std::vector<double> variance_of_points(Square(num_to_sample_));
-    for (int i = 0; i < num_to_sample_; ++i) {
-      grad_variance_[i].resize(dim_*Square(num_to_sample_));
+    gaussian_process_.ComputeVarianceOfPoints(&points_to_sample_state, variance_of_points.data());
+    ComputeCholeskyFactorL(num_to_sample_, variance_of_points.data());
 
-      gaussian_process_.ComputeVarianceOfPoints(&points_to_sample_state, variance_of_points.data());
-      ComputeCholeskyFactorL(num_to_sample_, variance_of_points.data());
-      gaussian_process_.ComputeGradCholeskyVarianceOfPoints(&points_to_sample_state, i, variance_of_points.data(), grad_variance_[i].data());
-    }
+    gaussian_process_.ComputeGradCholeskyVarianceOfPoints(&points_to_sample_state, variance_of_points.data(), grad_variance_.data());
 
     if (gradients != nullptr) {
       OL_THROW_EXCEPTION(RuntimeException, "PingGPPCholeskyVariance::EvaluateAndStoreAnalyticGradient() does not support direct gradient output.");
@@ -325,11 +311,12 @@ class PingGPPCholeskyVariance final : public PingableMatrixInputVectorOutputInte
       OL_THROW_EXCEPTION(RuntimeException, "PingGPPCholeskyVariance::GetAnalyticGradient() called BEFORE EvaluateAndStoreAnalyticGradient. NO DATA!");
     }
 
-    return grad_variance_[column_index][output_index*dim_ + row_index];
+    return grad_variance_[column_index*Square(num_to_sample_)*dim_ + output_index*dim_ + row_index];
   }
 
   OL_NONNULL_POINTERS void EvaluateFunction(double const * restrict points_to_sample, double * restrict function_values) const noexcept override {
-    GaussianProcess::StateType points_to_sample_state(gaussian_process_, points_to_sample, num_to_sample_, false);
+    int num_derivatives = 0;
+    GaussianProcess::StateType points_to_sample_state(gaussian_process_, points_to_sample, num_to_sample_, num_derivatives);
     gaussian_process_.ComputeVarianceOfPoints(&points_to_sample_state, chol_temp_.data());
     ComputeCholeskyFactorL(num_to_sample_, chol_temp_.data());
     ZeroUpperTriangle(num_to_sample_, chol_temp_.data());
@@ -345,7 +332,7 @@ class PingGPPCholeskyVariance final : public PingableMatrixInputVectorOutputInte
   std::vector<double> noise_variance_;
   std::vector<double> points_sampled_;
   mutable std::vector<double> chol_temp_;  // temporary storage used by the class
-  std::vector<std::vector<double> > grad_variance_;
+  std::vector<double> grad_variance_;
 
   SquareExponential sqexp_covariance_;
   GaussianProcess gaussian_process_;
@@ -373,7 +360,7 @@ class PingExpectedImprovement final : public PingableMatrixInputVectorOutputInte
         num_sampled_(num_sampled),
         gradients_already_computed_(false),
         noise_variance_(num_sampled_, 0.0),
-        union_of_points(dim_*(num_being_sampled_+1)),
+        union_of_points(dim_*(num_being_sampled_ + 1)),
         points_sampled_(points_sampled, points_sampled + dim_*num_sampled_),
         points_sampled_value_(points_sampled_value, points_sampled_value + num_sampled_),
         grad_EI_(dim_),
@@ -403,7 +390,8 @@ class PingExpectedImprovement final : public PingableMatrixInputVectorOutputInte
 
     NormalRNG normal_rng(3141);
     std::copy(current_point, current_point + dim_, union_of_points.data());
-    ExpectedImprovementEvaluator::StateType ei_state(ei_evaluator_, union_of_points.data(), num_being_sampled_+1, true, &normal_rng);
+    int num_derivatives = 1;  // HACK HACK HACK. TODO(eliu): fix this when EI class properly supports q,p-EI
+    ExpectedImprovementEvaluator::StateType ei_state(ei_evaluator_, union_of_points.data(), num_being_sampled_ + 1, num_derivatives, &normal_rng);
     ei_evaluator_.ComputeGradExpectedImprovement(&ei_state, grad_EI_.data());
 
     if (gradients != nullptr) {
@@ -422,7 +410,8 @@ class PingExpectedImprovement final : public PingableMatrixInputVectorOutputInte
   virtual void EvaluateFunction(double const * restrict current_point, double * restrict function_values) const noexcept override OL_NONNULL_POINTERS {
     std::copy(current_point, current_point + dim_, union_of_points.data());
     NormalRNG normal_rng(3141);
-    ExpectedImprovementEvaluator::StateType ei_state(ei_evaluator_, union_of_points.data(), num_being_sampled_+1, false, &normal_rng);
+    int num_derivatives = 0;
+    ExpectedImprovementEvaluator::StateType ei_state(ei_evaluator_, union_of_points.data(), num_being_sampled_ + 1, num_derivatives, &normal_rng);
     *function_values = ei_evaluator_.ComputeExpectedImprovement(&ei_state);
   }
 
@@ -491,7 +480,8 @@ class PingOnePotentialSampleExpectedImprovement final : public PingableMatrixInp
     }
     gradients_already_computed_ = true;
 
-    OnePotentialSampleExpectedImprovementEvaluator::StateType ei_state(ei_evaluator_, current_point, num_being_sampled_+1, true, nullptr);
+    int num_derivatives = 1;  // HACK HACK HACK. TODO(eliu): fix this when EI class properly supports q,p-EI
+    OnePotentialSampleExpectedImprovementEvaluator::StateType ei_state(ei_evaluator_, current_point, num_being_sampled_ + 1, num_derivatives, nullptr);
     ei_evaluator_.ComputeGradExpectedImprovement(&ei_state, grad_EI_.data());
 
     if (gradients != nullptr) {
@@ -508,7 +498,8 @@ class PingOnePotentialSampleExpectedImprovement final : public PingableMatrixInp
   }
 
   virtual void EvaluateFunction(double const * restrict current_point, double * restrict function_values) const noexcept override OL_NONNULL_POINTERS {
-    OnePotentialSampleExpectedImprovementEvaluator::StateType ei_state(ei_evaluator_, current_point, num_being_sampled_+1, false, nullptr);
+    int num_derivatives = 0;
+    OnePotentialSampleExpectedImprovementEvaluator::StateType ei_state(ei_evaluator_, current_point, num_being_sampled_ + 1, num_derivatives, nullptr);
     *function_values = ei_evaluator_.ComputeExpectedImprovement(&ei_state);
   }
 
@@ -1115,9 +1106,10 @@ OL_WARN_UNUSED_RESULT int ExpectedImprovementOptimizationTestCore(ExpectedImprov
   std::copy(points_being_sampled.begin(), points_being_sampled.end(), union_of_points_grid_search.begin() + dim);
 
   double tolerance_result = tolerance;
+  int num_derivatives = 1;  // HACK HACK HACK. TODO(eliu): fix this when EI class properly supports q,p-EI
   if (ei_mode == ExpectedImprovementEvaluationMode::kAnalytic) {
     OnePotentialSampleExpectedImprovementEvaluator ei_evaluator(*mock_gp_data.gaussian_process_ptr, mock_gp_data.best_so_far);
-    OnePotentialSampleExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, union_of_points.data(), num_being_sampled + 1, true, nullptr);
+    OnePotentialSampleExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, union_of_points.data(), num_being_sampled + 1, num_derivatives, nullptr);
 
     ei_optimized = ei_evaluator.ComputeExpectedImprovement(&ei_state);
     ei_evaluator.ComputeGradExpectedImprovement(&ei_state, grad_ei.data());
@@ -1129,7 +1121,7 @@ OL_WARN_UNUSED_RESULT int ExpectedImprovementOptimizationTestCore(ExpectedImprov
     tolerance_result = 3.0e-4;  // reduce b/c we cannot achieve full accuracy in the monte-carlo case
     // while still having this test run in a reasonable amt of time
     ExpectedImprovementEvaluator ei_evaluator(*mock_gp_data.gaussian_process_ptr, max_int_steps, mock_gp_data.best_so_far);
-    ExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, union_of_points.data(), num_being_sampled + 1, true, normal_rng_vec.data());
+    ExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, union_of_points.data(), num_being_sampled + 1, num_derivatives, normal_rng_vec.data());
 
     ei_optimized = ei_evaluator.ComputeExpectedImprovement(&ei_state);
     ei_evaluator.ComputeGradExpectedImprovement(&ei_state, grad_ei.data());
@@ -1290,9 +1282,10 @@ OL_WARN_UNUSED_RESULT int ExpectedImprovementOptimizationSimplexTestCore(Expecte
   std::copy(points_being_sampled.begin(), points_being_sampled.end(), union_of_points_grid_search.begin() + dim);
 
   double tolerance_result = tolerance;
+  int num_derivatives = 1;  // HACK HACK HACK. TODO(eliu): fix this when EI class properly supports q,p-EI
   if (ei_mode == ExpectedImprovementEvaluationMode::kAnalytic) {
     OnePotentialSampleExpectedImprovementEvaluator ei_evaluator(*mock_gp_data.gaussian_process_ptr, mock_gp_data.best_so_far);
-    OnePotentialSampleExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, union_of_points.data(), num_being_sampled + 1, true, nullptr);
+    OnePotentialSampleExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, union_of_points.data(), num_being_sampled + 1, num_derivatives, nullptr);
 
     ei_optimized = ei_evaluator.ComputeExpectedImprovement(&ei_state);
     ei_evaluator.ComputeGradExpectedImprovement(&ei_state, grad_ei.data());
@@ -1304,7 +1297,7 @@ OL_WARN_UNUSED_RESULT int ExpectedImprovementOptimizationSimplexTestCore(Expecte
     tolerance_result = 3.0e-4;  // reduce b/c we cannot achieve full accuracy in the monte-carlo case
     // while still having this test run in a reasonable amt of time
     ExpectedImprovementEvaluator ei_evaluator(*mock_gp_data.gaussian_process_ptr, max_int_steps, mock_gp_data.best_so_far);
-    ExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, union_of_points.data(), num_being_sampled + 1, true, normal_rng_vec.data());
+    ExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, union_of_points.data(), num_being_sampled + 1, num_derivatives, normal_rng_vec.data());
 
     ei_optimized = ei_evaluator.ComputeExpectedImprovement(&ei_state);
     ei_evaluator.ComputeGradExpectedImprovement(&ei_state, grad_ei.data());
@@ -1453,7 +1446,8 @@ int ExpectedImprovementOptimizationMultipleSamplesTest() {
     tolerance_result = 3.0e-4;  // reduce b/c we cannot achieve full accuracy in the monte-carlo case
     // while still having this test run in a reasonable amt of time
     ExpectedImprovementEvaluator ei_evaluator(*mock_gp_data.gaussian_process_ptr, max_int_steps, mock_gp_data.best_so_far);
-    ExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, union_of_points.data(), num_being_sampled + 1, true, normal_rng_vec.data());
+    int num_derivatives = 1;  // HACK HACK HACK. TODO(eliu): fix this when EI class properly supports q,p-EI
+    ExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, union_of_points.data(), num_being_sampled + 1, num_derivatives, normal_rng_vec.data());
 
     ei_optimized = ei_evaluator.ComputeExpectedImprovement(&ei_state);
     ei_evaluator.ComputeGradExpectedImprovement(&ei_state, grad_ei.data());
