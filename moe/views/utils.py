@@ -2,40 +2,43 @@
 """Utilities for MOE views."""
 from numpy.linalg import LinAlgError
 
-from moe.optimal_learning.python.data_containers import SamplePoint
-from moe.optimal_learning.python.models.covariance_of_process import CovarianceOfProcess
-from moe.optimal_learning.python.models.optimal_gaussian_process_linked_cpp import OptimalGaussianProcessLinkedCpp
+from moe.optimal_learning.python.data_containers import SamplePoint, HistoricalData
+from moe.optimal_learning.python.python_version.covariance import COVARIANCE_TYPES_TO_CLASSES
+from moe.optimal_learning.python.cpp_wrappers.gaussian_process import GaussianProcess
 from moe.views.exceptions import SingularMatrixError
 
 
-def _make_default_covariance_of_process(signal_variance=None, length=None):
-    """Make a default covariance of process with optional parameters."""
-    hyperparameters = [signal_variance]
-    hyperparameters.extend(length)
+def _make_gp_from_params(params):
+    """Create and return a C++ backed gaussian_process from the request params as a dict.
 
-    return CovarianceOfProcess(hyperparameters=hyperparameters)
+    ``params`` has the following form::
 
+        params = {
+            'gp_info': <instance of moe.rest.schemas.GpInfo>,
+            'domain_info': <instance of moe.rest.schemas.DomainInfo>,
+            'covariance_info': <instance of moe.rest.schemas.CovarianceInfo>,
+            }
 
-def _make_gp_from_gp_info(gp_info):
-    """Create and return a C++ backed gaussian_process from a gp_info dict.
-
-    gp_info has the form of GpInfo in moe/schemas.py
+    :param params: The request params dict
+    :type params: dict
 
     """
     # Load up the info
+    gp_info = params.get("gp_info")
+    covariance_info = params.get("covariance_info")
+    domain_info = params.get("domain_info")
+
     points_sampled = gp_info['points_sampled']
-    domain = gp_info['domain']
-    signal_variance = gp_info['signal_variance']
-    length = gp_info['length_scale']
 
     # Build the required objects
-    covariance_of_process = _make_default_covariance_of_process(
-            signal_variance=signal_variance,
-            length=length,
+    covariance_class = COVARIANCE_TYPES_TO_CLASSES[covariance_info.get('covariance_type')]
+    covariance_of_process = covariance_class(
+            covariance_info.get('hyperparameters')
             )
-    gaussian_process = OptimalGaussianProcessLinkedCpp(
-            domain=domain,
-            covariance_of_process=covariance_of_process,
+
+    gaussian_process = GaussianProcess(
+            covariance_of_process,
+            HistoricalData(domain_info.get('dim')),
             )
 
     # Sample from the process
@@ -46,7 +49,7 @@ def _make_gp_from_gp_info(gp_info):
                 point['value_var'],
                 )
         try:
-            gaussian_process.add_sample_point(sample_point, point['value_var'])
+            gaussian_process.add_sampled_points([sample_point])
         except LinAlgError:
             raise(SingularMatrixError)
 

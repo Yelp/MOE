@@ -11,7 +11,7 @@ import moe.build.GPP as cpp_optimal_learning
 from moe.optimal_learning.python.cpp_wrappers.optimization import GradientDescentParameters, GradientDescentOptimizer, NullOptimizer
 from moe.views.gp_pretty_view import GpPrettyView
 from moe.views.schemas import GpInfo, EiOptimizationParameters, ListOfPointsInDomain, ListOfExpectedImprovements
-from moe.views.utils import _make_gp_from_gp_info
+from moe.views.utils import _make_gp_from_params
 
 
 class GpNextPointsRequest(colander.MappingSchema):
@@ -120,7 +120,7 @@ class GpNextPointsPrettyView(GpPrettyView):
         """
         num_samples_to_generate = params.get('num_samples_to_generate')
 
-        gaussian_process = self.make_gp(params)
+        gaussian_process = _make_gp_from_params(params)
         optimizer_type, num_random_samples, optimization_parameters, domain_type = self.get_optimization_parameters_cpp(params)
 
         optimization_method = getattr(gaussian_process, optimization_method_name)
@@ -141,17 +141,6 @@ class GpNextPointsPrettyView(GpPrettyView):
                 'points_to_sample': next_points.tolist(),
                 'expected_improvement': expected_improvement.tolist(),
                 })
-
-    @staticmethod
-    def make_gp(deserialized_request_params):
-        """Create a gaussian_process object from deserialized request params.
-
-        :param deserialized_request_params: the deserialized params of a REST request, containing gp_info
-        :type deserialized_request_params: a dictionary with a key 'gp_info' containing a deserialized :class:`moe.views.schemas.GpInfo` object of historical data.
-
-        """
-        gp_info = deserialized_request_params.get('gp_info')
-        return _make_gp_from_gp_info(gp_info)
 
     @staticmethod
     def get_optimization_parameters_cpp(deserialized_request_params):

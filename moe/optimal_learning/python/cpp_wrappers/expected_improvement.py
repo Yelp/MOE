@@ -323,52 +323,6 @@ def kriging_believer_expected_improvement_optimization(
     )
 
 
-def evaluate_expected_improvement_at_point_list(ei_evaluator, points_to_evaluate, randomness=None, max_num_threads=1, status=None):
-    """Evaluate Expected Improvement (1,p-EI) over a specified list of ``points_to_evaluate``.
-
-    Generally gradient descent is preferred but when they fail to converge this may be the only "robust" option.
-    This function is also useful for plotting or debugging purposes (just to get a bunch of EI values).
-
-    :param ei_evaluator: object specifying how to evaluate the expected improvement
-    :type ei_evaluator: cpp_wrappers.expected_improvement.ExpectedImprovement
-    :param points_to_evaluate: points at which to compute EI
-    :type points_to_evaluate: array of float64 with shape (num_to_evaluate, ei_evaluator.dim)
-    :param randomness: RNGs used by C++ to generate initial guesses and as the source of normal random numbers when monte-carlo is used
-    :type randomness: RandomnessSourceContainer (C++ object; e.g., from C_GP.RandomnessSourceContainer())
-    :param max_num_threads: maximum number of threads to use, >= 1
-    :type max_num_threads: int > 0
-    :param status: status messages from C++ (e.g., reporting on optimizer success, etc.)
-    :type status: dict
-    :return: EI evaluated at each of points_to_evaluate
-    :rtype: array of float64 with shape (points_to_evaluate.shape[0])
-
-    """
-    # Create enough randomness sources if none are specified.
-    if randomness is None:
-        randomness = C_GP.RandomnessSourceContainer(max_num_threads)
-        # Set seed based on less repeatable factors (e.g,. time)
-        randomness.SetRandomizedUniformGeneratorSeed(0)
-        randomness.SetRandomizedNormalRNGSeed(0)
-
-    # status must be an initialized dict for the call to C++.
-    if status is None:
-        status = {}
-
-    ei_values = C_GP.evaluate_EI_at_point_list(
-        ei_evaluator._gaussian_process._gaussian_process,
-        cpp_utils.cppify(points_to_evaluate),
-        cpp_utils.cppify(ei_evaluator._points_to_sample),
-        points_to_evaluate.shape[0],
-        ei_evaluator._points_to_sample.shape[0],
-        ei_evaluator._best_so_far,
-        ei_evaluator._num_mc_iterations,
-        max_num_threads,
-        randomness,
-        status,
-    )
-    return numpy.array(ei_values)
-
-
 class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
 
     r"""Implementation of Expected Improvement computation via C++ wrappers: EI and its gradient at specified point(s) sampled from a GaussianProcess.
@@ -381,11 +335,11 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
 
     """
 
-    def __init__(self, gaussian_process, current_point, points_to_sample=numpy.array([]), num_mc_iterations=1000, randomness=None):
+    def __init__(self, gaussian_process, current_point=None, points_to_sample=None, num_mc_iterations=1000, randomness=None):
         """Construct an ExpectedImprovement object that knows how to call C++ for evaluation of member functions.
 
         :param gaussian_process: GaussianProcess describing
-        :type gaussian_process: cpp_wrappers.gaussian_process.GaussianProcess object
+        :type gaussian_process: :class:`moe.optimal_learning.python.cpp_wrappers.gaussian_process.GaussianProcess` object
         :param current_point: point at which to compute EI (i.e., q in q,p-EI)
         :type current_point: array of float64 with shape (dim)
         :param points_to_sample: points which are being sampled concurrently (i.e., p in q,p-EI)
@@ -404,7 +358,10 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
             self._best_so_far = numpy.finfo(numpy.float64).max
 
         self._current_point = numpy.copy(current_point)
-        self._points_to_sample = numpy.copy(points_to_sample)
+        if points_to_sample is not None:
+            self._points_to_sample = numpy.copy(points_to_sample)
+        else:
+            self._points_to_sample = numpy.array([])
 
         if randomness is None:
             self._randomness = C_GP.RandomnessSourceContainer(1)  # create randomness for only 1 thread
@@ -425,6 +382,49 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
     def problem_size(self):
         """Return the number of independent parameters to optimize."""
         return self.dim
+
+    def evaluate_at_point_list(self, points_to_evaluate, randomness=None, max_num_threads=1, status=None):
+        """Evaluate Expected Improvement (1,p-EI) over a specified list of ``points_to_evaluate``.
+
+        Generally gradient descent is preferred but when they fail to converge this may be the only "robust" option.
+        This function is also useful for plotting or debugging purposes (just to get a bunch of EI values).
+
+        :param points_to_evaluate: points at which to compute EI
+        :type points_to_evaluate: array of float64 with shape (num_to_evaluate, self.dim)
+        :param randomness: RNGs used by C++ to generate initial guesses and as the source of normal random numbers when monte-carlo is used
+        :type randomness: RandomnessSourceContainer (C++ object; e.g., from C_GP.RandomnessSourceContainer())
+        :param max_num_threads: maximum number of threads to use, >= 1
+        :type max_num_threads: int > 0
+        :param status: status messages from C++ (e.g., reporting on optimizer success, etc.)
+        :type status: dict
+        :return: EI evaluated at each of points_to_evaluate
+        :rtype: array of float64 with shape (points_to_evaluate.shape[0])
+
+        """
+        # Create enough randomness sources if none are specified.
+        if randomness is None:
+            randomness = C_GP.RandomnessSourceContainer(max_num_threads)
+            # Set seed based on less repeatable factors (e.g,. time)
+            randomness.SetRandomizedUniformGeneratorSeed(0)
+            randomness.SetRandomizedNormalRNGSeed(0)
+
+        # status must be an initialized dict for the call to C++.
+        if status is None:
+            status = {}
+
+        ei_values = C_GP.evaluate_EI_at_point_list(
+            self._gaussian_process._gaussian_process,
+            cpp_utils.cppify(points_to_evaluate),
+            cpp_utils.cppify(self._points_to_sample),
+            points_to_evaluate.shape[0],
+            self._points_to_sample.shape[0],
+            self._best_so_far,
+            self._num_mc_iterations,
+            max_num_threads,
+            randomness,
+            status,
+        )
+        return numpy.array(ei_values)
 
     def get_current_point(self):
         """Get the current_point (array of float64 with shape (problem_size)) at which this object is evaluating the objective function, ``f(x)``."""

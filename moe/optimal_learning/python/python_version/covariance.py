@@ -21,6 +21,8 @@ import numpy
 
 from moe.optimal_learning.python.interfaces.covariance_interface import CovarianceInterface
 
+SQUARE_EXPONENTIAL_COVARIANCE_TYPE = 'square_exponential'
+
 
 class SquareExponential(CovarianceInterface):
 
@@ -35,6 +37,8 @@ class SquareExponential(CovarianceInterface):
     This covariance object has ``dim+1`` hyperparameters: ``\alpha, lengths_i``
 
     """
+
+    covariance_type = SQUARE_EXPONENTIAL_COVARIANCE_TYPE
 
     def __init__(self, hyperparameters):
         r"""Construct a square exponential covariance object with the specified hyperparameters.
@@ -152,3 +156,7 @@ class SquareExponential(CovarianceInterface):
 
         """
         raise NotImplementedError("Python implementation does not support computing the hessian covariance wrt hyperparameters.")
+
+COVARIANCE_TYPES_TO_CLASSES = {
+        SQUARE_EXPONENTIAL_COVARIANCE_TYPE: SquareExponential,
+        }

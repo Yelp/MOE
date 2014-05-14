@@ -114,6 +114,27 @@ class GaussianProcessTestCase(OptimalLearningTestCase):
 
     precompute_gaussian_process_data = False
 
+    noise_variance_base = 0.0002
+    dim = 3
+    num_hyperparameters = dim + 1
+
+    gp_test_environment_input = GaussianProcessTestEnvironmentInput(
+        dim,
+        num_hyperparameters,
+        0,
+        noise_variance_base=noise_variance_base,
+        hyperparameter_interval=ClosedInterval(0.1, 1.3),
+        lower_bound_interval=ClosedInterval(-2.0, 0.5),
+        upper_bound_interval=ClosedInterval(2.0, 3.5),
+        covariance_class=SquareExponential,
+        spatial_domain_class=TensorProductDomain,
+        hyperparameter_domain_class=TensorProductDomain,
+        gaussian_process_class=GaussianProcess,
+    )
+
+    num_sampled_list = [1, 2, 3, 5, 10, 16, 20, 42]
+    num_to_sample_list = [1, 2, 3, 8]
+
     @T.class_setup
     def base_setup(self):
         """Build a Gaussian Process prior for each problem size in ``self.num_sampled_list`` if precomputation is desired.
@@ -160,3 +181,28 @@ class GaussianProcessTestCase(OptimalLearningTestCase):
             gaussian_process_type=test_environment.gaussian_process_class,
         )
         return GaussianProcessTestEnvironment(domain, covariance, gaussian_process)
+
+    def assert_relatively_equal(self, value_one, value_two, tol=None):
+        """Assert that two values are relatively equal, |value_one - value_two|/|value_one| <= eps."""
+        if tol is None:
+            tol = self.tol
+        denom = abs(value_one)
+        if (denom == 0.0):
+            denom = 1.0
+        T.assert_lte(
+                abs(value_one - value_two) / denom,
+                tol,
+                )
+
+    def assert_lists_relatively_equal(self, list_one, list_two, tol=None):
+        """Assert two lists are relatively equal."""
+        T.assert_length(list_one, len(list_two))
+        for i, list_one_item in enumerate(list_one):
+            list_two_item = list_two[i]
+            self.assert_relatively_equal(list_one_item, list_two_item, tol)
+
+    def assert_matrix_relatively_equal(self, matrix_one, matrix_two, tol=None):
+        """Assert two matrices are relatively equal."""
+        for row_idx, row_matrix_one in enumerate(matrix_one):
+            row_matrix_two = matrix_two[row_idx]
+            self.assert_lists_relatively_equal(row_matrix_one, row_matrix_two, tol)

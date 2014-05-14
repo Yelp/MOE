@@ -52,7 +52,7 @@ import copy
 import numpy
 
 import moe.build.GPP as C_GP
-from moe.optima_llearning.python.cpp_wrappers import cpp_utils
+from moe.optimal_learning.python.cpp_wrappers import cpp_utils
 from moe.optimal_learning.python.interfaces.log_likelihood_interface import GaussianProcessLogLikelihoodInterface
 from moe.optimal_learning.python.interfaces.optimization_interface import OptimizableInterface
 

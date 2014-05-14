@@ -3,6 +3,8 @@
 import colander
 
 from moe.optimal_learning.python.constant import default_gaussian_process_parameters, default_ei_optimization_parameters, default_optimizer_type, default_num_random_samples, ALL_OPTIMIZERS
+from moe.optimal_learning.python.python_version.covariance import COVARIANCE_TYPES_TO_CLASSES, SQUARE_EXPONENTIAL_COVARIANCE_TYPE
+from moe.optimal_learning.python.python_version.domain import TENSOR_PRODUCT_DOMAIN_TYPE, DOMAIN_TYPES_TO_CLASSES
 
 
 class ListOfFloats(colander.SequenceSchema):
@@ -52,20 +54,65 @@ class Domain(colander.SequenceSchema):
     domain_coordinates = DomainCoordinate()
 
 
+class DomainInfo(colander.MappingSchema):
+
+    """The domain info needed for every request.
+
+    **Required fields**
+
+        :domain_type: the type of domain to use in ``moe.optimal_learning.python.python_version.domain.DOMAIN_TYPES_TO_CLASSES``
+        :dim: the dimension of the domain (int)
+
+    **Optional fields**
+
+        :domain_bounds: the bounds of the domain of type :class:`moe.views.schemas.Domain`
+
+    """
+
+    domain_type = colander.SchemaNode(
+            colander.String(),
+            validator=colander.OneOf(DOMAIN_TYPES_TO_CLASSES),
+            missing=TENSOR_PRODUCT_DOMAIN_TYPE,
+            )
+    dim = colander.SchemaNode(
+            colander.Int(),
+            validator=colander.Range(min=0),
+            )
+
+
+class CovarianceInfo(colander.MappingSchema):
+
+    """The covariance info needed for every request.
+
+    **Required fields**
+
+        :covariance_type: a covariance type in ``moe.optimal_learning.python.python_version.covariance.COVARIANCE_TYPES_TO_CLASSES``
+        :hyperparameters: the hyperparameters corresponding to the given covariance_type
+
+    """
+
+    covariance_type = colander.SchemaNode(
+            colander.String(),
+            validator=colander.OneOf(COVARIANCE_TYPES_TO_CLASSES),
+            missing=SQUARE_EXPONENTIAL_COVARIANCE_TYPE,
+            )
+    hyperparameters = ListOfFloats(
+            missing=None,
+            )
+
+
 class GpInfo(colander.MappingSchema):
 
     """The Gaussian Process info needed for every request.
 
     Contains:
         * points_sampled - PointsSampled
-        * domain - Domain
         * length_scale - ListOfFloats
         * signal_variance - float
 
     """
 
     points_sampled = PointsSampled()
-    domain = Domain()
     length_scale = ListOfFloats(
             missing=default_gaussian_process_parameters.length_scale,
             )

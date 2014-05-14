@@ -14,8 +14,9 @@ from pyramid.view import view_config
 from moe.optimal_learning.python.constant import default_expected_improvement_parameters
 from moe.views.constant import GP_EI_ROUTE_NAME, GP_EI_PRETTY_ROUTE_NAME
 from moe.views.gp_pretty_view import GpPrettyView, PRETTY_RENDERER
-from moe.views.schemas import ListOfPointsInDomain, GpInfo, ListOfExpectedImprovements
-from moe.views.utils import _make_gp_from_gp_info
+from moe.views.schemas import ListOfPointsInDomain, GpInfo, ListOfExpectedImprovements, CovarianceInfo, DomainInfo
+from moe.views.utils import _make_gp_from_params
+from moe.optimal_learning.python.cpp_wrappers.expected_improvement import ExpectedImprovement
 
 
 class GpEiRequest(colander.MappingSchema):
@@ -66,6 +67,8 @@ class GpEiRequest(colander.MappingSchema):
             missing=default_expected_improvement_parameters.mc_iterations,
             )
     gp_info = GpInfo()
+    covariance_info = CovarianceInfo()
+    domain_info = DomainInfo()
 
 
 class GpEiResponse(colander.MappingSchema):
@@ -107,6 +110,8 @@ class GpEiView(GpPrettyView):
                 [0.1], [0.5], [0.9],
                 ],
             "gp_info": GpPrettyView._pretty_default_gp_info,
+            "covariance_info": GpPrettyView._pretty_default_covariance_info,
+            "domain_info": GpPrettyView._pretty_default_domain_info,
             }
 
     @view_config(route_name=_pretty_route_name, renderer=PRETTY_RENDERER)
@@ -129,7 +134,7 @@ class GpEiView(GpPrettyView):
            :input: :class:`moe.views.gp_ei.GpEiRequest`
            :output: :class:`moe.views.gp_ei.GpEiResponse`
 
-           :status 200: returns a response
+           :status 201: returns a response
            :status 500: server error
 
         """
@@ -137,13 +142,16 @@ class GpEiView(GpPrettyView):
 
         points_to_evaluate = numpy.array(params.get('points_to_evaluate'))
         points_being_sampled = numpy.array(params.get('points_being_sampled'))
-        gp_info = params.get('gp_info')
+        gaussian_process = _make_gp_from_params(params)
 
-        gaussian_process = _make_gp_from_gp_info(gp_info)
+        expected_improvement_evaluator = ExpectedImprovement(
+                gaussian_process,
+                None,
+                points_to_sample=points_being_sampled,
+                )
 
-        expected_improvement = gaussian_process.evaluate_expected_improvement_at_point_list(
+        expected_improvement = expected_improvement_evaluator.evaluate_at_point_list(
                 points_to_evaluate,
-                points_being_sampled=points_being_sampled,
                 )
 
         return self.form_response({

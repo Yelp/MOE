@@ -18,6 +18,8 @@ import numpy
 from moe.optimal_learning.python.geometry_utils import generate_grid_points, generate_latin_hypercube_points
 from moe.optimal_learning.python.interfaces.domain_interface import DomainInterface
 
+TENSOR_PRODUCT_DOMAIN_TYPE = 'tensor_product'
+
 
 class TensorProductDomain(DomainInterface):
 
@@ -26,6 +28,8 @@ class TensorProductDomain(DomainInterface):
     A d-dimensional tensor product domain is ``D = [x_0_{min}, x_0_{max}] X [x_1_{min}, x_1_{max}] X ... X [x_d_{min}, x_d_{max}]``
 
     """
+
+    domain_type = TENSOR_PRODUCT_DOMAIN_TYPE
 
     def __init__(self, domain_bounds):
         """Construct a TensorProductDomain with the specified bounds.
@@ -151,3 +155,7 @@ class TensorProductDomain(DomainInterface):
             output_update[j] = desired_step
 
         return output_update
+
+DOMAIN_TYPES_TO_CLASSES = {
+        TENSOR_PRODUCT_DOMAIN_TYPE: TensorProductDomain,
+        }
