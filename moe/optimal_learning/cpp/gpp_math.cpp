@@ -405,7 +405,8 @@ double ExpectedImprovementEvaluator::ComputeExpectedImprovement(StateType * ei_s
 }
 
 /*
-  Computes gradient of EI (see ExpectedImprovementEvaluator::ComputeGradExpectedImprovement) wrt current_point.
+  Computes gradient of EI (see ExpectedImprovementEvaluator::ComputeGradExpectedImprovement) wrt points_to_sample (stored in
+  union_of_points[0:num_to_sample]).
 
   Mechanism is similar to the computation of EI, where points' contributions to the gradient are thrown out of their
   corresponding ``improvement <= 0.0``.

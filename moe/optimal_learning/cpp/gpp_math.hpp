@@ -1127,10 +1127,10 @@ struct OnePotentialSampleExpectedImprovementState final {
       :point_to_sample[dim]: point at which to evaluate EI and/or its gradient to check their value in future experiments (i.e., test point for GP predictions)
       :configure_for_gradients: true if this object will be used to compute gradients, false otherwise
   \endrst*/
-  OnePotentialSampleExpectedImprovementState(const EvaluatorType& ei_evaluator, double const * restrict points_to_sample, bool configure_for_gradients)
+  OnePotentialSampleExpectedImprovementState(const EvaluatorType& ei_evaluator, double const * restrict point_to_sample, bool configure_for_gradients)
       : dim(ei_evaluator.dim()),
         num_derivatives(configure_for_gradients ? num_to_sample : 0),
-        point_to_sample(points_to_sample, points_to_sample + dim),
+        point_to_sample(point_to_sample, point_to_sample + dim),
         points_to_sample_state(*ei_evaluator.gaussian_process(), point_to_sample.data(), num_to_sample, num_derivatives),
         grad_mu(dim*num_derivatives),
         grad_chol_decomp(dim*num_derivatives) {
@@ -1165,7 +1165,7 @@ struct OnePotentialSampleExpectedImprovementState final {
 
     \param
       :ei_evaluator: expected improvement evaluator object that specifies the parameters & GP for EI evaluation
-      :points_to_sample[dim]: potential future sample whose EI (and/or gradients) is being evaluated
+      :point_to_sample[dim]: potential future sample whose EI (and/or gradients) is being evaluated
   \endrst*/
   void UpdateCurrentPoint(const EvaluatorType& ei_evaluator, double const * restrict point_to_sample_in) OL_NONNULL_POINTERS {
     // update current point in union_of_points
@@ -1186,7 +1186,7 @@ struct OnePotentialSampleExpectedImprovementState final {
 
     \param
       :ei_evaluator: expected improvement evaluator object that specifies the parameters & GP for EI evaluation
-      :current_point[dim]: current point (ei evaluation location) to change to
+      :point_to_sample[dim]: potential future sample whose EI (and/or gradients) is being evaluated
   \endrst*/
   void SetupState(const EvaluatorType& ei_evaluator, double const * restrict point_to_sample_in) OL_NONNULL_POINTERS {
     if (unlikely(dim != ei_evaluator.dim())) {

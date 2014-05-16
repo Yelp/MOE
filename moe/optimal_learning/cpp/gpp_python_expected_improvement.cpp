@@ -370,7 +370,7 @@ void ExportExpectedImprovementFunctions() {
     )%%");
 
   boost::python::def("compute_grad_expected_improvement", ComputeGradExpectedImprovementWrapper, R"%%(
-    Compute the gradient of expected improvement evaluated at current_point.
+    Compute the gradient of expected improvement evaluated at points_to_sample.
     If num_to_sample = 1 and num_being_sampled = 0 AND force_monte_carlo is false, this will
     use (fast/accurate) analytic evaluation.
     Otherwise monte carlo-based EI computation is used.
@@ -383,10 +383,10 @@ void ExportExpectedImprovementFunctions() {
     double best_so_far: best known value of objective so far
     bool force_monte_carlo: true to force monte carlo evaluation of EI
     RandomnessSourceContainer randomness_source: object containing randomness sources; only thread 0's source is used
-    pylist points_to_sample[dim]: current point being considered
+    pylist points_to_sample[dim]: potential future samples whose EI (and/or gradients) are being evaluated
 
     RETURNS:
-    pylist result[dim]: gradient of EI (computed at current_point)
+    pylist result[dim]: gradient of EI (computed at points_to_sample + points_being_sampled, wrt points_to_sample)
     )%%");
 
   boost::python::def("multistart_expected_improvement_optimization", MultistartExpectedImprovementOptimizationWrapper, R"%%(

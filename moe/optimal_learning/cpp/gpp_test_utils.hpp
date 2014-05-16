@@ -160,7 +160,7 @@ class PingableMatrixInputVectorOutputInterface {
   Class to conveniently hold and generate random data that are commonly needed for testing functions in gpp_math.cpp.  In
   particular, this mock is used for testing GP mean, GP variance, and expected improvement (and their gradients).
 
-  This class holds arrays: ``points_to_sample``, ``points_sampled``, ``points_sampled_value``, and ``current_point``
+  This class holds arrays: ``points_sampled``, ``points_sampled_value``, ``points_to_sample``, and ``points_being_sampled``
   which are sized according to the parameters specified in Initialize(), and filled with random numbers.
 
   TODO: we currently generate the point sets by repeated calls to rand().  This is generally unwise since the distribution
@@ -190,8 +190,8 @@ class MockExpectedImprovementEnvironment {
     (Re-)initializes the data data in this function: this includes space allocation and random number generation.
 
     If any of the size parameters are changed from their current values, space will be realloc'd.
-    Then it re-draws another set of uniform random points (in [-5, 5]) for the member arrays points_to_sample,
-    points_sampled, points_sampled_value, and current_point.
+    Then it re-draws another set of uniform random points (in [-5, 5]) for the member arrays
+    points_sampled, points_sampled_value, points_to_sample, and points_being_sampled.
 
     \param
       :dim: the spatial dimension of a point (i.e., number of independent params in experiment)
