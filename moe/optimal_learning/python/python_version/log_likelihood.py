@@ -100,10 +100,10 @@ def multistart_hyperparameter_optimization(
     # Producing the random starts in log10 space improves robustness by clustering some extra points near 0
     domain_bounds_log10 = numpy.log10(hyperparameter_optimizer.domain._domain_bounds)
     domain_log10 = TensorProductDomain(ClosedInterval.build_closed_intervals_from_list(domain_bounds_log10))
-    random_starts = domain_log10.generate_uniform_random_points_in_domain(num_points=num_multistarts)
-    random_starts = numpy.power(10.0, random_starts)
+    starting_points = domain_log10.generate_uniform_random_points_in_domain(num_points=num_multistarts)
+    starting_points = numpy.power(10.0, starting_points)
 
-    best_hyperparameters, _ = multistart_optimize(hyperparameter_optimizer, starting_points=random_starts)
+    best_hyperparameters, _ = multistart_optimize(hyperparameter_optimizer, starting_points=starting_points)
 
     # TODO(eliu): have GD actually indicate whether updates were found (GH-59)
     found_flag = True

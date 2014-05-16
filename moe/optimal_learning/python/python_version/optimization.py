@@ -189,7 +189,7 @@ def multistart_optimize(optimizer, starting_points=None, num_multistarts=None):
         raise ValueError('MUST specify starting points OR num_multistarts.')
 
     multistart_optimizer = MultistartOptimizer(optimizer, num_multistarts)
-    return multistart_optimizer.optimize(random_starts=starting_points)
+    return multistart_optimizer.optimize(starting_points=starting_points)
 
 
 class NullParameters(collections.namedtuple('NullParameters', [])):
@@ -451,7 +451,7 @@ class MultistartOptimizer(OptimizerInterface):
         self.optimizer = optimizer
         self.num_multistarts = num_multistarts
 
-    def optimize(self, random_starts=None, **kwargs):
+    def optimize(self, starting_points=None, **kwargs):
         """Perform multistart optimization with self.optimizer.
 
         .. Note:: comments copied from MultistartOptimizer::MultistartOptimize in gpp_optimization.hpp.
@@ -472,14 +472,14 @@ class MultistartOptimizer(OptimizerInterface):
 
         """
         # TODO(eliu): pass the best point, fcn value, etc. in thru an IOContainer-like structure (GH-59)
-        if random_starts is None:
-            random_starts = self.optimizer.domain.generate_uniform_random_points_in_domain(self.num_multistarts, None)
+        if starting_points is None:
+            starting_points = self.optimizer.domain.generate_uniform_random_points_in_domain(self.num_multistarts, None)
 
         best_function_value = -numpy.inf
-        best_point = random_starts[0, ...]  # any point will do
-        function_value_list = numpy.empty(random_starts.shape[0])
+        best_point = starting_points[0, ...]  # any point will do
+        function_value_list = numpy.empty(starting_points.shape[0])
 
-        for i, point in enumerate(random_starts):
+        for i, point in enumerate(starting_points):
             self.optimizer.objective_function.set_current_point(point)
             self.optimizer.optimize(**kwargs)
             function_value = self.optimizer.objective_function.compute_objective_function(**kwargs)

@@ -112,10 +112,10 @@ class GridPointGenerationTest(OptimalLearningTestCase):
         for i, y_coord in enumerate(per_axis_grid[1]):
             for j, x_coord in enumerate(per_axis_grid[0]):
                 for k, z_coord in enumerate(per_axis_grid[2]):
-                    truth = numpy.array([x_coord, y_coord, z_coord])
+                    coordinates_truth = numpy.array([x_coord, y_coord, z_coord])
                     index = i * len(per_axis_grid[2]) * len(per_axis_grid[0]) + j * len(per_axis_grid[2]) + k
                     test = grid[index, ...]
-                    self.assert_vector_within_relative(test, truth, 0.0)
+                    self.assert_vector_within_relative(test, coordinates_truth, 0.0)
 
         # Also test that scalar points_per_dimension works
         points_per_dimension = [5, 5, 5]
@@ -151,37 +151,37 @@ class ClosedIntervalTest(OptimalLearningTestCase):
 
     def test_length(self):
         """Check that length works."""
-        truth = [0.0, self.test_cases[1].max - self.test_cases[1].min, self.test_cases[2].max - self.test_cases[2].min, numpy.inf]
+        expected_length_list = [0.0, self.test_cases[1].max - self.test_cases[1].min, self.test_cases[2].max - self.test_cases[2].min, numpy.inf]
         for i, case in enumerate(self.test_cases):
-            T.assert_equal(case.length, truth[i])
+            T.assert_equal(case.length, expected_length_list[i])
 
     def test_is_inside(self):
         """Check that is_inside works."""
-        truth = [True, True, True, False, False]
+        points_inside_test_interval_0_truth = [True, True, True, False, False]
         case = 0
         for j, value in enumerate(self.points_to_check[case, ...]):
-            T.assert_equal(self.test_cases[case].is_inside(value), truth[j])
+            T.assert_equal(self.test_cases[case].is_inside(value), points_inside_test_interval_0_truth[j])
 
-        truth = [True, True, True, False, False]
+        points_inside_test_interval_1_truth = [True, True, True, False, False]
         case = 1
         for j, value in enumerate(self.points_to_check[case, ...]):
-            T.assert_equal(self.test_cases[case].is_inside(value), truth[j])
+            T.assert_equal(self.test_cases[case].is_inside(value), points_inside_test_interval_1_truth[j])
 
-        truth = [False, False, False, False, False]
+        points_inside_test_interval_2_truth = [False, False, False, False, False]
         case = 2
         for j, value in enumerate(self.points_to_check[case, ...]):
-            T.assert_equal(self.test_cases[case].is_inside(value), truth[j])
+            T.assert_equal(self.test_cases[case].is_inside(value), points_inside_test_interval_2_truth[j])
 
-        truth = [True, True, True, False, True]
+        points_inside_test_interval_3_truth = [True, True, True, False, True]
         case = 3
         for j, value in enumerate(self.points_to_check[case, ...]):
-            T.assert_equal(self.test_cases[case].is_inside(value), truth[j])
+            T.assert_equal(self.test_cases[case].is_inside(value), points_inside_test_interval_3_truth[j])
 
     def test_is_empty(self):
         """Check that is_empty works."""
-        truth = [False, False, True, False]
+        test_interval_empty_truth = [False, False, True, False]
         for i, case in enumerate(self.test_cases):
-            T.assert_equal(case.is_empty(), truth[i])
+            T.assert_equal(case.is_empty(), test_interval_empty_truth[i])
 
 
 if __name__ == "__main__":

@@ -51,15 +51,16 @@ class DomainInterface(object):
 
     @abstractmethod
     def compute_update_restricted_to_domain(self, max_relative_change, current_point, update_vector):
-        r"""Compute a new update so that CheckPointInside(``current_point`` + ``new_update``) is true.
+        r"""Compute a new update so that CheckPointInside(``current_point`` + ``return_value``) is true.
 
-        Changes new_update_vector so that:
-          ``point_new = point + new_update_vector``
+        Returns a new update vector in ``return_value`` so that:
+          ``point_new = point + return_value``
 
-        has coordinates such that ``CheckPointInside(point_new)`` returns true.
+        has coordinates such that ``CheckPointInside(point_new)`` returns true. We select ``point_new``
+        by projecting ``point + update_vector`` to the nearest point on the domain.
 
-        ``new_update_vector`` is a function of ``update_vector``.
-        ``new_update_vector`` is just a copy of ``update_vector`` if ``current_point`` is already inside the domain.
+        ``return_value`` is a function of ``update_vector``.
+        ``return_value`` is just a copy of ``update_vector`` if ``current_point`` is already inside the domain.
 
         .. NOTE::
             We modify update_vector (instead of returning point_new) so that further update

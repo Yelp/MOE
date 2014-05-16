@@ -322,13 +322,13 @@ class GradientDescentOptimizerTest(OptimalLearningTestCase):
         points = self.domain.generate_uniform_random_points_in_domain(num_points)
 
         multistart_optimizer = MultistartOptimizer(gradient_descent_optimizer_crippled, num_points)
-        test_best_point, _ = multistart_optimizer.optimize(random_starts=points)
+        test_best_point, _ = multistart_optimizer.optimize(starting_points=points)
         # This point set won't include the optimum so multistart GD won't find it.
         for value in (test_best_point - self.polynomial.optimum_point):
             T.assert_not_equal(value, 0.0)
 
         points_with_opt = numpy.append(points, self.polynomial.optimum_point.reshape((1, self.polynomial.dim)), axis=0)
-        test_best_point, _ = multistart_optimizer.optimize(random_starts=points_with_opt)
+        test_best_point, _ = multistart_optimizer.optimize(starting_points=points_with_opt)
         # This point set will include the optimum so multistart GD will find it.
         for value in (test_best_point - self.polynomial.optimum_point):
             T.assert_equal(value, 0.0)

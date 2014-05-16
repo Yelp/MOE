@@ -61,8 +61,8 @@ def multistart_expected_improvement_optimization(
     if num_samples_to_generate != 1:
         raise ValueError('num_samples_to_generate = %s must be 1. Other cases not implemented yet.' % num_samples_to_generate)
 
-    random_starts = ei_optimizer.domain.generate_uniform_random_points_in_domain(num_points=num_multistarts)
-    best_point, _ = multistart_optimize(ei_optimizer, starting_points=random_starts)
+    starting_points = ei_optimizer.domain.generate_uniform_random_points_in_domain(num_points=num_multistarts)
+    best_point, _ = multistart_optimize(ei_optimizer, starting_points=starting_points)
 
     # TODO(eliu): have GD actually indicate whether updates were found (GH-59)
     found_flag = True
