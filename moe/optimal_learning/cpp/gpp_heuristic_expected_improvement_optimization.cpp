@@ -62,8 +62,8 @@ FunctionValue KrigingBelieverEstimationPolicy::ComputeEstimate(const GaussianPro
   best_points_to_sample output.
 */
 template <typename DomainType>
-void ComputeHeuristicSetOfPointsToSample(const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters, const DomainType& domain, const ObjectiveEstimationPolicyInterface& estimation_policy, double best_so_far, int max_num_threads, bool lhc_search_only, int num_lhc_samples, int num_samples_to_generate, bool * restrict found_flag, UniformRandomGenerator * uniform_generator, double * restrict best_points_to_sample) {
-  if (unlikely(num_samples_to_generate <= 0)) {
+void ComputeHeuristicSetOfPointsToSample(const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters, const DomainType& domain, const ObjectiveEstimationPolicyInterface& estimation_policy, double best_so_far, int max_num_threads, bool lhc_search_only, int num_lhc_samples, int num_to_sample, bool * restrict found_flag, UniformRandomGenerator * uniform_generator, double * restrict best_points_to_sample) {
+  if (unlikely(num_to_sample <= 0)) {
     return;
   }
   const int dim = gaussian_process.dim();
@@ -76,7 +76,7 @@ void ComputeHeuristicSetOfPointsToSample(const GaussianProcess& gaussian_process
   std::unique_ptr<GaussianProcess> gaussian_process_local(gaussian_process.Clone());
 
   bool found_flag_overall = true;
-  for (int i = 0; i < num_samples_to_generate; ++i) {
+  for (int i = 0; i < num_to_sample; ++i) {
     bool found_flag_local = false;
     if (likely(lhc_search_only == false)) {
       ComputeOptimalPointToSampleWithRandomStarts(*gaussian_process_local, optimization_parameters, domain, nullptr, num_being_sampled, best_so_far, 0, max_num_threads, &found_flag_local, uniform_generator, nullptr, best_points_to_sample);
@@ -84,7 +84,7 @@ void ComputeHeuristicSetOfPointsToSample(const GaussianProcess& gaussian_process
     // if gradient descent EI optimization failed OR we're only doing latin hypercube searches
     if (unlikely(found_flag_local == false || lhc_search_only == true)) {
       if (unlikely(lhc_search_only == false)) {
-        OL_WARNING_PRINTF("WARNING: Constant Liar EI opt DID NOT CONVERGE on iteration %d of %d\n", i, num_samples_to_generate);
+        OL_WARNING_PRINTF("WARNING: Constant Liar EI opt DID NOT CONVERGE on iteration %d of %d\n", i, num_to_sample);
         OL_WARNING_PRINTF("Attempting latin hypercube search\n");
       }
 
@@ -93,7 +93,7 @@ void ComputeHeuristicSetOfPointsToSample(const GaussianProcess& gaussian_process
 
       // if latin hypercube 'dumb' search failed
       if (unlikely(found_flag_local == false)) {
-        OL_ERROR_PRINTF("ERROR: Constant Liar EI latin hypercube search FAILED on iteration %d of %d\n", i, num_samples_to_generate);
+        OL_ERROR_PRINTF("ERROR: Constant Liar EI latin hypercube search FAILED on iteration %d of %d\n", i, num_to_sample);
         *found_flag = false;
         return;
       }
@@ -110,7 +110,7 @@ void ComputeHeuristicSetOfPointsToSample(const GaussianProcess& gaussian_process
 }
 
 // template explicit instantiation definitions, see gpp_common.hpp header comments, item 6
-template void ComputeHeuristicSetOfPointsToSample(const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters, const TensorProductDomain& domain, const ObjectiveEstimationPolicyInterface& estimation_policy, double best_so_far, int max_num_threads, bool lhc_search_only, int num_lhc_samples, int num_samples_to_generate, bool * restrict found_flag, UniformRandomGenerator * uniform_generator, double * restrict best_points_to_sample);
-template void ComputeHeuristicSetOfPointsToSample(const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters, const SimplexIntersectTensorProductDomain& domain, const ObjectiveEstimationPolicyInterface& estimation_policy, double best_so_far, int max_num_threads, bool lhc_search_only, int num_lhc_samples, int num_samples_to_generate, bool * restrict found_flag, UniformRandomGenerator * uniform_generator, double * restrict best_points_to_sample);
+template void ComputeHeuristicSetOfPointsToSample(const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters, const TensorProductDomain& domain, const ObjectiveEstimationPolicyInterface& estimation_policy, double best_so_far, int max_num_threads, bool lhc_search_only, int num_lhc_samples, int num_to_sample, bool * restrict found_flag, UniformRandomGenerator * uniform_generator, double * restrict best_points_to_sample);
+template void ComputeHeuristicSetOfPointsToSample(const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters, const SimplexIntersectTensorProductDomain& domain, const ObjectiveEstimationPolicyInterface& estimation_policy, double best_so_far, int max_num_threads, bool lhc_search_only, int num_lhc_samples, int num_to_sample, bool * restrict found_flag, UniformRandomGenerator * uniform_generator, double * restrict best_points_to_sample);
 
 }  // end namespace optimal_learning

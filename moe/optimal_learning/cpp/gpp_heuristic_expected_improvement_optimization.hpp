@@ -237,7 +237,7 @@ class KrigingBelieverEstimationPolicy final : public ObjectiveEstimationPolicyIn
   We solve 1-EI, and then we *ASSUME* an objective function value at the resulting optima. This process is repeated q times.
   It is perhaps more clear in pseudocode:
   points_being_sampled = {}  // This stays empty! We are only working with 1,0-EI solves
-  for i = 0:num_samples_to_generate-1 {
+  for i = 0:num_to_sample-1 {
     // First, solve the 1,0-EI problem*
     new_point = ComputeOptimalPointToSampleWithRandomStarts(gaussian_process, points_being_sampled, other_parameters)
     // *Estimate* the objective function value at new_point
@@ -263,7 +263,7 @@ class KrigingBelieverEstimationPolicy final : public ObjectiveEstimationPolicyIn
   does not attempt to estimate the behavior of the underlying objective function) but much more expensive (because it
   requires monte-carlo iteration).
 
-  If num_samples_to_generate = 1, this is exactly the same as ComputeOptimalPointToSampleWithRandomStarts(); i.e.,
+  If num_to_sample = 1, this is exactly the same as ComputeOptimalPointToSampleWithRandomStarts(); i.e.,
   both methods solve the 1-EI optimization problem the same way.
 
   Currently, during optimization, we recommend that the coordinates of the initial guesses not differ from the
@@ -289,19 +289,19 @@ class KrigingBelieverEstimationPolicy final : public ObjectiveEstimationPolicyIn
   max_num_threads: maximum number of threads for use by OpenMP (generally should be <= # cores)
   lhc_search_only: whether to ONLY use latin hypercube search (and skip gradient descent EI opt)
   num_lhc_samples: number of samples to draw if/when doing latin hypercube search
-  num_samples_to_generate: how many simultaneous experiments you would like to run (i.e., the q in q,0-EI)
+  num_to_sample: how many simultaneous experiments you would like to run (i.e., the q in q,0-EI)
   uniform_generator[1]: a UniformRandomGenerator object providing the random engine for uniform random numbers
   OUTPUTS:
   found_flag[1]: true if best_points_to_sample corresponds to a nonzero EI if sampled simultaneously
   uniform_generator[1]:UniformRandomGenerator object will have its state changed due to random draws
-  best_points_to_sample[num_samples_to_generate*dim]: point yielding the best EI according to constant liar
+  best_points_to_sample[num_to_sample*dim]: point yielding the best EI according to constant liar
 */
 template <typename DomainType>
-void ComputeHeuristicSetOfPointsToSample(const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters, const DomainType& domain, const ObjectiveEstimationPolicyInterface& estimation_policy, double best_so_far, int max_num_threads, bool lhc_search_only, int num_lhc_samples, int num_samples_to_generate, bool * restrict found_flag, UniformRandomGenerator * uniform_generator, double * restrict best_points_to_sample);
+void ComputeHeuristicSetOfPointsToSample(const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters, const DomainType& domain, const ObjectiveEstimationPolicyInterface& estimation_policy, double best_so_far, int max_num_threads, bool lhc_search_only, int num_lhc_samples, int num_to_sample, bool * restrict found_flag, UniformRandomGenerator * uniform_generator, double * restrict best_points_to_sample);
 
 // template explicit instantiation declarations, see gpp_common.hpp header comments, item 6
-extern template void ComputeHeuristicSetOfPointsToSample(const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters, const TensorProductDomain& domain, const ObjectiveEstimationPolicyInterface& estimation_policy, double best_so_far, int max_num_threads, bool lhc_search_only, int num_lhc_samples, int num_samples_to_generate, bool * restrict found_flag, UniformRandomGenerator * uniform_generator, double * restrict best_points_to_sample);
-extern template void ComputeHeuristicSetOfPointsToSample(const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters, const SimplexIntersectTensorProductDomain& domain, const ObjectiveEstimationPolicyInterface& estimation_policy, double best_so_far, int max_num_threads, bool lhc_search_only, int num_lhc_samples, int num_samples_to_generate, bool * restrict found_flag, UniformRandomGenerator * uniform_generator, double * restrict best_points_to_sample);
+extern template void ComputeHeuristicSetOfPointsToSample(const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters, const TensorProductDomain& domain, const ObjectiveEstimationPolicyInterface& estimation_policy, double best_so_far, int max_num_threads, bool lhc_search_only, int num_lhc_samples, int num_to_sample, bool * restrict found_flag, UniformRandomGenerator * uniform_generator, double * restrict best_points_to_sample);
+extern template void ComputeHeuristicSetOfPointsToSample(const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters, const SimplexIntersectTensorProductDomain& domain, const ObjectiveEstimationPolicyInterface& estimation_policy, double best_so_far, int max_num_threads, bool lhc_search_only, int num_lhc_samples, int num_to_sample, bool * restrict found_flag, UniformRandomGenerator * uniform_generator, double * restrict best_points_to_sample);
 
 }  // end namespace optimal_learning
 

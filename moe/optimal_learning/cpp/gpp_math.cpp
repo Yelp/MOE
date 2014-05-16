@@ -128,7 +128,8 @@
 
   A last note about GP: it uses the State idiom laid out in gpp_common.hpp.  The associated state is PointsToSampleState.
   PointsToSampleState tracks the current "test" data set, points_to_sample--the set of currently running experiments,
-  possibly including the current point being optimized.  PointsToSampleState preallocates all vectors needed by GP's
+  possibly including the current point(s) being optimized. In the q,p-EI terminology, PointsToSampleState tracks the
+  union of ``points_to_sample`` and ``points_being_sampled``. PointsToSampleState preallocates all vectors needed by GP's
   member functions; it also precomputes (per points_to_sample update) some derived quantities that are used repeatedly
   by GP member functions.
 
@@ -141,11 +142,11 @@
   further details can be found below in the call tree discussion as well as in the implementation docs for these
   functions.  The gradient of EI is implemented similarly; see implementation docs for details on the one subtlety.
 
-  OnePotentialSample is a special case of ExpectedImprovementEvaluator.  With num_to_sample = 1 (only occurs in 1,0-EI
-  evaluation/optimization), there is only one experiment to worry about and no concurrent events.  This simplifies the
-  EI computation substantially (multi-dimensional Gaussians become a simple one dimensional case) and we can write EI
-  analytically in terms of the PDF and CDF of a N(0,1) normal distribution (which are evaluated numerically by boost).
-  No monte-carlo necessary!
+  OnePotentialSample is a special case of ExpectedImprovementEvaluator.  With num_to_sample = 1 and num_being_sampled = 0
+  (only occurs in 1,0-EI evaluation/optimization), there is only one experiment to worry about and no concurrent events.
+  This simplifies the EI computation substantially (multi-dimensional Gaussians become a simple one dimensional case)
+  and we can write EI analytically in terms of the PDF and CDF of a N(0,1) normal distribution (which are evaluated
+  numerically by boost). No monte-carlo necessary!
 
   ExpectedImprovementEvaluator and OnePotentialSample have corresponding State classes as well.  These are similar
   to each other except OnePotentialSample does not have a NormalRNG pointer (since it does no MC integration) and some
@@ -206,16 +207,12 @@
     <> Calls out to GP::ComputeMeanOfPoints(), GP:ComputeVarianceOfPoints, ComputeCholeskyFactorL, NormalRNG::operator(),
        and TriangularMatrixVectorMultiply
 
-  ExpectedImprovementEvaluator::ComputeGradExpectedImprovement()  (computes gradient of EI*)
+  ExpectedImprovementEvaluator::ComputeGradExpectedImprovement()  (computes gradient of EI)
     <> Compute GP.mean, variance, cholesky(variance), grad mean, grad variance, grad cholesky variance
     <> MC integration: Equation 4, 5 as before to compute improvement each step
                        Only have grad EI contributions when improvement > 0
                        When this happens, average in grad EI -= \nabla(\mu) + \nabla(chol(Vars)) * Nvec, where Nvec
                        is the same draws from N(0,1) used to compute the improvement in Equation 4, 5.
-
-  * Note: this gradient is computed wrt a *single* point of points_to_sample.  The index of this point is specified by
-  ExpectedImprovementEvaluator::kIndexOfCurrentPoint (= 0).  This leads to some subtlety in the grad EI computation;
-  see implementation for how this works out.
 
   We will not detail the call tree once inside of GaussianProcess.  The mathematical formulas for the mean and variance
   were already described above (Equation 2, 3).  Function docs (in this file) further detail/cite the formulas and
@@ -477,7 +474,7 @@ void ExpectedImprovementEvaluator::ComputeGradExpectedImprovement(StateType * ei
 }
 
 /*
-  Uses analytic formulas to compute EI when num_to_sample = 1 (occurs only in 1,0-EI).
+  Uses analytic formulas to compute EI when ``num_to_sample = 1`` and ``num_being_sampled = 0`` (occurs only in 1,0-EI).
   In this case, the single-parameter (posterior) GP is just a Gaussian.  So the integral in EI (previously eval'd with MC)
   can be computed 'exactly' using high-accuracy routines for the pdf & cdf of a Gaussian random variable.
 
@@ -534,78 +531,81 @@ void OnePotentialSampleExpectedImprovementEvaluator::ComputeGradExpectedImprovem
 
 /*
   This is not a genuine implementation of the q,p-EI capability insofar as we do not simultaneously optimize
-  num_samples_to_generate new points.
+  num_to_sample new points.
 
   Instead, we repeatedly solve 1,p-EI as follows:
-  points_to_sample = points_to_sample_input  // these are the points represented by the "p" in q,p-EI
+  points_being_sampled = points_being_sampled_input  // these are the points represented by the "p" in q,p-EI
   best_points_to_sample = {}  // we will generate q new points to add here
-  for i = 0:num_samples_to_generate-1 {
-    new_point = ComputeOptimalPointToSample(gaussian_process, points_to_sample, other_parameters)
-    points_to_sample.append(new_point)  // contrast this line with ComputeHeuristicSetOfPointsToSample()
+  for i = 0:num_to_sample-1 {
+    new_point = ComputeOptimalPointToSample(gaussian_process, points_being_sampled, other_parameters)
+    points_being_sampled.append(new_point)  // contrast this line with ComputeHeuristicSetOfPointsToSample()
     best_points_to_sample.append(new_point)  // save output
   }
   where ComputeOptimalPointToSample (optionally) uses a combination of gradient descent and "dumb" search algorithms.
 
   Thus iteratively decide and fix a *single* point to sample.  Then in future iterations, we tell MOE/OL that all the previously
-  fixed points are being sampled.  In each iteration, we append another point to points_to_sample; points_to_sample is initially
-  set to whatever is specified in the function's input (can be empty).
+  fixed points are being sampled.  In each iteration, we append another point to points_being_sampled; points_being_sampled
+  is initially set to whatever is specified in the function's input (can be empty).
 
   Note that this process is more sophisticated than kriging believer because the GP will account for the effect of the mean
-  AND variance in function values at points_to_sample.  Kriging believer simply trusts the mean and ignores variance.
+  AND variance in function values at points_being_sampled.  Kriging believer simply trusts the mean and ignores variance.
+  See ComputeHeuristicSetOfPointsToSample() in gpp_heuristic_expected_improvement_optimization.hpp for more details on
+  kriging and other heuristic EI optimization techniques.
 
-  TODO(eliu): modify EI optimizers to optimize ALL num_samples_to_generate points simultaneously (ticket 55773)
+  TODO(eliu): modify EI optimizers to optimize ALL num_to_sample points simultaneously (ticket 55773)
 */
 template <typename DomainType>
-void ComputeOptimalSetOfPointsToSample(const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters, const DomainType& domain, double const * restrict points_to_sample, int num_to_sample, double best_so_far, int max_int_steps, int max_num_threads, bool lhc_search_only, int num_lhc_samples, int num_samples_to_generate, bool * restrict found_flag, UniformRandomGenerator * uniform_generator, NormalRNG * normal_rng, double * restrict best_points_to_sample) {
-  if (unlikely(num_samples_to_generate <= 0)) {
+void ComputeOptimalSetOfPointsToSample(const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters, const DomainType& domain, double const * restrict points_being_sampled, int num_being_sampled, double best_so_far, int max_int_steps, int max_num_threads, bool lhc_search_only, int num_lhc_samples, int num_to_sample, bool * restrict found_flag, UniformRandomGenerator * uniform_generator, NormalRNG * normal_rng, double * restrict best_points_to_sample) {
+  if (unlikely(num_to_sample <= 0)) {
     return;
   }
   const int dim = gaussian_process.dim();
-  // we already have num_to_sample points to sample; we will be generating num_samples_to_generate new ones.
-  // in optimal_learning's lower levels, both input points_to_sample and the result of samples_to_generate are treated
+  // we already have num_being_sampled points to sample; we will be generating num_to_sample new ones.
+  // in optimal_learning's lower levels, both input points_being_sampled and the resulting of points_to_sample are treated
   // identically; there's no need to maintain separate lists for them.
-  // so construct points_to_sample_union_set to hold both sets of points in one place.
-  std::vector<double> points_to_sample_union_set(dim*(num_to_sample + num_samples_to_generate));
-  // point order doesn't matter; we put the existing points_to_sample at the front arbitrarily
-  std::copy(points_to_sample, points_to_sample + dim*num_to_sample, points_to_sample_union_set.data());
+  // so construct union_of_points to hold both sets of points in one place.
+  std::vector<double> union_of_points(dim*(num_being_sampled + num_to_sample));
+  // point order doesn't matter; we put the existing points_being_sampled at the front arbitrarily
+  std::copy(points_being_sampled, points_being_sampled + dim*num_being_sampled, union_of_points.data());
 
   // a pointer that will always point to location where the next computed sampling point should be written
-  // init to the first empty slot after where we copied points_to_sample
-  double * restrict next_point_to_sample = points_to_sample_union_set.data() + dim*num_to_sample;
+  // init to the first empty slot after where we copied points_being_sampled
+  double * restrict next_point_to_sample = union_of_points.data() + dim*num_being_sampled;
 
   bool found_flag_overall = true;
-  for (int j = 0; j < num_samples_to_generate; j++) {
+  for (int j = 0; j < num_to_sample; j++) {
     bool found_flag_local = false;
     if (lhc_search_only == false) {
-      ComputeOptimalPointToSampleWithRandomStarts(gaussian_process, optimization_parameters, domain, points_to_sample_union_set.data(), num_to_sample + j, best_so_far, max_int_steps, max_num_threads, &found_flag_local, uniform_generator, normal_rng, next_point_to_sample);
+      ComputeOptimalPointToSampleWithRandomStarts(gaussian_process, optimization_parameters, domain, union_of_points.data(), num_being_sampled + j, best_so_far, max_int_steps, max_num_threads, &found_flag_local, uniform_generator, normal_rng, next_point_to_sample);
     }
     // if gradient descent EI optimization failed OR we're only doing latin hypercube searches
     if (found_flag_local == false || lhc_search_only == true) {
       if (unlikely(lhc_search_only == false)) {
-        OL_WARNING_PRINTF("WARNING: EI opt DID NOT CONVERGE on iteration %d of %d\n", j, num_samples_to_generate);
+        OL_WARNING_PRINTF("WARNING: EI opt DID NOT CONVERGE on iteration %d of %d\n", j, num_to_sample);
         OL_WARNING_PRINTF("Attempting latin hypercube search\n");
       }
 
-      ComputeOptimalPointToSampleViaLatinHypercubeSearch(gaussian_process, domain, points_to_sample_union_set.data(), num_lhc_samples, num_to_sample + j, best_so_far, max_int_steps, max_num_threads, &found_flag_local, uniform_generator, normal_rng, next_point_to_sample);
+      ComputeOptimalPointToSampleViaLatinHypercubeSearch(gaussian_process, domain, union_of_points.data(), num_lhc_samples, num_being_sampled + j, best_so_far, max_int_steps, max_num_threads, &found_flag_local, uniform_generator, normal_rng, next_point_to_sample);
 
       // if latin hypercube 'dumb' search failed
       if (unlikely(found_flag_local == false)) {
-        OL_ERROR_PRINTF("ERROR: EI latin hypercube search FAILED on iteration %d of %d\n", j, num_samples_to_generate);
+        OL_ERROR_PRINTF("ERROR: EI latin hypercube search FAILED on iteration %d of %d\n", j, num_to_sample);
       }
     }
 
     found_flag_overall &= found_flag_local;
+    // Note that we are writing next_point_to_sample directly into union_of_points, so now we increment the pointer.
     next_point_to_sample += dim;
   }
 
   // set outputs
   *found_flag = found_flag_overall;
-  std::copy(points_to_sample_union_set.begin() + dim*num_to_sample, points_to_sample_union_set.end(), best_points_to_sample);
+  std::copy(union_of_points.begin() + dim*num_being_sampled, union_of_points.end(), best_points_to_sample);
 }
 
 // template explicit instantiation definitions, see gpp_common.hpp header comments, item 6
-template void ComputeOptimalSetOfPointsToSample(const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters, const TensorProductDomain& domain, double const * restrict points_to_sample, int num_to_sample, double best_so_far, int max_int_steps, int max_num_threads, bool lhc_search_only, int num_lhc_samples, int num_samples_to_generate, bool * restrict found_flag, UniformRandomGenerator * uniform_generator, NormalRNG * normal_rng, double * restrict best_points_to_sample);
-template void ComputeOptimalSetOfPointsToSample(const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters, const SimplexIntersectTensorProductDomain& domain, double const * restrict points_to_sample, int num_to_sample, double best_so_far, int max_int_steps, int max_num_threads, bool lhc_search_only, int num_lhc_samples, int num_samples_to_generate, bool * restrict found_flag, UniformRandomGenerator * uniform_generator, NormalRNG * normal_rng, double * restrict best_points_to_sample);
+template void ComputeOptimalSetOfPointsToSample(const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters, const TensorProductDomain& domain, double const * restrict points_being_sampled, int num_being_sampled, double best_so_far, int max_int_steps, int max_num_threads, bool lhc_search_only, int num_lhc_samples, int num_to_sample, bool * restrict found_flag, UniformRandomGenerator * uniform_generator, NormalRNG * normal_rng, double * restrict best_points_to_sample);
+template void ComputeOptimalSetOfPointsToSample(const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters, const SimplexIntersectTensorProductDomain& domain, double const * restrict points_being_sampled, int num_being_sampled, double best_so_far, int max_int_steps, int max_num_threads, bool lhc_search_only, int num_lhc_samples, int num_to_sample, bool * restrict found_flag, UniformRandomGenerator * uniform_generator, NormalRNG * normal_rng, double * restrict best_points_to_sample);
 
 void GaussianProcess::BuildCovarianceMatrixWithNoiseVariance() noexcept {
   optimal_learning::BuildCovarianceMatrixWithNoiseVariance(covariance_, noise_variance_.data(), points_sampled_.data(), dim_, num_sampled_, K_chol_.data());

@@ -58,41 +58,57 @@ namespace optimal_learning {
 */
 struct PythonInterfaceInputContainer {
   /*
-     Minimal constructor that only sets up points_to_sample; generally used when a GaussianProcess object is already available.
+    Minimal constructor that sets up ``points_to_sample`` only; generally used when a
+    GaussianProcess object is already available (e.g., in GaussianProcess member function wrappers).
 
-     INPUTS:
-     pylist points_to_sample_in[num_to_sample][dim]: points that are being sampled concurrently from the GP
-     dim: number of spatial dimension (independent parameters)
-     num_to_sample: number of points to sample
+    INPUTS:
+    :points_to_sample[num_to_sample][dim]: points at which to compute GP quantities
+    :dim: number of spatial dimension (independent parameters)
+    :num_to_sample: number of points being sampled from the GP
   */
   PythonInterfaceInputContainer(const boost::python::list& points_to_sample_in, int dim_in, int num_to_sample_in);
 
   /*
-     Full constructor that sets up all members held in this container; generally used when a GaussianProcess object is not
-     available/relevant (or to construct a GP).
+    Minimal constructor that sets up ``points_to_sample`` and ``points_being_sampled``; generally used when a
+    GaussianProcess object is already available (e.g., in Expected Improvement wrappers).
 
-     INPUTS:
-     pylist hyperparameters_in[2]: [0]: \alpha: the hyperparameter \alpha, (e.g., signal variance, \sigma_f^2)
+    INPUTS:
+    :points_to_sample[num_to_sample][dim]: points at which to evaluate EI and/or its gradient to check their value in future experiments (i.e., test points for GP predictions)
+    :pylist points_being_sampled_in[num_being_sampled][dim]: points that are being sampled in concurrent experiments
+    :dim: number of spatial dimension (independent parameters)
+    :num_to_sample: number of potential future samples; gradients are evaluated wrt these points (i.e., the "q" in q,p-EI)
+    :num_being_sampled: number of points being sampled concurrently (i.e., the "p" in q,p-EI)
+  */
+  PythonInterfaceInputContainer(const boost::python::list& points_to_sample_in, const boost::python::list& points_being_sampled_in, int dim_in, int num_to_sample_in, int num_being_sampled_in);
+
+  /*
+    Constructor that sets up GP-related members held in this container; generally used when a GaussianProcess object is not
+    available/relevant (or to construct a GP). Does not set points_being_sampled.
+
+    INPUTS:
+    :pylist hyperparameters_in[2]: [0]: \alpha: the hyperparameter \alpha, (e.g., signal variance, \sigma_f^2)
                                    [1]: lengths[dim]: the hyperparameter length scales, one per spatial dimension
-     pylist points_sampled_in[num_sampled][dim]: points that have already been sampled
-     pylist points_sampled_value_in[num_sampled]: objective values of the already-sampled points
-     pylist noise_variance_in[num_sampled]: the \sigma_n^2 (noise variance) associated w/observation, points_sampled_value
-     pylist points_to_sample_in[num_to_sample][dim]: points that are being sampled concurrently from the GP
-     dim: number of spatial dimension (independent parameters)
-     num_sampled: number of already-sampled points
-     num_to_sample: number of points being sampled concurrently
+    :pylist points_sampled_in[num_sampled][dim]: points that have already been sampled
+    :pylist points_sampled_value_in[num_sampled]: objective values of the already-sampled points
+    :pylist noise_variance_in[num_sampled]: the \sigma_n^2 (noise variance) associated w/observation, points_sampled_value
+    :pylist points_to_sample_in[num_to_sample][dim]: points at which to compute GP quantities
+    :dim: number of spatial dimension (independent parameters)
+    :num_sampled: number of already-sampled points
+    :num_to_sample: number of points being sampled from the GP
   */
   PythonInterfaceInputContainer(const boost::python::list& hyperparameters_in, const boost::python::list& points_sampled_in, const boost::python::list& points_sampled_value_in, const boost::python::list& noise_variance_in, const boost::python::list& points_to_sample_in, int dim_in, int num_sampled_in, int num_to_sample_in);
 
   int dim;
   int num_sampled;
   int num_to_sample;
+  int num_being_sampled;
   double alpha;
   std::vector<double> lengths;
   std::vector<double> points_sampled;
   std::vector<double> points_sampled_value;
   std::vector<double> noise_variance;
   std::vector<double> points_to_sample;
+  std::vector<double> points_being_sampled;
 };
 
 /*

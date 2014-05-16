@@ -69,13 +69,13 @@ int main() {
   using CovarianceClass = SquareExponential;  // see gpp_covariance.hpp for other options
 
   int dim = 2;
-  int num_to_sample = 0;
+  int num_being_sampled = 0;
   int num_sampled = 21;
 
   std::vector<double> points_sampled(num_sampled*dim);
   std::vector<double> points_sampled_value(num_sampled);
   std::vector<double> noise_variance(num_sampled, 0.01);  // each entry must be >= 0.0
-  std::vector<double> points_to_sample(num_to_sample*dim);  // each entry must be >= 0.0
+  std::vector<double> points_being_sampled(num_being_sampled*dim);  // each entry must be >= 0.0
 
   std::vector<ClosedInterval> domain_bounds = {
     {0.0, 2.0},
@@ -112,9 +112,9 @@ int main() {
   int max_num_threads = 1;
   bool lhc_search_only = false;
   int num_lhc_samples = 0;
-  int num_samples_to_generate = 1;
+  int num_to_sample = 1;
   bool found_flag = false;
-  std::vector<double> best_points_to_sample(num_samples_to_generate*dim);
+  std::vector<double> best_points_to_sample(num_to_sample*dim);
   for (int i = 1; i < num_sampled; ++i) {
     // std::vector<double> temp(dim, 0.0);
     // OnePotentialSampleExpectedImprovementEvaluator ei_evaluator(gaussian_process, best_so_far);
@@ -125,7 +125,7 @@ int main() {
     // ei_evaluator.ComputeGradExpectedImprovement(&ei_state, grad_ei.data());
     // PrintMatrix(grad_ei.data(), 1, dim);
 
-    ComputeOptimalSetOfPointsToSample(gaussian_process, gd_params, domain, points_to_sample.data(), num_to_sample, best_so_far, num_mc_iterations, max_num_threads, lhc_search_only, num_lhc_samples, num_samples_to_generate, &found_flag, &uniform_generator, nullptr, best_points_to_sample.data());
+    ComputeOptimalSetOfPointsToSample(gaussian_process, gd_params, domain, points_being_sampled.data(), num_being_sampled, best_so_far, num_mc_iterations, max_num_threads, lhc_search_only, num_lhc_samples, num_to_sample, &found_flag, &uniform_generator, nullptr, best_points_to_sample.data());
     printf("%d: found_flag = %d\n", i, found_flag);
 
     points_sampled_value[i] = function_to_minimize(best_points_to_sample.data(), &uniform_generator);
@@ -286,8 +286,8 @@ int main() {
     ConstantLiarEstimationPolicy constant_liar_policy(lie_value, lie_noise_variance);
 
     // number of simultaneous samples
-    const int num_samples_to_generate = 3;
-    std::vector<double> best_points_to_sample(dim*num_samples_to_generate);
+    const int num_to_sample = 3;
+    std::vector<double> best_points_to_sample(dim*num_to_sample);
 
     GaussianProcess gaussian_process(covariance_final, points_sampled.data(), points_sampled_value.data(), noise_variance.data(), dim, num_sampled);
 
@@ -295,8 +295,8 @@ int main() {
     int num_grid_search_points = 10000;
     found_flag = false;
     uniform_generator.SetExplicitSeed(31415);
-    ComputeConstantLiarSetOfPointsToSample(gaussian_process, gd_params, domain, constant_liar_policy, best_so_far, max_num_threads, grid_search_only, num_grid_search_points, num_samples_to_generate, &found_flag, &uniform_generator, best_points_to_sample.data());
-    PrintMatrixTrans(best_points_to_sample.data(), num_samples_to_generate, dim);
+    ComputeConstantLiarSetOfPointsToSample(gaussian_process, gd_params, domain, constant_liar_policy, best_so_far, max_num_threads, grid_search_only, num_grid_search_points, num_to_sample, &found_flag, &uniform_generator, best_points_to_sample.data());
+    PrintMatrixTrans(best_points_to_sample.data(), num_to_sample, dim);
 
     printf("hi\n");
     // test Estimation Policies
