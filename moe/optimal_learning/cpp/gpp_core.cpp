@@ -82,7 +82,7 @@ int main() {
     {0.0,  4.0}};
   DomainType domain(domain_bounds.data(), dim);
 
-  int num_mc_iterations=100000;
+  int num_mc_iterations = 100000;
 
   UniformRandomGenerator uniform_generator(314);  // set to mode 0 to generate seeds automatically
 

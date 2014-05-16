@@ -15,7 +15,6 @@
 #include "gpp_python_expected_improvement.hpp"
 
 // NOLINT-ing the C, C++ header includes as well; otherwise cpplint gets confused
-#include <algorithm>  // NOLINT(build/include_order)
 #include <string>  // NOLINT(build/include_order)
 #include <vector>  // NOLINT(build/include_order)
 
@@ -42,41 +41,37 @@ namespace {
 double ComputeExpectedImprovementWrapper(const GaussianProcess& gaussian_process, const boost::python::list& points_to_sample, int num_to_sample, int num_its, double best_so_far, bool force_monte_carlo, RandomnessSourceContainer& randomness_source) {
   PythonInterfaceInputContainer input_container(points_to_sample, gaussian_process.dim(), num_to_sample);
 
-  int num_derivatives = 0;
+  bool configure_for_gradients = false;
   if ((num_to_sample == 1) && (force_monte_carlo == false)) {
     OnePotentialSampleExpectedImprovementEvaluator ei_evaluator(gaussian_process, best_so_far);
-    OnePotentialSampleExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, input_container.points_to_sample.data(), input_container.num_to_sample, num_derivatives, nullptr);
+    OnePotentialSampleExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, input_container.points_to_sample.data(), configure_for_gradients);
     return ei_evaluator.ComputeExpectedImprovement(&ei_state);
   } else {
     ExpectedImprovementEvaluator ei_evaluator(gaussian_process, num_its, best_so_far);
-    ExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, input_container.points_to_sample.data(), input_container.num_to_sample, num_derivatives, randomness_source.normal_rng_vec.data());
+    double * points_being_sampled = nullptr;
+    int num_being_sampled = 0;
+    ExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, input_container.points_to_sample.data(), points_being_sampled, input_container.num_to_sample, num_being_sampled, configure_for_gradients, randomness_source.normal_rng_vec.data());
     return ei_evaluator.ComputeExpectedImprovement(&ei_state);
   }
 }
 
-boost::python::list ComputeGradExpectedImprovementWrapper(const GaussianProcess& gaussian_process, const boost::python::list& points_to_sample, int num_to_sample, int num_its, double best_so_far, bool force_monte_carlo, RandomnessSourceContainer& randomness_source, const boost::python::list& current_point) {
-  PythonInterfaceInputContainer input_container(points_to_sample, gaussian_process.dim(), num_to_sample);
+boost::python::list ComputeGradExpectedImprovementWrapper(const GaussianProcess& gaussian_process, const boost::python::list& points_being_sampled, int num_being_sampled, int num_its, double best_so_far, bool force_monte_carlo, RandomnessSourceContainer& randomness_source, const boost::python::list& current_point) {
+  int num_to_sample = 1;  // HACK HACK HACK. TODO(eliu): fix this when EI class properly supports q,p-EI (ADS-3094)
+  std::vector<double> points_to_sample(num_to_sample*gaussian_process.dim());
+  CopyPylistToVector(current_point, gaussian_process.dim(), points_to_sample);
 
-  // this vector stores all points_to_sample in a contiguous space
-  // the first point is "current_point", which is the point at which we are differentiating
-  // the remaining point(s) are from "points_to_sample", which are the other simultaneously running experiments we need to
-  // account for
-  std::vector<double> union_of_points((input_container.num_to_sample + 1) * input_container.dim);
-  CopyPylistToVector(current_point, input_container.dim, union_of_points);
-
-  std::vector<double> grad_EI(input_container.dim);
-  int num_derivatives = 1;  // HACK HACK HACK. TODO(eliu): fix this when EI class properly supports q,p-EI (ADS-3094)
-  if ((num_to_sample == 0) && (force_monte_carlo == false)) {
+  std::vector<double> grad_EI(num_to_sample*gaussian_process.dim());
+  bool configure_for_gradients = true;
+  if ((num_being_sampled == 0) && (force_monte_carlo == false)) {
     OnePotentialSampleExpectedImprovementEvaluator ei_evaluator(gaussian_process, best_so_far);
-    // here num_to_sample = 0, so union_of_points contains just current_point
-    OnePotentialSampleExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, union_of_points.data(), input_container.num_to_sample + 1, num_derivatives, nullptr);
+    OnePotentialSampleExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, points_to_sample.data(), configure_for_gradients);
     ei_evaluator.ComputeGradExpectedImprovement(&ei_state, grad_EI.data());
   } else {
-    // copy over points_to_sample as described above (at the declaration of union_of_points)
-    std::copy(input_container.points_to_sample.begin(), input_container.points_to_sample.end(), union_of_points.begin() + input_container.dim);
+    PythonInterfaceInputContainer input_container(points_being_sampled, gaussian_process.dim(), num_being_sampled);
 
+    auto points_being_sampled_C = input_container.points_to_sample.data();
     ExpectedImprovementEvaluator ei_evaluator(gaussian_process, num_its, best_so_far);
-    ExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, union_of_points.data(), input_container.num_to_sample + 1, num_derivatives, randomness_source.normal_rng_vec.data());
+    ExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, points_to_sample.data(), points_being_sampled_C, num_to_sample, num_being_sampled, configure_for_gradients, randomness_source.normal_rng_vec.data());
     ei_evaluator.ComputeGradExpectedImprovement(&ei_state, grad_EI.data());
   }
 

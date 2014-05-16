@@ -821,11 +821,11 @@ class ExpectedImprovementEvaluator final {
 /*!\rst
   State object for ExpectedImprovementEvaluator.  This tracks the points being sampled in concurrent experiments
   (``points_being_sampled``) ALONG with the points currently being evaluated via expected improvement for future experiments
-  (called ``current_point``); these are the p and q of q,p-EI, respectively.  ``current_point`` joined with
-  ``points_being_sampled`` is stored in ``union_of_points``.
+  (called ``points_to_sample``); these are the p and q of q,p-EI, respectively.  ``points_to_sample`` joined with
+  ``points_being_sampled`` is stored in ``union_of_points`` in that order.
 
   This struct also tracks the state of the GaussianProcess that underlies the expected improvement computation: the GP state
-  is built to handle the initial ``union_of_points``, and subsequent updates to ``current_point`` in this object also update
+  is built to handle the initial ``union_of_points``, and subsequent updates to ``points_to_sample`` in this object also update
   the GP state.
 
   This struct also holds a pointer to a random number generator needed for Monte Carlo integrated EI computations.
@@ -838,9 +838,6 @@ class ExpectedImprovementEvaluator final {
 struct ExpectedImprovementState final {
   using EvaluatorType = ExpectedImprovementEvaluator;
 
-  static constexpr int kIndexOfCurrentPoint = 0;  // position of current_point in union_of_points
-  // this is index (0..num_to_sample-1) of points_to_sample to differentiate against; choose 0 by convention
-
   /*!\rst
     Constructs an ExpectedImprovementState object with a specified source of randomness for the purpose of computing EI
     (and its gradient) over the specified set of points to sample.
@@ -850,70 +847,99 @@ struct ExpectedImprovementState final {
     .. WARNING:: This object is invalidated if the associated ei_evaluator is mutated.  SetupState() should be called to reset.
 
     .. WARNING::
-         Using this object to compute gradients when ``num_derivatives`` := 0 results in UNDEFINED BEHAVIOR.
+         Using this object to compute gradients when ``configure_for_gradients`` := false results in UNDEFINED BEHAVIOR.
 
     \param
       :ei_evaluator: expected improvement evaluator object that specifies the parameters & GP for EI evaluation
-      :points_to_sample[dim][num_to_sample]: list of potential concurrent samples (i.e., test points for GP predictions)
-      :num_to_sample: number of potential samples (i.e., the "p" in q,p-EI)
-      :num_derivatives: configure this object to compute ``num_derivatives`` derivative terms wrt
-        union_of_points[:][0:num_derivatives]; 0 means no gradient computation will be performed.
+      :points_to_sample[dim][num_to_sample]: points at which to evaluate EI and/or its gradient to check their value in future experiments (i.e., test points for GP predictions)
+      :points_being_sampled[dim][num_being_sampled]: points being sampled in concurrent experiments
+      :num_to_sample: number of potential future samples; gradients are evaluated wrt these points (i.e., the "q" in q,p-EI)
+      :num_being_sampled: number of points being sampled in concurrent experiments (i.e., the "p" in q,p-EI)
+      :configure_for_gradients: true if this object will be used to compute gradients, false otherwise
       :normal_rng[1]: pointer to a properly initialized* NormalRNG object
 
     .. NOTE::
          * The NormalRNG object must already be seeded.  If multithreaded computation is used for EI, then every state object
          must have a different NormalRNG (different seeds, not just different objects).
   \endrst*/
-  ExpectedImprovementState(const EvaluatorType& ei_evaluator, double const * restrict points_to_sample, int num_to_sample_in, int num_derivatives_in, NormalRNG * normal_rng_in) OL_NONNULL_POINTERS
+  ExpectedImprovementState(const EvaluatorType& ei_evaluator, double const * restrict points_to_sample, double const * restrict points_being_sampled, int num_to_sample_in, int num_being_sampled_in, bool configure_for_gradients, NormalRNG * normal_rng_in)
       : dim(ei_evaluator.dim()),
         num_to_sample(num_to_sample_in),
-        num_derivatives(num_derivatives_in),
-        union_of_points(points_to_sample, points_to_sample + dim*num_to_sample),
-        points_to_sample_state(*ei_evaluator.gaussian_process(), points_to_sample, num_to_sample, num_derivatives),
+        num_being_sampled(num_being_sampled_in),
+        num_derivatives(configure_for_gradients ? num_to_sample : 0),
+        num_union(num_to_sample + num_being_sampled),
+        union_of_points(BuildUnionOfPoints(points_to_sample, points_being_sampled, num_to_sample, num_being_sampled, dim)),
+        points_to_sample_state(*ei_evaluator.gaussian_process(), union_of_points.data(), num_union, num_derivatives),
         normal_rng(normal_rng_in),
-        to_sample_mean(num_to_sample),
+        to_sample_mean(num_union),
         grad_mu(dim*num_derivatives),
-        cholesky_to_sample_var(Square(num_to_sample)),
-        grad_chol_decomp(dim*Square(num_to_sample)*num_derivatives),
-        EI_this_step_from_var(num_to_sample),
-        aggregate(dim),
-        normals(num_to_sample) {
+        cholesky_to_sample_var(Square(num_union)),
+        grad_chol_decomp(dim*Square(num_union)*num_derivatives),
+        EI_this_step_from_var(num_union),
+        aggregate(dim*num_derivatives),
+        normals(num_union) {
+          // TODO(eliu): REMOVE THIS when q,p-EI is fully implemented (ADS-3094)
+          if (num_to_sample != 1) {
+            OL_THROW_EXCEPTION(InvalidValueException<int>, "EIEvaluator can only handle q=1!", 1, num_to_sample);
+          }
   }
 
   ExpectedImprovementState(ExpectedImprovementState&& OL_UNUSED(other)) = default;
 
+  /*!\rst
+    Create a vector with the union of points_to_sample and points_being_sampled (the latter is appended to the former).
+
+    Note the l-value return. Assigning the return to a std::vector<double> or passing it as an argument to the ctor
+    will result in copy-elision or move semantics; no copying/performance loss.
+
+    \param:
+      :points_to_sample[dim][num_to_sample]: points at which to evaluate EI and/or its gradient to check their value in future experiments (i.e., test points for GP predictions)
+      :points_being_sampled[dim][num_being_sampled]: points being sampled in concurrent experiments
+      :num_to_sample: number of potential future samples; gradients are evaluated wrt these points (i.e., the "q" in q,p-EI)
+      :num_being_sampled: number of points being sampled in concurrent experiments (i.e., the "p" in q,p-EI)
+      :dim: the number of spatial dimensions of each point array
+    \return
+      std::vector<double> with the union of the input arrays: points_being_sampled is *appended* to points_to_sample
+  \endrst*/
+  static std::vector<double> BuildUnionOfPoints(double const * restrict points_to_sample, double const * restrict points_being_sampled, int num_to_sample, int num_being_sampled, int dim) noexcept OL_WARN_UNUSED_RESULT {
+    std::vector<double> union_of_points(dim*(num_to_sample + num_being_sampled));
+    std::copy(points_to_sample, points_to_sample + dim*num_to_sample, union_of_points.data());
+    std::copy(points_being_sampled, points_being_sampled + dim*num_being_sampled, union_of_points.data() + dim*num_to_sample);
+    return union_of_points;
+  }
+
   int GetProblemSize() const noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
-    return dim;
+    return dim*num_to_sample;
   }
 
   /*!\rst
-    Get current point--potential sample whose EI is being evaluated
+    Get the ``points_to_sample``: potential future samples whose EI (and/or gradients) are being evaluated
 
     \output
-      :current_point[dim]: potential sample whose EI is being evaluted
+      :points_to_sample[dim][num_to_sample]: potential future samples whose EI (and/or gradients) are being evaluated
   \endrst*/
-  void GetCurrentPoint(double * restrict current_point) const noexcept OL_NONNULL_POINTERS {
-    std::copy(union_of_points.data() + kIndexOfCurrentPoint*dim, union_of_points.data() + (kIndexOfCurrentPoint+1)*dim, current_point);
+  void GetCurrentPoint(double * restrict points_to_sample) const noexcept OL_NONNULL_POINTERS {
+    std::copy(union_of_points.data(), union_of_points.data() + num_to_sample*dim, points_to_sample);
   }
 
   /*!\rst
-    Change the current location of the potential sample whose EI is being evaluated.
-    Update the state's derived quantities to be consistent with the new point.
+    Change the potential samples whose EI (and/or gradient) are being evaluated.
+    Update the state's derived quantities to be consistent with the new points.
 
     \param
       :ei_evaluator: expected improvement evaluator object that specifies the parameters & GP for EI evaluation
-      :current_point[dim]: coordinates of new current_point
+      :points_to_sample[dim][num_to_sample]: potential future samples whose EI (and/or gradients) are being evaluated
   \endrst*/
-  void UpdateCurrentPoint(const EvaluatorType& ei_evaluator, double const * restrict current_point) OL_NONNULL_POINTERS {
-    // update current point in union_of_points
-    std::copy(current_point, current_point + dim, union_of_points.data() + kIndexOfCurrentPoint*dim);
+  void UpdateCurrentPoint(const EvaluatorType& ei_evaluator, double const * restrict points_to_sample) OL_NONNULL_POINTERS {
+    // update points_to_sample in union_of_points
+    std::copy(points_to_sample, points_to_sample + num_to_sample*dim, union_of_points.data());
 
     // evaluate derived quantities for the GP
-    points_to_sample_state.SetupState(*ei_evaluator.gaussian_process(), union_of_points.data(), num_to_sample, num_derivatives);
+    points_to_sample_state.SetupState(*ei_evaluator.gaussian_process(), union_of_points.data(), num_union, num_derivatives);
   }
 
   /*!\rst
-    Configures this state object with a new ``current_point``, the location of the potential sample whose EI is to be evaluated.
+    Configures this state object with new ``points_to_sample``, the location of the potential samples whose EI is to be evaluated.
     Ensures all state variables & temporaries are properly sized.
     Properly sets all dependent state variables (e.g., GaussianProcess's state) for EI evaluation.
 
@@ -923,28 +949,31 @@ struct ExpectedImprovementState final {
 
     \param
       :ei_evaluator: expected improvement evaluator object that specifies the parameters & GP for EI evaluation
-      :current_point[dim]: current point (ei evaluation location) to change to
+      :points_to_sample[dim][num_to_sample]: potential future samples whose EI (and/or gradients) are being evaluated
   \endrst*/
-  void SetupState(const EvaluatorType& ei_evaluator, double const * restrict current_point) OL_NONNULL_POINTERS {
+  void SetupState(const EvaluatorType& ei_evaluator, double const * restrict points_to_sample) OL_NONNULL_POINTERS {
     if (unlikely(dim != ei_evaluator.dim())) {
       OL_THROW_EXCEPTION(InvalidValueException<int>, "Evaluator's and State's dim do not match!", dim, ei_evaluator.dim());
     }
 
-    // update quantities derived from current_point
-    UpdateCurrentPoint(ei_evaluator, current_point);
+    // update quantities derived from points_to_sample
+    UpdateCurrentPoint(ei_evaluator, points_to_sample);
   }
 
   // size information
   //! spatial dimension (e.g., entries per point of ``points_sampled``)
   const int dim;
-  //! number of points being sampled concurrently (i.e., the "p" in q,p-EI)
+  //! number of potential future samples; gradients are evaluated wrt these points (i.e., the "q" in q,p-EI)
   const int num_to_sample;
-
-  //! this object can compute ``num_derivatives`` derivative terms wrt
-  //! union_of_points[:][0:num_derivatives]; 0 means no gradient computation will be performed
+  //! number of points being sampled concurrently (i.e., the "p" in q,p-EI)
+  const int num_being_sampled;
+  //! number of derivative terms desired (usually 0 for no derivatives or num_to_sample)
   const int num_derivatives;
+  //! number of points in union_of_points: num_to_sample + num_being_sampled
+  const int num_union;
 
-  //! points currently being sampled; this is the union of the points represented by "p" and "q" in q,p-EI
+  //! points currently being sampled; this is the union of the points represented by "q" and "p" in q,p-EI
+  //! ``points_to_sample`` is stored first in memory, immediately followed by ``points_being_sampled``
   std::vector<double> union_of_points;
 
   //! gaussian process state
@@ -968,7 +997,8 @@ struct ExpectedImprovementState final {
 
 /*!\rst
   This is a specialization of the ExpectedImprovementEvaluator class for when the number of potential samples is 1; i.e.,
-  ``num_to_sample == 1``.  This class only supports the computation of 1,0-EI.  In this case, we have analytic formulas
+  ``num_to_sample == 1`` and the number of concurrent samples is 0; i.e. ``num_being_sampled == 0``.
+  In other words, this class only supports the computation of 1,0-EI.  In this case, we have analytic formulas
   for computing EI and its gradient.
 
   Thus this class does not perform any explicit numerical integration, nor do its EI functions require access to a
@@ -1040,7 +1070,7 @@ class OnePotentialSampleExpectedImprovementEvaluator final {
       :ei_state[1]: properly configured state object
     \output
       :ei_state[1]: state with temporary storage modified
-      :grad_EI[dim]: gradient of expected improvement wrt each dimension of the ``index_of_current_point``-th entry in ``points_to_sample``
+      :grad_EI[dim]: gradient of expected improvement wrt each dimension of ``points_to_sample``
   \endrst*/
   void ComputeGradExpectedImprovement(StateType * ei_state, double * restrict grad_EI) const;
 
@@ -1059,16 +1089,14 @@ class OnePotentialSampleExpectedImprovementEvaluator final {
 };
 
 /*!\rst
-  State object for OnePotentialSampleExpectedImprovementEvaluator.  This tracks the current point being evaluated via
-  expected improvement.
+  State object for OnePotentialSampleExpectedImprovementEvaluator.  This tracks the *ONE* ``point_to_sample``
+  being evaluated via expected improvement.
 
   This is just a special case of ExpectedImprovementState; see those class docs for more details.
   See general comments on State structs in ``gpp_common.hpp``'s header docs.
 \endrst*/
 struct OnePotentialSampleExpectedImprovementState final {
   using EvaluatorType = OnePotentialSampleExpectedImprovementEvaluator;
-
-  static constexpr int kIndexOfCurrentPoint = 0;  // position of ``current_point`` in ``union_of_points``; there is only 1 point to sample so this must be 0
 
   /*!\rst
     Constructs an OnePotentialSampleExpectedImprovementState object for the purpose of computing EI
@@ -1079,28 +1107,28 @@ struct OnePotentialSampleExpectedImprovementState final {
     .. WARNING::
          This object is invalidated if the associated ei_evaluator is mutated.  SetupState() should be called to reset.
 
-    .. NOTE::
-         ``num_to_sample = 1`` by definition for this case (hence the sizing on ``grad_mu`` and ``grad_chol``)
+    .. WARNING::
+         Using this object to compute gradients when ``configure_for_gradients`` := false results in UNDEFINED BEHAVIOR.
 
     \param
       :ei_evaluator: expected improvement evaluator object that specifies the parameters & GP for EI evaluation
-      :points_to_sample[dim][num_to_sample]: list of potential concurrent samples (i.e., test points for GP predictions)
-      :num_to_sample: number of potential samples
-      :num_derivatives: configure this object to compute ``num_derivatives`` derivative terms wrt
-        current_point[:][0:num_derivatives]; 0 means no gradient computation will be performed.
-      :normal_rng[1]: UNUSED (here to stay consistent with ExpectedImprovementState ctor)
+      :point_to_sample[dim]: point at which to evaluate EI and/or its gradient to check their value in future experiments (i.e., test point for GP predictions)
+      :configure_for_gradients: true if this object will be used to compute gradients, false otherwise
   \endrst*/
-  OnePotentialSampleExpectedImprovementState(const EvaluatorType& ei_evaluator, double const * restrict points_to_sample, int num_to_sample_in, int num_derivatives_in, NormalRNG * OL_UNUSED(normal_rng_in))
+  OnePotentialSampleExpectedImprovementState(const EvaluatorType& ei_evaluator, double const * restrict points_to_sample, bool configure_for_gradients)
       : dim(ei_evaluator.dim()),
-        num_to_sample(num_to_sample_in),
-        num_derivatives(num_derivatives_in),
-        current_point(points_to_sample, points_to_sample + dim),
-        points_to_sample_state(*ei_evaluator.gaussian_process(), points_to_sample, num_to_sample, num_derivatives),
-        grad_mu(dim),
-        grad_chol_decomp(dim) {
-    if (unlikely(num_to_sample != 1)) {
-      OL_THROW_EXCEPTION(InvalidValueException<int>, "num_to_sample MUST be 1!", num_to_sample, 1);
-    }
+        num_derivatives(configure_for_gradients ? num_to_sample : 0),
+        point_to_sample(points_to_sample, points_to_sample + dim),
+        points_to_sample_state(*ei_evaluator.gaussian_process(), point_to_sample.data(), num_to_sample, num_derivatives),
+        grad_mu(dim*num_derivatives),
+        grad_chol_decomp(dim*num_derivatives) {
+  }
+
+  /*!\rst
+    Constructor wrapper to match the signature of the ctor for ExpectedImprovementState().
+  \endrst*/
+  OnePotentialSampleExpectedImprovementState(const EvaluatorType& ei_evaluator, double const * restrict points_to_sample, double const * restrict OL_UNUSED(points_being_sampled), int OL_UNUSED(num_to_sample_in), int OL_UNUSED(num_being_sampled_in), bool configure_for_gradients, NormalRNG * OL_UNUSED(normal_rng_in))
+      : OnePotentialSampleExpectedImprovementState(ei_evaluator, points_to_sample, configure_for_gradients) {
   }
 
   OnePotentialSampleExpectedImprovementState(OnePotentialSampleExpectedImprovementState&& OL_UNUSED(other)) = default;
@@ -1110,33 +1138,33 @@ struct OnePotentialSampleExpectedImprovementState final {
   }
 
   /*!\rst
-    Get current point--potential sample whose EI is being evaluated
+    Get ``point_to_sample``: the potential future sample whose EI (and/or gradients) is being evaluated
 
     \output
-      :current_point[dim]: potential sample whose EI is being evaluted
+      :point_to_sample[dim]: potential sample whose EI is being evaluted
   \endrst*/
-  void GetCurrentPoint(double * restrict current_point_out) const noexcept OL_NONNULL_POINTERS {
-    std::copy(current_point.begin(), current_point.end(), current_point_out);
+  void GetCurrentPoint(double * restrict point_to_sample_out) const noexcept OL_NONNULL_POINTERS {
+    std::copy(point_to_sample.begin(), point_to_sample.end(), point_to_sample_out);
   }
 
   /*!\rst
-    Change the current location of the potential sample whose EI is being evaluated.
+    Change the potential sample whose EI (and/or gradient) is being evaluated.
     Update the state's derived quantities to be consistent with the new point.
 
     \param
       :ei_evaluator: expected improvement evaluator object that specifies the parameters & GP for EI evaluation
-      :current_point[dim]: coordinates of new current_point
+      :points_to_sample[dim]: potential future sample whose EI (and/or gradients) is being evaluated
   \endrst*/
-  void UpdateCurrentPoint(const EvaluatorType& ei_evaluator, double const * restrict current_point_in) OL_NONNULL_POINTERS {
+  void UpdateCurrentPoint(const EvaluatorType& ei_evaluator, double const * restrict point_to_sample_in) OL_NONNULL_POINTERS {
     // update current point in union_of_points
-    std::copy(current_point_in, current_point_in + dim, current_point.data());
+    std::copy(point_to_sample_in, point_to_sample_in + dim, point_to_sample.data());
 
     // evaluate derived quantities
-    points_to_sample_state.SetupState(*ei_evaluator.gaussian_process(), current_point.data(), num_to_sample, num_derivatives);
+    points_to_sample_state.SetupState(*ei_evaluator.gaussian_process(), point_to_sample.data(), num_to_sample, num_derivatives);
   }
 
   /*!\rst
-    Configures this state object with a new current point, the location of the potential sample whose EI is to be evaluated.
+    Configures this state object with a new ``point_to_sample``, the location of the potential sample whose EI is to be evaluated.
     Ensures all state variables & temporaries are properly sized.
     Properly sets all dependent state variables (e.g., GaussianProcess's state) for EI evaluation.
 
@@ -1148,26 +1176,24 @@ struct OnePotentialSampleExpectedImprovementState final {
       :ei_evaluator: expected improvement evaluator object that specifies the parameters & GP for EI evaluation
       :current_point[dim]: current point (ei evaluation location) to change to
   \endrst*/
-  void SetupState(const EvaluatorType& ei_evaluator, double const * restrict points_to_sample) OL_NONNULL_POINTERS {
+  void SetupState(const EvaluatorType& ei_evaluator, double const * restrict point_to_sample_in) OL_NONNULL_POINTERS {
     if (unlikely(dim != ei_evaluator.dim())) {
       OL_THROW_EXCEPTION(InvalidValueException<int>, "Evaluator's and State's dim do not match!", dim, ei_evaluator.dim());
     }
 
-    UpdateCurrentPoint(ei_evaluator, points_to_sample);
+    UpdateCurrentPoint(ei_evaluator, point_to_sample_in);
   }
 
   // size information
   //! spatial dimension (e.g., entries per point of ``points_sampled``)
   const int dim;
-  //! must be 1
-  const int num_to_sample;
-
-  //! this object can compute ``num_derivatives`` derivative terms wrt
-  //! current_point[:][0:num_derivatives]; 0 means no gradient computation will be performed
+  //! number of points to sample (i.e., the "q" in q,p-EI); MUST be 1
+  const int num_to_sample = 1;
+  //! number of derivative terms desired (usually 0 for no derivatives or num_to_sample)
   const int num_derivatives;
 
-  //! points currently being sampled
-  std::vector<double> current_point;
+  //! point at which to evaluate EI and/or its gradient (e.g., to check its value in future experiments)
+  std::vector<double> point_to_sample;
 
   //! gaussian process state
   GaussianProcess::StateType points_to_sample_state;
@@ -1189,17 +1215,15 @@ struct OnePotentialSampleExpectedImprovementState final {
     :ei_evaluator: evaluator object associated w/the state objects being constructed
     :starting_point[dim]: initial point to load into state (must be a valid point for the problem)
     :max_num_threads: maximum number of threads for use by OpenMP (generally should be <= # cores)
-    :num_derivatives: configure these state objects to compute ``num_derivatives`` derivative terms wrt
-      starting_point[:][0:num_derivatives]; 0 means no gradient computation will be performed.
+    :configure_for_gradients: true if these state objects will be used to compute gradients, false otherwise
     :state_vector[arbitrary]: vector of state objects, arbitrary size (usually 0)
   \output
     :state_vector[max_num_threads]: vector of states containing ``max_num_threads`` properly initialized state objects
 \endrst*/
-inline OL_NONNULL_POINTERS void SetupExpectedImprovementState(const OnePotentialSampleExpectedImprovementEvaluator& ei_evaluator, double const * restrict starting_point, int max_num_threads, int num_derivatives, std::vector<typename OnePotentialSampleExpectedImprovementEvaluator::StateType> * state_vector) {
+inline OL_NONNULL_POINTERS void SetupExpectedImprovementState(const OnePotentialSampleExpectedImprovementEvaluator& ei_evaluator, double const * restrict starting_point, int max_num_threads, bool configure_for_gradients, std::vector<typename OnePotentialSampleExpectedImprovementEvaluator::StateType> * state_vector) {
   state_vector->reserve(max_num_threads);
-  const int num_to_sample = 1;
   for (int i = 0; i < max_num_threads; ++i) {
-    state_vector->emplace_back(ei_evaluator, starting_point, num_to_sample, num_derivatives, nullptr);
+    state_vector->emplace_back(ei_evaluator, starting_point, configure_for_gradients);
   }
 }
 
@@ -1213,12 +1237,11 @@ inline OL_NONNULL_POINTERS void SetupExpectedImprovementState(const OnePotential
 
     template <typename ExpectedImprovementEvaluator>
     void SetupExpectedImprovementState(const ExpectedImprovementEvaluator& ei_evaluator, ...) {
-      int num_to_sample = 1;
       for (...) {
         if (std::is_same<ExpectedImprovementEvaluator, OnePotentialSampleExpectedImprovementEvaluator>::value) {
-          state_vector->emplace_back(ei_evaluator, starting_point, num_to_sample, num_derivatives, nullptr);
+          state_vector->emplace_back(ei_evaluator, points_to_sample, configure_for_gradients);
         } else {
-          state_vector->emplace_back(ei_evaluator, union_of_points.data(), num_being_sampled + num_to_sample, num_derivatives, normal_rng + i);
+          state_vector->emplace_back(ei_evaluator, points_to_sample, points_being_sampled, num_to_sample, num_being_sampled, configure_for_gradients, normal_rng + i);
         }
       }
     }
@@ -1228,28 +1251,24 @@ inline OL_NONNULL_POINTERS void SetupExpectedImprovementState(const OnePotential
 
   \param
     :ei_evaluator: evaluator object associated w/the state objects being constructed
-    :starting_point[dim]: initial point to load into state (must be a valid point for the problem)
-    :points_to_sample[dim][num_to_sample]: points that are being sampled concurrently from the GP
-    :num_to_sample: number of points being sampled concurrently (i.e., the p in q,p-EI)
-    :dim: number of spatial dimensions (size of a point, ``ei_evaluator.dim()``)
+    :points_to_sample[dim]: initial point to load into state (must be a valid point for the problem)
+    :points_being_sampled[dim][num_being_sampled]: points that are being sampled in concurrently experiments
+    :num_being_sampled: number of points being sampled concurrently (i.e., the p in q,p-EI)
     :max_num_threads: maximum number of threads for use by OpenMP (generally should be <= # cores)
-    :num_derivatives: configure these state objects to compute ``num_derivatives`` derivative terms wrt
-      union_of_points[:][0:num_derivatives]; 0 means no gradient computation will be performed.
+    :configure_for_gradients: true if these state objects will be used to compute gradients, false otherwise
     :state_vector[arbitrary]: vector of state objects, arbitrary size (usually 0)
     :normal_rng[max_num_threads]: a vector of NormalRNG objects that provide the (pesudo)random source for MC integration
   \output
     :state_vector[max_num_threads]: vector of states containing ``max_num_threads`` properly initialized state objects
 \endrst*/
-inline OL_NONNULL_POINTERS void SetupExpectedImprovementState(const ExpectedImprovementEvaluator& ei_evaluator, double const * restrict starting_point, double const * restrict points_to_sample, int num_to_sample, int dim, int max_num_threads, int num_derivatives, NormalRNG * normal_rng, std::vector<typename ExpectedImprovementEvaluator::StateType> * state_vector) {
-  std::vector<double> union_of_points((num_to_sample+1)*dim);
-  std::copy(starting_point, starting_point + dim, union_of_points.begin());
-  std::copy(points_to_sample, points_to_sample + dim*num_to_sample, union_of_points.begin() + dim);
+inline OL_NONNULL_POINTERS void SetupExpectedImprovementState(const ExpectedImprovementEvaluator& ei_evaluator, double const * restrict points_to_sample, double const * restrict points_being_sampled, int num_being_sampled, int max_num_threads, bool configure_for_gradients, NormalRNG * normal_rng, std::vector<typename ExpectedImprovementEvaluator::StateType> * state_vector) {
+  int num_to_sample = 1;  // HACK HACK HACK. TODO(eliu): fix this when EI class properly supports q,p-EI (ADS-3094)
 
   state_vector->reserve(max_num_threads);
   for (int i = 0; i < max_num_threads; ++i) {
-    state_vector->emplace_back(ei_evaluator, union_of_points.data(), num_to_sample+1, num_derivatives, normal_rng + i);
+    state_vector->emplace_back(ei_evaluator, points_to_sample, points_being_sampled, num_to_sample, num_being_sampled, configure_for_gradients, normal_rng + i);
   }
-}
+ }
 
 /*!\rst
   Optimize the Expected Improvement (to find the next best point to sample).  This method solves 1,p-EI as long as
@@ -1275,16 +1294,16 @@ inline OL_NONNULL_POINTERS void SetupExpectedImprovementState(const ExpectedImpr
     :optimization_parameters: GradientDescentParameters object that describes the parameters controlling EI optimization
       (e.g., number of iterations, tolerances, learning rate)
     :domain: object specifying the domain to optimize over (see ``gpp_domain.hpp``)
-    :initial_point[dim]: initial guess for gradient descent
-    :points_to_sample[dim][num_to_sample]: points that are being sampled concurrently from the GP
-    :num_to_sample: number of points being sampled concurrently (i.e., the p in 1,p-EI)
+    :points_to_sample[dim]: initial guess for gradient descent
+    :points_being_sampled[dim][num_being_sampled]: points that are being sampled concurrently from the GP
+    :num_being_sampled: number of points being sampled concurrently (i.e., the p in 1,p-EI)
     :normal_rng[1]: a NormalRNG object that provides the (pesudo)random source for MC integration
   \output
     :normal_rng[1]: NormalRNG object will have its state changed due to random draws
     :next_point[dim]: point yielding the best EI according to gradient descent
 \endrst*/
 template <typename ExpectedImprovementEvaluator, typename DomainType>
-void RestartedGradientDescentEIOptimization(const ExpectedImprovementEvaluator& ei_evaluator, const GradientDescentParameters& optimization_parameters, const DomainType& domain, double const * restrict initial_point, double const * restrict points_to_sample, int num_to_sample, NormalRNG * normal_rng, double * restrict next_point) {
+void RestartedGradientDescentEIOptimization(const ExpectedImprovementEvaluator& ei_evaluator, const GradientDescentParameters& optimization_parameters, const DomainType& domain, double const * restrict points_to_sample, double const * restrict points_being_sampled, int num_being_sampled, NormalRNG * normal_rng, double * restrict next_point) {
   if (unlikely(optimization_parameters.max_num_restarts <= 0)) {
     return;
   }
@@ -1292,12 +1311,9 @@ void RestartedGradientDescentEIOptimization(const ExpectedImprovementEvaluator& 
 
   OL_VERBOSE_PRINTF("Expected Improvement Optimization via %s:\n", OL_CURRENT_FUNCTION_NAME);
 
-  std::vector<double> union_of_points((num_to_sample + 1)*dim);
-  std::copy(initial_point, initial_point + dim, union_of_points.begin() + ExpectedImprovementEvaluator::StateType::kIndexOfCurrentPoint*dim);
-  std::copy(points_to_sample, points_to_sample + dim*num_to_sample, union_of_points.begin() + (ExpectedImprovementEvaluator::StateType::kIndexOfCurrentPoint+1)*dim);
-
-  int num_derivatives = 1;  // HACK HACK HACK. TODO(eliu): fix this when EI class properly supports q,p-EI (ADS-3094)
-  typename ExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, union_of_points.data(), num_to_sample+1, num_derivatives, normal_rng);
+  int num_to_sample = 1;  // HACK HACK HACK. TODO(eliu): fix this when EI class properly supports q,p-EI (ADS-3094)
+  bool configure_for_gradients = true;
+  typename ExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, points_to_sample, points_being_sampled, num_to_sample, num_being_sampled, configure_for_gradients, normal_rng);
 
   GradientDescentOptimizer<ExpectedImprovementEvaluator, DomainType> gd_opt;
   gd_opt.Optimize(ei_evaluator, optimization_parameters, domain, &ei_state);
@@ -1352,13 +1368,13 @@ OL_NONNULL_POINTERS void ComputeOptimalPointToSampleViaMultistartGradientDescent
   // set chunk_size; see gpp_common.hpp header comments, item 7
   const int chunk_size = std::max(std::min(4, std::max(1, num_multistarts/max_num_threads)), num_multistarts/(max_num_threads*10));
 
-  int num_derivatives = 1;  // HACK HACK HACK. TODO(eliu): fix this when EI class properly supports q,p-EI (ADS-3094)
+  bool configure_for_gradients = true;
   if (num_to_sample == 0) {
     // special analytic case when we are not using (or not accounting for) multiple, simultaneous experiments
     OnePotentialSampleExpectedImprovementEvaluator ei_evaluator(gaussian_process, best_so_far);
 
     std::vector<typename OnePotentialSampleExpectedImprovementEvaluator::StateType> ei_state_vector;
-    SetupExpectedImprovementState(ei_evaluator, start_point_set, max_num_threads, num_derivatives, &ei_state_vector);
+    SetupExpectedImprovementState(ei_evaluator, start_point_set, max_num_threads, configure_for_gradients, &ei_state_vector);
 
     const int dim = gaussian_process.dim();
     // init winner to be first point in set and 'force' its value to be 0.0; we cannot do worse than this
@@ -1374,7 +1390,7 @@ OL_NONNULL_POINTERS void ComputeOptimalPointToSampleViaMultistartGradientDescent
     ExpectedImprovementEvaluator ei_evaluator(gaussian_process, max_int_steps, best_so_far);
 
     std::vector<typename ExpectedImprovementEvaluator::StateType> ei_state_vector;
-    SetupExpectedImprovementState(ei_evaluator, start_point_set, points_to_sample, num_to_sample, dim, max_num_threads, num_derivatives, normal_rng, &ei_state_vector);
+    SetupExpectedImprovementState(ei_evaluator, start_point_set, points_to_sample, num_to_sample, max_num_threads, configure_for_gradients, normal_rng, &ei_state_vector);
 
     // init winner to be first point in set and 'force' its value to be 0.0; we cannot do worse than this
     OptimizationIOContainer io_container(dim, 0.0, start_point_set);
@@ -1491,13 +1507,13 @@ void EvaluateEIAtPointList(const GaussianProcess& gaussian_process, const Domain
   // set chunk_size; see gpp_common.hpp header comments, item 7
   const int chunk_size = std::max(std::min(40, std::max(1, num_multistarts/max_num_threads)), num_multistarts/(max_num_threads*120));
 
-  int num_derivatives = 0;
+  bool configure_for_gradients = false;
   if (num_to_sample == 0) {
     // special analytic case when we are not using (or not accounting for) multiple, simultaneous experiments
     OnePotentialSampleExpectedImprovementEvaluator ei_evaluator(gaussian_process, best_so_far);
 
     std::vector<typename OnePotentialSampleExpectedImprovementEvaluator::StateType> ei_state_vector;
-    SetupExpectedImprovementState(ei_evaluator, initial_guesses, max_num_threads, num_derivatives, &ei_state_vector);
+    SetupExpectedImprovementState(ei_evaluator, initial_guesses, max_num_threads, configure_for_gradients, &ei_state_vector);
 
     const int dim = gaussian_process.dim();
     // init winner to be first point in set and 'force' its value to be 0.0; we cannot do worse than this
@@ -1514,7 +1530,7 @@ void EvaluateEIAtPointList(const GaussianProcess& gaussian_process, const Domain
     ExpectedImprovementEvaluator ei_evaluator(gaussian_process, max_int_steps, best_so_far);
 
     std::vector<typename ExpectedImprovementEvaluator::StateType> ei_state_vector;
-    SetupExpectedImprovementState(ei_evaluator, initial_guesses, points_to_sample, num_to_sample, dim, max_num_threads, num_derivatives, normal_rng, &ei_state_vector);
+    SetupExpectedImprovementState(ei_evaluator, initial_guesses, points_to_sample, num_to_sample, max_num_threads, configure_for_gradients, normal_rng, &ei_state_vector);
 
     // init winner to be first point in set and 'force' its value to be 0.0; we cannot do worse than this
     OptimizationIOContainer io_container(dim, 0.0, initial_guesses);

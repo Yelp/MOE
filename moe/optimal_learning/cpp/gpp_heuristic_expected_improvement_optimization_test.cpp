@@ -379,9 +379,9 @@ int HeuristicExpectedImprovementOptimizationTestCore(EstimationPolicyTypes polic
   // check that the optimization succeeded on each output point
   std::vector<double> grad_ei(dim);
   OnePotentialSampleExpectedImprovementEvaluator ei_evaluator(*mock_gp_data.gaussian_process_ptr, mock_gp_data.best_so_far);
+  bool configure_for_gradients = true;
   for (int i = 0; i < num_samples_to_generate; ++i) {
-    int num_derivatives = 1;
-    OnePotentialSampleExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, best_points_to_sample.data() + i*dim, 1, num_derivatives, nullptr);
+    OnePotentialSampleExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, best_points_to_sample.data() + i*dim, configure_for_gradients);
     ei_evaluator.ComputeGradExpectedImprovement(&ei_state, grad_ei.data());
 
     current_errors = 0;

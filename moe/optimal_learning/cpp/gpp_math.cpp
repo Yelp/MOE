@@ -377,22 +377,22 @@ OL_NONNULL_POINTERS void BuildMixCovarianceMatrix(const CovarianceInterface& cov
   .. Note:: comments here are copied to _compute_expected_improvement_monte_carlo() in python_version/expected_improvement.py
   */
 double ExpectedImprovementEvaluator::ComputeExpectedImprovement(StateType * ei_state) const {
-  int num_to_sample = ei_state->num_to_sample;
+  int num_union = ei_state->num_union;
   gaussian_process_->ComputeMeanOfPoints(ei_state->points_to_sample_state, ei_state->to_sample_mean.data());
   gaussian_process_->ComputeVarianceOfPoints(&(ei_state->points_to_sample_state), ei_state->cholesky_to_sample_var.data());
-  ComputeCholeskyFactorL(num_to_sample, ei_state->cholesky_to_sample_var.data());
+  ComputeCholeskyFactorL(num_union, ei_state->cholesky_to_sample_var.data());
 
   double aggregate = 0.0;
   for (int i = 0; i < num_mc_iterations_; ++i) {
     double improvement_this_step = 0.0;
-    for (int j = 0; j < num_to_sample; ++j) {
+    for (int j = 0; j < num_union; ++j) {
       ei_state->EI_this_step_from_var[j] = (*(ei_state->normal_rng))();  // EI_this_step now holds "normals"
     }
 
     // compute EI_this_step_from_far = cholesky * normals   as  EI = cholesky * EI
     // b/c normals currently held in EI_this_step_from_var
-    TriangularMatrixVectorMultiply(ei_state->cholesky_to_sample_var.data(), 'N', num_to_sample, ei_state->EI_this_step_from_var.data());
-    for (int j = 0; j < num_to_sample; ++j) {
+    TriangularMatrixVectorMultiply(ei_state->cholesky_to_sample_var.data(), 'N', num_union, ei_state->EI_this_step_from_var.data());
+    for (int j = 0; j < num_union; ++j) {
       double EI_total = best_so_far_ - (ei_state->to_sample_mean[j] + ei_state->EI_this_step_from_var[j]);
       if (EI_total > improvement_this_step) {
         improvement_this_step = EI_total;
@@ -411,8 +411,7 @@ double ExpectedImprovementEvaluator::ComputeExpectedImprovement(StateType * ei_s
   Computes gradient of EI (see ExpectedImprovementEvaluator::ComputeGradExpectedImprovement) wrt current_point.
 
   Mechanism is similar to the computation of EI, where points' contributions to the gradient are thrown out of their
-  corresponding ``improvement <= 0.0``.  There is some additional subtlety here because we are only computing the gradient
-  of EI with respect to the current point (stored at index ``index_of_current_point``).
+  corresponding ``improvement <= 0.0``.
 
   Thus ``\nabla(\mu)`` only contributes when the ``winner`` (point w/best improvement this iteration) is the current point.
   That is, the gradient of ``\mu`` at ``x_i`` wrt ``x_j`` is 0 unless ``i == j`` (and only this result is stored in
@@ -423,12 +422,11 @@ double ExpectedImprovementEvaluator::ComputeExpectedImprovement(StateType * ei_s
   .. Note:: comments here are copied to _compute_grad_expected_improvement_monte_carlo() in python_version/expected_improvement.py
 */
 void ExpectedImprovementEvaluator::ComputeGradExpectedImprovement(StateType * ei_state, double * restrict grad_EI) const {
-  const int index_of_current_point = StateType::kIndexOfCurrentPoint;
-  const int num_to_sample = ei_state->num_to_sample;
+  const int num_union = ei_state->num_union;
   gaussian_process_->ComputeMeanOfPoints(ei_state->points_to_sample_state, ei_state->to_sample_mean.data());
   gaussian_process_->ComputeGradMeanOfPoints(ei_state->points_to_sample_state, ei_state->grad_mu.data());
   gaussian_process_->ComputeVarianceOfPoints(&(ei_state->points_to_sample_state), ei_state->cholesky_to_sample_var.data());
-  ComputeCholeskyFactorL(num_to_sample, ei_state->cholesky_to_sample_var.data());
+  ComputeCholeskyFactorL(num_union, ei_state->cholesky_to_sample_var.data());
 
   gaussian_process_->ComputeGradCholeskyVarianceOfPoints(&(ei_state->points_to_sample_state), ei_state->cholesky_to_sample_var.data(), ei_state->grad_chol_decomp.data());
 
@@ -436,17 +434,17 @@ void ExpectedImprovementEvaluator::ComputeGradExpectedImprovement(StateType * ei
   double aggregate_EI = 0.0;
   for (int i = 0; i < num_mc_iterations_; ++i) {
     double improvement_this_step = 0.0;
-    int winner = -1;
-    for (int j = 0; j < num_to_sample; ++j) {
+    int winner = num_union + 1;
+    for (int j = 0; j < num_union; ++j) {
       ei_state->EI_this_step_from_var[j] = (*(ei_state->normal_rng))();  // EI_this_step now holds "normals"
       ei_state->normals[j] = ei_state->EI_this_step_from_var[j];  // orig value of normals needed if improvement_this_step > 0.0
     }
 
     // compute EI_this_step_from_far = cholesky * normals   as  EI = cholesky * EI
     // b/c normals currently held in EI_this_step_from_var
-    TriangularMatrixVectorMultiply(ei_state->cholesky_to_sample_var.data(), 'N', num_to_sample, ei_state->EI_this_step_from_var.data());
+    TriangularMatrixVectorMultiply(ei_state->cholesky_to_sample_var.data(), 'N', num_union, ei_state->EI_this_step_from_var.data());
 
-    for (int j = 0; j < num_to_sample; ++j) {
+    for (int j = 0; j < num_union; ++j) {
       double EI_total = best_so_far_ - (ei_state->to_sample_mean[j] + ei_state->EI_this_step_from_var[j]);
       if (EI_total > improvement_this_step) {
         improvement_this_step = EI_total;
@@ -458,21 +456,18 @@ void ExpectedImprovementEvaluator::ComputeGradExpectedImprovement(StateType * ei
       aggregate_EI += improvement_this_step;
 
       // recall that grad_mu only stores \frac{d mu_i}{d Xs_i}, since \frac{d mu_j}{d Xs_i} = 0 for i != j.
-      // hence the only relevant term from grad_mu is the one describing the gradient wrt current_point,
-      // and this term only arises if the winner (for most improvement) is current_point
-      if (winner == index_of_current_point) {
+      // hence the only relevant term from grad_mu is the one describing the gradient wrt winner-th point,
+      // and this term only arises if the winner (for most improvement) index is less than num_to_sample
+      if (winner < ei_state->num_to_sample) {
         for (int k = 0; k < dim_; ++k) {
-          ei_state->aggregate[k] -= ei_state->grad_mu[index_of_current_point*dim_ + k];
+          ei_state->aggregate[winner*dim_ + k] -= ei_state->grad_mu[winner*dim_ + k];
         }
       }
 
-      // SpecialTensorVectorMultiply(grad_chol_decomp.data(), normals.data(), num_to_sample, num_to_sample, dim_, agg_dx.data());
-      // let L_{d,i,j} = grad_chol_decomp, d over dim_, i, j over num_to_sample
-      // we want to compute: agg_dx_{d,j} = L_{d,i,j} * normals_i (aka SpecialTensorVectorMultiply())
-      // then update aggregate_d -= agg_dx{d,j=winner}
-      // so we save work by only computing ONE column of the output, agg_dx
-      // aggregate -= grad_chol_decomp * normals
-      GeneralMatrixVectorMultiply(ei_state->grad_chol_decomp.data() + winner*dim_*(num_to_sample), 'N', ei_state->normals.data(), -1.0, 1.0, dim_, num_to_sample, dim_, ei_state->aggregate.data());
+      // SpecialTensorVectorMultiply(grad_chol_decomp.data(), normals.data(), num_union, num_union, dim_, agg_dx.data());
+      // let L_{d,i,j,k} = grad_chol_decomp, d over dim_, i, j over num_union, k over num_to_sample
+      // we want to compute: agg_dx_{d,k} = L_{d,i,j=winner,k} * normals_i (aka SpecialTensorVectorMultiply())
+      GeneralMatrixVectorMultiply(ei_state->grad_chol_decomp.data() + winner*dim_*(num_union), 'N', ei_state->normals.data(), -1.0, 1.0, dim_, num_union, dim_, ei_state->aggregate.data());
     }  // end if: improvement_this_step > 0.0
   }  // end for i: num_mc_iterations_
 

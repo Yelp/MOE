@@ -343,7 +343,7 @@ class PingGPPCholeskyVariance final : public PingableMatrixInputVectorOutputInte
 /*
   Supports evaluating the expected improvement, get_expected_EI(), and its gradient, get_expected_grad_EI().
 
-  The gradient is taken wrt current_point[dim], so this is the "input_matrix" X_{d,i} (with i always indexing 0).
+  The gradient is taken wrt points_to_sample[dim], so this is the "input_matrix" X_{d,i} (with i always indexing 0).
   The other inputs to EI are not differentiated against, so they are taken as input and stored by the constructor.
 
   The output of EI is a scalar.
@@ -360,13 +360,12 @@ class PingExpectedImprovement final : public PingableMatrixInputVectorOutputInte
         num_sampled_(num_sampled),
         gradients_already_computed_(false),
         noise_variance_(num_sampled_, 0.0),
-        union_of_points(dim_*(num_being_sampled_ + 1)),
         points_sampled_(points_sampled, points_sampled + dim_*num_sampled_),
         points_sampled_value_(points_sampled_value, points_sampled_value + num_sampled_),
+        points_being_sampled_(points_being_sampled, points_being_sampled + num_being_sampled_*dim_),
         grad_EI_(dim_),
         sqexp_covariance_(dim_, alpha, lengths),
         gaussian_process_(sqexp_covariance_, points_sampled_.data(), points_sampled_value_.data(), noise_variance_.data(), dim_, num_sampled_), ei_evaluator_(gaussian_process_, num_mc_iter, best_so_far) {
-    std::copy(points_being_sampled, points_being_sampled + dim_*num_being_sampled_, union_of_points.begin() + dim_);
   }
 
   virtual void GetInputSizes(int * num_rows, int * num_cols) const noexcept override OL_NONNULL_POINTERS {
@@ -382,16 +381,16 @@ class PingExpectedImprovement final : public PingableMatrixInputVectorOutputInte
     return 1;
   }
 
-  virtual void EvaluateAndStoreAnalyticGradient(double const * restrict current_point, double * restrict gradients) noexcept override OL_NONNULL_POINTERS_LIST(2) {
+  virtual void EvaluateAndStoreAnalyticGradient(double const * restrict points_to_sample, double * restrict gradients) noexcept override OL_NONNULL_POINTERS_LIST(2) {
     if (gradients_already_computed_ == true) {
       OL_WARNING_PRINTF("WARNING: grad_EI data already set.  Overwriting...\n");
     }
     gradients_already_computed_ = true;
 
     NormalRNG normal_rng(3141);
-    std::copy(current_point, current_point + dim_, union_of_points.data());
-    int num_derivatives = 1;  // HACK HACK HACK. TODO(eliu): fix this when EI class properly supports q,p-EI (ADS-3094)
-    ExpectedImprovementEvaluator::StateType ei_state(ei_evaluator_, union_of_points.data(), num_being_sampled_ + 1, num_derivatives, &normal_rng);
+    int num_to_sample = 1;  // HACK HACK HACK. TODO(eliu): fix this when EI class properly supports q,p-EI (ADS-3094)
+    bool configure_for_gradients = true;
+    ExpectedImprovementEvaluator::StateType ei_state(ei_evaluator_, points_to_sample, points_being_sampled_.data(), num_to_sample, num_being_sampled_, configure_for_gradients, &normal_rng);
     ei_evaluator_.ComputeGradExpectedImprovement(&ei_state, grad_EI_.data());
 
     if (gradients != nullptr) {
@@ -407,11 +406,11 @@ class PingExpectedImprovement final : public PingableMatrixInputVectorOutputInte
     return grad_EI_[row_index];
   }
 
-  virtual void EvaluateFunction(double const * restrict current_point, double * restrict function_values) const noexcept override OL_NONNULL_POINTERS {
-    std::copy(current_point, current_point + dim_, union_of_points.data());
+  virtual void EvaluateFunction(double const * restrict points_to_sample, double * restrict function_values) const noexcept override OL_NONNULL_POINTERS {
     NormalRNG normal_rng(3141);
-    int num_derivatives = 0;
-    ExpectedImprovementEvaluator::StateType ei_state(ei_evaluator_, union_of_points.data(), num_being_sampled_ + 1, num_derivatives, &normal_rng);
+    int num_to_sample = 1;  // HACK HACK HACK. TODO(eliu): fix this when EI class properly supports q,p-EI (ADS-3094)
+    bool configure_for_gradients = false;
+    ExpectedImprovementEvaluator::StateType ei_state(ei_evaluator_, points_to_sample, points_being_sampled_.data(), num_to_sample, num_being_sampled_, configure_for_gradients, &normal_rng);
     *function_values = ei_evaluator_.ComputeExpectedImprovement(&ei_state);
   }
 
@@ -422,9 +421,9 @@ class PingExpectedImprovement final : public PingableMatrixInputVectorOutputInte
   bool gradients_already_computed_;
 
   std::vector<double> noise_variance_;
-  mutable std::vector<double> union_of_points;
   std::vector<double> points_sampled_;
   std::vector<double> points_sampled_value_;
+  std::vector<double> points_being_sampled_;
   std::vector<double> grad_EI_;
 
   SquareExponential sqexp_covariance_;
@@ -437,7 +436,7 @@ class PingExpectedImprovement final : public PingableMatrixInputVectorOutputInte
 /*
   Supports evaluating an analytic special case of expected improvement via OnePotentialSampleExpectedImprovementEvaluator.
 
-  The gradient is taken wrt current_point[dim], so this is the "input_matrix" X_{d,i} (with i always indexing 0).
+  The gradient is taken wrt points_to_sample[dim], so this is the "input_matrix" X_{d,i} (with i always indexing 0).
   The other inputs to EI are not differentiated against, so they are taken as input and stored by the constructor.
 
   The output of EI is a scalar.
@@ -474,14 +473,14 @@ class PingOnePotentialSampleExpectedImprovement final : public PingableMatrixInp
     return 1;
   }
 
-  virtual void EvaluateAndStoreAnalyticGradient(double const * restrict current_point, double * restrict gradients) noexcept override OL_NONNULL_POINTERS_LIST(2) {
+  virtual void EvaluateAndStoreAnalyticGradient(double const * restrict points_to_sample, double * restrict gradients) noexcept override OL_NONNULL_POINTERS_LIST(2) {
     if (gradients_already_computed_ == true) {
       OL_WARNING_PRINTF("WARNING: grad_EI data already set.  Overwriting...\n");
     }
     gradients_already_computed_ = true;
 
-    int num_derivatives = 1;  // HACK HACK HACK. TODO(eliu): fix this when EI class properly supports q,p-EI (ADS-3094)
-    OnePotentialSampleExpectedImprovementEvaluator::StateType ei_state(ei_evaluator_, current_point, num_being_sampled_ + 1, num_derivatives, nullptr);
+    bool configure_for_gradients = true;
+    OnePotentialSampleExpectedImprovementEvaluator::StateType ei_state(ei_evaluator_, points_to_sample, configure_for_gradients);
     ei_evaluator_.ComputeGradExpectedImprovement(&ei_state, grad_EI_.data());
 
     if (gradients != nullptr) {
@@ -497,9 +496,9 @@ class PingOnePotentialSampleExpectedImprovement final : public PingableMatrixInp
     return grad_EI_[row_index];
   }
 
-  virtual void EvaluateFunction(double const * restrict current_point, double * restrict function_values) const noexcept override OL_NONNULL_POINTERS {
-    int num_derivatives = 0;
-    OnePotentialSampleExpectedImprovementEvaluator::StateType ei_state(ei_evaluator_, current_point, num_being_sampled_ + 1, num_derivatives, nullptr);
+  virtual void EvaluateFunction(double const * restrict points_to_sample, double * restrict function_values) const noexcept override OL_NONNULL_POINTERS {
+    bool configure_for_gradients = false;
+    OnePotentialSampleExpectedImprovementEvaluator::StateType ei_state(ei_evaluator_, points_to_sample, configure_for_gradients);
     *function_values = ei_evaluator_.ComputeExpectedImprovement(&ei_state);
   }
 
@@ -830,16 +829,16 @@ int MultithreadedEIOptimizationTest(ExpectedImprovementEvaluationMode ei_mode) {
   std::vector<double> points_being_sampled(kDim*num_being_sampled);
 
   // gradient descent parameters
-  const double gamma = 0.9;
-  const double pre_mult = 1.0;
+  const double gamma = 0.7;
+  const double pre_mult = 1.2;
   const double max_relative_change = 1.0;
   const double tolerance = 1.0e-7;
 
   const int max_gradient_descent_steps = 300;
-  const int max_num_restarts = 10;
+  const int max_num_restarts = 4;
   GradientDescentParameters gd_params(0, max_gradient_descent_steps, max_num_restarts, gamma, pre_mult, max_relative_change, tolerance);
 
-  int max_mc_iterations = 1000;
+  int max_mc_iterations = 3000;
 
   int total_errors = 0;
 
@@ -988,8 +987,8 @@ OL_WARN_UNUSED_RESULT int ExpectedImprovementOptimizationTestCore(ExpectedImprov
   int current_errors = 0;
 
   // gradient descent parameters
-  const double gamma = 0.9;
-  const double pre_mult = 1.0;
+  const double gamma = 0.5;
+  const double pre_mult = 1.3;
   const double max_relative_change = 1.0;
   const double tolerance = 1.0e-7;
   const int max_gradient_descent_steps = 1000;
@@ -998,17 +997,17 @@ OL_WARN_UNUSED_RESULT int ExpectedImprovementOptimizationTestCore(ExpectedImprov
   GradientDescentParameters gd_params(num_multistarts, max_gradient_descent_steps, max_num_restarts, gamma, pre_mult, max_relative_change, tolerance);
 
   // grid search parameters
-  int num_grid_search_points = 100000;
+  int num_grid_search_points = 10000;
 
   // EI computation parameters
   int num_being_sampled = 0;
-  int max_int_steps = 1000;
+  int max_int_steps = 6000;
 
   // random number generators
   UniformRandomGenerator uniform_generator(314);
   boost::uniform_real<double> uniform_double_hyperparameter(0.4, 1.3);
   boost::uniform_real<double> uniform_double_lower_bound(-2.0, 0.5);
-  boost::uniform_real<double> uniform_double_upper_bound(2.0, 3.5);
+  boost::uniform_real<double> uniform_double_upper_bound(1.0, 2.5);
 
   const int64_t pi_array[] = {314, 3141, 31415, 314159, 3141592, 31415926, 314159265, 3141592653, 31415926535, 314159265359};
   static const int kMaxNumThreads = 4;
@@ -1017,19 +1016,14 @@ OL_WARN_UNUSED_RESULT int ExpectedImprovementOptimizationTestCore(ExpectedImprov
     normal_rng_vec[j].SetExplicitSeed(pi_array[j]);
   }
 
-  int num_sampled;
-  if (ei_mode == ExpectedImprovementEvaluationMode::kAnalytic) {
-    num_sampled = 20;  // need to keep this similar to the number of multistarts
-  } else {
-    num_sampled = 80;  // matters less here b/c we end up starting one multistart from the LHC-search optima
-  }
+  int num_sampled = 20;
 
   std::vector<double> noise_variance(num_sampled, 0.002);
   MockGaussianProcessPriorData<DomainType> mock_gp_data(SquareExponential(dim, 1.0, 1.0), noise_variance, dim, num_sampled, uniform_double_lower_bound, uniform_double_upper_bound, uniform_double_hyperparameter, &uniform_generator);
 
   // we will optimize over the expanded region
   std::vector<ClosedInterval> domain_bounds(mock_gp_data.domain_bounds);
-  ExpandDomainBounds(2.2, &domain_bounds);
+  ExpandDomainBounds(1.5, &domain_bounds);
   DomainType domain(domain_bounds.data(), dim);
 
   // set up parallel experiments, if any
@@ -1038,9 +1032,9 @@ OL_WARN_UNUSED_RESULT int ExpectedImprovementOptimizationTestCore(ExpectedImprov
   } else {
     // using MC integration
     num_being_sampled = 2;
-    max_int_steps = 1000;
 
-    gd_params.max_num_steps = 200;
+    gd_params.max_num_restarts = 3;
+    gd_params.max_num_steps = 400;
     gd_params.tolerance = 1.0e-5;
   }
   std::vector<double> points_being_sampled(dim*num_being_sampled);
@@ -1076,8 +1070,6 @@ OL_WARN_UNUSED_RESULT int ExpectedImprovementOptimizationTestCore(ExpectedImprov
   } else {
     int num_multistarts_mc = 8;
     gd_params.num_multistarts = num_multistarts_mc;
-    gd_params.max_num_steps = 300;
-    max_int_steps = 6000;
     found_flag = false;
     std::vector<double> initial_guesses(num_multistarts_mc*dim);
     domain.GenerateUniformPointsInDomain(num_multistarts_mc - 1, &uniform_generator, initial_guesses.data() + dim);
@@ -1097,36 +1089,29 @@ OL_WARN_UNUSED_RESULT int ExpectedImprovementOptimizationTestCore(ExpectedImprov
   std::vector<double> grad_ei(dim);
 
   // set up evaluators and state to check results
-  std::vector<double> union_of_points((num_being_sampled+1)*dim);
-  std::copy(next_point.begin(), next_point.end(), union_of_points.begin());
-  std::copy(points_being_sampled.begin(), points_being_sampled.end(), union_of_points.begin() + dim);
-
-  std::vector<double> union_of_points_grid_search((num_being_sampled+1)*dim);
-  std::copy(grid_search_best_point.begin(), grid_search_best_point.end(), union_of_points_grid_search.begin());
-  std::copy(points_being_sampled.begin(), points_being_sampled.end(), union_of_points_grid_search.begin() + dim);
-
   double tolerance_result = tolerance;
-  int num_derivatives = 1;  // HACK HACK HACK. TODO(eliu): fix this when EI class properly supports q,p-EI (ADS-3094)
+  bool configure_for_gradients = true;
   if (ei_mode == ExpectedImprovementEvaluationMode::kAnalytic) {
     OnePotentialSampleExpectedImprovementEvaluator ei_evaluator(*mock_gp_data.gaussian_process_ptr, mock_gp_data.best_so_far);
-    OnePotentialSampleExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, union_of_points.data(), num_being_sampled + 1, num_derivatives, nullptr);
+    OnePotentialSampleExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, next_point.data(), configure_for_gradients);
 
     ei_optimized = ei_evaluator.ComputeExpectedImprovement(&ei_state);
     ei_evaluator.ComputeGradExpectedImprovement(&ei_state, grad_ei.data());
 
-    ei_state.UpdateCurrentPoint(ei_evaluator, union_of_points_grid_search.data());
+    ei_state.UpdateCurrentPoint(ei_evaluator, grid_search_best_point.data());
     ei_grid_search = ei_evaluator.ComputeExpectedImprovement(&ei_state);
   } else {
-    max_int_steps = 10000000;
-    tolerance_result = 3.0e-4;  // reduce b/c we cannot achieve full accuracy in the monte-carlo case
+    max_int_steps = 1000000;
+    tolerance_result = 1.0e-3;  // reduce b/c we cannot achieve full accuracy in the monte-carlo case
     // while still having this test run in a reasonable amt of time
     ExpectedImprovementEvaluator ei_evaluator(*mock_gp_data.gaussian_process_ptr, max_int_steps, mock_gp_data.best_so_far);
-    ExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, union_of_points.data(), num_being_sampled + 1, num_derivatives, normal_rng_vec.data());
+    int num_to_sample = 1;  // HACK HACK HACK. TODO(eliu): fix this when EI class properly supports q,p-EI (ADS-3094)
+    ExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, next_point.data(), points_being_sampled.data(), num_to_sample, num_being_sampled, configure_for_gradients, normal_rng_vec.data());
 
     ei_optimized = ei_evaluator.ComputeExpectedImprovement(&ei_state);
     ei_evaluator.ComputeGradExpectedImprovement(&ei_state, grad_ei.data());
 
-    ei_state.UpdateCurrentPoint(ei_evaluator, union_of_points_grid_search.data());
+    ei_state.UpdateCurrentPoint(ei_evaluator, grid_search_best_point.data());
     ei_grid_search = ei_evaluator.ComputeExpectedImprovement(&ei_state);
   }
 
@@ -1156,7 +1141,7 @@ OL_WARN_UNUSED_RESULT int ExpectedImprovementOptimizationSimplexTestCore(Expecte
   int current_errors = 0;
 
   // gradient descent parameters
-  const double gamma = 0.9;
+  const double gamma = 0.8;
   const double pre_mult = 0.02;
   const double max_relative_change = 0.99;
   const double tolerance = 1.0e-7;
@@ -1166,11 +1151,11 @@ OL_WARN_UNUSED_RESULT int ExpectedImprovementOptimizationSimplexTestCore(Expecte
   GradientDescentParameters gd_params(num_multistarts, max_gradient_descent_steps, max_num_restarts, gamma, pre_mult, max_relative_change, tolerance);
 
   // grid search parameters
-  int num_grid_search_points = 200000;
+  int num_grid_search_points = 20000;
 
   // EI computation parameters
   int num_being_sampled = 0;
-  int max_int_steps = 1000;
+  int max_int_steps = 6000;
 
   // random number generators
   UniformRandomGenerator uniform_generator(314);
@@ -1185,19 +1170,10 @@ OL_WARN_UNUSED_RESULT int ExpectedImprovementOptimizationSimplexTestCore(Expecte
     normal_rng_vec[j].SetExplicitSeed(pi_array[j]);
   }
 
-  int num_sampled;
-  if (ei_mode == ExpectedImprovementEvaluationMode::kAnalytic) {
-    num_sampled = 20;  // need to keep this similar to the number of multistarts
-  } else {
-    num_sampled = 80;  // matters less here b/c we end up starting one multistart from the LHC-search optima
-  }
+  int num_sampled = 20;
 
   std::vector<double> noise_variance(num_sampled, 0.002);
-  MockGaussianProcessPriorData<DomainType> mock_gp_data(SquareExponential(dim, 1.0, 1.0), noise_variance, dim, num_sampled);
-  mock_gp_data.InitializeHyperparameters(uniform_double_hyperparameter, &uniform_generator);
-  mock_gp_data.hyperparameters[0] = 0.8;
-  mock_gp_data.InitializeDomain(uniform_double_lower_bound, uniform_double_upper_bound, &uniform_generator);
-  mock_gp_data.InitializeGaussianProcess(&uniform_generator);
+  MockGaussianProcessPriorData<DomainType> mock_gp_data(SquareExponential(dim, 1.0, 1.0), noise_variance, dim, num_sampled, uniform_double_lower_bound, uniform_double_upper_bound, uniform_double_hyperparameter, &uniform_generator);
 
   // we will optimize over the expanded region
   std::vector<ClosedInterval> domain_bounds(mock_gp_data.domain_bounds);
@@ -1212,13 +1188,14 @@ OL_WARN_UNUSED_RESULT int ExpectedImprovementOptimizationSimplexTestCore(Expecte
   // set up parallel experiments, if any
   if (ei_mode == ExpectedImprovementEvaluationMode::kAnalytic) {
     num_being_sampled = 0;
+    gd_params.pre_mult = 1.0;
   } else {
     // using MC integration
     num_being_sampled = 2;
-    max_int_steps = 1000;
 
-    gd_params.max_num_steps = 600;
-    gd_params.tolerance = 1.0e-5;
+    gd_params.max_num_restarts = 4;
+    gd_params.max_num_steps = 500;
+    gd_params.tolerance = 1.0e-4;
   }
   std::vector<double> points_being_sampled(dim*num_being_sampled);
 
@@ -1251,12 +1228,14 @@ OL_WARN_UNUSED_RESULT int ExpectedImprovementOptimizationSimplexTestCore(Expecte
       ++total_errors;
     }
   } else {
-    int num_multistarts_mc = 1;
+    int num_multistarts_mc = 6;
     gd_params.num_multistarts = num_multistarts_mc;
-    gd_params.max_num_steps = 1000;
-    max_int_steps = 10000;
     found_flag = false;
     std::vector<double> initial_guesses(num_multistarts_mc*dim);
+    int num_points_actual = domain.GenerateUniformPointsInDomain(num_multistarts_mc, &uniform_generator, initial_guesses.data());
+    if (num_points_actual != num_multistarts_mc) {
+      ++total_errors;
+    }
     std::copy(grid_search_best_point.begin(), grid_search_best_point.end(), initial_guesses.begin());
 
     ComputeOptimalPointToSampleViaMultistartGradientDescent(*mock_gp_data.gaussian_process_ptr, gd_params, domain, initial_guesses.data(), points_being_sampled.data(), num_multistarts_mc, num_being_sampled, mock_gp_data.best_so_far, max_int_steps, kMaxNumThreads, normal_rng_vec.data(), &found_flag, next_point.data());
@@ -1273,36 +1252,29 @@ OL_WARN_UNUSED_RESULT int ExpectedImprovementOptimizationSimplexTestCore(Expecte
   std::vector<double> grad_ei(dim);
 
   // set up evaluators and state to check results
-  std::vector<double> union_of_points((num_being_sampled+1)*dim);
-  std::copy(next_point.begin(), next_point.end(), union_of_points.begin());
-  std::copy(points_being_sampled.begin(), points_being_sampled.end(), union_of_points.begin() + dim);
-
-  std::vector<double> union_of_points_grid_search((num_being_sampled+1)*dim);
-  std::copy(grid_search_best_point.begin(), grid_search_best_point.end(), union_of_points_grid_search.begin());
-  std::copy(points_being_sampled.begin(), points_being_sampled.end(), union_of_points_grid_search.begin() + dim);
-
   double tolerance_result = tolerance;
-  int num_derivatives = 1;  // HACK HACK HACK. TODO(eliu): fix this when EI class properly supports q,p-EI (ADS-3094)
+  bool configure_for_gradients = true;
   if (ei_mode == ExpectedImprovementEvaluationMode::kAnalytic) {
     OnePotentialSampleExpectedImprovementEvaluator ei_evaluator(*mock_gp_data.gaussian_process_ptr, mock_gp_data.best_so_far);
-    OnePotentialSampleExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, union_of_points.data(), num_being_sampled + 1, num_derivatives, nullptr);
+    OnePotentialSampleExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, next_point.data(), configure_for_gradients);
 
     ei_optimized = ei_evaluator.ComputeExpectedImprovement(&ei_state);
     ei_evaluator.ComputeGradExpectedImprovement(&ei_state, grad_ei.data());
 
-    ei_state.UpdateCurrentPoint(ei_evaluator, union_of_points_grid_search.data());
+    ei_state.UpdateCurrentPoint(ei_evaluator, grid_search_best_point.data());
     ei_grid_search = ei_evaluator.ComputeExpectedImprovement(&ei_state);
   } else {
-    max_int_steps = 10000000;
-    tolerance_result = 3.0e-4;  // reduce b/c we cannot achieve full accuracy in the monte-carlo case
+    max_int_steps = 1000000;
+    tolerance_result = 3.0e-3;  // reduce b/c we cannot achieve full accuracy in the monte-carlo case
     // while still having this test run in a reasonable amt of time
     ExpectedImprovementEvaluator ei_evaluator(*mock_gp_data.gaussian_process_ptr, max_int_steps, mock_gp_data.best_so_far);
-    ExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, union_of_points.data(), num_being_sampled + 1, num_derivatives, normal_rng_vec.data());
+    int num_to_sample = 1;  // HACK HACK HACK. TODO(eliu): fix this when EI class properly supports q,p-EI (ADS-3094)
+    ExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, next_point.data(), points_being_sampled.data(), num_to_sample, num_being_sampled, configure_for_gradients, normal_rng_vec.data());
 
     ei_optimized = ei_evaluator.ComputeExpectedImprovement(&ei_state);
     ei_evaluator.ComputeGradExpectedImprovement(&ei_state, grad_ei.data());
 
-    ei_state.UpdateCurrentPoint(ei_evaluator, union_of_points_grid_search.data());
+    ei_state.UpdateCurrentPoint(ei_evaluator, grid_search_best_point.data());
     ei_grid_search = ei_evaluator.ComputeExpectedImprovement(&ei_state);
   }
 
@@ -1345,31 +1317,31 @@ int ExpectedImprovementOptimizationMultipleSamplesTest() {
   int current_errors = 0;
 
   // gradient descent parameters
-  const double gamma = 0.9;
-  const double pre_mult = 1.0;
+  const double gamma = 0.7;
+  const double pre_mult = 1.3;
   const double max_relative_change = 1.0;
   const double tolerance = 1.0e-5;
-  const int max_gradient_descent_steps = 300;
-  const int max_num_restarts = 10;
+  const int max_gradient_descent_steps = 350;
+  const int max_num_restarts = 3;
   const int num_multistarts = 20;
   GradientDescentParameters gd_params(num_multistarts, max_gradient_descent_steps, max_num_restarts, gamma, pre_mult, max_relative_change, tolerance);
 
   // number of simultaneous samples
-  const int num_samples_to_generate = 4;
+  const int num_to_sample = 3;
 
   // grid search parameters
-  int num_grid_search_points = 10000;
+  int num_grid_search_points = 1000;
 
   // EI computation parameters
   const int num_being_sampled = 0;
   std::vector<double> points_being_sampled(dim*num_being_sampled);
-  int max_int_steps = 1000;
+  int max_int_steps = 6000;
 
   // random number generators
   UniformRandomGenerator uniform_generator(314);
   boost::uniform_real<double> uniform_double_hyperparameter(0.4, 1.3);
   boost::uniform_real<double> uniform_double_lower_bound(-2.0, 0.5);
-  boost::uniform_real<double> uniform_double_upper_bound(2.0, 3.5);
+  boost::uniform_real<double> uniform_double_upper_bound(1.0, 2.5);
 
   const int64_t pi_array[] = {314, 3141, 31415, 314159, 3141592, 31415926, 314159265, 3141592653, 31415926535, 314159265359};
   static const int kMaxNumThreads = 4;
@@ -1387,29 +1359,29 @@ int ExpectedImprovementOptimizationMultipleSamplesTest() {
   ExpandDomainBounds(1.5, &domain_bounds);
   DomainType domain(domain_bounds.data(), dim);
 
-  std::vector<double> best_points_to_sample(dim*num_samples_to_generate);
+  std::vector<double> best_points_to_sample(dim*num_to_sample);
 
   // optimize EI using grid search to set the baseline
   bool found_flag = false;
-  std::vector<double> grid_search_best_point_set(dim*num_samples_to_generate);
-  ComputeOptimalSetOfPointsToSample(*mock_gp_data.gaussian_process_ptr, gd_params, domain, points_being_sampled.data(), num_being_sampled, mock_gp_data.best_so_far, max_int_steps, kMaxNumThreads, true, num_grid_search_points, num_samples_to_generate, &found_flag, &uniform_generator, normal_rng_vec.data(), grid_search_best_point_set.data());
+  std::vector<double> grid_search_best_point_set(dim*num_to_sample);
+  ComputeOptimalSetOfPointsToSample(*mock_gp_data.gaussian_process_ptr, gd_params, domain, points_being_sampled.data(), num_being_sampled, mock_gp_data.best_so_far, max_int_steps, kMaxNumThreads, true, num_grid_search_points, num_to_sample, &found_flag, &uniform_generator, normal_rng_vec.data(), grid_search_best_point_set.data());
   if (!found_flag) {
     ++total_errors;
   }
 
   // optimize EI using gradient descent
   found_flag = false;
-  ComputeOptimalSetOfPointsToSample(*mock_gp_data.gaussian_process_ptr, gd_params, domain, points_being_sampled.data(), num_being_sampled, mock_gp_data.best_so_far, max_int_steps, kMaxNumThreads, false, num_grid_search_points, num_samples_to_generate, &found_flag, &uniform_generator, normal_rng_vec.data(), best_points_to_sample.data());
+  ComputeOptimalSetOfPointsToSample(*mock_gp_data.gaussian_process_ptr, gd_params, domain, points_being_sampled.data(), num_being_sampled, mock_gp_data.best_so_far, max_int_steps, kMaxNumThreads, false, num_grid_search_points, num_to_sample, &found_flag, &uniform_generator, normal_rng_vec.data(), best_points_to_sample.data());
   if (!found_flag) {
     ++total_errors;
   }
 
   // check points are in domain
-  current_errors = CheckPointsInDomain(domain, best_points_to_sample.data(), num_samples_to_generate);
+  current_errors = CheckPointsInDomain(domain, best_points_to_sample.data(), num_to_sample);
 #ifdef OL_ERROR_PRINT
   if (current_errors != 0) {
     OL_ERROR_PRINTF("ERROR: points were not in domain!  points:\n");
-    PrintMatrixTrans(best_points_to_sample.data(), num_samples_to_generate, dim);
+    PrintMatrixTrans(best_points_to_sample.data(), num_to_sample, dim);
     OL_ERROR_PRINTF("domain:\n");
     PrintDomainBounds(domain_bounds.data(), dim);
   }
@@ -1418,11 +1390,11 @@ int ExpectedImprovementOptimizationMultipleSamplesTest() {
 
   // check points are distinct; points within tolerance are considered non-distinct
   const double distinct_point_tolerance = 1.0e-5;
-  current_errors = CheckPointsAreDistinct(best_points_to_sample.data(), num_samples_to_generate, dim, distinct_point_tolerance);
+  current_errors = CheckPointsAreDistinct(best_points_to_sample.data(), num_to_sample, dim, distinct_point_tolerance);
 #ifdef OL_ERROR_PRINT
   if (current_errors != 0) {
     OL_ERROR_PRINTF("ERROR: points were not distinct!  points:\n");
-    PrintMatrixTrans(best_points_to_sample.data(), num_samples_to_generate, dim);
+    PrintMatrixTrans(best_points_to_sample.data(), num_to_sample, dim);
   }
 #endif
   total_errors += current_errors;
@@ -1432,28 +1404,31 @@ int ExpectedImprovementOptimizationMultipleSamplesTest() {
   std::vector<double> grad_ei(dim);
 
   // set up evaluators and state to check results
-  std::vector<double> union_of_points((num_being_sampled+num_samples_to_generate)*dim);
-  std::copy(best_points_to_sample.begin(), best_points_to_sample.end(), union_of_points.begin());
-  std::copy(points_being_sampled.begin(), points_being_sampled.end(), union_of_points.begin() + dim*num_samples_to_generate);
-
-  std::vector<double> union_of_points_grid_search((num_being_sampled+num_samples_to_generate)*dim);
-  std::copy(grid_search_best_point_set.begin(), grid_search_best_point_set.end(), union_of_points_grid_search.begin());
-  std::copy(points_being_sampled.begin(), points_being_sampled.end(), union_of_points_grid_search.begin() + dim*num_samples_to_generate);
-
   double tolerance_result = tolerance;
   {
-    max_int_steps = 10000000;  // evaluate the final results with high accuracy
-    tolerance_result = 3.0e-4;  // reduce b/c we cannot achieve full accuracy in the monte-carlo case
+    max_int_steps = 1000000;  // evaluate the final results with high accuracy
+    tolerance_result = 8.0e-4;  // reduce b/c we cannot achieve full accuracy in the monte-carlo case
     // while still having this test run in a reasonable amt of time
     ExpectedImprovementEvaluator ei_evaluator(*mock_gp_data.gaussian_process_ptr, max_int_steps, mock_gp_data.best_so_far);
-    int num_derivatives = 1;  // HACK HACK HACK. TODO(eliu): fix this when EI class properly supports q,p-EI (ADS-3094)
-    ExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, union_of_points.data(), num_being_sampled + 1, num_derivatives, normal_rng_vec.data());
+
+    int num_to_sample_local = 1;  // HACK HACK HACK. TODO(eliu): fix this when EI class properly supports q,p-EI (ADS-3094)
+    int num_being_sampled_local = num_being_sampled + num_to_sample - num_to_sample_local;
+    std::vector<double> points_to_sample_local(num_to_sample_local*dim);
+    std::copy(best_points_to_sample.end() - dim, best_points_to_sample.end(), points_to_sample_local.begin());
+    std::vector<double> points_being_sampled_local(num_being_sampled_local*dim);
+    std::copy(best_points_to_sample.begin(), best_points_to_sample.end() - dim, points_being_sampled_local.begin());
+    std::copy(points_being_sampled.begin(), points_being_sampled.end(), points_being_sampled_local.begin() + (num_to_sample - num_to_sample_local)*dim);
+    bool configure_for_gradients = true;
+
+    ExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, points_to_sample_local.data(), points_being_sampled_local.data(), num_to_sample_local, num_being_sampled_local, configure_for_gradients, normal_rng_vec.data());
 
     ei_optimized = ei_evaluator.ComputeExpectedImprovement(&ei_state);
     ei_evaluator.ComputeGradExpectedImprovement(&ei_state, grad_ei.data());
 
-    ei_state.UpdateCurrentPoint(ei_evaluator, union_of_points_grid_search.data());
-    ei_grid_search = ei_evaluator.ComputeExpectedImprovement(&ei_state);
+    std::copy(grid_search_best_point_set.end() - dim, grid_search_best_point_set.end(), points_to_sample_local.begin());
+    std::copy(grid_search_best_point_set.begin(), grid_search_best_point_set.end() - dim, points_being_sampled_local.begin());
+    ExpectedImprovementEvaluator::StateType ei_state_grid_search(ei_evaluator, points_to_sample_local.data(), points_being_sampled_local.data(), num_to_sample_local, num_being_sampled_local, configure_for_gradients, normal_rng_vec.data());
+    ei_grid_search = ei_evaluator.ComputeExpectedImprovement(&ei_state_grid_search);
   }
 
   printf("optimized EI: %.18E, grid_search_EI: %.18E\n", ei_optimized, ei_grid_search);
