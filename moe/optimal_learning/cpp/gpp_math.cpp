@@ -354,260 +354,6 @@ OL_NONNULL_POINTERS void BuildMixCovarianceMatrix(const CovarianceInterface& cov
 
 }  // end unnamed namespace
 
-/*
-  Let ``Ls * Ls^T = Vars`` and ``w`` = vector of IID normal(0,1) variables
-  Then:
-  ``y = mus + Ls * w``  (Equation 4, from file docs)
-  simulates drawing from our GP with mean mus and variance Vars.
-
-  Then as given in the file docs, we compute the improvement:
-  Then the improvement for this single sample is:
-  ``I = { best_known - min(y)   if (best_known - min(y) > 0)      (Equation 5 from file docs)``
-  ``    {          0               else``
-  This is implemented as ``max_{y} (best_known - y)``.  Notice that improvement takes the value 0 if it would be negative.
-
-  Since we cannot compute ``min(y)`` directly, we do so via monte-carlo (MC) integration.  That is, we draw from the GP
-  repeatedly, computing improvement during each iteration, and averaging the result.
-
-  See Scott's PhD thesis, sec 6.2.
-
-  .. Note:: comments here are copied to _compute_expected_improvement_monte_carlo() in python_version/expected_improvement.py
-  */
-double ExpectedImprovementEvaluator::ComputeExpectedImprovement(StateType * ei_state) const {
-  int num_union = ei_state->num_union;
-  gaussian_process_->ComputeMeanOfPoints(ei_state->points_to_sample_state, ei_state->to_sample_mean.data());
-  gaussian_process_->ComputeVarianceOfPoints(&(ei_state->points_to_sample_state), ei_state->cholesky_to_sample_var.data());
-  ComputeCholeskyFactorL(num_union, ei_state->cholesky_to_sample_var.data());
-
-  double aggregate = 0.0;
-  for (int i = 0; i < num_mc_iterations_; ++i) {
-    double improvement_this_step = 0.0;
-    for (int j = 0; j < num_union; ++j) {
-      ei_state->EI_this_step_from_var[j] = (*(ei_state->normal_rng))();  // EI_this_step now holds "normals"
-    }
-
-    // compute EI_this_step_from_far = cholesky * normals   as  EI = cholesky * EI
-    // b/c normals currently held in EI_this_step_from_var
-    TriangularMatrixVectorMultiply(ei_state->cholesky_to_sample_var.data(), 'N', num_union, ei_state->EI_this_step_from_var.data());
-    for (int j = 0; j < num_union; ++j) {
-      double EI_total = best_so_far_ - (ei_state->to_sample_mean[j] + ei_state->EI_this_step_from_var[j]);
-      if (EI_total > improvement_this_step) {
-        improvement_this_step = EI_total;
-      }
-    }
-
-    if (improvement_this_step > 0.0) {
-      aggregate += improvement_this_step;
-    }
-  }
-
-  return aggregate/static_cast<double>(num_mc_iterations_);
-}
-
-/*
-  Computes gradient of EI (see ExpectedImprovementEvaluator::ComputeGradExpectedImprovement) wrt points_to_sample (stored in
-  union_of_points[0:num_to_sample]).
-
-  Mechanism is similar to the computation of EI, where points' contributions to the gradient are thrown out of their
-  corresponding ``improvement <= 0.0``.
-
-  Thus ``\nabla(\mu)`` only contributes when the ``winner`` (point w/best improvement this iteration) is the current point.
-  That is, the gradient of ``\mu`` at ``x_i`` wrt ``x_j`` is 0 unless ``i == j`` (and only this result is stored in
-  ``ei_state->grad_mu``).  The interaction with ``ei_state->grad_chol_decomp`` is harder to know a priori (like with
-  ``grad_mu``) and has a more complex structure (rank 3 tensor), so the derivative wrt ``x_j`` is computed fully, and
-  the relevant submatrix (indexed by the current ``winner``) is accessed each iteration.
-
-  .. Note:: comments here are copied to _compute_grad_expected_improvement_monte_carlo() in python_version/expected_improvement.py
-*/
-void ExpectedImprovementEvaluator::ComputeGradExpectedImprovement(StateType * ei_state, double * restrict grad_EI) const {
-  const int num_union = ei_state->num_union;
-  gaussian_process_->ComputeMeanOfPoints(ei_state->points_to_sample_state, ei_state->to_sample_mean.data());
-  gaussian_process_->ComputeGradMeanOfPoints(ei_state->points_to_sample_state, ei_state->grad_mu.data());
-  gaussian_process_->ComputeVarianceOfPoints(&(ei_state->points_to_sample_state), ei_state->cholesky_to_sample_var.data());
-  ComputeCholeskyFactorL(num_union, ei_state->cholesky_to_sample_var.data());
-
-  gaussian_process_->ComputeGradCholeskyVarianceOfPoints(&(ei_state->points_to_sample_state), ei_state->cholesky_to_sample_var.data(), ei_state->grad_chol_decomp.data());
-
-  std::fill(ei_state->aggregate.begin(), ei_state->aggregate.end(), 0.0);
-  double aggregate_EI = 0.0;
-  for (int i = 0; i < num_mc_iterations_; ++i) {
-    double improvement_this_step = 0.0;
-    int winner = num_union + 1;
-    for (int j = 0; j < num_union; ++j) {
-      ei_state->EI_this_step_from_var[j] = (*(ei_state->normal_rng))();  // EI_this_step now holds "normals"
-      ei_state->normals[j] = ei_state->EI_this_step_from_var[j];  // orig value of normals needed if improvement_this_step > 0.0
-    }
-
-    // compute EI_this_step_from_far = cholesky * normals   as  EI = cholesky * EI
-    // b/c normals currently held in EI_this_step_from_var
-    TriangularMatrixVectorMultiply(ei_state->cholesky_to_sample_var.data(), 'N', num_union, ei_state->EI_this_step_from_var.data());
-
-    for (int j = 0; j < num_union; ++j) {
-      double EI_total = best_so_far_ - (ei_state->to_sample_mean[j] + ei_state->EI_this_step_from_var[j]);
-      if (EI_total > improvement_this_step) {
-        improvement_this_step = EI_total;
-        winner = j;
-      }
-    }
-
-    if (improvement_this_step > 0.0) {
-      aggregate_EI += improvement_this_step;
-
-      // recall that grad_mu only stores \frac{d mu_i}{d Xs_i}, since \frac{d mu_j}{d Xs_i} = 0 for i != j.
-      // hence the only relevant term from grad_mu is the one describing the gradient wrt winner-th point,
-      // and this term only arises if the winner (for most improvement) index is less than num_to_sample
-      if (winner < ei_state->num_to_sample) {
-        for (int k = 0; k < dim_; ++k) {
-          ei_state->aggregate[winner*dim_ + k] -= ei_state->grad_mu[winner*dim_ + k];
-        }
-      }
-
-      // SpecialTensorVectorMultiply(grad_chol_decomp.data(), normals.data(), num_union, num_union, dim_, agg_dx.data());
-      // let L_{d,i,j,k} = grad_chol_decomp, d over dim_, i, j over num_union, k over num_to_sample
-      // we want to compute: agg_dx_{d,k} = L_{d,i,j=winner,k} * normals_i (aka SpecialTensorVectorMultiply())
-      GeneralMatrixVectorMultiply(ei_state->grad_chol_decomp.data() + winner*dim_*(num_union), 'N', ei_state->normals.data(), -1.0, 1.0, dim_, num_union, dim_, ei_state->aggregate.data());
-    }  // end if: improvement_this_step > 0.0
-  }  // end for i: num_mc_iterations_
-
-  for (int k = 0; k < dim_; ++k) {
-    grad_EI[k] = ei_state->aggregate[k]/static_cast<double>(num_mc_iterations_);
-  }
-}
-
-/*
-  Uses analytic formulas to compute EI when ``num_to_sample = 1`` and ``num_being_sampled = 0`` (occurs only in 1,0-EI).
-  In this case, the single-parameter (posterior) GP is just a Gaussian.  So the integral in EI (previously eval'd with MC)
-  can be computed 'exactly' using high-accuracy routines for the pdf & cdf of a Gaussian random variable.
-
-  See Ginsbourger, Le Riche, and Carraro.
-*/
-double OnePotentialSampleExpectedImprovementEvaluator::ComputeExpectedImprovement(StateType * ei_state) const {
-  double to_sample_mean;
-  double to_sample_var;
-
-  gaussian_process_->ComputeMeanOfPoints(ei_state->points_to_sample_state, &to_sample_mean);
-  gaussian_process_->ComputeVarianceOfPoints(&(ei_state->points_to_sample_state), &to_sample_var);
-  to_sample_var = std::sqrt(to_sample_var);
-
-  double temp = best_so_far_ - to_sample_mean;
-  double EI = temp*boost::math::cdf(normal_, temp/to_sample_var) + to_sample_var*boost::math::pdf(normal_, temp/to_sample_var);
-
-  return std::fmax(0.0, EI);
-}
-
-/*
-  Differentiates get_one_to_sample_expected_EI wrt points_to_sample (which is just ONE point; i.e., 1,0-EI).
-  Again, this uses analytic formulas in terms of the pdf & cdf of a Gaussian since the integral in EI (and grad EI)
-  can be evaluated 'exactly' for this low dimensional case.
-
-  See Ginsbourger, Le Riche, and Carraro.
-*/
-void OnePotentialSampleExpectedImprovementEvaluator::ComputeGradExpectedImprovement(StateType * ei_state, double * restrict exp_grad_EI) const {
-  double to_sample_mean;
-  double to_sample_var;
-
-  double * restrict grad_mu = ei_state->grad_mu.data();
-  gaussian_process_->ComputeMeanOfPoints(ei_state->points_to_sample_state, &to_sample_mean);
-  gaussian_process_->ComputeGradMeanOfPoints(ei_state->points_to_sample_state, grad_mu);
-  gaussian_process_->ComputeVarianceOfPoints(&(ei_state->points_to_sample_state), &to_sample_var);
-  double sigma = std::sqrt(to_sample_var);
-
-  double * restrict grad_chol_decomp = ei_state->grad_chol_decomp.data();
-  // there is only 1 point, so gradient wrt 0-th point
-  gaussian_process_->ComputeGradCholeskyVarianceOfPoints(&(ei_state->points_to_sample_state), &sigma, grad_chol_decomp);
-
-  double mu_diff = best_so_far_ - to_sample_mean;
-  double C = mu_diff/sigma;
-  double pdf_C = boost::math::pdf(normal_, C);
-  double cdf_C = boost::math::cdf(normal_, C);
-
-  for (int i = 0; i < dim_; ++i) {
-    double d_C = (-sigma*grad_mu[i] - grad_chol_decomp[i]*mu_diff)/to_sample_var;
-    double d_A = -grad_mu[i]*cdf_C + mu_diff*pdf_C*d_C;
-    double d_B = grad_chol_decomp[i]*pdf_C + sigma*(-C)*pdf_C*d_C;
-
-    exp_grad_EI[i] = d_A + d_B;
-  }
-}
-
-/*
-  This is not a genuine implementation of the q,p-EI capability insofar as we do not simultaneously optimize
-  num_to_sample new points.
-
-  Instead, we repeatedly solve 1,p-EI as follows:
-  points_being_sampled = points_being_sampled_input  // these are the points represented by the "p" in q,p-EI
-  best_points_to_sample = {}  // we will generate q new points to add here
-  for i = 0:num_to_sample-1 {
-    new_point = ComputeOptimalPointToSample(gaussian_process, points_being_sampled, other_parameters)
-    points_being_sampled.append(new_point)  // contrast this line with ComputeHeuristicSetOfPointsToSample()
-    best_points_to_sample.append(new_point)  // save output
-  }
-  where ComputeOptimalPointToSample (optionally) uses a combination of gradient descent and "dumb" search algorithms.
-
-  Thus iteratively decide and fix a *single* point to sample.  Then in future iterations, we tell MOE/OL that all the previously
-  fixed points are being sampled.  In each iteration, we append another point to points_being_sampled; points_being_sampled
-  is initially set to whatever is specified in the function's input (can be empty).
-
-  Note that this process is more sophisticated than kriging believer because the GP will account for the effect of the mean
-  AND variance in function values at points_being_sampled.  Kriging believer simply trusts the mean and ignores variance.
-  See ComputeHeuristicSetOfPointsToSample() in gpp_heuristic_expected_improvement_optimization.hpp for more details on
-  kriging and other heuristic EI optimization techniques.
-
-  TODO(eliu): modify EI optimizers to optimize ALL num_to_sample points simultaneously (ticket 55773)
-*/
-template <typename DomainType>
-void ComputeOptimalSetOfPointsToSample(const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters, const DomainType& domain, double const * restrict points_being_sampled, int num_being_sampled, double best_so_far, int max_int_steps, int max_num_threads, bool lhc_search_only, int num_lhc_samples, int num_to_sample, bool * restrict found_flag, UniformRandomGenerator * uniform_generator, NormalRNG * normal_rng, double * restrict best_points_to_sample) {
-  if (unlikely(num_to_sample <= 0)) {
-    return;
-  }
-  const int dim = gaussian_process.dim();
-  // we already have num_being_sampled points to sample; we will be generating num_to_sample new ones.
-  // in optimal_learning's lower levels, both input points_being_sampled and the resulting of points_to_sample are treated
-  // identically; there's no need to maintain separate lists for them.
-  // so construct union_of_points to hold both sets of points in one place.
-  std::vector<double> union_of_points(dim*(num_being_sampled + num_to_sample));
-  // point order doesn't matter; we put the existing points_being_sampled at the front arbitrarily
-  std::copy(points_being_sampled, points_being_sampled + dim*num_being_sampled, union_of_points.data());
-
-  // a pointer that will always point to location where the next computed sampling point should be written
-  // init to the first empty slot after where we copied points_being_sampled
-  double * restrict next_point_to_sample = union_of_points.data() + dim*num_being_sampled;
-
-  bool found_flag_overall = true;
-  for (int j = 0; j < num_to_sample; j++) {
-    bool found_flag_local = false;
-    if (lhc_search_only == false) {
-      ComputeOptimalPointToSampleWithRandomStarts(gaussian_process, optimization_parameters, domain, union_of_points.data(), num_being_sampled + j, best_so_far, max_int_steps, max_num_threads, &found_flag_local, uniform_generator, normal_rng, next_point_to_sample);
-    }
-    // if gradient descent EI optimization failed OR we're only doing latin hypercube searches
-    if (found_flag_local == false || lhc_search_only == true) {
-      if (unlikely(lhc_search_only == false)) {
-        OL_WARNING_PRINTF("WARNING: EI opt DID NOT CONVERGE on iteration %d of %d\n", j, num_to_sample);
-        OL_WARNING_PRINTF("Attempting latin hypercube search\n");
-      }
-
-      ComputeOptimalPointToSampleViaLatinHypercubeSearch(gaussian_process, domain, union_of_points.data(), num_lhc_samples, num_being_sampled + j, best_so_far, max_int_steps, max_num_threads, &found_flag_local, uniform_generator, normal_rng, next_point_to_sample);
-
-      // if latin hypercube 'dumb' search failed
-      if (unlikely(found_flag_local == false)) {
-        OL_ERROR_PRINTF("ERROR: EI latin hypercube search FAILED on iteration %d of %d\n", j, num_to_sample);
-      }
-    }
-
-    found_flag_overall &= found_flag_local;
-    // Note that we are writing next_point_to_sample directly into union_of_points, so now we increment the pointer.
-    next_point_to_sample += dim;
-  }
-
-  // set outputs
-  *found_flag = found_flag_overall;
-  std::copy(union_of_points.begin() + dim*num_being_sampled, union_of_points.end(), best_points_to_sample);
-}
-
-// template explicit instantiation definitions, see gpp_common.hpp header comments, item 6
-template void ComputeOptimalSetOfPointsToSample(const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters, const TensorProductDomain& domain, double const * restrict points_being_sampled, int num_being_sampled, double best_so_far, int max_int_steps, int max_num_threads, bool lhc_search_only, int num_lhc_samples, int num_to_sample, bool * restrict found_flag, UniformRandomGenerator * uniform_generator, NormalRNG * normal_rng, double * restrict best_points_to_sample);
-template void ComputeOptimalSetOfPointsToSample(const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters, const SimplexIntersectTensorProductDomain& domain, double const * restrict points_being_sampled, int num_being_sampled, double best_so_far, int max_int_steps, int max_num_threads, bool lhc_search_only, int num_lhc_samples, int num_to_sample, bool * restrict found_flag, UniformRandomGenerator * uniform_generator, NormalRNG * normal_rng, double * restrict best_points_to_sample);
-
 void GaussianProcess::BuildCovarianceMatrixWithNoiseVariance() noexcept {
   optimal_learning::BuildCovarianceMatrixWithNoiseVariance(covariance_, noise_variance_.data(), points_sampled_.data(), dim_, num_sampled_, K_chol_.data());
 }
@@ -990,5 +736,259 @@ double GaussianProcess::SamplePointFromGP(double const * restrict point_to_sampl
     return gpp_mean + std::sqrt(gpp_variance) * normal_rng_() + std::sqrt(noise_variance_this_point)*normal_rng_();
   }
 }
+
+/*
+  Let ``Ls * Ls^T = Vars`` and ``w`` = vector of IID normal(0,1) variables
+  Then:
+  ``y = mus + Ls * w``  (Equation 4, from file docs)
+  simulates drawing from our GP with mean mus and variance Vars.
+
+  Then as given in the file docs, we compute the improvement:
+  Then the improvement for this single sample is:
+  ``I = { best_known - min(y)   if (best_known - min(y) > 0)      (Equation 5 from file docs)``
+  ``    {          0               else``
+  This is implemented as ``max_{y} (best_known - y)``.  Notice that improvement takes the value 0 if it would be negative.
+
+  Since we cannot compute ``min(y)`` directly, we do so via monte-carlo (MC) integration.  That is, we draw from the GP
+  repeatedly, computing improvement during each iteration, and averaging the result.
+
+  See Scott's PhD thesis, sec 6.2.
+
+  .. Note:: comments here are copied to _compute_expected_improvement_monte_carlo() in python_version/expected_improvement.py
+  */
+double ExpectedImprovementEvaluator::ComputeExpectedImprovement(StateType * ei_state) const {
+  int num_union = ei_state->num_union;
+  gaussian_process_->ComputeMeanOfPoints(ei_state->points_to_sample_state, ei_state->to_sample_mean.data());
+  gaussian_process_->ComputeVarianceOfPoints(&(ei_state->points_to_sample_state), ei_state->cholesky_to_sample_var.data());
+  ComputeCholeskyFactorL(num_union, ei_state->cholesky_to_sample_var.data());
+
+  double aggregate = 0.0;
+  for (int i = 0; i < num_mc_iterations_; ++i) {
+    double improvement_this_step = 0.0;
+    for (int j = 0; j < num_union; ++j) {
+      ei_state->EI_this_step_from_var[j] = (*(ei_state->normal_rng))();  // EI_this_step now holds "normals"
+    }
+
+    // compute EI_this_step_from_far = cholesky * normals   as  EI = cholesky * EI
+    // b/c normals currently held in EI_this_step_from_var
+    TriangularMatrixVectorMultiply(ei_state->cholesky_to_sample_var.data(), 'N', num_union, ei_state->EI_this_step_from_var.data());
+    for (int j = 0; j < num_union; ++j) {
+      double EI_total = best_so_far_ - (ei_state->to_sample_mean[j] + ei_state->EI_this_step_from_var[j]);
+      if (EI_total > improvement_this_step) {
+        improvement_this_step = EI_total;
+      }
+    }
+
+    if (improvement_this_step > 0.0) {
+      aggregate += improvement_this_step;
+    }
+  }
+
+  return aggregate/static_cast<double>(num_mc_iterations_);
+}
+
+/*
+  Computes gradient of EI (see ExpectedImprovementEvaluator::ComputeGradExpectedImprovement) wrt points_to_sample (stored in
+  union_of_points[0:num_to_sample]).
+
+  Mechanism is similar to the computation of EI, where points' contributions to the gradient are thrown out of their
+  corresponding ``improvement <= 0.0``.
+
+  Thus ``\nabla(\mu)`` only contributes when the ``winner`` (point w/best improvement this iteration) is the current point.
+  That is, the gradient of ``\mu`` at ``x_i`` wrt ``x_j`` is 0 unless ``i == j`` (and only this result is stored in
+  ``ei_state->grad_mu``).  The interaction with ``ei_state->grad_chol_decomp`` is harder to know a priori (like with
+  ``grad_mu``) and has a more complex structure (rank 3 tensor), so the derivative wrt ``x_j`` is computed fully, and
+  the relevant submatrix (indexed by the current ``winner``) is accessed each iteration.
+
+  .. Note:: comments here are copied to _compute_grad_expected_improvement_monte_carlo() in python_version/expected_improvement.py
+*/
+void ExpectedImprovementEvaluator::ComputeGradExpectedImprovement(StateType * ei_state, double * restrict grad_EI) const {
+  const int num_union = ei_state->num_union;
+  gaussian_process_->ComputeMeanOfPoints(ei_state->points_to_sample_state, ei_state->to_sample_mean.data());
+  gaussian_process_->ComputeGradMeanOfPoints(ei_state->points_to_sample_state, ei_state->grad_mu.data());
+  gaussian_process_->ComputeVarianceOfPoints(&(ei_state->points_to_sample_state), ei_state->cholesky_to_sample_var.data());
+  ComputeCholeskyFactorL(num_union, ei_state->cholesky_to_sample_var.data());
+
+  gaussian_process_->ComputeGradCholeskyVarianceOfPoints(&(ei_state->points_to_sample_state), ei_state->cholesky_to_sample_var.data(), ei_state->grad_chol_decomp.data());
+
+  std::fill(ei_state->aggregate.begin(), ei_state->aggregate.end(), 0.0);
+  double aggregate_EI = 0.0;
+  for (int i = 0; i < num_mc_iterations_; ++i) {
+    double improvement_this_step = 0.0;
+    int winner = num_union + 1;
+    for (int j = 0; j < num_union; ++j) {
+      ei_state->EI_this_step_from_var[j] = (*(ei_state->normal_rng))();  // EI_this_step now holds "normals"
+      ei_state->normals[j] = ei_state->EI_this_step_from_var[j];  // orig value of normals needed if improvement_this_step > 0.0
+    }
+
+    // compute EI_this_step_from_far = cholesky * normals   as  EI = cholesky * EI
+    // b/c normals currently held in EI_this_step_from_var
+    TriangularMatrixVectorMultiply(ei_state->cholesky_to_sample_var.data(), 'N', num_union, ei_state->EI_this_step_from_var.data());
+
+    for (int j = 0; j < num_union; ++j) {
+      double EI_total = best_so_far_ - (ei_state->to_sample_mean[j] + ei_state->EI_this_step_from_var[j]);
+      if (EI_total > improvement_this_step) {
+        improvement_this_step = EI_total;
+        winner = j;
+      }
+    }
+
+    if (improvement_this_step > 0.0) {
+      aggregate_EI += improvement_this_step;
+
+      // recall that grad_mu only stores \frac{d mu_i}{d Xs_i}, since \frac{d mu_j}{d Xs_i} = 0 for i != j.
+      // hence the only relevant term from grad_mu is the one describing the gradient wrt winner-th point,
+      // and this term only arises if the winner (for most improvement) index is less than num_to_sample
+      if (winner < ei_state->num_to_sample) {
+        for (int k = 0; k < dim_; ++k) {
+          ei_state->aggregate[winner*dim_ + k] -= ei_state->grad_mu[winner*dim_ + k];
+        }
+      }
+
+      // SpecialTensorVectorMultiply(grad_chol_decomp.data(), normals.data(), num_union, num_union, dim_, agg_dx.data());
+      // let L_{d,i,j,k} = grad_chol_decomp, d over dim_, i, j over num_union, k over num_to_sample
+      // we want to compute: agg_dx_{d,k} = L_{d,i,j=winner,k} * normals_i (aka SpecialTensorVectorMultiply())
+      GeneralMatrixVectorMultiply(ei_state->grad_chol_decomp.data() + winner*dim_*(num_union), 'N', ei_state->normals.data(), -1.0, 1.0, dim_, num_union, dim_, ei_state->aggregate.data());
+    }  // end if: improvement_this_step > 0.0
+  }  // end for i: num_mc_iterations_
+
+  for (int k = 0; k < dim_; ++k) {
+    grad_EI[k] = ei_state->aggregate[k]/static_cast<double>(num_mc_iterations_);
+  }
+}
+
+/*
+  Uses analytic formulas to compute EI when ``num_to_sample = 1`` and ``num_being_sampled = 0`` (occurs only in 1,0-EI).
+  In this case, the single-parameter (posterior) GP is just a Gaussian.  So the integral in EI (previously eval'd with MC)
+  can be computed 'exactly' using high-accuracy routines for the pdf & cdf of a Gaussian random variable.
+
+  See Ginsbourger, Le Riche, and Carraro.
+*/
+double OnePotentialSampleExpectedImprovementEvaluator::ComputeExpectedImprovement(StateType * ei_state) const {
+  double to_sample_mean;
+  double to_sample_var;
+
+  gaussian_process_->ComputeMeanOfPoints(ei_state->points_to_sample_state, &to_sample_mean);
+  gaussian_process_->ComputeVarianceOfPoints(&(ei_state->points_to_sample_state), &to_sample_var);
+  to_sample_var = std::sqrt(to_sample_var);
+
+  double temp = best_so_far_ - to_sample_mean;
+  double EI = temp*boost::math::cdf(normal_, temp/to_sample_var) + to_sample_var*boost::math::pdf(normal_, temp/to_sample_var);
+
+  return std::fmax(0.0, EI);
+}
+
+/*
+  Differentiates get_one_to_sample_expected_EI wrt points_to_sample (which is just ONE point; i.e., 1,0-EI).
+  Again, this uses analytic formulas in terms of the pdf & cdf of a Gaussian since the integral in EI (and grad EI)
+  can be evaluated 'exactly' for this low dimensional case.
+
+  See Ginsbourger, Le Riche, and Carraro.
+*/
+void OnePotentialSampleExpectedImprovementEvaluator::ComputeGradExpectedImprovement(StateType * ei_state, double * restrict exp_grad_EI) const {
+  double to_sample_mean;
+  double to_sample_var;
+
+  double * restrict grad_mu = ei_state->grad_mu.data();
+  gaussian_process_->ComputeMeanOfPoints(ei_state->points_to_sample_state, &to_sample_mean);
+  gaussian_process_->ComputeGradMeanOfPoints(ei_state->points_to_sample_state, grad_mu);
+  gaussian_process_->ComputeVarianceOfPoints(&(ei_state->points_to_sample_state), &to_sample_var);
+  double sigma = std::sqrt(to_sample_var);
+
+  double * restrict grad_chol_decomp = ei_state->grad_chol_decomp.data();
+  // there is only 1 point, so gradient wrt 0-th point
+  gaussian_process_->ComputeGradCholeskyVarianceOfPoints(&(ei_state->points_to_sample_state), &sigma, grad_chol_decomp);
+
+  double mu_diff = best_so_far_ - to_sample_mean;
+  double C = mu_diff/sigma;
+  double pdf_C = boost::math::pdf(normal_, C);
+  double cdf_C = boost::math::cdf(normal_, C);
+
+  for (int i = 0; i < dim_; ++i) {
+    double d_C = (-sigma*grad_mu[i] - grad_chol_decomp[i]*mu_diff)/to_sample_var;
+    double d_A = -grad_mu[i]*cdf_C + mu_diff*pdf_C*d_C;
+    double d_B = grad_chol_decomp[i]*pdf_C + sigma*(-C)*pdf_C*d_C;
+
+    exp_grad_EI[i] = d_A + d_B;
+  }
+}
+
+/*
+  This is not a genuine implementation of the q,p-EI capability insofar as we do not simultaneously optimize
+  num_to_sample new points.
+
+  Instead, we repeatedly solve 1,p-EI as follows:
+  points_being_sampled = points_being_sampled_input  // these are the points represented by the "p" in q,p-EI
+  best_points_to_sample = {}  // we will generate q new points to add here
+  for i = 0:num_to_sample-1 {
+    new_point = ComputeOptimalPointToSample(gaussian_process, points_being_sampled, other_parameters)
+    points_being_sampled.append(new_point)  // contrast this line with ComputeHeuristicSetOfPointsToSample()
+    best_points_to_sample.append(new_point)  // save output
+  }
+  where ComputeOptimalPointToSample (optionally) uses a combination of gradient descent and "dumb" search algorithms.
+
+  Thus iteratively decide and fix a *single* point to sample.  Then in future iterations, we tell MOE/OL that all the previously
+  fixed points are being sampled.  In each iteration, we append another point to points_being_sampled; points_being_sampled
+  is initially set to whatever is specified in the function's input (can be empty).
+
+  Note that this process is more sophisticated than kriging believer because the GP will account for the effect of the mean
+  AND variance in function values at points_being_sampled.  Kriging believer simply trusts the mean and ignores variance.
+  See ComputeHeuristicSetOfPointsToSample() in gpp_heuristic_expected_improvement_optimization.hpp for more details on
+  kriging and other heuristic EI optimization techniques.
+
+  TODO(eliu): modify EI optimizers to optimize ALL num_to_sample points simultaneously (ticket 55773)
+*/
+template <typename DomainType>
+void ComputeOptimalSetOfPointsToSample(const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters, const DomainType& domain, double const * restrict points_being_sampled, int num_being_sampled, double best_so_far, int max_int_steps, int max_num_threads, bool lhc_search_only, int num_lhc_samples, int num_to_sample, bool * restrict found_flag, UniformRandomGenerator * uniform_generator, NormalRNG * normal_rng, double * restrict best_points_to_sample) {
+  if (unlikely(num_to_sample <= 0)) {
+    return;
+  }
+  const int dim = gaussian_process.dim();
+  // we already have num_being_sampled points to sample; we will be generating num_to_sample new ones.
+  // in optimal_learning's lower levels, both input points_being_sampled and the resulting of points_to_sample are treated
+  // identically; there's no need to maintain separate lists for them.
+  // so construct union_of_points to hold both sets of points in one place.
+  std::vector<double> union_of_points(dim*(num_being_sampled + num_to_sample));
+  // point order doesn't matter; we put the existing points_being_sampled at the front arbitrarily
+  std::copy(points_being_sampled, points_being_sampled + dim*num_being_sampled, union_of_points.data());
+
+  // a pointer that will always point to location where the next computed sampling point should be written
+  // init to the first empty slot after where we copied points_being_sampled
+  double * restrict next_point_to_sample = union_of_points.data() + dim*num_being_sampled;
+
+  bool found_flag_overall = true;
+  for (int j = 0; j < num_to_sample; j++) {
+    bool found_flag_local = false;
+    if (lhc_search_only == false) {
+      ComputeOptimalPointToSampleWithRandomStarts(gaussian_process, optimization_parameters, domain, union_of_points.data(), num_being_sampled + j, best_so_far, max_int_steps, max_num_threads, &found_flag_local, uniform_generator, normal_rng, next_point_to_sample);
+    }
+    // if gradient descent EI optimization failed OR we're only doing latin hypercube searches
+    if (found_flag_local == false || lhc_search_only == true) {
+      if (unlikely(lhc_search_only == false)) {
+        OL_WARNING_PRINTF("WARNING: EI opt DID NOT CONVERGE on iteration %d of %d\n", j, num_to_sample);
+        OL_WARNING_PRINTF("Attempting latin hypercube search\n");
+      }
+
+      ComputeOptimalPointToSampleViaLatinHypercubeSearch(gaussian_process, domain, union_of_points.data(), num_lhc_samples, num_being_sampled + j, best_so_far, max_int_steps, max_num_threads, &found_flag_local, uniform_generator, normal_rng, next_point_to_sample);
+
+      // if latin hypercube 'dumb' search failed
+      if (unlikely(found_flag_local == false)) {
+        OL_ERROR_PRINTF("ERROR: EI latin hypercube search FAILED on iteration %d of %d\n", j, num_to_sample);
+      }
+    }
+
+    found_flag_overall &= found_flag_local;
+    // Note that we are writing next_point_to_sample directly into union_of_points, so now we increment the pointer.
+    next_point_to_sample += dim;
+  }
+
+  // set outputs
+  *found_flag = found_flag_overall;
+  std::copy(union_of_points.begin() + dim*num_being_sampled, union_of_points.end(), best_points_to_sample);
+}
+
+// template explicit instantiation definitions, see gpp_common.hpp header comments, item 6
+template void ComputeOptimalSetOfPointsToSample(const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters, const TensorProductDomain& domain, double const * restrict points_being_sampled, int num_being_sampled, double best_so_far, int max_int_steps, int max_num_threads, bool lhc_search_only, int num_lhc_samples, int num_to_sample, bool * restrict found_flag, UniformRandomGenerator * uniform_generator, NormalRNG * normal_rng, double * restrict best_points_to_sample);
+template void ComputeOptimalSetOfPointsToSample(const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters, const SimplexIntersectTensorProductDomain& domain, double const * restrict points_being_sampled, int num_being_sampled, double best_so_far, int max_int_steps, int max_num_threads, bool lhc_search_only, int num_lhc_samples, int num_to_sample, bool * restrict found_flag, UniformRandomGenerator * uniform_generator, NormalRNG * normal_rng, double * restrict best_points_to_sample);
 
 }  // end namespace optimal_learning
