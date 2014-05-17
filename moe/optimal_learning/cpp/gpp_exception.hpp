@@ -440,7 +440,7 @@ class SingularMatrixException : public std::exception {
     )%%"
 
     Note: this exception currently does not print the full matrix. Use a debugger
-    and call PrintMatrix() (gpp_linear_algebra.hpp) or catch the exception and
+    and call PrintMatrix() (gpp_logging.hpp) or catch the exception and
     proecss the matrix.
 
     RETURNS:

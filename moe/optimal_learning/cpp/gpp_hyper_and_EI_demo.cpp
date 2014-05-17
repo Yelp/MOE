@@ -39,6 +39,7 @@
 #include "gpp_common.hpp"
 #include "gpp_covariance.hpp"
 #include "gpp_domain.hpp"
+#include "gpp_logging.hpp"
 #include "gpp_math.hpp"
 #include "gpp_model_selection_and_hyperparameter_optimization.hpp"
 #include "gpp_optimization_parameters.hpp"

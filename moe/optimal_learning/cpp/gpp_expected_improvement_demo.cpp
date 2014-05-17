@@ -37,6 +37,7 @@
 #include "gpp_common.hpp"
 #include "gpp_covariance.hpp"
 #include "gpp_domain.hpp"
+#include "gpp_logging.hpp"
 #include "gpp_math.hpp"
 #include "gpp_optimization_parameters.hpp"
 #include "gpp_random.hpp"
