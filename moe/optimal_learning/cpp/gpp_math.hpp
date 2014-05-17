@@ -194,8 +194,8 @@
   Journal of Global Optimization, 13, 455-492.
 \endrst*/
 
-#ifndef OPTIMAL_LEARNING_EPI_SRC_CPP_GPP_MATH_HPP_
-#define OPTIMAL_LEARNING_EPI_SRC_CPP_GPP_MATH_HPP_
+#ifndef MOE_OPTIMAL_LEARNING_CPP_GPP_MATH_HPP_
+#define MOE_OPTIMAL_LEARNING_CPP_GPP_MATH_HPP_
 
 #include <algorithm>
 #include <memory>
@@ -1127,10 +1127,10 @@ struct OnePotentialSampleExpectedImprovementState final {
       :point_to_sample[dim]: point at which to evaluate EI and/or its gradient to check their value in future experiments (i.e., test point for GP predictions)
       :configure_for_gradients: true if this object will be used to compute gradients, false otherwise
   \endrst*/
-  OnePotentialSampleExpectedImprovementState(const EvaluatorType& ei_evaluator, double const * restrict point_to_sample, bool configure_for_gradients)
+  OnePotentialSampleExpectedImprovementState(const EvaluatorType& ei_evaluator, double const * restrict point_to_sample_in, bool configure_for_gradients)
       : dim(ei_evaluator.dim()),
         num_derivatives(configure_for_gradients ? num_to_sample : 0),
-        point_to_sample(point_to_sample, point_to_sample + dim),
+        point_to_sample(point_to_sample_in, point_to_sample_in + dim),
         points_to_sample_state(*ei_evaluator.gaussian_process(), point_to_sample.data(), num_to_sample, num_derivatives),
         grad_mu(dim*num_derivatives),
         grad_chol_decomp(dim*num_derivatives) {
@@ -1282,7 +1282,7 @@ inline OL_NONNULL_POINTERS void SetupExpectedImprovementState(const ExpectedImpr
   for (int i = 0; i < max_num_threads; ++i) {
     state_vector->emplace_back(ei_evaluator, points_to_sample, points_being_sampled, num_to_sample, num_being_sampled, configure_for_gradients, normal_rng + i);
   }
- }
+}
 
 /*!\rst
   Optimize the Expected Improvement (to find the next best point to sample).  This method solves 1,p-EI as long as
@@ -1643,4 +1643,4 @@ extern template void ComputeOptimalSetOfPointsToSample(const GaussianProcess& ga
 
 }  // end namespace optimal_learning
 
-#endif  // OPTIMAL_LEARNING_EPI_SRC_CPP_GPP_MATH_HPP_
+#endif  // MOE_OPTIMAL_LEARNING_CPP_GPP_MATH_HPP_

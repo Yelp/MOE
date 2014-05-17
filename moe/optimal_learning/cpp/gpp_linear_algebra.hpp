@@ -23,8 +23,8 @@
   See PLU for further description of its special output format.
 */
 
-#ifndef OPTIMAL_LEARNING_EPI_SRC_CPP_GPP_LINEAR_ALGEBRA_HPP_
-#define OPTIMAL_LEARNING_EPI_SRC_CPP_GPP_LINEAR_ALGEBRA_HPP_
+#ifndef MOE_OPTIMAL_LEARNING_CPP_GPP_LINEAR_ALGEBRA_HPP_
+#define MOE_OPTIMAL_LEARNING_CPP_GPP_LINEAR_ALGEBRA_HPP_
 
 #include "gpp_common.hpp"
 
@@ -418,4 +418,4 @@ void PLUMatrixVectorSolve(int r, double const * restrict LU, int const * restric
 
 }  // end namespace optimal_learning
 
-#endif  // OPTIMAL_LEARNING_EPI_SRC_CPP_GPP_LINEAR_ALGEBRA_HPP_
+#endif  // MOE_OPTIMAL_LEARNING_CPP_GPP_LINEAR_ALGEBRA_HPP_

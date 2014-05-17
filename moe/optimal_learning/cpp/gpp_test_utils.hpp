@@ -13,8 +13,8 @@
   constructing a GP with random hyperparameters on a random domain.
 \endrst*/
 
-#ifndef OPTIMAL_LEARNING_EPI_SRC_CPP_GPP_TEST_UTILS_HPP_
-#define OPTIMAL_LEARNING_EPI_SRC_CPP_GPP_TEST_UTILS_HPP_
+#ifndef MOE_OPTIMAL_LEARNING_CPP_GPP_TEST_UTILS_HPP_
+#define MOE_OPTIMAL_LEARNING_CPP_GPP_TEST_UTILS_HPP_
 
 #include <memory>
 #include <vector>
@@ -594,4 +594,4 @@ void FillRandomGaussianProcess(double const * restrict points_to_sample, double 
 
 }  // end namespace optimal_learning
 
-#endif  // OPTIMAL_LEARNING_EPI_SRC_CPP_GPP_TEST_UTILS_HPP_
+#endif  // MOE_OPTIMAL_LEARNING_CPP_GPP_TEST_UTILS_HPP_

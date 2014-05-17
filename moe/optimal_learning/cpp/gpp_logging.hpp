@@ -1,5 +1,6 @@
-// gpp_logging.hpp
-/*
+/*!
+  \file gpp_logging.hpp
+  \rst
   This file contains some macros wrapping std::printf(). Currently, the "log file" is just stdout. And
   the verbosity level must be chosen at compile-time, although we do provide separate macros for
   debug, verbose, warning, and error.
@@ -11,13 +12,11 @@
 
   TODO(eliu): (#48960) connect MOE/C++ to a real logging library instead of using stdout as our log.
 
-  TODO(eliu): (#59445) rename macros to be prefixed with "OL_" to 'namespace' them
-
   TODO(eliu): (#60254) Move PrintMatrix() and PrintMatrixTrans() functions here from gpp_linear_algebra
-*/
+\endrst*/
 
-#ifndef OPTIMAL_LEARNING_EPI_SRC_CPP_GPP_LOGGING_HPP_
-#define OPTIMAL_LEARNING_EPI_SRC_CPP_GPP_LOGGING_HPP_
+#ifndef MOE_OPTIMAL_LEARNING_CPP_GPP_LOGGING_HPP_
+#define MOE_OPTIMAL_LEARNING_CPP_GPP_LOGGING_HPP_
 
 #include <cstdio>
 
@@ -135,4 +134,4 @@ void PrintDomainBounds(ClosedInterval const * restrict domain_bounds, int dim);
 
 }  // end namespace optimal_learning
 
-#endif  // OPTIMAL_LEARNING_EPI_SRC_CPP_GPP_LOGGING_HPP_
+#endif  // MOE_OPTIMAL_LEARNING_CPP_GPP_LOGGING_HPP_

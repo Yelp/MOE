@@ -33,8 +33,8 @@
   Rasmussen & Williams Chapter 4
 \endrst*/
 
-#ifndef OPTIMAL_LEARNING_EPI_SRC_CPP_GPP_COVARIANCE_HPP_
-#define OPTIMAL_LEARNING_EPI_SRC_CPP_GPP_COVARIANCE_HPP_
+#ifndef MOE_OPTIMAL_LEARNING_CPP_GPP_COVARIANCE_HPP_
+#define MOE_OPTIMAL_LEARNING_CPP_GPP_COVARIANCE_HPP_
 
 #include <vector>
 
@@ -545,4 +545,4 @@ class MaternNu2p5 final : public CovarianceInterface {
 
 }  // end namespace optimal_learning
 
-#endif  // OPTIMAL_LEARNING_EPI_SRC_CPP_GPP_COVARIANCE_HPP_
+#endif  // MOE_OPTIMAL_LEARNING_CPP_GPP_COVARIANCE_HPP_

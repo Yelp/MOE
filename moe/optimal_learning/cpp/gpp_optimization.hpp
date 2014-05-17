@@ -290,8 +290,8 @@
         information about currently best-known objective values/points and the optimization result.
 \endrst*/
 
-#ifndef OPTIMAL_LEARNING_EPI_SRC_CPP_GPP_OPTIMIZATION_HPP_
-#define OPTIMAL_LEARNING_EPI_SRC_CPP_GPP_OPTIMIZATION_HPP_
+#ifndef MOE_OPTIMAL_LEARNING_CPP_GPP_OPTIMIZATION_HPP_
+#define MOE_OPTIMAL_LEARNING_CPP_GPP_OPTIMIZATION_HPP_
 
 // #define OL_VERBOSE_PRINT
 
@@ -1094,4 +1094,4 @@ class MultistartOptimizer final {
 
 }  // end namespace optimal_learning
 
-#endif  // OPTIMAL_LEARNING_EPI_SRC_CPP_GPP_OPTIMIZATION_HPP_
+#endif  // MOE_OPTIMAL_LEARNING_CPP_GPP_OPTIMIZATION_HPP_
