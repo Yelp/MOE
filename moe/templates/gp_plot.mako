@@ -181,7 +181,7 @@ function update_graphs(){
         alert("500 error 2");
     });
 
-    post_data['num_samples_to_generate'] = 1;
+    post_data['num_to_sample'] = 1;
     var jqxhr3 = $.post(
         "${request.route_url('gp_next_points_epi')}",
         JSON.stringify(post_data),

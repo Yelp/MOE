@@ -13,7 +13,7 @@ DEFAULT_PORT = 6543
 
 def gp_next_points(
         moe_experiment,
-        num_samples_to_generate=1,
+        num_to_sample=1,
         method_route_name=GP_NEXT_POINTS_EPI_ROUTE_NAME,
         rest_host=DEFAULT_HOST,
         rest_port=DEFAULT_PORT,
@@ -22,7 +22,7 @@ def gp_next_points(
     """Hit the rest endpoint for finding next point of highest EI at rest_host:rest_port corresponding to the method with the given experiment."""
     raw_payload = kwargs.copy()
     raw_payload['gp_info'] = moe_experiment.__dict__()
-    raw_payload['num_samples_to_generate'] = num_samples_to_generate
+    raw_payload['num_to_sample'] = num_to_sample
 
     json_payload = json.dumps(raw_payload)
 

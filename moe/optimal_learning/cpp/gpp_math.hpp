@@ -771,15 +771,30 @@ class ExpectedImprovementEvaluator final {
   }
 
   /*!\rst
-    Computes the expected improvement ``EI(Xs) = E_n[[f^*_n(X) - min(f(Xs_1),...,f(Xs_m))]^+]``, where ``Xs`` are potential points
-    to sample and ``X`` are already sampled points.  The ``^+`` indicates that the expression in the expectation evaluates to 0
-    if it is negative.  ``f^*(X)`` is the MINIMUM over all known function evaluations (``points_sampled_value``), whereas
-    ``f(Xs)`` are *GP-predicted* function evaluations.
+    Computes the expected improvement ``EI(Xs) = E_n[[f^*_n(X) - min(f(Xs_1),...,f(Xs_m))]^+]``, where ``Xs``
+    are potential points to sample (union of ``points_to_sample`` and ``points_being_sampled``) and ``X`` are
+    already sampled points.  The ``^+`` indicates that the expression in the expectation evaluates to 0 if it
+    is negative.  ``f^*(X)`` is the MINIMUM over all known function evaluations (``points_sampled_value``),
+    whereas ``f(Xs)`` are *GP-predicted* function evaluations.
 
-    The EI is the expected improvement in the current best known objective function value that would result from sampling
-    at ``points_to_sample``. This computation can account for ``points_being_sampled`` concurrent experiments.
+    ``points_to_sample`` is the "q" and ``points_being_sampled`` is the "p" in q,p-EI.
+
+    In words, we are computing the expected improvement (over the current ``best_so_far``, best known
+    objective function value) that would result from sampling (aka running new experiments) at
+    ``points_to_sample`` with ``points_being_sampled`` concurrent/ongoing experiments.
 
     In general, the EI expression is complex and difficult to evaluate; hence we use Monte-Carlo simulation to approximate it.
+    When faster (e.g., analytic) techniques are available, we will prefer them.
+
+    The idea of the MC approach is to repeatedly sample at the union of ``points_to_sample`` and
+    ``points_being_sampled``. This is analogous to gaussian_process_interface.sample_point_from_gp,
+    but we sample ``num_union`` points at once:
+    ``y = \mu + Lw``
+    where ``\mu`` is the GP-mean, ``L`` is the ``chol_factor(GP-variance)`` and ``w`` is a vector
+    of ``num_union`` draws from N(0, 1). Then:
+    ``improvement_per_step = max(max(best_so_far - y), 0.0)``
+    Observe that the inner ``max`` means only the smallest component of ``y`` contributes in each iteration.
+    We compute the improvement over many random draws and average.
 
     .. Note:: These comments were copied into ExpectedImprovementInterface.compute_expected_improvement() in interfaces/expected_improvement_interface.py.
 
@@ -788,7 +803,7 @@ class ExpectedImprovementEvaluator final {
     \output
       :ei_state[1]: state with temporary storage modified; ``normal_rng`` modified
     \return
-      the expected improvement from sampling ``points_to_sample``
+      the expected improvement from sampling ``points_to_sample`` with ``points_being_sampled`` concurrent experiments
   \endrst*/
   double ComputeExpectedImprovement(StateType * ei_state) const OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT;
 
@@ -797,8 +812,18 @@ class ExpectedImprovementEvaluator final {
     As with ComputeExpectedImprovement(), this computation accounts for the effect of ``points_being_sampled``
     concurrent experiments.
 
+    ``points_to_sample`` is the "q" and ``points_being_sampled`` is the "p" in q,p-EI..
+
     In general, the expressions for gradients of EI are complex and difficult to evaluate; hence we use
-    Monte-Carlo simulation to approximate it.
+    Monte-Carlo simulation to approximate it. When faster (e.g., analytic) techniques are available, we will prefer them.
+
+    The MC computation of grad EI is similar to the computation of EI (decsribed in
+    compute_expected_improvement). We differentiate ``y = \mu + Lw`` wrt ``points_to_sample``;
+    only terms from the gradient of ``\mu`` and ``L`` contribute. In EI, we computed:
+    ``improvement_per_step = max(max(best_so_far - y), 0.0)``
+    and noted that only the smallest component of ``y`` may contribute (if it is > 0.0).
+    Call this index ``winner``. Thus in computing grad EI, we only add gradient terms
+    that are attributable to the ``winner``-th component of ``y``.
 
     .. Note:: These comments were copied into ExpectedImprovementInterface.compute_expected_improvement() in interfaces/expected_improvement_interface.py.
 
@@ -806,7 +831,9 @@ class ExpectedImprovementEvaluator final {
       :ei_state[1]: properly configured state object
     \output
       :ei_state[1]: state with temporary storage modified; ``normal_rng`` modified
-      :grad_EI[dim][num_to_sample]: gradient of expected improvement wrt each dimension of the points in ``points_to_sample``
+      :grad_EI[dim][num_to_sample]: gradient of EI, ``\pderiv{EI(Xq \cup Xp)}{Xq_{d,i}}`` where ``Xq`` is ``points_to_sample``
+          and ``Xp`` is ``points_being_sampled`` (grad EI from sampling ``points_to_sample`` with
+          ``points_being_sampled`` concurrent experiments wrt each dimension of the points in ``points_to_sample``)
   \endrst*/
   void ComputeGradExpectedImprovement(StateType * ei_state, double * restrict grad_EI) const OL_NONNULL_POINTERS;
 
@@ -1069,7 +1096,7 @@ class OnePotentialSampleExpectedImprovementEvaluator final {
     \output
       :ei_state[1]: state with temporary storage modified
     \return
-      :the expected improvement from sampling ``points_to_sample``
+      the expected improvement from sampling ``point_to_sample``
   \endrst*/
   double ComputeExpectedImprovement(StateType * ei_state) const;
 
@@ -1082,7 +1109,7 @@ class OnePotentialSampleExpectedImprovementEvaluator final {
       :ei_state[1]: properly configured state object
     \output
       :ei_state[1]: state with temporary storage modified
-      :grad_EI[dim]: gradient of expected improvement wrt each dimension of ``points_to_sample``
+      :grad_EI[dim]: gradient of EI, ``\pderiv{EI(x)}{x_d}``, where ``x`` is ``points_to_sample``
   \endrst*/
   void ComputeGradExpectedImprovement(StateType * ei_state, double * restrict grad_EI) const;
 
