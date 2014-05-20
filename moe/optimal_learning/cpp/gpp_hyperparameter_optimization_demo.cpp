@@ -37,6 +37,7 @@
 #include "gpp_common.hpp"
 #include "gpp_covariance.hpp"
 #include "gpp_domain.hpp"
+#include "gpp_logging.hpp"
 #include "gpp_math.hpp"
 #include "gpp_model_selection_and_hyperparameter_optimization.hpp"
 #include "gpp_optimization_parameters.hpp"
@@ -55,7 +56,7 @@ int main() {
   // comments next to each parameter will indicate its purpose and domain
 
   // the "spatial" dimension, aka the number of independent (experiment) parameters
-  // i.e., this is the dimension of the points in points_sampled and points_to_sample
+  // i.e., this is the dimension of the points in points_sampled
   static const int dim = 3;  // > 0
 
   // number of points that we have already sampled; i.e., size of the training set
@@ -178,7 +179,7 @@ int main() {
   // and kill it quickly to keep cost low.
   // For now, just play around with different initial conditions or more conservative gamam settings.
 
-  // WARNING2: for small num_to_sample, it often appears that the solution becomes independent of one or more hyperparameters.
+  // WARNING2: for small num_sampled, it often appears that the solution becomes independent of one or more hyperparameters.
   // e.g., in 2D, we'd have an optimal "ridge."  Finding this robustly requires starting near it, so the random choice of
   // initial conditions can fail horribly in general.
 

@@ -41,7 +41,7 @@ class GpNextPointsConstantLiarRequest(GpNextPointsRequest):
 
     **Optional fields**
 
-        :num_samples_to_generate: number of next points to generate (default: 1)
+        :num_to_sample: number of next points to generate (default: 1)
         :ei_optimization_parameters: :class:`moe.views.schemas.EiOptimizationParameters` object containing optimization parameters (default: moe.optimal_learning.python.constant.default_ei_optimization_parameters)
         :lie_method: a string from `CONSTANT_LIAR_METHODS` representing the liar method to use (default: 'constant_liar_min')
         :lie_value: a float representing the 'lie' the Constant Liar heuristic will use (default: None). If `lie_value` is not None the algorithm will use this value instead of one calculated using `lie_method`.
@@ -54,7 +54,7 @@ class GpNextPointsConstantLiarRequest(GpNextPointsRequest):
         Content-Type: text/javascript
 
         {
-            'num_samples_to_generate': 1,
+            'num_to_sample': 1,
             'lie_value': 0.0,
             'lie_noise_variance': 0.0,
             'gp_info': {

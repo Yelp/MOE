@@ -62,12 +62,13 @@ FunctionValue KrigingBelieverEstimationPolicy::ComputeEstimate(const GaussianPro
   best_points_to_sample output.
 */
 template <typename DomainType>
-void ComputeHeuristicSetOfPointsToSample(const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters, const DomainType& domain, const ObjectiveEstimationPolicyInterface& estimation_policy, double best_so_far, int max_num_threads, bool lhc_search_only, int num_lhc_samples, int num_samples_to_generate, bool * restrict found_flag, UniformRandomGenerator * uniform_generator, double * restrict best_points_to_sample) {
-  if (unlikely(num_samples_to_generate <= 0)) {
+void ComputeHeuristicSetOfPointsToSample(const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters, const DomainType& domain, const ObjectiveEstimationPolicyInterface& estimation_policy, double best_so_far, int max_num_threads, bool lhc_search_only, int num_lhc_samples, int num_to_sample, bool * restrict found_flag, UniformRandomGenerator * uniform_generator, double * restrict best_points_to_sample) {
+  if (unlikely(num_to_sample <= 0)) {
     return;
   }
   const int dim = gaussian_process.dim();
-  const int num_to_sample = 0;
+  // For speed, we stick to the analytic EI routines: so we only consider q,0-EI (q-EI), not the more general q,p-EI problem.
+  const int num_being_sampled = 0;
 
   // Cannot/Should not modify the input gaussian_process (the GP with the estimated objective values is of little use;
   // the caller at most wants to do other optimization tasks on the GP with only prior data), so Clone() it first and
@@ -75,24 +76,24 @@ void ComputeHeuristicSetOfPointsToSample(const GaussianProcess& gaussian_process
   std::unique_ptr<GaussianProcess> gaussian_process_local(gaussian_process.Clone());
 
   bool found_flag_overall = true;
-  for (int i = 0; i < num_samples_to_generate; ++i) {
+  for (int i = 0; i < num_to_sample; ++i) {
     bool found_flag_local = false;
     if (likely(lhc_search_only == false)) {
-      ComputeOptimalPointToSampleWithRandomStarts(*gaussian_process_local, optimization_parameters, domain, nullptr, num_to_sample, best_so_far, 0, max_num_threads, &found_flag_local, uniform_generator, nullptr, best_points_to_sample);
+      ComputeOptimalPointToSampleWithRandomStarts(*gaussian_process_local, optimization_parameters, domain, nullptr, num_being_sampled, best_so_far, 0, max_num_threads, &found_flag_local, uniform_generator, nullptr, best_points_to_sample);
     }
     // if gradient descent EI optimization failed OR we're only doing latin hypercube searches
     if (unlikely(found_flag_local == false || lhc_search_only == true)) {
       if (unlikely(lhc_search_only == false)) {
-        OL_WARNING_PRINTF("WARNING: Constant Liar EI opt DID NOT CONVERGE on iteration %d of %d\n", i, num_samples_to_generate);
+        OL_WARNING_PRINTF("WARNING: Constant Liar EI opt DID NOT CONVERGE on iteration %d of %d\n", i, num_to_sample);
         OL_WARNING_PRINTF("Attempting latin hypercube search\n");
       }
 
       const int max_int_steps = 0;  // always hitting the analytic case
-      ComputeOptimalPointToSampleViaLatinHypercubeSearch(*gaussian_process_local, domain, nullptr, num_lhc_samples, num_to_sample, best_so_far, max_int_steps, max_num_threads, &found_flag_local, uniform_generator, nullptr, best_points_to_sample);
+      ComputeOptimalPointToSampleViaLatinHypercubeSearch(*gaussian_process_local, domain, nullptr, num_lhc_samples, num_being_sampled, best_so_far, max_int_steps, max_num_threads, &found_flag_local, uniform_generator, nullptr, best_points_to_sample);
 
       // if latin hypercube 'dumb' search failed
       if (unlikely(found_flag_local == false)) {
-        OL_ERROR_PRINTF("ERROR: Constant Liar EI latin hypercube search FAILED on iteration %d of %d\n", i, num_samples_to_generate);
+        OL_ERROR_PRINTF("ERROR: Constant Liar EI latin hypercube search FAILED on iteration %d of %d\n", i, num_to_sample);
         *found_flag = false;
         return;
       }
@@ -109,7 +110,7 @@ void ComputeHeuristicSetOfPointsToSample(const GaussianProcess& gaussian_process
 }
 
 // template explicit instantiation definitions, see gpp_common.hpp header comments, item 6
-template void ComputeHeuristicSetOfPointsToSample(const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters, const TensorProductDomain& domain, const ObjectiveEstimationPolicyInterface& estimation_policy, double best_so_far, int max_num_threads, bool lhc_search_only, int num_lhc_samples, int num_samples_to_generate, bool * restrict found_flag, UniformRandomGenerator * uniform_generator, double * restrict best_points_to_sample);
-template void ComputeHeuristicSetOfPointsToSample(const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters, const SimplexIntersectTensorProductDomain& domain, const ObjectiveEstimationPolicyInterface& estimation_policy, double best_so_far, int max_num_threads, bool lhc_search_only, int num_lhc_samples, int num_samples_to_generate, bool * restrict found_flag, UniformRandomGenerator * uniform_generator, double * restrict best_points_to_sample);
+template void ComputeHeuristicSetOfPointsToSample(const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters, const TensorProductDomain& domain, const ObjectiveEstimationPolicyInterface& estimation_policy, double best_so_far, int max_num_threads, bool lhc_search_only, int num_lhc_samples, int num_to_sample, bool * restrict found_flag, UniformRandomGenerator * uniform_generator, double * restrict best_points_to_sample);
+template void ComputeHeuristicSetOfPointsToSample(const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters, const SimplexIntersectTensorProductDomain& domain, const ObjectiveEstimationPolicyInterface& estimation_policy, double best_so_far, int max_num_threads, bool lhc_search_only, int num_lhc_samples, int num_to_sample, bool * restrict found_flag, UniformRandomGenerator * uniform_generator, double * restrict best_points_to_sample);
 
 }  // end namespace optimal_learning

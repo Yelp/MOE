@@ -397,8 +397,8 @@
      since std::strlen() can be used to find the length.
 */
 
-#ifndef OPTIMAL_LEARNING_EPI_SRC_CPP_GPP_COMMON_HPP_
-#define OPTIMAL_LEARNING_EPI_SRC_CPP_GPP_COMMON_HPP_
+#ifndef MOE_OPTIMAL_LEARNING_CPP_GPP_COMMON_HPP_
+#define MOE_OPTIMAL_LEARNING_CPP_GPP_COMMON_HPP_
 
 namespace optimal_learning {
 
@@ -695,4 +695,4 @@ static constexpr double kLog2Pi = 1.8378770664093454835607;
 
 }  // end namespace optimal_learning
 
-#endif  // OPTIMAL_LEARNING_EPI_SRC_CPP_GPP_COMMON_HPP_
+#endif  // MOE_OPTIMAL_LEARNING_CPP_GPP_COMMON_HPP_

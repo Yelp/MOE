@@ -333,15 +333,16 @@ OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT int PingCovarianceHyperparameterDeriva
 
   std::vector<double> hyperparameters(num_hyperparameters);
 
+  int num_being_sampled = 0;
   int num_to_sample = 1;
   int num_sampled = 1;
 
   MockExpectedImprovementEnvironment EI_environment;
-  UniformRandomGenerator uniform_generator(3141);
+  UniformRandomGenerator uniform_generator(2718);
   boost::uniform_real<double> uniform_double(3.0, 5.0);
 
   for (int i = 0; i < 10; ++i) {
-    EI_environment.Initialize(dim, num_to_sample, num_sampled);
+    EI_environment.Initialize(dim, num_to_sample, num_being_sampled, num_sampled);
 
     for (int j = 0; j < num_hyperparameters; ++j) {
       hyperparameters[j] = uniform_double(uniform_generator.engine);
@@ -519,13 +520,14 @@ OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT int PingCovarianceSpatialDerivativesTe
     total_errors += errors_this_iteration;
   }
 
+  int num_being_sampled = 0;
   int num_to_sample = 1;
   int num_sampled = 1;
 
   MockExpectedImprovementEnvironment EI_environment;
 
   for (int i = 0; i < 50; ++i) {
-    EI_environment.Initialize(dim, num_to_sample, num_sampled);
+    EI_environment.Initialize(dim, num_to_sample, num_being_sampled, num_sampled);
 
     for (int j = 0; j < dim; ++j) {
       lengths[j] = uniform_double(uniform_generator.engine);
@@ -563,7 +565,7 @@ OL_WARN_UNUSED_RESULT int RunCovarianceSpatialDerivativesTests() {
 
   {
     double epsilon_square_exponential[2] = {1.0e-2, 1.0e-3};
-    current_errors = PingCovarianceSpatialDerivativesTest<PingCovarianceSpatialDerivatives<SquareExponential> >("Square Exponential", epsilon_square_exponential, 2.0e-3, 1.0e-2, 1.0e-18);
+    current_errors = PingCovarianceSpatialDerivativesTest<PingCovarianceSpatialDerivatives<SquareExponential> >("Square Exponential", epsilon_square_exponential, 4.0e-3, 1.0e-2, 1.0e-18);
     if (current_errors != 0) {
       OL_PARTIAL_FAILURE_PRINTF("pinging sqexp covariance failed with %d errors\n", current_errors);
     }
@@ -598,7 +600,7 @@ OL_WARN_UNUSED_RESULT int RunCovarianceHyperparameterDerivativesTests() noexcept
 
   {
     double epsilon_square_exponential_hyperparameters[2] = {5.0e-2, 1.0e-2};
-    current_errors = PingCovarianceHyperparameterGradientsTest<PingGradCovarianceHyperparameters<SquareExponentialSingleLength> >("Square Exponential Single Length", 2, epsilon_square_exponential_hyperparameters, 3.0e-3, 4.0e-3, 5.0e-15);
+    current_errors = PingCovarianceHyperparameterGradientsTest<PingGradCovarianceHyperparameters<SquareExponentialSingleLength> >("Square Exponential Single Length", 2, epsilon_square_exponential_hyperparameters, 4.0e-3, 4.0e-3, 5.0e-15);
     if (current_errors != 0) {
       OL_PARTIAL_FAILURE_PRINTF("pinging sqexp covariance single length hyperparameters failed with %d errors\n", current_errors);
     }

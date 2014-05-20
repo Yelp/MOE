@@ -37,30 +37,28 @@ namespace optimal_learning {
 
 MockExpectedImprovementEnvironment::MockExpectedImprovementEnvironment()
     : dim(-1),
-      num_to_sample(-1),
       num_sampled(-1),
-      points_to_sample_(20*4),
+      num_to_sample(-1),
+      num_being_sampled(-1),
       points_sampled_(20*4),
       points_sampled_value_(20),
-      current_point_(4),
+      points_to_sample_(4),
+      points_being_sampled_(20*4),
       uniform_generator_(kDefaultSeed),
       uniform_double_(range_min, range_max) {
 }
 
-void MockExpectedImprovementEnvironment::Initialize(int dim_in, int num_to_sample_in, int num_sampled_in, UniformRandomGenerator * uniform_generator) {
-  if (dim_in != dim || num_to_sample_in != num_to_sample || num_sampled_in != num_sampled) {
+void MockExpectedImprovementEnvironment::Initialize(int dim_in, int num_to_sample_in, int num_being_sampled_in, int num_sampled_in, UniformRandomGenerator * uniform_generator) {
+  if (dim_in != dim || num_to_sample_in != num_to_sample || num_being_sampled_in != num_being_sampled || num_sampled_in != num_sampled) {
     dim = dim_in;
     num_to_sample = num_to_sample_in;
+    num_being_sampled = num_being_sampled_in;
     num_sampled = num_sampled_in;
 
-    points_to_sample_.resize(num_to_sample*dim);
     points_sampled_.resize(num_sampled*dim);
     points_sampled_value_.resize(num_sampled);
-    current_point_.resize(dim);
-  }
-
-  for (int i = 0; i < dim*num_to_sample; ++i) {
-    points_to_sample_[i] = uniform_double_(uniform_generator->engine);
+    points_to_sample_.resize(num_to_sample*dim);
+    points_being_sampled_.resize(num_being_sampled*dim);
   }
 
   for (int i = 0; i < dim*num_sampled; ++i) {
@@ -71,8 +69,12 @@ void MockExpectedImprovementEnvironment::Initialize(int dim_in, int num_to_sampl
     points_sampled_value_[i] = uniform_double_(uniform_generator->engine);
   }
 
-  for (int i = 0; i < dim; ++i) {
-    current_point_[i] = uniform_double_(uniform_generator->engine);
+  for (int i = 0; i < dim*num_to_sample; ++i) {
+    points_to_sample_[i] = uniform_double_(uniform_generator->engine);
+  }
+
+  for (int i = 0; i < dim*num_being_sampled; ++i) {
+    points_being_sampled_[i] = uniform_double_(uniform_generator->engine);
   }
 }
 

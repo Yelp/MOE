@@ -60,13 +60,12 @@ The modules in this package provide the interface with interacting with all the 
   multistart_expected_improvement_optimization().
 
   We can also evaluate EI at several points simultaneously; e.g., if we wanted to run 4 simultaneous
-  experiments, we can use EI to select all 4 points at once. For reasons that we will not describe
-  here, optimizing 4 points at once is *much* harder than optimizing 1 point 4 times. Solving for
-  a set of new experimental points is implemented in ComputeOptimalSetOfPointsToSample().
+  experiments, we can use EI to select all 4 points at once. Solving for a set of new experimental
+  points is implemented in multistart_expected_improvement_optimization().
 
   The literature (e.g., Ginsbourger 2008) refers to these problems collectively as q-EI, where q
-  is a positive integer. So 1-EI is the originally dicussed usage, and the previous scenario
-  would be called 4-EI.
+  is a positive integer. So 1-EI is the originally dicussed usage, and the previous scenario with
+  multiple simultaneous points/experiments would be called 4-EI.
 
   Additionally, there are use cases where we have existing experiments that are not yet complete but
   we have an opportunity to start some new trials. For example, maybe we are a drug company currently
@@ -79,9 +78,9 @@ The modules in this package provide the interface with interacting with all the 
   We call this q,p-EI, so the previous example would be 3,2-EI. The q-EI notation is equivalent to
   q,0-EI; if we do not explicitly write the value of p, it is 0. So q is the number of new
   (simultaneous) experiments to select. In code, this would be the size of the output from EI
-  optimization (i.e., best_points_to_sample, of which there are q = num_samples_to_generate points).
-  p is the number of ongoing/incomplete experiments to take into account (i.e., points_to_sample of
-  which there are p = num_points_to_sample points).
+  optimization (i.e., ``best_points_to_sample``, of which there are ``q = num_to_sample points``).
+  p is the number of ongoing/incomplete experiments to take into account (i.e., ``points_being_sampled``
+  of which there are ``p = num_being_sampled`` points).
 
   Back to optimization: the idea behind gradient descent is simple.  The gradient gives us the
   direction of steepest ascent (negative gradient is steepest descent).  So each iteration, we
@@ -97,5 +96,21 @@ The modules in this package provide the interface with interacting with all the 
   well-chosen, GD can fail to converge.  If this happens, we can fall back to a 'dumb' search
   (i.e., evaluate EI at a large number of random points and take the best one).  This
   functionality is accessed through: multistart_expected_improvement_optimization()
+
+  And domain-specific notation, following Rasmussen, Williams:
+    - ``X = points_sampled``; this is the training data (size ``dim`` X ``num_sampled``), also called the design matrix
+    - ``Xs = points_to_sample``; this is the test data (size ``dim`` X num_to_sample``)
+    - ``y, f, f(x) = points_sampled_value``, the experimental results from sampling training points
+    - ``K, K_{ij}, K(X,X) = covariance(X_i, X_j)``, covariance matrix between training inputs (``num_sampled x num_sampled``)
+    - ``Ks, Ks_{ij}, K(X,Xs) = covariance(X_i, Xs_j)``, covariance matrix between training and test inputs (``num_sampled x num_to_sample``)
+    - ``Kss, Kss_{ij}, K(Xs,Xs) = covariance(Xs_i, Xs_j)``, covariance matrix between test inputs (``num_to_sample x num_to_sample``)
+    - ``\theta``: (vector) of hyperparameters for a covariance function
+
+  .. NOTE::
+       Due to confusion with multiplication (K_* looks awkward in code comments), Rasmussen & Williams' \ms K_*\me
+       notation has been repalced with ``Ks`` and \ms K_{**}\me is ``Kss``.
+
+  Connecting to the q,p-EI notation, both the points represented by "q" and "p" are represented by ``Xs``. Within
+  the GP, there is no distinction between points being sampled by ongoing experiments and new points to sample.
 
 """
