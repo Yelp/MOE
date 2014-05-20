@@ -28,8 +28,8 @@
 
 #include "gpp_common.hpp"
 
-#ifndef OPTIMAL_LEARNING_EPI_SRC_CPP_GPP_EXCEPTION_HPP_
-#define OPTIMAL_LEARNING_EPI_SRC_CPP_GPP_EXCEPTION_HPP_
+#ifndef MOE_OPTIMAL_LEARNING_CPP_GPP_EXCEPTION_HPP_
+#define MOE_OPTIMAL_LEARNING_CPP_GPP_EXCEPTION_HPP_
 
 namespace optimal_learning {
 
@@ -440,7 +440,7 @@ class SingularMatrixException : public std::exception {
     )%%"
 
     Note: this exception currently does not print the full matrix. Use a debugger
-    and call PrintMatrix() (gpp_linear_algebra.hpp) or catch the exception and
+    and call PrintMatrix() (gpp_logging.hpp) or catch the exception and
     proecss the matrix.
 
     RETURNS:
@@ -472,4 +472,4 @@ class SingularMatrixException : public std::exception {
 
 }  // end namespace optimal_learning
 
-#endif  // OPTIMAL_LEARNING_EPI_SRC_CPP_GPP_EXCEPTION_HPP_
+#endif  // MOE_OPTIMAL_LEARNING_CPP_GPP_EXCEPTION_HPP_

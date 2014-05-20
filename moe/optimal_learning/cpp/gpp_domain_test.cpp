@@ -54,6 +54,7 @@
 #define OL_ERROR_PRINT OL_TEMP_ERROR_PRINT
 #define OL_WARNING_PRINT OL_TEMP_WARNING_PRINT
 #include "gpp_geometry.hpp"
+#include "gpp_linear_algebra.hpp"
 #include "gpp_logging.hpp"
 #include "gpp_random.hpp"
 #include "gpp_test_utils.hpp"

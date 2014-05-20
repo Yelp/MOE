@@ -57,15 +57,19 @@ boost::python::list VectorToPylist(const std::vector<double>& input) {
 
 PythonInterfaceInputContainer::PythonInterfaceInputContainer(const boost::python::list& points_to_sample_in, int dim_in, int num_to_sample_in)
     : dim(dim_in),
-      num_sampled(0),
       num_to_sample(num_to_sample_in),
-      alpha(0.0),
-      lengths(0),
-      points_sampled(0),
-      points_sampled_value(0),
-      noise_variance(0),
       points_to_sample(dim*num_to_sample) {
   CopyPylistToVector(points_to_sample_in, dim*num_to_sample, points_to_sample);
+}
+
+PythonInterfaceInputContainer::PythonInterfaceInputContainer(const boost::python::list& points_to_sample_in, const boost::python::list& points_being_sampled_in, int dim_in, int num_to_sample_in, int num_being_sampled_in)
+    : dim(dim_in),
+      num_to_sample(num_to_sample_in),
+      num_being_sampled(num_being_sampled_in),
+      points_to_sample(dim*num_to_sample),
+      points_being_sampled(dim*num_being_sampled) {
+  CopyPylistToVector(points_to_sample_in, dim*num_to_sample, points_to_sample);
+  CopyPylistToVector(points_being_sampled_in, dim*num_being_sampled, points_being_sampled);
 }
 
 PythonInterfaceInputContainer::PythonInterfaceInputContainer(const boost::python::list& hyperparameters_in, const boost::python::list& points_sampled_in, const boost::python::list& points_sampled_value_in, const boost::python::list& noise_variance_in, const boost::python::list& points_to_sample_in, int dim_in, int num_sampled_in, int num_to_sample_in)

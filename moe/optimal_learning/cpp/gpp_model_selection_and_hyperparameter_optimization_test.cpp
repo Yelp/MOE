@@ -193,7 +193,8 @@ OL_WARN_UNUSED_RESULT int PingLogLikelihoodTest(char const * class_name, int num
   int errors_this_iteration;
   const int dim = 3;
 
-  int num_to_sample = 0;
+  int num_being_sampled = 0;
+  int num_to_sample = 1;
   int num_sampled = 7;
 
   std::vector<double> hyperparameters(num_hyperparameters);
@@ -205,7 +206,7 @@ OL_WARN_UNUSED_RESULT int PingLogLikelihoodTest(char const * class_name, int num
   boost::uniform_real<double> uniform_double(3.0, 5.0);
 
   for (int i = 0; i < 50; ++i) {
-    EI_environment.Initialize(dim, num_to_sample, num_sampled);
+    EI_environment.Initialize(dim, num_to_sample, num_being_sampled, num_sampled);
 
     for (int j = 0; j < num_hyperparameters; ++j) {
       hyperparameters[j] = uniform_double(uniform_generator.engine);

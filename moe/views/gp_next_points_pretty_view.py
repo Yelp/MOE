@@ -24,7 +24,7 @@ class GpNextPointsRequest(colander.MappingSchema):
 
     **Optional fields**
 
-        :num_samples_to_generate: number of next points to generate (default: 1)
+        :num_to_sample: number of next points to generate (default: 1)
         :ei_optimization_parameters: moe.views.schemas.EiOptimizationParameters() object containing optimization parameters (default: moe.optimal_learning.python.constant.default_ei_optimization_parameters)
 
     **Example Request**
@@ -34,7 +34,7 @@ class GpNextPointsRequest(colander.MappingSchema):
         Content-Type: text/javascript
 
         {
-            'num_samples_to_generate': 1,
+            'num_to_sample': 1,
             'gp_info': {
                 'points_sampled': [
                         {'value_var': 0.01, 'value': 0.1, 'point': [0.0]},
@@ -49,7 +49,7 @@ class GpNextPointsRequest(colander.MappingSchema):
 
     """
 
-    num_samples_to_generate = colander.SchemaNode(
+    num_to_sample = colander.SchemaNode(
             colander.Int(),
             validator=colander.Range(min=1),
             )
@@ -101,7 +101,7 @@ class GpNextPointsPrettyView(GpPrettyView):
     response_schema = GpNextPointsResponse()
 
     _pretty_default_request = {
-            "num_samples_to_generate": 1,
+            "num_to_sample": 1,
             "gp_info": GpPrettyView._pretty_default_gp_info,
             }
 
@@ -118,7 +118,7 @@ class GpNextPointsPrettyView(GpPrettyView):
         :param **kwargs: extra kwargs to be passed to optimization method
 
         """
-        num_samples_to_generate = params.get('num_samples_to_generate')
+        num_to_sample = params.get('num_to_sample')
 
         gaussian_process = self.make_gp(params)
         optimizer_type, num_random_samples, optimization_parameters, domain_type = self.get_optimization_parameters_cpp(params)
@@ -130,7 +130,7 @@ class GpNextPointsPrettyView(GpPrettyView):
                 optimization_parameters,
                 domain_type,
                 num_random_samples,
-                num_samples_to_generate,
+                num_to_sample,
                 *args,
                 **kwargs
                 )

@@ -12,8 +12,8 @@
   See gpp_geometry.hpp for how to specify a plane.
 \endrst*/
 
-#ifndef OPTIMAL_LEARNING_EPI_SRC_CPP_GPP_DOMAIN_HPP_
-#define OPTIMAL_LEARNING_EPI_SRC_CPP_GPP_DOMAIN_HPP_
+#ifndef MOE_OPTIMAL_LEARNING_CPP_GPP_DOMAIN_HPP_
+#define MOE_OPTIMAL_LEARNING_CPP_GPP_DOMAIN_HPP_
 
 #include <cmath>
 
@@ -536,4 +536,4 @@ class SimplexIntersectTensorProductDomain {
 
 }  // end namespace optimal_learning
 
-#endif  // OPTIMAL_LEARNING_EPI_SRC_CPP_GPP_DOMAIN_HPP_
+#endif  // MOE_OPTIMAL_LEARNING_CPP_GPP_DOMAIN_HPP_
