@@ -34,6 +34,7 @@ New next_points routes have the form:
 """
 from collections import namedtuple
 
+
 MoeRoute = namedtuple('MoeRoute', ['route_name', 'endpoint'])
 
 GP_EI_ROUTE_NAME = 'gp_ei'

@@ -312,7 +312,8 @@ int main() {
     printf("value: %.18E, var = %.18E\n", kb_value.function_value, kb_value.noise_variance);
 
     {
-      PointsToSampleState gaussian_process_state(gaussian_process, best_points_to_sample.data(), 1, false);
+      int num_derivatives = 0;
+      PointsToSampleState gaussian_process_state(gaussian_process, best_points_to_sample.data(), 1, num_derivatives);
 
       double kriging_noise_variance = 1.2;
       double kriging_function_value;
@@ -345,7 +346,8 @@ int main() {
       GaussianProcess gaussian_process(covariance, points_sampled.data(), points_sampled_value.data(), noise_variance.data(), dim, num_sampled);
 
       {
-        PointsToSampleState gaussian_process_state(gaussian_process, points_sampled.data(), 1, false);
+        int num_derivatives = 0;
+        PointsToSampleState gaussian_process_state(gaussian_process, points_sampled.data(), 1, num_derivatives);
         double mean;
         double variance;
         gaussian_process.ComputeMeanOfPoints(gaussian_process_state, &mean);
@@ -355,7 +357,8 @@ int main() {
 
       {
         std::vector<double> point(dim, 0.5);
-        PointsToSampleState gaussian_process_state(gaussian_process, point.data(), 1, false);
+        int num_derivatives = 0;
+        PointsToSampleState gaussian_process_state(gaussian_process, point.data(), 1, num_derivatives);
         double mean;
         double variance;
         gaussian_process.ComputeMeanOfPoints(gaussian_process_state, &mean);
@@ -365,7 +368,8 @@ int main() {
 
       {
         std::vector<double> point(dim, 3);
-        PointsToSampleState gaussian_process_state(gaussian_process, point.data(), 1, false);
+        int num_derivatives = 0;
+        PointsToSampleState gaussian_process_state(gaussian_process, point.data(), 1, num_derivatives);
         double mean;
         double variance;
         gaussian_process.ComputeMeanOfPoints(gaussian_process_state, &mean);
@@ -436,7 +440,8 @@ int main() {
     double tolerance_result = tolerance;
     if (1) {
       OnePotentialSampleExpectedImprovementEvaluator ei_evaluator(gaussian_process, best_so_far);
-      OnePotentialSampleExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, union_of_points.data(), num_to_sample + 1, true, nullptr);
+      int num_derivatives = 1;
+      OnePotentialSampleExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, union_of_points.data(), num_to_sample + 1, num_derivatives, nullptr);
 
       ei_optimized = ei_evaluator.ComputeExpectedImprovement(&ei_state);
       ei_evaluator.ComputeGradExpectedImprovement(&ei_state, grad_ei.data());
@@ -508,7 +513,8 @@ int main() {
     double tolerance_result = tolerance;
     if (1) {
       OnePotentialSampleExpectedImprovementEvaluator ei_evaluator(gaussian_process, best_so_far);
-      OnePotentialSampleExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, union_of_points.data(), num_to_sample + 1, true, nullptr);
+      int num_derivatives = 1;
+      OnePotentialSampleExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, union_of_points.data(), num_to_sample + 1, num_derivatives, nullptr);
 
       ei_optimized = ei_evaluator.ComputeExpectedImprovement(&ei_state);
       ei_evaluator.ComputeGradExpectedImprovement(&ei_state, grad_ei.data());

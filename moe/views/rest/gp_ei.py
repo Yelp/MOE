@@ -11,7 +11,7 @@ import numpy
 
 from pyramid.view import view_config
 
-from moe.optimal_learning.python.constant import default_expected_improvement_parameters
+from moe.optimal_learning.python.constant import DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS
 from moe.views.constant import GP_EI_ROUTE_NAME, GP_EI_PRETTY_ROUTE_NAME
 from moe.views.gp_pretty_view import GpPrettyView, PRETTY_RENDERER
 from moe.views.schemas import ListOfPointsInDomain, GpInfo, ListOfExpectedImprovements, CovarianceInfo, DomainInfo
@@ -64,7 +64,7 @@ class GpEiRequest(colander.MappingSchema):
     mc_iterations = colander.SchemaNode(
             colander.Int(),
             validator=colander.Range(min=1),
-            missing=default_expected_improvement_parameters.mc_iterations,
+            missing=DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS,
             )
     gp_info = GpInfo()
     covariance_info = CovarianceInfo()

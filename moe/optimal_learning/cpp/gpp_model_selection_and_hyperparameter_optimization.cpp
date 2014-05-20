@@ -614,7 +614,8 @@ OL_NONNULL_POINTERS void LeaveOneOutCoreAccurate(const CovarianceInterface& cova
   std::copy(noise_variance + (index+1), noise_variance + num_sampled, noise_variance_loo.begin() + index);
 
   GaussianProcess gaussian_process(covariance, points_sampled_loo.data(), points_sampled_value_loo.data(), noise_variance_loo.data(), dim, num_sampled - 1);
-  GaussianProcess::StateType points_to_sample_state(gaussian_process, point_to_sample.data(), num_to_sample, false);
+  int num_derivatives = 0;
+  GaussianProcess::StateType points_to_sample_state(gaussian_process, point_to_sample.data(), num_to_sample, num_derivatives);
   gaussian_process.ComputeMeanOfPoints(points_to_sample_state, mean);
   gaussian_process.ComputeVarianceOfPoints(&points_to_sample_state, variance);
 }

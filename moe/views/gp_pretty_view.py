@@ -2,7 +2,7 @@
 """A class to encapsulate 'pretty' views."""
 import simplejson as json
 
-from moe.optimal_learning.python.python_version.covariance import SQUARE_EXPONENTIAL_COVARIANCE_TYPE
+from moe.optimal_learning.python.constant import SQUARE_EXPONENTIAL_COVARIANCE_TYPE
 
 PRETTY_RENDERER = 'moe:templates/pretty_input.mako'
 
@@ -29,7 +29,6 @@ class GpPrettyView(object):
                 {"value_var": 0.01, "value": 0.1, "point": [0.0]},
                 {"value_var": 0.01, "value": 0.2, "point": [1.0]},
                 ],
-            "domain": [[0, 1]],
             }
     _pretty_default_covariance_info = {
             "covariance_type": SQUARE_EXPONENTIAL_COVARIANCE_TYPE,

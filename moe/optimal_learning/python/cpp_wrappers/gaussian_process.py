@@ -89,15 +89,14 @@ class GaussianProcess(GaussianProcessInterface):
         :rtype: array of float64 with shape (num_to_sample)
 
         """
-        num_to_sample = len(points_to_sample)
         mu = C_GP.get_mean(
             self._gaussian_process,
             cpp_utils.cppify(points_to_sample),
-            num_to_sample,
+            points_to_sample.shape[0],
         )
         return numpy.array(mu)
 
-    def compute_grad_mean_of_points(self, points_to_sample):
+    def compute_grad_mean_of_points(self, points_to_sample, num_derivatives=-1):
         r"""Compute the gradient of the mean of this GP at each of point of ``Xs`` (``points_to_sample``) wrt ``Xs``.
 
         ``points_to_sample`` may not contain duplicate points. Violating this results in singular covariance matrices.
@@ -117,13 +116,13 @@ class GaussianProcess(GaussianProcessInterface):
         :rtype: array of float64 with shape (num_to_sample, dim)
 
         """
-        num_to_sample = len(points_to_sample)
+        num_derivatives = self._clamp_num_derivatives(points_to_sample.shape[0], num_derivatives)
         grad_mu = C_GP.get_grad_mean(
             self._gaussian_process,
-            cpp_utils.cppify(points_to_sample),
-            num_to_sample,
+            cpp_utils.cppify(points_to_sample[:num_derivatives, ...]),
+            num_derivatives,
         )
-        return cpp_utils.uncppify(grad_mu, (num_to_sample, self.dim))
+        return cpp_utils.uncppify(grad_mu, (num_derivatives, self.dim))
 
     def compute_variance_of_points(self, points_to_sample):
         r"""Compute the variance (matrix) of this GP at each point of ``Xs`` (``points_to_sample``).
@@ -140,7 +139,7 @@ class GaussianProcess(GaussianProcessInterface):
         :rtype: array of float64 with shape (num_to_sample, num_to_sample)
 
         """
-        num_to_sample = len(points_to_sample)
+        num_to_sample = points_to_sample.shape[0]
         variance = C_GP.get_var(
             self._gaussian_process,
             cpp_utils.cppify(points_to_sample),
@@ -159,7 +158,7 @@ class GaussianProcess(GaussianProcessInterface):
         :rtype: array of float64 with shape (num_to_sample, num_to_sample), only lower triangle filled in
 
         """
-        num_to_sample = len(points_to_sample)
+        num_to_sample = points_to_sample.shape[0]
         cholesky_variance = C_GP.get_chol_var(
             self._gaussian_process,
             cpp_utils.cppify(points_to_sample),
@@ -167,7 +166,7 @@ class GaussianProcess(GaussianProcessInterface):
         )
         return cpp_utils.uncppify(cholesky_variance, (num_to_sample, num_to_sample))
 
-    def compute_grad_variance_of_points(self, points_to_sample, var_of_grad):
+    def compute_grad_variance_of_points(self, points_to_sample, num_derivatives=-1):
         r"""Compute the gradient of the variance (matrix) of this GP at each point of ``Xs`` (``points_to_sample``) wrt ``Xs``.
 
         ``points_to_sample`` may not contain duplicate points. Violating this results in singular covariance matrices.
@@ -179,22 +178,24 @@ class GaussianProcess(GaussianProcessInterface):
 
         :param points_to_sample: num_to_sample points (in dim dimensions) being sampled from the GP
         :type points_to_sample: array of float64 with shape (num_to_sample, dim)
-        :param var_of_grad: index of ``points_to_sample`` to be differentiated against
-        :type var_of_grad: integer in {0, .. ``num_to_sample``-1}
+        :param num_derivatives: return derivatives wrt points_to_sample[0:num_derivatives]; large or negative values are clamped
+        :type num_derivatives: int
         :return: grad_var: gradient of the variance matrix of this GP
-        :rtype: array of float64 with shape (num_to_sample, num_to_sample, dim)
+        :rtype: array of float64 with shape (num_derivatives, num_to_sample, num_to_sample, dim)
 
         """
-        num_to_sample = len(points_to_sample)
+        num_derivatives = self._clamp_num_derivatives(points_to_sample.shape[0], num_derivatives)
+        num_to_sample = points_to_sample.shape[0]
+
         grad_variance = C_GP.get_grad_var(
             self._gaussian_process,
             cpp_utils.cppify(points_to_sample),
             num_to_sample,
-            var_of_grad,
+            num_derivatives,
         )
-        return cpp_utils.uncppify(grad_variance, (num_to_sample, num_to_sample, self.dim))
+        return cpp_utils.uncppify(grad_variance, (num_derivatives, num_to_sample, num_to_sample, self.dim))
 
-    def compute_grad_cholesky_variance_of_points(self, points_to_sample, var_of_grad):
+    def compute_grad_cholesky_variance_of_points(self, points_to_sample, num_derivatives=-1):
         r"""Compute the gradient of the cholesky factorization of the variance (matrix) of this GP at each point of ``Xs`` (``points_to_sample``) wrt ``Xs``.
 
         ``points_to_sample`` may not contain duplicate points. Violating this results in singular covariance matrices.
@@ -204,33 +205,31 @@ class GaussianProcess(GaussianProcessInterface):
 
         Note that ``grad_chol`` is nominally sized:
         ``grad_chol[num_to_sample][num_to_sample][num_to_sample][dim]``.
-        Let this be indexed ``grad_chol[j][i][k][d]``, which is read the derivative of ``var[j][i]``
+        Let this be indexed ``grad_chol[k][j][i][d]``, which is read the derivative of ``var[j][i]``
         with respect to ``x_{k,d}`` (x = ``points_to_sample``)
-
-        Due to actual usage patterns, the full gradient tensor is never required simultaneously;
-        thus only ``grad_chol[j][i][d]`` is formed with k (``var_of_grad``) as an input parameter to this function.
 
         .. Note:: Comments in this class are copied from this's superclass in interfaces.gaussian_process_interface.py.
 
         :param points_to_sample: num_to_sample points (in dim dimensions) being sampled from the GP
         :type points_to_sample: array of float64 with shape (num_to_sample, dim)
-        :param var_of_grad: index of ``points_to_sample`` to be differentiated against
-        :type var_of_grad: integer in {0, .. ``num_to_sample``-1}
+        :param num_derivatives: return derivatives wrt points_to_sample[0:num_derivatives]; large or negative values are clamped
+        :type num_derivatives: int
         :return: grad_chol: gradient of the cholesky factorization of the variance matrix of this GP.
-          ``grad_chol[j][i][d]`` is actually the gradients of ``var_{j,i}`` with
-          respect to ``x_{k,d}``, the d-th dimension of the k-th entry of ``points_to_sample``, where
-          k = ``var_of_grad``
-        :rtype: array of float64 with shape (num_to_sample, num_to_sample, dim)
+          ``grad_chol[k][j][i][d]`` is actually the gradients of ``var_{j,i}`` with
+          respect to ``x_{k,d}``, the d-th dimension of the k-th entry of ``points_to_sample``
+        :rtype: array of float64 with shape (num_derivatives, num_to_sample, num_to_sample, dim)
 
         """
-        num_to_sample = len(points_to_sample)
-        cholesky_grad_variance = C_GP.get_grad_chol_var(
+        num_derivatives = self._clamp_num_derivatives(points_to_sample.shape[0], num_derivatives)
+        num_to_sample = points_to_sample.shape[0]
+
+        grad_chol_decomp = C_GP.get_grad_chol_var(
             self._gaussian_process,
             cpp_utils.cppify(points_to_sample),
             num_to_sample,
-            var_of_grad,
+            num_derivatives,
         )
-        return cpp_utils.uncppify(cholesky_grad_variance, (num_to_sample, num_to_sample, self.dim))
+        return cpp_utils.uncppify(grad_chol_decomp, (num_derivatives, num_to_sample, num_to_sample, self.dim))
 
     def add_sampled_points(self, sampled_points):
         r"""Add sampled point(s) (point, value, noise) to the GP's prior data.

@@ -33,6 +33,7 @@ class RestGaussianProcessTestCase(GaussianProcessTestCase):
         return {
                 'domain_type': domain.domain_type,
                 'dim': domain.dim,
+                'domain_bounds': domain._domain_bounds,
                 }
 
     @staticmethod

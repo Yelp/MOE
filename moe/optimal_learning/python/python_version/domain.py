@@ -15,10 +15,9 @@ import copy
 
 import numpy
 
+from moe.optimal_learning.python.constant import TENSOR_PRODUCT_DOMAIN_TYPE
 from moe.optimal_learning.python.geometry_utils import generate_grid_points, generate_latin_hypercube_points
 from moe.optimal_learning.python.interfaces.domain_interface import DomainInterface
-
-TENSOR_PRODUCT_DOMAIN_TYPE = 'tensor_product'
 
 
 class TensorProductDomain(DomainInterface):
@@ -54,8 +53,6 @@ class TensorProductDomain(DomainInterface):
 
         :param point: point to check
         :type point: array of float64 with shape (dim)
-        :param points_to_sample: points which are being sampled concurrently (i.e., p in q,p-EI)
-        :type points_to_sample: array of float64 with shape (num_to_sample, dim)
         :return: true if point is inside the domain
         :rtype: bool
 
@@ -155,7 +152,3 @@ class TensorProductDomain(DomainInterface):
             output_update[j] = desired_step
 
         return output_update
-
-DOMAIN_TYPES_TO_CLASSES = {
-        TENSOR_PRODUCT_DOMAIN_TYPE: TensorProductDomain,
-        }

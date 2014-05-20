@@ -4,7 +4,6 @@ import simplejson as json
 
 import testify as T
 
-from moe.optimal_learning.python.constant import default_expected_improvement_parameters
 from moe.optimal_learning.python.cpp_wrappers.expected_improvement import ExpectedImprovement
 from moe.optimal_learning.python.cpp_wrappers.gaussian_process import GaussianProcess
 from moe.optimal_learning.python.cpp_wrappers.covariance import SquareExponential
@@ -25,7 +24,6 @@ class TestGpEiView(RestGaussianProcessTestCase):
         json_payload = json.dumps({
             'points_to_evaluate': points_to_evaluate,
             'points_being_sampled': [],
-            'mc_iterations': default_expected_improvement_parameters.mc_iterations,
             'gp_info': self._build_gp_info(gaussian_process),
             'covariance_info': self._build_covariance_info(covariance),
             'domain_info': self._build_domain_info(domain),

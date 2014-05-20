@@ -2,9 +2,8 @@
 """Base level schemas for the response/request schemas of each MOE REST endpoint."""
 import colander
 
-from moe.optimal_learning.python.constant import default_gaussian_process_parameters, default_ei_optimization_parameters, default_optimizer_type, default_num_random_samples, ALL_OPTIMIZERS
-from moe.optimal_learning.python.python_version.covariance import COVARIANCE_TYPES_TO_CLASSES, SQUARE_EXPONENTIAL_COVARIANCE_TYPE
-from moe.optimal_learning.python.python_version.domain import TENSOR_PRODUCT_DOMAIN_TYPE, DOMAIN_TYPES_TO_CLASSES
+from moe.optimal_learning.python.constant import DEFAULT_NEWTON_PARAMETERS, DEFAULT_GRADIENT_DESCENT_PARAMETERS, GRADIENT_DESCENT_OPTIMIZER, DEFAULT_OPTIMIZATION_MULTISTARTS, DEFAULT_OPTIMIZATION_NUM_RANDOM_SAMPLES, TENSOR_PRODUCT_DOMAIN_TYPE, SQUARE_EXPONENTIAL_COVARIANCE_TYPE, NULL_OPTIMIZER, NEWTON_OPTIMIZER
+from moe.optimal_learning.python.linkers import DOMAIN_TYPES_TO_DOMAIN_LINKS, OPTIMIZATION_TYPES_TO_OPTIMIZATION_METHODS, COVARIANCE_TYPES_TO_CLASSES
 
 
 class ListOfFloats(colander.SequenceSchema):
@@ -40,11 +39,12 @@ class PointsSampled(colander.SequenceSchema):
     point_sampled = SinglePoint()
 
 
-class DomainCoordinate(colander.SequenceSchema):
+class DomainCoordinate(colander.MappingSchema):
 
     """A single domain interval."""
 
-    domain_coordinate = colander.SchemaNode(colander.Float())
+    min = colander.SchemaNode(colander.Float())
+    max = colander.SchemaNode(colander.Float())
 
 
 class Domain(colander.SequenceSchema):
@@ -60,24 +60,130 @@ class DomainInfo(colander.MappingSchema):
 
     **Required fields**
 
-        :domain_type: the type of domain to use in ``moe.optimal_learning.python.python_version.domain.DOMAIN_TYPES_TO_CLASSES``
         :dim: the dimension of the domain (int)
 
     **Optional fields**
 
-        :domain_bounds: the bounds of the domain of type :class:`moe.views.schemas.Domain`
+        :domain_type: the type of domain to use in ``moe.optimal_learning.python.python_version.domain.DOMAIN_TYPES_TO_DOMAIN_LINKS`` (default: TENSOR_PRODUCT_DOMAIN_TYPE)
 
     """
 
     domain_type = colander.SchemaNode(
             colander.String(),
-            validator=colander.OneOf(DOMAIN_TYPES_TO_CLASSES),
+            validator=colander.OneOf(DOMAIN_TYPES_TO_DOMAIN_LINKS),
             missing=TENSOR_PRODUCT_DOMAIN_TYPE,
             )
     dim = colander.SchemaNode(
             colander.Int(),
             validator=colander.Range(min=0),
             )
+
+
+class BoundedDomainInfo(DomainInfo):
+
+    """The domain info needed for every request, along with bounds for optimization.
+
+    **Required fields**
+
+        All required fields from :class:`~moe.views.schemas.DomainInfo`
+        :domain_bounds: the bounds of the domain of type :class:`moe.views.schemas.Domain`
+
+    """
+
+    domain_bounds = Domain()
+
+
+class GradientDescentParametersSchema(colander.MappingSchema):
+
+    """Parameters for the gradient descent optimizer.
+
+    See :class:`moe.optimal_learning.python.cpp_wrappers.optimization.GradientDescentParameters`
+
+    """
+
+    max_num_steps = colander.SchemaNode(
+            colander.Int(),
+            missing=DEFAULT_GRADIENT_DESCENT_PARAMETERS.max_num_steps,
+            validator=colander.Range(min=1),
+            )
+    max_num_restarts = colander.SchemaNode(
+            colander.Int(),
+            missing=DEFAULT_GRADIENT_DESCENT_PARAMETERS.max_num_restarts,
+            validator=colander.Range(min=1),
+            )
+    num_steps_averaged = colander.SchemaNode(
+            colander.Int(),
+            missing=DEFAULT_GRADIENT_DESCENT_PARAMETERS.num_steps_averaged,
+            validator=colander.Range(min=1),
+            )
+    gamma = colander.SchemaNode(
+            colander.Float(),
+            missing=DEFAULT_GRADIENT_DESCENT_PARAMETERS.gamma,
+            validator=colander.Range(min=0.0),
+            )
+    pre_mult = colander.SchemaNode(
+            colander.Float(),
+            missing=DEFAULT_GRADIENT_DESCENT_PARAMETERS.pre_mult,
+            validator=colander.Range(min=0.0),
+            )
+    max_relative_change = colander.SchemaNode(
+            colander.Float(),
+            missing=DEFAULT_GRADIENT_DESCENT_PARAMETERS.max_relative_change,
+            validator=colander.Range(
+                min=0.0,
+                max=1.0,
+                ),
+            )
+    tolerance = colander.SchemaNode(
+            colander.Float(),
+            missing=DEFAULT_NEWTON_PARAMETERS.tolerance,
+            validator=colander.Range(min=0.0),
+            )
+
+
+class NewtonParametersSchema(colander.MappingSchema):
+
+    """Parameters for the newton optimizer.
+
+    See :class:`moe.optimal_learning.python.cpp_wrappers.optimization.NewtonParameters`
+
+    """
+
+    max_num_steps = colander.SchemaNode(
+            colander.Int(),
+            missing=DEFAULT_NEWTON_PARAMETERS.max_num_steps,
+            validator=colander.Range(min=1),
+            )
+    gamma = colander.SchemaNode(
+            colander.Float(),
+            missing=DEFAULT_NEWTON_PARAMETERS.gamma,
+            validator=colander.Range(min=0.0),
+            )
+    time_factor = colander.SchemaNode(
+            colander.Float(),
+            missing=DEFAULT_NEWTON_PARAMETERS.time_factor,
+            validator=colander.Range(min=0.0),
+            )
+    max_relative_change = colander.SchemaNode(
+            colander.Float(),
+            missing=DEFAULT_NEWTON_PARAMETERS.max_relative_change,
+            validator=colander.Range(
+                min=0.0,
+                max=1.0,
+                ),
+            )
+    tolerance = colander.SchemaNode(
+            colander.Float(),
+            missing=DEFAULT_NEWTON_PARAMETERS.tolerance,
+            validator=colander.Range(min=0.0),
+            )
+
+
+class NullParametersSchema(colander.MappingSchema):
+
+    """Parameters for the null optimizer."""
+
+    pass
 
 
 class CovarianceInfo(colander.MappingSchema):
@@ -107,119 +213,10 @@ class GpInfo(colander.MappingSchema):
 
     Contains:
         * points_sampled - PointsSampled
-        * length_scale - ListOfFloats
-        * signal_variance - float
 
     """
 
     points_sampled = PointsSampled()
-    length_scale = ListOfFloats(
-            missing=default_gaussian_process_parameters.length_scale,
-            )
-    signal_variance = colander.SchemaNode(
-            colander.Float(),
-            missing=default_gaussian_process_parameters.signal_variance,
-            )
-
-
-class EiOptimizationParameters(colander.MappingSchema):
-
-    """Optimization parameters.
-
-    **Optional fields**
-
-        :param optimizer_type: the type of optimizer to use
-        :type optimizer_type: string in ['gradient_descent']
-        :param num_random_samples: the number of random samples to try on top of the optimization method (failsafe)
-        :type num_random_samples: int >= 0
-        :param num_multistarts: number of initial guesses to try in multistarted gradient descent (suggest: a few hundred)
-        :type num_multistarts: int > 0
-        :param max_num_steps: maximum number of gradient descent iterations per restart (suggest: 200-1000)
-        :type max_num_steps: int > 0
-        :param max_num_restarts: maximum number of gradient descent restarts, the we are allowed to call gradient descent.  Should be >= 2 as a minimum (suggest: 10-20)
-        :type max_num_restarts: int > 0
-        :param gamma: exponent controlling rate of step size decrease (see struct docs or GradientDescentOptimizer) (suggest: 0.5-0.9)
-        :type gamma: float64 > 1.0
-        :param pre_mult: scaling factor for step size (see struct docs or GradientDescentOptimizer) (suggest: 0.1-1.0)
-        :type pre_mult: float64 > 0.0
-        :param max_relative_change: max change allowed per GD iteration (as a relative fraction of current distance to wall)
-               (suggest: 0.5-1.0 for less sensitive problems like EI; 0.02 for more sensitive problems like hyperparameter opt)
-        :type max_relative_change: float64 in [0, 1]
-        :param tolerance: when the magnitude of the gradient falls below this value OR we will not move farther than tolerance
-               (e.g., at a boundary), stop.  (suggest: 1.0e-7)
-        :type tolerance: float64 >= 0.0
-
-    ***Example Request** (default values in moe/optimal_learning/python/constant)
-
-    .. sourcecode:: http
-
-        Content-Type: text/javascript
-
-        {
-            'optimizer_type': 'gradient_descent',
-            'num_random_samples': 4000,
-            'num_multistarts': 40,
-            'gd_iterations': 1000,
-            'max_num_restarts': 3,
-            'gamma': 0.9,
-            'pre_mult': 1.0,
-            'mc_iterations': 100000,
-            'max_relative_change': 1.0,
-            'tolerance': 1.0e-7,
-        }
-
-    """
-
-    optimizer_type = colander.SchemaNode(
-            colander.String(),
-            missing=default_optimizer_type,
-            validator=colander.OneOf(ALL_OPTIMIZERS),
-            )
-    num_random_samples = colander.SchemaNode(
-            colander.Int(),
-            missing=default_num_random_samples,
-            validator=colander.Range(min=0),
-            )
-    num_multistarts = colander.SchemaNode(
-            colander.Int(),
-            missing=default_ei_optimization_parameters.num_multistarts,
-            validator=colander.Range(min=1),
-            )
-    gd_iterations = colander.SchemaNode(
-            colander.Int(),
-            missing=default_ei_optimization_parameters.gd_iterations,
-            validator=colander.Range(min=10),
-            )
-    max_num_restarts = colander.SchemaNode(
-            colander.Int(),
-            missing=default_ei_optimization_parameters.max_num_restarts,
-            validator=colander.Range(min=1),
-            )
-    gamma = colander.SchemaNode(
-            colander.Float(),
-            missing=default_ei_optimization_parameters.gamma,
-            validator=colander.Range(min=0.0, max=1.0),
-            )
-    pre_mult = colander.SchemaNode(
-            colander.Float(),
-            missing=default_ei_optimization_parameters.pre_mult,
-            validator=colander.Range(min=0.0),
-            )
-    mc_iterations = colander.SchemaNode(
-            colander.Int(),
-            missing=default_ei_optimization_parameters.mc_iterations,
-            validator=colander.Range(min=100),
-            )
-    max_relative_change = colander.SchemaNode(
-            colander.Float(),
-            missing=default_ei_optimization_parameters.max_relative_change,
-            validator=colander.Range(min=0.0, max=1.0),
-            )
-    tolerance = colander.SchemaNode(
-            colander.Float(),
-            missing=default_ei_optimization_parameters.tolerance,
-            validator=colander.Range(min=1.0e-15, max=1.0e-4),
-            )
 
 
 class ListOfPointsInDomain(colander.SequenceSchema):
@@ -244,3 +241,38 @@ class MatrixOfFloats(colander.SequenceSchema):
     """A 2d list of floats."""
 
     row_of_matrix = ListOfFloats()
+
+
+class OptimizationInfo(colander.MappingSchema):
+
+    """Optimization information needed for each next point endpoint.
+
+    **Optimization fields**
+
+        :optimization_type: a string defining the optimization type from `moe.optimal_learning.python.cpp_wrappers.optimization.OPTIMIZATION_TYPES_TO_OPTIMIZATION_METHODS` (default: GRADIENT_DESCENT_OPTIMIZER)
+        :optimization_parameters: a dict corresponding the the parameters of the optimization method
+
+    """
+
+    optimization_type = colander.SchemaNode(
+            colander.String(),
+            validator=colander.OneOf(OPTIMIZATION_TYPES_TO_OPTIMIZATION_METHODS),
+            missing=GRADIENT_DESCENT_OPTIMIZER,
+            )
+    num_multistarts = colander.SchemaNode(
+            colander.Int(),
+            missing=DEFAULT_OPTIMIZATION_MULTISTARTS,
+            validator=colander.Range(min=1),
+            )
+    num_random_samples = colander.SchemaNode(
+            colander.Int(),
+            missing=DEFAULT_OPTIMIZATION_NUM_RANDOM_SAMPLES,
+            validator=colander.Range(min=1),
+            )
+
+
+OPTIMIZATION_TYPES_TO_SCHEMA_CLASSES = {
+        NULL_OPTIMIZER: NullParametersSchema,
+        NEWTON_OPTIMIZER: NewtonParametersSchema,
+        GRADIENT_DESCENT_OPTIMIZER: GradientDescentParametersSchema,
+        }

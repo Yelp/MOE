@@ -6,12 +6,14 @@ Include:
     2. Class that extends GpPrettyView for next_points optimizers
 """
 import colander
+import numpy
 
-import moe.build.GPP as cpp_optimal_learning
-from moe.optimal_learning.python.cpp_wrappers.optimization import GradientDescentParameters, GradientDescentOptimizer, NullOptimizer
+from moe.optimal_learning.python.cpp_wrappers.expected_improvement import ExpectedImprovement, multistart_expected_improvement_optimization
 from moe.views.gp_pretty_view import GpPrettyView
-from moe.views.schemas import GpInfo, EiOptimizationParameters, ListOfPointsInDomain, ListOfExpectedImprovements
-from moe.views.utils import _make_gp_from_params
+from moe.views.schemas import GpInfo, ListOfPointsInDomain, ListOfExpectedImprovements, CovarianceInfo, BoundedDomainInfo, OptimizationInfo, OPTIMIZATION_TYPES_TO_SCHEMA_CLASSES
+from moe.views.utils import _make_gp_from_params, _make_domain_from_params
+from moe.optimal_learning.python.linkers import OPTIMIZATION_TYPES_TO_OPTIMIZATION_METHODS
+from moe.optimal_learning.python.constant import OPTIMIZATION_TYPE_TO_DEFAULT_PARAMETERS, TEST_EXPECTED_IMPROVEMENT_MC_ITERATIONS
 
 
 class GpNextPointsRequest(colander.MappingSchema):
@@ -40,9 +42,6 @@ class GpNextPointsRequest(colander.MappingSchema):
                         {'value_var': 0.01, 'value': 0.1, 'point': [0.0]},
                         {'value_var': 0.01, 'value': 0.2, 'point': [1.0]}
                     ],
-                'domain': [
-                    [0, 1],
-                    ]
                 },
             },
         }
@@ -54,9 +53,9 @@ class GpNextPointsRequest(colander.MappingSchema):
             validator=colander.Range(min=1),
             )
     gp_info = GpInfo()
-    ei_optimization_parameters = EiOptimizationParameters(
-            missing=EiOptimizationParameters().deserialize({})
-            )
+    covariance_info = CovarianceInfo()
+    domain_info = BoundedDomainInfo()
+    optimization_info = OptimizationInfo()
 
 
 class GpNextPointsResponse(colander.MappingSchema):
@@ -100,6 +99,8 @@ class GpNextPointsPrettyView(GpPrettyView):
     request_schema = GpNextPointsRequest()
     response_schema = GpNextPointsResponse()
 
+    ei_optimization_method = multistart_expected_improvement_optimization
+
     _pretty_default_request = {
             "num_samples_to_generate": 1,
             "gp_info": GpPrettyView._pretty_default_gp_info,
@@ -119,22 +120,37 @@ class GpNextPointsPrettyView(GpPrettyView):
 
         """
         num_samples_to_generate = params.get('num_samples_to_generate')
+        points_being_sampled = params.get('points_being_sampled')
+        if points_being_sampled is not None:
+            points_being_sampled = numpy.array(points_being_sampled)
 
         gaussian_process = _make_gp_from_params(params)
-        optimizer_type, num_random_samples, optimization_parameters, domain_type = self.get_optimization_parameters_cpp(params)
+        domain = _make_domain_from_params(params)
 
-        optimization_method = getattr(gaussian_process, optimization_method_name)
+        optimizer_class, optimization_parameters, num_random_samples = self.get_optimization_parameters_cpp(params)
 
-        next_points = optimization_method(
-                optimizer_type,
-                optimization_parameters,
-                domain_type,
-                num_random_samples,
-                num_samples_to_generate,
-                *args,
-                **kwargs
+        expected_improvement_evaluator = ExpectedImprovement(
+                gaussian_process,
+                points_to_sample=points_being_sampled,
+                num_mc_iterations=TEST_EXPECTED_IMPROVEMENT_MC_ITERATIONS,
                 )
-        expected_improvement = gaussian_process.evaluate_expected_improvement_at_point_list(next_points)
+
+        expected_improvement_optimizer = optimizer_class(
+                domain,
+                expected_improvement_evaluator,
+                optimization_parameters,
+                num_random_samples=num_random_samples,
+                )
+
+        next_points = multistart_expected_improvement_optimization(
+                expected_improvement_optimizer,
+                optimization_parameters.num_multistarts,
+                num_samples_to_generate,
+                )
+
+        expected_improvement = expected_improvement_evaluator.evaluate_at_point_list(
+                next_points,
+                )
 
         return self.form_response({
                 'endpoint': route_name,
@@ -150,31 +166,21 @@ class GpNextPointsPrettyView(GpPrettyView):
         :type deserialized_request_params: a dictionary with a key ei_optimization_parameters containing a :class:`moe.views.schemas.EiOptimizationParameters()` object with optimization parameters
 
         """
-        ei_optimization_parameters = deserialized_request_params.get('ei_optimization_parameters')
+        optimization_info = deserialized_request_params.get('optimization_info')
+        num_random_samples = optimization_info.get('num_random_samples')
 
-        # TODO(eliu): clean this up!
-        # TODO(sclark): should this endpoint also support 'dumb' search optimization?
+        optimization_method = OPTIMIZATION_TYPES_TO_OPTIMIZATION_METHODS[optimization_info.get('optimization_type')]
+        schema_class = OPTIMIZATION_TYPES_TO_SCHEMA_CLASSES[optimization_info.get('optimization_type')]()
 
-        # TODO(eliu): domain_type should passed as part of the domain; this is a hack until I
-        # refactor these calls to use the new interface
-        num_random_samples = ei_optimization_parameters.get('num_random_samples')
-        domain_type = cpp_optimal_learning.DomainTypes.tensor_product
-        if ei_optimization_parameters.get('optimizer_type') == 'gradient_descent':
-            optimizer = GradientDescentOptimizer
-            # Note: num_random_samples only has meaning when computing more than 1 points_to_sample simultaneously
-            optimization_parameters = GradientDescentParameters(
-                ei_optimization_parameters.get('num_multistarts'),
-                ei_optimization_parameters.get('gd_iterations'),
-                ei_optimization_parameters.get('max_num_restarts'),
-                ei_optimization_parameters.get('gamma'),
-                ei_optimization_parameters.get('pre_mult'),
-                ei_optimization_parameters.get('max_relative_change'),
-                ei_optimization_parameters.get('tolerance'),
-            )
-        else:
-            # null optimization (dumb search)
-            optimizer = NullOptimizer
-            num_random_samples = ei_optimization_parameters.get('num_random_samples'),
-            optimization_parameters = None
+        # Start with defaults
+        optimization_parameters_dict = dict(OPTIMIZATION_TYPE_TO_DEFAULT_PARAMETERS[optimization_info.get('optimization_type')]._asdict())
+        for param, val in optimization_info.get('optimization_parameters', {}).iteritems():
+            # Override defaults as needed
+            optimization_parameters_dict[param] = val
 
-        return optimizer, num_random_samples, optimization_parameters, domain_type
+        # Validate optimization parameters
+        validated_optimization_parameters = schema_class.deserialize(optimization_parameters_dict)
+        validated_optimization_parameters['num_multistarts'] = optimization_info['num_multistarts']
+        optimization_parameters = optimization_method.cpp_parameters_class(**validated_optimization_parameters)
+
+        return optimization_method.cpp_optimizer_class, optimization_parameters, num_random_samples

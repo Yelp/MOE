@@ -232,7 +232,11 @@ class GaussianProcessLogMarginalLikelihood(GaussianProcessLogLikelihoodInterface
         :rtype: float64
 
         """
-        covariance_matrix = python_utils.build_covariance_matrix(self._covariance, self._historical_data.points_sampled, noise_variance=self._historical_data.points_sampled_noise_variance)
+        covariance_matrix = python_utils.build_covariance_matrix(
+            self._covariance,
+            self._historical_data.points_sampled,
+            noise_variance=self._historical_data.points_sampled_noise_variance,
+        )
         K_chol = scipy.linalg.cho_factor(covariance_matrix, lower=True, overwrite_a=True)
 
         log_marginal_term2 = -numpy.log(K_chol[0].diagonal()).sum()
@@ -261,11 +265,18 @@ class GaussianProcessLogMarginalLikelihood(GaussianProcessLogLikelihoodInterface
         :rtype: array of float64 with shape (num_hyperparameters)
 
         """
-        covariance_matrix = python_utils.build_covariance_matrix(self._covariance, self._historical_data.points_sampled, noise_variance=self._historical_data.points_sampled_noise_variance)
+        covariance_matrix = python_utils.build_covariance_matrix(
+            self._covariance,
+            self._historical_data.points_sampled,
+            noise_variance=self._historical_data.points_sampled_noise_variance,
+        )
         K_chol = scipy.linalg.cho_factor(covariance_matrix, lower=True, overwrite_a=True)
         K_inv_y = scipy.linalg.cho_solve(K_chol, self._historical_data.points_sampled_value)
 
-        grad_hyperparameter_cov_matrix = python_utils.build_hyperparameter_grad_covariance_matrix(self._covariance, self._historical_data.points_sampled)
+        grad_hyperparameter_cov_matrix = python_utils.build_hyperparameter_grad_covariance_matrix(
+            self._covariance,
+            self._historical_data.points_sampled,
+        )
         grad_log_marginal = numpy.empty(self._covariance.num_hyperparameters)
         for k in xrange(self._covariance.num_hyperparameters):
             grad_cov_block = grad_hyperparameter_cov_matrix[..., k]

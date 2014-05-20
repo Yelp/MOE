@@ -29,14 +29,16 @@ namespace optimal_learning {
 namespace {
 
 /*!\rst
-  Computes \sum_{i=0}^{dim} (p1_i - p2_i) / W_i * (p1_i - p2_i), p1, p2 = point 1 & 2; W = weight.
-  Equivalent to ||p1 - p2||_2 if all entries of W are 1.0.
+  Computes ``\sum_{i=0}^{dim} (p1_i - p2_i) / W_i * (p1_i - p2_i)``, ``p1, p2 = point 1 & 2``; ``W = weight``.
+  Equivalent to ``\|p1 - p2\|_2`` if all entries of W are 1.0.
 
-  INPUTS:
-  point_one[size]: the vector p1
-  point_two[size]: the vector p2
-  weights[size]: the vector W, i.e., the scaling to apply to each term of the norm
-  size: number of dimensions in point
+  \param
+    :point_one[size]: the vector p1
+    :point_two[size]: the vector p2
+    :weights[size]: the vector W, i.e., the scaling to apply to each term of the norm
+    :size: number of dimensions in point
+  \return
+    the weighted ``L_2``-norm of the vector difference ``p1 - p2``.
 \endrst*/
 OL_PURE_FUNCTION OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT double NormSquaredWithInverseWeights(double const * restrict point_one, double const * restrict point_two, double const * restrict weights, int size) noexcept {
   // calculates the one norm of two vectors (point_one and point_two of size size)
@@ -51,13 +53,13 @@ OL_PURE_FUNCTION OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT double NormSquaredWit
 /*!\rst
   Validate and initialize covariance function data (sizes, hyperparameters).
 
-  INPUTS:
-  dim: the number of spatial dimensions
-  alpha: the hyperparameter \alpha, (e.g., signal variance, \sigma_f^2)
-  lengths_in: the input length scales, one per spatial dimension
-  lengths_sq[dim]: pointer to an array of at least dim double
-  OUTPUTS:
-  lengths_sq[dim]: first dim entries overwritten with the square of the entries of lengths_in
+  \param
+    :dim: the number of spatial dimensions
+    :alpha: the hyperparameter \alpha, (e.g., signal variance, \sigma_f^2)
+    :lengths_in: the input length scales, one per spatial dimension
+    :lengths_sq[dim]: pointer to an array of at least dim double
+  \output
+    :lengths_sq[dim]: first dim entries overwritten with the square of the entries of lengths_in
 \endrst*/
 OL_NONNULL_POINTERS void InitializeCovariance(int dim, double alpha, const std::vector<double>& lengths_in, double * restrict lengths_sq) {
   // validate inputs

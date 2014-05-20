@@ -19,9 +19,8 @@ covariance computation for use with the derivative computations.
 """
 import numpy
 
+from moe.optimal_learning.python.constant import SQUARE_EXPONENTIAL_COVARIANCE_TYPE
 from moe.optimal_learning.python.interfaces.covariance_interface import CovarianceInterface
-
-SQUARE_EXPONENTIAL_COVARIANCE_TYPE = 'square_exponential'
 
 
 class SquareExponential(CovarianceInterface):
@@ -156,7 +155,3 @@ class SquareExponential(CovarianceInterface):
 
         """
         raise NotImplementedError("Python implementation does not support computing the hessian covariance wrt hyperparameters.")
-
-COVARIANCE_TYPES_TO_CLASSES = {
-        SQUARE_EXPONENTIAL_COVARIANCE_TYPE: SquareExponential,
-        }
