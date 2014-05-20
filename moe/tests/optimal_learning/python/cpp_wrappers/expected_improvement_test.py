@@ -67,17 +67,17 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
 
         for test_case in self.gp_test_environments:
             domain, python_cov, python_gp = test_case
-            current_point = domain.generate_random_point_in_domain()
-            python_ei_eval = python_version.expected_improvement.ExpectedImprovement(python_gp, current_point)
+            points_to_sample = domain.generate_random_point_in_domain()
+            python_ei_eval = python_version.expected_improvement.ExpectedImprovement(python_gp, points_to_sample)
 
             cpp_cov = cpp_wrappers.covariance.SquareExponential(python_cov.get_hyperparameters())
             cpp_gp = cpp_wrappers.gaussian_process.GaussianProcess(cpp_cov, python_gp._historical_data)
-            cpp_ei_eval = cpp_wrappers.expected_improvement.ExpectedImprovement(cpp_gp, current_point)
+            cpp_ei_eval = cpp_wrappers.expected_improvement.ExpectedImprovement(cpp_gp, points_to_sample)
 
             for _ in xrange(num_tests_per_case):
-                current_point = domain.generate_random_point_in_domain()
-                cpp_ei_eval.set_current_point(current_point)
-                python_ei_eval.set_current_point(current_point)
+                points_to_sample = domain.generate_random_point_in_domain()
+                cpp_ei_eval.set_current_point(points_to_sample)
+                python_ei_eval.set_current_point(points_to_sample)
 
                 cpp_ei = cpp_ei_eval.compute_expected_improvement()
                 python_ei = python_ei_eval.compute_expected_improvement()

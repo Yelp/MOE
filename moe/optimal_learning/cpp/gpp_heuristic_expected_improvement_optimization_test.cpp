@@ -267,7 +267,7 @@ int EstimationPolicyTest() {
 namespace {
 
 /*
-  This test assumes that ComputeOptimalPointToSampleWithRandomStarts() with num_to_sample = 0 (analytic case)
+  This test assumes that ComputeOptimalPointToSampleWithRandomStarts() with num_being_sampled = 0 (analytic case)
   is working properly, and it assumes EstimationPolicyTest() passes. It checks:
   1) ComputeHeuristicSetOfPointsToSample() is working correctly (found_flag is true)
   2) points returned are all inside the specified domain
@@ -343,22 +343,22 @@ int HeuristicExpectedImprovementOptimizationTestCore(EstimationPolicyTypes polic
   DomainType domain(domain_bounds.data(), dim);
 
   // number of simultaneous samples
-  const int num_samples_to_generate = 3;
-  std::vector<double> best_points_to_sample(dim*num_samples_to_generate);
+  const int num_to_sample = 3;
+  std::vector<double> best_points_to_sample(dim*num_to_sample);
 
   // test optimization
   bool found_flag = false;
-  ComputeHeuristicSetOfPointsToSample(*mock_gp_data.gaussian_process_ptr, gd_params, domain, *estimation_policy, mock_gp_data.best_so_far, kMaxNumThreads, grid_search_only, num_grid_search_points, num_samples_to_generate, &found_flag, &uniform_generator, best_points_to_sample.data());
+  ComputeHeuristicSetOfPointsToSample(*mock_gp_data.gaussian_process_ptr, gd_params, domain, *estimation_policy, mock_gp_data.best_so_far, kMaxNumThreads, grid_search_only, num_grid_search_points, num_to_sample, &found_flag, &uniform_generator, best_points_to_sample.data());
   if (!found_flag) {
     ++total_errors;
   }
 
   // check points are in domain
-  current_errors = CheckPointsInDomain(domain, best_points_to_sample.data(), num_samples_to_generate);
+  current_errors = CheckPointsInDomain(domain, best_points_to_sample.data(), num_to_sample);
 #ifdef OL_ERROR_PRINT
   if (current_errors != 0) {
     OL_ERROR_PRINTF("ERROR: points were not in domain!  points:\n");
-    PrintMatrixTrans(best_points_to_sample.data(), num_samples_to_generate, dim);
+    PrintMatrixTrans(best_points_to_sample.data(), num_to_sample, dim);
     OL_ERROR_PRINTF("domain:\n");
     PrintDomainBounds(domain_bounds.data(), dim);
   }
@@ -367,11 +367,11 @@ int HeuristicExpectedImprovementOptimizationTestCore(EstimationPolicyTypes polic
 
   // check points are distinct; points within tolerance are considered non-distinct
   const double distinct_point_tolerance = 1.0e-5;
-  current_errors = CheckPointsAreDistinct(best_points_to_sample.data(), num_samples_to_generate, dim, distinct_point_tolerance);
+  current_errors = CheckPointsAreDistinct(best_points_to_sample.data(), num_to_sample, dim, distinct_point_tolerance);
 #ifdef OL_ERROR_PRINT
   if (current_errors != 0) {
     OL_ERROR_PRINTF("ERROR: points were not distinct!  points:\n");
-    PrintMatrixTrans(best_points_to_sample.data(), num_samples_to_generate, dim);
+    PrintMatrixTrans(best_points_to_sample.data(), num_to_sample, dim);
   }
 #endif
   total_errors += current_errors;
@@ -379,9 +379,9 @@ int HeuristicExpectedImprovementOptimizationTestCore(EstimationPolicyTypes polic
   // check that the optimization succeeded on each output point
   std::vector<double> grad_ei(dim);
   OnePotentialSampleExpectedImprovementEvaluator ei_evaluator(*mock_gp_data.gaussian_process_ptr, mock_gp_data.best_so_far);
-  for (int i = 0; i < num_samples_to_generate; ++i) {
-    int num_derivatives = 1;
-    OnePotentialSampleExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, best_points_to_sample.data() + i*dim, 1, num_derivatives, nullptr);
+  bool configure_for_gradients = true;
+  for (int i = 0; i < num_to_sample; ++i) {
+    OnePotentialSampleExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, best_points_to_sample.data() + i*dim, configure_for_gradients);
     ei_evaluator.ComputeGradExpectedImprovement(&ei_state, grad_ei.data());
 
     current_errors = 0;

@@ -456,8 +456,8 @@ BOOST_PYTHON_MODULE(GPP) {
        multistart_expected_improvement_optimization() is the primary endpoint for this functionality.
        heuristic_expected_improvement_optimization() is an alternative endpoint (faster, less accurate).
 
-    Users may specify "p" (aka num_to_sample) points from ongoing/incomplete experiments for MOE's optimizer to consider.
-    And they may request that MOE produce "q" (aka num_samples_to_generate) points representing the parameters for new
+    Users may specify "p" (aka num_being_sampled) points from ongoing/incomplete experiments for MOE's optimizer to consider.
+    And they may request that MOE produce "q" (aka num_to_sample) points representing the parameters for new
     experiments. These are found by solving the q,p-EI problem (see gpp_math.hpp file overview for further details).
 
     DETAILS:

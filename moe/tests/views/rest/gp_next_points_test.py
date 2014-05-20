@@ -16,10 +16,10 @@ class TestGpNextPointsViews(RestGaussianProcessTestCase):
 
     precompute_gaussian_process_data = True
 
-    def _build_json_payload(self, domain, gaussian_process, covariance, num_samples_to_generate, lie_value=None):
+    def _build_json_payload(self, domain, gaussian_process, covariance, num_to_sample, lie_value=None):
         """Create a json_payload to POST to the /gp/next_points/* endpoint with all needed info."""
         dict_to_dump = {
-            'num_samples_to_generate': num_samples_to_generate,
+            'num_to_sample': num_to_sample,
             'gp_info': self._build_gp_info(gaussian_process),
             'covariance_info': self._build_covariance_info(covariance),
             'domain_info': self._build_domain_info(domain),
@@ -37,14 +37,14 @@ class TestGpNextPointsViews(RestGaussianProcessTestCase):
         """Test that the /gp/next_points/* endpoints do the same thing as the C++ interface."""
         for moe_route in ALL_NEXT_POINTS_MOE_ROUTES:
             for test_case in self.gp_test_environments:
-                for num_samples_to_generate in [1, 2, 4]:
+                for num_to_sample in [1, 2, 4]:
                     python_domain, python_cov, python_gp = test_case
 
                     # Next point from REST
                     if moe_route.route_name == GP_NEXT_POINTS_CONSTANT_LIAR_ROUTE_NAME:
-                        json_payload = self._build_json_payload(python_domain, python_gp, python_cov, num_samples_to_generate, lie_value=0.0)
+                        json_payload = self._build_json_payload(python_domain, python_gp, python_cov, num_to_sample, lie_value=0.0)
                     else:
-                        json_payload = self._build_json_payload(python_domain, python_gp, python_cov, num_samples_to_generate)
+                        json_payload = self._build_json_payload(python_domain, python_gp, python_cov, num_to_sample)
                     resp = self.testapp.post(moe_route.endpoint, json_payload)
                     resp_schema = GpNextPointsResponse()
                     resp_dict = resp_schema.deserialize(json.loads(resp.body))

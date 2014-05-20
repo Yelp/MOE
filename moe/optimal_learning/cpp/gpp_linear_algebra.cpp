@@ -39,33 +39,6 @@
 namespace optimal_learning {
 
 /*
-  Since matrices are stored column-major and the natural screen-printed formatting
-  is by rows, we need to access the matrix in transposed order.
-*/
-void PrintMatrix(double const * restrict matrix, int num_rows, int num_cols) noexcept {
-  for (int i = 0; i < num_rows; ++i) {
-    for (int j = 0; j < num_cols; ++j) {
-      std::printf("%.18E ", matrix[j*num_rows + i]);
-    }
-    std::printf("\n");
-  }
-}
-
-/*
-  Opposite PrintMatrix(), the screen formatted ordering here is the same as the
-  matrix storage ordering.
-*/
-void PrintMatrixTrans(double const * restrict matrix, int num_rows, int num_cols) noexcept {
-  // prints a matrix to stdout
-  for (int i = 0; i < num_rows; ++i) {
-    for (int j = 0; j < num_cols; ++j) {
-      std::printf("%.18E ", matrix[i*num_cols + j]);
-    }
-    std::printf("\n");
-  }
-}
-
-/*
   Slow (compared to computing \sqrt(x_i*x_i)) but stable computation of ||vector||_2
 
   Computing norm += Square(vector[i]) can be unsafe due to overflow & precision loss.

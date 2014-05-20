@@ -11,8 +11,8 @@
             Contains functions for distance, projection, etc.
 \endrst*/
 
-#ifndef OPTIMAL_LEARNING_EPI_SRC_CPP_GPP_GEOMETRY_HPP_
-#define OPTIMAL_LEARNING_EPI_SRC_CPP_GPP_GEOMETRY_HPP_
+#ifndef MOE_OPTIMAL_LEARNING_CPP_GPP_GEOMETRY_HPP_
+#define MOE_OPTIMAL_LEARNING_CPP_GPP_GEOMETRY_HPP_
 
 #include <limits>
 #include <vector>
@@ -308,4 +308,4 @@ inline OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT bool CheckPointInUnitSimplex(do
 
 }  // end namespace optimal_learning
 
-#endif  // OPTIMAL_LEARNING_EPI_SRC_CPP_GPP_GEOMETRY_HPP_
+#endif  // MOE_OPTIMAL_LEARNING_CPP_GPP_GEOMETRY_HPP_

@@ -23,52 +23,12 @@
   See PLU for further description of its special output format.
 */
 
-#ifndef OPTIMAL_LEARNING_EPI_SRC_CPP_GPP_LINEAR_ALGEBRA_HPP_
-#define OPTIMAL_LEARNING_EPI_SRC_CPP_GPP_LINEAR_ALGEBRA_HPP_
+#ifndef MOE_OPTIMAL_LEARNING_CPP_GPP_LINEAR_ALGEBRA_HPP_
+#define MOE_OPTIMAL_LEARNING_CPP_GPP_LINEAR_ALGEBRA_HPP_
 
 #include "gpp_common.hpp"
 
 namespace optimal_learning {
-
-/*
-  Utility function to print a 2D matrix (formatted) to stdout.
-  Uses %.18E descriptors to printf.
-  For example, the input: A[3][4] = [4 53 81 32 12 2 5 8 93 2 1 0]
-  would be printed as (with decimal points removed):
-  4  32  5  2
-  53 12  8  1
-  81  2  93 0
-
-  No inputs may be nullptr.
-
-  INPUTS:
-  matrix[num_rows][num_cols]: matrix to be printed
-  num_rows: number of rows
-  num_cols: number of columns
-*/
-void PrintMatrix(double const * restrict matrix, int num_rows, int num_cols) noexcept OL_NONNULL_POINTERS;
-
-/*
-  Utility function to print the TRANSPOSE of a 2D matrix (formatted) to stdout.
-  Uses %.18E descriptors to printf.
-  For example, the input: A[3][4] = [4 53 81 32 12 2 5 8 93 2 1 0]
-  would be printed as (with decimal points removed):
-  4  53 81
-  32 12 2
-  5  8  93
-  2  1  0
-  Equivalent to:
-  MatrixTranspose(matrix, num_rows, num_cols, MatrixTranspose);
-  PrintMatrix(MatrixTranspose, num_cols, num_rows)
-
-  No inputs may be nullptr.
-
-  INPUTS:
-  matrix[num_rows][num_cols]: matrix to be printed
-  num_rows: number of rows
-  num_cols: number of columns
-*/
-void PrintMatrixTrans(double const * restrict matrix, int num_rows, int num_cols) noexcept OL_NONNULL_POINTERS;
 
 /*
   Computes ||x||_2 in a reasonably (see implementation notes) accurate and stable way.
@@ -418,4 +378,4 @@ void PLUMatrixVectorSolve(int r, double const * restrict LU, int const * restric
 
 }  // end namespace optimal_learning
 
-#endif  // OPTIMAL_LEARNING_EPI_SRC_CPP_GPP_LINEAR_ALGEBRA_HPP_
+#endif  // MOE_OPTIMAL_LEARNING_CPP_GPP_LINEAR_ALGEBRA_HPP_

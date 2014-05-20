@@ -38,6 +38,15 @@ class GaussianProcessInterface(object):
     This (estimated) mean and variance characterize the predicted distributions of the actual \ms m(x), k(x,x')\me
     functions that underly our GP.
 
+    The "independent variables" for this object are ``points_to_sample``. These points are both the "p" and the "q" in q,p-EI;
+    i.e., they are the parameters of both ongoing experiments and new predictions. Recall that in q,p-EI, the q points are
+    called ``points_to_sample`` and the p points are called ``points_being_sampled.`` Here, we need to make predictions about
+    both point sets with the GP, so we simply call the union of point sets ``points_to_sample.``
+
+    In GP computations, there is really no distinction between the "q" and "p" points from EI, ``points_to_sample`` and
+    ``points_being_sampled``, respectively. However, in EI optimization, we only need gradients of GP quantities wrt
+    ``points_to_sample``, so users should call members functions with ``num_derivatives = num_to_sample`` in that context.
+
     """
 
     __metaclass__ = ABCMeta

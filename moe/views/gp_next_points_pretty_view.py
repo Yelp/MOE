@@ -26,7 +26,7 @@ class GpNextPointsRequest(colander.MappingSchema):
 
     **Optional fields**
 
-        :num_samples_to_generate: number of next points to generate (default: 1)
+        :num_to_sample: number of next points to generate (default: 1)
         :ei_optimization_parameters: moe.views.schemas.EiOptimizationParameters() object containing optimization parameters (default: moe.optimal_learning.python.constant.default_ei_optimization_parameters)
 
     **Example Request**
@@ -36,7 +36,7 @@ class GpNextPointsRequest(colander.MappingSchema):
         Content-Type: text/javascript
 
         {
-            'num_samples_to_generate': 1,
+            'num_to_sample': 1,
             'gp_info': {
                 'points_sampled': [
                         {'value_var': 0.01, 'value': 0.1, 'point': [0.0]},
@@ -48,7 +48,7 @@ class GpNextPointsRequest(colander.MappingSchema):
 
     """
 
-    num_samples_to_generate = colander.SchemaNode(
+    num_to_sample = colander.SchemaNode(
             colander.Int(),
             validator=colander.Range(min=1),
             )
@@ -102,15 +102,15 @@ class GpNextPointsPrettyView(GpPrettyView):
     ei_optimization_method = multistart_expected_improvement_optimization
 
     _pretty_default_request = {
-            "num_samples_to_generate": 1,
+            "num_to_sample": 1,
             "gp_info": GpPrettyView._pretty_default_gp_info,
             }
 
     def compute_next_points_to_sample_response(self, params, optimization_method_name, route_name, *args, **kwargs):
         """Compute the next points to sample (and their expected improvement) using optimization_method_name from params in the request.
 
-        :param deserialized_request_params: the deserialized REST request, containing ei_optimization_parameters and gp_info
-        :type deserialized_request_params: a deserialized self.request_schema object as a dict
+        :param request_params: the deserialized REST request, containing ei_optimization_parameters and gp_info
+        :type request_params: a deserialized self.request_schema object as a dict
         :param optimization_method_name: the optimization method to use
         :type optimization_method_name: string in ``moe.views.constant.OPTIMIZATION_METHOD_NAMES``
         :param route_name: name of the route being called
@@ -119,10 +119,10 @@ class GpNextPointsPrettyView(GpPrettyView):
         :param **kwargs: extra kwargs to be passed to optimization method
 
         """
-        num_samples_to_generate = params.get('num_samples_to_generate')
         points_being_sampled = params.get('points_being_sampled')
         if points_being_sampled is not None:
             points_being_sampled = numpy.array(points_being_sampled)
+        num_to_sample = params.get('num_to_sample')
 
         gaussian_process = _make_gp_from_params(params)
         domain = _make_domain_from_params(params)
@@ -145,7 +145,9 @@ class GpNextPointsPrettyView(GpPrettyView):
         next_points = multistart_expected_improvement_optimization(
                 expected_improvement_optimizer,
                 optimization_parameters.num_multistarts,
-                num_samples_to_generate,
+                num_to_sample,
+                *args,
+                **kwargs
                 )
 
         expected_improvement = expected_improvement_evaluator.evaluate_at_point_list(

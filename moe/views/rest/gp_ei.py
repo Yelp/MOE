@@ -30,7 +30,7 @@ class GpEiRequest(colander.MappingSchema):
 
     **Optional fields**
 
-        :points_being_sampled: list of points in domain being sampled (default: []) (:class:`moe.views.schemas.ListOfPointsInDomain`)
+        :points_being_sampled: list of points in domain being sampled in concurrent experiments (default: []) (:class:`moe.views.schemas.ListOfPointsInDomain`)
         :mc_iterations: number of Monte Carlo (MC) iterations to perform in numerical integration to calculate EI (default: 1000)
 
     **Example Request**
