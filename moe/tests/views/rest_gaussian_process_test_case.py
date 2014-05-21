@@ -28,20 +28,11 @@ class RestGaussianProcessTestCase(GaussianProcessTestCase):
                 }
 
     @staticmethod
-    def _build_domain_info(domain):
-        """Create and return a domain_info dictionary from a :class:`~moe.optimal_learning.python.python_version.domain.Domain` object."""
-        return {
-                'domain_type': domain.domain_type,
-                'dim': domain.dim,
-                'domain_bounds': domain._domain_bounds,
-                }
-
-    @staticmethod
     def _build_gp_info(gaussian_process):
         """Create and return a gp_info dictionary from a GP object."""
         # Convert sampled points
         json_points_sampled = []
-        for i, point in enumerate(gaussian_process._historical_data.to_list_of_sample_points()):
+        for point in gaussian_process._historical_data.to_list_of_sample_points():
             json_points_sampled.append({
                     'point': point.point.tolist(),  # json needs the numpy array to be a list
                     'value': point.value,

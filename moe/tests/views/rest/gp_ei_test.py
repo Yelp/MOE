@@ -10,6 +10,7 @@ from moe.optimal_learning.python.cpp_wrappers.covariance import SquareExponentia
 from moe.tests.views.rest_gaussian_process_test_case import RestGaussianProcessTestCase
 from moe.views.constant import GP_EI_ENDPOINT
 from moe.views.rest.gp_ei import GpEiResponse
+from moe.views.utils import _build_domain_info
 
 
 class TestGpEiView(RestGaussianProcessTestCase):
@@ -26,7 +27,7 @@ class TestGpEiView(RestGaussianProcessTestCase):
             'points_being_sampled': [],
             'gp_info': self._build_gp_info(gaussian_process),
             'covariance_info': self._build_covariance_info(covariance),
-            'domain_info': self._build_domain_info(domain),
+            'domain_info': _build_domain_info(domain),
             })
 
         return json_payload

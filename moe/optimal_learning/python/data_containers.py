@@ -99,7 +99,7 @@ class HistoricalData(object):
 
     __slots__ = ('_dim', '_points_sampled', '_points_sampled_value', '_points_sampled_noise_variance')
 
-    def __init__(self, dim, sample_points=[], validate=False):
+    def __init__(self, dim, sample_points=None, validate=False):
         """Create a HistoricalData object tracking the state of an experiment (already-sampled points, values, and noise).
 
         :param dim: number of spatial dimensions; must line up with len(sample_points[0]) if sample_points is empty
@@ -110,6 +110,9 @@ class HistoricalData(object):
         :type validate: boolean
 
         """
+        if sample_points is None:
+            sample_points = []
+
         num_sampled = len(sample_points)
         self._dim = dim
         if validate:

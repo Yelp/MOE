@@ -8,6 +8,15 @@ from moe.optimal_learning.python.cpp_wrappers.gaussian_process import GaussianPr
 from moe.views.exceptions import SingularMatrixError
 
 
+def _build_domain_info(domain):
+    """Create and return a domain_info dictionary from a :class:`~moe.optimal_learning.python.python_version.domain.Domain` object."""
+    return {
+            'domain_type': domain.domain_type,
+            'dim': domain.dim,
+            'domain_bounds': domain._domain_bounds,
+            }
+
+
 def _make_domain_from_params(params):
     """Create and return a C++ ingestable domain from the request params.
 

@@ -21,7 +21,9 @@ def gp_next_points(
 ):
     """Hit the rest endpoint for finding next point of highest EI at rest_host:rest_port corresponding to the method with the given experiment."""
     raw_payload = kwargs.copy()
-    raw_payload['gp_info'] = moe_experiment.__dict__()
+    experiment_payload = moe_experiment.build_json_payload()
+    raw_payload['gp_info'] = experiment_payload.get('gp_info')
+    raw_payload['domain_info'] = experiment_payload.get('domain_info')
     raw_payload['num_to_sample'] = num_to_sample
 
     json_payload = json.dumps(raw_payload)

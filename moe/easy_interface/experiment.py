@@ -1,72 +1,59 @@
 # -*- coding: utf-8 -*-
 """Classes for MOE optimizable experiments."""
 import pprint
-from collections import namedtuple
 
-import numpy
+from moe.optimal_learning.python.constant import TENSOR_PRODUCT_DOMAIN_TYPE
+from moe.optimal_learning.python.data_containers import HistoricalData
+from moe.optimal_learning.python.linkers import DOMAIN_TYPES_TO_DOMAIN_LINKS
+from moe.optimal_learning.python.utils import _build_domain_info
 
-ExperimentPoint = namedtuple('ExperimentPoint', ['point', 'value', 'value_var'])
+DEFAULT_DOMAIN = TENSOR_PRODUCT_DOMAIN_TYPE
 
 
 class Experiment(object):
 
     """A class for MOE optimizable experiments."""
 
-    def __init__(self, domain):
+    def __init__(self, domain_bounds, points_sampled=None, domain_type=DEFAULT_DOMAIN):
         """Construct a MOE optimizable experiment.
 
-        Required arguments:
-            domain - the domain of the experiment
+        **Required arguments:**
+
+            :param domain_bounds: The bounds for the optimization experiment
+            :type domain_bounds: An iterable of iterables describing the [min, max] of the domain for each dimension
+
+        **Optional arguments:**
+
+            :param points_sampled: The historic points sampled and their objective function values
+            :type points_sampled: An iterable of iterables describing the [point, value, noise] of each objective function evaluation
+            :param domain_type: The type of domain to use
+            :type domain_type: A string from ``moe.optimal_learning.python.linkers.DOMAIN_TYPES_TO_DOMAIN_LINKS``
 
         """
-        self.domain = domain
-        self.points_sampled = []
-        self.best_point = None
+        self.domain = DOMAIN_TYPES_TO_DOMAIN_LINKS[domain_type].python_domain_class(domain_bounds)
+        self.historical_data = HistoricalData(
+                self.domain.dim,
+                sample_points=points_sampled,
+                )
 
-    def __dict__(self):
+    def build_json_payload(self):
         """Construct a json serializeable and MOE REST recognizeable dictionary of the experiment."""
+        # Convert sampled points
+        json_points_sampled = []
+        for point in self.historical_data.to_list_of_sample_points():
+            json_points_sampled.append({
+                    'point': point.point.tolist(),  # json needs the numpy array to be a list
+                    'value': point.value,
+                    'value_var': point.noise_variance,
+                    })
+
         return {
-                'domain': self.domain,
-                'points_sampled': [point._asdict() for point in self.points_sampled],
+                'domain_info': _build_domain_info(self.domain),
+                'gp_info': {
+                    'points_sampled': [point._asdict() for point in self.points_sampled],
+                    },
                 }
 
     def __str__(self):
         """Return a pprint formated version of the experiment dict."""
-        return pprint.pformat(self.__dict__())
-
-    def add_point(self, point_in_domain, value, value_var=0.0):
-        """Add a point to the experiment."""
-        point = ExperimentPoint(point_in_domain, value, value_var)
-
-        if self.best_point is not None:
-            if value < self.best_point.value:
-                self.best_point = point
-        else:
-            self.best_point = point
-
-        self.points_sampled.append(point)
-
-    def generate_uniform_stencil(self, size_of_stencil=3):
-        """Generate a uniform stencil to sample.
-
-        This makes the assumption that the domain is a hypercube.
-        """
-        raw_grid = []
-        for dim_domain in self.domain:
-            raw_grid.append(
-                    numpy.linspace(
-                        dim_domain[0],
-                        dim_domain[1],
-                        num=size_of_stencil
-                        )
-                    )
-
-        mesh_grid = numpy.meshgrid(*raw_grid)
-
-        points = [[] for _ in xrange(size_of_stencil ** len(self.domain))]
-        for dim_grid in mesh_grid:
-            flat_grid = dim_grid.flatten()
-            for point_idx, point in enumerate(flat_grid):
-                points[point_idx].append(point)
-
-        return points
+        return pprint.pformat(self.build_json_payload)
