@@ -26,7 +26,11 @@ class GpMeanVarRequest(colander.MappingSchema):
         :points_to_sample: list of points in domain to calculate the Gaussian Process (GP) mean and covariance at (:class:`moe.views.schemas.ListOfPointsInDomain`)
         :gp_info: a :class:`moe.views.schemas.GpInfo` object of historical data
 
-    **Example Request**
+    **Optional fields**
+
+        :covariance_info: a :class:`moe.views.schemas.CovarianceInfo` dict of covariance information
+
+    **Example Minimal Request**
 
     .. sourcecode:: http
 
@@ -39,19 +43,44 @@ class GpMeanVarRequest(colander.MappingSchema):
                         {'value_var': 0.01, 'value': 0.1, 'point': [0.0]},
                         {'value_var': 0.01, 'value': 0.2, 'point': [1.0]}
                     ],
-                'domain': [
-                    [0, 1],
-                    ]
                 },
-            },
+            'domain_info': {
+                'dim': 1,
+                },
+        }
+
+    **Example Full Request**
+
+    .. sourcecode:: http
+
+        Content-Type: text/javascript
+
+        {
+            'points_to_sample': [[0.1], [0.5], [0.9]],
+            'gp_info': {
+                'points_sampled': [
+                        {'value_var': 0.01, 'value': 0.1, 'point': [0.0]},
+                        {'value_var': 0.01, 'value': 0.2, 'point': [1.0]}
+                    ],
+                },
+            'domain_info': {
+                'domain_type': 'tensor_product'
+                'dim': 1,
+                },
+            'covariance_info': {
+                'covariance_type': 'square_exponential',
+                'hyperparameters': [1.0, 1.0],
+                },
         }
 
     """
 
     points_to_sample = ListOfPointsInDomain()
     gp_info = GpInfo()
-    covariance_info = CovarianceInfo()
     domain_info = DomainInfo()
+    covariance_info = CovarianceInfo(
+            missing=CovarianceInfo().deserialize({}),
+            )
 
 
 class GpMeanVarResponse(colander.MappingSchema):

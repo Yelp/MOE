@@ -8,7 +8,8 @@ Include:
 import colander
 import numpy
 
-from moe.optimal_learning.python.cpp_wrappers.expected_improvement import ExpectedImprovement, multistart_expected_improvement_optimization
+import moe.optimal_learning.python.cpp_wrappers.expected_improvement
+from moe.optimal_learning.python.cpp_wrappers.expected_improvement import ExpectedImprovement
 from moe.views.gp_pretty_view import GpPrettyView
 from moe.views.schemas import GpInfo, ListOfPointsInDomain, ListOfExpectedImprovements, CovarianceInfo, BoundedDomainInfo, OptimizationInfo, OPTIMIZATION_TYPES_TO_SCHEMA_CLASSES
 from moe.views.utils import _make_gp_from_params, _make_domain_from_params
@@ -22,14 +23,16 @@ class GpNextPointsRequest(colander.MappingSchema):
 
     **Required fields**
 
-        :gp_info: a :class:`moe.views.schemas.GpInfo` object of historical data
+        :gp_info: a :class:`moe.views.schemas.GpInfo` dict of historical data
+        :domain_info: a :class:`moe.views.schemas.BoundedDomainInfo` dict of domain information
 
     **Optional fields**
 
         :num_to_sample: number of next points to generate (default: 1)
-        :ei_optimization_parameters: moe.views.schemas.EiOptimizationParameters() object containing optimization parameters (default: moe.optimal_learning.python.constant.default_ei_optimization_parameters)
+        :covariance_info: a :class:`moe.views.schemas.CovarianceInfo` dict of covariance information
+        :optimiaztion_info: a :class:`moe.views.schemas.OptimizationInfo` dict of optimization information
 
-    **Example Request**
+    **Example Minimal Request**
 
     .. sourcecode:: http
 
@@ -43,7 +46,48 @@ class GpNextPointsRequest(colander.MappingSchema):
                         {'value_var': 0.01, 'value': 0.2, 'point': [1.0]}
                     ],
                 },
-            },
+            'domain_info': {
+                'dim': 1,
+                'domain_bounds': [
+                    {'min': 0.0, 'max': 1.0},
+                    ],
+                },
+        }
+
+    **Example Full Request**
+
+    .. sourcecode:: http
+
+        Content-Type: text/javascript
+
+        {
+            'num_to_sample': 1,
+            'gp_info': {
+                'points_sampled': [
+                        {'value_var': 0.01, 'value': 0.1, 'point': [0.0]},
+                        {'value_var': 0.01, 'value': 0.2, 'point': [1.0]}
+                    ],
+                },
+            'domain_info': {
+                'domain_type': 'tensor_product'
+                'dim': 1,
+                'domain_bounds': [
+                    {'min': 0.0, 'max': 1.0},
+                    ],
+                },
+            'covariance_info': {
+                'covariance_type': 'square_exponential',
+                'hyperparameters': [1.0, 1.0],
+                },
+            'optimization_info': {
+                'optimization_type': 'gradient_descent_optimizer',
+                'num_multistarts': 200,
+                'num_random_samples': 4000,
+                'optimization_parameters': {
+                    'gamma': 0.5,
+                    ...
+                    },
+                },
         }
 
     """
@@ -53,9 +97,13 @@ class GpNextPointsRequest(colander.MappingSchema):
             validator=colander.Range(min=1),
             )
     gp_info = GpInfo()
-    covariance_info = CovarianceInfo()
     domain_info = BoundedDomainInfo()
-    optimization_info = OptimizationInfo()
+    covariance_info = CovarianceInfo(
+            missing=CovarianceInfo().deserialize({}),
+            )
+    optimization_info = OptimizationInfo(
+            missing=OptimizationInfo().deserialize({}),
+            )
 
 
 class GpNextPointsResponse(colander.MappingSchema):
@@ -99,11 +147,18 @@ class GpNextPointsPrettyView(GpPrettyView):
     request_schema = GpNextPointsRequest()
     response_schema = GpNextPointsResponse()
 
-    ei_optimization_method = multistart_expected_improvement_optimization
-
     _pretty_default_request = {
             "num_to_sample": 1,
             "gp_info": GpPrettyView._pretty_default_gp_info,
+            "domain_info": {
+                "dim": 1,
+                "domain_bounds": [
+                    {
+                        "min": 0.0,
+                        "max": 1.0,
+                    },
+                    ],
+                },
             }
 
     def compute_next_points_to_sample_response(self, params, optimization_method_name, route_name, *args, **kwargs):
@@ -142,7 +197,9 @@ class GpNextPointsPrettyView(GpPrettyView):
                 num_random_samples=num_random_samples,
                 )
 
-        next_points = multistart_expected_improvement_optimization(
+        opt_method = getattr(moe.optimal_learning.python.cpp_wrappers.expected_improvement, optimization_method_name)
+
+        next_points = opt_method(
                 expected_improvement_optimizer,
                 optimization_parameters.num_multistarts,
                 num_to_sample,

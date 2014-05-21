@@ -60,6 +60,7 @@ class GpPrettyView(object):
         :returns: A deserialized self.request_schema object
 
         """
+        print self.request.json_body
         return self.request_schema.deserialize(self.request.json_body)
 
     def form_response(self, response_dict):

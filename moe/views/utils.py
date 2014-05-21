@@ -52,9 +52,12 @@ def _make_gp_from_params(params):
 
     # Build the required objects
     covariance_class = COVARIANCE_TYPES_TO_CLASSES[covariance_info.get('covariance_type')].cpp_covariance_class
-    covariance_of_process = covariance_class(
-            covariance_info.get('hyperparameters')
-            )
+
+    hyperparameters = covariance_info.get('hyperparameters')
+    if hyperparameters is None:
+        hyperparameters = covariance_class.make_default_hyperparameters(dim=domain_info.get('dim'))
+
+    covariance_of_process = covariance_class(hyperparameters)
 
     gaussian_process = GaussianProcess(
             covariance_of_process,

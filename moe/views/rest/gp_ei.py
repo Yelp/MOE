@@ -32,27 +32,51 @@ class GpEiRequest(colander.MappingSchema):
 
         :points_being_sampled: list of points in domain being sampled in concurrent experiments (default: []) (:class:`moe.views.schemas.ListOfPointsInDomain`)
         :mc_iterations: number of Monte Carlo (MC) iterations to perform in numerical integration to calculate EI (default: 1000)
+        :covariance_info: a :class:`moe.views.schemas.CovarianceInfo` dict of covariance information
 
-    **Example Request**
+    **Example Minimal Request**
 
     .. sourcecode:: http
 
-        Content-Type: text/javascrip
+        Content-Type: text/javascript
 
         {
             'points_to_evaluate': [[0.1], [0.5], [0.9]],
-            'points_being_sampled': [],
-            'mc_iterations': 1000,
             'gp_info': {
                 'points_sampled': [
                         {'value_var': 0.01, 'value': 0.1, 'point': [0.0]},
                         {'value_var': 0.01, 'value': 0.2, 'point': [1.0]}
                     ],
-                'domain': [
-                    [0, 1],
-                    ]
                 },
-            },
+            'domain_info': {
+                'dim': 1,
+                },
+        }
+
+    **Example Full Request**
+
+    .. sourcecode:: http
+
+        Content-Type: text/javascript
+
+        {
+            'points_to_evaluate': [[0.1], [0.5], [0.9]],
+            'points_being_sampled': [[0.2], [0.7]],
+            'mc_iterations': 10000,
+            'gp_info': {
+                'points_sampled': [
+                        {'value_var': 0.01, 'value': 0.1, 'point': [0.0]},
+                        {'value_var': 0.01, 'value': 0.2, 'point': [1.0]}
+                    ],
+                },
+            'domain_info': {
+                'domain_type': 'tensor_product'
+                'dim': 1,
+                },
+            'covariance_info': {
+                'covariance_type': 'square_exponential',
+                'hyperparameters': [1.0, 1.0],
+                },
         }
 
     """
@@ -67,8 +91,10 @@ class GpEiRequest(colander.MappingSchema):
             missing=DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS,
             )
     gp_info = GpInfo()
-    covariance_info = CovarianceInfo()
     domain_info = DomainInfo()
+    covariance_info = CovarianceInfo(
+            missing=CovarianceInfo().deserialize({}),
+            )
 
 
 class GpEiResponse(colander.MappingSchema):
@@ -141,13 +167,14 @@ class GpEiView(GpPrettyView):
         params = self.get_params_from_request()
 
         points_to_evaluate = numpy.array(params.get('points_to_evaluate'))
-        points_being_sampled = numpy.array(params.get('points_being_sampled'))
+        points_being_sampled = params.get('points_being_sampled')
+        if points_being_sampled is not None:
+            points_being_sampled = numpy.array(points_being_sampled)
         gaussian_process = _make_gp_from_params(params)
 
         expected_improvement_evaluator = ExpectedImprovement(
                 gaussian_process,
-                None,
-                points_to_sample=points_being_sampled,
+                points_being_sampled=points_being_sampled,
                 )
 
         expected_improvement = expected_improvement_evaluator.evaluate_at_point_list(
