@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 """Classes for MOE optimizable experiments."""
 import pprint
+import numpy
 
 from moe.optimal_learning.python.constant import TENSOR_PRODUCT_DOMAIN_TYPE
 from moe.optimal_learning.python.data_containers import HistoricalData
 from moe.optimal_learning.python.linkers import DOMAIN_TYPES_TO_DOMAIN_LINKS
-from moe.optimal_learning.python.utils import _build_domain_info
+from moe.views.utils import _build_domain_info
+from moe.optimal_learning.python.geometry_utils import ClosedInterval
 
 DEFAULT_DOMAIN = TENSOR_PRODUCT_DOMAIN_TYPE
 
@@ -30,7 +32,8 @@ class Experiment(object):
             :type domain_type: A string from ``moe.optimal_learning.python.linkers.DOMAIN_TYPES_TO_DOMAIN_LINKS``
 
         """
-        self.domain = DOMAIN_TYPES_TO_DOMAIN_LINKS[domain_type].python_domain_class(domain_bounds)
+        _domain_bounds = [ClosedInterval(bound[0], bound[1]) for bound in domain_bounds]
+        self.domain = DOMAIN_TYPES_TO_DOMAIN_LINKS[domain_type].python_domain_class(_domain_bounds)
         self.historical_data = HistoricalData(
                 self.domain.dim,
                 sample_points=points_sampled,
@@ -50,7 +53,7 @@ class Experiment(object):
         return {
                 'domain_info': _build_domain_info(self.domain),
                 'gp_info': {
-                    'points_sampled': [point._asdict() for point in self.points_sampled],
+                    'points_sampled': json_points_sampled,
                     },
                 }
 
