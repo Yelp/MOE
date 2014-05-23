@@ -11,7 +11,7 @@ See interfaces/expected_improvement_interface.py or gpp_math.hpp/cpp for further
 import numpy
 
 import moe.build.GPP as C_GP
-from moe.optimal_learning.python.constant import DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS
+from moe.optimal_learning.python.constant import DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS, DEFAULT_EXPECTED_IMPROVEMENT_MAX_NUM_THREADS
 import moe.optimal_learning.python.cpp_wrappers.cpp_utils as cpp_utils
 from moe.optimal_learning.python.interfaces.expected_improvement_interface import ExpectedImprovementInterface
 from moe.optimal_learning.python.interfaces.optimization_interface import OptimizableInterface
@@ -22,7 +22,7 @@ def multistart_expected_improvement_optimization(
         num_multistarts,
         num_to_sample,
         randomness=None,
-        max_num_threads=1,
+        max_num_threads=DEFAULT_EXPECTED_IMPROVEMENT_MAX_NUM_THREADS,
         status=None,
 ):
     """Solve the q,p-EI problem, returning the optimal set of q points to sample CONCURRENTLY in future experiments.
@@ -94,7 +94,7 @@ def _heuristic_expected_improvement_optimization(
         num_to_sample,
         estimation_policy,
         randomness=None,
-        max_num_threads=1,
+        max_num_threads=DEFAULT_EXPECTED_IMPROVEMENT_MAX_NUM_THREADS,
         status=None,
 ):
     """Heuristically solve the q,0-EI problem (estimating multistart_expected_improvement_optimization()) using 1,0-EI solves.
