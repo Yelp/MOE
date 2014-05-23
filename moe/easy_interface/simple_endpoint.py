@@ -13,12 +13,14 @@ DEFAULT_PORT = 6543
 
 
 def call_endpoint_with_payload(url, json_payload):
+    """Send a POST request to a ``url`` with a given ``json_payload``, return the response as a dict."""
     request = urllib2.Request(url, json_payload, {'Content-Type': 'application/json'})
     f = urllib2.urlopen(request)
     response = f.read()
     f.close()
 
     return json.loads(response)
+
 
 def gp_next_points(
         moe_experiment,
@@ -47,6 +49,7 @@ def gp_next_points(
 
     return output["points_to_sample"]
 
+
 def gp_mean_var(
         points_sampled,
         points_to_sample,
@@ -72,11 +75,8 @@ def gp_mean_var(
     json_payload = json.dumps(raw_payload)
     url = "http://%s:%d%s" % (rest_host, rest_port, endpoint)
 
-    print url
-    print json_payload
-
     json_response = call_endpoint_with_payload(url, json_payload)
 
     output = GpMeanVarResponse().deserialize(json_response)
 
-    return output
+    return output.get('mean'), output.get('var')
