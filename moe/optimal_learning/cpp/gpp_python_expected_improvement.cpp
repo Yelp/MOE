@@ -101,7 +101,7 @@ boost::python::list ComputeGradExpectedImprovementWrapper(const GaussianProcess&
   best_points_to_sample[num_to_sample][dim]: next set of points to evaluate
 */
 template <typename DomainType>
-void DispatchExpectedImprovementOptimization(const boost::python::object& optimization_parameters, const GaussianProcess& gaussian_process, const PythonInterfaceInputContainer& input_container, const DomainType& domain_object, const std::string& domain_name, OptimizerTypes optimizer_type, int num_to_sample, double best_so_far, int max_int_steps, int max_num_threads, RandomnessSourceContainer& randomness_source, boost::python::dict& status, double * restrict best_points_to_sample) {
+void DispatchExpectedImprovementOptimization(bool use_GPU, const boost::python::object& optimization_parameters, const GaussianProcess& gaussian_process, const PythonInterfaceInputContainer& input_container, const DomainType& domain_object, const std::string& domain_name, OptimizerTypes optimizer_type, int num_to_sample, double best_so_far, int max_int_steps, int max_num_threads, RandomnessSourceContainer& randomness_source, boost::python::dict& status, double * restrict best_points_to_sample) {
   bool found_flag = false;
   switch (optimizer_type) {
     case OptimizerTypes::kNull: {
@@ -113,7 +113,7 @@ void DispatchExpectedImprovementOptimization(const boost::python::object& optimi
       } else {
         bool random_search_only = true;
         GradientDescentParameters gradient_descent_parameters(0, 0, 0, 1.0, 1.0, 1.0, 0.0);  // dummy struct; we aren't using gradient descent
-        ComputeOptimalSetOfPointsToSample(gaussian_process, gradient_descent_parameters, domain_object, input_container.points_being_sampled.data(), input_container.num_being_sampled, best_so_far, max_int_steps, max_num_threads, random_search_only, num_random_samples, num_to_sample, &found_flag, &randomness_source.uniform_generator, randomness_source.normal_rng_vec.data(), best_points_to_sample);
+        ComputeOptimalSetOfPointsToSample(gaussian_process, gradient_descent_parameters, domain_object, input_container.points_being_sampled.data(), input_container.num_being_sampled, best_so_far, max_int_steps, max_num_threads, random_search_only, num_random_samples, num_to_sample, &found_flag, false, &randomness_source.uniform_generator, randomness_source.normal_rng_vec.data(), best_points_to_sample);
       }
 
       status["lhc_" + domain_name + "_domain_found_update"] = found_flag;
@@ -126,10 +126,10 @@ void DispatchExpectedImprovementOptimization(const boost::python::object& optimi
       int num_random_samples = boost::python::extract<int>(optimization_parameters.attr("num_random_samples"));
 
       if (num_to_sample == 1) {
-        ComputeOptimalPointToSampleWithRandomStarts(gaussian_process, gradient_descent_parameters, domain_object, input_container.points_being_sampled.data(), input_container.num_being_sampled, best_so_far, max_int_steps, max_num_threads, &found_flag, &randomness_source.uniform_generator, randomness_source.normal_rng_vec.data(), best_points_to_sample);
+        ComputeOptimalPointToSampleWithRandomStarts(gaussian_process, gradient_descent_parameters, domain_object, input_container.points_being_sampled.data(), input_container.num_being_sampled, best_so_far, max_int_steps, max_num_threads, &found_flag, use_GPU, &randomness_source.uniform_generator, randomness_source.normal_rng_vec.data(), best_points_to_sample);
       } else {
         bool random_search_only = false;
-        ComputeOptimalSetOfPointsToSample(gaussian_process, gradient_descent_parameters, domain_object, input_container.points_being_sampled.data(), input_container.num_being_sampled, best_so_far, max_int_steps, max_num_threads, random_search_only, num_random_samples, num_to_sample, &found_flag, &randomness_source.uniform_generator, randomness_source.normal_rng_vec.data(), best_points_to_sample);
+        ComputeOptimalSetOfPointsToSample(gaussian_process, gradient_descent_parameters, domain_object, input_container.points_being_sampled.data(), input_container.num_being_sampled, best_so_far, max_int_steps, max_num_threads, random_search_only, num_random_samples, num_to_sample, &found_flag, use_GPU, &randomness_source.uniform_generator, randomness_source.normal_rng_vec.data(), best_points_to_sample);
       }
 
       status["gradient_descent_" + domain_name + "_domain_found_update"] = found_flag;
@@ -143,7 +143,7 @@ void DispatchExpectedImprovementOptimization(const boost::python::object& optimi
   }  // end switch over optimizer_type
 }
 
-boost::python::list MultistartExpectedImprovementOptimizationWrapper(const boost::python::object& optimization_parameters, const GaussianProcess& gaussian_process, const boost::python::list& domain, const boost::python::list& points_being_sampled, int num_being_sampled, int num_to_sample, double best_so_far, int max_int_steps, int max_num_threads, RandomnessSourceContainer& randomness_source, boost::python::dict& status) {
+boost::python::list MultistartExpectedImprovementOptimizationWrapper(bool use_GPU, const boost::python::object& optimization_parameters, const GaussianProcess& gaussian_process, const boost::python::list& domain, const boost::python::list& points_being_sampled, int num_being_sampled, int num_to_sample, double best_so_far, int max_int_steps, int max_num_threads, RandomnessSourceContainer& randomness_source, boost::python::dict& status) {
   // TODO(eliu): (#55793) make domain objects constructible from python; and pass them in through
   // the optimization_parameters python object
 
@@ -167,14 +167,14 @@ boost::python::list MultistartExpectedImprovementOptimizationWrapper(const boost
       TensorProductDomain domain_object(domain_C.data(), input_container.dim);
       std::string domain_name("tensor");
 
-      DispatchExpectedImprovementOptimization(optimization_parameters, gaussian_process, input_container, domain_object, domain_name, optimizer_type, num_to_sample, best_so_far, max_int_steps, max_num_threads, randomness_source, status, best_points_to_sample_C.data());
+      DispatchExpectedImprovementOptimization(use_GPU, optimization_parameters, gaussian_process, input_container, domain_object, domain_name, optimizer_type, num_to_sample, best_so_far, max_int_steps, max_num_threads, randomness_source, status, best_points_to_sample_C.data());
       break;
     }  // end case OptimizerTypes::kTensorProduct
     case DomainTypes::kSimplex: {
       SimplexIntersectTensorProductDomain domain_object(domain_C.data(), input_container.dim);
       std::string domain_name("simplex");
 
-      DispatchExpectedImprovementOptimization(optimization_parameters, gaussian_process, input_container, domain_object, domain_name, optimizer_type, num_to_sample, best_so_far, max_int_steps, max_num_threads, randomness_source, status, best_points_to_sample_C.data());
+      DispatchExpectedImprovementOptimization(use_GPU, optimization_parameters, gaussian_process, input_container, domain_object, domain_name, optimizer_type, num_to_sample, best_so_far, max_int_steps, max_num_threads, randomness_source, status, best_points_to_sample_C.data());
       break;
     }  // end case OptimizerTypes::kSimplex
     default: {
