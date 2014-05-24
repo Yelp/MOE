@@ -17,6 +17,7 @@ from moe.optimal_learning.python.interfaces.optimization_interface import Optimi
 
 
 def multistart_expected_improvement_optimization(
+        use_GPU,
         ei_optimizer,
         num_multistarts,
         num_to_sample,
@@ -70,6 +71,7 @@ def multistart_expected_improvement_optimization(
         status = {}
 
     best_points_to_sample = C_GP.multistart_expected_improvement_optimization(
+        use_GPU,
         ei_optimizer.optimization_parameters,
         ei_optimizer.objective_function._gaussian_process._gaussian_process,
         cpp_utils.cppify(ei_optimizer.domain.domain_bounds),

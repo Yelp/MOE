@@ -76,7 +76,7 @@ class OptimalGaussianProcessLinkedCpp(OptimalGaussianProcess):
         cov, history = self._build_new_environment()
         return GaussianProcess(cov, history)
 
-    def multistart_expected_improvement_optimization(self, optimizer_type, optimization_parameters, domain_type, num_random_samples, num_to_sample, domain=None, points_being_sampled=numpy.array([]), mc_iterations=1000, status=None):
+    def multistart_expected_improvement_optimization(self, use_GPU=False, optimizer_type, optimization_parameters, domain_type, num_random_samples, num_to_sample, domain=None, points_being_sampled=numpy.array([]), mc_iterations=1000, status=None):
         """Calls into multistart_expected_improvement_optimization_wrapper in cpp/GPP_python.cpp (solving q,p-EI)
         """
 
@@ -92,7 +92,7 @@ class OptimalGaussianProcessLinkedCpp(OptimalGaussianProcess):
 
         ei_optimizer = optimizer_type(new_domain, ei_evaluator, optimization_parameters, num_random_samples=num_random_samples)
 
-        return cpp_ei.multistart_expected_improvement_optimization(ei_optimizer, None, num_to_sample, randomness=self.randomness, max_num_threads=self.max_num_threads, status=status)
+        return cpp_ei.multistart_expected_improvement_optimization(use_GPU, ei_optimizer, None, num_to_sample, randomness=self.randomness, max_num_threads=self.max_num_threads, status=status)
 
     def _heuristic_expected_improvement_optimization(self, optimizer_type, optimization_parameters, domain_type, num_random_samples, num_to_sample, estimation_policy, domain=None, status=None):
         """

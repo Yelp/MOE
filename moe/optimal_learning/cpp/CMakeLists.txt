@@ -37,9 +37,11 @@ endif()
 #### External dependencies
 find_package(PythonLibs REQUIRED)
 find_package(Boost COMPONENTS python REQUIRED)
+find_package(CUDA REQUIRED)
 
 include_directories(${PYTHON_INCLUDE_DIRS})
 include_directories(${Boost_INCLUDE_DIRS})
+include_directories(${CUDA_INCLUDE_DIRS})
 
 #### Sources
 # Lists of source files that are dependencies. Currently we have one group for "core" functionality,
@@ -95,6 +97,10 @@ set(DEMO_SOURCES
   gpp_expected_improvement_demo.cpp
   gpp_hyper_and_EI_demo.cpp
   )
+
+set(GPU_CORE
+    gpp_cuda_math.o
+    )
 
 #### Extra flags and definitions
 # These are meant to be reasonable defaults. Users should feel free to alter the definitions (changing
@@ -280,10 +286,11 @@ add_library(
   $<TARGET_OBJECTS:OPTIMAL_LEARNING_PYTHON_BUNDLE>
   $<TARGET_OBJECTS:OPTIMAL_LEARNING_CORE_BUNDLE>
   $<TARGET_OBJECTS:OPTIMAL_LEARNING_TEST_BUNDLE>
+  ${GPU_CORE}
   ${CMAKE_BINARY_DIR}/__init__.py
   )
 
-target_link_libraries(GPP ${PYTHON_LIBRARIES} ${Boost_LIBRARIES})
+target_link_libraries(GPP ${PYTHON_LIBRARIES} ${Boost_LIBRARIES} ${CUDA_LIBRARIES})
 
 # Make sure lib ends in ".so"
 set_target_properties(
@@ -295,30 +302,31 @@ set_target_properties(
   LINK_FLAGS "${EXTRA_LINK_FLAGS}"
   )
 
-#### "EPI" executable: for testing purposes
-set(
-  dependencies
-  $<TARGET_OBJECTS:OPTIMAL_LEARNING_CORE_BUNDLE>
-  $<TARGET_OBJECTS:OPTIMAL_LEARNING_TEST_BUNDLE>
-  )
-configure_exec_targets(
-  EPI
-  gpp_core.cpp
-  "${dependencies}"
-  "${EXTRA_COMPILE_FLAGS}"
-  "${EXTRA_COMPILE_DEFINITIONS}"
-  )
-
-#### Demo executables
-set(dependencies $<TARGET_OBJECTS:OPTIMAL_LEARNING_CORE_BUNDLE> gpp_test_utils.cpp)
-configure_exec_targets(
-  "${DEMO_NAMES}"
-  "${DEMO_SOURCES}"
-  "${dependencies}"
-  "${EXTRA_COMPILE_FLAGS}"
-  "${EXTRA_COMPILE_DEFINITIONS}"
-  )
-
-# Dummy target named "demos" that builds all demos
-add_custom_target(demos)
-add_dependencies(demos ${DEMO_NAMES})
+##### "EPI" executable: for testing purposes
+#set(
+#  dependencies
+#  $<TARGET_OBJECTS:OPTIMAL_LEARNING_CORE_BUNDLE>
+#  $<TARGET_OBJECTS:OPTIMAL_LEARNING_TEST_BUNDLE>
+#  ${GPU_CORE}
+#  )
+#configure_exec_targets(
+#  EPI
+#  gpp_core.cpp
+#  "${dependencies}"
+#  "${EXTRA_COMPILE_FLAGS}"
+#  "${EXTRA_COMPILE_DEFINITIONS}"
+#  )
+#
+##### Demo executables
+#set(dependencies $<TARGET_OBJECTS:OPTIMAL_LEARNING_CORE_BUNDLE> gpp_test_utils.cpp ${GPU_CORE})
+#configure_exec_targets(
+#  "${DEMO_NAMES}"
+#  "${DEMO_SOURCES}"
+#  "${dependencies}"
+#  "${EXTRA_COMPILE_FLAGS}"
+#  "${EXTRA_COMPILE_DEFINITIONS}"
+#  )
+#
+## Dummy target named "demos" that builds all demos
+#add_custom_target(demos)
+#add_dependencies(demos ${DEMO_NAMES})
