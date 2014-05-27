@@ -5,6 +5,7 @@ from numpy.linalg import LinAlgError
 from moe.optimal_learning.python.linkers import DOMAIN_TYPES_TO_DOMAIN_LINKS, COVARIANCE_TYPES_TO_CLASSES
 from moe.optimal_learning.python.data_containers import SamplePoint, HistoricalData
 from moe.optimal_learning.python.cpp_wrappers.gaussian_process import GaussianProcess
+from moe.optimal_learning.python.geometry_utils import ClosedInterval
 from moe.views.exceptions import SingularMatrixError
 
 
@@ -17,7 +18,7 @@ def _build_domain_info(domain):
             }
 
 
-def _make_domain_from_params(params):
+def _make_domain_from_params(params, python_version=False):
     """Create and return a C++ ingestable domain from the request params.
 
     ``params`` has the following form::
@@ -30,11 +31,14 @@ def _make_domain_from_params(params):
     """
     domain_info = params.get("domain_info")
 
-    domain_bounds_iterable = [[bound['min'], bound['max']] for bound in domain_info.get('domain_bounds', [])]
+    domain_bounds_iterable = [ClosedInterval(bound['min'], bound['max']) for bound in domain_info.get('domain_bounds', [])]
 
-    return DOMAIN_TYPES_TO_DOMAIN_LINKS[domain_info.get('domain_type')].cpp_domain_class(
-            domain_bounds_iterable,
-            )
+    if python_version:
+        domain_class = DOMAIN_TYPES_TO_DOMAIN_LINKS[domain_info.get('domain_type')].python_domain_class
+    else:
+        domain_class = DOMAIN_TYPES_TO_DOMAIN_LINKS[domain_info.get('domain_type')].cpp_domain_class
+
+    return domain_class(domain_bounds_iterable)
 
 
 def _make_gp_from_params(params):
@@ -67,6 +71,8 @@ def _make_gp_from_params(params):
         hyperparameters = covariance_class.make_default_hyperparameters(dim=domain_info.get('dim'))
 
     covariance_of_process = covariance_class(hyperparameters)
+
+    print hyperparameters
 
     gaussian_process = GaussianProcess(
             covariance_of_process,

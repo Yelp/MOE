@@ -431,9 +431,9 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         ei_values = C_GP.evaluate_EI_at_point_list(
             self._gaussian_process._gaussian_process,
             cpp_utils.cppify(points_to_evaluate),
-            cpp_utils.cppify(self._points_to_sample),
+            cpp_utils.cppify(self._points_being_sampled),
             points_to_evaluate.shape[0],
-            self._points_to_sample.shape[0],
+            self._points_being_sampled.shape[0],
             self._best_so_far,
             self._num_mc_iterations,
             max_num_threads,

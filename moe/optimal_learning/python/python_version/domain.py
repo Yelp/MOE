@@ -34,7 +34,7 @@ class TensorProductDomain(DomainInterface):
         """Construct a TensorProductDomain with the specified bounds.
 
         :param domain_bounds: the boundaries of a dim-dimensional tensor-product domain
-        :type domain_bounds: iterable of dim ClosedInterval
+        :type domain_bounds: iterable of dim :class:`moe.optimal_learning.python.geometry_utils.ClosedInterval`
 
         """
         self._domain_bounds = copy.deepcopy(domain_bounds)

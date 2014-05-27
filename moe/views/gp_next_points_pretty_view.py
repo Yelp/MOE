@@ -180,32 +180,39 @@ class GpNextPointsPrettyView(GpPrettyView):
         num_to_sample = params.get('num_to_sample')
 
         gaussian_process = _make_gp_from_params(params)
-        domain = _make_domain_from_params(params)
-
-        optimizer_class, optimization_parameters, num_random_samples = self.get_optimization_parameters_cpp(params)
 
         expected_improvement_evaluator = ExpectedImprovement(
                 gaussian_process,
-                points_to_sample=points_being_sampled,
+                points_being_sampled=points_being_sampled,
                 num_mc_iterations=TEST_EXPECTED_IMPROVEMENT_MC_ITERATIONS,
                 )
 
-        expected_improvement_optimizer = optimizer_class(
-                domain,
-                expected_improvement_evaluator,
-                optimization_parameters,
-                num_random_samples=num_random_samples,
-                )
+        if gaussian_process.num_sampled == 0:
+            # If there is no initial data we bootstrap with random points
+            py_domain = _make_domain_from_params(params, python_version=True)
+            next_points = py_domain.generate_uniform_random_points_in_domain(num_to_sample)
+        else:
+            # Calculate the next best points to sample given the historical data
+            domain = _make_domain_from_params(params)
 
-        opt_method = getattr(moe.optimal_learning.python.cpp_wrappers.expected_improvement, optimization_method_name)
+            optimizer_class, optimization_parameters, num_random_samples = self.get_optimization_parameters_cpp(params)
 
-        next_points = opt_method(
-                expected_improvement_optimizer,
-                optimization_parameters.num_multistarts,
-                num_to_sample,
-                *args,
-                **kwargs
-                )
+            expected_improvement_optimizer = optimizer_class(
+                    domain,
+                    expected_improvement_evaluator,
+                    optimization_parameters,
+                    num_random_samples=num_random_samples,
+                    )
+
+            opt_method = getattr(moe.optimal_learning.python.cpp_wrappers.expected_improvement, optimization_method_name)
+
+            next_points = opt_method(
+                    expected_improvement_optimizer,
+                    optimization_parameters.num_multistarts,
+                    num_to_sample,
+                    *args,
+                    **kwargs
+                    )
 
         expected_improvement = expected_improvement_evaluator.evaluate_at_point_list(
                 next_points,
