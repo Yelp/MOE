@@ -8,7 +8,7 @@ from moe.tests.views.rest_gaussian_process_test_case import RestGaussianProcessT
 from moe.views.constant import ALL_NEXT_POINTS_MOE_ROUTES, GP_NEXT_POINTS_CONSTANT_LIAR_ROUTE_NAME
 from moe.views.gp_next_points_pretty_view import GpNextPointsResponse
 from moe.optimal_learning.python.constant import TEST_OPTIMIZATION_MULTISTARTS, TEST_GRADIENT_DESCENT_PARAMETERS, TEST_OPTIMIZATION_NUM_RANDOM_SAMPLES
-from moe.views.utils import _build_domain_info
+from moe.views.utils import _build_domain_info, _build_covariance_info
 
 
 class TestGpNextPointsViews(RestGaussianProcessTestCase):
@@ -22,7 +22,7 @@ class TestGpNextPointsViews(RestGaussianProcessTestCase):
         dict_to_dump = {
             'num_to_sample': num_to_sample,
             'gp_info': self._build_gp_info(gaussian_process),
-            'covariance_info': self._build_covariance_info(covariance),
+            'covariance_info': _build_covariance_info(covariance),
             'domain_info': _build_domain_info(domain),
             'optimization_info': {
                 'num_multistarts': TEST_OPTIMIZATION_MULTISTARTS,
