@@ -43,6 +43,14 @@ class SamplePoint(_BaseSamplePoint):
         """Pretty print this object as a dict."""
         return pprint.pformat(dict(self._asdict()))
 
+    def json_payload(self):
+        """Convert the sample_point into a dict to be consumed by json for a REST request."""
+        return {
+                'point': self.point,
+                'value': self.value,
+                'value_var': self.noise_variance,
+                }
+
     def validate(self, dim=None):
         """Check this SamplePoint passes basic validity checks: dimension is expected, all values are finite.
 
@@ -145,6 +153,17 @@ class HistoricalData(object):
             out_string += repr(self._points_sampled_value) + '\n'
             out_string += repr(self._points_sampled_noise_variance)
             return out_string
+
+    def json_payload(self):
+        """Construct a json serializeable and MOE REST recognizeable dictionary of the historical data."""
+        json_points_sampled = []
+        for point in self.to_list_of_sample_points():
+            json_points_sampled.append({
+                    'point': point.point.tolist(),  # json needs the numpy array to be a list
+                    'value': point.value,
+                    'value_var': point.noise_variance,
+                    })
+        return {'points_sampled': json_points_sampled}
 
     @staticmethod
     def validate_sample_points(dim, sample_points):

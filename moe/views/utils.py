@@ -72,8 +72,6 @@ def _make_gp_from_params(params):
 
     covariance_of_process = covariance_class(hyperparameters)
 
-    print hyperparameters
-
     gaussian_process = GaussianProcess(
             covariance_of_process,
             HistoricalData(domain_info.get('dim')),

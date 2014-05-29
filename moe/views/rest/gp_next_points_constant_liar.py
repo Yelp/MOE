@@ -121,7 +121,7 @@ class GpNextPointsConstantLiar(GpNextPointsPrettyView):
             return params.get('lie_value')
 
         gaussian_process = _make_gp_from_params(params)
-        points_sampled_values = [point.value for point in gaussian_process._historical_data.to_list_of_sample_points()]
+        points_sampled_values = gaussian_process._historical_data._points_sampled_value.to_list()
 
         if params.get('lie_method') == CONSTANT_LIAR_MIN:
             return numpy.amin(points_sampled_values)

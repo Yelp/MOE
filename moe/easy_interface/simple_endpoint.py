@@ -3,6 +3,7 @@
 import simplejson as json
 import urllib2
 
+from moe.optimal_learning.python.data_containers import HistoricalData
 from moe.views.gp_next_points_pretty_view import GpNextPointsResponse
 from moe.views.rest.gp_mean_var import GpMeanVarResponse
 from moe.views.constant import ALL_REST_ROUTES_ROUTE_NAME_TO_ENDPOINT, GP_NEXT_POINTS_EPI_ROUTE_NAME, GP_MEAN_VAR_ROUTE_NAME
@@ -24,22 +25,22 @@ def call_endpoint_with_payload(url, json_payload):
 
 def gp_next_points(
         moe_experiment,
-        num_to_sample=1,
         method_route_name=GP_NEXT_POINTS_EPI_ROUTE_NAME,
         rest_host=DEFAULT_HOST,
         rest_port=DEFAULT_PORT,
         **kwargs
 ):
     """Hit the rest endpoint for finding next point of highest EI at rest_host:rest_port corresponding to the method with the given experiment."""
-    raw_payload = kwargs.copy()
+    endpoint = ALL_REST_ROUTES_ROUTE_NAME_TO_ENDPOINT[method_route_name]
+    raw_payload = kwargs.copy()  # Any options can be set via the kwargs ('covariance_info' etc.)
+
     experiment_payload = moe_experiment.build_json_payload()
-    raw_payload['gp_info'] = experiment_payload.get('gp_info')
-    raw_payload['domain_info'] = experiment_payload.get('domain_info')
-    raw_payload['num_to_sample'] = num_to_sample
+    if 'gp_info' not in raw_payload:
+        raw_payload['gp_info'] = experiment_payload.get('gp_info')
+    if 'domain_info' not in raw_payload:
+        raw_payload['domain_info'] = experiment_payload.get('domain_info')
 
     json_payload = json.dumps(raw_payload)
-
-    endpoint = ALL_REST_ROUTES_ROUTE_NAME_TO_ENDPOINT[method_route_name]
 
     url = "http://%s:%d%s" % (rest_host, rest_port, endpoint)
 
@@ -59,20 +60,21 @@ def gp_mean_var(
 ):
     """Hit the rest endpoint for calculating the posterior mean and variance of a gaussian process, given points already sampled."""
     endpoint = ALL_REST_ROUTES_ROUTE_NAME_TO_ENDPOINT[GP_MEAN_VAR_ROUTE_NAME]
-    raw_payload = kwargs.copy()
+    raw_payload = kwargs.copy()  # Any options can be set via the kwargs ('covariance_info' etc.)
+
     raw_payload['points_to_sample'] = points_to_sample
-    json_ready_points_sampled = []
-    for point in points_sampled:
-        json_ready_points_sampled.append({
-            'point': point[0],
-            'value': point[1],
-            'value_var': point[2] if len(point) == 3 else 0.0,
-            })
-    raw_payload['gp_info'] = {
-            'points_sampled': json_ready_points_sampled,
-            }
-    raw_payload['domain_info'] = {'dim': 1}
+
+    historical_data = HistoricalData(
+            len(points_to_sample[0]),  # The dim of the space
+            sample_points=points_sampled,
+            )
+    if 'gp_info' not in raw_payload:
+        raw_payload['gp_info'] = historical_data.json_payload()
+    if 'domain_info' not in raw_payload:
+        raw_payload['domain_info'] = {'dim': len(points_to_sample[0])}
+
     json_payload = json.dumps(raw_payload)
+
     url = "http://%s:%d%s" % (rest_host, rest_port, endpoint)
 
     json_response = call_endpoint_with_payload(url, json_payload)

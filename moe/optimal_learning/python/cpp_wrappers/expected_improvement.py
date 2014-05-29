@@ -402,6 +402,10 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
     def evaluate_at_point_list(self, points_to_evaluate, randomness=None, max_num_threads=1, status=None):
         """Evaluate Expected Improvement (1,p-EI) over a specified list of ``points_to_evaluate``.
 
+        .. note::
+
+            We use ``points_to_evaluate`` instead of ``self._points_to_sample`` and compute the EI at those points only.
+
         Generally gradient descent is preferred but when they fail to converge this may be the only "robust" option.
         This function is also useful for plotting or debugging purposes (just to get a bunch of EI values).
 

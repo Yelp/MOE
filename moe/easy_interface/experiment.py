@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """Classes for MOE optimizable experiments."""
 import pprint
-import numpy
 
 from moe.optimal_learning.python.constant import TENSOR_PRODUCT_DOMAIN_TYPE
 from moe.optimal_learning.python.data_containers import HistoricalData
@@ -41,20 +40,9 @@ class Experiment(object):
 
     def build_json_payload(self):
         """Construct a json serializeable and MOE REST recognizeable dictionary of the experiment."""
-        # Convert sampled points
-        json_points_sampled = []
-        for point in self.historical_data.to_list_of_sample_points():
-            json_points_sampled.append({
-                    'point': point.point.tolist(),  # json needs the numpy array to be a list
-                    'value': point.value,
-                    'value_var': point.noise_variance,
-                    })
-
         return {
                 'domain_info': _build_domain_info(self.domain),
-                'gp_info': {
-                    'points_sampled': json_points_sampled,
-                    },
+                'gp_info': self.historical_data.json_payload(),
                 }
 
     def __str__(self):
