@@ -11,6 +11,7 @@ import random
 
 from moe.easy_interface.experiment import Experiment
 from moe.easy_interface.simple_endpoint import gp_next_points
+from moe.optimal_learning.python.data_containers import SamplePoint
 
 
 def function_to_minimize(x):
@@ -24,7 +25,7 @@ if __name__ == '__main__':
     exp = Experiment([[0, 2], [0, 4]])
     # Bootstrap with some known or already sampled point(s)
     exp.historical_data.append_sample_points([
-        [[0, 0], 1.0, 0.01],  # sampled points have the form [point_as_a_list, objective_function_value, value_variance]
+        SamplePoint([0, 0], function_to_minimize([0, 0]), 0.05),  # Iterables of the form [point, f_val, f_var] are also allowed
         ])
 
     # Sample 20 points
@@ -37,4 +38,4 @@ if __name__ == '__main__':
         print "Sampled f(%s) = %f" % (str(next_point_to_sample), value_of_next_point)
 
         # Add the information about the point to the experiment historical data to inform the GP
-        exp.historical_data.append_sample_points([[next_point_to_sample, value_of_next_point, 0.01]])  # We can add some noise
+        exp.historical_data.append_sample_points([SamplePoint(next_point_to_sample, value_of_next_point, 0.01)])  # We can add some noise

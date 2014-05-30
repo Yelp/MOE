@@ -126,7 +126,6 @@ def _make_gp_from_params(params):
     points_sampled = gp_info.get('points_sampled')
 
     covariance_of_process = _make_covariance_of_process_from_params(params)
-
     gaussian_process = GaussianProcess(
             covariance_of_process,
             HistoricalData(domain_info.get('dim')),
