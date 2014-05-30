@@ -8,7 +8,7 @@ import numpy
 import scipy.linalg
 import scipy.stats
 
-from moe.optimal_learning.python.constant import default_expected_improvement_parameters
+from moe.optimal_learning.python.constant import DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS, DEFAULT_EXPECTED_IMPROVEMENT_MAX_NUM_THREADS
 from moe.optimal_learning.python.interfaces.expected_improvement_interface import ExpectedImprovementInterface
 from moe.optimal_learning.python.interfaces.optimization_interface import OptimizableInterface
 from moe.optimal_learning.python.python_version.optimization import multistart_optimize, NullOptimizer
@@ -19,7 +19,7 @@ def multistart_expected_improvement_optimization(
         num_multistarts,
         num_to_sample,
         randomness=None,
-        max_num_threads=1,
+        max_num_threads=DEFAULT_EXPECTED_IMPROVEMENT_MAX_NUM_THREADS,
         status=None,
 ):
     """Solve the q,p-EI problem, returning the optimal set of q points to sample CONCURRENTLY in future experiments.
@@ -72,7 +72,7 @@ def evaluate_expected_improvement_at_point_list(
         ei_evaluator,
         points_to_evaluate,
         randomness=None,
-        max_num_threads=1,
+        max_num_threads=DEFAULT_EXPECTED_IMPROVEMENT_MAX_NUM_THREADS,
         status=None,
 ):
     """Evaluate Expected Improvement (1,p-EI) over a specified list of ``points_to_evaluate``.
@@ -124,9 +124,9 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
     def __init__(
             self,
             gaussian_process,
-            points_to_sample,
-            points_being_sampled=numpy.array([]),
-            num_mc_iterations=default_expected_improvement_parameters.mc_iterations,
+            points_to_sample=None,
+            points_being_sampled=None,
+            num_mc_iterations=DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS,
             randomness=None,
     ):
         """Construct an ExpectedImprovement object that supports q,p-EI.
@@ -152,8 +152,15 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         else:
             self._best_so_far = numpy.finfo(numpy.float64).max
 
-        self.set_current_point(points_to_sample)
-        self._points_being_sampled = numpy.copy(points_being_sampled)
+        if points_being_sampled is None:
+            self._points_being_sampled = numpy.array([])
+        else:
+            self._points_being_sampled = numpy.copy(points_being_sampled)
+
+        if points_to_sample is None:
+            self.set_current_point(numpy.zeros((1, gaussian_process.dim)))
+        else:
+            self.set_current_point(points_to_sample)
 
     @property
     def dim(self):

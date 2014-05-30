@@ -18,6 +18,7 @@ from pyramid.view import view_config
 from moe.views.constant import GP_NEXT_POINTS_CONSTANT_LIAR_ROUTE_NAME, GP_NEXT_POINTS_CONSTANT_LIAR_PRETTY_ROUTE_NAME, GP_NEXT_POINTS_CONSTANT_LIAR_OPTIMIZATION_METHOD_NAME
 from moe.views.gp_next_points_pretty_view import GpNextPointsPrettyView, GpNextPointsRequest
 from moe.views.gp_pretty_view import PRETTY_RENDERER
+from moe.views.utils import _make_gp_from_params
 
 
 CONSTANT_LIAR_MIN = 'constant_liar_min'
@@ -37,15 +38,17 @@ class GpNextPointsConstantLiarRequest(GpNextPointsRequest):
 
     **Required fields**
 
-        :gp_info: a GpInfo object of historical data
+        :gp_info: a :class:`moe.views.schemas.GpInfo` dict of historical data
+        :domain_info: a :class:`moe.views.schemas.BoundedDomainInfo` dict of domain information
 
     **Optional fields**
 
         :num_to_sample: number of next points to generate (default: 1)
-        :ei_optimization_parameters: :class:`moe.views.schemas.EiOptimizationParameters` object containing optimization parameters (default: moe.optimal_learning.python.constant.default_ei_optimization_parameters)
         :lie_method: a string from `CONSTANT_LIAR_METHODS` representing the liar method to use (default: 'constant_liar_min')
         :lie_value: a float representing the 'lie' the Constant Liar heuristic will use (default: None). If `lie_value` is not None the algorithm will use this value instead of one calculated using `lie_method`.
         :lie_noise_variance: a positive (>= 0) float representing the noise variance of the 'lie' value (default: 0.0)
+        :covariance_info: a :class:`moe.views.schemas.CovarianceInfo` dict of covariance information
+        :optimiaztion_info: a :class:`moe.views.schemas.OptimizationInfo` dict of optimization information
 
     **Example Request**
 
@@ -62,11 +65,13 @@ class GpNextPointsConstantLiarRequest(GpNextPointsRequest):
                         {'value_var': 0.01, 'value': 0.1, 'point': [0.0]},
                         {'value_var': 0.01, 'value': 0.2, 'point': [1.0]}
                     ],
-                'domain': [
-                    [0, 1],
-                    ]
                 },
-            },
+            'domain_info': {
+                'dim': 1,
+                'domain_bounds': [
+                    {'min': 0.0, 'max': 1.0},
+                    ],
+                },
         }
 
     """
@@ -115,8 +120,8 @@ class GpNextPointsConstantLiar(GpNextPointsPrettyView):
         if params.get('lie_value') is not None:
             return params.get('lie_value')
 
-        gaussian_process = self.make_gp(params)
-        points_sampled_values = [point.value for point in gaussian_process.points_sampled]
+        gaussian_process = _make_gp_from_params(params)
+        points_sampled_values = gaussian_process._historical_data._points_sampled_value.to_list()
 
         if params.get('lie_method') == CONSTANT_LIAR_MIN:
             return numpy.amin(points_sampled_values)

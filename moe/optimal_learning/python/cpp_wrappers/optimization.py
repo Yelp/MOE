@@ -242,7 +242,7 @@ class GradientDescentParameters(object):
 
     """
 
-    def __init__(self, num_multistarts, max_num_steps, max_num_restarts, gamma, pre_mult, max_relative_change, tolerance):
+    def __init__(self, num_multistarts, max_num_steps, max_num_restarts, gamma, pre_mult, max_relative_change, tolerance, num_steps_averaged):
         r"""Build a GradientDescentParameters (C++ object) via its ctor; this object specifies multistarted GD behavior and is required by C++ GD optimization.
 
         .. Note:: See gpp_optimization_parameters.hpp for more details.

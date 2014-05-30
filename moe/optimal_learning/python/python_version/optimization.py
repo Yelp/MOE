@@ -200,6 +200,22 @@ class NullParameters(collections.namedtuple('NullParameters', [])):
 
 
 # See GradientDescentParameters (below) for docstring.
+_BaseNewtonParameters = collections.namedtuple('_BaseNewtonParameters', [
+    'max_num_steps',
+    'gamma',
+    'time_factor',
+    'max_relative_change',
+    'tolerance',
+])
+
+
+class NewtonParameters(_BaseNewtonParameters):
+
+    """See docstring at :class:`moe.optimal_learning.python.cpp_wrappers.optimization`."""
+
+    __slots__ = ()
+
+# See GradientDescentParameters (below) for docstring.
 _BaseGradientDescentParameters = collections.namedtuple('_BaseGradientDescentParameters', [
     'max_num_steps',
     'max_num_restarts',
