@@ -135,7 +135,7 @@ class GpNextPointsPrettyView(GpPrettyView):
                 *args,
                 **kwargs
                 )
-        # TODO(eliu, sclark): after refactor, this should call EIEvaluator not the _at_pont_list method
+        # TODO(eliu, sclark): after refactor, this should call EIEvaluator not the _at_point_list method
         expected_improvement = gaussian_process.evaluate_expected_improvement_at_point_list(next_points[numpy.newaxis, ...])
 
         return self.form_response({

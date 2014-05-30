@@ -42,7 +42,7 @@ def multistart_expected_improvement_optimization(
 
     If ``num_to_sample = 1``, this is the same as ComputeOptimalPointsToSampleWithRandomStarts().
 
-    TODO(GH-56): allow callers to pass in a source of randomness
+    TODO(eliu): (GH-56) Allow callers to pass in a source of randomness.
 
     :param ei_optimizer: object that optimizes (e.g., gradient descent, newton) EI over a domain
     :type ei_optimizer: interfaces.optimization_interfaces.OptimizerInterface subclass
@@ -63,7 +63,7 @@ def multistart_expected_improvement_optimization(
     random_starts = ei_optimizer.domain.generate_uniform_random_points_in_domain(num_points=num_multistarts)
     best_point, _ = multistart_optimize(ei_optimizer, starting_points=random_starts)
 
-    # TODO(GH-59): have GD actually indicate whether updates were found
+    # TODO(eliu): (GH-59) Have GD actually indicate whether updates were found.
     found_flag = True
     if status is not None:
         status["gradient_descent_found_update"] = found_flag
@@ -83,7 +83,7 @@ def evaluate_expected_improvement_at_point_list(
     Generally gradient descent is preferred but when it fails to converge this may be the only "robust" option.
     This function is also useful for plotting or debugging purposes (just to get a bunch of EI values).
 
-    TODO(GH-56): allow callers to pass in a source of randomness
+    TODO(eliu): (GH-56) Allow callers to pass in a source of randomness.
 
     :param ei_evaluator: object specifying how to evaluate the expected improvement
     :type ei_evaluator: interfaces.expected_improvement_interface.ExpectedImprovementInterface subclass
@@ -102,7 +102,7 @@ def evaluate_expected_improvement_at_point_list(
     null_optimizer = NullOptimizer(None, ei_evaluator)
     _, values = multistart_optimize(null_optimizer, starting_points=points_to_evaluate)
 
-    # TODO(GH-59): have multistart actually indicate whether updates were found
+    # TODO(eliu): (GH-59) Have multistart actually indicate whether updates were found.
     found_flag = True
     if status is not None:
         status["evaluate_EI_at_point_list"] = found_flag
@@ -134,7 +134,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
     ):
         """Construct an ExpectedImprovement object that supports q,p-EI.
 
-        TODO(GH-56): allow callers to pass in a source of randomness
+        TODO(eliu): (GH-56) Allow callers to pass in a source of randomness.
 
         :param gaussian_process: GaussianProcess describing
         :type gaussian_process: interfaces.gaussian_process_interface.GaussianProcessInterface subclass
@@ -321,7 +321,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
 
         normals = numpy.random.normal(size=(self._num_mc_iterations, num_points))
 
-        # TODO(GH-60): might be worth breaking num_mc_iterations up into smaller blocks
+        # TODO(eliu): (GH-60) Partition num_mc_iterations up into smaller blocks if it helps.
         # so that we don't waste as much mem bandwidth (since each entry of normals is
         # only used once)
         mu_star = self._best_so_far - mu_star
@@ -423,7 +423,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
 
         normals = numpy.random.normal(size=(self._num_mc_iterations, num_points))
 
-        # TODO(GH-60): might be worth breaking num_mc_iterations up into smaller blocks
+        # TODO(eliu): (GH-60) Partition num_mc_iterations up into smaller blocks if it helps.
         # so that we don't waste as much mem bandwidth (since each entry of normals is
         # only used once)
         mu_star = self._best_so_far - mu_star
@@ -460,7 +460,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
 
         # Handle derivative terms from grad_chol_decomp
         # Mask rows of normals that did not show positive improvement
-        # TODO(GH-61): can this be done with numpy.tile, numpy.repeat or something more sensical?
+        # TODO(eliu): (GH-61) Use numpy.tile, numpy.repeat or something more sensical if possible.
         normals_mask = numpy.empty(normals.shape, dtype=bool)
         normals_mask[...] = best_improvement_each_iter.mask[:, numpy.newaxis]
         # Compress out the masked data
@@ -496,11 +496,11 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
 
                 # Expand winner_indexes_equal_to_i.mask to cover the full shape of grad_chol_decomp_tiled
                 # This is the same idea as normals_mask above
-                # TODO(GH-61): can I do this with numpy.tile, numpy.repeat or something more sensical?
+                # TODO(eliu): (GH-61) Use numpy.tile, numpy.repeat or something more sensical if possible.
                 grad_chol_decomp_block_i_tile_mask = numpy.empty(grad_chol_decomp_tiled.shape, dtype=bool)
                 grad_chol_decomp_block_i_tile_mask[...] = winner_indexes_equal_to_i.mask[:, numpy.newaxis, numpy.newaxis]
 
-                # TODO(GH-61): is there a way to produce the desired block pattern directly, without copy + mask? Can I avoid duplicating grad_chol entirely?
+                # TODO(eliu): (GH-61) Is there a way to produce the desired block pattern directly, without copy + mask? Can I avoid duplicating grad_chol entirely?
                 # Tile the appropriate block of grad_chol_decomp to *FILL* all blocks
                 grad_chol_decomp_block_i_tile = numpy.tile(
                     grad_chol_decomp[diff_index, i, ...],

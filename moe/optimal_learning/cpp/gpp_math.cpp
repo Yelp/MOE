@@ -341,7 +341,7 @@ OL_NONNULL_POINTERS void BuildCovarianceMatrixWithNoiseVariance(const Covariance
   \output
     :cov_matrix[num_sampled][num_to_sample]: computed "mix" covariance matrix
 \endrst*/
-// TODO(eliu): Do not re-compute symmetric part (either don't compute it or copy from already-computed value) (ticket 40552)
+// TODO(eliu): (ticket 40552) Do not re-compute symmetric part (either don't compute it or copy from already-computed value)
 OL_NONNULL_POINTERS void BuildMixCovarianceMatrix(const CovarianceInterface& covariance, double const * restrict points_sampled, double const * restrict points_to_sample, int dim, int num_sampled, int num_to_sample, double * restrict cov_matrix) noexcept {
   // calculate the covariance matrix defined in gpp_covariance.hpp
   for (int j = 0; j < num_to_sample; ++j) {
@@ -612,10 +612,10 @@ void GaussianProcess::ComputeGradVarianceOfPoints(StateType * points_to_sample_s
 void GaussianProcess::ComputeGradCholeskyVarianceOfPointsPerPoint(StateType * points_to_sample_state, int diff_index, double const * restrict chol_var, double * restrict grad_chol) const noexcept {
   ComputeGradVarianceOfPointsPerPoint(points_to_sample_state, diff_index, grad_chol);
 
-  // TODO(eliu): can we use a faster version (e.g., gaxpy-based) of cholesky and still apply Smith's algorithm for its derivative?
-  // Primary concern is that Smith's algorithm produces a derivative based on the outer product version of
-  // cholesky, so does the base cholesky code need to follow the same algorithm for consistency?
-  // (ticket 40454)
+  // TODO(eliu): (ticket 40454) Can we use a faster version (e.g., gaxpy-based) of cholesky and still apply
+  // Smith's algorithm for its derivative? Primary concern is that Smith's algorithm produces a derivative
+  // based on the outer product version of cholesky, so does the base cholesky code need to follow the same
+  // algorithm for consistency?
 
   const int num_to_sample = points_to_sample_state->num_to_sample;
   // input is upper block triangular, zero the lower block triangle
@@ -851,7 +851,7 @@ void ExpectedImprovementEvaluator::ComputeGradExpectedImprovement(StateType * ei
 
       // let L_{d,i,j,k} = grad_chol_decomp, d over dim_, i, j over num_union, k over num_to_sample
       // we want to compute: agg_dx_{d,k} = L_{d,i,j=winner,k} * normals_i
-      // TODO(GH-92): Could form this as one GeneralMatrixVectorMultiply() call by storing data as L_{d,i,k,j}
+      // TODO(eliu): (GH-92) Form this as one GeneralMatrixVectorMultiply() call by storing data as L_{d,i,k,j} if it's faster.
       double const * restrict grad_chol_decomp_winner_block = ei_state->grad_chol_decomp.data() + winner*dim_*(num_union);
       for (int k = 0; k < ei_state->num_to_sample; ++k) {
         GeneralMatrixVectorMultiply(grad_chol_decomp_winner_block, 'N', ei_state->normals.data(), -1.0, 1.0, dim_, num_union, dim_, ei_state->aggregate.data() + k*dim_);
@@ -927,7 +927,7 @@ void OnePotentialSampleExpectedImprovementEvaluator::ComputeGradExpectedImprovem
   ComputeOptimalPointsToSampleViaLatinHypercubeSearch(). That is, this method attempts multistart gradient descent
   and falls back to latin hypercube search if gradient descent fails (or is not desired).
 
-  TODO(GH-77): Instead of random search, we may want to fall back on the methods in
+  TODO(eliu): (GH-77) Instead of random search, we may want to fall back on the methods in
   ``gpp_heuristic_expected_improvement_optimization.hpp`` if gradient descent fails; esp for larger q
   (even ``q \approx 4``), latin hypercube search does a pretty terrible job.
   This is more for general q,p-EI as these two things are equivalent for 1,0-EI.

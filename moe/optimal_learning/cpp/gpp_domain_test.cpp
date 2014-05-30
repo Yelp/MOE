@@ -7,7 +7,7 @@
   * CheckPointInDomain: specify a domain, point list, and truth values.  checks that points are/are not inside
   * GeneratePointInDomain: generates some random points, checks that they are inside the domain
   * GenerateUniformPointsInDomain: generates uniformly distributed points, checks that they are inside the domain
-     TODO(eliu): how do you check that the points are actually uniformly distributed?
+     TODO(eliu): Test whether computed point distribution is actually uniform (ADS-3099)
   * LimitUpdate: starting from points within the domain, checks that:
     * updates to another point in the domain remain unchanged
     * updates to a point outside the domain are limited such that the new endpoint is in the domain
@@ -307,7 +307,7 @@ OL_WARN_UNUSED_RESULT int GeneratePointInDomainTest(const DomainTestFixture& dom
 /*!\rst
   Check whether GenerateUniformPointsInDomain generates points that are inside the input domain.
 
-  TODO(eliu): HOW do I test whether a point distribution is uniform???
+  TODO(eliu): Test whether computed point distribution is actually uniform (ADS-3099)
 
   \return
     number of test failures
