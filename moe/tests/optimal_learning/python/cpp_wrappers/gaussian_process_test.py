@@ -9,7 +9,7 @@ from moe.optimal_learning.python.cpp_wrappers.gaussian_process import GaussianPr
 from moe.tests.optimal_learning.python.gaussian_process_test_case import GaussianProcessTestCase
 
 
-class GaussianProcessCppWrappersTestCase(GaussianProcessTestCase):
+class GaussianProcessTest(GaussianProcessTestCase):
 
     """Test C++ vs Python implementations of Gaussian Process properties (mean, variance, cholesky variance, and their gradients)."""
 
@@ -24,7 +24,7 @@ class GaussianProcessCppWrappersTestCase(GaussianProcessTestCase):
 
         """
         numpy.random.seed(8794)
-        super(GaussianProcessCppWrappersTestCase, self).base_setup()
+        super(GaussianProcessTest, self).base_setup()
 
     def test_python_and_cpp_return_same_mu_and_gradient(self):
         """Compare mu/grad mu results from Python & C++, checking seeral random points per test case."""

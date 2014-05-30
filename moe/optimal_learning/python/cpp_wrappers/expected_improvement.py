@@ -365,7 +365,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
 
         if points_to_sample is None:
             # set an arbitrary point
-            self.set_current_point([0.0] * gaussian_process.dim)
+            self.set_current_point(numpy.zeros((1, gaussian_process.dim)))
         else:
             self.set_current_point(points_to_sample)
 
