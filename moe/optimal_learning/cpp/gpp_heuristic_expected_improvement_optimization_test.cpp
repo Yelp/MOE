@@ -348,13 +348,16 @@ int HeuristicExpectedImprovementOptimizationTestCore(EstimationPolicyTypes polic
 
   // test optimization
   bool found_flag = false;
-  ComputeHeuristicSetOfPointsToSample(*mock_gp_data.gaussian_process_ptr, gd_params, domain, *estimation_policy, mock_gp_data.best_so_far, kMaxNumThreads, grid_search_only, num_grid_search_points, num_to_sample, &found_flag, &uniform_generator, best_points_to_sample.data());
+  ComputeHeuristicPointsToSample(*mock_gp_data.gaussian_process_ptr, gd_params, domain, *estimation_policy, mock_gp_data.best_so_far, kMaxNumThreads, grid_search_only, num_grid_search_points, num_to_sample, &found_flag, &uniform_generator, best_points_to_sample.data());
   if (!found_flag) {
     ++total_errors;
   }
 
   // check points are in domain
-  current_errors = CheckPointsInDomain(domain, best_points_to_sample.data(), num_to_sample);
+  RepeatedDomain<DomainType> repeated_domain(domain, num_to_sample);
+  if (!repeated_domain.CheckPointInside(best_points_to_sample.data())) {
+    ++current_errors;
+  }
 #ifdef OL_ERROR_PRINT
   if (current_errors != 0) {
     OL_ERROR_PRINTF("ERROR: points were not in domain!  points:\n");
