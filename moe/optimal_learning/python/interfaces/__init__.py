@@ -57,11 +57,10 @@ The modules in this package provide the interface with interacting with all the 
 
   With the ability the compute EI, the final step is to optimize
   to find the best EI.  This is done using multistart gradient descent (MGD), in
-  multistart_expected_improvement_optimization().
-
-  We can also evaluate EI at several points simultaneously; e.g., if we wanted to run 4 simultaneous
-  experiments, we can use EI to select all 4 points at once. Solving for a set of new experimental
-  points is implemented in multistart_expected_improvement_optimization().
+  multistart_expected_improvement_optimization(). This method wraps a MGD call and falls back on random search
+  if that fails. See gpp_optimization.hpp for multistart/optimization templates. This method
+  can evaluate and optimize EI at serval points simultaneously; e.g., if we wanted to run 4 simultaneous
+  experiments, we can use EI to select all 4 points at once.
 
   The literature (e.g., Ginsbourger 2008) refers to these problems collectively as q-EI, where q
   is a positive integer. So 1-EI is the originally dicussed usage, and the previous scenario with
@@ -93,9 +92,9 @@ The modules in this package provide the interface with interacting with all the 
   GD as well as the template definition.
 
   For particularly difficult problems or problems where gradient descent's parameters are not
-  well-chosen, GD can fail to converge.  If this happens, we can fall back to a 'dumb' search
-  (i.e., evaluate EI at a large number of random points and take the best one).  This
-  functionality is accessed through: multistart_expected_improvement_optimization()
+  well-chosen, GD can fail to converge.  If this happens, we can fall back on heuristics;
+  e.g., 'dumb' search (i.e., evaluate EI at a large number of random points and take the best
+  one). This functionality is accessed through: multistart_expected_improvement_optimization().
 
   And domain-specific notation, following Rasmussen, Williams:
     - ``X = points_sampled``; this is the training data (size ``dim`` X ``num_sampled``), also called the design matrix

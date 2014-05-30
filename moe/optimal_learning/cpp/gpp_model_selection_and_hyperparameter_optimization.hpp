@@ -902,7 +902,7 @@ OL_NONNULL_POINTERS void RestartedGradientDescentHyperparameterOptimization(cons
   Generates num_multistarts initial guesses (random sampling from domain), all within the specified domain, and kicks off
   an optimization run from each guess.
 
-  Same idea as ComputeOptimalPointToSampleWithRandomStarts() in gpp_math.hpp, which is for optimizing Expected Improvement;
+  Same idea as ComputeOptimalPointsToSampleWithRandomStarts() in gpp_math.hpp, which is for optimizing Expected Improvement;
   see those docs for additional gradient descent details.
   This is the primary endpoint for hyperparameter optimization using gradient descent.
   It constructs the required state objects, builds a GradientDescentOptimizer object, and wraps a series of calls:
@@ -956,7 +956,7 @@ OL_NONNULL_POINTERS void MultistartGradientDescentHyperparameterOptimization(con
   // set chunk_size, see gpp_common.hpp header comments, item 7
   const int chunk_size = std::max(std::min(15, std::max(1, gd_parameters.num_multistarts/max_num_threads)), gd_parameters.num_multistarts/(max_num_threads*20));
 
-  OptimizationIOContainer io_container(num_hyperparameters);
+  OptimizationIOContainer io_container(log_likelihood_state_vector[0].GetProblemSize());
   InitializeBestKnownPoint(log_likelihood_evaluator, initial_guesses.data(), num_hyperparameters, gd_parameters.num_multistarts, true, log_likelihood_state_vector.data(), &io_container);
 
   GradientDescentOptimizer<LogLikelihoodEvaluator, TensorProductDomain> gd_opt;
@@ -1019,7 +1019,7 @@ OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT int NewtonHyperparameterOptimization(c
   Generates num_multistarts initial guesses (random sampling from domain), all within the specified domain, and kicks off
   an optimization run from each guess.
 
-  Same idea as ComputeOptimalPointToSampleWithRandomStarts() in gpp_math.hpp, which is for optimizing Expected Improvement.
+  Same idea as ComputeOptimalPointsToSampleWithRandomStarts() in gpp_math.hpp, which is for optimizing Expected Improvement.
   This is the primary endpoint for hyperparameter optimization using Newton's method.
   It constructs the required state objects, builds a NewtonOptimizer object, and wraps a series of calls:
   The heart of multistarting is in MultistartOptimizer<...>::MultistartOptimize<...>(...) (in gpp_optimization.hpp).
@@ -1072,7 +1072,7 @@ OL_NONNULL_POINTERS void MultistartNewtonHyperparameterOptimization(const LogLik
   // set chunk_size, see gpp_common.hpp header comments, item 7
   const int chunk_size = std::max(std::min(4, std::max(1, newton_parameters.num_multistarts/max_num_threads)), newton_parameters.num_multistarts/(max_num_threads*8));
 
-  OptimizationIOContainer io_container(num_hyperparameters);
+  OptimizationIOContainer io_container(log_likelihood_state_vector[0].GetProblemSize());
   InitializeBestKnownPoint(log_likelihood_evaluator, initial_guesses.data(), num_hyperparameters, newton_parameters.num_multistarts, true, log_likelihood_state_vector.data(), &io_container);
 
   NewtonOptimizer<LogLikelihoodEvaluator, TensorProductDomain> newton_opt;
@@ -1118,7 +1118,7 @@ void EvaluateLogLikelihoodAtPointList(const LogLikelihoodEvaluator& log_likeliho
   NullOptimizer<LogLikelihoodEvaluator, DomainType> null_opt;
 
   const int num_hyperparameters = covariance.GetNumberOfHyperparameters();
-  OptimizationIOContainer io_container(num_hyperparameters);
+  OptimizationIOContainer io_container(log_likelihood_state_vector[0].GetProblemSize());
   InitializeBestKnownPoint(log_likelihood_evaluator, initial_guesses, num_hyperparameters, num_multistarts, false, log_likelihood_state_vector.data(), &io_container);
 
   typename NullOptimizer<LogLikelihoodEvaluator, DomainType>::ParameterStruct null_parameters;

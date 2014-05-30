@@ -135,7 +135,10 @@ class GpEiView(GpPrettyView):
         """
         params = self.get_params_from_request()
 
-        points_to_evaluate = numpy.array(params.get('points_to_evaluate'))
+        # TODO(eliu, sclark): change REST interface to give points_to_evaluate with shape
+        # (num_to_evaluate, num_to_sample, dim)
+        # Here we assume shape is (num_to_evaluate, dim) so we insert an axis
+        points_to_evaluate = numpy.array(params.get('points_to_evaluate'))[..., numpy.newaxis, :]
         points_being_sampled = numpy.array(params.get('points_being_sampled'))
         gp_info = params.get('gp_info')
 

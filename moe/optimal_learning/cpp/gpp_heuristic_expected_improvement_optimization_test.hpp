@@ -30,7 +30,7 @@ namespace optimal_learning {
 OL_WARN_UNUSED_RESULT int EstimationPolicyTest();
 
 /*!\rst
-  Checks that ComputeHeuristicSetOfPointsToSample() works on a tensor product domain using both
+  Checks that ComputeHeuristicPointsToSample() works on a tensor product domain using both
   ConstantLiarEstimationPolicy and KrigingBelieverEstimationPolicy estimation policies.
   This test assumes the the code tested in:
   1. ExpectedImprovementOptimizationTest(DomainTypes::kTensorProduct, ExpectedImprovementEvaluationMode::kAnalytic)

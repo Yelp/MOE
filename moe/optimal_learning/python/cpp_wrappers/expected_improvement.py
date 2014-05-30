@@ -26,21 +26,24 @@ def multistart_expected_improvement_optimization(
 ):
     """Solve the q,p-EI problem, returning the optimal set of q points to sample CONCURRENTLY in future experiments.
 
-    When points_being_sampled.size == 0 && num_to_sample == 1, this function will use (fast) analytic EI computations.
+    When ``points_being_sampled.size == 0 && num_to_sample == 1``, this function will use (fast) analytic EI computations.
 
-    .. NOTE:: The following comments are copied from gpp_math.hpp, ComputeOptimalSetOfPointsToSample().
+    .. NOTE:: The following comments are copied from gpp_math.hpp, ComputeOptimalPointsToSample().
         These comments are copied into multistart_expected_improvement_optimization() in python_version/expected_improvement.py
+
+    This is the primary entry-point for EI optimization in the optimal_learning library. It offers our best shot at
+    improving robustness by combining higher accuracy methods like gradient descent with fail-safes like random/grid search.
 
     Returns the optimal set of q points to sample CONCURRENTLY by solving the q,p-EI problem.  That is, we may want to run 4
     experiments at the same time and maximize the EI across all 4 experiments at once while knowing of 2 ongoing experiments
     (4,2-EI). This function handles this use case. Evaluation of q,p-EI (and its gradient) for q > 1 or p > 1 is expensive
     (requires monte-carlo iteration), so this method is usually very expensive.
 
-    Compared to ComputeHeuristicSetOfPointsToSample() (``gpp_heuristic_expected_improvement_optimization.hpp``), this function
+    Compared to ComputeHeuristicPointsToSample() (``gpp_heuristic_expected_improvement_optimization.hpp``), this function
     makes no external assumptions about the underlying objective function. Instead, it utilizes a feature of the
     GaussianProcess that allows the GP to account for ongoing/incomplete experiments.
 
-    If ``num_to_sample = 1``, this is the same as ComputeOptimalPointToSampleWithRandomStarts().
+    If ``num_to_sample = 1``, this is the same as ComputeOptimalPointsToSampleWithRandomStarts().
 
     :param ei_optimizer: object that optimizes (e.g., gradient descent, newton) EI over a domain
     :type ei_optimizer: cpp_wrappers.optimization.*Optimizer object
@@ -74,8 +77,8 @@ def multistart_expected_improvement_optimization(
         ei_optimizer.objective_function._gaussian_process._gaussian_process,
         cpp_utils.cppify(ei_optimizer.domain.domain_bounds),
         cpp_utils.cppify(ei_optimizer.objective_function._points_being_sampled),
-        ei_optimizer.objective_function._points_being_sampled.shape[0],
         num_to_sample,
+        ei_optimizer.objective_function.num_being_sampled,
         ei_optimizer.objective_function._best_so_far,
         ei_optimizer.objective_function._num_mc_iterations,
         max_num_threads,
@@ -96,7 +99,7 @@ def _heuristic_expected_improvement_optimization(
         max_num_threads=1,
         status=None,
 ):
-    """Heuristically solve the q,0-EI problem (estimating multistart_expected_improvement_optimization()) using 1,0-EI solves.
+    r"""Heuristically solve the q,0-EI problem (estimating multistart_expected_improvement_optimization()) using 1,0-EI solves.
 
     Consider this as an alternative when multistart_expected_improvement_optimization() is too expensive. Since this function
     kernalizes 1,0-EI, it always hits the analytic case; hence it is much faster than q,0-EI which requires monte-carlo.
@@ -105,25 +108,27 @@ def _heuristic_expected_improvement_optimization(
 
     Calls into heuristic_expected_improvement_optimization_wrapper in cpp/GPP_python_expected_improvement.cpp.
 
-    .. NOTE:: The following comments are copied from gpp_heuristic_expected_improvement_optimization.hpp, ComputeHeuristicSetOfPointsToSample().
+    .. NOTE:: The following comments are copied from gpp_heuristic_expected_improvement_optimization.hpp, ComputeHeuristicPointsToSample().
 
     It heuristically solves the q,0-EI optimization problem. As a reminder, that problem is finding the set of q points
-    that maximizes the Expected Improvement (saved in the output, best_points_to_sample). Solving for q points simultaneously
+    that maximizes the Expected Improvement (saved in the output, ``best_points_to_sample``). Solving for q points simultaneously
     usually requires monte-carlo iteration and is expensive. The heuristic here solves q-EI as a sequence of 1-EI problems.
     We solve 1-EI, and then we *ASSUME* an objective function value at the resulting optima. This process is repeated q times.
-    It is perhaps more clear in pseudocode:
-    points_being_sampled = {}  // This stays empty! We are only working with 1,0-EI solves
-    for i = 0:num_to_sample-1 {
-      // First, solve the 1,0-EI problem*
-      new_point = ComputeOptimalPointToSampleWithRandomStarts(gaussian_process, points_being_sampled, other_parameters)
-      // *Estimate* the objective function value at new_point
-      new_function_value = ESTIMATED_OBJECTIVE_FUNCTION_VALUE(new_point, other_args)
-      new_function_value_noise = ESTIMATED_NOISE_VARIANCE(new_point, other_args)
-      // Write the estimated objective values to the GP as *truth*
-      gaussian_process.AddPoint(new_point, new_function_value, new_function_value_noise)
-      optimal_points_to_sample.append(new_point)
-    }
-    *Recall: each call to ComputeOptimalPointToSampleWithRandomStarts() (gpp_math.hpp) kicks off a round of MGD optimization of 1-EI.
+    It is perhaps more clear in pseudocode::
+
+      points_being_sampled = {}  // This stays empty! We are only working with 1,0-EI solves
+      for i = 0:num_to_sample-1 {
+        // First, solve the 1,0-EI problem\*
+        new_point = ComputeOptimalPointsToSampleWithRandomStarts(gaussian_process, points_being_sampled, other_parameters)
+        // *Estimate* the objective function value at new_point
+        new_function_value = ESTIMATED_OBJECTIVE_FUNCTION_VALUE(new_point, other_args)
+        new_function_value_noise = ESTIMATED_NOISE_VARIANCE(new_point, other_args)
+        // Write the estimated objective values to the GP as *truth*
+        gaussian_process.AddPoint(new_point, new_function_value, new_function_value_noise)
+        optimal_points_to_sample.append(new_point)
+      }
+
+    \*Recall: each call to ComputeOptimalPointsToSampleWithRandomStarts() (gpp_math.hpp) kicks off a round of MGD optimization of 1-EI.
 
     Note that ideally the estimated objective function value (and noise) would be measured from the real-world (e.g.,
     by running an experiment). Then this algorithm would be optimal. However, the estimate probably is not accurately
@@ -134,12 +139,12 @@ def _heuristic_expected_improvement_optimization(
     heuristics described in Ginsbourger 2008. The interface for estimation_policy is generic so users may specify
     other estimators as well.
 
-    Contrast this appraoch with ComputeOptimalSetOfPointsToSample() (gpp_math.hpp) which solves all outputs of the q,0-EI
-    problem simultaneously instead of one point at a time. This method is more accurate (b/c it
+    Contrast this approach with ComputeOptimalPointsToSample() (gpp_math.hpp) which solves all outputs of the q,0-EI
+    problem simultaneously instead of one point at a time. That method is more accurate (b/c it
     does not attempt to estimate the behavior of the underlying objective function) but much more expensive (because it
     requires monte-carlo iteration).
 
-    If num_to_sample = 1, this is exactly the same as ComputeOptimalPointToSampleWithRandomStarts(); i.e.,
+    If ``num_to_sample = 1``, this is exactly the same as ComputeOptimalPointsToSampleWithRandomStarts(); i.e.,
     both methods solve the 1-EI optimization problem the same way.
 
     Currently, during optimization, we recommend that the coordinates of the initial guesses not differ from the
@@ -324,7 +329,7 @@ def kriging_believer_expected_improvement_optimization(
 
 
 def evaluate_expected_improvement_at_point_list(ei_evaluator, points_to_evaluate, randomness=None, max_num_threads=1, status=None):
-    """Evaluate Expected Improvement (1,p-EI) over a specified list of ``points_to_evaluate``.
+    """Evaluate Expected Improvement (q,p-EI) over a specified list of ``points_to_evaluate``.
 
     Generally gradient descent is preferred but when they fail to converge this may be the only "robust" option.
     This function is also useful for plotting or debugging purposes (just to get a bunch of EI values).
@@ -332,7 +337,7 @@ def evaluate_expected_improvement_at_point_list(ei_evaluator, points_to_evaluate
     :param ei_evaluator: object specifying how to evaluate the expected improvement
     :type ei_evaluator: cpp_wrappers.expected_improvement.ExpectedImprovement
     :param points_to_evaluate: points at which to compute EI
-    :type points_to_evaluate: array of float64 with shape (num_to_evaluate, ei_evaluator.dim)
+    :type points_to_evaluate: array of float64 with shape (num_to_evaluate, num_to_sample, ei_evaluator.dim)
     :param randomness: RNGs used by C++ to generate initial guesses and as the source of normal random numbers when monte-carlo is used
     :type randomness: RandomnessSourceContainer (C++ object; e.g., from C_GP.RandomnessSourceContainer())
     :param max_num_threads: maximum number of threads to use, >= 1
@@ -354,12 +359,17 @@ def evaluate_expected_improvement_at_point_list(ei_evaluator, points_to_evaluate
     if status is None:
         status = {}
 
+    # num_to_sample need not match ei_evaluator.num_to_sample since points_to_evaluate
+    # overrides any data inside ei_evaluator
+    num_to_evaluate, num_to_sample, _ = points_to_evaluate.shape
+
     ei_values = C_GP.evaluate_EI_at_point_list(
         ei_evaluator._gaussian_process._gaussian_process,
         cpp_utils.cppify(points_to_evaluate),
         cpp_utils.cppify(ei_evaluator._points_being_sampled),
-        points_to_evaluate.shape[0],
-        ei_evaluator._points_being_sampled.shape[0],
+        num_to_evaluate,
+        num_to_sample,
+        ei_evaluator.num_being_sampled,
         ei_evaluator._best_so_far,
         ei_evaluator._num_mc_iterations,
         max_num_threads,
@@ -448,9 +458,6 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
 
         """
         self._points_to_sample = numpy.copy(numpy.atleast_2d(points_to_sample))
-        # TODO(eliu): remove this after cpp can compute all EI gradients (ADS-3094)
-        if self._points_to_sample.shape[0] != 1:
-            raise ValueError('cpp_wrappers ExpectedImprovement can only handle 1,p-EI; current point can only be a single point.')
 
     def compute_expected_improvement(self, force_monte_carlo=False):
         r"""Compute the expected improvement at ``points_to_sample``, with ``points_being_sampled`` concurrent points being sampled.
@@ -488,13 +495,12 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         :rtype: float64
 
         """
-        num_points = self.num_to_sample + self.num_being_sampled
-        union_of_points = numpy.reshape(numpy.append(self._points_to_sample, self._points_being_sampled), (num_points, self.dim))
-
         return C_GP.compute_expected_improvement(
             self._gaussian_process._gaussian_process,
-            cpp_utils.cppify(union_of_points),
-            num_points,
+            cpp_utils.cppify(self._points_to_sample),
+            cpp_utils.cppify(self._points_being_sampled),
+            self.num_to_sample,
+            self.num_being_sampled,
             self._num_mc_iterations,
             self._best_so_far,
             force_monte_carlo,
@@ -533,16 +539,16 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         """
         grad_ei = C_GP.compute_grad_expected_improvement(
             self._gaussian_process._gaussian_process,
+            cpp_utils.cppify(self._points_to_sample),
             cpp_utils.cppify(self._points_being_sampled),
-            self._points_being_sampled.shape[0],
+            self.num_to_sample,
+            self.num_being_sampled,
             self._num_mc_iterations,
             self._best_so_far,
             force_monte_carlo,
             self._randomness,
-            cpp_utils.cppify(self._points_to_sample[0]),  # TODO(eliu): remove indexing to point 0 after cpp can compute all EI gradients (ADS-3094)
         )
-        # TODO(eliu): remove this after cpp can compute all EI gradients (ADS-3094)
-        return numpy.atleast_2d(numpy.array(grad_ei))
+        return cpp_utils.uncppify(grad_ei, (self.num_to_sample, self.dim))
 
     def compute_grad_objective_function(self, **kwargs):
         """Wrapper for compute_grad_expected_improvement; see that function's docstring."""

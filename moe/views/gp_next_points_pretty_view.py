@@ -6,6 +6,7 @@ Include:
     2. Class that extends GpPrettyView for next_points optimizers
 """
 import colander
+import numpy
 
 import moe.build.GPP as cpp_optimal_learning
 from moe.optimal_learning.python.cpp_wrappers.optimization import GradientDescentParameters, GradientDescentOptimizer, NullOptimizer
@@ -134,7 +135,8 @@ class GpNextPointsPrettyView(GpPrettyView):
                 *args,
                 **kwargs
                 )
-        expected_improvement = gaussian_process.evaluate_expected_improvement_at_point_list(next_points)
+        # TODO(eliu, sclark): after refactor, this should call EIEvaluator not the _at_pont_list method
+        expected_improvement = gaussian_process.evaluate_expected_improvement_at_point_list(next_points[numpy.newaxis, ...])
 
         return self.form_response({
                 'endpoint': route_name,

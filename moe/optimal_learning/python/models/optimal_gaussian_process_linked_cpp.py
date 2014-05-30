@@ -294,7 +294,7 @@ class OptimalGaussianProcessLinkedCpp(OptimalGaussianProcess):
         """
         return self.compute_hyperparam_grad_log_likelihood(objective_type=C_GP.LogLikelihoodTypes.log_marginal_likelihood)
 
-    def multistart_hyperparameter_optimization(self, optimizer_type, optimization_parameters, hyperparameter_domain=None, status=None):
+    def multistart_hyperparameter_optimization(self, optimizer_type, optimization_parameters, hyperparameter_domain=None, num_random_samples=None, status=None):
         """ Optimizes hyperparameters based on maximizing the log likelihood-like measures using a multistart optimizer:
         log_marginal_likelihood     : log marginal likelihood (that the data comes from the model, p(y | X, \theta).
         leave_one_out_log_likelihood: leave-one-out log pseudo-likelihood, which evaluates the ability of the
@@ -308,15 +308,15 @@ class OptimalGaussianProcessLinkedCpp(OptimalGaussianProcess):
         See gpp_python.cpp for C++ enum declarations laying out the options for objective and optimizer types.
         """
         cov, history = self._build_new_environment()
-        log_likelihood_evaluator = cpp_log_likelihood.GaussianProcessLogLikelihood(cov, history, log_likelihood_type=hyperparameter_optimization_parameters.objective_type)
+        log_likelihood_evaluator = cpp_log_likelihood.GaussianProcessLogLikelihood(cov, history)
         # Guess "reasonable" hyperparameter constraints if none are given.
         if not hyperparameter_domain:
             hyperparameter_domain = cpp_domain.TensorProductDomain([ClosedInterval(0.01, 10.0)] * log_likelihood_evaluator.num_hyperparameters)
 
         num_random_samples = 0
-        log_likelihood_optimizer = optimizer_type(hyperparameter_domain, log_likelihood_evaluator, optimization_parameters)
+        log_likelihood_optimizer = optimizer_type(hyperparameter_domain, log_likelihood_evaluator, optimization_parameters, num_random_samples=num_random_samples)
 
-        return cpp_log_likelihood.multistart_hyperparameter_optimization(log_likelihood_optimizer, optimization_parameters, num_random_samples, hyperparameter_domain=hyperparameter_domain, randomness=self.randomness, max_num_threads=self.max_num_threads, status=status)
+        return cpp_log_likelihood.multistart_hyperparameter_optimization(log_likelihood_optimizer, None, randomness=self.randomness, max_num_threads=self.max_num_threads, status=status)
 
     def evaluate_log_likelihood_at_hyperparameter_list(self, hyperparameters_to_evaluate, objective_type=C_GP.LogLikelihoodTypes.log_marginal_likelihood):
         """ Calls into evaluate_log_likelihood_at_hyperparameter_list_wrapper() in src/cpp/GPP_python.cpp

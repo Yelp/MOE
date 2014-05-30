@@ -291,12 +291,12 @@ int HeuristicExpectedImprovementOptimizationTestCore(EstimationPolicyTypes polic
   int current_errors = 0;
 
   // gradient descent parameters
-  const double gamma = 0.5;
-  const double pre_mult = 1.0;
+  const double gamma = 0.4;
+  const double pre_mult = 1.3;
   const double max_relative_change = 1.0;
-  const double tolerance = 1.0e-9;
-  const int max_gradient_descent_steps = 1000;
-  const int max_num_restarts = 10;
+  const double tolerance = 1.0e-12;
+  const int max_gradient_descent_steps = 300;
+  const int max_num_restarts = 5;
   const int num_multistarts = 20;
   GradientDescentParameters gd_params(num_multistarts, max_gradient_descent_steps, max_num_restarts, gamma, pre_mult, max_relative_change, tolerance);
 

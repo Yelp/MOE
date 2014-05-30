@@ -146,7 +146,8 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
         ei_eval = ExpectedImprovement(gaussian_process, points_to_sample)
 
         num_to_eval = 10
-        points_to_evaluate = domain.generate_uniform_random_points_in_domain(num_to_eval)
+        # Add in a newaxis to make num_to_sample explicitly 1
+        points_to_evaluate = domain.generate_uniform_random_points_in_domain(num_to_eval)[..., numpy.newaxis, :]
 
         test_values = evaluate_expected_improvement_at_point_list(ei_eval, points_to_evaluate)
 

@@ -31,7 +31,7 @@ class GaussianProcessTestEnvironment(_BaseGaussianProcessTestEnvironment):
 
     """
 
-    pass
+    __slots__ = ()
 
 
 class GaussianProcessTestEnvironmentInput(object):
