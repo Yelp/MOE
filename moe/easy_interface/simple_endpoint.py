@@ -73,14 +73,15 @@ def gp_hyper_opt(
     """Hit the rest endpoint for optimizing the hyperparameters of a gaussian process, given points already sampled."""
     endpoint = ALL_REST_ROUTES_ROUTE_NAME_TO_ENDPOINT[GP_HYPER_OPT_ROUTE_NAME]
     gp_dim = len(points_sampled[0][0])
+    hyper_dim = gp_dim + 1
     raw_payload = kwargs.copy()
     raw_payload['domain_info'] = {'dim': gp_dim}
     raw_payload['gp_info'] = _build_gp_info_from_points_sampled(points_sampled)
     raw_payload['hyperparameter_domain_info'] = {
-            'dim': gp_dim + 1,
+            'dim': hyper_dim,
             'domain_bounds': [],
             }
-    for _ in range(gp_dim + 1):
+    for _ in range(hyper_dim):
         raw_payload['hyperparameter_domain_info']['domain_bounds'].append({
             'min': 0.1,
             'max': 2.0,

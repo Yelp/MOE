@@ -11,11 +11,12 @@ import random
 import numpy
 
 from moe.easy_interface.simple_endpoint import gp_hyper_opt
+from moe.optimal_learning.python.data_containers import SamplePoint
 
 # Randomly generate some historical data
 # points_sampled is an iterable of iterables of the form [point_as_a_list, objective_function_value, value_variance]
 points_sampled = [
-        [[x], random.uniform(-1, 1), 0.01] for x in numpy.arange(0, 1, 0.1)
+        SamplePoint([x], random.uniform(-1, 1), 0.01) for x in numpy.arange(0, 1, 0.1)
         ]
 
 if __name__ == '__main__':

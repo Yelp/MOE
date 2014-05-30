@@ -98,6 +98,7 @@ def _make_optimization_parameters_from_params(params):
 
     # Validate optimization parameters
     validated_optimization_parameters = schema_class.deserialize(optimization_parameters_dict)
+    # TODO(eliu): Kill this when you reoganize num_multistarts for C++
     validated_optimization_parameters['num_multistarts'] = optimization_info['num_multistarts']
     optimization_parameters = optimization_method.cpp_parameters_class(**validated_optimization_parameters)
 

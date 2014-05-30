@@ -13,7 +13,7 @@ from moe.optimal_learning.python.cpp_wrappers.log_likelihood import GaussianProc
 from moe.views.constant import GP_HYPER_OPT_ROUTE_NAME, GP_HYPER_OPT_PRETTY_ROUTE_NAME
 from moe.views.gp_pretty_view import GpPrettyView, PRETTY_RENDERER
 from moe.views.schemas import GpInfo, CovarianceInfo, BoundedDomainInfo, OptimizationInfo, DomainInfo, ListOfFloats
-from moe.views.utils import _build_covariance_info, _make_covariance_of_process_from_params, _make_domain_from_params, _make_gp_from_params, _make_optimization_parameters_from_params
+from moe.views.utils import _build_covariance_info, _make_domain_from_params, _make_gp_from_params, _make_optimization_parameters_from_params
 
 
 class GpHyperOptRequest(colander.MappingSchema):
@@ -166,7 +166,7 @@ class GpHyperOptView(GpPrettyView):
         return self.pretty_response()
 
     @view_config(route_name=_route_name, renderer='json', request_method='POST')
-    def gp_ei_view(self):
+    def gp_hyper_opt_view(self):
         """Endpoint for gp_hyper_opt POST requests.
 
         .. http:post:: /gp/hyper_opt
@@ -183,8 +183,8 @@ class GpHyperOptView(GpPrettyView):
         params = self.get_params_from_request()
 
         hyperparameter_domain = _make_domain_from_params(params, domain_info_key='hyperparameter_domain_info')
-        covariance_of_process = _make_covariance_of_process_from_params(params)
         gaussian_process = _make_gp_from_params(params)
+        covariance_of_process = gaussian_process._covariance
         optimizer_class, optimization_parameters, num_random_samples = _make_optimization_parameters_from_params(params)
 
         log_likelihood_eval = GaussianProcessLogLikelihood(
