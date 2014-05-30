@@ -49,16 +49,16 @@ class TestGpEiView(RestGaussianProcessTestCase):
     def test_interface_returns_same_as_cpp(self):
         """Test that the /gp/ei endpoint does the same thing as the C++ interface."""
         for test_case in self.test_cases:
-            # TODO(eliu, sclark): change test case to have the right shape
-            # here we assume shape is (num_to_evaluate, dim) so we insert an axis
-            points_to_evaluate = test_case['points_to_evaluate'][..., numpy.newaxis, :]
+            points_to_evaluate = test_case['points_to_evaluate']
             num_points_in_sample = test_case['num_points_in_sample']
             domain = test_case['domain']
 
             gaussian_process, _ = self._make_random_processes_from_latin_hypercube(domain, num_points_in_sample)
             # EI from C++
+            # TODO(eliu, sclark): change test case to have the right shape
+            # here we assume shape is (num_to_evaluate, dim) so we insert an axis
             cpp_expected_improvement = gaussian_process.evaluate_expected_improvement_at_point_list(
-                    points_to_evaluate,
+                    points_to_evaluate[..., numpy.newaxis, :],
                     )
 
             # EI from REST
