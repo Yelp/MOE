@@ -34,6 +34,7 @@ New next_points routes have the form:
 """
 from collections import namedtuple
 
+
 MoeRoute = namedtuple('MoeRoute', ['route_name', 'endpoint'])
 
 GP_EI_ROUTE_NAME = 'gp_ei'
@@ -74,6 +75,7 @@ GP_NEXT_POINTS_CONSTANT_LIAR_PRETTY_ENDPOINT = '/gp/next_points/constant_liar/pr
 GP_NEXT_POINTS_CONSTANT_LIAR_PRETTY_MOE_ROUTE = MoeRoute(GP_NEXT_POINTS_CONSTANT_LIAR_PRETTY_ROUTE_NAME, GP_NEXT_POINTS_CONSTANT_LIAR_PRETTY_ENDPOINT)
 GP_NEXT_POINTS_CONSTANT_LIAR_OPTIMIZATION_METHOD_NAME = 'constant_liar_expected_improvement_optimization'
 
+# These need to match method names in moe/optimal_learning/python/cpp_wrappers/expected_improvement.py
 OPTIMIZATION_METHOD_NAMES = [
         GP_NEXT_POINTS_EPI_OPTIMIZATION_METHOD_NAME,
         GP_NEXT_POINTS_KRIGING_OPTIMIZATION_METHOD_NAME,

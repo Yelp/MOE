@@ -13,8 +13,8 @@ from pyramid.view import view_config
 
 from moe.views.constant import GP_MEAN_VAR_ROUTE_NAME, GP_MEAN_VAR_PRETTY_ROUTE_NAME
 from moe.views.gp_pretty_view import GpPrettyView, PRETTY_RENDERER
-from moe.views.schemas import ListOfFloats, MatrixOfFloats, GpInfo, ListOfPointsInDomain
-from moe.views.utils import _make_gp_from_gp_info
+from moe.views.schemas import ListOfFloats, MatrixOfFloats, GpInfo, ListOfPointsInDomain, CovarianceInfo, DomainInfo
+from moe.views.utils import _make_gp_from_params
 
 
 class GpMeanVarRequest(colander.MappingSchema):
@@ -26,7 +26,11 @@ class GpMeanVarRequest(colander.MappingSchema):
         :points_to_sample: list of points in domain to calculate the Gaussian Process (GP) mean and covariance at (:class:`moe.views.schemas.ListOfPointsInDomain`)
         :gp_info: a :class:`moe.views.schemas.GpInfo` object of historical data
 
-    **Example Request**
+    **Optional fields**
+
+        :covariance_info: a :class:`moe.views.schemas.CovarianceInfo` dict of covariance information
+
+    **Example Minimal Request**
 
     .. sourcecode:: http
 
@@ -39,17 +43,44 @@ class GpMeanVarRequest(colander.MappingSchema):
                         {'value_var': 0.01, 'value': 0.1, 'point': [0.0]},
                         {'value_var': 0.01, 'value': 0.2, 'point': [1.0]}
                     ],
-                'domain': [
-                    [0, 1],
-                    ]
                 },
-            },
+            'domain_info': {
+                'dim': 1,
+                },
+        }
+
+    **Example Full Request**
+
+    .. sourcecode:: http
+
+        Content-Type: text/javascript
+
+        {
+            'points_to_sample': [[0.1], [0.5], [0.9]],
+            'gp_info': {
+                'points_sampled': [
+                        {'value_var': 0.01, 'value': 0.1, 'point': [0.0]},
+                        {'value_var': 0.01, 'value': 0.2, 'point': [1.0]}
+                    ],
+                },
+            'domain_info': {
+                'domain_type': 'tensor_product'
+                'dim': 1,
+                },
+            'covariance_info': {
+                'covariance_type': 'square_exponential',
+                'hyperparameters': [1.0, 1.0],
+                },
         }
 
     """
 
     points_to_sample = ListOfPointsInDomain()
     gp_info = GpInfo()
+    domain_info = DomainInfo()
+    covariance_info = CovarianceInfo(
+            missing=CovarianceInfo().deserialize({}),
+            )
 
 
 class GpMeanVarResponse(colander.MappingSchema):
@@ -98,6 +129,8 @@ class GpMeanVarView(GpPrettyView):
                 [0.1], [0.5], [0.9],
                 ],
             "gp_info": GpPrettyView._pretty_default_gp_info,
+            "covariance_info": GpPrettyView._pretty_default_covariance_info,
+            "domain_info": GpPrettyView._pretty_default_domain_info,
             }
 
     @view_config(route_name=_pretty_route_name, renderer=PRETTY_RENDERER)
@@ -127,11 +160,10 @@ class GpMeanVarView(GpPrettyView):
         params = self.get_params_from_request()
 
         points_to_sample = numpy.array(params.get('points_to_sample'))
-        gp_info = params.get('gp_info')
+        gaussian_process = _make_gp_from_params(params)
 
-        gaussian_process = _make_gp_from_gp_info(gp_info)
-
-        mean, var = gaussian_process.get_mean_and_var_of_points(points_to_sample)
+        mean = gaussian_process.compute_mean_of_points(points_to_sample)
+        var = gaussian_process.compute_variance_of_points(points_to_sample)
 
         return self.form_response({
                 'endpoint': self._route_name,

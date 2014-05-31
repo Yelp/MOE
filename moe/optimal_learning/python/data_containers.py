@@ -43,6 +43,14 @@ class SamplePoint(_BaseSamplePoint):
         """Pretty print this object as a dict."""
         return pprint.pformat(dict(self._asdict()))
 
+    def json_payload(self):
+        """Convert the sample_point into a dict to be consumed by json for a REST request."""
+        return {
+                'point': self.point,
+                'value': self.value,
+                'value_var': self.noise_variance,
+                }
+
     def validate(self, dim=None):
         """Check this SamplePoint passes basic validity checks: dimension is expected, all values are finite.
 
@@ -99,7 +107,7 @@ class HistoricalData(object):
 
     __slots__ = ('_dim', '_points_sampled', '_points_sampled_value', '_points_sampled_noise_variance')
 
-    def __init__(self, dim, sample_points=[], validate=False):
+    def __init__(self, dim, sample_points=None, validate=False):
         """Create a HistoricalData object tracking the state of an experiment (already-sampled points, values, and noise).
 
         :param dim: number of spatial dimensions; must line up with len(sample_points[0]) if sample_points is empty
@@ -110,6 +118,9 @@ class HistoricalData(object):
         :type validate: boolean
 
         """
+        if sample_points is None:
+            sample_points = []
+
         num_sampled = len(sample_points)
         self._dim = dim
         if validate:
@@ -142,6 +153,17 @@ class HistoricalData(object):
             out_string += repr(self._points_sampled_value) + '\n'
             out_string += repr(self._points_sampled_noise_variance)
             return out_string
+
+    def json_payload(self):
+        """Construct a json serializeable and MOE REST recognizeable dictionary of the historical data."""
+        json_points_sampled = []
+        for point in self.to_list_of_sample_points():
+            json_points_sampled.append({
+                    'point': point.point.tolist(),  # json needs the numpy array to be a list
+                    'value': point.value,
+                    'value_var': point.noise_variance,
+                    })
+        return {'points_sampled': json_points_sampled}
 
     @staticmethod
     def validate_sample_points(dim, sample_points):

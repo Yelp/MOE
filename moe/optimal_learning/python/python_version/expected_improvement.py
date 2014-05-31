@@ -8,7 +8,7 @@ import numpy
 import scipy.linalg
 import scipy.stats
 
-from moe.optimal_learning.python.constant import default_expected_improvement_parameters
+from moe.optimal_learning.python.constant import DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS, DEFAULT_EXPECTED_IMPROVEMENT_MAX_NUM_THREADS
 from moe.optimal_learning.python.interfaces.expected_improvement_interface import ExpectedImprovementInterface
 from moe.optimal_learning.python.interfaces.optimization_interface import OptimizableInterface
 from moe.optimal_learning.python.python_version.optimization import multistart_optimize, NullOptimizer
@@ -19,7 +19,7 @@ def multistart_expected_improvement_optimization(
         num_multistarts,
         num_to_sample,
         randomness=None,
-        max_num_threads=1,
+        max_num_threads=DEFAULT_EXPECTED_IMPROVEMENT_MAX_NUM_THREADS,
         status=None,
 ):
     """Solve the q,p-EI problem, returning the optimal set of q points to sample CONCURRENTLY in future experiments.
@@ -71,45 +71,6 @@ def multistart_expected_improvement_optimization(
     return best_point
 
 
-def evaluate_expected_improvement_at_point_list(
-        ei_evaluator,
-        points_to_evaluate,
-        randomness=None,
-        max_num_threads=1,
-        status=None,
-):
-    """Evaluate Expected Improvement (q,p-EI) over a specified list of ``points_to_evaluate``.
-
-    Generally gradient descent is preferred but when it fails to converge this may be the only "robust" option.
-    This function is also useful for plotting or debugging purposes (just to get a bunch of EI values).
-
-    TODO(eliu): (GH-56) Allow callers to pass in a source of randomness.
-
-    :param ei_evaluator: object specifying how to evaluate the expected improvement
-    :type ei_evaluator: interfaces.expected_improvement_interface.ExpectedImprovementInterface subclass
-    :param points_to_evaluate: points at which to compute EI
-    :type points_to_evaluate: array of float64 with shape (num_to_evaluate, num_to_sample, ei_evaluator.dim)
-    :param randomness: random source(s) used for monte-carlo integration (when applicable) (UNUSED)
-    :type randomness: (UNUSED)
-    :param max_num_threads: maximum number of threads to use, >= 1 (UNUSED)
-    :type max_num_threads: int > 0
-    :param status: status messages from C++ (e.g., reporting on optimizer success, etc.)
-    :type status: dict
-    :return: EI evaluated at each of points_to_evaluate
-    :rtype: array of float64 with shape (points_to_evaluate.shape[0])
-
-    """
-    null_optimizer = NullOptimizer(None, ei_evaluator)
-    _, values = multistart_optimize(null_optimizer, starting_points=points_to_evaluate)
-
-    # TODO(eliu): (GH-59) Have multistart actually indicate whether updates were found.
-    found_flag = True
-    if status is not None:
-        status["evaluate_EI_at_point_list"] = found_flag
-
-    return values
-
-
 class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
 
     r"""Implementation of Expected Improvement computation in Python: EI and its gradient at specified point(s) sampled from a GaussianProcess.
@@ -127,9 +88,9 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
     def __init__(
             self,
             gaussian_process,
-            points_to_sample,
-            points_being_sampled=numpy.array([]),
-            num_mc_iterations=default_expected_improvement_parameters.mc_iterations,
+            points_to_sample=None,
+            points_being_sampled=None,
+            num_mc_iterations=DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS,
             randomness=None,
     ):
         """Construct an ExpectedImprovement object that supports q,p-EI.
@@ -155,8 +116,15 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         else:
             self._best_so_far = numpy.finfo(numpy.float64).max
 
-        self.set_current_point(points_to_sample)
-        self._points_being_sampled = numpy.copy(points_being_sampled)
+        if points_being_sampled is None:
+            self._points_being_sampled = numpy.array([])
+        else:
+            self._points_being_sampled = numpy.copy(points_being_sampled)
+
+        if points_to_sample is None:
+            self.set_current_point(numpy.zeros((1, gaussian_process.dim)))
+        else:
+            self.set_current_point(points_to_sample)
 
     @property
     def dim(self):
@@ -190,6 +158,47 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
 
         """
         self._points_to_sample = numpy.copy(numpy.atleast_2d(points_to_sample))
+
+    def evaluate_at_point_list(
+            self,
+            points_to_evaluate,
+            randomness=None,
+            max_num_threads=DEFAULT_EXPECTED_IMPROVEMENT_MAX_NUM_THREADS,
+            status=None,
+    ):
+        """Evaluate Expected Improvement (q,p-EI) over a specified list of ``points_to_evaluate``.
+
+        .. Note:: We use ``points_to_evaluate`` instead of ``self._points_to_sample`` and compute the EI at those points only.
+            ``self._points_to_sample`` will be changed.
+
+        Generally gradient descent is preferred but when it fails to converge this may be the only "robust" option.
+        This function is also useful for plotting or debugging purposes (just to get a bunch of EI values).
+
+        TODO(eliu): (GH-56) Allow callers to pass in a source of randomness.
+
+        :param ei_evaluator: object specifying how to evaluate the expected improvement
+        :type ei_evaluator: interfaces.expected_improvement_interface.ExpectedImprovementInterface subclass
+        :param points_to_evaluate: points at which to compute EI
+        :type points_to_evaluate: array of float64 with shape (num_to_evaluate, num_to_sample, ei_evaluator.dim)
+        :param randomness: random source(s) used for monte-carlo integration (when applicable) (UNUSED)
+        :type randomness: (UNUSED)
+        :param max_num_threads: maximum number of threads to use, >= 1 (UNUSED)
+        :type max_num_threads: int > 0
+        :param status: status messages from C++ (e.g., reporting on optimizer success, etc.)
+        :type status: dict
+        :return: EI evaluated at each of points_to_evaluate
+        :rtype: array of float64 with shape (points_to_evaluate.shape[0])
+
+        """
+        null_optimizer = NullOptimizer(None, self)
+        _, values = multistart_optimize(null_optimizer, starting_points=points_to_evaluate)
+
+        # TODO(eliu): (GH-59) Have multistart actually indicate whether updates were found.
+        found_flag = True
+        if status is not None:
+            status["evaluate_EI_at_point_list"] = found_flag
+
+        return values
 
     def _compute_expected_improvement_1d_analytic(self, mu_star, var_star):
         """Compute EI when the number of potential samples is 1 (i.e., points_being_sampled.size = 0) using *fast* analytic methods.

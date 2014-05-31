@@ -8,6 +8,7 @@ for C++ calls to construct the matching C++ domain object.
 import copy
 
 import moe.build.GPP as C_GP
+from moe.optimal_learning.python.constant import TENSOR_PRODUCT_DOMAIN_TYPE, SIMPLEX_INTERSECT_TENSOR_PRODUCT_DOMAIN_TYPE
 from moe.optimal_learning.python.interfaces.domain_interface import DomainInterface
 
 
@@ -20,6 +21,8 @@ class TensorProductDomain(DomainInterface):
     internals to Python.
 
     """
+
+    domain_type = TENSOR_PRODUCT_DOMAIN_TYPE
 
     def __init__(self, domain_bounds):
         """Construct a TensorProductDomain that can be used with cpp_wrappers.* functions/classes.
@@ -58,7 +61,7 @@ class TensorProductDomain(DomainInterface):
         """
         raise NotImplementedError("C++ wrapper currently does not support domain member functions.")
 
-    def generate_uniform_random_points_in_domain(self, num_points, random_source):
+    def generate_uniform_random_points_in_domain(self, num_points, random_source=None):
         r"""Generate ``num_points`` uniformly distributed points from the domain.
 
         We do not currently expose a C++ endpoint for this call; see domain_interface.py for interface specification.
@@ -93,6 +96,8 @@ class SimplexIntersectTensorProductDomain(DomainInterface):
     ASSUMPTION: most of the volume of the tensor product region lies inside the simplex region.
 
     """
+
+    domain_type = SIMPLEX_INTERSECT_TENSOR_PRODUCT_DOMAIN_TYPE
 
     def __init__(self, domain_bounds):
         """Construct a SimplexIntersectTensorProductDomain that can be used with cpp_wrappers.* functions/classes.

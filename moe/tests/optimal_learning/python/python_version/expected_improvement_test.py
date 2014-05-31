@@ -9,7 +9,7 @@ from moe.optimal_learning.python.repeated_domain import RepeatedDomain
 from moe.optimal_learning.python.python_version.covariance import SquareExponential
 from moe.optimal_learning.python.python_version.domain import TensorProductDomain
 from moe.optimal_learning.python.python_version.gaussian_process import GaussianProcess
-from moe.optimal_learning.python.python_version.expected_improvement import multistart_expected_improvement_optimization, evaluate_expected_improvement_at_point_list, ExpectedImprovement
+from moe.optimal_learning.python.python_version.expected_improvement import multistart_expected_improvement_optimization, ExpectedImprovement
 from moe.optimal_learning.python.python_version.optimization import GradientDescentParameters, GradientDescentOptimizer
 from moe.tests.optimal_learning.python.gaussian_process_test_case import GaussianProcessTestCase, GaussianProcessTestEnvironmentInput
 
@@ -147,9 +147,9 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
 
         num_to_eval = 10
         # Add in a newaxis to make num_to_sample explicitly 1
-        points_to_evaluate = domain.generate_uniform_random_points_in_domain(num_to_eval)[..., numpy.newaxis, :]
+        points_to_evaluate = domain.generate_uniform_random_points_in_domain(num_to_eval)[:, numpy.newaxis, :]
 
-        test_values = evaluate_expected_improvement_at_point_list(ei_eval, points_to_evaluate)
+        test_values = ei_eval.evaluate_at_point_list(points_to_evaluate)
 
         for i, value in enumerate(test_values):
             ei_eval.set_current_point(points_to_evaluate[i, ...])

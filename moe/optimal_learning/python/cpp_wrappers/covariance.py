@@ -8,6 +8,7 @@ covariance functions in a format that can be interpreted in C++ calls.
 """
 import numpy
 
+from moe.optimal_learning.python.constant import SQUARE_EXPONENTIAL_COVARIANCE_TYPE
 from moe.optimal_learning.python.interfaces.covariance_interface import CovarianceInterface
 
 
@@ -25,6 +26,8 @@ class SquareExponential(CovarianceInterface):
 
     """
 
+    covariance_type = SQUARE_EXPONENTIAL_COVARIANCE_TYPE
+
     def __init__(self, hyperparameters):
         r"""Construct a square exponential covariance object that can be used with cpp_wrappers.* functions/classes.
 
@@ -39,6 +42,11 @@ class SquareExponential(CovarianceInterface):
     def num_hyperparameters(self):
         """Return the number of hyperparameters of this covariance function."""
         return self._hyperparameters.size
+
+    @staticmethod
+    def make_default_hyperparameters(dim):
+        """Return a default set up hyperparameters given the dimension of the space."""
+        return numpy.ones(dim + 1)
 
     def get_hyperparameters(self):
         """Get the hyperparameters (array of float64 with shape (num_hyperparameters)) of this covariance."""
