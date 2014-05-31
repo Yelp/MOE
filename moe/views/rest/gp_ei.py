@@ -31,7 +31,7 @@ class GpEiRequest(colander.MappingSchema):
     **Optional fields**
 
         :points_being_sampled: list of points in domain being sampled in concurrent experiments (default: []) (:class:`moe.views.schemas.ListOfPointsInDomain`)
-        :mc_iterations: number of Monte Carlo (MC) iterations to perform in numerical integration to calculate EI (default: 1000)
+        :mc_iterations: number of Monte Carlo (MC) iterations to perform in numerical integration to calculate EI
         :covariance_info: a :class:`moe.views.schemas.CovarianceInfo` dict of covariance information
 
     **Example Minimal Request**
@@ -166,7 +166,10 @@ class GpEiView(GpPrettyView):
         """
         params = self.get_params_from_request()
 
-        points_to_evaluate = numpy.array(params.get('points_to_evaluate'))
+        # TODO(sclark): (GH-99) Change REST interface to give points_to_evaluate with shape
+        # (num_to_evaluate, num_to_sample, dim)
+        # Here we assume the shape is (num_to_evaluate, dim) so we insert an axis, making num_to_sample = 1.
+        points_to_evaluate = numpy.array(params.get('points_to_evaluate'))[:, numpy.newaxis, :]
         points_being_sampled = params.get('points_being_sampled')
         if points_being_sampled is not None:
             points_being_sampled = numpy.array(points_being_sampled)

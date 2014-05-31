@@ -330,7 +330,10 @@ class _CppOptimizationParameters(object):
         self.objective_type = objective_type
         self.optimizer_type = optimizer_type
         self.num_random_samples = num_random_samples  # number of samples to 'dumb' search over
-        self.optimizer_parameters = optimizer_parameters.parameters  # must match the optimizer_type
+        if optimizer_parameters:
+            self.optimizer_parameters = optimizer_parameters.parameters  # must match the optimizer_type
+        else:
+            self.optimizer_parameters = None
 
 
 class NullOptimizer(OptimizerInterface):
@@ -355,7 +358,7 @@ class NullOptimizer(OptimizerInterface):
         self.optimizer_type = C_GP.OptimizerTypes.null
         self.optimization_parameters = _CppOptimizationParameters(
             domain_type=domain._domain_type,
-            objective_type=optimizable.objective_function.objective_type,
+            objective_type=optimizable.objective_type,
             optimizer_type=self.optimizer_type,
             num_random_samples=num_random_samples,
             optimizer_parameters=None,

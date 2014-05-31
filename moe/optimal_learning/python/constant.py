@@ -57,9 +57,9 @@ TEST_GRADIENT_DESCENT_PARAMETERS = python_optimization.GradientDescentParameters
         max_num_steps=5,
         max_num_restarts=2,
         num_steps_averaged=1,
-        gamma=0.7,
-        pre_mult=0.4,
-        max_relative_change=0.1,
+        gamma=0.4,
+        pre_mult=1.0,
+        max_relative_change=1.0,
         tolerance=1.0e-3,
         )
 

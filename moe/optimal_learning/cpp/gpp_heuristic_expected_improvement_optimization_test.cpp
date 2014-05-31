@@ -291,12 +291,12 @@ int HeuristicExpectedImprovementOptimizationTestCore(EstimationPolicyTypes polic
   int current_errors = 0;
 
   // gradient descent parameters
-  const double gamma = 0.5;
-  const double pre_mult = 1.0;
+  const double gamma = 0.4;
+  const double pre_mult = 1.3;
   const double max_relative_change = 1.0;
-  const double tolerance = 1.0e-9;
-  const int max_gradient_descent_steps = 1000;
-  const int max_num_restarts = 10;
+  const double tolerance = 1.0e-12;
+  const int max_gradient_descent_steps = 300;
+  const int max_num_restarts = 5;
   const int num_multistarts = 20;
   GradientDescentParameters gd_params(num_multistarts, max_gradient_descent_steps, max_num_restarts, gamma, pre_mult, max_relative_change, tolerance);
 
@@ -348,13 +348,16 @@ int HeuristicExpectedImprovementOptimizationTestCore(EstimationPolicyTypes polic
 
   // test optimization
   bool found_flag = false;
-  ComputeHeuristicSetOfPointsToSample(*mock_gp_data.gaussian_process_ptr, gd_params, domain, *estimation_policy, mock_gp_data.best_so_far, kMaxNumThreads, grid_search_only, num_grid_search_points, num_to_sample, &found_flag, &uniform_generator, best_points_to_sample.data());
+  ComputeHeuristicPointsToSample(*mock_gp_data.gaussian_process_ptr, gd_params, domain, *estimation_policy, mock_gp_data.best_so_far, kMaxNumThreads, grid_search_only, num_grid_search_points, num_to_sample, &found_flag, &uniform_generator, best_points_to_sample.data());
   if (!found_flag) {
     ++total_errors;
   }
 
   // check points are in domain
-  current_errors = CheckPointsInDomain(domain, best_points_to_sample.data(), num_to_sample);
+  RepeatedDomain<DomainType> repeated_domain(domain, num_to_sample);
+  if (!repeated_domain.CheckPointInside(best_points_to_sample.data())) {
+    ++current_errors;
+  }
 #ifdef OL_ERROR_PRINT
   if (current_errors != 0) {
     OL_ERROR_PRINTF("ERROR: points were not in domain!  points:\n");

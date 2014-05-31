@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """An example for accessing the gp_mean_var simple endpoint.
 
 :func:`moe.easy_interface.simple_endpoint.gp_mean_var`

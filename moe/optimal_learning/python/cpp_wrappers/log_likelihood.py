@@ -143,7 +143,7 @@ def evaluate_log_likelihood_at_hyperparameter_list(log_likelihood_evaluator, hyp
     Generally Newton or gradient descent is preferred but when they fail to converge this may be the only "robust" option.
     This function is also useful for plotting or debugging purposes (just to get a bunch of log likelihood values).
 
-    Calls into evaluate_log_likelihood_at_hyperparameter_list() in src/cpp/GPP_python_model_selection.cpp.
+    Calls into evaluate_log_likelihood_at_hyperparameter_list() in cpp/GPP_python_model_selection.cpp.
 
     :param log_likelihood_evaluator: object specifying which log likelihood measure to evaluate
     :type log_likelihood_evaluator: cpp_wrappers.log_likelihood.LogLikelihood

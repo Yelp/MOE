@@ -61,13 +61,10 @@
 
   With the ability the compute EI, the final step is to optimize
   to find the best EI.  This is done using multistart gradient descent (MGD), in
-  ComputeOptimalPointToSampleWithRandomStarts().  This generates a uniform random
-  sampling of points and calls ComputeOptimalPointToSampleViaMultistartGradientDescent(),
-  which carries out the multistart process via templates from gpp_optimization.hpp.
-
-  We can also evaluate EI at several points simultaneously; e.g., if we wanted to run 4 simultaneous
-  experiments, we can use EI to select all 4 points at once. Solving for a set of new experimental
-  points is implemented in ComputeOptimalSetOfPointsToSample().
+  ComputeOptimalPointsToSample(). This method wraps a MGD call and falls back on random search
+  if that fails. See gpp_optimization.hpp for multistart/optimization templates. This method
+  can evaluate and optimize EI at serval points simultaneously; e.g., if we wanted to run 4 simultaneous
+  experiments, we can use EI to select all 4 points at once.
 
   The literature (e.g., Ginsbourger 2008) refers to these problems collectively as q-EI, where q
   is a positive integer. So 1-EI is the originally dicussed usage, and the previous scenario with
@@ -99,9 +96,9 @@
   GD as well as the template definition.
 
   For particularly difficult problems or problems where gradient descent's parameters are not
-  well-chosen, GD can fail to converge.  If this happens, we can fall back to a 'dumb' search
-  (i.e., evaluate EI at a large number of random points and take the best one).  This
-  functionality is accessed through: ComputeOptimalPointToSampleViaLatinHypercubeSearch<>().
+  well-chosen, GD can fail to converge.  If this happens, we can fall back on heuristics;
+  e.g., 'dumb' search (i.e., evaluate EI at a large number of random points and take the best
+  one). Naive search lives in: ComputeOptimalPointsToSampleViaLatinHypercubeSearch<>().
 
   **2 FILE OVERVIEW**
 
@@ -126,19 +123,17 @@
   **3 IMPLEMENTATION NOTES**
 
   a. This file has a few primary endpoints for EI optimization:
-     i. ComputeOptimalPointToSampleWithRandomStarts<>()
-          Solves the 1,p-EI problem.
-          Takes in a covariance function and prior data, outputs the next best point (experiment)
-          to sample (run). Uses gradient descent. Only produces a single new point to sample.
-     ii. ComputeOptimalPointToSampleViaLatinHypercubeSearch<>()
-          Estimates the 1,p-EI problem.
-          Takes in a covariance function and prior data, outputs the next best point (experiment)
-          to sample (run). Uses 'dumb' search. Only produces a single new point to sample.
-     iii. ComputeOptimalSetOfPointsToSample<>()
+     i. ComputeOptimalPointsToSampleWithRandomStarts<>()
           Solves the q,p-EI problem.
-          Takes in a covariance function and prior data, outputs the next best set of points (experiments)
-          to sample (run). Uses gradient descent and/or 'dumb' search. Produces a specified number of
-          points for simultaneous sampling.
+          Takes in a gaussian_process describing the prior, domain, config, etc.; outputs the next best point(s) (experiment)
+          to sample (run). Uses gradient descent.
+     ii. ComputeOptimalPointsToSampleViaLatinHypercubeSearch<>()
+          Estimates the q,p-EI problem.
+          Takes in a gaussian_process describing the prior, domain, etc.; outputs the next best point(s) (experiment)
+          to sample (run). Uses 'dumb' search.
+     iii. ComputeOptimalPointsToSample<>()
+          Solves the q,p-EI problem.
+          Wraps the previous two items; relies on gradient descent and falls back to "dumb" search if it fails.
 
      .. NOTE::
          See ``gpp_math.cpp``'s header comments for more detailed implementation notes.
@@ -910,10 +905,6 @@ struct ExpectedImprovementState final {
         EI_this_step_from_var(num_union),
         aggregate(dim*num_derivatives),
         normals(num_union) {
-          // TODO(eliu): REMOVE THIS when q,p-EI is fully implemented (ADS-3094)
-          if (num_to_sample != 1) {
-            OL_THROW_EXCEPTION(InvalidValueException<int>, "EIEvaluator can only handle q=1!", 1, num_to_sample);
-          }
   }
 
   ExpectedImprovementState(ExpectedImprovementState&& OL_UNUSED(other)) = default;
@@ -1292,8 +1283,10 @@ inline OL_NONNULL_POINTERS void SetupExpectedImprovementState(const OnePotential
 
   \param
     :ei_evaluator: evaluator object associated w/the state objects being constructed
-    :points_to_sample[dim]: initial point to load into state (must be a valid point for the problem)
+    :points_to_sample[dim][num_to_sample]: initial points to load into state (must be a valid point for the problem);
+      i.e., points at which to evaluate EI and/or its gradient
     :points_being_sampled[dim][num_being_sampled]: points that are being sampled in concurrently experiments
+    :num_to_sample: number of potential future samples; gradients are evaluated wrt these points (i.e., the "q" in q,p-EI)
     :num_being_sampled: number of points being sampled concurrently (i.e., the p in q,p-EI)
     :max_num_threads: maximum number of threads for use by OpenMP (generally should be <= # cores)
     :configure_for_gradients: true if these state objects will be used to compute gradients, false otherwise
@@ -1302,9 +1295,7 @@ inline OL_NONNULL_POINTERS void SetupExpectedImprovementState(const OnePotential
   \output
     :state_vector[max_num_threads]: vector of states containing ``max_num_threads`` properly initialized state objects
 \endrst*/
-inline OL_NONNULL_POINTERS void SetupExpectedImprovementState(const ExpectedImprovementEvaluator& ei_evaluator, double const * restrict points_to_sample, double const * restrict points_being_sampled, int num_being_sampled, int max_num_threads, bool configure_for_gradients, NormalRNG * normal_rng, std::vector<typename ExpectedImprovementEvaluator::StateType> * state_vector) {
-  int num_to_sample = 1;  // HACK HACK HACK. TODO(eliu): fix this when EI class properly supports q,p-EI (ADS-3094)
-
+inline OL_NONNULL_POINTERS void SetupExpectedImprovementState(const ExpectedImprovementEvaluator& ei_evaluator, double const * restrict points_to_sample, double const * restrict points_being_sampled, int num_to_sample, int num_being_sampled, int max_num_threads, bool configure_for_gradients, NormalRNG * normal_rng, std::vector<typename ExpectedImprovementEvaluator::StateType> * state_vector) {
   state_vector->reserve(max_num_threads);
   for (int i = 0; i < max_num_threads; ++i) {
     state_vector->emplace_back(ei_evaluator, points_to_sample, points_being_sampled, num_to_sample, num_being_sampled, configure_for_gradients, normal_rng + i);
@@ -1312,20 +1303,18 @@ inline OL_NONNULL_POINTERS void SetupExpectedImprovementState(const ExpectedImpr
 }
 
 /*!\rst
-  Optimize the Expected Improvement (to find the next best point to sample).  This method solves 1,p-EI as long as
-  the initial guess is good enough.  Optimization is done using restarted Gradient Descent, via
-  GradientDescentOptimizer<...>::Optimize() from ``gpp_optimization.hpp``.  Please see that file for details on gradient
-  descent and see gpp_optimization_parameters.hpp for the meanings of the GradientDescentParameters.
+  Solve the q,p-EI problem (see ComputeOptimalPointsToSample and/or header docs) by optimizing the Expected Improvement.
+  Optimization is done using restarted Gradient Descent, via GradientDescentOptimizer<...>::Optimize() from
+  ``gpp_optimization.hpp``.  Please see that file for details on gradient descent and see gpp_optimization_parameters.hpp
+  for the meanings of the GradientDescentParameters.
 
   This function is just a simple wrapper that sets up the Evaluator's State and calls a general template for restarted GD.
 
-  Currently, during optimization, we recommend that the coordinates of the initial guesses not differ from the
-  coordinates of the optima by more than about 1 order of magnitude. This is a very (VERY!) rough guideline implying
-  that this function should be backed by multistarting on a grid (or similar) to provide better chances of a good initial guess.
-
-  The 'dumb' search component is provided through ComputeOptimalPointToSampleViaMultistartGradientDescent() (see below).
-  Generally, calling that function should be preferred.  This function is meant for 1) easier testing;
-  2) if you really know what you're doing.
+  This function does not perform multistarting or employ any other robustness-boosting heuristcs; it only
+  converges if the ``initial_guess`` is close to the solution. In general,
+  ComputeOptimalPointsToSample() (see below) is preferred. This function is meant for:
+  1. easier testing;
+  2. if you really know what you're doing.
 
   Solution is guaranteed to lie within the region specified by ``domain``; note that this may not be a
   true optima (i.e., the gradient may be substantially nonzero).
@@ -1335,16 +1324,17 @@ inline OL_NONNULL_POINTERS void SetupExpectedImprovementState(const ExpectedImpr
     :optimization_parameters: GradientDescentParameters object that describes the parameters controlling EI optimization
       (e.g., number of iterations, tolerances, learning rate)
     :domain: object specifying the domain to optimize over (see ``gpp_domain.hpp``)
-    :points_to_sample[dim]: initial guess for gradient descent
+    :initial_guess[dim][num_to_sample]: initial guess for gradient descent
     :points_being_sampled[dim][num_being_sampled]: points that are being sampled in concurrent experiments
-    :num_being_sampled: number of points being sampled concurrently (i.e., the p in 1,p-EI)
+    :num_to_sample: number of potential future samples; gradients are evaluated wrt these points (i.e., the "q" in q,p-EI)
+    :num_being_sampled: number of points being sampled concurrently (i.e., the "p" in q,p-EI)
     :normal_rng[1]: a NormalRNG object that provides the (pesudo)random source for MC integration
   \output
     :normal_rng[1]: NormalRNG object will have its state changed due to random draws
-    :next_point[dim]: point yielding the best EI according to gradient descent
+    :next_point[dim][num_to_sample]: points yielding the best EI according to gradient descent
 \endrst*/
 template <typename ExpectedImprovementEvaluator, typename DomainType>
-void RestartedGradientDescentEIOptimization(const ExpectedImprovementEvaluator& ei_evaluator, const GradientDescentParameters& optimization_parameters, const DomainType& domain, double const * restrict points_to_sample, double const * restrict points_being_sampled, int num_being_sampled, NormalRNG * normal_rng, double * restrict next_point) {
+void RestartedGradientDescentEIOptimization(const ExpectedImprovementEvaluator& ei_evaluator, const GradientDescentParameters& optimization_parameters, const DomainType& domain, double const * restrict initial_guess, double const * restrict points_being_sampled, int num_to_sample, int num_being_sampled, NormalRNG * normal_rng, double * restrict next_point) {
   if (unlikely(optimization_parameters.max_num_restarts <= 0)) {
     return;
   }
@@ -1352,23 +1342,32 @@ void RestartedGradientDescentEIOptimization(const ExpectedImprovementEvaluator& 
 
   OL_VERBOSE_PRINTF("Expected Improvement Optimization via %s:\n", OL_CURRENT_FUNCTION_NAME);
 
-  int num_to_sample = 1;  // HACK HACK HACK. TODO(eliu): fix this when EI class properly supports q,p-EI (ADS-3094)
   bool configure_for_gradients = true;
-  typename ExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, points_to_sample, points_being_sampled, num_to_sample, num_being_sampled, configure_for_gradients, normal_rng);
+  typename ExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, initial_guess, points_being_sampled, num_to_sample, num_being_sampled, configure_for_gradients, normal_rng);
 
-  GradientDescentOptimizer<ExpectedImprovementEvaluator, DomainType> gd_opt;
-  gd_opt.Optimize(ei_evaluator, optimization_parameters, domain, &ei_state);
+  using RepeatedDomain = RepeatedDomain<DomainType>;
+  RepeatedDomain repeated_domain(domain, num_to_sample);
+  GradientDescentOptimizer<ExpectedImprovementEvaluator, RepeatedDomain> gd_opt;
+  gd_opt.Optimize(ei_evaluator, optimization_parameters, repeated_domain, &ei_state);
   ei_state.GetCurrentPoint(next_point);
 }
 
 /*!\rst
-  Performs multistart gradient descent (MGD) to optimize 1,p-EI.  Starts a GD run from each
-  point in ``start_point_set``.  The point corresponding to the optimal EI* is stored in ``best_next_point``.
+  Perform multistart gradient descent (MGD) to solve the q,p-EI problem (see ComputeOptimalPointsToSample and/or
+  header docs).  Starts a GD run from each point in ``start_point_set``.  The point corresponding to the
+  optimal EI\* is stored in ``best_next_point``.
+
+  \* Multistarting is heuristic for global optimization. EI is not convex so this method may not find the true optimum.
 
   This function wraps MultistartOptimizer<>::MultistartOptimize() (see ``gpp_optimization.hpp``), which provides the multistarting
   component. Optimization is done using restarted Gradient Descent, via GradientDescentOptimizer<...>::Optimize() from
   ``gpp_optimization.hpp``. Please see that file for details on gradient descent and see ``gpp_optimization_parameters.hpp``
   for the meanings of the GradientDescentParameters.
+
+  This function (or its wrappers, e.g., ComputeOptimalPointsToSampleWithRandomStarts) are the primary entry-points for
+  gradient descent based EI optimization in the ``optimal_learning`` library.
+
+  Users may prefer to call ComputeOptimalPointsToSample(), which applies other heuristics to improve robustness.
 
   Currently, during optimization, we recommend that the coordinates of the initial guesses not differ from the
   coordinates of the optima by more than about 1 order of magnitude. This is a very (VERY!) rough guideline for
@@ -1376,9 +1375,6 @@ void RestartedGradientDescentEIOptimization(const ExpectedImprovementEvaluator& 
 
   Solution is guaranteed to lie within the region specified by ``domain``; note that this may not be a
   true optima (i.e., the gradient may be substantially nonzero).
-
-  See ComputeOptimalPointToSampleWithRandomStarts() for additional details on MGD and its use for optimizing EI.  Usually that
-  endpoint is preferred.
 
   .. WARNING::
        This function fails ungracefully if NO improvement can be found!  In that case,
@@ -1391,10 +1387,11 @@ void RestartedGradientDescentEIOptimization(const ExpectedImprovementEvaluator& 
     :optimization_parameters: GradientDescentParameters object that describes the parameters controlling EI optimization
       (e.g., number of iterations, tolerances, learning rate)
     :domain: object specifying the domain to optimize over (see ``gpp_domain.hpp``)
-    :start_point_set[dim][num_multistarts]: set of initial guesses for MGD
+    :start_point_set[dim][num_to_sample][num_multistarts]: set of initial guesses for MGD (one block of num_to_sample points per multistart)
     :points_being_sampled[dim][num_being_sampled]: points that are being sampled in concurrent experiments
     :num_multistarts: number of points in set of initial guesses
-    :num_being_sampled: number of points being sampled concurrently (i.e., the p in 1,p-EI)
+    :num_to_sample: number of potential future samples; gradients are evaluated wrt these points (i.e., the "q" in q,p-EI)
+    :num_being_sampled: number of points being sampled concurrently (i.e., the "p" in q,p-EI)
     :best_so_far: value of the best sample so far (must be ``min(points_sampled_value)``)
     :max_int_steps: maximum number of MC iterations
     :max_num_threads: maximum number of threads for use by OpenMP (generally should be <= # cores)
@@ -1402,24 +1399,23 @@ void RestartedGradientDescentEIOptimization(const ExpectedImprovementEvaluator& 
   \output
     :normal_rng[max_num_threads]: NormalRNG objects will have their state changed due to random draws
     :found_flag[1]: true if ``best_next_point`` corresponds to a nonzero EI
-    :best_next_point[dim]: point yielding the best EI according to MGD
+    :best_next_point[dim][num_to_sample]: points yielding the best EI according to MGD
 \endrst*/
 template <typename DomainType>
-OL_NONNULL_POINTERS void ComputeOptimalPointToSampleViaMultistartGradientDescent(const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters, const DomainType& domain, double const * restrict start_point_set, double const * restrict points_being_sampled, int num_multistarts, int num_being_sampled, double best_so_far, int max_int_steps, int max_num_threads, NormalRNG * normal_rng, bool * restrict found_flag, double * restrict best_next_point) {
+OL_NONNULL_POINTERS void ComputeOptimalPointsToSampleViaMultistartGradientDescent(const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters, const DomainType& domain, double const * restrict start_point_set, double const * restrict points_being_sampled, int num_multistarts, int num_to_sample, int num_being_sampled, double best_so_far, int max_int_steps, int max_num_threads, NormalRNG * normal_rng, bool * restrict found_flag, double * restrict best_next_point) {
   // set chunk_size; see gpp_common.hpp header comments, item 7
   const int chunk_size = std::max(std::min(4, std::max(1, num_multistarts/max_num_threads)), num_multistarts/(max_num_threads*10));
 
   bool configure_for_gradients = true;
-  if (num_being_sampled == 0) {
+  if (num_to_sample == 1 && num_being_sampled == 0) {
     // special analytic case when we are not using (or not accounting for) multiple, simultaneous experiments
     OnePotentialSampleExpectedImprovementEvaluator ei_evaluator(gaussian_process, best_so_far);
 
     std::vector<typename OnePotentialSampleExpectedImprovementEvaluator::StateType> ei_state_vector;
     SetupExpectedImprovementState(ei_evaluator, start_point_set, max_num_threads, configure_for_gradients, &ei_state_vector);
 
-    const int dim = gaussian_process.dim();
     // init winner to be first point in set and 'force' its value to be 0.0; we cannot do worse than this
-    OptimizationIOContainer io_container(dim, 0.0, start_point_set);
+    OptimizationIOContainer io_container(ei_state_vector[0].GetProblemSize(), 0.0, start_point_set);
 
     GradientDescentOptimizer<OnePotentialSampleExpectedImprovementEvaluator, DomainType> gd_opt;
     MultistartOptimizer<GradientDescentOptimizer<OnePotentialSampleExpectedImprovementEvaluator, DomainType> > multistart_optimizer;
@@ -1427,55 +1423,33 @@ OL_NONNULL_POINTERS void ComputeOptimalPointToSampleViaMultistartGradientDescent
     *found_flag = io_container.found_flag;
     std::copy(io_container.best_point.begin(), io_container.best_point.end(), best_next_point);
   } else {
-    const int dim = gaussian_process.dim();
     ExpectedImprovementEvaluator ei_evaluator(gaussian_process, max_int_steps, best_so_far);
 
     std::vector<typename ExpectedImprovementEvaluator::StateType> ei_state_vector;
-    SetupExpectedImprovementState(ei_evaluator, start_point_set, points_being_sampled, num_being_sampled, max_num_threads, configure_for_gradients, normal_rng, &ei_state_vector);
+    SetupExpectedImprovementState(ei_evaluator, start_point_set, points_being_sampled, num_to_sample, num_being_sampled, max_num_threads, configure_for_gradients, normal_rng, &ei_state_vector);
 
     // init winner to be first point in set and 'force' its value to be 0.0; we cannot do worse than this
-    OptimizationIOContainer io_container(dim, 0.0, start_point_set);
+    OptimizationIOContainer io_container(ei_state_vector[0].GetProblemSize(), 0.0, start_point_set);
 
-    GradientDescentOptimizer<ExpectedImprovementEvaluator, DomainType> gd_opt;
-    MultistartOptimizer<GradientDescentOptimizer<ExpectedImprovementEvaluator, DomainType> > multistart_optimizer;
-    multistart_optimizer.MultistartOptimize(gd_opt, ei_evaluator, optimization_parameters, domain, start_point_set, num_multistarts, max_num_threads, chunk_size, ei_state_vector.data(), nullptr, &io_container);
+    using RepeatedDomain = RepeatedDomain<DomainType>;
+    RepeatedDomain repeated_domain(domain, num_to_sample);
+    GradientDescentOptimizer<ExpectedImprovementEvaluator, RepeatedDomain> gd_opt;
+    MultistartOptimizer<GradientDescentOptimizer<ExpectedImprovementEvaluator, RepeatedDomain> > multistart_optimizer;
+    multistart_optimizer.MultistartOptimize(gd_opt, ei_evaluator, optimization_parameters, repeated_domain, start_point_set, num_multistarts, max_num_threads, chunk_size, ei_state_vector.data(), nullptr, &io_container);
     *found_flag = io_container.found_flag;
     std::copy(io_container.best_point.begin(), io_container.best_point.end(), best_next_point);
   }
 }
 
 /*!\rst
-  Performs multistart (restarted) gradient descent (MGD) to optimize Expected Improvement (1,p-EI) starting from
-  ``num_multistarts`` points selected randomly from the within th domain.
-  The point corresponding to the optimal EI* is stored in ``best_next_point``.
+  Perform multistart gradient descent (MGD) to solve the q,p-EI problem (see ComputeOptimalPointsToSample and/or
+  header docs), starting from ``num_multistarts`` points selected randomly from the within th domain.
 
-  This is the primary endpoint for expected improvement optimization using gradient descent.  It produces an uniform random
-  sampling of initial guesses and wraps a series of calls:
-  The heart of MGD is in ComputeOptimalPointToSampleViaMultistartGradientDescent(), which wraps
-  MultistartOptimizer<...>::MultistartOptimize(...) (in gpp_optimization.hpp).
-  The heart of restarted GD is in GradientDescentOptimizer<...>::Optimize() (in gpp_optimization.hpp).
-  EI is computed in ComputeExpectedImprovement() and its gradient is in ComputeGradExpectedImprovement(), which are member
-  functions of ExpectedImprovementEvaluator and OnePotentialSampleExpectedImprovementEvaluator.
+  This function is a simple wrapper around ComputeOptimalPointsToSampleViaMultistartGradientDescent(). It additionally
+  generates a set of random starting points and is just here for convenience when better initial guesses are not
+  available.
 
-  This function should be the primary entry-point into this optimal learning library.  It takes in a covariance function,
-  points already sampled, and potential (future) points to sample as well as parameters for gradient descent and MC integration.
-  Basically, the input is a full specification of the optimization problem.
-  And the output is the "best" next point to sample.
-
-  See file docs for this file for more high level description of how this works.  See the matching cpp file docs
-  for more mathematical details.
-
-  Currently, during optimization, we recommend that the coordinates of the initial guesses not differ from the
-  coordinates of the optima by more than about 1 order of magnitude. This is a very (VERY!) rough guideline for
-  sizing the domain and num_multistarts; i.e., be wary of sets of initial guesses that cover the space too sparsely.
-
-  Solution is guaranteed to lie within the region specified by "domain"; note that this may not be a
-  true optima (i.e., the gradient may be substantially nonzero).
-
-  .. WARNING::
-       This function fails if NO improvement can be found!  In that case,
-       ``best_next_point`` will always be the first randomly chosen point.
-       ``found_flag`` will be set to false in this case.
+  See ComputeOptimalPointsToSampleViaMultistartGradientDescent() for more details.
 
   \param
     :gaussian_process: GaussianProcess object (holds ``points_sampled``, ``values``, ``noise_variance``, derived quantities)
@@ -1484,7 +1458,8 @@ OL_NONNULL_POINTERS void ComputeOptimalPointToSampleViaMultistartGradientDescent
       (e.g., number of iterations, tolerances, learning rate)
     :domain: object specifying the domain to optimize over (see ``gpp_domain.hpp``)
     :points_being_sampled[dim][num_being_sampled]: points that are being sampled in concurrent experiments
-    :num_being_sampled: number of points being sampled concurrently (i.e., the p in 1,p-EI)
+    :num_to_sample: number of potential future samples; gradients are evaluated wrt these points (i.e., the "q" in q,p-EI)
+    :num_being_sampled: number of points being sampled concurrently (i.e., the "p" in q,p-EI)
     :best_so_far: value of the best sample so far (must be ``min(points_sampled_value)``)
     :max_int_steps: maximum number of MC iterations
     :max_num_threads: maximum number of threads for use by OpenMP (generally should be <= # cores)
@@ -1494,27 +1469,28 @@ OL_NONNULL_POINTERS void ComputeOptimalPointToSampleViaMultistartGradientDescent
     :found_flag[1]: true if best_next_point corresponds to a nonzero EI
     :uniform_generator[1]: UniformRandomGenerator object will have its state changed due to random draws
     :normal_rng[max_num_threads]: NormalRNG objects will have their state changed due to random draws
-    :best_next_point[dim]: point yielding the best EI according to MGD
+    :best_next_point[dim][num_to_sample]: points yielding the best EI according to MGD
 \endrst*/
 template <typename DomainType>
-void ComputeOptimalPointToSampleWithRandomStarts(const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters, const DomainType& domain, double const * restrict points_being_sampled, int num_being_sampled, double best_so_far, int max_int_steps, int max_num_threads, bool * restrict found_flag, UniformRandomGenerator * uniform_generator, NormalRNG * normal_rng, double * restrict best_next_point) {
-  std::vector<double> starting_points(gaussian_process.dim()*optimization_parameters.num_multistarts);
+void ComputeOptimalPointsToSampleWithRandomStarts(const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters, const DomainType& domain, double const * restrict points_being_sampled, int num_to_sample, int num_being_sampled, double best_so_far, int max_int_steps, int max_num_threads, bool * restrict found_flag, UniformRandomGenerator * uniform_generator, NormalRNG * normal_rng, double * restrict best_next_point) {
+  std::vector<double> starting_points(gaussian_process.dim()*optimization_parameters.num_multistarts*num_to_sample);
 
   // GenerateUniformPointsInDomain() is allowed to return fewer than the requested number of multistarts
-  int num_multistarts = domain.GenerateUniformPointsInDomain(optimization_parameters.num_multistarts, uniform_generator, starting_points.data());
+  RepeatedDomain<DomainType> repeated_domain(domain, num_to_sample);
+  int num_multistarts = repeated_domain.GenerateUniformPointsInDomain(optimization_parameters.num_multistarts, uniform_generator, starting_points.data());
 
-  ComputeOptimalPointToSampleViaMultistartGradientDescent(gaussian_process, optimization_parameters, domain, starting_points.data(), points_being_sampled, num_multistarts, num_being_sampled, best_so_far, max_int_steps, max_num_threads, normal_rng, found_flag, best_next_point);
+  ComputeOptimalPointsToSampleViaMultistartGradientDescent(gaussian_process, optimization_parameters, domain, starting_points.data(), points_being_sampled, num_multistarts, num_to_sample, num_being_sampled, best_so_far, max_int_steps, max_num_threads, normal_rng, found_flag, best_next_point);
 #ifdef OL_WARNING_PRINT
   if (false == *found_flag) {
     OL_WARNING_PRINTF("WARNING: %s DID NOT CONVERGE\n", OL_CURRENT_FUNCTION_NAME);
     OL_WARNING_PRINTF("First multistart point was returned:\n");
-    PrintMatrix(starting_points.data(), 1, gaussian_process.dim());
+    PrintMatrixTrans(starting_points.data(), num_to_sample, gaussian_process.dim());
   }
 #endif
 }
 
 /*!\rst
-  Function to evaluate Expected Improvement (1,p-EI) over a specified list of ``num_multistarts`` points.
+  Function to evaluate Expected Improvement (q,p-EI) over a specified list of ``num_multistarts`` points.
   Optionally outputs the EI at each of these points.
   Outputs the point of the set obtaining the maximum EI value.
 
@@ -1528,10 +1504,11 @@ void ComputeOptimalPointToSampleWithRandomStarts(const GaussianProcess& gaussian
     :gaussian_process: GaussianProcess object (holds ``points_sampled``, ``values``, ``noise_variance``, derived quantities)
       that describes the underlying GP
     :domain: object specifying the domain to optimize over (see ``gpp_domain.hpp``)
-    :initial_guesses[dim][num_multistarts]: list of points at which to compute EI
+    :initial_guesses[dim][num_to_sample][num_multistarts]: list of points at which to compute EI
     :points_being_sampled[dim][num_being_sampled]: points that are being sampled in concurrent experiments
     :num_multistarts: number of points to check
-    :num_being_sampled: number of points being sampled concurrently (i.e., the p in 1,p-EI)
+    :num_to_sample: number of potential future samples; gradients are evaluated wrt these points (i.e., the "q" in q,p-EI)
+    :num_being_sampled: number of points being sampled concurrently (i.e., the "p" in q,p-EI)
     :best_so_far: value of the best sample so far (must be ``min(points_sampled_value)``)
     :max_int_steps: maximum number of MC iterations
     :max_num_threads: maximum number of threads for use by OpenMP (generally should be <= # cores)
@@ -1541,24 +1518,23 @@ void ComputeOptimalPointToSampleWithRandomStarts(const GaussianProcess& gaussian
     :normal_rng[max_num_threads]: NormalRNG objects will have their state changed due to random draws
     :function_values[num_multistarts]: EI evaluated at each point of ``initial_guesses``, in the same order as
       ``initial_guesses``; never dereferenced if nullptr
-    :best_next_point[dim]: point yielding the best EI according to dumb search
+    :best_next_point[dim][num_to_sample]: points yielding the best EI according to dumb search
 \endrst*/
 template <typename DomainType>
-void EvaluateEIAtPointList(const GaussianProcess& gaussian_process, const DomainType& domain, double const * restrict initial_guesses, double const * restrict points_being_sampled, int num_multistarts, int num_being_sampled, double best_so_far, int max_int_steps, int max_num_threads, bool *  restrict found_flag, NormalRNG * normal_rng, double * restrict function_values, double * restrict best_next_point) {
+void EvaluateEIAtPointList(const GaussianProcess& gaussian_process, const DomainType& domain, double const * restrict initial_guesses, double const * restrict points_being_sampled, int num_multistarts, int num_to_sample, int num_being_sampled, double best_so_far, int max_int_steps, int max_num_threads, bool *  restrict found_flag, NormalRNG * normal_rng, double * restrict function_values, double * restrict best_next_point) {
   // set chunk_size; see gpp_common.hpp header comments, item 7
   const int chunk_size = std::max(std::min(40, std::max(1, num_multistarts/max_num_threads)), num_multistarts/(max_num_threads*120));
 
   bool configure_for_gradients = false;
-  if (num_being_sampled == 0) {
+  if (num_to_sample == 1 && num_being_sampled == 0) {
     // special analytic case when we are not using (or not accounting for) multiple, simultaneous experiments
     OnePotentialSampleExpectedImprovementEvaluator ei_evaluator(gaussian_process, best_so_far);
 
     std::vector<typename OnePotentialSampleExpectedImprovementEvaluator::StateType> ei_state_vector;
     SetupExpectedImprovementState(ei_evaluator, initial_guesses, max_num_threads, configure_for_gradients, &ei_state_vector);
 
-    const int dim = gaussian_process.dim();
     // init winner to be first point in set and 'force' its value to be 0.0; we cannot do worse than this
-    OptimizationIOContainer io_container(dim, 0.0, initial_guesses);
+    OptimizationIOContainer io_container(ei_state_vector[0].GetProblemSize(), 0.0, initial_guesses);
 
     NullOptimizer<OnePotentialSampleExpectedImprovementEvaluator, DomainType> null_opt;
     typename NullOptimizer<OnePotentialSampleExpectedImprovementEvaluator, DomainType>::ParameterStruct null_parameters;
@@ -1567,27 +1543,29 @@ void EvaluateEIAtPointList(const GaussianProcess& gaussian_process, const Domain
     *found_flag = io_container.found_flag;
     std::copy(io_container.best_point.begin(), io_container.best_point.end(), best_next_point);
   } else {
-    const int dim = gaussian_process.dim();
     ExpectedImprovementEvaluator ei_evaluator(gaussian_process, max_int_steps, best_so_far);
 
     std::vector<typename ExpectedImprovementEvaluator::StateType> ei_state_vector;
-    SetupExpectedImprovementState(ei_evaluator, initial_guesses, points_being_sampled, num_being_sampled, max_num_threads, configure_for_gradients, normal_rng, &ei_state_vector);
+    SetupExpectedImprovementState(ei_evaluator, initial_guesses, points_being_sampled, num_to_sample, num_being_sampled, max_num_threads, configure_for_gradients, normal_rng, &ei_state_vector);
 
     // init winner to be first point in set and 'force' its value to be 0.0; we cannot do worse than this
-    OptimizationIOContainer io_container(dim, 0.0, initial_guesses);
+    OptimizationIOContainer io_container(ei_state_vector[0].GetProblemSize(), 0.0, initial_guesses);
 
-    NullOptimizer<ExpectedImprovementEvaluator, DomainType> null_opt;
-    typename NullOptimizer<ExpectedImprovementEvaluator, DomainType>::ParameterStruct null_parameters;
-    MultistartOptimizer<NullOptimizer<ExpectedImprovementEvaluator, DomainType> > multistart_optimizer;
-    multistart_optimizer.MultistartOptimize(null_opt, ei_evaluator, null_parameters, domain, initial_guesses, num_multistarts, max_num_threads, chunk_size, ei_state_vector.data(), function_values, &io_container);
+    using RepeatedDomain = RepeatedDomain<DomainType>;
+    RepeatedDomain repeated_domain(domain, num_to_sample);
+    NullOptimizer<ExpectedImprovementEvaluator, RepeatedDomain> null_opt;
+    typename NullOptimizer<ExpectedImprovementEvaluator, RepeatedDomain>::ParameterStruct null_parameters;
+    MultistartOptimizer<NullOptimizer<ExpectedImprovementEvaluator, RepeatedDomain> > multistart_optimizer;
+    multistart_optimizer.MultistartOptimize(null_opt, ei_evaluator, null_parameters, repeated_domain, initial_guesses, num_multistarts, max_num_threads, chunk_size, ei_state_vector.data(), function_values, &io_container);
     *found_flag = io_container.found_flag;
     std::copy(io_container.best_point.begin(), io_container.best_point.end(), best_next_point);
   }
 }
 
 /*!\rst
-  Brute force optimization ("dumb" search on a latin hypercube) over ``num_multistarts`` points to find the best point
-  to sample next. This function searches for the point with the largest 1,p-EI value.
+  Perform a random, naive search to "solve" the q,p-EI problem (see ComputeOptimalPointsToSample and/or
+  header docs).  Evaluates EI at ``num_multistarts`` points (e.g., on a latin hypercube) to find the
+  point with the best EI value.
 
   Generally gradient descent is preferred but when they fail to converge this may be the only "robust" option.
 
@@ -1602,7 +1580,8 @@ void EvaluateEIAtPointList(const GaussianProcess& gaussian_process, const Domain
     :domain: object specifying the domain to optimize over (see ``gpp_domain.hpp``)
     :points_being_sampled[dim][num_being_sampled]: points that are being sampled in concurrent experiments
     :num_multistarts: number of random points to check
-    :num_being_sampled: number of points being sampled concurrently (i.e., the p in 1,p-EI)
+    :num_to_sample: number of potential future samples; gradients are evaluated wrt these points (i.e., the "q" in q,p-EI)
+    :num_being_sampled: number of points being sampled concurrently (i.e., the "p" in q,p-EI)
     :best_so_far: value of the best sample so far (must be ``min(points_sampled_value)``)
     :max_int_steps: maximum number of MC iterations
     :max_num_threads: maximum number of threads for use by OpenMP (generally should be <= # cores)
@@ -1612,30 +1591,34 @@ void EvaluateEIAtPointList(const GaussianProcess& gaussian_process, const Domain
     found_flag[1]: true if best_next_point corresponds to a nonzero EI
     :uniform_generator[1]: UniformRandomGenerator object will have its state changed due to random draws
     :normal_rng[max_num_threads]: NormalRNG objects will have their state changed due to random draws
-    :best_next_point[dim]: point yielding the best EI according to dumb search
+    :best_next_point[dim][num_to_sample]: points yielding the best EI according to dumb search
 \endrst*/
 template <typename DomainType>
-void ComputeOptimalPointToSampleViaLatinHypercubeSearch(const GaussianProcess& gaussian_process, const DomainType& domain, double const * restrict points_being_sampled, int num_multistarts, int num_being_sampled, double best_so_far, int max_int_steps, int max_num_threads, bool * restrict found_flag, UniformRandomGenerator * uniform_generator, NormalRNG * normal_rng, double * restrict best_next_point) {
-  std::vector<double> initial_guesses(gaussian_process.dim()*num_multistarts);
-  num_multistarts = domain.GenerateUniformPointsInDomain(num_multistarts, uniform_generator, initial_guesses.data());
+void ComputeOptimalPointsToSampleViaLatinHypercubeSearch(const GaussianProcess& gaussian_process, const DomainType& domain, double const * restrict points_being_sampled, int num_multistarts, int num_to_sample, int num_being_sampled, double best_so_far, int max_int_steps, int max_num_threads, bool * restrict found_flag, UniformRandomGenerator * uniform_generator, NormalRNG * normal_rng, double * restrict best_next_point) {
+  std::vector<double> initial_guesses(gaussian_process.dim()*num_multistarts*num_to_sample);
+  RepeatedDomain<DomainType> repeated_domain(domain, num_to_sample);
+  num_multistarts = repeated_domain.GenerateUniformPointsInDomain(num_multistarts, uniform_generator, initial_guesses.data());
 
-  EvaluateEIAtPointList(gaussian_process, domain, initial_guesses.data(), points_being_sampled, num_multistarts, num_being_sampled, best_so_far, max_int_steps, max_num_threads, found_flag, normal_rng, nullptr, best_next_point);
+  EvaluateEIAtPointList(gaussian_process, domain, initial_guesses.data(), points_being_sampled, num_multistarts, num_to_sample, num_being_sampled, best_so_far, max_int_steps, max_num_threads, found_flag, normal_rng, nullptr, best_next_point);
 }
 
 /*!\rst
+  Solve the q,p-EI problem (see header docs) by optimizing the Expected Improvement.
+  Uses multistart gradient descent, "dumb" search, and/or other heuristics to perform the optimization.
+
+  This is the primary entry-point for EI optimization in the optimal_learning library. It offers our best shot at
+  improving robustness by combining higher accuracy methods like gradient descent with fail-safes like random/grid search.
+
   Returns the optimal set of q points to sample CONCURRENTLY by solving the q,p-EI problem.  That is, we may want to run 4
   experiments at the same time and maximize the EI across all 4 experiments at once while knowing of 2 ongoing experiments
   (4,2-EI). This function handles this use case. Evaluation of q,p-EI (and its gradient) for q > 1 or p > 1 is expensive
   (requires monte-carlo iteration), so this method is usually very expensive.
 
-  Compared to ComputeHeuristicSetOfPointsToSample() (``gpp_heuristic_expected_improvement_optimization.hpp``), this function
+  Wraps ComputeOptimalPointsToSampleWithRandomStarts() and ComputeOptimalPointsToSampleViaLatinHypercubeSearch().
+
+  Compared to ComputeHeuristicPointsToSample() (``gpp_heuristic_expected_improvement_optimization.hpp``), this function
   makes no external assumptions about the underlying objective function. Instead, it utilizes a feature of the
   GaussianProcess that allows the GP to account for ongoing/incomplete experiments.
-
-  If ``num_to_sample = 1``, this is the same as ComputeOptimalPointToSampleWithRandomStarts().
-
-  With ``lhc_search_only := false`` and ``num_to_sample := 1``, this is equivalent to
-  ComputeOptimalPointToSampleWithRandomStarts() (i.e., 1,p-EI).
 
   .. NOTE:: These comments were copied into multistart_expected_improvement_optimization() in cpp_wrappers/expected_improvement.py.
 
@@ -1646,13 +1629,13 @@ void ComputeOptimalPointToSampleViaLatinHypercubeSearch(const GaussianProcess& g
       (e.g., number of iterations, tolerances, learning rate)
     :domain: object specifying the domain to optimize over (see ``gpp_domain.hpp``)
     :points_being_sampled[dim][num_being_sampled]: points that are being sampled in concurrent experiments
+    :num_to_sample: how many simultaneous experiments you would like to run (i.e., the q in q,p-EI)
     :num_being_sampled: number of points being sampled concurrently (i.e., the p in q,p-EI)
     :best_so_far: value of the best sample so far (must be ``min(points_sampled_value)``)
     :max_int_steps: maximum number of MC iterations
     :max_num_threads: maximum number of threads for use by OpenMP (generally should be <= # cores)
     :lhc_search_only: whether to ONLY use latin hypercube search (and skip gradient descent EI opt)
     :num_lhc_samples: number of samples to draw if/when doing latin hypercube search
-    :num_to_sample: how many simultaneous experiments you would like to run (i.e., the q in q,p-EI)
     :uniform_generator[1]: a UniformRandomGenerator object providing the random engine for uniform random numbers
     :normal_rng[max_num_threads]: a vector of NormalRNG objects that provide the (pesudo)random source for MC integration
   \output
@@ -1662,11 +1645,11 @@ void ComputeOptimalPointToSampleViaLatinHypercubeSearch(const GaussianProcess& g
     :best_points_to_sample[num_to_sample*dim]: point yielding the best EI according to MGD
 \endrst*/
 template <typename DomainType>
-void ComputeOptimalSetOfPointsToSample(const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters, const DomainType& domain, double const * restrict points_being_sampled, int num_being_sampled, double best_so_far, int max_int_steps, int max_num_threads, bool lhc_search_only, int num_lhc_samples, int num_to_sample, bool * restrict found_flag, UniformRandomGenerator * uniform_generator, NormalRNG * normal_rng, double * restrict best_points_to_sample);
+void ComputeOptimalPointsToSample(const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters, const DomainType& domain, double const * restrict points_being_sampled, int num_to_sample, int num_being_sampled, double best_so_far, int max_int_steps, int max_num_threads, bool lhc_search_only, int num_lhc_samples, bool * restrict found_flag, UniformRandomGenerator * uniform_generator, NormalRNG * normal_rng, double * restrict best_points_to_sample);
 
 // template explicit instantiation declarations, see gpp_common.hpp header comments, item 6
-extern template void ComputeOptimalSetOfPointsToSample(const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters, const TensorProductDomain& domain, double const * restrict points_being_sampled, int num_being_sampled, double best_so_far, int max_int_steps, int max_num_threads, bool lhc_search_only, int num_lhc_samples, int num_to_sample, bool * restrict found_flag, UniformRandomGenerator * uniform_generator, NormalRNG * normal_rng, double * restrict best_points_to_sample);
-extern template void ComputeOptimalSetOfPointsToSample(const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters, const SimplexIntersectTensorProductDomain& domain, double const * restrict points_being_sampled, int num_being_sampled, double best_so_far, int max_int_steps, int max_num_threads, bool lhc_search_only, int num_lhc_samples, int num_to_sample, bool * restrict found_flag, UniformRandomGenerator * uniform_generator, NormalRNG * normal_rng, double * restrict best_points_to_sample);
+extern template void ComputeOptimalPointsToSample(const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters, const TensorProductDomain& domain, double const * restrict points_being_sampled, int num_to_sample, int num_being_sampled, double best_so_far, int max_int_steps, int max_num_threads, bool lhc_search_only, int num_lhc_samples, bool * restrict found_flag, UniformRandomGenerator * uniform_generator, NormalRNG * normal_rng, double * restrict best_points_to_sample);
+extern template void ComputeOptimalPointsToSample(const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters, const SimplexIntersectTensorProductDomain& domain, double const * restrict points_being_sampled, int num_to_sample, int num_being_sampled, double best_so_far, int max_int_steps, int max_num_threads, bool lhc_search_only, int num_lhc_samples, bool * restrict found_flag, UniformRandomGenerator * uniform_generator, NormalRNG * normal_rng, double * restrict best_points_to_sample);
 
 }  // end namespace optimal_learning
 

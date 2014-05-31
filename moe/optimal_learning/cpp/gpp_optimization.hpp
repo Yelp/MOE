@@ -983,7 +983,7 @@ class MultistartOptimizer final {
     Generally, you will not call this function directly.  Instead, it is intended to be used in wrappers that set up state,
     chunk_size, etc. for the specific optimization problem at hand.  For examples with Expected Improvement (EI), see gpp_math:
     * ``EvaluateEIAtPointList()``
-    * ``ComputeOptimalPointToSampleViaMultistartGradientDescent()``
+    * ``ComputeOptimalPointsToSampleViaMultistartGradientDescent()``
     or gpp_model_selection:
     * ``EvaluateLogLikelihoodAtPointList()``
     * ``MultistartGradientDescentHyperparameterOptimization()``

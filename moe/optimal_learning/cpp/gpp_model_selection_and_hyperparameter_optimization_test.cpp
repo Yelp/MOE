@@ -712,7 +712,7 @@ OL_WARN_UNUSED_RESULT int MultistartHyperparameterLikelihoodNewtonOptimizationTe
 
     int chunk_size = 2;
 
-    OptimizationIOContainer io_container(num_hyperparameters);
+    OptimizationIOContainer io_container(log_likelihood_state_vector[0].GetProblemSize());
     InitializeBestKnownPoint(log_likelihood_eval, initial_guesses.data(), num_hyperparameters, newton_parameters.num_multistarts, true, log_likelihood_state_vector.data(), &io_container);
 
     io_container.found_flag = true;  // want to see that this flag is flipped to false

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Links between the python and cpp_wrapper implementations of domains, covariances and optimizations."""
 from collections import namedtuple
 

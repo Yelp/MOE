@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """Test class for gp_mean_var view."""
+import numpy
 import simplejson as json
 
 import testify as T
@@ -47,8 +48,12 @@ class TestGpEiView(RestGaussianProcessTestCase):
                     cpp_gp,
                     None,
                     )
+            # TODO(sclark): (GH-99) Change test case to have the right shape:
+            # (num_to_evaluate, num_to_sample, dim)
+            # Here we assume the shape is (num_to_evaluate, dim) so we insert an axis, making num_to_sample = 1.
+            # Also might be worth testing more num_to_sample values (will require manipulating C++ RNG state).
             cpp_expected_improvement = expected_improvement_evaluator.evaluate_at_point_list(
-                    points_to_evaluate,
+                    points_to_evaluate[:, numpy.newaxis, :],
                     )
 
             # EI from REST
@@ -63,6 +68,7 @@ class TestGpEiView(RestGaussianProcessTestCase):
                     rest_expected_improvement,
                     tol=1e-11,
                     )
+
 
 if __name__ == "__main__":
     T.run()
