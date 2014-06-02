@@ -2,8 +2,9 @@
   \file gpp_random.hpp
   \rst
   This file specifies two classes for abstracting/handling psuedo-random number generation.  Currently, we have:
-  1) UniformRandomGenerator (container for a PRNG "engine")
-  2) NormalRNG (functor for N(0, 1)-distributed PRNs, uses UniformRandomGenerator)
+
+  1. UniformRandomGenerator (container for a PRNG "engine")
+  2. NormalRNG (functor for N(0, 1)-distributed PRNs, uses UniformRandomGenerator)
 
   It additionally contains two methods for randomly generating points in a tensor-product domain:
   ``[x_0_min, x_0_max] X [x_1_min, x_1_max] X ... X [x_d_min, x_d_max]``
@@ -26,8 +27,8 @@
   a common choice (and the only one used in gpp_* so far), so NormalRNG wraps the entire number generation process.
 \endrst*/
 
-#ifndef OPTIMAL_LEARNING_EPI_SRC_CPP_GPP_RANDOM_HPP_
-#define OPTIMAL_LEARNING_EPI_SRC_CPP_GPP_RANDOM_HPP_
+#ifndef MOE_OPTIMAL_LEARNING_CPP_GPP_RANDOM_HPP_
+#define MOE_OPTIMAL_LEARNING_CPP_GPP_RANDOM_HPP_
 
 #include <iosfwd>
 
@@ -45,9 +46,9 @@ namespace optimal_learning {
   Container for an uniform random generator (e.g., mersenne twister).  Member functions are for easy manipulation
   of seeds and have signatures matching corresponding members of NormalRNG.
 
-  Note: seed values take type ``EngineType::result_type``. Do not pass in a wider integer type!
+  .. Note:: seed values take type ``EngineType::result_type``. Do not pass in a wider integer type!
 
-  WARNING: this class is NOT THREAD-SAFE. You must construct one object per thread (and
+  .. WARNING:: this class is NOT THREAD-SAFE. You must construct one object per thread (and
   ensure that the seeds are different for practical computations).
 \endrst*/
 struct UniformRandomGenerator final {
@@ -115,11 +116,12 @@ struct UniformRandomGenerator final {
       }
 
     This function is meant to generate seeds so that:
-    1) this function can be called multiple times successively (e.g., in the above loop)
-       with different thread_ids to initialize RNGs for multiple threads
-    2) multiple runs of this code are unlikely to generate the same seed values
 
-    Item 2) is important for minimizing the probability that we run EI computations
+    1. this function can be called multiple times successively (e.g., in the above loop)
+       with different thread_ids to initialize RNGs for multiple threads
+    2. multiple runs of this code are unlikely to generate the same seed values
+
+    Item 2. is important for minimizing the probability that we run EI computations
     (see gpp_math.hpp) with the "same" randomness.
 
     \param
@@ -348,4 +350,4 @@ inline OL_NONNULL_POINTERS void ComputeRandomPointInDomain(ClosedInterval const 
 
 }  // end namespace optimal_learning
 
-#endif  // OPTIMAL_LEARNING_EPI_SRC_CPP_GPP_RANDOM_HPP_
+#endif  // MOE_OPTIMAL_LEARNING_CPP_GPP_RANDOM_HPP_

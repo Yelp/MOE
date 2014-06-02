@@ -9,7 +9,7 @@ from moe.optimal_learning.python.repeated_domain import RepeatedDomain
 from moe.optimal_learning.python.python_version.covariance import SquareExponential
 from moe.optimal_learning.python.python_version.domain import TensorProductDomain
 from moe.optimal_learning.python.python_version.gaussian_process import GaussianProcess
-from moe.optimal_learning.python.python_version.expected_improvement import multistart_expected_improvement_optimization, evaluate_expected_improvement_at_point_list, ExpectedImprovement
+from moe.optimal_learning.python.python_version.expected_improvement import multistart_expected_improvement_optimization, ExpectedImprovement
 from moe.optimal_learning.python.python_version.optimization import GradientDescentParameters, GradientDescentOptimizer
 from moe.tests.optimal_learning.python.gaussian_process_test_case import GaussianProcessTestCase, GaussianProcessTestEnvironmentInput
 
@@ -82,15 +82,15 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
         for test_case in self.gp_test_environments:
             domain, _, gaussian_process = test_case
 
-            for num_points_q, num_points_p in num_points_p_q_list:
-                points_q = domain.generate_uniform_random_points_in_domain(num_points_q)
-                points_p = domain.generate_uniform_random_points_in_domain(num_points_p)
+            for num_to_sample, num_being_sampled in num_points_p_q_list:
+                points_to_sample = domain.generate_uniform_random_points_in_domain(num_to_sample)
+                points_being_sampled = domain.generate_uniform_random_points_in_domain(num_being_sampled)
 
-                union_of_points = numpy.reshape(numpy.append(points_q, points_p), (num_points_q + num_points_p, self.dim))
+                union_of_points = numpy.reshape(numpy.append(points_to_sample, points_being_sampled), (num_to_sample + num_being_sampled, self.dim))
                 ei_eval = ExpectedImprovement(
                     gaussian_process,
-                    points_q,
-                    points_to_sample=points_p,
+                    points_to_sample,
+                    points_being_sampled=points_being_sampled,
                     num_mc_iterations=self.num_mc_iterations,
                 )
 
@@ -110,11 +110,11 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
                 # Compute quantities required for grad EI
                 grad_mu = ei_eval._gaussian_process.compute_grad_mean_of_points(
                     union_of_points,
-                    num_derivatives=num_points_q,
+                    num_derivatives=num_to_sample,
                 )
                 grad_chol_decomp = ei_eval._gaussian_process.compute_grad_cholesky_variance_of_points(
                     union_of_points,
-                    num_derivatives=num_points_q,
+                    num_derivatives=num_to_sample,
                 )
 
                 # Check grad EI
@@ -142,13 +142,14 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
         index = numpy.argmax(numpy.greater_equal(self.num_sampled_list, 5))
         domain, _, gaussian_process = self.gp_test_environments[index]
 
-        current_point = domain.generate_random_point_in_domain()
-        ei_eval = ExpectedImprovement(gaussian_process, current_point)
+        points_to_sample = domain.generate_random_point_in_domain()
+        ei_eval = ExpectedImprovement(gaussian_process, points_to_sample)
 
         num_to_eval = 10
-        points_to_evaluate = domain.generate_uniform_random_points_in_domain(num_to_eval)
+        # Add in a newaxis to make num_to_sample explicitly 1
+        points_to_evaluate = domain.generate_uniform_random_points_in_domain(num_to_eval)[:, numpy.newaxis, :]
 
-        test_values = evaluate_expected_improvement_at_point_list(ei_eval, points_to_evaluate)
+        test_values = ei_eval.evaluate_at_point_list(points_to_evaluate)
 
         for i, value in enumerate(test_values):
             ei_eval.set_current_point(points_to_evaluate[i, ...])
@@ -179,16 +180,16 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
         )
         num_multistarts = 3
 
-        current_point = domain.generate_random_point_in_domain()
-        ei_eval = ExpectedImprovement(gaussian_process, current_point)
+        points_to_sample = domain.generate_random_point_in_domain()
+        ei_eval = ExpectedImprovement(gaussian_process, points_to_sample)
 
         # expand the domain so that we are definitely not doing constrained optimization
         expanded_domain = TensorProductDomain([ClosedInterval(-4.0, 2.0)] * self.dim)
 
-        num_samples_to_generate = 1
-        repeated_domain = RepeatedDomain(ei_eval.num_points_q, expanded_domain)
+        num_to_sample = 1
+        repeated_domain = RepeatedDomain(ei_eval.num_to_sample, expanded_domain)
         ei_optimizer = GradientDescentOptimizer(repeated_domain, ei_eval, gd_parameters)
-        best_point = multistart_expected_improvement_optimization(ei_optimizer, num_multistarts, num_samples_to_generate)
+        best_point = multistart_expected_improvement_optimization(ei_optimizer, num_multistarts, num_to_sample)
 
         # Check that gradients are small
         ei_eval.set_current_point(best_point)
@@ -224,19 +225,19 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
 
         # Expand the domain so that we are definitely not doing constrained optimization
         expanded_domain = TensorProductDomain([ClosedInterval(-4.0, 2.0)] * self.dim)
-        num_samples_to_generate = 2
-        repeated_domain = RepeatedDomain(num_samples_to_generate, expanded_domain)
+        num_to_sample = 2
+        repeated_domain = RepeatedDomain(num_to_sample, expanded_domain)
 
         num_mc_iterations = 10000
         # Just any random point that won't be optimal
-        current_point = repeated_domain.generate_random_point_in_domain()
-        ei_eval = ExpectedImprovement(gaussian_process, current_point, num_mc_iterations=num_mc_iterations)
+        points_to_sample = repeated_domain.generate_random_point_in_domain()
+        ei_eval = ExpectedImprovement(gaussian_process, points_to_sample, num_mc_iterations=num_mc_iterations)
         # Compute EI and its gradient for the sake of comparison
         ei_initial = ei_eval.compute_expected_improvement()
         grad_ei_initial = ei_eval.compute_grad_expected_improvement()
 
         ei_optimizer = GradientDescentOptimizer(repeated_domain, ei_eval, gd_parameters)
-        best_point = multistart_expected_improvement_optimization(ei_optimizer, num_multistarts, num_samples_to_generate)
+        best_point = multistart_expected_improvement_optimization(ei_optimizer, num_multistarts, num_to_sample)
 
         # Check that gradients are "small"
         ei_eval.set_current_point(best_point)

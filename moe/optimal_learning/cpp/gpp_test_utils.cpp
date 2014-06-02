@@ -37,30 +37,28 @@ namespace optimal_learning {
 
 MockExpectedImprovementEnvironment::MockExpectedImprovementEnvironment()
     : dim(-1),
-      num_to_sample(-1),
       num_sampled(-1),
-      points_to_sample_(20*4),
+      num_to_sample(-1),
+      num_being_sampled(-1),
       points_sampled_(20*4),
       points_sampled_value_(20),
-      current_point_(4),
+      points_to_sample_(4),
+      points_being_sampled_(20*4),
       uniform_generator_(kDefaultSeed),
       uniform_double_(range_min, range_max) {
 }
 
-void MockExpectedImprovementEnvironment::Initialize(int dim_in, int num_to_sample_in, int num_sampled_in, UniformRandomGenerator * uniform_generator) {
-  if (dim_in != dim || num_to_sample_in != num_to_sample || num_sampled_in != num_sampled) {
+void MockExpectedImprovementEnvironment::Initialize(int dim_in, int num_to_sample_in, int num_being_sampled_in, int num_sampled_in, UniformRandomGenerator * uniform_generator) {
+  if (dim_in != dim || num_to_sample_in != num_to_sample || num_being_sampled_in != num_being_sampled || num_sampled_in != num_sampled) {
     dim = dim_in;
     num_to_sample = num_to_sample_in;
+    num_being_sampled = num_being_sampled_in;
     num_sampled = num_sampled_in;
 
-    points_to_sample_.resize(num_to_sample*dim);
     points_sampled_.resize(num_sampled*dim);
     points_sampled_value_.resize(num_sampled);
-    current_point_.resize(dim);
-  }
-
-  for (int i = 0; i < dim*num_to_sample; ++i) {
-    points_to_sample_[i] = uniform_double_(uniform_generator->engine);
+    points_to_sample_.resize(num_to_sample*dim);
+    points_being_sampled_.resize(num_being_sampled*dim);
   }
 
   for (int i = 0; i < dim*num_sampled; ++i) {
@@ -71,8 +69,12 @@ void MockExpectedImprovementEnvironment::Initialize(int dim_in, int num_to_sampl
     points_sampled_value_[i] = uniform_double_(uniform_generator->engine);
   }
 
-  for (int i = 0; i < dim; ++i) {
-    current_point_[i] = uniform_double_(uniform_generator->engine);
+  for (int i = 0; i < dim*num_to_sample; ++i) {
+    points_to_sample_[i] = uniform_double_(uniform_generator->engine);
+  }
+
+  for (int i = 0; i < dim*num_being_sampled; ++i) {
+    points_being_sampled_[i] = uniform_double_(uniform_generator->engine);
   }
 }
 
@@ -308,13 +310,15 @@ OL_CONST_FUNCTION OL_WARN_UNUSED_RESULT double SecondOrderCenteredFiniteDifferen
 
   Note that in some cases, this function will decide to skip some tests or run them
   under more relaxed tolerances.  There are many reasons for this:
-  1) When the exact gradient is near 0, finite differencing is simply trying
+
+  1. When the exact gradient is near 0, finite differencing is simply trying
      to compute ``(x1 - x2) = 0``, which has an infinite condition number.  If our
      method is correct/accurate, we will be able to reasonably closely approximate
      0, but we cannot expect convergence.
-  2) Backward stability type error analysis deals with normed bounds; for example,
+  2. Backward stability type error analysis deals with normed bounds; for example,
      see the discussion in ResidualNorm().  These normed estimates bound the error
      on the LARGEST entries. The error in the smaller entries can be much larger.
+
   However, even when errors could be large, we're trying to compute 0, etc., we do
   not want to completely ignore these scenarios since that could cause us to accept
   completely bogus outputs.  Instead we try to compensate.
@@ -328,12 +332,14 @@ OL_CONST_FUNCTION OL_WARN_UNUSED_RESULT double SecondOrderCenteredFiniteDifferen
   avoid ill-conditioning issues. Random points are chosen make the implementer's life easier.
 
   The typical workflow to implement ``f(x)`` and ``df(x)/dx`` might look like:
-  1) Code ``f(x)``
-  2) Verify ``f(x)``
-  3) Analytically compute df/dx (on paper, with a computer algebra system, etc.)
-  4) Check ``df/dx``
-     a) at some hand-evaluated points
-     b) Ping testing (this function)
+
+  1. Code ``f(x)``
+  2. Verify ``f(x)``
+  3. Analytically compute df/dx (on paper, with a computer algebra system, etc.)
+  4. Check ``df/dx``
+
+     a. at some hand-evaluated points
+     b. Ping testing (this function)
 
   If errors arise, this function will output some information to provide further context on what input/output
   combination failed and how. At the head of this file, define OL_PING_TEST_DEBUG_PRINT to turn on super verbose

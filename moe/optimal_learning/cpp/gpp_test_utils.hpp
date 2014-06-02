@@ -13,8 +13,8 @@
   constructing a GP with random hyperparameters on a random domain.
 \endrst*/
 
-#ifndef OPTIMAL_LEARNING_EPI_SRC_CPP_GPP_TEST_UTILS_HPP_
-#define OPTIMAL_LEARNING_EPI_SRC_CPP_GPP_TEST_UTILS_HPP_
+#ifndef MOE_OPTIMAL_LEARNING_CPP_GPP_TEST_UTILS_HPP_
+#define MOE_OPTIMAL_LEARNING_CPP_GPP_TEST_UTILS_HPP_
 
 #include <memory>
 #include <vector>
@@ -42,9 +42,10 @@ class SimplexIntersectTensorProductDomain;
   with derivatives taken wrt each member of ``X_{d,i}``,
   ``gradf_{k,d,i} = \frac{\partial f_k}{\partial X_{d,i}}``
   In the nomenclature used in the class:
-    ``d`` indexes over num_rows (set in GetInputSizes())
-    ``i`` indexes over num_cols (set in GetInputSizes())
-    ``k`` indexes over GetOutputSize()
+
+  * ``d`` indexes over num_rows (set in GetInputSizes())
+  * ``i`` indexes over num_cols (set in GetInputSizes())
+  * ``k`` indexes over GetOutputSize()
 
   Typically ``d`` is the spatial_dimension of the problem.  So if ``i`` ranges over ``1 .. num_points``,
   then ``X_{d,i}`` is a matrix of num_points points each with dimension spatial_dim.
@@ -57,6 +58,7 @@ class SimplexIntersectTensorProductDomain;
   how implementations store/compute ``f()`` and its gradient.
 
   Generally, usage goes as follows:
+
   * Use GetInputSizes(), GetOutputSize(), and possibly GetGradientsSize() to inspect the dimensions of the problem
   * EvaluateAndStoreAnalyticGradient(): compute and internally store the gradient evaluated at a given input\*
   * GetAnalyticGradient: returns the value of the analytic gradient for a given output (``k``), wrt a given point ``(d,i)``
@@ -160,7 +162,7 @@ class PingableMatrixInputVectorOutputInterface {
   Class to conveniently hold and generate random data that are commonly needed for testing functions in gpp_math.cpp.  In
   particular, this mock is used for testing GP mean, GP variance, and expected improvement (and their gradients).
 
-  This class holds arrays: ``points_to_sample``, ``points_sampled``, ``points_sampled_value``, and ``current_point``
+  This class holds arrays: ``points_sampled``, ``points_sampled_value``, ``points_to_sample``, and ``points_being_sampled``
   which are sized according to the parameters specified in Initialize(), and filled with random numbers.
 
   TODO: we currently generate the point sets by repeated calls to rand().  This is generally unwise since the distribution
@@ -190,30 +192,29 @@ class MockExpectedImprovementEnvironment {
     (Re-)initializes the data data in this function: this includes space allocation and random number generation.
 
     If any of the size parameters are changed from their current values, space will be realloc'd.
-    Then it re-draws another set of uniform random points (in [-5, 5]) for the member arrays points_to_sample,
-    points_sampled, points_sampled_value, and current_point.
+    Then it re-draws another set of uniform random points (in [-5, 5]) for the member arrays
+    points_sampled, points_sampled_value, points_to_sample, and points_being_sampled.
 
     \param
       :dim: the spatial dimension of a point (i.e., number of independent params in experiment)
-      :num_to_sample: number of points being sampled concurrently
+      :num_to_sample: number of points to be sampled in future experiments
+      :num_being_sampled: number of points being sampled concurrently
       :num_sampled: number of already-sampled points
   \endrst*/
-  void Initialize(int dim_in, int num_to_sample_in, int num_sampled_in) {
-    Initialize(dim_in, num_to_sample_in, num_sampled_in, &uniform_generator_);
+  void Initialize(int dim_in, int num_to_sample_in, int num_being_sampled_in, int num_sampled_in) {
+    Initialize(dim_in, num_to_sample_in, num_being_sampled_in, num_sampled_in, &uniform_generator_);
   }
 
-  void Initialize(int dim_in, int num_to_sample_in, int num_sampled_in, UniformRandomGenerator * uniform_generator);
+  void Initialize(int dim_in, int num_to_sample_in, int num_being_sampled_in, int num_sampled_in, UniformRandomGenerator * uniform_generator);
 
   //! spatial dimension (e.g., entries per point of points_sampled)
   int dim;
-  //! number of points currently being sampled
-  int num_to_sample;
   //! number of points in points_sampled (history)
   int num_sampled;
-
-  double * points_to_sample() {
-    return points_to_sample_.data();
-  }
+  //! number of points to be sampled in future experiments (i.e., the q in q,p-EI)
+  int num_to_sample;
+  //! number of points currently being sampled (i.e., the p in q,p-EI)
+  int num_being_sampled;
 
   double * points_sampled() {
     return points_sampled_.data();
@@ -223,21 +224,25 @@ class MockExpectedImprovementEnvironment {
     return points_sampled_value_.data();
   }
 
-  double * current_point() {
-    return current_point_.data();
+  double * points_to_sample() {
+    return points_to_sample_.data();
+  }
+
+  double * points_being_sampled() {
+    return points_being_sampled_.data();
   }
 
   OL_DISALLOW_COPY_AND_ASSIGN(MockExpectedImprovementEnvironment);
 
  private:
-  //! points to make predictions about
-  std::vector<double> points_to_sample_;
   //! coordinates of already-sampled points, ``X``
   std::vector<double> points_sampled_;
   //! function values at points_sampled, ``y``
   std::vector<double> points_sampled_value_;
-  //! current point to differentiate against
-  std::vector<double> current_point_;
+  //! points to be sampled in experiments (i.e., the q in q,p-EI)
+  std::vector<double> points_to_sample_;
+  //! points being sampled in concurrent experiments (i.e., the p in q,p-EI)
+  std::vector<double> points_being_sampled_;
 
   //! uniform random number generator for generating coordinates
   UniformRandomGenerator uniform_generator_;
@@ -441,30 +446,6 @@ bool CheckDoubleWithinRelative(double value, double truth, double tolerance) noe
 bool CheckMatrixNormWithin(double const * restrict matrix1, double const * restrict matrix2, int size_m, int size_n, double tolerance) noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT;
 
 /*!\rst
-  Check if each point in point_list is inside the specified domain.
-
-  \param
-    :domain: the domain providing the inside/outside test
-    :point_list[dim][num_points]: list of points to check
-    :num_points: number of points in point_list
-  \return
-    number of points outside the domain
-\endrst*/
-template <typename DomainType>
-OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT int CheckPointsInDomain(const DomainType& domain, double const * restrict point_list, int num_points) noexcept {
-  int num_errors = 0;
-  double const * restrict point = point_list;
-  for (int i = 0; i < num_points; ++i) {
-    if (!domain.CheckPointInside(point)) {
-      ++num_errors;
-    }
-    point += domain.dim();
-  }
-
-  return num_errors;
-}
-
-/*!\rst
   Check whether the distance between every pair of points is larger than tolerance.
 
   \param
@@ -574,13 +555,13 @@ void FillRandomCovarianceHyperparameters(const boost::uniform_real<double>& unif
 void FillRandomDomainBounds(const boost::uniform_real<double>& uniform_double_lower_bound, const boost::uniform_real<double>& uniform_double_upper_bound, UniformRandomGenerator * uniform_generator, std::vector<ClosedInterval> * domain_bounds);
 
 /*!\rst
-  Utility to draw num_sampled points from a GaussianProcess and add those values to the prior.
+  Utility to draw num_to_sample points from a GaussianProcess and add those values to the prior.
 
   \param
-    :points_sampled[dim][num_to_sample]: points at which to draw from the GP
+    :points_to_sample[dim][num_to_sample]: points at which to draw/sample from the GP
     :noise_variance[num_to_sample]: the ``\sigma_n^2`` (noise variance) associated w/the new observations, ``points_sampled_value``
     :dim: the spatial dimension of a point (i.e., number of independent params in experiment)
-    :num_to_sampled number of points add to the GP
+    :num_to_sample: number of points add to the GP
     :gaussian_process[1]: a properly initialized GaussianProcess
   \output
     :points_to_sample_value[num_to_sample]: values of the newly sampled points
@@ -591,4 +572,4 @@ void FillRandomGaussianProcess(double const * restrict points_to_sample, double 
 
 }  // end namespace optimal_learning
 
-#endif  // OPTIMAL_LEARNING_EPI_SRC_CPP_GPP_TEST_UTILS_HPP_
+#endif  // MOE_OPTIMAL_LEARNING_CPP_GPP_TEST_UTILS_HPP_

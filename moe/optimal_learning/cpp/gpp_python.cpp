@@ -1,12 +1,13 @@
-// gpp_python.cpp
-/*
-  This file contains the "call" to BOOST_PYTHON_MODULE; think of that as the "main()" function for the interface.
-  It includes the full docstring for the Python module. That call wraps Export.*() functions from gpp_python_.*
-  helper files, which contain the pieces of C++ functionality that we are exporting to Python (e.g., debugging
+/*!
+  \file gpp_python.cpp
+  \rst
+  This file contains the "call" to ``BOOST_PYTHON_MODULE``; think of that as the ``main()`` function for the interface.
+  It includes the full docstring for the Python module. That call wraps ``Export.*()`` functions from ``gpp_python_.*``
+  helper files, which contain the pieces of ``C++`` functionality that we are exporting to Python (e.g., debugging
   tools like GP mean, variance, and gradients as well as EI optimizers and model selection tools).
 
   This file also includes the logic for translating C++ exceptions to Python exceptions.
-*/
+\endrst*/
 // This include violates the Google Style Guide by placing an "other" system header ahead of C and C++ system headers.  However,
 // it needs to be at the top, otherwise compilation fails on some systems with some versions of python: OS X, python 2.7.3.
 // Putting this include first prevents pyport from doing something illegal in C++; reference: http://bugs.python.org/issue10910
@@ -37,28 +38,29 @@ namespace optimal_learning {
 
 namespace {  // unnamed namespace for exception translation (for BOOST_PYTHON_MODULE(GPP))
 
-/*
+/*!\rst
   Helper function to build a Python exception type object called "name" within the specified scope.
-  The new Python exception will subclass "Exception".
+  The new Python exception will subclass ``Exception``.
 
-  Afterward, "scope" will have a new callable object called "name" that can be used to
-  construct an exception instance. For example, if name = "MyPyException", then in Python:
-  >>> import scope
-  >>> raise scope.MyPyException("my message")
+  Afterward, ``scope`` will have a new callable object called ``name`` that can be used to
+  construct an exception instance. For example, if ``name = "MyPyException"``, then in Python::
 
-  WARNING: ONLY call this function from within a BOOST_PYTHON_MODULE block since it only has
-  meaning during module construction. After module construction, scope has no meaning and it
-  will probably be a dangling pointer or NoneType, leading to an exception or segfault.
+    >>> import scope
+    >>> raise scope.MyPyException("my message")
 
-  INPUTS:
-  name[]: ptr to char array containing the desired name of the new Python exception type
-  docstring[]: ptr to char array with the docstring for the new Python exception type
-  scope[1]: the scope to add the new exception types to
-  OUTPUTS:
-  scope[1]: the input scope with the new exception types added
-  RETURNS:
-  PyObject pointer to the (callable) type object (the new exception type) that was created
-*/
+  .. WARNING:: ONLY call this function from within a ``BOOST_PYTHON_MODULE`` block since it only has
+    meaning during module construction. After module construction, scope has no meaning and it
+    will probably be a dangling pointer or NoneType, leading to an exception or segfault.
+
+  \param
+    :name[]: ptr to char array containing the desired name of the new Python exception type
+    :docstring[]: ptr to char array with the docstring for the new Python exception type
+    :scope[1]: the scope to add the new exception types to
+  \output
+    :scope[1]: the input scope with the new exception types added
+  \return
+    PyObject pointer to the (callable) type object (the new exception type) that was created
+\endrst*/
 OL_WARN_UNUSED_RESULT PyObject * CreatePyExceptionClass(const char * name, const char * docstring, boost::python::scope * scope) {
   std::string scope_name = boost::python::extract<std::string>(scope->attr("__name__"));
   std::string qualified_name = scope_name + "." + name;
@@ -74,16 +76,17 @@ OL_WARN_UNUSED_RESULT PyObject * CreatePyExceptionClass(const char * name, const
     BUT in this example:
     http://docs.python.org/3.3/extending/extending.html#intermezzo-errors-and-exceptions
     (scroll down to the first code block, reading "Note also that the SpamError variable retains...")
-    They set:
+    They set::
+
       SpamError = PyErr_NewException(...);  (1)
       Py_INCREF(SpamError);                 (2)
 
-    So PyErr_NewException returns a *new reference* that SpamError owns in (1). Then in (2), SpamError owns
+    So ``PyErr_NewException`` returns a *new reference* that SpamError owns in (1). Then in (2), SpamError owns
     the reference... again?!  (This example appears unchanged since somewhere in python 1.x; maybe it's just old.)
-    It seems like this Py_INCREF call is just a 'safety buffer'?
+    It seems like this ``Py_INCREF`` call is just a 'safety buffer'?
 
     The doc language (new reference) would lead me to believe that SpamError owns a reference to the new type object.
-    When SpamError is done, it should be Py_DECREF'd. (Unless SpamError is never done--which is appropriate here, I
+    When SpamError is done, it should be ``Py_DECREF``'d. (Unless SpamError is never done--which is appropriate here, I
     believe, since type objects should not be deallocated as I have no control of whether all referrers have
     been destroyed.)
 
@@ -113,13 +116,14 @@ OL_WARN_UNUSED_RESULT PyObject * CreatePyExceptionClass(const char * name, const
   return type_object;
 }
 
-/*
-  When translating C++ exceptions to Python exceptions, we need to identify a base class. By Python convention,
+/*!\rst
+  When translating ``C++`` exceptions to Python exceptions, we need to identify a base class. By Python convention,
   we want these to be Python types inheriting from Exception.
   This is a monostate object that knows how to set up these base classes in Python; it also keeps pointers to
   the resulting Python type objects for future use (e.g., instantiating Python exceptions).
 
-  NOTE: this class follows the Monostate pattern, implying GLOBAL STATE.
+  .. NOTE:: this class follows the Monostate pattern, implying GLOBAL STATE.
+
   http://c2.com/cgi/wiki?MonostatePattern
   http://www.informit.com/guides/content.aspx?g=cplusplus&seqNum=147
   That is, the various PyObject * for Python type objects (and others) are stored as private, static variables.
@@ -127,9 +131,13 @@ OL_WARN_UNUSED_RESULT PyObject * CreatePyExceptionClass(const char * name, const
   We use monostate because once the Python type objects have been created, we need to hold on to references to
   them until the end of time. Type objects must never be deallocated:
   http://docs.python.org/release/3.3.3/c-api/intro.html#objects-types-and-reference-counts
+
   "The sole exception are the type objects; since these must never be deallocated, they are typically static PyTypeObject objects."
+
   Also, see python/object.h's header comments (object.h, Python 2.7):
+
   "Type objects are exceptions to the first rule; the standard types are represented by
+
   statically initialized type objects, although work on type/class unification
   for Python 2.2 made it possible to have heap-allocated type objects too."
 
@@ -138,19 +146,21 @@ OL_WARN_UNUSED_RESULT PyObject * CreatePyExceptionClass(const char * name, const
   be destructed) is not an option. We could also heap allocate this container and never delete,
   but that seems even more confusing. Besides, static variables is how it is done in Python.
 
-  Additionally, this class protects against redundant calls to PyErr_NewException (which creates exception type objects).
+  Additionally, this class protects against redundant calls to ``PyErr_NewException`` (which creates exception type objects).
   Redundant here means creating multiple exception types with the same name.  Failing to do so would add MULTIPLE
   instances of the "same" type (Python has no ODR), which is confusing to the user.
 
-  NOTE: we cannot mark PyObject * pointers as pointers to const, e.g.,
-  const PyObject * some_object;
+  .. NOTE:: we cannot mark PyObject * pointers as pointers to const, e.g., ::
+
+      const PyObject * some_object;
+
   because Python C-API calls will modify the objects. HOWEVER, DO NOT CHANGE these pointers and
   DO NOT CHANGE the things they point to!  (Outside of Python calls that is.)
   The pointers in the monostate are meant to be "conceptually" const.
-*/
+\endrst*/
 class PyExceptionClassContainer {
  public:
-  /*
+  /*!\rst
     Initializes the (mono-) state. This defines new python type objects (for exceptions) and saves the
     python scope that they are defined in.
 
@@ -160,15 +170,15 @@ class PyExceptionClassContainer {
     If Initialize() is not called at program start or after Reset(), all newly translated exceptions will
     be of type: default_exception_type_object_.
 
-    WARNING: NOT THREAD SAFE in C++. It might be thread-safe in Python calls; not sure
-    how the GIL is handled here.
-    However there is no reason to call this from multiple threads in C++ so I'm ignoring the issue.
+    .. WARNING:: NOT THREAD SAFE in C++. It might be thread-safe in Python calls; not sure
+      how the GIL is handled here.
+      However there is no reason to call this from multiple threads in C++ so I'm ignoring the issue.
 
-    INPUTS:
-    scope[1]: the scope to add the new exception types to
-    OUTPUTS:
-    scope[1]: the input scope with the new exception types added
-  */
+    \param
+      :scope[1]: the scope to add the new exception types to
+    \output
+      :scope[1]: the input scope with the new exception types added
+  \endrst*/
   void Initialize(boost::python::scope * scope) OL_NONNULL_POINTERS {
     // Prevent duplicate definitions (in Python) of the same objects
     if (!initialized_) {
@@ -189,19 +199,19 @@ class PyExceptionClassContainer {
     }
   }
 
-  /*
+  /*!\rst
     Reset the state back to default. Afer this call, translated exceptions will be of type
     default_exception_type_object_. Future calls to Initialize() will define new exception
     types in another (not necessarily different) scope.
 
     This is not recommended.
 
-    WARNING: NOT THREAD SAFE. See Initialize() comments.
+    .. WARNING:: NOT THREAD SAFE. See Initialize() comments.
 
-    WARNING: This makes the existing PyObjects *unreachable* from C++.
-    It is unsafe to DECREF our PyObject pointers; we cannot guarantee that these type
-    objects will outlive all instances. (*I think*)
-  */
+    .. WARNING:: This makes the existing ``PyObject``s *unreachable* from ``C++``.
+      It is unsafe to ``DECREF`` our ``PyObject`` pointers; we cannot guarantee that these type
+      objects will outlive all instances. (*I think*)
+  \endrst*/
   void Reset() {
     initialized_ = false;
     scope_ = nullptr;
@@ -250,16 +260,16 @@ PyObject * PyExceptionClassContainer::singular_matrix_exception_type_object_ = P
 boost::python::scope * PyExceptionClassContainer::scope_ = nullptr;
 bool PyExceptionClassContainer::initialized_ = false;
 
-/*
+/*!\rst
   Translate BoundsException to a Python exception, maintaining the data fields.
 
-  INPUTS:
-  except: C++ exception to translate
-  py_exception_type_objects: PyExceptionClassContainer with the appropriate type object for constructing the
-                             translated Python exception base class. We assume that this type inherits from Exception.
-  RETURNS:
-  **NEVER RETURNS**
-*/
+  \param
+    :except: C++ exception to translate
+    :py_exception_type_objects: PyExceptionClassContainer with the appropriate type object for constructing the
+      translated Python exception base class. We assume that this type inherits from Exception.
+  \return
+    **NEVER RETURNS**
+\endrst*/
 template <typename ValueType>
 OL_NORETURN void TranslateBoundsException(const BoundsException<ValueType>& except, const PyExceptionClassContainer& py_exception_type_objects) {
   PyObject * base_exception_class = py_exception_type_objects.bounds_exception_type_object();
@@ -278,16 +288,16 @@ OL_NORETURN void TranslateBoundsException(const BoundsException<ValueType>& exce
   throw;  // suppress warning; throw_error_already_set() never returns but isn't marked noreturn: https://svn.boost.org/trac/boost/ticket/1482
 }
 
-/*
+/*!\rst
   Translate InvalidValueException to a Python exception, maintaining the data fields.
 
-  INPUTS:
-  except: C++ exception to translate
-  py_exception_type_objects: PyExceptionClassContainer with the appropriate type object for constructing the
-                             translated Python exception base class. We assume that this type inherits from Exception.
-  RETURNS:
-  **NEVER RETURNS**
-*/
+  \param
+    :except: C++ exception to translate
+    :py_exception_type_objects: PyExceptionClassContainer with the appropriate type object for constructing the
+      translated Python exception base class. We assume that this type inherits from Exception.
+  \return
+    **NEVER RETURNS**
+\endrst*/
 template <typename ValueType>
 OL_NORETURN void TranslateInvalidValueException(const InvalidValueException<ValueType>& except, const PyExceptionClassContainer& py_exception_type_objects) {
   PyObject * base_exception_class = py_exception_type_objects.invalid_value_exception_type_object();
@@ -306,16 +316,16 @@ OL_NORETURN void TranslateInvalidValueException(const InvalidValueException<Valu
   throw;  // suppress warning; throw_error_already_set() never returns but isn't marked noreturn: https://svn.boost.org/trac/boost/ticket/1482
 }
 
-/*
+/*!\rst
   Translate SingularMatrixException to a Python exception, maintaining the data fields.
 
-  INPUTS:
-  except: C++ exception to translate
-  py_exception_type_objects: PyExceptionClassContainer with the appropriate type object for constructing the
-                             translated Python exception base class. We assume that this type inherits from Exception.
-  RETURNS:
-  **NEVER RETURNS**
-*/
+  \param
+    :except: C++ exception to translate
+    :py_exception_type_objects: PyExceptionClassContainer with the appropriate type object for constructing the
+      translated Python exception base class. We assume that this type inherits from Exception.
+  \return
+    **NEVER RETURNS**
+\endrst*/
 OL_NORETURN void TranslateSingularMatrixException(const SingularMatrixException& except, const PyExceptionClassContainer& py_exception_type_objects) {
   PyObject * base_exception_class = py_exception_type_objects.singular_matrix_exception_type_object();
 
@@ -334,26 +344,30 @@ OL_NORETURN void TranslateSingularMatrixException(const SingularMatrixException&
   throw;  // suppress warning; throw_error_already_set() never returns but isn't marked noreturn: https://svn.boost.org/trac/boost/ticket/1482
 }
 
-/*
+/*!\rst
   Register an exception translator (C++ to Python) with boost python for ExceptionType, using the callable translate.
   Boost python expects only unary exception translators (w/the exception to translate as the argument), so we use
   a lambda to capture additional arguments for our translators.
 
   TEMPLATE PARAMETERS:
-  ExceptionType: the type of the exception that the user wants to register
-  Translator: a Copyconstructible type such that the following code is well-formed:
+
+  * ExceptionType: the type of the exception that the user wants to register
+  * Translator: a Copyconstructible type such that the following code is well-formed::
+
       void SomeFunc(ExceptionType except, const PyExceptionClassContainer& py_exception_type_objects) {
         translate(except, py_exception_type_objects);
       }
+
     Currently, the use cases in BOOST_PYTHON_MODULE(GPP) pass translate as a function pointer.
     This follows the requirements for boost::python::register_exception_translator:
     http://www.boost.org/doc/libs/1_55_0/libs/python/doc/v2/exception_translator.html
     http://en.cppreference.com/w/cpp/concept/CopyConstructible
-  INPUTS:
-  py_exception_type_objects: PyExceptionClassContainer with the appropriate type object for constructing the
-                             translated Python exception base class. We assume that this type inherits from Exception.
-  translate: an instance of Translator satisfying the requirements described above in TEMPLATE PARAMETERS.
-*/
+
+  \param
+    :py_exception_type_objects: PyExceptionClassContainer with the appropriate type object for constructing the
+      translated Python exception base class. We assume that this type inherits from Exception.
+    :translate: an instance of Translator satisfying the requirements described above in TEMPLATE PARAMETERS.
+\endrst*/
 template <typename ExceptionType, typename Translator>
 void RegisterExceptionTranslatorWithPayload(const PyExceptionClassContainer& py_exception_type_objects, Translator translate) {
   static_assert(std::is_copy_constructible<Translator>::value, "Exception translator must be copy constructible.");
@@ -371,14 +385,14 @@ void RegisterExceptionTranslatorWithPayload(const PyExceptionClassContainer& py_
   boost::python::register_exception_translator<ExceptionType>(translate_exception, nullptr);
 }
 
-/*
+/*!\rst
   Helper that registers exception translators to convert C++ exceptions to Python exceptions.
   This is just a convenient place to register translators for optimal_learning's exceptions.
 
-  NOTE: PyExceptionClassContainer (monostate class) must be properly initialized first!
-  Otherwise all translators will translate to PyExceptionClassContainer::default_exception_type_object_
-  (e.g., PyExc_RuntimeError).
-*/
+  .. NOTE:: PyExceptionClassContainer (monostate class) must be properly initialized first!
+    Otherwise all translators will translate to ``PyExceptionClassContainer::default_exception_type_object_``
+    (e.g., ``PyExc_RuntimeError``).
+\endrst*/
 void RegisterOptimalLearningExceptions() {
   PyExceptionClassContainer py_exception_type_objects;
 
@@ -421,7 +435,8 @@ BOOST_PYTHON_MODULE(GPP) {
     enumerated types for specifying interface behaviors, C++ objects for computation and communication, as well as
     various functions for optimization and testing/data exploration.
 
-    OVERVIEW:
+    **OVERVIEW**
+
     TODO(eliu): when we come up with a "README" type overview for MOE, that or parts of that should be incorporated here.
 
     MOE is a black-box global optimization method for objectives (e.g., click-through rate, delivery time, happiness)
@@ -440,27 +455,28 @@ BOOST_PYTHON_MODULE(GPP) {
     parameters from the historical data.
 
     Thus, using MOE breaks down into three main steps:
-    1) Model Selection/Hyperparameter Optimization: the GP (through a "covariance" function) has several hyperparameters
+
+    1. Model Selection/Hyperparameter Optimization: the GP (through a "covariance" function) has several hyperparameters
        that are not informed by the model. We first need to choose an appropriate set of hyperparameters. For example,
        we could choose the hyperparameters that maximize the likelihood that the model produced the observed data.
        multistart_hyperparameter_optimization() is the primary endpoint for this functionality.
 
-    2) Construct the Gaussian Process: from the historical data and the hyperparameters chosen in step 1, we can build
+    2. Construct the Gaussian Process: from the historical data and the hyperparameters chosen in step 1, we can build
        a GP that MOE will use as a proxy for the behavior of the objective in the real world. In this sense, the GP's
-       predictions are a type of regression.
-       GaussianProcess() constructs a GP.
+       predictions are a type of regression. GaussianProcess() constructs a GP.
 
-    3) Select new Experiment Parameters via EI: with the GP from step 2, MOE now has a model for the "real world." Using this
+    3. Select new Experiment Parameters via EI: with the GP from step 2, MOE now has a model for the "real world." Using this
        GP model, we will select the next experiment parameters (or set of parameters) for live measurement. These
        new parameters are the ones MOE thinks will produce the biggest gain over the historical best.
        multistart_expected_improvement_optimization() is the primary endpoint for this functionality.
        heuristic_expected_improvement_optimization() is an alternative endpoint (faster, less accurate).
 
-    Users may specify "p" (aka num_to_sample) points from ongoing/incomplete experiments for MOE's optimizer to consider.
-    And they may request that MOE produce "q" (aka num_samples_to_generate) points representing the parameters for new
+    Users may specify "p" (aka num_being_sampled) points from ongoing/incomplete experiments for MOE's optimizer to consider.
+    And they may request that MOE produce "q" (aka num_to_sample) points representing the parameters for new
     experiments. These are found by solving the q,p-EI problem (see gpp_math.hpp file overview for further details).
 
-    DETAILS:
+    **DETAILS**
+
     For more information, consult the docstrings for the entities exposed in this module.  (Everybody has one!)
     These docstrings currently provide fairly high level (and sometimes sparse) descriptions.
     For further details, see the file documents for the C++ hpp and cpp files. Header (hpp) files contain more high
@@ -469,58 +485,66 @@ BOOST_PYTHON_MODULE(GPP) {
     TODO(eliu): when we have gemdoc or whatever, point this to those docs as well.
 
     Now we will provide an overview of the enums, classes, and endpoints provided in this module.
-    Note: Each entity provided in this module has a docstring; this is only meant to be an overview. Consult the
-          individual docstrings for more information and/or see the C++ docs.
 
-    Exceptions:
+    .. Note:: Each entity provided in this module has a docstring; this is only meant to be an overview. Consult the
+      individual docstrings for more information and/or see the C++ docs.
+
+    * Exceptions:
       We expose equivalent Python definitions for the exception classes in gpp_exception.hpp. We also provide
       translators so that C++ exceptions will be caught and rethrown as their Python counterparts. The type objects
       (e.g., BoundsException) are referenced by module-scope names in Python.
 
-    Enums:
+    * Enums:
       We provide some enum types defined in C++. Values from these enum types are used to signal information about
       which domain, which optimizer, which log likelihood objective, etc. to use throughout this module. We define the
       enums in C++ because not all currently in-use version of Python support enums natively. Additionally, we wanted
       the strong typing. In particular, a function expecting a DomainTypes enum *cannot* take (int) 0 as an input
       even if kTensorProduct maps to the value 0. In general, *never* rely on the particular value of each enum name.
-        <> DomainTypes, LogLikelihoodTypes, OptimizerTypes
 
-    Objects:
+      * DomainTypes
+      * LogLikelihoodTypes
+      * OptimizerTypes
+
+    * Objects:
       We currently expose constructors for a few C++ objects:
-        <> GaussianProcess: for one set of historical data (and hyperparameters), this represents the GP model. It is fairly
-           expensive to create, so the intention is that users create it once and pass it to all functions in this module
-           that need it (as opposed to recreating it every time).  Constructing the GP is noted as step 2 of MOE above.
-        <> GradientDescentParameters, NewtonParameters: structs that hold tolerances, max step counts, learning rates, etc.
-           that control the behavior of the derivative-based optimizers
-        <> RandomnessSourceContainer: container for a uniform RNG and a normal (gaussian) RNG. These are needed by the C++ to
-           guarantee that multi-threaded runs see different (and consistent) randomness. This class also exposes several
-           functions for setting thread-safe seeds (both explicitly and automatically).
 
-    Optimization:
+      * GaussianProcess: for one set of historical data (and hyperparameters), this represents the GP model. It is fairly
+        expensive to create, so the intention is that users create it once and pass it to all functions in this module
+        that need it (as opposed to recreating it every time).  Constructing the GP is noted as step 2 of MOE above.
+      * GradientDescentParameters, NewtonParameters: structs that hold tolerances, max step counts, learning rates, etc.
+        that control the behavior of the derivative-based optimizers
+      * RandomnessSourceContainer: container for a uniform RNG and a normal (gaussian) RNG. These are needed by the C++ to
+        guarantee that multi-threaded runs see different (and consistent) randomness. This class also exposes several
+        functions for setting thread-safe seeds (both explicitly and automatically).
+
+    * Optimization:
       We expose two main optimization routines. One for model selection and the other for experimental cohort selection.
       These routines provide multistart optimization (with choosable optimizer, domain, and objective type) and are
       the endpoints to use for steps 1 and 3 of MOE dicussed above.
       These routines are multithreaded.
-        <> multistart_hyperparameter_optimization: optimize the specified log likelihood measure to yield the hyperparameters
-           that produce the "best" model.
-        <> multistart_expected_improvement_optimization: optimize the expected improvement to yield the experimental parameters
-           that the user should test next (solving q,p-EI).
 
-    Testing/Exploring:
+      * multistart_hyperparameter_optimization: optimize the specified log likelihood measure to yield the hyperparameters
+        that produce the "best" model.
+      * multistart_expected_improvement_optimization: optimize the expected improvement to yield the experimental parameters
+        that the user should test next (solving q,p-EI).
+
+    * Testing/Exploring:
       These endpoints are provided for testing core C++ functionality as well as exploring the behaviors of
       Gaussian Processes, Expected Improvement, etc.  GP and EI functions require a GaussianProcess object.
-      <> Log Likelihood (model fit): compute_log_likelihood, compute_hyperparameter_grad_log_likelihood
-      <> GPs: get_mean, get_grad_mean, get_var, get_chol_var, get_grad_var, get_grad_chol_var
-      <> EI: compute_expected_improvement, compute_grad_expected_improvement
 
-    Plotting:
+      * Log Likelihood (model fit): compute_log_likelihood, compute_hyperparameter_grad_log_likelihood
+      * GPs: get_mean, get_grad_mean, get_var, get_chol_var, get_grad_var, get_grad_chol_var
+      * EI: compute_expected_improvement, compute_grad_expected_improvement
+
+    * Plotting:
       These endpoints are useful for plotting log likelihood or expected improvement (or other applications needing
       lists of function values).
       These routines are multithreaded.
-      <> evaluate_log_likelihood_at_hyperparameter_list: compute selected log likelihood measures for each set of specified
-           hyperparameters. Equivalent to but much faster than calling compute_log_likelihood() in a loop.
-      <> evaluate_EI_at_point_list: compute expected improvement for each point (cohort parameters) in an input list.
-           Equivalent to but much faster than calling compute_expected_improvement in a loop.
+
+      * evaluate_log_likelihood_at_hyperparameter_list: compute selected log likelihood measures for each set of specified
+        hyperparameters. Equivalent to but much faster than calling compute_log_likelihood() in a loop.
+      * evaluate_EI_at_point_list: compute expected improvement for each point (cohort parameters) in an input list.
+        Equivalent to but much faster than calling compute_expected_improvement in a loop.
     )%%";
 
   ExportCppTestFunctions();

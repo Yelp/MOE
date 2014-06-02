@@ -39,12 +39,12 @@ class ExpectedImprovementInterface(object):
     See file docs for a description of what EI is and an overview of how it can be computed.
 
     Implementers are responsible for dealing with PRNG state for any randomness needed in EI computation.
-    Implementers are also responsible for storing current_point and points_to_sample:
+    Implementers are also responsible for storing ``points_to_sample`` and ``points_being_sampled``:
 
-    :param current_point: point at which to compute EI (i.e., q in q,p-EI)
-    :type current_point: array of float64 with shape (dim)
-    :param points_to_sample: points which are being sampled concurrently (i.e., p in q,p-EI)
+    :param points_to_sample: points at which to evaluate EI and/or its gradient to check their value in future experiments (i.e., "q" in q,p-EI)
     :type points_to_sample: array of float64 with shape (num_to_sample, dim)
+    :param points_being_sampled: points being sampled in concurrent experiments (i.e., "p" in q,p-EI)
+    :type points_being_sampled: array of float64 with shape (num_being_sampled, dim)
 
     """
 
@@ -55,26 +55,50 @@ class ExpectedImprovementInterface(object):
         """Return the number of spatial dimensions."""
         pass
 
+    @abstractproperty
+    def num_to_sample(self):
+        """Number of points at which to compute/optimize EI, aka potential points to sample in future experiments; i.e., the ``q`` in ``q,p-EI``."""
+        pass
+
+    @abstractproperty
+    def num_being_sampled(self):
+        """Number of points being sampled in concurrent experiments; i.e., the ``p`` in ``q,p-EI``."""
+        pass
+
     @abstractmethod
     def compute_expected_improvement(self, **kwargs):
-        r"""Compute the expected improvement at ``current_point``, with ``points_to_sample`` concurrent points being sampled.
+        r"""Compute the expected improvement at ``points_to_sample``, with ``points_being_sampled`` concurrent points being sampled.
 
         .. NOTE:: These comments were copied from ExpectedImprovementEvaluator::ComputeExpectedImprovement in gpp_math.hpp.
-           and duplicated in cpp_wrappers/expected_improvement.py.
+           and duplicated in cpp_wrappers/expected_improvement.py and python_version/expected_improvement.py
+           in the functions of the same name.
 
-        ``current_points`` is the q and points_to_sample is the p in q,p-EI.
+        ``points_to_sample`` is the "q" and ``points_being_sampled`` is the "p" in q,p-EI.
 
-        We compute ``EI(Xs) = E_n[[f^*_n(X) - min(f(Xs_1),...,f(Xs_m))]^+]``, where ``Xs`` are potential points
-        to sample and ``X`` are already sampled points.  The ``^+`` indicates that the expression in the expectation evaluates to 0
-        if it is negative.  ``f^*(X)`` is the MINIMUM over all known function evaluations (``points_sampled_value``), whereas
-        ``f(Xs)`` are *GP-predicted* function evaluations.
+        Computes the expected improvement ``EI(Xs) = E_n[[f^*_n(X) - min(f(Xs_1),...,f(Xs_m))]^+]``, where ``Xs``
+        are potential points to sample (union of ``points_to_sample`` and ``points_being_sampled``) and ``X`` are
+        already sampled points.  The ``^+`` indicates that the expression in the expectation evaluates to 0 if it
+        is negative.  ``f^*(X)`` is the MINIMUM over all known function evaluations (``points_sampled_value``),
+        whereas ``f(Xs)`` are *GP-predicted* function evaluations.
 
-        The EI is the expected improvement in the current best known objective function value that would result from sampling
-        at ``points_to_sample``.
+        In words, we are computing the expected improvement (over the current ``best_so_far``, best known
+        objective function value) that would result from sampling (aka running new experiments) at
+        ``points_to_sample`` with ``points_being_sampled`` concurrent/ongoing experiments.
 
         In general, the EI expression is complex and difficult to evaluate; hence we use Monte-Carlo simulation to approximate it.
+        When faster (e.g., analytic) techniques are available, we will prefer them.
 
-        :return: value of EI evaluated at ``current_point``
+        The idea of the MC approach is to repeatedly sample at the union of ``points_to_sample`` and
+        ``points_being_sampled``. This is analogous to gaussian_process_interface.sample_point_from_gp,
+        but we sample ``num_union`` points at once:
+        ``y = \mu + Lw``
+        where ``\mu`` is the GP-mean, ``L`` is the ``chol_factor(GP-variance)`` and ``w`` is a vector
+        of ``num_union`` draws from N(0, 1). Then:
+        ``improvement_per_step = max(max(best_so_far - y), 0.0)``
+        Observe that the inner ``max`` means only the smallest component of ``y`` contributes in each iteration.
+        We compute the improvement over many random draws and average.
+
+        :return: the expected improvement from sampling ``points_to_sample`` with ``points_being_sampled`` concurrent experiments
         :rtype: float64
 
         """
@@ -82,18 +106,29 @@ class ExpectedImprovementInterface(object):
 
     @abstractmethod
     def compute_grad_expected_improvement(self, **kwargs):
-        r"""Compute the gradient of expected improvement at ``current_point`` wrt ``current_point``, with ``points_to_sample`` concurrent samples.
+        r"""Compute the gradient of expected improvement at ``points_to_sample`` wrt ``points_to_sample``, with ``points_being_sampled`` concurrent samples.
 
         .. NOTE:: These comments were copied from ExpectedImprovementEvaluator::ComputeGradExpectedImprovement in gpp_math.hpp
-           and duplicated in cpp_wrappers/expected_improvement.py.
+           and duplicated in cpp_wrappers/expected_improvement.py and python_version/expected_improvement.py
+           in the functions of the same name.
 
-        ``current_points`` is the q and points_to_sample is the p in q,p-EI.
+        ``points_to_sample`` is the "q" and ``points_being_sampled`` is the "p" in q,p-EI.
 
         In general, the expressions for gradients of EI are complex and difficult to evaluate; hence we use
-        Monte-Carlo simulation to approximate it.
+        Monte-Carlo simulation to approximate it. When faster (e.g., analytic) techniques are available, we will prefer them.
 
-        :return: gradient of EI, i-th entry is ``\pderiv{EI(x)}{x_i}`` where ``x`` is ``current_point``
-        :rtype: array of float64 with shape (dim)
+        The MC computation of grad EI is similar to the computation of EI (decsribed in
+        compute_expected_improvement). We differentiate ``y = \mu + Lw`` wrt ``points_to_sample``;
+        only terms from the gradient of ``\mu`` and ``L`` contribute. In EI, we computed:
+        ``improvement_per_step = max(max(best_so_far - y), 0.0)``
+        and noted that only the smallest component of ``y`` may contribute (if it is > 0.0).
+        Call this index ``winner``. Thus in computing grad EI, we only add gradient terms
+        that are attributable to the ``winner``-th component of ``y``.
+
+        :return: gradient of EI, ``\pderiv{EI(Xq \cup Xp)}{Xq_{i,d}}`` where ``Xq`` is ``points_to_sample``
+          and ``Xp`` is ``points_being_sampled`` (grad EI from sampling ``points_to_sample`` with
+          ``points_being_sampled`` concurrent experiments wrt each dimension of the points in ``points_to_sample``)
+        :rtype: array of float64 with shape (num_to_sample, dim)
 
         """
         pass

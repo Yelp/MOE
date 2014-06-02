@@ -11,11 +11,12 @@ import numpy
 
 from pyramid.view import view_config
 
-from moe.optimal_learning.python.constant import default_expected_improvement_parameters
+from moe.optimal_learning.python.constant import DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS
 from moe.views.constant import GP_EI_ROUTE_NAME, GP_EI_PRETTY_ROUTE_NAME
 from moe.views.gp_pretty_view import GpPrettyView, PRETTY_RENDERER
-from moe.views.schemas import ListOfPointsInDomain, GpInfo, ListOfExpectedImprovements
-from moe.views.utils import _make_gp_from_gp_info
+from moe.views.schemas import ListOfPointsInDomain, GpInfo, ListOfExpectedImprovements, CovarianceInfo, DomainInfo
+from moe.views.utils import _make_gp_from_params
+from moe.optimal_learning.python.cpp_wrappers.expected_improvement import ExpectedImprovement
 
 
 class GpEiRequest(colander.MappingSchema):
@@ -29,29 +30,53 @@ class GpEiRequest(colander.MappingSchema):
 
     **Optional fields**
 
-        :points_being_sampled: list of points in domain being sampled (default: []) (:class:`moe.views.schemas.ListOfPointsInDomain`)
-        :mc_iterations: number of Monte Carlo (MC) iterations to perform in numerical integration to calculate EI (default: 1000)
+        :points_being_sampled: list of points in domain being sampled in concurrent experiments (default: []) (:class:`moe.views.schemas.ListOfPointsInDomain`)
+        :mc_iterations: number of Monte Carlo (MC) iterations to perform in numerical integration to calculate EI
+        :covariance_info: a :class:`moe.views.schemas.CovarianceInfo` dict of covariance information
 
-    **Example Request**
+    **Example Minimal Request**
 
     .. sourcecode:: http
 
-        Content-Type: text/javascrip
+        Content-Type: text/javascript
 
         {
             'points_to_evaluate': [[0.1], [0.5], [0.9]],
-            'points_being_sampled': [],
-            'mc_iterations': 1000,
             'gp_info': {
                 'points_sampled': [
                         {'value_var': 0.01, 'value': 0.1, 'point': [0.0]},
                         {'value_var': 0.01, 'value': 0.2, 'point': [1.0]}
                     ],
-                'domain': [
-                    [0, 1],
-                    ]
                 },
-            },
+            'domain_info': {
+                'dim': 1,
+                },
+        }
+
+    **Example Full Request**
+
+    .. sourcecode:: http
+
+        Content-Type: text/javascript
+
+        {
+            'points_to_evaluate': [[0.1], [0.5], [0.9]],
+            'points_being_sampled': [[0.2], [0.7]],
+            'mc_iterations': 10000,
+            'gp_info': {
+                'points_sampled': [
+                        {'value_var': 0.01, 'value': 0.1, 'point': [0.0]},
+                        {'value_var': 0.01, 'value': 0.2, 'point': [1.0]}
+                    ],
+                },
+            'domain_info': {
+                'domain_type': 'tensor_product'
+                'dim': 1,
+                },
+            'covariance_info': {
+                'covariance_type': 'square_exponential',
+                'hyperparameters': [1.0, 1.0],
+                },
         }
 
     """
@@ -63,9 +88,13 @@ class GpEiRequest(colander.MappingSchema):
     mc_iterations = colander.SchemaNode(
             colander.Int(),
             validator=colander.Range(min=1),
-            missing=default_expected_improvement_parameters.mc_iterations,
+            missing=DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS,
             )
     gp_info = GpInfo()
+    domain_info = DomainInfo()
+    covariance_info = CovarianceInfo(
+            missing=CovarianceInfo().deserialize({}),
+            )
 
 
 class GpEiResponse(colander.MappingSchema):
@@ -107,6 +136,8 @@ class GpEiView(GpPrettyView):
                 [0.1], [0.5], [0.9],
                 ],
             "gp_info": GpPrettyView._pretty_default_gp_info,
+            "covariance_info": GpPrettyView._pretty_default_covariance_info,
+            "domain_info": GpPrettyView._pretty_default_domain_info,
             }
 
     @view_config(route_name=_pretty_route_name, renderer=PRETTY_RENDERER)
@@ -129,21 +160,28 @@ class GpEiView(GpPrettyView):
            :input: :class:`moe.views.gp_ei.GpEiRequest`
            :output: :class:`moe.views.gp_ei.GpEiResponse`
 
-           :status 200: returns a response
+           :status 201: returns a response
            :status 500: server error
 
         """
         params = self.get_params_from_request()
 
-        points_to_evaluate = numpy.array(params.get('points_to_evaluate'))
-        points_being_sampled = numpy.array(params.get('points_being_sampled'))
-        gp_info = params.get('gp_info')
+        # TODO(sclark): (GH-99) Change REST interface to give points_to_evaluate with shape
+        # (num_to_evaluate, num_to_sample, dim)
+        # Here we assume the shape is (num_to_evaluate, dim) so we insert an axis, making num_to_sample = 1.
+        points_to_evaluate = numpy.array(params.get('points_to_evaluate'))[:, numpy.newaxis, :]
+        points_being_sampled = params.get('points_being_sampled')
+        if points_being_sampled is not None:
+            points_being_sampled = numpy.array(points_being_sampled)
+        gaussian_process = _make_gp_from_params(params)
 
-        gaussian_process = _make_gp_from_gp_info(gp_info)
-
-        expected_improvement = gaussian_process.evaluate_expected_improvement_at_point_list(
-                points_to_evaluate,
+        expected_improvement_evaluator = ExpectedImprovement(
+                gaussian_process,
                 points_being_sampled=points_being_sampled,
+                )
+
+        expected_improvement = expected_improvement_evaluator.evaluate_at_point_list(
+                points_to_evaluate,
                 )
 
         return self.form_response({

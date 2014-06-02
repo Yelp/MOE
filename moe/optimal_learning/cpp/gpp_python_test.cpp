@@ -1,8 +1,9 @@
-// gpp_python_model_selection.cpp
-/*
-  This file contains a wrapper that calls all C++ unit tests. The wrapper prints error messages indicating which
+/*!
+  \file gpp_python_model_selection.cpp
+  \rst
+  This file contains a wrapper that calls all ``C++`` unit tests. The wrapper prints error messages indicating which
   test(s) failed.
-*/
+\endrst*/
 // This include violates the Google Style Guide by placing an "other" system header ahead of C and C++ system headers.  However,
 // it needs to be at the top, otherwise compilation fails on some systems with some versions of python: OS X, python 2.7.3.
 // Putting this include first prevents pyport from doing something illegal in C++; reference: http://bugs.python.org/issue10910
@@ -259,8 +260,8 @@ void ExportCppTestFunctions() {
   boost::python::def("run_cpp_tests", RunCppTestsWrapper, R"%%(
     Runs all current C++ unit tests and reports failures.
 
-    RETURNS:
-    number of test failures. expected to be 0.
+    :return: number of test failures. expected to be 0.
+    :rtype: int >= 0
     )%%");
 }
 

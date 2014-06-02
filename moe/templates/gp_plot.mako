@@ -31,25 +31,13 @@
               <div class="form-group">
                 <label for="opt-num-multistarts" class="col-sm-6 control-label">Multistarts</label>
                 <div class="col-sm-6">
-                  <input class="form-control" id="opt-num-multistarts" value="${ default_ei_optimization_parameters.num_multistarts }">
+                  <input class="form-control" id="opt-num-multistarts" value="${ default_num_multistarts }">
                 </div>
               </div>
               <div class="form-group">
                 <label for="opt-gd-iterations" class="col-sm-6 control-label">GD Iterations</label>
                 <div class="col-sm-6">
-                  <input class="form-control" id="opt-gd-iterations" value="${ default_ei_optimization_parameters.gd_iterations }">
-                </div>
-              </div>
-              <div class="form-group">
-                <label for="opt-pre-mult" class="col-sm-6 control-label">Pre-mult</label>
-                <div class="col-sm-6">
-                  <input class="form-control" id="opt-pre-mult" value="${ default_ei_optimization_parameters.pre_mult }">
-                </div>
-              </div>
-              <div class="form-group">
-                <label for="opt-gamma" class="col-sm-6 control-label">Gamma</label>
-                <div class="col-sm-6">
-                  <input class="form-control" id="opt-gamma" value="${ default_ei_optimization_parameters.gamma }">
+                  <input class="form-control" id="opt-gd-iterations" value="${ default_ei_optimization_parameters.max_num_restarts }">
                 </div>
               </div>
             </form>
@@ -146,13 +134,27 @@ function update_graphs(){
         'points_to_evaluate': xvals,
         'gp_info': {
             'points_sampled': points_sampled,
-            'domain': [[0, 1]],
-            'length_scale': [$.parseJSON($('#hyperparameters-length').val())],
-            'signal_variance': $.parseJSON($('#hyperparameters-alpha').val()),
             },
-        'ei_optimization_parameters': {
+        'domain_info': {
+            'dim': 1,
+            'domain_bounds': [
+                {'min': 0.0, 'max': 1.0},
+                ],
+            },
+        'covariance_info': {
+            'covariance_type': 'square_exponential',
+            'hyperparameters': [
+                $.parseJSON($('#hyperparameters-alpha').val()),
+                $.parseJSON($('#hyperparameters-length').val())
+                ],
+            },
+        'optimization_info':{
+            'optimization_type': 'gradient_descent_optimizer',
             'num_multistarts': $.parseJSON($('#opt-num-multistarts').val()),
-            'gd_iterations': $.parseJSON($('#opt-gd-iterations').val()),
+            'num_random_samples': 100,
+            'optimization_parameters': {
+                'max_num_restarts': $.parseJSON($('#opt-gd-iterations').val()),
+                },
             },
         }
 
@@ -167,7 +169,7 @@ function update_graphs(){
         }
     );
     jqxhr1.fail(function() {
-        alert("500 error 1");
+        alert("500 error gp_mean_var");
     });
 
     var jqxhr2 = $.post(
@@ -178,10 +180,10 @@ function update_graphs(){
         }
     );
     jqxhr2.fail(function() {
-        alert("500 error 2");
+        alert("500 error gp_ei");
     });
 
-    post_data['num_samples_to_generate'] = 1;
+    post_data['num_to_sample'] = 1;
     var jqxhr3 = $.post(
         "${request.route_url('gp_next_points_epi')}",
         JSON.stringify(post_data),
@@ -190,7 +192,7 @@ function update_graphs(){
         }
     );
     jqxhr3.fail(function() {
-        alert("500 error 3");
+        alert("500 error gp_next_points_epi");
     });
 
     $("#loading-screen").html('<h1>Processing...</h1><div class="progress progress-striped active"><div class="progress-bar"  role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"><span class="sr-only">100% Complete</span></div></div>');
@@ -218,7 +220,7 @@ function update_graphs(){
             }
         );
         jqxhr4.fail(function() {
-            alert("500 error 4");
+            alert("500 error gp_mean_var of gp_next_points_epi");
         });
 
         jqxhr4.done(function() {

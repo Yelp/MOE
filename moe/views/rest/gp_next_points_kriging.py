@@ -19,23 +19,25 @@ class GpNextPointsKrigingRequest(GpNextPointsRequest):
 
     **Required fields**
 
-        :gp_info: a :class:`moe.views.schemas.GpInfo` object of historical data
+        :gp_info: a :class:`moe.views.schemas.GpInfo` dict of historical data
+        :domain_info: a :class:`moe.views.schemas.BoundedDomainInfo` dict of domain information
 
     **Optional fields**
 
-        :num_samples_to_generate: number of next points to generate (default: 1)
-        :ei_optimization_parameters: :class:`moe.views.schemas.EiOptimizationParameters` object containing optimization parameters (default: moe.optimal_learning.python.constant.default_ei_optimization_parameters)
+        :num_to_sample: number of next points to generate (default: 1)
         :std_deviation_coef: a float used in Kriging, see Kriging implementation docs (default: 0.0)
         :kriging_noise_variance: a positive (>= 0) float used in Kriging, see Kriging implementation docs (default: 0.0)
+        :covariance_info: a :class:`moe.views.schemas.CovarianceInfo` dict of covariance information
+        :optimiaztion_info: a :class:`moe.views.schemas.OptimizationInfo` dict of optimization information
 
     **Example Request**
 
     .. sourcecode:: http
 
-        Content-Type: text/javascrip
+        Content-Type: text/javascript
 
         {
-            'num_samples_to_generate': 1,
+            'num_to_sample': 1,
             'std_deviation_coef': 0.0,
             'kriging_noise_variance': 0.0,
             'gp_info': {
@@ -43,11 +45,13 @@ class GpNextPointsKrigingRequest(GpNextPointsRequest):
                         {'value_var': 0.01, 'value': 0.1, 'point': [0.0]},
                         {'value_var': 0.01, 'value': 0.2, 'point': [1.0]}
                     ],
-                'domain': [
-                    [0, 1],
-                    ]
                 },
-            },
+            'domain_info': {
+                'dim': 1,
+                'domain_bounds': [
+                    {'min': 0.0, 'max': 1.0},
+                    ],
+                },
         }
 
     """

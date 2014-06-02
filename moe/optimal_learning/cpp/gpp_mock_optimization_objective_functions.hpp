@@ -16,6 +16,7 @@
   for running tests.  See gpp_optimization_test.cpp for examples.
 
   Following the style laid out in gpp_common.hpp (file comments, item 5), we currently define:
+
   * ``class PolynomialEvaluator;``
   * ``struct PolynomialState;``
 
@@ -25,8 +26,8 @@
   PolynomialState is simple: it's just a container class that holds a point at which to evaluate the polynomial.
 \endrst*/
 
-#ifndef OPTIMAL_LEARNING_EPI_SRC_CPP_GPP_MOCK_OPTIMIZATION_OBJECTIVE_FUNCTIONS_HPP_
-#define OPTIMAL_LEARNING_EPI_SRC_CPP_GPP_MOCK_OPTIMIZATION_OBJECTIVE_FUNCTIONS_HPP_
+#ifndef MOE_OPTIMAL_LEARNING_CPP_GPP_MOCK_OPTIMIZATION_OBJECTIVE_FUNCTIONS_HPP_
+#define MOE_OPTIMAL_LEARNING_CPP_GPP_MOCK_OPTIMIZATION_OBJECTIVE_FUNCTIONS_HPP_
 
 #include <algorithm>
 #include <vector>
@@ -147,4 +148,4 @@ struct PolynomialState final {
 
 }  // end namespace optimal_learning
 
-#endif  // OPTIMAL_LEARNING_EPI_SRC_CPP_GPP_MOCK_OPTIMIZATION_OBJECTIVE_FUNCTIONS_HPP_
+#endif  // MOE_OPTIMAL_LEARNING_CPP_GPP_MOCK_OPTIMIZATION_OBJECTIVE_FUNCTIONS_HPP_
