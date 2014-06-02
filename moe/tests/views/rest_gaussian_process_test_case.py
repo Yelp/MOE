@@ -20,14 +20,6 @@ class RestGaussianProcessTestCase(GaussianProcessTestCase):
         self.testapp = TestApp(app)
 
     @staticmethod
-    def _build_covariance_info(covariance):
-        """Create and return a covariance_info dictionary from a :class:`~moe.optimal_learning.python.python_version.covaraince.Covaraince` object."""
-        return {
-                'covariance_type': covariance.covariance_type,
-                'hyperparameters': covariance.get_hyperparameters().tolist(),
-                }
-
-    @staticmethod
     def _build_gp_info(gaussian_process):
         """Create and return a gp_info dictionary from a GP object."""
         # Convert sampled points

@@ -11,10 +11,9 @@ import numpy
 import moe.optimal_learning.python.cpp_wrappers.expected_improvement
 from moe.optimal_learning.python.cpp_wrappers.expected_improvement import ExpectedImprovement
 from moe.views.gp_pretty_view import GpPrettyView
-from moe.views.schemas import GpInfo, ListOfPointsInDomain, CovarianceInfo, BoundedDomainInfo, OptimizationInfo, OPTIMIZATION_TYPES_TO_SCHEMA_CLASSES
-from moe.views.utils import _make_gp_from_params, _make_domain_from_params
-from moe.optimal_learning.python.linkers import OPTIMIZATION_TYPES_TO_OPTIMIZATION_METHODS
-from moe.optimal_learning.python.constant import OPTIMIZATION_TYPE_TO_DEFAULT_PARAMETERS, DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS
+from moe.views.utils import _make_gp_from_params, _make_domain_from_params, _make_optimization_parameters_from_params
+from moe.views.schemas import GpInfo, ListOfPointsInDomain, CovarianceInfo, BoundedDomainInfo, OptimizationInfo
+from moe.optimal_learning.python.constant import DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS
 
 
 class GpNextPointsRequest(colander.MappingSchema):
@@ -208,7 +207,7 @@ class GpNextPointsPrettyView(GpPrettyView):
             # Calculate the next best points to sample given the historical data
             domain = _make_domain_from_params(params)
 
-            optimizer_class, optimization_parameters, num_random_samples = self.get_optimization_parameters_cpp(params)
+            optimizer_class, optimization_parameters, num_random_samples = _make_optimization_parameters_from_params(params)
 
             expected_improvement_optimizer = optimizer_class(
                     domain,
@@ -235,30 +234,3 @@ class GpNextPointsPrettyView(GpPrettyView):
                 'points_to_sample': next_points.tolist(),
                 'expected_improvement': expected_improvement,
                 })
-
-    @staticmethod
-    def get_optimization_parameters_cpp(deserialized_request_params):
-        """Figure out which cpp_wrappers.* objects to construct from params.
-
-        :param deserialized_request_params: the deserialized REST request, containing ei_optimization_parameters
-        :type deserialized_request_params: a dictionary with a key ei_optimization_parameters containing a :class:`moe.views.schemas.EiOptimizationParameters()` object with optimization parameters
-
-        """
-        optimization_info = deserialized_request_params.get('optimization_info')
-        num_random_samples = optimization_info.get('num_random_samples')
-
-        optimization_method = OPTIMIZATION_TYPES_TO_OPTIMIZATION_METHODS[optimization_info.get('optimization_type')]
-        schema_class = OPTIMIZATION_TYPES_TO_SCHEMA_CLASSES[optimization_info.get('optimization_type')]()
-
-        # Start with defaults
-        optimization_parameters_dict = dict(OPTIMIZATION_TYPE_TO_DEFAULT_PARAMETERS[optimization_info.get('optimization_type')]._asdict())
-        for param, val in optimization_info.get('optimization_parameters', {}).iteritems():
-            # Override defaults as needed
-            optimization_parameters_dict[param] = val
-
-        # Validate optimization parameters
-        validated_optimization_parameters = schema_class.deserialize(optimization_parameters_dict)
-        validated_optimization_parameters['num_multistarts'] = optimization_info['num_multistarts']
-        optimization_parameters = optimization_method.cpp_parameters_class(**validated_optimization_parameters)
-
-        return optimization_method.cpp_optimizer_class, optimization_parameters, num_random_samples
