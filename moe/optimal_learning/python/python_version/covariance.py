@@ -3,9 +3,11 @@
 
 This file contains implementations of CovarianceInterface. Currently, we have
 SquareExponential, supporting:
+
 * covariance
 * grad_covariance
 * hyperparameter_grad_covariance
+
 It also contains a few utilities for computing common mathematical quantities and
 initialization. Note that the hessian is not yet implemented (use C++ for that feature).
 

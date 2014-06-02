@@ -1,11 +1,12 @@
-// gpp_exception.cpp
-/*
+/*!
+  \file gpp_exception.cpp
+  \rst
   This file contains definitions for the constructors of the various exception classes in gpp_exception.hpp. These ctors
   generally set the message_ member with some debugging information about what the error is and where it occurred.
 
   In most cases, we use boost::lexical_cast<std::string> to convert from numbers to strings. std::to_string's formatting
   for floating point types is absolutely terrible (but it works fine for integral types, which is where we use it).
-*/
+\endrst*/
 
 // We are not doing any internationalization stuff with boost::lexical_cast nor
 // are reading numbers like "329,387.38971".
@@ -24,20 +25,20 @@ namespace optimal_learning {
 
 namespace {
 
-/*
+/*!\rst
   Utility function to append some additional info (file/line number, function name,
   and/or a custom message) to a specified string.
   This is meant to be used for constructing what() messages for the exception classes
   in gpp_exception.hpp.
 
-  INPUTS:
-  line_info[]: ptr to char array containing __FILE__ and __LINE__ info; e.g., from OL_STRINGIFY_FILE_AND_LINE
-  func_info[]: optional ptr to char array from OL_CURRENT_FUNCTION_NAME or similar
-  custom_message[]: optional ptr to char array with any additional text/info to print/log
-  message[1]: a valid std::string object
-  OUTPUTS:
-  message[1]: string with additional info appended
-*/
+  \param
+    :line_info[]: ptr to char array containing __FILE__ and __LINE__ info; e.g., from OL_STRINGIFY_FILE_AND_LINE
+    :func_info[]: optional ptr to char array from OL_CURRENT_FUNCTION_NAME or similar
+    :custom_message[]: optional ptr to char array with any additional text/info to print/log
+    :message[1]: a valid std::string object
+  \output
+    :message[1]: string with additional info appended
+\endrst*/
 void AppendCustomMessageAndDebugInfo(char const * line_info, char const * func_info, char const * custom_message, std::string * message) {
   if (custom_message) {
     *message += custom_message;

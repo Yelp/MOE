@@ -2,23 +2,32 @@
   \file gpp_optimization.hpp
   \rst
   Table of Contents:
-  1) FILE OVERVIEW
-  2) OPTIMIZATION OF OBJECTIVE FUNCTIONS
-     a) GRADIENT DESCENT
-        i) OVERVIEW
-        ii) IMPLEMENTATION DETAILS
-     b) NEWTON'S METHOD
-        i) OVERVIEW
-        ii) IMPLEMENTATION DETAILS
-     c) MULTISTART OPTIMIZATION
-  3) CODE HIERARCHY / CALL-TREE
-     a) REQUIREMENTS OF TEMPLATE (CLASS) PARAMETERS
-     b) CODE HIERARCHY / CALL-TREE FOR THIS FILE
-        i) OPTIMIZER CLASS TEMPLATE
-        ii) OPTIMIZER CLASSES IN THIS FILE
-        iii) MULTISTART OPTIMIZATION
 
-.. Note:: comments in this header are copied in the module docstring in python/python_version/optimization.py
+  1. FILE OVERVIEW
+  2. OPTIMIZATION OF OBJECTIVE FUNCTIONS
+
+     a. GRADIENT DESCENT
+
+        i. OVERVIEW
+        ii. IMPLEMENTATION DETAILS
+
+     b. NEWTON'S METHOD
+
+        i. OVERVIEW
+        ii. IMPLEMENTATION DETAILS
+
+     c. MULTISTART OPTIMIZATION
+
+  3. CODE HIERARCHY / CALL-TREE
+
+     a. REQUIREMENTS OF TEMPLATE (CLASS) PARAMETERS
+     b. CODE HIERARCHY / CALL-TREE FOR THIS FILE
+
+        i. OPTIMIZER CLASS TEMPLATE
+        ii. OPTIMIZER CLASSES IN THIS FILE
+        iii. MULTISTART OPTIMIZATION
+
+  .. Note:: comments in this header are copied in the module docstring in python/python_version/optimization.py
     and in the module docstring in python/cpp_wrappers/optimization.py.
 
   Read the "OVERVIEW" sections for header-style comments that describe the file contents at a high level.
@@ -26,7 +35,8 @@
   are included together here since this file contains template class declarations and template function definitions.
   For further implementation details, see comment blocks before each individual class/function.
 
-  1) FILE OVERVIEW:
+  **1. FILE OVERVIEW**
+
   First, the functions in this file are all MAXIMIZERS.  We also use the term "optima," and unless we specifically
   state otherwise, "optima" and "optimization" refer to "maxima" and "maximization," respectively.  (Note that
   minimizing ``g(x)`` is equivalent to maximizing ``f(x) = -1 * g(x)``.)
@@ -53,9 +63,12 @@
   section 3a) of this header (below) for details on precisely what functions/interface a (Evaluator, State) tuple are
   required to provide in order to be used with the optimizers in this file.
 
-  2) OPTIMIZATION OF OBJECTIVE FUNCTIONS:
-  2a) GRADIENT DESCENT (GD):
-  2a, i) OVERVIEW:
+  **2. OPTIMIZATION OF OBJECTIVE FUNCTIONS**
+
+  **2a. GRADIENT DESCENT (GD)**
+
+  **2a, i. OVERVIEW**
+
   We use first derivative information to walk the path of steepest ascent, hopefully toward a (local) maxima of the
   chosen log likelihood measure.  This is implemented in: GradientDescentOptimization().
   This method ensures that the result lies within a specified domain.
@@ -70,7 +83,8 @@
 
   Gradient descent is implemented in: GradientDescentOptimizer::Optimize() (which calls GradientDescentOptimization())
 
-  2a, ii) IMPLEMENTATION DETAILS:
+  **2a, ii. IMPLEMENTATION DETAILS**
+
   GD's update is: ``\theta_{i+1} = \theta_i + \gamma * \nabla f(\theta_i)``
   where ``\gamma`` controls the step-size and is chosen heuristically, often varying by problem.
 
@@ -85,8 +99,10 @@
   to specify a maximum relative change to limit the aggressiveness of GD steps.  Finally, we wrap GD in a restart
   loop, where we fire off another GD run from the current location unless convergence was reached.
 
-  2b) NEWTON'S METHOD:
-  2b, i) OVERVIEW:
+  **2b. NEWTON'S METHOD**
+
+  **2b, i. OVERVIEW**
+
   Newton's Method (for optimization) uses second derivative information in addition to the first derivatives used by
   gradient descent (GD). In higher dimensions, first derivatives => gradients and second derivatives => Hessian matrix.
   At each iteration, gradient descent computes the derivative and blindly takes a step (of some
@@ -104,7 +120,8 @@
 
   Newton is implemented here: NewtonOptimizer::Optimize() (which calls NewtonOptimization())
 
-  2b, ii) IMPLEMENTATION DETAILS:
+  **2b, ii. IMPLEMENTATION DETAILS**
+
   Let's address the footnotes from the previous section (Section 2b, i paragraph 1):
 
   \* Within its region of attraction, Newton's steps are optimal (when we have only second derivative information).  Outside
@@ -121,7 +138,7 @@
   linear approximations to ``g(x)`` and proceed in a fixed-point like fashion.
 
   As an optimization method, we are looking for roots of the gradient, ``f'(x_{opt}) = 0``.  So we require an initial guess
-  x_0 and the ability to evaluate ``f'(x)`` and ``f''(x)`` (in higher dimensions, the gradient and Hessian of f).  Thus Newton
+  ``x_0`` and the ability to evaluate ``f'(x)`` and ``f''(x)`` (in higher dimensions, the gradient and Hessian of f).  Thus Newton
   makes repeated linear approximations to ``f'(x)`` or equivalently, it locally approximates ``f(x)`` with a *quadratic* function,
   continuing iteration from the optima of that quadratic.
   In particular, Newton would solve the optimization problem of a quadratic program in one iteration.
@@ -141,7 +158,8 @@
   optima if the Hessian is strictly negative or positive definite; a saddle if the Hessian has both positive and negative
   eigenvalues, and an indeterminate case if the Hessian is singular.
 
-  2c) MULTISTART OPTIMIZATION:
+  **2c. MULTISTART OPTIMIZATION**
+
   Above, we mentioned that gradient descent (GD), Newton, etc. have a difficult time converging if they are started "too far"
   from an optima.  Even if convergence occurs, it will typically be very slow unless the problem is simple.  Worse,
   in a problem with multiple optima, the methods may converge to the wrong one!
@@ -164,8 +182,10 @@
   can have exceptionally poor convergence characteristics or run too slowly.  In cases where these more advanced techniques
   fail, we commonly fall back to 'dumb' search.
 
-  3) CODE HIERARCHY / CALL-TREE:
-  3a) REQUIREMENTS OF TEMPLATE (CLASS) PARAMETERS:
+  **3. CODE HIERARCHY / CALL-TREE**
+
+  **3a. REQUIREMENTS OF TEMPLATE (CLASS) PARAMETERS**
+
   As mentioned in the overview, the functions and classes in this file are all templated on (Evaluator, State) tuples.
   They also template on Domain types.  In particular, the optimization functions and classes have the following form:
   template <typename ObjectiveFunctionEvaluator, typename Domain> optimization_function(...);
@@ -182,38 +202,46 @@
   to the requirements/guidelines laid out in gpp_common.hpp, an (Evaluate, State) tuple MUST provide the following
   interface to be used with the optimizers in this file:
 
-  Evaluator:
-  // these functions all evaluate f() and its derivatives at state.GetCurrentPoint()
-  // derivatives are computed against the space whose dimension is state.GetProblemSize()
-  double ComputeObjectiveFunction(State * state);  // compute f(current_point)
-  void ComputeGradObjectiveFunction(State * state, double * grad_objective);  // compute f'(current_point)
-  void ComputeHessianObjectiveFunction(State * state, double * hessian_objective);  // compute f''(current_point)
+  Evaluator::
 
-  State:
-  int GetProblemSize();  // how many dimensions to optimize
-  void GetCurrentPoint(double * point);  // get current point at which Evalutor is computing results
-  void UpdateCurrentPoint(double const * point);  // set current point at which Evalutor is computing results
+    // these functions all evaluate f() and its derivatives at state.GetCurrentPoint()
+    // derivatives are computed against the space whose dimension is state.GetProblemSize()
+    double ComputeObjectiveFunction(State * state);  // compute f(current_point)
+    void ComputeGradObjectiveFunction(State * state, double * grad_objective);  // compute f'(current_point)
+    void ComputeHessianObjectiveFunction(State * state, double * hessian_objective);  // compute f''(current_point)
+
+  State::
+
+    int GetProblemSize();  // how many dimensions to optimize
+    void GetCurrentPoint(double * point);  // get current point at which Evalutor is computing results
+    void UpdateCurrentPoint(double const * point);  // set current point at which Evalutor is computing results
 
   gpp_math.hpp and gpp_model_selection_and_hyperparameter_optimization.hpp have (Evaluator, State) examples that implement
   the above interface:
-  gpp_math.hpp:
-  (ExpectedImprovement, ExpectedImprovementState)
-  (OnePotentialSampleExpectedImprovement, OnePotentialSampleExpectedImprovementState)
-  gpp_model_selection_and_hyperparameter_optimization.hpp:
-  (LogMarginalLikelihoodEvaluator, LogMarginalLikelihoodState)
-  (LeaveOneOutLogLikelihoodEvaluator, LeaveOneOutLogLikelihoodState)
+
+  * gpp_math.hpp:
+
+    * (ExpectedImprovement, ExpectedImprovementState)
+    * (OnePotentialSampleExpectedImprovement, OnePotentialSampleExpectedImprovementState)
+
+  * gpp_model_selection_and_hyperparameter_optimization.hpp:
+
+    * (LogMarginalLikelihoodEvaluator, LogMarginalLikelihoodState)
+    * (LeaveOneOutLogLikelihoodEvaluator, LeaveOneOutLogLikelihoodState)
 
   gpp_mock_optimization_objective_functions.hpp lays out a pure abstract Evaluator class (with State) that is optimizable;
   examine tests that #include that file for more examples.
 
-  Note: not all (Evaluator, State) tuples (e.g., GaussianProcess) make sense for optimization; these classes
-  do not provide the above interface.
+  .. Note:: not all (Evaluator, State) tuples (e.g., GaussianProcess) make sense for optimization; these classes
+    do not provide the above interface.
 
-  3b) CODE HIERARCHY / CALL-TREE FOR THIS FILE:
+  **3b. CODE HIERARCHY / CALL-TREE FOR THIS FILE**
+
   First, we will describe the interface for Optimizer classes.  Then we will go over individual classes.
   Finally we will touch on the MultistartOptimizer template class.
 
-  3b, i) OPTIMIZER CLASS TEMPLATE
+  **3b, i. OPTIMIZER CLASS TEMPLATE**
+
   As mentioned above, this file provides various Optimizer classes, e.g., NewtonOptimizer.  Here we'll go over high
   level details and then go through each specific example.
   TODO(eliu): (#45086) firm up class design.  Currently the classes are very bare-bones; they have just one method (Optimize) and
@@ -249,43 +277,52 @@
   See specific Optimizer class docs (and ::Optimize() function docs) for details.
 
   Now, we outline specific optimization classes provided in thils file and the multistarting function that uses them:
-  3b, ii) OPTIMIZER CLASSES IN THIS FILE:
+
+  **3b, ii. OPTIMIZER CLASSES IN THIS FILE**
+
   class NullOptimizer<ObjectiveFunctionEvaluator, Domain>:
   NullOptimizer<...>::Optimize(...) (do nothing)
+
     * This optimizer does nothing; it provides an "identity" optimizer where Output := Input.
     * Its purpose is to allow MultistartOptimizer<...> to be used for 'dumb' searches.
 
   class GradientDescentOptimizer<ObjectiveFunctionEvaluator, Domain>:
   GradientDescentOptimizer<...>::Optimize(...) (restarted part of gradient descent)
+
     * Iteratively restarts GD from its previous ending point, unless convergence conditions are met
     * This calls:
-    GradientDescentOptimization<ObjectiveFunctionEvaluator, Domain>()  (gradient descent)
+      GradientDescentOptimization<ObjectiveFunctionEvaluator, Domain>()  (gradient descent)
+
       * Performs gradient descent to optimize specified objective function
       * Ensures (heuristically by modifying steps) that solutions remain in the specified domain
       * Calls out to ObjectiveFunctionEvaluator::ComputeObjectiveFunction() and ComputeGradObjectiveFunction()
 
   class NewtonOptimizer<ObjectiveFunctionEvaluator, Domain>:
   NewtonOptimizer<...>::Optimize() (Newton's method with refinement step)
+
     * First calls NewtonOptimization() to optimize.  Robustness heuristics are active to help make convergence easier.
     * Then calls NewtonOptimization() again with robustness heuristics off (heuristics should have converged fully
-       or gotten us close) to ensure that convergence occurred.  (Sometimes the heuristics converge to nonsense;
-       this second step will catch that.)
+      or gotten us close) to ensure that convergence occurred.  (Sometimes the heuristics converge to nonsense;
+      this second step will catch that.)
     * This function calls the following twice:
-    NewtonOptimization<ObjectiveFunctionEvaluator, Domain>() (Newton's method for optimization)
+      NewtonOptimization<ObjectiveFunctionEvaluator, Domain>() (Newton's method for optimization)
+
       * Performs Newton iteration to optimize the templated objective function
       * Ensures (heuristically by modifying steps) that solutions remain in the specified domain
       * Calls out to ObjectiveFunctionEvaluator::ComputeObjectiveFunction(), ComputeGradObjectiveFunction(),
-         and ComputeHessianObjectiveFunction()
+        and ComputeHessianObjectiveFunction()
       * Inner loop also calls ComputePLUFactorization() and PLUMatrixVectorSolve() from gpp_linear_algebra
 
-   3b, iii) MULTISTART OPTIMIZATION:
+   **3b, iii. MULTISTART OPTIMIZATION**
    class MultistartOptimizer<Optimizer<ObjectiveFunctionEvaluator, Domain> >:
-   MultistartOptimizer<...>::MultistartOptimize() (multistarts any Optimizer from section 3b, ii))
+   MultistartOptimizer<...>::MultistartOptimize() (multistarts any Optimizer from section 3b, ii.)
+
      * Calls Optimizer::Optimize() once for each point in the provided list of initial guesses
      * Multithreaded using OpenMP for performance
      * Reports the best result overall (and optionally each individual result)
      * Proxy for finding the global maximum since it is difficult/impossible to guarantee an optimum is global
-        in general. See function comments (below) and header comments (above, 2c) for details.
+       in general. See function comments (below) and header comments (above, 2c) for details.
+
      .. NOTE:: uses OptimizationIOContainer class (see declaration below for details) for inputting/outputting
         information about currently best-known objective values/points and the optimization result.
 \endrst*/
@@ -325,13 +362,16 @@ namespace optimal_learning {
   The contract:
   On input, the optimizer will read best_objective_value_so_far.
   IF optimization results in a LARGER objective value, then:
-    1) best_objective_value_so_far will be set to that new larger value
-    2) best_point will be set to the point producing this new larger objective value
-    3) found_flag will be SET to true
+
+    1. best_objective_value_so_far will be set to that new larger value
+    2. best_point will be set to the point producing this new larger objective value
+    3. found_flag will be SET to true
+
   ELSE:
-    1) best_objective_value_so_far will be unmodified
-    2) best_point will be unmodified
-    3) found_flag will be SET to false
+
+    1. best_objective_value_so_far will be unmodified
+    2. best_point will be unmodified
+    3. found_flag will be SET to false
 
   The idea is for the user to be able to indicate what an improvement is.  For example, to optimize log likelihood as a
   function of hyperparameters, we could do:
@@ -805,14 +845,14 @@ class GradientDescentOptimizer final {
     This method calls gradient descent, then restarts (by calling GD again) from the GD's result point.  This is done until
     max_num_restarts is reached or the result point stops changing (compared to tolerance).
 
-    Note that we are using an absolute tolerance, based on the size of the most recent step*.  Here, 'step' is the
+    Note that we are using an absolute tolerance, based on the size of the most recent step\*.  Here, 'step' is the
     distance covered by the last restart, not the last GD iteration (as in GradientDescentOptimization()).
     The suggested value is 1.0e-7, although this may need to be loosened for problems with 'difficult' optima (e.g., the shape
     is not locally very peaked).  Setting too high of a tolerance can cause wrong answers--e.g., we stop at a point
     that is not an optima but simply an region with small gradient.  Setting the tolerance too low may make convergence impossible;
     GD could get stuck (bouncing between the same few points) or numerical effects could make it impossible to satisfy tolerance.
 
-    * As opposed to say based on changes in the objective function.
+    \* As opposed to say based on changes in the objective function.
 
     Solution is guaranteed to lie within the region specified by "domain"; note that this may not be a
     true optima (i.e., the gradient may be substantially nonzero).
@@ -982,9 +1022,12 @@ class MultistartOptimizer final {
 
     Generally, you will not call this function directly.  Instead, it is intended to be used in wrappers that set up state,
     chunk_size, etc. for the specific optimization problem at hand.  For examples with Expected Improvement (EI), see gpp_math:
+
     * ``EvaluateEIAtPointList()``
     * ``ComputeOptimalPointsToSampleViaMultistartGradientDescent()``
+
     or gpp_model_selection:
+
     * ``EvaluateLogLikelihoodAtPointList()``
     * ``MultistartGradientDescentHyperparameterOptimization()``
     * ``MultistartNewtonHyperparameterOptimization()``

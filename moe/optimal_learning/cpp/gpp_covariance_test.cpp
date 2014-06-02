@@ -1,11 +1,12 @@
-// gpp_covariance_test.cpp
-/*
+/*!
+  \file gpp_covariance_test.cpp
+  \rst
   This file contains two template classes: one supporting computing covariance and its analytic spatial derivatives, and the other
   for covariance and its analytic hyperparameter derivatives.  Then through a matched pair of template functions, we ping
   the analytic derivatives using finite differences for validation.  (The pinging is done through PingDerivatve() in test_utils.hpp.)
 
   The Run.*() functions invoke the derivative ping funtions on all of the covariance functions declared in gpp_covariance.hpp.
-*/
+\endrst*/
 
 #include "gpp_covariance_test.hpp"
 
@@ -25,7 +26,7 @@ namespace optimal_learning {
 
 namespace {
 
-/*
+/*!\rst
   Supports evaluating a covariance function, Covariance.Covariance() and its gradient, Covariance.GradCovariance()
 
   Covariance has the form f = cov(x_d, y_d), where x, y are vectors of size dim.
@@ -39,7 +40,7 @@ namespace {
   The output of coariance is a scalar.
 
   WARNING: this class is NOT THREAD SAFE.
-*/
+\endrst*/
 template <typename CovarianceClass>
 class PingCovarianceSpatialDerivatives final : public PingableMatrixInputVectorOutputInterface {
  public:
@@ -130,7 +131,7 @@ class PingCovarianceSpatialDerivatives final : public PingableMatrixInputVectorO
   CovarianceClass covariance_;
 };
 
-/*
+/*!\rst
   Supports evaluating a covariance function, covariance.Covariance() and its hyperparameter gradient,
   covariance.HyperparameterGradCovariance()
 
@@ -139,7 +140,7 @@ class PingCovarianceSpatialDerivatives final : public PingableMatrixInputVectorO
   (via EvaluateFunction) is supported by building additional local covariance objects.
 
   The output of coariance is a scalar.
-*/
+\endrst*/
 template <typename CovarianceClass>
 class PingGradCovarianceHyperparameters final : public PingableMatrixInputVectorOutputInterface {
  public:
@@ -324,7 +325,6 @@ class PingHessianCovarianceHyperparameters final : public PingableMatrixInputVec
   CovarianceClass covariance_;
 };
 
-
 template <typename PingCovarianceClass>
 OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT int PingCovarianceHyperparameterDerivativesTest(char const * class_name, int num_hyperparameters, double epsilon[2], double tolerance_fine, double tolerance_coarse, double input_output_ratio) {
   const int dim = 3;
@@ -462,12 +462,14 @@ OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT int PingCovarianceHyperparameterHessia
   return total_errors;
 }
 
-
-/*
+/*!\rst
   Pings the gradient of covariance functions to check their validity.
   Test cases include a couple of simple hand-checked cases as well as a run
   of 50 randomly generated tests.
-*/
+
+  \return
+    number of pings that failed
+\endrst*/
 template <typename PingCovarianceClass>
 OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT int PingCovarianceSpatialDerivativesTest(char const * class_name, double epsilon[2], double tolerance_fine, double tolerance_coarse, double input_output_ratio) {
   const  int dim = 3;
@@ -558,7 +560,14 @@ OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT int PingCovarianceSpatialDerivativesTe
   return total_errors;
 }
 
-// use separate scopes to prevent accidental misuse of variable names
+/*!\rst
+  Test that gradient wrt spatial coordinates of various covariance functions are working.
+
+  Uses separate scopes to prevent accidental misuse of variable names.
+
+  \return
+    Number of covariance functions where spatial gradient pings failed
+\endrst*/
 OL_WARN_UNUSED_RESULT int RunCovarianceSpatialDerivativesTests() {
   int total_errors = 0;
   int current_errors = 0;
@@ -593,7 +602,14 @@ OL_WARN_UNUSED_RESULT int RunCovarianceSpatialDerivativesTests() {
   return total_errors;
 }
 
-// use separate scopes to prevent accidental misuse of variable names
+/*!\rst
+  Test that gradient and hessian wrt hyperparameters of various covariance functions are working.
+
+  Uses separate scopes to prevent accidental misuse of variable names.
+
+  \return
+    Number of covariance functions where hyperparameter gradients/hessian pings failed
+\endrst*/
 OL_WARN_UNUSED_RESULT int RunCovarianceHyperparameterDerivativesTests() noexcept {
   int total_errors = 0;
   int current_errors = 0;

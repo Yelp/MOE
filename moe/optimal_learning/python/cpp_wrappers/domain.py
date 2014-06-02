@@ -89,8 +89,10 @@ class SimplexIntersectTensorProductDomain(DomainInterface):
     See TensorProductDomain for what that means.
 
     The unit d-simplex is defined as the set of x_i such that:
-    1) ``x_i >= 0 \forall i  (i ranging over dimension)``
-    2) ``\sum_i x_i <= 1``
+
+    1. ``x_i >= 0 \forall i  (i ranging over dimension)``
+    2. ``\sum_i x_i <= 1``
+
     (Implying that ``x_i <= 1 \forall i``)
 
     ASSUMPTION: most of the volume of the tensor product region lies inside the simplex region.

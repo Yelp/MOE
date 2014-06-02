@@ -1,18 +1,23 @@
-// gpp_model_selection_and_hyperparameter_optimization_test.cpp
-/*
+/*!
+  \file gpp_model_selection_and_hyperparameter_optimization_test.cpp
+  \rst
   Routines to test the functions in gpp_model_selection_and_hyperparameter_optimization.cpp.
 
   These tests verify LogMarginalLikelihoodEvaluator and LeaveOneOutLogLikelihoodEvaluator and their optimizers:
-  1a) Following gpp_covariance_test.cpp, we define classes (PingLogLikelihood, PingHessianLogLikelihood) for evaluating
-      log likelihood + gradient or log likelihood gradient + hessian (derivs wrt hyperparameters).
-  1b) Ping for derivative accuracy (PingLogLikelihoodTest, which is general enough for gradients and hessian); this is
-      for derivatives wrt hyperparameters.  These are for unit testing analytic derivatives.
-  2) Gradient Descent + Newton unit tests: using polynomials and other simple fucntions with analytically known optima
+
+  1. Ping testing (verifying analytic gradient computation against finite difference approximations)
+
+     a. Following gpp_covariance_test.cpp, we define classes (PingLogLikelihood, PingHessianLogLikelihood) for evaluating
+        log likelihood + gradient or log likelihood gradient + hessian (derivs wrt hyperparameters).
+     b. Ping for derivative accuracy (PingLogLikelihoodTest, which is general enough for gradients and hessian); this is
+        for derivatives wrt hyperparameters.  These are for unit testing analytic derivatives.
+
+  2. Gradient Descent + Newton unit tests: using polynomials and other simple fucntions with analytically known optima
      to verify that the optimizers are performing correctly.
-  3) Hyperparameter optimization: we run hyperparameter optimization on toy problems using LML and LOO-CV likelihood
+  3. Hyperparameter optimization: we run hyperparameter optimization on toy problems using LML and LOO-CV likelihood
      as objective functions.  Convergence to at least local maxima is verified for both gradient descent and newton optimizers.
      These function as integration tests.
-*/
+\endrst*/
 
 // #define OL_VERBOSE_PRINT
 
@@ -45,12 +50,12 @@ namespace optimal_learning {
 
 namespace {  // tests for pinging log likelihood measures wrt their hyperparameters
 
-/*
-  Supports evaluating log likelihood functions and their gradients wrt hyperparameters..
+/*!\rst
+  Supports evaluating log likelihood functions and their gradients wrt hyperparameters.
 
-  The gradient is taken wrt hyperparameters[n_hyper], so this is the "input_matrix" X_{d,i} with i unused.
+  The gradient is taken wrt ``hyperparameters[n_hyper]``, so this is the ``input_matrix``, ``X_{d,i}`` with ``i`` unused.
   The other inputs to log marginal are not differentiated against, so they are taken as input and stored by the constructor.
-*/
+\endrst*/
 template <typename LogLikelihoodEvaluator, typename CovarianceClass>
 class PingLogLikelihood final : public PingableMatrixInputVectorOutputInterface {
  public:
@@ -107,16 +112,28 @@ class PingLogLikelihood final : public PingableMatrixInputVectorOutputInterface 
   }
 
  private:
+  //! number of hyperparameters of the underlying covariance function
   int num_hyperparameters_;
+  //! whether gradients been computed and stored--whether this class is ready for use
   bool gradients_already_computed_;
 
+  //! log likelihood evaluator that is being tested (e.g., LogMarginalLikelihood, LeaveOneOutLogLikelihood)
   LogLikelihoodEvaluator log_likelihood_eval_;
 
+  //! the gradient of the log marginal measure wrt hyperparameters of covariance
   std::vector<double> grad_log_marginal_likelihood_;
 
   OL_DISALLOW_DEFAULT_AND_COPY_AND_ASSIGN(PingLogLikelihood);
 };
 
+/*!\rst
+  Supports evaluating log likelihood functions and their hessians wrt hyperparameters.
+
+  The hessian is taken wrt ``hyperparameters[n_hyper]``, so this is the ``input_matrix``, ``X_{d,i}`` with ``i`` unused.
+  The other inputs to log marginal are not differentiated against, so they are taken as input and stored by the constructor.
+
+  Hessians are tested against gradients, so ``GetOutputSize`` returns ``num_hyperparameters``.
+\endrst*/
 template <typename LogLikelihoodEvaluator, typename CovarianceClass>
 class PingHessianLogLikelihood final : public PingableMatrixInputVectorOutputInterface {
  public:
@@ -173,20 +190,34 @@ class PingHessianLogLikelihood final : public PingableMatrixInputVectorOutputInt
   }
 
  private:
+  //! number of hyperparameters of the underlying covariance function
   int num_hyperparameters_;
+  //! whether gradients been computed and stored--whether this class is ready for use
   bool gradients_already_computed_;
 
+  //! log likelihood evaluator that is being tested (e.g., LogMarginalLikelihood, LeaveOneOutLogLikelihood)
   LogLikelihoodEvaluator log_likelihood_eval_;
 
+  //! the hessian of the log marginal measure wrt hyperparameters of covariance
   std::vector<double> hessian_log_marginal_likelihood_;
 
   OL_DISALLOW_DEFAULT_AND_COPY_AND_ASSIGN(PingHessianLogLikelihood);
 };
 
-/*
+/*!\rst
   Pings the gradients (hyperparameters) of the likelihood functions 50 times with randomly generated test cases
-  Covariance fcn to check against is a template parameter of PingLogLikelihood
-*/
+  Covariance fcn to check against is a template parameter of PingLogLikelihood.
+
+  \param
+    :class_name: name of the log likelihood being tested (for logging)
+    :num_hyperparameters: number of hyperparameters of the underlying covariance function
+    :epsilon: coarse, fine ``h`` sizes to use in finite difference computation
+    :tolerance_fine: desired amount of deviation from the exact rate
+    :tolerance_coarse: maximum allowable abmount of deviation from the exact rate
+    :input_output_ratio: for ``||analytic_gradient||/||input|| < input_output_ratio``, ping testing is not performed, see PingDerivative()
+  \return
+    number of ping test failures
+\endrst*/
 template <typename PingLogLikelihood>
 OL_WARN_UNUSED_RESULT int PingLogLikelihoodTest(char const * class_name, int num_hyperparameters, double epsilon[2], double tolerance_fine, double tolerance_coarse, double input_output_ratio) {
   int total_errors = 0;
@@ -294,21 +325,27 @@ int RunLogLikelihoodPingTests() {
 
 namespace {  // tests for gradient descent and newton optimization of log likelihood measures wrt hyperparameters
 
-/*
+/*!\rst
   Tests hyperparameter optimization.  Basic code flow:
-  SETUP
-    0) Pick a domain and specify hyperparameters (random) + covariance type (hyperparameters, CovarianceClass)
-    1) Generate N random points in the domain
-    2) Build a GP on the specified hyperparameters, incrementally generating function values for each of the N points
-  OPTIMIZE
-    3) Specify new, random, and different (~1 order of mag larger) hyperparameters than those used to generate the data
+
+  **SETUP**
+
+    0. Pick a domain and specify hyperparameters (random) + covariance type (hyperparameters, CovarianceClass)
+    1. Generate N random points in the domain
+    2. Build a GP on the specified hyperparameters, incrementally generating function values for each of the N points
+
+  **OPTIMIZE**
+
+    3. Specify new, random, and different (~1 order of mag larger) hyperparameters than those used to generate the data
        (hyperparameters_wrong, covariance_wrong)
-    4) Starting with covariance_wrong, optimize hyperparameters.
-  CHECK
-    5) Rerun optimization once more starting from the optimized values: VERIFY that no change occurs (within tolerance)
-    6) VERIFY that the log marginal likelihood after optimization is better than the likelihood before optimization
-    7) (REMOVED, FLAKY) CHECK that optimized hyperparameters are close to the hyperparameters used to generate the data
-*/
+    4. Starting with covariance_wrong, optimize hyperparameters.
+
+  **CHECK**
+
+    5. Rerun optimization once more starting from the optimized values: VERIFY that no change occurs (within tolerance)
+    6. VERIFY that the log marginal likelihood after optimization is better than the likelihood before optimization
+    7. (REMOVED, FLAKY) CHECK that optimized hyperparameters are close to the hyperparameters used to generate the data
+\endrst*/
 template <typename LogLikelihoodEvaluator, typename CovarianceClass>
 OL_WARN_UNUSED_RESULT int HyperparameterLikelihoodOptimizationTestCore(LogLikelihoodTypes objective_mode) {
   using DomainType = TensorProductDomain;
@@ -440,22 +477,28 @@ OL_WARN_UNUSED_RESULT int HyperparameterLikelihoodOptimizationTestCore(LogLikeli
   return total_errors;
 }
 
-/*
+/*!\rst
   Tests Newton hyperparameter optimization.  Basic code flow:
-  SETUP
-    0) Pick a domain and specify hyperparameters (random) + covariance type (hyperparameters, CovarianceClass)
-    1) Generate N random points in the domain
-    2) Build a GP on the specified hyperparameters, incrementally generating function values for each of the N points
-  OPTIMIZE
-    3) Specify new, random, and different (~1 order of mag larger) hyperparameters than those used to generate the data
+
+  **SETUP**
+
+    0. Pick a domain and specify hyperparameters (random) + covariance type (hyperparameters, CovarianceClass)
+    1. Generate N random points in the domain
+    2. Build a GP on the specified hyperparameters, incrementally generating function values for each of the N points
+
+  **OPTIMIZE**
+
+    3. Specify new, random, and different (~1 order of mag larger) hyperparameters than those used to generate the data
        (hyperparameters_wrong, covariance_wrong)
-    4) Starting with covariance_wrong, optimize hyperparameters.
-  CHECK
-    5) Rerun optimization once more starting from the optimized values: VERIFY that no change occurs (within tolerance).  Set very large time_factor for this check
-    6) Verify that the log marginal likelihood after optimization is better than the likelihood before optimization
-    7) Verify that the gradient is below newton tolerance.
-    8) TODO(eliu): Verify that the eigenvalues of the Hessian are all negative (=> maxima) (TODO(eliu): #49119)
-*/
+    4. Starting with covariance_wrong, optimize hyperparameters.
+
+  **CHECK**
+
+    5. Rerun optimization once more starting from the optimized values: VERIFY that no change occurs (within tolerance).  Set very large time_factor for this check
+    6. Verify that the log marginal likelihood after optimization is better than the likelihood before optimization
+    7. Verify that the gradient is below newton tolerance.
+    8. TODO(eliu): Verify that the eigenvalues of the Hessian are all negative (=> maxima) (TODO(eliu): #49119)
+\endrst*/
 template <typename LogLikelihoodEvaluator, typename CovarianceClass>
 OL_WARN_UNUSED_RESULT int HyperparameterLikelihoodNewtonOptimizationTestCore(LogLikelihoodTypes OL_UNUSED(objective_mode)) {
   using DomainType = TensorProductDomain;
@@ -568,23 +611,29 @@ OL_WARN_UNUSED_RESULT int HyperparameterLikelihoodNewtonOptimizationTestCore(Log
   return total_errors;
 }
 
-/*
+/*!\rst
   Tests multistarted Newton optimization for hyperparameters.
   Compares result to newton optimization called from an initial guess very near the optimal solution.
 
   Tests Newton hyperparameter optimization.  Basic code flow:
-  SETUP
-    0) Pick a domain and specify hyperparameters (random) + covariance type (hyperparameters, CovarianceClass)
-    1) Generate N random points in the domain
-    2) Build a GP on the specified hyperparameters, incrementally generating function values for each of the N points
-  OPTIMIZE
-    3) Multistarted Newton optimization with multithreading enabled
-  CHECK
-    4) Rerun optimization once more starting from the values in step 0; this should be very near the real solution.
-    5) Verify that these hyperparameters and the results of multistart Newton are the same
-    6) Verify that the log marginal likelihood after multistart optimization is better than the likelihood at the
+
+  **SETUP**
+
+    0. Pick a domain and specify hyperparameters (random) + covariance type (hyperparameters, CovarianceClass)
+    1. Generate N random points in the domain
+    2. Build a GP on the specified hyperparameters, incrementally generating function values for each of the N points
+
+  **OPTIMIZE**
+
+    3. Multistarted Newton optimization with multithreading enabled
+
+  **CHECK**
+
+    4. Rerun optimization once more starting from the values in step 0; this should be very near the real solution.
+    5. Verify that these hyperparameters and the results of multistart Newton are the same
+    6. Verify that the log marginal likelihood after multistart optimization is better than the likelihood at the
        hyperparameters from step 0 (since these are not optimal)
-*/
+\endrst*/
 template <typename LogLikelihoodEvaluator, typename CovarianceClass>
 OL_WARN_UNUSED_RESULT int MultistartHyperparameterLikelihoodNewtonOptimizationTestCore(LogLikelihoodTypes OL_UNUSED(objective_mode)) {
   using DomainType = TensorProductDomain;

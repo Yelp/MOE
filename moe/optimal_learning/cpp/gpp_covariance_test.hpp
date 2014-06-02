@@ -1,5 +1,5 @@
 /*!
-  \file gpp_cov_test.hpp
+  \file gpp_covariance_test.hpp
   \rst
   Simple function call to run unit tests for covariance functions defined in gpp_covariance.cpp.
   This function consists of a battery of ping tests that verify the correctness of derivatives and hessians

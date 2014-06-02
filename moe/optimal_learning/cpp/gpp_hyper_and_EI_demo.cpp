@@ -1,5 +1,6 @@
 /*!
   \file gpp_hyper_and_EI_demo.cpp
+  \rst
   This demo combines gpp_hyperparameter_optimization_demo.cpp and gpp_expected_improvement_demo.cpp.  If you have read
   and understood those, then this demo should be very straightforward insofar as it is currently almost a direct copy-paste.
 
@@ -8,6 +9,7 @@
   ongoing experiments.
 
   The basic layout is:
+
   1. Set up input data sizes
   2. Generate random hyperparameters
   3. Generate (random) set of sampled point locations, noise variances
@@ -16,6 +18,7 @@
   6. Select desired concurrent experiment locations (points_being_sampled)
   7. Construct Gaussian Process (model) to model the training data "world," using the optimized hyperparameters
   8. Optimize Expected Improvement to decide what point we would sample next
+
      a. Do this once using the optimized hyperparameters
      b. And again using wrong hyperparameters to emulate a human not knowing how to pick (but drawing from a GP with the same state).
         To do this, we build another GP (wrong_hyper) using the wrong hyperparameters but the same training data as the model gp

@@ -97,13 +97,13 @@ The modules in this package provide the interface with interacting with all the 
   one). This functionality is accessed through: multistart_expected_improvement_optimization().
 
   And domain-specific notation, following Rasmussen, Williams:
-    - ``X = points_sampled``; this is the training data (size ``dim`` X ``num_sampled``), also called the design matrix
-    - ``Xs = points_to_sample``; this is the test data (size ``dim`` X num_to_sample``)
-    - ``y, f, f(x) = points_sampled_value``, the experimental results from sampling training points
-    - ``K, K_{ij}, K(X,X) = covariance(X_i, X_j)``, covariance matrix between training inputs (``num_sampled x num_sampled``)
-    - ``Ks, Ks_{ij}, K(X,Xs) = covariance(X_i, Xs_j)``, covariance matrix between training and test inputs (``num_sampled x num_to_sample``)
-    - ``Kss, Kss_{ij}, K(Xs,Xs) = covariance(Xs_i, Xs_j)``, covariance matrix between test inputs (``num_to_sample x num_to_sample``)
-    - ``\theta``: (vector) of hyperparameters for a covariance function
+    * ``X = points_sampled``; this is the training data (size ``dim`` X ``num_sampled``), also called the design matrix
+    * ``Xs = points_to_sample``; this is the test data (size ``dim`` X num_to_sample``)
+    * ``y, f, f(x) = points_sampled_value``, the experimental results from sampling training points
+    * ``K, K_{ij}, K(X,X) = covariance(X_i, X_j)``, covariance matrix between training inputs (``num_sampled x num_sampled``)
+    * ``Ks, Ks_{ij}, K(X,Xs) = covariance(X_i, Xs_j)``, covariance matrix between training and test inputs (``num_sampled x num_to_sample``)
+    * ``Kss, Kss_{ij}, K(Xs,Xs) = covariance(Xs_i, Xs_j)``, covariance matrix between test inputs (``num_to_sample x num_to_sample``)
+    * ``\theta``: (vector) of hyperparameters for a covariance function
 
   .. NOTE::
        Due to confusion with multiplication (K_* looks awkward in code comments), Rasmussen & Williams' \ms K_*\me

@@ -1,11 +1,12 @@
-// gpp_test_utils_test.cpp
-/*
+/*!
+  \file gpp_test_utils_test.cpp
+  \rst
   This file contains functions for testing the functions and classes in gpp_test_utils.hpp. These
   tests are generally pretty simple since these functions implicitly work; e.g., if
   CheckDoubleWithinRelative() were wrong, other tests wouldn't make any sense.
 
   TODO(eliu): #66842 implement the rest of the unit tests for gpp_test_utils
-*/
+\endrst*/
 
 #include "gpp_test_utils_test.hpp"
 
@@ -27,9 +28,9 @@ namespace optimal_learning {
 
 namespace {
 
-/*
+/*!\rst
   Assumes CheckDoubleWithin() is already verified.
-*/
+\endrst*/
 OL_WARN_UNUSED_RESULT int FillRandomCovarianceHyperparametersTest() {
   int total_errors = 0;
   const int kDim = 5;
@@ -78,9 +79,9 @@ OL_WARN_UNUSED_RESULT int FillRandomCovarianceHyperparametersTest() {
   return total_errors;
 }
 
-/*
+/*!\rst
   Assumes CheckDoubleWithin() is already verified.
-*/
+\endrst*/
 OL_WARN_UNUSED_RESULT int FillRandomDomainBoundsTest() {
   int total_errors = 0;
   const int kDim = 5;
@@ -121,10 +122,10 @@ OL_WARN_UNUSED_RESULT int FillRandomDomainBoundsTest() {
   return total_errors;
 }
 
-/*
+/*!\rst
   Assumes FillRandomCovarianceHyperparameters(), FillRandomDomainBounds(), and CheckDoubleWithin()
   are already verified.
-*/
+\endrst*/
 OL_WARN_UNUSED_RESULT int FillRandomGaussianProcess() {
   int total_errors = 0;
   const int kDim = 5;

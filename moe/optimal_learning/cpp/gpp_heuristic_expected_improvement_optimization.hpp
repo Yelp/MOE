@@ -3,13 +3,17 @@
   \rst
   1. FILE OVERVIEW
   2. CODE DESIGN/LAYOUT OVERVIEW:
+
      a. class FunctionValue
      b. class ObjectiveEstimationPolicyInterface
+
         i. ConstantLiarEstimationPolicy
         ii. KrigingBelieverEstimationPolicy
+
      c. function ComputeHeuristicPointsToSample()
 
   **1 FILE OVERVIEW**
+
   Readers should review the header docs for gpp_math.hpp first to understand Gaussian Processes and Expected
   Improvement; readers should additionally check gpp_math.cpp file docs for further details.
 
@@ -23,25 +27,32 @@
   see the class and function docs for more details.
 
   **2 CODE DESIGN/LAYOUT OVERVIEW**
+
   Currently, we have:
+
   **2a FunctionValue**
+
   A simple container class for holding the pair (function_value, noise_variance), representing a measured or
   estimated objective function value and the associated noise variance.
 
   **2b ObjectiveEstimationPolicyInterface**
+
   A simple interface for computing objective function estimates. This supports a single function, ComputeEstimate(),
   that estimates the objective function evaluated at a point. It additionally has access to the GaussianProcess
   and an iteration counter.
 
   **2b, i ConstantLiarEstimationPolicy**
+
   The simplest estimation policy, "Constant Liar" always returns the same objective function estimate, no matter what.
 
   **2b, ii KrigingBelieverEstimationPolicy**
+
   Kriging Believer uses some information from the GaussianProcess to produce its estimates. In the basic form
   (as used in Ginsbourger 2008), Kriging returns the GP Mean at the evaluation point. We also allow shifting
   by some scaling of the GP std deviation.
 
   **2c Finally, we discuss performing heuristic EI optimization via ComputeHeuristicPointsToSample()**
+
   As with the EI optimizers in gpp_math, this function is templated on domain. This function is responsible for
   actually performing the heuristic optimization. It uses ComputeOptimalPointsToSampleWithRandomStarts()
   (from gpp_math.hpp) to do this. This function estimates the solution to q-EI using a sequence of q solves

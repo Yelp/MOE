@@ -2,23 +2,30 @@
   \file gpp_math.cpp
   \rst
   These comments are getting to be of some length, so here's a table of contents:
+
   1. FILE OVERVIEW
   2. IMPLEMENTATION NOTES
   3. MATHEMATICAL OVERVIEW
+
      a. GAUSSIAN PROCESSES
      b. SAMPLING FROM GPs
      c. EXPECTED IMPROVEMENT
+
   4. CODE DESIGN/LAYOUT OVERVIEW:
+
      a. class GaussianProcess
      b. class ExpectedImprovementEvaluator, OnePotentialSampleExpectedImprovementEvaluator
      c. function ComputeOptimalPointsToSampleWithRandomStarts()
+
   5. CODE HIERARCHY / CALL-TREE
 
   **1 FILE OVERVIEW**
+
   Implementations of functions for Gaussian Processes (mean, variance of GPs and their gradients) and for
   computing and optimizing Expected Improvement (EI).
 
   **2 IMPLEMENTATION NOTES**
+
   See gpp_math.hpp file docs and gpp_common.hpp for a few important implementation notes
   (e.g., restrict, memory allocation, matrix storage style, etc), as well as citation details.
 
@@ -34,6 +41,7 @@
     }
 
   **3 MATHEMATICAL OVERVIEW**
+
   Next, we provide a high-level discussion of GPs and the EI optimization process used in this file.  See
   Rasmussen & Williams for more details on the former and Scott Clark's thesis for details on the latter.  This segment
   is more focused on concepts and mathematical ideas.  We subsequently discuss how the classes and functions
@@ -41,6 +49,7 @@
   gpp_math.hpp before continuing (a conceptual overview).
 
   **3a GAUSSIAN PROCESSES**
+
   First, a Gaussian Process (GP) is defined as a collection of normally distributed random variables (RVs); these
   RVs are not independent nor identically-distributed (i.e., all normal but different mean/var) in general.  Since
   the GP is a collection of RVs, it defines a distribution over FUNCTIONS.  So drawing from the GP realizes
@@ -73,6 +82,7 @@
   be over data with nonzero noise variance.  However this is immaterial to the rest of the discussion here.
 
   **3b SAMPLING FROM GPs**
+
   So to obtain the posterior distribution, fs, we again sample this joint prior and throw out any function
   realizations that do not satisfy the observations (i.e., pass through all ``(X,f)`` pairs).  This is expensive.
 
@@ -89,6 +99,7 @@
   Note that if our GP has 10 dimensions (variables), then y contains 10 sample values.
 
   **3c EXPECTED IMPROVEMENT**
+
   .. Note:: these comments are copied in Python: interfaces/expected_improvement_interface.py
 
   Then the improvement for this single sample is:
@@ -110,10 +121,12 @@
   This is handled starting in the highest level functions of file, ComputeOptimalPointsToSample().
 
   **4 CODE OVERVIEW**
+
   Finally, we give some further details about how the previous ideas map into the code.  We begin with an overview
   of important classes and functions in this file, and end by going over the call stack for the EI optimization entry point.
 
   **4a First, the GaussianProcess (GP) class**
+
   The GaussianProcess class abstracts the handling of GPs and their properties; quickly going over the functionality: it
   provides methods for computing mean, variance, cholesky of variance, and their gradients (wrt spatial dimensions).
   GP also allows the user to sample function values from it, distributed according to the GP prior.  Lastly GP provides
@@ -136,6 +149,7 @@
   used indirectly when users compute or optimize EI.  Plotting/visualization might be one reason to call GP members directly.
 
   **4b Next, the ExpectedImprovementEvaluator and OnePotentialSampleExpectedImprovementEvaulator classes**
+
   ExpectedImprovementEvaluator abstracts the computation of EI and its gradient.  This class references a single
   GaussianProcess that it uses to compute EI/grad EI as described above.  Equations 4, 5 above detailed the EI computation;
   further details can be found below in the call tree discussion as well as in the implementation docs for these
@@ -156,6 +170,7 @@
   hold some pre-allocated vectors for use as local temporaries by EI and GradEI computation.
 
   **4c And finally, we discuss selecting optimal experiments with ComputeOptimalPointsToSampleWithRandomStarts()**
+
   This function is the top of the hierarchy for EI optimization.  It encompasses a multistart, restarted gradient descent
   method.  Since this is not a convex optimization problem, there could be multiple local optima (or even 0 optima).  So
   we start GD from multiple locations (multistart) as a heuristic in hopes of finding the global optima.
@@ -164,14 +179,17 @@
   component of restarted gradient descent.
 
   **5 CODE HIERARCHY / CALL-TREE**
+
   For obtaining multiple new points to sample (q,p-EI), we have two main paths for optimization: multistart gradient
   descent and 'dumb' search. The optimization hierarchy looks like (these optimization functions are in the header;
   they are templates):
   ComputeOptimalPointsToSampleWithRandomStarts<...>(...)  (selects random points; defined in math.hpp)
+
   * Solves q,p-EI.
   * Selects random starting locations based on latin hypercube sampling
   * This calls:
     ComputeOptimalPointsToSampleViaMultistartGradientDescent<...>(...)  (multistart gradient descent)
+
     * Switches into analytic OnePotentialSample case when appropriate
     * Multithreaded over starting locations
     * Optimizes with restarted gradient descent; collects results and updates the solution as new optima are found
@@ -180,10 +198,12 @@
       GradientDescentOptimizer::Optimize<ObjectiveFunctionEvaluator, Domain>() (see gpp_optimization.hpp)
 
   ComputeOptimalPointsToSampleViaLatinHypercubeSearch<...>(...)  (defined in gpp_math.hpp)
+
   * Estimates q,p-EI with a 'dumb' search.
   * Selects random starting locations based on latin hypercube sampling
   * This calls:
-  * EvaluateEIAtPointList<...>(...)
+    EvaluateEIAtPointList<...>(...)
+
     * Evaluates EI at each starting location
     * Switches into analytic OnePotentialSample case when appropriate
     * Multithreaded over starting locations
@@ -191,6 +211,7 @@
       MultistartOptimizer<...>::MultistartOptimize(...) for multistarting (see gpp_optimization.hpp)
 
   ComputeOptimalPointsToSample<...>(...)  (defined in gpp_math.cpp)
+
   * Solves q,p-EI
   * Tries ComputeOptimalPointsToSampleWithRandomStarts() first.
   * If that fails, switches to ComputeOptimalPointsToSampleViaLatinHypercubeSearch().
@@ -198,18 +219,20 @@
   So finally we will overview the function calls for EI calculation.  We limit our discussion to the general MC case;
   the analytic case is similar and simpler.
   ExpectedImprovementEvaluator::ComputeExpectedImprovement()  (computes EI)
+
   * Computes GP.mean, GP.variance, cholesky(GP.variance)
   * MC integration: samples from the GP repeatedly (Equation 4) and computes the improvement (Equation 5), averaging the result
-                    See function comments for more details.
+    See function comments for more details.
   * Calls out to GP::ComputeMeanOfPoints(), GP:ComputeVarianceOfPoints, ComputeCholeskyFactorL, NormalRNG::operator(),
     and TriangularMatrixVectorMultiply
 
   ExpectedImprovementEvaluator::ComputeGradExpectedImprovement()  (computes gradient of EI)
+
   * Compute GP.mean, variance, cholesky(variance), grad mean, grad variance, grad cholesky variance
   * MC integration: Equation 4, 5 as before to compute improvement each step
-                    Only have grad EI contributions when improvement > 0.
-                    Care is needed because only the point yielding the largest improvement contributes to the gradient.
-                    See function comments for more details.
+    Only have grad EI contributions when improvement > 0.
+    Care is needed because only the point yielding the largest improvement contributes to the gradient.
+    See function comments for more details.
 
   We will not detail the call tree once inside of GaussianProcess.  The mathematical formulas for the mean and variance
   were already described above (Equation 2, 3).  Function docs (in this file) further detail/cite the formulas and
@@ -462,6 +485,7 @@ void GaussianProcess::ComputeVarianceOfPoints(StateType * points_to_sample_state
 
 /*!\rst
   **CORE IDEA**
+
   Similar to ComputeGradCholeskyVarianceOfPoints() below, except this function does not account for the cholesky decomposition.  That is,
   it produces derivatives wrt ``Xs_{d,p}`` (``points_to_sample``) of:
   ``Vars = Kss - (V^T * V) = Kss - Ks^T * K^-1 * Ks`` (see ComputeVarianceOfPoints)
@@ -510,6 +534,7 @@ void GaussianProcess::ComputeVarianceOfPoints(StateType * points_to_sample_state
   The ordering ``DVars_{d,i,j}`` is significant: this is the ordering (d changes the fastest) in storage.
 
   **OPTIMIZATIONS**
+
   Implementing this formula naively results in a large amount of redundant computation, so we now describe the optimizations
   present in our implementation.
 

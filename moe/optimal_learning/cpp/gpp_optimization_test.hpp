@@ -17,6 +17,7 @@ namespace optimal_learning {
 
 /*!\rst
   Checks that specified optimizer is working correctly:
+
   * kGradientDescent
   * kNewton
 

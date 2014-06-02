@@ -19,7 +19,7 @@ class OptimalLearningTestCase(T.TestCase):
     """
 
     def assert_scalar_within_relative(self, value, truth, tol):
-        """Check whether a scalar value is relatively equal to truth: |value - truth|/|truth| <= tol.
+        """Check whether a scalar ``value`` is relatively equal to ``truth``: ``|value - truth|/|truth| <= tol``.
 
         :param value: scalar to check
         :type value: float64
@@ -37,7 +37,7 @@ class OptimalLearningTestCase(T.TestCase):
         T.assert_lte(diff, tol, "value = %s, truth = %s, diff = %s, tol = %s" % (repr(value), repr(truth), repr(diff), repr(tol)))
 
     def assert_vector_within_relative(self, value, truth, tol):
-        """Check whether a vector is element-wise relatively equal to truth: |value[i] - truth[i]|/|truth[i]| <= tol.
+        """Check whether a vector is element-wise relatively equal to ``truth``: ``|value[i] - truth[i]|/|truth[i]| <= tol``.
 
         :param value: scalar to check
         :type value: float64

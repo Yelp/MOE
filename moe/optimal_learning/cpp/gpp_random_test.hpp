@@ -20,6 +20,7 @@ namespace optimal_learning {
 
 /*!\rst
   Tests that the various point generator functions available in gpp_random.hpp are working; e.g.,
+
   * ComputeRandomPointInDomain()
   * ComputeLatinHypercubePointsInDomain()
   * ComputeUniformPointsInUnitSimplex()
@@ -31,6 +32,7 @@ int RunRandomPointGeneratorTests() OL_WARN_UNUSED_RESULT;
 
 /*!\rst
   Checks that PRNG container is behaving correctly:
+
   * Tests manual seed setting
   * Tests last_seed and reset
   * Tests that in multithreaded environemnts, each thread gets a different seed

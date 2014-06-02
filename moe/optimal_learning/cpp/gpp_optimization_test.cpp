@@ -1,23 +1,24 @@
-// gpp_optimization_test.cpp
-/*
+/*!
+  \file gpp_optimization_test.cpp
+  \rst
   Unit tests for the optimization algorithms in gpp_optimization.hpp.  Currently we have tests for:
-  1) restarted gradient descent (which uses gradient descent)
-  2) newton
+  1. restarted gradient descent (which uses gradient descent)
+  2. newton
 
   And each optimizer is tested against:
-  1) a quadratic objective function
+  1. a quadratic objective function
 
   performing:
-  1) Unconstrained optimization: optimal point is set away from domain boundaries
-  2) Constrained optimization: optimal point is set outside the boundaries
+  1. Unconstrained optimization: optimal point is set away from domain boundaries
+  2. Constrained optimization: optimal point is set outside the boundaries
 
   on:
-  1) tensor product domains
+  1. tensor product domains
 
   Generally the tests verify that:
-  0) The expected optimum is actually an optimum (gradients are small).
-  1) When started from the optimum value, the optimizer does not move away from it
-  2) When started away from the optimum value, the optimizer finds it.
+  0. The expected optimum is actually an optimum (gradients are small).
+  1. When started from the optimum value, the optimizer does not move away from it
+  2. When started away from the optimum value, the optimizer finds it.
   Where "finds it" is checked by seeing whether the point returned by the optimizer is within tolerance of the true
   optimum and whether the gradients are within tolerance of 0.
 
@@ -37,7 +38,7 @@
 
   TODO(eliu): verifying item 0 (claimed optimum is an optimum) should be done in a SEPARATE unit test!
   (ticket 55779)
-*/
+\endrst*/
 
 // #define OL_VERBOSE_PRINT
 
@@ -63,10 +64,10 @@ namespace {  // mock objective functions and tests for various optimizers
 using optimal_learning::PolynomialEvaluator;
 using optimal_learning::Square;
 
-/*
-  Class to evaluate the function f(x_1,...,x_{dim}) = -\sum_i (x_i - s_i)^2, i = 1..dim.
-  This is a simple quadratic form with maxima at (s_1, ..., s_{dim}).
-*/
+/*!\rst
+  Class to evaluate the function ``f(x_1,...,x_{dim}) = -\sum_i (x_i - s_i)^2, i = 1..dim``.
+  This is a simple quadratic form with maxima at ``(s_1, ..., s_{dim})``.
+\endrst*/
 class SimpleQuadraticEvaluator final : public PolynomialEvaluator {
  public:
   SimpleQuadraticEvaluator(double const * restrict maxima_point, int dim_in) : dim_(dim_in), maxima_point_(maxima_point, maxima_point + dim_) {
@@ -84,14 +85,14 @@ class SimpleQuadraticEvaluator final : public PolynomialEvaluator {
     std::copy(maxima_point_.begin(), maxima_point_.end(), point);
   }
 
-  /*
+  /*!\rst
     Computes the quadratic objective function (see class description).
 
-    INPUTS:
-    quadratic_dummy_state: properly configured state oboject (set up with the point at which to evaluate the objective)
-    RETURNS:
-    objective function value
-  */
+    \param
+      :quadratic_dummy_state: properly configured state oboject (set up with the point at which to evaluate the objective)
+    \return
+      objective function value
+  \endrst*/
   virtual double ComputeObjectiveFunction(StateType * quadratic_dummy_state) const noexcept override OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT {
     double sum = 0.0;
     for (int i = 0; i < dim_; ++i) {
@@ -100,29 +101,29 @@ class SimpleQuadraticEvaluator final : public PolynomialEvaluator {
     return sum;
   }
 
-  /*
+  /*!\rst
     Computes partial derivatives of the objective function wrt the point x (contained in quadratic_dummy_state; see class description).
 
-    INPUTS:
-    quadratic_dummy_state[1]: properly configured state oboject (set up with the point at which to evaluate the objective)
-    OUTPUTS:
-    grad_objective[dim]: gradient of objective function wrt each dimension of the point contained in dummy_state.
-  */
+    \param
+      :quadratic_dummy_state[1]: properly configured state oboject (set up with the point at which to evaluate the objective)
+    \output
+      :grad_objective[dim]: gradient of objective function wrt each dimension of the point contained in dummy_state.
+  \endrst*/
   virtual void ComputeGradObjectiveFunction(StateType * quadratic_dummy_state, double * restrict grad_objective) const noexcept override OL_NONNULL_POINTERS {
     for (int i = 0; i < dim_; ++i) {
       grad_objective[i] = -2.0*(quadratic_dummy_state->current_point[i] - maxima_point_[i]);
     }
   }
 
-  /*
+  /*!\rst
     Computes Hessian matrix of the objective function wrt the point x (contained in quadratic_dummy_state; see class description).
     This matrix is symmetric.  It is also negative definite near maxima of the log marginal.
 
-    INPUTS:
-    quadratic_dummy_state[1]: properly configured state oboject (set up with the point at which to evaluate the objective)
-    OUTPUTS:
-    hessian_objective[dim][dim]: (i,j)th entry is \mixpderiv{f(x_i)}{x_i}{x_j}, for our quadratic objective, f
-  */
+    \param
+      :quadratic_dummy_state[1]: properly configured state oboject (set up with the point at which to evaluate the objective)
+    \output
+      :hessian_objective[dim][dim]: (i,j)th entry is \mixpderiv{f(x_i)}{x_i}{x_j}, for our quadratic objective, f
+  \endrst*/
   virtual void ComputeHessianObjectiveFunction(StateType * OL_UNUSED(quadratic_dummy_state), double * restrict hessian_objective) const OL_NONNULL_POINTERS {
     std::fill(hessian_objective, hessian_objective + dim_*dim_, 0.0);
     for (int i = 0; i < dim_; ++i) {
@@ -138,6 +139,12 @@ class SimpleQuadraticEvaluator final : public PolynomialEvaluator {
   std::vector<double> maxima_point_;
 };
 
+/*!\rst
+  Test gradient descent's ability to optimize the function represented by MockEvaluator in an unconstrained setting.
+
+  \return
+    number of test failures (invalid results, non-convergence, etc.)
+\endrst*/
 template <typename MockEvaluator>
 OL_WARN_UNUSED_RESULT int MockObjectiveGradientDescentOptimizationTestCore() {
   using DomainType = TensorProductDomain;
@@ -259,6 +266,12 @@ OL_WARN_UNUSED_RESULT int MockObjectiveGradientDescentOptimizationTestCore() {
   return total_errors;
 }
 
+/*!\rst
+  Test gradient descent's ability to optimize the function represented by MockEvaluator in a constrained setting.
+
+  \return
+    number of test failures (invalid results, non-convergence, etc.)
+\endrst*/
 template <typename MockEvaluator>
 OL_WARN_UNUSED_RESULT int MockObjectiveGradientDescentConstrainedOptimizationTestCore() {
   using DomainType = TensorProductDomain;
@@ -393,6 +406,12 @@ OL_WARN_UNUSED_RESULT int MockObjectiveGradientDescentConstrainedOptimizationTes
   return total_errors;
 }
 
+/*!\rst
+  Test newton's ability to optimize the function represented by MockEvaluator in an unconstrained setting.
+
+  \return
+    number of test failures (invalid results, non-convergence, etc.)
+\endrst*/
 template <typename MockEvaluator>
 OL_WARN_UNUSED_RESULT int MockObjectiveNewtonOptimizationTestCore() {
   using DomainType = TensorProductDomain;
@@ -513,6 +532,12 @@ OL_WARN_UNUSED_RESULT int MockObjectiveNewtonOptimizationTestCore() {
   return total_errors;
 }
 
+/*!\rst
+  Test newton's ability to optimize the function represented by MockEvaluator in a constrained setting.
+
+  \return
+    number of test failures (invalid results, non-convergence, etc.)
+\endrst*/
 template <typename MockEvaluator>
 OL_WARN_UNUSED_RESULT int MockObjectiveNewtonConstrainedOptimizationTestCore() {
   using DomainType = TensorProductDomain;

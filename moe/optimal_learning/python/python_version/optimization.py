@@ -4,22 +4,29 @@ r"""Classes for various optimizers (maximizers) and multistarting said optimizer
 .. Note:: comments in this module are copied from the header comments in gpp_optimization.hpp.
 
 Table of Contents:
-1) FILE OVERVIEW
-2) OPTIMIZATION OF OBJECTIVE FUNCTIONS
-   a) GRADIENT DESCENT
-      i) OVERVIEW
-      ii) IMPLEMENTATION DETAILS
-   b) NEWTON'S METHOD
-      i) OVERVIEW
-      ii) IMPLEMENTATION DETAILS
-   c) MULTISTART OPTIMIZATION
+
+1. FILE OVERVIEW
+2. OPTIMIZATION OF OBJECTIVE FUNCTIONS
+
+   a. GRADIENT DESCENT
+
+      i. OVERVIEW
+      ii. IMPLEMENTATION DETAILS
+
+   b. NEWTON'S METHOD
+
+      i. OVERVIEW
+      ii. IMPLEMENTATION DETAILS
+
+   c. MULTISTART OPTIMIZATION
 
 Read the "OVERVIEW" sections for header-style comments that describe the file contents at a high level.
 Read the "IMPLEMENTATION" comments for cpp-style comments that talk more about the specifics.  Both types
 are included together here since this file contains template class declarations and template function definitions.
 For further implementation details, see comment blocks before each individual class/function.
 
-1) FILE OVERVIEW:
+**1. FILE OVERVIEW**
+
 First, the functions in this file are all MAXIMIZERS.  We also use the term "optima," and unless we specifically
 state otherwise, "optima" and "optimization" refer to "maxima" and "maximization," respectively.  (Note that
 minimizing ``g(x)`` is equivalent to maximizing ``f(x) = -1 * g(x)``.)
@@ -35,13 +42,15 @@ further below. These templated classes are general and can optimize any Optimiza
 
 In this way, we can make the local and global optimizers completely agonistic to the function they are optimizing.
 
-2) OPTIMIZATION OF OBJECTIVE FUNCTIONS:
-2a) GRADIENT DESCENT (GD):
+**2. OPTIMIZATION OF OBJECTIVE FUNCTIONS**
+
+**2a. GRADIENT DESCENT (GD)**
 
 .. Note:: Below there is some discussion of "restarted" Gradient Descent; this is not yet implemented in Python.
     See cpp_wrappers/optimization.py if you want to use this feature.
 
-2a, i) OVERVIEW:
+**2a, i. OVERVIEW**
+
 We use first derivative information to walk the path of steepest ascent, hopefully toward a (local) maxima of the
 chosen log likelihood measure.  This is implemented in: GradientDescentOptimization().
 This method ensures that the result lies within a specified domain.
@@ -60,7 +69,8 @@ to better answers than straight gradient descent. It amounts to averaging over t
 
 Gradient descent is implemented in: GradientDescentOptimizer::Optimize() (which calls GradientDescentOptimization())
 
-2a, ii) IMPLEMENTATION DETAILS:
+**2a, ii. IMPLEMENTATION DETAILS**
+
 GD's update is: ``\theta_{i+1} = \theta_i + \gamma * \nabla f(\theta_i)``
 where ``\gamma`` controls the step-size and is chosen heuristically, often varying by problem.
 
@@ -75,11 +85,12 @@ To help, we take the standard approach of scaling down step size with iteration 
 to specify a maximum relative change to limit the aggressiveness of GD steps.  Finally, we wrap GD in a restart
 loop, where we fire off another GD run from the current location unless convergence was reached.
 
-2b) NEWTON'S METHOD:
+**2b. NEWTON'S METHOD:**
 
 .. Note:: Newton's method is not yet implemented in Python. See cpp_wrappers/optimization.py if you want to use this feature.
 
-2b, i) OVERVIEW:
+**2b, i. OVERVIEW**
+
 Newton's Method (for optimization) uses second derivative information in addition to the first derivatives used by
 gradient descent (GD). In higher dimensions, first derivatives => gradients and second derivatives => Hessian matrix.
 At each iteration, gradient descent computes the derivative and blindly takes a step (of some
@@ -97,7 +108,8 @@ The MultistartOptimizer template class in this file provides generic multistart 
 
 Newton is implemented here: NewtonOptimizer::Optimize() (which calls NewtonOptimization())
 
-2b, ii) IMPLEMENTATION DETAILS:
+**2b, ii. IMPLEMENTATION DETAILS**
+
 Let's address the footnotes from the previous section (Section 2b, i paragraph 1):
 
 \* Within its region of attraction, Newton's steps are optimal (when we have only second derivative information).  Outside
@@ -134,7 +146,8 @@ In higher dimensions, a saddle point can also result (e.g., ``z = x^2 - y^2`` at
 optima if the Hessian is strictly negative or positive definite; a saddle if the Hessian has both positive and negative
 eigenvalues, and an indeterminate case if the Hessian is singular.
 
-2c) MULTISTART OPTIMIZATION:
+**2c. MULTISTART OPTIMIZATION**
+
 Above, we mentioned that gradient descent (GD), Newton, etc. have a difficult time converging if they are started "too far"
 from an optima.  Even if convergence occurs, it will typically be very slow unless the problem is simple.  Worse,
 in a problem with multiple optima, the methods may converge to the wrong one!
@@ -233,41 +246,46 @@ class GradientDescentParameters(_BaseGradientDescentParameters):
 
     .. Note:: the following comments are copied from cpp_wrappers.optimization.GradientDescentParameters
 
-    Iterations:
+    **Iterations**
+
     The total number of gradient descent steps is at most ``num_multistarts * max_num_steps * max_num_restarts``
     Generally, allowing more iterations leads to a better solution but costs more time.
 
-    Averaging:
+    **Averaging**
+
     When optimizing stochastic objective functions, it can often be beneficial to average some number of gradient descent
     steps to obtain the final result (vs just returning the last step).
     Polyak-Ruppert averaging: postprocessing step where we replace ``x_n`` with:
-      ``\overbar{x} = \frac{1}{n - n_0} \sum_{t=n_0 + 1}^n x_t``
+    ``\overbar{x} = \frac{1}{n - n_0} \sum_{t=n_0 + 1}^n x_t``
     ``n_0 = 0`` averages all steps; ``n_0 = n - 1`` is equivalent to returning ``x_n`` directly.
     Here, num_steps_averaged is ``n - n_0``.
+
     * ``num_steps_averaged`` < 0: averages all steps
     * ``num_steps_averaged`` == 0: do not average
     * ``num_steps_averaged`` > 0 and <= ``max_num_steps``: average the specified number of steps
     * ``max_steps_averaged`` > ``max_num_steps``: average all steps
 
-    Learning Rate:
+    **Learning Rate**
+
     GD may be implemented using a learning rate: ``pre_mult * (i+1)^{-\gamma}``, where i is the current iteration
     Larger gamma causes the GD step size to (artificially) scale down faster.
     Smaller pre_mult (artificially) shrinks the GD step size.
     Generally, taking a very large number of small steps leads to the most robustness; but it is very slow.
 
-    Tolerances:
+    **Tolerances**
+
     Larger relative changes are potentially less robust but lead to faster convergence.
     Large tolerances run faster but may lead to high errors or false convergence (e.g., if the tolerance is 1.0e-3 and the learning
     rate control forces steps to fall below 1.0e-3 quickly, then GD will quit "successfully" without genuinely converging.)
 
     :ivar max_num_steps: (*int > 0*) maximum number of gradient descent iterations per restart (suggest: 200-1000)
     :ivar max_num_restarts: (*int > 0*) maximum number of gradient descent restarts, the we are allowed to call gradient descent.  Should be >= 2 as a minimum (suggest: 10-20)
-    :ivar num_steps_averaged: (*int*) number of steps to use in polyak-ruppert averaging (see above)
+    :ivar num_steps_averaged: (*int*) number of steps to use in polyak-ruppert averaging (see above) (suggest: 10-50% of max_num_steps for stochastic problems, 0 otherwise)
     :ivar gamma: (*float64 > 1.0*) exponent controlling rate of step size decrease (see struct docs or GradientDescentOptimizer) (suggest: 0.5-0.9)
     :ivar pre_mult: (*float64 > 1.0*) scaling factor for step size (see struct docs or GradientDescentOptimizer) (suggest: 0.1-1.0)
     :ivar max_relative_change: (*float64 in [0, 1]*) max change allowed per GD iteration (as a relative fraction of current distance to wall)
            (suggest: 0.5-1.0 for less sensitive problems like EI; 0.02 for more sensitive problems like hyperparameter opt)
-    :ivar tolerance: (*float 64 >= 0.0) when the magnitude of the gradient falls below this value OR we will not move farther than tolerance
+    :ivar tolerance: (*float 64 >= 0.0*) when the magnitude of the gradient falls below this value OR we will not move farther than tolerance
            (e.g., at a boundary), stop.  (suggest: 1.0e-7)
 
     """
@@ -324,6 +342,7 @@ class GradientDescentOptimizer(OptimizerInterface):
         """Return a valid (non-empty, not out-of-bounds) to average over in suppport of Polyak-Ruppert averaging.
 
         Yields a range according to the following:
+
         * ``num_steps_averaged`` < 0: averages all steps
         * ``num_steps_averaged`` == 0: do not average
         * ``num_steps_averaged`` > 0 and <= ``max_num_steps``: average the specified number of steps

@@ -34,8 +34,10 @@ namespace optimal_learning {
   used by the Python interface to communicate domain type to C++.
 \endrst*/
 enum class DomainTypes {
-  kTensorProduct = 0,  // TensorProductDomain
-  kSimplex = 1,  // SimplexIntersectTensorProductDomain
+  //! TensorProductDomain
+  kTensorProduct = 0,
+  //! SimplexIntersectTensorProductDomain
+  kSimplex = 1,
 };
 
 /*!\rst
@@ -44,9 +46,13 @@ enum class DomainTypes {
   A d-dimensional tensor product domain is ``D = [x_0_{min}, x_0_{max}] X [x_1_{min}, x_1_{max}] X ... X [x_d_{min}, x_d_{max}]``
 \endrst*/
 class TensorProductDomain {
-  static constexpr double kInvalidStepScaleFactor = 0.5;  // attempt to scale down the step-size (or distance to wall) by this factor when a domain-exiting (i.e., invalid) step is requested
+  //! attempt to scale down the step-size (or distance to wall) by this factor when a domain-exiting (i.e., invalid) step is requested
+  static constexpr double kInvalidStepScaleFactor = 0.5;
 
  public:
+  //! string name of this domain for logging
+  constexpr static char const * kName = "tensor_product";
+
   TensorProductDomain() = delete;  // no default ctor; dim = 0 doesn't reallly make sense as a default
 
   /*!\rst
@@ -240,8 +246,10 @@ class TensorProductDomain {
 
   See TensorProductDomain for what that means.
   The unit d-simplex is defined as the set of ``x_i`` such that:
-  1) ``x_i >= 0 \forall i  (i ranging over dimension)``
-  2) ``\sum_i x_i <= 1``
+
+  1. ``x_i >= 0 \forall i  (i ranging over dimension)``
+  2. ``\sum_i x_i <= 1``
+
   (Implying that ``x_i <= 1 \forall i``)
 
   ASSUMPTION: most of the volume of the tensor product region lies inside the simplex region.
@@ -259,6 +267,9 @@ class SimplexIntersectTensorProductDomain {
   static constexpr double kRelativeChangeEpsilonTweak = 4*std::numeric_limits<double>::epsilon();
 
  public:
+  //! string name of this domain for logging
+  constexpr static char const * kName = "simplex_tensor_product";
+
   SimplexIntersectTensorProductDomain() = delete;  // no default ctor; dim = 0 doesn't reallly make sense as a default
 
   /*!\rst
@@ -545,7 +556,7 @@ class SimplexIntersectTensorProductDomain {
     ``num_repeats`` times in a loop. In some cases, data reordering is also necessary
     to preserve the output properties (e.g., uniform distribution).
 
-  For some use cases (e.g., q,p-EI optimization with q > 1), we need to simultaneously
+  For some use cases (e.g., q,p-EI optimization with ``q > 1``), we need to simultaneously
   manipulate several points within the same domain. To support this use case, we have
   the ``RepeatedDomain``, a light-weight wrapper around any ``DomainType`` object
   that kernalizes that object's functionality.
@@ -574,7 +585,7 @@ class SimplexIntersectTensorProductDomain {
   For example, ``CheckPointInside()`` calls the kernel domain's ``CheckPointInside()``
   function ``num_repeats`` times, returning True only if all ``num_repeats`` input
   points are inside the kernel domain.
-\edrst*/
+\endrst*/
 template <typename DomainType_>
 class RepeatedDomain {
  public:

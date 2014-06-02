@@ -1,7 +1,8 @@
-// gpp_geometry_test.cpp
-/*
+/*!
+  \file gpp_geometry_test.cpp
+  \rst
   This file contains functions for testing the functions and classes in gpp_geometry.hpp.
-*/
+\endrst*/
 
 #include "gpp_geometry_test.hpp"
 
@@ -23,6 +24,12 @@ namespace optimal_learning {
 
 namespace {  // local functions for testing ClosedInterval
 
+/*!\rst
+  Check that ClosedInterval has the desired ``type_traits``.
+
+  \return
+    number of missing ``type_traits``
+\endrst*/
 OL_WARN_UNUSED_RESULT int CheckClosedIntervalTraits() {
   int total_errors = 0;
   if (!std::is_pod<ClosedInterval>::value) {
@@ -38,6 +45,12 @@ OL_WARN_UNUSED_RESULT int CheckClosedIntervalTraits() {
   return total_errors;
 }
 
+/*!\rst
+  Check that the IsInside() member function of ClosedInterval is working.
+
+  \return
+    number of incorrect IsInside() results
+\endrst*/
 OL_WARN_UNUSED_RESULT int ClosedIntervalIsInsideTest() {
   int total_errors = 0;
   // max == min
@@ -139,6 +152,12 @@ OL_WARN_UNUSED_RESULT int ClosedIntervalIsInsideTest() {
   return total_errors;
 }
 
+/*!\rst
+  Check that the Length() and IsEmpty() member functions of ClosedInterval are working.
+
+  \return
+    number of incorrect length values and IsEmpty checks
+\endrst*/
 OL_WARN_UNUSED_RESULT int ClosedIntervalLengthAndIsEmptyTest() {
   int total_errors = 0;
   // max == min
@@ -232,6 +251,12 @@ int ClosedIntervalTests() {
 
 namespace {  // local functions for testing gpp_geometry.hpp's functions
 
+/*!\rst
+  Test that the tensor product in/out test is working.
+
+  \return
+    number of points where in/out check fails
+\endrst*/
 OL_WARN_UNUSED_RESULT int CheckPointInHypercubeTest() {
   const int dim = 4;
 
@@ -268,6 +293,12 @@ OL_WARN_UNUSED_RESULT int CheckPointInHypercubeTest() {
   return total_errors;
 }
 
+/*!\rst
+  Test that the simplex in/out test is working.
+
+  \return
+    number of points where in/out check fails
+\endrst*/
 OL_WARN_UNUSED_RESULT int CheckPointInUnitSimplexTest() {
   const int dim = 4;
 
@@ -301,17 +332,17 @@ OL_WARN_UNUSED_RESULT int CheckPointInUnitSimplexTest() {
   return total_errors;
 }
 
-/*
+/*!\rst
   Utility for constructing a random unit vector.
 
-  INPUTS:
-  dim: number of spatial dimensions
-  uniform_double_distribution: range from which to draw random numbers
-  uniform_generator[1]: UniformRandomGenerator object providing the random engine for uniform random numbers
-  OUTPUTS:
-  uniform_generator[1]: UniformRandomGenerator object with it's state changed due to dim random draws
-  unit_vector[dim]: a unit vector w/random entries
-*/
+  \param
+    :dim: number of spatial dimensions
+    :uniform_double_distribution: range from which to draw random numbers
+    :uniform_generator[1]: UniformRandomGenerator object providing the random engine for uniform random numbers
+  \output
+    :uniform_generator[1]: UniformRandomGenerator object with it's state changed due to dim random draws
+    :unit_vector[dim]: a unit vector w/random entries
+\endrst*/
 void BuildRandomUnitVector(int dim, const boost::uniform_real<double>& uniform_double_distribution, UniformRandomGenerator * uniform_generator, double * unit_vector) {
   for (int k = 0; k < dim; ++k) {
     unit_vector[k] = uniform_double_distribution(uniform_generator->engine);
@@ -322,10 +353,19 @@ void BuildRandomUnitVector(int dim, const boost::uniform_real<double>& uniform_d
   VectorScale(dim, norm, unit_vector);
 }
 
+/*!\rst
+  Test that the computation of the orthogonal distance from a plane to a point works.
+
+  Outline:
+
+  1. Pick several random hyperplanes (unit normal + right hand side, ``\sum_i n_i*x_i = -a_0``)
+  2. Pick a point on the hyperplane (easy: ``x_i = -a_0 * n_i``)
+  3. Pck random distances and the point-on-plane by distance*normal; check OrthogonalDistanceToPoint == distance
+
+  \return
+    number of test failures
+\endrst*/
 OL_WARN_UNUSED_RESULT int OrthogonalDistanceToPointTest() {
-  // idea: pick several random hyperplanes (unit normal + right hand side, \sum_i n_i*x_i = -a_0)
-  // pick a point on the hyperplane (easy: x_i = -a_0 * n_i)
-  // pick random distances and the point-on-plane by distance*normal; check OrthogonalDistanceToPoint == distance
   const int dim = 5;
   const int num_planes = 10;
   const int num_points = 10;
@@ -370,10 +410,19 @@ OL_WARN_UNUSED_RESULT int OrthogonalDistanceToPointTest() {
   return total_errors;
 }
 
+/*!\rst
+  Test that orthogonally projecting a point onto a plane is working properly.
+
+  Outline:
+
+  1. Pick several random hyperplanes (unit normal + right hand side, ``\sum_i n_i*x_i = -a_0``)
+  2. Pick random points
+  3. Project each point onto plane & verify that the resulting point's OrthogonalDistanceToPoint == 0
+
+  \return
+    number of test failures
+\endrst*/
 OL_WARN_UNUSED_RESULT int OrthogonalProjectionOntoPlaneTest() {
-  // idea: pick several random hyperplanes (unit normal + right hand side, \sum_i n_i*x_i = -a_0)
-  // pick random points
-  // project each point onto plane & verify that the resulting point's OrthogonalDistanceToPoint == 0
   const int dim = 5;
   const int num_planes = 10;
   const int num_points = 10;
@@ -419,12 +468,20 @@ OL_WARN_UNUSED_RESULT int OrthogonalProjectionOntoPlaneTest() {
   return total_errors;
 }
 
-/*
+/*!\rst
+  Check that the distance from a point to a plane along a vector is computed correctly.
+
   Outline:
-  1) Pick several random hyperplanes (unit normal + right hand side, \sum_i n_i*x_i = -a_0)
-  2) Pick random points & random vectors
-  3) Project each point onto plane (along vector) & verify that the resulting point's OrthogonalDistanceToPoint == 0
-*/
+
+  1. Pick several random hyperplanes (unit normal + right hand side, ``\sum_i n_i*x_i = -a_0``)
+  2. Pick random points & random vectors
+  3. Compute distance from point to plane along vector
+  4. Travel that distance along the vector--result should be on the plane
+  5. Project the result onto the plane orthogonally and verify the projection does (almost) nothing
+
+  \return
+    number of test failures
+\endrst*/
 OL_WARN_UNUSED_RESULT int DistanceToPlaneAlongVectorTest() {
   const int dim = 5;
   const int num_planes = 10;

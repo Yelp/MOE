@@ -8,15 +8,18 @@
   In gpp_expected_improvement_demo, we choose the hyperparameters arbitrarily.  Here,
   we will walk through an example of how one would select hyperparameters for a given
   class of covariance function; here, SquareExponential will do.  This demo supports:
+
   1. User-specified training data
   2. Randomly generated training data (more automatic)
 
   More details on the second case:
+
   1. Choose a set of hyperparameters randomly: source covariance
   2. Build a fake\* training set by drawing from a GP with source covariance, at randomly
      chosen locations
      \* By defining OL_USER_INPUTS to 1, you can specify your own input data.
   3. Choose a new random set of hyperparameters and run hyperparameter optimization
+
      a. Show log likelihood using the optimized hyperparameters AND the source hyperparameters
      b. observe that with larger training sets, the optimized hyperparameters converge
         to the source values; but in smaller sets other optima may exist
