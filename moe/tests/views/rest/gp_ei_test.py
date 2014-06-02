@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """Test class for gp_mean_var view."""
+import numpy
 import simplejson as json
 
 import testify as T
@@ -34,6 +35,7 @@ class TestGpEiView(RestGaussianProcessTestCase):
 
     def test_interface_returns_same_as_cpp(self):
         """Test that the /gp/ei endpoint does the same thing as the C++ interface."""
+        tolerance = 1.0e-11
         for test_case in self.gp_test_environments:
             python_domain, python_cov, python_gp = test_case
 
@@ -47,8 +49,12 @@ class TestGpEiView(RestGaussianProcessTestCase):
                     cpp_gp,
                     None,
                     )
+            # TODO(sclark): (GH-99) Change test case to have the right shape:
+            # (num_to_evaluate, num_to_sample, dim)
+            # Here we assume the shape is (num_to_evaluate, dim) so we insert an axis, making num_to_sample = 1.
+            # Also might be worth testing more num_to_sample values (will require manipulating C++ RNG state).
             cpp_expected_improvement = expected_improvement_evaluator.evaluate_at_point_list(
-                    points_to_evaluate,
+                    points_to_evaluate[:, numpy.newaxis, :],
                     )
 
             # EI from REST
@@ -56,13 +62,14 @@ class TestGpEiView(RestGaussianProcessTestCase):
             resp = self.testapp.post(self.endpoint, json_payload)
             resp_schema = GpEiResponse()
             resp_dict = resp_schema.deserialize(json.loads(resp.body))
-            rest_expected_improvement = resp_dict.get('expected_improvement')
+            rest_expected_improvement = numpy.asarray(resp_dict.get('expected_improvement'))
 
-            self.assert_lists_relatively_equal(
-                    cpp_expected_improvement,
+            self.assert_vector_within_relative(
                     rest_expected_improvement,
-                    tol=1e-11,
+                    cpp_expected_improvement,
+                    tolerance,
                     )
+
 
 if __name__ == "__main__":
     T.run()

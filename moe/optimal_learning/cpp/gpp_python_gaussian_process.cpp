@@ -1,11 +1,12 @@
-// gpp_python_gaussian_process.cpp
-/*
+/*!
+  \file gpp_python_gaussian_process.cpp
+  \rst
   This file has the logic to construct a GaussianProcess (C++ object) from Python and invoke its member functions.
   The data flow follows the basic 4 step from gpp_python_common.hpp.
 
-  Note: several internal functions of this source file are only called from Export*() functions,
-  so their description, inputs, outputs, etc. comments have been moved. These comments exist in
-  Export*() as Python docstrings, so we saw no need to repeat ourselves.
+  .. Note:: several internal functions of this source file are only called from ``Export*()`` functions,
+    so their description, inputs, outputs, etc. comments have been moved. These comments exist in
+    ``Export*()`` as Python docstrings, so we saw no need to repeat ourselves.
 */
 // This include violates the Google Style Guide by placing an "other" system header ahead of C and C++ system headers.  However,
 // it needs to be at the top, otherwise compilation fails on some systems with some versions of python: OS X, python 2.7.3.
@@ -31,10 +32,10 @@ namespace optimal_learning {
 
 namespace {
 
-/*
+/*!\rst
   Surrogate "constructor" for GaussianProcess intended only for use by boost::python.  This aliases the normal C++ constructor,
-  replacing "double const * restrict" arguments with "const boost::python::list&" arguments.
-*/
+  replacing ``double const * restrict`` arguments with ``const boost::python::list&`` arguments.
+\endrst*/
 GaussianProcess * make_gaussian_process(const boost::python::list& hyperparameters, const boost::python::list& points_sampled, const boost::python::list& points_sampled_value, const boost::python::list& noise_variance, int dim, int num_sampled) {
   const int num_to_sample = 0;
   const boost::python::list points_to_sample_dummy;
@@ -150,77 +151,90 @@ void ExportGaussianProcessFunctions() {
       .def("__init__", boost::python::make_constructor(&make_gaussian_process), R"%%(
     Constructor for a GaussianProcess object
 
-    INPUTS:
-    pylist hyperparameters[2]: covariance hyperparameters; see "Details on ..." section at the top of BOOST_PYTHON_MODULE
-    pylist points_sampled[dim][num_sampled]: points that have already been sampled
-    pylist points_sampled_value[num_sampled]: values of the already-sampled points
-    pylist noise_variance[num_sampled]: the \sigma_n^2 (noise variance) associated w/observation, points_sampled_value
-    dim: the spatial dimension of a point (i.e., number of independent params in experiment)
-    num_sampled: number of already-sampled points
+    :param hyperparameters: covariance hyperparameters; see "Details on ..." section at the top of ``BOOST_PYTHON_MODULE``
+    :type hyperparameters: list of len 2; index 0 is a float64 ``\alpha`` (signal variance) and index 1 is the length scales (list of floa64 of length ``dim``)
+    :param points_sampled: points that have already been sampled
+    :type points_sampled: list of float64 with shape (num_sampled, dim)
+    :param points_sampled_value: values of the already-sampled points
+    :type points_sampled_value: list of float64 with shape (num_sampled, )
+    :param noise_variance: the ``\sigma_n^2`` (noise variance) associated w/observation, points_sampled_value
+    :type noise_variance: list of float64 with shape (num_sampled, )
+    :param dim: the spatial dimension of a point (i.e., number of independent params in experiment)
+    :type param: int > 0
+    :param num_sampled: number of already-sampled points
+    :type num_sampled: int > 0
           )%%")
       ;  // NOLINT, this is boost style
 
   boost::python::def("get_mean", GetMeanWrapper, R"%%(
     Compute the (predicted) mean, mus, of the Gaussian Process posterior.
-    mus_i = Ks_{i,k} * K^-1_{k,l} * y_l = Ks^T * K^-1 * y
+    ``mus_i = Ks_{i,k} * K^-1_{k,l} * y_l = Ks^T * K^-1 * y``
 
-    INPUTS:
-    GaussianProcess gaussian_process: GaussianProcess object (holds points_sampled, values, noise_variance, derived quantities)
-    pylist points_to_sample[num_to_sample][dim]: points to sample
-    int num_to_sample: number of points to sample
-
-    RETURNS:
-    pylist result[num_to_sample]: mean of points to be sampled
+    :param gaussian_process: GaussianProcess object (holds points_sampled, values, noise_variance, derived quantities)
+    :type gaussian_process: GPP.GaussianProcess (boost::python ctor wrapper around optimal_learning::GaussianProcess)
+    :param points_to_sample: points at which to compute GP-derived quantities (mean, variance, etc.; i.e., make predictions)
+    :type points_to_sample: list of float64 with shape (num_to_sample, dim)
+    :param num_to_sample: number of points to sample
+    :type num_to_sample: int > 0
+    :return: GP mean evaluated at each of ``points_to_sample``
+    :rtype: list of float64 with shape (num_to_sample, )
     )%%");
 
   boost::python::def("get_grad_mean", GetGradMeanWrapper, R"%%(
-    Compute the gradient of the (predicted) mean, mus, of the Gaussian Process posterior.
+    Compute the gradient of the (predicted) mean, ``mus``, of the Gaussian Process posterior.
     Gradient is computed wrt each point in points_to_sample.
     Known zero terms are dropped (see below).
-    mus_i = Ks_{i,k} * K^-1_{k,l} * y_l = Ks^T * K^-1 * y
-    In principle, we compute \pderiv{mus_i}{Xs_{d,p}}
-    But this is zero unless p == i. So this method only returns the "block diagonal."
+    ``mus_i = Ks_{i,k} * K^-1_{k,l} * y_l = Ks^T * K^-1 * y``
+    In principle, we compute ``\pderiv{mus_i}{Xs_{d,p}}``
+    But this is zero unless ``p == i``. So this method only returns the "block diagonal."
 
-    INPUTS:
-    GaussianProcess gaussian_process: GaussianProcess object (holds points_sampled, values, noise_variance, derived quantities)
-    pylist points_to_sample[num_to_sample][dim]: points to sample
-    int num_to_sample: number of points to sample
-
-    RETURNS:
-    pylist result[dim*num_to_sample]: gradient of mean values, ordered in num_to_sample rows of size dim
+    :param gaussian_process: GaussianProcess object (holds points_sampled, values, noise_variance, derived quantities)
+    :type gaussian_process: GPP.GaussianProcess (boost::python ctor wrapper around optimal_learning::GaussianProcess)
+    :param points_to_sample: points at which to compute GP-derived quantities (mean, variance, etc.; i.e., make predictions)
+    :type points_to_sample: list of float64 with shape (num_to_sample, dim)
+    :param num_to_sample: number of points to sample
+    :type num_to_sample: int > 0
+    :return: gradient of the mean of the GP.  ``grad_mu[d][i]`` is
+        actually the gradient of ``\mu_i`` with respect to ``x_{d,i}``, the d-th dimension of
+        the i-th entry of ``points_to_sample``.
+    :rtype: list of float64 with shape (num_to_sample, dim)
     )%%");
 
   boost::python::def("get_var", GetVarWrapper, R"%%(
-    Compute the (predicted) variance, Vars, of the Gaussian Process posterior.
-    L * L^T = K
-    V = L^-1 * Ks^T
-    Vars = Kss - (V^T * V)
+    Compute the (predicted) variance, ``Vars``, of the Gaussian Process posterior.
+    ``L * L^T = K``
+    ``V = L^-1 * Ks^T``
+    ``Vars = Kss - (V^T * V)``
     Expanded index notation:
-    Vars_{i,j} = Kss_{i,j} - Ks_{i,l} * K^-1_{l,k} * Ks_{k,j} = Kss - Ks^T * K^-1 * Ks
+    ``Vars_{i,j} = Kss_{i,j} - Ks_{i,l} * K^-1_{l,k} * Ks_{k,j} = Kss - Ks^T * K^-1 * Ks`
 
-    INPUTS:
-    GaussianProcess gaussian_process: GaussianProcess object (holds points_sampled, values, noise_variance, derived quantities)
-    pylist points_to_sample[num_to_sample][dim]: points to sample
-    int num_to_sample: number of points to sample
+    .. Note:: ``Vars`` is symmetric (in fact, SPD).
 
-    RETURNS:
-    pylist result[num_to_sample][num_to_sample]:
-      matrix of variances, ordered as num_to_sample rows of length num_to_sample
+    :param gaussian_process: GaussianProcess object (holds points_sampled, values, noise_variance, derived quantities)
+    :type gaussian_process: GPP.GaussianProcess (boost::python ctor wrapper around optimal_learning::GaussianProcess)
+    :param points_to_sample: points at which to compute GP-derived quantities (mean, variance, etc.; i.e., make predictions)
+    :type points_to_sample: list of float64 with shape (num_to_sample, dim)
+    :param num_to_sample: number of points to sample
+    :type num_to_sample: int > 0
+    :return: GP variance evaluated at ``points_to_sample``,
+        ordered as num_to_sample rows of length num_to_sample
+    :rtype: list of float64 with shape (num_to_sample, num_to_sample)
     )%%");
 
   boost::python::def("get_chol_var", GetCholVarWrapper, R"%%(
     Computes the Cholesky Decomposition of the predicted GP variance:
-    L * L^T = Vars, where Vars is the output of get_var().
+    ``L * L^T = Vars``, where Vars is the output of get_var().
     See that function's docstring for further details.
 
-    INPUTS:
-    GaussianProcess gaussian_process: GaussianProcess object (holds points_sampled, values, noise_variance, derived quantities)
-    pylist points_to_sample[num_to_sample][dim]: points to sample
-    int num_to_sample: number of points to sample
-
-    RETURNS:
-    pylist result[num_to_sample][num_to_sample]: Cholesky Factorization of the
-      matrix of variances, ordered as num_to_sample rows of length num_to_sample
+    :param gaussian_process: GaussianProcess object (holds points_sampled, values, noise_variance, derived quantities)
+    :type gaussian_process: GPP.GaussianProcess (boost::python ctor wrapper around optimal_learning::GaussianProcess)
+    :param points_to_sample: points at which to compute GP-derived quantities (mean, variance, etc.; i.e., make predictions)
+    :type points_to_sample: list of float64 with shape (num_to_sample, dim)
+    :param num_to_sample: number of points to sample
+    :type num_to_sample: int > 0
+    :return: cholesky factor (L) of the GP variance evaluated at ``points_to_sample``,
+        ordered as num_to_sample rows of length num_to_sample
+    :rtype: list of float64 with shape (num_to_sample, num_to_sample)
     )%%");
 
   boost::python::def("get_grad_var", GetGradVarWrapper, R"%%(
@@ -231,26 +245,28 @@ void ExportGaussianProcessFunctions() {
   boost::python::def("get_grad_chol_var", GetGradCholVarWrapper, R"%%(
     Compute gradient of the Cholesky Factorization of the (predicted) variance, Vars, of the Gaussian Process posterior.
     Gradient is computed wrt points_to_sample[0:num_derivatives].
-    L * L^T = K
-    V = L^-1 * Ks^T
-    Vars = Kss - (V^T * V)
+    ``L * L^T = K``
+    ``V = L^-1 * Ks^T``
+    ``Vars = Kss - (V^T * V)``
     Expanded index notation:
-    Vars_{i,j} = Kss_{i,j} - Ks_{i,l} * K^-1_{l,k} * Ks_{k,j} = Kss - Ks^T * K^-1 * Ks
-    Then the Cholesky Decomposition is Ls * Ls^T = Vars
+    ``Vars_{i,j} = Kss_{i,j} - Ks_{i,l} * K^-1_{l,k} * Ks_{k,j} = Kss - Ks^T * K^-1 * Ks``
+    Then the Cholesky Decomposition is ``Ls * Ls^T = Vars``
 
-    General derivative expression: \pderiv{Ls_{i,j}}{Xs_{d,p}}
-    We compute this for p = 0, 1, ..., num_derivatives-1.
+    General derivative expression: ``\pderiv{Ls_{i,j}}{Xs_{d,p}}``
+    We compute this for ``p = 0, 1, ..., num_derivatives-1``.
 
-    INPUTS:
-    GaussianProcess gaussian_process: GaussianProcess object (holds points_sampled, values, noise_variance, derived quantities)
-    pylist points_to_sample[num_to_sample][dim]: points to sample
-    int num_to_sample: number of points to sample
-    int num_derivatives: return derivatives wrt points_to_sample[0:num_derivatives]
-
-    RETURNS:
-    pylist result[num_derivatives][num_to_sample][num_to_sample][dim]:
-      tensor of cholesky factorized variance gradients, ordered as num_to_sample blocks, each having
-      num_to_sample rows with length dim
+    :param gaussian_process: GaussianProcess object (holds points_sampled, values, noise_variance, derived quantities)
+    :type gaussian_process: GPP.GaussianProcess (boost::python ctor wrapper around optimal_learning::GaussianProcess)
+    :param points_to_sample: points at which to compute GP-derived quantities (mean, variance, etc.; i.e., make predictions)
+    :type points_to_sample: list of float64 with shape (num_to_sample, dim)
+    :param num_to_sample: number of points to sample
+    :type num_to_sample: int > 0
+    :param num_derivatives: return derivatives wrt ``points_to_sample[0:num_derivatives]`
+    :type num_derivatives: 0 < int <= num_to_sample
+    :return: gradient of the cholesky-factored variance of the GP.
+      ``grad_chol[k][j][i][d]`` is actually the gradients of ``var_{i,j}`` with
+      respect to ``x_{d,k}``, the d-th dimension of the k-th entry of ``points_to_sample``
+    :rtype: list of float64 with shape (num_derivatives, num_to_sample, num_to_sample, dim)
     )%%");
 }
 

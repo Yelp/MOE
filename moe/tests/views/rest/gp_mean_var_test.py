@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """Test class for gp_mean_var view."""
+import numpy
 import simplejson as json
 
 import testify as T
@@ -31,6 +32,7 @@ class TestGpMeanVarView(RestGaussianProcessTestCase):
 
     def test_interface_returns_same_as_cpp(self):
         """Test that the /gp/mean_var endpoint does the same thing as the C++ interface."""
+        tolerance = 1.0e-11
         for test_case in self.gp_test_environments:
             python_domain, python_cov, python_gp = test_case
 
@@ -48,11 +50,12 @@ class TestGpMeanVarView(RestGaussianProcessTestCase):
             resp = self.testapp.post(self.endpoint, json_payload)
             resp_schema = GpMeanVarResponse()
             resp_dict = resp_schema.deserialize(json.loads(resp.body))
-            rest_mean = resp_dict.get('mean')
-            rest_var = resp_dict.get('var')
+            rest_mean = numpy.asarray(resp_dict.get('mean'))
+            rest_var = numpy.asarray(resp_dict.get('var'))
 
-            self.assert_lists_relatively_equal(rest_mean, cpp_mean, tol=1e-11)
-            self.assert_matrix_relatively_equal(rest_var, cpp_var, tol=1e-11)
+            self.assert_vector_within_relative(rest_mean, cpp_mean, tolerance)
+            self.assert_vector_within_relative(rest_var, cpp_var, tolerance)
+
 
 if __name__ == "__main__":
     T.run()

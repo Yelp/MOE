@@ -1,8 +1,9 @@
-// gpp_random_test.cpp
-/*
+/*!
+  \file gpp_random_test.cpp
+  \rst
   This file contains functions for testing the functions and classes in gpp_random.hpp.  There are also a number of simple
   supporting routines.  See header for comments on the general layout of these tests.
-*/
+\endrst*/
 
 #include "gpp_random_test.hpp"
 
@@ -24,10 +25,13 @@ namespace optimal_learning {
 
 namespace {
 
-/*
+/*!\rst
   Randomly generates points in a domain and ensures that the results are valid.  ComputeRandomPointInDomain guarantees
   nothing further about the distribution of its outputs.
-*/
+
+  \return
+    number of randomly generated points that were not inside the domain
+\endrst*/
 OL_WARN_UNUSED_RESULT int RandomPointInDomainTest() {
   static const int kDim = 5;
   const int num_tests = 50;
@@ -60,11 +64,11 @@ OL_WARN_UNUSED_RESULT int RandomPointInDomainTest() {
   return total_errors;
 }
 
-/*
+/*!\rst
   Just your basic bubble sort.
-  Need the ability to sort matrices A_{ij} in blocks of A_{i*}, doing comparisons only on
-  jth entries.  This is (as far as I know) awkward with STL vectors/sort.
-*/
+  Need the ability to sort matrices ``A_{ij}`` in blocks of ``A_{i*}``, doing comparisons only on
+  ``j``-th entries.  This is (as far as I know) awkward with STL vectors/sort.
+\endrst*/
 OL_NONNULL_POINTERS void bubble_sort(int dim_to_sort, int dim, int num_points, double * restrict points) noexcept {
   int newi;
 
@@ -84,10 +88,11 @@ OL_NONNULL_POINTERS void bubble_sort(int dim_to_sort, int dim, int num_points, d
   }
 }
 
-/*
-  Check that the latin hypercube point generation routine generates points in that are
-  1) in the domain
-  2) properly distributed
+/*!\rst
+  Check that the latin hypercube point generation routine generates points in that are:
+
+  1. in the domain
+  2. properly distributed
 
   Latin hypercube sampling with N points divides a d-dimensional domain into N subranges in
   each ordinate direction.  For example, in the 2D domain [0,1]x[0,1], with N=8, the square
@@ -98,11 +103,15 @@ OL_NONNULL_POINTERS void bubble_sort(int dim_to_sort, int dim, int num_points, d
   eliminates 1 row and 1 column, this is always possible (let the rooks be pidgeons).
 
   So the test is as follows:
-  use latin hypercube sampling to sample N points
-  for each spatial dimension d
-  sort the points along their d-th coordinate
-  check that each subrange only contains 1 point
-*/
+
+  1. use latin hypercube sampling to sample N points
+  2. for each spatial dimension d
+  3. sort the points along their d-th coordinate
+  4. check that each subrange only contains 1 point
+
+  \return
+    number of LHC points that were improperly distributed
+\endrst*/
 OL_WARN_UNUSED_RESULT int HypercubePointInDomainTest() {
   static const int kDim = 5;
   const int num_tests = 50;
@@ -160,6 +169,12 @@ OL_WARN_UNUSED_RESULT int HypercubePointInDomainTest() {
   return total_errors;
 }
 
+/*!\rst
+  Test random point generation in a unit simplex.
+
+  \return
+    number of randomly generated points that were not in the unit simplex
+\endrst*/
 OL_WARN_UNUSED_RESULT int RandomPointInUnitSimplexTest() {
   static const int kDim = 5;
   const int num_tests = 50;
@@ -215,31 +230,31 @@ int RunRandomPointGeneratorTests() {
 
 namespace {
 
-/*
+/*!\rst
   Checks that all elements of a vector are unique.
 
   Modifies the vector (by sorting).
 
-  INPUTS:
-  input_vector: vector to be checked
-  RETURNS:
-  true if all elements are distinct
-*/
+  \input
+    :input_vector: vector to be checked
+  \output
+    true if all elements are distinct
+\endrst*/
 template <typename T>
 OL_WARN_UNUSED_RESULT int CheckAllElementsUnique(const std::vector<T>& input_vector) {
   return std::unordered_set<T>(input_vector.begin(), input_vector.end()).size() == input_vector.size();
 }
 
-/*
+/*!\rst
   Fill a vector with all unique random elements.  Random elements are meant
   to potentially be fake process IDs for non-system processes.  I'm assuming
-  those probably lie in (100, 2^32) or so.
+  those probably lie in ``(100, 2^32)`` or so.
 
-  INPUTS:
-  thread_ids[1]: allocated vector of thread ids, already set to desired size
-  OUTPUTS:
-  thread_ids[1]: overwrites all thread_ids entries with unique values
-*/
+  \input
+    :thread_ids[1]: allocated vector of thread ids, already set to desired size
+  \output
+    :thread_ids[1]: overwrites all thread_ids entries with unique values
+\endrst*/
 void GenerateUniqueRandomVector(std::vector<int> * thread_ids) {
   UniformRandomGenerator uniform_generator(314, 0);  // single instance, so thread_id = 0
   boost::uniform_int<int> uniform_int_distribution(100, std::numeric_limits<int>::max());
@@ -260,13 +275,17 @@ void GenerateUniqueRandomVector(std::vector<int> * thread_ids) {
   std::shuffle((*thread_ids).begin(), (*thread_ids).end(), uniform_generator.engine);
 }
 
-/*
+/*!\rst
   Test the features of random number generator containers.
-  1) Check that explicitly setting the seed works and sets "last_seed" properly
-  2) Verify that the reset functionality properly resets to the last seed
-  3) verify that with different input thread ids, container will generate will
+
+  1. Check that explicitly setting the seed works and sets "last_seed" properly
+  2. Verify that the reset functionality properly resets to the last seed
+  3. verify that with different input thread ids, container will generate will
      generate a unique seed per thread
-*/
+
+  \return
+    number of test failures
+\endrst*/
 template <typename RNGContainer>
 OL_WARN_UNUSED_RESULT int RandomNumberGeneratorContainerTestCore() {
   int total_errors = 0;
@@ -347,8 +366,10 @@ OL_WARN_UNUSED_RESULT int RandomNumberGeneratorContainerTestCore() {
 
 }  // end unnamed namespace
 
-// Note: only NormalRNG is meant to be used multi-threaded, so UniformRandomGenerator
-// is not tested for generating unique seeds in a multi-threaded environment
+/*!\rst
+  .. Note:: only NormalRNG is meant to be used multi-threaded, so UniformRandomGenerator
+      is not tested for generating unique seeds in a multi-threaded environment
+\endrst*/
 int RandomNumberGeneratorContainerTest() {
   int total_errors = 0;
   int current_errors = 0;

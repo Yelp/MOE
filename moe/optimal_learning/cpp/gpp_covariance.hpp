@@ -433,7 +433,7 @@ class MaternNu1p5 final : public CovarianceInterface {
 
   //! dimension of the problem
   int dim_;
-  //! \sigma_f^2, signal variance
+  //! ``\sigma_f^2``, signal variance
   double alpha_;
   //! length scales, one per dimension
   std::vector<double> lengths_;
@@ -533,7 +533,7 @@ class MaternNu2p5 final : public CovarianceInterface {
 
   //! dimension of the problem
   int dim_;
-  //! \sigma_f^2, signal variance
+  //! ``\sigma_f^2``, signal variance
   double alpha_;
   //! length scales, one per dimension
   std::vector<double> lengths_;

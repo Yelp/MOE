@@ -9,13 +9,14 @@ Leave One Out Cross Validation Log Pseudo-Likelihood.
   These comments are copied in python_version/log_likelihood.py.
   See this file's comments and interfaces.log_likelihood_interface for more details as well as the hpp and corresponding .cpp file.
 
-a) LOG MARGINAL LIKELIHOOD (LML):
+**a. LOG MARGINAL LIKELIHOOD (LML)**
+
 (Rasmussen & Williams, 5.4.1)
 The Log Marginal Likelihood measure comes from the ideas of Bayesian model selection, which use Bayesian inference
 to predict distributions over models and their parameters.  The cpp file comments explore this idea in more depth.
 For now, we will simply state the relevant result.  We can build up the notion of the "marginal likelihood":
 probability(observed data GIVEN sampling points (``X``), model hyperparameters, model class (regression, GP, etc.)),
-which is denoted: ``p(y|X,\theta,H_i)`` (see the cpp file comments for more).
+which is denoted: ``p(y | X, \theta, H_i)`` (see the cpp file comments for more).
 
 So the marginal likelihood deals with computing the probability that the observed data was generated from (another
 way: is easily explainable by) the given model.
@@ -34,7 +35,8 @@ This is not magic.  Using GPs as an example, if the covariance function is compl
 go through with marginal likelihood optimization, obtain an "optimal" set of hyperparameters, and proceed... never
 realizing that our fundamental assumptions are wrong.  So care is always needed.
 
-b) LEAVE ONE OUT CROSS VALIDATION (LOO-CV):
+**b. LEAVE ONE OUT CROSS VALIDATION (LOO-CV)**
+
 (Rasmussen & Williams, Chp 5.4.2)
 In cross validation, we split the training data, X, into two sets--a sub-training set and a validation set.  Then we
 train a model on the sub-training set and test it on the validation set.  Since the validation set comes from the
@@ -143,7 +145,7 @@ def evaluate_log_likelihood_at_hyperparameter_list(log_likelihood_evaluator, hyp
     Generally Newton or gradient descent is preferred but when they fail to converge this may be the only "robust" option.
     This function is also useful for plotting or debugging purposes (just to get a bunch of log likelihood values).
 
-    Calls into evaluate_log_likelihood_at_hyperparameter_list() in src/cpp/GPP_python_model_selection.cpp.
+    Calls into evaluate_log_likelihood_at_hyperparameter_list() in cpp/GPP_python_model_selection.cpp.
 
     :param log_likelihood_evaluator: object specifying which log likelihood measure to evaluate
     :type log_likelihood_evaluator: cpp_wrappers.log_likelihood.LogLikelihood
@@ -339,8 +341,8 @@ class GaussianProcessLeaveOneOutLogLikelihood(GaussianProcessLogLikelihood):
     That is, cross validation involves splitting the training set into a sub-training set and a validation set.  Then we measure
     the log likelihood that a model built on the sub-training set could produce the values in the validation set.
 
-    Leave-One-Out CV does this process ``|y|`` times: on the i-th run, the sub-training set is (X,y) with the i-th point removed
-    and the validation set is the i-th point.  Then the predictive performance of each sub-model are aggregated into a
+    Leave-One-Out CV does this process ``|y|`` times: on the ``i``-th run, the sub-training set is ``(X, y)`` with the ``i``-th point removed
+    and the validation set is the ``i``-th point.  Then the predictive performance of each sub-model are aggregated into a
     psuedo-likelihood.
 
     This quantity primarily deals with the internal consistency of the model--how well it explains itself.  The LOO-CV

@@ -14,6 +14,7 @@ namespace optimal_learning {
 
 /*!\rst
   Exports constructor and member functions (with docstrings) from GaussianProcess:
+
   1. Constructor accepting Python structures
   2. Evaluation of mean, variance, cholesky of variance (and their gradients)
 \endrst*/

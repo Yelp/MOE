@@ -19,6 +19,7 @@ namespace optimal_learning {
 /*!\rst
   Checks that the subclasses of ObjectiveEstimationPolicyInterface declared in
   gpp_heuristic_expected_improvement_optimization.hpp are working correctly. Right now, these are:
+
   1. Constant Liar
   2. Kriging Believer
 
@@ -30,9 +31,10 @@ namespace optimal_learning {
 OL_WARN_UNUSED_RESULT int EstimationPolicyTest();
 
 /*!\rst
-  Checks that ComputeHeuristicSetOfPointsToSample() works on a tensor product domain using both
+  Checks that ComputeHeuristicPointsToSample() works on a tensor product domain using both
   ConstantLiarEstimationPolicy and KrigingBelieverEstimationPolicy estimation policies.
   This test assumes the the code tested in:
+
   1. ExpectedImprovementOptimizationTest(DomainTypes::kTensorProduct, ExpectedImprovementEvaluationMode::kAnalytic)
   2. EstimationPolicyTest()
 

@@ -4,6 +4,7 @@
 These are currently used to describe domain limits for optimizers (i.e., implementations of interfaces/optimization_interface.py)
 
 Each domain provides functions to:
+
 * Describe the set of boundary planes
 * Check whether a point is inside/outside
 * Generate random point(s) inside

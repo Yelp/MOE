@@ -22,6 +22,7 @@ namespace optimal_learning {
 
 /*!\rst
   Exports functions (with docstrings) for model selection:
+
   1. log likelihood (and its gradient) evaluation (useful for testing)
   2. multistart hyperparameter optimization (main entry-point)
   3. log likelihood evaluation at a list of hyperparameters (useful for testing, plotting)

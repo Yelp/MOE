@@ -16,6 +16,7 @@
   for running tests.  See gpp_optimization_test.cpp for examples.
 
   Following the style laid out in gpp_common.hpp (file comments, item 5), we currently define:
+
   * ``class PolynomialEvaluator;``
   * ``struct PolynomialState;``
 

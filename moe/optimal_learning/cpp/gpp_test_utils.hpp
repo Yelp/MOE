@@ -42,9 +42,10 @@ class SimplexIntersectTensorProductDomain;
   with derivatives taken wrt each member of ``X_{d,i}``,
   ``gradf_{k,d,i} = \frac{\partial f_k}{\partial X_{d,i}}``
   In the nomenclature used in the class:
-    ``d`` indexes over num_rows (set in GetInputSizes())
-    ``i`` indexes over num_cols (set in GetInputSizes())
-    ``k`` indexes over GetOutputSize()
+
+  * ``d`` indexes over num_rows (set in GetInputSizes())
+  * ``i`` indexes over num_cols (set in GetInputSizes())
+  * ``k`` indexes over GetOutputSize()
 
   Typically ``d`` is the spatial_dimension of the problem.  So if ``i`` ranges over ``1 .. num_points``,
   then ``X_{d,i}`` is a matrix of num_points points each with dimension spatial_dim.
@@ -57,6 +58,7 @@ class SimplexIntersectTensorProductDomain;
   how implementations store/compute ``f()`` and its gradient.
 
   Generally, usage goes as follows:
+
   * Use GetInputSizes(), GetOutputSize(), and possibly GetGradientsSize() to inspect the dimensions of the problem
   * EvaluateAndStoreAnalyticGradient(): compute and internally store the gradient evaluated at a given input\*
   * GetAnalyticGradient: returns the value of the analytic gradient for a given output (``k``), wrt a given point ``(d,i)``
@@ -442,30 +444,6 @@ bool CheckDoubleWithinRelative(double value, double truth, double tolerance) noe
     true if A - B are "close"
 \endrst*/
 bool CheckMatrixNormWithin(double const * restrict matrix1, double const * restrict matrix2, int size_m, int size_n, double tolerance) noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT;
-
-/*!\rst
-  Check if each point in point_list is inside the specified domain.
-
-  \param
-    :domain: the domain providing the inside/outside test
-    :point_list[dim][num_points]: list of points to check
-    :num_points: number of points in point_list
-  \return
-    number of points outside the domain
-\endrst*/
-template <typename DomainType>
-OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT int CheckPointsInDomain(const DomainType& domain, double const * restrict point_list, int num_points) noexcept {
-  int num_errors = 0;
-  double const * restrict point = point_list;
-  for (int i = 0; i < num_points; ++i) {
-    if (!domain.CheckPointInside(point)) {
-      ++num_errors;
-    }
-    point += domain.dim();
-  }
-
-  return num_errors;
-}
 
 /*!\rst
   Check whether the distance between every pair of points is larger than tolerance.

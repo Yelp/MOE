@@ -310,13 +310,15 @@ OL_CONST_FUNCTION OL_WARN_UNUSED_RESULT double SecondOrderCenteredFiniteDifferen
 
   Note that in some cases, this function will decide to skip some tests or run them
   under more relaxed tolerances.  There are many reasons for this:
-  1) When the exact gradient is near 0, finite differencing is simply trying
+
+  1. When the exact gradient is near 0, finite differencing is simply trying
      to compute ``(x1 - x2) = 0``, which has an infinite condition number.  If our
      method is correct/accurate, we will be able to reasonably closely approximate
      0, but we cannot expect convergence.
-  2) Backward stability type error analysis deals with normed bounds; for example,
+  2. Backward stability type error analysis deals with normed bounds; for example,
      see the discussion in ResidualNorm().  These normed estimates bound the error
      on the LARGEST entries. The error in the smaller entries can be much larger.
+
   However, even when errors could be large, we're trying to compute 0, etc., we do
   not want to completely ignore these scenarios since that could cause us to accept
   completely bogus outputs.  Instead we try to compensate.
@@ -330,12 +332,14 @@ OL_CONST_FUNCTION OL_WARN_UNUSED_RESULT double SecondOrderCenteredFiniteDifferen
   avoid ill-conditioning issues. Random points are chosen make the implementer's life easier.
 
   The typical workflow to implement ``f(x)`` and ``df(x)/dx`` might look like:
-  1) Code ``f(x)``
-  2) Verify ``f(x)``
-  3) Analytically compute df/dx (on paper, with a computer algebra system, etc.)
-  4) Check ``df/dx``
-     a) at some hand-evaluated points
-     b) Ping testing (this function)
+
+  1. Code ``f(x)``
+  2. Verify ``f(x)``
+  3. Analytically compute df/dx (on paper, with a computer algebra system, etc.)
+  4. Check ``df/dx``
+
+     a. at some hand-evaluated points
+     b. Ping testing (this function)
 
   If errors arise, this function will output some information to provide further context on what input/output
   combination failed and how. At the head of this file, define OL_PING_TEST_DEBUG_PRINT to turn on super verbose

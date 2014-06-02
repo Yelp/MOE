@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""A class to encapsulate 'pretty' views for gp_next_points_* endpoints.
+"""A class to encapsulate 'pretty' views for ``gp_next_points_*`` endpoints.
 
 Include:
     1. Request and response schemas
@@ -11,14 +11,13 @@ import numpy
 import moe.optimal_learning.python.cpp_wrappers.expected_improvement
 from moe.optimal_learning.python.cpp_wrappers.expected_improvement import ExpectedImprovement
 from moe.views.gp_pretty_view import GpPrettyView
-from moe.views.schemas import GpInfo, ListOfPointsInDomain, ListOfExpectedImprovements, CovarianceInfo, BoundedDomainInfo, OptimizationInfo
 from moe.views.utils import _make_gp_from_params, _make_domain_from_params, _make_optimization_parameters_from_params
-from moe.optimal_learning.python.constant import TEST_EXPECTED_IMPROVEMENT_MC_ITERATIONS
+from moe.optimal_learning.python.constant import DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS
 
 
 class GpNextPointsRequest(colander.MappingSchema):
 
-    """A gp_next_points_* request colander schema.
+    """A ``gp_next_points_*`` request colander schema.
 
     **Required fields**
 
@@ -28,6 +27,7 @@ class GpNextPointsRequest(colander.MappingSchema):
     **Optional fields**
 
         :num_to_sample: number of next points to generate (default: 1)
+        :mc_iterations: number of Monte Carlo (MC) iterations to perform in numerical integration to calculate EI
         :covariance_info: a :class:`moe.views.schemas.CovarianceInfo` dict of covariance information
         :optimiaztion_info: a :class:`moe.views.schemas.OptimizationInfo` dict of optimization information
 
@@ -61,6 +61,7 @@ class GpNextPointsRequest(colander.MappingSchema):
 
         {
             'num_to_sample': 1,
+            'mc_iterations': 10000,
             'gp_info': {
                 'points_sampled': [
                         {'value_var': 0.01, 'value': 0.1, 'point': [0.0]},
@@ -95,6 +96,11 @@ class GpNextPointsRequest(colander.MappingSchema):
             colander.Int(),
             validator=colander.Range(min=1),
             )
+    mc_iterations = colander.SchemaNode(
+            colander.Int(),
+            validator=colander.Range(min=1),
+            missing=DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS,
+            )
     gp_info = GpInfo()
     domain_info = BoundedDomainInfo()
     covariance_info = CovarianceInfo(
@@ -107,7 +113,7 @@ class GpNextPointsRequest(colander.MappingSchema):
 
 class GpNextPointsResponse(colander.MappingSchema):
 
-    """A gp_next_points_* response colander schema.
+    """A ``gp_next_points_*`` response colander schema.
 
     **Output fields**
 
@@ -122,19 +128,22 @@ class GpNextPointsResponse(colander.MappingSchema):
         {
             "endpoint":"gp_ei",
             "points_to_sample": [["0.478332304526"]],
-            "expected_improvement": ["0.443478498868"],
+            "expected_improvement": "0.443478498868",
         }
 
     """
 
     endpoint = colander.SchemaNode(colander.String())
     points_to_sample = ListOfPointsInDomain()
-    expected_improvement = ListOfExpectedImprovements()
+    expected_improvement = colander.SchemaNode(
+            colander.Float(),
+            validator=colander.Range(min=0.0),
+            )
 
 
 class GpNextPointsPrettyView(GpPrettyView):
 
-    """A class to encapsulate 'pretty' gp_next_points_* views.
+    """A class to encapsulate 'pretty' ``gp_next_points_*`` views.
 
     Extends GpPrettyView with:
         1. gaussian_process generation from params
@@ -169,23 +178,26 @@ class GpNextPointsPrettyView(GpPrettyView):
         :type optimization_method_name: string in ``moe.views.constant.OPTIMIZATION_METHOD_NAMES``
         :param route_name: name of the route being called
         :type route_name: string in ``moe.views.constant.ALL_REST_ROUTES_ROUTE_NAME_TO_ENDPOINT.keys()``
-        :param *args: extra args to be passed to optimization method
-        :param **kwargs: extra kwargs to be passed to optimization method
+        :param ``*args``: extra args to be passed to optimization method
+        :param ``**kwargs``: extra kwargs to be passed to optimization method
 
         """
         points_being_sampled = params.get('points_being_sampled')
         if points_being_sampled is not None:
             points_being_sampled = numpy.array(points_being_sampled)
         num_to_sample = params.get('num_to_sample')
+        num_mc_iterations = params.get('mc_iterations')
 
         gaussian_process = _make_gp_from_params(params)
 
         expected_improvement_evaluator = ExpectedImprovement(
                 gaussian_process,
                 points_being_sampled=points_being_sampled,
-                num_mc_iterations=TEST_EXPECTED_IMPROVEMENT_MC_ITERATIONS,
+                num_mc_iterations=num_mc_iterations,
                 )
 
+        # TODO(eliu): (GH-89) Make the optimal_learning library handle this case 'organically' with
+        # reasonable default behavior and remove hacks like this one.
         if gaussian_process.num_sampled == 0:
             # If there is no initial data we bootstrap with random points
             py_domain = _make_domain_from_params(params, python_version=True)
@@ -213,12 +225,11 @@ class GpNextPointsPrettyView(GpPrettyView):
                     **kwargs
                     )
 
-        expected_improvement = expected_improvement_evaluator.evaluate_at_point_list(
-                next_points,
-                )
+        expected_improvement_evaluator.set_current_point(next_points)
+        expected_improvement = expected_improvement_evaluator.compute_expected_improvement()
 
         return self.form_response({
                 'endpoint': route_name,
                 'points_to_sample': next_points.tolist(),
-                'expected_improvement': expected_improvement.tolist(),
+                'expected_improvement': expected_improvement,
                 })
