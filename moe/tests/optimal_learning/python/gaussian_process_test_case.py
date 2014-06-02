@@ -183,28 +183,3 @@ class GaussianProcessTestCase(OptimalLearningTestCase):
             gaussian_process_type=test_environment.gaussian_process_class,
         )
         return GaussianProcessTestEnvironment(domain, covariance, gaussian_process)
-
-    def assert_relatively_equal(self, value_one, value_two, tol=None):
-        """Assert that two values are relatively equal, ``|value_one - value_two|/|value_one| <= eps``."""
-        if tol is None:
-            tol = self.tol
-        denom = abs(value_one)
-        if (denom == 0.0):
-            denom = 1.0
-        T.assert_lte(
-                abs(value_one - value_two) / denom,
-                tol,
-                )
-
-    def assert_lists_relatively_equal(self, list_one, list_two, tol=None):
-        """Assert two lists are relatively equal."""
-        T.assert_length(list_one, len(list_two))
-        for i, list_one_item in enumerate(list_one):
-            list_two_item = list_two[i]
-            self.assert_relatively_equal(list_one_item, list_two_item, tol)
-
-    def assert_matrix_relatively_equal(self, matrix_one, matrix_two, tol=None):
-        """Assert two matrices are relatively equal."""
-        for row_idx, row_matrix_one in enumerate(matrix_one):
-            row_matrix_two = matrix_two[row_idx]
-            self.assert_lists_relatively_equal(row_matrix_one, row_matrix_two, tol)

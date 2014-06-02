@@ -35,6 +35,7 @@ class TestGpEiView(RestGaussianProcessTestCase):
 
     def test_interface_returns_same_as_cpp(self):
         """Test that the /gp/ei endpoint does the same thing as the C++ interface."""
+        tolerance = 1.0e-11
         for test_case in self.gp_test_environments:
             python_domain, python_cov, python_gp = test_case
 
@@ -61,12 +62,12 @@ class TestGpEiView(RestGaussianProcessTestCase):
             resp = self.testapp.post(self.endpoint, json_payload)
             resp_schema = GpEiResponse()
             resp_dict = resp_schema.deserialize(json.loads(resp.body))
-            rest_expected_improvement = resp_dict.get('expected_improvement')
+            rest_expected_improvement = numpy.asarray(resp_dict.get('expected_improvement'))
 
-            self.assert_lists_relatively_equal(
-                    cpp_expected_improvement,
+            self.assert_vector_within_relative(
                     rest_expected_improvement,
-                    tol=1e-11,
+                    cpp_expected_improvement,
+                    tolerance,
                     )
 
 
