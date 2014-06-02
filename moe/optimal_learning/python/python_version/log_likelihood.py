@@ -7,13 +7,14 @@ in model selection. This file provides an implementation of the Log Marginal Lik
 .. Note:: This is a copy of the file comments in cpp_wrappers/log_likelihood.py.
   See this file's comments and interfaces.log_likelihood_interface for more details as well as the cpp_wrappers version.
 
-LOG MARGINAL LIKELIHOOD (LML):
+**LOG MARGINAL LIKELIHOOD (LML)**
+
 (Rasmussen & Williams, 5.4.1)
 The Log Marginal Likelihood measure comes from the ideas of Bayesian model selection, which use Bayesian inference
 to predict distributions over models and their parameters.  The cpp file comments explore this idea in more depth.
 For now, we will simply state the relevant result.  We can build up the notion of the "marginal likelihood":
 probability(observed data GIVEN sampling points (``X``), model hyperparameters, model class (regression, GP, etc.)),
-which is denoted: ``p(y|X,\theta,H_i)`` (see the cpp file comments for more).
+which is denoted: ``p(y | X, \theta, H_i)`` (see the cpp file comments for more).
 
 So the marginal likelihood deals with computing the probability that the observed data was generated from (another
 way: is easily explainable by) the given model.
@@ -215,7 +216,7 @@ class GaussianProcessLogMarginalLikelihood(GaussianProcessLogLikelihoodInterface
 
         .. NOTE:: These comments are copied from LogMarginalLikelihoodEvaluator::ComputeLogLikelihood in gpp_model_selection_and_hyperparameter_optimization.cpp.
 
-        ``log p(y|X,\theta) = -\frac{1}{2} * y^T * K^-1 * y - \frac{1}{2} * \log(det(K)) - \frac{n}{2} * \log(2*pi)``
+        ``log p(y | X, \theta) = -\frac{1}{2} * y^T * K^-1 * y - \frac{1}{2} * \log(det(K)) - \frac{n}{2} * \log(2*pi)``
         where n is ``num_sampled``, ``\theta`` are the hyperparameters, and ``\log`` is the natural logarithm.  In the following,
         ``term1 = -\frac{1}{2} * y^T * K^-1 * y``
         ``term2 = -\frac{1}{2} * \log(det(K))``
@@ -256,7 +257,7 @@ class GaussianProcessLogMarginalLikelihood(GaussianProcessLogLikelihoodInterface
 
         .. NOTE:: These comments are copied from LogMarginalLikelihoodEvaluator::ComputeGradLogLikelihood in gpp_model_selection_and_hyperparameter_optimization.cpp.
 
-        Computes ``\pderiv{log(p(y|X,\theta))}{\theta_k} = \frac{1}{2} * y_i * \pderiv{K_{ij}}{\theta_k} * y_j - \frac{1}{2}``
+        Computes ``\pderiv{log(p(y | X, \theta))}{\theta_k} = \frac{1}{2} * y_i * \pderiv{K_{ij}}{\theta_k} * y_j - \frac{1}{2}``
         ``* trace(K^{-1}_{ij}\pderiv{K_{ij}}{\theta_k})``
         Or equivalently, ``= \frac{1}{2} * trace([\alpha_i \alpha_j - K^{-1}_{ij}]*\pderiv{K_{ij}}{\theta_k})``,
         where ``\alpha_i = K^{-1}_{ij} * y_j``

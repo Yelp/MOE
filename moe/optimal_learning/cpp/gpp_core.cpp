@@ -1,10 +1,11 @@
-// gpp_core.cpp
-/*
+/*!
+  \file gpp_core.cpp
+  \rst
   File with main() used by eliu for testing/debugging C++ OL components.
 
   The code in this file is ad-hoc and purely used as a quick way to call and run the C++
   code from the command-line (i.e., independent of python).
-*/
+\endrst*/
 
 #include <sys/time.h>
 

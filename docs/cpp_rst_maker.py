@@ -1,6 +1,8 @@
+# -*- coding: utf-8 -*-
 """Automatically create *.rst files for sphinx for all doxygen+breathe created C++ api docs."""
 from os import listdir
-from os.path import isfile, join
+from os.path import isfile, join, splitext
+
 
 CPP_FILE_PATH = join(
         'moe',
@@ -14,18 +16,22 @@ def get_cpp_files():
     cpp_files = {}
     for file_name in listdir(CPP_FILE_PATH):
         if isfile(join(CPP_FILE_PATH, file_name)):
-            file_base = file_name.split('.')[0]
-            file_ext = file_name.split('.')[1]
-            if file_base not in cpp_files and file_ext in ['hpp', 'cpp']:
+            file_base, file_ext = splitext(file_name)
+            # Skip any files that don't have an extension
+            if not file_ext:
+                continue
+
+            if file_base not in cpp_files and file_ext in ['.hpp', '.cpp']:
                 cpp_files[file_base] = {
                         'cpp': None,
                         'hpp': None,
                         }
-            if file_ext == 'hpp':
+            if file_ext == '.hpp':
                 cpp_files[file_base]['hpp'] = file_name
-            elif file_ext == 'cpp':
+            elif file_ext == '.cpp':
                 cpp_files[file_base]['cpp'] = file_name
     return cpp_files
+
 
 def create_cpp_tree(cpp_files):
     """Create cpp_tree.rst index file."""
@@ -35,7 +41,7 @@ def create_cpp_tree(cpp_files):
                 'cpp_tree.rst',
                 ),
             'w'
-            )
+    )
     fout.write("""
 C++ Files
 =========
@@ -44,20 +50,21 @@ C++ Files
     :maxdepth: 2
 
 """
-            )
+    )
     for cpp_file in cpp_files:
         fout.write('    %s.rst\n' % cpp_file)
     fout.close()
+
 
 def create_rst_file(file_base, files):
     """Create a default file_base.rst file for sphinx."""
     fout = open(
             join(
                 'docs',
-                '%s.rst' % file_base, 
+                '%s.rst' % file_base,
                 ),
             'w'
-            )
+    )
     fout.write(
 """%s
 =====
@@ -85,12 +92,14 @@ def create_rst_file(file_base, files):
             )
     fout.close()
 
+
 def create_rst_files_for_cpp():
     """Generate all rst files."""
     cpp_files = get_cpp_files()
     create_cpp_tree(cpp_files)
     for file_base, files in cpp_files.iteritems():
         create_rst_file(file_base, files)
+
 
 if __name__ == '__main__':
     create_rst_files_for_cpp()

@@ -5,13 +5,16 @@
   capabilities present in this project.  These capabilities live in gpp_math.
 
   The layout is:
+
   1. Set up input data sizes
   2. Specify hyperparameters
   3. Generate (random) set of sampled point locations, noise variances
   4. Generate data for the Gaussian Process Prior:
+
      a. Use a randomly constructed Gaussian Process to generate imaginary objective function values, OR
      b. Use user-provided input training data.\*
         \* By defining OL_USER_INPUTS to 1, you can specify your own input data.
+
   5. Select desired concurrent experiment locations (points_being_sampled)
   6. Construct Gaussian Process to model the training data "world"
   7. Optimize Expected Improvement to decide what point we would sample next

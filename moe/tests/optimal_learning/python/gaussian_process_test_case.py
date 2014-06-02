@@ -5,11 +5,11 @@ import collections
 import numpy
 import testify as T
 
-import moe.optimal_learning.python.gaussian_process_test_utils as gp_utils
 from moe.optimal_learning.python.geometry_utils import ClosedInterval
 from moe.optimal_learning.python.python_version.covariance import SquareExponential
 from moe.optimal_learning.python.python_version.domain import TensorProductDomain
 from moe.optimal_learning.python.python_version.gaussian_process import GaussianProcess
+import moe.tests.optimal_learning.python.gaussian_process_test_utils as gp_utils
 from moe.tests.optimal_learning.python.optimal_learning_test_case import OptimalLearningTestCase
 
 
@@ -139,13 +139,15 @@ class GaussianProcessTestCase(OptimalLearningTestCase):
     def base_setup(self):
         """Build a Gaussian Process prior for each problem size in ``self.num_sampled_list`` if precomputation is desired.
 
-        Requires:
-        self.num_sampled_list: (*list of int*) problem sizes to consider
-        self.gp_test_environment_input: (*GaussianProcessTestEnvironmentInput*) specification of how to build the
+        **Requires**
+
+        * self.num_sampled_list: (*list of int*) problem sizes to consider
+        * self.gp_test_environment_input: (*GaussianProcessTestEnvironmentInput*) specification of how to build the
           gaussian process prior
 
-        Outputs:
-        self.gp_test_environments: (*list of GaussianProcessTestEnvironment*) gaussian process data for each of the
+        **Outputs**
+
+        * self.gp_test_environments: (*list of GaussianProcessTestEnvironment*) gaussian process data for each of the
           specified problem sizes (``self.num_sampled_list``)
 
         """
@@ -183,7 +185,7 @@ class GaussianProcessTestCase(OptimalLearningTestCase):
         return GaussianProcessTestEnvironment(domain, covariance, gaussian_process)
 
     def assert_relatively_equal(self, value_one, value_two, tol=None):
-        """Assert that two values are relatively equal, |value_one - value_two|/|value_one| <= eps."""
+        """Assert that two values are relatively equal, ``|value_one - value_two|/|value_one| <= eps``."""
         if tol is None:
             tol = self.tol
         denom = abs(value_one)

@@ -1,15 +1,18 @@
-// gpp_linear_algebra_test.cpp
-/*
+/*!
+  \file gpp_linear_algebra_test.cpp
+  \rst
   Routines to test the functions in gpp_linear_algebra.cpp and gpp_linear_algebra-inl.hpp.
 
   This includes a battery of tests that verify that all of our linear algebra subroutines are working correctly.  These tests
   fall into a few categories:
-  1) manually verifying a general function (e.g., GeneralMatrixVectorMultiply) and then using that to
+
+  1. manually verifying a general function (e.g., GeneralMatrixVectorMultiply) and then using that to
      verify special cases (e.g., Triangular and Symmetric multiply).
-  2) asserting properties of the underlying matrices or operators: e.g., Q*Q^T = I for Q known to be orthogonal, or X*X^-1 = I, etc.
-  3) checking correctness against simple, hand-verified cases
-  4) checking results against analytically known (usually norm-wise) error bounds, taking conditioning into account over
+  2. asserting properties of the underlying matrices or operators: e.g., Q*Q^T = I for Q known to be orthogonal, or X*X^-1 = I, etc.
+  3. checking correctness against simple, hand-verified cases
+  4. checking results against analytically known (usually norm-wise) error bounds, taking conditioning into account over
      well- and ill-conditioned inputs
+
   These tests live in the functions called through RunLinearAlgebraTests().
 
   This file also has implementations various Build.*() functions, which provide interesting inputs for the linear algebra
@@ -17,7 +20,7 @@
   (prolate, moler, orthogonal symmetric) as well as some matrices with interesting properties resulting from things like
   Householder Reflections.  We also have some utilites for data manipulation (e.g., extracting the lower triangle) as well as
   routines to manipulate condition number (e.g., adding diagonal dominance).
-*/
+\endrst*/
 
 #include "gpp_linear_algebra_test.hpp"
 
@@ -49,11 +52,11 @@ void BuildIdentityMatrix(int size_m, double * restrict matrix) noexcept {
   }
 }
 
-/*
-  A_{i,j} = { 2 * \alpha                                 if i == j
-            { \sin(2 * \pi * \alpha * k)/ (\pi * k)      otherwise
-  where k = |i - j|
-*/
+/*!\rst
+  ``A_{i,j} = { 2 * \alpha                                 if i == j``
+  ``          { \sin(2 * \pi * \alpha * k)/ (\pi * k)      otherwise``
+  where ``k = |i - j|``
+\endrst*/
 void BuildProlateMatrix(double alpha, int size, double * restrict prolate_matrix) noexcept {
   for (int j = 0; j < size; ++j) {
     for (int i = 0; i < size; ++i) {
@@ -68,10 +71,10 @@ void BuildProlateMatrix(double alpha, int size, double * restrict prolate_matrix
   }
 }
 
-/*
-  A_{ij} = { i * alpha^2 + 1.0               if i == j
-           { min(i, j) * alpha^2 + alpha     otherwise
-*/
+/*!\rst
+  ``A_{ij} = { i * alpha^2 + 1.0               if i == j``
+  ``         { min(i, j) * alpha^2 + alpha     otherwise``
+\endrst*/
 void BuildMolerMatrix(double alpha, int size, double * restrict moler_matrix) noexcept {
   for (int j = 0; j < size; ++j) {
     for (int i = 0; i < size; ++i) {
@@ -84,12 +87,12 @@ void BuildMolerMatrix(double alpha, int size, double * restrict moler_matrix) no
   }
 }
 
-/*
-  Builds a matrix Q s.t. Q * Q^T = I, Q = Q^T, and ||Q*x|| = ||x||.  In particular, Q is (real) orthogonal
-  AND symmetric.  This is not the only Q with the given properties.  Q is not SPD.
+/*!\rst
+  Builds a matrix ``Q`` s.t. ``Q * Q^T = I``, ``Q = Q^T``, and ``\|Q*x\| = \|x\|``.  In particular, ``Q` is (real) orthogonal
+  AND symmetric.  This is not the only ``Q`` with the given properties.  ``Q`` is not SPD.
 
-  This is the eigenvector matrix for a n-point second-difference matrix (e.g., discrete hessian)
-*/
+  This is the eigenvector matrix for a n-point second-difference matrix (e.g., discrete hessian).
+\endrst*/
 void BuildOrthogonalSymmetricMatrix(int size, double * restrict orthog_symm_matrix) noexcept {
   for (int j = 0; j < size; ++j) {
     for (int i = 0; i < size; ++i) {
@@ -101,6 +104,10 @@ void BuildOrthogonalSymmetricMatrix(int size, double * restrict orthog_symm_matr
   }
 }
 
+/*!\rst
+  Randomly generates half (diagonal and one triangle) of a matrix and copies those values into the other half.
+  The result is not guaranteed to have any special properties (e.g., SPD) beyond symmetry.
+\endrst*/
 void BuildRandomSymmetricMatrix(int size, double left_bound, double right_bound, UniformRandomGenerator * uniform_generator, double * restrict symmetric_matrix) noexcept {
   boost::uniform_real<double> uniform_double(left_bound, right_bound);
   for (int j = 0; j < size; ++j) {
@@ -112,6 +119,9 @@ void BuildRandomSymmetricMatrix(int size, double left_bound, double right_bound,
   }
 }
 
+/*!\rst
+  Randomly generates a lower triangular matrix, zeroing the upper triangle.
+\endrst*/
 void BuildRandomLowerTriangularMatrix(int size, UniformRandomGenerator * uniform_generator, double * restrict lower_triangular_matrix) noexcept {
   boost::uniform_real<double> uniform_double_unit_interval(0.0, 1.0);
 
@@ -126,6 +136,10 @@ void BuildRandomLowerTriangularMatrix(int size, UniformRandomGenerator * uniform
   }
 }
 
+/*!\rst
+  A matrix ``A`` is SPD if and only if it can be cholesky-factored: ``L * L^T = A``.
+  Generate ``L`` randomly and form ``A``.
+\endrst*/
 void BuildRandomSPDMatrix(int size, UniformRandomGenerator * uniform_generator, double * restrict spd_matrix) noexcept {
   std::vector<double> lower_triangular_matrix(size*size);
   std::vector<double> upper_triangular_matrix(size*size);
@@ -135,12 +149,12 @@ void BuildRandomSPDMatrix(int size, UniformRandomGenerator * uniform_generator, 
   GeneralMatrixMatrixMultiply(lower_triangular_matrix.data(), 'N', upper_triangular_matrix.data(), 1.0, 0.0, size, size, size, spd_matrix);
 }
 
-/*
-  The matrix F (householder) as a function of x (vector) where:
-  F = I - 2 * v*v^T
-  where v = w / ||w||_2
-  and   w = sign(x[0]) * ||x||_2 * e_0 + x  (e_0 is the cartesian unit vector, [1; zeros(n-1,1)])
-*/
+/*!\rst
+  The matrix ``F`` (householder) as a function of ``x`` (vector) where:
+  ``F = I - 2 * v*v^T``,
+  where ``v = w / ||w||_2``,
+  and   ``w = sign(x[0]) * \|x\|_2 * e_0 + x``  (``e_0`` is the cartesian unit vector, ``[1; zeros(n-1,1)]``)
+\endrst*/
 void BuildHouseholderReflectorMatrix(double const * restrict vector, int size, double * restrict householder) noexcept {
   double norm_of_vector = VectorNorm(vector, size);
 
@@ -160,7 +174,6 @@ void BuildHouseholderReflectorMatrix(double const * restrict vector, int size, d
 
 void BuildRandomVector(int size, double left_bound, double right_bound, UniformRandomGenerator * uniform_generator, double * restrict vector) noexcept {
   boost::uniform_real<double> uniform_double(left_bound, right_bound);
-
   for (int i = 0; i < size; ++i) {
     vector[i] = uniform_double(uniform_generator->engine);
   }
@@ -191,12 +204,12 @@ void ZeroUpperTriangle(int size, double * restrict matrix) noexcept {
 
 namespace {
 
-/*
-  Adds scale*eye(size) to the result of BuildRandomSPDMatrix.
+/*!\rst
+  Adds ``scale*eye(size)`` to the result of BuildRandomSPDMatrix.
 
   Adding positive numbers to the diagonal will significantly improve conditioning (thus turning
   any ill-conditioned example matrix in this file into a well-conditioned one).
-*/
+\endrst*/
 OL_NONNULL_POINTERS void ModifyMatrixDiagonal(int size, double scale, double * restrict spd_matrix) noexcept {
   for (int i = 0; i < size; ++i) {
     spd_matrix[0] += scale;
@@ -213,6 +226,16 @@ OL_NONNULL_POINTERS void ExtractLowerTriangularPart(double const * restrict matr
   }
 }
 
+/*!\rst
+  Check Cholesky factorization.
+  Uses:
+
+  1. Some simple test cases with whole-number results.
+  2. Generate random SPD matrices. Factor them. Check that the factorization is close to the original matrix.
+
+  \return
+    number of invalid entries in the factorizations
+\endrst*/
 OL_WARN_UNUSED_RESULT int TestCholesky() {
   int total_errors = 0;
 
@@ -315,7 +338,21 @@ OL_WARN_UNUSED_RESULT int TestCholesky() {
   return total_errors;
 }
 
-// TODO(eliu): add a small (well-conditioned) example with analytic solution
+/*!\rst
+  Test that SPDMatrixInverse and CholeskyFactorLMatrixVectorSolve are  working correctly
+  against some especially bad named matrices and some random inputs.
+  Outline:
+
+  1. Construct matrices, ``A``
+  2. Select a solution, ``x``, randomly.
+  3. Construct RHS by doing ``A*x``.
+  4. Solve ``Ax = b`` using backsolve and direct-inverse; check the size of ``\|b - Ax\|``.
+
+  TODO: add a small (well-conditioned) example with analytic solution
+
+  \return
+    number of test cases where the solver error is too large
+\endrst*/
 OL_WARN_UNUSED_RESULT int TestSPDLinearSolvers() {
   const int num_tests = 10;
   const int num_test_sizes = 3;
@@ -418,6 +455,17 @@ OL_WARN_UNUSED_RESULT int TestSPDLinearSolvers() {
   return total_errors;
 }
 
+/*!\rst
+  Test that ``A * x`` and ``A^T * x`` work, where ``A`` is a matrix and ``x`` is a vector.
+  Outline:
+
+  1. Check different input size combinations and no/transpose setups on small hand-checked problems.
+  2. Exploit special property of Householder matrices: perform ``Ax`` and verify that the output has
+     the property (see implementation).
+
+  \return
+    number of cases where matrix-vector multiply failed
+\endrst*/
 OL_WARN_UNUSED_RESULT int TestGeneralMatrixVectorMultiply() noexcept {
   int total_errors = 0;
 
@@ -553,6 +601,17 @@ OL_WARN_UNUSED_RESULT int TestGeneralMatrixVectorMultiply() noexcept {
   return total_errors;
 }
 
+/*!\rst
+  Check that ``A * B`` works where ``A, B`` are matrices.
+  Outline:
+
+  1. Simple hand-checked test case.
+  2. Generate a random orthogonal matrix and verify that ``Q * Q^T = I``.
+  3. Generate a random SPD matrix and guarantee good conditioning: verify ``A * A^-1 = I``.
+
+  \return
+    number of cases where matrix-matrix multiply failed
+\endrst*/
 OL_WARN_UNUSED_RESULT int TestGeneralMatrixMatrixMultiply() noexcept {
   int total_errors = 0;
 
@@ -656,10 +715,20 @@ OL_WARN_UNUSED_RESULT int TestGeneralMatrixMatrixMultiply() noexcept {
   return total_errors;
 }
 
-/*
-  Assume that dgemv() is correct.  Then assert that dtrmv (triangular)
-  and dsymv (symmetric) match dgemv for the appropriate matrices.
-*/
+/*!\rst
+  Check that ``Ax`` works for the special cases of ``A`` being:
+
+  1. triangular
+  2. symmetric
+
+  Assuming that dgemv() is correct, we then check (using random matrices):
+
+  1. Assert that dtrmv (triangular) matches dgemv for the appropriate matrices.
+  2. Assert that dsymv (symmetric) match dgemv for the appropriate matrices.
+
+  \return
+    number of cases where matrix-vector multiply does not match triangular or symmetric specialized multiplies.
+\endrst*/
 OL_WARN_UNUSED_RESULT int TestSpecialMatrixVectorMultiply() {
   int total_errors_dsymv = 0;
   int total_errors_dtrmv = 0;
@@ -742,6 +811,12 @@ OL_WARN_UNUSED_RESULT int TestSpecialMatrixVectorMultiply() {
   return total_errors_dsymv + total_errors_dtrmv + total_errors_dtrmv_T;
 }
 
+/*!\rst
+  Check that matrix-transpose works.
+
+  \return
+    number of entries where ``A`` and ``A^T`` do not match
+\endrst*/
 OL_WARN_UNUSED_RESULT int TestMatrixTranspose() noexcept {
   const int size_m = 3;
   const int size_n = 5;
@@ -764,16 +839,18 @@ OL_WARN_UNUSED_RESULT int TestMatrixTranspose() noexcept {
     }
   }
 
-  GeneralMatrixMatrixMultiply(matrix_T.data(), 'N', matrix.data(), 1.0, 0.0, size_n, size_m, size_n, product_matrix.data());
-  if (!CheckMatrixIsSymmetric(product_matrix.data(), size_n, std::numeric_limits<double>::epsilon())) {
-    ++total_errors;
-  }
-
   return total_errors;
 }
 
+/*!\rst
+  Check that ``A = PLU`` factorization works.
+
+  Test is conducted using a case from Trefethen's "Numerical Linear Algebra", 1997.
+
+  \return
+    number of cases where PLU fails.
+\endrst*/
 OL_WARN_UNUSED_RESULT int TestPLUFactor() noexcept {
-  // From Trefethen's Numerical Linear Algebra, 1997
   const int size = 4;
   int total_errors;
   int pivot[size] = {0};
@@ -796,6 +873,14 @@ OL_WARN_UNUSED_RESULT int TestPLUFactor() noexcept {
   return total_errors;
 }
 
+/*!\rst
+  Check that solving ``Ax = b`` works when using PLU factorization + backsolves.
+
+  Test is conducted using a case from Trefethen's "Numerical Linear Algebra", 1997.
+
+  \return
+    number of cases where PLU fails.
+\endrst*/
 OL_WARN_UNUSED_RESULT int TestPLUSolve() noexcept {
   const int size = 4;
   int total_errors;
@@ -828,6 +913,19 @@ OL_WARN_UNUSED_RESULT int TestPLUSolve() noexcept {
   return total_errors;
 }
 
+/*!\rst
+  Test vector norm.
+
+  For several problem sizes, check:
+
+  1. zeros have ``norm = 0``
+  2. ``\|\alpha\| = \alpha`` where \alpha is scalar
+  3. Scaling a vector by its own norm results in a vector with ``norm = 1.0``.
+  4. Columns of a matrix whose columns are *known* to have unit-norm.
+
+  \return
+    number of cases where the norm is wrong
+\endrst*/
 OL_WARN_UNUSED_RESULT int TestNorm() noexcept {
   int total_errors = 0;
   const int num_sizes = 3;
@@ -880,6 +978,14 @@ OL_WARN_UNUSED_RESULT int TestNorm() noexcept {
   return total_errors;
 }
 
+/*!\rst
+  Test several vector (BLAS-1) functions:
+
+  1. scale: ``y = \alpha * y``
+  2. AXPY: ``y = \alpha * x + y``
+  3. dot product: ``c = x^T * y``, ``c`` is scalar
+  4. norm: ``\|x\|``
+\endrst*/
 OL_WARN_UNUSED_RESULT int TestVectorFunctions() noexcept {
   int total_errors = 0;
   const int size = 4;
@@ -1008,6 +1114,12 @@ OL_WARN_UNUSED_RESULT int TestVectorFunctions() noexcept {
   return total_errors;
 }
 
+/*!\rst
+  Test that outerproduct is working with some small hand-checked cases.
+
+  \return
+    number of entries where the outerproduct is invalid
+\endrst*/
 OL_WARN_UNUSED_RESULT int TestOuterProduct() noexcept {
   int total_errors = 0;
   const int size_m = 2;
@@ -1039,6 +1151,12 @@ OL_WARN_UNUSED_RESULT int TestOuterProduct() noexcept {
   return total_errors;
 }
 
+/*!\rst
+  Test matrix trace and ``tr(AB)``.
+
+  \return
+    number of cases where trace functions fail
+\endrst*/
 OL_WARN_UNUSED_RESULT int TestMatrixTrace() noexcept {
   int total_errors = 0;
 

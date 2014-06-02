@@ -2,9 +2,11 @@
 """Classes for gp_next_points_constant_liar endpoints.
 
 Includes:
+
     1. pretty and backend views
 
 Support for:
+
     * `'constant_liar_min'` - `lie_value` is equal to the *min* of all points sampled so far
     * `'constant_liar_max'` - `lie_value` is equal to the *max* of all points sampled so far
     * `'constant_liar_mean'` - `lie_value` is equal to the *mean* of all points sampled so far

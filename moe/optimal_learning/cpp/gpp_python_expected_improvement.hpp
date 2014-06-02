@@ -21,6 +21,7 @@ void ExportEstimationPolicies();
 
 /*!\rst
   Exports functions (with docstrings) for expected improvement operations:
+
   1. expected improvement (and its gradient) evaluation (uesful for testing)
   2. multistart expected improvement optimization (main entry-point)
   3. expected improvement evaluation at a list of points (useful for testing, plotting)

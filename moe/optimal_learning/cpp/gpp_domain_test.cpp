@@ -4,11 +4,13 @@
   This file contains functions for testing the functions and classes in gpp_domain.hpp.
 
   It has several templated test functions (on DomainTestFixture) for:
+
   * CheckPointInDomain: specify a domain, point list, and truth values.  checks that points are/are not inside
   * GeneratePointInDomain: generates some random points, checks that they are inside the domain
   * GenerateUniformPointsInDomain: generates uniformly distributed points, checks that they are inside the domain
-     TODO(eliu): Test whether computed point distribution is actually uniform (ADS-3099)
+    TODO(eliu): Test whether computed point distribution is actually uniform (ADS-3099)
   * LimitUpdate: starting from points within the domain, checks that:
+
     * updates to another point in the domain remain unchanged
     * updates to a point outside the domain are limited such that the new endpoint is in the domain
 
@@ -344,6 +346,7 @@ OL_WARN_UNUSED_RESULT int GenerateUniformPointsInDomainTest(const DomainTestFixt
 
 /*!\rst
   Check whether LimitUpdate is behaving correctly:
+
   * max_relative_change is respected
   * no change for updates that are within the domain
   * restricting to nearest boundary when update exits the domain
@@ -717,6 +720,7 @@ OL_WARN_UNUSED_RESULT int GenerateUniformPointsInDomainRepeatedDomainTest(const 
 
 /*!\rst
   Check whether LimitUpdate is behaving correctly:
+
   * updates staying within the domain are unchanged
   * updates staying within/leaving the domain are identical to the kernel domain's output
 

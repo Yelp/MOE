@@ -4,16 +4,21 @@
   Classes and utilities that are useful throughout the gpp_python_* interface code.
 
   This file includes three main groups of things:
+
   1. Tools for translating between C++ and Python data sources
+
      a. PythonInterfaceInputContainer: captures the most common set of inputs used in gpp_python
      b. utilities for copying between std::vector and boost::python::list
+
   2. A RandomnessSourceContainer for moving consistent RNG state between C++, Python
   3. Export*() functions for giving Python access to various C++ calls via boost::python.
+
      a. enum classes
      b. optimization parameter structs
      c. RandomnessSourceContainer from item 2)
 
   Functions callable from Python generally have the following form:
+
   1. Copy vector inputs from references of Python structures to C++ (e.g., boost::python::list to std::vector).
      Items 1a) and 1b) are helpful for this.
   2. Construct any temporary objects needed by C++ (e.g., Evaluator/State pairs).
@@ -24,9 +29,10 @@
   See other gpp_python_*.cpp files for examples (e.g., gpp_python_expected_improvement.cpp or gpp_python_model_selection.cpp).
 
   General notes about the Python interface:
+
   1. We use raw strings (C++11) to pass multiline string
-     literals to boost to specify python docstrings. Our delimiter is: %%. The
-     format is: R"%%(put anything here, no need to escape chars)%%".
+     literals to boost to specify python docstrings. Our delimiter is: ``%%``. The
+     format is: ``R"%%(put anything here, no need to escape chars)%%"``.
      Unfortunately this confuses linters but it is much more human-readable than alternatives.
 
   2. ALL ARRAYS/LISTS MUST BE FLATTENED!
@@ -34,12 +40,12 @@
      Matrices will be described as A[dim1][dim2]...[dimN]
      To FLATTEN a matrix is to lay it out in memory C-style;
      i.e., rightmost index varies the most rapidly.
-     For example: A[3][4] =
-     [4  32  5  2
-     53 12  8  1
-     81  2  93 0]
+     For example: ``A[3][4] =``
+     ``[4  32  5  2``
+     `` 53 12  8  1``
+     `` 81  2  93 0]``
      would be FLATTENED into an array:
-     A_flat[12] = [4 32 5 2 53 12 8 1 81 2 93 0]
+     ``A_flat[12] = [4 32 5 2 53 12 8 1 81 2 93 0]``
 \endrst*/
 
 #ifndef MOE_OPTIMAL_LEARNING_CPP_GPP_PYTHON_COMMON_HPP_
@@ -211,9 +217,9 @@ class RandomnessSourceContainer {
               checked BEFORE calling this function.
 
     \return
-      0 if success, 1 if failure (due to invalid sizes)
+      true if successful, false otherwise (due to invalid sizes)
   \endrst*/
-  int SetNormalRNGSeedPythonList(const boost::python::list& seed_list, const boost::python::list& seed_flag_list);
+  bool SetNormalRNGSeedPythonList(const boost::python::list& seed_list, const boost::python::list& seed_flag_list);
 
   /*!\rst
     Resets all threads' RNGs to the seed values they were initialized with.  Useful for testing.

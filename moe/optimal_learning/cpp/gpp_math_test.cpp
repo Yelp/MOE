@@ -4,7 +4,9 @@
   Routines to test the functions in gpp_math.cpp.
 
   The tests verify GaussianProcess, ExpectedImprovementEvaluator (+OnePotentialSample), and EI optimization from gpp_math.cpp.
+
   1. Ping testing (verifying analytic gradient computation against finite difference approximations)
+
      a. Following gpp_covariance_test.cpp, we define classes (PingGPMean + other GP ping, PingExpectedImprovement) for
         evaluating those functions + their spatial gradients.
 
@@ -13,6 +15,7 @@
         or incomplete data (e.g., gradient of mean returned as a vector instead of a diagonal matrix; gradient of variance
         only differentiates wrt a single point at a time); hence we need specialized handlers for testing.
      b. Ping for derivative accuracy (PingGPComponentTest, PingEITest); these unit test the analytic derivatives.
+
   2. Monte-Carlo EI vs analytic EI validation: the monte-carlo versions are run to "high" accuracy and checked against
      analytic formulae when applicable
   3. Gradient Descent: using polynomials and other simple fucntions with analytically known optima
@@ -572,6 +575,11 @@ class PingOnePotentialSampleExpectedImprovement final : public PingableMatrixInp
 /*!\rst
   Pings gradients (spatial) of GP components (e.g., mean, variance, cholesky of variance) 50 times with randomly generated test cases
 
+  \param
+    :epsilon: coarse, fine ``h`` sizes to use in finite difference computation
+    :tolerance_fine: desired amount of deviation from the exact rate
+    :tolerance_coarse: maximum allowable abmount of deviation from the exact rate
+    :input_output_ratio: for ``||analytic_gradient||/||input|| < input_output_ratio``, ping testing is not performed, see PingDerivative()
   \return
     number of ping/test failures
 \endrst*/
@@ -663,6 +671,13 @@ int PingGPCholeskyVarianceTest() {
   Pings the gradients (spatial) of the EI 50 times with randomly generated test cases
   Works with various EI evaluators (e.g., MC, analytic formulae)
 
+  \param
+    :num_to_sample: number of potential future samples; gradients are evaluated wrt these points (i.e., the "q" in q,p-EI)
+    :num_being_sampled: number of points being sampled in concurrent experiments (i.e., the "p" in q,p-EI)
+    :epsilon: coarse, fine ``h`` sizes to use in finite difference computation
+    :tolerance_fine: desired amount of deviation from the exact rate
+    :tolerance_coarse: maximum allowable abmount of deviation from the exact rate
+    :input_output_ratio: for ``||analytic_gradient||/||input|| < input_output_ratio``, ping testing is not performed, see PingDerivative()
   \return
     number of ping/test failures
 \endrst*/
@@ -1406,6 +1421,7 @@ OL_WARN_UNUSED_RESULT int ExpectedImprovementOptimizationSimplexTestCore(Expecte
 
 /*!\rst
   At the moment, this test is very bare-bones.  It checks:
+
   1. method succeeds
   2. points returned are all inside the specified domain
   3. points returned are not within epsilon of each other (i.e., distinct)

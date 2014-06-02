@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""A class to encapsulate 'pretty' views for gp_next_points_* endpoints.
+"""A class to encapsulate 'pretty' views for ``gp_next_points_*`` endpoints.
 
 Include:
     1. Request and response schemas
@@ -19,7 +19,7 @@ from moe.optimal_learning.python.constant import OPTIMIZATION_TYPE_TO_DEFAULT_PA
 
 class GpNextPointsRequest(colander.MappingSchema):
 
-    """A gp_next_points_* request colander schema.
+    """A ``gp_next_points_*`` request colander schema.
 
     **Required fields**
 
@@ -115,7 +115,7 @@ class GpNextPointsRequest(colander.MappingSchema):
 
 class GpNextPointsResponse(colander.MappingSchema):
 
-    """A gp_next_points_* response colander schema.
+    """A ``gp_next_points_*`` response colander schema.
 
     **Output fields**
 
@@ -145,7 +145,7 @@ class GpNextPointsResponse(colander.MappingSchema):
 
 class GpNextPointsPrettyView(GpPrettyView):
 
-    """A class to encapsulate 'pretty' gp_next_points_* views.
+    """A class to encapsulate 'pretty' ``gp_next_points_*`` views.
 
     Extends GpPrettyView with:
         1. gaussian_process generation from params
@@ -180,8 +180,8 @@ class GpNextPointsPrettyView(GpPrettyView):
         :type optimization_method_name: string in ``moe.views.constant.OPTIMIZATION_METHOD_NAMES``
         :param route_name: name of the route being called
         :type route_name: string in ``moe.views.constant.ALL_REST_ROUTES_ROUTE_NAME_TO_ENDPOINT.keys()``
-        :param *args: extra args to be passed to optimization method
-        :param **kwargs: extra kwargs to be passed to optimization method
+        :param ``*args``: extra args to be passed to optimization method
+        :param ``**kwargs``: extra kwargs to be passed to optimization method
 
         """
         points_being_sampled = params.get('points_being_sampled')

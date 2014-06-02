@@ -123,6 +123,7 @@
   **3 IMPLEMENTATION NOTES**
 
   a. This file has a few primary endpoints for EI optimization:
+
      i. ComputeOptimalPointsToSampleWithRandomStarts<>()
           Solves the q,p-EI problem.
           Takes in a gaussian_process describing the prior, domain, config, etc.; outputs the next best point(s) (experiment)
@@ -146,13 +147,14 @@
   **4 NOTATION**
 
   And domain-specific notation, following Rasmussen, Williams:
-    - ``X = points_sampled``; this is the training data (size ``dim`` X ``num_sampled``), also called the design matrix
-    - ``Xs = points_to_sample``; this is the test data (size ``dim`` X num_to_sample``)
-    - ``y, f, f(x) = points_sampled_value``, the experimental results from sampling training points
-    - ``K, K_{ij}, K(X,X) = covariance(X_i, X_j)``, covariance matrix between training inputs (``num_sampled x num_sampled``)
-    - ``Ks, Ks_{ij}, K(X,Xs) = covariance(X_i, Xs_j)``, covariance matrix between training and test inputs (``num_sampled x num_to_sample``)
-    - ``Kss, Kss_{ij}, K(Xs,Xs) = covariance(Xs_i, Xs_j)``, covariance matrix between test inputs (``num_to_sample x num_to_sample``)
-    - ``\theta``: (vector) of hyperparameters for a covariance function
+
+    * ``X = points_sampled``; this is the training data (size ``dim`` X ``num_sampled``), also called the design matrix
+    * ``Xs = points_to_sample``; this is the test data (size ``dim`` X num_to_sample``)
+    * ``y, f, f(x) = points_sampled_value``, the experimental results from sampling training points
+    * ``K, K_{ij}, K(X,X) = covariance(X_i, X_j)``, covariance matrix between training inputs (``num_sampled x num_sampled``)
+    * ``Ks, Ks_{ij}, K(X,Xs) = covariance(X_i, Xs_j)``, covariance matrix between training and test inputs (``num_sampled x num_to_sample``)
+    * ``Kss, Kss_{ij}, K(Xs,Xs) = covariance(Xs_i, Xs_j)``, covariance matrix between test inputs (``num_to_sample x num_to_sample``)
+    * ``\theta``: (vector) of hyperparameters for a covariance function
 
   .. NOTE::
        Due to confusion with multiplication (K_* looks awkward in code comments), Rasmussen & Williams' \ms K_*\me
@@ -403,7 +405,7 @@ class GaussianProcess final {
   /*!\rst
     Computes the variance (matrix) of this GP at each point of ``Xs`` (``points_to_sample``).
 
-    The variance matrix is symmetric and is stored in the LOWER TRIANGLE.
+    The variance matrix is symmetric (in fact, SPD) and is stored in the LOWER TRIANGLE.
 
     .. Note:: ``points_to_sample`` should not contain duplicate points.
 
@@ -413,7 +415,7 @@ class GaussianProcess final {
       :points_to_sample_state[1]: ptr to a FULLY CONFIGURED PointsToSampleState (configure via PointsToSampleState::SetupState)
     \output
       :points_to_sample_state[1]: ptr to a FULLY CONFIGURED PointsToSampleState; only temporary state may be mutated
-      :var_star[num_to_sample][num_to_sample]: variance of GP
+      :var_star[num_to_sample][num_to_sample]: variance of GP evaluated at ``points_to_sample``
   \endrst*/
   void ComputeVarianceOfPoints(StateType * points_to_sample_state, double * restrict var_star) const noexcept OL_NONNULL_POINTERS;
 
@@ -442,7 +444,7 @@ class GaussianProcess final {
     \output
       :points_to_sample_state[1]: ptr to a FULLY CONFIGURED PointsToSampleState; only temporary state may be mutated
       :grad_chol[dim][num_to_sample][num_to_sample][state->num_derivatives]: gradient of the cholesky-factored
-      :variance of the GP.  ``grad_chol[d][i][j][k]`` is actually the gradients of ``var_{i,j}`` with
+        variance of the GP.  ``grad_chol[d][i][j][k]`` is actually the gradients of ``var_{i,j}`` with
         respect to ``x_{d,k}``, the d-th dimension of the k-th entry of ``points_to_sample``
   \endrst*/
   void ComputeGradCholeskyVarianceOfPoints(StateType * points_to_sample_state, double const * restrict chol_var, double * restrict grad_chol) const noexcept OL_NONNULL_POINTERS;
@@ -527,7 +529,7 @@ class GaussianProcess final {
     \output
       :points_to_sample_state[1]: ptr to a FULLY CONFIGURED PointsToSampleState; only temporary state may be mutated
       :grad_chol[dim][num_to_sample][num_to_sample]: gradient of the cholesky-factored
-      :variance of the GP.  ``grad_chol[d][i][j]`` is actually the gradients of ``var_{i,j}`` with
+        variance of the GP.  ``grad_chol[d][i][j]`` is actually the gradients of ``var_{i,j}`` with
         respect to ``x_{d,k}``, the d-th dimension of the k-th entry of ``points_to_sample``, where
         k = ``diff_index``
   \endrst*/
@@ -883,10 +885,10 @@ struct ExpectedImprovementState final {
       :num_to_sample: number of potential future samples; gradients are evaluated wrt these points (i.e., the "q" in q,p-EI)
       :num_being_sampled: number of points being sampled in concurrent experiments (i.e., the "p" in q,p-EI)
       :configure_for_gradients: true if this object will be used to compute gradients, false otherwise
-      :normal_rng[1]: pointer to a properly initialized* NormalRNG object
+      :normal_rng[1]: pointer to a properly initialized\* NormalRNG object
 
     .. NOTE::
-         * The NormalRNG object must already be seeded.  If multithreaded computation is used for EI, then every state object
+         \* The NormalRNG object must already be seeded.  If multithreaded computation is used for EI, then every state object
          must have a different NormalRNG (different seeds, not just different objects).
   \endrst*/
   ExpectedImprovementState(const EvaluatorType& ei_evaluator, double const * restrict points_to_sample, double const * restrict points_being_sampled, int num_to_sample_in, int num_being_sampled_in, bool configure_for_gradients, NormalRNG * normal_rng_in)

@@ -18,6 +18,7 @@ class SinglePoint(colander.MappingSchema):
     """A point object.
 
     Contains:
+
         * point - ListOfFloats
         * value - float
         * value_var - float >= 0.0
@@ -212,6 +213,7 @@ class GpInfo(colander.MappingSchema):
     """The Gaussian Process info needed for every request.
 
     Contains:
+
         * points_sampled - PointsSampled
 
     """

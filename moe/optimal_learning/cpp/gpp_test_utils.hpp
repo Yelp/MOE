@@ -42,9 +42,10 @@ class SimplexIntersectTensorProductDomain;
   with derivatives taken wrt each member of ``X_{d,i}``,
   ``gradf_{k,d,i} = \frac{\partial f_k}{\partial X_{d,i}}``
   In the nomenclature used in the class:
-    ``d`` indexes over num_rows (set in GetInputSizes())
-    ``i`` indexes over num_cols (set in GetInputSizes())
-    ``k`` indexes over GetOutputSize()
+
+  * ``d`` indexes over num_rows (set in GetInputSizes())
+  * ``i`` indexes over num_cols (set in GetInputSizes())
+  * ``k`` indexes over GetOutputSize()
 
   Typically ``d`` is the spatial_dimension of the problem.  So if ``i`` ranges over ``1 .. num_points``,
   then ``X_{d,i}`` is a matrix of num_points points each with dimension spatial_dim.
@@ -57,6 +58,7 @@ class SimplexIntersectTensorProductDomain;
   how implementations store/compute ``f()`` and its gradient.
 
   Generally, usage goes as follows:
+
   * Use GetInputSizes(), GetOutputSize(), and possibly GetGradientsSize() to inspect the dimensions of the problem
   * EvaluateAndStoreAnalyticGradient(): compute and internally store the gradient evaluated at a given input\*
   * GetAnalyticGradient: returns the value of the analytic gradient for a given output (``k``), wrt a given point ``(d,i)``
