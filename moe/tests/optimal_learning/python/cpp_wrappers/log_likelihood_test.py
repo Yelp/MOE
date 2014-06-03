@@ -2,14 +2,9 @@
 """Test cases to check that C++ and Python implementations of interfaces/log_likelihood.py match."""
 import testify as T
 
-from moe.optimal_learning.python import cpp_wrappers
-from moe.optimal_learning.python import python_version
-import moe.optimal_learning.python.cpp_wrappers.covariance
-import moe.optimal_learning.python.cpp_wrappers.log_likelihood
+import moe.optimal_learning.python.cpp_wrappers as cpp_wrappers
 from moe.optimal_learning.python.geometry_utils import ClosedInterval
-import moe.optimal_learning.python.python_version.covariance
-from moe.optimal_learning.python.python_version.domain import TensorProductDomain
-import moe.optimal_learning.python.python_version.log_likelihood
+import moe.optimal_learning.python.python_version as python_version
 from moe.tests.optimal_learning.python.gaussian_process_test_case import GaussianProcessTestCase, GaussianProcessTestEnvironmentInput
 
 
@@ -32,8 +27,8 @@ class LogLikelihoodTest(GaussianProcessTestCase):
         lower_bound_interval=ClosedInterval(-2.0, 0.5),
         upper_bound_interval=ClosedInterval(2.0, 3.5),
         covariance_class=python_version.covariance.SquareExponential,
-        spatial_domain_class=TensorProductDomain,
-        hyperparameter_domain_class=TensorProductDomain,
+        spatial_domain_class=python_version.domain.TensorProductDomain,
+        hyperparameter_domain_class=python_version.domain.TensorProductDomain,
     )
 
     num_sampled_list = [1, 2, 5, 10, 16, 20, 42]

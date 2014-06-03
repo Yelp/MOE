@@ -239,12 +239,12 @@ class GaussianProcessLogMarginalLikelihood(GaussianProcessLogLikelihoodInterface
             self._historical_data.points_sampled,
             noise_variance=self._historical_data.points_sampled_noise_variance,
         )
-        k_chol = scipy.linalg.cho_factor(covariance_matrix, lower=True, overwrite_a=True)
+        K_chol = scipy.linalg.cho_factor(covariance_matrix, lower=True, overwrite_a=True)
 
-        log_marginal_term2 = -numpy.log(k_chol[0].diagonal()).sum()
+        log_marginal_term2 = -numpy.log(K_chol[0].diagonal()).sum()
 
-        k_inv_y = scipy.linalg.cho_solve(k_chol, self._historical_data.points_sampled_value)
-        log_marginal_term1 = -0.5 * numpy.inner(self._historical_data.points_sampled_value, k_inv_y)
+        K_inv_y = scipy.linalg.cho_solve(K_chol, self._historical_data.points_sampled_value)
+        log_marginal_term1 = -0.5 * numpy.inner(self._historical_data.points_sampled_value, K_inv_y)
 
         log_marginal_term3 = -0.5 * numpy.float64(self._historical_data.points_sampled_value.size) * numpy.log(2.0 * numpy.pi)
         return log_marginal_term1 + log_marginal_term2 + log_marginal_term3
@@ -272,8 +272,8 @@ class GaussianProcessLogMarginalLikelihood(GaussianProcessLogLikelihoodInterface
             self._historical_data.points_sampled,
             noise_variance=self._historical_data.points_sampled_noise_variance,
         )
-        k_chol = scipy.linalg.cho_factor(covariance_matrix, lower=True, overwrite_a=True)
-        k_inv_y = scipy.linalg.cho_solve(k_chol, self._historical_data.points_sampled_value)
+        K_chol = scipy.linalg.cho_factor(covariance_matrix, lower=True, overwrite_a=True)
+        K_inv_y = scipy.linalg.cho_solve(K_chol, self._historical_data.points_sampled_value)
 
         grad_hyperparameter_cov_matrix = python_utils.build_hyperparameter_grad_covariance_matrix(
             self._covariance,
@@ -282,14 +282,14 @@ class GaussianProcessLogMarginalLikelihood(GaussianProcessLogLikelihoodInterface
         grad_log_marginal = numpy.empty(self._covariance.num_hyperparameters)
         for k in xrange(self._covariance.num_hyperparameters):
             grad_cov_block = grad_hyperparameter_cov_matrix[..., k]
-            # computing 0.5 * \alpha^T * grad_hyperparameter_cov_matrix * \alpha, where \alpha = K^-1 * y (aka k_inv_y)
-            # temp_vec := grad_hyperparameter_cov_matrix * k_inv_y
-            temp_vec = numpy.dot(grad_cov_block, k_inv_y)
-            # computes 0.5 * k_inv_y^T * temp_vec
-            grad_log_marginal[k] = 0.5 * numpy.dot(k_inv_y, temp_vec)
+            # computing 0.5 * \alpha^T * grad_hyperparameter_cov_matrix * \alpha, where \alpha = K^-1 * y (aka K_inv_y)
+            # temp_vec := grad_hyperparameter_cov_matrix * K_inv_y
+            temp_vec = numpy.dot(grad_cov_block, K_inv_y)
+            # computes 0.5 * K_inv_y^T * temp_vec
+            grad_log_marginal[k] = 0.5 * numpy.dot(K_inv_y, temp_vec)
 
             # compute -0.5 * tr(K^-1 * dK/d\theta)
-            temp = scipy.linalg.cho_solve(k_chol, grad_cov_block, overwrite_b=True)
+            temp = scipy.linalg.cho_solve(K_chol, grad_cov_block, overwrite_b=True)
             grad_log_marginal[k] -= 0.5 * temp.trace()
             # TODO(eliu): this can be much faster if we form K^-1 explicitly (see below), but that is less accurate
             # grad_log_marginal[k] -= 0.5 * numpy.einsum('ij,ji', K_inv, grad_cov_block)
