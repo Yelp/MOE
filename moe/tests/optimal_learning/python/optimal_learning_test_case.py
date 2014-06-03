@@ -6,6 +6,7 @@ to be more DRY (model after C++ test cases). We can set up one ping tester and j
 
 """
 import numpy
+
 import testify as T
 
 

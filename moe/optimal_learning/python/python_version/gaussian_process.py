@@ -9,6 +9,7 @@ See interfaces.gaussian_process_interface.py for more details.
 import copy
 
 import numpy
+
 import scipy.linalg
 
 from moe.optimal_learning.python.interfaces.gaussian_process_interface import GaussianProcessInterface
@@ -107,12 +108,12 @@ class GaussianProcess(GaussianProcessInterface):
         if self.num_sampled == 0:
             return numpy.zeros(points_to_sample.shape[0])
 
-        K_star = python_utils.build_mix_covariance_matrix(
+        k_star = python_utils.build_mix_covariance_matrix(
             self._covariance,
             self._historical_data.points_sampled,
             points_to_sample,
         )
-        mu_star = numpy.dot(K_star.T, self._K_inv_y)
+        mu_star = numpy.dot(k_star.T, self._K_inv_y)
         return mu_star
 
     def compute_grad_mean_of_points(self, points_to_sample, num_derivatives=-1):
@@ -138,13 +139,13 @@ class GaussianProcess(GaussianProcessInterface):
 
         """
         num_derivatives = self._clamp_num_derivatives(points_to_sample.shape[0], num_derivatives)
-        grad_K_star = numpy.empty((num_derivatives, self._historical_data.points_sampled.shape[0], self.dim))
+        grad_k_star = numpy.empty((num_derivatives, self._historical_data.points_sampled.shape[0], self.dim))
         for i, point_one in enumerate(points_to_sample[:num_derivatives, ...]):
             for j, point_two in enumerate(self._historical_data.points_sampled):
-                grad_K_star[i, j, ...] = self._covariance.grad_covariance(point_one, point_two)
+                grad_k_star[i, j, ...] = self._covariance.grad_covariance(point_one, point_two)
 
         # y_{k,i} = A_{k,j,i} * x_j
-        grad_mu_star = numpy.einsum('ijk, j', grad_K_star, self._K_inv_y)
+        grad_mu_star = numpy.einsum('ijk, j', grad_k_star, self._K_inv_y)
         return grad_mu_star
 
     def compute_variance_of_points(self, points_to_sample):
@@ -162,24 +163,24 @@ class GaussianProcess(GaussianProcessInterface):
         :rtype: array of float64 with shape (num_to_sample, num_to_sample)
 
         """
-        var_star = python_utils.build_covariance_matrix(self._covariance, points_to_sample)  # this is K_star_star
+        var_star = python_utils.build_covariance_matrix(self._covariance, points_to_sample)  # this is k_star_star
         if self.num_sampled == 0:
             return numpy.diag(numpy.diag(var_star))
 
-        K_star = python_utils.build_mix_covariance_matrix(
+        k_star = python_utils.build_mix_covariance_matrix(
             self._covariance,
             self._historical_data.points_sampled,
             points_to_sample,
         )
-        V = scipy.linalg.solve_triangular(
+        v = scipy.linalg.solve_triangular(
             self._K_chol[0],
-            K_star,
+            k_star,
             lower=self._K_chol[1],
             overwrite_b=True,
         )
 
         # cheaper to go through scipy.linalg.get_blas_funcs() which can compute A = alpha*B*C + beta*A in one pass
-        var_star -= numpy.dot(V.T, V)
+        var_star -= numpy.dot(v.T, v)
         return var_star
 
     def compute_cholesky_variance_of_points(self, points_to_sample):
@@ -218,26 +219,26 @@ class GaussianProcess(GaussianProcessInterface):
         # Compute grad variance
         grad_var = numpy.zeros((num_to_sample, num_to_sample, self.dim))
 
-        K_star = python_utils.build_mix_covariance_matrix(
+        k_star = python_utils.build_mix_covariance_matrix(
             self._covariance,
             self._historical_data.points_sampled,
             points_to_sample,
         )
-        K_inv_times_K_star = scipy.linalg.cho_solve(self._K_chol, K_star, overwrite_b=True)
+        k_inv_times_k_star = scipy.linalg.cho_solve(self._K_chol, k_star, overwrite_b=True)
         for i, point_one in enumerate(points_to_sample):
             for j, point_two in enumerate(points_to_sample):
                 if var_of_grad == i and var_of_grad == j:
                     grad_var[i, j, ...] = self._covariance.grad_covariance(point_one, point_two)
                     for idx_two, sampled_two in enumerate(self._historical_data.points_sampled):
-                        grad_var[i, j, ...] -= 2.0 * K_inv_times_K_star[idx_two, i] * self._covariance.grad_covariance(point_one, sampled_two)
+                        grad_var[i, j, ...] -= 2.0 * k_inv_times_k_star[idx_two, i] * self._covariance.grad_covariance(point_one, sampled_two)
                 elif var_of_grad == i:
                     grad_var[i, j, ...] = self._covariance.grad_covariance(point_one, point_two)
                     for idx_two, sampled_two in enumerate(self._historical_data.points_sampled):
-                        grad_var[i, j, ...] -= K_inv_times_K_star[idx_two, j] * self._covariance.grad_covariance(point_one, sampled_two)
+                        grad_var[i, j, ...] -= k_inv_times_k_star[idx_two, j] * self._covariance.grad_covariance(point_one, sampled_two)
                 elif var_of_grad == j:
                     grad_var[i, j, ...] = self._covariance.grad_covariance(point_two, point_one)
                     for idx_one, sampled_one in enumerate(self._historical_data.points_sampled):
-                        grad_var[i, j, ...] -= K_inv_times_K_star[idx_one, i] * self._covariance.grad_covariance(point_two, sampled_one)
+                        grad_var[i, j, ...] -= k_inv_times_k_star[idx_one, i] * self._covariance.grad_covariance(point_two, sampled_one)
         return grad_var
 
     def compute_grad_variance_of_points(self, points_to_sample, num_derivatives=-1):
@@ -295,11 +296,11 @@ class GaussianProcess(GaussianProcessInterface):
 
         # Step 2 of Appendix 2
         for k in xrange(num_to_sample):
-            L_kk = chol_var[k, k]
-            if L_kk > 1.0e-16:
-                grad_chol[k, k, ...] *= 0.5 / L_kk
+            l_kk = chol_var[k, k]
+            if l_kk > 1.0e-16:
+                grad_chol[k, k, ...] *= 0.5 / l_kk
                 for j in xrange(k + 1, num_to_sample):
-                    grad_chol[j, k, ...] = (grad_chol[j, k, ...] - chol_var[j, k] * grad_chol[k, k, ...]) / L_kk
+                    grad_chol[j, k, ...] = (grad_chol[j, k, ...] - chol_var[j, k] * grad_chol[k, k, ...]) / l_kk
                 for j in xrange(k + 1, num_to_sample):
                     for i in xrange(j, num_to_sample):
                         grad_chol[i, j, ...] += -grad_chol[i, k, ...] * chol_var[j, k] - chol_var[i, k] * grad_chol[j, k, ...]

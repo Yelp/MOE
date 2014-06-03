@@ -3,12 +3,12 @@
 from numpy.linalg import LinAlgError
 
 from moe.optimal_learning.python.constant import OPTIMIZATION_TYPE_TO_DEFAULT_PARAMETERS
-from moe.optimal_learning.python.linkers import DOMAIN_TYPES_TO_DOMAIN_LINKS, COVARIANCE_TYPES_TO_CLASSES, OPTIMIZATION_TYPES_TO_OPTIMIZATION_METHODS
-from moe.views.schemas import OPTIMIZATION_TYPES_TO_SCHEMA_CLASSES
-from moe.optimal_learning.python.data_containers import SamplePoint, HistoricalData
 from moe.optimal_learning.python.cpp_wrappers.gaussian_process import GaussianProcess
+from moe.optimal_learning.python.data_containers import SamplePoint, HistoricalData
 from moe.optimal_learning.python.geometry_utils import ClosedInterval
+from moe.optimal_learning.python.linkers import DOMAIN_TYPES_TO_DOMAIN_LINKS, COVARIANCE_TYPES_TO_CLASSES, OPTIMIZATION_TYPES_TO_OPTIMIZATION_METHODS
 from moe.views.exceptions import SingularMatrixError
+from moe.views.schemas import OPTIMIZATION_TYPES_TO_SCHEMA_CLASSES
 
 
 def _build_domain_info(domain):

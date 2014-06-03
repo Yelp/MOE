@@ -4,9 +4,9 @@ import pprint
 
 from moe.optimal_learning.python.constant import TENSOR_PRODUCT_DOMAIN_TYPE
 from moe.optimal_learning.python.data_containers import HistoricalData
+from moe.optimal_learning.python.geometry_utils import ClosedInterval
 from moe.optimal_learning.python.linkers import DOMAIN_TYPES_TO_DOMAIN_LINKS
 from moe.views.utils import _build_domain_info
-from moe.optimal_learning.python.geometry_utils import ClosedInterval
 
 DEFAULT_DOMAIN = TENSOR_PRODUCT_DOMAIN_TYPE
 

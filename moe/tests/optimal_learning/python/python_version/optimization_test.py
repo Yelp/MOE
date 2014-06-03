@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """Tests for the Python optimization module (null, gradient descent, and multistarting) using a simple polynomial objective."""
 import numpy
+
 import testify as T
 
 from moe.optimal_learning.python.geometry_utils import ClosedInterval
