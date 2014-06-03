@@ -2,17 +2,11 @@
 """Some default configuration parameters for optimal_learning components."""
 from collections import namedtuple
 
-# EI Defaults
-ExpectedImprovementParameters = namedtuple(
-        'ExpectedImprovementParameters',
-        [
-            'mc_iterations',
-            ],
-        )
+import moe.optimal_learning.python.python_version.optimization as python_optimization
 
-default_expected_improvement_parameters = ExpectedImprovementParameters(
-        mc_iterations=100000,
-        )
+
+# Covariance constants
+SQUARE_EXPONENTIAL_COVARIANCE_TYPE = 'square_exponential'
 
 # GP Defaults
 GaussianProcessParameters = namedtuple(
@@ -23,42 +17,63 @@ GaussianProcessParameters = namedtuple(
             ],
         )
 
-default_gaussian_process_parameters = GaussianProcessParameters(
+DEFAULT_GAUSSIAN_PROCESS_PARAMETERS = GaussianProcessParameters(
     length_scale=[0.2],
     signal_variance=1.0,
     )
 
-# EI Optimization defaults
-EIOptimizationParameters = namedtuple(
-    'EIOptimizationParameters',
-    [
-        'num_multistarts',
-        'gd_iterations',
-        'max_num_restarts',
-        'gamma',
-        'pre_mult',
-        'mc_iterations',
-        'max_relative_change',
-        'tolerance',
-        ],
-    )
+# Domain constants
+TENSOR_PRODUCT_DOMAIN_TYPE = 'tensor_product'
+SIMPLEX_INTERSECT_TENSOR_PRODUCT_DOMAIN_TYPE = 'simplex_intersect_tensor_product'
 
-GRADIENT_DESCENT_OPTIMIZER = 'gradient_descent'
+NULL_OPTIMIZER = 'null_optimizer'
+NEWTON_OPTIMIZER = 'newton_optimizer'
+GRADIENT_DESCENT_OPTIMIZER = 'gradient_descent_optimizer'
 
-ALL_OPTIMIZERS = [
-        GRADIENT_DESCENT_OPTIMIZER,
-        ]
+# EI Defaults
+DEFAULT_EXPECTED_IMPROVEMENT_MAX_NUM_THREADS = 1
 
-default_optimizer_type = GRADIENT_DESCENT_OPTIMIZER
-default_num_random_samples = 4000
+DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS = 10000
+TEST_EXPECTED_IMPROVEMENT_MC_ITERATIONS = 50
 
-default_ei_optimization_parameters = EIOptimizationParameters(
-    num_multistarts=40,
-    gd_iterations=1000,
-    max_num_restarts=3,
-    gamma=0.9,
-    pre_mult=1.0,
-    mc_iterations=100000,
-    max_relative_change=1.0,
-    tolerance=1.0e-7,
-    )
+DEFAULT_NEWTON_MULTISTARTS = 200
+DEFAULT_GRADIENT_DESCENT_MULTISTARTS = 10000
+DEFAULT_OPTIMIZATION_MULTISTARTS = 10000
+TEST_OPTIMIZATION_MULTISTARTS = 3
+PRETTY_OPTIMIZATION_MULTISTARTS = 40
+
+DEFAULT_OPTIMIZATION_NUM_RANDOM_SAMPLES = 4000
+TEST_OPTIMIZATION_NUM_RANDOM_SAMPLES = 3
+
+DEFAULT_NEWTON_PARAMETERS = python_optimization.NewtonParameters(
+        max_num_steps=100,
+        gamma=1.05,
+        time_factor=1.0e-2,
+        max_relative_change=1.0,
+        tolerance=1.0e-9,
+        )
+
+TEST_GRADIENT_DESCENT_PARAMETERS = python_optimization.GradientDescentParameters(
+        max_num_steps=5,
+        max_num_restarts=2,
+        num_steps_averaged=1,
+        gamma=0.4,
+        pre_mult=1.0,
+        max_relative_change=1.0,
+        tolerance=1.0e-3,
+        )
+
+DEFAULT_GRADIENT_DESCENT_PARAMETERS = python_optimization.GradientDescentParameters(
+        max_num_steps=400,
+        max_num_restarts=10,
+        num_steps_averaged=10,
+        gamma=0.7,
+        pre_mult=0.4,
+        max_relative_change=0.1,
+        tolerance=1.0e-6,
+        )
+
+OPTIMIZATION_TYPE_TO_DEFAULT_PARAMETERS = {
+        NEWTON_OPTIMIZER: DEFAULT_NEWTON_PARAMETERS,
+        GRADIENT_DESCENT_OPTIMIZER: DEFAULT_GRADIENT_DESCENT_PARAMETERS,
+        }

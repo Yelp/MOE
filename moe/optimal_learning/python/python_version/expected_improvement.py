@@ -8,7 +8,7 @@ import numpy
 import scipy.linalg
 import scipy.stats
 
-from moe.optimal_learning.python.constant import default_expected_improvement_parameters
+from moe.optimal_learning.python.constant import DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS, DEFAULT_EXPECTED_IMPROVEMENT_MAX_NUM_THREADS
 from moe.optimal_learning.python.interfaces.expected_improvement_interface import ExpectedImprovementInterface
 from moe.optimal_learning.python.interfaces.optimization_interface import OptimizableInterface
 from moe.optimal_learning.python.python_version.optimization import multistart_optimize, NullOptimizer
@@ -19,27 +19,30 @@ def multistart_expected_improvement_optimization(
         num_multistarts,
         num_to_sample,
         randomness=None,
-        max_num_threads=1,
+        max_num_threads=DEFAULT_EXPECTED_IMPROVEMENT_MAX_NUM_THREADS,
         status=None,
 ):
     """Solve the q,p-EI problem, returning the optimal set of q points to sample CONCURRENTLY in future experiments.
 
-    When points_being_sampled.shape[0] == 0 && num_to_sample == 1, this function will use (fast) analytic EI computations.
+    When ``points_being_sampled.shape[0] == 0 && num_to_sample == 1``, this function will use (fast) analytic EI computations.
 
     .. NOTE:: The following comments are copied from multistart_expected_improvement_optimization() in cpp_wrappers/expected_improvement.py
+
+    This is the primary entry-point for EI optimization in the optimal_learning library. It offers our best shot at
+    improving robustness by combining higher accuracy methods like gradient descent with fail-safes like random/grid search.
 
     Returns the optimal set of q points to sample CONCURRENTLY by solving the q,p-EI problem.  That is, we may want to run 4
     experiments at the same time and maximize the EI across all 4 experiments at once while knowing of 2 ongoing experiments
     (4,2-EI). This function handles this use case. Evaluation of q,p-EI (and its gradient) for q > 1 or p > 1 is expensive
     (requires monte-carlo iteration), so this method is usually very expensive.
 
-    Compared to ComputeHeuristicSetOfPointsToSample() (``gpp_heuristic_expected_improvement_optimization.hpp``), this function
+    Compared to ComputeHeuristicPointsToSample() (``gpp_heuristic_expected_improvement_optimization.hpp``), this function
     makes no external assumptions about the underlying objective function. Instead, it utilizes the Expected (Parallel)
     Improvement, allowing the GP to account for ongoing/incomplete experiments.
 
-    If ``num_to_sample = 1``, this is the same as ComputeOptimalPointToSampleWithRandomStarts().
+    If ``num_to_sample = 1``, this is the same as ComputeOptimalPointsToSampleWithRandomStarts().
 
-    TODO(eliu): allow callers to pass in a source of randomness (GH-56)
+    TODO(eliu): (GH-56) Allow callers to pass in a source of randomness.
 
     :param ei_optimizer: object that optimizes (e.g., gradient descent, newton) EI over a domain
     :type ei_optimizer: interfaces.optimization_interfaces.OptimizerInterface subclass
@@ -60,51 +63,12 @@ def multistart_expected_improvement_optimization(
     random_starts = ei_optimizer.domain.generate_uniform_random_points_in_domain(num_points=num_multistarts)
     best_point, _ = multistart_optimize(ei_optimizer, starting_points=random_starts)
 
-    # TODO(eliu): have GD actually indicate whether updates were found (GH-59)
+    # TODO(eliu): (GH-59) Have GD actually indicate whether updates were found.
     found_flag = True
     if status is not None:
         status["gradient_descent_found_update"] = found_flag
 
     return best_point
-
-
-def evaluate_expected_improvement_at_point_list(
-        ei_evaluator,
-        points_to_evaluate,
-        randomness=None,
-        max_num_threads=1,
-        status=None,
-):
-    """Evaluate Expected Improvement (1,p-EI) over a specified list of ``points_to_evaluate``.
-
-    Generally gradient descent is preferred but when it fails to converge this may be the only "robust" option.
-    This function is also useful for plotting or debugging purposes (just to get a bunch of EI values).
-
-    TODO(eliu): allow callers to pass in a source of randomness (GH-56)
-
-    :param ei_evaluator: object specifying how to evaluate the expected improvement
-    :type ei_evaluator: interfaces.expected_improvement_interface.ExpectedImprovementInterface subclass
-    :param points_to_evaluate: points at which to compute EI
-    :type points_to_evaluate: array of float64 with shape (num_to_evaluate, ei_evaluator.dim)
-    :param randomness: random source(s) used for monte-carlo integration (when applicable) (UNUSED)
-    :type randomness: (UNUSED)
-    :param max_num_threads: maximum number of threads to use, >= 1 (UNUSED)
-    :type max_num_threads: int > 0
-    :param status: status messages from C++ (e.g., reporting on optimizer success, etc.)
-    :type status: dict
-    :return: EI evaluated at each of points_to_evaluate
-    :rtype: array of float64 with shape (points_to_evaluate.shape[0])
-
-    """
-    null_optimizer = NullOptimizer(None, ei_evaluator)
-    _, values = multistart_optimize(null_optimizer, starting_points=points_to_evaluate)
-
-    # TODO(eliu): have multistart actually indicate whether updates were found (GH-59)
-    found_flag = True
-    if status is not None:
-        status["evaluate_EI_at_point_list"] = found_flag
-
-    return values
 
 
 class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
@@ -124,14 +88,14 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
     def __init__(
             self,
             gaussian_process,
-            points_to_sample,
-            points_being_sampled=numpy.array([]),
-            num_mc_iterations=default_expected_improvement_parameters.mc_iterations,
+            points_to_sample=None,
+            points_being_sampled=None,
+            num_mc_iterations=DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS,
             randomness=None,
     ):
         """Construct an ExpectedImprovement object that supports q,p-EI.
 
-        TODO(eliu): allow callers to pass in a source of randomness (GH-56)
+        TODO(eliu): (GH-56) Allow callers to pass in a source of randomness.
 
         :param gaussian_process: GaussianProcess describing
         :type gaussian_process: interfaces.gaussian_process_interface.GaussianProcessInterface subclass
@@ -152,8 +116,15 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         else:
             self._best_so_far = numpy.finfo(numpy.float64).max
 
-        self.set_current_point(points_to_sample)
-        self._points_being_sampled = numpy.copy(points_being_sampled)
+        if points_being_sampled is None:
+            self._points_being_sampled = numpy.array([])
+        else:
+            self._points_being_sampled = numpy.copy(points_being_sampled)
+
+        if points_to_sample is None:
+            self.set_current_point(numpy.zeros((1, gaussian_process.dim)))
+        else:
+            self.set_current_point(points_to_sample)
 
     @property
     def dim(self):
@@ -187,6 +158,47 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
 
         """
         self._points_to_sample = numpy.copy(numpy.atleast_2d(points_to_sample))
+
+    def evaluate_at_point_list(
+            self,
+            points_to_evaluate,
+            randomness=None,
+            max_num_threads=DEFAULT_EXPECTED_IMPROVEMENT_MAX_NUM_THREADS,
+            status=None,
+    ):
+        """Evaluate Expected Improvement (q,p-EI) over a specified list of ``points_to_evaluate``.
+
+        .. Note:: We use ``points_to_evaluate`` instead of ``self._points_to_sample`` and compute the EI at those points only.
+            ``self._points_to_sample`` will be changed.
+
+        Generally gradient descent is preferred but when it fails to converge this may be the only "robust" option.
+        This function is also useful for plotting or debugging purposes (just to get a bunch of EI values).
+
+        TODO(eliu): (GH-56) Allow callers to pass in a source of randomness.
+
+        :param ei_evaluator: object specifying how to evaluate the expected improvement
+        :type ei_evaluator: interfaces.expected_improvement_interface.ExpectedImprovementInterface subclass
+        :param points_to_evaluate: points at which to compute EI
+        :type points_to_evaluate: array of float64 with shape (num_to_evaluate, num_to_sample, ei_evaluator.dim)
+        :param randomness: random source(s) used for monte-carlo integration (when applicable) (UNUSED)
+        :type randomness: (UNUSED)
+        :param max_num_threads: maximum number of threads to use, >= 1 (UNUSED)
+        :type max_num_threads: int > 0
+        :param status: status messages from C++ (e.g., reporting on optimizer success, etc.)
+        :type status: dict
+        :return: EI evaluated at each of points_to_evaluate
+        :rtype: array of float64 with shape (points_to_evaluate.shape[0])
+
+        """
+        null_optimizer = NullOptimizer(None, self)
+        _, values = multistart_optimize(null_optimizer, starting_points=points_to_evaluate)
+
+        # TODO(eliu): (GH-59) Have multistart actually indicate whether updates were found.
+        found_flag = True
+        if status is not None:
+            status["evaluate_EI_at_point_list"] = found_flag
+
+        return values
 
     def _compute_expected_improvement_1d_analytic(self, mu_star, var_star):
         """Compute EI when the number of potential samples is 1 (i.e., points_being_sampled.size = 0) using *fast* analytic methods.
@@ -318,9 +330,9 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
 
         normals = numpy.random.normal(size=(self._num_mc_iterations, num_points))
 
-        # TODO(eliu): might be worth breaking num_mc_iterations up into smaller blocks
+        # TODO(eliu): (GH-60) Partition num_mc_iterations up into smaller blocks if it helps.
         # so that we don't waste as much mem bandwidth (since each entry of normals is
-        # only used once) (GH-60)
+        # only used once)
         mu_star = self._best_so_far - mu_star
         # Compute Ls * w; note the shape is (self._num_mc_iterations, num_points)
         improvement_each_iter = numpy.einsum('kj, ij', chol_var, normals)
@@ -420,9 +432,9 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
 
         normals = numpy.random.normal(size=(self._num_mc_iterations, num_points))
 
-        # TODO(eliu): might be worth breaking num_mc_iterations up into smaller blocks
+        # TODO(eliu): (GH-60) Partition num_mc_iterations up into smaller blocks if it helps.
         # so that we don't waste as much mem bandwidth (since each entry of normals is
-        # only used once) (GH-60)
+        # only used once)
         mu_star = self._best_so_far - mu_star
         # Compute Ls * w; note the shape is (self._num_mc_iterations, num_points)
         improvement_each_iter = numpy.einsum('kj, ij', chol_var, normals)
@@ -457,7 +469,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
 
         # Handle derivative terms from grad_chol_decomp
         # Mask rows of normals that did not show positive improvement
-        # TODO(eliu): can this be done with numpy.tile, numpy.repeat or something more sensical? (GH-61)
+        # TODO(eliu): (GH-61) Use numpy.tile, numpy.repeat or something more sensical if possible.
         normals_mask = numpy.empty(normals.shape, dtype=bool)
         normals_mask[...] = best_improvement_each_iter.mask[:, numpy.newaxis]
         # Compress out the masked data
@@ -493,11 +505,11 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
 
                 # Expand winner_indexes_equal_to_i.mask to cover the full shape of grad_chol_decomp_tiled
                 # This is the same idea as normals_mask above
-                # TODO(eliu): can I do this with numpy.tile, numpy.repeat or something more sensical? (GH-61)
+                # TODO(eliu): (GH-61) Use numpy.tile, numpy.repeat or something more sensical if possible.
                 grad_chol_decomp_block_i_tile_mask = numpy.empty(grad_chol_decomp_tiled.shape, dtype=bool)
                 grad_chol_decomp_block_i_tile_mask[...] = winner_indexes_equal_to_i.mask[:, numpy.newaxis, numpy.newaxis]
 
-                # TODO(eliu): there has to be smarter way to do this! (GH-61)
+                # TODO(eliu): (GH-61) Is there a way to produce the desired block pattern directly, without copy + mask? Can I avoid duplicating grad_chol entirely?
                 # Tile the appropriate block of grad_chol_decomp to *FILL* all blocks
                 grad_chol_decomp_block_i_tile = numpy.tile(
                     grad_chol_decomp[diff_index, i, ...],

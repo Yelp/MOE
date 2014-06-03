@@ -19,7 +19,7 @@ class OptimalLearningTestCase(T.TestCase):
     """
 
     def assert_scalar_within_relative(self, value, truth, tol):
-        """Check whether a scalar value is relatively equal to truth: |value - truth|/|truth| <= tol.
+        """Check whether a scalar ``value`` is relatively equal to ``truth``: ``|value - truth|/|truth| <= tol``.
 
         :param value: scalar to check
         :type value: float64
@@ -34,10 +34,14 @@ class OptimalLearningTestCase(T.TestCase):
         if denom < numpy.finfo('float64').tiny:
             denom = 1.0  # do not divide by 0
         diff = numpy.fabs((value - truth) / denom)
-        T.assert_lte(diff, tol, "value = %s, truth = %s, diff = %s, tol = %s" % (repr(value), repr(truth), repr(diff), repr(tol)))
+        T.assert_lte(
+            diff,
+            tol,
+            message='value = {0:.18E}, truth = {1:.18E}, diff = {2:.18E}, tol = {3:.18E}'.format(value, truth, diff, tol),
+        )
 
     def assert_vector_within_relative(self, value, truth, tol):
-        """Check whether a vector is element-wise relatively equal to truth: |value[i] - truth[i]|/|truth[i]| <= tol.
+        """Check whether a vector is element-wise relatively equal to ``truth``: ``|value[i] - truth[i]|/|truth[i]| <= tol``.
 
         :param value: scalar to check
         :type value: float64
@@ -48,6 +52,11 @@ class OptimalLearningTestCase(T.TestCase):
         :raise: AssertionError value[i], truth[i] are not relatively equal for every i
 
         """
+        T.assert_equal(
+            value.shape,
+            truth.shape,
+            message='value.shape = {0} != truth.shape = {1}'.format(value.shape, truth.shape),
+        )
         for index in numpy.ndindex(value.shape):
             self.assert_scalar_within_relative(value[index], truth[index], tol)
 

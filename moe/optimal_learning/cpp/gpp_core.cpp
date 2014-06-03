@@ -1,10 +1,11 @@
-// gpp_core.cpp
-/*
+/*!
+  \file gpp_core.cpp
+  \rst
   File with main() used by eliu for testing/debugging C++ OL components.
 
   The code in this file is ad-hoc and purely used as a quick way to call and run the C++
   code from the command-line (i.e., independent of python).
-*/
+\endrst*/
 
 #include <sys/time.h>
 
@@ -127,7 +128,7 @@ int main() {
     // ei_evaluator.ComputeGradExpectedImprovement(&ei_state, grad_ei.data());
     // PrintMatrix(grad_ei.data(), 1, dim);
 
-    ComputeOptimalSetOfPointsToSample(gaussian_process, gd_params, domain, points_being_sampled.data(), num_being_sampled, best_so_far, num_mc_iterations, max_num_threads, lhc_search_only, num_lhc_samples, num_to_sample, &found_flag, &uniform_generator, nullptr, best_points_to_sample.data());
+    ComputeOptimalPointsToSample(gaussian_process, gd_params, domain, points_being_sampled.data(), num_to_sample, num_being_sampled, best_so_far, num_mc_iterations, max_num_threads, lhc_search_only, num_lhc_samples, &found_flag, &uniform_generator, nullptr, best_points_to_sample.data());
     printf("%d: found_flag = %d\n", i, found_flag);
 
     points_sampled_value[i] = function_to_minimize(best_points_to_sample.data(), &uniform_generator);
@@ -154,7 +155,10 @@ int main() {
   // the "spatial" dimension, aka the number of independent (experiment) parameters
   static const int dim = 3;  // > 0
 
-  // number of concurrent samples running alongside the optimization
+  // number of points to optimize simultaneously (for simult experiments); "q" in q,p-EI
+  static const int num_to_sample = 1;  // >= 1
+
+  // number of concurrent samples running alongside the optimization; "p" in q,p-EI
   static const int num_being_sampled = 0;  // >= 0
 
   // number of points that we have already sampled; i.e., size of the training set
@@ -427,7 +431,7 @@ int main() {
       {0.2, 0.35},
       {0.05951614568196238, 0.4}};
     TensorProductDomain ei_domain(derp2, dim);
-    ComputeOptimalPointToSampleWithRandomStarts(gaussian_process, gd_params, ei_domain, points_being_sampled.data(), num_being_sampled, best_so_far, max_int_steps, max_num_threads, &found_flag, &uniform_generator, nullptr, next_point.data());
+    ComputeOptimalPointsToSampleWithRandomStarts(gaussian_process, gd_params, ei_domain, points_being_sampled.data(), num_to_sample, num_being_sampled, best_so_far, max_int_steps, max_num_threads, &found_flag, &uniform_generator, nullptr, next_point.data());
     printf("EI found: %d\n", found_flag);
     printf("next best point  : "); PrintMatrix(next_point.data(), 1, dim);
 
@@ -500,7 +504,7 @@ int main() {
       {0.2, 0.35},
       {0.05951614568196238, 0.4}};
     SimplexIntersectTensorProductDomain ei_domain(derp2, dim);
-    ComputeOptimalPointToSampleWithRandomStarts(gaussian_process, gd_params, ei_domain, points_being_sampled.data(), num_being_sampled, best_so_far, max_int_steps, max_num_threads, &found_flag, &uniform_generator, nullptr, next_point.data());
+    ComputeOptimalPointsToSampleWithRandomStarts(gaussian_process, gd_params, ei_domain, points_being_sampled.data(), num_to_sample, num_being_sampled, best_so_far, max_int_steps, max_num_threads, &found_flag, &uniform_generator, nullptr, next_point.data());
     printf("EI found: %d\n", found_flag);
     printf("next best point  : "); PrintMatrix(next_point.data(), 1, dim);
 
@@ -585,6 +589,9 @@ void run_core_test(int *processor_count_list, int num_processor_count_list, int 
   using HyperparameterDomainType = TensorProductDomain;
   int procs;
   int dim = 2;
+
+  // number of points to optimize simultaneously (for simult experiments); "q" in q,p-EI
+  static const int num_to_sample = 1;  // >= 1
 
   std::vector<ClosedInterval> domain_bounds = {
     {-5.0, 10.0},
@@ -783,7 +790,7 @@ void run_core_test(int *processor_count_list, int num_processor_count_list, int 
 
     // fill up queue
     for (int j = 0; j < procs; j++) {
-      ComputeOptimalPointToSampleWithRandomStarts(gp, gd_params_ei, domain, points_to_sample.data(), j, best_so_far, max_int_steps, max_num_threads, &found_flag, &uniform_generator, normal_rng_vec.data(), points_to_sample.data() + j*dim);
+      ComputeOptimalPointsToSampleWithRandomStarts(gp, gd_params_ei, domain, points_to_sample.data(), num_to_sample, j, best_so_far, max_int_steps, max_num_threads, &found_flag, &uniform_generator, normal_rng_vec.data(), points_to_sample.data() + j*dim);
       printf("points_to_sample so far\n");
       PrintMatrixTrans(points_to_sample.data(), j+1, dim);
     }
@@ -819,7 +826,7 @@ void run_core_test(int *processor_count_list, int num_processor_count_list, int 
       // TODO(sclark): tail off correctly so taht we dont sample the end points repeatedly
       if (num_sampled - stencil_rows*stencil_columns + procs - 1 < num_samples) {
         printf("picking a new point\n");
-        ComputeOptimalPointToSampleWithRandomStarts(gp, gd_params_ei, domain, points_to_sample.data(), procs-1, best_so_far, max_int_steps, max_num_threads, &found_flag, &uniform_generator, normal_rng_vec.data(), points_to_sample.data() + (procs-1)*dim);
+        ComputeOptimalPointsToSampleWithRandomStarts(gp, gd_params_ei, domain, points_to_sample.data(), num_to_sample, procs-1, best_so_far, max_int_steps, max_num_threads, &found_flag, &uniform_generator, normal_rng_vec.data(), points_to_sample.data() + (procs-1)*dim);
       }
 
       printf("points_to_sample so far\n");
@@ -865,7 +872,10 @@ int main() {
   // the "spatial" dimension, aka the number of independent (experiment) parameters
   static const int dim = 2;  // > 0
 
-  // number of concurrent samples running alongside the optimization
+  // number of points to optimize simultaneously (for simult experiments); "q" in q,p-EI
+  static const int num_to_sample = 1;  // >= 1
+
+  // number of concurrent samples running alongside the optimization; "p" in q,p-EI
   static const int num_being_sampled = 0;  // >= 0
 
   // number of points that we have already sampled; i.e., size of the training set
@@ -971,7 +981,7 @@ int main() {
     {
       std::vector<double> next_point_winner(dim);
       bool found_flag = false;
-      ComputeOptimalPointToSampleWithRandomStarts(gp_model, gd_params, domain, points_being_sampled.data(), num_being_sampled, best_so_far, max_int_steps, max_num_threads, &found_flag, &uniform_generator, normal_rng_vec.data(), next_point_winner.data());
+      ComputeOptimalPointsToSampleWithRandomStarts(gp_model, gd_params, domain, points_being_sampled.data(), num_to_sample, num_being_sampled, best_so_far, max_int_steps, max_num_threads, &found_flag, &uniform_generator, normal_rng_vec.data(), next_point_winner.data());
       // printf(OL_ANSI_COLOR_CYAN "EI OPTIMIZATION FINISHED (optimized hyperparameters).\n" OL_ANSI_COLOR_RESET);
       printf("Next best sample point according to EI (opt hyper):\n");
       PrintMatrix(next_point_winner.data(), 1, dim);
@@ -986,9 +996,6 @@ int main() {
   using DomainType = TensorProductDomain;
   const int dim = 3;
 
-  int total_errors = 0;
-  int current_errors = 0;
-
   const double gamma = 0.9;
   const double pre_mult = 0.02;
   const double max_relative_change = 0.99;
@@ -1001,7 +1008,8 @@ int main() {
   // grid search parameters
   int num_grid_search_points = 100000;
 
-  // EI computation parameters
+  // 1,p-EI computation parameters
+  const int num_to_sample = 1;
   int num_being_sampled = 0;
   int max_int_steps = 1000;
 
@@ -1099,7 +1107,7 @@ int main() {
     // likely be masked (making for a bad test)
     bool found_flag = false;
     for (int j = 0; j < num_being_sampled; j++) {
-      ComputeOptimalPointToSampleWithRandomStarts(gaussian_process, gd_params, domain, points_being_sampled.data(), j, best_so_far, max_int_steps, kMaxNumThreads, &found_flag, &uniform_generator, normal_rng_vec.data(), points_being_sampled.data() + j*dim);
+      ComputeOptimalPointsToSampleWithRandomStarts(gaussian_process, gd_params, domain, points_being_sampled.data(), num_to_sample, j, best_so_far, max_int_steps, kMaxNumThreads, &found_flag, &uniform_generator, normal_rng_vec.data(), points_being_sampled.data() + j*dim);
     }
     printf("setup complete, points_being_sampled:\n");
     PrintMatrixTrans(points_being_sampled.data(), num_being_sampled, dim);
@@ -1112,16 +1120,15 @@ int main() {
   time_t c0, c1;
   c0 = clock();
 
-  std::vector<double> next_point(dim);
   bool found_flag = false;
-  std::vector<double> grid_search_best_point(dim);
-  // ComputeOptimalPointToSampleViaLatinHypercubeSearch(gaussian_process, domain, points_being_sampled.data(), num_grid_search_points, num_being_sampled, best_so_far, max_int_steps, kMaxNumThreads, &found_flag, &uniform_generator, normal_rng_vec.data(), grid_search_best_point.data());
+  std::vector<double> grid_search_best_point(dim*num_to_sample);
+  // ComputeOptimalPointsToSampleViaLatinHypercubeSearch(gaussian_process, domain, points_being_sampled.data(), num_grid_search_points, num_to_sample, num_being_sampled, best_so_far, max_int_steps, kMaxNumThreads, &found_flag, &uniform_generator, normal_rng_vec.data(), grid_search_best_point.data());
 
   std::vector<double> function_values(num_grid_search_points);
-  std::vector<double> initial_guesses(dim*num_grid_search_points);
+  std::vector<double> initial_guesses(dim*num_to_sample*num_grid_search_points);
   num_grid_search_points = domain.GenerateUniformPointsInDomain(num_grid_search_points, &uniform_generator, initial_guesses.data());
 
-  EvaluateEIAtPointList(gaussian_process, domain, initial_guesses.data(), points_being_sampled.data(), num_grid_search_points, num_being_sampled, best_so_far, max_int_steps, kMaxNumThreads, &found_flag, normal_rng_vec.data(), function_values.data(), grid_search_best_point.data());
+  EvaluateEIAtPointList(gaussian_process, domain, initial_guesses.data(), points_being_sampled.data(), num_grid_search_points, num_to_sample, num_being_sampled, best_so_far, max_int_steps, kMaxNumThreads, &found_flag, normal_rng_vec.data(), function_values.data(), grid_search_best_point.data());
 
   gettimeofday(&tv1, nullptr);
   c1 = clock();
@@ -1183,12 +1190,12 @@ int main() {
   // error += MultithreadedEIOptimizationTest(ExpectedImprovementEvaluationMode::kMonteCarlo);
   // error += ExpectedImprovementOptimizationTest(DomainTypes::kTensorProduct, ExpectedImprovementEvaluationMode::kAnalytic);
   // error += ExpectedImprovementOptimizationTest(DomainTypes::kTensorProduct, ExpectedImprovementEvaluationMode::kMonteCarlo);
-  // error += ExpectedImprovementOptimizationMultipleSamplesTest();
+  error += ExpectedImprovementOptimizationMultipleSamplesTest();
   // error += ExpectedImprovementOptimizationTest(DomainTypes::kSimplex, ExpectedImprovementEvaluationMode::kAnalytic);
   // error += ExpectedImprovementOptimizationTest(DomainTypes::kSimplex, ExpectedImprovementEvaluationMode::kMonteCarlo);
   // error += EvaluateEIAtPointListTest();
   // error += EstimationPolicyTest();
-  error += HeuristicExpectedImprovementOptimizationTest();
+  // error += HeuristicExpectedImprovementOptimizationTest();
 
   if (error != 0) {
     OL_FAILURE_PRINTF("%d errors\n", error);

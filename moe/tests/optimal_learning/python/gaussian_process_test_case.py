@@ -5,11 +5,11 @@ import collections
 import numpy
 import testify as T
 
-import moe.optimal_learning.python.gaussian_process_test_utils as gp_utils
 from moe.optimal_learning.python.geometry_utils import ClosedInterval
 from moe.optimal_learning.python.python_version.covariance import SquareExponential
 from moe.optimal_learning.python.python_version.domain import TensorProductDomain
 from moe.optimal_learning.python.python_version.gaussian_process import GaussianProcess
+import moe.tests.optimal_learning.python.gaussian_process_test_utils as gp_utils
 from moe.tests.optimal_learning.python.optimal_learning_test_case import OptimalLearningTestCase
 
 
@@ -31,7 +31,7 @@ class GaussianProcessTestEnvironment(_BaseGaussianProcessTestEnvironment):
 
     """
 
-    pass
+    __slots__ = ()
 
 
 class GaussianProcessTestEnvironmentInput(object):
@@ -114,17 +114,40 @@ class GaussianProcessTestCase(OptimalLearningTestCase):
 
     precompute_gaussian_process_data = False
 
+    noise_variance_base = 0.0002
+    dim = 3
+    num_hyperparameters = dim + 1
+
+    gp_test_environment_input = GaussianProcessTestEnvironmentInput(
+        dim,
+        num_hyperparameters,
+        0,
+        noise_variance_base=noise_variance_base,
+        hyperparameter_interval=ClosedInterval(0.1, 1.3),
+        lower_bound_interval=ClosedInterval(-2.0, 0.5),
+        upper_bound_interval=ClosedInterval(2.0, 3.5),
+        covariance_class=SquareExponential,
+        spatial_domain_class=TensorProductDomain,
+        hyperparameter_domain_class=TensorProductDomain,
+        gaussian_process_class=GaussianProcess,
+    )
+
+    num_sampled_list = [1, 2, 3, 5, 10, 16, 20, 42]
+    num_to_sample_list = [1, 2, 3, 8]
+
     @T.class_setup
     def base_setup(self):
         """Build a Gaussian Process prior for each problem size in ``self.num_sampled_list`` if precomputation is desired.
 
-        Requires:
-        self.num_sampled_list: (*list of int*) problem sizes to consider
-        self.gp_test_environment_input: (*GaussianProcessTestEnvironmentInput*) specification of how to build the
+        **Requires**
+
+        * self.num_sampled_list: (*list of int*) problem sizes to consider
+        * self.gp_test_environment_input: (*GaussianProcessTestEnvironmentInput*) specification of how to build the
           gaussian process prior
 
-        Outputs:
-        self.gp_test_environments: (*list of GaussianProcessTestEnvironment*) gaussian process data for each of the
+        **Outputs**
+
+        * self.gp_test_environments: (*list of GaussianProcessTestEnvironment*) gaussian process data for each of the
           specified problem sizes (``self.num_sampled_list``)
 
         """

@@ -4,6 +4,7 @@
   Functions for testing gpp_math's GP and EI functionality.
 
   Tests are broken into two main groups:
+
   * ping (unit) tests for GP outputs (mean, cholesky/variance) and EI (for the general and one sample cases)
   * unit + integration tests for optimization methods
 
@@ -78,6 +79,7 @@ OL_WARN_UNUSED_RESULT int PingEIOnePotentialSampleTest();
 
 /*!\rst
   Runs a battery of ping tests for the GP and optimization functions:
+
   * GP mean
   * GP variance
   * cholesky decomposition of the GP variance
@@ -122,7 +124,7 @@ OL_WARN_UNUSED_RESULT int MultithreadedEIOptimizationTest(ExpectedImprovementEva
 OL_WARN_UNUSED_RESULT int ExpectedImprovementOptimizationTest(DomainTypes domain_type, ExpectedImprovementEvaluationMode ei_mode);
 
 /*!\rst
-  Checks that ComputeOptimalSetOfPointsToSample works on a tensor product domain.
+  Checks that ComputeOptimalPointsToSample works on a tensor product domain.
   This test exercises the the code tested in:
   ExpectedImprovementOptimizationTest(kTensorProduct, ei_mode)
   for ``ei_mode = {kAnalytic, kMonteCarlo}``.

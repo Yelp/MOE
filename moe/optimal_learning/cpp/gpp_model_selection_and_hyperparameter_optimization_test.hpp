@@ -6,10 +6,12 @@
   metrics wrt hyperparameters of the covariance function.
 
   These will be abbreviated as:
+
   * LML = LogMarginalLikelihood
   * LOO-CV = Leave One Out Cross Validation
 
   As in gpp_math_test, we have two main groups of tests:
+
   * ping (unit) tests for gradient/hessian of LML and gradient of LOO-CV.
   * unit + integration tests for optimization methods (gradient descent, newton)
 
@@ -32,6 +34,7 @@ namespace optimal_learning {
 
 /*!\rst
   Runs a battery of ping tests for the Log Likelihood Evaluators:
+
   * Log Marginal: gradient and hessian wrt hyperparameters
   * Leave One Out: gradient wrt hyperparameters
 

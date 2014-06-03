@@ -22,9 +22,12 @@ namespace optimal_learning {
   and hyperparameter optimization).
 \endrst*/
 enum class OptimizerTypes {
-  kNull = 0,  // NullOptimizer<>, used for evaluating objective at points
-  kGradientDescent = 1,  // GradientDescentOptimizer<>
-  kNewton = 2,  // NewtonOptimizer<>
+  //! NullOptimizer<>, used for evaluating objective at points
+  kNull = 0,
+  //! GradientDescentOptimizer<>
+  kGradientDescent = 1,
+  //! NewtonOptimizer<>
+  kNewton = 2,
 };
 
 // TODO(eliu): (#58807) do one of two things:
@@ -45,17 +48,20 @@ struct NullParameters {
   .. Note:: these comments are copied in build_gradient_descent_parameters() in cpp_wrappers/optimization_parameters.py.
      That function wraps this struct's ctor.
 
-  Iterations:
+  **Iterations**
+
   The total number of gradient descent steps is at most ``num_multistarts * max_num_steps * max_num_restarts``
   Generally, allowing more iterations leads to a better solution but costs more time.
 
-  Learning Rate:
+  **Learning Rate**
+
   GD may be implemented using a learning rate: ``pre_mult * (i+1)^{-\gamma}``, where i is the current iteration
   Larger gamma causes the GD step size to (artificially) scale down faster.
   Smaller pre_mult (artificially) shrinks the GD step size.
   Generally, taking a very large number of small steps leads to the most robustness; but it is very slow.
 
-  Tolerances:
+  **Tolerances**
+
   Larger relative changes are potentially less robust but lead to faster convergence.
   Large tolerances run faster but may lead to high errors or false convergence (e.g., if the tolerance is 1.0e-3 and the learning
   rate control forces steps to fall below 1.0e-3 quickly, then GD will quit "successfully" without genuinely converging.)
@@ -87,7 +93,7 @@ struct GradientDescentParameters {
   int num_multistarts;
   //! maximum number of gradient descent iterations per restart (suggest: 200-1000)
   int max_num_steps;
-  //! maximum number of gradient descent restarts, the we are allowed to call gradient descent.  Should be >= 2 as a minimum (suggest: 10-20)
+  //! maximum number of gradient descent restarts, the we are allowed to call gradient descent.  Should be >= 2 as a minimum (suggest: 4-20)
   int max_num_restarts;
 
   // learning rate control
@@ -111,7 +117,7 @@ struct GradientDescentParameters {
   .. Note:: these comments are copied in build_newton_parameters() in cpp_wrappers/optimization_parameters.py.
      That function wraps this struct's ctor.
 
-  Diagonal dominance control: gamma and time_factor:
+  **Diagonal dominance control: ``gamma`` and ``time_factor``**
   On i-th newton iteration, we add ``1/(time_factor*gamma^{i+1}) * I`` to the Hessian to improve robustness
 
   Choosing a small gamma (e.g., ``1.0 < gamma <= 1.01``) and time_factor (e.g., ``0 < time_factor <= 1.0e-3``)
@@ -146,23 +152,23 @@ struct NewtonParameters {
   NewtonParameters(NewtonParameters&& OL_UNUSED(other)) = default;
 
   // iteration control
-  //! number of initial guesses for multistarting
+  //! number of initial guesses for multistarting (suggest: a few hundred)
   int num_multistarts;
-  //! maximum number of newton iterations (per initial guess)
+  //! maximum number of newton iterations (per initial guess) (suggest: 100)
   int max_num_steps;
   //! maximum number of newton restarts (fixed; not used by newton)
   const int max_num_restarts = 1;
 
   // diagonal domaince control
-  //! exponent controlling rate of time_factor growth (see class docs and NewtonOptimizer)
+  //! exponent controlling rate of time_factor growth (see class docs and NewtonOptimizer) (suggest: 1.01-1.1)
   double gamma;
-  //! initial amount of additive diagonal dominance (see class docs and NewtonOptimizer)
+  //! initial amount of additive diagonal dominance (see class docs and NewtonOptimizer) (suggest: 1.0e-3-1.0e-1)
   double time_factor;
 
   // tolerance control
-  //! max change allowed per update (as a relative fraction of current distance to wall) (Newton may ignore this)
+  //! max change allowed per update (as a relative fraction of current distance to wall) (Newton may ignore this) (suggest: 1.0)
   double max_relative_change;
-  //! when the magnitude of the gradient falls below this value, stop
+  //! when the magnitude of the gradient falls below this value, stop (suggest: 1.0e-10)
   double tolerance;
 };
 

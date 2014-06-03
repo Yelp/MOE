@@ -120,6 +120,8 @@ class GaussianProcess(GaussianProcessInterface):
 
         :param points_to_sample: num_to_sample points (in dim dimensions) being sampled from the GP
         :type points_to_sample: array of float64 with shape (num_to_sample, dim)
+        :param num_derivatives: return derivatives wrt points_to_sample[0:num_derivatives]; large or negative values are clamped
+        :type num_derivatives: int
         :return: grad_mu: gradient of the mean of the GP. ``grad_mu[i][d]`` is actually the gradient
           of ``\mu_i`` wrt ``x_{i,d}``, the d-th dim of the i-th entry of ``points_to_sample``.
         :rtype: array of float64 with shape (num_to_sample, dim)

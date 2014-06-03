@@ -2,13 +2,17 @@
   \file gpp_geometry.hpp
   \rst
   This file contains classes and utilities to help with (planar) geometry operations.
-    - Functions:
-        - CheckPointInHypercube: checks whether a point is in the domain \ms [x_{1,min}, x_{1,max}] X ... X [x_{dim,min}, x_{dim,max}]\me
-        - CheckPointInUnitSimplex: checks whether a point is in the unit simplex
-    - Structs:
-        - ClosedInterval: represents the closed interval \ms [a, b]\me with utilities for length, in/out test etc.
-        - Plane: represents a dim-dimensional plane as its "outward" unit normal and the signed distance from the origin.
-            Contains functions for distance, projection, etc.
+
+    * Functions:
+
+        * CheckPointInHypercube: checks whether a point is in the domain \ms [x_{1,min}, x_{1,max}] X ... X [x_{dim,min}, x_{dim,max}]\me
+        * CheckPointInUnitSimplex: checks whether a point is in the unit simplex
+
+    * Structs:
+
+        * ClosedInterval: represents the closed interval \ms [a, b]\me with utilities for length, in/out test etc.
+        * Plane: represents a dim-dimensional plane as its "outward" unit normal and the signed distance from the origin.
+          Contains functions for distance, projection, etc.
 \endrst*/
 
 #ifndef MOE_OPTIMAL_LEARNING_CPP_GPP_GEOMETRY_HPP_
@@ -29,8 +33,9 @@ namespace optimal_learning {
   An interval with \ms a > b\me is considered empty.
 
   This struct is "trivial" and "standard layout" and thus "POD" (in the C++11 sense).
-    - http://en.cppreference.com/w/cpp/types/is_pod
-    - http://stackoverflow.com/questions/4178175/what-are-aggregates-and-pods-and-how-why-are-they-special/7189821#7189821
+
+  * http://en.cppreference.com/w/cpp/types/is_pod
+  * http://stackoverflow.com/questions/4178175/what-are-aggregates-and-pods-and-how-why-are-they-special/7189821#7189821
 
   This struct is not an aggregate; list (aka brace) initialization and a 2-argument constructor are both available::
 
@@ -50,7 +55,8 @@ struct ClosedInterval {
 
     The presence of this ctor makes this object a non-aggregate, so brace-initialization
     follow list initialization rules (not aggregate initialization):
-      - http://en.cppreference.com/w/cpp/language/list_initialization
+
+    * http://en.cppreference.com/w/cpp/language/list_initialization
 
     \param
       :min_in: left bound of the interval
@@ -93,12 +99,14 @@ struct ClosedInterval {
     return max < min;
   }
 
+  //! left and right boundaries, ``[min, max]``, of this ClosedInterval
   double min, max;
 };
 
 /*!\rst
   We specify a plane in dim-space using the Hesse (or Hessian) Normal Form:
-    - http://mathworld.wolfram.com/HessianNormalForm.html
+
+  * http://mathworld.wolfram.com/HessianNormalForm.html
 
   The equation of plane requires dim + 1 real numbers:
   \ms a_0 + \sum_{i=0}^{dim} n_i x_i = 0\me
@@ -112,10 +120,12 @@ struct ClosedInterval {
   Note: \ms a_0\me is measured in units of \ms \|n_{vec}\|\me, so if it is *not* an unit vector, that is analogous to scaling \ms a_0\nme.
 
   As an example, let's consider 4 planes with dim = 2:
-    - \ms a_0\me = -1, and \ms n_{vec}\me = { 1.0, 0.0}: the plane x =  1 with rightward pointing normal.
-    - \ms a_0\me = -1, and \ms n_{vec}\me = {-1.0, 0.0}: the plane x = -1 with leftward  pointing normal.
-    - \ms a_0\me =  1, and \ms n_{vec}\me = { 1.0, 0.0}: the plane x = -1 with rightward pointing normal.
-    - \ms a_0\me =  1, and \ms n_{vec}\me = {-1.0, 0.0}: the plane x =  1 with leftward  pointing normal.
+
+  * \ms a_0\me = -1, and \ms n_{vec}\me = { 1.0, 0.0}: the plane x =  1 with rightward pointing normal.
+  * \ms a_0\me = -1, and \ms n_{vec}\me = {-1.0, 0.0}: the plane x = -1 with leftward  pointing normal.
+  * \ms a_0\me =  1, and \ms n_{vec}\me = { 1.0, 0.0}: the plane x = -1 with rightward pointing normal.
+  * \ms a_0\me =  1, and \ms n_{vec}\me = {-1.0, 0.0}: the plane x =  1 with leftward  pointing normal.
+
   Be careful with the signs.
 
   Another common way of specifying a plane is via a point \ms x_0\me and an unit normal, \ms n_{vec}\me. A point x is in the plane
@@ -182,7 +192,7 @@ struct Plane {
     Computes the signed, shortest distance from this plane to point: positive means the point is in the half-space
     determined by the direction of ``unit_normal``.
 
-    Note: if point is the origin, this yields precisely \ms a_0\me (``offset``).
+    .. Note:: if point is the origin, this yields precisely \ms a_0\me (``offset``).
 
     \param
       :point[dim]: point to compute distance to
@@ -282,8 +292,10 @@ inline OL_WARN_UNUSED_RESULT OL_NONNULL_POINTERS bool CheckPointInHypercube(Clos
 
 /*!\rst
   Checks if a point is inside/on the unit d-simplex.  A point \ms x_i\me lies inside the unit d-simplex if:
+
     1. \ms x_i \geq 0 \ \forall i\me  (i ranging over dimension)
     2. \ms \sum_i x_i \leq 1\me
+
   Implying that \ms x_i \leq 1 \ \forall i\me.
 
   \param

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-r"""Thin optimization-related containers that can be passed to cpp_wrappers.* functions/classes that perform optimization.
+r"""Thin optimization-related containers that can be passed to ``cpp_wrappers.*`` functions/classes that perform optimization.
 
 See cpp/gpp_optimization.hpp for more details on optimization techniques.
 
@@ -20,22 +20,29 @@ wrappers around these C++ objects' constructors.
 .. Note:: the following comments in this module are copied from the header comments in gpp_optimization.hpp.
 
 Table of Contents:
-1) FILE OVERVIEW
-2) OPTIMIZATION OF OBJECTIVE FUNCTIONS
-   a) GRADIENT DESCENT
-      i) OVERVIEW
-      ii) IMPLEMENTATION DETAILS
-   b) NEWTON'S METHOD
-      i) OVERVIEW
-      ii) IMPLEMENTATION DETAILS
-   c) MULTISTART OPTIMIZATION
+
+1. FILE OVERVIEW
+2. OPTIMIZATION OF OBJECTIVE FUNCTIONS
+
+   a. GRADIENT DESCENT
+
+      i. OVERVIEW
+      ii. IMPLEMENTATION DETAILS
+
+   b. NEWTON'S METHOD
+
+      i. OVERVIEW
+      ii. IMPLEMENTATION DETAILS
+
+   c. MULTISTART OPTIMIZATION
 
 Read the "OVERVIEW" sections for header-style comments that describe the file contents at a high level.
 Read the "IMPLEMENTATION" comments for cpp-style comments that talk more about the specifics.  Both types
 are included together here since this file contains template class declarations and template function definitions.
 For further implementation details, see comment blocks before each individual class/function.
 
-1) FILE OVERVIEW:
+**1 FILE OVERVIEW**
+
 First, the functions in this file are all MAXIMIZERS.  We also use the term "optima," and unless we specifically
 state otherwise, "optima" and "optimization" refer to "maxima" and "maximization," respectively.  (Note that
 minimizing ``g(x)`` is equivalent to maximizing ``f(x) = -1 * g(x)``.)
@@ -51,9 +58,12 @@ further below. These templated classes are general and can optimize any Optimiza
 
 In this way, we can make the local and global optimizers completely agonistic to the function they are optimizing.
 
-2) OPTIMIZATION OF OBJECTIVE FUNCTIONS:
-2a) GRADIENT DESCENT (GD):
-2a, i) OVERVIEW:
+**2 OPTIMIZATION OF OBJECTIVE FUNCTIONS**
+
+**2a GRADIENT DESCENT (GD)**
+
+**2a, i. OVERVIEW**
+
 We use first derivative information to walk the path of steepest ascent, hopefully toward a (local) maxima of the
 chosen log likelihood measure.  This is implemented in: GradientDescentOptimization().
 This method ensures that the result lies within a specified domain.
@@ -72,7 +82,8 @@ to better answers than straight gradient descent. It amounts to averaging over t
 
 Gradient descent is implemented in: GradientDescentOptimizer::Optimize() (which calls GradientDescentOptimization())
 
-2a, ii) IMPLEMENTATION DETAILS:
+**2a, ii. IMPLEMENTATION DETAILS**
+
 GD's update is: ``\theta_{i+1} = \theta_i + \gamma * \nabla f(\theta_i)``
 where ``\gamma`` controls the step-size and is chosen heuristically, often varying by problem.
 
@@ -87,8 +98,10 @@ To help, we take the standard approach of scaling down step size with iteration 
 to specify a maximum relative change to limit the aggressiveness of GD steps.  Finally, we wrap GD in a restart
 loop, where we fire off another GD run from the current location unless convergence was reached.
 
-2b) NEWTON'S METHOD:
-2b, i) OVERVIEW:
+**2b. NEWTON'S METHOD**
+
+**2b, i. OVERVIEW**
+
 Newton's Method (for optimization) uses second derivative information in addition to the first derivatives used by
 gradient descent (GD). In higher dimensions, first derivatives => gradients and second derivatives => Hessian matrix.
 At each iteration, gradient descent computes the derivative and blindly takes a step (of some
@@ -106,7 +119,8 @@ The MultistartOptimizer template class in this file provides generic multistart 
 
 Newton is implemented here: NewtonOptimizer::Optimize() (which calls NewtonOptimization())
 
-2b, ii) IMPLEMENTATION DETAILS:
+**2b, ii. IMPLEMENTATION DETAILS**
+
 Let's address the footnotes from the previous section (Section 2b, i paragraph 1):
 
 \* Within its region of attraction, Newton's steps are optimal (when we have only second derivative information).  Outside
@@ -143,7 +157,8 @@ In higher dimensions, a saddle point can also result (e.g., ``z = x^2 - y^2`` at
 optima if the Hessian is strictly negative or positive definite; a saddle if the Hessian has both positive and negative
 eigenvalues, and an indeterminate case if the Hessian is singular.
 
-2c) MULTISTART OPTIMIZATION:
+**2c. MULTISTART OPTIMIZATION**
+
 Above, we mentioned that gradient descent (GD), Newton, etc. have a difficult time converging if they are started "too far"
 from an optima.  Even if convergence occurs, it will typically be very slow unless the problem is simple.  Worse,
 in a problem with multiple optima, the methods may converge to the wrong one!
@@ -190,13 +205,22 @@ class NewtonParameters(object):
 
     """
 
-    def __init__(self, num_multistarts, max_num_steps, gamma, time_factor, max_relative_change, tolerance):
+    def __init__(
+            self,
+            num_multistarts,
+            max_num_steps,
+            gamma,
+            time_factor,
+            max_relative_change,
+            tolerance,
+    ):
         r"""Build a NewtonParameters (C++ object) via its ctor; this object specifies multistarted Newton behavior and is required by C++ Newton optimization.
 
         .. Note:: See gpp_optimization_parameters.hpp for more details.
             The following comments are copied from NewtonParameters struct in gpp_optimization_parameters.hpp.
 
-        Diagonal dominance control: gamma and time_factor:
+        **Diagonal dominance control: ``gamma`` and ``time_factor``**
+
         On i-th newton iteration, we add ``1/(time_factor*gamma^(i+1)) * I`` to the Hessian to improve robustness
 
         Choosing a small gamma (e.g., ``1.0 < gamma <= 1.01``) and time_factor (e.g., ``0 < time_factor <= 1.0e-3``)
@@ -209,17 +233,17 @@ class NewtonParameters(object):
         ``gamma = 1.05, time_factor = 1.0e-1`` will be several times faster but not as robust.
         for "easy" problems, these can be much more aggressive, e.g., ``gamma = 2.0``, ``time_factor = 1.0e1`` or more
 
-        :param num_multistarts: number of initial guesses to try in multistarted newton
+        :param num_multistarts: number of initial guesses to try in multistarted newton (suggest: a few hundred)
         :type num_multistarts: int > 0
-        :param max_num_steps: maximum number of newton iterations (per initial guess)
+        :param max_num_steps: maximum number of newton iterations (per initial guess) (suggest: 100)
         :type max_num_steps: int > 0
-        :param gamma: exponent controlling rate of time_factor growth (see function comments)
+        :param gamma: exponent controlling rate of time_factor growth (see function comments) (suggest: 1.01-1.1)
         :type gamma: float64 > 1.0
-        :param time_factor: initial amount of additive diagonal dominance (see function comments)
+        :param time_factor: initial amount of additive diagonal dominance (see function comments) (suggest: 1.0e-3-1.0e-1)
         :type time_factor: float64 > 0.0
-        :param max_relative_change: max change allowed per update (as a relative fraction of current distance to wall)
+        :param max_relative_change: max change allowed per update (as a relative fraction of current distance to wall) (suggest: 1.0)
         :type max_relative_change: float64 in [0, 1]
-        :param tolerance: when the magnitude of the gradient falls below this value, stop
+        :param tolerance: when the magnitude of the gradient falls below this value, stop (suggest: 1.0e-10)
         :type tolerance: float64 >= 0.0
 
         """
@@ -242,24 +266,51 @@ class GradientDescentParameters(object):
 
     """
 
-    def __init__(self, num_multistarts, max_num_steps, max_num_restarts, gamma, pre_mult, max_relative_change, tolerance):
+    def __init__(
+            self,
+            num_multistarts,
+            max_num_steps,
+            max_num_restarts,
+            num_steps_averaged,
+            gamma,
+            pre_mult,
+            max_relative_change,
+            tolerance,
+    ):
         r"""Build a GradientDescentParameters (C++ object) via its ctor; this object specifies multistarted GD behavior and is required by C++ GD optimization.
 
         .. Note:: See gpp_optimization_parameters.hpp for more details.
             The following comments are copied from GradientDescentParameters struct in gpp_optimization_parameters.hpp.
             And they are copied to python_version.optimization.GradientDescentParameters.
 
-        Iterations:
+        **Iterations**
+
         The total number of gradient descent steps is at most ``num_multistarts * max_num_steps * max_num_restarts``
         Generally, allowing more iterations leads to a better solution but costs more time.
 
-        Learning Rate:
+        **Averaging (NOT IMPLEMENTED IN C++ YET)**
+
+        When optimizing stochastic objective functions, it can often be beneficial to average some number of gradient descent
+        steps to obtain the final result (vs just returning the last step).
+        Polyak-Ruppert averaging: postprocessing step where we replace ``x_n`` with:
+        ``\overbar{x} = \frac{1}{n - n_0} \sum_{t=n_0 + 1}^n x_t``
+        ``n_0 = 0`` averages all steps; ``n_0 = n - 1`` is equivalent to returning ``x_n`` directly.
+        Here, num_steps_averaged is ``n - n_0``.
+
+        * ``num_steps_averaged`` < 0: averages all steps
+        * ``num_steps_averaged`` == 0: do not average
+        * ``num_steps_averaged`` > 0 and <= ``max_num_steps``: average the specified number of steps
+        * ``max_steps_averaged`` > ``max_num_steps``: average all steps
+
+        **Learning Rate**
+
         GD may be implemented using a learning rate: ``pre_mult * (i+1)^{-\gamma}``, where i is the current iteration
         Larger gamma causes the GD step size to (artificially) scale down faster.
         Smaller pre_mult (artificially) shrinks the GD step size.
         Generally, taking a very large number of small steps leads to the most robustness; but it is very slow.
 
-        Tolerances:
+        **Tolerances**
+
         Larger relative changes are potentially less robust but lead to faster convergence.
         Large tolerances run faster but may lead to high errors or false convergence (e.g., if the tolerance is 1.0e-3 and the learning
         rate control forces steps to fall below 1.0e-3 quickly, then GD will quit "successfully" without genuinely converging.)
@@ -268,8 +319,10 @@ class GradientDescentParameters(object):
         :type num_multistarts: int > 0
         :param max_num_steps: maximum number of gradient descent iterations per restart (suggest: 200-1000)
         :type max_num_steps: int > 0
-        :param max_num_restarts: maximum number of gradient descent restarts, the we are allowed to call gradient descent.  Should be >= 2 as a minimum (suggest: 10-20)
+        :param max_num_restarts: maximum number of gradient descent restarts, the we are allowed to call gradient descent.  Should be >= 2 as a minimum (suggest: 4-20)
         :type max_num_restarts: int > 0
+        :param num_steps_averaged: number of steps to use in polyak-ruppert averaging (see above) (suggest: 10-50% of max_num_steps for stochastic problems, 0 otherwise) (UNUSED)
+        :type num_steps_averaged: int (range is clamped as described above)
         :param gamma: exponent controlling rate of step size decrease (see struct docs or GradientDescentOptimizer) (suggest: 0.5-0.9)
         :type gamma: float64 > 1.0
         :param pre_mult: scaling factor for step size (see struct docs or GradientDescentOptimizer) (suggest: 0.1-1.0)
@@ -323,14 +376,24 @@ class _CppOptimizationParameters(object):
 
     __slots__ = ('domain_type', 'objective_type', 'optimizer_type', 'num_random_samples', 'optimizer_parameters', )
 
-    def __init__(self, domain_type=None, objective_type=None, optimizer_type=None, num_random_samples=None, optimizer_parameters=None):
+    def __init__(
+            self,
+            domain_type=None,
+            objective_type=None,
+            optimizer_type=None,
+            num_random_samples=None,
+            optimizer_parameters=None,
+    ):
         """Construct CppOptimizationParameters that specifies optimization behavior to C++."""
         # see gpp_python_common.cpp for .*_type enum definitions. .*_type variables must be from those enums (NOT integers)
         self.domain_type = domain_type
         self.objective_type = objective_type
         self.optimizer_type = optimizer_type
         self.num_random_samples = num_random_samples  # number of samples to 'dumb' search over
-        self.optimizer_parameters = optimizer_parameters.parameters  # must match the optimizer_type
+        if optimizer_parameters:
+            self.optimizer_parameters = optimizer_parameters.parameters  # must match the optimizer_type
+        else:
+            self.optimizer_parameters = None
 
 
 class NullOptimizer(OptimizerInterface):
@@ -355,7 +418,7 @@ class NullOptimizer(OptimizerInterface):
         self.optimizer_type = C_GP.OptimizerTypes.null
         self.optimization_parameters = _CppOptimizationParameters(
             domain_type=domain._domain_type,
-            objective_type=optimizable.objective_function.objective_type,
+            objective_type=optimizable.objective_type,
             optimizer_type=self.optimizer_type,
             num_random_samples=num_random_samples,
             optimizer_parameters=None,
