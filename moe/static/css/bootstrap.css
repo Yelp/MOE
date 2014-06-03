@@ -5785,4 +5785,8 @@ button.close {
     display: none !important;
   }
 }
+.middle-text {
+  vertical-align: middle;
+  margin-top: 24px;
+}
 /*# sourceMappingURL=bootstrap.css.map */

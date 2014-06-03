@@ -4,9 +4,25 @@
     <div class="row">
         <div class="col-md-8">
             <div id="graph-area">
-                <h3>Gaussian Process</h3>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h3>Gaussian Process</h3>
+                    </div>
+                    <div class="col-md-6 middle-text">
+                        Endpoint(s):
+                        <a href="http://sc932.github.io/MOE/moe.views.rest.html#module-moe.views.rest.gp_mean_var"><strong><code>gp_mean_var</code></strong></a>
+                    </div>
+                </div>
                 <div class="gp-graph"></div>
-                <h3>Expected Improvement</h3>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h3>Expected Improvement</h3>
+                    </div>
+                    <div class="col-md-6 middle-text">
+                        Endpoint(s):
+                        <a href="http://sc932.github.io/MOE/moe.views.rest.html#module-moe.views.rest.gp_ei"><strong><code>gp_ei</code></strong></a> and <a href="http://sc932.github.io/MOE/moe.views.rest.html#module-moe.views.rest.gp_next_points_epi"><strong><code>gp_next_points_epi</code></strong></a>
+                    </div>
+                </div>
                 <div class="ei-graph"></div>
             </div>
         </div>
