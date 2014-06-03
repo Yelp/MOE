@@ -214,8 +214,12 @@
 #include "gpp_optimization_parameters.hpp"
 #include "gpp_random.hpp"
 
-#include "gpp_cuda_util.hpp"
 namespace optimal_learning {
+
+    extern "C" double cuda_get_EI(double * __restrict__ mu, double * __restrict__ L, double best, int num_union_of_pts, double * __restrict__ dev_mu, double * __restrict__ dev_L, double * __restrict__ dev_EIs, unsigned int seed);
+    extern "C" void cuda_get_gradEI(double * __restrict__ mu, double * __restrict__ grad_mu, double * __restrict__ L, double * __restrict__ grad_L, double best, int num_union_of_pts, int num_to_sample, int dimension, double * __restrict__ dev_mu, double * __restrict__ dev_grad_mu, double * __restrict__ dev_L, double * __restrict__ dev_grad_L, double * __restrict__ dev_grad_EIs, unsigned int seed, double * __restrict__ grad_EI);
+    extern "C" void cuda_allocate_mem(int num_union_of_pts, int num_to_sample, int dimension, double** __restrict__ pointer_dev_mu, double** __restrict__ pointer_dev_grad_mu, double** __restrict__ pointer_dev_L, double** __restrict__ pointer_dev_grad_L, double** __restrict__ pointer_dev_grad_EIs, double ** __restrict__ pointer_dev_EIs); 
+    extern "C" void cuda_free_mem(double* __restrict__ dev_mu, double* __restrict__ dev_grad_mu, double* __restrict__ dev_L, double* __restrict__ dev_grad_L, double* __restrict__ dev_grad_EIs, double* __restrict__ dev_EIs); 
 
 struct PointsToSampleState;
 
@@ -726,17 +730,6 @@ struct ExpectedImprovementState;
 struct CudaExpectedImprovementState;
 struct OnePotentialSampleExpectedImprovementState;
 
-// Need to put these two functions in gpp_cuda_util in future
-void cuda_memory_allocation(CudaExpectedImprovementState * ei_state) {
-    cuda_allocate_mem(ei_state->num_union, ei_state->num_to_sample, ei_state->dim, &(ei_state->dev_mu), &(ei_state->dev_grad_mu), &(ei_state->dev_L), &(ei_state->dev_grad_L), &(ei_state->dev_grad_EIs), &(ei_state->dev_EIs));
-    ei_state->cuda_memory_allocated = true;
-}
-
-void cuda_memory_deallocation(CudaExpectedImprovementState * ei_state) {
-    cuda_free_mem(ei_state->dev_mu, ei_state->dev_grad_mu, ei_state->dev_L, ei_state->dev_grad_L, ei_state->dev_grad_EIs, ei_state->dev_EIs);
-        ei_state->cuda_memory_allocated = false;
-    }
-// Need to put these two functions in gpp_cuda_util in future
 
 
 /*!\rst
@@ -1151,7 +1144,7 @@ struct CudaExpectedImprovementState final {
          * The NormalRNG object must already be seeded.  If multithreaded computation is used for EI, then every state object
          must have a different NormalRNG (different seeds, not just different objects).
   \endrst*/
-  CudaExpectedImprovementState(const EvaluatorType& ei_evaluator, double const * restrict points_to_sample, double const * restrict points_being_sampled, int num_to_sample_in, int num_being_sampled_in, bool configure_for_gradients, NormalRNG * normal_rng_in, double * restrict dev_mu_in, double * restrict dev_L_in, double * restrict dev_grad_mu_in, double * restrict dev_grad_L_in, double * restrict dev_EIs_in, double * restrict dev_grad_EIs_in)
+  CudaExpectedImprovementState(const EvaluatorType& ei_evaluator, double const * restrict points_to_sample, double const * restrict points_being_sampled, int num_to_sample_in, int num_being_sampled_in, bool configure_for_gradients, NormalRNG * normal_rng_in)
       : dim(ei_evaluator.dim()),
         num_to_sample(num_to_sample_in),
         num_being_sampled(num_being_sampled_in),
@@ -1164,12 +1157,6 @@ struct CudaExpectedImprovementState final {
         grad_mu(dim*num_derivatives),
         cholesky_to_sample_var(Square(num_union)),
         grad_chol_decomp(dim*Square(num_union)*num_derivatives),
-        dev_mu(dev_mu_in),
-        dev_L(dev_L_in),
-        dev_grad_mu(dev_grad_mu_in),
-        dev_grad_L(dev_grad_L_in),
-        dev_EIs(dev_EIs_in),
-        dev_grad_EIs(dev_grad_EIs_in), 
         cuda_memory_allocated(false) {
   }
 
@@ -1928,6 +1915,8 @@ void ComputeOptimalSetOfPointsToSample(const GaussianProcess& gaussian_process, 
 extern template void ComputeOptimalSetOfPointsToSample(const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters, const TensorProductDomain& domain, double const * restrict points_being_sampled, int num_being_sampled, double best_so_far, int max_int_steps, int max_num_threads, bool lhc_search_only, int num_lhc_samples, int num_to_sample, bool * restrict found_flag, UniformRandomGenerator * uniform_generator, NormalRNG * normal_rng, double * restrict best_points_to_sample);
 extern template void ComputeOptimalSetOfPointsToSample(const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters, const SimplexIntersectTensorProductDomain& domain, double const * restrict points_being_sampled, int num_being_sampled, double best_so_far, int max_int_steps, int max_num_threads, bool lhc_search_only, int num_lhc_samples, int num_to_sample, bool * restrict found_flag, UniformRandomGenerator * uniform_generator, NormalRNG * normal_rng, double * restrict best_points_to_sample);
 
+void cuda_memory_allocation(CudaExpectedImprovementState * ei_state); 
+void cuda_memory_deallocation(CudaExpectedImprovementState * ei_state); 
 }  // end namespace optimal_learning
 
 #endif  // MOE_OPTIMAL_LEARNING_CPP_GPP_MATH_HPP_

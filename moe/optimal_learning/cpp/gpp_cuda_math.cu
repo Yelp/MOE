@@ -300,5 +300,4 @@ namespace optimal_learning {
          }
      }
 }    // end namespace optimal_learning
-int main() {
-}
+

@@ -1020,4 +1020,15 @@ void ComputeOptimalSetOfPointsToSample(const GaussianProcess& gaussian_process, 
 template void ComputeOptimalSetOfPointsToSample(const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters, const TensorProductDomain& domain, double const * restrict points_being_sampled, int num_being_sampled, double best_so_far, int max_int_steps, int max_num_threads, bool lhc_search_only, int num_lhc_samples, int num_to_sample, bool * restrict found_flag, UniformRandomGenerator * uniform_generator, NormalRNG * normal_rng, double * restrict best_points_to_sample);
 template void ComputeOptimalSetOfPointsToSample(const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters, const SimplexIntersectTensorProductDomain& domain, double const * restrict points_being_sampled, int num_being_sampled, double best_so_far, int max_int_steps, int max_num_threads, bool lhc_search_only, int num_lhc_samples, int num_to_sample, bool * restrict found_flag, UniformRandomGenerator * uniform_generator, NormalRNG * normal_rng, double * restrict best_points_to_sample);
 
+// Need to put these two functions in gpp_cuda_util in future
+void cuda_memory_allocation(CudaExpectedImprovementState * ei_state) {
+    cuda_allocate_mem(ei_state->num_union, ei_state->num_to_sample, ei_state->dim, &(ei_state->dev_mu), &(ei_state->dev_grad_mu), &(ei_state->dev_L), &(ei_state->dev_grad_L), &(ei_state->dev_grad_EIs), &(ei_state->dev_EIs));
+    ei_state->cuda_memory_allocated = true;
+}
+
+void cuda_memory_deallocation(CudaExpectedImprovementState * ei_state) {
+    cuda_free_mem(ei_state->dev_mu, ei_state->dev_grad_mu, ei_state->dev_L, ei_state->dev_grad_L, ei_state->dev_grad_EIs, ei_state->dev_EIs);
+        ei_state->cuda_memory_allocated = false;
+}
+// Need to put these two functions in gpp_cuda_util in future
 }  // end namespace optimal_learning

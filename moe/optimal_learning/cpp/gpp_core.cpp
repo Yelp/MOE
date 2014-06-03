@@ -42,6 +42,8 @@
 #include "gpp_test_utils.hpp"
 #include "gpp_test_utils_test.hpp"
 
+#include <cuda_runtime.h>
+
 using namespace optimal_learning;  // NOLINT, i'm lazy in this file which has no external linkage anyway
 
 // -1: mirroring the "Within python" example currently at: https://github.com/sc932/MOE
@@ -55,7 +57,7 @@ using namespace optimal_learning;  // NOLINT, i'm lazy in this file which has no
 // 7: speed test multistart GD hyper
 // 8: speed test log likelihood eval
 
-#define OL_MODE 1
+#define OL_MODE 10
 #if OL_MODE == -1
 
 double function_to_minimize(double const * restrict point, UniformRandomGenerator * uniform_generator) {
@@ -704,6 +706,7 @@ void run_core_test(int *processor_count_list, int num_processor_count_list, int 
 
   std::vector<double> loo_new_hyperparameters(covariance.GetNumberOfHyperparameters());
   printf("LEAVE ONE OUT HYPERPARAM OPT:\n");
+
   RestartedGradientDescentHyperparameterOptimization(loo_marginal_eval, covariance_perturbed, gd_parameters, hyperparameter_domain, loo_new_hyperparameters.data());
   covariance.SetHyperparameters(loo_new_hyperparameters.data());
 
@@ -2102,4 +2105,92 @@ int main() {
   return 0;
 }
 
+#elif OL_MODE == 10
+
+int main() {
+  using DomainType = TensorProductDomain;
+  const int dim = 3;
+
+
+  // random number generators
+  UniformRandomGenerator uniform_generator(314);
+  boost::uniform_real<double> uniform_double_hyperparameter(0.4, 1.3);
+  boost::uniform_real<double> uniform_double_lower_bound(-2.0, 0.5);
+  boost::uniform_real<double> uniform_double_upper_bound(2.0, 3.5);
+
+  // const int64_t pi_array[] = {314, 3141, 31415, 314159, 3141592, 31415926, 314159265, 3141592653, 31415926535, 314159265359};
+  // static const int kMaxNumThreads = 4;
+  // std::vector<NormalRNG> normal_rng_vec(kMaxNumThreads);
+  // for (int j = 0; j < kMaxNumThreads; ++j) {
+  //   normal_rng_vec[j].SetExplicitSeed(pi_array[j]);
+  // }
+  NormalRNG normal_rng;
+
+  SquareExponential covariance(dim, 1.0, 1.0);
+  std::vector<double> hyperparameters(covariance.GetNumberOfHyperparameters());
+  for (auto& entry : hyperparameters) {
+    entry = uniform_double_hyperparameter(uniform_generator.engine);
+  }
+  covariance.SetHyperparameters(hyperparameters.data());
+
+  std::vector<ClosedInterval> domain_bounds(dim);
+  for (int i = 0; i < dim; ++i) {
+    domain_bounds[i].min = uniform_double_lower_bound(uniform_generator.engine);
+    domain_bounds[i].max = uniform_double_upper_bound(uniform_generator.engine);
+  }
+  DomainType domain_gp_source(domain_bounds.data(), dim);
+
+  int num_sampled = 20;
+  std::vector<double> points_sampled(num_sampled*dim);
+  std::vector<double> points_sampled_value(num_sampled);
+  std::vector<double> noise_variance(num_sampled, 0.002);
+
+  GaussianProcess gaussian_process(covariance, points_sampled.data(), points_sampled_value.data(), noise_variance.data(), dim, 0);
+
+  // generate random sampling points
+  domain_gp_source.GenerateUniformPointsInDomain(num_sampled, &uniform_generator, points_sampled.data());
+
+  // generate the "world"
+  for (int j = 0; j < num_sampled; ++j) {
+    points_sampled_value.data()[j] = gaussian_process.SamplePointFromGP(points_sampled.data() + dim*j, noise_variance[j]);
+    gaussian_process.AddPointToGP(points_sampled.data() + dim*j, points_sampled_value[j], noise_variance[j]);
+  }
+  // double best_so_far = *std::min_element(points_sampled_value.begin(), points_sampled_value.end());
+  double best_so_far = *std::min_element(points_sampled_value.begin(), points_sampled_value.begin() + 0 + 1);
+
+  for (int i = 0; i < 10; ++i) {
+  int num_to_sample = 1;
+  std::vector<double> points_to_sample(num_to_sample*dim);
+  domain_gp_source.GenerateUniformPointsInDomain(num_to_sample, &uniform_generator, points_to_sample.data());
+  int num_being_sampled = 4;
+  std::vector<double> points_being_sampled(num_being_sampled*dim);
+  domain_gp_source.GenerateUniformPointsInDomain(num_being_sampled, &uniform_generator, points_being_sampled.data());
+
+  CudaExpectedImprovementEvaluator cuda_ei_evaluator(gaussian_process, best_so_far);
+  CudaExpectedImprovementState cuda_ei_state(cuda_ei_evaluator, points_to_sample.data(), points_being_sampled.data(), num_to_sample, num_being_sampled, true, &normal_rng);
+
+  // calculation
+  cudaSetDevice(1);
+  cuda_memory_allocation(&cuda_ei_state);
+  double EI = cuda_ei_evaluator.ComputeObjectiveFunction(&cuda_ei_state);
+  std::vector<double> grad_EI(num_to_sample*dim);
+  cuda_ei_evaluator.ComputeGradObjectiveFunction(&cuda_ei_state, grad_EI.data());
+  cuda_memory_deallocation(&cuda_ei_state);
+  cudaDeviceReset();
+  printf("EI is %.18E\n", EI);
+  printf("grad_EI %.18E\n", grad_EI[0]);
+
+  // cpu calculation
+  int num_mc_iterations = 1000000;
+  ExpectedImprovementEvaluator cpu_ei_evaluator(gaussian_process, num_mc_iterations,  best_so_far);
+  ExpectedImprovementState cpu_ei_state(cpu_ei_evaluator, points_to_sample.data(), points_being_sampled.data(), num_to_sample, num_being_sampled, true, &normal_rng);
+  double cpu_EI = cpu_ei_evaluator.ComputeObjectiveFunction(&cpu_ei_state);
+  std::vector<double> cpu_grad_EI(num_to_sample*dim);
+  cpu_ei_evaluator.ComputeGradObjectiveFunction(&cpu_ei_state, cpu_grad_EI.data());
+  printf("cpu EI is %.18E\n", cpu_EI);
+  printf("cpu grad_EI %.18E\n", cpu_grad_EI[0]);
+  }
+
+  return 0;
+}
 #endif
