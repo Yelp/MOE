@@ -68,8 +68,8 @@ class TestGpNextPointsViews(RestGaussianProcessTestCase):
                 )
 
         # Test arbitrary parameters get passed through
-        json_payload['optimization_info']['num_multistarts'] = 5
-        json_payload['optimization_info']['optimization_parameters']['max_num_steps'] = 10
+        json_payload['optimization_info']['num_multistarts'] = TEST_OPTIMIZATION_MULTISTARTS + 5
+        json_payload['optimization_info']['optimization_parameters']['max_num_steps'] = TEST_GRADIENT_DESCENT_PARAMETERS.max_num_steps + 10
 
         request = pyramid.testing.DummyRequest(post=json_payload)
         request.json_body = json_payload
@@ -79,12 +79,12 @@ class TestGpNextPointsViews(RestGaussianProcessTestCase):
 
         T.assert_equal(
                 optimization_parameters.num_multistarts,
-                5
+                TEST_OPTIMIZATION_MULTISTARTS + 5
                 )
 
         T.assert_equal(
                 optimization_parameters._python_max_num_steps,
-                10
+                TEST_GRADIENT_DESCENT_PARAMETERS.max_num_steps + 10
                 )
 
     def test_interface_returns_same_as_cpp(self):
