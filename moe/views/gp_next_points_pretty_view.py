@@ -12,8 +12,8 @@ import moe.optimal_learning.python.cpp_wrappers.expected_improvement
 from moe.optimal_learning.python.cpp_wrappers.expected_improvement import ExpectedImprovement
 from moe.views.gp_pretty_view import GpPrettyView
 from moe.views.utils import _make_gp_from_params, _make_domain_from_params, _make_optimization_parameters_from_params
-from moe.views.schemas import GpInfo, ListOfPointsInDomain, CovarianceInfo, BoundedDomainInfo, OptimizationInfo
-from moe.optimal_learning.python.constant import DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS
+from moe.views.schemas import GpInfo, ListOfPointsInDomain, CovarianceInfo, BoundedDomainInfo, OptimizationInfo, OPTIMIZATION_TYPES_TO_SCHEMA_CLASSES
+from moe.optimal_learning.python.constant import DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS, OPTIMIZATION_TYPE_TO_DEFAULT_PARAMETERS
 
 
 class GpNextPointsRequest(colander.MappingSchema):
@@ -169,6 +169,24 @@ class GpNextPointsPrettyView(GpPrettyView):
                     ],
                 },
             }
+
+    def get_params_from_request(self):
+        """Return the deserialized parameters from the json_body of a request.
+
+        :returns: A deserialized self.request_schema object
+
+        """
+        params = self.request_schema.deserialize(self.request.json_body)
+        optimization_type = params['optimization_info']['optimization_type']
+        schema_class = OPTIMIZATION_TYPES_TO_SCHEMA_CLASSES[optimization_type]()
+        optimization_parameters_dict = dict(OPTIMIZATION_TYPE_TO_DEFAULT_PARAMETERS[optimization_type]._asdict())
+        for param, val in self.request.json_body.get('optimization_info').get('optimization_parameters', {}).iteritems():
+            optimization_parameters_dict[param] = val
+
+        validated_optimization_parameters = schema_class.deserialize(optimization_parameters_dict)
+
+        params['optimization_info']['optimization_parameters'] = validated_optimization_parameters
+        return params
 
     def compute_next_points_to_sample_response(self, params, optimization_method_name, route_name, *args, **kwargs):
         """Compute the next points to sample (and their expected improvement) using optimization_method_name from params in the request.

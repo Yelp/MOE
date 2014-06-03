@@ -245,6 +245,13 @@ class MatrixOfFloats(colander.SequenceSchema):
     row_of_matrix = ListOfFloats()
 
 
+OPTIMIZATION_TYPES_TO_SCHEMA_CLASSES = {
+        NULL_OPTIMIZER: NullParametersSchema,
+        NEWTON_OPTIMIZER: NewtonParametersSchema,
+        GRADIENT_DESCENT_OPTIMIZER: GradientDescentParametersSchema,
+        }
+
+
 class OptimizationInfo(colander.MappingSchema):
 
     """Optimization information needed for each next point endpoint.
@@ -271,10 +278,3 @@ class OptimizationInfo(colander.MappingSchema):
             missing=DEFAULT_OPTIMIZATION_NUM_RANDOM_SAMPLES,
             validator=colander.Range(min=1),
             )
-
-
-OPTIMIZATION_TYPES_TO_SCHEMA_CLASSES = {
-        NULL_OPTIMIZER: NullParametersSchema,
-        NEWTON_OPTIMIZER: NewtonParametersSchema,
-        GRADIENT_DESCENT_OPTIMIZER: GradientDescentParametersSchema,
-        }
