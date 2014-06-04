@@ -12,6 +12,7 @@ from pyramid.view import view_config
 from moe.optimal_learning.python.cpp_wrappers.log_likelihood import GaussianProcessLogLikelihood, multistart_hyperparameter_optimization
 from moe.views.constant import GP_HYPER_OPT_ROUTE_NAME, GP_HYPER_OPT_PRETTY_ROUTE_NAME
 from moe.views.gp_pretty_view import GpPrettyView, PRETTY_RENDERER
+from moe.views.optimizable_gp_pretty_view import OptimizableGpPrettyView
 from moe.views.schemas import GpInfo, CovarianceInfo, BoundedDomainInfo, OptimizationInfo, DomainInfo, ListOfFloats
 from moe.views.utils import _build_covariance_info, _make_domain_from_params, _make_gp_from_params, _make_optimization_parameters_from_params
 
@@ -127,7 +128,7 @@ class GpHyperOptResponse(colander.MappingSchema):
     status = GpHyperOptStatus()
 
 
-class GpHyperOptView(GpPrettyView):
+class GpHyperOptView(OptimizableGpPrettyView):
 
     """Views for gp_hyper_opt endpoints."""
 
