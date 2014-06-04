@@ -3,11 +3,12 @@
 import simplejson as json
 
 from moe.optimal_learning.python.constant import SQUARE_EXPONENTIAL_COVARIANCE_TYPE
+from moe.resources import Root
 
 PRETTY_RENDERER = 'moe:templates/pretty_input.mako'
 
 
-class GpPrettyView(object):
+class GpPrettyView(Root):
 
     """A class to encapsulate 'pretty' views.
 

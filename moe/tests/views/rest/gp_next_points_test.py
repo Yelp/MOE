@@ -19,7 +19,7 @@ class TestGpNextPointsViews(RestGaussianProcessTestCase):
     precompute_gaussian_process_data = True
     num_sampled_list = [1, 2, 10]
 
-    def _build_json_payload(self, domain, gaussian_process, covariance, num_to_sample, lie_value=None, **kwargs):
+    def _build_json_payload(self, domain, gaussian_process, covariance, num_to_sample, lie_value=None):
         """Create a json_payload to POST to the /gp/next_points/* endpoint with all needed info."""
         dict_to_dump = {
             'num_to_sample': num_to_sample,
@@ -33,9 +33,6 @@ class TestGpNextPointsViews(RestGaussianProcessTestCase):
                 'optimization_parameters': dict(TEST_GRADIENT_DESCENT_PARAMETERS._asdict()),
                 },
             }
-        # overwrite defaults
-        for key, value in kwargs:
-            dict_to_dump[key] = value
 
         if lie_value is not None:
             dict_to_dump['lie_value'] = lie_value
