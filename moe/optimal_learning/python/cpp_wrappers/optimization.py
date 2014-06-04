@@ -345,6 +345,8 @@ class GradientDescentParameters(object):
             numpy.float64(max_relative_change),
             numpy.float64(tolerance),
         )
+        # TODO(eliu GH-138) Expose the internal data from the above object for testing in python
+        self._python_max_num_steps = max_num_steps
 
 
 class _CppOptimizationParameters(object):
