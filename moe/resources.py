@@ -4,7 +4,7 @@
 
 class Root(object):
 
-    """Resources Root."""
+    """Resources Root. This is the base view class."""
 
     def __init__(self, request):
         """Initialization for the root resource."""
