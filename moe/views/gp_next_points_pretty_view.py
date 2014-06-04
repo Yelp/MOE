@@ -13,6 +13,7 @@ from moe.optimal_learning.python.constant import DEFAULT_EXPECTED_IMPROVEMENT_MC
 import moe.optimal_learning.python.cpp_wrappers.expected_improvement
 from moe.optimal_learning.python.cpp_wrappers.expected_improvement import ExpectedImprovement
 from moe.views.gp_pretty_view import GpPrettyView
+from moe.views.optimizable_gp_pretty_view import OptimizableGpPrettyView
 from moe.views.schemas import GpInfo, ListOfPointsInDomain, CovarianceInfo, BoundedDomainInfo, OptimizationInfo
 from moe.views.utils import _make_gp_from_params, _make_domain_from_params, _make_optimization_parameters_from_params
 
@@ -143,7 +144,7 @@ class GpNextPointsResponse(colander.MappingSchema):
             )
 
 
-class GpNextPointsPrettyView(GpPrettyView):
+class GpNextPointsPrettyView(OptimizableGpPrettyView):
 
     """A class to encapsulate 'pretty' ``gp_next_points_*`` views.
 
