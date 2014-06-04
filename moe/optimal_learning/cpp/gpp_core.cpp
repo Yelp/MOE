@@ -42,8 +42,8 @@
 #include "gpp_random_test.hpp"
 #include "gpp_test_utils.hpp"
 #include "gpp_test_utils_test.hpp"
+#include "gpp_expected_improvement_gpu.hpp"
 
-#include <cuda_runtime.h>
 
 using namespace optimal_learning;  // NOLINT, i'm lazy in this file which has no external linkage anyway
 
@@ -2177,13 +2177,13 @@ int main() {
   CudaExpectedImprovementState cuda_ei_state(cuda_ei_evaluator, points_to_sample.data(), points_being_sampled.data(), num_to_sample, num_being_sampled, true, &normal_rng);
 
   // calculation
-  cudaSetDevice(1);
-  cuda_memory_allocation(&cuda_ei_state);
+  // cudaSetDevice(1);
+  // cuda_memory_allocation(&cuda_ei_state);
   double EI = cuda_ei_evaluator.ComputeObjectiveFunction(&cuda_ei_state);
   std::vector<double> grad_EI(num_to_sample*dim);
   cuda_ei_evaluator.ComputeGradObjectiveFunction(&cuda_ei_state, grad_EI.data());
-  cuda_memory_deallocation(&cuda_ei_state);
-  cudaDeviceReset();
+  // cuda_memory_deallocation(&cuda_ei_state);
+  // cudaDeviceReset();
   printf("EI is %.18E\n", EI);
   printf("grad_EI %.18E\n", grad_EI[0]);
 

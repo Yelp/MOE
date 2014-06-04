@@ -1,5 +1,11 @@
-#ifndef MOE_OPTIMAL_LEARNING_CPP_GPP_MATH_HPP_
-#define MOE_OPTIMAL_LEARNING_CPP_GPP_MATH_HPP_
+/*!
+  \file gpp_cuda_math.hpp
+  \rst
+  Functions compiled by nvcc are all declared here. 
+\endrst*/
+
+#ifndef MOE_OPTIMAL_LEARNING_CPP_GPU_GPP_CUDA_MATH_HPP
+#define MOE_OPTIMAL_LEARNING_CPP_GPU_GPP_CUDA_MATH_HPP
 
 
 namespace optimal_learning {
@@ -9,4 +15,5 @@ namespace optimal_learning {
     extern "C" void cuda_free_mem(double* __restrict__ dev_mu, double* __restrict__ dev_grad_mu, double* __restrict__ dev_L, double* __restrict__ dev_grad_L, double* __restrict__ dev_grad_EIs, double* __restrict__ dev_EIs); 
 
 }   // end namespace optimal_learning
-#endif  // MOE_OPTIMAL_LEARNING_CPP_GPP_MATH_HPP_
+#endif  // MOE_OPTIMAL_LEARNING_CPP_GPU_GPP_CUDA_MATH_HPP
+

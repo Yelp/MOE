@@ -815,18 +815,6 @@ double ExpectedImprovementEvaluator::ComputeExpectedImprovement(StateType * ei_s
   return aggregate/static_cast<double>(num_mc_iterations_);
 }
 
-double CudaExpectedImprovementEvaluator::ComputeExpectedImprovement(StateType * ei_state) const {
-  if (ei_state->cuda_memory_allocated == false) {
-      OL_THROW_EXCEPTION(RuntimeException, "GPU memory space has not been allocated yet!");
-  }
-  int num_union = ei_state->num_union;
-  gaussian_process_->ComputeMeanOfPoints(ei_state->points_to_sample_state, ei_state->to_sample_mean.data());
-  gaussian_process_->ComputeVarianceOfPoints(&(ei_state->points_to_sample_state), ei_state->cholesky_to_sample_var.data());
-  ComputeCholeskyFactorL(num_union, ei_state->cholesky_to_sample_var.data());
-  unsigned int seed_in = ei_state->normal_rng->engine();
-  return cuda_get_EI(ei_state->to_sample_mean.data(), ei_state->cholesky_to_sample_var.data(), best_so_far_, num_union, ei_state->dev_mu, ei_state->dev_L, ei_state->dev_EIs, seed_in);
-}
-
 /*!\rst
   Computes gradient of EI (see ExpectedImprovementEvaluator::ComputeGradExpectedImprovement) wrt points_to_sample (stored in
   union_of_points[0:num_to_sample]).
@@ -900,23 +888,6 @@ void ExpectedImprovementEvaluator::ComputeGradExpectedImprovement(StateType * ei
   for (int k = 0; k < ei_state->num_to_sample*dim_; ++k) {
     grad_EI[k] = ei_state->aggregate[k]/static_cast<double>(num_mc_iterations_);
   }
-}
-
-void CudaExpectedImprovementEvaluator::ComputeGradExpectedImprovement(StateType * ei_state, double * restrict grad_EI) const {
-  if (ei_state->cuda_memory_allocated == false) {
-      OL_THROW_EXCEPTION(RuntimeException, "GPU memory space has not been allocated yet!");
-  }
-  const int num_union = ei_state->num_union;
-  const int num_to_sample = ei_state->num_to_sample;
-  gaussian_process_->ComputeMeanOfPoints(ei_state->points_to_sample_state, ei_state->to_sample_mean.data());
-  gaussian_process_->ComputeGradMeanOfPoints(ei_state->points_to_sample_state, ei_state->grad_mu.data());
-  gaussian_process_->ComputeVarianceOfPoints(&(ei_state->points_to_sample_state), ei_state->cholesky_to_sample_var.data());
-  ComputeCholeskyFactorL(num_union, ei_state->cholesky_to_sample_var.data());
-
-  gaussian_process_->ComputeGradCholeskyVarianceOfPoints(&(ei_state->points_to_sample_state), ei_state->cholesky_to_sample_var.data(), ei_state->grad_chol_decomp.data());
-  unsigned int seed_in = ei_state->normal_rng->engine();
-
-  cuda_get_gradEI(ei_state->to_sample_mean.data(), ei_state->grad_mu.data(), ei_state->cholesky_to_sample_var.data(), ei_state->grad_chol_decomp.data(), best_so_far_, num_union, num_to_sample, dim_, ei_state->dev_mu, ei_state->dev_grad_mu, ei_state->dev_L, ei_state->dev_grad_L, ei_state->dev_grad_EIs, seed_in, grad_EI);
 }
 
 /*!\rst
@@ -1023,15 +994,4 @@ void ComputeOptimalPointsToSample(const GaussianProcess& gaussian_process, const
 template void ComputeOptimalPointsToSample(const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters, const TensorProductDomain& domain, double const * restrict points_being_sampled, int num_to_sample, int num_being_sampled, double best_so_far, int max_int_steps, int max_num_threads, bool lhc_search_only, int num_lhc_samples, bool * restrict found_flag, UniformRandomGenerator * uniform_generator, NormalRNG * normal_rng, double * restrict best_points_to_sample);
 template void ComputeOptimalPointsToSample(const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters, const SimplexIntersectTensorProductDomain& domain, double const * restrict points_being_sampled, int num_to_sample, int num_being_sampled, double best_so_far, int max_int_steps, int max_num_threads, bool lhc_search_only, int num_lhc_samples, bool * restrict found_flag, UniformRandomGenerator * uniform_generator, NormalRNG * normal_rng, double * restrict best_points_to_sample);
 
-// Need to put these two functions in gpp_cuda_util in future
-void cuda_memory_allocation(CudaExpectedImprovementState * ei_state) {
-    cuda_allocate_mem(ei_state->num_union, ei_state->num_to_sample, ei_state->dim, &(ei_state->dev_mu), &(ei_state->dev_grad_mu), &(ei_state->dev_L), &(ei_state->dev_grad_L), &(ei_state->dev_grad_EIs), &(ei_state->dev_EIs));
-    ei_state->cuda_memory_allocated = true;
-}
-
-void cuda_memory_deallocation(CudaExpectedImprovementState * ei_state) {
-    cuda_free_mem(ei_state->dev_mu, ei_state->dev_grad_mu, ei_state->dev_L, ei_state->dev_grad_L, ei_state->dev_grad_EIs, ei_state->dev_EIs);
-        ei_state->cuda_memory_allocated = false;
-}
-// Need to put these two functions in gpp_cuda_util in future
 }  // end namespace optimal_learning

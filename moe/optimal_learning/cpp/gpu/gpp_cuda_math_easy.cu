@@ -69,25 +69,7 @@ namespace optimal_learning {
 
     __global__ void EI_gpu(double const * __restrict__ L, double const * __restrict__ mu, int no_of_pts, int NUM_ITS, double best, unsigned int seed, double * __restrict__ EIs)
     {
-        // copy mu, L to shared memory mu_local & L_local 
-        // For multiple dynamically sized arrays in a single kernel, declare a single extern unsized array, and use
-        // pointers into it to divide it into multiple arrays
-        // refer to http://devblogs.nvidia.com/parallelforall/using-shared-memory-cuda-cc/
-
-        extern __shared__ double storage[];
-        double * L_local = storage;
-        double * mu_local = &L_local[no_of_pts * no_of_pts];
-        const int idx = threadIdx.x;
         const int IDX = threadIdx.x + blockDim.x * blockIdx.x;
-        const int loop_no = no_of_pts * no_of_pts / blockDim.x;
-        for (int k = 0; k <= loop_no; ++k) {
-            if (k * blockDim.x + idx < no_of_pts * no_of_pts)
-                L_local[k*blockDim.x+idx] = L[k*blockDim.x+idx];
-            if (k * blockDim.x + idx < no_of_pts)
-                mu_local[k*blockDim.x+idx] = mu[k*blockDim.x+idx];
-        }
-        __syncthreads();
-
         // MC start
         // RNG setup
         unsigned int local_seed = seed + IDX;
@@ -105,9 +87,9 @@ namespace optimal_learning {
             for(int i = 0; i < no_of_pts; ++i) {
                 normals[i] = curand_normal_double(&s);
             }
-            TriangularMatrixVectorMultiply_gpu(L_local, no_of_pts, normals);
+            TriangularMatrixVectorMultiply_gpu(L, no_of_pts, normals);
             for(int i = 0; i < no_of_pts; ++i) {
-                EI = best - (mu_local[i] + normals[i]);
+                EI = best - (mu[i] + normals[i]);
                 if(EI > improvement_this_step) {
                     improvement_this_step = EI;
                 }
@@ -121,31 +103,7 @@ namespace optimal_learning {
      // grad_EIs[dim][num_to_sample][num_threads]
      __global__ void grad_EI_gpu(double const * __restrict__ mu, double const * __restrict__ L, double const * __restrict__ grad_mu, double const * __restrict__ grad_L, double best, int num_union_of_pts, int num_to_sample, int dimension, int NUM_ITS, unsigned int seed,  double * __restrict__ grad_EIs)
      {
-         // copy mu, L, grad_mu, grad_L to shared memory 
-         extern __shared__ double storage[];
-         double * mu_local = storage;
-         double * L_local = &mu_local[num_union_of_pts];
-         double * grad_mu_local = &L_local[num_union_of_pts * num_union_of_pts];
-         double * grad_L_local = &grad_mu_local[num_to_sample * dimension];
-         // mu_local[num_union_of_pts],
-         // L_local[num_union_of_pts * num_union_of_pts],
-         // grad_mu_local[num_to_sample * dimension],
-         // grad_L_local[num_to_sample * num_union_of_pts * num_union_of_pts * dimension];
-         const int idx = threadIdx.x;
          const int IDX = threadIdx.x + blockDim.x * blockIdx.x;
-         const int loop_no = num_to_sample * num_union_of_pts * num_union_of_pts * dimension / blockDim.x;
-         for (int k = 0; k <= loop_no; ++k) {
-             if (k * blockDim.x + idx < num_to_sample * num_union_of_pts * num_union_of_pts * dimension)
-                 grad_L_local[k*blockDim.x+idx] = grad_L[k*blockDim.x+idx];
-             if (k * blockDim.x + idx < num_union_of_pts * num_union_of_pts)
-                 L_local[k*blockDim.x+idx] = L[k*blockDim.x+idx];
-             if (k * blockDim.x + idx < num_to_sample * dimension)
-                 grad_mu_local[k*blockDim.x+idx] = grad_mu[k*blockDim.x+idx];
-             if (k * blockDim.x + idx < num_union_of_pts)
-                 mu_local[k*blockDim.x+idx] = mu[k*blockDim.x+idx];
-         }
-         __syncthreads();
-
          int i, k, mc, winner;
          double EI, improvement_this_step;
          // RNG setup
@@ -169,9 +127,9 @@ namespace optimal_learning {
                  normals[i] = curand_normal_double(&s);
                  normals_copy[i] = normals[i];
              }
-             TriangularMatrixVectorMultiply_gpu(L_local, num_union_of_pts, normals);
+             TriangularMatrixVectorMultiply_gpu(L, num_union_of_pts, normals);
              for(i = 0; i < num_union_of_pts; ++i){
-                 EI = best - (mu_local[i] + normals[i]);
+                 EI = best - (mu[i] + normals[i]);
                  if(EI > improvement_this_step){
                      improvement_this_step = EI;
                      winner = i;
@@ -181,11 +139,11 @@ namespace optimal_learning {
              if(improvement_this_step > 0.0) {
                  if (winner < num_to_sample) {
                      for (k = 0; k < dimension; ++k) {
-                         grad_EIs[IDX*num_to_sample*dimension + winner * dimension + k] -= grad_mu_local[winner * dimension + k];
+                         grad_EIs[IDX*num_to_sample*dimension + winner * dimension + k] -= grad_mu[winner * dimension + k];
                      }
                  }
                  for (i = 0; i < num_to_sample; ++i) {   // derivative w.r.t ith point
-                     GeneralMatrixVectorMultiply_gpu(grad_L_local + i*num_union_of_pts*num_union_of_pts*dimension + winner*num_union_of_pts*dimension, normals_copy, dimension, num_union_of_pts, dimension, grad_EIs + IDX*num_to_sample*dimension + i*dimension);
+                     GeneralMatrixVectorMultiply_gpu(grad_L + i*num_union_of_pts*num_union_of_pts*dimension + winner*num_union_of_pts*dimension, normals_copy, dimension, num_union_of_pts, dimension, grad_EIs + IDX*num_to_sample*dimension + i*dimension);
                  }
              }
          }
@@ -200,9 +158,9 @@ namespace optimal_learning {
      }
         
     extern "C" void cuda_allocate_mem(int num_union_of_pts, int num_to_sample, int dimension, double** __restrict__ pointer_dev_mu, double** __restrict__ pointer_dev_grad_mu, double** __restrict__ pointer_dev_L, double** __restrict__ pointer_dev_grad_L, double** __restrict__ pointer_dev_grad_EIs, double ** __restrict__ pointer_dev_EIs) {
-        const unsigned int gradEI_thread_no = 256;
+        const unsigned int gradEI_thread_no = 16;
         const unsigned int gradEI_block_no = 16;
-        const unsigned int EI_thread_no = 1024;
+        const unsigned int EI_thread_no = 16;
         const unsigned int EI_block_no = 16;
         int mem_size_mu = num_union_of_pts * sizeof(double);
         int mem_size_grad_mu = num_to_sample * dimension * sizeof(double);
@@ -243,7 +201,7 @@ namespace optimal_learning {
         checkCudaErrors(cudaMemcpy(dev_mu, mu, mem_size_mu, cudaMemcpyHostToDevice));
         checkCudaErrors(cudaMemcpy(dev_L, L, mem_size_L, cudaMemcpyHostToDevice));
         // execute kernel
-        EI_gpu<<< grid, threads, num_union_of_pts*sizeof(double)+num_union_of_pts*num_union_of_pts*sizeof(double)>>>(dev_L, dev_mu, num_union_of_pts, NUM_ITS, best, seed, dev_EIs); 
+        EI_gpu<<< grid, threads >>>(dev_L, dev_mu, num_union_of_pts, NUM_ITS, best, seed, dev_EIs); 
         getLastCudaError("EI_gpu execution failed");
         // copy dev_EIs back to CPU
         checkCudaErrors(cudaMemcpy(EIs, dev_EIs, mem_size_EIs, cudaMemcpyDeviceToHost));
@@ -276,7 +234,7 @@ namespace optimal_learning {
          checkCudaErrors(cudaMemcpy(dev_L, L, mem_size_L, cudaMemcpyHostToDevice));
          checkCudaErrors(cudaMemcpy(dev_grad_L, grad_L, mem_size_grad_L, cudaMemcpyHostToDevice));
          // execute kernel
-         grad_EI_gpu<<< grid, threads, mem_size_mu+mem_size_L+mem_size_grad_mu+mem_size_grad_L >>>(dev_mu, dev_L, dev_grad_mu, dev_grad_L, best, num_union_of_pts, num_to_sample, dimension, NUM_ITS, seed, dev_grad_EIs); 
+         grad_EI_gpu<<< grid, threads >>>(dev_mu, dev_L, dev_grad_mu, dev_grad_L, best, num_union_of_pts, num_to_sample, dimension, NUM_ITS, seed, dev_grad_EIs); 
          getLastCudaError("grad_EI_gpu execution failed");
          // copy result back to CPU
          checkCudaErrors(cudaMemcpy(grad_EIs, dev_grad_EIs, mem_size_grad_EIs, cudaMemcpyDeviceToHost));
@@ -300,4 +258,6 @@ namespace optimal_learning {
          }
      }
 }    // end namespace optimal_learning
+int main() {
+}
 
