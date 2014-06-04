@@ -4,9 +4,14 @@ import numpy
 
 import testify as T
 
-import moe.optimal_learning.python.cpp_wrappers as cpp_wrappers
+import moe.optimal_learning.python.cpp_wrappers.covariance
+import moe.optimal_learning.python.cpp_wrappers.expected_improvement
+import moe.optimal_learning.python.cpp_wrappers.gaussian_process
 from moe.optimal_learning.python.geometry_utils import ClosedInterval
-import moe.optimal_learning.python.python_version as python_version
+import moe.optimal_learning.python.python_version.covariance
+import moe.optimal_learning.python.python_version.domain
+import moe.optimal_learning.python.python_version.expected_improvement
+import moe.optimal_learning.python.python_version.gaussian_process
 from moe.tests.optimal_learning.python.gaussian_process_test_case import GaussianProcessTestCase, GaussianProcessTestEnvironmentInput
 
 
@@ -34,10 +39,10 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
         hyperparameter_interval=ClosedInterval(0.1, 0.3),
         lower_bound_interval=ClosedInterval(-1.0, 0.5),
         upper_bound_interval=ClosedInterval(2.0, 3.5),
-        covariance_class=python_version.covariance.SquareExponential,
-        spatial_domain_class=python_version.domain.TensorProductDomain,
-        hyperparameter_domain_class=python_version.domain.TensorProductDomain,
-        gaussian_process_class=python_version.gaussian_process.GaussianProcess,
+        covariance_class=moe.optimal_learning.python.python_version.covariance.SquareExponential,
+        spatial_domain_class=moe.optimal_learning.python.python_version.domain.TensorProductDomain,
+        hyperparameter_domain_class=moe.optimal_learning.python.python_version.domain.TensorProductDomain,
+        gaussian_process_class=moe.optimal_learning.python.python_version.gaussian_process.GaussianProcess,
     )
 
     num_sampled_list = [1, 2, 5, 10, 16, 20, 42, 50]
@@ -62,11 +67,11 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
         for test_case in self.gp_test_environments:
             domain, python_cov, python_gp = test_case
             points_to_sample = domain.generate_random_point_in_domain()
-            python_ei_eval = python_version.expected_improvement.ExpectedImprovement(python_gp, points_to_sample)
+            python_ei_eval = moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement(python_gp, points_to_sample)
 
-            cpp_cov = cpp_wrappers.covariance.SquareExponential(python_cov.get_hyperparameters())
-            cpp_gp = cpp_wrappers.gaussian_process.GaussianProcess(cpp_cov, python_gp._historical_data)
-            cpp_ei_eval = cpp_wrappers.expected_improvement.ExpectedImprovement(cpp_gp, points_to_sample)
+            cpp_cov = moe.optimal_learning.python.cpp_wrappers.covariance.SquareExponential(python_cov.get_hyperparameters())
+            cpp_gp = moe.optimal_learning.python.cpp_wrappers.gaussian_process.GaussianProcess(cpp_cov, python_gp._historical_data)
+            cpp_ei_eval = moe.optimal_learning.python.cpp_wrappers.expected_improvement.ExpectedImprovement(cpp_gp, points_to_sample)
 
             for _ in xrange(num_tests_per_case):
                 points_to_sample = domain.generate_random_point_in_domain()
