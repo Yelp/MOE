@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 """Test class for gp_next_points_epi view."""
-import simplejson as json
 import pyramid.testing
+
+import simplejson as json
 
 import testify as T
 
