@@ -100,15 +100,16 @@ $ pip install -e .
 $ python setup.py install
 ```
 
-### OSX Tips:
+### OSX Tips (<=10.8 For 10.9, see separate instructions below ):
 
 0. Are you sure you wouldn't rather be running linux?
 1. Download MacPorts - http://www.macports.org/install.php (If you change the install directory from `/opt/local`, don't forget to update the cmake invocation.)
 2. MacPorts can resolve most dependencies. Make sure you set your `PATH` env var.
-3. Download xQuartz (needed for X11, needed for matplotlib) - http://xquartz.macosforge.org/landing/ (Also available through MacPorts, see item 4.)
+3. Download xQuartz (needed for X11, needed for matplotlib) - http://xquartz.macosforge.org/landing/ (Also available through MacPorts, see item 5.)
 4. Getting gcc, boost, matplotlib, and xQuartz (`xorg-server`) reqs (before installing MOE):
 5. Make sure you create your virtualenv with the correct python `--python=/opt/local/bin/python` if you are using MacPorts
 6. If you are using another package manager (like homebrew) you may need to modify `opt/local` below to point to your `Cellar` directory.
+7. For the following commands, order matters, especially when selecting the proper gcc compiler.
 
 ```bash
 $ sudo port selfupdate
@@ -120,6 +121,21 @@ $ sudo port install py-matplotlib
 $ sudo port install doxygen
 $ export MOE_CMAKE_OPTS=-DCMAKE_FIND_ROOT_PATH=/opt/local && export MOE_CC_PATH=/opt/local/bin/gcc && export MOE_CXX_PATH=/opt/local/bin/g++
 ```
+
+#### Additional Tips for 10.9
+
+1. Currently, Boost cannot be installed with MacPorts. You should build it from source (see section "Building Boost")
+2. Boost, MOE, and the virtualenv must be built with the same python.
+
+#### Building Boost
+
+To ensure compatibility between versions, you may have to build Boost from scratch. After downloading the Boost source, run the bootstrap with the flag '--with-python=PYTHON' (more detailed build instructions in the Boost README), filling in the correct location for the correct python.
+
+Make sure GCC is '/opt/local/bin/gcc' (macport installed) or whatever C++11 compliant gcc you want, make sure python is '/opt/local/bin/python###' (where ### is version) or whatever python you want to use. 
+
+When building MOE, set the 'BOOST_ROOT' environment variable with the location of the Boost that you have installed when running CMake and verify that CMake finds it (e.g., check a link.txt file in a 'moe/build/CMakeFiles/*.dir/' dir and verify the location of libboost_python-mt or libboost_python, whichever is appropriate)  
+
+You might need to add (prepend?) BOOST_ROOT to 'CMAKE_FIND_ROOT_PATH=/opt/local' to make this work if you have a separate Boost installed via macport. You can also avoid setting boost's python and set moe's python instead (set '-DPYTHON_LIBRARIES=path/to/python.dylib' env variable when cmake'ing moe).
 
 ### Linux Tips:
 
@@ -134,7 +150,6 @@ $ apt-get install python python-dev gcc cmake libboost-all-dev python-pip doxyge
 
 1. Do you have dependencies installed in non-standard places? e.g., did you build your own boost? Set the env var: `export MOE_CMAKE_OPTS=-DCMAKE_FIND_ROOT_PATH=/path/to/stuff ...` (OS X users with MacPorts should set `/opt/local`) This can be used to set any number of cmake arguments.
 2. Are you using the right compiler? e.g., for `gcc`, run `export MOE_CC_PATH=gcc && export MOE_CXX_PATH=g++` (OS X users need to explicitly set this.)
-
 
 # Contributing
 
@@ -155,3 +170,6 @@ $ apt-get install python python-dev gcc cmake libboost-all-dev python-pip doxyge
 [4]: http://sc932.github.io/MOE/moe.views.rest.html#module-moe.views.rest.gp_ei
 [5]: http://sc932.github.io/MOE/moe.easy_interface.html
 [6]: http://docs.docker.io/
+
+
+
