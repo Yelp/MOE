@@ -25,7 +25,7 @@ class GpPrettyView(Root):
     response_schema = None  # Define in a subclass
 
     _pretty_default_request = None
-    _pretty_default_gp_info = {
+    _pretty_default_gp_historical_info = {
             "points_sampled": [
                 {"value_var": 0.01, "value": 0.1, "point": [0.0]},
                 {"value_var": 0.01, "value": 0.2, "point": [1.0]},

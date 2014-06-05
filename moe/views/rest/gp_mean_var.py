@@ -13,7 +13,7 @@ from pyramid.view import view_config
 
 from moe.views.constant import GP_MEAN_VAR_ROUTE_NAME, GP_MEAN_VAR_PRETTY_ROUTE_NAME
 from moe.views.gp_pretty_view import GpPrettyView, PRETTY_RENDERER
-from moe.views.schemas import ListOfFloats, MatrixOfFloats, GpInfo, ListOfPointsInDomain, CovarianceInfo, DomainInfo
+from moe.views.schemas import ListOfFloats, MatrixOfFloats, GpHistoricalInfo, ListOfPointsInDomain, CovarianceInfo, DomainInfo
 from moe.views.utils import _make_gp_from_params
 
 
@@ -24,7 +24,7 @@ class GpMeanVarRequest(colander.MappingSchema):
     **Required fields**
 
         :points_to_sample: list of points in domain to calculate the Gaussian Process (GP) mean and covariance at (:class:`moe.views.schemas.ListOfPointsInDomain`)
-        :gp_info: a :class:`moe.views.schemas.GpInfo` object of historical data
+        :gp_historical_info: a :class:`moe.views.schemas.GpHistoricalInfo` object of historical data
 
     **Optional fields**
 
@@ -38,7 +38,7 @@ class GpMeanVarRequest(colander.MappingSchema):
 
         {
             'points_to_sample': [[0.1], [0.5], [0.9]],
-            'gp_info': {
+            'gp_historical_info': {
                 'points_sampled': [
                         {'value_var': 0.01, 'value': 0.1, 'point': [0.0]},
                         {'value_var': 0.01, 'value': 0.2, 'point': [1.0]}
@@ -57,7 +57,7 @@ class GpMeanVarRequest(colander.MappingSchema):
 
         {
             'points_to_sample': [[0.1], [0.5], [0.9]],
-            'gp_info': {
+            'gp_historical_info': {
                 'points_sampled': [
                         {'value_var': 0.01, 'value': 0.1, 'point': [0.0]},
                         {'value_var': 0.01, 'value': 0.2, 'point': [1.0]}
@@ -76,7 +76,7 @@ class GpMeanVarRequest(colander.MappingSchema):
     """
 
     points_to_sample = ListOfPointsInDomain()
-    gp_info = GpInfo()
+    gp_historical_info = GpHistoricalInfo()
     domain_info = DomainInfo()
     covariance_info = CovarianceInfo(
             missing=CovarianceInfo().deserialize({}),
@@ -128,7 +128,7 @@ class GpMeanVarView(GpPrettyView):
             "points_to_sample": [
                 [0.1], [0.5], [0.9],
                 ],
-            "gp_info": GpPrettyView._pretty_default_gp_info,
+            "gp_historical_info": GpPrettyView._pretty_default_gp_historical_info,
             "covariance_info": GpPrettyView._pretty_default_covariance_info,
             "domain_info": GpPrettyView._pretty_default_domain_info,
             }

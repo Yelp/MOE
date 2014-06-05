@@ -25,7 +25,7 @@ class TestGpNextPointsViews(RestGaussianProcessTestCase):
         dict_to_dump = {
             'num_to_sample': num_to_sample,
             'mc_iterations': TEST_EXPECTED_IMPROVEMENT_MC_ITERATIONS,
-            'gp_info': self._build_gp_info(gaussian_process),
+            'gp_historical_info': self._build_gp_historical_info(gaussian_process),
             'covariance_info': _build_covariance_info(covariance),
             'domain_info': _build_domain_info(domain),
             'optimization_info': {

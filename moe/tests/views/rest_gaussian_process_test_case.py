@@ -20,8 +20,8 @@ class RestGaussianProcessTestCase(GaussianProcessTestCase):
         self.testapp = TestApp(app)
 
     @staticmethod
-    def _build_gp_info(gaussian_process):
-        """Create and return a gp_info dictionary from a GP object."""
+    def _build_gp_historical_info(gaussian_process):
+        """Create and return a gp_historical_info dictionary from a GP object."""
         # Convert sampled points
         json_points_sampled = []
         for point in gaussian_process._historical_data.to_list_of_sample_points():
@@ -31,9 +31,9 @@ class RestGaussianProcessTestCase(GaussianProcessTestCase):
                     'value_var': point.noise_variance,
                     })
 
-        # Build entire gp_info dict
-        gp_info = {
+        # Build entire gp_historical_info dict
+        gp_historical_info = {
                 'points_sampled': json_points_sampled,
                 }
 
-        return gp_info
+        return gp_historical_info
