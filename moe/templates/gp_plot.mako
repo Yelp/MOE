@@ -71,7 +71,7 @@
               <div class="form-group">
                 <label for="opt-num-multistarts" class="col-sm-6 control-label">
                     Multistarts
-                    <span class="glyphicon glyphicon-question-sign tooltip-rdy small" data-original-title="The number of multistarts that the SGD algorithm will use. Higher numbers will help the algorithm not get stuck in local EI optima at extra computational cost." data-placement="bottom"><span>
+                    <span class="glyphicon glyphicon-question-sign tooltip-rdy small" data-original-title="The number of multistarts that the SGD algorithm will use. Higher numbers will potentialily have the algorithm explore more local EI optima at extra computational cost." data-placement="bottom"><span>
                 </label>
                 <div class="col-sm-6">
                   <input class="form-control" id="opt-num-multistarts" value="${ default_num_multistarts }">
@@ -80,7 +80,7 @@
               <div class="form-group">
                 <label for="opt-gd-iterations" class="col-sm-6 control-label">
                     GD Iterations
-                    <span class="glyphicon glyphicon-question-sign tooltip-rdy small" data-original-title="Controls how many Gradient Descent (GD) steps the SGD algorithm will take for each multistart. Higher values will explore local optima more." data-placement="bottom"><span>
+                    <span class="glyphicon glyphicon-question-sign tooltip-rdy small" data-original-title="Controls how many Gradient Descent (GD) steps the SGD algorithm will take for each multistart. Higher values will resolve individual local optima more." data-placement="bottom"><span>
                 </label>
                 <div class="col-sm-6">
                   <input class="form-control" id="opt-gd-iterations" value="${ default_ei_optimization_parameters.max_num_restarts }">
