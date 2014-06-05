@@ -8,7 +8,7 @@
                     <div class="col-md-6">
                         <h3>
                             Gaussian Process (GP)
-                            <span class="glyphicon glyphicon-question-sign tooltip-rdy small" data-original-title="The Gaussian Process (GPs) posterior mean and variance given the historical data and parameters (on right). The dashed line is the posterior mean, the faded area is the variance, for each point in [0,1]." data-placement="right"><span>
+                            <span class="glyphicon glyphicon-question-sign tooltip-rdy small" data-original-title="The Gaussian Process (GPs) posterior mean and variance given the historical data and parameters (on right). The dashed line is the posterior mean, the faded area is the variance, for each point in [0,1]." data-placement="bottom"><span>
                         </h3>
                     </div>
                     <div class="col-md-6 middle-text">
@@ -83,7 +83,7 @@
                     <span class="glyphicon glyphicon-question-sign tooltip-rdy small" data-original-title="Controls how many Gradient Descent (GD) steps the SGD algorithm will take for each multistart. Higher values will resolve individual local optima more." data-placement="bottom"><span>
                 </label>
                 <div class="col-sm-6">
-                  <input class="form-control" id="opt-gd-iterations" value="${ default_ei_optimization_parameters.max_num_restarts }">
+                  <input class="form-control" id="opt-gd-iterations" value="${ default_ei_optimization_parameters.max_num_steps }">
                 </div>
               </div>
             </form>
@@ -117,7 +117,7 @@
             <center>
                 <h4>
                     Points Sampled
-                    <span class="glyphicon glyphicon-question-sign tooltip-rdy small" data-original-title="The historical points that have been sampled. In the form f(point) = value + variance." data-placement="bottom"><span>
+                    <span class="glyphicon glyphicon-question-sign tooltip-rdy small" data-original-title="The historical points that have been sampled. In the form f(point) = value &plusmn; variance." data-placement="bottom"><span>
                 </h4>
             </center>
             <div id="points-sampled">
@@ -198,9 +198,9 @@ function update_graphs(){
         'optimization_info':{
             'optimization_type': 'gradient_descent_optimizer',
             'num_multistarts': $.parseJSON($('#opt-num-multistarts').val()),
-            'num_random_samples': 100,
+            'num_random_samples': 400,
             'optimization_parameters': {
-                'max_num_restarts': $.parseJSON($('#opt-gd-iterations').val()),
+                'max_num_steps': $.parseJSON($('#opt-gd-iterations').val()),
                 },
             },
         }
