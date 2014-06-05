@@ -271,7 +271,7 @@ configure_object_library(
 add_custom_command(
   OUTPUT __init__.py
   WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-  COMMAND touch __init__.py
+  COMMAND echo 'r"""Built C++ files."""' > __init__.py
   )
 
 # Rule for GPP library; includes dependency on having __init__.py in the same directory

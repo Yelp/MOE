@@ -34,12 +34,12 @@ def main(global_config, **settings):
             event.request.db = db
         db_uri = settings['mongodb.url']
         db_port = int(settings['mongodb.port'])
-        MongoDB = pymongo.Connection
+        mongodb = pymongo.Connection
         if 'pyramid_debugtoolbar' in set(settings.values()):
             class MongoDB(pymongo.Connection):
                 def __html__(self):
                     return 'MongoDB: <b>{}></b>'.format(self)
-        conn = MongoDB(
+        conn = mongodb(
                 db_uri,
                 db_port,
                 )

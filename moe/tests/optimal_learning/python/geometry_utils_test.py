@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """Tests for the functions/classes in geometry_utils."""
 import numpy
+
 import testify as T
 
 from moe.optimal_learning.python.geometry_utils import ClosedInterval, generate_grid_points, generate_latin_hypercube_points

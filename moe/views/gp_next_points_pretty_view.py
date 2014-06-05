@@ -6,15 +6,16 @@ Include:
     2. Class that extends GpPrettyView for next_points optimizers
 """
 import colander
+
 import numpy
 
+from moe.optimal_learning.python.constant import DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS
 import moe.optimal_learning.python.cpp_wrappers.expected_improvement
 from moe.optimal_learning.python.cpp_wrappers.expected_improvement import ExpectedImprovement
 from moe.views.gp_pretty_view import GpPrettyView
 from moe.views.optimizable_gp_pretty_view import OptimizableGpPrettyView
-from moe.views.utils import _make_gp_from_params, _make_domain_from_params, _make_optimization_parameters_from_params
 from moe.views.schemas import GpInfo, ListOfPointsInDomain, CovarianceInfo, BoundedDomainInfo, OptimizationInfo
-from moe.optimal_learning.python.constant import DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS
+from moe.views.utils import _make_gp_from_params, _make_domain_from_params, _make_optimization_parameters_from_params
 
 
 class GpNextPointsRequest(colander.MappingSchema):
