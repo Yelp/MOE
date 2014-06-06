@@ -33,6 +33,6 @@ def linear_algebra_error(exception, request):
 @view_config(context=colander.Invalid)
 def failed_validation(exception, request):
     """Catch colander.Invalid and give an informative 500 response."""
-    response = Response('Failed validation:\n{0:s}' .format(pprint.pformat(exception.asdict())))
+    response = Response('Failed validation:\n{0:s}'.format(pprint.pformat(exception.asdict())))
     response.status_int = 500
     return response

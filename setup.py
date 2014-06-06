@@ -15,7 +15,7 @@ README = open(os.path.join(here, 'README.md')).read()
 MAJOR = 0
 MINOR = 1
 MICRO = 0
-VERSION = "{0:d}.{1:d}.{2:d}" .format(MAJOR, MINOR, MICRO)
+VERSION = "{0:d}.{1:d}.{2:d}".format(MAJOR, MINOR, MICRO)
 
 CLASSIFIERS = """
         Development Status :: 4 - Beta
@@ -69,7 +69,7 @@ def find_path(moe_executable):
         potential_path = os.path.join(prefix, moe_executable.exe_name)
         if os.path.isfile(potential_path):
             path = potential_path
-            print "Could not find env var {0:s} for {1:s}, using {2:s} from $PATH" .format(moe_executable.env_var, moe_executable.exe_name, path)
+            print "Could not find env var {0:s} for {1:s}, using {2:s} from $PATH".format(moe_executable.env_var, moe_executable.exe_name, path)
             break
 
     return path
@@ -101,7 +101,7 @@ class InstallCppComponents(install):
         if cmake_options == '':
             print "MOE_CMAKE_OPTS not set. Passing no extra args to cmake."
         else:
-            print "Passing '{0:s}' args from MOE_CMAKE_OPTS to cmake." .format(cmake_options)
+            print "Passing '{0:s}' args from MOE_CMAKE_OPTS to cmake.".format(cmake_options)
 
         # Set env dict with cc and/or cxx path
         cc_path = os.environ.get('MOE_CC_PATH', None)
@@ -109,12 +109,12 @@ class InstallCppComponents(install):
         env = {}
         if cc_path is not None:
             env['CC'] = cc_path
-            print "Passing CC={0:s} to cmake." .format(cc_path)
+            print "Passing CC={0:s} to cmake.".format(cc_path)
         else:
             print "MOE_CC_PATH not set. Not passing a CC env var to cmake."
         if cxx_path is not None:
             env['CXX'] = cxx_path
-            print "Passing CXX={0:s} to cmake." .format(cxx_path)
+            print "Passing CXX={0:s} to cmake.".format(cxx_path)
         else:
             print "MOE_CXX_PATH not set. Not passing a CXX env var to cmake."
 

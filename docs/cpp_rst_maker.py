@@ -52,7 +52,7 @@ C++ Files
 """
     )
     for cpp_file in cpp_files:
-        fout.write('    {0:s}.rst\n' .format(cpp_file))
+        fout.write('    {0:s}.rst\n'.format(cpp_file))
     fout.close()
 
 
@@ -61,7 +61,7 @@ def create_rst_file(file_base, files):
     fout = open(
             join(
                 'docs',
-                '{0:s}.rst' .format(file_base),
+                '{0:s}.rst'.format(file_base),
                 ),
             'w'
     )
@@ -71,12 +71,12 @@ def create_rst_file(file_base, files):
 
 **Contents:**
 
-""" .format(file_base)
+""".format(file_base)
     )
     index_count = 1
     for file_type in ['hpp', 'cpp']:
         if files[file_type] is not None:
-            fout.write('    {0:d}. `{1:s}`_\n' .format(index_count, files[file_type]))
+            fout.write('    {0:d}. `{1:s}`_\n'.format(index_count, files[file_type]))
             index_count += 1
     fout.write('\n')
 
@@ -88,7 +88,7 @@ def create_rst_file(file_base, files):
 
 .. doxygenfile:: {1:s}
 
-""" .format(files[file_type], files[file_type])
+""".format(files[file_type], files[file_type])
             )
     fout.close()
 

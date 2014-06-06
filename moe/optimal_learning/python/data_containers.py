@@ -37,7 +37,7 @@ class SamplePoint(_BaseSamplePoint):
         if noise_variance >= 0.0 and numpy.isfinite(noise_variance):
             return super(SamplePoint, cls).__new__(cls, point, value, noise_variance)
         else:
-            raise ValueError('noise_variance = {0:s} must be positive and finite!' .format(noise_variance))
+            raise ValueError('noise_variance = {0:s} must be positive and finite!'.format(noise_variance))
 
     def __str__(self):
         """Pretty print this object as a dict."""
@@ -62,15 +62,15 @@ class SamplePoint(_BaseSamplePoint):
         """
         # check that dim of points matches specified dimension
         if dim is not None and len(self.point) != dim:
-            raise ValueError('Input dim = {0:d} and point dimension {1:d} do not match!' .format(dim, len(self.point)))
+            raise ValueError('Input dim = {0:d} and point dimension {1:d} do not match!'.format(dim, len(self.point)))
 
         # check that all values are finite
         if not numpy.isfinite(self.point).all():
-            raise ValueError('point = {0:s} contains non-finite values!' .format(self.point))
+            raise ValueError('point = {0:s} contains non-finite values!'.format(self.point))
         if not numpy.isfinite(self.value):
-            raise ValueError('value = {0:s} is non-finite!' .format(self.value))
+            raise ValueError('value = {0:s} is non-finite!'.format(self.value))
         if not numpy.isfinite(self.noise_variance) or self.noise_variance < 0.0:
-            raise ValueError('value = {0:s} is non-finite or negative!' .format(self.noise_variance))
+            raise ValueError('value = {0:s} is non-finite or negative!'.format(self.noise_variance))
 
 
 class HistoricalData(object):
@@ -179,7 +179,7 @@ class HistoricalData(object):
         """
         num_sampled = len(sample_points)
         if dim <= 0:
-            raise ValueError('Input dim = {0:d} is non-positive.' .format(dim))
+            raise ValueError('Input dim = {0:d} is non-positive.'.format(dim))
 
         if num_sampled > 0:
             for sample_point in sample_points:
@@ -202,11 +202,11 @@ class HistoricalData(object):
 
         """
         if dim <= 0:
-            raise ValueError('Input dim = {0:d} is non-positive.' .format(dim))
+            raise ValueError('Input dim = {0:d} is non-positive.'.format(dim))
 
         # Check that all array leading dimensions are the same
         if points_sampled.shape[0] != points_sampled_value.size or points_sampled.shape[0] != points_sampled_noise_variance.size:
-            raise ValueError('Input arrays do not have the same leading dimension: (points_sampled, value, noise) = ({0:d}, {1:d}, {2:d})' .format(points_sampled.shape[0], points_sampled_value.size, points_sampled_noise_variance.size))
+            raise ValueError('Input arrays do not have the same leading dimension: (points_sampled, value, noise) = ({0:d}, {1:d}, {2:d})'.format(points_sampled.shape[0], points_sampled_value.size, points_sampled_noise_variance.size))
 
         if points_sampled.shape[0] > 0:
             for i in xrange(points_sampled.shape[0]):

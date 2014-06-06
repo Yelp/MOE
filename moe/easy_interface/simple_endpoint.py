@@ -44,7 +44,7 @@ def gp_next_points(
 
     json_payload = json.dumps(raw_payload)
 
-    url = "http://{0:s}:{1:d}{2:s}" .format(rest_host, rest_port, endpoint)
+    url = "http://{0:s}:{1:d}{2:s}".format(rest_host, rest_port, endpoint)
 
     json_response = call_endpoint_with_payload(url, json_payload)
 
@@ -90,7 +90,7 @@ def gp_hyper_opt(
             })
     json_payload = json.dumps(raw_payload)
 
-    url = "http://{0:s}:{1:d}{2:s}" .format(rest_host, rest_port, endpoint)
+    url = "http://{0:s}:{1:d}{2:s}".format(rest_host, rest_port, endpoint)
 
     json_response = call_endpoint_with_payload(url, json_payload)
 
@@ -123,7 +123,7 @@ def gp_mean_var(
 
     json_payload = json.dumps(raw_payload)
 
-    url = "http://{0:s}:{1:d}{2:s}" .format(rest_host, rest_port, endpoint)
+    url = "http://{0:s}:{1:d}{2:s}".format(rest_host, rest_port, endpoint)
 
     json_response = call_endpoint_with_payload(url, json_payload)
 

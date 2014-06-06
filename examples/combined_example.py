@@ -42,7 +42,7 @@ if __name__ == '__main__':
         covariance_info = {}
         if i > 0 and i % 5 == 0:
             covariance_info = gp_hyper_opt(exp.historical_data.to_list_of_sample_points())
-            print "Updated covariance_info with {0:s}" .format(str(covariance_info))
+            print "Updated covariance_info with {0:s}".format(str(covariance_info))
         # Use MOE to determine what is the point with highest Expected Improvement to use next
         next_point_to_sample = gp_next_points(
                 exp,
@@ -51,7 +51,7 @@ if __name__ == '__main__':
         # Sample the point from our objective function, we can replace this with any function
         value_of_next_point = function_to_minimize(next_point_to_sample)
 
-        print "Sampled f({0:s}) = {1:.18E}" .format(str(next_point_to_sample), value_of_next_point)
+        print "Sampled f({0:s}) = {1:.18E}".format(str(next_point_to_sample), value_of_next_point)
 
         # Add the information about the point to the experiment historical data to inform the GP
         exp.historical_data.append_sample_points([[next_point_to_sample, value_of_next_point, 0.01]])  # We can add some noise
@@ -61,4 +61,4 @@ if __name__ == '__main__':
             exp.historical_data.to_list_of_sample_points(),  # Historical data to inform Gaussian Process
             points_to_evaluate,  # We will calculate the mean and variance of the GP at these points
             )
-    print "GP mean at (0, 0), (0.1, 0.1), ...: {0:s}" .format(str(mean))
+    print "GP mean at (0, 0), (0.1, 0.1), ...: {0:s}".format(str(mean))
