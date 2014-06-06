@@ -132,7 +132,7 @@ class GpNextPointsConstantLiar(GpNextPointsPrettyView):
         elif params.get('lie_method') == CONSTANT_LIAR_MEAN:
             return numpy.mean(points_sampled_values)
         else:
-            raise(NotImplementedError, '{0:s} is not implemented'.format(params.get('lie_method')))
+            raise(NotImplementedError, '{0} is not implemented'.format(params.get('lie_method')))
 
     @view_config(route_name=_route_name, renderer='json', request_method='POST')
     def gp_next_points_constant_liar_view(self):
