@@ -35,8 +35,34 @@ New next_points routes have the form:
 from collections import namedtuple
 
 
-MoeRestLogLine = namedtuple('MoeLogLine', ['endpoint', 'type', 'content'])
-MoeRoute = namedtuple('MoeRoute', ['route_name', 'endpoint'])
+_BaseMoeRestLogLine = namedtuple('MoeLogLine', ['endpoint', 'type', 'content'])
+
+
+class MoeRestLogLine(_BaseMoeRestLogLine):
+
+    """The information logged for all MOE REST requests/responses.
+
+    :ivar endpoint: The endpoint that was called
+    :ivar type: Whether this is a ``'request'`` or ``'response'``
+    :ivar content: The json of the request/response
+
+    """
+
+    __slots__ = ()
+
+_BaseMoeRoute = namedtuple('MoeRoute', ['route_name', 'endpoint'])
+
+
+class MoeRoute(_BaseMoeRoute):
+
+    """Information for mapping a MOE ``route_name`` to its corresponding endpoint.
+
+    :ivar route_name: The name of the route (ie ``'gp_ei'``)
+    :ivar endpoint: The endpoint for the route (ie ``'/gp/ei'``)
+
+    """
+
+    __slots__ = ()
 
 GP_EI_ROUTE_NAME = 'gp_ei'
 GP_EI_ENDPOINT = '/gp/ei'
