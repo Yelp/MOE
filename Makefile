@@ -16,7 +16,7 @@ test:
 
 style-test-no-tox:
 		pip install flake8 flake8-import-order pep8-naming flake8-docstrings
-		flake8 --ignore=E501,E126,E123,I101 moe
+		flake8 --ignore=E501,E126,E123,I101,N806 moe
 		pep257 moe
 
 style-test:

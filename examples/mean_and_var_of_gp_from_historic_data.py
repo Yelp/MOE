@@ -28,4 +28,4 @@ if __name__ == '__main__':
             )
     # Print out the mean and variance of the GP at each point_to_evaluate
     for i, point in enumerate(points_to_evaluate):
-        print "GP(%s) ~ N(%f, %f)" % (str(point), mean[i], var[i][i])
+        print "GP({0:s}) ~ N({1:.18E}, {2:.18E})".format(str(point), mean[i], var[i][i])

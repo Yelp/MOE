@@ -2,12 +2,10 @@
 """Utilities for MOE views."""
 from numpy.linalg import LinAlgError
 
-from moe.optimal_learning.python.constant import OPTIMIZATION_TYPE_TO_DEFAULT_PARAMETERS
-from moe.optimal_learning.python.linkers import DOMAIN_TYPES_TO_DOMAIN_LINKS, COVARIANCE_TYPES_TO_CLASSES, OPTIMIZATION_TYPES_TO_OPTIMIZATION_METHODS
-from moe.views.schemas import OPTIMIZATION_TYPES_TO_SCHEMA_CLASSES
-from moe.optimal_learning.python.data_containers import SamplePoint, HistoricalData
 from moe.optimal_learning.python.cpp_wrappers.gaussian_process import GaussianProcess
+from moe.optimal_learning.python.data_containers import SamplePoint, HistoricalData
 from moe.optimal_learning.python.geometry_utils import ClosedInterval
+from moe.optimal_learning.python.linkers import DOMAIN_TYPES_TO_DOMAIN_LINKS, COVARIANCE_TYPES_TO_CLASSES, OPTIMIZATION_TYPES_TO_OPTIMIZATION_METHODS
 from moe.views.exceptions import SingularMatrixError
 
 
@@ -86,18 +84,10 @@ def _make_optimization_parameters_from_params(params):
     """
     optimization_info = params.get('optimization_info')
     num_random_samples = optimization_info.get('num_random_samples')
+    validated_optimization_parameters = params.get('optimization_info').get('optimization_parameters')
 
     optimization_method = OPTIMIZATION_TYPES_TO_OPTIMIZATION_METHODS[optimization_info.get('optimization_type')]
-    schema_class = OPTIMIZATION_TYPES_TO_SCHEMA_CLASSES[optimization_info.get('optimization_type')]()
 
-    # Start with defaults
-    optimization_parameters_dict = dict(OPTIMIZATION_TYPE_TO_DEFAULT_PARAMETERS[optimization_info.get('optimization_type')]._asdict())
-    for param, val in optimization_info.get('optimization_parameters', {}).iteritems():
-        # Override defaults as needed
-        optimization_parameters_dict[param] = val
-
-    # Validate optimization parameters
-    validated_optimization_parameters = schema_class.deserialize(optimization_parameters_dict)
     # TODO(eliu): Kill this when you reoganize num_multistarts for C++
     validated_optimization_parameters['num_multistarts'] = optimization_info['num_multistarts']
     optimization_parameters = optimization_method.cpp_parameters_class(**validated_optimization_parameters)
@@ -111,7 +101,7 @@ def _make_gp_from_params(params):
     ``params`` has the following form::
 
         params = {
-            'gp_info': <instance of moe.rest.schemas.GpInfo>,
+            'gp_historical_info': <instance of moe.rest.schemas.GpHistoricalInfo>,
             'domain_info': <instance of moe.rest.schemas.DomainInfo>,
             'covariance_info': <instance of moe.rest.schemas.CovarianceInfo>,
             }
@@ -121,9 +111,9 @@ def _make_gp_from_params(params):
 
     """
     # Load up the info
-    gp_info = params.get("gp_info")
+    gp_historical_info = params.get("gp_historical_info")
     domain_info = params.get("domain_info")
-    points_sampled = gp_info.get('points_sampled')
+    points_sampled = gp_historical_info.get('points_sampled')
 
     covariance_of_process = _make_covariance_of_process_from_params(params)
     gaussian_process = GaussianProcess(

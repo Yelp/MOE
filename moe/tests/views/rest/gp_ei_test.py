@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 """Test class for gp_mean_var view."""
 import numpy
+
 import simplejson as json
 
 import testify as T
 
+from moe.optimal_learning.python.cpp_wrappers.covariance import SquareExponential
 from moe.optimal_learning.python.cpp_wrappers.expected_improvement import ExpectedImprovement
 from moe.optimal_learning.python.cpp_wrappers.gaussian_process import GaussianProcess
-from moe.optimal_learning.python.cpp_wrappers.covariance import SquareExponential
 from moe.tests.views.rest_gaussian_process_test_case import RestGaussianProcessTestCase
 from moe.views.constant import GP_EI_ENDPOINT
 from moe.views.rest.gp_ei import GpEiResponse
@@ -26,7 +27,7 @@ class TestGpEiView(RestGaussianProcessTestCase):
         json_payload = json.dumps({
             'points_to_evaluate': points_to_evaluate,
             'points_being_sampled': [],
-            'gp_info': self._build_gp_info(gaussian_process),
+            'gp_historical_info': self._build_gp_historical_info(gaussian_process),
             'covariance_info': _build_covariance_info(covariance),
             'domain_info': _build_domain_info(domain),
             })

@@ -1,14 +1,16 @@
 # -*- coding: utf-8 -*-
 """Test class for gp_next_points_epi view."""
+import pyramid.testing
+
 import simplejson as json
 
 import testify as T
 
+from moe.optimal_learning.python.constant import TEST_OPTIMIZATION_MULTISTARTS, TEST_GRADIENT_DESCENT_PARAMETERS, TEST_OPTIMIZATION_NUM_RANDOM_SAMPLES, TEST_EXPECTED_IMPROVEMENT_MC_ITERATIONS
 from moe.tests.views.rest_gaussian_process_test_case import RestGaussianProcessTestCase
 from moe.views.constant import ALL_NEXT_POINTS_MOE_ROUTES, GP_NEXT_POINTS_CONSTANT_LIAR_ROUTE_NAME
-from moe.views.gp_next_points_pretty_view import GpNextPointsResponse
-from moe.views.utils import _build_domain_info, _build_covariance_info
-from moe.optimal_learning.python.constant import TEST_OPTIMIZATION_MULTISTARTS, TEST_GRADIENT_DESCENT_PARAMETERS, TEST_OPTIMIZATION_NUM_RANDOM_SAMPLES, TEST_EXPECTED_IMPROVEMENT_MC_ITERATIONS
+from moe.views.gp_next_points_pretty_view import GpNextPointsResponse, GpNextPointsPrettyView
+from moe.views.utils import _build_domain_info, _build_covariance_info, _make_optimization_parameters_from_params
 
 
 class TestGpNextPointsViews(RestGaussianProcessTestCase):
@@ -23,7 +25,7 @@ class TestGpNextPointsViews(RestGaussianProcessTestCase):
         dict_to_dump = {
             'num_to_sample': num_to_sample,
             'mc_iterations': TEST_EXPECTED_IMPROVEMENT_MC_ITERATIONS,
-            'gp_info': self._build_gp_info(gaussian_process),
+            'gp_historical_info': self._build_gp_historical_info(gaussian_process),
             'covariance_info': _build_covariance_info(covariance),
             'domain_info': _build_domain_info(domain),
             'optimization_info': {
@@ -32,9 +34,56 @@ class TestGpNextPointsViews(RestGaussianProcessTestCase):
                 'optimization_parameters': dict(TEST_GRADIENT_DESCENT_PARAMETERS._asdict()),
                 },
             }
+
         if lie_value is not None:
             dict_to_dump['lie_value'] = lie_value
         return json.dumps(dict_to_dump)
+
+    def test_optimization_params_passed_through(self):
+        """Test that the optimization parameters get passed through to the endpoint."""
+        test_case = self.gp_test_environments[0]
+        num_to_sample = 1
+
+        python_domain, python_cov, python_gp = test_case
+
+        # Test default test parameters get passed through
+        json_payload = json.loads(self._build_json_payload(python_domain, python_gp, python_cov, num_to_sample))
+
+        request = pyramid.testing.DummyRequest(post=json_payload)
+        request.json_body = json_payload
+        view = GpNextPointsPrettyView(request)
+        params = view.get_params_from_request()
+        _, optimization_parameters, num_random_samples = _make_optimization_parameters_from_params(params)
+
+        T.assert_equal(
+                optimization_parameters.num_multistarts,
+                TEST_OPTIMIZATION_MULTISTARTS
+                )
+
+        T.assert_equal(
+                optimization_parameters._python_max_num_steps,
+                TEST_GRADIENT_DESCENT_PARAMETERS.max_num_steps
+                )
+
+        # Test arbitrary parameters get passed through
+        json_payload['optimization_info']['num_multistarts'] = TEST_OPTIMIZATION_MULTISTARTS + 5
+        json_payload['optimization_info']['optimization_parameters']['max_num_steps'] = TEST_GRADIENT_DESCENT_PARAMETERS.max_num_steps + 10
+
+        request = pyramid.testing.DummyRequest(post=json_payload)
+        request.json_body = json_payload
+        view = GpNextPointsPrettyView(request)
+        params = view.get_params_from_request()
+        _, optimization_parameters, num_random_samples = _make_optimization_parameters_from_params(params)
+
+        T.assert_equal(
+                optimization_parameters.num_multistarts,
+                TEST_OPTIMIZATION_MULTISTARTS + 5
+                )
+
+        T.assert_equal(
+                optimization_parameters._python_max_num_steps,
+                TEST_GRADIENT_DESCENT_PARAMETERS.max_num_steps + 10
+                )
 
     def test_interface_returns_same_as_cpp(self):
         """Test that the /gp/next_points/* endpoints do the same thing as the C++ interface."""

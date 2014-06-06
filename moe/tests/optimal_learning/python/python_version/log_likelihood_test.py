@@ -6,6 +6,7 @@ we rely more on cpp_wrappers/covariance_test.py's comparison with C++ for verifi
 
 """
 import numpy
+
 import testify as T
 
 from moe.optimal_learning.python.geometry_utils import ClosedInterval

@@ -6,14 +6,16 @@ Include:
     2. Class that extends GpPrettyView for next_points optimizers
 """
 import colander
+
 import numpy
 
+from moe.optimal_learning.python.constant import DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS
 import moe.optimal_learning.python.cpp_wrappers.expected_improvement
 from moe.optimal_learning.python.cpp_wrappers.expected_improvement import ExpectedImprovement
 from moe.views.gp_pretty_view import GpPrettyView
+from moe.views.optimizable_gp_pretty_view import OptimizableGpPrettyView
+from moe.views.schemas import GpHistoricalInfo, ListOfPointsInDomain, CovarianceInfo, BoundedDomainInfo, OptimizationInfo
 from moe.views.utils import _make_gp_from_params, _make_domain_from_params, _make_optimization_parameters_from_params
-from moe.views.schemas import GpInfo, ListOfPointsInDomain, CovarianceInfo, BoundedDomainInfo, OptimizationInfo
-from moe.optimal_learning.python.constant import DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS
 
 
 class GpNextPointsRequest(colander.MappingSchema):
@@ -22,7 +24,7 @@ class GpNextPointsRequest(colander.MappingSchema):
 
     **Required fields**
 
-        :gp_info: a :class:`moe.views.schemas.GpInfo` dict of historical data
+        :gp_historical_info: a :class:`moe.views.schemas.GpHistoricalInfo` dict of historical data
         :domain_info: a :class:`moe.views.schemas.BoundedDomainInfo` dict of domain information
 
     **Optional fields**
@@ -40,7 +42,7 @@ class GpNextPointsRequest(colander.MappingSchema):
 
         {
             'num_to_sample': 1,
-            'gp_info': {
+            'gp_historical_info': {
                 'points_sampled': [
                         {'value_var': 0.01, 'value': 0.1, 'point': [0.0]},
                         {'value_var': 0.01, 'value': 0.2, 'point': [1.0]}
@@ -63,7 +65,7 @@ class GpNextPointsRequest(colander.MappingSchema):
         {
             'num_to_sample': 1,
             'mc_iterations': 10000,
-            'gp_info': {
+            'gp_historical_info': {
                 'points_sampled': [
                         {'value_var': 0.01, 'value': 0.1, 'point': [0.0]},
                         {'value_var': 0.01, 'value': 0.2, 'point': [1.0]}
@@ -102,7 +104,7 @@ class GpNextPointsRequest(colander.MappingSchema):
             validator=colander.Range(min=1),
             missing=DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS,
             )
-    gp_info = GpInfo()
+    gp_historical_info = GpHistoricalInfo()
     domain_info = BoundedDomainInfo()
     covariance_info = CovarianceInfo(
             missing=CovarianceInfo().deserialize({}),
@@ -142,7 +144,7 @@ class GpNextPointsResponse(colander.MappingSchema):
             )
 
 
-class GpNextPointsPrettyView(GpPrettyView):
+class GpNextPointsPrettyView(OptimizableGpPrettyView):
 
     """A class to encapsulate 'pretty' ``gp_next_points_*`` views.
 
@@ -158,7 +160,7 @@ class GpNextPointsPrettyView(GpPrettyView):
 
     _pretty_default_request = {
             "num_to_sample": 1,
-            "gp_info": GpPrettyView._pretty_default_gp_info,
+            "gp_historical_info": GpPrettyView._pretty_default_gp_historical_info,
             "domain_info": {
                 "dim": 1,
                 "domain_bounds": [
@@ -173,7 +175,7 @@ class GpNextPointsPrettyView(GpPrettyView):
     def compute_next_points_to_sample_response(self, params, optimization_method_name, route_name, *args, **kwargs):
         """Compute the next points to sample (and their expected improvement) using optimization_method_name from params in the request.
 
-        :param request_params: the deserialized REST request, containing ei_optimization_parameters and gp_info
+        :param request_params: the deserialized REST request, containing ei_optimization_parameters and gp_historical_info
         :type request_params: a deserialized self.request_schema object as a dict
         :param optimization_method_name: the optimization method to use
         :type optimization_method_name: string in ``moe.views.constant.OPTIMIZATION_METHOD_NAMES``

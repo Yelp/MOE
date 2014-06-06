@@ -12,7 +12,8 @@ from pyramid.view import view_config
 from moe.optimal_learning.python.cpp_wrappers.log_likelihood import GaussianProcessLogLikelihood, multistart_hyperparameter_optimization
 from moe.views.constant import GP_HYPER_OPT_ROUTE_NAME, GP_HYPER_OPT_PRETTY_ROUTE_NAME
 from moe.views.gp_pretty_view import GpPrettyView, PRETTY_RENDERER
-from moe.views.schemas import GpInfo, CovarianceInfo, BoundedDomainInfo, OptimizationInfo, DomainInfo, ListOfFloats
+from moe.views.optimizable_gp_pretty_view import OptimizableGpPrettyView
+from moe.views.schemas import GpHistoricalInfo, CovarianceInfo, BoundedDomainInfo, OptimizationInfo, DomainInfo, ListOfFloats
 from moe.views.utils import _build_covariance_info, _make_domain_from_params, _make_gp_from_params, _make_optimization_parameters_from_params
 
 
@@ -22,7 +23,7 @@ class GpHyperOptRequest(colander.MappingSchema):
 
     **Required fields**
 
-        :gp_info: a :class:`moe.views.schemas.GpInfo` object of historical data
+        :gp_historical_info: a :class:`moe.views.schemas.GpHistoricalInfo` object of historical data
         :domain_info: a :class:`moe.views.schemas.DomainInfo` dict of domain information for the GP
         :hyperparameter_domain_info: a :class:`moe.views.schemas.BoundedDomainInfo` dict of domain information for the hyperparameter optimization
 
@@ -38,7 +39,7 @@ class GpHyperOptRequest(colander.MappingSchema):
         Content-Type: text/javascript
 
         {
-            'gp_info': {
+            'gp_historical_info': {
                 'points_sampled': [
                         {'value_var': 0.01, 'value': 0.1, 'point': [0.0]},
                         {'value_var': 0.01, 'value': 0.2, 'point': [1.0]}
@@ -71,7 +72,7 @@ class GpHyperOptRequest(colander.MappingSchema):
 
     """
 
-    gp_info = GpInfo()
+    gp_historical_info = GpHistoricalInfo()
     domain_info = DomainInfo()
     covariance_info = CovarianceInfo(
             missing=CovarianceInfo().deserialize({}),
@@ -127,7 +128,7 @@ class GpHyperOptResponse(colander.MappingSchema):
     status = GpHyperOptStatus()
 
 
-class GpHyperOptView(GpPrettyView):
+class GpHyperOptView(OptimizableGpPrettyView):
 
     """Views for gp_hyper_opt endpoints."""
 
@@ -138,7 +139,7 @@ class GpHyperOptView(GpPrettyView):
     response_schema = GpHyperOptResponse()
 
     _pretty_default_request = {
-            "gp_info": GpPrettyView._pretty_default_gp_info,
+            "gp_historical_info": GpPrettyView._pretty_default_gp_historical_info,
             "domain_info": {"dim": 1},
             "covariance_info": GpPrettyView._pretty_default_covariance_info,
             "hyperparameter_domain_info": {
