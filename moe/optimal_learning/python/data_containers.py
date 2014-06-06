@@ -37,7 +37,7 @@ class SamplePoint(_BaseSamplePoint):
         if noise_variance >= 0.0 and numpy.isfinite(noise_variance):
             return super(SamplePoint, cls).__new__(cls, point, value, noise_variance)
         else:
-            raise ValueError('noise_variance = {0:s} must be positive and finite!'.format(noise_variance))
+            raise ValueError('noise_variance = {0} must be positive and finite!'.format(noise_variance))
 
     def __str__(self):
         """Pretty print this object as a dict."""
@@ -66,11 +66,11 @@ class SamplePoint(_BaseSamplePoint):
 
         # check that all values are finite
         if not numpy.isfinite(self.point).all():
-            raise ValueError('point = {0:s} contains non-finite values!'.format(self.point))
+            raise ValueError('point = {0} contains non-finite values!'.format(self.point))
         if not numpy.isfinite(self.value):
-            raise ValueError('value = {0:s} is non-finite!'.format(self.value))
+            raise ValueError('value = {0} is non-finite!'.format(self.value))
         if not numpy.isfinite(self.noise_variance) or self.noise_variance < 0.0:
-            raise ValueError('value = {0:s} is non-finite or negative!'.format(self.noise_variance))
+            raise ValueError('value = {0} is non-finite or negative!'.format(self.noise_variance))
 
 
 class HistoricalData(object):
