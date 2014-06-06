@@ -52,7 +52,7 @@ class GpPrettyView(Root):
 
     def _create_moe_log_line(self, type, content):
         """Log a :class:`moe.views.constant.MoeLogLine` as a dict to the MOE logger."""
-        self.log.debug(
+        self.log.info(
                 dict(
                     MoeRestLogLine(
                         endpoint=self._route_name,
