@@ -42,7 +42,7 @@ class Experiment(object):
         """Construct a json serializeable and MOE REST recognizeable dictionary of the experiment."""
         return {
                 'domain_info': _build_domain_info(self.domain),
-                'gp_info': self.historical_data.json_payload(),
+                'gp_historical_info': self.historical_data.json_payload(),
                 }
 
     def __str__(self):

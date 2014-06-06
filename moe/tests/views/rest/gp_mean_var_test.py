@@ -25,7 +25,7 @@ class TestGpMeanVarView(RestGaussianProcessTestCase):
         """Create a json_payload to POST to the /gp/mean_var endpoint with all needed info."""
         json_payload = json.dumps({
             'points_to_sample': points_to_sample,
-            'gp_info': self._build_gp_info(gaussian_process),
+            'gp_historical_info': self._build_gp_historical_info(gaussian_process),
             'covariance_info': _build_covariance_info(covariance),
             'domain_info': _build_domain_info(domain),
             })

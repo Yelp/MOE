@@ -101,7 +101,7 @@ def _make_gp_from_params(params):
     ``params`` has the following form::
 
         params = {
-            'gp_info': <instance of moe.rest.schemas.GpInfo>,
+            'gp_historical_info': <instance of moe.rest.schemas.GpHistoricalInfo>,
             'domain_info': <instance of moe.rest.schemas.DomainInfo>,
             'covariance_info': <instance of moe.rest.schemas.CovarianceInfo>,
             }
@@ -111,9 +111,9 @@ def _make_gp_from_params(params):
 
     """
     # Load up the info
-    gp_info = params.get("gp_info")
+    gp_historical_info = params.get("gp_historical_info")
     domain_info = params.get("domain_info")
-    points_sampled = gp_info.get('points_sampled')
+    points_sampled = gp_historical_info.get('points_sampled')
 
     covariance_of_process = _make_covariance_of_process_from_params(params)
     gaussian_process = GaussianProcess(

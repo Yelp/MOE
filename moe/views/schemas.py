@@ -208,7 +208,7 @@ class CovarianceInfo(colander.MappingSchema):
             )
 
 
-class GpInfo(colander.MappingSchema):
+class GpHistoricalInfo(colander.MappingSchema):
 
     """The Gaussian Process info needed for every request.
 

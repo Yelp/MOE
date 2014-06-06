@@ -37,8 +37,8 @@ def gp_next_points(
     raw_payload = kwargs.copy()  # Any options can be set via the kwargs ('covariance_info' etc.)
 
     experiment_payload = moe_experiment.build_json_payload()
-    if 'gp_info' not in raw_payload:
-        raw_payload['gp_info'] = experiment_payload.get('gp_info')
+    if 'gp_historical_info' not in raw_payload:
+        raw_payload['gp_historical_info'] = experiment_payload.get('gp_historical_info')
     if 'domain_info' not in raw_payload:
         raw_payload['domain_info'] = experiment_payload.get('domain_info')
 
@@ -53,7 +53,7 @@ def gp_next_points(
     return output["points_to_sample"]
 
 
-def _build_gp_info_from_points_sampled(points_sampled):
+def _build_gp_historical_info_from_points_sampled(points_sampled):
     json_ready_points_sampled = []
     for point in points_sampled:
         json_ready_points_sampled.append({
@@ -78,7 +78,7 @@ def gp_hyper_opt(
     hyper_dim = gp_dim + 1
     raw_payload = kwargs.copy()
     raw_payload['domain_info'] = {'dim': gp_dim}
-    raw_payload['gp_info'] = _build_gp_info_from_points_sampled(points_sampled)
+    raw_payload['gp_historical_info'] = _build_gp_historical_info_from_points_sampled(points_sampled)
     raw_payload['hyperparameter_domain_info'] = {
             'dim': hyper_dim,
             'domain_bounds': [],
@@ -116,8 +116,8 @@ def gp_mean_var(
             len(points_to_sample[0]),  # The dim of the space
             sample_points=points_sampled,
             )
-    if 'gp_info' not in raw_payload:
-        raw_payload['gp_info'] = historical_data.json_payload()
+    if 'gp_historical_info' not in raw_payload:
+        raw_payload['gp_historical_info'] = historical_data.json_payload()
     if 'domain_info' not in raw_payload:
         raw_payload['domain_info'] = {'dim': len(points_to_sample[0])}
 

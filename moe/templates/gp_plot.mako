@@ -179,7 +179,7 @@ function update_graphs(){
     var post_data = {
         'points_to_sample': xvals,
         'points_to_evaluate': xvals,
-        'gp_info': {
+        'gp_historical_info': {
             'points_sampled': points_sampled,
             },
         'domain_info': {
