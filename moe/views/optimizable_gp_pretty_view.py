@@ -18,8 +18,8 @@ class OptimizableGpPrettyView(GpPrettyView):
         :returns: A deserialized self.request_schema object
 
         """
-        # Deserialize the basic request schema
-        params = self.request_schema.deserialize(self.request.json_body)
+        # First we get the standard params (not including optimization info)
+        params = super(OptimizableGpPrettyView, self).get_params_from_request()
         optimization_type = params['optimization_info']['optimization_type']
         # Find the schma class that corresponds to the ``optimization_type`` of the request
         schema_class = OPTIMIZATION_TYPES_TO_SCHEMA_CLASSES[optimization_type]()
