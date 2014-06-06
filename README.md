@@ -100,7 +100,7 @@ $ pip install -e .
 $ python setup.py install
 ```
 
-### OSX Tips (<=10.8 For 10.9, see separate instructions below ):
+### OSX Tips (<=10.8. For 10.9, see separate instructions below):
 
 0. Are you sure you wouldn't rather be running linux?
 1. Download MacPorts - http://www.macports.org/install.php (If you change the install directory from `/opt/local`, don't forget to update the cmake invocation.)
@@ -124,18 +124,34 @@ $ export MOE_CMAKE_OPTS=-DCMAKE_FIND_ROOT_PATH=/opt/local && export MOE_CC_PATH=
 
 #### Additional Tips for 10.9
 
-1. Currently, Boost cannot be installed with MacPorts. You should build it from source (see section "Building Boost")
+To ensure consistency, be sure to use full paths throughout the installation.
+
+1. Currently, Boost should not be installed with MacPorts. You should build it from source (see section "Building Boost").
 2. Boost, MOE, and the virtualenv must be built with the same python.
+3. We recommend using MacPorts Python: '/opt/local/bin/python'. 
+
+Under OS X 10.9, Apple switched their canonical C++ library from 'libstdc++' (GNU) to 'libc++' (LLVM); they are not ABI-compatible. To remain consistent, package managers are linking against 'libc++'. Since MOE is built with gcc, we need 'libstdc++'; thus dependencies must also be built with that C++ library. Currently, package managers do not have enough flexibility to operate several C++ libraries at once, and we do not expect this to change. Ignoring this condition leads to binary incompatibilities; e.g., see:
+http://stackoverflow.com/questions/20134223/building-a-boost-python-application-on-macos-10-9-mavericks/
 
 #### Building Boost
 
-To ensure compatibility between versions, you may have to build Boost from scratch. After downloading the Boost source, run the bootstrap with the flag '--with-python=PYTHON' (more detailed build instructions in the Boost README), filling in the correct location for the correct python.
+1. Download the Boost source (http://sourceforge.net/projects/boost/files/boost/1.55.0/ has been verfied to work).
+2. From within the main directory, run:
 
-Make sure GCC is '/opt/local/bin/gcc' (macport installed) or whatever C++11 compliant gcc you want, make sure python is '/opt/local/bin/python###' (where ### is version) or whatever python you want to use. 
+```bash
+$ sudo ./bootstrap.sh --with-python=PYTHON
+$ sudo ./b2 install
+```
 
-When building MOE, set the 'BOOST_ROOT' environment variable with the location of the Boost that you have installed when running CMake and verify that CMake finds it (e.g., check a link.txt file in a 'moe/build/CMakeFiles/*.dir/' dir and verify the location of libboost_python-mt or libboost_python, whichever is appropriate)  
+2. Make sure 'which gcc' is '/opt/local/bin/gcc' (macport installed) or whatever C++11 compliant gcc you want (similarly, 'which g++' should be '/opt/local/bin/g++'), and make sure Python is '/opt/local/bin/python' if using MacPorts or whichever Python you want to use. 
+3. When building MOE, set the 'BOOST_ROOT' environment variable with the location of the Boost that you have installed when running CMake and verify that CMake finds it (e.g., check a link.txt file in a 'moe/build/CMakeFiles/*.dir/' dir and verify the location of 'libboost_python-mt' or 'libboost_python', whichever is appropriate)  
+4. You might need to prepend 'BOOST_ROOT' to 'CMAKE_FIND_ROOT_PATH=/opt/local' to make this work if you have separate Boost installation(s). 'BOOST_ROOT' is the 'path/to/your/boost_1_55_0'.
 
-You might need to add (prepend?) BOOST_ROOT to 'CMAKE_FIND_ROOT_PATH=/opt/local' to make this work if you have a separate Boost installed via macport. You can also avoid setting boost's python and set moe's python instead (set '-DPYTHON_LIBRARIES=path/to/python.dylib' env variable when cmake'ing moe).
+```bash
+$ export MOE_CMAKE_OPTS='-D BOOST_ROOT=/path/to/boost -D Boost_NO_SYSTEM_PATHS=ON -D CMAKE_FIND_ROOT_PATH=/path/to/boost:/opt/local'
+```
+
+5. If you elected to use a different Python than the one from MacPorts, make sure CMake is finding it (e.g., set the '-DPYTHON_LIBRARIES=path/to/python.dylib' env variable when running CMake). Check 'link.txt' (see item above) to see if Python was found correctly.
 
 ### Linux Tips:
 
