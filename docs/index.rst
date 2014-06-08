@@ -160,12 +160,14 @@ Building Boost:
 5. If you elected to use a different Python than the one from MacPorts, make sure CMake is finding it (e.g., set the ``-DPYTHON_LIBRARIES=path/to/python.dylib`` env variable when running CMake). Check ``link.txt`` (see item above) to see if Python was found correctly.
 
 Additional options for ``./boostrap.sh``:
-``--with-libraries=python,math,random,program_options,exception,system`` compiles only the libraries we need.
-``--prefix=path/to/install/dir`` builds Boost and pulls the libraries in the specified path. Default is ``/usr/local`` (recommended, especially if you already have system Boost installations; remember to set ``BOOST_ROOT``).
+
+1. ``--with-libraries=python,math,random,program_options,exception,system`` compiles only the libraries we need.
+2. ``--prefix=path/to/install/dir`` builds Boost and pulls the libraries in the specified path. Default is ``/usr/local`` (recommended, especially if you already have system Boost installations; remember to set ``BOOST_ROOT``).
 
 Additional options for ``./b2``: 
-``--build-dir=/path/to/build/dir`` builds the Boost files in a separate location instead of mixed into the source tree (recommended).
-``-j4`` uses 4 threads to compile (faster).
+
+1. ``--build-dir=/path/to/build/dir`` builds the Boost files in a separate location instead of mixed into the source tree (recommended).
+2. ``-j4`` uses 4 threads to compile (faster).
 
 Linux Tips:
 ....
