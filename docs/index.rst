@@ -132,8 +132,7 @@ Additional Tips for 10.9:
 To ensure consistency, be sure to use full paths throughout the installation.
 
 1. Currently, Boost should not be installed with MacPorts. You should build it from source (see section "Building Boost").
-2. Boost, MOE, and the virtualenv must be built with the same python.
-3. We recommend using MacPorts Python: ``/opt/local/bin/python``. 
+2. Boost, MOE, and the virtualenv must be built with the same python. We recommend using MacPorts Python: ``/opt/local/bin/python``. 
 
 Under OS X 10.9, Apple switched their canonical C++ library from ``libstdc++`` (GNU) to ``libc++`` (LLVM); they are not ABI-compatible. To remain consistent, package managers are linking against ``libc++``. Since MOE is built with gcc, we need ``libstdc++``; thus dependencies must also be built with that C++ library. Currently, package managers do not have enough flexibility to operate several C++ libraries at once, and we do not expect this to change. Ignoring this condition leads to binary incompatibilities; e.g., see:
 http://stackoverflow.com/questions/20134223/building-a-boost-python-application-on-macos-10-9-mavericks/
@@ -142,7 +141,7 @@ Building Boost:
 ^^^^
 
 1. Download the Boost source (http://sourceforge.net/projects/boost/files/boost/1.55.0/ has been verfied to work).
-2. From within the main directory, run:
+2. From within the main directory, run (after checking additional options below):
 
 ::
 
@@ -151,7 +150,7 @@ Building Boost:
 
 
 2. Make sure ``which gcc`` is ``/opt/local/bin/gcc`` (macport installed) or whatever C++11 compliant gcc you want (similarly, ``which g++`` should be ``/opt/local/bin/g++``), and make sure Python is ``/opt/local/bin/python`` if using MacPorts or whichever Python you want to use. 
-3. When building MOE, set the ``BOOST_ROOT`` environment variable with the location of the Boost that you have installed when running CMake and verify that CMake finds it (e.g., check a link.txt file in a ``moe/build/CMakeFiles/*.dir/`` dir and verify the location of ``libboost_python-mt`` or ``libboost_python``, whichever is appropriate)  
+3. When building MOE, add to ``MOE_CMAKE_OPTS`` the ``BOOST_ROOT`` variable containing the location of the Boost that you have installed when running CMake and verify that CMake finds it (e.g., check a link.txt file in a ``moe/build/CMakeFiles/*.dir/`` dir and verify the location of ``libboost_python-mt`` or ``libboost_python``, whichever is appropriate)  
 4. You might need to prepend ``BOOST_ROOT`` to ``CMAKE_FIND_ROOT_PATH=/opt/local`` to make this work if you have separate Boost installation(s). ``BOOST_ROOT`` is the ``path/to/your/boost_1_55_0``.
 
 ::
@@ -160,6 +159,13 @@ Building Boost:
 
 5. If you elected to use a different Python than the one from MacPorts, make sure CMake is finding it (e.g., set the ``-DPYTHON_LIBRARIES=path/to/python.dylib`` env variable when running CMake). Check ``link.txt`` (see item above) to see if Python was found correctly.
 
+Additional options for ``./boostrap.sh``:
+``--with-libraries=python,math,random,program_options,exception,system`` compiles only the libraries we need.
+``--prefix=path/to/install/dir`` builds Boost and pulls the libraries in the specified path. Default is ``/usr/local`` (recommended, especially if you already have system Boost installations; remember to set ``BOOST_ROOT``).
+
+Additional options for ``./b2``: 
+``--build-dir=/path/to/build/dir`` builds the Boost files in a separate location instead of mixed into the source tree (recommended).
+``-j4`` uses 4 threads to compile (faster).
 
 Linux Tips:
 ....
