@@ -137,18 +137,18 @@ http://stackoverflow.com/questions/20134223/building-a-boost-python-application-
 1. Download the Boost source (http://sourceforge.net/projects/boost/files/boost/1.55.0/ has been verfied to work).
 2. From within the main directory, run (after checking additional options below):
 
-```bash
-$ sudo ./bootstrap.sh --with-python=PYTHON
-$ sudo ./b2 install
-```
+    ```bash
+    $ sudo ./bootstrap.sh --with-python=PYTHON
+    $ sudo ./b2 install
+    ```
 
 2. Make sure `which gcc` is `/opt/local/bin/gcc` (macport installed) or whatever C++11 compliant gcc you want (similarly, `which g++` should be `/opt/local/bin/g++`), and make sure Python is `/opt/local/bin/python` if using MacPorts or whichever Python you want to use. 
 3. When building MOE, add to `MOE_CMAKE_OPTS` the `BOOST_ROOT` variable containing the location of the Boost that you have installed when running CMake and verify that CMake finds it (e.g., check a link.txt file in a `moe/build/CMakeFiles/*.dir/` dir and verify the location of `libboost_python-mt` or `libboost_python`, whichever is appropriate)  
 4. You might need to prepend `BOOST_ROOT` to `CMAKE_FIND_ROOT_PATH=/opt/local` to make this work if you have separate Boost installation(s). `BOOST_ROOT` is the `path/to/your/boost_1_55_0`.
 
-```bash
-$ export MOE_CMAKE_OPTS='-D BOOST_ROOT=/path/to/boost -D Boost_NO_SYSTEM_PATHS=ON -D CMAKE_FIND_ROOT_PATH=/path/to/boost:/opt/local'
-```
+    ```bash
+    $ export MOE_CMAKE_OPTS='-D BOOST_ROOT=/path/to/boost -D Boost_NO_SYSTEM_PATHS=ON -D CMAKE_FIND_ROOT_PATH=/path/to/boost:/opt/local'
+    ```
 
 5. If you elected to use a different Python than the one from MacPorts, make sure CMake is finding it (e.g., set the `-DPYTHON_LIBRARIES=path/to/python.dylib` env variable when running CMake). Check `link.txt` (see item above) to see if Python was found correctly.
 
