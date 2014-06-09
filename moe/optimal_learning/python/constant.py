@@ -63,13 +63,23 @@ TEST_GRADIENT_DESCENT_PARAMETERS = python_optimization.GradientDescentParameters
         tolerance=1.0e-3,
         )
 
+DEMO_GRADIENT_DESCENT_PARAMETERS = python_optimization.GradientDescentParameters(
+        max_num_steps=50,
+        max_num_restarts=4,
+        num_steps_averaged=0,
+        gamma=0.4,
+        pre_mult=1.4,
+        max_relative_change=1.0,
+        tolerance=1.0e-6,
+        )
+
 DEFAULT_GRADIENT_DESCENT_PARAMETERS = python_optimization.GradientDescentParameters(
         max_num_steps=400,
         max_num_restarts=10,
         num_steps_averaged=10,
         gamma=0.7,
         pre_mult=0.4,
-        max_relative_change=0.1,
+        max_relative_change=1.0,
         tolerance=1.0e-6,
         )
 

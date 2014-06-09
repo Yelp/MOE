@@ -25,7 +25,7 @@ OR
 
 ::
 
-    $ curl -X POST -H "Content-Type: application/json" -d '{"points_to_evaluate": [[0.06727463396075942], [0.5067300380945079], [0.9698763624056982], [0.6741416078606629], [0.3413945823872875], [0.8293462326458892], [0.1895850103202945], [0.29784241725123095], [0.7611434260204735], [0.4050181259320824]], "points_being_sampled": [], "gp_info": {"points_sampled": [{"value_var": 0.01, "value": -2.014556917682888, "point": [0.8356251271367201]}, {"value_var": 0.01, "value": -1.3556680509922945, "point": [0.5775274088974685]}, {"value_var": 0.01, "value": -0.17644452034270924, "point": [0.1299624124365485]}, {"value_var": 0.01, "value": 0.3125023458503953, "point": [0.02303611187965965]}, {"value_var": 0.01, "value": -0.5899125641251172, "point": [0.3938472181674687]}, {"value_var": 0.01, "value": -1.8568254250899945, "point": [0.9894680586912427]}, {"value_var": 0.01, "value": -1.0638344140121117, "point": [0.45444660991161895]}, {"value_var": 0.01, "value": -0.28576907668798884, "point": [0.20420919931329756]}, {"value_var": 0.01, "value": -1.568109287685418, "point": [0.6404744671911634]}, {"value_var": 0.01, "value": -1.8418398343184625, "point": [0.7168047658371041]}], "domain": [[0, 1]]}}' http://127.0.0.1:6543/gp/ei
+    $ curl -X POST -H "Content-Type: application/json" -d '{"points_to_evaluate": [[0.06727463396075942], [0.5067300380945079], [0.9698763624056982], [0.6741416078606629], [0.3413945823872875], [0.8293462326458892], [0.1895850103202945], [0.29784241725123095], [0.7611434260204735], [0.4050181259320824]], "points_being_sampled": [], "gp_historical_info": {"points_sampled": [{"value_var": 0.01, "value": -2.014556917682888, "point": [0.8356251271367201]}, {"value_var": 0.01, "value": -1.3556680509922945, "point": [0.5775274088974685]}, {"value_var": 0.01, "value": -0.17644452034270924, "point": [0.1299624124365485]}, {"value_var": 0.01, "value": 0.3125023458503953, "point": [0.02303611187965965]}, {"value_var": 0.01, "value": -0.5899125641251172, "point": [0.3938472181674687]}, {"value_var": 0.01, "value": -1.8568254250899945, "point": [0.9894680586912427]}, {"value_var": 0.01, "value": -1.0638344140121117, "point": [0.45444660991161895]}, {"value_var": 0.01, "value": -0.28576907668798884, "point": [0.20420919931329756]}, {"value_var": 0.01, "value": -1.568109287685418, "point": [0.6404744671911634]}, {"value_var": 0.01, "value": -1.8418398343184625, "point": [0.7168047658371041]}], "domain": [[0, 1]]}}' http://127.0.0.1:6543/gp/ei
 
 From ipython
 ....
@@ -103,7 +103,7 @@ Requires:
     $ pip install -e .
     $ python setup.py install
 
-OSX Tips:
+OSX Tips (<=10.8. For 10.9, see separate instructions below):
 .....
 
 0. Are you sure you wouldn't rather be running linux?
@@ -113,6 +113,7 @@ OSX Tips:
 4. Getting gcc, boost, matplotlib, and xQuartz (``xorg-server``) reqs (before installing MOE):
 5. Make sure you create your virtualenv with the correct python ``--python=/opt/local/bin/python`` if you are using MacPorts
 6. If you are using another package manager (like homebrew) you may need to modify ``opt/local`` below to point to your ``Cellar`` directory.
+7. For the following commands, order matters, especially when selecting the proper gcc compiler.
 
 ::
 
@@ -124,6 +125,49 @@ OSX Tips:
     $ sudo port install py-matplotlib
     $ sudo port install doxygen
     $ export MOE_CMAKE_OPTS=-DCMAKE_FIND_ROOT_PATH=/opt/local && export MOE_CC_PATH=/opt/local/bin/gcc && export MOE_CXX_PATH=/opt/local/bin/g++
+
+Additional Tips for 10.9:
+^^^^
+
+To ensure consistency, be sure to use full paths throughout the installation.
+
+1. Currently, Boost should not be installed with MacPorts. You should build it from source (see section "Building Boost").
+2. Boost, MOE, and the virtualenv must be built with the same python. We recommend using MacPorts Python: ``/opt/local/bin/python``. 
+
+Under OS X 10.9, Apple switched their canonical C++ library from ``libstdc++`` (GNU) to ``libc++`` (LLVM); they are not ABI-compatible. To remain consistent, package managers are linking against ``libc++``. Since MOE is built with gcc, we need ``libstdc++``; thus dependencies must also be built with that C++ library. Currently, package managers do not have enough flexibility to operate several C++ libraries at once, and we do not expect this to change. Ignoring this condition leads to binary incompatibilities; e.g., see:
+http://stackoverflow.com/questions/20134223/building-a-boost-python-application-on-macos-10-9-mavericks/
+
+Building Boost:
+^^^^
+
+1. Download the Boost source (http://sourceforge.net/projects/boost/files/boost/1.55.0/ has been verfied to work).
+2. From within the main directory, run (after checking additional options below):
+
+::
+
+    $ sudo ./bootstrap.sh --with-python=PYTHON
+    $ sudo ./b2 install
+
+
+2. Make sure ``which gcc`` is ``/opt/local/bin/gcc`` (macport installed) or whatever C++11 compliant gcc you want (similarly, ``which g++`` should be ``/opt/local/bin/g++``), and make sure Python is ``/opt/local/bin/python`` if using MacPorts or whichever Python you want to use. 
+3. When building MOE, add to ``MOE_CMAKE_OPTS`` the ``BOOST_ROOT`` variable containing the location of the Boost that you have installed when running CMake and verify that CMake finds it (e.g., check a link.txt file in a ``moe/build/CMakeFiles/*.dir/`` dir and verify the location of ``libboost_python-mt`` or ``libboost_python``, whichever is appropriate)  
+4. You might need to prepend ``BOOST_ROOT`` to ``CMAKE_FIND_ROOT_PATH=/opt/local`` to make this work if you have separate Boost installation(s). ``BOOST_ROOT`` is the ``path/to/your/boost_1_55_0``.
+
+::
+
+    $ export MOE_CMAKE_OPTS='-D BOOST_ROOT=/path/to/boost -D Boost_NO_SYSTEM_PATHS=ON -D CMAKE_FIND_ROOT_PATH=/path/to/boost:/opt/local'
+
+5. If you elected to use a different Python than the one from MacPorts, make sure CMake is finding it (e.g., set the ``-DPYTHON_LIBRARIES=path/to/python.dylib`` env variable when running CMake). Check ``link.txt`` (see item above) to see if Python was found correctly.
+
+Additional options for ``./boostrap.sh``:
+
+1. ``--with-libraries=python,math,random,program_options,exception,system`` compiles only the libraries we need.
+2. ``--prefix=path/to/install/dir`` builds Boost and pulls the libraries in the specified path. Default is ``/usr/local`` (recommended, especially if you already have system Boost installations; remember to set ``BOOST_ROOT``).
+
+Additional options for ``./b2``: 
+
+1. ``--build-dir=/path/to/build/dir`` builds the Boost files in a separate location instead of mixed into the source tree (recommended).
+2. ``-j4`` uses 4 threads to compile (faster).
 
 Linux Tips:
 ....

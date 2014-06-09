@@ -3,12 +3,12 @@
 from collections import namedtuple
 
 from moe.optimal_learning.python.constant import SQUARE_EXPONENTIAL_COVARIANCE_TYPE, TENSOR_PRODUCT_DOMAIN_TYPE, SIMPLEX_INTERSECT_TENSOR_PRODUCT_DOMAIN_TYPE, NULL_OPTIMIZER, NEWTON_OPTIMIZER, GRADIENT_DESCENT_OPTIMIZER
-import moe.optimal_learning.python.cpp_wrappers.domain as cpp_domain
-import moe.optimal_learning.python.python_version.domain as python_domain
-import moe.optimal_learning.python.cpp_wrappers.optimization as cpp_optimization
-import moe.optimal_learning.python.python_version.optimization as python_optimization
 import moe.optimal_learning.python.cpp_wrappers.covariance as cpp_covariance
+import moe.optimal_learning.python.cpp_wrappers.domain as cpp_domain
+import moe.optimal_learning.python.cpp_wrappers.optimization as cpp_optimization
 import moe.optimal_learning.python.python_version.covariance as python_covariance
+import moe.optimal_learning.python.python_version.domain as python_domain
+import moe.optimal_learning.python.python_version.optimization as python_optimization
 
 
 # Covariance

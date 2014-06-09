@@ -9,6 +9,7 @@ See interfaces.gaussian_process_interface.py for more details.
 import copy
 
 import numpy
+
 import scipy.linalg
 
 from moe.optimal_learning.python.interfaces.gaussian_process_interface import GaussianProcessInterface

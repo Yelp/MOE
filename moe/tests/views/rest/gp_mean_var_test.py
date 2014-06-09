@@ -1,16 +1,17 @@
 # -*- coding: utf-8 -*-
 """Test class for gp_mean_var view."""
 import numpy
+
 import simplejson as json
 
 import testify as T
 
-from moe.tests.views.rest_gaussian_process_test_case import RestGaussianProcessTestCase
 from moe.optimal_learning.python.cpp_wrappers.covariance import SquareExponential
 from moe.optimal_learning.python.cpp_wrappers.gaussian_process import GaussianProcess
+from moe.tests.views.rest_gaussian_process_test_case import RestGaussianProcessTestCase
 from moe.views.constant import GP_MEAN_VAR_ENDPOINT
 from moe.views.rest.gp_mean_var import GpMeanVarResponse
-from moe.views.utils import _build_domain_info
+from moe.views.utils import _build_domain_info, _build_covariance_info
 
 
 class TestGpMeanVarView(RestGaussianProcessTestCase):
@@ -24,8 +25,8 @@ class TestGpMeanVarView(RestGaussianProcessTestCase):
         """Create a json_payload to POST to the /gp/mean_var endpoint with all needed info."""
         json_payload = json.dumps({
             'points_to_sample': points_to_sample,
-            'gp_info': self._build_gp_info(gaussian_process),
-            'covariance_info': self._build_covariance_info(covariance),
+            'gp_historical_info': self._build_gp_historical_info(gaussian_process),
+            'covariance_info': _build_covariance_info(covariance),
             'domain_info': _build_domain_info(domain),
             })
         return json_payload

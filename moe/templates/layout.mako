@@ -11,7 +11,7 @@
   <!-- bootstrap -->
   <link rel="stylesheet" href="${request.static_url('moe:static/css/bootstrap.css')}" />
   <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-  <link rel="script" href="${request.static_url('moe:static/js/bootstrap.js')}" />
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
   <!-- d3 -->
   <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.1/d3.js"></script>
   <link rel="stylesheet" href="${request.static_url('moe:static/css/d3.css')}" />

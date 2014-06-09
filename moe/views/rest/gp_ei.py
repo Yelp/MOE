@@ -12,11 +12,11 @@ import numpy
 from pyramid.view import view_config
 
 from moe.optimal_learning.python.constant import DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS
+from moe.optimal_learning.python.cpp_wrappers.expected_improvement import ExpectedImprovement
 from moe.views.constant import GP_EI_ROUTE_NAME, GP_EI_PRETTY_ROUTE_NAME
 from moe.views.gp_pretty_view import GpPrettyView, PRETTY_RENDERER
-from moe.views.schemas import ListOfPointsInDomain, GpInfo, ListOfExpectedImprovements, CovarianceInfo, DomainInfo
+from moe.views.schemas import ListOfPointsInDomain, GpHistoricalInfo, ListOfExpectedImprovements, CovarianceInfo, DomainInfo
 from moe.views.utils import _make_gp_from_params
-from moe.optimal_learning.python.cpp_wrappers.expected_improvement import ExpectedImprovement
 
 
 class GpEiRequest(colander.MappingSchema):
@@ -26,7 +26,7 @@ class GpEiRequest(colander.MappingSchema):
     **Required fields**
 
         :points_to_evaluate: list of points in domain to calculate Expected Improvement (EI) at (:class:`moe.views.schemas.ListOfPointsInDomain`)
-        :gp_info: a :class:`moe.views.schemas.GpInfo` object of historical data
+        :gp_historical_info: a :class:`moe.views.schemas.GpHistoricalInfo` object of historical data
 
     **Optional fields**
 
@@ -42,7 +42,7 @@ class GpEiRequest(colander.MappingSchema):
 
         {
             'points_to_evaluate': [[0.1], [0.5], [0.9]],
-            'gp_info': {
+            'gp_historical_info': {
                 'points_sampled': [
                         {'value_var': 0.01, 'value': 0.1, 'point': [0.0]},
                         {'value_var': 0.01, 'value': 0.2, 'point': [1.0]}
@@ -63,7 +63,7 @@ class GpEiRequest(colander.MappingSchema):
             'points_to_evaluate': [[0.1], [0.5], [0.9]],
             'points_being_sampled': [[0.2], [0.7]],
             'mc_iterations': 10000,
-            'gp_info': {
+            'gp_historical_info': {
                 'points_sampled': [
                         {'value_var': 0.01, 'value': 0.1, 'point': [0.0]},
                         {'value_var': 0.01, 'value': 0.2, 'point': [1.0]}
@@ -90,7 +90,7 @@ class GpEiRequest(colander.MappingSchema):
             validator=colander.Range(min=1),
             missing=DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS,
             )
-    gp_info = GpInfo()
+    gp_historical_info = GpHistoricalInfo()
     domain_info = DomainInfo()
     covariance_info = CovarianceInfo(
             missing=CovarianceInfo().deserialize({}),
@@ -135,7 +135,7 @@ class GpEiView(GpPrettyView):
             "points_to_evaluate": [
                 [0.1], [0.5], [0.9],
                 ],
-            "gp_info": GpPrettyView._pretty_default_gp_info,
+            "gp_historical_info": GpPrettyView._pretty_default_gp_historical_info,
             "covariance_info": GpPrettyView._pretty_default_covariance_info,
             "domain_info": GpPrettyView._pretty_default_domain_info,
             }

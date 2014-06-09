@@ -37,6 +37,7 @@ realizing that our fundamental assumptions are wrong.  So care is always needed.
 import copy
 
 import numpy
+
 import scipy.linalg
 
 from moe.optimal_learning.python.geometry_utils import ClosedInterval

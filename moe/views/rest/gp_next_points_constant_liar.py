@@ -40,7 +40,7 @@ class GpNextPointsConstantLiarRequest(GpNextPointsRequest):
 
     **Required fields**
 
-        :gp_info: a :class:`moe.views.schemas.GpInfo` dict of historical data
+        :gp_historical_info: a :class:`moe.views.schemas.GpHistoricalInfo` dict of historical data
         :domain_info: a :class:`moe.views.schemas.BoundedDomainInfo` dict of domain information
 
     **Optional fields**
@@ -62,7 +62,7 @@ class GpNextPointsConstantLiarRequest(GpNextPointsRequest):
             'num_to_sample': 1,
             'lie_value': 0.0,
             'lie_noise_variance': 0.0,
-            'gp_info': {
+            'gp_historical_info': {
                 'points_sampled': [
                         {'value_var': 0.01, 'value': 0.1, 'point': [0.0]},
                         {'value_var': 0.01, 'value': 0.2, 'point': [1.0]}
@@ -132,7 +132,7 @@ class GpNextPointsConstantLiar(GpNextPointsPrettyView):
         elif params.get('lie_method') == CONSTANT_LIAR_MEAN:
             return numpy.mean(points_sampled_values)
         else:
-            raise(NotImplementedError, '%s is not implemented' % params.get('lie_method'))
+            raise(NotImplementedError, '{0} is not implemented'.format(params.get('lie_method')))
 
     @view_config(route_name=_route_name, renderer='json', request_method='POST')
     def gp_next_points_constant_liar_view(self):

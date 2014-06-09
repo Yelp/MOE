@@ -1,13 +1,17 @@
 # -*- coding: utf-8 -*-
 """A class to encapsulate 'pretty' views."""
+import logging
+
 import simplejson as json
 
 from moe.optimal_learning.python.constant import SQUARE_EXPONENTIAL_COVARIANCE_TYPE
+from moe.resources import Root
+from moe.views.constant import MoeRestLogLine
 
 PRETTY_RENDERER = 'moe:templates/pretty_input.mako'
 
 
-class GpPrettyView(object):
+class GpPrettyView(Root):
 
     """A class to encapsulate 'pretty' views.
 
@@ -24,7 +28,7 @@ class GpPrettyView(object):
     response_schema = None  # Define in a subclass
 
     _pretty_default_request = None
-    _pretty_default_gp_info = {
+    _pretty_default_gp_historical_info = {
             "points_sampled": [
                 {"value_var": 0.01, "value": 0.1, "point": [0.0]},
                 {"value_var": 0.01, "value": 0.2, "point": [1.0]},
@@ -40,8 +44,23 @@ class GpPrettyView(object):
             }
 
     def __init__(self, request):
-        """Store the request for the view."""
-        self.request = request
+        """Store the request for the view and set up the logger."""
+        super(GpPrettyView, self).__init__(request)
+
+        # Set up logging
+        self.log = logging.getLogger(__name__)
+
+    def _create_moe_log_line(self, type, content):
+        """Log a :class:`moe.views.constant.MoeLogLine` as a dict to the MOE logger."""
+        self.log.info(
+                dict(
+                    MoeRestLogLine(
+                        endpoint=self._route_name,
+                        type=type,
+                        content=content
+                        )._asdict()
+                    )
+                )
 
     def pretty_response(self):
         """A pretty, browser interactive view for the interface. Includes form request and response.
@@ -60,6 +79,11 @@ class GpPrettyView(object):
         :returns: A deserialized self.request_schema object
 
         """
+        self._create_moe_log_line(
+                type='request',
+                content=self.request.json_body,
+                )
+
         return self.request_schema.deserialize(self.request.json_body)
 
     def form_response(self, response_dict):
@@ -69,4 +93,8 @@ class GpPrettyView(object):
         :type response_dict: dict
         :returns: a serialized self.response_schema object
         """
+        self._create_moe_log_line(
+                type='response',
+                content=response_dict,
+                )
         return self.response_schema.serialize(response_dict)

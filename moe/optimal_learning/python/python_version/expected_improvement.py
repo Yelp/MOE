@@ -5,6 +5,7 @@ See interfaces/expected_improvement_interface.py or gpp_math.hpp/cpp for further
 
 """
 import numpy
+
 import scipy.linalg
 import scipy.stats
 
