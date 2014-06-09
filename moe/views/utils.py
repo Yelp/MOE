@@ -88,7 +88,7 @@ def _make_optimization_parameters_from_params(params):
 
     optimization_method = OPTIMIZATION_TYPES_TO_OPTIMIZATION_METHODS[optimization_info.get('optimization_type')]
 
-    # TODO(eliu): Kill this when you reoganize num_multistarts for C++
+    # TODO(eliu): (GH-167) Kill this when you reoganize num_multistarts for C++.
     validated_optimization_parameters['num_multistarts'] = optimization_info['num_multistarts']
     optimization_parameters = optimization_method.cpp_parameters_class(**validated_optimization_parameters)
 
