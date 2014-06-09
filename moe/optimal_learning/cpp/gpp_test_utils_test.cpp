@@ -5,7 +5,7 @@
   tests are generally pretty simple since these functions implicitly work; e.g., if
   CheckDoubleWithinRelative() were wrong, other tests wouldn't make any sense.
 
-  TODO(eliu): #66842 implement the rest of the unit tests for gpp_test_utils
+  TODO(eliu): (GH-122) implement the rest of the unit tests for gpp_test_utils
 \endrst*/
 
 #include "gpp_test_utils_test.hpp"

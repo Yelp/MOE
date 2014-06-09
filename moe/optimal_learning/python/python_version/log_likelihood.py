@@ -64,7 +64,7 @@ def multistart_hyperparameter_optimization(
     Optimizers are: null ('dumb' search), gradient descent, newton
     Newton is the suggested optimizer, which is not presently available in Python (use the C++ interface). In Python,
     gradient descent is suggested.
-    TODO(eliu): implement hessians and newton's method (GH-57)
+    TODO(eliu): (GH-57) Implement hessians and Newton's method.
 
     'dumb' search means this will just evaluate the objective log likelihood measure at num_multistarts 'points'
     (hyperparameters) in the domain, uniformly sampled using latin hypercube sampling.
@@ -81,7 +81,7 @@ def multistart_hyperparameter_optimization(
     .. WARNING:: this function fails if NO improvement can be found!  In that case,
        the output will always be the first randomly chosen point. status will report failure.
 
-    TODO(eliu): allow callers to pass in a source of randomness (GH-56)
+    TODO(eliu): (GH-56) Allow callers to pass in a source of randomness.
 
     :param hyperparameter_optimizer: object that optimizes (e.g., gradient descent, newton) the desired log_likelihood
         measure over a domain (wrt the hyperparameters of covariance)
@@ -106,7 +106,7 @@ def multistart_hyperparameter_optimization(
 
     best_hyperparameters, _ = multistart_optimize(hyperparameter_optimizer, starting_points=random_starts)
 
-    # TODO(eliu): have GD actually indicate whether updates were found (GH-59)
+    # TODO(eliu): (GH-59) Have GD actually indicate whether updates were found, e.g., in an IOContainer-like structure.
     found_flag = True
     if status is not None:
         status["gradient_descent_found_update"] = found_flag
@@ -290,7 +290,7 @@ class GaussianProcessLogMarginalLikelihood(GaussianProcessLogLikelihoodInterface
             # compute -0.5 * tr(K^-1 * dK/d\theta)
             temp = scipy.linalg.cho_solve(K_chol, grad_cov_block, overwrite_b=True)
             grad_log_marginal[k] -= 0.5 * temp.trace()
-            # TODO(eliu): this can be much faster if we form K^-1 explicitly (see below), but that is less accurate
+            # TODO(eliu): (GH-180) this can be much faster if we form K^-1 explicitly (see below), but that is less accurate
             # grad_log_marginal[k] -= 0.5 * numpy.einsum('ij,ji', K_inv, grad_cov_block)
 
         return grad_log_marginal

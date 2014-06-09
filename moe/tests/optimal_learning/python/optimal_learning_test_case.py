@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Base test case class for optimal_learning tests; includes some additional asserts for numerical tests.
 
-TODO(eliu): generalize ping testing code used in some derivative tests (e.g., covariance, log likelihood pinging)
+TODO(eliu): (GH-175) Generalize ping testing code used in some derivative tests (e.g., covariance, log likelihood pinging)
 to be more DRY (model after C++ test cases). We can set up one ping tester and just pass it objective functions.
 
 """

@@ -2,42 +2,45 @@
   \file gpp_optimization_test.cpp
   \rst
   Unit tests for the optimization algorithms in gpp_optimization.hpp.  Currently we have tests for:
+
   1. restarted gradient descent (which uses gradient descent)
   2. newton
 
   And each optimizer is tested against:
+
   1. a quadratic objective function
 
   performing:
+
   1. Unconstrained optimization: optimal point is set away from domain boundaries
   2. Constrained optimization: optimal point is set outside the boundaries
 
   on:
+
   1. tensor product domains
 
   Generally the tests verify that:
-  0. The expected optimum is actually an optimum (gradients are small).
-  1. When started from the optimum value, the optimizer does not move away from it
-  2. When started away from the optimum value, the optimizer finds it.
+
+  1. The expected optimum is actually an optimum (gradients are small).
+  2. When started from the optimum value, the optimizer does not move away from it
+  3. When started away from the optimum value, the optimizer finds it.
+
   Where "finds it" is checked by seeing whether the point returned by the optimizer is within tolerance of the true
   optimum and whether the gradients are within tolerance of 0.
 
   This is a little tricky for the constrained case b/c we are currently assuming we can compute the location of the
   true optimum directly... which may not always be possible.
 
-  TODO(eliu): we should add some more complex objective functions (higher order polynomials and/or transcendentals)
-  and simplex domains.
-  We also need a more general way of testing constrained optimization since it is not always possible to directly compute
-  the location of the optima.
-  (ticket 55778)
+  TODO(eliu): (GH-146) we should add some more complex objective functions (higher order
+  polynomials and/or transcendentals) and simplex domains.
+  We also need a more general way of testing constrained optimization since it is not
+  always possible to directly compute the location of the optima.
 
-  TODO(eliu): we have quite a bit of code duplication here.  For the most part, the only difference is how we set up
-  the optimizers in the beginning of each test function.  This duplication could be reduced by encapsulating the optimizers
-  in classes and then templating the testing functions on the optimizer type.
-  (ticket 55779)
+  TODO(eliu): (GH-146) we have quite a bit of code duplication here.  For the most part, the
+  only difference is how we set up the optimizers in the beginning of each test function.
+  This duplication could be reduced by encapsulating the optimizers in classes and then
+  templating the testing functions on the optimizer type.
 
-  TODO(eliu): verifying item 0 (claimed optimum is an optimum) should be done in a SEPARATE unit test!
-  (ticket 55779)
 \endrst*/
 
 // #define OL_VERBOSE_PRINT

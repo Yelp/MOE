@@ -99,7 +99,7 @@ OL_WARN_UNUSED_RESULT PyObject * CreatePyExceptionClass(const char * name, const
   // http://bugs.python.org/issue4949
   // first nullptr: base class for NewException will be PyExc_Exception unless overriden
   // second nullptr: no default member fields (could pass a dict with default fields)
-#if defined(PY_MAJOR_VERSION) && PY_MAJOR_VERSION >= 2 && PY_MINOR_VERSION >= 7
+#if defined(PY_MAJOR_VERSION) && ((PY_MAJOR_VERSION > 2) || ((PY_MAJOR_VERSION == 2) && (PY_MINOR_VERSION >= 7)))
   PyObject * type_object = PyErr_NewExceptionWithDoc(const_cast<char *>(qualified_name.c_str()), const_cast<char *>(docstring), nullptr, nullptr);
 #else
   // PyErr_NewExceptionWithDoc did not exist before Python 2.7, so we "cannot" attach a docstring to our new type object.
@@ -184,7 +184,7 @@ class PyExceptionClassContainer {
     if (!initialized_) {
       scope_ = scope;
 
-      // TODO(eliu): If listing exception type objects here gets unwieldly, we can store them in an
+      // Note: If listing exception type objects here gets unwieldly, we can store them in an
       // array<> of typle<>, making Initialize() just a simple for (item : array) { ... } loop.
       static char const * bounds_exception_docstring = "value not in range [min, max].";
       bounds_exception_type_object_ = CreatePyExceptionClass(bounds_exception_name_, bounds_exception_docstring, scope_);
@@ -334,7 +334,7 @@ OL_NORETURN void TranslateSingularMatrixException(const SingularMatrixException&
 
   instance.attr("num_rows") = except.num_rows();
   instance.attr("num_cols") = except.num_cols();
-  // TODO(eliu): (#?????) this would make more sense as a numpy array/matrix
+  // TODO(eliu): (GH-159) this would make more sense as a numpy array/matrix
   instance.attr("matrix") = VectorToPylist(except.matrix());
 
   // Note: SetObject gets ownership (*not* borrow/steal) of both references (type object and instance/value);
@@ -348,6 +348,9 @@ OL_NORETURN void TranslateSingularMatrixException(const SingularMatrixException&
   Register an exception translator (C++ to Python) with boost python for ExceptionType, using the callable translate.
   Boost python expects only unary exception translators (w/the exception to translate as the argument), so we use
   a lambda to capture additional arguments for our translators.
+
+  .. Note:: if/when template'd lambdas become available (C++14?), we can kill this function. It is just a simple
+    template'd wrapper around a lambda-expression.
 
   TEMPLATE PARAMETERS:
 
@@ -378,7 +381,6 @@ void RegisterExceptionTranslatorWithPayload(const PyExceptionClassContainer& py_
       [py_exception_type_objects, translate](const ExceptionType& except) {
     translate(except, py_exception_type_objects);
   };
-  // TODO(eliu): if/when template'd lambdas become available (C++14?), we can kill this function.
 
   // nullptr suppresses a superfluous compiler warning b/c boost::python::register_exception_translator
   // defaults a (dummy) pointer argument to 0.
@@ -410,7 +412,7 @@ void RegisterOptimalLearningExceptions() {
 
 namespace {  // unnamed namespace for BOOST_PYTHON_MODULE(GPP) definition
 
-// TODO(eliu): (#59677) improve docstrings for the GPP module and for the classes, functions, etc
+// TODO(eliu): (GH-140) improve docstrings for the GPP module and for the classes, functions, etc
 //   in it exposed to Python. Many of them are a bit barebones at the moment.
 BOOST_PYTHON_MODULE(GPP) {
   boost::python::scope current_scope;
@@ -437,7 +439,7 @@ BOOST_PYTHON_MODULE(GPP) {
 
     **OVERVIEW**
 
-    TODO(eliu): when we come up with a "README" type overview for MOE, that or parts of that should be incorporated here.
+    TODO(eliu): (GH-25) when we come up with a "README" type overview for MOE, that or parts of that should be incorporated here.
 
     MOE is a black-box global optimization method for objectives (e.g., click-through rate, delivery time, happiness)
     that are time-consuming/expensive to measure, highly complex, non-convex, nontrivial to predict, or all of the above.
@@ -482,7 +484,7 @@ BOOST_PYTHON_MODULE(GPP) {
     For further details, see the file documents for the C++ hpp and cpp files. Header (hpp) files contain more high
     level descriptions/motivation whereas source (cpp) files contain more [mathematical] details.
     gpp_math.hpp and gpp_model_selection_and_hyperparameter_optimization.hpp are good starting points for more reading.
-    TODO(eliu): when we have gemdoc or whatever, point this to those docs as well.
+    TODO(eliu): (GH-25) when we have jemdoc (or whatever tool), point this to those docs as well.
 
     Now we will provide an overview of the enums, classes, and endpoints provided in this module.
 

@@ -95,10 +95,6 @@ class HistoricalData(object):
     domain in HistoricalData so as to place no restriction on how users can use optimal_learning and think about their
     experiments.
 
-    TODO(eliu): it'd be cool if this inherited from namedtuple (since adding new points makes sense, but changing dim or
-    arbitrarily changing the referrant of noise_variance does not). Not 100% sure how to do this since __new__ and
-    __init__ would need to take different arguments.
-
     :ivar _points_sampled: (*array of float64 with shape (self.num_sampled, self.dim)*) already-sampled points
     :ivar _points_sampled_value: (*array of float64 with shape (self.num_sampled)*) function value measured at each point
     :ivar _points_sampled_noise_variance: (*array of float64 with shape (self.num_sampled)*) noise variance associated with ``points_sampled_value``

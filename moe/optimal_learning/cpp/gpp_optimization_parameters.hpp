@@ -30,11 +30,9 @@ enum class OptimizerTypes {
   kNewton = 2,
 };
 
-// TODO(eliu): (#58807) do one of two things:
-// 1) ADD num_multistarts to NullParameters (since we multistart the "null" optimizer!)
-// 2) REMOVE num_multistarts from ALL OptimizerParameter structs. num_multistarts doesn't configure the
-//    individual optimizer, it just controls how many times we call that optimizer.
-//    Then num_multistarts can live in a struct for multistart optimization (or something else entirely?)
+// TODO(eliu): (GH-167) Remove num_multistarts from ALL OptimizerParameter structs. num_multistarts doesn't
+// configure the individual optimizer, it just controls how many times we call that optimizer.
+// Then num_multistarts can live in a parameter struct specifically for multistart optimization.
 
 /*!\rst
   Empty container for optimizers that do not require any parameters (e.g., the null optimizer).

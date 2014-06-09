@@ -23,7 +23,7 @@ def generate_latin_hypercube_points(num_points, domain_bounds):
     :rtype: array of float64 with shape (num_points, dim)
 
     """
-    # TODO(eliu): actually allow users to pass in a random source (GH-56)
+    # TODO(eliu): (GH-56) Allow users to pass in a random source.
     if num_points == 0:
         return numpy.array([])
 

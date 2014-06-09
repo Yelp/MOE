@@ -19,12 +19,12 @@
 
   5. CODE HIERARCHY / CALL-TREE
 
-  **1 FILE OVERVIEW**
+  **1. FILE OVERVIEW**
 
   Implementations of functions for Gaussian Processes (mean, variance of GPs and their gradients) and for
   computing and optimizing Expected Improvement (EI).
 
-  **2 IMPLEMENTATION NOTES**
+  **2. IMPLEMENTATION NOTES**
 
   See gpp_math.hpp file docs and gpp_common.hpp for a few important implementation notes
   (e.g., restrict, memory allocation, matrix storage style, etc), as well as citation details.
@@ -40,7 +40,7 @@
       A += n;
     }
 
-  **3 MATHEMATICAL OVERVIEW**
+  **3. MATHEMATICAL OVERVIEW**
 
   Next, we provide a high-level discussion of GPs and the EI optimization process used in this file.  See
   Rasmussen & Williams for more details on the former and Scott Clark's thesis for details on the latter.  This segment
@@ -48,7 +48,7 @@
   in this file map onto these mathematical concepts.  If it wasn't clear, please read the file comments for
   gpp_math.hpp before continuing (a conceptual overview).
 
-  **3a GAUSSIAN PROCESSES**
+  **3a. GAUSSIAN PROCESSES**
 
   First, a Gaussian Process (GP) is defined as a collection of normally distributed random variables (RVs); these
   RVs are not independent nor identically-distributed (i.e., all normal but different mean/var) in general.  Since
@@ -81,7 +81,7 @@
   ``K + \sigma^2`` is computed in BuildCovarianceMatrixWithNoiseVariance(); almost all practical uses of GPs and EI will
   be over data with nonzero noise variance.  However this is immaterial to the rest of the discussion here.
 
-  **3b SAMPLING FROM GPs**
+  **3b. SAMPLING FROM GPs**
 
   So to obtain the posterior distribution, fs, we again sample this joint prior and throw out any function
   realizations that do not satisfy the observations (i.e., pass through all ``(X,f)`` pairs).  This is expensive.
@@ -98,7 +98,7 @@
   where ``L * L^T = Vars`` (cholesky-factorization) and w is a vector of samples from ``N(0,1)``
   Note that if our GP has 10 dimensions (variables), then y contains 10 sample values.
 
-  **3c EXPECTED IMPROVEMENT**
+  **3c. EXPECTED IMPROVEMENT**
 
   .. Note:: these comments are copied in Python: interfaces/expected_improvement_interface.py
 
@@ -120,12 +120,12 @@
   implies the need for all of the various "grad" functions, e.g., GP::ComputeGradMeanOfPoints().
   This is handled starting in the highest level functions of file, ComputeOptimalPointsToSample().
 
-  **4 CODE OVERVIEW**
+  **4. CODE OVERVIEW**
 
   Finally, we give some further details about how the previous ideas map into the code.  We begin with an overview
   of important classes and functions in this file, and end by going over the call stack for the EI optimization entry point.
 
-  **4a First, the GaussianProcess (GP) class**
+  **4a. First, the GaussianProcess (GP) class**
 
   The GaussianProcess class abstracts the handling of GPs and their properties; quickly going over the functionality: it
   provides methods for computing mean, variance, cholesky of variance, and their gradients (wrt spatial dimensions).
@@ -148,7 +148,7 @@
   In current usage, users generally will not need to access GaussianProcess's member functions directly; instead these are
   used indirectly when users compute or optimize EI.  Plotting/visualization might be one reason to call GP members directly.
 
-  **4b Next, the ExpectedImprovementEvaluator and OnePotentialSampleExpectedImprovementEvaulator classes**
+  **4b. Next, the ExpectedImprovementEvaluator and OnePotentialSampleExpectedImprovementEvaulator classes**
 
   ExpectedImprovementEvaluator abstracts the computation of EI and its gradient.  This class references a single
   GaussianProcess that it uses to compute EI/grad EI as described above.  Equations 4, 5 above detailed the EI computation;
@@ -169,7 +169,7 @@
   is never a reason (or a way) for multiple threads to accidentally use the same GP state.  Finally, the EI state classes
   hold some pre-allocated vectors for use as local temporaries by EI and GradEI computation.
 
-  **4c And finally, we discuss selecting optimal experiments with ComputeOptimalPointsToSampleWithRandomStarts()**
+  **4c. And finally, we discuss selecting optimal experiments with ComputeOptimalPointsToSampleWithRandomStarts()**
 
   This function is the top of the hierarchy for EI optimization.  It encompasses a multistart, restarted gradient descent
   method.  Since this is not a convex optimization problem, there could be multiple local optima (or even 0 optima).  So
@@ -178,7 +178,7 @@
   See the file comments of gpp_optimization.hpp for more details on the base gradient descent implementation and the restart
   component of restarted gradient descent.
 
-  **5 CODE HIERARCHY / CALL-TREE**
+  **5. CODE HIERARCHY / CALL-TREE**
 
   For obtaining multiple new points to sample (q,p-EI), we have two main paths for optimization: multistart gradient
   descent and 'dumb' search. The optimization hierarchy looks like (these optimization functions are in the header;
@@ -186,28 +186,32 @@
   ComputeOptimalPointsToSampleWithRandomStarts<...>(...)  (selects random points; defined in math.hpp)
 
   * Solves q,p-EI.
-  * Selects random starting locations based on latin hypercube sampling
+  * Selects random starting locations based on random sampling from the domain (e.g., latin hypercube)
   * This calls:
+
     ComputeOptimalPointsToSampleViaMultistartGradientDescent<...>(...)  (multistart gradient descent)
 
     * Switches into analytic OnePotentialSample case when appropriate
     * Multithreaded over starting locations
     * Optimizes with restarted gradient descent; collects results and updates the solution as new optima are found
     * This calls:
+
       MultistartOptimizer<...>::MultistartOptimize(...) for multistarting (see gpp_optimization.hpp) which in turn uses
       GradientDescentOptimizer::Optimize<ObjectiveFunctionEvaluator, Domain>() (see gpp_optimization.hpp)
 
   ComputeOptimalPointsToSampleViaLatinHypercubeSearch<...>(...)  (defined in gpp_math.hpp)
 
   * Estimates q,p-EI with a 'dumb' search.
-  * Selects random starting locations based on latin hypercube sampling
+  * Selects random starting locations based on random sampling from the domain (e.g., latin hypercube)
   * This calls:
+
     EvaluateEIAtPointList<...>(...)
 
     * Evaluates EI at each starting location
     * Switches into analytic OnePotentialSample case when appropriate
     * Multithreaded over starting locations
     * This calls:
+
       MultistartOptimizer<...>::MultistartOptimize(...) for multistarting (see gpp_optimization.hpp)
 
   ComputeOptimalPointsToSample<...>(...)  (defined in gpp_math.cpp)
@@ -364,7 +368,6 @@ OL_NONNULL_POINTERS void BuildCovarianceMatrixWithNoiseVariance(const Covariance
   \output
     :cov_matrix[num_sampled][num_to_sample]: computed "mix" covariance matrix
 \endrst*/
-// TODO(eliu): (ticket 40552) Do not re-compute symmetric part (either don't compute it or copy from already-computed value)
 OL_NONNULL_POINTERS void BuildMixCovarianceMatrix(const CovarianceInterface& covariance, double const * restrict points_sampled, double const * restrict points_to_sample, int dim, int num_sampled, int num_to_sample, double * restrict cov_matrix) noexcept {
   // calculate the covariance matrix defined in gpp_covariance.hpp
   for (int j = 0; j < num_to_sample; ++j) {
@@ -637,10 +640,9 @@ void GaussianProcess::ComputeGradVarianceOfPoints(StateType * points_to_sample_s
 void GaussianProcess::ComputeGradCholeskyVarianceOfPointsPerPoint(StateType * points_to_sample_state, int diff_index, double const * restrict chol_var, double * restrict grad_chol) const noexcept {
   ComputeGradVarianceOfPointsPerPoint(points_to_sample_state, diff_index, grad_chol);
 
-  // TODO(eliu): (ticket 40454) Can we use a faster version (e.g., gaxpy-based) of cholesky and still apply
-  // Smith's algorithm for its derivative? Primary concern is that Smith's algorithm produces a derivative
-  // based on the outer product version of cholesky, so does the base cholesky code need to follow the same
-  // algorithm for consistency?
+  // TODO(eliu): (GH-173) Try reorganizing Smith's algorithm to use an ordering analogous to the gaxpy
+  // formulation of cholesky (currently it's organized like the outer-product version which results in
+  // more memory accesses).
 
   const int num_to_sample = points_to_sample_state->num_to_sample;
   // input is upper block triangular, zero the lower block triangle
@@ -730,7 +732,8 @@ void GaussianProcess::AddPointToGP(double const * restrict new_point, double new
   *(noise_variance_.end() - 1) = new_point_noise_variance;
 
   // recompute derived quantities
-  // TODO(eliu): since we're just adding 1 point, can update be done without recomputing everything?
+  // TODO(eliu): (GH-192) Insert the new covariance (and cholesky covariance) rows into the current matrix  (O(N^2))
+  // instead of recomputing everything (O(N^3)).
   RecomputeDerivedVariables();
 }
 

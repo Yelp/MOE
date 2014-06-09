@@ -131,8 +131,8 @@ void DispatchHyperparameterOptimization(const boost::python::object& optimizatio
   switch (optimizer_type) {
     case OptimizerTypes::kNull: {
       // found_flag set to true; 'dumb' search cannot fail
-      // TODO(eliu): REMOVE this assumption and have 'dumb' search function pass
-      // out found_flag like every other optimizer does!
+      // TODO(eliu): (GH-189) Remove this assumption and have 'dumb' search function pass
+      // out found_flag like every other optimizer does.
       found_flag = true;
 
       // optimization_parameters must contain an int num_random_samples field, extract it
@@ -166,6 +166,8 @@ void DispatchHyperparameterOptimization(const boost::python::object& optimizatio
 }
 
 boost::python::list MultistartHyperparameterOptimizationWrapper(const boost::python::object& optimization_parameters, const boost::python::list& hyperparameter_domain, const boost::python::list& points_sampled, const boost::python::list& points_sampled_value, int dim, int num_sampled, const boost::python::list& hyperparameters, const boost::python::list& noise_variance, int max_num_threads, RandomnessSourceContainer& randomness_source, boost::python::dict& status) {
+  // TODO(eliu): (GH-131) make domain objects constructible from python; and pass them in through
+  // the optimization_parameters python object
   const int num_to_sample = 0;
   const boost::python::list points_to_sample_dummy;
   PythonInterfaceInputContainer input_container(hyperparameters, points_sampled, points_sampled_value, noise_variance, points_to_sample_dummy, dim, num_sampled, num_to_sample);

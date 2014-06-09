@@ -9,7 +9,7 @@ class CppUnitTestWrapperTest(T.TestCase):
 
     """Calls a C++ function that runs all C++ unit tests.
 
-    TODO(eliu): (ADS-2223) remove/fix this once C++ gets a proper unit testing framework.
+    TODO(eliu): (GH-115) Remove/fix this once C++ gets a proper unit testing framework.
 
     """
 

@@ -175,7 +175,8 @@
 
   Currently we let the user specify the initial guesses.  In practice, this typically means a random sampling of points.
   We do not (yet) make any effort to say sample more heavily from regions where "more stuff is happening" or any
-  other heuristics.  TODO(eliu): improve multistart heuristics (#57985).
+  other heuristics.
+  TODO(eliu): (GH-165) Improve multistart heuristics.
 
   Finally, MultistartOptimizer::MultistartOptimize() is also used to provide 'dumb' search functionality (optimization
   by just evaluating the objective at numerous points).  For sufficiently complex problems, gradient descent, Newton, etc.
@@ -244,8 +245,7 @@
 
   As mentioned above, this file provides various Optimizer classes, e.g., NewtonOptimizer.  Here we'll go over high
   level details and then go through each specific example.
-  TODO(eliu): (#45086) firm up class design.  Currently the classes are very bare-bones; they have just one method (Optimize) and
-  no state.  I made classes to make templating MultistartOptimizer easier.
+  TODO(eliu): (GH-174) Include objective, param struct, domain, etc. as Optimizer class members (copies or references).
 
   In general, the Optimizer classes are the primary endpoint for local optimization; i.e., you have a good initial guess
   and you are confident that the optima is nearby.  In current use cases, this is uncommon.  But when it is true, multistart
@@ -484,8 +484,7 @@ struct OptimizationIOContainer final {
     :next_point[problem_size]: point yielding the best objective function value according to gradient descent, SAME as
                                objective_state.GetCurrentPoint() (see previous item)
 
-  TODO(eliu): much like in the Optimizer classes (where this is now fixed), the next_point output is redundant. It just has
-  the same data as objective_state.GetCurrentPoint().  I should remove it.
+  TODO(eliu): (GH-186) The next_point output is redundant with objective_state.GetCurrentPoint(). Remove it.
 \endrst*/
 template <typename ObjectiveFunctionEvaluator, typename DomainType>
 OL_NONNULL_POINTERS void GradientDescentOptimization(const ObjectiveFunctionEvaluator& objective_evaluator, const GradientDescentParameters& gd_parameters, const DomainType& domain, typename ObjectiveFunctionEvaluator::StateType * objective_state, double * restrict next_point) {
@@ -558,7 +557,7 @@ OL_NONNULL_POINTERS void GradientDescentOptimization(const ObjectiveFunctionEval
 #ifdef OL_OPTIMIZATION_VERBOSE_PRINT
   for (int j = 0; j < problem_size; ++j) {
     if (std::fabs(next_point[j] - domain[2*j + 0]) < 1.0e-8 || std::fabs(next_point[j] - domain[2*j + 1]) < 1.0e-8) {
-      OL_VERBOSE_PRINTF("WARNING: coord %d is very close to boundaries! coord = %.18E, lower boundary = %.18E, upper boundary = %.18E.  Are you sure this is reasonable?\n", j, next_point[j], domain[2*j+0], domain[2*j+1]);
+      OL_VERBOSE_PRINTF("WARNING: coord %d is very close to boundaries! coord = %.18E, lower boundary = %.18E, upper boundary = %.18E\n", j, next_point[j], domain[2*j+0], domain[2*j+1]);
     }
   }
 #endif
@@ -650,12 +649,13 @@ OL_NONNULL_POINTERS void GradientDescentOptimization(const ObjectiveFunctionEval
   loosened for ill-conditioned problems.  Setting too high of a tolerance can cause wrong answers--e.g., we stop at a point
   that is not an optima but simply an region with small gradient.  Setting the tolerance too low will make convergence impossible
   due to loss of accuracy through numerical effects.
-  TODO(eliu): (#57983) Investigate/add stagnation detection to newton, so it stops when going too many steps without improving the result.
+  TODO(eliu): (GH-161) Investigate/add stagnation detection to newton, so it stops when going too many steps without improving the result.
 
-  Improving Newton's performance/robustness is a part of #48414, #47421.
+  TODO(eliu): (GH-133) (GH-134) Improve Newton's performance/robustness.
 
   .. WARNING:: this method does not check the eigenvalues of H at this solution to verify that it is an optima and not a saddle
-      or an indeterminate result.  (TODO(eliu): #49119)
+      or an indeterminate result.
+      TODO(eliu): (GH-121) Add optima classification to Newton.
 
   Solution is guaranteed to lie within the region specified by "domain"; note that this may not be a
   true optima (i.e., the gradient may be substantially nonzero).
@@ -727,7 +727,7 @@ OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT int NewtonOptimization(const Objective
     }
     // reduce amount of diagonal dominance to be added next iteration
     time_factor *= newton_parameters.gamma;
-    // TODO(eliu): #48414 update limiting.  If the update change is too large (factor of 2?), then consider:
+    // TODO(eliu): (GH-134) update limiting.  If the update change is too large (factor of 2?), then consider:
     // 1) limiting the update
     // 2) and/or DECREASING time_factor to take more conservative steps
     // 3) line search to find a better update (instead of just using max step size limiting)
@@ -964,7 +964,7 @@ class NewtonOptimizer final {
 
     total_errors += NewtonOptimization(objective_evaluator, newton_parameters, domain, objective_state);
 
-    // TOOD(eliu): if newton_parameters becomes a class member, so should this refinement version
+    // TODO(eliu): (GH-174) If newton_parameters becomes a class member, so should this refinement version.
     const int max_num_steps_refinement = 10;  // max number of newton steps; don't need many here b/c it should already be converged
     const double time_factor_refinement = 1.0e40;  // scaling factor high enough to remove diagonal dominance adjustment
     ParameterStruct newton_parameters_refinement(1, max_num_steps_refinement, newton_parameters.gamma, time_factor_refinement, newton_parameters.max_relative_change, newton_parameters.tolerance);
@@ -1061,8 +1061,8 @@ class MultistartOptimizer final {
       :io_container[1]: object container new best_objective_value_so_far and corresponding best_point IF found_flag is true.
                         unchanged from input otherwise. See struct docs in gpp_optimization.hpp for details.
 
-    TODO(eliu): consider having multiple versions of this for static/guided/dynamic scheduling. unforutnately openmp doesn't
-    let you choose that parameter programmatically :(  Need to demonstrate a need for it though, otherwise guided might be good
+    TODO(eliu): (GH-150) consider having multiple versions of this for static/guided/dynamic scheduling.
+    Unforutnately openmp doesn't let you choose that parameter programmatically. This would be nice for testing.
     enough
   \endrst*/
   void MultistartOptimize(const Optimizer& optimizer, const ObjectiveFunctionEvaluator& objective_evaluator, const ParameterStruct& optimizer_parameters, const DomainType& domain, double const * restrict initial_guesses, int num_multistarts, int max_num_threads, int chunk_size, typename ObjectiveFunctionEvaluator::StateType * objective_state_vector, double * restrict function_values, OptimizationIOContainer * restrict io_container) {

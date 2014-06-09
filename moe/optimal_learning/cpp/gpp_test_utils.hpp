@@ -103,7 +103,7 @@ class PingableMatrixInputVectorOutputInterface {
     This should generally not be used unless you require direct access to the analytic gradient.
 
     \return
-      MUST be ``num_rows*num_cols*GetOutputSize()`` or undefined behavior may result.
+      MUST be ``num_rows*num_cols*GetOutputSize()`` invalid memory read/writes may occur
   \endrst*/
   virtual int GetGradientsSize() const noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT = 0;
 
@@ -165,11 +165,11 @@ class PingableMatrixInputVectorOutputInterface {
   This class holds arrays: ``points_sampled``, ``points_sampled_value``, ``points_to_sample``, and ``points_being_sampled``
   which are sized according to the parameters specified in Initialize(), and filled with random numbers.
 
-  TODO: we currently generate the point sets by repeated calls to rand().  This is generally unwise since the distribution
-  of points is not particularly random.  Additionally, our current covariance functions are all stationary, so we would rather
-  generate a random base point ``x``, and then a random (direction, radius) pair so that ``y = x + direction*radius``.
-  We better cover the different behavioral regimes of our code in this case, since it's the radius value that actually
-  correlates to results. (Ticket: #44278)
+  TODO(eliu): (GH-125) we currently generate the point sets by repeated calls to rand().  This is generally
+  unwise since the distribution of points is not particularly random.  Additionally, our current covariance
+  functions are all stationary, so we would rather generate a random base point ``x``, and then a random
+  (direction, radius) pair so that ``y = x + direction*radius``. We better cover the different behavioral
+  regimes of our code in this case, since it's the radius value that actually correlates to results.
 \endrst*/
 class MockExpectedImprovementEnvironment {
  public:

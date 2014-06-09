@@ -55,7 +55,7 @@ class GaussianProcess(GaussianProcessInterface):
     def __init__(self, covariance_function, historical_data):
         """Construct a GaussianProcess object that knows how to call C++ for evaluation of member functions.
 
-        TODO(eliu): have a way to set private RNG state for self.sample_point_from_gp() (GH-56)
+        TODO(eliu): (GH-56) Have a way to set private RNG state for self.sample_point_from_gp()
 
         :param covariance_function: covariance object encoding assumptions about the GP's behavior on our data
         :type covariance_function: Covariance object exposing hyperparameters (e.g., from python_version.covariance)
@@ -212,7 +212,7 @@ class GaussianProcess(GaussianProcessInterface):
         :rtype: array of float64 with shape (num_to_sample, num_to_sample, dim)
 
         """
-        # TODO(eliu): this can be improved/optimized. see: gpp_math.cpp, GaussianProcess::ComputeGradVarianceOfPoints (GH-62)
+        # TODO(eliu): (GH-62) This can be improved/optimized. see: gpp_math.cpp, GaussianProcess::ComputeGradVarianceOfPoints
         num_to_sample = points_to_sample.shape[0]
 
         # Compute grad variance
@@ -282,7 +282,7 @@ class GaussianProcess(GaussianProcessInterface):
         :rtype: array of float64 with shape (num_to_sample, num_to_sample, dim)
 
         """
-        # TODO(eliu): this can be improved/optimized. see: gpp_math.cpp, GaussianProcess::ComputeGradCholeskyVarianceOfPoints (GH-62)
+        # TODO(eliu): (GH-62) This can be improved/optimized. see: gpp_math.cpp, GaussianProcess::ComputeGradCholeskyVarianceOfPoints
         num_to_sample = points_to_sample.shape[0]
 
         # Compute grad cholesky
@@ -353,8 +353,8 @@ class GaussianProcess(GaussianProcessInterface):
         :type validate: boolean
 
         """
-        # TODO(eliu): make this more efficient than rebuilding all precomputed data (e.g., can update the existing K_chol
-        # instead of recomputing it from scratch. (ADS-3583)
+        # TODO(eliu): (GH-192) Insert the new covariance (and cholesky covariance) rows into the current matrix  (O(N^2))
+        # instead of recomputing everything (O(N^3))
         self._historical_data.append_sample_points(sampled_points, validate=validate)
         self._build_precomputed_data()
 

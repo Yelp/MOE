@@ -417,9 +417,9 @@ class SimplexIntersectTensorProductDomain {
   \endrst*/
   int GenerateUniformPointsInDomain(int num_points, UniformRandomGenerator * uniform_generator, double * restrict random_points) const OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT {
     // ASSUME: most of the tensor product domain lies inside the simplex domain
-    // TODO(eliu): if the opposite is true (most of the simplex lies inside the tensor prod), then we need to reverse this
-    //             sampling: draw a uniform sample from the simplex first, then reject based on the tensor product region
-    //             (ticket 55780)
+    // TODO(eliu): (GH-155) if the opposite is true (most of the simplex lies inside the tensor prod),
+    // then we need to instead draw a uniform sample from the simplex first, then reject
+    // based on the tensor product region.
     int num_points_local = std::max(10, num_points);
     std::vector<double> random_points_local(num_points_local*dim_);
 

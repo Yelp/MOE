@@ -43,9 +43,7 @@ class CovarianceInterface(object):
 
     Implementers of this ABC are required to manage their own hyperparameters.
 
-    TODO(eliu): getter/setter for hyperparameters. maybe following this?
-    http://google-styleguide.googlecode.com/svn/trunk/pyguide.html#Function_and_Method_Decorators
-    How to make it work with ABCs?
+    TODO(eliu): (GH-71) getter/setter for hyperparameters.
 
     """
 

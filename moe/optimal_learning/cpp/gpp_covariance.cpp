@@ -7,10 +7,11 @@
 
   Gradient (spatial and hyperparameter) functions return all derivatives at once because there is substantial shared computation.
   The shared results are by far the most expensive part of gradient computations; they typically involve exponentiation and are
-  further at least partially shared with the base covariance computation.   In fact, we could improve performance further by
-  caching [certain] components of the covariance computation for use with the derivative computations. (TODO(eliu): #44010)
+  further at least partially shared with the base covariance computation.
 
-  TODO(eliu): #48408 Check expression simplification of gradients/hessians (esp the latter) for the various covariance functions.
+  TODO(eliu): (GH-132) compute fcn, gradient, and hessian simultaneously for covariance (optionally skipping some terms).
+
+  TODO(eliu): (GH-129) Check expression simplification of gradients/hessians (esp the latter) for the various covariance functions.
   Current math was done by hand and maybe I missed something.
 \endrst*/
 
