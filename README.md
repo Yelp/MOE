@@ -21,10 +21,10 @@ $ pserve --reload development.ini
 
 In your favorite browser go to: http://127.0.0.1:6543/
 
-OR
+Or, from the command line,
 
 ```bash
-$ curl -X POST -H "Content-Type: application/json" -d '{"points_to_evaluate": [[0.06727463396075942], [0.5067300380945079], [0.9698763624056982], [0.6741416078606629], [0.3413945823872875], [0.8293462326458892], [0.1895850103202945], [0.29784241725123095], [0.7611434260204735], [0.4050181259320824]], "points_being_sampled": [], "gp_historical_info": {"points_sampled": [{"value_var": 0.01, "value": -2.014556917682888, "point": [0.8356251271367201]}, {"value_var": 0.01, "value": -1.3556680509922945, "point": [0.5775274088974685]}, {"value_var": 0.01, "value": -0.17644452034270924, "point": [0.1299624124365485]}, {"value_var": 0.01, "value": 0.3125023458503953, "point": [0.02303611187965965]}, {"value_var": 0.01, "value": -0.5899125641251172, "point": [0.3938472181674687]}, {"value_var": 0.01, "value": -1.8568254250899945, "point": [0.9894680586912427]}, {"value_var": 0.01, "value": -1.0638344140121117, "point": [0.45444660991161895]}, {"value_var": 0.01, "value": -0.28576907668798884, "point": [0.20420919931329756]}, {"value_var": 0.01, "value": -1.568109287685418, "point": [0.6404744671911634]}, {"value_var": 0.01, "value": -1.8418398343184625, "point": [0.7168047658371041]}], "domain": [[0, 1]]}}' http://127.0.0.1:6543/gp/ei
+$ curl -X POST -H "Content-Type: application/json" -d '{"domain_info": {"dim": 1}, "points_to_evaluate": [[0.1], [0.5], [0.9]], "gp_info": {"points_sampled": [{"value_var": 0.01, "value": 0.1, "point": [0.0]}, {"value_var": 0.01, "value": 0.2, "point": [1.0]}]}}' http://127.0.0.1:6543/gp/ei
 ```
 [`gp_ei` endpoint documentation.][4]
 
@@ -181,8 +181,8 @@ $ apt-get install python python-dev gcc cmake libboost-all-dev python-pip doxyge
 1. Fork it.
 2. Create a branch (`git checkout -b my_moe_branch`)
 3. Develop your feature/fix (don't forget to add tests!)
-4. Run tests (`tox`)
-5. Test against styleguide (`tox -e pep8`)
+4. Run tests (`tox` or `make test-no-tox`)
+5. Test against styleguide (`tox -e pep8` or `make style-test-no-tox`)
 6. Commit your changes (`git commit -am "Added Some Mathemagics"`)
 7. Push to the branch (`git push origin my_moe_branch`)
 8. Open a [Pull Request][3]
