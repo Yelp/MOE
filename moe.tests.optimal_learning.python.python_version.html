@@ -1,0 +1,640 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>moe.tests.optimal_learning.python.python_version package &mdash; MOE 0.1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="_static/breathe.css" type="text/css" />
+  
+    <link rel="top" title="MOE 0.1.0 documentation" href="index.html"/>
+        <link rel="up" title="moe.tests.optimal_learning.python package" href="moe.tests.optimal_learning.python.html"/>
+        <link rel="next" title="moe.tests.views package" href="moe.tests.views.html"/>
+        <link rel="prev" title="moe.tests.optimal_learning.python.cpp_wrappers package" href="moe.tests.optimal_learning.python.cpp_wrappers.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="index.html" class="fa fa-home"> MOE</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="moe.html">moe package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="moe.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#module-moe.resources">moe.resources module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#module-moe">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="cpp_tree.html">C++ Files</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimization_test.html">gpp_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_domain_test.html">gpp_domain_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_exception.html">gpp_exception</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_geometry.html">gpp_geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_test_utils.html">gpp_test_utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_logging.html">gpp_logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_covariance.html">gpp_covariance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_test.html">gpp_python_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_domain.html">gpp_domain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_common.html">gpp_python_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_hyperparameter_optimization_demo.html">gpp_hyperparameter_optimization_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_test_utils_test.html">gpp_test_utils_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_math_test.html">gpp_math_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_model_selection.html">gpp_python_model_selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_math.html">gpp_math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_random_test.html">gpp_random_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_random.html">gpp_random</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra.html">gpp_linear_algebra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_core.html">gpp_core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_covariance_test.html">gpp_covariance_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python.html">gpp_python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_and_hyperparameter_optimization.html">gpp_model_selection_and_hyperparameter_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimization_parameters.html">gpp_optimization_parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_common.html">gpp_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_and_hyperparameter_optimization_test.html">gpp_model_selection_and_hyperparameter_optimization_test</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">MOE</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="moe.html">moe package</a> &raquo;</li>
+      
+          <li><a href="moe.tests.html">moe.tests package</a> &raquo;</li>
+      
+          <li><a href="moe.tests.optimal_learning.html">moe.tests.optimal_learning package</a> &raquo;</li>
+      
+          <li><a href="moe.tests.optimal_learning.python.html">moe.tests.optimal_learning.python package</a> &raquo;</li>
+      
+    <li>moe.tests.optimal_learning.python.python_version package</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="_sources/moe.tests.optimal_learning.python.python_version.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <div class="section" id="moe-tests-optimal-learning-python-python-version-package">
+<h1>moe.tests.optimal_learning.python.python_version package<a class="headerlink" href="#moe-tests-optimal-learning-python-python-version-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-moe.tests.optimal_learning.python.python_version.covariance_test">
+<span id="moe-tests-optimal-learning-python-python-version-covariance-test-module"></span><h2>moe.tests.optimal_learning.python.python_version.covariance_test module<a class="headerlink" href="#module-moe.tests.optimal_learning.python.python_version.covariance_test" title="Permalink to this headline">¶</a></h2>
+<p>Test cases for the Square Exponential covariance function and its spatial gradient.</p>
+<p>Testing is sparse at the moment. The C++ implementations are tested thoroughly (gpp_covariance_test.hpp/cpp) and
+we rely more on cpp_wrappers/covariance_test.py&#8217;s comparison with C++ for verification of the Python code.
+x
+TODO(eliu): test hyperparameter gradient
+TODO(eliu): ping testing for spatial gradients
+TODO(eliu): make test structure general enough to support other covariance functions automatically</p>
+<dl class="class">
+<dt id="moe.tests.optimal_learning.python.python_version.covariance_test.SquareExponentialTest">
+<em class="property">class </em><tt class="descclassname">moe.tests.optimal_learning.python.python_version.covariance_test.</tt><tt class="descname">SquareExponentialTest</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/python_version/covariance_test.html#SquareExponentialTest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.covariance_test.SquareExponentialTest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase" title="moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase"><tt class="xref py py-class docutils literal"><span class="pre">moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase</span></tt></a></p>
+<p>Tests for the computation of the SquareExponential covariance and spatial gradient of covariance.</p>
+<p>Tests cases are against manually verified results in various spatial dimensions and some ping tests.</p>
+<dl class="method">
+<dt id="moe.tests.optimal_learning.python.python_version.covariance_test.SquareExponentialTest.base_setup">
+<tt class="descname">base_setup</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/python_version/covariance_test.html#SquareExponentialTest.base_setup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.covariance_test.SquareExponentialTest.base_setup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set up parameters for test cases.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.optimal_learning.python.python_version.covariance_test.SquareExponentialTest.test_hyperparameter_gradient_pings">
+<tt class="descname">test_hyperparameter_gradient_pings</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/python_version/covariance_test.html#SquareExponentialTest.test_hyperparameter_gradient_pings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.covariance_test.SquareExponentialTest.test_hyperparameter_gradient_pings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ping test (compare analytic result to finite difference) the gradient wrt hyperparameters.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.optimal_learning.python.python_version.covariance_test.SquareExponentialTest.test_square_exponential_covariance_one_dim">
+<tt class="descname">test_square_exponential_covariance_one_dim</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/python_version/covariance_test.html#SquareExponentialTest.test_square_exponential_covariance_one_dim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.covariance_test.SquareExponentialTest.test_square_exponential_covariance_one_dim" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test the SquareExponential covariance function against correct values for different sets of hyperparameters in 1D.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.optimal_learning.python.python_version.covariance_test.SquareExponentialTest.test_square_exponential_covariance_three_dim">
+<tt class="descname">test_square_exponential_covariance_three_dim</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/python_version/covariance_test.html#SquareExponentialTest.test_square_exponential_covariance_three_dim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.covariance_test.SquareExponentialTest.test_square_exponential_covariance_three_dim" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test the SquareExponential covariance function against correct values for different sets of hyperparameters in 3D.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.optimal_learning.python.python_version.covariance_test.SquareExponentialTest.test_square_exponential_grad_covariance_three_dim">
+<tt class="descname">test_square_exponential_grad_covariance_three_dim</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/python_version/covariance_test.html#SquareExponentialTest.test_square_exponential_grad_covariance_three_dim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.covariance_test.SquareExponentialTest.test_square_exponential_grad_covariance_three_dim" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test the SquareExponential grad_covariance function against correct values for different sets of hyperparameters in 3D.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-moe.tests.optimal_learning.python.python_version.expected_improvement_test">
+<span id="moe-tests-optimal-learning-python-python-version-expected-improvement-test-module"></span><h2>moe.tests.optimal_learning.python.python_version.expected_improvement_test module<a class="headerlink" href="#module-moe.tests.optimal_learning.python.python_version.expected_improvement_test" title="Permalink to this headline">¶</a></h2>
+<p>Test the Python implementation of Expected Improvement and its gradient.</p>
+<dl class="class">
+<dt id="moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest">
+<em class="property">class </em><tt class="descclassname">moe.tests.optimal_learning.python.python_version.expected_improvement_test.</tt><tt class="descname">ExpectedImprovementTest</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/python_version/expected_improvement_test.html#ExpectedImprovementTest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestCase" title="moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestCase"><tt class="xref py py-class docutils literal"><span class="pre">moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestCase</span></tt></a></p>
+<p>Verify that the &#8220;naive&#8221; and &#8220;vectorized&#8221; EI implementations in Python return the same result.</p>
+<p>The code for the naive implementation of EI is straightforward to read whereas the vectorized version is a lot more
+opaque. So we verify one against the other.</p>
+<p>Fully verifying the monte carlo implemetation (e.g., conducting convergence tests, comparing against analytic results)
+is expensive and already a part of the C++ unit test suite.</p>
+<dl class="method">
+<dt id="moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.base_setup">
+<tt class="descname">base_setup</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/python_version/expected_improvement_test.html#ExpectedImprovementTest.base_setup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.base_setup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the standard setup but seed the RNG first (for repeatability).</p>
+<p>It is easy to stumble into test cases where EI is very small (e.g., &lt; 1.e-20),
+which makes it difficult to set meaningful tolerances for the checks.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.dim">
+<tt class="descname">dim</tt><em class="property"> = 3</em><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.dim" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.gp_test_environment_input">
+<tt class="descname">gp_test_environment_input</tt><em class="property"> = &lt;moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestEnvironmentInput object at 0x1082b3ed0&gt;</em><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.gp_test_environment_input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.noise_variance_base">
+<tt class="descname">noise_variance_base</tt><em class="property"> = 0.002</em><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.noise_variance_base" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.num_hyperparameters">
+<tt class="descname">num_hyperparameters</tt><em class="property"> = 4</em><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.num_hyperparameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.num_mc_iterations">
+<tt class="descname">num_mc_iterations</tt><em class="property"> = 747</em><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.num_mc_iterations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.num_sampled_list">
+<tt class="descname">num_sampled_list</tt><em class="property"> = [1, 2, 5, 10, 16, 20, 50]</em><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.num_sampled_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.precompute_gaussian_process_data">
+<tt class="descname">precompute_gaussian_process_data</tt><em class="property"> = True</em><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.precompute_gaussian_process_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.rng_seed">
+<tt class="descname">rng_seed</tt><em class="property"> = 314</em><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.rng_seed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.test_evaluate_ei_at_points">
+<tt class="descname">test_evaluate_ei_at_points</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/python_version/expected_improvement_test.html#ExpectedImprovementTest.test_evaluate_ei_at_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.test_evaluate_ei_at_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check that <tt class="docutils literal"><span class="pre">evaluate_expected_improvement_at_point_list</span></tt> computes and orders results correctly (using 1D analytic EI).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.test_expected_improvement_and_gradient">
+<tt class="descname">test_expected_improvement_and_gradient</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/python_version/expected_improvement_test.html#ExpectedImprovementTest.test_expected_improvement_and_gradient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.test_expected_improvement_and_gradient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test EI by comparing the vectorized and &#8220;naive&#8221; versions.</p>
+<p>With the same RNG state, these two functions should return identical output.
+We use a fairly low number of monte-carlo iterations since we are not
+trying to converge; just check for consistency.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">this is not a particularly good test. It relies on the &#8220;naive&#8221;
+version being easier to verify manually and only checks for consistency
+between the naive and vectorized versions.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.test_multistart_analytic_expected_improvement_optimization">
+<tt class="descname">test_multistart_analytic_expected_improvement_optimization</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/python_version/expected_improvement_test.html#ExpectedImprovementTest.test_multistart_analytic_expected_improvement_optimization"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.test_multistart_analytic_expected_improvement_optimization" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check that multistart optimization (gradient descent) can find the optimum point to sample (using 1D analytic EI).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.test_multistart_mmonte_carlo_expected_improvement_optimization">
+<tt class="descname">test_multistart_mmonte_carlo_expected_improvement_optimization</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/python_version/expected_improvement_test.html#ExpectedImprovementTest.test_multistart_mmonte_carlo_expected_improvement_optimization"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.test_multistart_mmonte_carlo_expected_improvement_optimization" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check that multistart optimization (gradient descent) can find the optimum point to sample (using 2-EI).</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-moe.tests.optimal_learning.python.python_version.log_likelihood_test">
+<span id="moe-tests-optimal-learning-python-python-version-log-likelihood-test-module"></span><h2>moe.tests.optimal_learning.python.python_version.log_likelihood_test module<a class="headerlink" href="#module-moe.tests.optimal_learning.python.python_version.log_likelihood_test" title="Permalink to this headline">¶</a></h2>
+<p>Test cases for the Log Marginal Likelihood metric for model fit.</p>
+<p>Testing is sparse at the moment. The C++ implementations are tested thoroughly (gpp_covariance_test.hpp/cpp) and
+we rely more on cpp_wrappers/covariance_test.py&#8217;s comparison with C++ for verification of the Python code.</p>
+<dl class="class">
+<dt id="moe.tests.optimal_learning.python.python_version.log_likelihood_test.GaussianProcessLogMarginalLikelihoodTest">
+<em class="property">class </em><tt class="descclassname">moe.tests.optimal_learning.python.python_version.log_likelihood_test.</tt><tt class="descname">GaussianProcessLogMarginalLikelihoodTest</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/python_version/log_likelihood_test.html#GaussianProcessLogMarginalLikelihoodTest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.log_likelihood_test.GaussianProcessLogMarginalLikelihoodTest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestCase" title="moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestCase"><tt class="xref py py-class docutils literal"><span class="pre">moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestCase</span></tt></a></p>
+<p>Test cases for the Log Marginal Likelihood metric for model fit.</p>
+<p>Tests check that the gradients ping properly and that computed log likelihood values are &lt; 0.0.</p>
+<dl class="attribute">
+<dt id="moe.tests.optimal_learning.python.python_version.log_likelihood_test.GaussianProcessLogMarginalLikelihoodTest.dim">
+<tt class="descname">dim</tt><em class="property"> = 3</em><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.log_likelihood_test.GaussianProcessLogMarginalLikelihoodTest.dim" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="moe.tests.optimal_learning.python.python_version.log_likelihood_test.GaussianProcessLogMarginalLikelihoodTest.gp_test_environment_input">
+<tt class="descname">gp_test_environment_input</tt><em class="property"> = &lt;moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestEnvironmentInput object at 0x10834bf50&gt;</em><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.log_likelihood_test.GaussianProcessLogMarginalLikelihoodTest.gp_test_environment_input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="moe.tests.optimal_learning.python.python_version.log_likelihood_test.GaussianProcessLogMarginalLikelihoodTest.noise_variance_base">
+<tt class="descname">noise_variance_base</tt><em class="property"> = 0.002</em><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.log_likelihood_test.GaussianProcessLogMarginalLikelihoodTest.noise_variance_base" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="moe.tests.optimal_learning.python.python_version.log_likelihood_test.GaussianProcessLogMarginalLikelihoodTest.num_hyperparameters">
+<tt class="descname">num_hyperparameters</tt><em class="property"> = 4</em><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.log_likelihood_test.GaussianProcessLogMarginalLikelihoodTest.num_hyperparameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="moe.tests.optimal_learning.python.python_version.log_likelihood_test.GaussianProcessLogMarginalLikelihoodTest.num_sampled_list">
+<tt class="descname">num_sampled_list</tt><em class="property"> = [1, 2, 5, 10, 16, 20, 42]</em><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.log_likelihood_test.GaussianProcessLogMarginalLikelihoodTest.num_sampled_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="moe.tests.optimal_learning.python.python_version.log_likelihood_test.GaussianProcessLogMarginalLikelihoodTest.precompute_gaussian_process_data">
+<tt class="descname">precompute_gaussian_process_data</tt><em class="property"> = False</em><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.log_likelihood_test.GaussianProcessLogMarginalLikelihoodTest.precompute_gaussian_process_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.optimal_learning.python.python_version.log_likelihood_test.GaussianProcessLogMarginalLikelihoodTest.test_evaluate_log_likelihood_at_points">
+<tt class="descname">test_evaluate_log_likelihood_at_points</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/python_version/log_likelihood_test.html#GaussianProcessLogMarginalLikelihoodTest.test_evaluate_log_likelihood_at_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.log_likelihood_test.GaussianProcessLogMarginalLikelihoodTest.test_evaluate_log_likelihood_at_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check that <tt class="docutils literal"><span class="pre">evaluate_log_likelihood_at_hyperparameter_list</span></tt> computes and orders results correctly.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.optimal_learning.python.python_version.log_likelihood_test.GaussianProcessLogMarginalLikelihoodTest.test_grad_log_likelihood_pings">
+<tt class="descname">test_grad_log_likelihood_pings</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/python_version/log_likelihood_test.html#GaussianProcessLogMarginalLikelihoodTest.test_grad_log_likelihood_pings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.log_likelihood_test.GaussianProcessLogMarginalLikelihoodTest.test_grad_log_likelihood_pings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ping test (compare analytic result to finite difference) the log likelihood gradient wrt hyperparameters.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.optimal_learning.python.python_version.log_likelihood_test.GaussianProcessLogMarginalLikelihoodTest.test_multistart_hyperparameter_optimization">
+<tt class="descname">test_multistart_hyperparameter_optimization</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/python_version/log_likelihood_test.html#GaussianProcessLogMarginalLikelihoodTest.test_multistart_hyperparameter_optimization"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.log_likelihood_test.GaussianProcessLogMarginalLikelihoodTest.test_multistart_hyperparameter_optimization" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check that multistart optimization (gradient descent) can find the optimum hyperparameters.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-moe.tests.optimal_learning.python.python_version.optimization_test">
+<span id="moe-tests-optimal-learning-python-python-version-optimization-test-module"></span><h2>moe.tests.optimal_learning.python.python_version.optimization_test module<a class="headerlink" href="#module-moe.tests.optimal_learning.python.python_version.optimization_test" title="Permalink to this headline">¶</a></h2>
+<p>Tests for the Python optimization module (null, gradient descent, and multistarting) using a simple polynomial objective.</p>
+<dl class="class">
+<dt id="moe.tests.optimal_learning.python.python_version.optimization_test.GradientDescentOptimizerTest">
+<em class="property">class </em><tt class="descclassname">moe.tests.optimal_learning.python.python_version.optimization_test.</tt><tt class="descname">GradientDescentOptimizerTest</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/python_version/optimization_test.html#GradientDescentOptimizerTest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.optimization_test.GradientDescentOptimizerTest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase" title="moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase"><tt class="xref py py-class docutils literal"><span class="pre">moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase</span></tt></a></p>
+<p>Test Gradient Descent on a simple quadratic objective.</p>
+<p>We check GD in an unconstrained setting, a constrained setting, and we test multistarting it.</p>
+<p>We don&#8217;t test the stochastic averaging option meaningfully. We check that the optimizer will average
+the number of steps specified by input. We also check that the simple unconstrained case can also be solved
+with averaging on*.</p>
+<p>* This is not much of a test. The problem is convex and isotropic so GD will take a more or less straight
+path to the maxima. Averaging can only reduce the accuracy of the solve.</p>
+<p>TODO(eliu): build a simple stochastic objective and test the stochastic component fully.</p>
+<dl class="method">
+<dt id="moe.tests.optimal_learning.python.python_version.optimization_test.GradientDescentOptimizerTest.base_setup">
+<tt class="descname">base_setup</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/python_version/optimization_test.html#GradientDescentOptimizerTest.base_setup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.optimization_test.GradientDescentOptimizerTest.base_setup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set up a test case for optimizing a simple quadratic polynomial.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.optimal_learning.python.python_version.optimization_test.GradientDescentOptimizerTest.test_get_averaging_range">
+<tt class="descname">test_get_averaging_range</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/python_version/optimization_test.html#GradientDescentOptimizerTest.test_get_averaging_range"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.optimization_test.GradientDescentOptimizerTest.test_get_averaging_range" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test the method used to produce what interval to average over in Polyak-Ruppert averaging.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.optimal_learning.python.python_version.optimization_test.GradientDescentOptimizerTest.test_gradient_descent_optimizer">
+<tt class="descname">test_gradient_descent_optimizer</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/python_version/optimization_test.html#GradientDescentOptimizerTest.test_gradient_descent_optimizer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.optimization_test.GradientDescentOptimizerTest.test_gradient_descent_optimizer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check that gradient descent can find the optimum of the quadratic test objective.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.optimal_learning.python.python_version.optimization_test.GradientDescentOptimizerTest.test_gradient_descent_optimizer_constrained">
+<tt class="descname">test_gradient_descent_optimizer_constrained</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/python_version/optimization_test.html#GradientDescentOptimizerTest.test_gradient_descent_optimizer_constrained"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.optimization_test.GradientDescentOptimizerTest.test_gradient_descent_optimizer_constrained" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check that gradient descent can find the global optimum (in a domain) when the true optimum is outside.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.optimal_learning.python.python_version.optimization_test.GradientDescentOptimizerTest.test_gradient_descent_optimizer_with_averaging">
+<tt class="descname">test_gradient_descent_optimizer_with_averaging</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/python_version/optimization_test.html#GradientDescentOptimizerTest.test_gradient_descent_optimizer_with_averaging"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.optimization_test.GradientDescentOptimizerTest.test_gradient_descent_optimizer_with_averaging" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check that gradient descent can find the optimum of the quadratic test objective with averaging on.</p>
+<p>This test doesn&#8217;t exercise the purpose of averaging (i.e., this objective isn&#8217;t stochastic), but it does
+check that it at least runs.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.optimal_learning.python.python_version.optimization_test.GradientDescentOptimizerTest.test_multistarted_gradient_descent_optimizer">
+<tt class="descname">test_multistarted_gradient_descent_optimizer</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/python_version/optimization_test.html#GradientDescentOptimizerTest.test_multistarted_gradient_descent_optimizer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.optimization_test.GradientDescentOptimizerTest.test_multistarted_gradient_descent_optimizer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check that multistarted GD can find the optimum in a &#8216;very&#8217; large domain.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.optimal_learning.python.python_version.optimization_test.GradientDescentOptimizerTest.test_multistarted_gradient_descent_optimizer_crippled_start">
+<tt class="descname">test_multistarted_gradient_descent_optimizer_crippled_start</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/python_version/optimization_test.html#GradientDescentOptimizerTest.test_multistarted_gradient_descent_optimizer_crippled_start"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.optimization_test.GradientDescentOptimizerTest.test_multistarted_gradient_descent_optimizer_crippled_start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check that multistarted GD is finding the best result from GD.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="moe.tests.optimal_learning.python.python_version.optimization_test.NullOptimizerTest">
+<em class="property">class </em><tt class="descclassname">moe.tests.optimal_learning.python.python_version.optimization_test.</tt><tt class="descname">NullOptimizerTest</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/python_version/optimization_test.html#NullOptimizerTest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.optimization_test.NullOptimizerTest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase" title="moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase"><tt class="xref py py-class docutils literal"><span class="pre">moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase</span></tt></a></p>
+<p>Test the NullOptimizer on a simple objective.</p>
+<p>NullOptimizer should do nothing.
+Multistarting it should be the same as a &#8216;dumb&#8217; search over points.</p>
+<dl class="method">
+<dt id="moe.tests.optimal_learning.python.python_version.optimization_test.NullOptimizerTest.base_setup">
+<tt class="descname">base_setup</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/python_version/optimization_test.html#NullOptimizerTest.base_setup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.optimization_test.NullOptimizerTest.base_setup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set up a test case for optimizing a simple quadratic polynomial.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.optimal_learning.python.python_version.optimization_test.NullOptimizerTest.test_multistarted_null_optimizer">
+<tt class="descname">test_multistarted_null_optimizer</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/python_version/optimization_test.html#NullOptimizerTest.test_multistarted_null_optimizer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.optimization_test.NullOptimizerTest.test_multistarted_null_optimizer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test that multistarting null optimizer just evalutes the function and indentifies the max.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.optimal_learning.python.python_version.optimization_test.NullOptimizerTest.test_null_optimizer">
+<tt class="descname">test_null_optimizer</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/python_version/optimization_test.html#NullOptimizerTest.test_null_optimizer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.optimization_test.NullOptimizerTest.test_null_optimizer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test that null optimizer does not change current_point.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="moe.tests.optimal_learning.python.python_version.optimization_test.QuadraticFunction">
+<em class="property">class </em><tt class="descclassname">moe.tests.optimal_learning.python.python_version.optimization_test.</tt><tt class="descname">QuadraticFunction</tt><big>(</big><em>maxima_point</em>, <em>current_point</em><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/python_version/optimization_test.html#QuadraticFunction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.optimization_test.QuadraticFunction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="moe.optimal_learning.python.interfaces.html#moe.optimal_learning.python.interfaces.optimization_interface.OptimizableInterface" title="moe.optimal_learning.python.interfaces.optimization_interface.OptimizableInterface"><tt class="xref py py-class docutils literal"><span class="pre">moe.optimal_learning.python.interfaces.optimization_interface.OptimizableInterface</span></tt></a></p>
+<p>Class to evaluate the function f(x_1,...,x_{dim}) = -sum_i (x_i - s_i)^2, i = 1..dim.</p>
+<p>This is a simple quadratic form with maxima at (s_1, ..., s_{dim}).</p>
+<dl class="method">
+<dt id="moe.tests.optimal_learning.python.python_version.optimization_test.QuadraticFunction.compute_grad_objective_function">
+<tt class="descname">compute_grad_objective_function</tt><big>(</big><em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/python_version/optimization_test.html#QuadraticFunction.compute_grad_objective_function"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.optimization_test.QuadraticFunction.compute_grad_objective_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the gradient of <tt class="docutils literal"><span class="pre">f(current_point)</span></tt> wrt <tt class="docutils literal"><span class="pre">current_point</span></tt>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">gradient of the objective, i-th entry is <tt class="docutils literal"><span class="pre">\pderiv{f(x)}{x_i}</span></tt></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">array of float64 with shape (problem_size)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.optimal_learning.python.python_version.optimization_test.QuadraticFunction.compute_hessian_objective_function">
+<tt class="descname">compute_hessian_objective_function</tt><big>(</big><em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/python_version/optimization_test.html#QuadraticFunction.compute_hessian_objective_function"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.optimization_test.QuadraticFunction.compute_hessian_objective_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the hessian matrix of <tt class="docutils literal"><span class="pre">f(current_point)</span></tt> wrt <tt class="docutils literal"><span class="pre">current_point</span></tt>.</p>
+<p>This matrix is symmetric as long as the mixed second derivatives of f(x) are continuous: Clairaut&#8217;s Theorem.
+<a class="reference external" href="http://en.wikipedia.org/wiki/Symmetry_of_second_derivatives">http://en.wikipedia.org/wiki/Symmetry_of_second_derivatives</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">hessian of the objective, (i,j)th entry is <tt class="docutils literal"><span class="pre">\mixpderiv{f(x)}{x_i}{x_j}</span></tt></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">array of float64 with shape (problem_size, problem_size)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.optimal_learning.python.python_version.optimization_test.QuadraticFunction.compute_objective_function">
+<tt class="descname">compute_objective_function</tt><big>(</big><em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/python_version/optimization_test.html#QuadraticFunction.compute_objective_function"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.optimization_test.QuadraticFunction.compute_objective_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute <tt class="docutils literal"><span class="pre">f(current_point)</span></tt>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">value of objective function evaluated at <tt class="docutils literal"><span class="pre">current_point</span></tt></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float64</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="moe.tests.optimal_learning.python.python_version.optimization_test.QuadraticFunction.dim">
+<tt class="descname">dim</tt><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/python_version/optimization_test.html#QuadraticFunction.dim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.optimization_test.QuadraticFunction.dim" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the number of spatial dimensions.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.optimal_learning.python.python_version.optimization_test.QuadraticFunction.get_current_point">
+<tt class="descname">get_current_point</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/python_version/optimization_test.html#QuadraticFunction.get_current_point"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.optimization_test.QuadraticFunction.get_current_point" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the current_point (array of float64 with shape (problem_size)) at which this object is evaluating the objective function, <tt class="docutils literal"><span class="pre">f(x)</span></tt>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="moe.tests.optimal_learning.python.python_version.optimization_test.QuadraticFunction.optimum_point">
+<tt class="descname">optimum_point</tt><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/python_version/optimization_test.html#QuadraticFunction.optimum_point"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.optimization_test.QuadraticFunction.optimum_point" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the argmax_x (f(x)), the point at which the global maximum occurs.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="moe.tests.optimal_learning.python.python_version.optimization_test.QuadraticFunction.optimum_value">
+<tt class="descname">optimum_value</tt><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/python_version/optimization_test.html#QuadraticFunction.optimum_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.optimization_test.QuadraticFunction.optimum_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return max_x f(x), the global maximum value of this function.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="moe.tests.optimal_learning.python.python_version.optimization_test.QuadraticFunction.problem_size">
+<tt class="descname">problem_size</tt><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/python_version/optimization_test.html#QuadraticFunction.problem_size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.optimization_test.QuadraticFunction.problem_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the number of independent parameters to optimize.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.optimal_learning.python.python_version.optimization_test.QuadraticFunction.set_current_point">
+<tt class="descname">set_current_point</tt><big>(</big><em>current_point</em><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/python_version/optimization_test.html#QuadraticFunction.set_current_point"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.optimization_test.QuadraticFunction.set_current_point" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set current_point to the specified point; ordering must match.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>current_point</strong> (<em>array of float64 with shape (problem_size)</em>) &#8211; current_point at which to evaluate the objective function, <tt class="docutils literal"><span class="pre">f(x)</span></tt></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-moe.tests.optimal_learning.python.python_version">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-moe.tests.optimal_learning.python.python_version" title="Permalink to this headline">¶</a></h2>
+<p>Test suite for the Python implementation of optimal_learning.</p>
+<ul class="simple">
+<li>Lower level functions (e.g., covariance) are generally tested with a combination of manual verification and derivative pinging.</li>
+<li>Mid-level level functions (e.g., log likelihood) are mostly tested with derivative pinging.</li>
+<li>High-level functions (e.g., optimization of EI or log likelihood) are only loosely tested, only checking that outputs
+are valid (vs trying to verify them).</li>
+</ul>
+<p>Note that the Python implementation is additionally tested against the C++ (same inputs, same results for the various
+optimal_learning features) implementation (see moe/tests/optimal_learning/python/cpp_wrappers).</p>
+<p>TODO(eliu): in general, the Python test suite is lacking and we rely on comparison against the more extensively tested
+C++ implementation to check the Python.</p>
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="moe.tests.views.html" class="btn btn-neutral float-right" title="moe.tests.views package"/>Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="moe.tests.optimal_learning.python.cpp_wrappers.html" class="btn btn-neutral" title="moe.tests.optimal_learning.python.cpp_wrappers package"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

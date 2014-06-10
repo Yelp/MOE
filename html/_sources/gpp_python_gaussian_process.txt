@@ -1,0 +1,20 @@
+gpp_python_gaussian_process
+=====
+
+**Contents:**
+
+    1. `gpp_python_gaussian_process.hpp`_
+    2. `gpp_python_gaussian_process.cpp`_
+
+
+gpp_python_gaussian_process.hpp
+------
+
+.. doxygenfile:: gpp_python_gaussian_process.hpp
+
+
+gpp_python_gaussian_process.cpp
+------
+
+.. doxygenfile:: gpp_python_gaussian_process.cpp
+

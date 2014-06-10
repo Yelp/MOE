@@ -1,0 +1,18 @@
+moe.optimal_learning package
+============================
+
+Subpackages
+-----------
+
+.. toctree::
+
+    moe.optimal_learning.cpp
+    moe.optimal_learning.python
+
+Module contents
+---------------
+
+.. automodule:: moe.optimal_learning
+    :members:
+    :undoc-members:
+    :show-inheritance:

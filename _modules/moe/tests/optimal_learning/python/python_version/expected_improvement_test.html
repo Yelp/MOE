@@ -1,0 +1,468 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>moe.tests.optimal_learning.python.python_version.expected_improvement_test &mdash; MOE 0.1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../../../../_static/favicon.ico"/>
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../../../../_static/breathe.css" type="text/css" />
+  
+    <link rel="top" title="MOE 0.1.0 documentation" href="../../../../../../index.html"/>
+        <link rel="up" title="moe" href="../../../../../moe.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="../../../../../../index.html" class="fa fa-home"> MOE</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../moe.html">moe package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../moe.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../moe.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../moe.html#module-moe.resources">moe.resources module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../moe.html#module-moe">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../cpp_tree.html">C++ Files</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_optimization_test.html">gpp_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_domain_test.html">gpp_domain_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_exception.html">gpp_exception</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_geometry.html">gpp_geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_test_utils.html">gpp_test_utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_logging.html">gpp_logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_covariance.html">gpp_covariance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_python_test.html">gpp_python_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_domain.html">gpp_domain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_python_common.html">gpp_python_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_hyperparameter_optimization_demo.html">gpp_hyperparameter_optimization_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_test_utils_test.html">gpp_test_utils_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_math_test.html">gpp_math_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_python_model_selection.html">gpp_python_model_selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_math.html">gpp_math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_random_test.html">gpp_random_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_random.html">gpp_random</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_geometry_test.html">gpp_geometry_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_linear_algebra.html">gpp_linear_algebra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_core.html">gpp_core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_covariance_test.html">gpp_covariance_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_python.html">gpp_python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_model_selection_and_hyperparameter_optimization.html">gpp_model_selection_and_hyperparameter_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_optimization_parameters.html">gpp_optimization_parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_common.html">gpp_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_model_selection_and_hyperparameter_optimization_test.html">gpp_model_selection_and_hyperparameter_optimization_test</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../../../../index.html">MOE</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../../../../index.html">Module code</a> &raquo;</li>
+      
+          <li><a href="../../../../../moe.html">moe</a> &raquo;</li>
+      
+    <li>moe.tests.optimal_learning.python.python_version.expected_improvement_test</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <h1>Source code for moe.tests.optimal_learning.python.python_version.expected_improvement_test</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;Test the Python implementation of Expected Improvement and its gradient.&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+<span class="kn">import</span> <span class="nn">testify</span> <span class="kn">as</span> <span class="nn">T</span>
+
+<span class="kn">from</span> <span class="nn">moe.optimal_learning.python.geometry_utils</span> <span class="kn">import</span> <span class="n">ClosedInterval</span>
+<span class="kn">from</span> <span class="nn">moe.optimal_learning.python.python_version.covariance</span> <span class="kn">import</span> <span class="n">SquareExponential</span>
+<span class="kn">from</span> <span class="nn">moe.optimal_learning.python.python_version.domain</span> <span class="kn">import</span> <span class="n">TensorProductDomain</span>
+<span class="kn">from</span> <span class="nn">moe.optimal_learning.python.python_version.expected_improvement</span> <span class="kn">import</span> <span class="n">multistart_expected_improvement_optimization</span><span class="p">,</span> <span class="n">ExpectedImprovement</span>
+<span class="kn">from</span> <span class="nn">moe.optimal_learning.python.python_version.gaussian_process</span> <span class="kn">import</span> <span class="n">GaussianProcess</span>
+<span class="kn">from</span> <span class="nn">moe.optimal_learning.python.python_version.optimization</span> <span class="kn">import</span> <span class="n">GradientDescentParameters</span><span class="p">,</span> <span class="n">GradientDescentOptimizer</span>
+<span class="kn">from</span> <span class="nn">moe.optimal_learning.python.repeated_domain</span> <span class="kn">import</span> <span class="n">RepeatedDomain</span>
+<span class="kn">from</span> <span class="nn">moe.tests.optimal_learning.python.gaussian_process_test_case</span> <span class="kn">import</span> <span class="n">GaussianProcessTestCase</span><span class="p">,</span> <span class="n">GaussianProcessTestEnvironmentInput</span>
+
+
+<div class="viewcode-block" id="ExpectedImprovementTest"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest">[docs]</a><span class="k">class</span> <span class="nc">ExpectedImprovementTest</span><span class="p">(</span><span class="n">GaussianProcessTestCase</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;Verify that the &quot;naive&quot; and &quot;vectorized&quot; EI implementations in Python return the same result.</span>
+
+<span class="sd">    The code for the naive implementation of EI is straightforward to read whereas the vectorized version is a lot more</span>
+<span class="sd">    opaque. So we verify one against the other.</span>
+
+<span class="sd">    Fully verifying the monte carlo implemetation (e.g., conducting convergence tests, comparing against analytic results)</span>
+<span class="sd">    is expensive and already a part of the C++ unit test suite.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">precompute_gaussian_process_data</span> <span class="o">=</span> <span class="bp">True</span>
+
+    <span class="n">noise_variance_base</span> <span class="o">=</span> <span class="mf">0.002</span>
+    <span class="n">dim</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="n">num_hyperparameters</span> <span class="o">=</span> <span class="n">dim</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="n">gp_test_environment_input</span> <span class="o">=</span> <span class="n">GaussianProcessTestEnvironmentInput</span><span class="p">(</span>
+        <span class="n">dim</span><span class="p">,</span>
+        <span class="n">num_hyperparameters</span><span class="p">,</span>
+        <span class="mi">0</span><span class="p">,</span>
+        <span class="n">noise_variance_base</span><span class="o">=</span><span class="n">noise_variance_base</span><span class="p">,</span>
+        <span class="n">hyperparameter_interval</span><span class="o">=</span><span class="n">ClosedInterval</span><span class="p">(</span><span class="mf">3.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">),</span>
+        <span class="n">lower_bound_interval</span><span class="o">=</span><span class="n">ClosedInterval</span><span class="p">(</span><span class="o">-</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span>
+        <span class="n">upper_bound_interval</span><span class="o">=</span><span class="n">ClosedInterval</span><span class="p">(</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">),</span>
+        <span class="n">covariance_class</span><span class="o">=</span><span class="n">SquareExponential</span><span class="p">,</span>
+        <span class="n">spatial_domain_class</span><span class="o">=</span><span class="n">TensorProductDomain</span><span class="p">,</span>
+        <span class="n">hyperparameter_domain_class</span><span class="o">=</span><span class="n">TensorProductDomain</span><span class="p">,</span>
+        <span class="n">gaussian_process_class</span><span class="o">=</span><span class="n">GaussianProcess</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">num_sampled_list</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">50</span><span class="p">]</span>
+
+    <span class="n">num_mc_iterations</span> <span class="o">=</span> <span class="mi">747</span>
+    <span class="n">rng_seed</span> <span class="o">=</span> <span class="mi">314</span>
+
+    <span class="nd">@T.class_setup</span>
+<div class="viewcode-block" id="ExpectedImprovementTest.base_setup"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.base_setup">[docs]</a>    <span class="k">def</span> <span class="nf">base_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Run the standard setup but seed the RNG first (for repeatability).</span>
+
+<span class="sd">        It is easy to stumble into test cases where EI is very small (e.g., &lt; 1.e-20),</span>
+<span class="sd">        which makes it difficult to set meaningful tolerances for the checks.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">7859</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">ExpectedImprovementTest</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">base_setup</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="ExpectedImprovementTest.test_expected_improvement_and_gradient"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.test_expected_improvement_and_gradient">[docs]</a>    <span class="k">def</span> <span class="nf">test_expected_improvement_and_gradient</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Test EI by comparing the vectorized and &quot;naive&quot; versions.</span>
+
+<span class="sd">        With the same RNG state, these two functions should return identical output.</span>
+<span class="sd">        We use a fairly low number of monte-carlo iterations since we are not</span>
+<span class="sd">        trying to converge; just check for consistency.</span>
+
+<span class="sd">        .. Note:: this is not a particularly good test. It relies on the &quot;naive&quot;</span>
+<span class="sd">          version being easier to verify manually and only checks for consistency</span>
+<span class="sd">          between the naive and vectorized versions.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">num_points_p_q_list</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">)]</span>
+        <span class="n">ei_tolerance</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="s">&#39;float64&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">eps</span>
+        <span class="n">grad_ei_tolerance</span> <span class="o">=</span> <span class="mf">1.0e-13</span>
+        <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">78532</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">test_case</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">gp_test_environments</span><span class="p">:</span>
+            <span class="n">domain</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">gaussian_process</span> <span class="o">=</span> <span class="n">test_case</span>
+
+            <span class="k">for</span> <span class="n">num_to_sample</span><span class="p">,</span> <span class="n">num_being_sampled</span> <span class="ow">in</span> <span class="n">num_points_p_q_list</span><span class="p">:</span>
+                <span class="n">points_to_sample</span> <span class="o">=</span> <span class="n">domain</span><span class="o">.</span><span class="n">generate_uniform_random_points_in_domain</span><span class="p">(</span><span class="n">num_to_sample</span><span class="p">)</span>
+                <span class="n">points_being_sampled</span> <span class="o">=</span> <span class="n">domain</span><span class="o">.</span><span class="n">generate_uniform_random_points_in_domain</span><span class="p">(</span><span class="n">num_being_sampled</span><span class="p">)</span>
+
+                <span class="n">union_of_points</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">,</span> <span class="n">points_being_sampled</span><span class="p">),</span> <span class="p">(</span><span class="n">num_to_sample</span> <span class="o">+</span> <span class="n">num_being_sampled</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">))</span>
+                <span class="n">ei_eval</span> <span class="o">=</span> <span class="n">ExpectedImprovement</span><span class="p">(</span>
+                    <span class="n">gaussian_process</span><span class="p">,</span>
+                    <span class="n">points_to_sample</span><span class="p">,</span>
+                    <span class="n">points_being_sampled</span><span class="o">=</span><span class="n">points_being_sampled</span><span class="p">,</span>
+                    <span class="n">num_mc_iterations</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">num_mc_iterations</span><span class="p">,</span>
+                <span class="p">)</span>
+
+                <span class="c"># Compute quantities required for EI</span>
+                <span class="n">mu_star</span> <span class="o">=</span> <span class="n">ei_eval</span><span class="o">.</span><span class="n">_gaussian_process</span><span class="o">.</span><span class="n">compute_mean_of_points</span><span class="p">(</span><span class="n">union_of_points</span><span class="p">)</span>
+                <span class="n">var_star</span> <span class="o">=</span> <span class="n">ei_eval</span><span class="o">.</span><span class="n">_gaussian_process</span><span class="o">.</span><span class="n">compute_variance_of_points</span><span class="p">(</span><span class="n">union_of_points</span><span class="p">)</span>
+
+                <span class="c"># Check EI</span>
+                <span class="c"># Save state first to restore at the end (o/w other &quot;random&quot; events will get screwed up)</span>
+                <span class="n">rng_state</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">get_state</span><span class="p">()</span>
+                <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rng_seed</span><span class="p">)</span>
+                <span class="n">ei_vectorized</span> <span class="o">=</span> <span class="n">ei_eval</span><span class="o">.</span><span class="n">_compute_expected_improvement_monte_carlo</span><span class="p">(</span><span class="n">mu_star</span><span class="p">,</span> <span class="n">var_star</span><span class="p">)</span>
+                <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rng_seed</span><span class="p">)</span>
+                <span class="n">ei_naive</span> <span class="o">=</span> <span class="n">ei_eval</span><span class="o">.</span><span class="n">_compute_expected_improvement_monte_carlo_naive</span><span class="p">(</span><span class="n">mu_star</span><span class="p">,</span> <span class="n">var_star</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">assert_scalar_within_relative</span><span class="p">(</span><span class="n">ei_vectorized</span><span class="p">,</span> <span class="n">ei_naive</span><span class="p">,</span> <span class="n">ei_tolerance</span><span class="p">)</span>
+
+                <span class="c"># Compute quantities required for grad EI</span>
+                <span class="n">grad_mu</span> <span class="o">=</span> <span class="n">ei_eval</span><span class="o">.</span><span class="n">_gaussian_process</span><span class="o">.</span><span class="n">compute_grad_mean_of_points</span><span class="p">(</span>
+                    <span class="n">union_of_points</span><span class="p">,</span>
+                    <span class="n">num_derivatives</span><span class="o">=</span><span class="n">num_to_sample</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="n">grad_chol_decomp</span> <span class="o">=</span> <span class="n">ei_eval</span><span class="o">.</span><span class="n">_gaussian_process</span><span class="o">.</span><span class="n">compute_grad_cholesky_variance_of_points</span><span class="p">(</span>
+                    <span class="n">union_of_points</span><span class="p">,</span>
+                    <span class="n">num_derivatives</span><span class="o">=</span><span class="n">num_to_sample</span><span class="p">,</span>
+                <span class="p">)</span>
+
+                <span class="c"># Check grad EI</span>
+                <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rng_seed</span><span class="p">)</span>
+                <span class="n">grad_ei_vectorized</span> <span class="o">=</span> <span class="n">ei_eval</span><span class="o">.</span><span class="n">_compute_grad_expected_improvement_monte_carlo</span><span class="p">(</span>
+                    <span class="n">mu_star</span><span class="p">,</span>
+                    <span class="n">var_star</span><span class="p">,</span>
+                    <span class="n">grad_mu</span><span class="p">,</span>
+                    <span class="n">grad_chol_decomp</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rng_seed</span><span class="p">)</span>
+                <span class="n">grad_ei_naive</span> <span class="o">=</span> <span class="n">ei_eval</span><span class="o">.</span><span class="n">_compute_grad_expected_improvement_monte_carlo_naive</span><span class="p">(</span>
+                    <span class="n">mu_star</span><span class="p">,</span>
+                    <span class="n">var_star</span><span class="p">,</span>
+                    <span class="n">grad_mu</span><span class="p">,</span>
+                    <span class="n">grad_chol_decomp</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">assert_vector_within_relative</span><span class="p">(</span><span class="n">grad_ei_vectorized</span><span class="p">,</span> <span class="n">grad_ei_naive</span><span class="p">,</span> <span class="n">grad_ei_tolerance</span><span class="p">)</span>
+
+                <span class="c"># Restore state</span>
+                <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">set_state</span><span class="p">(</span><span class="n">rng_state</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="ExpectedImprovementTest.test_evaluate_ei_at_points"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.test_evaluate_ei_at_points">[docs]</a>    <span class="k">def</span> <span class="nf">test_evaluate_ei_at_points</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Check that ``evaluate_expected_improvement_at_point_list`` computes and orders results correctly (using 1D analytic EI).&quot;&quot;&quot;</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">greater_equal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_sampled_list</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+        <span class="n">domain</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">gaussian_process</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gp_test_environments</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+
+        <span class="n">points_to_sample</span> <span class="o">=</span> <span class="n">domain</span><span class="o">.</span><span class="n">generate_random_point_in_domain</span><span class="p">()</span>
+        <span class="n">ei_eval</span> <span class="o">=</span> <span class="n">ExpectedImprovement</span><span class="p">(</span><span class="n">gaussian_process</span><span class="p">,</span> <span class="n">points_to_sample</span><span class="p">)</span>
+
+        <span class="n">num_to_eval</span> <span class="o">=</span> <span class="mi">10</span>
+        <span class="c"># Add in a newaxis to make num_to_sample explicitly 1</span>
+        <span class="n">points_to_evaluate</span> <span class="o">=</span> <span class="n">domain</span><span class="o">.</span><span class="n">generate_uniform_random_points_in_domain</span><span class="p">(</span><span class="n">num_to_eval</span><span class="p">)[:,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:]</span>
+
+        <span class="n">test_values</span> <span class="o">=</span> <span class="n">ei_eval</span><span class="o">.</span><span class="n">evaluate_at_point_list</span><span class="p">(</span><span class="n">points_to_evaluate</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">test_values</span><span class="p">):</span>
+            <span class="n">ei_eval</span><span class="o">.</span><span class="n">set_current_point</span><span class="p">(</span><span class="n">points_to_evaluate</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="o">...</span><span class="p">])</span>
+            <span class="n">truth</span> <span class="o">=</span> <span class="n">ei_eval</span><span class="o">.</span><span class="n">compute_expected_improvement</span><span class="p">()</span>
+            <span class="n">T</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">truth</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="ExpectedImprovementTest.test_multistart_analytic_expected_improvement_optimization"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.test_multistart_analytic_expected_improvement_optimization">[docs]</a>    <span class="k">def</span> <span class="nf">test_multistart_analytic_expected_improvement_optimization</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Check that multistart optimization (gradient descent) can find the optimum point to sample (using 1D analytic EI).&quot;&quot;&quot;</span>
+        <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">3148</span><span class="p">)</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">greater_equal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_sampled_list</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
+        <span class="n">domain</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">gaussian_process</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gp_test_environments</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+
+        <span class="n">max_num_steps</span> <span class="o">=</span> <span class="mi">200</span>  <span class="c"># this is generally *too few* steps; we configure it this way so the test will run quickly</span>
+        <span class="n">max_num_restarts</span> <span class="o">=</span> <span class="mi">5</span>
+        <span class="n">num_steps_averaged</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">gamma</span> <span class="o">=</span> <span class="mf">0.2</span>
+        <span class="n">pre_mult</span> <span class="o">=</span> <span class="mf">1.5</span>
+        <span class="n">max_relative_change</span> <span class="o">=</span> <span class="mf">1.0</span>
+        <span class="n">tolerance</span> <span class="o">=</span> <span class="mf">1.0e-7</span>
+        <span class="n">gd_parameters</span> <span class="o">=</span> <span class="n">GradientDescentParameters</span><span class="p">(</span>
+            <span class="n">max_num_steps</span><span class="p">,</span>
+            <span class="n">max_num_restarts</span><span class="p">,</span>
+            <span class="n">num_steps_averaged</span><span class="p">,</span>
+            <span class="n">gamma</span><span class="p">,</span>
+            <span class="n">pre_mult</span><span class="p">,</span>
+            <span class="n">max_relative_change</span><span class="p">,</span>
+            <span class="n">tolerance</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">num_multistarts</span> <span class="o">=</span> <span class="mi">3</span>
+
+        <span class="n">points_to_sample</span> <span class="o">=</span> <span class="n">domain</span><span class="o">.</span><span class="n">generate_random_point_in_domain</span><span class="p">()</span>
+        <span class="n">ei_eval</span> <span class="o">=</span> <span class="n">ExpectedImprovement</span><span class="p">(</span><span class="n">gaussian_process</span><span class="p">,</span> <span class="n">points_to_sample</span><span class="p">)</span>
+
+        <span class="c"># expand the domain so that we are definitely not doing constrained optimization</span>
+        <span class="n">expanded_domain</span> <span class="o">=</span> <span class="n">TensorProductDomain</span><span class="p">([</span><span class="n">ClosedInterval</span><span class="p">(</span><span class="o">-</span><span class="mf">4.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
+
+        <span class="n">num_to_sample</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">repeated_domain</span> <span class="o">=</span> <span class="n">RepeatedDomain</span><span class="p">(</span><span class="n">ei_eval</span><span class="o">.</span><span class="n">num_to_sample</span><span class="p">,</span> <span class="n">expanded_domain</span><span class="p">)</span>
+        <span class="n">ei_optimizer</span> <span class="o">=</span> <span class="n">GradientDescentOptimizer</span><span class="p">(</span><span class="n">repeated_domain</span><span class="p">,</span> <span class="n">ei_eval</span><span class="p">,</span> <span class="n">gd_parameters</span><span class="p">)</span>
+        <span class="n">best_point</span> <span class="o">=</span> <span class="n">multistart_expected_improvement_optimization</span><span class="p">(</span><span class="n">ei_optimizer</span><span class="p">,</span> <span class="n">num_multistarts</span><span class="p">,</span> <span class="n">num_to_sample</span><span class="p">)</span>
+
+        <span class="c"># Check that gradients are small</span>
+        <span class="n">ei_eval</span><span class="o">.</span><span class="n">set_current_point</span><span class="p">(</span><span class="n">best_point</span><span class="p">)</span>
+        <span class="n">gradient</span> <span class="o">=</span> <span class="n">ei_eval</span><span class="o">.</span><span class="n">compute_grad_expected_improvement</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assert_vector_within_relative</span><span class="p">(</span><span class="n">gradient</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">gradient</span><span class="o">.</span><span class="n">shape</span><span class="p">),</span> <span class="n">tolerance</span><span class="p">)</span>
+
+        <span class="c"># Check that output is in the domain</span>
+        <span class="n">T</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span><span class="n">repeated_domain</span><span class="o">.</span><span class="n">check_point_inside</span><span class="p">(</span><span class="n">best_point</span><span class="p">),</span> <span class="bp">True</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="ExpectedImprovementTest.test_multistart_mmonte_carlo_expected_improvement_optimization"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.test_multistart_mmonte_carlo_expected_improvement_optimization">[docs]</a>    <span class="k">def</span> <span class="nf">test_multistart_mmonte_carlo_expected_improvement_optimization</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Check that multistart optimization (gradient descent) can find the optimum point to sample (using 2-EI).&quot;&quot;&quot;</span>
+        <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">7858</span><span class="p">)</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">greater_equal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_sampled_list</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
+        <span class="n">domain</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">gaussian_process</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gp_test_environments</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+
+        <span class="n">max_num_steps</span> <span class="o">=</span> <span class="mi">75</span>  <span class="c"># this is *too few* steps; we configure it this way so the test will run quickly</span>
+        <span class="n">max_num_restarts</span> <span class="o">=</span> <span class="mi">5</span>
+        <span class="n">num_steps_averaged</span> <span class="o">=</span> <span class="mi">50</span>
+        <span class="n">gamma</span> <span class="o">=</span> <span class="mf">0.2</span>
+        <span class="n">pre_mult</span> <span class="o">=</span> <span class="mf">1.5</span>
+        <span class="n">max_relative_change</span> <span class="o">=</span> <span class="mf">1.0</span>
+        <span class="n">tolerance</span> <span class="o">=</span> <span class="mf">1.0e-2</span>  <span class="c"># really large tolerance b/c converging with monte-carlo (esp in Python) is expensive</span>
+        <span class="n">gd_parameters</span> <span class="o">=</span> <span class="n">GradientDescentParameters</span><span class="p">(</span>
+            <span class="n">max_num_steps</span><span class="p">,</span>
+            <span class="n">max_num_restarts</span><span class="p">,</span>
+            <span class="n">num_steps_averaged</span><span class="p">,</span>
+            <span class="n">gamma</span><span class="p">,</span>
+            <span class="n">pre_mult</span><span class="p">,</span>
+            <span class="n">max_relative_change</span><span class="p">,</span>
+            <span class="n">tolerance</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">num_multistarts</span> <span class="o">=</span> <span class="mi">2</span>
+
+        <span class="c"># Expand the domain so that we are definitely not doing constrained optimization</span>
+        <span class="n">expanded_domain</span> <span class="o">=</span> <span class="n">TensorProductDomain</span><span class="p">([</span><span class="n">ClosedInterval</span><span class="p">(</span><span class="o">-</span><span class="mf">4.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
+        <span class="n">num_to_sample</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="n">repeated_domain</span> <span class="o">=</span> <span class="n">RepeatedDomain</span><span class="p">(</span><span class="n">num_to_sample</span><span class="p">,</span> <span class="n">expanded_domain</span><span class="p">)</span>
+
+        <span class="n">num_mc_iterations</span> <span class="o">=</span> <span class="mi">10000</span>
+        <span class="c"># Just any random point that won&#39;t be optimal</span>
+        <span class="n">points_to_sample</span> <span class="o">=</span> <span class="n">repeated_domain</span><span class="o">.</span><span class="n">generate_random_point_in_domain</span><span class="p">()</span>
+        <span class="n">ei_eval</span> <span class="o">=</span> <span class="n">ExpectedImprovement</span><span class="p">(</span><span class="n">gaussian_process</span><span class="p">,</span> <span class="n">points_to_sample</span><span class="p">,</span> <span class="n">num_mc_iterations</span><span class="o">=</span><span class="n">num_mc_iterations</span><span class="p">)</span>
+        <span class="c"># Compute EI and its gradient for the sake of comparison</span>
+        <span class="n">ei_initial</span> <span class="o">=</span> <span class="n">ei_eval</span><span class="o">.</span><span class="n">compute_expected_improvement</span><span class="p">()</span>
+        <span class="n">grad_ei_initial</span> <span class="o">=</span> <span class="n">ei_eval</span><span class="o">.</span><span class="n">compute_grad_expected_improvement</span><span class="p">()</span>
+
+        <span class="n">ei_optimizer</span> <span class="o">=</span> <span class="n">GradientDescentOptimizer</span><span class="p">(</span><span class="n">repeated_domain</span><span class="p">,</span> <span class="n">ei_eval</span><span class="p">,</span> <span class="n">gd_parameters</span><span class="p">)</span>
+        <span class="n">best_point</span> <span class="o">=</span> <span class="n">multistart_expected_improvement_optimization</span><span class="p">(</span><span class="n">ei_optimizer</span><span class="p">,</span> <span class="n">num_multistarts</span><span class="p">,</span> <span class="n">num_to_sample</span><span class="p">)</span>
+
+        <span class="c"># Check that gradients are &quot;small&quot;</span>
+        <span class="n">ei_eval</span><span class="o">.</span><span class="n">set_current_point</span><span class="p">(</span><span class="n">best_point</span><span class="p">)</span>
+        <span class="n">ei_final</span> <span class="o">=</span> <span class="n">ei_eval</span><span class="o">.</span><span class="n">compute_expected_improvement</span><span class="p">()</span>
+        <span class="n">grad_ei_final</span> <span class="o">=</span> <span class="n">ei_eval</span><span class="o">.</span><span class="n">compute_grad_expected_improvement</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assert_vector_within_relative</span><span class="p">(</span><span class="n">grad_ei_final</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">grad_ei_final</span><span class="o">.</span><span class="n">shape</span><span class="p">),</span> <span class="n">tolerance</span><span class="p">)</span>
+
+        <span class="c"># Check that output is in the domain</span>
+        <span class="n">T</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span><span class="n">repeated_domain</span><span class="o">.</span><span class="n">check_point_inside</span><span class="p">(</span><span class="n">best_point</span><span class="p">),</span> <span class="bp">True</span><span class="p">)</span>
+
+        <span class="c"># Since we didn&#39;t really converge to the optimal EI (too costly), do some other sanity checks</span>
+        <span class="c"># EI should have improved</span>
+        <span class="n">T</span><span class="o">.</span><span class="n">assert_gt</span><span class="p">(</span><span class="n">ei_final</span><span class="p">,</span> <span class="n">ei_initial</span><span class="p">)</span>
+
+        <span class="c"># grad EI should have improved</span>
+        <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndindex</span><span class="p">(</span><span class="n">grad_ei_final</span><span class="o">.</span><span class="n">shape</span><span class="p">):</span>
+            <span class="n">T</span><span class="o">.</span><span class="n">assert_lt</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">grad_ei_final</span><span class="p">[</span><span class="n">index</span><span class="p">]),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">grad_ei_initial</span><span class="p">[</span><span class="n">index</span><span class="p">]))</span>
+
+</div></div>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">T</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,433 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>moe.optimal_learning.EPI.src.python.models.covariance_of_process &mdash; MOE 0.1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../../../../../_static/favicon.ico"/>
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../../../../../_static/breathe.css" type="text/css" />
+  
+    <link rel="top" title="MOE 0.1.0 documentation" href="../../../../../../../index.html"/>
+        <link rel="up" title="moe" href="../../../../../../moe.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="../../../../../../../index.html" class="fa fa-home"> MOE</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../moe.html">moe package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../../moe.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../../moe.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../../moe.html#module-moe.resources">moe.resources module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../../moe.html#module-moe">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../gpp_math_hpp.html">gpp_math.hpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../gpp_geometry_hpp.html">gpp_geometry.hpp</a></li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../../../../../index.html">MOE</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../../../../../index.html">Module code</a> &raquo;</li>
+      
+          <li><a href="../../../../../../moe.html">moe</a> &raquo;</li>
+      
+    <li>moe.optimal_learning.EPI.src.python.models.covariance_of_process</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <h1>Source code for moe.optimal_learning.EPI.src.python.models.covariance_of_process</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="kn">import</span> <span class="nn">moe.optimal_learning.EPI.src.python.lib.math</span>
+<span class="kn">from</span> <span class="nn">scipy.optimize.optimize</span> <span class="kn">import</span> <span class="n">fminbound</span>
+<span class="kn">from</span> <span class="nn">scipy.optimize.optimize</span> <span class="kn">import</span> <span class="n">fmin_bfgs</span>
+
+
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">,</span> <span class="n">format</span><span class="o">=</span><span class="s">&#39;</span><span class="si">%(asctime)s</span><span class="s"> - </span><span class="si">%(levelname)s</span><span class="s"> - </span><span class="si">%(message)s</span><span class="s">&#39;</span><span class="p">)</span>
+
+<span class="c"># Constants</span>
+<span class="n">BFGS_LOO_CV_UPDATER</span> <span class="o">=</span> <span class="s">&#39;bfgs_leave_one_out_cross_validation_updater&#39;</span>
+<span class="n">FMIN_MARGINAL_UPDATER</span> <span class="o">=</span> <span class="s">&#39;fmin_marginal_likelihood_updater&#39;</span>
+<span class="n">BFGS_MARGINAL_UPDATER</span> <span class="o">=</span> <span class="s">&#39;bfgs_marginal_likelihood_updater&#39;</span>
+
+<div class="viewcode-block" id="CovarianceOfProcess"><a class="viewcode-back" href="../../../../../../../moe.optimal_learning.EPI.src.python.models.html#moe.optimal_learning.EPI.src.python.models.covariance_of_process.CovarianceOfProcess">[docs]</a><span class="k">class</span> <span class="nc">CovarianceOfProcess</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;The covariance properties of a process</span>
+
+<span class="sd">    :kwargs:</span>
+<span class="sd">        - cov_func: The covariance function, a function of two input points</span>
+<span class="sd">                    default: :math:`cov(x_1, x_2) = a*exp(-(1/2l)*|x_1 - x_2|^p)`</span>
+<span class="sd">        - grad_cov_func: The gradient of the covariance function, a function of two input points.</span>
+<span class="sd">                         The gradient is taken with respect to the first point.</span>
+<span class="sd">        - hyperparameter_grad_table: a mapping from hyperparameters to gradients of covariance wrt them</span>
+<span class="sd">        - length, alpha: Parameters of the default square exponential covariance function.</span>
+<span class="sd">                        Not used if explicit *cov* and *grad_cov* functions are given.</span>
+
+<span class="sd">    :state functions:</span>
+<span class="sd">        - self.cov(x1, x2): The covariance function of the process</span>
+<span class="sd">        - self.grad_cov(x1, x2): The gradient of the covariance function of the process</span>
+
+<span class="sd">    :References:</span>
+<span class="sd">        - www.gaussianprocess.org/gpml/chapters/RW.pdf (most notably chapter 5)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cov_func</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">grad_cov_func</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">hyperparameters</span><span class="o">=</span><span class="p">[],</span> <span class="n">hyperparameter_grad_table</span><span class="o">=</span><span class="p">[],</span> <span class="n">hyperparameter_grad_table_kwargs</span><span class="o">=</span><span class="p">[]):</span>
+        <span class="sd">&quot;&quot;&quot;Inits the CovarianceOfProcess with either an square exponential cov function</span>
+<span class="sd">        with given (or default parameters) OR with a user defined cov and grad_cov function</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">hyperparameters</span> <span class="o">=</span> <span class="n">hyperparameters</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_default_covariance</span> <span class="o">=</span> <span class="bp">False</span>
+
+        <span class="k">def</span> <span class="nf">default_cov</span><span class="p">(</span><span class="n">point_one</span><span class="p">,</span> <span class="n">point_two</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;The square exponential covariance function</span>
+
+<span class="sd">            alpha * exp( -1/2 * r L r^T )</span>
+<span class="sd">            r = point_one - point_two</span>
+<span class="sd">            L = diagonal matrix with length scales</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+
+            <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+                <span class="k">return</span> <span class="s">&quot;The square exponential covariance function eq 5.1 pg 106 RW GP book&quot;</span>
+
+            <span class="n">alpha</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hyperparameters</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">length</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hyperparameters</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+
+            <span class="n">covariance</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span>
+                    <span class="n">moe</span><span class="o">.</span><span class="n">optimal_learning</span><span class="o">.</span><span class="n">EPI</span><span class="o">.</span><span class="n">src</span><span class="o">.</span><span class="n">python</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">vector_diag_vector_product</span><span class="p">(</span>
+                        <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">point_one</span><span class="p">),</span>
+                        <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">length</span><span class="p">)</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">length</span><span class="p">)),</span>
+                        <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">point_two</span><span class="p">)</span>
+                        <span class="p">)</span>
+                    <span class="p">)</span>
+
+            <span class="k">return</span> <span class="n">covariance</span>
+
+        <span class="k">def</span> <span class="nf">default_cov_grad_length_one_length_scale</span><span class="p">(</span><span class="n">point_one</span><span class="p">,</span> <span class="n">point_two</span><span class="p">,</span> <span class="n">length</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;Return the gradient of the default covariance function wrt a single length scale</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="n">moe</span><span class="o">.</span><span class="n">optimal_learning</span><span class="o">.</span><span class="n">EPI</span><span class="o">.</span><span class="n">src</span><span class="o">.</span><span class="n">python</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">vector_diag_vector_product</span><span class="p">(</span>
+                    <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">point_one</span><span class="p">),</span>
+                    <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">length</span><span class="p">)</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">length</span><span class="p">)</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">length</span><span class="p">)),</span>
+                    <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">point_two</span><span class="p">)</span>
+                    <span class="p">)</span> <span class="o">*</span> <span class="n">default_cov</span><span class="p">(</span><span class="n">point_one</span><span class="p">,</span> <span class="n">point_two</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">default_cov_grad_length</span><span class="p">(</span><span class="n">point_one</span><span class="p">,</span> <span class="n">point_two</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="p">{}):</span>
+            <span class="sd">&quot;&quot;&quot;Return the gradient of the default covariance function wrt length</span>
+
+<span class="sd">            If we want to pick out a specific length component to diff against</span>
+<span class="sd">            all of the other components will go to zero</span>
+<span class="sd">            otherwise, we want to use all components</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+
+            <span class="n">length</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hyperparameters</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">length</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">default_cov_grad_length_one_length_scale</span><span class="p">(</span><span class="n">point_one</span><span class="p">,</span> <span class="n">point_two</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span>
+
+            <span class="c"># pull out the length component we are taking the grad wrt</span>
+            <span class="n">length_index_vector</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">point_one</span><span class="p">))</span>
+            <span class="n">length_index_vector</span><span class="p">[</span><span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;length_index&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="mf">1.0</span>
+            <span class="n">diag_vec</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.0</span><span class="o">/</span><span class="n">length</span><span class="p">[</span><span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;length_index&#39;</span><span class="p">]]</span><span class="o">**</span><span class="mi">3</span><span class="p">]</span>
+
+            <span class="k">return</span> <span class="n">moe</span><span class="o">.</span><span class="n">optimal_learning</span><span class="o">.</span><span class="n">EPI</span><span class="o">.</span><span class="n">src</span><span class="o">.</span><span class="n">python</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">vector_diag_vector_product</span><span class="p">(</span>
+                    <span class="n">length_index_vector</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">point_one</span><span class="p">),</span>
+                    <span class="n">diag_vec</span><span class="p">,</span>
+                    <span class="n">length_index_vector</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">point_two</span><span class="p">)</span>
+                    <span class="p">)</span> <span class="o">*</span> <span class="n">default_cov</span><span class="p">(</span><span class="n">point_one</span><span class="p">,</span> <span class="n">point_two</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">default_cov_grad_alpha</span><span class="p">(</span><span class="n">point_one</span><span class="p">,</span> <span class="n">point_two</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="p">{}):</span>
+            <span class="sd">&quot;&quot;&quot;Return the gradient of the default covariance function wrt alpha</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">alpha</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hyperparameters</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">default_cov</span><span class="p">(</span><span class="n">point_one</span><span class="p">,</span> <span class="n">point_two</span><span class="p">)</span> <span class="o">/</span> <span class="n">alpha</span>
+
+        <span class="k">def</span> <span class="nf">grad_default_cov</span><span class="p">(</span><span class="n">point_one</span><span class="p">,</span> <span class="n">point_two</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;The gradient (wrt r = (point_one - point_two)) of the square exponential covariance function, see paper&quot;&quot;&quot;</span>
+
+            <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+                <span class="k">return</span> <span class="s">&quot;The gradient (wrt r = (point_one - point_two)) of the square exponential covariance function&quot;</span>
+
+            <span class="n">length</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hyperparameters</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+            <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+                        <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">length</span><span class="p">)</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">length</span><span class="p">))</span> <span class="o">*</span>
+                        <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">point_two</span><span class="p">)</span> <span class="o">-</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">point_one</span><span class="p">))</span><span class="o">.</span><span class="n">T</span> <span class="o">*</span>
+                        <span class="n">default_cov</span><span class="p">(</span><span class="n">point_one</span><span class="p">,</span> <span class="n">point_two</span><span class="p">)</span>
+                    <span class="p">)</span>
+
+        <span class="c"># A cov_func and grad_cov_func were not defined, use default (exp cov, see paper)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">cov_func</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">grad_cov_func</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cov</span> <span class="o">=</span> <span class="n">default_cov</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">grad_cov</span> <span class="o">=</span> <span class="n">grad_default_cov</span>
+            <span class="c"># set the alpha hyperparameters</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">hyperparameter_grad_table</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="n">default_cov_grad_alpha</span>
+                    <span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">hyperparameter_grad_table_kwargs</span> <span class="o">=</span> <span class="p">[{}]</span>
+            <span class="c"># set the length hyperparameters</span>
+            <span class="n">length</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hyperparameters</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">length</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">hyperparameter_grad_table</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">default_cov_grad_length</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">hyperparameter_grad_table_kwargs</span><span class="o">.</span><span class="n">append</span><span class="p">({})</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hyperparameters</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">hyperparameter_grad_table</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">default_cov_grad_length</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">hyperparameter_grad_table_kwargs</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s">&#39;length_index&#39;</span><span class="p">:</span> <span class="n">i</span><span class="p">})</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">is_default_covariance</span> <span class="o">=</span> <span class="bp">True</span>
+
+        <span class="c"># The user defines both a cov and grad_cov function</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="ow">not</span> <span class="n">cov_func</span> <span class="ow">and</span> <span class="ow">not</span> <span class="ow">not</span> <span class="n">grad_cov_func</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cov</span> <span class="o">=</span> <span class="n">cov_func</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">grad_cov</span> <span class="o">=</span> <span class="n">grad_cov_func</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">hyperparameter_grad_table</span> <span class="o">=</span> <span class="n">hyperparameter_grad_table</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">hyperparameter_grad_table_kwargs</span> <span class="o">=</span> <span class="n">hyperparameter_grad_table_kwargs</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="s">&quot;Need both cov_func and grad_cov_func or neither (not xor)&quot;</span><span class="p">)</span>
+
+    <span class="c">#######################################</span>
+    <span class="c">### Hyperparameter Update Functions ###</span>
+    <span class="c">#######################################</span>
+
+    <span class="k">def</span> <span class="nf">_neg_log_marginal_likelihood_given_hyperparameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hyperparameters</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;log likelihood given both components</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># Store current values</span>
+        <span class="n">old_hyperparameters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hyperparameters</span><span class="p">[:]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hyperparameters</span> <span class="o">=</span> <span class="n">hyperparameters</span>
+        <span class="c"># Compute needed components</span>
+        <span class="n">likelihood</span> <span class="o">=</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">GP</span><span class="o">.</span><span class="n">get_log_marginal_likelihood</span><span class="p">()</span>
+        <span class="c"># Put them back</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hyperparameters</span> <span class="o">=</span> <span class="n">old_hyperparameters</span>
+        <span class="k">return</span> <span class="n">likelihood</span>
+
+    <span class="k">def</span> <span class="nf">_gradient_of_marginal_wrt_hyperparameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hyperparameters</span><span class="p">):</span>
+        <span class="c"># Store current values</span>
+        <span class="n">old_hyperparameters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hyperparameters</span><span class="p">[:]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hyperparameters</span> <span class="o">=</span> <span class="n">hyperparameters</span>
+        <span class="c"># Compute needed components</span>
+        <span class="n">the_gradient</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hyperparameters</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">grad_function</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hyperparameter_grad_table</span><span class="p">):</span>
+            <span class="n">the_gradient</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_marginal_gradient_of_variable</span><span class="p">(</span>
+                    <span class="n">grad_function</span><span class="p">,</span>
+                    <span class="n">kwargs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">hyperparameter_grad_table_kwargs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                    <span class="p">)</span>
+        <span class="c"># Put them back</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hyperparameters</span> <span class="o">=</span> <span class="n">old_hyperparameters</span>
+        <span class="k">return</span> <span class="n">the_gradient</span>
+
+    <span class="k">def</span> <span class="nf">_marginal_gradient_of_variable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hyperparameter_grad_func</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="p">{}):</span>
+        <span class="sd">&quot;&quot;&quot;follows pg114 of RW&quot;&quot;&quot;</span>
+        <span class="n">K</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">GP</span><span class="o">.</span><span class="n">build_covariance_matrix</span><span class="p">()</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">GP</span><span class="o">.</span><span class="n">values_of_samples</span><span class="p">)</span>
+        <span class="n">grad_cov_hyper_K</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">GP</span><span class="o">.</span><span class="n">build_covariance_matrix</span><span class="p">(</span><span class="n">grad_function</span><span class="o">=</span><span class="n">hyperparameter_grad_func</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="n">K_inv_y</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">y</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+        <span class="n">grad_K_K_inv_y</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">grad_cov_hyper_K</span><span class="p">,</span> <span class="n">K_inv_y</span><span class="p">)</span>
+        <span class="n">first_term</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">K_inv_y</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">grad_K_K_inv_y</span><span class="p">)</span>
+
+        <span class="n">K_inv_grad_K</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">grad_cov_hyper_K</span><span class="p">)</span>
+        <span class="n">second_term</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">K_inv_grad_K</span><span class="p">)</span>
+
+        <span class="n">grad_hyper_K</span> <span class="o">=</span> <span class="n">first_term</span> <span class="o">+</span> <span class="n">second_term</span>
+        <span class="k">return</span> <span class="n">grad_hyper_K</span>
+
+    <span class="k">def</span> <span class="nf">_update_hyperparameters_via_marginal_fmin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lower_ratio</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">upper_ratio</span><span class="o">=</span><span class="mf">2.0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Update via scipy.optimize.optimize.fminbound, derivative free</span>
+<span class="sd">        This expects len(self.hyperparameters) = 1</span>
+
+<span class="sd">        References:</span>
+<span class="sd">            * http://www.scipy.org/doc/api_docs/SciPy.optimize.optimize.html#fminbound</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hyperparameters</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="s">&quot;Whoa there, why would fmin_bound allow more than 1 dim? What is this, matlab?&quot;</span><span class="p">)</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">n_its</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">while</span> <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">start</span> <span class="o">-</span> <span class="n">end</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">1e-4</span> <span class="ow">and</span> <span class="n">n_its</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">:</span>
+            <span class="n">start</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_neg_log_marginal_likelihood_given_hyperparameters</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hyperparameters</span><span class="p">)</span>
+            <span class="n">lower_bound</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hyperparameters</span><span class="p">)</span> <span class="o">*</span> <span class="n">lower_ratio</span>
+            <span class="n">upper_bound</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hyperparameters</span><span class="p">)</span> <span class="o">*</span> <span class="n">upper_ratio</span>
+            <span class="c"># The parameters can change up to a half order of magnitude up or down</span>
+            <span class="c"># http://www.scipy.org/doc/api_docs/SciPy.optimize.optimize.html#fminbound</span>
+            <span class="n">fmin_out</span> <span class="o">=</span> <span class="n">fminbound</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_neg_log_marginal_likelihood_given_hyperparameters</span><span class="p">,</span>
+                    <span class="n">lower_bound</span><span class="p">,</span>
+                    <span class="n">upper_bound</span><span class="p">,</span>
+                    <span class="n">full_output</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                    <span class="n">disp</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+                    <span class="p">)</span>
+            <span class="n">n_its</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">hyperparameters</span> <span class="o">=</span> <span class="n">fmin_out</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">end</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_neg_log_marginal_likelihood_given_hyperparameters</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hyperparameters</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_update_hyperparameters_via_marginal_BFGS</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hyperparameter_grad_table</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Update via scipy.optimize.optimize.fmin_bfgs</span>
+
+<span class="sd">        References:</span>
+<span class="sd">            * http://www.scipy.org/doc/api_docs/SciPy.optimize.optimize.html#fmin_bfgs</span>
+<span class="sd">            * http://en.wikipedia.org/wiki/BFGS_method</span>
+<span class="sd">            * follows chapter 5 of RW (namely 5.9)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">fmin_out</span> <span class="o">=</span> <span class="n">fmin_bfgs</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_neg_log_marginal_likelihood_given_hyperparameters</span><span class="p">,</span>
+                <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hyperparameters</span><span class="p">),</span>
+                <span class="n">fprime</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_gradient_of_marginal_wrt_hyperparameters</span><span class="p">,</span>
+                <span class="n">full_output</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hyperparameters</span> <span class="o">=</span> <span class="n">fmin_out</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">_update_hyperparameters_via_LOO_CV_BFGS</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hyperparameter_grad_table</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Update via scipy.optimize.optimize.fmin_bfgs</span>
+
+<span class="sd">        References:</span>
+<span class="sd">            * follows chapter 5 of RW (namely 5.4.2)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span><span class="p">(</span><span class="ne">NotImplementedError</span><span class="p">)</span>
+
+<div class="viewcode-block" id="CovarianceOfProcess.update_hyperparameters"><a class="viewcode-back" href="../../../../../../../moe.optimal_learning.EPI.src.python.models.html#moe.optimal_learning.EPI.src.python.models.covariance_of_process.CovarianceOfProcess.update_hyperparameters">[docs]</a>    <span class="k">def</span> <span class="nf">update_hyperparameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">GP</span><span class="p">,</span> <span class="n">update_type</span><span class="o">=</span><span class="n">BFGS_MARGINAL_UPDATER</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="c"># TODO fix for new cov function</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">GP</span> <span class="o">=</span> <span class="n">GP</span>
+
+        <span class="k">if</span> <span class="n">update_type</span> <span class="o">==</span> <span class="n">BFGS_LOO_CV_UPDATER</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_update_hyperparameters_via_LOO_CV_BFGS</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">update_type</span> <span class="o">==</span> <span class="n">FMIN_MARGINAL_UPDATER</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_update_hyperparameters_via_marginal_fmin</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">update_type</span> <span class="o">==</span> <span class="n">BFGS_MARGINAL_UPDATER</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_update_hyperparameters_via_marginal_BFGS</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../../../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

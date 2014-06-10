@@ -1,0 +1,228 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>moe.tests.moe.views package &mdash; MOE 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/breathe.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="MOE 0.1.0 documentation" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../http-routingtable.html" title="HTTP Routing Table"
+             >routing table</a> |</li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">MOE 0.1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="moe-tests-moe-views-package">
+<h1>moe.tests.moe.views package<a class="headerlink" href="#moe-tests-moe-views-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-moe.tests.moe.views.gp_ei_test">
+<span id="moe-tests-moe-views-gp-ei-test-module"></span><h2>moe.tests.moe.views.gp_ei_test module<a class="headerlink" href="#module-moe.tests.moe.views.gp_ei_test" title="Permalink to this headline">¶</a></h2>
+<p>Test class for gp_mean_var view.</p>
+<dl class="class">
+<dt id="moe.tests.moe.views.gp_ei_test.TestGpEiView">
+<em class="property">class </em><tt class="descclassname">moe.tests.moe.views.gp_ei_test.</tt><tt class="descname">TestGpEiView</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/moe/tests/moe/views/gp_ei_test.html#TestGpEiView"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.moe.views.gp_ei_test.TestGpEiView" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../moe.tests.moe.views.html#moe.tests.moe.views.rest_gaussian_process_test_case.RestGaussianProcessTestCase" title="moe.tests.moe.views.rest_gaussian_process_test_case.RestGaussianProcessTestCase"><tt class="xref py py-class docutils literal"><span class="pre">moe.tests.moe.views.rest_gaussian_process_test_case.RestGaussianProcessTestCase</span></tt></a></p>
+<p>Test that the /gp/ei endpoint does the same thing as the C++ interface.</p>
+<dl class="attribute">
+<dt id="moe.tests.moe.views.gp_ei_test.TestGpEiView.test_cases">
+<tt class="descname">test_cases</tt><em class="property"> = [{'points_to_evaluate': array([[ 0.81411316],        [ 0.16180022],        [ 0.9961107 ],        [ 0.68434308],        [ 0.26834425],        [ 0.78339746],        [ 0.35515879],        [ 0.06315022],        [ 0.42502989],        [ 0.514961  ]]), 'domain': [[0, 1]], 'num_points_in_sample': 10}, {'points_to_evaluate': array([[ 0.41011338,  0.90038191],        [ 0.97098865,  0.8916584 ],        [ 0.5624036 ,  0.53824428],        [ 0.77100389,  0.70688835],        [ 0.29639541,  0.27264126],        [ 0.0234198 ,  0.47815415],        [ 0.34792401,  0.11501965],        [ 0.13809714,  0.07457104],        [ 0.87042017,  0.680602  ],        [ 0.63879374,  0.39442316]]), 'domain': [[0, 1], [0, 1]], 'num_points_in_sample': 10}, {'points_to_evaluate': array([[ 0.54813395,  0.83358   ,  0.14988289],        [ 0.93690353,  0.9827082 ,  0.94698514],        [ 0.71127288,  0.55840726,  0.72303483],        [ 0.66487079,  0.61990928,  0.06073183],        [ 0.4405628 ,  0.74724405,  0.84096498],        [ 0.25702008,  0.48823163,  0.38903214],        [ 0.32331859,  0.05107508,  0.69512821],        [ 0.00885457,  0.21227273,  0.27448021],        [ 0.12648266,  0.35823351,  0.43794903],        [ 0.89023342,  0.13274544,  0.50878712]]), 'domain': [[0, 1], [0, 1], [0, 1]], 'num_points_in_sample': 10}]</em><a class="headerlink" href="#moe.tests.moe.views.gp_ei_test.TestGpEiView.test_cases" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.moe.views.gp_ei_test.TestGpEiView.test_interface_returns_same_as_cpp">
+<tt class="descname">test_interface_returns_same_as_cpp</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/moe/tests/moe/views/gp_ei_test.html#TestGpEiView.test_interface_returns_same_as_cpp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.moe.views.gp_ei_test.TestGpEiView.test_interface_returns_same_as_cpp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test that the /gp/ei endpoint does the same thing as the C++ interface.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-moe.tests.moe.views.gp_mean_var_test">
+<span id="moe-tests-moe-views-gp-mean-var-test-module"></span><h2>moe.tests.moe.views.gp_mean_var_test module<a class="headerlink" href="#module-moe.tests.moe.views.gp_mean_var_test" title="Permalink to this headline">¶</a></h2>
+<p>Test class for gp_mean_var view.</p>
+<dl class="class">
+<dt id="moe.tests.moe.views.gp_mean_var_test.TestGpMeanVarView">
+<em class="property">class </em><tt class="descclassname">moe.tests.moe.views.gp_mean_var_test.</tt><tt class="descname">TestGpMeanVarView</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/moe/tests/moe/views/gp_mean_var_test.html#TestGpMeanVarView"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.moe.views.gp_mean_var_test.TestGpMeanVarView" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../moe.tests.moe.views.html#moe.tests.moe.views.rest_gaussian_process_test_case.RestGaussianProcessTestCase" title="moe.tests.moe.views.rest_gaussian_process_test_case.RestGaussianProcessTestCase"><tt class="xref py py-class docutils literal"><span class="pre">moe.tests.moe.views.rest_gaussian_process_test_case.RestGaussianProcessTestCase</span></tt></a></p>
+<p>Test that the /gp/mean_var endpoint does the same thing as the C++ interface.</p>
+<dl class="attribute">
+<dt id="moe.tests.moe.views.gp_mean_var_test.TestGpMeanVarView.test_cases">
+<tt class="descname">test_cases</tt><em class="property"> = [{'points_to_sample': array([[ 0.76448216],        [ 0.10423474],        [ 0.03399741],        [ 0.88896148],        [ 0.5702094 ],        [ 0.42691636],        [ 0.36910183],        [ 0.27801738],        [ 0.99858861],        [ 0.66690135]]), 'num_points_in_sample': 10, 'domain': [[0, 1]]}, {'points_to_sample': array([[ 0.18631298,  0.64165507],        [ 0.34990686,  0.05767492],        [ 0.82951309,  0.14315437],        [ 0.93620966,  0.2667638 ],        [ 0.530763  ,  0.33443543],        [ 0.23187773,  0.54404931],        [ 0.64221088,  0.78673396],        [ 0.70506407,  0.40724109],        [ 0.09810137,  0.82414402],        [ 0.43733856,  0.93354367]]), 'num_points_in_sample': 10, 'domain': [[0, 1], [0, 1]]}, {'points_to_sample': array([[ 0.20024177,  0.59383239,  0.40909197],        [ 0.86962005,  0.61840798,  0.02145439],        [ 0.92737037,  0.72145912,  0.30443822],        [ 0.57472787,  0.81309865,  0.82175257],        [ 0.45214438,  0.91992783,  0.20304899],        [ 0.36384769,  0.45467012,  0.15280016],        [ 0.63498227,  0.14583644,  0.95861064],        [ 0.17022624,  0.20510164,  0.67171458],        [ 0.76130009,  0.04438648,  0.79085288],        [ 0.00441237,  0.37337151,  0.59133666]]), 'num_points_in_sample': 10, 'domain': [[0, 1], [0, 1], [0, 1]]}]</em><a class="headerlink" href="#moe.tests.moe.views.gp_mean_var_test.TestGpMeanVarView.test_cases" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.moe.views.gp_mean_var_test.TestGpMeanVarView.test_interface_returns_same_as_cpp">
+<tt class="descname">test_interface_returns_same_as_cpp</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/moe/tests/moe/views/gp_mean_var_test.html#TestGpMeanVarView.test_interface_returns_same_as_cpp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.moe.views.gp_mean_var_test.TestGpMeanVarView.test_interface_returns_same_as_cpp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test that the /gp/mean_var endpoint does the same thing as the C++ interface.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-moe.tests.moe.views.gp_next_points_epi_test">
+<span id="moe-tests-moe-views-gp-next-points-epi-test-module"></span><h2>moe.tests.moe.views.gp_next_points_epi_test module<a class="headerlink" href="#module-moe.tests.moe.views.gp_next_points_epi_test" title="Permalink to this headline">¶</a></h2>
+<p>Test class for gp_next_points_epi view.</p>
+<dl class="class">
+<dt id="moe.tests.moe.views.gp_next_points_epi_test.TestGpNextPointsViews">
+<em class="property">class </em><tt class="descclassname">moe.tests.moe.views.gp_next_points_epi_test.</tt><tt class="descname">TestGpNextPointsViews</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/moe/tests/moe/views/gp_next_points_epi_test.html#TestGpNextPointsViews"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.moe.views.gp_next_points_epi_test.TestGpNextPointsViews" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../moe.tests.moe.views.html#moe.tests.moe.views.rest_gaussian_process_test_case.RestGaussianProcessTestCase" title="moe.tests.moe.views.rest_gaussian_process_test_case.RestGaussianProcessTestCase"><tt class="xref py py-class docutils literal"><span class="pre">moe.tests.moe.views.rest_gaussian_process_test_case.RestGaussianProcessTestCase</span></tt></a></p>
+<p>Test that the /gp/next_points/* endpoints do the same thing as the C++ interface.</p>
+<dl class="attribute">
+<dt id="moe.tests.moe.views.gp_next_points_epi_test.TestGpNextPointsViews.endpoints">
+<tt class="descname">endpoints</tt><em class="property"> = ['/gp/next_points/epi', '/gp/next_points/kriging', '/gp/next_points/constant_liar']</em><a class="headerlink" href="#moe.tests.moe.views.gp_next_points_epi_test.TestGpNextPointsViews.endpoints" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="moe.tests.moe.views.gp_next_points_epi_test.TestGpNextPointsViews.test_cases">
+<tt class="descname">test_cases</tt><em class="property"> = [{'num_samples_to_generate': 1, 'domain': [[0, 1]], 'num_points_in_sample': 10}, {'num_samples_to_generate': 1, 'domain': [[0, 1], [0, 1]], 'num_points_in_sample': 10}, {'num_samples_to_generate': 1, 'domain': [[0, 1], [0, 1], [0, 1]], 'num_points_in_sample': 10}]</em><a class="headerlink" href="#moe.tests.moe.views.gp_next_points_epi_test.TestGpNextPointsViews.test_cases" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.moe.views.gp_next_points_epi_test.TestGpNextPointsViews.test_interface_returns_same_as_cpp">
+<tt class="descname">test_interface_returns_same_as_cpp</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/moe/tests/moe/views/gp_next_points_epi_test.html#TestGpNextPointsViews.test_interface_returns_same_as_cpp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.moe.views.gp_next_points_epi_test.TestGpNextPointsViews.test_interface_returns_same_as_cpp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test that the /gp/next_points/* endpoints do the same thing as the C++ interface.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-moe.tests.moe.views.rest_gaussian_process_test_case">
+<span id="moe-tests-moe-views-rest-gaussian-process-test-case-module"></span><h2>moe.tests.moe.views.rest_gaussian_process_test_case module<a class="headerlink" href="#module-moe.tests.moe.views.rest_gaussian_process_test_case" title="Permalink to this headline">¶</a></h2>
+<p>Base class for testing the REST interface against the C++ interface.</p>
+<dl class="class">
+<dt id="moe.tests.moe.views.rest_gaussian_process_test_case.RestGaussianProcessTestCase">
+<em class="property">class </em><tt class="descclassname">moe.tests.moe.views.rest_gaussian_process_test_case.</tt><tt class="descname">RestGaussianProcessTestCase</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/moe/tests/moe/views/rest_gaussian_process_test_case.html#RestGaussianProcessTestCase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.moe.views.rest_gaussian_process_test_case.RestGaussianProcessTestCase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../moe.tests.EPI.src.python.html#moe.tests.EPI.src.python.gaussian_process_test_case.GaussianProcessTestCase" title="moe.tests.EPI.src.python.gaussian_process_test_case.GaussianProcessTestCase"><tt class="xref py py-class docutils literal"><span class="pre">moe.tests.EPI.src.python.gaussian_process_test_case.GaussianProcessTestCase</span></tt></a></p>
+<p>Base class for testing the REST interface against the C++ interface.</p>
+<dl class="method">
+<dt id="moe.tests.moe.views.rest_gaussian_process_test_case.RestGaussianProcessTestCase.create_webapp">
+<tt class="descname">create_webapp</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/moe/tests/moe/views/rest_gaussian_process_test_case.html#RestGaussianProcessTestCase.create_webapp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.moe.views.rest_gaussian_process_test_case.RestGaussianProcessTestCase.create_webapp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a mocked webapp and store it in self.testapp.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="moe.tests.moe.views.rest_gaussian_process_test_case.RestGaussianProcessTestCase.domain_1d">
+<tt class="descname">domain_1d</tt><em class="property"> = [[0, 1]]</em><a class="headerlink" href="#moe.tests.moe.views.rest_gaussian_process_test_case.RestGaussianProcessTestCase.domain_1d" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="moe.tests.moe.views.rest_gaussian_process_test_case.RestGaussianProcessTestCase.domain_2d">
+<tt class="descname">domain_2d</tt><em class="property"> = [[0, 1], [0, 1]]</em><a class="headerlink" href="#moe.tests.moe.views.rest_gaussian_process_test_case.RestGaussianProcessTestCase.domain_2d" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="moe.tests.moe.views.rest_gaussian_process_test_case.RestGaussianProcessTestCase.domain_3d">
+<tt class="descname">domain_3d</tt><em class="property"> = [[0, 1], [0, 1], [0, 1]]</em><a class="headerlink" href="#moe.tests.moe.views.rest_gaussian_process_test_case.RestGaussianProcessTestCase.domain_3d" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-moe.tests.moe.views">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-moe.tests.moe.views" title="Permalink to this headline">¶</a></h2>
+<p>Views tests.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">moe.tests.moe.views package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-moe.tests.moe.views.gp_ei_test">moe.tests.moe.views.gp_ei_test module</a></li>
+<li><a class="reference internal" href="#module-moe.tests.moe.views.gp_mean_var_test">moe.tests.moe.views.gp_mean_var_test module</a></li>
+<li><a class="reference internal" href="#module-moe.tests.moe.views.gp_next_points_epi_test">moe.tests.moe.views.gp_next_points_epi_test module</a></li>
+<li><a class="reference internal" href="#module-moe.tests.moe.views.rest_gaussian_process_test_case">moe.tests.moe.views.rest_gaussian_process_test_case module</a></li>
+<li><a class="reference internal" href="#module-moe.tests.moe.views">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/autogen/moe.tests.moe.views.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../http-routingtable.html" title="HTTP Routing Table"
+             >routing table</a> |</li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">MOE 0.1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

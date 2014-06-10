@@ -1,0 +1,617 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>moe.tests.EPI.src.python.models.covariance_of_process_test &mdash; MOE 0.1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../../../../../_static/favicon.ico"/>
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../../../../../_static/breathe.css" type="text/css" />
+  
+    <link rel="top" title="MOE 0.1.0 documentation" href="../../../../../../../index.html"/>
+        <link rel="up" title="moe" href="../../../../../../moe.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="../../../../../../../index.html" class="fa fa-home"> MOE</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../moe.html">moe package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../../moe.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../../moe.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../../moe.html#module-moe.resources">moe.resources module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../../moe.html#module-moe">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../gpp_math_hpp.html">gpp_math.hpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../gpp_geometry_hpp.html">gpp_geometry.hpp</a></li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../../../../../index.html">MOE</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../../../../../index.html">Module code</a> &raquo;</li>
+      
+          <li><a href="../../../../../../moe.html">moe</a> &raquo;</li>
+      
+    <li>moe.tests.EPI.src.python.models.covariance_of_process_test</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <h1>Source code for moe.tests.EPI.src.python.models.covariance_of_process_test</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">testify</span> <span class="kn">as</span> <span class="nn">T</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+<span class="kn">from</span> <span class="nn">moe.tests.EPI.src.python.gaussian_process_test_case</span> <span class="kn">import</span> <span class="n">GaussianProcessTestCase</span>
+<span class="kn">from</span> <span class="nn">moe.optimal_learning.EPI.src.python.models.covariance_of_process</span> <span class="kn">import</span> <span class="n">CovarianceOfProcess</span>
+<span class="kn">from</span> <span class="nn">moe.optimal_learning.EPI.src.python.models.gaussian_process</span> <span class="kn">import</span> <span class="n">GaussianProcess</span>
+<span class="kn">from</span> <span class="nn">moe.optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp</span> <span class="kn">import</span> <span class="n">OptimalGaussianProcessLinkedCpp</span>
+<span class="kn">from</span> <span class="nn">moe.optimal_learning.EPI.src.python.lib.math</span> <span class="kn">import</span> <span class="n">get_latin_hypercube_points</span>
+
+<span class="n">MACHINE_PRECISION</span> <span class="o">=</span> <span class="mf">1e-8</span>
+
+<div class="viewcode-block" id="HyperparameterUpdateTest"><a class="viewcode-back" href="../../../../../../../moe.tests.EPI.src.python.models.html#moe.tests.EPI.src.python.models.covariance_of_process_test.HyperparameterUpdateTest">[docs]</a><span class="k">class</span> <span class="nc">HyperparameterUpdateTest</span><span class="p">(</span><span class="n">GaussianProcessTestCase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Tests optimal_learning.EPI.src.python.models.covariance_of_process.update_hyper_parameters</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="HyperparameterUpdateTest.test_hyperparameters_cov_grad_pings"><a class="viewcode-back" href="../../../../../../../moe.tests.EPI.src.python.models.html#moe.tests.EPI.src.python.models.covariance_of_process_test.HyperparameterUpdateTest.test_hyperparameters_cov_grad_pings">[docs]</a>    <span class="k">def</span> <span class="nf">test_hyperparameters_cov_grad_pings</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="mf">2e-3</span>
+        <span class="n">domain</span> <span class="o">=</span> <span class="p">[[</span><span class="o">-</span><span class="mf">5.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">5.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">]]</span>
+        <span class="n">real_length</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">])</span>
+
+        <span class="n">GP</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_default_gaussian_process</span><span class="p">(</span>
+                <span class="n">gaussian_process_class</span><span class="o">=</span><span class="n">GaussianProcess</span><span class="p">,</span>
+                <span class="n">domain</span><span class="o">=</span><span class="n">domain</span><span class="p">,</span>
+                <span class="n">length</span><span class="o">=</span><span class="n">real_length</span><span class="p">,</span>
+                <span class="n">default_sample_variance</span><span class="o">=</span><span class="mf">0.01</span>
+                <span class="p">)</span>
+        <span class="n">GP</span><span class="o">.</span><span class="n">cop</span><span class="o">.</span><span class="n">GP</span> <span class="o">=</span> <span class="n">GP</span>
+
+        <span class="c"># sample some points</span>
+        <span class="n">points_to_sample</span> <span class="o">=</span> <span class="n">get_latin_hypercube_points</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="n">domain</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sample_points_from_gaussian_process</span><span class="p">(</span>
+                <span class="n">GP</span><span class="p">,</span>
+                <span class="n">points_to_sample</span>
+                <span class="p">)</span>
+
+        <span class="n">hyperparameters</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">GP</span><span class="o">.</span><span class="n">cop</span><span class="o">.</span><span class="n">hyperparameters</span><span class="p">)</span>
+
+        <span class="n">points_to_test_one</span> <span class="o">=</span> <span class="n">get_latin_hypercube_points</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">domain</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">test_point_on</span><span class="p">,</span> <span class="n">point_one</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">points_to_test_one</span><span class="p">):</span>
+            <span class="n">point_two</span> <span class="o">=</span> <span class="n">point_one</span> <span class="o">+</span> <span class="mf">0.01</span> <span class="c"># we want the points to be close so there is a &gt;&gt; 0 grad</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">hyperparameter</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">):</span>
+                <span class="c"># the analytic method</span>
+                <span class="n">calc_grad</span> <span class="o">=</span> <span class="n">GP</span><span class="o">.</span><span class="n">cop</span><span class="o">.</span><span class="n">hyperparameter_grad_table</span><span class="p">[</span><span class="n">i</span><span class="p">](</span>
+                        <span class="n">point_one</span><span class="p">,</span>
+                        <span class="n">point_two</span><span class="p">,</span>
+                        <span class="n">kwargs</span><span class="o">=</span><span class="n">GP</span><span class="o">.</span><span class="n">cop</span><span class="o">.</span><span class="n">hyperparameter_grad_table_kwargs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                        <span class="p">)</span>
+
+                <span class="c"># finite difference</span>
+                <span class="c"># save old</span>
+                <span class="n">hyperparameters_old</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">GP</span><span class="o">.</span><span class="n">cop</span><span class="o">.</span><span class="n">hyperparameters</span><span class="p">)</span>
+
+                <span class="c"># hyper + h</span>
+                <span class="n">hyperparameters_plus_step</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">GP</span><span class="o">.</span><span class="n">cop</span><span class="o">.</span><span class="n">hyperparameters</span><span class="p">)</span>
+                <span class="n">hyperparameters_plus_step</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">h</span>
+                <span class="n">GP</span><span class="o">.</span><span class="n">cop</span><span class="o">.</span><span class="n">hyperparameters</span> <span class="o">=</span> <span class="n">hyperparameters_plus_step</span>
+                <span class="n">fd_plus_step</span> <span class="o">=</span> <span class="n">GP</span><span class="o">.</span><span class="n">cop</span><span class="o">.</span><span class="n">cov</span><span class="p">(</span><span class="n">point_one</span><span class="p">,</span> <span class="n">point_two</span><span class="p">)</span>
+                <span class="n">GP</span><span class="o">.</span><span class="n">cop</span><span class="o">.</span><span class="n">hyperparameters</span> <span class="o">=</span> <span class="n">hyperparameters_old</span>
+
+                <span class="c"># hyper - h</span>
+                <span class="n">hyperparameters_minus_step</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">GP</span><span class="o">.</span><span class="n">cop</span><span class="o">.</span><span class="n">hyperparameters</span><span class="p">)</span>
+                <span class="n">hyperparameters_minus_step</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-=</span> <span class="n">h</span>
+                <span class="n">GP</span><span class="o">.</span><span class="n">cop</span><span class="o">.</span><span class="n">hyperparameters</span> <span class="o">=</span> <span class="n">hyperparameters_minus_step</span>
+                <span class="n">fd_minus_step</span> <span class="o">=</span> <span class="n">GP</span><span class="o">.</span><span class="n">cop</span><span class="o">.</span><span class="n">cov</span><span class="p">(</span><span class="n">point_one</span><span class="p">,</span> <span class="n">point_two</span><span class="p">)</span>
+                <span class="n">GP</span><span class="o">.</span><span class="n">cop</span><span class="o">.</span><span class="n">hyperparameters</span> <span class="o">=</span> <span class="n">hyperparameters_old</span>
+
+                <span class="c"># calculate finite diff</span>
+                <span class="n">fd_grad</span> <span class="o">=</span> <span class="p">(</span><span class="n">fd_plus_step</span> <span class="o">-</span> <span class="n">fd_minus_step</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">h</span><span class="p">)</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">assert_relatively_equal</span><span class="p">(</span><span class="n">calc_grad</span><span class="p">,</span> <span class="n">fd_grad</span><span class="p">,</span> <span class="mf">5e-5</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="HyperparameterUpdateTest.test_hyperparameters_marginal_grad_pings"><a class="viewcode-back" href="../../../../../../../moe.tests.EPI.src.python.models.html#moe.tests.EPI.src.python.models.covariance_of_process_test.HyperparameterUpdateTest.test_hyperparameters_marginal_grad_pings">[docs]</a>    <span class="k">def</span> <span class="nf">test_hyperparameters_marginal_grad_pings</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="mf">2.0e-3</span>
+        <span class="n">domain</span> <span class="o">=</span> <span class="p">[[</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]]</span>
+        <span class="n">real_length</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">])</span>
+
+        <span class="n">GP</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_default_gaussian_process</span><span class="p">(</span>
+                <span class="n">gaussian_process_class</span><span class="o">=</span><span class="n">GaussianProcess</span><span class="p">,</span>
+                <span class="n">domain</span><span class="o">=</span><span class="n">domain</span><span class="p">,</span>
+                <span class="n">length</span><span class="o">=</span><span class="n">real_length</span><span class="p">,</span>
+                <span class="n">default_sample_variance</span><span class="o">=</span><span class="mf">0.01</span>
+                <span class="p">)</span>
+        <span class="n">GP</span><span class="o">.</span><span class="n">cop</span><span class="o">.</span><span class="n">GP</span> <span class="o">=</span> <span class="n">GP</span>
+
+        <span class="c"># sample some points</span>
+        <span class="n">points_to_sample</span> <span class="o">=</span> <span class="n">get_latin_hypercube_points</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="n">domain</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sample_points_from_gaussian_process</span><span class="p">(</span>
+                <span class="n">GP</span><span class="p">,</span>
+                <span class="n">points_to_sample</span>
+                <span class="p">)</span>
+
+        <span class="n">hyperparameters</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">GP</span><span class="o">.</span><span class="n">cop</span><span class="o">.</span><span class="n">hyperparameters</span><span class="p">)</span>
+
+        <span class="n">fd_grad</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">GP</span><span class="o">.</span><span class="n">cop</span><span class="o">.</span><span class="n">hyperparameters</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">fd_grad</span><span class="p">):</span>
+            <span class="n">hyperparameters_plus_step</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">GP</span><span class="o">.</span><span class="n">cop</span><span class="o">.</span><span class="n">hyperparameters</span><span class="p">)</span>
+            <span class="n">hyperparameters_plus_step</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">h</span>
+            <span class="n">hyperparameters_minus_step</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">GP</span><span class="o">.</span><span class="n">cop</span><span class="o">.</span><span class="n">hyperparameters</span><span class="p">)</span>
+            <span class="n">hyperparameters_minus_step</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-=</span> <span class="n">h</span>
+
+            <span class="n">fg_part_forward</span> <span class="o">=</span> <span class="o">-</span><span class="n">GP</span><span class="o">.</span><span class="n">cop</span><span class="o">.</span><span class="n">_neg_log_marginal_likelihood_given_hyperparameters</span><span class="p">(</span>
+                    <span class="n">hyperparameters_plus_step</span>
+                    <span class="p">)</span>
+            <span class="n">fg_part_backward</span> <span class="o">=</span> <span class="o">-</span><span class="n">GP</span><span class="o">.</span><span class="n">cop</span><span class="o">.</span><span class="n">_neg_log_marginal_likelihood_given_hyperparameters</span><span class="p">(</span>
+                    <span class="n">hyperparameters_minus_step</span>
+                    <span class="p">)</span>
+            <span class="n">fd_grad</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">fg_part_forward</span> <span class="o">-</span> <span class="n">fg_part_backward</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">h</span><span class="p">)</span>
+
+        <span class="n">calc_grad</span> <span class="o">=</span> <span class="n">GP</span><span class="o">.</span><span class="n">cop</span><span class="o">.</span><span class="n">_gradient_of_marginal_wrt_hyperparameters</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">fd_grad_part</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">fd_grad</span><span class="p">):</span>
+            <span class="n">calc_grad_part</span> <span class="o">=</span> <span class="n">calc_grad</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assert_relatively_equal</span><span class="p">(</span><span class="n">fd_grad_part</span><span class="p">,</span> <span class="n">calc_grad_part</span><span class="p">,</span> <span class="mf">6e-4</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="HyperparameterUpdateTest.test_marginal_stays_below_zero"><a class="viewcode-back" href="../../../../../../../moe.tests.EPI.src.python.models.html#moe.tests.EPI.src.python.models.covariance_of_process_test.HyperparameterUpdateTest.test_marginal_stays_below_zero">[docs]</a>    <span class="k">def</span> <span class="nf">test_marginal_stays_below_zero</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">real_length</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">2.0</span><span class="p">])</span>
+        <span class="n">domain</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">]]</span>
+
+        <span class="c"># make a python based gaussian process</span>
+        <span class="n">GP</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_default_gaussian_process</span><span class="p">(</span>
+                <span class="n">gaussian_process_class</span><span class="o">=</span><span class="n">GaussianProcess</span><span class="p">,</span>
+                <span class="n">domain</span><span class="o">=</span><span class="n">domain</span><span class="p">,</span>
+                <span class="n">length</span><span class="o">=</span><span class="n">real_length</span><span class="p">,</span>
+                <span class="n">default_sample_variance</span><span class="o">=</span><span class="mf">0.01</span>
+                <span class="p">)</span>
+
+        <span class="c"># grab 50 random points to sample</span>
+        <span class="n">points_to_sample</span> <span class="o">=</span> <span class="n">get_latin_hypercube_points</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="n">domain</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points_to_sample</span><span class="p">:</span>
+            <span class="c"># draw the point from the GP and add it back</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_sample_points_from_gaussian_process</span><span class="p">(</span>
+                    <span class="n">GP</span><span class="p">,</span>
+                    <span class="p">[</span><span class="n">point</span><span class="p">]</span>
+                    <span class="p">)</span>
+            <span class="c"># assert the marginal stays below zero</span>
+            <span class="n">T</span><span class="o">.</span><span class="n">assert_lte</span><span class="p">(</span>
+                    <span class="n">GP</span><span class="o">.</span><span class="n">get_log_marginal_likelihood</span><span class="p">(),</span>
+                    <span class="mf">0.0</span>
+                    <span class="p">)</span>
+</div>
+    <span class="nd">@T.suite</span><span class="p">(</span><span class="s">&#39;disabled&#39;</span><span class="p">,</span> <span class="n">reason</span><span class="o">=</span><span class="s">&#39;Broken, #53237&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_test_hyperparameter_update_does_no_worse_than_initial_points</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Broken test!</span>
+<span class="sd">        This test calls GP.cop.update_hyperparameters() to attempt hyperparameter optimization.</span>
+<span class="sd">        The current optimization options all call out to scipy&#39;s suite, and none of them can handle</span>
+<span class="sd">        constrained optimization problems.</span>
+
+<span class="sd">        As a result, this test always fails, either attempting</span>
+<span class="sd">        to query with negative hyperparameters or [nearly] 0 hyperparameters. The former</span>
+<span class="sd">        can result in log(negative_number) which breaks things; the latter results in a severe</span>
+<span class="sd">        loss of precision, causing scipy to return without accomplishing anything.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">domain</span> <span class="o">=</span> <span class="p">[[</span><span class="o">-</span><span class="mf">5.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">5.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">]]</span>
+        <span class="n">real_length</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">])</span>
+
+        <span class="n">GP</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_default_gaussian_process</span><span class="p">(</span>
+                <span class="n">gaussian_process_class</span><span class="o">=</span><span class="n">GaussianProcess</span><span class="p">,</span>
+                <span class="n">domain</span><span class="o">=</span><span class="n">domain</span><span class="p">,</span>
+                <span class="n">length</span><span class="o">=</span><span class="n">real_length</span><span class="p">,</span>
+                <span class="n">default_sample_variance</span><span class="o">=</span><span class="mf">0.01</span>
+                <span class="p">)</span>
+
+        <span class="c"># sample some points</span>
+        <span class="n">points_to_sample</span> <span class="o">=</span> <span class="n">get_latin_hypercube_points</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="n">domain</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sample_points_from_gaussian_process</span><span class="p">(</span>
+                <span class="n">GP</span><span class="p">,</span>
+                <span class="n">points_to_sample</span>
+                <span class="p">)</span>
+
+        <span class="c"># save the current likelihood</span>
+        <span class="n">GP</span><span class="o">.</span><span class="n">cop</span><span class="o">.</span><span class="n">hyperparameters</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.55</span><span class="p">,</span> <span class="mf">0.85</span><span class="p">]</span>
+        <span class="n">old_marginal_likelihood</span> <span class="o">=</span> <span class="n">GP</span><span class="o">.</span><span class="n">get_log_marginal_likelihood</span><span class="p">()</span>
+
+        <span class="c"># sample some points</span>
+        <span class="n">points_to_sample</span> <span class="o">=</span> <span class="n">get_latin_hypercube_points</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="n">domain</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sample_points_from_gaussian_process</span><span class="p">(</span>
+                <span class="n">GP</span><span class="p">,</span>
+                <span class="n">points_to_sample</span><span class="p">,</span>
+                <span class="p">)</span>
+
+        <span class="c"># update the hyperparameters and find the new likelihood</span>
+        <span class="n">GP</span><span class="o">.</span><span class="n">cop</span><span class="o">.</span><span class="n">update_hyperparameters</span><span class="p">(</span><span class="n">GP</span><span class="p">)</span>
+        <span class="n">new_marginal_likelihood</span> <span class="o">=</span> <span class="n">GP</span><span class="o">.</span><span class="n">get_log_marginal_likelihood</span><span class="p">()</span>
+
+        <span class="c"># assert we did no worse by updating the hyperparameters</span>
+        <span class="n">T</span><span class="o">.</span><span class="n">assert_lt</span><span class="p">(</span>
+                <span class="n">old_marginal_likelihood</span><span class="p">,</span>
+                <span class="n">new_marginal_likelihood</span><span class="p">,</span>
+                <span class="p">)</span>
+
+<div class="viewcode-block" id="HyperparameterUpdateTest.test_python_and_cpp_return_same_marginal"><a class="viewcode-back" href="../../../../../../../moe.tests.EPI.src.python.models.html#moe.tests.EPI.src.python.models.covariance_of_process_test.HyperparameterUpdateTest.test_python_and_cpp_return_same_marginal">[docs]</a>    <span class="k">def</span> <span class="nf">test_python_and_cpp_return_same_marginal</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">domain</span> <span class="o">=</span> <span class="p">[[</span><span class="o">-</span><span class="mf">5.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">5.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">]]</span>
+        <span class="n">real_length</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">])</span>
+
+        <span class="n">python_GP</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_default_gaussian_process</span><span class="p">(</span>
+                <span class="n">gaussian_process_class</span><span class="o">=</span><span class="n">GaussianProcess</span><span class="p">,</span>
+                <span class="n">domain</span><span class="o">=</span><span class="n">domain</span><span class="p">,</span>
+                <span class="n">length</span><span class="o">=</span><span class="n">real_length</span><span class="p">,</span>
+                <span class="n">default_sample_variance</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+                <span class="p">)</span>
+        <span class="n">cpp_GP</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_default_gaussian_process</span><span class="p">(</span>
+                <span class="n">gaussian_process_class</span><span class="o">=</span><span class="n">OptimalGaussianProcessLinkedCpp</span><span class="p">,</span>
+                <span class="n">domain</span><span class="o">=</span><span class="n">domain</span><span class="p">,</span>
+                <span class="n">length</span><span class="o">=</span><span class="n">real_length</span><span class="p">,</span>
+                <span class="n">default_sample_variance</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+                <span class="p">)</span>
+
+        <span class="c"># grab 50 random points to sample</span>
+        <span class="n">points_to_sample</span> <span class="o">=</span> <span class="n">get_latin_hypercube_points</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="n">domain</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points_to_sample</span><span class="p">:</span>
+            <span class="c"># draw the point from the GP and add it back</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_sample_points_from_gaussian_process</span><span class="p">(</span>
+                    <span class="n">python_GP</span><span class="p">,</span>
+                    <span class="p">[</span><span class="n">point</span><span class="p">],</span>
+                    <span class="n">extra_gaussian_process</span><span class="o">=</span><span class="n">cpp_GP</span><span class="p">,</span>
+                    <span class="p">)</span>
+            <span class="c"># assert the marginals are relatively equal</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assert_relatively_equal</span><span class="p">(</span>
+                <span class="n">python_GP</span><span class="o">.</span><span class="n">get_log_marginal_likelihood</span><span class="p">(),</span>
+                <span class="n">cpp_GP</span><span class="o">.</span><span class="n">get_log_marginal_likelihood</span><span class="p">(),</span>
+                <span class="mf">1.0e-14</span><span class="p">,</span>
+                <span class="p">)</span>
+
+            <span class="c"># assert gradients (wrt hyperparams) of marginals are relatively equal</span>
+            <span class="n">python_GP</span><span class="o">.</span><span class="n">cop</span><span class="o">.</span><span class="n">GP</span> <span class="o">=</span> <span class="n">python_GP</span>
+            <span class="n">python_grad_marginal</span> <span class="o">=</span> <span class="n">python_GP</span><span class="o">.</span><span class="n">cop</span><span class="o">.</span><span class="n">_gradient_of_marginal_wrt_hyperparameters</span><span class="p">(</span><span class="n">python_GP</span><span class="o">.</span><span class="n">cop</span><span class="o">.</span><span class="n">hyperparameters</span><span class="p">)</span>
+            <span class="n">cpp_grad_marginal</span> <span class="o">=</span> <span class="n">cpp_GP</span><span class="o">.</span><span class="n">get_hyperparam_grad_log_marginal_likelihood</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">cpp_grad_marginal</span><span class="p">)):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">assert_relatively_equal</span><span class="p">(</span><span class="n">python_grad_marginal</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">cpp_grad_marginal</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="mf">5.0e-13</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="CovarianceOfProcessTest"><a class="viewcode-back" href="../../../../../../../moe.tests.EPI.src.python.models.html#moe.tests.EPI.src.python.models.covariance_of_process_test.CovarianceOfProcessTest">[docs]</a><span class="k">class</span> <span class="nc">CovarianceOfProcessTest</span><span class="p">(</span><span class="n">GaussianProcessTestCase</span><span class="p">):</span>
+
+    <span class="n">one_dim_test_sets</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">]],</span> <span class="c"># default</span>
+                <span class="p">[</span><span class="mf">2.0</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">]],</span>
+                <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">]],</span>
+                <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="p">[</span><span class="mf">10.0</span><span class="p">]],</span>
+                <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">]],</span>
+                <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="p">[</span><span class="mf">10.0</span><span class="p">]],</span>
+                <span class="p">]</span>
+
+    <span class="n">three_dim_test_sets</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">]],</span>
+                <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">]],</span>
+                <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">]],</span>
+                <span class="p">[</span><span class="mf">2.0</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">]],</span>
+                <span class="p">[</span><span class="mf">2.0</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">]],</span>
+                <span class="p">[</span><span class="mf">2.0</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">]],</span>
+                <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="p">[</span><span class="mf">10.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">]],</span>
+                <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="p">[</span><span class="mf">10.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">]],</span>
+                <span class="p">[</span><span class="mf">10.0</span><span class="p">,</span> <span class="p">[</span><span class="mf">10.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">]],</span>
+                <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="p">[</span><span class="mf">10.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">]],</span>
+                <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="p">[</span><span class="mf">10.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">]],</span>
+                <span class="p">[</span><span class="mf">10.0</span><span class="p">,</span> <span class="p">[</span><span class="mf">10.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">]],</span>
+                <span class="p">]</span>
+
+<div class="viewcode-block" id="CovarianceOfProcessTest.test_default_cov_one_dim"><a class="viewcode-back" href="../../../../../../../moe.tests.EPI.src.python.models.html#moe.tests.EPI.src.python.models.covariance_of_process_test.CovarianceOfProcessTest.test_default_cov_one_dim">[docs]</a>    <span class="k">def</span> <span class="nf">test_default_cov_one_dim</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Test the default covariance function against correct values for different sets of hyperparameters</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">for</span> <span class="n">signal_variance</span><span class="p">,</span> <span class="n">length</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">one_dim_test_sets</span><span class="p">:</span>
+            <span class="n">cop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_default_covariance_of_process</span><span class="p">(</span>
+                    <span class="n">signal_variance</span><span class="o">=</span><span class="n">signal_variance</span><span class="p">,</span>
+                    <span class="n">length</span><span class="o">=</span><span class="n">length</span>
+                    <span class="p">)</span>
+
+            <span class="n">T</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span><span class="n">cop</span><span class="o">.</span><span class="n">is_default_covariance</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+
+            <span class="c"># One length away</span>
+            <span class="n">T</span><span class="o">.</span><span class="n">assert_lte</span><span class="p">(</span>
+                    <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">cop</span><span class="o">.</span><span class="n">cov</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">]),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">length</span><span class="p">))</span> <span class="o">-</span> <span class="n">signal_variance</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">)),</span>
+                    <span class="n">MACHINE_PRECISION</span>
+                    <span class="p">)</span>
+            <span class="c"># Sym</span>
+            <span class="n">T</span><span class="o">.</span><span class="n">assert_lte</span><span class="p">(</span>
+                    <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">cop</span><span class="o">.</span><span class="n">cov</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">length</span><span class="p">),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">]))</span> <span class="o">-</span> <span class="n">signal_variance</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">)),</span>
+                    <span class="n">MACHINE_PRECISION</span>
+                    <span class="p">)</span>
+
+            <span class="c"># One length * sqrt 2 away</span>
+            <span class="n">T</span><span class="o">.</span><span class="n">assert_lte</span><span class="p">(</span>
+                    <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">cop</span><span class="o">.</span><span class="n">cov</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">]),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">length</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)]))</span> <span class="o">-</span> <span class="n">signal_variance</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">)),</span>
+                    <span class="n">MACHINE_PRECISION</span>
+                    <span class="p">)</span>
+</div>
+<div class="viewcode-block" id="CovarianceOfProcessTest.test_default_cov_two_dim_with_one_length"><a class="viewcode-back" href="../../../../../../../moe.tests.EPI.src.python.models.html#moe.tests.EPI.src.python.models.covariance_of_process_test.CovarianceOfProcessTest.test_default_cov_two_dim_with_one_length">[docs]</a>    <span class="k">def</span> <span class="nf">test_default_cov_two_dim_with_one_length</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Test the default covariance function against correct values for different sets of hyperparameters</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">for</span> <span class="n">signal_variance</span><span class="p">,</span> <span class="n">length</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">one_dim_test_sets</span><span class="p">:</span>
+            <span class="n">cop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_default_covariance_of_process</span><span class="p">(</span>
+                    <span class="n">signal_variance</span><span class="o">=</span><span class="n">signal_variance</span><span class="p">,</span>
+                    <span class="n">length</span><span class="o">=</span><span class="n">length</span>
+                    <span class="p">)</span>
+
+            <span class="n">T</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span><span class="n">cop</span><span class="o">.</span><span class="n">is_default_covariance</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+
+            <span class="c"># One length away</span>
+            <span class="n">T</span><span class="o">.</span><span class="n">assert_lte</span><span class="p">(</span>
+                    <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">cop</span><span class="o">.</span><span class="n">cov</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="n">length</span><span class="p">[</span><span class="mi">0</span><span class="p">]]))</span> <span class="o">-</span> <span class="n">signal_variance</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">)),</span>
+                    <span class="n">MACHINE_PRECISION</span>
+                    <span class="p">)</span>
+            <span class="n">T</span><span class="o">.</span><span class="n">assert_lte</span><span class="p">(</span>
+                    <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">cop</span><span class="o">.</span><span class="n">cov</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">length</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">]))</span> <span class="o">-</span> <span class="n">signal_variance</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">)),</span>
+                    <span class="n">MACHINE_PRECISION</span>
+                    <span class="p">)</span>
+            <span class="n">T</span><span class="o">.</span><span class="n">assert_lte</span><span class="p">(</span>
+                    <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">cop</span><span class="o">.</span><span class="n">cov</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="mf">2.0</span><span class="o">*</span><span class="n">length</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="mf">2.0</span><span class="o">*</span><span class="n">length</span><span class="p">[</span><span class="mi">0</span><span class="p">]]))</span> <span class="o">-</span> <span class="n">signal_variance</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">)),</span>
+                    <span class="n">MACHINE_PRECISION</span>
+                    <span class="p">)</span>
+
+            <span class="c"># One length * sqrt 2 away</span>
+            <span class="n">T</span><span class="o">.</span><span class="n">assert_lte</span><span class="p">(</span>
+                    <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">cop</span><span class="o">.</span><span class="n">cov</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="n">length</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)]))</span> <span class="o">-</span> <span class="n">signal_variance</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">)),</span>
+                    <span class="n">MACHINE_PRECISION</span>
+                    <span class="p">)</span>
+            <span class="c"># Sym</span>
+            <span class="n">T</span><span class="o">.</span><span class="n">assert_lte</span><span class="p">(</span>
+                    <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">cop</span><span class="o">.</span><span class="n">cov</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="n">length</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)]),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]))</span> <span class="o">-</span> <span class="n">signal_variance</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">)),</span>
+                    <span class="n">MACHINE_PRECISION</span>
+                    <span class="p">)</span>
+</div>
+<div class="viewcode-block" id="CovarianceOfProcessTest.test_default_cov_three_dim_with_full_length"><a class="viewcode-back" href="../../../../../../../moe.tests.EPI.src.python.models.html#moe.tests.EPI.src.python.models.covariance_of_process_test.CovarianceOfProcessTest.test_default_cov_three_dim_with_full_length">[docs]</a>    <span class="k">def</span> <span class="nf">test_default_cov_three_dim_with_full_length</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Test the default covariance function against correct values for different sets of hyperparameters</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">signal_variance</span><span class="p">,</span> <span class="n">length</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">three_dim_test_sets</span><span class="p">:</span>
+
+            <span class="n">cop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_default_covariance_of_process</span><span class="p">(</span>
+                    <span class="n">signal_variance</span><span class="o">=</span><span class="n">signal_variance</span><span class="p">,</span>
+                    <span class="n">length</span><span class="o">=</span><span class="n">length</span>
+                    <span class="p">)</span>
+
+            <span class="n">T</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span><span class="n">cop</span><span class="o">.</span><span class="n">is_default_covariance</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+
+            <span class="c"># One length away</span>
+            <span class="n">T</span><span class="o">.</span><span class="n">assert_lte</span><span class="p">(</span>
+                    <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">cop</span><span class="o">.</span><span class="n">cov</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">length</span><span class="p">[</span><span class="mi">2</span><span class="p">]]))</span> <span class="o">-</span> <span class="n">signal_variance</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">)),</span>
+                    <span class="n">MACHINE_PRECISION</span>
+                    <span class="p">)</span>
+            <span class="n">T</span><span class="o">.</span><span class="n">assert_lte</span><span class="p">(</span>
+                    <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">cop</span><span class="o">.</span><span class="n">cov</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="n">length</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">0</span><span class="p">]))</span> <span class="o">-</span> <span class="n">signal_variance</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">)),</span>
+                    <span class="n">MACHINE_PRECISION</span>
+                    <span class="p">)</span>
+            <span class="n">T</span><span class="o">.</span><span class="n">assert_lte</span><span class="p">(</span>
+                    <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">cop</span><span class="o">.</span><span class="n">cov</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">length</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]))</span> <span class="o">-</span> <span class="n">signal_variance</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">)),</span>
+                    <span class="n">MACHINE_PRECISION</span>
+                    <span class="p">)</span>
+            <span class="n">T</span><span class="o">.</span><span class="n">assert_lte</span><span class="p">(</span>
+                    <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">cop</span><span class="o">.</span><span class="n">cov</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">/</span><span class="mf">3.0</span><span class="o">*</span><span class="n">length</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">/</span><span class="mf">3.0</span><span class="o">*</span><span class="n">length</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">/</span><span class="mf">3.0</span><span class="o">*</span><span class="n">length</span><span class="p">[</span><span class="mi">2</span><span class="p">]]))</span> <span class="o">-</span> <span class="n">signal_variance</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">)),</span>
+                    <span class="n">MACHINE_PRECISION</span>
+                    <span class="p">)</span>
+
+            <span class="c"># Sym</span>
+            <span class="n">T</span><span class="o">.</span><span class="n">assert_lte</span><span class="p">(</span>
+                    <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">cop</span><span class="o">.</span><span class="n">cov</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">/</span><span class="mf">3.0</span><span class="o">*</span><span class="n">length</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">/</span><span class="mf">3.0</span><span class="o">*</span><span class="n">length</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">/</span><span class="mf">3.0</span><span class="o">*</span><span class="n">length</span><span class="p">[</span><span class="mi">2</span><span class="p">]]),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]))</span> <span class="o">-</span> <span class="n">signal_variance</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">)),</span>
+                    <span class="n">MACHINE_PRECISION</span>
+                    <span class="p">)</span>
+</div>
+<div class="viewcode-block" id="CovarianceOfProcessTest.test_default_grad_cov_three_dim_with_full_length"><a class="viewcode-back" href="../../../../../../../moe.tests.EPI.src.python.models.html#moe.tests.EPI.src.python.models.covariance_of_process_test.CovarianceOfProcessTest.test_default_grad_cov_three_dim_with_full_length">[docs]</a>    <span class="k">def</span> <span class="nf">test_default_grad_cov_three_dim_with_full_length</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Test the default covariance function against correct values for different sets of hyperparameters</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">for</span> <span class="n">signal_variance</span><span class="p">,</span> <span class="n">length</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">three_dim_test_sets</span><span class="p">:</span>
+            <span class="n">cop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_default_covariance_of_process</span><span class="p">(</span>
+                    <span class="n">signal_variance</span><span class="o">=</span><span class="n">signal_variance</span><span class="p">,</span>
+                    <span class="n">length</span><span class="o">=</span><span class="n">length</span>
+                    <span class="p">)</span>
+
+            <span class="n">T</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span><span class="n">cop</span><span class="o">.</span><span class="n">is_default_covariance</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+
+            <span class="c"># Same point</span>
+            <span class="n">grad_cov</span> <span class="o">=</span> <span class="n">cop</span><span class="o">.</span><span class="n">grad_cov</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]))</span>
+            <span class="n">T</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span><span class="n">grad_cov</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mf">0.0</span><span class="p">)</span>
+            <span class="n">T</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span><span class="n">grad_cov</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mf">0.0</span><span class="p">)</span>
+            <span class="n">T</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span><span class="n">grad_cov</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mf">0.0</span><span class="p">)</span>
+
+            <span class="c"># One length away</span>
+            <span class="n">grad_cov</span> <span class="o">=</span> <span class="n">cop</span><span class="o">.</span><span class="n">grad_cov</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">length</span><span class="p">[</span><span class="mi">2</span><span class="p">]]))</span>
+            <span class="n">T</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span><span class="n">grad_cov</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mf">0.0</span><span class="p">)</span>
+            <span class="n">T</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span><span class="n">grad_cov</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mf">0.0</span><span class="p">)</span>
+            <span class="n">T</span><span class="o">.</span><span class="n">assert_gt</span><span class="p">(</span><span class="n">grad_cov</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mf">0.0</span><span class="p">)</span>
+
+            <span class="c"># Sym is opposite</span>
+            <span class="n">grad_cov</span> <span class="o">=</span> <span class="n">cop</span><span class="o">.</span><span class="n">grad_cov</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">length</span><span class="p">[</span><span class="mi">2</span><span class="p">]]),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]))</span>
+            <span class="n">T</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span><span class="n">grad_cov</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mf">0.0</span><span class="p">)</span>
+            <span class="n">T</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span><span class="n">grad_cov</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mf">0.0</span><span class="p">)</span>
+            <span class="n">T</span><span class="o">.</span><span class="n">assert_lt</span><span class="p">(</span><span class="n">grad_cov</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mf">0.0</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="CovarianceOfProcessTest.test_setting_new_cov_function"><a class="viewcode-back" href="../../../../../../../moe.tests.EPI.src.python.models.html#moe.tests.EPI.src.python.models.covariance_of_process_test.CovarianceOfProcessTest.test_setting_new_cov_function">[docs]</a>    <span class="k">def</span> <span class="nf">test_setting_new_cov_function</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Test setting a new cov function</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="nf">always_one</span><span class="p">(</span><span class="n">point_one</span><span class="p">,</span> <span class="n">point_two</span><span class="p">):</span>
+            <span class="k">return</span> <span class="mf">1.0</span>
+
+        <span class="k">def</span> <span class="nf">always_zero</span><span class="p">(</span><span class="n">point_one</span><span class="p">,</span> <span class="n">point_two</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">point_one</span><span class="p">))</span>
+
+        <span class="n">cop</span> <span class="o">=</span> <span class="n">CovarianceOfProcess</span><span class="p">(</span><span class="n">cov_func</span><span class="o">=</span><span class="n">always_one</span><span class="p">,</span> <span class="n">grad_cov_func</span><span class="o">=</span><span class="n">always_zero</span><span class="p">)</span>
+
+        <span class="n">T</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span><span class="n">cop</span><span class="o">.</span><span class="n">is_default_covariance</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
+
+        <span class="c"># Test cov</span>
+        <span class="n">T</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span>
+                <span class="n">cop</span><span class="o">.</span><span class="n">cov</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">]),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">])),</span>
+                <span class="mf">1.0</span>
+                <span class="p">)</span>
+        <span class="n">T</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span>
+                <span class="n">cop</span><span class="o">.</span><span class="n">cov</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">]),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">3</span><span class="p">])),</span>
+                <span class="mf">1.0</span>
+                <span class="p">)</span>
+        <span class="n">T</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span>
+                <span class="n">cop</span><span class="o">.</span><span class="n">cov</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])),</span>
+                <span class="mf">1.0</span>
+                <span class="p">)</span>
+        <span class="n">T</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span>
+                <span class="n">cop</span><span class="o">.</span><span class="n">cov</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">])),</span>
+                <span class="mf">1.0</span>
+                <span class="p">)</span>
+
+        <span class="c"># Test grad_cov</span>
+        <span class="n">T</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span>
+                <span class="n">cop</span><span class="o">.</span><span class="n">grad_cov</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">]),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">]))[</span><span class="mi">0</span><span class="p">],</span>
+                <span class="mf">0.0</span>
+                <span class="p">)</span>
+        <span class="n">T</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span>
+                <span class="n">cop</span><span class="o">.</span><span class="n">grad_cov</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">]),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">3</span><span class="p">]))[</span><span class="mi">0</span><span class="p">],</span>
+                <span class="mf">0.0</span>
+                <span class="p">)</span>
+        <span class="n">T</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span>
+                <span class="n">cop</span><span class="o">.</span><span class="n">grad_cov</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]))[</span><span class="mi">0</span><span class="p">],</span>
+                <span class="mf">0.0</span>
+                <span class="p">)</span>
+        <span class="n">T</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span>
+                <span class="n">cop</span><span class="o">.</span><span class="n">grad_cov</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]))[</span><span class="mi">1</span><span class="p">],</span>
+                <span class="mf">0.0</span>
+                <span class="p">)</span>
+
+</div></div>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">T</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../../../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

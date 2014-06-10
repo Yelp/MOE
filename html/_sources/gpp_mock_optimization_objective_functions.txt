@@ -1,0 +1,13 @@
+gpp_mock_optimization_objective_functions
+=====
+
+**Contents:**
+
+    1. `gpp_mock_optimization_objective_functions.hpp`_
+
+
+gpp_mock_optimization_objective_functions.hpp
+------
+
+.. doxygenfile:: gpp_mock_optimization_objective_functions.hpp
+

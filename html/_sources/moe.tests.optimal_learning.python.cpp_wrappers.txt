@@ -1,0 +1,38 @@
+moe.tests.optimal_learning.python.cpp_wrappers package
+======================================================
+
+Submodules
+----------
+
+moe.tests.optimal_learning.python.cpp_wrappers.expected_improvement_test module
+-------------------------------------------------------------------------------
+
+.. automodule:: moe.tests.optimal_learning.python.cpp_wrappers.expected_improvement_test
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+moe.tests.optimal_learning.python.cpp_wrappers.gaussian_process_test module
+---------------------------------------------------------------------------
+
+.. automodule:: moe.tests.optimal_learning.python.cpp_wrappers.gaussian_process_test
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+moe.tests.optimal_learning.python.cpp_wrappers.log_likelihood_test module
+-------------------------------------------------------------------------
+
+.. automodule:: moe.tests.optimal_learning.python.cpp_wrappers.log_likelihood_test
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: moe.tests.optimal_learning.python.cpp_wrappers
+    :members:
+    :undoc-members:
+    :show-inheritance:

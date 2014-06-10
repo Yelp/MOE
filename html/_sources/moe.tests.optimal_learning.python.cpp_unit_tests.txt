@@ -1,0 +1,22 @@
+moe.tests.optimal_learning.python.cpp_unit_tests package
+========================================================
+
+Submodules
+----------
+
+moe.tests.optimal_learning.python.cpp_unit_tests.cpp_unit_test_wrapper_test module
+----------------------------------------------------------------------------------
+
+.. automodule:: moe.tests.optimal_learning.python.cpp_unit_tests.cpp_unit_test_wrapper_test
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: moe.tests.optimal_learning.python.cpp_unit_tests
+    :members:
+    :undoc-members:
+    :show-inheritance:

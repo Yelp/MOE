@@ -1,0 +1,17 @@
+moe.tests.optimal_learning package
+==================================
+
+Subpackages
+-----------
+
+.. toctree::
+
+    moe.tests.optimal_learning.python
+
+Module contents
+---------------
+
+.. automodule:: moe.tests.optimal_learning
+    :members:
+    :undoc-members:
+    :show-inheritance:

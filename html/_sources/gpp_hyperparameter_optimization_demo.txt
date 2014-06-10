@@ -1,0 +1,13 @@
+gpp_hyperparameter_optimization_demo
+=====
+
+**Contents:**
+
+    1. `gpp_hyperparameter_optimization_demo.cpp`_
+
+
+gpp_hyperparameter_optimization_demo.cpp
+------
+
+.. doxygenfile:: gpp_hyperparameter_optimization_demo.cpp
+

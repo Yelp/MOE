@@ -1,0 +1,296 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>moe.optimal_learning.python.gaussian_process_test_utils &mdash; MOE 0.1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../../_static/breathe.css" type="text/css" />
+  
+    <link rel="top" title="MOE 0.1.0 documentation" href="../../../../index.html"/>
+        <link rel="up" title="moe" href="../../../moe.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="../../../../index.html" class="fa fa-home"> MOE</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../moe.html">moe package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe.html#module-moe.resources">moe.resources module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe.html#module-moe">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../cpp_tree.html">C++ Files</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_optimization_test.html">gpp_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_domain_test.html">gpp_domain_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_exception.html">gpp_exception</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_geometry.html">gpp_geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_test_utils.html">gpp_test_utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_logging.html">gpp_logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_covariance.html">gpp_covariance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_python_test.html">gpp_python_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_domain.html">gpp_domain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_python_common.html">gpp_python_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_hyperparameter_optimization_demo.html">gpp_hyperparameter_optimization_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_test_utils_test.html">gpp_test_utils_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_math_test.html">gpp_math_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_python_model_selection.html">gpp_python_model_selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_math.html">gpp_math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_random_test.html">gpp_random_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_random.html">gpp_random</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_geometry_test.html">gpp_geometry_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_linear_algebra.html">gpp_linear_algebra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_core.html">gpp_core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_covariance_test.html">gpp_covariance_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_python.html">gpp_python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_model_selection_and_hyperparameter_optimization.html">gpp_model_selection_and_hyperparameter_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_optimization_parameters.html">gpp_optimization_parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_common.html">gpp_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_model_selection_and_hyperparameter_optimization_test.html">gpp_model_selection_and_hyperparameter_optimization_test</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../../index.html">MOE</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+      
+          <li><a href="../../../moe.html">moe</a> &raquo;</li>
+      
+    <li>moe.optimal_learning.python.gaussian_process_test_utils</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <h1>Source code for moe.optimal_learning.python.gaussian_process_test_utils</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;Utilities for generating domains, hyperparameters of covariance, and gaussian processes; useful primarily for testing.</span>
+
+<span class="sd">By default, the functions in this file use the Python optimal_learning library (python_version package). Users</span>
+<span class="sd">can override this behavior with any implementation of the ABCs in the interfaces package.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+<span class="kn">from</span> <span class="nn">moe.optimal_learning.python.data_containers</span> <span class="kn">import</span> <span class="n">HistoricalData</span><span class="p">,</span> <span class="n">SamplePoint</span>
+<span class="kn">from</span> <span class="nn">moe.optimal_learning.python.geometry_utils</span> <span class="kn">import</span> <span class="n">ClosedInterval</span>
+<span class="kn">from</span> <span class="nn">moe.optimal_learning.python.python_version.covariance</span> <span class="kn">import</span> <span class="n">SquareExponential</span>
+<span class="kn">from</span> <span class="nn">moe.optimal_learning.python.python_version.gaussian_process</span> <span class="kn">import</span> <span class="n">GaussianProcess</span>
+
+
+<div class="viewcode-block" id="fill_random_covariance_hyperparameters"><a class="viewcode-back" href="../../../../moe.optimal_learning.python.html#moe.optimal_learning.python.gaussian_process_test_utils.fill_random_covariance_hyperparameters">[docs]</a><span class="k">def</span> <span class="nf">fill_random_covariance_hyperparameters</span><span class="p">(</span><span class="n">hyperparameter_interval</span><span class="p">,</span> <span class="n">num_hyperparameters</span><span class="p">,</span> <span class="n">covariance_type</span><span class="o">=</span><span class="n">SquareExponential</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generate random hyperparameters (drawn uniformly from the input interval) and returns a covariance object with those hyperparameters.</span>
+
+<span class="sd">    This is mainly useful for testing or when &quot;random&quot; data is needed so that we get more varied cases than hyperparameters = 1.0.</span>
+
+<span class="sd">    :param hyperparameter_interval: range, [min, max], from which to draw the hyperparameters</span>
+<span class="sd">    :type hyperparameter_interval: ClosedInterval</span>
+<span class="sd">    :param num_hyperparameters: number of hyperparameters</span>
+<span class="sd">    :type num_hyperparameters: int &gt; 0</span>
+<span class="sd">    :param covariance_type: covariance function whose hyperparameters are being set</span>
+<span class="sd">    :type covariance_type: interfaces.covariance_interface.CovarianceInterface subclass</span>
+<span class="sd">    :return: covariance_type instantiated with the generated hyperparameters</span>
+<span class="sd">    :rtype: covariance_type object</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">hyper</span> <span class="o">=</span> <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">hyperparameter_interval</span><span class="o">.</span><span class="n">min</span><span class="p">,</span> <span class="n">hyperparameter_interval</span><span class="o">.</span><span class="n">max</span><span class="p">)</span>
+             <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">num_hyperparameters</span><span class="p">)]</span>
+    <span class="k">return</span> <span class="n">covariance_type</span><span class="p">(</span><span class="n">hyper</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="fill_random_domain_bounds"><a class="viewcode-back" href="../../../../moe.optimal_learning.python.html#moe.optimal_learning.python.gaussian_process_test_utils.fill_random_domain_bounds">[docs]</a><span class="k">def</span> <span class="nf">fill_random_domain_bounds</span><span class="p">(</span><span class="n">lower_bound_interval</span><span class="p">,</span> <span class="n">upper_bound_interval</span><span class="p">,</span> <span class="n">dim</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Generate a random list of dim ``[min_i, max_i]`` pairs.</span>
+
+<span class="sd">    The data is organized such that:</span>
+<span class="sd">    ``min_i \in [lower_bound_interval.min, lower_bound_interval.max]``</span>
+<span class="sd">    ``max_i \in [upper_bound_interval.min, upper_bound_interval.max]``</span>
+
+<span class="sd">    This is mainly useful for testing or when &quot;random&quot; data is needed so that we get more varied cases than the unit hypercube.</span>
+
+<span class="sd">    :param lower_bound_interval: an uniform range, ``[min, max]``, from which to draw the domain lower bounds, ``min_i``</span>
+<span class="sd">    :type lower_bound_interval: ClosedInterval</span>
+<span class="sd">    :param upper_bound_interval: an uniform range, ``[min, max]``, from which to draw the domain upper bounds, ``max_i``</span>
+<span class="sd">    :type upper_bound_interval: ClosedInterval</span>
+<span class="sd">    :param dim: the spatial dimension of a point (i.e., number of independent params in experiment)</span>
+<span class="sd">    :type dim: int &gt; 0</span>
+<span class="sd">    :return: ClosedInterval objects with their min, max members initialized as described</span>
+<span class="sd">    :rtype: list of ClosedInterval</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">domain_bounds</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">dim</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+    <span class="n">domain_bounds</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">lower_bound_interval</span><span class="o">.</span><span class="n">min</span><span class="p">,</span> <span class="n">lower_bound_interval</span><span class="o">.</span><span class="n">max</span><span class="p">)</span>
+    <span class="n">domain_bounds</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">upper_bound_interval</span><span class="o">.</span><span class="n">min</span><span class="p">,</span> <span class="n">upper_bound_interval</span><span class="o">.</span><span class="n">max</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ClosedInterval</span><span class="o">.</span><span class="n">build_closed_intervals_from_list</span><span class="p">(</span><span class="n">domain_bounds</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="build_random_gaussian_process"><a class="viewcode-back" href="../../../../moe.optimal_learning.python.html#moe.optimal_learning.python.gaussian_process_test_utils.build_random_gaussian_process">[docs]</a><span class="k">def</span> <span class="nf">build_random_gaussian_process</span><span class="p">(</span><span class="n">points_sampled</span><span class="p">,</span> <span class="n">covariance</span><span class="p">,</span> <span class="n">noise_variance</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">gaussian_process_type</span><span class="o">=</span><span class="n">GaussianProcess</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Utility to draw ``points_sampled.shape[0]`` points from a GaussianProcess prior, add those values to the GP, and return the GP.</span>
+
+<span class="sd">    This is mainly useful for testing or when &quot;random&quot; data is needed that will produce reasonably well-behaved GPs.</span>
+
+<span class="sd">    :param points_sampled: points at which to draw from the GP</span>
+<span class="sd">    :type points_sampled: array of float64 with shape (num_sampled, dim)</span>
+<span class="sd">    :param covariance: covariance function backing the GP</span>
+<span class="sd">    :type covariance: interfaces.covariance_interface.CovarianceInterface subclass composable with gaussian_process_type</span>
+<span class="sd">    :param noise_variance: the ``\sigma_n^2`` (noise variance) associated w/the new observations, ``points_sampled_value``</span>
+<span class="sd">    :type noise_variance: array of float64 with shape (num_sampled)</span>
+<span class="sd">    :param gaussian_process_type: gaussian process whose historical data is being set</span>
+<span class="sd">    :type gaussian_process_type: interfaces.gaussian_process_interface.GaussianProcessInterface subclass</span>
+<span class="sd">    :return: a gaussian process with the generated prior data</span>
+<span class="sd">    :rtype: gaussian_process_type object</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">noise_variance</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">noise_variance</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">points_sampled</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="n">gaussian_process</span> <span class="o">=</span> <span class="n">gaussian_process_type</span><span class="p">(</span><span class="n">covariance</span><span class="p">,</span> <span class="n">HistoricalData</span><span class="p">(</span><span class="n">points_sampled</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">point</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">points_sampled</span><span class="p">):</span>
+        <span class="c"># Draw function value from the GP</span>
+        <span class="n">function_value</span> <span class="o">=</span> <span class="n">gaussian_process</span><span class="o">.</span><span class="n">sample_point_from_gp</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">noise_variance</span><span class="o">=</span><span class="n">noise_variance</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="c"># Add function value back into the GP</span>
+        <span class="n">sample_point</span> <span class="o">=</span> <span class="p">[</span><span class="n">SamplePoint</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">function_value</span><span class="p">,</span> <span class="n">noise_variance</span><span class="p">[</span><span class="n">i</span><span class="p">])]</span>
+        <span class="n">gaussian_process</span><span class="o">.</span><span class="n">add_sampled_points</span><span class="p">(</span><span class="n">sample_point</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">gaussian_process</span></div>
+</pre></div>
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

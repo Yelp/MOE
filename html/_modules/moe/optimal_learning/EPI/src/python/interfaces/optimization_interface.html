@@ -1,0 +1,293 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>moe.optimal_learning.EPI.src.python.interfaces.optimization_interface &mdash; MOE 0.1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../../../../../_static/favicon.ico"/>
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../../../../../_static/breathe.css" type="text/css" />
+  
+    <link rel="top" title="MOE 0.1.0 documentation" href="../../../../../../../index.html"/>
+        <link rel="up" title="moe" href="../../../../../../moe.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="../../../../../../../index.html" class="fa fa-home"> MOE</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../moe.html">moe package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../../moe.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../../moe.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../../moe.html#module-moe.resources">moe.resources module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../../moe.html#module-moe">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../gpp_math_hpp.html">gpp_math.hpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../gpp_geometry_hpp.html">gpp_geometry.hpp</a></li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../../../../../index.html">MOE</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../../../../../index.html">Module code</a> &raquo;</li>
+      
+          <li><a href="../../../../../../moe.html">moe</a> &raquo;</li>
+      
+    <li>moe.optimal_learning.EPI.src.python.interfaces.optimization_interface</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <h1>Source code for moe.optimal_learning.EPI.src.python.interfaces.optimization_interface</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;Interfaces for optimization (maximization): OptimizableInterface for things that can be optimized and OptimizerInterface to perform the optimizattion.</span>
+
+<span class="sd">First, implementation of these interfaces should be MAXIMIZERS.  We also use the term &quot;optima,&quot; and unless we specifically</span>
+<span class="sd">state otherwise, &quot;optima&quot; and &quot;optimization&quot; refer to &quot;maxima&quot; and &quot;maximization,&quot; respectively.  (Note that</span>
+<span class="sd">minimizing g(x) is equivalent to maximizing f(x) = -1 * g(x).)</span>
+
+<span class="sd">See the file comments for gpp_optimization.hpp for further dicussion of optimization as well as the particular techniques available</span>
+<span class="sd">through the C++ interface.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABCMeta</span><span class="p">,</span> <span class="n">abstractmethod</span><span class="p">,</span> <span class="n">abstractproperty</span>
+
+
+<div class="viewcode-block" id="OptimizableInterface"><a class="viewcode-back" href="../../../../../../../moe.optimal_learning.EPI.src.python.interfaces.html#moe.optimal_learning.EPI.src.python.interfaces.optimization_interface.OptimizableInterface">[docs]</a><span class="k">class</span> <span class="nc">OptimizableInterface</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="sd">r&quot;&quot;&quot;Interface that an object must fulfill to be optimized by an implementation of OptimizationInterface.</span>
+
+<span class="sd">    Below, ``f(x)`` is the scalar objective function represented by this object. ``x`` is a vector-valued input</span>
+<span class="sd">    with ``problem_size`` dimensions. With ``f(x)`` (and/or its derivatives), a OptimizableInterface implementation</span>
+<span class="sd">    can be hooked up to a OptimizationInterface implementation to find the maximum value of ``f(x)`` and the input</span>
+<span class="sd">    ``x`` at which this maximum occurs.</span>
+
+<span class="sd">    This interface is straightforward--we need the ability to compute the problem size (how many independent parameters to</span>
+<span class="sd">    optimize) as well as the ability to compute ``f(x)`` and/or its various derivatives. An implementation of ``f(x)`` is</span>
+<span class="sd">    required; this allows for derivative-free optimization methods. Providing derivatives opens the door to more</span>
+<span class="sd">    advanced/efficient techniques (e.g., gradient descent, BFGS, Newton).</span>
+
+<span class="sd">    This interface is meant to be generic. For example, when optimizing the log marginal likelihood of a GP model</span>
+<span class="sd">    (wrt hyperparameters of covariance; e.g., python_version.log_likelihood.GaussianProcessLogMarginalLikelihood)</span>
+<span class="sd">    ``f`` is the log marginal, ``x`` is the vector of hyperparameters, and ``problem_size`` is ``num_hyperparameters``.</span>
+<span class="sd">    Note that log marginal and covariance both have an associated spatial dimension, and this is NOT ``problem_size``.</span>
+<span class="sd">    For Expected Improvement (e.g., python_version.expected_improvement.ExpectedImprovement), ``f`` would be the EI,</span>
+<span class="sd">    ``x`` is the new experiment point (or points) being optimized, and ``problem_size`` is ``dim`` (or ``num_points*dim``).</span>
+
+<span class="sd">    TODO(eliu): getter/setter for current_point. maybe following this?</span>
+<span class="sd">    http://google-styleguide.googlecode.com/svn/trunk/pyguide.html#Function_and_Method_Decorators</span>
+<span class="sd">    How to make it work with ABCs?</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">__metaclass__</span> <span class="o">=</span> <span class="n">ABCMeta</span>
+
+    <span class="nd">@abstractproperty</span>
+<div class="viewcode-block" id="OptimizableInterface.problem_size"><a class="viewcode-back" href="../../../../../../../moe.optimal_learning.EPI.src.python.interfaces.html#moe.optimal_learning.EPI.src.python.interfaces.optimization_interface.OptimizableInterface.problem_size">[docs]</a>    <span class="k">def</span> <span class="nf">problem_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the number of independent parameters to optimize.&quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+</div>
+    <span class="nd">@abstractmethod</span>
+<div class="viewcode-block" id="OptimizableInterface.get_current_point"><a class="viewcode-back" href="../../../../../../../moe.optimal_learning.EPI.src.python.interfaces.html#moe.optimal_learning.EPI.src.python.interfaces.optimization_interface.OptimizableInterface.get_current_point">[docs]</a>    <span class="k">def</span> <span class="nf">get_current_point</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the current_point (array of float64 with shape (problem_size)) at which this object is evaluating the objective function, ``f(x)``.&quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+</div>
+    <span class="nd">@abstractmethod</span>
+<div class="viewcode-block" id="OptimizableInterface.set_current_point"><a class="viewcode-back" href="../../../../../../../moe.optimal_learning.EPI.src.python.interfaces.html#moe.optimal_learning.EPI.src.python.interfaces.optimization_interface.OptimizableInterface.set_current_point">[docs]</a>    <span class="k">def</span> <span class="nf">set_current_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">current_point</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set current_point to the specified point; ordering must match.</span>
+
+<span class="sd">        :param current_point: current_point at which to evaluate the objective function, ``f(x)``</span>
+<span class="sd">        :type current_point: array of float64 with shape (problem_size)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+</div>
+    <span class="nd">@abstractmethod</span>
+<div class="viewcode-block" id="OptimizableInterface.compute_objective_function"><a class="viewcode-back" href="../../../../../../../moe.optimal_learning.EPI.src.python.interfaces.html#moe.optimal_learning.EPI.src.python.interfaces.optimization_interface.OptimizableInterface.compute_objective_function">[docs]</a>    <span class="k">def</span> <span class="nf">compute_objective_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Compute ``f(current_point)``.</span>
+
+<span class="sd">        :return: value of objective function evaluated at ``current_point``</span>
+<span class="sd">        :rtype: float64</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+</div>
+    <span class="nd">@abstractmethod</span>
+<div class="viewcode-block" id="OptimizableInterface.compute_grad_objective_function"><a class="viewcode-back" href="../../../../../../../moe.optimal_learning.EPI.src.python.interfaces.html#moe.optimal_learning.EPI.src.python.interfaces.optimization_interface.OptimizableInterface.compute_grad_objective_function">[docs]</a>    <span class="k">def</span> <span class="nf">compute_grad_objective_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Compute the gradient of ``f(current_point)`` wrt ``current_point``.</span>
+
+<span class="sd">        :return: gradient of the objective, i-th entry is ``\pderiv{f(x)}{x_i}``</span>
+<span class="sd">        :rtype: array of float64 with shape (problem_size)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+</div>
+    <span class="nd">@abstractmethod</span>
+<div class="viewcode-block" id="OptimizableInterface.compute_hessian_objective_function"><a class="viewcode-back" href="../../../../../../../moe.optimal_learning.EPI.src.python.interfaces.html#moe.optimal_learning.EPI.src.python.interfaces.optimization_interface.OptimizableInterface.compute_hessian_objective_function">[docs]</a>    <span class="k">def</span> <span class="nf">compute_hessian_objective_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Compute the hessian matrix of ``f(current_point)`` wrt ``current_point``.</span>
+
+<span class="sd">        This matrix is symmetric as long as the mixed second derivatives of f(x) are continuous: Clairaut&#39;s Theorem.</span>
+<span class="sd">        http://en.wikipedia.org/wiki/Symmetry_of_second_derivatives</span>
+
+<span class="sd">        :return: hessian of the objective, (i,j)th entry is ``\mixpderiv{f(x)}{x_i}{x_j}``</span>
+<span class="sd">        :rtype: array of float64 with shape (problem_size, problem_size)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+
+</div></div>
+<div class="viewcode-block" id="OptimizerInterface"><a class="viewcode-back" href="../../../../../../../moe.optimal_learning.EPI.src.python.interfaces.html#moe.optimal_learning.EPI.src.python.interfaces.optimization_interface.OptimizerInterface">[docs]</a><span class="k">class</span> <span class="nc">OptimizerInterface</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="sd">r&quot;&quot;&quot;Interface to *maximize* any object implementing OptimizableInterface (defined above).&quot;&quot;&quot;</span>
+
+    <span class="n">__metaclass__</span> <span class="o">=</span> <span class="n">ABCMeta</span>
+
+    <span class="nd">@abstractmethod</span>
+<div class="viewcode-block" id="OptimizerInterface.optimize"><a class="viewcode-back" href="../../../../../../../moe.optimal_learning.EPI.src.python.interfaces.html#moe.optimal_learning.EPI.src.python.interfaces.optimization_interface.OptimizerInterface.optimize">[docs]</a>    <span class="k">def</span> <span class="nf">optimize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">optimizable</span><span class="p">,</span> <span class="n">optimization_parameters</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Maximize a function f(x), represented by an implementation of OptimizableInterface.</span>
+
+<span class="sd">        If an initial guess is required (vs optimizer auto-selects starting point(s)), passing via an ``initial_guess``</span>
+<span class="sd">        kwarg is suggested.</span>
+
+<span class="sd">        In general, kwargs not specifically consumed by the implementation of optimize() should be passed down to</span>
+<span class="sd">        member functions of the ``optimizable`` input.</span>
+
+<span class="sd">        :param optimizable: point at which to compute the objective</span>
+<span class="sd">        :type optimizable: OptimizableInterface</span>
+<span class="sd">        :param optimization_parameters: object specifying the desired optimization method (e.g., gradient descent, random search)</span>
+<span class="sd">          and parameters controlling its behavior (e.g., tolerance, iterations, etc.)</span>
+<span class="sd">        :type optimization_parameters: implementation-defined</span>
+<span class="sd">        :return: point at which the objective function is maximized</span>
+<span class="sd">        :rtype: array of float64 with shape (optimizable.problem_size)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div></div>
+</pre></div>
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../../../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

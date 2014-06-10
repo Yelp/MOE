@@ -1,0 +1,334 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>moe.optimal_learning.python.python_version.python_utils &mdash; MOE 0.1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../../../_static/favicon.ico"/>
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../../../_static/breathe.css" type="text/css" />
+  
+    <link rel="top" title="MOE 0.1.0 documentation" href="../../../../../index.html"/>
+        <link rel="up" title="moe" href="../../../../moe.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="../../../../../index.html" class="fa fa-home"> MOE</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../moe.html">moe package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe.html#module-moe.resources">moe.resources module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe.html#module-moe">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../cpp_tree.html">C++ Files</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_optimization_test.html">gpp_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_domain_test.html">gpp_domain_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_exception.html">gpp_exception</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_geometry.html">gpp_geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_test_utils.html">gpp_test_utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_logging.html">gpp_logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_covariance.html">gpp_covariance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python_test.html">gpp_python_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_domain.html">gpp_domain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python_common.html">gpp_python_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_hyperparameter_optimization_demo.html">gpp_hyperparameter_optimization_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_test_utils_test.html">gpp_test_utils_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_math_test.html">gpp_math_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python_model_selection.html">gpp_python_model_selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_math.html">gpp_math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_random_test.html">gpp_random_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_random.html">gpp_random</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_geometry_test.html">gpp_geometry_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_linear_algebra.html">gpp_linear_algebra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_core.html">gpp_core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_covariance_test.html">gpp_covariance_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python.html">gpp_python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_model_selection_and_hyperparameter_optimization.html">gpp_model_selection_and_hyperparameter_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_optimization_parameters.html">gpp_optimization_parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_common.html">gpp_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_model_selection_and_hyperparameter_optimization_test.html">gpp_model_selection_and_hyperparameter_optimization_test</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../../../index.html">MOE</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../../../index.html">Module code</a> &raquo;</li>
+      
+          <li><a href="../../../../moe.html">moe</a> &raquo;</li>
+      
+    <li>moe.optimal_learning.python.python_version.python_utils</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <h1>Source code for moe.optimal_learning.python.python_version.python_utils</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;Utilities for computing covariance matrices and related structures.&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+
+<div class="viewcode-block" id="build_covariance_matrix"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.python_utils.build_covariance_matrix">[docs]</a><span class="k">def</span> <span class="nf">build_covariance_matrix</span><span class="p">(</span><span class="n">covariance</span><span class="p">,</span> <span class="n">points_sampled</span><span class="p">,</span> <span class="n">noise_variance</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Compute the covariance matrix, ``K``, of a list of points, ``X_i``.</span>
+
+<span class="sd">    .. NOTE:: These comments are copied from BuildCovarianceMatrix() in gpp_math.cpp.</span>
+
+<span class="sd">    Matrix is computed as:</span>
+<span class="sd">    ``A_{i,j} = covariance(X_i, X_j) + \delta_{i,j}*noise_i``.</span>
+<span class="sd">    where ``\delta_{i,j}`` is the Kronecker ``delta``, equal to 1 if ``i == j`` and 0 else.</span>
+<span class="sd">    Result is SPD assuming covariance operator is SPD and points are unique.</span>
+
+<span class="sd">    Generally, this is called from other functions with &quot;points_sampled&quot; as the input and not any</span>
+<span class="sd">    arbitrary list of points; hence the very specific input name.</span>
+
+<span class="sd">    Point list cannot contain duplicates.  Doing so (or providing nearly duplicate points) can lead to</span>
+<span class="sd">    semi-definite matrices or very poor numerical conditioning.</span>
+
+<span class="sd">    :param covariance: the covariance function encoding assumptions about the GP&#39;s behavior on our data</span>
+<span class="sd">    :type covariance: interfaces.covariance_interface.CovarianceInterface subclass</span>
+<span class="sd">    :param points_sampled: points, ``X_i``</span>
+<span class="sd">    :type points_sampled: array of float64 with shape (points_sampled.shape[0], dim)</span>
+<span class="sd">    :param noise_variance: i-th entry is amt of noise variance to add to i-th diagonal entry; i.e., noise measuring i-th point</span>
+<span class="sd">    :type noise_variance: array of float64 with shape (points_sampled.shape[0])</span>
+<span class="sd">    :return: covariance matrix</span>
+<span class="sd">    :rtype: array of float64 with shape(points_sampled.shape[0], points_sampled.shape[0]), order=&#39;F&#39;</span>
+
+<span class="sd">    .. Note:: Fortran ordering is important here; scipy.linalg factor/solve methods</span>
+<span class="sd">        (e.g., cholesky, solve_triangular) implicitly require order=&#39;F&#39; to enable</span>
+<span class="sd">        overwriting. This output is commonly overwritten.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">cov_mat</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">points_sampled</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">points_sampled</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">order</span><span class="o">=</span><span class="s">&#39;F&#39;</span><span class="p">)</span>
+    <span class="c"># Only form the lower triangle; matrix is symmetric.</span>
+    <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">point_two</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">points_sampled</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">point_one</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">points_sampled</span><span class="p">[</span><span class="n">j</span><span class="p">:,</span> <span class="o">...</span><span class="p">],</span> <span class="n">start</span><span class="o">=</span><span class="n">j</span><span class="p">):</span>
+            <span class="n">cov_mat</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">covariance</span><span class="o">.</span><span class="n">covariance</span><span class="p">(</span><span class="n">point_one</span><span class="p">,</span> <span class="n">point_two</span><span class="p">)</span>
+
+    <span class="c"># Copy into the (strict) upper triangle.</span>
+    <span class="c"># TODO(eliu): we could avoid this step entirely and only fill the lower triangle (GH-62)</span>
+    <span class="n">cov_mat</span> <span class="o">+=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">tril</span><span class="p">(</span><span class="n">cov_mat</span><span class="p">,</span> <span class="n">k</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+
+    <span class="k">if</span> <span class="n">noise_variance</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">cov_mat</span> <span class="o">+=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">noise_variance</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">cov_mat</span>
+
+</div>
+<div class="viewcode-block" id="build_mix_covariance_matrix"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.python_utils.build_mix_covariance_matrix">[docs]</a><span class="k">def</span> <span class="nf">build_mix_covariance_matrix</span><span class="p">(</span><span class="n">covariance</span><span class="p">,</span> <span class="n">points_sampled</span><span class="p">,</span> <span class="n">points_to_sample</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute the &quot;mix&quot; covariance matrix, ``Ks``, of ``Xs`` and ``X`` (``points_to_sample`` and ``points_sampled``, respectively).</span>
+
+<span class="sd">    .. NOTE:: These comments are copied from BuildMixCovarianceMatrix() in gpp_math.cpp.</span>
+
+<span class="sd">    Matrix is computed as:</span>
+<span class="sd">    ``A_{i,j} = covariance(X_i, Xs_j).``</span>
+<span class="sd">    Result is not guaranteed to be SPD and need not even be square.</span>
+
+<span class="sd">    Generally, this is called from other functions with &quot;points_sampled&quot; and &quot;points_to_sample&quot; as the</span>
+<span class="sd">    input lists and not any arbitrary list of points; hence the very specific input name.  But this</span>
+<span class="sd">    is not a requirement.</span>
+
+<span class="sd">    Point lists cannot contain duplicates with each other or within themselves.</span>
+
+<span class="sd">    :param covariance: the covariance function encoding assumptions about the GP&#39;s behavior on our data</span>
+<span class="sd">    :type covariance: interfaces.covariance_interface.CovarianceInterface subclass</span>
+<span class="sd">    :param points_sampled: points, ``X_i``</span>
+<span class="sd">    :type points_sampled: array of float64 with shape (points_sampled.shape[0], dim)</span>
+<span class="sd">    :param points_to_sample: points, ``Xs_i``</span>
+<span class="sd">    :type points_to_sample: array of float64 with shape (points_to_sample.shape[0], dim)</span>
+<span class="sd">    :return: &quot;mix&quot; covariance matrix</span>
+<span class="sd">    :rtype: array of float64 with shape (points_sampled.shape[0], points_to_sample.shape[0]), order=&#39;F&#39;</span>
+
+<span class="sd">    .. Note:: Fortran ordering is important here; scipy.linalg factor/solve methods</span>
+<span class="sd">        (e.g., cholesky, solve_triangular) implicitly require order=&#39;F&#39; to enable</span>
+<span class="sd">        overwriting. This output is commonly overwritten.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">cov_mat</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">points_sampled</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">points_to_sample</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">order</span><span class="o">=</span><span class="s">&#39;F&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">point_two</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">point_one</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">points_sampled</span><span class="p">):</span>
+            <span class="n">cov_mat</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">covariance</span><span class="o">.</span><span class="n">covariance</span><span class="p">(</span><span class="n">point_one</span><span class="p">,</span> <span class="n">point_two</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">cov_mat</span>
+
+</div>
+<div class="viewcode-block" id="build_hyperparameter_grad_covariance_matrix"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.python_utils.build_hyperparameter_grad_covariance_matrix">[docs]</a><span class="k">def</span> <span class="nf">build_hyperparameter_grad_covariance_matrix</span><span class="p">(</span><span class="n">covariance</span><span class="p">,</span> <span class="n">points_sampled</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Build ``A_{jik} = \pderiv{K_{ij}}{\theta_k}``.</span>
+
+<span class="sd">    .. NOTE:: These comments are copied from BuildHyperparameterGradCovarianceMatrix() in gpp_model_selection_and_hyperparameter_optimization.cpp.</span>
+
+<span class="sd">    Build ``A_{jik} = \pderiv{K_{ij}}{\theta_k}``</span>
+<span class="sd">    Hence the outer loop structure is identical to BuildCovarianceMatrix().</span>
+
+<span class="sd">    Note the structure of the resulting tensor is ``num_hyperparameters`` blocks of size</span>
+<span class="sd">    ``num_sampled X num_sampled``.  Consumers of this want ``dK/d\theta_k`` located sequentially.</span>
+<span class="sd">    However, for a given pair of points (x, y), it is more efficient to compute all</span>
+<span class="sd">    hyperparameter derivatives at once.  Thus the innermost loop writes to all</span>
+<span class="sd">    ``num_hyperparameters`` blocks at once.</span>
+
+<span class="sd">    Consumers of this result generally require complete storage (i.e., will not take advantage</span>
+<span class="sd">    of its symmetry), so instead of ignoring the upper triangles, we copy them from the</span>
+<span class="sd">    (already-computed) lower triangles to avoid redundant work.</span>
+
+<span class="sd">    Since CovarianceInterface.HyperparameterGradCovariance() returns a vector of size ``|\theta_k|``,</span>
+<span class="sd">    the inner loop writes all relevant entries of ``A_{jik}`` simultaneously to prevent recomputation.</span>
+
+<span class="sd">    :param covariance: the covariance function encoding assumptions about the GP&#39;s behavior on our data</span>
+<span class="sd">    :type covariance: interfaces.covariance_interface.CovarianceInterface subclass</span>
+<span class="sd">    :param points_sampled: points, ``X_i``</span>
+<span class="sd">    :type points_sampled: array of float64 with shape (points_sampled.shape[0], dim)</span>
+<span class="sd">    :return: gradient of covariance matrix wrt hyperparameters</span>
+<span class="sd">    :rtype: array of float64 with shape (points_sampled.shape[0], points_sampled.shape[0], num_hyperparameters), order=&#39;F&#39;</span>
+
+<span class="sd">    .. Note:: Fortran ordering is important here; scipy.linalg factor/solve methods</span>
+<span class="sd">        (e.g., cholesky, solve_triangular) implicitly require order=&#39;F&#39; to enable</span>
+<span class="sd">        overwriting. This output is commonly overwritten.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">cov_mat</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">points_sampled</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">points_sampled</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">covariance</span><span class="o">.</span><span class="n">num_hyperparameters</span><span class="p">),</span> <span class="n">order</span><span class="o">=</span><span class="s">&#39;F&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">point_one</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">points_sampled</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">point_two</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">points_sampled</span><span class="p">):</span>
+            <span class="n">cov_mat</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="n">covariance</span><span class="o">.</span><span class="n">hyperparameter_grad_covariance</span><span class="p">(</span><span class="n">point_one</span><span class="p">,</span> <span class="n">point_two</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">cov_mat</span></div>
+</pre></div>
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

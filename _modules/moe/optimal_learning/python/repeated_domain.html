@@ -1,0 +1,367 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>moe.optimal_learning.python.repeated_domain &mdash; MOE 0.1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../../_static/breathe.css" type="text/css" />
+  
+    <link rel="top" title="MOE 0.1.0 documentation" href="../../../../index.html"/>
+        <link rel="up" title="moe" href="../../../moe.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="../../../../index.html" class="fa fa-home"> MOE</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../moe.html">moe package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe.html#module-moe.resources">moe.resources module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe.html#module-moe">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../cpp_tree.html">C++ Files</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_optimization_test.html">gpp_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_domain_test.html">gpp_domain_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_exception.html">gpp_exception</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_geometry.html">gpp_geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_test_utils.html">gpp_test_utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_logging.html">gpp_logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_covariance.html">gpp_covariance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_python_test.html">gpp_python_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_domain.html">gpp_domain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_python_common.html">gpp_python_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_hyperparameter_optimization_demo.html">gpp_hyperparameter_optimization_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_test_utils_test.html">gpp_test_utils_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_math_test.html">gpp_math_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_python_model_selection.html">gpp_python_model_selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_math.html">gpp_math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_random_test.html">gpp_random_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_random.html">gpp_random</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_geometry_test.html">gpp_geometry_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_linear_algebra.html">gpp_linear_algebra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_core.html">gpp_core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_covariance_test.html">gpp_covariance_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_python.html">gpp_python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_model_selection_and_hyperparameter_optimization.html">gpp_model_selection_and_hyperparameter_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_optimization_parameters.html">gpp_optimization_parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_common.html">gpp_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_model_selection_and_hyperparameter_optimization_test.html">gpp_model_selection_and_hyperparameter_optimization_test</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../../index.html">MOE</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+      
+          <li><a href="../../../moe.html">moe</a> &raquo;</li>
+      
+    <li>moe.optimal_learning.python.repeated_domain</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <h1>Source code for moe.optimal_learning.python.repeated_domain</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;RepeatedDomain class for handling manipulating sets of points in a (kernel) domain simultaneously.&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+<span class="kn">from</span> <span class="nn">moe.optimal_learning.python.interfaces.domain_interface</span> <span class="kn">import</span> <span class="n">DomainInterface</span>
+
+
+<div class="viewcode-block" id="RepeatedDomain"><a class="viewcode-back" href="../../../../moe.optimal_learning.python.html#moe.optimal_learning.python.repeated_domain.RepeatedDomain">[docs]</a><span class="k">class</span> <span class="nc">RepeatedDomain</span><span class="p">(</span><span class="n">DomainInterface</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;A generic domain type for simultaneously manipulating ``num_repeats`` points in a &quot;regular&quot; domain (the kernel).</span>
+
+<span class="sd">    .. Note:: Comments in this class are copied from RepeatedDomain in gpp_domain.hpp.</span>
+
+<span class="sd">    .. Note:: the kernel domain is *not* copied. Instead, the kernel functions are called</span>
+<span class="sd">      ``num_repeats`` times in a loop. In some cases, data reordering is also necessary</span>
+<span class="sd">      to preserve the output properties (e.g., uniform distribution).</span>
+
+<span class="sd">    For some use cases (e.g., q,p-EI optimization with q &gt; 1), we need to simultaneously</span>
+<span class="sd">    manipulate several points within the same domain. To support this use case, we have</span>
+<span class="sd">    the ``RepeatedDomain``, a light-weight wrapper around any DomainInterface subclass</span>
+<span class="sd">    that kernalizes that object&#39;s functionality.</span>
+
+<span class="sd">    In general, kernel domain operations need be performed ``num_repeats`` times, once</span>
+<span class="sd">    for each point. This class hides the looping logic so that use cases like various</span>
+<span class="sd">    OptimizerInterface subclasses (optimization.py) do not need to be explicitly aware</span>
+<span class="sd">    of whether they are optimizing 1 point or 50 points. Instead, the OptimizableInterface</span>
+<span class="sd">    implementation provides problem_size() and appropriately sized gradient information.</span>
+<span class="sd">    Coupled with RepeatedDomain, Optimizers can remain oblivious.</span>
+
+<span class="sd">    In simpler terms, say we want to solve 5,0-EI in a parameter-space of dimension 3.</span>
+<span class="sd">    So we would have 5 points moving around in a 3D space. The 3D space, whatever it is,</span>
+<span class="sd">    is the kernel domain. We &quot;repeat&quot; the kernel 5 times; in practice this mostly amounts to</span>
+<span class="sd">    simple loops around kernel functions and sometimes data reordering is also needed.</span>
+
+<span class="sd">    .. Note:: this operation is more complex than just working in a higher dimensional space.</span>
+<span class="sd">      3 points in a 2D simplex is not the same as 1 point in a 6D simplex; e.g.,</span>
+<span class="sd">      ``[(0.5, 0.5), (0.5, 0.5), (0.5, 0.5)]`` is valid in the first scenario but not in the second.</span>
+
+<span class="sd">    Where the member domain takes ``kernel_input``, this class&#39;s members take an array with</span>
+<span class="sd">    shape ``(num_repeats, ) + kernel_input.shape``. Similarly ``kernel_output`` becomes an</span>
+<span class="sd">    array with shape ``(num_repeats, ) + kernel_output.shape``.</span>
+
+<span class="sd">    For example, ``check_point_inside()`` calls the kernel domain&#39;s ``check_point_inside()``</span>
+<span class="sd">    function ``num_repeats`` times, returning True only if all ``num_repeats`` input</span>
+<span class="sd">    points are inside the kernel domain.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_repeats</span><span class="p">,</span> <span class="n">domain</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construct a RepeatedDomain with the specified input (kernel) domain and number of repeats.</span>
+
+<span class="sd">        :param num_repeats: number of times to repeat the input domain</span>
+<span class="sd">        :type num_repeats: int &gt; 0</span>
+<span class="sd">        :param domain: the domain to repeat</span>
+<span class="sd">        :type domain: DomainInterface subclass</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_repeats</span> <span class="o">=</span> <span class="n">num_repeats</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_domain</span> <span class="o">=</span> <span class="n">domain</span>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="RepeatedDomain.dim"><a class="viewcode-back" href="../../../../moe.optimal_learning.python.html#moe.optimal_learning.python.repeated_domain.RepeatedDomain.dim">[docs]</a>    <span class="k">def</span> <span class="nf">dim</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the number of spatial dimensions of the kernel domain.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_domain</span><span class="o">.</span><span class="n">dim</span>
+</div>
+<div class="viewcode-block" id="RepeatedDomain.check_point_inside"><a class="viewcode-back" href="../../../../moe.optimal_learning.python.html#moe.optimal_learning.python.repeated_domain.RepeatedDomain.check_point_inside">[docs]</a>    <span class="k">def</span> <span class="nf">check_point_inside</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Check if a point is inside the domain/on its boundary or outside.</span>
+
+<span class="sd">        :param point: point to check</span>
+<span class="sd">        :type point: array of float64 with shape (num_repeats, dim)</span>
+<span class="sd">        :return: true if point is inside the repeated domain</span>
+<span class="sd">        :rtype: bool</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">all</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">_domain</span><span class="o">.</span><span class="n">check_point_inside</span><span class="p">(</span><span class="n">point</span><span class="p">)</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points</span><span class="p">])</span>
+</div>
+<div class="viewcode-block" id="RepeatedDomain.generate_random_point_in_domain"><a class="viewcode-back" href="../../../../moe.optimal_learning.python.html#moe.optimal_learning.python.repeated_domain.RepeatedDomain.generate_random_point_in_domain">[docs]</a>    <span class="k">def</span> <span class="nf">generate_random_point_in_domain</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">random_source</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Generate ``point`` uniformly at random such that ``self.check_point_inside(point)`` is True.</span>
+
+<span class="sd">        .. Note:: if you need multiple points, use generate_uniform_random_points_in_domain instead;</span>
+<span class="sd">            depending on implementation, it may ield better distributions over many points. For example,</span>
+<span class="sd">            tensor product type domains use latin hypercube sampling instead of repeated random draws</span>
+<span class="sd">            which guarantees that no non-uniform clusters may arise (in subspaces) versus this method</span>
+<span class="sd">            which treats all draws independently.</span>
+
+<span class="sd">        :return: point in repeated domain</span>
+<span class="sd">        :rtype: array of float64 with shape (num_repeats, dim)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">_domain</span><span class="o">.</span><span class="n">generate_random_point_in_domain</span><span class="p">(</span><span class="n">random_source</span><span class="o">=</span><span class="n">random_source</span><span class="p">)</span>
+                            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_repeats</span><span class="p">)])</span>
+</div>
+<div class="viewcode-block" id="RepeatedDomain.generate_uniform_random_points_in_domain"><a class="viewcode-back" href="../../../../moe.optimal_learning.python.html#moe.optimal_learning.python.repeated_domain.RepeatedDomain.generate_uniform_random_points_in_domain">[docs]</a>    <span class="k">def</span> <span class="nf">generate_uniform_random_points_in_domain</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_points</span><span class="p">,</span> <span class="n">random_source</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Generate AT MOST ``num_points`` uniformly distributed points from the domain.</span>
+
+<span class="sd">        Unlike many of this class&#39;s other member functions, ``generate_uniform_random_points_in_domain()``</span>
+<span class="sd">        is not as simple as calling the kernel&#39;s member function ``num_repeats`` times. To</span>
+<span class="sd">        obtain the same distribution, we have to additionally &quot;transpose&quot; (see implementation</span>
+<span class="sd">        for details).</span>
+
+<span class="sd">        .. NOTE::</span>
+<span class="sd">             The number of points returned may be LESS THAN ``num_points``!</span>
+
+<span class="sd">        Implementations may use rejection sampling. In such cases, generating the requested</span>
+<span class="sd">        number of points may be unreasonably slow, so implementers are allowed to generate</span>
+<span class="sd">        fewer than ``num_points`` results.</span>
+
+<span class="sd">        :param num_points: max number of points to generate</span>
+<span class="sd">        :type num_points: integer &gt;= 0</span>
+<span class="sd">        :param random_source:</span>
+<span class="sd">        :type random_source: callable yielding uniform random numbers in [0,1]</span>
+<span class="sd">        :return: uniform random sampling of points from the domain; may be fewer than ``num_points``!</span>
+<span class="sd">        :rtype: array of float64 with shape (num_points_generated, num_repeats, dim)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">output_points</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">num_points</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_repeats</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">))</span>
+        <span class="c"># Generate num_repeats sets of points from some sampling (e.g., LHC)</span>
+        <span class="c"># Then we &quot;transpose&quot; the output ordering: the i-th point in RepeatedDomain is constructed</span>
+        <span class="c"># from the i-th points of LHC_1 ... LHC_{num_repeats}</span>
+        <span class="n">num_points_array</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_repeats</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_repeats</span><span class="p">):</span>
+            <span class="n">temp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_domain</span><span class="o">.</span><span class="n">generate_uniform_random_points_in_domain</span><span class="p">(</span><span class="n">num_points</span><span class="p">,</span> <span class="n">random_source</span><span class="o">=</span><span class="n">random_source</span><span class="p">)</span>
+            <span class="c"># Since generate_uniform_random_points_in_domain() may not always return num_points</span>
+            <span class="c"># points, we need to make sure we only use the valid results</span>
+            <span class="n">num_points_array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">output_points</span><span class="p">[:,</span> <span class="n">i</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp</span>
+        <span class="c"># We can only use the smallest num_points that came out of our draws</span>
+        <span class="k">return</span> <span class="n">output_points</span><span class="p">[:</span><span class="n">numpy</span><span class="o">.</span><span class="n">amin</span><span class="p">(</span><span class="n">num_points_array</span><span class="p">),</span> <span class="o">...</span><span class="p">]</span>
+</div>
+<div class="viewcode-block" id="RepeatedDomain.compute_update_restricted_to_domain"><a class="viewcode-back" href="../../../../moe.optimal_learning.python.html#moe.optimal_learning.python.repeated_domain.RepeatedDomain.compute_update_restricted_to_domain">[docs]</a>    <span class="k">def</span> <span class="nf">compute_update_restricted_to_domain</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_relative_change</span><span class="p">,</span> <span class="n">current_point</span><span class="p">,</span> <span class="n">update_vector</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Compute a new update so that CheckPointInside(``current_point`` + ``return_value``) is true.</span>
+
+<span class="sd">        Returns a new update vector in ``return_value`` so that:</span>
+<span class="sd">          ``point_new = point + return_value``</span>
+
+<span class="sd">        has coordinates such that ``CheckPointInside(point_new)`` returns true. We select ``point_new``</span>
+<span class="sd">        by projecting ``point + update_vector`` to the nearest point on the domain.</span>
+
+<span class="sd">        ``return_value`` is a function of ``update_vector``.</span>
+<span class="sd">        ``return_value`` is just a copy of ``update_vector`` if ``current_point`` is already inside the domain.</span>
+
+<span class="sd">        .. NOTE::</span>
+<span class="sd">            We modify update_vector (instead of returning point_new) so that further update</span>
+<span class="sd">            limiting/testing may be performed.</span>
+
+<span class="sd">        :param max_relative_change: max change allowed per update (as a relative fraction of current distance to boundary)</span>
+<span class="sd">        :type max_relative_change: float64 in (0, 1]</span>
+<span class="sd">        :param current_point: starting point</span>
+<span class="sd">        :type current_point: array of float64 with shape (num_repeats, dim)</span>
+<span class="sd">        :param update_vector: proposed update</span>
+<span class="sd">        :type update_vector: array of float64 with shape (num_repeats, dim)</span>
+<span class="sd">        :return: new update so that the final point remains inside the domain</span>
+<span class="sd">        :rtype: array of float64 with shape (num_repeats, dim)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">_domain</span><span class="o">.</span><span class="n">compute_update_restricted_to_domain</span><span class="p">(</span>
+            <span class="n">max_relative_change</span><span class="p">,</span>
+            <span class="n">current_point</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>
+            <span class="n">update_vector</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="o">...</span><span class="p">])</span>
+                            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_repeats</span><span class="p">)])</span></div></div>
+</pre></div>
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

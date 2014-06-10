@@ -1,0 +1,190 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>moe.easy_interface package &mdash; MOE 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/breathe.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="MOE 0.1.0 documentation" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../http-routingtable.html" title="HTTP Routing Table"
+             >routing table</a> |</li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">MOE 0.1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="moe-easy-interface-package">
+<h1>moe.easy_interface package<a class="headerlink" href="#moe-easy-interface-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-moe.easy_interface.experiment">
+<span id="moe-easy-interface-experiment-module"></span><h2>moe.easy_interface.experiment module<a class="headerlink" href="#module-moe.easy_interface.experiment" title="Permalink to this headline">¶</a></h2>
+<p>Classes for MOE optimizable experiments.</p>
+<dl class="class">
+<dt id="moe.easy_interface.experiment.Experiment">
+<em class="property">class </em><tt class="descclassname">moe.easy_interface.experiment.</tt><tt class="descname">Experiment</tt><big>(</big><em>domain</em><big>)</big><a class="reference internal" href="../_modules/moe/easy_interface/experiment.html#Experiment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.easy_interface.experiment.Experiment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>A class for MOE optimizable experiments.</p>
+<dl class="method">
+<dt id="moe.easy_interface.experiment.Experiment.add_point">
+<tt class="descname">add_point</tt><big>(</big><em>point_in_domain</em>, <em>value</em>, <em>value_var=0.0</em><big>)</big><a class="reference internal" href="../_modules/moe/easy_interface/experiment.html#Experiment.add_point"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.easy_interface.experiment.Experiment.add_point" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a point to the experiment.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.easy_interface.experiment.Experiment.generate_uniform_stencil">
+<tt class="descname">generate_uniform_stencil</tt><big>(</big><em>size_of_stencil=3</em><big>)</big><a class="reference internal" href="../_modules/moe/easy_interface/experiment.html#Experiment.generate_uniform_stencil"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.easy_interface.experiment.Experiment.generate_uniform_stencil" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a uniform stencil to sample.</p>
+<p>This makes the assumption that the domain is a hypercube.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="moe.easy_interface.experiment.ExperimentPoint">
+<em class="property">class </em><tt class="descclassname">moe.easy_interface.experiment.</tt><tt class="descname">ExperimentPoint</tt><a class="headerlink" href="#moe.easy_interface.experiment.ExperimentPoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">tuple</span></tt></p>
+<p>ExperimentPoint(point, value, value_var)</p>
+<dl class="attribute">
+<dt id="moe.easy_interface.experiment.ExperimentPoint.point">
+<tt class="descname">point</tt><a class="headerlink" href="#moe.easy_interface.experiment.ExperimentPoint.point" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 0</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="moe.easy_interface.experiment.ExperimentPoint.value">
+<tt class="descname">value</tt><a class="headerlink" href="#moe.easy_interface.experiment.ExperimentPoint.value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 1</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="moe.easy_interface.experiment.ExperimentPoint.value_var">
+<tt class="descname">value_var</tt><a class="headerlink" href="#moe.easy_interface.experiment.ExperimentPoint.value_var" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 2</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-moe.easy_interface.simple_endpoint">
+<span id="moe-easy-interface-simple-endpoint-module"></span><h2>moe.easy_interface.simple_endpoint module<a class="headerlink" href="#module-moe.easy_interface.simple_endpoint" title="Permalink to this headline">¶</a></h2>
+<p>Simple functions for hitting the REST endpoints of a MOE service.</p>
+<dl class="function">
+<dt id="moe.easy_interface.simple_endpoint.gp_next_points">
+<tt class="descclassname">moe.easy_interface.simple_endpoint.</tt><tt class="descname">gp_next_points</tt><big>(</big><em>moe_experiment</em>, <em>num_samples_to_generate=1</em>, <em>method='moe_next_points_epi'</em>, <em>rest_host='127.0.0.1'</em>, <em>rest_port=6543</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/moe/easy_interface/simple_endpoint.html#gp_next_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.easy_interface.simple_endpoint.gp_next_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hit the rest endpoint for finding next point of highest EI at rest_host:rest_port corresponding to the method with the given experiment.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-moe.easy_interface">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-moe.easy_interface" title="Permalink to this headline">¶</a></h2>
+<p>An easy, simple interface for using the MOE REST service.</p>
+<dl class="docutils">
+<dt>Contains:</dt>
+<dd><ul class="first last simple">
+<li>experiment.py - The a class for historic information required to optimize using MOE</li>
+<li>simple_endpoint.py - An example use of the REST interface using python</li>
+</ul>
+</dd>
+</dl>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">moe.easy_interface package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-moe.easy_interface.experiment">moe.easy_interface.experiment module</a></li>
+<li><a class="reference internal" href="#module-moe.easy_interface.simple_endpoint">moe.easy_interface.simple_endpoint module</a></li>
+<li><a class="reference internal" href="#module-moe.easy_interface">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/autogen/moe.easy_interface.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../http-routingtable.html" title="HTTP Routing Table"
+             >routing table</a> |</li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">MOE 0.1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

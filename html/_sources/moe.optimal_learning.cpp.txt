@@ -1,0 +1,10 @@
+moe.optimal_learning.cpp package
+================================
+
+Module contents
+---------------
+
+.. automodule:: moe.optimal_learning.cpp
+    :members:
+    :undoc-members:
+    :show-inheritance:

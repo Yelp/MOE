@@ -1,0 +1,20 @@
+gpp_covariance_test
+=====
+
+**Contents:**
+
+    1. `gpp_covariance_test.hpp`_
+    2. `gpp_covariance_test.cpp`_
+
+
+gpp_covariance_test.hpp
+------
+
+.. doxygenfile:: gpp_covariance_test.hpp
+
+
+gpp_covariance_test.cpp
+------
+
+.. doxygenfile:: gpp_covariance_test.cpp
+

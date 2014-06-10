@@ -1,0 +1,516 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>moe.optimal_learning.python.python_version.log_likelihood &mdash; MOE 0.1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../../../_static/favicon.ico"/>
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../../../_static/breathe.css" type="text/css" />
+  
+    <link rel="top" title="MOE 0.1.0 documentation" href="../../../../../index.html"/>
+        <link rel="up" title="moe" href="../../../../moe.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="../../../../../index.html" class="fa fa-home"> MOE</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../moe.html">moe package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe.html#module-moe.resources">moe.resources module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe.html#module-moe">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../cpp_tree.html">C++ Files</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_optimization_test.html">gpp_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_domain_test.html">gpp_domain_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_exception.html">gpp_exception</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_geometry.html">gpp_geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_test_utils.html">gpp_test_utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_logging.html">gpp_logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_covariance.html">gpp_covariance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python_test.html">gpp_python_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_domain.html">gpp_domain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python_common.html">gpp_python_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_hyperparameter_optimization_demo.html">gpp_hyperparameter_optimization_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_test_utils_test.html">gpp_test_utils_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_math_test.html">gpp_math_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python_model_selection.html">gpp_python_model_selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_math.html">gpp_math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_random_test.html">gpp_random_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_random.html">gpp_random</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_geometry_test.html">gpp_geometry_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_linear_algebra.html">gpp_linear_algebra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_core.html">gpp_core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_covariance_test.html">gpp_covariance_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python.html">gpp_python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_model_selection_and_hyperparameter_optimization.html">gpp_model_selection_and_hyperparameter_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_optimization_parameters.html">gpp_optimization_parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_common.html">gpp_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_model_selection_and_hyperparameter_optimization_test.html">gpp_model_selection_and_hyperparameter_optimization_test</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../../../index.html">MOE</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../../../index.html">Module code</a> &raquo;</li>
+      
+          <li><a href="../../../../moe.html">moe</a> &raquo;</li>
+      
+    <li>moe.optimal_learning.python.python_version.log_likelihood</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <h1>Source code for moe.optimal_learning.python.python_version.log_likelihood</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="sd">r&quot;&quot;&quot;Tools to compute log likelihood-like measures of model fit and optimize them (wrt the hyperparameters of covariance) to select the best model for a given set of historical data.</span>
+
+<span class="sd">See the file comments in interfaces/log_likelihood_interface.py for an overview of log likelihood-like metrics and their role</span>
+<span class="sd">in model selection. This file provides an implementation of the Log Marginal Likelihood.</span>
+
+<span class="sd">.. Note:: This is a copy of the file comments in cpp_wrappers/log_likelihood.py.</span>
+<span class="sd">  See this file&#39;s comments and interfaces.log_likelihood_interface for more details as well as the cpp_wrappers version.</span>
+
+<span class="sd">**LOG MARGINAL LIKELIHOOD (LML)**</span>
+
+<span class="sd">(Rasmussen &amp; Williams, 5.4.1)</span>
+<span class="sd">The Log Marginal Likelihood measure comes from the ideas of Bayesian model selection, which use Bayesian inference</span>
+<span class="sd">to predict distributions over models and their parameters.  The cpp file comments explore this idea in more depth.</span>
+<span class="sd">For now, we will simply state the relevant result.  We can build up the notion of the &quot;marginal likelihood&quot;:</span>
+<span class="sd">probability(observed data GIVEN sampling points (``X``), model hyperparameters, model class (regression, GP, etc.)),</span>
+<span class="sd">which is denoted: ``p(y | X, \theta, H_i)`` (see the cpp file comments for more).</span>
+
+<span class="sd">So the marginal likelihood deals with computing the probability that the observed data was generated from (another</span>
+<span class="sd">way: is easily explainable by) the given model.</span>
+
+<span class="sd">The marginal likelihood is in part paramaterized by the model&#39;s hyperparameters; e.g., as mentioned above.  Thus</span>
+<span class="sd">we can search for the set of hyperparameters that produces the best marginal likelihood and use them in our model.</span>
+<span class="sd">Additionally, a nice property of the marginal likelihood optimization is that it automatically trades off between</span>
+<span class="sd">model complexity and data fit, producing a model that is reasonably simple while still explaining the data reasonably</span>
+<span class="sd">well.  See the cpp file comments for more discussion of how/why this works.</span>
+
+<span class="sd">In general, we do not want a model with perfect fit and high complexity, since this implies overfit to input noise.</span>
+<span class="sd">We also do not want a model with very low complexity and poor data fit: here we are washing the signal out with</span>
+<span class="sd">(assumed) noise, so the model is simple but it provides no insight on the data.</span>
+
+<span class="sd">This is not magic.  Using GPs as an example, if the covariance function is completely mis-specified, we can blindly</span>
+<span class="sd">go through with marginal likelihood optimization, obtain an &quot;optimal&quot; set of hyperparameters, and proceed... never</span>
+<span class="sd">realizing that our fundamental assumptions are wrong.  So care is always needed.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+<span class="kn">import</span> <span class="nn">scipy.linalg</span>
+
+<span class="kn">from</span> <span class="nn">moe.optimal_learning.python.geometry_utils</span> <span class="kn">import</span> <span class="n">ClosedInterval</span>
+<span class="kn">from</span> <span class="nn">moe.optimal_learning.python.interfaces.log_likelihood_interface</span> <span class="kn">import</span> <span class="n">GaussianProcessLogLikelihoodInterface</span>
+<span class="kn">from</span> <span class="nn">moe.optimal_learning.python.interfaces.optimization_interface</span> <span class="kn">import</span> <span class="n">OptimizableInterface</span>
+<span class="kn">from</span> <span class="nn">moe.optimal_learning.python.python_version</span> <span class="kn">import</span> <span class="n">python_utils</span>
+<span class="kn">from</span> <span class="nn">moe.optimal_learning.python.python_version.domain</span> <span class="kn">import</span> <span class="n">TensorProductDomain</span>
+<span class="kn">from</span> <span class="nn">moe.optimal_learning.python.python_version.optimization</span> <span class="kn">import</span> <span class="n">multistart_optimize</span><span class="p">,</span> <span class="n">NullOptimizer</span>
+
+
+<div class="viewcode-block" id="multistart_hyperparameter_optimization"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.log_likelihood.multistart_hyperparameter_optimization">[docs]</a><span class="k">def</span> <span class="nf">multistart_hyperparameter_optimization</span><span class="p">(</span>
+        <span class="n">hyperparameter_optimizer</span><span class="p">,</span>
+        <span class="n">num_multistarts</span><span class="p">,</span>
+        <span class="n">randomness</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+        <span class="n">max_num_threads</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">status</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Select the hyperparameters that maximize the specified log likelihood measure of model fit (over the historical data) within the specified domain.</span>
+
+<span class="sd">    .. Note:: The following comments are copied from multistart_hyperparameter_optimization() in cpp_wrappers/log_likelihood.py</span>
+
+<span class="sd">    See GaussianProcessLogMarginalLikelihood and GaussianProcessLeaveOneOutLogLikelihood for an overview of some</span>
+<span class="sd">    example log likelihood-like measures.</span>
+
+<span class="sd">    Optimizers are: null (&#39;dumb&#39; search), gradient descent, newton</span>
+<span class="sd">    Newton is the suggested optimizer, which is not presently available in Python (use the C++ interface). In Python,</span>
+<span class="sd">    gradient descent is suggested.</span>
+<span class="sd">    TODO(eliu): implement hessians and newton&#39;s method (GH-57)</span>
+
+<span class="sd">    &#39;dumb&#39; search means this will just evaluate the objective log likelihood measure at num_multistarts &#39;points&#39;</span>
+<span class="sd">    (hyperparameters) in the domain, uniformly sampled using latin hypercube sampling.</span>
+
+<span class="sd">    See gpp_python_common.cpp for C++ enum declarations laying out the options for objective and optimizer types.</span>
+
+<span class="sd">    Currently, during optimization, we recommend that the coordinates of the initial guesses not differ from the</span>
+<span class="sd">    coordinates of the optima by more than about 1 order of magnitude. This is a very (VERY!) rough guideline for</span>
+<span class="sd">    sizing the domain and gd_parameters.num_multistarts; i.e., be wary of sets of initial guesses that cover the space too sparsely.</span>
+
+<span class="sd">    Solution is guaranteed to lie within the region specified by &quot;domain&quot;; note that this may not be a</span>
+<span class="sd">    true optima (i.e., the gradient may be substantially nonzero).</span>
+
+<span class="sd">    .. WARNING:: this function fails if NO improvement can be found!  In that case,</span>
+<span class="sd">       the output will always be the first randomly chosen point. status will report failure.</span>
+
+<span class="sd">    TODO(eliu): allow callers to pass in a source of randomness (GH-56)</span>
+
+<span class="sd">    :param hyperparameter_optimizer: object that optimizes (e.g., gradient descent, newton) the desired log_likelihood</span>
+<span class="sd">        measure over a domain (wrt the hyperparameters of covariance)</span>
+<span class="sd">    :type hyperparameter_optimizer: interfaces.optimization_interfaces.OptimizerInterface subclass</span>
+<span class="sd">    :param num_multistarts: number of times to multistart ``hyperparameter_optimizer``</span>
+<span class="sd">    :type num_multistarts: int &gt; 0</span>
+<span class="sd">    :param randomness: random source used to generate multistart points (UNUSED)</span>
+<span class="sd">    :type randomness: (UNUSED)</span>
+<span class="sd">    :param max_num_threads: maximum number of threads to use, &gt;= 1 (UNUSED)</span>
+<span class="sd">    :type max_num_threads: int &gt; 0</span>
+<span class="sd">    :param status: status messages (e.g., reporting on optimizer success, etc.)</span>
+<span class="sd">    :type status: dict</span>
+<span class="sd">    :return: hyperparameters that maximize the specified log likelihood measure within the specified domain</span>
+<span class="sd">    :rtype: array of float64 with shape (log_likelihood_evaluator.num_hyperparameters)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c"># Producing the random starts in log10 space improves robustness by clustering some extra points near 0</span>
+    <span class="n">domain_bounds_log10</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">hyperparameter_optimizer</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">_domain_bounds</span><span class="p">)</span>
+    <span class="n">domain_log10</span> <span class="o">=</span> <span class="n">TensorProductDomain</span><span class="p">(</span><span class="n">ClosedInterval</span><span class="o">.</span><span class="n">build_closed_intervals_from_list</span><span class="p">(</span><span class="n">domain_bounds_log10</span><span class="p">))</span>
+    <span class="n">random_starts</span> <span class="o">=</span> <span class="n">domain_log10</span><span class="o">.</span><span class="n">generate_uniform_random_points_in_domain</span><span class="p">(</span><span class="n">num_points</span><span class="o">=</span><span class="n">num_multistarts</span><span class="p">)</span>
+    <span class="n">random_starts</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">random_starts</span><span class="p">)</span>
+
+    <span class="n">best_hyperparameters</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">multistart_optimize</span><span class="p">(</span><span class="n">hyperparameter_optimizer</span><span class="p">,</span> <span class="n">starting_points</span><span class="o">=</span><span class="n">random_starts</span><span class="p">)</span>
+
+    <span class="c"># TODO(eliu): have GD actually indicate whether updates were found (GH-59)</span>
+    <span class="n">found_flag</span> <span class="o">=</span> <span class="bp">True</span>
+    <span class="k">if</span> <span class="n">status</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">status</span><span class="p">[</span><span class="s">&quot;gradient_descent_found_update&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">found_flag</span>
+
+    <span class="k">return</span> <span class="n">best_hyperparameters</span>
+
+</div>
+<div class="viewcode-block" id="evaluate_log_likelihood_at_hyperparameter_list"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.log_likelihood.evaluate_log_likelihood_at_hyperparameter_list">[docs]</a><span class="k">def</span> <span class="nf">evaluate_log_likelihood_at_hyperparameter_list</span><span class="p">(</span><span class="n">log_likelihood_evaluator</span><span class="p">,</span> <span class="n">hyperparameters_to_evaluate</span><span class="p">,</span> <span class="n">max_num_threads</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute the specified log likelihood measure at each input set of hyperparameters.</span>
+
+<span class="sd">    Generally Newton or gradient descent is preferred but when they fail to converge this may be the only &quot;robust&quot; option.</span>
+<span class="sd">    This function is also useful for plotting or debugging purposes (just to get a bunch of log likelihood values).</span>
+
+<span class="sd">    :param log_likelihood_evaluator: object specifying which log likelihood measure to evaluate</span>
+<span class="sd">    :type log_likelihood_evaluator: interfaces.log_likelihood_interface.LogLikelihoodInterface subclass</span>
+<span class="sd">    :param hyperparameters_to_evaluate: the hyperparameters at which to compute the specified log likelihood</span>
+<span class="sd">    :type hyperparameters_to_evaluate: array of float64 with shape (num_to_eval, log_likelihood_evaluator.num_hyperparameters)</span>
+<span class="sd">    :param max_num_threads: maximum number of threads to use, &gt;= 1 (UNUSED)</span>
+<span class="sd">    :type max_num_threads: int</span>
+<span class="sd">    :return: log likelihood value at each specified set of hyperparameters</span>
+<span class="sd">    :rtype: array of float64 with shape (hyperparameters_to_evaluate.shape[0])</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">null_optimizer</span> <span class="o">=</span> <span class="n">NullOptimizer</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="n">log_likelihood_evaluator</span><span class="p">)</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">values</span> <span class="o">=</span> <span class="n">multistart_optimize</span><span class="p">(</span><span class="n">null_optimizer</span><span class="p">,</span> <span class="n">starting_points</span><span class="o">=</span><span class="n">hyperparameters_to_evaluate</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">values</span>
+
+</div>
+<div class="viewcode-block" id="GaussianProcessLogMarginalLikelihood"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood">[docs]</a><span class="k">class</span> <span class="nc">GaussianProcessLogMarginalLikelihood</span><span class="p">(</span><span class="n">GaussianProcessLogLikelihoodInterface</span><span class="p">,</span> <span class="n">OptimizableInterface</span><span class="p">):</span>
+
+    <span class="sd">r&quot;&quot;&quot;Class for computing the Log Marginal Likelihood, ``log(p(y | X, \theta))``.</span>
+
+<span class="sd">    That is, the probability of observing the training values, y, given the training points, X,</span>
+<span class="sd">    and hyperparameters (of the covariance function), ``\theta``.</span>
+
+<span class="sd">    This is a measure of how likely it is that the observed values came from our Gaussian Process Prior.</span>
+
+<span class="sd">    .. Note:: This is a copy of GaussianProcessLogMarginalLikelihood&#39;s class comments in cpp_wrappers/log_likelihood.py.</span>
+<span class="sd">      See this file&#39;s comments and interfaces.log_likelihood_interface for more details as well as the cpp_wrappers version.</span>
+
+<span class="sd">    Given a particular covariance function (including hyperparameters) and</span>
+<span class="sd">    training data ((point, function value, measurement noise) tuples), the log marginal likelihood is the log probability that</span>
+<span class="sd">    the data were observed from a Gaussian Process would have generated the observed function values at the given measurement</span>
+<span class="sd">    points.  So log marginal likelihood tells us &quot;the probability of the observations given the assumptions of the model.&quot;</span>
+<span class="sd">    Log marginal sits well with the Bayesian Inference camp.</span>
+<span class="sd">    (Rasmussen &amp; Williams p118)</span>
+
+<span class="sd">    This quantity primarily deals with the trade-off between model fit and model complexity.  Handling this trade-off is automatic</span>
+<span class="sd">    in the log marginal likelihood calculation.  See Rasmussen &amp; Williams 5.2 and 5.4.1 for more details.</span>
+
+<span class="sd">    We can use the log marginal likelihood to determine how good our model is.  Additionally, we can maximize it by varying</span>
+<span class="sd">    hyperparameters (or even changing covariance functions) to improve our model quality.  Hence this class provides access</span>
+<span class="sd">    to functions for computing log marginal likelihood and its hyperparameter gradients.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">covariance_function</span><span class="p">,</span> <span class="n">historical_data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construct a LogLikelihood object that knows how to call C++ for evaluation of member functions.</span>
+
+<span class="sd">        :param covariance_function: covariance object encoding assumptions about the GP&#39;s behavior on our data</span>
+<span class="sd">        :type covariance_function: Covariance object exposing hyperparameters (e.g., from python_version.covariance)</span>
+<span class="sd">        :param historical_data: object specifying the already-sampled points, the objective value at those points, and the noise variance associated with each observation</span>
+<span class="sd">        :type historical_data: HistoricalData object</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_covariance</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">covariance_function</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_historical_data</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">historical_data</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="GaussianProcessLogMarginalLikelihood.dim"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.dim">[docs]</a>    <span class="k">def</span> <span class="nf">dim</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the number of spatial dimensions.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_historical_data</span><span class="o">.</span><span class="n">dim</span>
+</div>
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="GaussianProcessLogMarginalLikelihood.num_hyperparameters"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.num_hyperparameters">[docs]</a>    <span class="k">def</span> <span class="nf">num_hyperparameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the number of hyperparameters.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_covariance</span><span class="o">.</span><span class="n">num_hyperparameters</span>
+</div>
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="GaussianProcessLogMarginalLikelihood.problem_size"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.problem_size">[docs]</a>    <span class="k">def</span> <span class="nf">problem_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the number of independent parameters to optimize.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_hyperparameters</span>
+</div>
+<div class="viewcode-block" id="GaussianProcessLogMarginalLikelihood.get_hyperparameters"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.get_hyperparameters">[docs]</a>    <span class="k">def</span> <span class="nf">get_hyperparameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the hyperparameters (array of float64 with shape (num_hyperparameters)) of this covariance.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_covariance</span><span class="o">.</span><span class="n">get_hyperparameters</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="GaussianProcessLogMarginalLikelihood.set_hyperparameters"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.set_hyperparameters">[docs]</a>    <span class="k">def</span> <span class="nf">set_hyperparameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hyperparameters</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set hyperparameters to the specified hyperparameters; ordering must match.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_covariance</span><span class="o">.</span><span class="n">set_hyperparameters</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="GaussianProcessLogMarginalLikelihood.get_current_point"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.get_current_point">[docs]</a>    <span class="k">def</span> <span class="nf">get_current_point</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the current_point (array of float64 with shape (problem_size)) at which this object is evaluating the objective function, ``f(x)``.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_hyperparameters</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="GaussianProcessLogMarginalLikelihood.set_current_point"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.set_current_point">[docs]</a>    <span class="k">def</span> <span class="nf">set_current_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">current_point</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set current_point to the specified point; ordering must match.</span>
+
+<span class="sd">        :param current_point: current_point at which to evaluate the objective function, ``f(x)``</span>
+<span class="sd">        :type current_point: array of float64 with shape (problem_size)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_hyperparameters</span><span class="p">(</span><span class="n">current_point</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="GaussianProcessLogMarginalLikelihood.compute_log_likelihood"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.compute_log_likelihood">[docs]</a>    <span class="k">def</span> <span class="nf">compute_log_likelihood</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Compute the _log_likelihood_type measure at the specified hyperparameters.</span>
+
+<span class="sd">        .. NOTE:: These comments are copied from LogMarginalLikelihoodEvaluator::ComputeLogLikelihood in gpp_model_selection_and_hyperparameter_optimization.cpp.</span>
+
+<span class="sd">        ``log p(y | X, \theta) = -\frac{1}{2} * y^T * K^-1 * y - \frac{1}{2} * \log(det(K)) - \frac{n}{2} * \log(2*pi)``</span>
+<span class="sd">        where n is ``num_sampled``, ``\theta`` are the hyperparameters, and ``\log`` is the natural logarithm.  In the following,</span>
+<span class="sd">        ``term1 = -\frac{1}{2} * y^T * K^-1 * y``</span>
+<span class="sd">        ``term2 = -\frac{1}{2} * \log(det(K))``</span>
+<span class="sd">        ``term3 = -\frac{n}{2} * \log(2*pi)``</span>
+
+<span class="sd">        For an SPD matrix ``K = L * L^T``,</span>
+<span class="sd">        ``det(K) = \Pi_i L_ii^2``</span>
+<span class="sd">        We could compute this directly and then take a logarithm.  But we also know:</span>
+<span class="sd">        ``\log(det(K)) = 2 * \sum_i \log(L_ii)``</span>
+<span class="sd">        The latter method is (currently) preferred for computing ``\log(det(K))`` due to reduced chance for overflow</span>
+<span class="sd">        and (possibly) better numerical conditioning.</span>
+
+<span class="sd">        :return: value of log_likelihood evaluated at hyperparameters (``LL(y | X, \theta)``)</span>
+<span class="sd">        :rtype: float64</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">covariance_matrix</span> <span class="o">=</span> <span class="n">python_utils</span><span class="o">.</span><span class="n">build_covariance_matrix</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_covariance</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_historical_data</span><span class="o">.</span><span class="n">points_sampled</span><span class="p">,</span>
+            <span class="n">noise_variance</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_historical_data</span><span class="o">.</span><span class="n">points_sampled_noise_variance</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">K_chol</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">cho_factor</span><span class="p">(</span><span class="n">covariance_matrix</span><span class="p">,</span> <span class="n">lower</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">overwrite_a</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+        <span class="n">log_marginal_term2</span> <span class="o">=</span> <span class="o">-</span><span class="n">numpy</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">K_chol</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">diagonal</span><span class="p">())</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+        <span class="n">K_inv_y</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">cho_solve</span><span class="p">(</span><span class="n">K_chol</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_historical_data</span><span class="o">.</span><span class="n">points_sampled_value</span><span class="p">)</span>
+        <span class="n">log_marginal_term1</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_historical_data</span><span class="o">.</span><span class="n">points_sampled_value</span><span class="p">,</span> <span class="n">K_inv_y</span><span class="p">)</span>
+
+        <span class="n">log_marginal_term3</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_historical_data</span><span class="o">.</span><span class="n">points_sampled_value</span><span class="o">.</span><span class="n">size</span><span class="p">)</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">log_marginal_term1</span> <span class="o">+</span> <span class="n">log_marginal_term2</span> <span class="o">+</span> <span class="n">log_marginal_term3</span>
+</div>
+<div class="viewcode-block" id="GaussianProcessLogMarginalLikelihood.compute_objective_function"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.compute_objective_function">[docs]</a>    <span class="k">def</span> <span class="nf">compute_objective_function</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Wrapper for compute_log_likelihood; see that function&#39;s docstring.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_log_likelihood</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="GaussianProcessLogMarginalLikelihood.compute_grad_log_likelihood"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.compute_grad_log_likelihood">[docs]</a>    <span class="k">def</span> <span class="nf">compute_grad_log_likelihood</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Compute the gradient (wrt hyperparameters) of the _log_likelihood_type measure at the specified hyperparameters.</span>
+
+<span class="sd">        .. NOTE:: These comments are copied from LogMarginalLikelihoodEvaluator::ComputeGradLogLikelihood in gpp_model_selection_and_hyperparameter_optimization.cpp.</span>
+
+<span class="sd">        Computes ``\pderiv{log(p(y | X, \theta))}{\theta_k} = \frac{1}{2} * y_i * \pderiv{K_{ij}}{\theta_k} * y_j - \frac{1}{2}``</span>
+<span class="sd">        ``* trace(K^{-1}_{ij}\pderiv{K_{ij}}{\theta_k})``</span>
+<span class="sd">        Or equivalently, ``= \frac{1}{2} * trace([\alpha_i \alpha_j - K^{-1}_{ij}]*\pderiv{K_{ij}}{\theta_k})``,</span>
+<span class="sd">        where ``\alpha_i = K^{-1}_{ij} * y_j``</span>
+
+<span class="sd">        :return: grad_log_likelihood: i-th entry is ``\pderiv{LL(y | X, \theta)}{\theta_i}``</span>
+<span class="sd">        :rtype: array of float64 with shape (num_hyperparameters)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">covariance_matrix</span> <span class="o">=</span> <span class="n">python_utils</span><span class="o">.</span><span class="n">build_covariance_matrix</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_covariance</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_historical_data</span><span class="o">.</span><span class="n">points_sampled</span><span class="p">,</span>
+            <span class="n">noise_variance</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_historical_data</span><span class="o">.</span><span class="n">points_sampled_noise_variance</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">K_chol</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">cho_factor</span><span class="p">(</span><span class="n">covariance_matrix</span><span class="p">,</span> <span class="n">lower</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">overwrite_a</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="n">K_inv_y</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">cho_solve</span><span class="p">(</span><span class="n">K_chol</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_historical_data</span><span class="o">.</span><span class="n">points_sampled_value</span><span class="p">)</span>
+
+        <span class="n">grad_hyperparameter_cov_matrix</span> <span class="o">=</span> <span class="n">python_utils</span><span class="o">.</span><span class="n">build_hyperparameter_grad_covariance_matrix</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_covariance</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_historical_data</span><span class="o">.</span><span class="n">points_sampled</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">grad_log_marginal</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_covariance</span><span class="o">.</span><span class="n">num_hyperparameters</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_covariance</span><span class="o">.</span><span class="n">num_hyperparameters</span><span class="p">):</span>
+            <span class="n">grad_cov_block</span> <span class="o">=</span> <span class="n">grad_hyperparameter_cov_matrix</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span>
+            <span class="c"># computing 0.5 * \alpha^T * grad_hyperparameter_cov_matrix * \alpha, where \alpha = K^-1 * y (aka K_inv_y)</span>
+            <span class="c"># temp_vec := grad_hyperparameter_cov_matrix * K_inv_y</span>
+            <span class="n">temp_vec</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">grad_cov_block</span><span class="p">,</span> <span class="n">K_inv_y</span><span class="p">)</span>
+            <span class="c"># computes 0.5 * K_inv_y^T * temp_vec</span>
+            <span class="n">grad_log_marginal</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">K_inv_y</span><span class="p">,</span> <span class="n">temp_vec</span><span class="p">)</span>
+
+            <span class="c"># compute -0.5 * tr(K^-1 * dK/d\theta)</span>
+            <span class="n">temp</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">cho_solve</span><span class="p">(</span><span class="n">K_chol</span><span class="p">,</span> <span class="n">grad_cov_block</span><span class="p">,</span> <span class="n">overwrite_b</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+            <span class="n">grad_log_marginal</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">-=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">temp</span><span class="o">.</span><span class="n">trace</span><span class="p">()</span>
+            <span class="c"># TODO(eliu): this can be much faster if we form K^-1 explicitly (see below), but that is less accurate</span>
+            <span class="c"># grad_log_marginal[k] -= 0.5 * numpy.einsum(&#39;ij,ji&#39;, K_inv, grad_cov_block)</span>
+
+        <span class="k">return</span> <span class="n">grad_log_marginal</span>
+</div>
+<div class="viewcode-block" id="GaussianProcessLogMarginalLikelihood.compute_grad_objective_function"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.compute_grad_objective_function">[docs]</a>    <span class="k">def</span> <span class="nf">compute_grad_objective_function</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Wrapper for compute_grad_log_likelihood; see that function&#39;s docstring.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_grad_log_likelihood</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="GaussianProcessLogMarginalLikelihood.compute_hessian_log_likelihood"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.compute_hessian_log_likelihood">[docs]</a>    <span class="k">def</span> <span class="nf">compute_hessian_log_likelihood</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;We do not currently support computation of the (hyperparameter) hessian of log likelihood-like metrics.&quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s">&#39;Currently C++ does not expose Hessian computation of log likelihood-like metrics.&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="GaussianProcessLogMarginalLikelihood.compute_hessian_objective_function"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.compute_hessian_objective_function">[docs]</a>    <span class="k">def</span> <span class="nf">compute_hessian_objective_function</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Wrapper for compute_hessian_log_likelihood; see that function&#39;s docstring.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_hessian_log_likelihood</span><span class="p">()</span></div></div>
+</pre></div>
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

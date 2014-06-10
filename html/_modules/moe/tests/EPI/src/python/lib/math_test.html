@@ -1,0 +1,356 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>moe.tests.EPI.src.python.lib.math_test &mdash; MOE 0.1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../../../../../_static/favicon.ico"/>
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../../../../../_static/breathe.css" type="text/css" />
+  
+    <link rel="top" title="MOE 0.1.0 documentation" href="../../../../../../../index.html"/>
+        <link rel="up" title="moe" href="../../../../../../moe.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="../../../../../../../index.html" class="fa fa-home"> MOE</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../moe.html">moe package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../../moe.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../../moe.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../../moe.html#module-moe.resources">moe.resources module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../../moe.html#module-moe">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../gpp_math_hpp.html">gpp_math.hpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../gpp_geometry_hpp.html">gpp_geometry.hpp</a></li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../../../../../index.html">MOE</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../../../../../index.html">Module code</a> &raquo;</li>
+      
+          <li><a href="../../../../../../moe.html">moe</a> &raquo;</li>
+      
+    <li>moe.tests.EPI.src.python.lib.math_test</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <h1>Source code for moe.tests.EPI.src.python.lib.math_test</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">testify</span> <span class="kn">as</span> <span class="nn">T</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+<span class="kn">import</span> <span class="nn">moe.optimal_learning.EPI.src.python.lib.math</span>
+
+
+<span class="n">MACHINE_PRECISION</span> <span class="o">=</span> <span class="mf">1e-13</span>
+
+<div class="viewcode-block" id="PointGenerationTest"><a class="viewcode-back" href="../../../../../../../moe.tests.EPI.src.python.lib.html#moe.tests.EPI.src.python.lib.math_test.PointGenerationTest">[docs]</a><span class="k">class</span> <span class="nc">PointGenerationTest</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Test optimal_learning.EPI.src.python.lib.math.get_latin_hypercube_points(num_points, domains)</span>
+<span class="sd">    also tests optimal_learning.EPI.src.python.lib.math.not_in_domain(point, domain)</span>
+
+<span class="sd">    http://en.wikipedia.org/wiki/Latin_hypercube_sampling</span>
+
+<span class="sd">    From wikipedia:</span>
+<span class="sd">        In the context of statistical sampling, a square grid containing sample positions</span>
+<span class="sd">        is a Latin square if (and only if) there is only one sample in each row and each column.</span>
+<span class="sd">        A Latin hypercube is the generalisation of this concept to an arbitrary number of dimensions,</span>
+<span class="sd">        whereby each sample is the only one in each axis-aligned hyperplane containing it.</span>
+
+<span class="sd">        When sampling a function of N variables, the range of each variable is divided into</span>
+<span class="sd">        M equally probable intervals. M sample points are then placed to satisfy the Latin hypercube requirements;</span>
+<span class="sd">        note that this forces the number of divisions, M, to be equal for each variable.</span>
+<span class="sd">        Also note that this sampling scheme does not require more samples for more dimensions (variables);</span>
+<span class="sd">        this independence is one of the main advantages of this sampling scheme.</span>
+<span class="sd">        Another advantage is that random samples can be taken one at a time,</span>
+<span class="sd">        remembering which samples were taken so far.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">domains_to_test</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">[[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span>
+            <span class="p">[[</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">]],</span>
+            <span class="p">[[</span><span class="o">-</span><span class="mi">500</span><span class="p">,</span> <span class="o">-</span><span class="mi">490</span><span class="p">]],</span>
+            <span class="p">[[</span><span class="mi">6000</span><span class="p">,</span> <span class="mf">6000.001</span><span class="p">]],</span>
+            <span class="p">[[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span>
+            <span class="p">[[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span>
+            <span class="p">[[</span><span class="o">-</span><span class="mi">7000</span><span class="p">,</span> <span class="mi">10000</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">8000</span><span class="p">,</span> <span class="o">-</span><span class="mi">7999</span><span class="p">],</span> <span class="p">[</span><span class="mf">10000.06</span><span class="p">,</span> <span class="mf">10000.0601</span><span class="p">]],</span>
+            <span class="p">]</span>
+
+    <span class="n">num_points_to_test</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">_point_in_domain</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">domain</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns true if a point is in a specified domain</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">sub_domain</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">domain</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">point</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">sub_domain</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="k">return</span> <span class="bp">False</span>
+            <span class="k">elif</span> <span class="n">point</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">sub_domain</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">return</span> <span class="bp">True</span>
+
+<div class="viewcode-block" id="PointGenerationTest.test_latin_hypercube_within_domain"><a class="viewcode-back" href="../../../../../../../moe.tests.EPI.src.python.lib.html#moe.tests.EPI.src.python.lib.math_test.PointGenerationTest.test_latin_hypercube_within_domain">[docs]</a>    <span class="k">def</span> <span class="nf">test_latin_hypercube_within_domain</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Tests that get_latin_hypercube_points returns points within the domain</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">domain</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">domains_to_test</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">num_points</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_points_to_test</span><span class="p">:</span>
+                <span class="n">points</span> <span class="o">=</span> <span class="n">moe</span><span class="o">.</span><span class="n">optimal_learning</span><span class="o">.</span><span class="n">EPI</span><span class="o">.</span><span class="n">src</span><span class="o">.</span><span class="n">python</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">get_latin_hypercube_points</span><span class="p">(</span><span class="n">num_points</span><span class="p">,</span> <span class="n">domain</span><span class="p">)</span>
+
+                <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points</span><span class="p">:</span>
+                    <span class="n">T</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_point_in_domain</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">domain</span><span class="p">),</span> <span class="bp">True</span><span class="p">)</span>
+                    <span class="n">T</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span><span class="n">moe</span><span class="o">.</span><span class="n">optimal_learning</span><span class="o">.</span><span class="n">EPI</span><span class="o">.</span><span class="n">src</span><span class="o">.</span><span class="n">python</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">not_in_domain</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">domain</span><span class="p">),</span> <span class="bp">False</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="PointGenerationTest.test_make_rand_point_within_domain"><a class="viewcode-back" href="../../../../../../../moe.tests.EPI.src.python.lib.html#moe.tests.EPI.src.python.lib.math_test.PointGenerationTest.test_make_rand_point_within_domain">[docs]</a>    <span class="k">def</span> <span class="nf">test_make_rand_point_within_domain</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Tests that make_rand_point(domain) returns a point in the domain</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">domain</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">domains_to_test</span><span class="p">:</span>
+            <span class="n">point</span> <span class="o">=</span> <span class="n">moe</span><span class="o">.</span><span class="n">optimal_learning</span><span class="o">.</span><span class="n">EPI</span><span class="o">.</span><span class="n">src</span><span class="o">.</span><span class="n">python</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">make_rand_point</span><span class="p">(</span><span class="n">domain</span><span class="p">)</span>
+
+            <span class="n">T</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_point_in_domain</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">domain</span><span class="p">),</span> <span class="bp">True</span><span class="p">)</span>
+            <span class="n">T</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span><span class="n">moe</span><span class="o">.</span><span class="n">optimal_learning</span><span class="o">.</span><span class="n">EPI</span><span class="o">.</span><span class="n">src</span><span class="o">.</span><span class="n">python</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">not_in_domain</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">domain</span><span class="p">),</span> <span class="bp">False</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="PointGenerationTest.test_latin_hypercube_equally_spaced"><a class="viewcode-back" href="../../../../../../../moe.tests.EPI.src.python.lib.html#moe.tests.EPI.src.python.lib.math_test.PointGenerationTest.test_latin_hypercube_equally_spaced">[docs]</a>    <span class="k">def</span> <span class="nf">test_latin_hypercube_equally_spaced</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Sampling from a latin hypercube results in a set of points</span>
+<span class="sd">        that in each dimension are drawn uniformly from sub-intervals of the domain</span>
+<span class="sd">        this tests that every sub-interval in each dimension contains exactly one point</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">domain</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">domains_to_test</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">num_points</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_points_to_test</span><span class="p">:</span>
+                <span class="n">points</span> <span class="o">=</span> <span class="n">moe</span><span class="o">.</span><span class="n">optimal_learning</span><span class="o">.</span><span class="n">EPI</span><span class="o">.</span><span class="n">src</span><span class="o">.</span><span class="n">python</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">get_latin_hypercube_points</span><span class="p">(</span><span class="n">num_points</span><span class="p">,</span> <span class="n">domain</span><span class="p">)</span>
+
+                <span class="k">for</span> <span class="n">dim</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">domain</span><span class="p">)):</span>
+                    <span class="c"># This size of each slice</span>
+                    <span class="n">sub_domain_width</span> <span class="o">=</span> <span class="p">(</span><span class="n">domain</span><span class="p">[</span><span class="n">dim</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">domain</span><span class="p">[</span><span class="n">dim</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span><span class="o">/</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">num_points</span><span class="p">)</span> <span class="c"># Weak types suck sometimes</span>
+                    <span class="c"># Sort in dim dimension</span>
+                    <span class="n">points</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">points</span><span class="p">:</span> <span class="n">points</span><span class="p">[</span><span class="n">dim</span><span class="p">])</span>
+                    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">point</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
+                        <span class="c"># This point must fall somewhere within the slice</span>
+                        <span class="n">min_val</span> <span class="o">=</span> <span class="n">domain</span><span class="p">[</span><span class="n">dim</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">sub_domain_width</span><span class="o">*</span><span class="n">i</span>
+                        <span class="n">max_val</span> <span class="o">=</span> <span class="n">min_val</span> <span class="o">+</span> <span class="n">sub_domain_width</span>
+                        <span class="n">T</span><span class="o">.</span><span class="n">assert_gte</span><span class="p">(</span><span class="n">point</span><span class="p">[</span><span class="n">dim</span><span class="p">],</span> <span class="n">min_val</span><span class="p">)</span>
+                        <span class="n">T</span><span class="o">.</span><span class="n">assert_lte</span><span class="p">(</span><span class="n">point</span><span class="p">[</span><span class="n">dim</span><span class="p">],</span> <span class="n">max_val</span><span class="p">)</span>
+</div></div>
+<div class="viewcode-block" id="MatrixOpsTest"><a class="viewcode-back" href="../../../../../../../moe.tests.EPI.src.python.lib.html#moe.tests.EPI.src.python.lib.math_test.MatrixOpsTest">[docs]</a><span class="k">class</span> <span class="nc">MatrixOpsTest</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Test the various matrix ops in optimal_learning.EPI.src.python.lib.math</span>
+
+<span class="sd">    Tests:</span>
+<span class="sd">        vector_diag_vector_product</span>
+<span class="sd">        inverse_via_backwards_sub</span>
+<span class="sd">        cholesky_decomp</span>
+<span class="sd">        inverse_via_cholesky</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_assert_matrix_equal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">expected_matrix</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Asserts a matrix is within MACHINE_PRECISION of the identity matrix</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">size_of_matrix</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">size_of_matrix</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">size_of_matrix</span><span class="p">):</span>
+                <span class="n">T</span><span class="o">.</span><span class="n">assert_lte</span><span class="p">(</span>
+                        <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">matrix</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="n">expected_matrix</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]),</span>
+                        <span class="n">MACHINE_PRECISION</span>
+                        <span class="p">)</span>
+
+<div class="viewcode-block" id="MatrixOpsTest.test_cholesky_decomp"><a class="viewcode-back" href="../../../../../../../moe.tests.EPI.src.python.lib.html#moe.tests.EPI.src.python.lib.math_test.MatrixOpsTest.test_cholesky_decomp">[docs]</a>    <span class="k">def</span> <span class="nf">test_cholesky_decomp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Tests cholesky_decomp</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">size_of_matrix</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">10</span><span class="p">):</span>
+            <span class="n">true_cholesky</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">tril</span><span class="p">(</span>
+                    <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">size_of_matrix</span><span class="p">,</span><span class="n">size_of_matrix</span><span class="p">))</span>
+                    <span class="p">)</span>
+            <span class="n">matrix</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">true_cholesky</span><span class="p">,</span> <span class="n">true_cholesky</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+            <span class="n">calculated_cholesky</span> <span class="o">=</span> <span class="n">moe</span><span class="o">.</span><span class="n">optimal_learning</span><span class="o">.</span><span class="n">EPI</span><span class="o">.</span><span class="n">src</span><span class="o">.</span><span class="n">python</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">cholesky_decomp</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_assert_matrix_equal</span><span class="p">(</span>
+                    <span class="n">calculated_cholesky</span> <span class="o">-</span> <span class="n">true_cholesky</span><span class="p">,</span>
+                    <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">size_of_matrix</span><span class="p">,</span> <span class="n">size_of_matrix</span><span class="p">))</span>
+                    <span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="MatrixOpsTest.test_inverse_via_cholesky"><a class="viewcode-back" href="../../../../../../../moe.tests.EPI.src.python.lib.html#moe.tests.EPI.src.python.lib.math_test.MatrixOpsTest.test_inverse_via_cholesky">[docs]</a>    <span class="k">def</span> <span class="nf">test_inverse_via_cholesky</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;This tests inverse_via_cholesky and cholesky_decomp</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">size_of_matrix</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">10</span><span class="p">):</span>
+            <span class="n">true_cholesky</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">tril</span><span class="p">(</span>
+                    <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">size_of_matrix</span><span class="p">,</span> <span class="n">size_of_matrix</span><span class="p">))</span>
+                    <span class="p">)</span>
+            <span class="n">A</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">true_cholesky</span><span class="p">,</span> <span class="n">true_cholesky</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+            <span class="n">A_inv</span> <span class="o">=</span> <span class="n">moe</span><span class="o">.</span><span class="n">optimal_learning</span><span class="o">.</span><span class="n">EPI</span><span class="o">.</span><span class="n">src</span><span class="o">.</span><span class="n">python</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">inverse_via_cholesky</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_assert_matrix_equal</span><span class="p">(</span>
+                    <span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">A_inv</span><span class="p">),</span>
+                    <span class="n">numpy</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">size_of_matrix</span><span class="p">))</span>
+                    <span class="p">)</span>
+</div>
+<div class="viewcode-block" id="MatrixOpsTest.test_inverse_via_backwards_sub"><a class="viewcode-back" href="../../../../../../../moe.tests.EPI.src.python.lib.html#moe.tests.EPI.src.python.lib.math_test.MatrixOpsTest.test_inverse_via_backwards_sub">[docs]</a>    <span class="k">def</span> <span class="nf">test_inverse_via_backwards_sub</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Tests inverse_via_backwards_sub</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">size_of_matrix</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">10</span><span class="p">):</span>
+            <span class="n">A</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">tril</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">size_of_matrix</span><span class="p">,</span><span class="n">size_of_matrix</span><span class="p">)))</span>
+            <span class="n">A_inv</span> <span class="o">=</span> <span class="n">moe</span><span class="o">.</span><span class="n">optimal_learning</span><span class="o">.</span><span class="n">EPI</span><span class="o">.</span><span class="n">src</span><span class="o">.</span><span class="n">python</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">inverse_via_backwards_sub</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_assert_matrix_equal</span><span class="p">(</span>
+                    <span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">A_inv</span><span class="p">),</span>
+                    <span class="n">numpy</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">size_of_matrix</span><span class="p">))</span>
+                    <span class="p">)</span>
+</div>
+<div class="viewcode-block" id="MatrixOpsTest.test_vector_diag_vector_product"><a class="viewcode-back" href="../../../../../../../moe.tests.EPI.src.python.lib.html#moe.tests.EPI.src.python.lib.math_test.MatrixOpsTest.test_vector_diag_vector_product">[docs]</a>    <span class="k">def</span> <span class="nf">test_vector_diag_vector_product</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Tests test_vector_diag_vector_product by doing the full matrix ops</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">sizes_to_test</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">size</span> <span class="ow">in</span> <span class="n">sizes_to_test</span><span class="p">:</span>
+            <span class="n">rand_vec_one</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
+            <span class="n">rand_vec_two</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
+            <span class="n">rand_diag_vec</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
+            <span class="n">rand_diag_matrix</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">rand_diag_vec</span><span class="p">)</span>
+
+            <span class="n">method_result</span> <span class="o">=</span> <span class="n">moe</span><span class="o">.</span><span class="n">optimal_learning</span><span class="o">.</span><span class="n">EPI</span><span class="o">.</span><span class="n">src</span><span class="o">.</span><span class="n">python</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">vector_diag_vector_product</span><span class="p">(</span>
+                    <span class="n">rand_vec_one</span><span class="p">,</span>
+                    <span class="n">rand_diag_vec</span><span class="p">,</span>
+                    <span class="n">rand_vec_two</span>
+                    <span class="p">)</span>
+            <span class="n">numpy_result</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span>
+                    <span class="p">(</span><span class="n">rand_vec_one</span> <span class="o">-</span> <span class="n">rand_vec_two</span><span class="p">),</span>
+                    <span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span>
+                        <span class="n">rand_diag_matrix</span><span class="p">,</span>
+                        <span class="p">(</span><span class="n">rand_vec_one</span> <span class="o">-</span> <span class="n">rand_vec_two</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+                        <span class="p">)</span>
+                    <span class="p">)</span>
+
+            <span class="n">T</span><span class="o">.</span><span class="n">assert_lte</span><span class="p">(</span>
+                    <span class="p">(</span><span class="n">method_result</span> <span class="o">-</span> <span class="n">numpy_result</span><span class="p">)</span><span class="o">/</span><span class="n">numpy_result</span><span class="p">,</span>
+                    <span class="n">MACHINE_PRECISION</span>
+                    <span class="p">)</span>
+</div></div>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">T</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../../../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

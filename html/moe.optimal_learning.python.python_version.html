@@ -1,0 +1,1874 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>moe.optimal_learning.python.python_version package &mdash; MOE 0.1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="_static/breathe.css" type="text/css" />
+  
+    <link rel="top" title="MOE 0.1.0 documentation" href="index.html"/>
+        <link rel="up" title="moe.optimal_learning.python package" href="moe.optimal_learning.python.html"/>
+        <link rel="next" title="moe.tests package" href="moe.tests.html"/>
+        <link rel="prev" title="moe.optimal_learning.python.interfaces package" href="moe.optimal_learning.python.interfaces.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="index.html" class="fa fa-home"> MOE</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="moe.html">moe package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="moe.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#module-moe.resources">moe.resources module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#module-moe">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="cpp_tree.html">C++ Files</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimization_test.html">gpp_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_domain_test.html">gpp_domain_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_exception.html">gpp_exception</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_geometry.html">gpp_geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_test_utils.html">gpp_test_utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_logging.html">gpp_logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_covariance.html">gpp_covariance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_test.html">gpp_python_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_domain.html">gpp_domain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_common.html">gpp_python_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_hyperparameter_optimization_demo.html">gpp_hyperparameter_optimization_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_test_utils_test.html">gpp_test_utils_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_math_test.html">gpp_math_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_model_selection.html">gpp_python_model_selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_math.html">gpp_math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_random_test.html">gpp_random_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_random.html">gpp_random</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra.html">gpp_linear_algebra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_core.html">gpp_core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_covariance_test.html">gpp_covariance_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python.html">gpp_python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_and_hyperparameter_optimization.html">gpp_model_selection_and_hyperparameter_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimization_parameters.html">gpp_optimization_parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_common.html">gpp_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_and_hyperparameter_optimization_test.html">gpp_model_selection_and_hyperparameter_optimization_test</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">MOE</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="moe.html">moe package</a> &raquo;</li>
+      
+          <li><a href="moe.optimal_learning.html">moe.optimal_learning package</a> &raquo;</li>
+      
+          <li><a href="moe.optimal_learning.python.html">moe.optimal_learning.python package</a> &raquo;</li>
+      
+    <li>moe.optimal_learning.python.python_version package</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="_sources/moe.optimal_learning.python.python_version.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <div class="section" id="moe-optimal-learning-python-python-version-package">
+<h1>moe.optimal_learning.python.python_version package<a class="headerlink" href="#moe-optimal-learning-python-python-version-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-moe.optimal_learning.python.python_version.covariance">
+<span id="moe-optimal-learning-python-python-version-covariance-module"></span><h2>moe.optimal_learning.python.python_version.covariance module<a class="headerlink" href="#module-moe.optimal_learning.python.python_version.covariance" title="Permalink to this headline">¶</a></h2>
+<p>Implementations of covariance functions for use with python_version/log_likelihood.py and gaussian_process.py.</p>
+<p>This file contains implementations of CovarianceInterface. Currently, we have
+SquareExponential, supporting:</p>
+<ul class="simple">
+<li>covariance</li>
+<li>grad_covariance</li>
+<li>hyperparameter_grad_covariance</li>
+</ul>
+<p>It also contains a few utilities for computing common mathematical quantities and
+initialization. Note that the hessian is not yet implemented (use C++ for that feature).</p>
+<p>Gradient (spatial and hyperparameter) functions return all derivatives at once
+because there is substantial shared computation. The shared results are by far the
+most expensive part of gradient computations; they typically involve exponentiation
+and are further at least partially shared with the base covariance computation. In
+fact, we could improve performance further by caching [certain] components of the
+covariance computation for use with the derivative computations.</p>
+<dl class="class">
+<dt id="moe.optimal_learning.python.python_version.covariance.SquareExponential">
+<em class="property">class </em><tt class="descclassname">moe.optimal_learning.python.python_version.covariance.</tt><tt class="descname">SquareExponential</tt><big>(</big><em>hyperparameters</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/covariance.html#SquareExponential"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.covariance.SquareExponential" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="moe.optimal_learning.python.interfaces.html#moe.optimal_learning.python.interfaces.covariance_interface.CovarianceInterface" title="moe.optimal_learning.python.interfaces.covariance_interface.CovarianceInterface"><tt class="xref py py-class docutils literal"><span class="pre">moe.optimal_learning.python.interfaces.covariance_interface.CovarianceInterface</span></tt></a></p>
+<p>Implement the square exponential covariance function.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">comments are copied from SquareExponential in cpp_wrappers/covariance.py</p>
+</div>
+<p>The function:
+<tt class="docutils literal"><span class="pre">cov(x_1,</span> <span class="pre">x_2)</span> <span class="pre">=</span> <span class="pre">\alpha</span> <span class="pre">*</span> <span class="pre">\exp(-1/2</span> <span class="pre">*</span> <span class="pre">((x_1</span> <span class="pre">-</span> <span class="pre">x_2)^T</span> <span class="pre">*</span> <span class="pre">L</span> <span class="pre">*</span> <span class="pre">(x_1</span> <span class="pre">-</span> <span class="pre">x_2))</span> <span class="pre">)</span></tt>
+where L is the diagonal matrix with i-th diagonal entry <tt class="docutils literal"><span class="pre">1/lengths[i]/lengths[i]</span></tt></p>
+<p>This covariance object has <tt class="docutils literal"><span class="pre">dim+1</span></tt> hyperparameters: <tt class="docutils literal"><span class="pre">\alpha,</span> <span class="pre">lengths_i</span></tt></p>
+<dl class="method">
+<dt id="moe.optimal_learning.python.python_version.covariance.SquareExponential.covariance">
+<tt class="descname">covariance</tt><big>(</big><em>point_one</em>, <em>point_two</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/covariance.html#SquareExponential.covariance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.covariance.SquareExponential.covariance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the square exponential covariance function of two points, cov(<tt class="docutils literal"><span class="pre">point_one</span></tt>, <tt class="docutils literal"><span class="pre">point_two</span></tt>).</p>
+<p>Square Exponential: <tt class="docutils literal"><span class="pre">cov(x_1,</span> <span class="pre">x_2)</span> <span class="pre">=</span> <span class="pre">\alpha</span> <span class="pre">*</span> <span class="pre">\exp(-1/2</span> <span class="pre">*</span> <span class="pre">((x_1</span> <span class="pre">-</span> <span class="pre">x_2)^T</span> <span class="pre">*</span> <span class="pre">L</span> <span class="pre">*</span> <span class="pre">(x_1</span> <span class="pre">-</span> <span class="pre">x_2))</span> <span class="pre">)</span></tt></p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">comments are copied from the matching method comments of CovarianceInterface in interfaces/covariance_interface.py</p>
+</div>
+<p>The covariance function is guaranteed to be symmetric by definition: <tt class="docutils literal"><span class="pre">covariance(x,</span> <span class="pre">y)</span> <span class="pre">=</span> <span class="pre">covariance(y,</span> <span class="pre">x)</span></tt>.
+This function is also positive definite by definition.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>point_one</strong> (<em>array of float64 with shape (dim)</em>) &#8211; first input, the point <tt class="docutils literal"><span class="pre">x</span></tt></li>
+<li><strong>point_two</strong> (<em>array of float64 with shape (dim)</em>) &#8211; second input, the point <tt class="docutils literal"><span class="pre">y</span></tt></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">value of covariance between the input points</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float64</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="moe.optimal_learning.python.python_version.covariance.SquareExponential.covariance_type">
+<tt class="descname">covariance_type</tt><em class="property"> = 'square_exponential'</em><a class="headerlink" href="#moe.optimal_learning.python.python_version.covariance.SquareExponential.covariance_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="moe.optimal_learning.python.python_version.covariance.SquareExponential.get_hyperparameters">
+<tt class="descname">get_hyperparameters</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/covariance.html#SquareExponential.get_hyperparameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.covariance.SquareExponential.get_hyperparameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the hyperparameters (array of float64 with shape (num_hyperparameters)) of this covariance.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.optimal_learning.python.python_version.covariance.SquareExponential.grad_covariance">
+<tt class="descname">grad_covariance</tt><big>(</big><em>point_one</em>, <em>point_two</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/covariance.html#SquareExponential.grad_covariance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.covariance.SquareExponential.grad_covariance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the gradient of self.covariance(point_one, point_two) with respect to the FIRST argument, point_one.</p>
+<p>Gradient of Square Exponential (wrt <tt class="docutils literal"><span class="pre">x_1</span></tt>):
+<tt class="docutils literal"><span class="pre">\pderiv{cov(x_1,</span> <span class="pre">x_2)}{x_{1,i}}</span> <span class="pre">=</span> <span class="pre">(x_{2,i}</span> <span class="pre">-</span> <span class="pre">x_{1,i})</span> <span class="pre">/</span> <span class="pre">L_{i}^2</span> <span class="pre">*</span> <span class="pre">cov(x_1,</span> <span class="pre">x_2)</span></tt></p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">comments are copied from the matching method comments of CovarianceInterface in interfaces/covariance_interface.py</p>
+</div>
+<p>This distinction is important for maintaining the desired symmetry.  <tt class="docutils literal"><span class="pre">Cov(x,</span> <span class="pre">y)</span> <span class="pre">=</span> <span class="pre">Cov(y,</span> <span class="pre">x)</span></tt>.
+Additionally, <tt class="docutils literal"><span class="pre">\pderiv{Cov(x,</span> <span class="pre">y)}{x}</span> <span class="pre">=</span> <span class="pre">\pderiv{Cov(y,</span> <span class="pre">x)}{x}</span></tt>.
+However, in general, <tt class="docutils literal"><span class="pre">\pderiv{Cov(x,</span> <span class="pre">y)}{x}</span> <span class="pre">!=</span> <span class="pre">\pderiv{Cov(y,</span> <span class="pre">x)}{y}</span></tt> (NOT equal!  These may differ by a negative sign)</p>
+<p>Hence to avoid separate implementations for differentiating against first vs second argument, this function only handles
+differentiation against the first argument.  If you need <tt class="docutils literal"><span class="pre">\pderiv{Cov(y,</span> <span class="pre">x)}{x}</span></tt>, just swap points x and y.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>point_one</strong> (<em>array of float64 with shape (dim)</em>) &#8211; first input, the point <tt class="docutils literal"><span class="pre">x</span></tt></li>
+<li><strong>point_two</strong> (<em>array of float64 with shape (dim)</em>) &#8211; second input, the point <tt class="docutils literal"><span class="pre">y</span></tt></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">grad_cov: i-th entry is <tt class="docutils literal"><span class="pre">\pderiv{cov(x_1,</span> <span class="pre">x_2)}{x_i}</span></tt></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">array of float64 with shape (dim)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.optimal_learning.python.python_version.covariance.SquareExponential.hyperparameter_grad_covariance">
+<tt class="descname">hyperparameter_grad_covariance</tt><big>(</big><em>point_one</em>, <em>point_two</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/covariance.html#SquareExponential.hyperparameter_grad_covariance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.covariance.SquareExponential.hyperparameter_grad_covariance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the gradient of self.covariance(point_one, point_two) with respect to its hyperparameters.</p>
+<p>Gradient of Square Exponential (wrt hyperparameters (<tt class="docutils literal"><span class="pre">alpha,</span> <span class="pre">L</span></tt>)):
+<tt class="docutils literal"><span class="pre">\pderiv{cov(x_1,</span> <span class="pre">x_2)}{\theta_0}</span> <span class="pre">=</span> <span class="pre">cov(x_1,</span> <span class="pre">x_2)</span> <span class="pre">/</span> <span class="pre">\theta_0</span></tt>
+<tt class="docutils literal"><span class="pre">\pderiv{cov(x_1,</span> <span class="pre">x_2)}{\theta_0}</span> <span class="pre">=</span> <span class="pre">[(x_{1,i}</span> <span class="pre">-</span> <span class="pre">x_{2,i})</span> <span class="pre">/</span> <span class="pre">L_i]^2</span> <span class="pre">/</span> <span class="pre">L_i</span> <span class="pre">*</span> <span class="pre">cov(x_1,</span> <span class="pre">x_2)</span></tt>
+Note: <tt class="docutils literal"><span class="pre">\theta_0</span> <span class="pre">=</span> <span class="pre">\alpha</span></tt> and <tt class="docutils literal"><span class="pre">\theta_{1:d}</span> <span class="pre">=</span> <span class="pre">L_{0:d-1}</span></tt></p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">comments are copied from the matching method comments of CovarianceInterface in interfaces/covariance_interface.py</p>
+</div>
+<p>Unlike GradCovariance(), the order of point_one and point_two is irrelevant here (since we are not differentiating against
+either of them).  Thus the matrix of grad covariances (wrt hyperparameters) is symmetric.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>point_one</strong> (<em>array of float64 with shape (dim)</em>) &#8211; first input, the point <tt class="docutils literal"><span class="pre">x</span></tt></li>
+<li><strong>point_two</strong> (<em>array of float64 with shape (dim)</em>) &#8211; second input, the point <tt class="docutils literal"><span class="pre">y</span></tt></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">grad_hyperparameter_cov: i-th entry is <tt class="docutils literal"><span class="pre">\pderiv{cov(x_1,</span> <span class="pre">x_2)}{\theta_i}</span></tt></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">array of float64 with shape (num_hyperparameters)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.optimal_learning.python.python_version.covariance.SquareExponential.hyperparameter_hessian_covariance">
+<tt class="descname">hyperparameter_hessian_covariance</tt><big>(</big><em>point_one</em>, <em>point_two</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/covariance.html#SquareExponential.hyperparameter_hessian_covariance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.covariance.SquareExponential.hyperparameter_hessian_covariance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the hessian of self.covariance(point_one, point_two) with respect to its hyperparameters.</p>
+<p>TODO(eliu): implement Hessians in Python (GH-57).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="moe.optimal_learning.python.python_version.covariance.SquareExponential.num_hyperparameters">
+<tt class="descname">num_hyperparameters</tt><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/covariance.html#SquareExponential.num_hyperparameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.covariance.SquareExponential.num_hyperparameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the number of hyperparameters of this covariance function.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.optimal_learning.python.python_version.covariance.SquareExponential.set_hyperparameters">
+<tt class="descname">set_hyperparameters</tt><big>(</big><em>hyperparameters</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/covariance.html#SquareExponential.set_hyperparameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.covariance.SquareExponential.set_hyperparameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set hyperparameters to the specified hyperparameters; ordering must match.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-moe.optimal_learning.python.python_version.domain">
+<span id="moe-optimal-learning-python-python-version-domain-module"></span><h2>moe.optimal_learning.python.python_version.domain module<a class="headerlink" href="#module-moe.optimal_learning.python.python_version.domain" title="Permalink to this headline">¶</a></h2>
+<p>Various python implementations of interfaces.domain_interface.DomainInterface (e.g., TensorProduct).</p>
+<p>These are currently used to describe domain limits for optimizers (i.e., implementations of interfaces/optimization_interface.py)</p>
+<p>Each domain provides functions to:</p>
+<ul class="simple">
+<li>Describe the set of boundary planes</li>
+<li>Check whether a point is inside/outside</li>
+<li>Generate random point(s) inside</li>
+<li>Generate points on a fixed grid</li>
+<li>Limit updates (from optimizers) so that a path stays inside the domain</li>
+</ul>
+<dl class="class">
+<dt id="moe.optimal_learning.python.python_version.domain.TensorProductDomain">
+<em class="property">class </em><tt class="descclassname">moe.optimal_learning.python.python_version.domain.</tt><tt class="descname">TensorProductDomain</tt><big>(</big><em>domain_bounds</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/domain.html#TensorProductDomain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.domain.TensorProductDomain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="moe.optimal_learning.python.interfaces.html#moe.optimal_learning.python.interfaces.domain_interface.DomainInterface" title="moe.optimal_learning.python.interfaces.domain_interface.DomainInterface"><tt class="xref py py-class docutils literal"><span class="pre">moe.optimal_learning.python.interfaces.domain_interface.DomainInterface</span></tt></a></p>
+<p>Domain type for a tensor product domain.</p>
+<p>A d-dimensional tensor product domain is <tt class="docutils literal"><span class="pre">D</span> <span class="pre">=</span> <span class="pre">[x_0_{min},</span> <span class="pre">x_0_{max}]</span> <span class="pre">X</span> <span class="pre">[x_1_{min},</span> <span class="pre">x_1_{max}]</span> <span class="pre">X</span> <span class="pre">...</span> <span class="pre">X</span> <span class="pre">[x_d_{min},</span> <span class="pre">x_d_{max}]</span></tt></p>
+<dl class="method">
+<dt id="moe.optimal_learning.python.python_version.domain.TensorProductDomain.check_point_inside">
+<tt class="descname">check_point_inside</tt><big>(</big><em>point</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/domain.html#TensorProductDomain.check_point_inside"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.domain.TensorProductDomain.check_point_inside" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if a point is inside the domain/on its boundary or outside.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>point</strong> (<em>array of float64 with shape (dim)</em>) &#8211; point to check</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">true if point is inside the domain</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.optimal_learning.python.python_version.domain.TensorProductDomain.compute_update_restricted_to_domain">
+<tt class="descname">compute_update_restricted_to_domain</tt><big>(</big><em>max_relative_change</em>, <em>current_point</em>, <em>update_vector</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/domain.html#TensorProductDomain.compute_update_restricted_to_domain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.domain.TensorProductDomain.compute_update_restricted_to_domain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute a new update so that CheckPointInside(<tt class="docutils literal"><span class="pre">current_point</span></tt> + <tt class="docutils literal"><span class="pre">new_update</span></tt>) is true.</p>
+<dl class="docutils">
+<dt>Changes new_update_vector so that:</dt>
+<dd><tt class="docutils literal"><span class="pre">point_new</span> <span class="pre">=</span> <span class="pre">point</span> <span class="pre">+</span> <span class="pre">new_update_vector</span></tt></dd>
+</dl>
+<p>has coordinates such that <tt class="docutils literal"><span class="pre">CheckPointInside(point_new)</span></tt> returns true. We select <tt class="docutils literal"><span class="pre">point_new</span></tt>
+by projecting <tt class="docutils literal"><span class="pre">point</span> <span class="pre">+</span> <span class="pre">update_vector</span></tt> to the nearest point on the domain.</p>
+<p><tt class="docutils literal"><span class="pre">new_update_vector</span></tt> is a function of <tt class="docutils literal"><span class="pre">update_vector</span></tt>.
+<tt class="docutils literal"><span class="pre">new_update_vector</span></tt> is just a copy of <tt class="docutils literal"><span class="pre">update_vector</span></tt> if <tt class="docutils literal"><span class="pre">current_point</span></tt> is already inside the domain.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">We modify update_vector (instead of returning point_new) so that further update
+limiting/testing may be performed.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>max_relative_change</strong> (<em>float64 in (0, 1]</em>) &#8211; max change allowed per update (as a relative fraction of current distance to boundary)</li>
+<li><strong>current_point</strong> (<em>array of float64 with shape (dim)</em>) &#8211; starting point</li>
+<li><strong>update_vector</strong> (<em>array of float64 with shape (dim)</em>) &#8211; proposed update</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">new update so that the final point remains inside the domain</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">array of float64 with shape (dim)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="moe.optimal_learning.python.python_version.domain.TensorProductDomain.dim">
+<tt class="descname">dim</tt><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/domain.html#TensorProductDomain.dim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.domain.TensorProductDomain.dim" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the number of spatial dimensions.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="moe.optimal_learning.python.python_version.domain.TensorProductDomain.domain_type">
+<tt class="descname">domain_type</tt><em class="property"> = 'tensor_product'</em><a class="headerlink" href="#moe.optimal_learning.python.python_version.domain.TensorProductDomain.domain_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="moe.optimal_learning.python.python_version.domain.TensorProductDomain.generate_grid_points_in_domain">
+<tt class="descname">generate_grid_points_in_domain</tt><big>(</big><em>points_per_dimension</em>, <em>random_source=None</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/domain.html#TensorProductDomain.generate_grid_points_in_domain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.domain.TensorProductDomain.generate_grid_points_in_domain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a grid of <tt class="docutils literal"><span class="pre">N_0</span> <span class="pre">by</span> <span class="pre">N_1</span> <span class="pre">by</span> <span class="pre">...</span> <span class="pre">by</span> <span class="pre">N_{dim-1}</span></tt> points, with each dimension uniformly spaced along the domain boundary.</p>
+<p>See python.geometry_utils.generate_grid_points for more details.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>points_per_dimension</strong> (<em>tuple or scalar</em>) &#8211; (n_1, n_2, ... n_{dim}) number of stencil points per spatial dimension.
+If len(points_per_dimension) == 1, then n_i = len(points_per_dimension)</li>
+<li><strong>random_source</strong> (<em>callable yielding uniform random numbers in [0,1]</em>) &#8211; random source producing uniform random numbers (e.g., numpy.random.uniform) (UNUSED)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">uniform random sampling of points from the domain</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.optimal_learning.python.python_version.domain.TensorProductDomain.generate_random_point_in_domain">
+<tt class="descname">generate_random_point_in_domain</tt><big>(</big><em>random_source=None</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/domain.html#TensorProductDomain.generate_random_point_in_domain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.domain.TensorProductDomain.generate_random_point_in_domain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate <tt class="docutils literal"><span class="pre">point</span></tt> uniformly at random such that <tt class="docutils literal"><span class="pre">self.check_point_inside(point)</span></tt> is True.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">if you need multiple points, use generate_uniform_random_points_in_domain instead; it
+yields better distributions over many points (via latin hypercube samplling) b/c it guarantees
+that no non-uniform clusters may arise (in subspaces) versus this method which treats all draws
+independently.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">point in domain</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">array of float64 with shape (dim)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.optimal_learning.python.python_version.domain.TensorProductDomain.generate_uniform_random_points_in_domain">
+<tt class="descname">generate_uniform_random_points_in_domain</tt><big>(</big><em>num_points</em>, <em>random_source=None</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/domain.html#TensorProductDomain.generate_uniform_random_points_in_domain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.domain.TensorProductDomain.generate_uniform_random_points_in_domain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate <tt class="docutils literal"><span class="pre">num_points</span></tt> on a latin-hypercube (i.e., like a checkerboard).</p>
+<p>See python.geometry_utils.generate_latin_hypercube_points for more details.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>num_points</strong> (<em>integer &gt;= 0</em>) &#8211; max number of points to generate</li>
+<li><strong>random_source</strong> (<em>callable yielding uniform random numbers in [0,1]</em>) &#8211; random source producing uniform random numbers (e.g., numpy.random.uniform) (UNUSED)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">uniform random sampling of points from the domain</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">array of float64 with shape (num_points, dim)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-moe.optimal_learning.python.python_version.expected_improvement">
+<span id="moe-optimal-learning-python-python-version-expected-improvement-module"></span><h2>moe.optimal_learning.python.python_version.expected_improvement module<a class="headerlink" href="#module-moe.optimal_learning.python.python_version.expected_improvement" title="Permalink to this headline">¶</a></h2>
+<p>Classes (Python) to compute the Expected Improvement, including monte carlo and analytic (where applicable) implementations.</p>
+<p>See interfaces/expected_improvement_interface.py or gpp_math.hpp/cpp for further details on expected improvement.</p>
+<dl class="class">
+<dt id="moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement">
+<em class="property">class </em><tt class="descclassname">moe.optimal_learning.python.python_version.expected_improvement.</tt><tt class="descname">ExpectedImprovement</tt><big>(</big><em>gaussian_process</em>, <em>points_to_sample=None</em>, <em>points_being_sampled=None</em>, <em>num_mc_iterations=10000</em>, <em>randomness=None</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/expected_improvement.html#ExpectedImprovement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="moe.optimal_learning.python.interfaces.html#moe.optimal_learning.python.interfaces.expected_improvement_interface.ExpectedImprovementInterface" title="moe.optimal_learning.python.interfaces.expected_improvement_interface.ExpectedImprovementInterface"><tt class="xref py py-class docutils literal"><span class="pre">moe.optimal_learning.python.interfaces.expected_improvement_interface.ExpectedImprovementInterface</span></tt></a>, <a class="reference internal" href="moe.optimal_learning.python.interfaces.html#moe.optimal_learning.python.interfaces.optimization_interface.OptimizableInterface" title="moe.optimal_learning.python.interfaces.optimization_interface.OptimizableInterface"><tt class="xref py py-class docutils literal"><span class="pre">moe.optimal_learning.python.interfaces.optimization_interface.OptimizableInterface</span></tt></a></p>
+<p>Implementation of Expected Improvement computation in Python: EI and its gradient at specified point(s) sampled from a GaussianProcess.</p>
+<p>A class to encapsulate the computation of expected improvement and its spatial gradient using points sampled from an
+associated GaussianProcess. The general EI computation requires monte-carlo integration; it can support q,p-EI optimization.
+It is designed to work with any GaussianProcess.</p>
+<p>When available, fast, analytic formulas replace monte-carlo loops.</p>
+<p>See interfaces/expected_improvement_interface.py docs for further details.</p>
+<dl class="method">
+<dt id="moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.compute_expected_improvement">
+<tt class="descname">compute_expected_improvement</tt><big>(</big><em>force_monte_carlo=False</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/expected_improvement.html#ExpectedImprovement.compute_expected_improvement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.compute_expected_improvement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the expected improvement at <tt class="docutils literal"><span class="pre">points_to_sample</span></tt>, with <tt class="docutils literal"><span class="pre">points_being_sampled</span></tt> concurrent points being sampled.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">These comments were copied from this&#8217;s superclass in expected_improvement_interface.py.</p>
+</div>
+<p><tt class="docutils literal"><span class="pre">points_to_sample</span></tt> is the &#8220;q&#8221; and <tt class="docutils literal"><span class="pre">points_being_sampled</span></tt> is the &#8220;p&#8221; in q,p-EI.</p>
+<p>Computes the expected improvement <tt class="docutils literal"><span class="pre">EI(Xs)</span> <span class="pre">=</span> <span class="pre">E_n[[f^*_n(X)</span> <span class="pre">-</span> <span class="pre">min(f(Xs_1),...,f(Xs_m))]^+]</span></tt>, where <tt class="docutils literal"><span class="pre">Xs</span></tt>
+are potential points to sample (union of <tt class="docutils literal"><span class="pre">points_to_sample</span></tt> and <tt class="docutils literal"><span class="pre">points_being_sampled</span></tt>) and <tt class="docutils literal"><span class="pre">X</span></tt> are
+already sampled points.  The <tt class="docutils literal"><span class="pre">^+</span></tt> indicates that the expression in the expectation evaluates to 0 if it
+is negative.  <tt class="docutils literal"><span class="pre">f^*(X)</span></tt> is the MINIMUM over all known function evaluations (<tt class="docutils literal"><span class="pre">points_sampled_value</span></tt>),
+whereas <tt class="docutils literal"><span class="pre">f(Xs)</span></tt> are <em>GP-predicted</em> function evaluations.</p>
+<p>In words, we are computing the expected improvement (over the current <tt class="docutils literal"><span class="pre">best_so_far</span></tt>, best known
+objective function value) that would result from sampling (aka running new experiments) at
+<tt class="docutils literal"><span class="pre">points_to_sample</span></tt> with <tt class="docutils literal"><span class="pre">points_being_sampled</span></tt> concurrent/ongoing experiments.</p>
+<p>In general, the EI expression is complex and difficult to evaluate; hence we use Monte-Carlo simulation to approximate it.
+When faster (e.g., analytic) techniques are available, we will prefer them.</p>
+<p>The idea of the MC approach is to repeatedly sample at the union of <tt class="docutils literal"><span class="pre">points_to_sample</span></tt> and
+<tt class="docutils literal"><span class="pre">points_being_sampled</span></tt>. This is analogous to gaussian_process_interface.sample_point_from_gp,
+but we sample <tt class="docutils literal"><span class="pre">num_union</span></tt> points at once:
+<tt class="docutils literal"><span class="pre">y</span> <span class="pre">=</span> <span class="pre">\mu</span> <span class="pre">+</span> <span class="pre">Lw</span></tt>
+where <tt class="docutils literal"><span class="pre">\mu</span></tt> is the GP-mean, <tt class="docutils literal"><span class="pre">L</span></tt> is the <tt class="docutils literal"><span class="pre">chol_factor(GP-variance)</span></tt> and <tt class="docutils literal"><span class="pre">w</span></tt> is a vector
+of <tt class="docutils literal"><span class="pre">num_union</span></tt> draws from N(0, 1). Then:
+<tt class="docutils literal"><span class="pre">improvement_per_step</span> <span class="pre">=</span> <span class="pre">max(max(best_so_far</span> <span class="pre">-</span> <span class="pre">y),</span> <span class="pre">0.0)</span></tt>
+Observe that the inner <tt class="docutils literal"><span class="pre">max</span></tt> means only the smallest component of <tt class="docutils literal"><span class="pre">y</span></tt> contributes in each iteration.
+We compute the improvement over many random draws and average.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>force_monte_carlo</strong> (<em>boolean</em>) &#8211; whether to force monte carlo evaluation (vs using fast/accurate analytic eval when possible)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the expected improvement from sampling <tt class="docutils literal"><span class="pre">points_to_sample</span></tt> with <tt class="docutils literal"><span class="pre">points_being_sampled</span></tt> concurrent experiments</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">float64</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.compute_grad_expected_improvement">
+<tt class="descname">compute_grad_expected_improvement</tt><big>(</big><em>force_monte_carlo=False</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/expected_improvement.html#ExpectedImprovement.compute_grad_expected_improvement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.compute_grad_expected_improvement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the gradient of expected improvement at <tt class="docutils literal"><span class="pre">points_to_sample</span></tt> wrt <tt class="docutils literal"><span class="pre">points_to_sample</span></tt>, with <tt class="docutils literal"><span class="pre">points_being_sampled</span></tt> concurrent samples.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">These comments were copied from this&#8217;s superclass in expected_improvement_interface.py.</p>
+</div>
+<p><tt class="docutils literal"><span class="pre">points_to_sample</span></tt> is the &#8220;q&#8221; and <tt class="docutils literal"><span class="pre">points_being_sampled</span></tt> is the &#8220;p&#8221; in q,p-EI.</p>
+<p>In general, the expressions for gradients of EI are complex and difficult to evaluate; hence we use
+Monte-Carlo simulation to approximate it. When faster (e.g., analytic) techniques are available, we will prefer them.</p>
+<p>The MC computation of grad EI is similar to the computation of EI (decsribed in
+compute_expected_improvement). We differentiate <tt class="docutils literal"><span class="pre">y</span> <span class="pre">=</span> <span class="pre">\mu</span> <span class="pre">+</span> <span class="pre">Lw</span></tt> wrt <tt class="docutils literal"><span class="pre">points_to_sample</span></tt>;
+only terms from the gradient of <tt class="docutils literal"><span class="pre">\mu</span></tt> and <tt class="docutils literal"><span class="pre">L</span></tt> contribute. In EI, we computed:
+<tt class="docutils literal"><span class="pre">improvement_per_step</span> <span class="pre">=</span> <span class="pre">max(max(best_so_far</span> <span class="pre">-</span> <span class="pre">y),</span> <span class="pre">0.0)</span></tt>
+and noted that only the smallest component of <tt class="docutils literal"><span class="pre">y</span></tt> may contribute (if it is &gt; 0.0).
+Call this index <tt class="docutils literal"><span class="pre">winner</span></tt>. Thus in computing grad EI, we only add gradient terms
+that are attributable to the <tt class="docutils literal"><span class="pre">winner</span></tt>-th component of <tt class="docutils literal"><span class="pre">y</span></tt>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>force_monte_carlo</strong> (<em>boolean</em>) &#8211; whether to force monte carlo evaluation (vs using fast/accurate analytic eval when possible)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">gradient of EI, <tt class="docutils literal"><span class="pre">\pderiv{EI(Xq</span> <span class="pre">\cup</span> <span class="pre">Xp)}{Xq_{i,d}}</span></tt> where <tt class="docutils literal"><span class="pre">Xq</span></tt> is <tt class="docutils literal"><span class="pre">points_to_sample</span></tt>
+and <tt class="docutils literal"><span class="pre">Xp</span></tt> is <tt class="docutils literal"><span class="pre">points_being_sampled</span></tt> (grad EI from sampling <tt class="docutils literal"><span class="pre">points_to_sample</span></tt> with
+<tt class="docutils literal"><span class="pre">points_being_sampled</span></tt> concurrent experiments wrt each dimension of the points in <tt class="docutils literal"><span class="pre">points_to_sample</span></tt>)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">array of float64 with shape (num_to_sample, dim)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.compute_grad_objective_function">
+<tt class="descname">compute_grad_objective_function</tt><big>(</big><em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/expected_improvement.html#ExpectedImprovement.compute_grad_objective_function"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.compute_grad_objective_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrapper for compute_grad_expected_improvement; see that function&#8217;s docstring.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.compute_hessian_objective_function">
+<tt class="descname">compute_hessian_objective_function</tt><big>(</big><em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/expected_improvement.html#ExpectedImprovement.compute_hessian_objective_function"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.compute_hessian_objective_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>We do not currently support computation of the (spatial) hessian of Expected Improvement.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.compute_objective_function">
+<tt class="descname">compute_objective_function</tt><big>(</big><em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/expected_improvement.html#ExpectedImprovement.compute_objective_function"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.compute_objective_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrapper for compute_expected_improvement; see that function&#8217;s docstring.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.dim">
+<tt class="descname">dim</tt><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/expected_improvement.html#ExpectedImprovement.dim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.dim" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the number of spatial dimensions.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.evaluate_at_point_list">
+<tt class="descname">evaluate_at_point_list</tt><big>(</big><em>points_to_evaluate</em>, <em>randomness=None</em>, <em>max_num_threads=1</em>, <em>status=None</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/expected_improvement.html#ExpectedImprovement.evaluate_at_point_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.evaluate_at_point_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate Expected Improvement (q,p-EI) over a specified list of <tt class="docutils literal"><span class="pre">points_to_evaluate</span></tt>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">We use <tt class="docutils literal"><span class="pre">points_to_evaluate</span></tt> instead of <tt class="docutils literal"><span class="pre">self._points_to_sample</span></tt> and compute the EI at those points only.
+<tt class="docutils literal"><span class="pre">self._points_to_sample</span></tt> will be changed.</p>
+</div>
+<p>Generally gradient descent is preferred but when it fails to converge this may be the only &#8220;robust&#8221; option.
+This function is also useful for plotting or debugging purposes (just to get a bunch of EI values).</p>
+<p>TODO(eliu): (GH-56) Allow callers to pass in a source of randomness.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ei_evaluator</strong> (<em>interfaces.expected_improvement_interface.ExpectedImprovementInterface subclass</em>) &#8211; object specifying how to evaluate the expected improvement</li>
+<li><strong>points_to_evaluate</strong> (<em>array of float64 with shape (num_to_evaluate, num_to_sample, ei_evaluator.dim)</em>) &#8211; points at which to compute EI</li>
+<li><strong>randomness</strong> (<em>(UNUSED)</em>) &#8211; random source(s) used for monte-carlo integration (when applicable) (UNUSED)</li>
+<li><strong>max_num_threads</strong> (<em>int &gt; 0</em>) &#8211; maximum number of threads to use, &gt;= 1 (UNUSED)</li>
+<li><strong>status</strong> (<em>dict</em>) &#8211; status messages from C++ (e.g., reporting on optimizer success, etc.)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">EI evaluated at each of points_to_evaluate</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">array of float64 with shape (points_to_evaluate.shape[0])</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.get_current_point">
+<tt class="descname">get_current_point</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/expected_improvement.html#ExpectedImprovement.get_current_point"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.get_current_point" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the current_point (array of float64 with shape (problem_size)) at which this object is evaluating the objective function, <tt class="docutils literal"><span class="pre">f(x)</span></tt>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.num_being_sampled">
+<tt class="descname">num_being_sampled</tt><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/expected_improvement.html#ExpectedImprovement.num_being_sampled"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.num_being_sampled" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of points being sampled in concurrent experiments; i.e., the <tt class="docutils literal"><span class="pre">p</span></tt> in <tt class="docutils literal"><span class="pre">q,p-EI</span></tt>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.num_to_sample">
+<tt class="descname">num_to_sample</tt><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/expected_improvement.html#ExpectedImprovement.num_to_sample"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.num_to_sample" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of points at which to compute/optimize EI, aka potential points to sample in future experiments; i.e., the <tt class="docutils literal"><span class="pre">q</span></tt> in <tt class="docutils literal"><span class="pre">q,p-EI</span></tt>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.problem_size">
+<tt class="descname">problem_size</tt><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/expected_improvement.html#ExpectedImprovement.problem_size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.problem_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the number of independent parameters to optimize.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.set_current_point">
+<tt class="descname">set_current_point</tt><big>(</big><em>points_to_sample</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/expected_improvement.html#ExpectedImprovement.set_current_point"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.set_current_point" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set current_point to the specified point; ordering must match.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>points_to_sample</strong> (<em>array of float64 with shape (problem_size)</em>) &#8211; current_point at which to evaluate the objective function, <tt class="docutils literal"><span class="pre">f(x)</span></tt></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="moe.optimal_learning.python.python_version.expected_improvement.multistart_expected_improvement_optimization">
+<tt class="descclassname">moe.optimal_learning.python.python_version.expected_improvement.</tt><tt class="descname">multistart_expected_improvement_optimization</tt><big>(</big><em>ei_optimizer</em>, <em>num_multistarts</em>, <em>num_to_sample</em>, <em>randomness=None</em>, <em>max_num_threads=1</em>, <em>status=None</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/expected_improvement.html#multistart_expected_improvement_optimization"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.expected_improvement.multistart_expected_improvement_optimization" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solve the q,p-EI problem, returning the optimal set of q points to sample CONCURRENTLY in future experiments.</p>
+<p>When <tt class="docutils literal"><span class="pre">points_being_sampled.shape[0]</span> <span class="pre">==</span> <span class="pre">0</span> <span class="pre">&amp;&amp;</span> <span class="pre">num_to_sample</span> <span class="pre">==</span> <span class="pre">1</span></tt>, this function will use (fast) analytic EI computations.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The following comments are copied from multistart_expected_improvement_optimization() in cpp_wrappers/expected_improvement.py</p>
+</div>
+<p>This is the primary entry-point for EI optimization in the optimal_learning library. It offers our best shot at
+improving robustness by combining higher accuracy methods like gradient descent with fail-safes like random/grid search.</p>
+<p>Returns the optimal set of q points to sample CONCURRENTLY by solving the q,p-EI problem.  That is, we may want to run 4
+experiments at the same time and maximize the EI across all 4 experiments at once while knowing of 2 ongoing experiments
+(4,2-EI). This function handles this use case. Evaluation of q,p-EI (and its gradient) for q &gt; 1 or p &gt; 1 is expensive
+(requires monte-carlo iteration), so this method is usually very expensive.</p>
+<p>Compared to ComputeHeuristicPointsToSample() (<tt class="docutils literal"><span class="pre">gpp_heuristic_expected_improvement_optimization.hpp</span></tt>), this function
+makes no external assumptions about the underlying objective function. Instead, it utilizes the Expected (Parallel)
+Improvement, allowing the GP to account for ongoing/incomplete experiments.</p>
+<p>If <tt class="docutils literal"><span class="pre">num_to_sample</span> <span class="pre">=</span> <span class="pre">1</span></tt>, this is the same as ComputeOptimalPointsToSampleWithRandomStarts().</p>
+<p>TODO(eliu): (GH-56) Allow callers to pass in a source of randomness.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ei_optimizer</strong> (<em>interfaces.optimization_interfaces.OptimizerInterface subclass</em>) &#8211; object that optimizes (e.g., gradient descent, newton) EI over a domain</li>
+<li><strong>num_multistarts</strong> (<em>int &gt; 0</em>) &#8211; number of times to multistart <tt class="docutils literal"><span class="pre">ei_optimizer</span></tt></li>
+<li><strong>num_to_sample</strong> (<em>int &gt;= 1</em>) &#8211; how many simultaneous experiments you would like to run (i.e., the q in q,p-EI) (UNUSED, specify through ei_optimizer)</li>
+<li><strong>randomness</strong> (<em>(UNUSED)</em>) &#8211; random source(s) used to generate multistart points and perform monte-carlo integration (when applicable) (UNUSED)</li>
+<li><strong>max_num_threads</strong> (<em>int &gt; 0</em>) &#8211; maximum number of threads to use, &gt;= 1 (UNUSED)</li>
+<li><strong>status</strong> (<em>dict</em>) &#8211; status messages from C++ (e.g., reporting on optimizer success, etc.)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">point(s) that maximize the expected improvement (solving the q,p-EI problem)</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">array of float64 with shape (num_to_sample, ei_evaluator.dim)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-moe.optimal_learning.python.python_version.gaussian_process">
+<span id="moe-optimal-learning-python-python-version-gaussian-process-module"></span><h2>moe.optimal_learning.python.python_version.gaussian_process module<a class="headerlink" href="#module-moe.optimal_learning.python.python_version.gaussian_process" title="Permalink to this headline">¶</a></h2>
+<p>Implementation (Python) of GaussianProcessInterface.</p>
+<p>This file contains a class to manipulate a Gaussian Process through numpy/scipy.</p>
+<p>See interfaces.gaussian_process_interface.py for more details.</p>
+<dl class="class">
+<dt id="moe.optimal_learning.python.python_version.gaussian_process.GaussianProcess">
+<em class="property">class </em><tt class="descclassname">moe.optimal_learning.python.python_version.gaussian_process.</tt><tt class="descname">GaussianProcess</tt><big>(</big><em>covariance_function</em>, <em>historical_data</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/gaussian_process.html#GaussianProcess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.gaussian_process.GaussianProcess" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="moe.optimal_learning.python.interfaces.html#moe.optimal_learning.python.interfaces.gaussian_process_interface.GaussianProcessInterface" title="moe.optimal_learning.python.interfaces.gaussian_process_interface.GaussianProcessInterface"><tt class="xref py py-class docutils literal"><span class="pre">moe.optimal_learning.python.interfaces.gaussian_process_interface.GaussianProcessInterface</span></tt></a></p>
+<p>Implementation of a GaussianProcess strictly in Python.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Comments in this class are copied from this object&#8217;s superclass in interfaces.gaussian_process_interface.py.</p>
+</div>
+<p>Object that encapsulates Gaussian Process Priors (GPPs).  A GPP is defined by a set of
+(sample point, function value, noise variance) triples along with a covariance function that relates the points.
+Each point has dimension dim.  These are the training data; for example, each sample point might specify an experimental
+cohort and the corresponding function value is the objective measured for that experiment.  There is one noise variance
+value per function value; this is the measurement error and is treated as N(0, noise_variance) Gaussian noise.</p>
+<p>GPPs estimate a real process ms f(x) = GP(m(x), k(x,x&#8217;))me (see file docs).  This class deals with building an estimator
+to the actual process using measurements taken from the actual process&#8211;the (sample point, function val, noise) triple.
+Then predictions about unknown points can be made by sampling from the GPP&#8211;in particular, finding the (predicted)
+mean and variance.  These functions (and their gradients) are provided in ComputeMeanOfPoints, ComputeVarianceOfPoints,
+etc.</p>
+<p>Further mathematical details are given in the implementation comments, but we are essentially computing:</p>
+<div class="line-block">
+<div class="line">ComputeMeanOfPoints    : <tt class="docutils literal"><span class="pre">K(Xs,</span> <span class="pre">X)</span> <span class="pre">*</span> <span class="pre">[K(X,X)</span> <span class="pre">+</span> <span class="pre">\sigma_n^2</span> <span class="pre">I]^{-1}</span> <span class="pre">*</span> <span class="pre">y</span> <span class="pre">=</span> <span class="pre">Ks^T</span> <span class="pre">*</span> <span class="pre">K^{-1}</span> <span class="pre">*</span> <span class="pre">y</span></tt></div>
+<div class="line">ComputeVarianceOfPoints: <tt class="docutils literal"><span class="pre">K(Xs,</span> <span class="pre">Xs)</span> <span class="pre">-</span> <span class="pre">K(Xs,X)</span> <span class="pre">*</span> <span class="pre">[K(X,X)</span> <span class="pre">+</span> <span class="pre">\sigma_n^2</span> <span class="pre">I]^{-1}</span> <span class="pre">*</span> <span class="pre">K(X,Xs)</span> <span class="pre">=</span> <span class="pre">Kss</span> <span class="pre">-</span> <span class="pre">Ks^T</span> <span class="pre">*</span> <span class="pre">K^{-1}</span> <span class="pre">*</span> <span class="pre">Ks</span></tt></div>
+</div>
+<p>This (estimated) mean and variance characterize the predicted distributions of the actual ms m(x), k(x,x&#8217;)me
+functions that underly our GP.</p>
+<p>The &#8220;independent variables&#8221; for this object are <tt class="docutils literal"><span class="pre">points_to_sample</span></tt>. These points are both the &#8220;p&#8221; and the &#8220;q&#8221; in q,p-EI;
+i.e., they are the parameters of both ongoing experiments and new predictions. Recall that in q,p-EI, the q points are
+called <tt class="docutils literal"><span class="pre">points_to_sample</span></tt> and the p points are called <tt class="docutils literal"><span class="pre">points_being_sampled.</span></tt> Here, we need to make predictions about
+both point sets with the GP, so we simply call the union of point sets <tt class="docutils literal"><span class="pre">points_to_sample.</span></tt></p>
+<p>In GP computations, there is really no distinction between the &#8220;q&#8221; and &#8220;p&#8221; points from EI, <tt class="docutils literal"><span class="pre">points_to_sample</span></tt> and
+<tt class="docutils literal"><span class="pre">points_being_sampled</span></tt>, respectively. However, in EI optimization, we only need gradients of GP quantities wrt
+<tt class="docutils literal"><span class="pre">points_to_sample</span></tt>, so users should call members functions with <tt class="docutils literal"><span class="pre">num_derivatives</span> <span class="pre">=</span> <span class="pre">num_to_sample</span></tt> in that context.</p>
+<dl class="method">
+<dt id="moe.optimal_learning.python.python_version.gaussian_process.GaussianProcess.add_sampled_points">
+<tt class="descname">add_sampled_points</tt><big>(</big><em>sampled_points</em>, <em>validate=False</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/gaussian_process.html#GaussianProcess.add_sampled_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.gaussian_process.GaussianProcess.add_sampled_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add sampled point(s) (point, value, noise) to the GP&#8217;s prior data.</p>
+<p>Also forces recomputation of all derived quantities for GP to remain consistent.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>sampled_points</strong> (<em>list of SampledPoint objects</em>) &#8211; SampledPoint objects to load into the GP (containing point, function value, and noise variance)</li>
+<li><strong>validate</strong> (<em>boolean</em>) &#8211; whether to sanity-check the input sample_points</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.optimal_learning.python.python_version.gaussian_process.GaussianProcess.compute_cholesky_variance_of_points">
+<tt class="descname">compute_cholesky_variance_of_points</tt><big>(</big><em>points_to_sample</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/gaussian_process.html#GaussianProcess.compute_cholesky_variance_of_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.gaussian_process.GaussianProcess.compute_cholesky_variance_of_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the cholesky factorization of the variance (matrix) of this GP at each point of <tt class="docutils literal"><span class="pre">Xs</span></tt> (<tt class="docutils literal"><span class="pre">points_to_sample</span></tt>).</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last"><tt class="docutils literal"><span class="pre">points_to_sample</span></tt> should not contain duplicate points.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>points_to_sample</strong> (<em>array of float64 with shape (num_to_sample, dim)</em>) &#8211; num_to_sample points (in dim dimensions) being sampled from the GP</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">cholesky factorization of the variance matrix of this GP, lower triangular</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">array of float64 with shape (num_to_sample, num_to_sample), lower triangle filled in</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.optimal_learning.python.python_version.gaussian_process.GaussianProcess.compute_grad_cholesky_variance_of_points">
+<tt class="descname">compute_grad_cholesky_variance_of_points</tt><big>(</big><em>points_to_sample</em>, <em>num_derivatives=-1</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/gaussian_process.html#GaussianProcess.compute_grad_cholesky_variance_of_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.gaussian_process.GaussianProcess.compute_grad_cholesky_variance_of_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the gradient of the cholesky factorization of the variance (matrix) of this GP at each point of <tt class="docutils literal"><span class="pre">Xs</span></tt> (<tt class="docutils literal"><span class="pre">points_to_sample</span></tt>) wrt <tt class="docutils literal"><span class="pre">Xs</span></tt>.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last"><tt class="docutils literal"><span class="pre">points_to_sample</span></tt> should not contain duplicate points.</p>
+</div>
+<p>This function accounts for the effect on the gradient resulting from
+cholesky-factoring the variance matrix.  See Smith 1995 for algorithm details.</p>
+<p>Observe that <tt class="docutils literal"><span class="pre">grad_chol</span></tt> is nominally sized:
+<tt class="docutils literal"><span class="pre">grad_chol[num_to_sample][num_to_sample][num_to_sample][dim]</span></tt>.
+Let this be indexed <tt class="docutils literal"><span class="pre">grad_chol[k][j][i][d]</span></tt>, which is read the derivative of <tt class="docutils literal"><span class="pre">var[j][i]</span></tt>
+with respect to <tt class="docutils literal"><span class="pre">x_{k,d}</span></tt> (x = <tt class="docutils literal"><span class="pre">points_to_sample</span></tt>)</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Comments in this class are copied from this&#8217;s superclass in interfaces.gaussian_process_interface.py.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>points_to_sample</strong> (<em>array of float64 with shape (num_to_sample, dim)</em>) &#8211; num_to_sample points (in dim dimensions) being sampled from the GP</li>
+<li><strong>num_derivatives</strong> (<em>int</em>) &#8211; return derivatives wrt points_to_sample[0:num_derivatives]; large or negative values are clamped</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">grad_chol: gradient of the cholesky factorization of the variance matrix of this GP.
+<tt class="docutils literal"><span class="pre">grad_chol[k][j][i][d]</span></tt> is actually the gradients of <tt class="docutils literal"><span class="pre">var_{j,i}</span></tt> with
+respect to <tt class="docutils literal"><span class="pre">x_{k,d}</span></tt>, the d-th dimension of the k-th entry of <tt class="docutils literal"><span class="pre">points_to_sample</span></tt>, where
+k = <tt class="docutils literal"><span class="pre">var_of_grad</span></tt></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">array of float64 with shape (num_derivatives, num_to_sample, num_to_sample, dim)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.optimal_learning.python.python_version.gaussian_process.GaussianProcess.compute_grad_mean_of_points">
+<tt class="descname">compute_grad_mean_of_points</tt><big>(</big><em>points_to_sample</em>, <em>num_derivatives=-1</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/gaussian_process.html#GaussianProcess.compute_grad_mean_of_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.gaussian_process.GaussianProcess.compute_grad_mean_of_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the gradient of the mean of this GP at each of point of <tt class="docutils literal"><span class="pre">Xs</span></tt> (<tt class="docutils literal"><span class="pre">points_to_sample</span></tt>) wrt <tt class="docutils literal"><span class="pre">Xs</span></tt>.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last"><tt class="docutils literal"><span class="pre">points_to_sample</span></tt> should not contain duplicate points.</p>
+</div>
+<p>Observe that <tt class="docutils literal"><span class="pre">grad_mu</span></tt> is nominally sized: <tt class="docutils literal"><span class="pre">grad_mu[num_to_sample][num_to_sample][dim]</span></tt>. This is
+the the d-th component of the derivative evaluated at the i-th input wrt the j-th input.
+However, for <tt class="docutils literal"><span class="pre">0</span> <span class="pre">&lt;=</span> <span class="pre">i,j</span> <span class="pre">&lt;</span> <span class="pre">num_to_sample</span></tt>, <tt class="docutils literal"><span class="pre">i</span> <span class="pre">!=</span> <span class="pre">j</span></tt>, <tt class="docutils literal"><span class="pre">grad_mu[j][i][d]</span> <span class="pre">=</span> <span class="pre">0</span></tt>.
+(See references or implementation for further details.)
+Thus, <tt class="docutils literal"><span class="pre">grad_mu</span></tt> is stored in a reduced form which only tracks the nonzero entries.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Comments in this class are copied from this&#8217;s superclass in interfaces.gaussian_process_interface.py.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>points_to_sample</strong> (<em>array of float64 with shape (num_to_sample, dim)</em>) &#8211; num_to_sample points (in dim dimensions) being sampled from the GP</li>
+<li><strong>num_derivatives</strong> (<em>int</em>) &#8211; return derivatives wrt points_to_sample[0:num_derivatives]; large or negative values are clamped</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">grad_mu: gradient of the mean of the GP. <tt class="docutils literal"><span class="pre">grad_mu[i][d]</span></tt> is actually the gradient
+of <tt class="docutils literal"><span class="pre">\mu_i</span></tt> wrt <tt class="docutils literal"><span class="pre">x_{i,d}</span></tt>, the d-th dim of the i-th entry of <tt class="docutils literal"><span class="pre">points_to_sample</span></tt>.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">array of float64 with shape (num_derivatives, dim)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.optimal_learning.python.python_version.gaussian_process.GaussianProcess.compute_grad_variance_of_points">
+<tt class="descname">compute_grad_variance_of_points</tt><big>(</big><em>points_to_sample</em>, <em>num_derivatives=-1</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/gaussian_process.html#GaussianProcess.compute_grad_variance_of_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.gaussian_process.GaussianProcess.compute_grad_variance_of_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the gradient of the variance (matrix) of this GP at each point of <tt class="docutils literal"><span class="pre">Xs</span></tt> (<tt class="docutils literal"><span class="pre">points_to_sample</span></tt>) wrt <tt class="docutils literal"><span class="pre">Xs</span></tt>.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last"><tt class="docutils literal"><span class="pre">points_to_sample</span></tt> should not contain duplicate points.</p>
+</div>
+<p>This function is similar to compute_grad_cholesky_variance_of_points() (below), except this does not include
+gradient terms from the cholesky factorization. Description will not be duplicated here.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Comments in this class are copied from this&#8217;s superclass in interfaces.gaussian_process_interface.py.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>points_to_sample</strong> (<em>array of float64 with shape (num_to_sample, dim)</em>) &#8211; num_to_sample points (in dim dimensions) being sampled from the GP</li>
+<li><strong>num_derivatives</strong> (<em>int</em>) &#8211; return derivatives wrt points_to_sample[0:num_derivatives]; large or negative values are clamped</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">grad_var: gradient of the variance matrix of this GP</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">array of float64 with shape (num_derivatives, num_to_sample, num_to_sample, dim)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.optimal_learning.python.python_version.gaussian_process.GaussianProcess.compute_mean_of_points">
+<tt class="descname">compute_mean_of_points</tt><big>(</big><em>points_to_sample</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/gaussian_process.html#GaussianProcess.compute_mean_of_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.gaussian_process.GaussianProcess.compute_mean_of_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the mean of this GP at each of point of <tt class="docutils literal"><span class="pre">Xs</span></tt> (<tt class="docutils literal"><span class="pre">points_to_sample</span></tt>).</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last"><tt class="docutils literal"><span class="pre">points_to_sample</span></tt> should not contain duplicate points.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Comments in this class are copied from this&#8217;s superclass in interfaces.gaussian_process_interface.py.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>points_to_sample</strong> (<em>array of float64 with shape (num_to_sample, dim)</em>) &#8211; num_to_sample points (in dim dimensions) being sampled from the GP</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">mean: where mean[i] is the mean at points_to_sample[i]</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">array of float64 with shape (num_to_sample)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.optimal_learning.python.python_version.gaussian_process.GaussianProcess.compute_variance_of_points">
+<tt class="descname">compute_variance_of_points</tt><big>(</big><em>points_to_sample</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/gaussian_process.html#GaussianProcess.compute_variance_of_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.gaussian_process.GaussianProcess.compute_variance_of_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the variance (matrix) of this GP at each point of <tt class="docutils literal"><span class="pre">Xs</span></tt> (<tt class="docutils literal"><span class="pre">points_to_sample</span></tt>).</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last"><tt class="docutils literal"><span class="pre">points_to_sample</span></tt> should not contain duplicate points.</p>
+</div>
+<p>The variance matrix is symmetric although we currently return the full representation.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Comments in this class are copied from this&#8217;s superclass in interfaces.gaussian_process_interface.py.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>points_to_sample</strong> (<em>array of float64 with shape (num_to_sample, dim)</em>) &#8211; num_to_sample points (in dim dimensions) being sampled from the GP</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">var_star: variance matrix of this GP</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">array of float64 with shape (num_to_sample, num_to_sample)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="moe.optimal_learning.python.python_version.gaussian_process.GaussianProcess.dim">
+<tt class="descname">dim</tt><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/gaussian_process.html#GaussianProcess.dim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.gaussian_process.GaussianProcess.dim" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the number of spatial dimensions.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="moe.optimal_learning.python.python_version.gaussian_process.GaussianProcess.num_sampled">
+<tt class="descname">num_sampled</tt><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/gaussian_process.html#GaussianProcess.num_sampled"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.gaussian_process.GaussianProcess.num_sampled" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the number of sampled points.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.optimal_learning.python.python_version.gaussian_process.GaussianProcess.sample_point_from_gp">
+<tt class="descname">sample_point_from_gp</tt><big>(</big><em>point_to_sample</em>, <em>noise_variance=0.0</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/gaussian_process.html#GaussianProcess.sample_point_from_gp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.gaussian_process.GaussianProcess.sample_point_from_gp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sample a function value from a Gaussian Process prior, provided a point at which to sample.</p>
+<p>Uses the formula <tt class="docutils literal"><span class="pre">function_value</span> <span class="pre">=</span> <span class="pre">gpp_mean</span> <span class="pre">+</span> <span class="pre">sqrt(gpp_variance)</span> <span class="pre">*</span> <span class="pre">w1</span> <span class="pre">+</span> <span class="pre">sqrt(noise_variance)</span> <span class="pre">*</span> <span class="pre">w2</span></tt>, where <tt class="docutils literal"><span class="pre">w1,</span> <span class="pre">w2</span></tt>
+are draws from N(0,1).</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Set noise_variance to 0 if you want &#8220;accurate&#8221; draws from the GP.
+BUT if the drawn (point, value) pair is meant to be added back into the GP (e.g., for testing), then this point
+MUST be drawn with noise_variance equal to the noise associated with &#8220;point&#8221; as a member of &#8220;points_sampled&#8221;</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Comments in this class are copied from this&#8217;s superclass in interfaces.gaussian_process_interface.py.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>point_to_sample</strong> &#8211; point (in dim dimensions) at which to sample from this GP</li>
+<li><strong>noise_variance</strong> (<em>float64 &gt;= 0.0</em>) &#8211; amount of noise to associate with the sample</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">sample_value: function value drawn from this GP</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float64</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-moe.optimal_learning.python.python_version.log_likelihood">
+<span id="moe-optimal-learning-python-python-version-log-likelihood-module"></span><h2>moe.optimal_learning.python.python_version.log_likelihood module<a class="headerlink" href="#module-moe.optimal_learning.python.python_version.log_likelihood" title="Permalink to this headline">¶</a></h2>
+<p>Tools to compute log likelihood-like measures of model fit and optimize them (wrt the hyperparameters of covariance) to select the best model for a given set of historical data.</p>
+<p>See the file comments in interfaces/log_likelihood_interface.py for an overview of log likelihood-like metrics and their role
+in model selection. This file provides an implementation of the Log Marginal Likelihood.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This is a copy of the file comments in cpp_wrappers/log_likelihood.py.
+See this file&#8217;s comments and interfaces.log_likelihood_interface for more details as well as the cpp_wrappers version.</p>
+</div>
+<p><strong>LOG MARGINAL LIKELIHOOD (LML)</strong></p>
+<p>(Rasmussen &amp; Williams, 5.4.1)
+The Log Marginal Likelihood measure comes from the ideas of Bayesian model selection, which use Bayesian inference
+to predict distributions over models and their parameters.  The cpp file comments explore this idea in more depth.
+For now, we will simply state the relevant result.  We can build up the notion of the &#8220;marginal likelihood&#8221;:
+probability(observed data GIVEN sampling points (<tt class="docutils literal"><span class="pre">X</span></tt>), model hyperparameters, model class (regression, GP, etc.)),
+which is denoted: <tt class="docutils literal"><span class="pre">p(y</span> <span class="pre">|</span> <span class="pre">X,</span> <span class="pre">\theta,</span> <span class="pre">H_i)</span></tt> (see the cpp file comments for more).</p>
+<p>So the marginal likelihood deals with computing the probability that the observed data was generated from (another
+way: is easily explainable by) the given model.</p>
+<p>The marginal likelihood is in part paramaterized by the model&#8217;s hyperparameters; e.g., as mentioned above.  Thus
+we can search for the set of hyperparameters that produces the best marginal likelihood and use them in our model.
+Additionally, a nice property of the marginal likelihood optimization is that it automatically trades off between
+model complexity and data fit, producing a model that is reasonably simple while still explaining the data reasonably
+well.  See the cpp file comments for more discussion of how/why this works.</p>
+<p>In general, we do not want a model with perfect fit and high complexity, since this implies overfit to input noise.
+We also do not want a model with very low complexity and poor data fit: here we are washing the signal out with
+(assumed) noise, so the model is simple but it provides no insight on the data.</p>
+<p>This is not magic.  Using GPs as an example, if the covariance function is completely mis-specified, we can blindly
+go through with marginal likelihood optimization, obtain an &#8220;optimal&#8221; set of hyperparameters, and proceed... never
+realizing that our fundamental assumptions are wrong.  So care is always needed.</p>
+<dl class="class">
+<dt id="moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood">
+<em class="property">class </em><tt class="descclassname">moe.optimal_learning.python.python_version.log_likelihood.</tt><tt class="descname">GaussianProcessLogMarginalLikelihood</tt><big>(</big><em>covariance_function</em>, <em>historical_data</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/log_likelihood.html#GaussianProcessLogMarginalLikelihood"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="moe.optimal_learning.python.interfaces.html#moe.optimal_learning.python.interfaces.log_likelihood_interface.GaussianProcessLogLikelihoodInterface" title="moe.optimal_learning.python.interfaces.log_likelihood_interface.GaussianProcessLogLikelihoodInterface"><tt class="xref py py-class docutils literal"><span class="pre">moe.optimal_learning.python.interfaces.log_likelihood_interface.GaussianProcessLogLikelihoodInterface</span></tt></a>, <a class="reference internal" href="moe.optimal_learning.python.interfaces.html#moe.optimal_learning.python.interfaces.optimization_interface.OptimizableInterface" title="moe.optimal_learning.python.interfaces.optimization_interface.OptimizableInterface"><tt class="xref py py-class docutils literal"><span class="pre">moe.optimal_learning.python.interfaces.optimization_interface.OptimizableInterface</span></tt></a></p>
+<p>Class for computing the Log Marginal Likelihood, <tt class="docutils literal"><span class="pre">log(p(y</span> <span class="pre">|</span> <span class="pre">X,</span> <span class="pre">\theta))</span></tt>.</p>
+<p>That is, the probability of observing the training values, y, given the training points, X,
+and hyperparameters (of the covariance function), <tt class="docutils literal"><span class="pre">\theta</span></tt>.</p>
+<p>This is a measure of how likely it is that the observed values came from our Gaussian Process Prior.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This is a copy of GaussianProcessLogMarginalLikelihood&#8217;s class comments in cpp_wrappers/log_likelihood.py.
+See this file&#8217;s comments and interfaces.log_likelihood_interface for more details as well as the cpp_wrappers version.</p>
+</div>
+<p>Given a particular covariance function (including hyperparameters) and
+training data ((point, function value, measurement noise) tuples), the log marginal likelihood is the log probability that
+the data were observed from a Gaussian Process would have generated the observed function values at the given measurement
+points.  So log marginal likelihood tells us &#8220;the probability of the observations given the assumptions of the model.&#8221;
+Log marginal sits well with the Bayesian Inference camp.
+(Rasmussen &amp; Williams p118)</p>
+<p>This quantity primarily deals with the trade-off between model fit and model complexity.  Handling this trade-off is automatic
+in the log marginal likelihood calculation.  See Rasmussen &amp; Williams 5.2 and 5.4.1 for more details.</p>
+<p>We can use the log marginal likelihood to determine how good our model is.  Additionally, we can maximize it by varying
+hyperparameters (or even changing covariance functions) to improve our model quality.  Hence this class provides access
+to functions for computing log marginal likelihood and its hyperparameter gradients.</p>
+<dl class="method">
+<dt id="moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.compute_grad_log_likelihood">
+<tt class="descname">compute_grad_log_likelihood</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/log_likelihood.html#GaussianProcessLogMarginalLikelihood.compute_grad_log_likelihood"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.compute_grad_log_likelihood" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the gradient (wrt hyperparameters) of the _log_likelihood_type measure at the specified hyperparameters.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">These comments are copied from LogMarginalLikelihoodEvaluator::ComputeGradLogLikelihood in gpp_model_selection_and_hyperparameter_optimization.cpp.</p>
+</div>
+<p>Computes <tt class="docutils literal"><span class="pre">\pderiv{log(p(y</span> <span class="pre">|</span> <span class="pre">X,</span> <span class="pre">\theta))}{\theta_k}</span> <span class="pre">=</span> <span class="pre">\frac{1}{2}</span> <span class="pre">*</span> <span class="pre">y_i</span> <span class="pre">*</span> <span class="pre">\pderiv{K_{ij}}{\theta_k}</span> <span class="pre">*</span> <span class="pre">y_j</span> <span class="pre">-</span> <span class="pre">\frac{1}{2}</span></tt>
+<tt class="docutils literal"><span class="pre">*</span> <span class="pre">trace(K^{-1}_{ij}\pderiv{K_{ij}}{\theta_k})</span></tt>
+Or equivalently, <tt class="docutils literal"><span class="pre">=</span> <span class="pre">\frac{1}{2}</span> <span class="pre">*</span> <span class="pre">trace([\alpha_i</span> <span class="pre">\alpha_j</span> <span class="pre">-</span> <span class="pre">K^{-1}_{ij}]*\pderiv{K_{ij}}{\theta_k})</span></tt>,
+where <tt class="docutils literal"><span class="pre">\alpha_i</span> <span class="pre">=</span> <span class="pre">K^{-1}_{ij}</span> <span class="pre">*</span> <span class="pre">y_j</span></tt></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">grad_log_likelihood: i-th entry is <tt class="docutils literal"><span class="pre">\pderiv{LL(y</span> <span class="pre">|</span> <span class="pre">X,</span> <span class="pre">\theta)}{\theta_i}</span></tt></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">array of float64 with shape (num_hyperparameters)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.compute_grad_objective_function">
+<tt class="descname">compute_grad_objective_function</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/log_likelihood.html#GaussianProcessLogMarginalLikelihood.compute_grad_objective_function"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.compute_grad_objective_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrapper for compute_grad_log_likelihood; see that function&#8217;s docstring.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.compute_hessian_log_likelihood">
+<tt class="descname">compute_hessian_log_likelihood</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/log_likelihood.html#GaussianProcessLogMarginalLikelihood.compute_hessian_log_likelihood"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.compute_hessian_log_likelihood" title="Permalink to this definition">¶</a></dt>
+<dd><p>We do not currently support computation of the (hyperparameter) hessian of log likelihood-like metrics.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.compute_hessian_objective_function">
+<tt class="descname">compute_hessian_objective_function</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/log_likelihood.html#GaussianProcessLogMarginalLikelihood.compute_hessian_objective_function"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.compute_hessian_objective_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrapper for compute_hessian_log_likelihood; see that function&#8217;s docstring.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.compute_log_likelihood">
+<tt class="descname">compute_log_likelihood</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/log_likelihood.html#GaussianProcessLogMarginalLikelihood.compute_log_likelihood"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.compute_log_likelihood" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the _log_likelihood_type measure at the specified hyperparameters.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">These comments are copied from LogMarginalLikelihoodEvaluator::ComputeLogLikelihood in gpp_model_selection_and_hyperparameter_optimization.cpp.</p>
+</div>
+<p><tt class="docutils literal"><span class="pre">log</span> <span class="pre">p(y</span> <span class="pre">|</span> <span class="pre">X,</span> <span class="pre">\theta)</span> <span class="pre">=</span> <span class="pre">-\frac{1}{2}</span> <span class="pre">*</span> <span class="pre">y^T</span> <span class="pre">*</span> <span class="pre">K^-1</span> <span class="pre">*</span> <span class="pre">y</span> <span class="pre">-</span> <span class="pre">\frac{1}{2}</span> <span class="pre">*</span> <span class="pre">\log(det(K))</span> <span class="pre">-</span> <span class="pre">\frac{n}{2}</span> <span class="pre">*</span> <span class="pre">\log(2*pi)</span></tt>
+where n is <tt class="docutils literal"><span class="pre">num_sampled</span></tt>, <tt class="docutils literal"><span class="pre">\theta</span></tt> are the hyperparameters, and <tt class="docutils literal"><span class="pre">\log</span></tt> is the natural logarithm.  In the following,
+<tt class="docutils literal"><span class="pre">term1</span> <span class="pre">=</span> <span class="pre">-\frac{1}{2}</span> <span class="pre">*</span> <span class="pre">y^T</span> <span class="pre">*</span> <span class="pre">K^-1</span> <span class="pre">*</span> <span class="pre">y</span></tt>
+<tt class="docutils literal"><span class="pre">term2</span> <span class="pre">=</span> <span class="pre">-\frac{1}{2}</span> <span class="pre">*</span> <span class="pre">\log(det(K))</span></tt>
+<tt class="docutils literal"><span class="pre">term3</span> <span class="pre">=</span> <span class="pre">-\frac{n}{2}</span> <span class="pre">*</span> <span class="pre">\log(2*pi)</span></tt></p>
+<p>For an SPD matrix <tt class="docutils literal"><span class="pre">K</span> <span class="pre">=</span> <span class="pre">L</span> <span class="pre">*</span> <span class="pre">L^T</span></tt>,
+<tt class="docutils literal"><span class="pre">det(K)</span> <span class="pre">=</span> <span class="pre">\Pi_i</span> <span class="pre">L_ii^2</span></tt>
+We could compute this directly and then take a logarithm.  But we also know:
+<tt class="docutils literal"><span class="pre">\log(det(K))</span> <span class="pre">=</span> <span class="pre">2</span> <span class="pre">*</span> <span class="pre">\sum_i</span> <span class="pre">\log(L_ii)</span></tt>
+The latter method is (currently) preferred for computing <tt class="docutils literal"><span class="pre">\log(det(K))</span></tt> due to reduced chance for overflow
+and (possibly) better numerical conditioning.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">value of log_likelihood evaluated at hyperparameters (<tt class="docutils literal"><span class="pre">LL(y</span> <span class="pre">|</span> <span class="pre">X,</span> <span class="pre">\theta)</span></tt>)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float64</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.compute_objective_function">
+<tt class="descname">compute_objective_function</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/log_likelihood.html#GaussianProcessLogMarginalLikelihood.compute_objective_function"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.compute_objective_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrapper for compute_log_likelihood; see that function&#8217;s docstring.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.dim">
+<tt class="descname">dim</tt><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/log_likelihood.html#GaussianProcessLogMarginalLikelihood.dim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.dim" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the number of spatial dimensions.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.get_current_point">
+<tt class="descname">get_current_point</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/log_likelihood.html#GaussianProcessLogMarginalLikelihood.get_current_point"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.get_current_point" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the current_point (array of float64 with shape (problem_size)) at which this object is evaluating the objective function, <tt class="docutils literal"><span class="pre">f(x)</span></tt>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.get_hyperparameters">
+<tt class="descname">get_hyperparameters</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/log_likelihood.html#GaussianProcessLogMarginalLikelihood.get_hyperparameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.get_hyperparameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the hyperparameters (array of float64 with shape (num_hyperparameters)) of this covariance.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.num_hyperparameters">
+<tt class="descname">num_hyperparameters</tt><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/log_likelihood.html#GaussianProcessLogMarginalLikelihood.num_hyperparameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.num_hyperparameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the number of hyperparameters.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.problem_size">
+<tt class="descname">problem_size</tt><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/log_likelihood.html#GaussianProcessLogMarginalLikelihood.problem_size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.problem_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the number of independent parameters to optimize.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.set_current_point">
+<tt class="descname">set_current_point</tt><big>(</big><em>current_point</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/log_likelihood.html#GaussianProcessLogMarginalLikelihood.set_current_point"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.set_current_point" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set current_point to the specified point; ordering must match.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>current_point</strong> (<em>array of float64 with shape (problem_size)</em>) &#8211; current_point at which to evaluate the objective function, <tt class="docutils literal"><span class="pre">f(x)</span></tt></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.set_hyperparameters">
+<tt class="descname">set_hyperparameters</tt><big>(</big><em>hyperparameters</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/log_likelihood.html#GaussianProcessLogMarginalLikelihood.set_hyperparameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.set_hyperparameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set hyperparameters to the specified hyperparameters; ordering must match.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="moe.optimal_learning.python.python_version.log_likelihood.evaluate_log_likelihood_at_hyperparameter_list">
+<tt class="descclassname">moe.optimal_learning.python.python_version.log_likelihood.</tt><tt class="descname">evaluate_log_likelihood_at_hyperparameter_list</tt><big>(</big><em>log_likelihood_evaluator</em>, <em>hyperparameters_to_evaluate</em>, <em>max_num_threads=1</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/log_likelihood.html#evaluate_log_likelihood_at_hyperparameter_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.log_likelihood.evaluate_log_likelihood_at_hyperparameter_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the specified log likelihood measure at each input set of hyperparameters.</p>
+<p>Generally Newton or gradient descent is preferred but when they fail to converge this may be the only &#8220;robust&#8221; option.
+This function is also useful for plotting or debugging purposes (just to get a bunch of log likelihood values).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>log_likelihood_evaluator</strong> (<em>interfaces.log_likelihood_interface.LogLikelihoodInterface subclass</em>) &#8211; object specifying which log likelihood measure to evaluate</li>
+<li><strong>hyperparameters_to_evaluate</strong> (<em>array of float64 with shape (num_to_eval, log_likelihood_evaluator.num_hyperparameters)</em>) &#8211; the hyperparameters at which to compute the specified log likelihood</li>
+<li><strong>max_num_threads</strong> (<em>int</em>) &#8211; maximum number of threads to use, &gt;= 1 (UNUSED)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">log likelihood value at each specified set of hyperparameters</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">array of float64 with shape (hyperparameters_to_evaluate.shape[0])</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="moe.optimal_learning.python.python_version.log_likelihood.multistart_hyperparameter_optimization">
+<tt class="descclassname">moe.optimal_learning.python.python_version.log_likelihood.</tt><tt class="descname">multistart_hyperparameter_optimization</tt><big>(</big><em>hyperparameter_optimizer</em>, <em>num_multistarts</em>, <em>randomness=None</em>, <em>max_num_threads=1</em>, <em>status=None</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/log_likelihood.html#multistart_hyperparameter_optimization"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.log_likelihood.multistart_hyperparameter_optimization" title="Permalink to this definition">¶</a></dt>
+<dd><p>Select the hyperparameters that maximize the specified log likelihood measure of model fit (over the historical data) within the specified domain.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The following comments are copied from multistart_hyperparameter_optimization() in cpp_wrappers/log_likelihood.py</p>
+</div>
+<p>See GaussianProcessLogMarginalLikelihood and GaussianProcessLeaveOneOutLogLikelihood for an overview of some
+example log likelihood-like measures.</p>
+<p>Optimizers are: null (&#8216;dumb&#8217; search), gradient descent, newton
+Newton is the suggested optimizer, which is not presently available in Python (use the C++ interface). In Python,
+gradient descent is suggested.
+TODO(eliu): implement hessians and newton&#8217;s method (GH-57)</p>
+<p>&#8216;dumb&#8217; search means this will just evaluate the objective log likelihood measure at num_multistarts &#8216;points&#8217;
+(hyperparameters) in the domain, uniformly sampled using latin hypercube sampling.</p>
+<p>See gpp_python_common.cpp for C++ enum declarations laying out the options for objective and optimizer types.</p>
+<p>Currently, during optimization, we recommend that the coordinates of the initial guesses not differ from the
+coordinates of the optima by more than about 1 order of magnitude. This is a very (VERY!) rough guideline for
+sizing the domain and gd_parameters.num_multistarts; i.e., be wary of sets of initial guesses that cover the space too sparsely.</p>
+<p>Solution is guaranteed to lie within the region specified by &#8220;domain&#8221;; note that this may not be a
+true optima (i.e., the gradient may be substantially nonzero).</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">this function fails if NO improvement can be found!  In that case,
+the output will always be the first randomly chosen point. status will report failure.</p>
+</div>
+<p>TODO(eliu): allow callers to pass in a source of randomness (GH-56)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>hyperparameter_optimizer</strong> (<em>interfaces.optimization_interfaces.OptimizerInterface subclass</em>) &#8211; object that optimizes (e.g., gradient descent, newton) the desired log_likelihood
+measure over a domain (wrt the hyperparameters of covariance)</li>
+<li><strong>num_multistarts</strong> (<em>int &gt; 0</em>) &#8211; number of times to multistart <tt class="docutils literal"><span class="pre">hyperparameter_optimizer</span></tt></li>
+<li><strong>randomness</strong> (<em>(UNUSED)</em>) &#8211; random source used to generate multistart points (UNUSED)</li>
+<li><strong>max_num_threads</strong> (<em>int &gt; 0</em>) &#8211; maximum number of threads to use, &gt;= 1 (UNUSED)</li>
+<li><strong>status</strong> (<em>dict</em>) &#8211; status messages (e.g., reporting on optimizer success, etc.)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">hyperparameters that maximize the specified log likelihood measure within the specified domain</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">array of float64 with shape (log_likelihood_evaluator.num_hyperparameters)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-moe.optimal_learning.python.python_version.optimization">
+<span id="moe-optimal-learning-python-python-version-optimization-module"></span><h2>moe.optimal_learning.python.python_version.optimization module<a class="headerlink" href="#module-moe.optimal_learning.python.python_version.optimization" title="Permalink to this headline">¶</a></h2>
+<p>Classes for various optimizers (maximizers) and multistarting said optimizers.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">comments in this module are copied from the header comments in gpp_optimization.hpp.</p>
+</div>
+<p>Table of Contents:</p>
+<ol class="arabic simple">
+<li>FILE OVERVIEW</li>
+<li>OPTIMIZATION OF OBJECTIVE FUNCTIONS<ol class="loweralpha">
+<li>GRADIENT DESCENT<ol class="lowerroman">
+<li>OVERVIEW</li>
+<li>IMPLEMENTATION DETAILS</li>
+</ol>
+</li>
+<li>NEWTON&#8217;S METHOD<ol class="lowerroman">
+<li>OVERVIEW</li>
+<li>IMPLEMENTATION DETAILS</li>
+</ol>
+</li>
+<li>MULTISTART OPTIMIZATION</li>
+</ol>
+</li>
+</ol>
+<p>Read the &#8220;OVERVIEW&#8221; sections for header-style comments that describe the file contents at a high level.
+Read the &#8220;IMPLEMENTATION&#8221; comments for cpp-style comments that talk more about the specifics.  Both types
+are included together here since this file contains template class declarations and template function definitions.
+For further implementation details, see comment blocks before each individual class/function.</p>
+<p><strong>1. FILE OVERVIEW</strong></p>
+<p>First, the functions in this file are all MAXIMIZERS.  We also use the term &#8220;optima,&#8221; and unless we specifically
+state otherwise, &#8220;optima&#8221; and &#8220;optimization&#8221; refer to &#8220;maxima&#8221; and &#8220;maximization,&#8221; respectively.  (Note that
+minimizing <tt class="docutils literal"><span class="pre">g(x)</span></tt> is equivalent to maximizing <tt class="docutils literal"><span class="pre">f(x)</span> <span class="pre">=</span> <span class="pre">-1</span> <span class="pre">*</span> <span class="pre">g(x)</span></tt>.)</p>
+<p>This file contains templates for some common optimization techniques: gradient descent (GD) and Newton&#8217;s method.
+We provide constrained implementations (constraint via heuristics like restricting updates to 50% of the distance
+to the nearest wall) of these optimizers.  For unconstrained, just set the domain to be huge: <tt class="docutils literal"><span class="pre">[-DBL_MAX,</span> <span class="pre">DBL_MAX]</span></tt>.</p>
+<p>We provide *Optimizer template classes (e.g., NewtonOptimizer) as main endpoints for doing local optimization
+(i.e., run the optimization method from a single initial guess).  We also provide a MultistartOptimizer class
+for global optimization (i.e., start optimizers from each of a set of initial guesses).  These are all discussed
+further below. These templated classes are general and can optimize any OptimizableInterface subclass.</p>
+<p>In this way, we can make the local and global optimizers completely agonistic to the function they are optimizing.</p>
+<p><strong>2. OPTIMIZATION OF OBJECTIVE FUNCTIONS</strong></p>
+<p><strong>2a. GRADIENT DESCENT (GD)</strong></p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Below there is some discussion of &#8220;restarted&#8221; Gradient Descent; this is not yet implemented in Python.
+See cpp_wrappers/optimization.py if you want to use this feature.</p>
+</div>
+<p><strong>2a, i. OVERVIEW</strong></p>
+<p>We use first derivative information to walk the path of steepest ascent, hopefully toward a (local) maxima of the
+chosen log likelihood measure.  This is implemented in: GradientDescentOptimization().
+This method ensures that the result lies within a specified domain.</p>
+<p>We additionally restart gradient-descent in practice; i.e., we repeatedly take the output of a GD run and start a
+new GD run from that point.  This lives in: GradientDescentOptimizer::Optimize().</p>
+<p>Even with restarts, gradient descent (GD) cannot start &#8220;too far&#8221; from the solution and still
+successfully find it.  Thus users should typically start it from multiple initial guesses and take the best one
+(see gpp_math and gpp_model_selection for examples).  The MultistartOptimizer template class in this file
+provides generic multistart functionality.</p>
+<p>Finally, we optionally apply Polyak-Ruppert averaging. This is described in more detail in the docstring for
+GradientDescentParameters. For functions where we only have access to gradient + noise, this averaging can lead
+to better answers than straight gradient descent. It amounts to averaging over the final <tt class="docutils literal"><span class="pre">N_{avg}</span></tt> steps.</p>
+<p>Gradient descent is implemented in: GradientDescentOptimizer::Optimize() (which calls GradientDescentOptimization())</p>
+<p><strong>2a, ii. IMPLEMENTATION DETAILS</strong></p>
+<p>GD&#8217;s update is: <tt class="docutils literal"><span class="pre">\theta_{i+1}</span> <span class="pre">=</span> <span class="pre">\theta_i</span> <span class="pre">+</span> <span class="pre">\gamma</span> <span class="pre">*</span> <span class="pre">\nabla</span> <span class="pre">f(\theta_i)</span></tt>
+where <tt class="docutils literal"><span class="pre">\gamma</span></tt> controls the step-size and is chosen heuristically, often varying by problem.</p>
+<p>The previous update leads to unconstrained optimization.  To ensure that our results always stay within the
+specified domain, we additionally limit updates if they would move us outside the domain.  For example,
+we could imagine only moving half the distance to the nearest boundary.</p>
+<p>With gradient descent (GD), it is hard to know what step sizes to take.  Unfortunately, far enough away from an
+optima, the objective could increase (but very slowly).  If gradient descent takes too large of a step in a
+bad direction, it can easily &#8220;get lost.&#8221;  At the same time, taking very small steps leads to slow performance.
+To help, we take the standard approach of scaling down step size with iteration number. We also allow the user
+to specify a maximum relative change to limit the aggressiveness of GD steps.  Finally, we wrap GD in a restart
+loop, where we fire off another GD run from the current location unless convergence was reached.</p>
+<p><strong>2b. NEWTON&#8217;S METHOD:</strong></p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Newton&#8217;s method is not yet implemented in Python. See cpp_wrappers/optimization.py if you want to use this feature.</p>
+</div>
+<p><strong>2b, i. OVERVIEW</strong></p>
+<p>Newton&#8217;s Method (for optimization) uses second derivative information in addition to the first derivatives used by
+gradient descent (GD). In higher dimensions, first derivatives =&gt; gradients and second derivatives =&gt; Hessian matrix.
+At each iteration, gradient descent computes the derivative and blindly takes a step (of some
+heuristically determined size) in that direction.  Care must be taken in the step size choice to balance robustness
+and speed while ensuring that convergence is possible.  By using second derivative (the Hessian matrix in higher
+dimensions), which is interpretable as information about local curvature, Newton makes better* choices about
+step size and direction to ensure rapid** convergence.</p>
+<p>*, ** See &#8220;IMPLEMENTATION DETAILS&#8221; comments section for details.</p>
+<p>Recall that Newton indiscriminately finds solutions where <tt class="docutils literal"><span class="pre">f'(x)</span> <span class="pre">=</span> <span class="pre">0</span></tt>; the eigenvalues of the Hessian classify these
+<tt class="docutils literal"><span class="pre">x</span></tt> as optima, saddle points, or indeterminate. We multistart Newton (e.g., gpp_model_selection_and_hyperparameter_optimization)
+but just take the best objective value without classifying solutions.
+The MultistartOptimizer template class in this file provides generic multistart functionality.</p>
+<p>Newton is implemented here: NewtonOptimizer::Optimize() (which calls NewtonOptimization())</p>
+<p><strong>2b, ii. IMPLEMENTATION DETAILS</strong></p>
+<p>Let&#8217;s address the footnotes from the previous section (Section 2b, i paragraph 1):</p>
+<p>* Within its region of attraction, Newton&#8217;s steps are optimal (when we have only second derivative information).  Outside
+of this region, Newton can make very poor decisions and diverge.  In general, Newton is more sensitive to its initial
+conditions than gradient descent, but it has the potential to be much, much faster.</p>
+<p>** By quadratic convergence, we mean that once Newton is near enough to the solution, the log of the error will roughly
+halve each iteration.  Numerically, we would see the &#8220;number of digits&#8221; double each iteration.  Again, this only happens
+once Newton is &#8220;close enough.&#8221;</p>
+<p>Newton&#8217;s Method is a root-finding technique at its base.  To find a root of <tt class="docutils literal"><span class="pre">g(x)</span></tt>, Newton requires an
+initial guess, <tt class="docutils literal"><span class="pre">x_0</span></tt>, and the ability to compute <tt class="docutils literal"><span class="pre">g(x)</span></tt> and <tt class="docutils literal"><span class="pre">g'(x)</span></tt>.  Then the idea is that you compute
+root of the line tangent to <tt class="docutils literal"><span class="pre">g(x_0)</span></tt>; call this <tt class="docutils literal"><span class="pre">x_1</span></tt>.  And repeat.  But the core idea is to make repeated
+linear approximations to <tt class="docutils literal"><span class="pre">g(x)</span></tt> and proceed in a fixed-point like fashion.</p>
+<p>As an optimization method, we are looking for roots of the gradient, <tt class="docutils literal"><span class="pre">f'(x_{opt})</span> <span class="pre">=</span> <span class="pre">0</span></tt>.  So we require an initial guess
+x_0 and the ability to evaluate <tt class="docutils literal"><span class="pre">f'(x)</span></tt> and <tt class="docutils literal"><span class="pre">f''(x)</span></tt> (in higher dimensions, the gradient and Hessian of f).  Thus Newton
+makes repeated linear approximations to <tt class="docutils literal"><span class="pre">f'(x)</span></tt> or equivalently, it locally approximates <tt class="docutils literal"><span class="pre">f(x)</span></tt> with a <em>quadratic</em> function,
+continuing iteration from the optima of that quadratic.
+In particular, Newton would solve the optimization problem of a quadratic program in one iteration.</p>
+<p>Mathematically, the update formulas for gradient descent (GD) and Newton are:
+GD:     <tt class="docutils literal"><span class="pre">\theta_{i+1}</span> <span class="pre">=</span> <span class="pre">\theta_i</span> <span class="pre">+</span>&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">\gamma</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">*</span> <span class="pre">\nabla</span> <span class="pre">f(\theta_i)</span></tt>
+Newton: <tt class="docutils literal"><span class="pre">\theta_{i+1}</span> <span class="pre">=</span> <span class="pre">\theta_i</span> <span class="pre">-</span> <span class="pre">H_f^-1(\theta_i)</span> <span class="pre">*</span> <span class="pre">\nabla</span> <span class="pre">f(\theta_i)</span></tt>
+Note: the sign of the udpate is flipped because H is <em>negative</em> definite near a maxima.
+These update schemes are similar.  In GD, <tt class="docutils literal"><span class="pre">\gamma</span></tt> is chosen heuristically.  There are many ways to proceed but only
+so much that can be done with just gradient information; moreover the standard algorithm always proceeds in the direction
+of the gradient.  Newton takes a much more general appraoch.  Instead of a scalar <tt class="docutils literal"><span class="pre">\gamma</span></tt>, the Newton update applies
+<tt class="docutils literal"><span class="pre">H^-1</span></tt> to the gradient, changing both the direction and magnitude of the step.</p>
+<p>Unfortunately, Newton indiscriminately finds solutions where <tt class="docutils literal"><span class="pre">f'(x)</span> <span class="pre">=</span> <span class="pre">0</span></tt>.  This is not necesarily an optima!  In one dimension,
+we can have <tt class="docutils literal"><span class="pre">f'(x)</span> <span class="pre">=</span> <span class="pre">0</span></tt> and <tt class="docutils literal"><span class="pre">f''(x)</span> <span class="pre">=</span> <span class="pre">0</span></tt>, in which case the solution need not be an optima (e.g., <tt class="docutils literal"><span class="pre">y</span> <span class="pre">=</span> <span class="pre">x^3</span></tt> at <tt class="docutils literal"><span class="pre">x</span> <span class="pre">=</span> <span class="pre">0</span></tt>).
+In higher dimensions, a saddle point can also result (e.g., <tt class="docutils literal"><span class="pre">z</span> <span class="pre">=</span> <span class="pre">x^2</span> <span class="pre">-</span> <span class="pre">y^2</span></tt> at <tt class="docutils literal"><span class="pre">x,y</span> <span class="pre">=</span> <span class="pre">0</span></tt>).  More generally, we have an
+optima if the Hessian is strictly negative or positive definite; a saddle if the Hessian has both positive and negative
+eigenvalues, and an indeterminate case if the Hessian is singular.</p>
+<p><strong>2c. MULTISTART OPTIMIZATION</strong></p>
+<p>Above, we mentioned that gradient descent (GD), Newton, etc. have a difficult time converging if they are started &#8220;too far&#8221;
+from an optima.  Even if convergence occurs, it will typically be very slow unless the problem is simple.  Worse,
+in a problem with multiple optima, the methods may converge to the wrong one!</p>
+<p>Multistarting the optimizers is one way of mitigating* this issue.  Multistart involves starting a run of the
+specified optimizer (e.g., Newton) from each of a set of initial guesses.  Then the best result is reported as
+the result of the whole procedure.  By trying a large number of initial guesses, we potentially reduce the need
+for good guesses; i.e., hopefully at least one guess will be &#8220;near enough&#8221; to the global optimum.  This
+functionality is provided in MultistartOptimizer::MultistartOptimize(...).</p>
+<p>* As noted below in the MultistartOptimizer::MultistartOptimize() function docs, mitigate is intentional here.
+Multistarting is NOT GUARANTEED to find global optima.  But it can increase the chances of success.</p>
+<p>Currently we let the user specify the initial guesses.  In practice, this typically means a random sampling of points.
+We do not (yet) make any effort to say sample more heavily from regions where &#8220;more stuff is happening&#8221; or any
+other heuristics.  TODO(eliu): improve multistart heuristics (#57985).</p>
+<p>Finally, MultistartOptimizer::MultistartOptimize() is also used to provide &#8216;dumb&#8217; search functionality (optimization
+by just evaluating the objective at numerous points).  For sufficiently complex problems, gradient descent, Newton, etc.
+can have exceptionally poor convergence characteristics or run too slowly.  In cases where these more advanced techniques
+fail, we commonly fall back to &#8216;dumb&#8217; search.</p>
+<dl class="class">
+<dt id="moe.optimal_learning.python.python_version.optimization.GradientDescentOptimizer">
+<em class="property">class </em><tt class="descclassname">moe.optimal_learning.python.python_version.optimization.</tt><tt class="descname">GradientDescentOptimizer</tt><big>(</big><em>domain</em>, <em>optimizable</em>, <em>optimization_parameters</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/optimization.html#GradientDescentOptimizer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.optimization.GradientDescentOptimizer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="moe.optimal_learning.python.interfaces.html#moe.optimal_learning.python.interfaces.optimization_interface.OptimizerInterface" title="moe.optimal_learning.python.interfaces.optimization_interface.OptimizerInterface"><tt class="xref py py-class docutils literal"><span class="pre">moe.optimal_learning.python.interfaces.optimization_interface.OptimizerInterface</span></tt></a></p>
+<p>Optimizes an objective function over the specified domain with the gradient descent method.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">See optimize() docstring for more details.</p>
+</div>
+<dl class="method">
+<dt id="moe.optimal_learning.python.python_version.optimization.GradientDescentOptimizer.optimize">
+<tt class="descname">optimize</tt><big>(</big><em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/optimization.html#GradientDescentOptimizer.optimize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.optimization.GradientDescentOptimizer.optimize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply gradient-descrent to to find a locally optimal (maximal here) value of the specified objective function.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">comments in this method are copied from the function comments of GradientDescentOptimization() in cpp/gpp_optimization.hpp.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Additional high-level discussion is provided in section 2a) in the header docs of this file.</p>
+</div>
+<p>Basic gradient descent (GD) to optimize objective function <tt class="docutils literal"><span class="pre">f(x)</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre>input: initial_guess
+
+next_point = initial_guess
+i = 0;
+while (not converged) {
+  direction = derivative of f(x) at next_point
+  step_scale = compute step_size scaling: pre_mult * (i+1)^(-gamma)
+
+  next_point += step_scale * direction
+  ++i
+}
+if (averaging) {
+  next_point = average(previous_points, average_range_start, average_range_end)
+}
+</pre></div>
+</div>
+<p>See GradientDescentParameters docstring or the GD code for more information on averaging.</p>
+<p>So it marches along the direction of largest gradient (so the steepest descent) for some distance.  The distance
+is a combination of the size of the gradient and the step_scale factor.  Here, we use an exponentially decreasing
+scale to request progressively smaller step sizes: <tt class="docutils literal"><span class="pre">(i+1)^(-gamma)</span></tt>, where <tt class="docutils literal"><span class="pre">i</span></tt> is the iteration number</p>
+<p>We do not allow the step to take next_point out of the domain; if this happens, the update is limited.
+Thus the solution is guaranteed to lie within the region specified by &#8220;domain&#8221;; note that this may not be a
+true optima (i.e., the gradient may be substantially nonzero).</p>
+<p>We may also limit very large updates (controlled via max_relative_change).  Decreasing this value
+makes gradient descent (GD) more stable but also slower.  For very sensitive problems like hyperparameter
+optimization, max_relative_change = 0.02 is suggested; for less sensitive problems
+(e.g., EI, especially analytic), you can use 1.0 (or near).</p>
+<p>The constraint implementation (no stepping outside the domain) and the large update limiting are not &#8220;pure&#8221; gradient
+descent approaches.  They are all heuristics meant to improve Newton&#8217;s robustness.  The constraint implementation
+in particular may lead to non-convergence and it also may not find constrained optima that lie exactly on a boundary.  This would
+require a more general handling where we search in an <tt class="docutils literal"><span class="pre">d-1</span></tt> dimensional subspace (i.e., only on the boundary).</p>
+<p>Note that we are using an absolute tolerance here, based on the size of the most recent step.
+The suggested value is 1.0e-7, although this may need to be loosened for problems with &#8216;difficult&#8217; optima (e.g., the shape
+is not locally very peaked).  Setting too high of a tolerance can cause wrong answers&#8211;e.g., we stop at a point
+that is not an optima but simply an region with small gradient.  Setting the tolerance too low may make convergence impossible;
+GD could get stuck (bouncing between the same few points) or numerical effects could make it impossible to satisfy tolerance.</p>
+<p>Finally, GD terminates if updates are very small.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="moe.optimal_learning.python.python_version.optimization.GradientDescentParameters">
+<em class="property">class </em><tt class="descclassname">moe.optimal_learning.python.python_version.optimization.</tt><tt class="descname">GradientDescentParameters</tt><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/optimization.html#GradientDescentParameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.optimization.GradientDescentParameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">moe.optimal_learning.python.python_version.optimization._BaseGradientDescentParameters</span></tt></p>
+<p>Container to hold parameters that specify the behavior of Gradient Descent.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">the following comments are copied from cpp_wrappers.optimization.GradientDescentParameters</p>
+</div>
+<p><strong>Iterations</strong></p>
+<p>The total number of gradient descent steps is at most <tt class="docutils literal"><span class="pre">num_multistarts</span> <span class="pre">*</span> <span class="pre">max_num_steps</span> <span class="pre">*</span> <span class="pre">max_num_restarts</span></tt>
+Generally, allowing more iterations leads to a better solution but costs more time.</p>
+<p><strong>Averaging</strong></p>
+<p>When optimizing stochastic objective functions, it can often be beneficial to average some number of gradient descent
+steps to obtain the final result (vs just returning the last step).
+Polyak-Ruppert averaging: postprocessing step where we replace <tt class="docutils literal"><span class="pre">x_n</span></tt> with:
+<tt class="docutils literal"><span class="pre">\overbar{x}</span> <span class="pre">=</span> <span class="pre">\frac{1}{n</span> <span class="pre">-</span> <span class="pre">n_0}</span> <span class="pre">\sum_{t=n_0</span> <span class="pre">+</span> <span class="pre">1}^n</span> <span class="pre">x_t</span></tt>
+<tt class="docutils literal"><span class="pre">n_0</span> <span class="pre">=</span> <span class="pre">0</span></tt> averages all steps; <tt class="docutils literal"><span class="pre">n_0</span> <span class="pre">=</span> <span class="pre">n</span> <span class="pre">-</span> <span class="pre">1</span></tt> is equivalent to returning <tt class="docutils literal"><span class="pre">x_n</span></tt> directly.
+Here, num_steps_averaged is <tt class="docutils literal"><span class="pre">n</span> <span class="pre">-</span> <span class="pre">n_0</span></tt>.</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">num_steps_averaged</span></tt> &lt; 0: averages all steps</li>
+<li><tt class="docutils literal"><span class="pre">num_steps_averaged</span></tt> == 0: do not average</li>
+<li><tt class="docutils literal"><span class="pre">num_steps_averaged</span></tt> &gt; 0 and &lt;= <tt class="docutils literal"><span class="pre">max_num_steps</span></tt>: average the specified number of steps</li>
+<li><tt class="docutils literal"><span class="pre">max_steps_averaged</span></tt> &gt; <tt class="docutils literal"><span class="pre">max_num_steps</span></tt>: average all steps</li>
+</ul>
+<p><strong>Learning Rate</strong></p>
+<p>GD may be implemented using a learning rate: <tt class="docutils literal"><span class="pre">pre_mult</span> <span class="pre">*</span> <span class="pre">(i+1)^{-\gamma}</span></tt>, where i is the current iteration
+Larger gamma causes the GD step size to (artificially) scale down faster.
+Smaller pre_mult (artificially) shrinks the GD step size.
+Generally, taking a very large number of small steps leads to the most robustness; but it is very slow.</p>
+<p><strong>Tolerances</strong></p>
+<p>Larger relative changes are potentially less robust but lead to faster convergence.
+Large tolerances run faster but may lead to high errors or false convergence (e.g., if the tolerance is 1.0e-3 and the learning
+rate control forces steps to fall below 1.0e-3 quickly, then GD will quit &#8220;successfully&#8221; without genuinely converging.)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>max_num_steps</strong> &#8211; (<em>int &gt; 0</em>) maximum number of gradient descent iterations per restart (suggest: 200-1000)</li>
+<li><strong>max_num_restarts</strong> &#8211; (<em>int &gt; 0</em>) maximum number of gradient descent restarts, the we are allowed to call gradient descent.  Should be &gt;= 2 as a minimum (suggest: 10-20)</li>
+<li><strong>num_steps_averaged</strong> &#8211; (<em>int</em>) number of steps to use in polyak-ruppert averaging (see above) (suggest: 10-50% of max_num_steps for stochastic problems, 0 otherwise)</li>
+<li><strong>gamma</strong> &#8211; (<em>float64 &gt; 1.0</em>) exponent controlling rate of step size decrease (see struct docs or GradientDescentOptimizer) (suggest: 0.5-0.9)</li>
+<li><strong>pre_mult</strong> &#8211; (<em>float64 &gt; 1.0</em>) scaling factor for step size (see struct docs or GradientDescentOptimizer) (suggest: 0.1-1.0)</li>
+<li><strong>max_relative_change</strong> &#8211; (<em>float64 in [0, 1]</em>) max change allowed per GD iteration (as a relative fraction of current distance to wall)
+(suggest: 0.5-1.0 for less sensitive problems like EI; 0.02 for more sensitive problems like hyperparameter opt)</li>
+<li><strong>tolerance</strong> &#8211; (<em>float 64 &gt;= 0.0</em>) when the magnitude of the gradient falls below this value OR we will not move farther than tolerance
+(e.g., at a boundary), stop.  (suggest: 1.0e-7)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="moe.optimal_learning.python.python_version.optimization.MultistartOptimizer">
+<em class="property">class </em><tt class="descclassname">moe.optimal_learning.python.python_version.optimization.</tt><tt class="descname">MultistartOptimizer</tt><big>(</big><em>optimizer</em>, <em>num_multistarts</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/optimization.html#MultistartOptimizer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.optimization.MultistartOptimizer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="moe.optimal_learning.python.interfaces.html#moe.optimal_learning.python.interfaces.optimization_interface.OptimizerInterface" title="moe.optimal_learning.python.interfaces.optimization_interface.OptimizerInterface"><tt class="xref py py-class docutils literal"><span class="pre">moe.optimal_learning.python.interfaces.optimization_interface.OptimizerInterface</span></tt></a></p>
+<p>A general class for multistarting any class that implements interfaces.optimization_interface.OptimizerInterface (except itself).</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">comments copied from MultistartOptimizer in gpp_optimization.hpp.</p>
+</div>
+<p>The use with GradientDescentOptimizer, NewtonOptimizer, etc. are standard practice in nonlinear optimization.  In particular,
+without special properties like convexity, single-start optimizers can converge to local optima.  In general, a nonlinear
+function can have many local optima, so the only way to improve* your chances of finding the global optimum is to start
+from many different locations.</p>
+<p>* Improve is intentional here.  In the general case, you are not <em>guaranteed</em> (in finite time) to find the global optimum.</p>
+<p>Use with NullOptimizer requires special mention here as it might seem silly. This case reduces to evaluating the
+objective function at every point of initial_guesses.  Through function_values, you can get the objective value at each
+of point of initial_guesses too (e.g., for plotting).  So use MultistartOptimize with NullOptimzer to perform a
+&#8216;dumb&#8217; search (e.g., initial_guesses can be obtained from a grid, random sampling, etc.).  NullOptimizer allows &#8216;dumb&#8217; search
+to use the same code as multistart optimization.  &#8216;Dumb&#8217; search is inaccurate but it never fails, so we often use it as a
+fall-back when more advanced (e.g., gradient descent) techniques fail.</p>
+<dl class="method">
+<dt id="moe.optimal_learning.python.python_version.optimization.MultistartOptimizer.optimize">
+<tt class="descname">optimize</tt><big>(</big><em>random_starts=None</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/optimization.html#MultistartOptimizer.optimize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.optimization.MultistartOptimizer.optimize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform multistart optimization with self.optimizer.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">comments copied from MultistartOptimizer::MultistartOptimize in gpp_optimization.hpp.</p>
+</div>
+<p>Performs multistart optimization with the specified Optimizer (instance variable) to optimize the specified
+OptimizableInterface (objective function) over the specified DomainInterface. Optimizer behavior is controlled
+by the specified ParameterStruct. See class docs and header docs of this file, section 2c and 3b, iii),
+for more information.</p>
+<p>The method allows you to specify what the current best is, so that if optimization cannot beat it, no improvement will be
+reported.  It will otherwise report the overall best improvement (through io_container) as well as the result of every
+individual multistart run if desired (through function_values).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>starting_points</strong> (<em>array of float64 with shape (num_points, dim) or None</em>) &#8211; points from which to multistart <tt class="docutils literal"><span class="pre">self.optimizer</span></tt>; if None, points are chosen randomly</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">(best point found, objective function values at the end of each optimization run)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">tuple: (array of float64 with shape (self.optimizer.dim), array of float64 with shape (self.num_multistarts))</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="moe.optimal_learning.python.python_version.optimization.NewtonParameters">
+<em class="property">class </em><tt class="descclassname">moe.optimal_learning.python.python_version.optimization.</tt><tt class="descname">NewtonParameters</tt><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/optimization.html#NewtonParameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.optimization.NewtonParameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">moe.optimal_learning.python.python_version.optimization._BaseNewtonParameters</span></tt></p>
+<p>See docstring at <a class="reference internal" href="moe.optimal_learning.python.cpp_wrappers.html#module-moe.optimal_learning.python.cpp_wrappers.optimization" title="moe.optimal_learning.python.cpp_wrappers.optimization"><tt class="xref py py-class docutils literal"><span class="pre">moe.optimal_learning.python.cpp_wrappers.optimization</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="moe.optimal_learning.python.python_version.optimization.NullOptimizer">
+<em class="property">class </em><tt class="descclassname">moe.optimal_learning.python.python_version.optimization.</tt><tt class="descname">NullOptimizer</tt><big>(</big><em>domain</em>, <em>optimizable</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/optimization.html#NullOptimizer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.optimization.NullOptimizer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="moe.optimal_learning.python.interfaces.html#moe.optimal_learning.python.interfaces.optimization_interface.OptimizerInterface" title="moe.optimal_learning.python.interfaces.optimization_interface.OptimizerInterface"><tt class="xref py py-class docutils literal"><span class="pre">moe.optimal_learning.python.interfaces.optimization_interface.OptimizerInterface</span></tt></a></p>
+<p>A &#8220;null&#8221; or identity optimizer: this does nothing. It is used to perform &#8220;dumb&#8221; search with MultistartOptimizer.</p>
+<dl class="method">
+<dt id="moe.optimal_learning.python.python_version.optimization.NullOptimizer.optimize">
+<tt class="descname">optimize</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/optimization.html#NullOptimizer.optimize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.optimization.NullOptimizer.optimize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Do nothing; arguments are unused.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="moe.optimal_learning.python.python_version.optimization.NullParameters">
+<em class="property">class </em><tt class="descclassname">moe.optimal_learning.python.python_version.optimization.</tt><tt class="descname">NullParameters</tt><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/optimization.html#NullParameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.optimization.NullParameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#moe.optimal_learning.python.python_version.optimization.NullParameters" title="moe.optimal_learning.python.python_version.optimization.NullParameters"><tt class="xref py py-class docutils literal"><span class="pre">moe.optimal_learning.python.python_version.optimization.NullParameters</span></tt></a></p>
+<p>Empty container for optimizers that do not require any parameters (e.g., the null optimizer).</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="moe.optimal_learning.python.python_version.optimization.multistart_optimize">
+<tt class="descclassname">moe.optimal_learning.python.python_version.optimization.</tt><tt class="descname">multistart_optimize</tt><big>(</big><em>optimizer</em>, <em>starting_points=None</em>, <em>num_multistarts=None</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/optimization.html#multistart_optimize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.optimization.multistart_optimize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Multistart the specified optimizer randomly or from the specified list of initial guesses.</p>
+<p>If <tt class="docutils literal"><span class="pre">starting_points</span></tt> is specified, this will always multistart from those points.
+If <tt class="docutils literal"><span class="pre">starting_points</span></tt> is not specified and <tt class="docutils literal"><span class="pre">num_multistarts</span></tt> is specified, we start from a random set of points.
+If <tt class="docutils literal"><span class="pre">starting_points</span></tt> is not specified and <tt class="docutils literal"><span class="pre">num_multistarts</span></tt> is not specified, an exception is raised.</p>
+<p>This is a simple wrapper around MultistartOptimizer.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>optimizer</strong> (<em>interfaces.optimization_interface.OptimizerInterface subclass</em>) &#8211; object that will perform the optimization</li>
+<li><strong>points_to_evaluate</strong> (<em>array of float64 with shape (num_points, evaluator.problem_size)</em>) &#8211; points at which to compute the objective</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">(best point found, objective function values at the end of each optimization run)</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">tuple: (array of float64 with shape (optimizer.dim), array of float64 with shape (starting_points.shape[0]) or (num_multistarts))</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">objective function value at each specified point</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">array of float64 with shape (points_to_evaluate.shape[0])</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last">ValueError: if both <tt class="docutils literal"><span class="pre">starting_points</span></tt> and <tt class="docutils literal"><span class="pre">num_multistarts</span></tt> are None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-moe.optimal_learning.python.python_version.python_utils">
+<span id="moe-optimal-learning-python-python-version-python-utils-module"></span><h2>moe.optimal_learning.python.python_version.python_utils module<a class="headerlink" href="#module-moe.optimal_learning.python.python_version.python_utils" title="Permalink to this headline">¶</a></h2>
+<p>Utilities for computing covariance matrices and related structures.</p>
+<dl class="function">
+<dt id="moe.optimal_learning.python.python_version.python_utils.build_covariance_matrix">
+<tt class="descclassname">moe.optimal_learning.python.python_version.python_utils.</tt><tt class="descname">build_covariance_matrix</tt><big>(</big><em>covariance</em>, <em>points_sampled</em>, <em>noise_variance=None</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/python_utils.html#build_covariance_matrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.python_utils.build_covariance_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the covariance matrix, <tt class="docutils literal"><span class="pre">K</span></tt>, of a list of points, <tt class="docutils literal"><span class="pre">X_i</span></tt>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">These comments are copied from BuildCovarianceMatrix() in gpp_math.cpp.</p>
+</div>
+<p>Matrix is computed as:
+<tt class="docutils literal"><span class="pre">A_{i,j}</span> <span class="pre">=</span> <span class="pre">covariance(X_i,</span> <span class="pre">X_j)</span> <span class="pre">+</span> <span class="pre">\delta_{i,j}*noise_i</span></tt>.
+where <tt class="docutils literal"><span class="pre">\delta_{i,j}</span></tt> is the Kronecker <tt class="docutils literal"><span class="pre">delta</span></tt>, equal to 1 if <tt class="docutils literal"><span class="pre">i</span> <span class="pre">==</span> <span class="pre">j</span></tt> and 0 else.
+Result is SPD assuming covariance operator is SPD and points are unique.</p>
+<p>Generally, this is called from other functions with &#8220;points_sampled&#8221; as the input and not any
+arbitrary list of points; hence the very specific input name.</p>
+<p>Point list cannot contain duplicates.  Doing so (or providing nearly duplicate points) can lead to
+semi-definite matrices or very poor numerical conditioning.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>covariance</strong> (<em>interfaces.covariance_interface.CovarianceInterface subclass</em>) &#8211; the covariance function encoding assumptions about the GP&#8217;s behavior on our data</li>
+<li><strong>points_sampled</strong> (<em>array of float64 with shape (points_sampled.shape[0], dim)</em>) &#8211; points, <tt class="docutils literal"><span class="pre">X_i</span></tt></li>
+<li><strong>noise_variance</strong> (<em>array of float64 with shape (points_sampled.shape[0])</em>) &#8211; i-th entry is amt of noise variance to add to i-th diagonal entry; i.e., noise measuring i-th point</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">covariance matrix</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">array of float64 with shape(points_sampled.shape[0], points_sampled.shape[0]), order=&#8217;F&#8217;</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Fortran ordering is important here; scipy.linalg factor/solve methods
+(e.g., cholesky, solve_triangular) implicitly require order=&#8217;F&#8217; to enable
+overwriting. This output is commonly overwritten.</p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="moe.optimal_learning.python.python_version.python_utils.build_hyperparameter_grad_covariance_matrix">
+<tt class="descclassname">moe.optimal_learning.python.python_version.python_utils.</tt><tt class="descname">build_hyperparameter_grad_covariance_matrix</tt><big>(</big><em>covariance</em>, <em>points_sampled</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/python_utils.html#build_hyperparameter_grad_covariance_matrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.python_utils.build_hyperparameter_grad_covariance_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build <tt class="docutils literal"><span class="pre">A_{jik}</span> <span class="pre">=</span> <span class="pre">\pderiv{K_{ij}}{\theta_k}</span></tt>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">These comments are copied from BuildHyperparameterGradCovarianceMatrix() in gpp_model_selection_and_hyperparameter_optimization.cpp.</p>
+</div>
+<p>Build <tt class="docutils literal"><span class="pre">A_{jik}</span> <span class="pre">=</span> <span class="pre">\pderiv{K_{ij}}{\theta_k}</span></tt>
+Hence the outer loop structure is identical to BuildCovarianceMatrix().</p>
+<p>Note the structure of the resulting tensor is <tt class="docutils literal"><span class="pre">num_hyperparameters</span></tt> blocks of size
+<tt class="docutils literal"><span class="pre">num_sampled</span> <span class="pre">X</span> <span class="pre">num_sampled</span></tt>.  Consumers of this want <tt class="docutils literal"><span class="pre">dK/d\theta_k</span></tt> located sequentially.
+However, for a given pair of points (x, y), it is more efficient to compute all
+hyperparameter derivatives at once.  Thus the innermost loop writes to all
+<tt class="docutils literal"><span class="pre">num_hyperparameters</span></tt> blocks at once.</p>
+<p>Consumers of this result generally require complete storage (i.e., will not take advantage
+of its symmetry), so instead of ignoring the upper triangles, we copy them from the
+(already-computed) lower triangles to avoid redundant work.</p>
+<p>Since CovarianceInterface.HyperparameterGradCovariance() returns a vector of size <tt class="docutils literal"><span class="pre">|\theta_k|</span></tt>,
+the inner loop writes all relevant entries of <tt class="docutils literal"><span class="pre">A_{jik}</span></tt> simultaneously to prevent recomputation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>covariance</strong> (<em>interfaces.covariance_interface.CovarianceInterface subclass</em>) &#8211; the covariance function encoding assumptions about the GP&#8217;s behavior on our data</li>
+<li><strong>points_sampled</strong> (<em>array of float64 with shape (points_sampled.shape[0], dim)</em>) &#8211; points, <tt class="docutils literal"><span class="pre">X_i</span></tt></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">gradient of covariance matrix wrt hyperparameters</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">array of float64 with shape (points_sampled.shape[0], points_sampled.shape[0], num_hyperparameters), order=&#8217;F&#8217;</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Fortran ordering is important here; scipy.linalg factor/solve methods
+(e.g., cholesky, solve_triangular) implicitly require order=&#8217;F&#8217; to enable
+overwriting. This output is commonly overwritten.</p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="moe.optimal_learning.python.python_version.python_utils.build_mix_covariance_matrix">
+<tt class="descclassname">moe.optimal_learning.python.python_version.python_utils.</tt><tt class="descname">build_mix_covariance_matrix</tt><big>(</big><em>covariance</em>, <em>points_sampled</em>, <em>points_to_sample</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/python_utils.html#build_mix_covariance_matrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.python_utils.build_mix_covariance_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the &#8220;mix&#8221; covariance matrix, <tt class="docutils literal"><span class="pre">Ks</span></tt>, of <tt class="docutils literal"><span class="pre">Xs</span></tt> and <tt class="docutils literal"><span class="pre">X</span></tt> (<tt class="docutils literal"><span class="pre">points_to_sample</span></tt> and <tt class="docutils literal"><span class="pre">points_sampled</span></tt>, respectively).</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">These comments are copied from BuildMixCovarianceMatrix() in gpp_math.cpp.</p>
+</div>
+<p>Matrix is computed as:
+<tt class="docutils literal"><span class="pre">A_{i,j}</span> <span class="pre">=</span> <span class="pre">covariance(X_i,</span> <span class="pre">Xs_j).</span></tt>
+Result is not guaranteed to be SPD and need not even be square.</p>
+<p>Generally, this is called from other functions with &#8220;points_sampled&#8221; and &#8220;points_to_sample&#8221; as the
+input lists and not any arbitrary list of points; hence the very specific input name.  But this
+is not a requirement.</p>
+<p>Point lists cannot contain duplicates with each other or within themselves.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>covariance</strong> (<em>interfaces.covariance_interface.CovarianceInterface subclass</em>) &#8211; the covariance function encoding assumptions about the GP&#8217;s behavior on our data</li>
+<li><strong>points_sampled</strong> (<em>array of float64 with shape (points_sampled.shape[0], dim)</em>) &#8211; points, <tt class="docutils literal"><span class="pre">X_i</span></tt></li>
+<li><strong>points_to_sample</strong> (<em>array of float64 with shape (points_to_sample.shape[0], dim)</em>) &#8211; points, <tt class="docutils literal"><span class="pre">Xs_i</span></tt></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">&#8220;mix&#8221; covariance matrix</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">array of float64 with shape (points_sampled.shape[0], points_to_sample.shape[0]), order=&#8217;F&#8217;</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Fortran ordering is important here; scipy.linalg factor/solve methods
+(e.g., cholesky, solve_triangular) implicitly require order=&#8217;F&#8217; to enable
+overwriting. This output is commonly overwritten.</p>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="module-moe.optimal_learning.python.python_version">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-moe.optimal_learning.python.python_version" title="Permalink to this headline">¶</a></h2>
+<p>Implementations of the ABCs in the python/interfaces package using Python (as opposed to C++ calls).</p>
+<p>The modules in this package are meant to fill two main purposes:</p>
+<ol class="arabic simple">
+<li>Provide a (hopefully) easy-to-read Python implementation to help familiarize people (especially those who are not
+well-versed in C++) with the features of the optimal_learning library.</li>
+<li>Provide a convenient work/test environment for developers to try out new algorithms, features, and ideas. If you have
+a new way to compute ExpectedImprovement, you can quickly develop the algorithm in Python and then use either
+python_version/gaussian_process.py or (faster) cpp_wrappers/gaussian_process.py. Or you can test out some new
+optimization methods in Python and connect your optimizers to the objective functions in this package or
+offload the expensive computation to C++ via cpp_wrappers.</li>
+</ol>
+<p>Unlike the interface implementations in the cpp_wrappers package, the classes in this package are all composable with
+each other and with classes in cpp_wrappers.</p>
+<p>Modules in this package make extensive use of numpy and scipy. As mentioned in the interface documentation, all functions
+return and accept numpy arrays.</p>
+<p>See the package comments for python/interfaces (in __init__.py) for an overview of optimal_learning&#8217;s capabilities.</p>
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="moe.tests.html" class="btn btn-neutral float-right" title="moe.tests package"/>Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="moe.optimal_learning.python.interfaces.html" class="btn btn-neutral" title="moe.optimal_learning.python.interfaces package"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,38 @@
+moe.tests.views.rest package
+============================
+
+Submodules
+----------
+
+moe.tests.views.rest.gp_ei_test module
+--------------------------------------
+
+.. automodule:: moe.tests.views.rest.gp_ei_test
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+moe.tests.views.rest.gp_mean_var_test module
+--------------------------------------------
+
+.. automodule:: moe.tests.views.rest.gp_mean_var_test
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+moe.tests.views.rest.gp_next_points_test module
+-----------------------------------------------
+
+.. automodule:: moe.tests.views.rest.gp_next_points_test
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: moe.tests.views.rest
+    :members:
+    :undoc-members:
+    :show-inheritance:

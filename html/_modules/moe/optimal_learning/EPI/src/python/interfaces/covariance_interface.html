@@ -1,0 +1,336 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>moe.optimal_learning.EPI.src.python.interfaces.covariance_interface &mdash; MOE 0.1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../../../../../_static/favicon.ico"/>
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../../../../../_static/breathe.css" type="text/css" />
+  
+    <link rel="top" title="MOE 0.1.0 documentation" href="../../../../../../../index.html"/>
+        <link rel="up" title="moe" href="../../../../../../moe.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="../../../../../../../index.html" class="fa fa-home"> MOE</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../moe.html">moe package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../../moe.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../../moe.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../../moe.html#module-moe.resources">moe.resources module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../../moe.html#module-moe">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../gpp_math_hpp.html">gpp_math.hpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../gpp_geometry_hpp.html">gpp_geometry.hpp</a></li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../../../../../index.html">MOE</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../../../../../index.html">Module code</a> &raquo;</li>
+      
+          <li><a href="../../../../../../moe.html">moe</a> &raquo;</li>
+      
+    <li>moe.optimal_learning.EPI.src.python.interfaces.covariance_interface</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <h1>Source code for moe.optimal_learning.EPI.src.python.interfaces.covariance_interface</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="sd">r&quot;&quot;&quot;Interface for covariance function: covariance of two points and spatial/hyperparameter derivatives.</span>
+
+<span class="sd">.. Note:: comments are copied from the file comments of gpp_covariance.hpp</span>
+
+<span class="sd">Covariance functions have a few fundamental properties (see references at the bottom for full details).  In short,</span>
+<span class="sd">they are SPSD (symmetric positive semi-definite): ``k(x,x&#39;) = k(x&#39;, x)`` for any ``x,x&#39;`` and ``k(x,x) &gt;= 0`` for all ``x``.</span>
+<span class="sd">As a consequence, covariance matrices are SPD as long as the input points are all distinct.</span>
+
+<span class="sd">Additionally, the Square Exponential and Matern covariances (as well as other functions) are stationary. In essence,</span>
+<span class="sd">this means they can be written as ``k(r) = k(|x - x&#39;|) = k(x, x&#39;) = k(x&#39;, x)``.  So they operate on distances between</span>
+<span class="sd">points as opposed to the points themselves.  The name stationary arises because the covariance is the same</span>
+<span class="sd">modulo linear shifts: ``k(x+a, x&#39;+a) = k(x, x&#39;).``</span>
+
+<span class="sd">Covariance functions are a fundamental component of gaussian processes: as noted in the gpp_math.hpp header comments,</span>
+<span class="sd">gaussian processes are defined by a mean function and a covariance function.  Covariance functions describe how</span>
+<span class="sd">two random variables change in relation to each other--more explicitly, in a GP they specify how similar two points are.</span>
+<span class="sd">The choice of covariance function is important because it encodes our assumptions about how the &quot;world&quot; behaves.</span>
+
+<span class="sd">Covariance functions also generally have hyperparameters (e.g., signal/background noise, length scales) that specify the</span>
+<span class="sd">assumed behavior of the Gaussian Process. Specifying hyperparameters is tricky because changing them fundamentally changes</span>
+<span class="sd">the behavior of the GP. optimization_interface.py together with log_likelihood_interface.py provide methods optimizing</span>
+<span class="sd">and evaluating model fit, respectively.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABCMeta</span><span class="p">,</span> <span class="n">abstractmethod</span><span class="p">,</span> <span class="n">abstractproperty</span>
+
+
+<div class="viewcode-block" id="CovarianceInterface"><a class="viewcode-back" href="../../../../../../../moe.optimal_learning.EPI.src.python.interfaces.html#moe.optimal_learning.EPI.src.python.interfaces.covariance_interface.CovarianceInterface">[docs]</a><span class="k">class</span> <span class="nc">CovarianceInterface</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="sd">r&quot;&quot;&quot;Interface for a covariance function: covariance of two points and spatial/hyperparameter derivatives.</span>
+
+<span class="sd">    .. Note:: comments are copied from the class comments of CovarianceInterface in gpp_covariance.hpp</span>
+
+<span class="sd">    Abstract class to enable evaluation of covariance functions--supports the evaluation of the covariance between two</span>
+<span class="sd">    points, as well as the gradient with respect to those coordinates and gradient/hessian with respect to the</span>
+<span class="sd">    hyperparameters of the covariance function.</span>
+
+<span class="sd">    Covariance operaters, ``cov(x_1, x_2)`` are SPD.  Due to the symmetry, there is no need to differentiate wrt x_1 and x_2; hence</span>
+<span class="sd">    the gradient operation should only take gradients wrt dim variables, where ``dim = |x_1|``</span>
+
+<span class="sd">    Hyperparameters (denoted ``\theta_j``) are stored as class member data by subclasses.</span>
+
+<span class="sd">    Implementers of this ABC are required to manage their own hyperparameters.</span>
+
+<span class="sd">    TODO(eliu): getter/setter for hyperparameters. maybe following this?</span>
+<span class="sd">    http://google-styleguide.googlecode.com/svn/trunk/pyguide.html#Function_and_Method_Decorators</span>
+<span class="sd">    How to make it work with ABCs?</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">__metaclass__</span> <span class="o">=</span> <span class="n">ABCMeta</span>
+
+    <span class="nd">@abstractproperty</span>
+<div class="viewcode-block" id="CovarianceInterface.num_hyperparameters"><a class="viewcode-back" href="../../../../../../../moe.optimal_learning.EPI.src.python.interfaces.html#moe.optimal_learning.EPI.src.python.interfaces.covariance_interface.CovarianceInterface.num_hyperparameters">[docs]</a>    <span class="k">def</span> <span class="nf">num_hyperparameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the number of hyperparameters of this covariance function.&quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+</div>
+    <span class="nd">@abstractmethod</span>
+<div class="viewcode-block" id="CovarianceInterface.get_hyperparameters"><a class="viewcode-back" href="../../../../../../../moe.optimal_learning.EPI.src.python.interfaces.html#moe.optimal_learning.EPI.src.python.interfaces.covariance_interface.CovarianceInterface.get_hyperparameters">[docs]</a>    <span class="k">def</span> <span class="nf">get_hyperparameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the hyperparameters (array of float64 with shape (num_hyperparameters)) of this covariance.&quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+</div>
+    <span class="nd">@abstractmethod</span>
+<div class="viewcode-block" id="CovarianceInterface.set_hyperparameters"><a class="viewcode-back" href="../../../../../../../moe.optimal_learning.EPI.src.python.interfaces.html#moe.optimal_learning.EPI.src.python.interfaces.covariance_interface.CovarianceInterface.set_hyperparameters">[docs]</a>    <span class="k">def</span> <span class="nf">set_hyperparameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hyperparameters</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set hyperparameters to the specified hyperparameters; ordering must match.</span>
+
+<span class="sd">        :param hyperparameters: hyperparameters</span>
+<span class="sd">        :type hyperparameters: array of float64 with shape (num_hyperparameters)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+</div>
+    <span class="nd">@abstractmethod</span>
+<div class="viewcode-block" id="CovarianceInterface.covariance"><a class="viewcode-back" href="../../../../../../../moe.optimal_learning.EPI.src.python.interfaces.html#moe.optimal_learning.EPI.src.python.interfaces.covariance_interface.CovarianceInterface.covariance">[docs]</a>    <span class="k">def</span> <span class="nf">covariance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point_one</span><span class="p">,</span> <span class="n">point_two</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Compute the covariance function of two points, cov(``point_one``, ``point_two``).</span>
+
+<span class="sd">        .. Note:: comments are copied from the matching method comments of CovarianceInterface in gpp_covariance.hpp</span>
+<span class="sd">          and comments are copied to the matching method comments of SquareExponential in python_version/covariance.py</span>
+
+<span class="sd">        The covariance function is guaranteed to be symmetric by definition: ``covariance(x, y) = covariance(y, x)``.</span>
+<span class="sd">        This function is also positive definite by definition.</span>
+
+<span class="sd">        :param point_one: first input, the point ``x``</span>
+<span class="sd">        :type point_one: array of float64 with shape (dim)</span>
+<span class="sd">        :param point_two: second input, the point ``y``</span>
+<span class="sd">        :type point_two: array of float64 with shape (dim)</span>
+<span class="sd">        :return: value of covariance between the input points</span>
+<span class="sd">        :rtype: float64</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+</div>
+    <span class="nd">@abstractmethod</span>
+<div class="viewcode-block" id="CovarianceInterface.grad_covariance"><a class="viewcode-back" href="../../../../../../../moe.optimal_learning.EPI.src.python.interfaces.html#moe.optimal_learning.EPI.src.python.interfaces.covariance_interface.CovarianceInterface.grad_covariance">[docs]</a>    <span class="k">def</span> <span class="nf">grad_covariance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point_one</span><span class="p">,</span> <span class="n">point_two</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Compute the gradient of self.covariance(point_one, point_two) with respect to the FIRST argument, point_one.</span>
+
+<span class="sd">        .. Note:: comments are copied from the matching method comments of CovarianceInterface in gpp_covariance.hpp</span>
+<span class="sd">          and comments are copied to the matching method comments of SquareExponential in python_version/covariance.py</span>
+
+<span class="sd">        This distinction is important for maintaining the desired symmetry.  ``Cov(x, y) = Cov(y, x)``.</span>
+<span class="sd">        Additionally, ``\pderiv{Cov(x, y)}{x} = \pderiv{Cov(y, x)}{x}``.</span>
+<span class="sd">        However, in general, ``\pderiv{Cov(x, y)}{x} != \pderiv{Cov(y, x)}{y}`` (NOT equal!  These may differ by a negative sign)</span>
+
+<span class="sd">        Hence to avoid separate implementations for differentiating against first vs second argument, this function only handles</span>
+<span class="sd">        differentiation against the first argument.  If you need ``\pderiv{Cov(y, x)}{x}``, just swap points x and y.</span>
+
+<span class="sd">        :param point_one: first input, the point ``x``</span>
+<span class="sd">        :type point_one: array of float64 with shape (dim)</span>
+<span class="sd">        :param point_two: second input, the point ``y``</span>
+<span class="sd">        :type point_two: array of float64 with shape (dim)</span>
+<span class="sd">        :return: grad_cov: i-th entry is ``\pderiv{cov(x_1, x_2)}{x_i}``</span>
+<span class="sd">        :rtype: array of float64 with shape (dim)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+</div>
+    <span class="nd">@abstractmethod</span>
+<div class="viewcode-block" id="CovarianceInterface.hyperparameter_grad_covariance"><a class="viewcode-back" href="../../../../../../../moe.optimal_learning.EPI.src.python.interfaces.html#moe.optimal_learning.EPI.src.python.interfaces.covariance_interface.CovarianceInterface.hyperparameter_grad_covariance">[docs]</a>    <span class="k">def</span> <span class="nf">hyperparameter_grad_covariance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point_one</span><span class="p">,</span> <span class="n">point_two</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Compute the gradient of self.covariance(point_one, point_two) with respect to its hyperparameters.</span>
+
+<span class="sd">        .. Note:: comments are copied from the matching method comments of CovarianceInterface in gpp_covariance.hpp</span>
+<span class="sd">          and comments are copied to the matching method comments of SquareExponential in python_version/covariance.py</span>
+
+<span class="sd">        Unlike GradCovariance(), the order of point_one and point_two is irrelevant here (since we are not differentiating against</span>
+<span class="sd">        either of them).  Thus the matrix of grad covariances (wrt hyperparameters) is symmetric.</span>
+
+<span class="sd">        :param point_one: first input, the point ``x``</span>
+<span class="sd">        :type point_one: array of float64 with shape (dim)</span>
+<span class="sd">        :param point_two: second input, the point ``y``</span>
+<span class="sd">        :type point_two: array of float64 with shape (dim)</span>
+<span class="sd">        :return: grad_hyperparameter_cov: i-th entry is ``\pderiv{cov(x_1, x_2)}{\theta_i}``</span>
+<span class="sd">        :rtype: array of float64 with shape (num_hyperparameters)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+</div>
+    <span class="nd">@abstractmethod</span>
+<div class="viewcode-block" id="CovarianceInterface.hyperparameter_hessian_covariance"><a class="viewcode-back" href="../../../../../../../moe.optimal_learning.EPI.src.python.interfaces.html#moe.optimal_learning.EPI.src.python.interfaces.covariance_interface.CovarianceInterface.hyperparameter_hessian_covariance">[docs]</a>    <span class="k">def</span> <span class="nf">hyperparameter_hessian_covariance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point_one</span><span class="p">,</span> <span class="n">point_two</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Compute the hessian of self.covariance(point_one, point_two) with respect to its hyperparameters.</span>
+
+<span class="sd">        .. Note:: comments are copied from the matching method comments of CovarianceInterface in gpp_covariance.hpp</span>
+
+<span class="sd">        The Hessian matrix of the covariance evaluated at x_1, x_2 with respect to the hyperparameters.  The Hessian is defined as:</span>
+<span class="sd">        ``[ \ppderiv{cov}{\theta_0^2}              \mixpderiv{cov}{\theta_0}{\theta_1}    ... \mixpderiv{cov}{\theta_0}{\theta_{n-1}} ]``</span>
+<span class="sd">        ``[ \mixpderiv{cov}{\theta_1}{\theta_0}    \ppderiv{cov}{\theta_1^2 }             ... \mixpderiv{cov}{\theta_1}{\theta_{n-1}} ]``</span>
+<span class="sd">        ``[      ...                                                                                     ...                          ]``</span>
+<span class="sd">        ``[ \mixpderiv{cov}{\theta_{n-1}{\theta_0} \mixpderiv{cov}{\theta_{n-1}{\theta_1} ... \ppderiv{cov}{\theta_{n-1}^2}           ]``</span>
+<span class="sd">        where &quot;cov&quot; abbreviates covariance(x_1, x_2) and &quot;n&quot; refers to the number of hyperparameters.</span>
+
+<span class="sd">        Unless noted otherwise in subclasses, the Hessian is symmetric (due to the equality of mixed derivatives when a function</span>
+<span class="sd">        f is twice continuously differentiable).</span>
+
+<span class="sd">        Similarly to the gradients, the Hessian is independent of the order of ``x_1, x_2: H_{cov}(x_1, x_2) = H_{cov}(x_2, x_1)``</span>
+
+<span class="sd">        For further details: http://en.wikipedia.org/wiki/Hessian_matrix</span>
+
+<span class="sd">        :param point_one: first input, the point ``x``</span>
+<span class="sd">        :type point_one: array of float64 with shape(dim)</span>
+<span class="sd">        :param point_two: second input, the point ``y``</span>
+<span class="sd">        :type point_two: array of float64 with shape (dim)</span>
+<span class="sd">        :return: hessian_hyperparameter_cov: ``(i,j)``-th entry is ``\mixpderiv{cov(x_1, x_2)}{\theta_i}{\theta_j}``</span>
+<span class="sd">        :rtype: array of float64 with shape (num_hyperparameters, num_hyperparameters)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div></div>
+</pre></div>
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../../../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

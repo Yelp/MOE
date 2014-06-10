@@ -1,0 +1,734 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>moe.optimal_learning.python.python_version.optimization &mdash; MOE 0.1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../../../_static/favicon.ico"/>
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../../../_static/breathe.css" type="text/css" />
+  
+    <link rel="top" title="MOE 0.1.0 documentation" href="../../../../../index.html"/>
+        <link rel="up" title="moe" href="../../../../moe.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="../../../../../index.html" class="fa fa-home"> MOE</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../moe.html">moe package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe.html#module-moe.resources">moe.resources module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe.html#module-moe">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../cpp_tree.html">C++ Files</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_optimization_test.html">gpp_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_domain_test.html">gpp_domain_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_exception.html">gpp_exception</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_geometry.html">gpp_geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_test_utils.html">gpp_test_utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_logging.html">gpp_logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_covariance.html">gpp_covariance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python_test.html">gpp_python_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_domain.html">gpp_domain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python_common.html">gpp_python_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_hyperparameter_optimization_demo.html">gpp_hyperparameter_optimization_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_test_utils_test.html">gpp_test_utils_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_math_test.html">gpp_math_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python_model_selection.html">gpp_python_model_selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_math.html">gpp_math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_random_test.html">gpp_random_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_random.html">gpp_random</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_geometry_test.html">gpp_geometry_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_linear_algebra.html">gpp_linear_algebra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_core.html">gpp_core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_covariance_test.html">gpp_covariance_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python.html">gpp_python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_model_selection_and_hyperparameter_optimization.html">gpp_model_selection_and_hyperparameter_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_optimization_parameters.html">gpp_optimization_parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_common.html">gpp_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_model_selection_and_hyperparameter_optimization_test.html">gpp_model_selection_and_hyperparameter_optimization_test</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../../../index.html">MOE</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../../../index.html">Module code</a> &raquo;</li>
+      
+          <li><a href="../../../../moe.html">moe</a> &raquo;</li>
+      
+    <li>moe.optimal_learning.python.python_version.optimization</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <h1>Source code for moe.optimal_learning.python.python_version.optimization</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="sd">r&quot;&quot;&quot;Classes for various optimizers (maximizers) and multistarting said optimizers.</span>
+
+<span class="sd">.. Note:: comments in this module are copied from the header comments in gpp_optimization.hpp.</span>
+
+<span class="sd">Table of Contents:</span>
+
+<span class="sd">1. FILE OVERVIEW</span>
+<span class="sd">2. OPTIMIZATION OF OBJECTIVE FUNCTIONS</span>
+
+<span class="sd">   a. GRADIENT DESCENT</span>
+
+<span class="sd">      i. OVERVIEW</span>
+<span class="sd">      ii. IMPLEMENTATION DETAILS</span>
+
+<span class="sd">   b. NEWTON&#39;S METHOD</span>
+
+<span class="sd">      i. OVERVIEW</span>
+<span class="sd">      ii. IMPLEMENTATION DETAILS</span>
+
+<span class="sd">   c. MULTISTART OPTIMIZATION</span>
+
+<span class="sd">Read the &quot;OVERVIEW&quot; sections for header-style comments that describe the file contents at a high level.</span>
+<span class="sd">Read the &quot;IMPLEMENTATION&quot; comments for cpp-style comments that talk more about the specifics.  Both types</span>
+<span class="sd">are included together here since this file contains template class declarations and template function definitions.</span>
+<span class="sd">For further implementation details, see comment blocks before each individual class/function.</span>
+
+<span class="sd">**1. FILE OVERVIEW**</span>
+
+<span class="sd">First, the functions in this file are all MAXIMIZERS.  We also use the term &quot;optima,&quot; and unless we specifically</span>
+<span class="sd">state otherwise, &quot;optima&quot; and &quot;optimization&quot; refer to &quot;maxima&quot; and &quot;maximization,&quot; respectively.  (Note that</span>
+<span class="sd">minimizing ``g(x)`` is equivalent to maximizing ``f(x) = -1 * g(x)``.)</span>
+
+<span class="sd">This file contains templates for some common optimization techniques: gradient descent (GD) and Newton&#39;s method.</span>
+<span class="sd">We provide constrained implementations (constraint via heuristics like restricting updates to 50% of the distance</span>
+<span class="sd">to the nearest wall) of these optimizers.  For unconstrained, just set the domain to be huge: ``[-DBL_MAX, DBL_MAX]``.</span>
+
+<span class="sd">We provide \*Optimizer template classes (e.g., NewtonOptimizer) as main endpoints for doing local optimization</span>
+<span class="sd">(i.e., run the optimization method from a single initial guess).  We also provide a MultistartOptimizer class</span>
+<span class="sd">for global optimization (i.e., start optimizers from each of a set of initial guesses).  These are all discussed</span>
+<span class="sd">further below. These templated classes are general and can optimize any OptimizableInterface subclass.</span>
+
+<span class="sd">In this way, we can make the local and global optimizers completely agonistic to the function they are optimizing.</span>
+
+<span class="sd">**2. OPTIMIZATION OF OBJECTIVE FUNCTIONS**</span>
+
+<span class="sd">**2a. GRADIENT DESCENT (GD)**</span>
+
+<span class="sd">.. Note:: Below there is some discussion of &quot;restarted&quot; Gradient Descent; this is not yet implemented in Python.</span>
+<span class="sd">    See cpp_wrappers/optimization.py if you want to use this feature.</span>
+
+<span class="sd">**2a, i. OVERVIEW**</span>
+
+<span class="sd">We use first derivative information to walk the path of steepest ascent, hopefully toward a (local) maxima of the</span>
+<span class="sd">chosen log likelihood measure.  This is implemented in: GradientDescentOptimization().</span>
+<span class="sd">This method ensures that the result lies within a specified domain.</span>
+
+<span class="sd">We additionally restart gradient-descent in practice; i.e., we repeatedly take the output of a GD run and start a</span>
+<span class="sd">new GD run from that point.  This lives in: GradientDescentOptimizer::Optimize().</span>
+
+<span class="sd">Even with restarts, gradient descent (GD) cannot start &quot;too far&quot; from the solution and still</span>
+<span class="sd">successfully find it.  Thus users should typically start it from multiple initial guesses and take the best one</span>
+<span class="sd">(see gpp_math and gpp_model_selection for examples).  The MultistartOptimizer template class in this file</span>
+<span class="sd">provides generic multistart functionality.</span>
+
+<span class="sd">Finally, we optionally apply Polyak-Ruppert averaging. This is described in more detail in the docstring for</span>
+<span class="sd">GradientDescentParameters. For functions where we only have access to gradient + noise, this averaging can lead</span>
+<span class="sd">to better answers than straight gradient descent. It amounts to averaging over the final ``N_{avg}`` steps.</span>
+
+<span class="sd">Gradient descent is implemented in: GradientDescentOptimizer::Optimize() (which calls GradientDescentOptimization())</span>
+
+<span class="sd">**2a, ii. IMPLEMENTATION DETAILS**</span>
+
+<span class="sd">GD&#39;s update is: ``\theta_{i+1} = \theta_i + \gamma * \nabla f(\theta_i)``</span>
+<span class="sd">where ``\gamma`` controls the step-size and is chosen heuristically, often varying by problem.</span>
+
+<span class="sd">The previous update leads to unconstrained optimization.  To ensure that our results always stay within the</span>
+<span class="sd">specified domain, we additionally limit updates if they would move us outside the domain.  For example,</span>
+<span class="sd">we could imagine only moving half the distance to the nearest boundary.</span>
+
+<span class="sd">With gradient descent (GD), it is hard to know what step sizes to take.  Unfortunately, far enough away from an</span>
+<span class="sd">optima, the objective could increase (but very slowly).  If gradient descent takes too large of a step in a</span>
+<span class="sd">bad direction, it can easily &quot;get lost.&quot;  At the same time, taking very small steps leads to slow performance.</span>
+<span class="sd">To help, we take the standard approach of scaling down step size with iteration number. We also allow the user</span>
+<span class="sd">to specify a maximum relative change to limit the aggressiveness of GD steps.  Finally, we wrap GD in a restart</span>
+<span class="sd">loop, where we fire off another GD run from the current location unless convergence was reached.</span>
+
+<span class="sd">**2b. NEWTON&#39;S METHOD:**</span>
+
+<span class="sd">.. Note:: Newton&#39;s method is not yet implemented in Python. See cpp_wrappers/optimization.py if you want to use this feature.</span>
+
+<span class="sd">**2b, i. OVERVIEW**</span>
+
+<span class="sd">Newton&#39;s Method (for optimization) uses second derivative information in addition to the first derivatives used by</span>
+<span class="sd">gradient descent (GD). In higher dimensions, first derivatives =&gt; gradients and second derivatives =&gt; Hessian matrix.</span>
+<span class="sd">At each iteration, gradient descent computes the derivative and blindly takes a step (of some</span>
+<span class="sd">heuristically determined size) in that direction.  Care must be taken in the step size choice to balance robustness</span>
+<span class="sd">and speed while ensuring that convergence is possible.  By using second derivative (the Hessian matrix in higher</span>
+<span class="sd">dimensions), which is interpretable as information about local curvature, Newton makes better\* choices about</span>
+<span class="sd">step size and direction to ensure rapid\*\* convergence.</span>
+
+<span class="sd">\*, \*\* See &quot;IMPLEMENTATION DETAILS&quot; comments section for details.</span>
+
+<span class="sd">Recall that Newton indiscriminately finds solutions where ``f&#39;(x) = 0``; the eigenvalues of the Hessian classify these</span>
+<span class="sd">``x`` as optima, saddle points, or indeterminate. We multistart Newton (e.g., gpp_model_selection_and_hyperparameter_optimization)</span>
+<span class="sd">but just take the best objective value without classifying solutions.</span>
+<span class="sd">The MultistartOptimizer template class in this file provides generic multistart functionality.</span>
+
+<span class="sd">Newton is implemented here: NewtonOptimizer::Optimize() (which calls NewtonOptimization())</span>
+
+<span class="sd">**2b, ii. IMPLEMENTATION DETAILS**</span>
+
+<span class="sd">Let&#39;s address the footnotes from the previous section (Section 2b, i paragraph 1):</span>
+
+<span class="sd">\* Within its region of attraction, Newton&#39;s steps are optimal (when we have only second derivative information).  Outside</span>
+<span class="sd">of this region, Newton can make very poor decisions and diverge.  In general, Newton is more sensitive to its initial</span>
+<span class="sd">conditions than gradient descent, but it has the potential to be much, much faster.</span>
+
+<span class="sd">\*\* By quadratic convergence, we mean that once Newton is near enough to the solution, the log of the error will roughly</span>
+<span class="sd">halve each iteration.  Numerically, we would see the &quot;number of digits&quot; double each iteration.  Again, this only happens</span>
+<span class="sd">once Newton is &quot;close enough.&quot;</span>
+
+<span class="sd">Newton&#39;s Method is a root-finding technique at its base.  To find a root of ``g(x)``, Newton requires an</span>
+<span class="sd">initial guess, ``x_0``, and the ability to compute ``g(x)`` and ``g&#39;(x)``.  Then the idea is that you compute</span>
+<span class="sd">root of the line tangent to ``g(x_0)``; call this ``x_1``.  And repeat.  But the core idea is to make repeated</span>
+<span class="sd">linear approximations to ``g(x)`` and proceed in a fixed-point like fashion.</span>
+
+<span class="sd">As an optimization method, we are looking for roots of the gradient, ``f&#39;(x_{opt}) = 0``.  So we require an initial guess</span>
+<span class="sd">x_0 and the ability to evaluate ``f&#39;(x)`` and ``f&#39;&#39;(x)`` (in higher dimensions, the gradient and Hessian of f).  Thus Newton</span>
+<span class="sd">makes repeated linear approximations to ``f&#39;(x)`` or equivalently, it locally approximates ``f(x)`` with a *quadratic* function,</span>
+<span class="sd">continuing iteration from the optima of that quadratic.</span>
+<span class="sd">In particular, Newton would solve the optimization problem of a quadratic program in one iteration.</span>
+
+<span class="sd">Mathematically, the update formulas for gradient descent (GD) and Newton are:</span>
+<span class="sd">GD:     ``\theta_{i+1} = \theta_i +     \gamma       * \nabla f(\theta_i)``</span>
+<span class="sd">Newton: ``\theta_{i+1} = \theta_i - H_f^-1(\theta_i) * \nabla f(\theta_i)``</span>
+<span class="sd">Note: the sign of the udpate is flipped because H is *negative* definite near a maxima.</span>
+<span class="sd">These update schemes are similar.  In GD, ``\gamma`` is chosen heuristically.  There are many ways to proceed but only</span>
+<span class="sd">so much that can be done with just gradient information; moreover the standard algorithm always proceeds in the direction</span>
+<span class="sd">of the gradient.  Newton takes a much more general appraoch.  Instead of a scalar ``\gamma``, the Newton update applies</span>
+<span class="sd">``H^-1`` to the gradient, changing both the direction and magnitude of the step.</span>
+
+<span class="sd">Unfortunately, Newton indiscriminately finds solutions where ``f&#39;(x) = 0``.  This is not necesarily an optima!  In one dimension,</span>
+<span class="sd">we can have ``f&#39;(x) = 0`` and ``f&#39;&#39;(x) = 0``, in which case the solution need not be an optima (e.g., ``y = x^3`` at ``x = 0``).</span>
+<span class="sd">In higher dimensions, a saddle point can also result (e.g., ``z = x^2 - y^2`` at ``x,y = 0``).  More generally, we have an</span>
+<span class="sd">optima if the Hessian is strictly negative or positive definite; a saddle if the Hessian has both positive and negative</span>
+<span class="sd">eigenvalues, and an indeterminate case if the Hessian is singular.</span>
+
+<span class="sd">**2c. MULTISTART OPTIMIZATION**</span>
+
+<span class="sd">Above, we mentioned that gradient descent (GD), Newton, etc. have a difficult time converging if they are started &quot;too far&quot;</span>
+<span class="sd">from an optima.  Even if convergence occurs, it will typically be very slow unless the problem is simple.  Worse,</span>
+<span class="sd">in a problem with multiple optima, the methods may converge to the wrong one!</span>
+
+<span class="sd">Multistarting the optimizers is one way of mitigating\* this issue.  Multistart involves starting a run of the</span>
+<span class="sd">specified optimizer (e.g., Newton) from each of a set of initial guesses.  Then the best result is reported as</span>
+<span class="sd">the result of the whole procedure.  By trying a large number of initial guesses, we potentially reduce the need</span>
+<span class="sd">for good guesses; i.e., hopefully at least one guess will be &quot;near enough&quot; to the global optimum.  This</span>
+<span class="sd">functionality is provided in MultistartOptimizer::MultistartOptimize(...).</span>
+
+<span class="sd">\* As noted below in the MultistartOptimizer::MultistartOptimize() function docs, mitigate is intentional here.</span>
+<span class="sd">Multistarting is NOT GUARANTEED to find global optima.  But it can increase the chances of success.</span>
+
+<span class="sd">Currently we let the user specify the initial guesses.  In practice, this typically means a random sampling of points.</span>
+<span class="sd">We do not (yet) make any effort to say sample more heavily from regions where &quot;more stuff is happening&quot; or any</span>
+<span class="sd">other heuristics.  TODO(eliu): improve multistart heuristics (#57985).</span>
+
+<span class="sd">Finally, MultistartOptimizer::MultistartOptimize() is also used to provide &#39;dumb&#39; search functionality (optimization</span>
+<span class="sd">by just evaluating the objective at numerous points).  For sufficiently complex problems, gradient descent, Newton, etc.</span>
+<span class="sd">can have exceptionally poor convergence characteristics or run too slowly.  In cases where these more advanced techniques</span>
+<span class="sd">fail, we commonly fall back to &#39;dumb&#39; search.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">collections</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+<span class="kn">from</span> <span class="nn">moe.optimal_learning.python.interfaces.optimization_interface</span> <span class="kn">import</span> <span class="n">OptimizerInterface</span>
+
+
+<div class="viewcode-block" id="multistart_optimize"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.optimization.multistart_optimize">[docs]</a><span class="k">def</span> <span class="nf">multistart_optimize</span><span class="p">(</span><span class="n">optimizer</span><span class="p">,</span> <span class="n">starting_points</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">num_multistarts</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Multistart the specified optimizer randomly or from the specified list of initial guesses.</span>
+
+<span class="sd">    If ``starting_points`` is specified, this will always multistart from those points.</span>
+<span class="sd">    If ``starting_points`` is not specified and ``num_multistarts`` is specified, we start from a random set of points.</span>
+<span class="sd">    If ``starting_points`` is not specified and ``num_multistarts`` is not specified, an exception is raised.</span>
+
+<span class="sd">    This is a simple wrapper around MultistartOptimizer.</span>
+
+<span class="sd">    :param optimizer: object that will perform the optimization</span>
+<span class="sd">    :type optimizer: interfaces.optimization_interface.OptimizerInterface subclass</span>
+<span class="sd">    :param points_to_evaluate: points at which to compute the objective</span>
+<span class="sd">    :type points_to_evaluate: array of float64 with shape (num_points, evaluator.problem_size)</span>
+<span class="sd">    :return: (best point found, objective function values at the end of each optimization run)</span>
+<span class="sd">    :rtype: tuple: (array of float64 with shape (optimizer.dim), array of float64 with shape (starting_points.shape[0]) or (num_multistarts))</span>
+<span class="sd">    :return: objective function value at each specified point</span>
+<span class="sd">    :rtype: array of float64 with shape (points_to_evaluate.shape[0])</span>
+<span class="sd">    :raises: ValueError: if both ``starting_points`` and ``num_multistarts`` are None</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">starting_points</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">num_multistarts</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;MUST specify starting points OR num_multistarts.&#39;</span><span class="p">)</span>
+
+    <span class="n">multistart_optimizer</span> <span class="o">=</span> <span class="n">MultistartOptimizer</span><span class="p">(</span><span class="n">optimizer</span><span class="p">,</span> <span class="n">num_multistarts</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">multistart_optimizer</span><span class="o">.</span><span class="n">optimize</span><span class="p">(</span><span class="n">random_starts</span><span class="o">=</span><span class="n">starting_points</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="NullParameters"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.optimization.NullParameters">[docs]</a><span class="k">class</span> <span class="nc">NullParameters</span><span class="p">(</span><span class="n">collections</span><span class="o">.</span><span class="n">namedtuple</span><span class="p">(</span><span class="s">&#39;NullParameters&#39;</span><span class="p">,</span> <span class="p">[])):</span>
+
+    <span class="sd">&quot;&quot;&quot;Empty container for optimizers that do not require any parameters (e.g., the null optimizer).&quot;&quot;&quot;</span>
+
+    <span class="n">__slots__</span> <span class="o">=</span> <span class="p">()</span>
+
+
+<span class="c"># See GradientDescentParameters (below) for docstring.</span></div>
+<span class="n">_BaseNewtonParameters</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">namedtuple</span><span class="p">(</span><span class="s">&#39;_BaseNewtonParameters&#39;</span><span class="p">,</span> <span class="p">[</span>
+    <span class="s">&#39;max_num_steps&#39;</span><span class="p">,</span>
+    <span class="s">&#39;gamma&#39;</span><span class="p">,</span>
+    <span class="s">&#39;time_factor&#39;</span><span class="p">,</span>
+    <span class="s">&#39;max_relative_change&#39;</span><span class="p">,</span>
+    <span class="s">&#39;tolerance&#39;</span><span class="p">,</span>
+<span class="p">])</span>
+
+
+<div class="viewcode-block" id="NewtonParameters"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.optimization.NewtonParameters">[docs]</a><span class="k">class</span> <span class="nc">NewtonParameters</span><span class="p">(</span><span class="n">_BaseNewtonParameters</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;See docstring at :class:`moe.optimal_learning.python.cpp_wrappers.optimization`.&quot;&quot;&quot;</span>
+
+    <span class="n">__slots__</span> <span class="o">=</span> <span class="p">()</span>
+
+<span class="c"># See GradientDescentParameters (below) for docstring.</span></div>
+<span class="n">_BaseGradientDescentParameters</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">namedtuple</span><span class="p">(</span><span class="s">&#39;_BaseGradientDescentParameters&#39;</span><span class="p">,</span> <span class="p">[</span>
+    <span class="s">&#39;max_num_steps&#39;</span><span class="p">,</span>
+    <span class="s">&#39;max_num_restarts&#39;</span><span class="p">,</span>
+    <span class="s">&#39;num_steps_averaged&#39;</span><span class="p">,</span>
+    <span class="s">&#39;gamma&#39;</span><span class="p">,</span>
+    <span class="s">&#39;pre_mult&#39;</span><span class="p">,</span>
+    <span class="s">&#39;max_relative_change&#39;</span><span class="p">,</span>
+    <span class="s">&#39;tolerance&#39;</span><span class="p">,</span>
+<span class="p">])</span>
+
+
+<div class="viewcode-block" id="GradientDescentParameters"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.optimization.GradientDescentParameters">[docs]</a><span class="k">class</span> <span class="nc">GradientDescentParameters</span><span class="p">(</span><span class="n">_BaseGradientDescentParameters</span><span class="p">):</span>
+
+    <span class="sd">r&quot;&quot;&quot;Container to hold parameters that specify the behavior of Gradient Descent.</span>
+
+<span class="sd">    .. Note:: the following comments are copied from cpp_wrappers.optimization.GradientDescentParameters</span>
+
+<span class="sd">    **Iterations**</span>
+
+<span class="sd">    The total number of gradient descent steps is at most ``num_multistarts * max_num_steps * max_num_restarts``</span>
+<span class="sd">    Generally, allowing more iterations leads to a better solution but costs more time.</span>
+
+<span class="sd">    **Averaging**</span>
+
+<span class="sd">    When optimizing stochastic objective functions, it can often be beneficial to average some number of gradient descent</span>
+<span class="sd">    steps to obtain the final result (vs just returning the last step).</span>
+<span class="sd">    Polyak-Ruppert averaging: postprocessing step where we replace ``x_n`` with:</span>
+<span class="sd">    ``\overbar{x} = \frac{1}{n - n_0} \sum_{t=n_0 + 1}^n x_t``</span>
+<span class="sd">    ``n_0 = 0`` averages all steps; ``n_0 = n - 1`` is equivalent to returning ``x_n`` directly.</span>
+<span class="sd">    Here, num_steps_averaged is ``n - n_0``.</span>
+
+<span class="sd">    * ``num_steps_averaged`` &lt; 0: averages all steps</span>
+<span class="sd">    * ``num_steps_averaged`` == 0: do not average</span>
+<span class="sd">    * ``num_steps_averaged`` &gt; 0 and &lt;= ``max_num_steps``: average the specified number of steps</span>
+<span class="sd">    * ``max_steps_averaged`` &gt; ``max_num_steps``: average all steps</span>
+
+<span class="sd">    **Learning Rate**</span>
+
+<span class="sd">    GD may be implemented using a learning rate: ``pre_mult * (i+1)^{-\gamma}``, where i is the current iteration</span>
+<span class="sd">    Larger gamma causes the GD step size to (artificially) scale down faster.</span>
+<span class="sd">    Smaller pre_mult (artificially) shrinks the GD step size.</span>
+<span class="sd">    Generally, taking a very large number of small steps leads to the most robustness; but it is very slow.</span>
+
+<span class="sd">    **Tolerances**</span>
+
+<span class="sd">    Larger relative changes are potentially less robust but lead to faster convergence.</span>
+<span class="sd">    Large tolerances run faster but may lead to high errors or false convergence (e.g., if the tolerance is 1.0e-3 and the learning</span>
+<span class="sd">    rate control forces steps to fall below 1.0e-3 quickly, then GD will quit &quot;successfully&quot; without genuinely converging.)</span>
+
+<span class="sd">    :ivar max_num_steps: (*int &gt; 0*) maximum number of gradient descent iterations per restart (suggest: 200-1000)</span>
+<span class="sd">    :ivar max_num_restarts: (*int &gt; 0*) maximum number of gradient descent restarts, the we are allowed to call gradient descent.  Should be &gt;= 2 as a minimum (suggest: 10-20)</span>
+<span class="sd">    :ivar num_steps_averaged: (*int*) number of steps to use in polyak-ruppert averaging (see above) (suggest: 10-50% of max_num_steps for stochastic problems, 0 otherwise)</span>
+<span class="sd">    :ivar gamma: (*float64 &gt; 1.0*) exponent controlling rate of step size decrease (see struct docs or GradientDescentOptimizer) (suggest: 0.5-0.9)</span>
+<span class="sd">    :ivar pre_mult: (*float64 &gt; 1.0*) scaling factor for step size (see struct docs or GradientDescentOptimizer) (suggest: 0.1-1.0)</span>
+<span class="sd">    :ivar max_relative_change: (*float64 in [0, 1]*) max change allowed per GD iteration (as a relative fraction of current distance to wall)</span>
+<span class="sd">           (suggest: 0.5-1.0 for less sensitive problems like EI; 0.02 for more sensitive problems like hyperparameter opt)</span>
+<span class="sd">    :ivar tolerance: (*float 64 &gt;= 0.0*) when the magnitude of the gradient falls below this value OR we will not move farther than tolerance</span>
+<span class="sd">           (e.g., at a boundary), stop.  (suggest: 1.0e-7)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">__slots__</span> <span class="o">=</span> <span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="NullOptimizer"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.optimization.NullOptimizer">[docs]</a><span class="k">class</span> <span class="nc">NullOptimizer</span><span class="p">(</span><span class="n">OptimizerInterface</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;A &quot;null&quot; or identity optimizer: this does nothing. It is used to perform &quot;dumb&quot; search with MultistartOptimizer.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">domain</span><span class="p">,</span> <span class="n">optimizable</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construct a NullOptimizer.</span>
+
+<span class="sd">        :param domain: the domain that this optimizer operates over</span>
+<span class="sd">        :type domain: interfaces.domain_interface.DomainInterface subclass</span>
+<span class="sd">        :param optimizable: object representing the objective function being optimized</span>
+<span class="sd">        :type optimizable: interfaces.optimization_interface.OptimizableInterface subclass</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">domain</span> <span class="o">=</span> <span class="n">domain</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">objective_function</span> <span class="o">=</span> <span class="n">optimizable</span>
+
+<div class="viewcode-block" id="NullOptimizer.optimize"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.optimization.NullOptimizer.optimize">[docs]</a>    <span class="k">def</span> <span class="nf">optimize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Do nothing; arguments are unused.&quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+
+</div></div>
+<div class="viewcode-block" id="GradientDescentOptimizer"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.optimization.GradientDescentOptimizer">[docs]</a><span class="k">class</span> <span class="nc">GradientDescentOptimizer</span><span class="p">(</span><span class="n">OptimizerInterface</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;Optimizes an objective function over the specified domain with the gradient descent method.</span>
+
+<span class="sd">    .. Note:: See optimize() docstring for more details.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">domain</span><span class="p">,</span> <span class="n">optimizable</span><span class="p">,</span> <span class="n">optimization_parameters</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construct a GradientDescentOptimizer.</span>
+
+<span class="sd">        :param domain: the domain that this optimizer operates over</span>
+<span class="sd">        :type domain: interfaces.domain_interface.DomainInterface subclass</span>
+<span class="sd">        :param optimizable: object representing the objective function being optimized</span>
+<span class="sd">        :type optimizable: interfaces.optimization_interface.OptimizableInterface subclass</span>
+<span class="sd">        :param optimization_parameters: parameters describing how to perform optimization (tolerances, iterations, etc.)</span>
+<span class="sd">        :type optimization_parameters: python_version.optimization.GradientDescentParameters object</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">domain</span> <span class="o">=</span> <span class="n">domain</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">objective_function</span> <span class="o">=</span> <span class="n">optimizable</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">optimization_parameters</span> <span class="o">=</span> <span class="n">optimization_parameters</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_get_averaging_range</span><span class="p">(</span><span class="n">num_steps_averaged</span><span class="p">,</span> <span class="n">num_steps_total</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a valid (non-empty, not out-of-bounds) to average over in suppport of Polyak-Ruppert averaging.</span>
+
+<span class="sd">        Yields a range according to the following:</span>
+
+<span class="sd">        * ``num_steps_averaged`` &lt; 0: averages all steps</span>
+<span class="sd">        * ``num_steps_averaged`` == 0: do not average</span>
+<span class="sd">        * ``num_steps_averaged`` &gt; 0 and &lt;= ``max_num_steps``: average the specified number of steps</span>
+<span class="sd">        * ``max_steps_averaged`` &gt; ``max_num_steps``: average all steps</span>
+
+<span class="sd">        Assumes that the averaging will be done from a 0-indexed array where the first index (position 0)</span>
+<span class="sd">        is skipped. (We skip this point b/c it would bias the average toward the initial guess.)</span>
+
+<span class="sd">        :param num_steps_averaged: desired number of steps to average</span>
+<span class="sd">        :type num_steps_averaged: int</span>
+<span class="sd">        :param num_steps_total: total number of steps taken</span>
+<span class="sd">        :type num_steps_total: int &gt; 1</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">num_steps_averaged</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">num_steps_averaged</span> <span class="o">&gt;</span> <span class="n">num_steps_total</span><span class="p">:</span>
+            <span class="n">num_steps_averaged</span> <span class="o">=</span> <span class="n">num_steps_total</span>  <span class="c"># average all steps</span>
+        <span class="k">elif</span> <span class="n">num_steps_averaged</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">num_steps_averaged</span> <span class="o">=</span> <span class="mi">1</span>                <span class="c"># average only the last step aka do not average</span>
+
+        <span class="n">start</span> <span class="o">=</span> <span class="n">num_steps_total</span> <span class="o">-</span> <span class="n">num_steps_averaged</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="n">num_steps_total</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span>
+
+<div class="viewcode-block" id="GradientDescentOptimizer.optimize"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.optimization.GradientDescentOptimizer.optimize">[docs]</a>    <span class="k">def</span> <span class="nf">optimize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Apply gradient-descrent to to find a locally optimal (maximal here) value of the specified objective function.</span>
+
+<span class="sd">        .. Note:: comments in this method are copied from the function comments of GradientDescentOptimization() in cpp/gpp_optimization.hpp.</span>
+
+<span class="sd">        .. Note:: Additional high-level discussion is provided in section 2a) in the header docs of this file.</span>
+
+<span class="sd">        Basic gradient descent (GD) to optimize objective function ``f(x)``::</span>
+
+<span class="sd">          input: initial_guess</span>
+
+<span class="sd">          next_point = initial_guess</span>
+<span class="sd">          i = 0;</span>
+<span class="sd">          while (not converged) {</span>
+<span class="sd">            direction = derivative of f(x) at next_point</span>
+<span class="sd">            step_scale = compute step_size scaling: pre_mult * (i+1)^(-gamma)</span>
+
+<span class="sd">            next_point += step_scale * direction</span>
+<span class="sd">            ++i</span>
+<span class="sd">          }</span>
+<span class="sd">          if (averaging) {</span>
+<span class="sd">            next_point = average(previous_points, average_range_start, average_range_end)</span>
+<span class="sd">          }</span>
+
+<span class="sd">        See GradientDescentParameters docstring or the GD code for more information on averaging.</span>
+
+<span class="sd">        So it marches along the direction of largest gradient (so the steepest descent) for some distance.  The distance</span>
+<span class="sd">        is a combination of the size of the gradient and the step_scale factor.  Here, we use an exponentially decreasing</span>
+<span class="sd">        scale to request progressively smaller step sizes: ``(i+1)^(-gamma)``, where ``i`` is the iteration number</span>
+
+<span class="sd">        We do not allow the step to take next_point out of the domain; if this happens, the update is limited.</span>
+<span class="sd">        Thus the solution is guaranteed to lie within the region specified by &quot;domain&quot;; note that this may not be a</span>
+<span class="sd">        true optima (i.e., the gradient may be substantially nonzero).</span>
+
+<span class="sd">        We may also limit very large updates (controlled via max_relative_change).  Decreasing this value</span>
+<span class="sd">        makes gradient descent (GD) more stable but also slower.  For very sensitive problems like hyperparameter</span>
+<span class="sd">        optimization, max_relative_change = 0.02 is suggested; for less sensitive problems</span>
+<span class="sd">        (e.g., EI, especially analytic), you can use 1.0 (or near).</span>
+
+<span class="sd">        The constraint implementation (no stepping outside the domain) and the large update limiting are not &quot;pure&quot; gradient</span>
+<span class="sd">        descent approaches.  They are all heuristics meant to improve Newton&#39;s robustness.  The constraint implementation</span>
+<span class="sd">        in particular may lead to non-convergence and it also may not find constrained optima that lie exactly on a boundary.  This would</span>
+<span class="sd">        require a more general handling where we search in an ``d-1`` dimensional subspace (i.e., only on the boundary).</span>
+
+<span class="sd">        Note that we are using an absolute tolerance here, based on the size of the most recent step.</span>
+<span class="sd">        The suggested value is 1.0e-7, although this may need to be loosened for problems with &#39;difficult&#39; optima (e.g., the shape</span>
+<span class="sd">        is not locally very peaked).  Setting too high of a tolerance can cause wrong answers--e.g., we stop at a point</span>
+<span class="sd">        that is not an optima but simply an region with small gradient.  Setting the tolerance too low may make convergence impossible;</span>
+<span class="sd">        GD could get stuck (bouncing between the same few points) or numerical effects could make it impossible to satisfy tolerance.</span>
+
+<span class="sd">        Finally, GD terminates if updates are very small.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># TODO(eliu): implement restarts like in the C++ code (GH-59)</span>
+        <span class="n">initial_guess</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">objective_function</span><span class="o">.</span><span class="n">get_current_point</span><span class="p">()</span>
+        <span class="n">x_hat</span> <span class="o">=</span> <span class="n">initial_guess</span>
+        <span class="n">x_path</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">optimization_parameters</span><span class="o">.</span><span class="n">max_num_steps</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="p">)</span> <span class="o">+</span> <span class="n">initial_guess</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="n">x_path</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="n">initial_guess</span>
+
+        <span class="n">step_counter</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">while</span> <span class="n">step_counter</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimization_parameters</span><span class="o">.</span><span class="n">max_num_steps</span><span class="p">:</span>
+            <span class="n">alpha_n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimization_parameters</span><span class="o">.</span><span class="n">pre_mult</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">step_counter</span><span class="p">),</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">optimization_parameters</span><span class="o">.</span><span class="n">gamma</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">objective_function</span><span class="o">.</span><span class="n">set_current_point</span><span class="p">(</span><span class="n">x_path</span><span class="p">[</span><span class="n">step_counter</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="o">...</span><span class="p">])</span>
+            <span class="n">orig_step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">objective_function</span><span class="o">.</span><span class="n">compute_grad_objective_function</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+            <span class="n">orig_step</span> <span class="o">*=</span> <span class="n">alpha_n</span>
+            <span class="n">fixed_step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">compute_update_restricted_to_domain</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">optimization_parameters</span><span class="o">.</span><span class="n">max_relative_change</span><span class="p">,</span>
+                <span class="n">x_path</span><span class="p">[</span><span class="n">step_counter</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>
+                <span class="n">orig_step</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="n">x_path</span><span class="p">[</span><span class="n">step_counter</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="n">fixed_step</span> <span class="o">+</span> <span class="n">x_path</span><span class="p">[</span><span class="n">step_counter</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+
+            <span class="n">step_counter</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="c"># TODO(eliu): tolerance control: if step is too small, stop (??). This goes at the loop&#39;s end, AFTER incrementing step_counter! (GH-59)</span>
+
+        <span class="c"># Polyak-Ruppert averaging: postprocessing step where we replace x_n with:</span>
+        <span class="c"># \overbar{x} = \frac{1}{n - n_0} \sum_{t=n_0 + 1}^n x_t</span>
+        <span class="c"># n_0 = 0 averages all steps; n_0 = n - 1 is equivalent to returning x_n directly.</span>
+        <span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_averaging_range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">optimization_parameters</span><span class="o">.</span><span class="n">num_steps_averaged</span><span class="p">,</span> <span class="n">step_counter</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">x_hat</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">x_path</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">objective_function</span><span class="o">.</span><span class="n">set_current_point</span><span class="p">(</span><span class="n">x_hat</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="MultistartOptimizer"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.optimization.MultistartOptimizer">[docs]</a><span class="k">class</span> <span class="nc">MultistartOptimizer</span><span class="p">(</span><span class="n">OptimizerInterface</span><span class="p">):</span>
+
+    <span class="sd">r&quot;&quot;&quot;A general class for multistarting any class that implements interfaces.optimization_interface.OptimizerInterface (except itself).</span>
+
+<span class="sd">    .. Note:: comments copied from MultistartOptimizer in gpp_optimization.hpp.</span>
+
+<span class="sd">    The use with GradientDescentOptimizer, NewtonOptimizer, etc. are standard practice in nonlinear optimization.  In particular,</span>
+<span class="sd">    without special properties like convexity, single-start optimizers can converge to local optima.  In general, a nonlinear</span>
+<span class="sd">    function can have many local optima, so the only way to improve\* your chances of finding the global optimum is to start</span>
+<span class="sd">    from many different locations.</span>
+
+<span class="sd">    \* Improve is intentional here.  In the general case, you are not *guaranteed* (in finite time) to find the global optimum.</span>
+
+<span class="sd">    Use with NullOptimizer requires special mention here as it might seem silly. This case reduces to evaluating the</span>
+<span class="sd">    objective function at every point of initial_guesses.  Through function_values, you can get the objective value at each</span>
+<span class="sd">    of point of initial_guesses too (e.g., for plotting).  So use MultistartOptimize with NullOptimzer to perform a</span>
+<span class="sd">    &#39;dumb&#39; search (e.g., initial_guesses can be obtained from a grid, random sampling, etc.).  NullOptimizer allows &#39;dumb&#39; search</span>
+<span class="sd">    to use the same code as multistart optimization.  &#39;Dumb&#39; search is inaccurate but it never fails, so we often use it as a</span>
+<span class="sd">    fall-back when more advanced (e.g., gradient descent) techniques fail.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">num_multistarts</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construct a MultistartOptimizer for multistarting any implementation of OptimizationInterface.</span>
+
+<span class="sd">        :param optimizer: object representing the optimization method to be multistarted</span>
+<span class="sd">        :type optimizer: interfaces.optimization_interface.OptimizableInterface subclass (except itself)</span>
+<span class="sd">        :param optimization_parameters:</span>
+<span class="sd">        :type optimization_parameters:</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span> <span class="o">=</span> <span class="n">optimizer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_multistarts</span> <span class="o">=</span> <span class="n">num_multistarts</span>
+
+<div class="viewcode-block" id="MultistartOptimizer.optimize"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.optimization.MultistartOptimizer.optimize">[docs]</a>    <span class="k">def</span> <span class="nf">optimize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">random_starts</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Perform multistart optimization with self.optimizer.</span>
+
+<span class="sd">        .. Note:: comments copied from MultistartOptimizer::MultistartOptimize in gpp_optimization.hpp.</span>
+
+<span class="sd">        Performs multistart optimization with the specified Optimizer (instance variable) to optimize the specified</span>
+<span class="sd">        OptimizableInterface (objective function) over the specified DomainInterface. Optimizer behavior is controlled</span>
+<span class="sd">        by the specified ParameterStruct. See class docs and header docs of this file, section 2c and 3b, iii),</span>
+<span class="sd">        for more information.</span>
+
+<span class="sd">        The method allows you to specify what the current best is, so that if optimization cannot beat it, no improvement will be</span>
+<span class="sd">        reported.  It will otherwise report the overall best improvement (through io_container) as well as the result of every</span>
+<span class="sd">        individual multistart run if desired (through function_values).</span>
+
+<span class="sd">        :param starting_points: points from which to multistart ``self.optimizer``; if None, points are chosen randomly</span>
+<span class="sd">        :type starting_points: array of float64 with shape (num_points, dim) or None</span>
+<span class="sd">        :return: (best point found, objective function values at the end of each optimization run)</span>
+<span class="sd">        :rtype: tuple: (array of float64 with shape (self.optimizer.dim), array of float64 with shape (self.num_multistarts))</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># TODO(eliu): pass the best point, fcn value, etc. in thru an IOContainer-like structure (GH-59)</span>
+        <span class="k">if</span> <span class="n">random_starts</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">random_starts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">generate_uniform_random_points_in_domain</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_multistarts</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+
+        <span class="n">best_function_value</span> <span class="o">=</span> <span class="o">-</span><span class="n">numpy</span><span class="o">.</span><span class="n">inf</span>
+        <span class="n">best_point</span> <span class="o">=</span> <span class="n">random_starts</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>  <span class="c"># any point will do</span>
+        <span class="n">function_value_list</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">random_starts</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">point</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">random_starts</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">objective_function</span><span class="o">.</span><span class="n">set_current_point</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">optimize</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="n">function_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">objective_function</span><span class="o">.</span><span class="n">compute_objective_function</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="n">function_value_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">function_value</span>
+
+            <span class="k">if</span> <span class="n">function_value</span> <span class="o">&gt;</span> <span class="n">best_function_value</span><span class="p">:</span>
+                <span class="n">best_function_value</span> <span class="o">=</span> <span class="n">function_value</span>
+                <span class="n">best_point</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">objective_function</span><span class="o">.</span><span class="n">get_current_point</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">best_point</span><span class="p">,</span> <span class="n">function_value_list</span></div></div>
+</pre></div>
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

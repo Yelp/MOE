@@ -1,0 +1,319 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>moe.tests.EPI.src.python.gaussian_process_test_case &mdash; MOE 0.1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../../../../_static/favicon.ico"/>
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../../../../_static/breathe.css" type="text/css" />
+  
+    <link rel="top" title="MOE 0.1.0 documentation" href="../../../../../../index.html"/>
+        <link rel="up" title="moe" href="../../../../../moe.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="../../../../../../index.html" class="fa fa-home"> MOE</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../moe.html">moe package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../moe.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../moe.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../moe.html#module-moe.resources">moe.resources module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../moe.html#module-moe">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../gpp_math_hpp.html">gpp_math.hpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../gpp_geometry_hpp.html">gpp_geometry.hpp</a></li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../../../../index.html">MOE</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../../../../index.html">Module code</a> &raquo;</li>
+      
+          <li><a href="../../../../../moe.html">moe</a> &raquo;</li>
+      
+    <li>moe.tests.EPI.src.python.gaussian_process_test_case</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <h1>Source code for moe.tests.EPI.src.python.gaussian_process_test_case</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">testify</span> <span class="kn">as</span> <span class="nn">T</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+<span class="kn">from</span> <span class="nn">moe.optimal_learning.EPI.src.python.data_containers</span> <span class="kn">import</span> <span class="n">SamplePoint</span>
+<span class="kn">from</span> <span class="nn">moe.optimal_learning.EPI.src.python.models.covariance_of_process</span> <span class="kn">import</span> <span class="n">CovarianceOfProcess</span>
+<span class="kn">from</span> <span class="nn">moe.optimal_learning.EPI.src.python.models.optimal_gaussian_process_linked_cpp</span> <span class="kn">import</span> <span class="n">OptimalGaussianProcessLinkedCpp</span>
+<span class="kn">from</span> <span class="nn">moe.optimal_learning.EPI.src.python.models.optimal_gaussian_process</span> <span class="kn">import</span> <span class="n">OptimalGaussianProcess</span> <span class="k">as</span> <span class="n">OptimalGaussianProcessPython</span>
+<span class="kn">import</span> <span class="nn">moe.optimal_learning.EPI.src.python.lib.math</span>
+<span class="kn">from</span> <span class="nn">moe.optimal_learning.EPI.src.python.constant</span> <span class="kn">import</span> <span class="n">default_gaussian_process_parameters</span>
+
+
+<div class="viewcode-block" id="GaussianProcessTestCase"><a class="viewcode-back" href="../../../../../../moe.tests.EPI.src.python.html#moe.tests.EPI.src.python.gaussian_process_test_case.GaussianProcessTestCase">[docs]</a><span class="k">class</span> <span class="nc">GaussianProcessTestCase</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+
+    <span class="n">default_domain</span> <span class="o">=</span> <span class="p">[[</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]]</span>
+    <span class="n">default_covariance_signal_variance</span> <span class="o">=</span> <span class="n">default_gaussian_process_parameters</span><span class="o">.</span><span class="n">signal_variance</span>
+    <span class="n">default_covariance_length</span> <span class="o">=</span> <span class="n">default_gaussian_process_parameters</span><span class="o">.</span><span class="n">length_scale</span>
+    <span class="n">default_gaussian_process_class</span> <span class="o">=</span> <span class="n">OptimalGaussianProcessLinkedCpp</span>
+    <span class="n">default_sample_variance</span> <span class="o">=</span> <span class="mf">0.01</span>
+    <span class="n">tol</span> <span class="o">=</span> <span class="mf">1e-12</span> <span class="c"># TODO eliu look into this ticket #43006</span>
+
+<div class="viewcode-block" id="GaussianProcessTestCase.assert_relatively_equal"><a class="viewcode-back" href="../../../../../../moe.tests.EPI.src.python.html#moe.tests.EPI.src.python.gaussian_process_test_case.GaussianProcessTestCase.assert_relatively_equal">[docs]</a>    <span class="k">def</span> <span class="nf">assert_relatively_equal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value_one</span><span class="p">,</span> <span class="n">value_two</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Assert that two values are relatively equal,</span>
+<span class="sd">        |value_one - value_two|/|value_one| &lt;= eps</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">tol</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">tol</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tol</span>
+        <span class="n">denom</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">value_one</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">denom</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">):</span>
+            <span class="n">denom</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">;</span>
+        <span class="n">T</span><span class="o">.</span><span class="n">assert_lte</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">value_one</span> <span class="o">-</span> <span class="n">value_two</span><span class="p">)</span><span class="o">/</span><span class="n">denom</span><span class="p">,</span>
+                 <span class="n">tol</span><span class="p">,</span>
+                 <span class="p">)</span>
+</div>
+<div class="viewcode-block" id="GaussianProcessTestCase.assert_lists_relatively_equal"><a class="viewcode-back" href="../../../../../../moe.tests.EPI.src.python.html#moe.tests.EPI.src.python.gaussian_process_test_case.GaussianProcessTestCase.assert_lists_relatively_equal">[docs]</a>    <span class="k">def</span> <span class="nf">assert_lists_relatively_equal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">list_one</span><span class="p">,</span> <span class="n">list_two</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Assert two lists are relatively equal.&quot;&quot;&quot;</span>
+        <span class="n">T</span><span class="o">.</span><span class="n">assert_length</span><span class="p">(</span><span class="n">list_one</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">list_two</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">list_one_item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">list_one</span><span class="p">):</span>
+            <span class="n">list_two_item</span> <span class="o">=</span> <span class="n">list_two</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assert_relatively_equal</span><span class="p">(</span><span class="n">list_one_item</span><span class="p">,</span> <span class="n">list_two_item</span><span class="p">,</span> <span class="n">tol</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="GaussianProcessTestCase.assert_matrix_relatively_equal"><a class="viewcode-back" href="../../../../../../moe.tests.EPI.src.python.html#moe.tests.EPI.src.python.gaussian_process_test_case.GaussianProcessTestCase.assert_matrix_relatively_equal">[docs]</a>    <span class="k">def</span> <span class="nf">assert_matrix_relatively_equal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">matrix_one</span><span class="p">,</span> <span class="n">matrix_two</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Assert two matrices are relatively equal.&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">row_idx</span><span class="p">,</span> <span class="n">row_matrix_one</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">matrix_one</span><span class="p">):</span>
+            <span class="n">row_matrix_two</span> <span class="o">=</span> <span class="n">matrix_two</span><span class="p">[</span><span class="n">row_idx</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assert_lists_relatively_equal</span><span class="p">(</span><span class="n">row_matrix_one</span><span class="p">,</span> <span class="n">row_matrix_two</span><span class="p">,</span> <span class="n">tol</span><span class="p">)</span>
+</div>
+    <span class="k">def</span> <span class="nf">_make_default_covariance_of_process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">signal_variance</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Make a default covariance of process with optional parameters</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">signal_variance</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">signal_variance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_covariance_signal_variance</span>
+        <span class="k">if</span> <span class="n">length</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">length</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_covariance_length</span>
+        <span class="n">hyperparameters</span> <span class="o">=</span> <span class="p">[</span><span class="n">signal_variance</span><span class="p">]</span>
+        <span class="n">hyperparameters</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">length</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">CovarianceOfProcess</span><span class="p">(</span><span class="n">hyperparameters</span><span class="o">=</span><span class="n">hyperparameters</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_make_default_gaussian_process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gaussian_process_class</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">default_sample_variance</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">signal_variance</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">covariance_of_process</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">max_number_of_threads</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Make a default gaussian process with optional parameters</span>
+<span class="sd">        using a default covariance of process</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">domain</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">domain</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_domain</span>
+        <span class="k">if</span> <span class="n">gaussian_process_class</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">gaussian_process_class</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_gaussian_process_class</span>
+        <span class="k">if</span> <span class="n">default_sample_variance</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">default_sample_variance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_sample_variance</span>
+
+        <span class="c"># build the covariance_of_process object</span>
+        <span class="k">if</span> <span class="n">covariance_of_process</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">covariance_of_process</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_default_covariance_of_process</span><span class="p">(</span>
+                    <span class="n">signal_variance</span><span class="o">=</span><span class="n">signal_variance</span><span class="p">,</span>
+                    <span class="n">length</span><span class="o">=</span><span class="n">length</span><span class="p">,</span>
+                    <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">gaussian_process_class</span><span class="p">(</span>
+            <span class="n">domain</span><span class="o">=</span><span class="n">domain</span><span class="p">,</span>
+            <span class="n">covariance_of_process</span><span class="o">=</span><span class="n">covariance_of_process</span><span class="p">,</span>
+            <span class="n">default_sample_variance</span><span class="o">=</span><span class="n">default_sample_variance</span><span class="p">,</span>
+            <span class="n">max_number_of_threads</span><span class="o">=</span><span class="n">max_number_of_threads</span><span class="p">,</span>
+            <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_sample_points_from_gaussian_process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gaussian_process</span><span class="p">,</span> <span class="n">points_to_sample</span><span class="p">,</span> <span class="n">random_normal_values</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">extra_gaussian_process</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">default_sample_variance</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Samples the points in points_to_sample by drawing them from the gaussian_process</span>
+<span class="sd">        and them adding them to gaussian_process, and also to extra_gaussian_process if it is provided</span>
+<span class="sd">        will use the values provided in random_normal_values for drawing the points if given need 2 per point</span>
+<span class="sd">        see gaussian_process.sample_from_process for details</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">default_sample_variance</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">default_sample_variance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_sample_variance</span>
+
+        <span class="k">for</span> <span class="n">point_on</span><span class="p">,</span> <span class="n">point_to_sample</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">):</span>
+            <span class="c"># wrap the point in a numpy array</span>
+            <span class="n">point_point</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">point_to_sample</span><span class="p">)</span>
+
+            <span class="c"># grab the normal values we need (or not)</span>
+            <span class="k">if</span> <span class="n">random_normal_values</span><span class="p">:</span>
+                <span class="n">random_normal</span> <span class="o">=</span> <span class="n">random_normal_values</span><span class="p">[</span><span class="n">point_on</span> <span class="o">*</span> <span class="mi">2</span><span class="p">]</span>
+                <span class="n">sample_variance_normal</span> <span class="o">=</span> <span class="n">random_normal_values</span><span class="p">[</span><span class="n">point_on</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">random_normal</span> <span class="o">=</span> <span class="bp">None</span>
+                <span class="n">sample_variance_normal</span> <span class="o">=</span> <span class="n">default_sample_variance</span>
+
+            <span class="c"># draw a value from gaussian_process at point_point</span>
+            <span class="n">point_val</span> <span class="o">=</span> <span class="n">gaussian_process</span><span class="o">.</span><span class="n">sample_from_process</span><span class="p">(</span>
+                    <span class="n">point_point</span><span class="p">,</span>
+                    <span class="n">random_normal</span><span class="o">=</span><span class="n">random_normal</span><span class="p">,</span>
+                    <span class="p">)</span>
+
+            <span class="c"># wrap the point in the SamplePoint class</span>
+            <span class="n">sample_point</span> <span class="o">=</span> <span class="n">SamplePoint</span><span class="p">(</span><span class="n">point_point</span><span class="p">,</span> <span class="n">point_val</span><span class="p">,</span> <span class="n">default_sample_variance</span><span class="p">)</span>
+
+            <span class="c"># add the point to the GPs</span>
+            <span class="n">gaussian_process</span><span class="o">.</span><span class="n">add_sample_point</span><span class="p">(</span><span class="n">sample_point</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">extra_gaussian_process</span><span class="p">:</span>
+                <span class="n">extra_gaussian_process</span><span class="o">.</span><span class="n">add_sample_point</span><span class="p">(</span><span class="n">sample_point</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_make_random_processes_from_latin_hypercube</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">domain</span><span class="p">,</span> <span class="n">num_points_in_sample</span><span class="p">,</span> <span class="n">default_sample_variance</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">covariance_of_process</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">default_signal_variance</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">default_sample_variance</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">default_sample_variance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_sample_variance</span>
+
+        <span class="n">cpp_GP</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_default_gaussian_process</span><span class="p">(</span>
+                <span class="n">gaussian_process_class</span><span class="o">=</span><span class="n">OptimalGaussianProcessLinkedCpp</span><span class="p">,</span>
+                <span class="n">domain</span><span class="o">=</span><span class="n">domain</span><span class="p">,</span>
+                <span class="n">covariance_of_process</span><span class="o">=</span><span class="n">covariance_of_process</span><span class="p">,</span>
+                <span class="n">default_sample_variance</span><span class="o">=</span><span class="n">default_sample_variance</span><span class="p">,</span>
+                <span class="p">)</span>
+        <span class="n">python_GP</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_default_gaussian_process</span><span class="p">(</span>
+                <span class="n">gaussian_process_class</span><span class="o">=</span><span class="n">OptimalGaussianProcessPython</span><span class="p">,</span>
+                <span class="n">domain</span><span class="o">=</span><span class="n">domain</span><span class="p">,</span>
+                <span class="n">covariance_of_process</span><span class="o">=</span><span class="n">covariance_of_process</span><span class="p">,</span>
+                <span class="n">default_sample_variance</span><span class="o">=</span><span class="n">default_sample_variance</span><span class="p">,</span>
+                <span class="p">)</span>
+
+        <span class="c"># A num_points_in_sample random latin hypercube points</span>
+        <span class="n">stencil_points_to_sample</span> <span class="o">=</span> <span class="n">moe</span><span class="o">.</span><span class="n">optimal_learning</span><span class="o">.</span><span class="n">EPI</span><span class="o">.</span><span class="n">src</span><span class="o">.</span><span class="n">python</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">get_latin_hypercube_points</span><span class="p">(</span><span class="n">num_points_in_sample</span><span class="p">,</span> <span class="n">domain</span><span class="p">)</span>
+
+        <span class="c"># Sample stencil</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sample_points_from_gaussian_process</span><span class="p">(</span>
+                <span class="n">gaussian_process</span><span class="o">=</span><span class="n">cpp_GP</span><span class="p">,</span>
+                <span class="n">points_to_sample</span><span class="o">=</span><span class="n">stencil_points_to_sample</span><span class="p">,</span>
+                <span class="n">extra_gaussian_process</span><span class="o">=</span><span class="n">python_GP</span><span class="p">,</span>
+                <span class="n">default_sample_variance</span><span class="o">=</span><span class="n">default_sample_variance</span><span class="p">,</span>
+                <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">cpp_GP</span><span class="p">,</span> <span class="n">python_GP</span></div>
+</pre></div>
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

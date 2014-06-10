@@ -1,0 +1,219 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>moe.optimal_learning.EPI.src.python.cpp_wrappers.cpp_utils &mdash; MOE 0.1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../../../../../_static/favicon.ico"/>
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../../../../../_static/breathe.css" type="text/css" />
+  
+    <link rel="top" title="MOE 0.1.0 documentation" href="../../../../../../../index.html"/>
+        <link rel="up" title="moe" href="../../../../../../moe.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="../../../../../../../index.html" class="fa fa-home"> MOE</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../moe.html">moe package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../../moe.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../../moe.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../../moe.html#module-moe.resources">moe.resources module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../../moe.html#module-moe">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../gpp_math_hpp.html">gpp_math.hpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../gpp_geometry_hpp.html">gpp_geometry.hpp</a></li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../../../../../index.html">MOE</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../../../../../index.html">Module code</a> &raquo;</li>
+      
+          <li><a href="../../../../../../moe.html">moe</a> &raquo;</li>
+      
+    <li>moe.optimal_learning.EPI.src.python.cpp_wrappers.cpp_utils</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <h1>Source code for moe.optimal_learning.EPI.src.python.cpp_wrappers.cpp_utils</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;Utilities for making data C++ consumable and for making C++ outputs Python consumable.&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+
+<div class="viewcode-block" id="cppify"><a class="viewcode-back" href="../../../../../../../moe.optimal_learning.EPI.src.python.cpp_wrappers.html#moe.optimal_learning.EPI.src.python.cpp_wrappers.cpp_utils.cppify">[docs]</a><span class="k">def</span> <span class="nf">cppify</span><span class="p">(</span><span class="n">array</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Flatten a numpy array and copies it to a list for C++ consumption.</span>
+
+<span class="sd">    TOOD(eliu): C++ to accept numpy arrays instead?</span>
+
+<span class="sd">    :param array: array to convert</span>
+<span class="sd">    :type array: array-like (e.g., ndarray, list, etc.) of float64</span>
+<span class="sd">    :return: list copied from flattened array</span>
+<span class="sd">    :rtype: list</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">ravel</span><span class="p">(</span><span class="n">array</span><span class="p">))</span>
+
+</div>
+<div class="viewcode-block" id="uncppify"><a class="viewcode-back" href="../../../../../../../moe.optimal_learning.EPI.src.python.cpp_wrappers.html#moe.optimal_learning.EPI.src.python.cpp_wrappers.cpp_utils.uncppify">[docs]</a><span class="k">def</span> <span class="nf">uncppify</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">expected_shape</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Reshape a copy of the input array into the expected shape.</span>
+
+<span class="sd">    TODO(eliu): Ideally we can avoid the copy here and get rid of this function (instead, call reshape directly).</span>
+
+<span class="sd">    :param array: array to reshape</span>
+<span class="sd">    :type array: array-like</span>
+<span class="sd">    :param expected_shape: desired shape for array</span>
+<span class="sd">    :type expected_shape: int or tuple of ints</span>
+<span class="sd">    :return: reshaped input</span>
+<span class="sd">    :rtype: array of float64 with shape ``expected_shape``</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">array</span><span class="p">),</span> <span class="n">expected_shape</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="cppify_hyperparameters"><a class="viewcode-back" href="../../../../../../../moe.optimal_learning.EPI.src.python.cpp_wrappers.html#moe.optimal_learning.EPI.src.python.cpp_wrappers.cpp_utils.cppify_hyperparameters">[docs]</a><span class="k">def</span> <span class="nf">cppify_hyperparameters</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Convert a flat array of hyperparameters into a form C++ can consume.</span>
+
+<span class="sd">    C++ interface expects hyperparameters in a list, where:</span>
+<span class="sd">    hyperparameters[0]: ``float64 = \alpha`` (``\sigma_f^2``, signal variance)</span>
+<span class="sd">    hyperparameters[1]: list = length scales (len = dim, one length per spatial dimension)</span>
+
+<span class="sd">    :param hyperparameters: hyperparameters to convert</span>
+<span class="sd">    :type hyperparameters: array of float64 with shape (num_hyperparameters)</span>
+<span class="sd">    :return: hyperparameters converted to C++ input format</span>
+<span class="sd">    :rtype: list where item [0] is a float and item [1] is a list of float with len = dim</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">cppify</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">[</span><span class="mi">1</span><span class="p">:])]</span></div>
+</pre></div>
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../../../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

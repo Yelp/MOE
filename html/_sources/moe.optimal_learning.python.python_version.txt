@@ -1,0 +1,70 @@
+moe.optimal_learning.python.python_version package
+==================================================
+
+Submodules
+----------
+
+moe.optimal_learning.python.python_version.covariance module
+------------------------------------------------------------
+
+.. automodule:: moe.optimal_learning.python.python_version.covariance
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+moe.optimal_learning.python.python_version.domain module
+--------------------------------------------------------
+
+.. automodule:: moe.optimal_learning.python.python_version.domain
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+moe.optimal_learning.python.python_version.expected_improvement module
+----------------------------------------------------------------------
+
+.. automodule:: moe.optimal_learning.python.python_version.expected_improvement
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+moe.optimal_learning.python.python_version.gaussian_process module
+------------------------------------------------------------------
+
+.. automodule:: moe.optimal_learning.python.python_version.gaussian_process
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+moe.optimal_learning.python.python_version.log_likelihood module
+----------------------------------------------------------------
+
+.. automodule:: moe.optimal_learning.python.python_version.log_likelihood
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+moe.optimal_learning.python.python_version.optimization module
+--------------------------------------------------------------
+
+.. automodule:: moe.optimal_learning.python.python_version.optimization
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+moe.optimal_learning.python.python_version.python_utils module
+--------------------------------------------------------------
+
+.. automodule:: moe.optimal_learning.python.python_version.python_utils
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: moe.optimal_learning.python.python_version
+    :members:
+    :undoc-members:
+    :show-inheritance:

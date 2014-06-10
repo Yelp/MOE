@@ -1,0 +1,18 @@
+moe.tests package
+=================
+
+Subpackages
+-----------
+
+.. toctree::
+
+    moe.tests.optimal_learning
+    moe.tests.views
+
+Module contents
+---------------
+
+.. automodule:: moe.tests
+    :members:
+    :undoc-members:
+    :show-inheritance:

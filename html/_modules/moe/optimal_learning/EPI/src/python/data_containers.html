@@ -1,0 +1,463 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>moe.optimal_learning.EPI.src.python.data_containers &mdash; MOE 0.1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../../../../_static/favicon.ico"/>
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../../../../_static/breathe.css" type="text/css" />
+  
+    <link rel="top" title="MOE 0.1.0 documentation" href="../../../../../../index.html"/>
+        <link rel="up" title="moe" href="../../../../../moe.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="../../../../../../index.html" class="fa fa-home"> MOE</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../moe.html">moe package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../moe.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../moe.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../moe.html#module-moe.resources">moe.resources module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../moe.html#module-moe">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../gpp_math_hpp.html">gpp_math.hpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../gpp_geometry_hpp.html">gpp_geometry.hpp</a></li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../../../../index.html">MOE</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../../../../index.html">Module code</a> &raquo;</li>
+      
+          <li><a href="../../../../../moe.html">moe</a> &raquo;</li>
+      
+    <li>moe.optimal_learning.EPI.src.python.data_containers</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <h1>Source code for moe.optimal_learning.EPI.src.python.data_containers</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;Data containers convenient for/used to interact with optimal_learning.EPI.src.python members.&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">collections</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">pprint</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">,</span> <span class="n">format</span><span class="o">=</span><span class="s">&#39;</span><span class="si">%(asctime)s</span><span class="s"> - </span><span class="si">%(levelname)s</span><span class="s"> - </span><span class="si">%(message)s</span><span class="s">&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="SamplePoint"><a class="viewcode-back" href="../../../../../../moe.optimal_learning.EPI.src.python.html#moe.optimal_learning.EPI.src.python.data_containers.SamplePoint">[docs]</a><span class="k">class</span> <span class="nc">SamplePoint</span><span class="p">(</span><span class="n">collections</span><span class="o">.</span><span class="n">namedtuple</span><span class="p">(</span><span class="s">&#39;SamplePoint&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;point&#39;</span><span class="p">,</span> <span class="s">&#39;value&#39;</span><span class="p">,</span> <span class="s">&#39;noise_variance&#39;</span><span class="p">])):</span>
+
+    <span class="sd">&quot;&quot;&quot;A point (coordinates, function value, noise variance) sampled from the objective function we are modeling/optimizing.</span>
+
+<span class="sd">    This class is a representation of a &quot;Sample Point,&quot; which is defined by the three data members listed here.</span>
+<span class="sd">    SamplePoint is a convenient way of communicating data to the rest of the optimal_learning library (via the</span>
+<span class="sd">    HistoricalData container); it also provides a convenient grouping for interactive introspection.</span>
+
+<span class="sd">    Users are not required to use SamplePoint--iterables with the same data layout will suffice.</span>
+
+<span class="sd">    :ivar point: (*iterable of dim float64*) The point sampled (in the domain of the function)</span>
+<span class="sd">    :ivar value: (*float64*) The value returned by the function</span>
+<span class="sd">    :ivar noise_variance: (*float64*) The noise/measurement variance (if any) associated with ``value``</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">__slots__</span> <span class="o">=</span> <span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">noise_variance</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Allocate and construct a new class instance with the specified data fields.</span>
+
+<span class="sd">        Checks for data validity.</span>
+<span class="sd">        See class docs for input descriptions.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">noise_variance</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;noise_variance = </span><span class="si">%f</span><span class="s"> must be positive!&#39;</span> <span class="o">%</span> <span class="n">noise_variance</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">SamplePoint</span><span class="p">,</span> <span class="n">cls</span><span class="p">)</span><span class="o">.</span><span class="n">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">noise_variance</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Pretty print this object as a dict.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">pprint</span><span class="o">.</span><span class="n">pformat</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_asdict</span><span class="p">()))</span>
+
+<div class="viewcode-block" id="SamplePoint.validate"><a class="viewcode-back" href="../../../../../../moe.optimal_learning.EPI.src.python.html#moe.optimal_learning.EPI.src.python.data_containers.SamplePoint.validate">[docs]</a>    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Check this SamplePoint passes basic validity checks: dimension is expected, all values are finite.</span>
+
+<span class="sd">        :param dim: number of (expected) spatial dimensions; None to skip check</span>
+<span class="sd">        :type dim: int &gt; 0</span>
+<span class="sd">        :raises ValueError: self.point does not have exactly dim entries</span>
+<span class="sd">        :raises ValueError: if any member data is non-finite or out of range</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># check that dim of points matches specified dimension</span>
+        <span class="k">if</span> <span class="n">dim</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">point</span><span class="p">)</span> <span class="o">!=</span> <span class="n">dim</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Input dim = </span><span class="si">%d</span><span class="s"> and point dimension </span><span class="si">%d</span><span class="s"> do not match!&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">dim</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">point</span><span class="p">)))</span>
+
+        <span class="c"># check that all values are finite</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">numpy</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">point</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;point = </span><span class="si">%s</span><span class="s"> contains non-finite values!&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">point</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">numpy</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;value = </span><span class="si">%f</span><span class="s"> is non-finite!&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">numpy</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">noise_variance</span><span class="p">)</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">noise_variance</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;value = </span><span class="si">%f</span><span class="s"> is non-finite or negative!&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">noise_variance</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="HistoricalData"><a class="viewcode-back" href="../../../../../../moe.optimal_learning.EPI.src.python.html#moe.optimal_learning.EPI.src.python.data_containers.HistoricalData">[docs]</a><span class="k">class</span> <span class="nc">HistoricalData</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;A data container for storing the historical data from an entire experiment in a layout convenient for this library.</span>
+
+<span class="sd">    Users will likely find it most convenient to store experiment historical data in &quot;tuples&quot; of</span>
+<span class="sd">    (coordinates, value, noise); for example, these could be the columns of a database row, part of an ORM, etc.</span>
+<span class="sd">    The SamplePoint class (above) provides a convenient representation of this input format, but users are *not* required</span>
+<span class="sd">    to use it.</span>
+
+<span class="sd">    But the internals of optimal_learning will generally do computations on all coordinates at once, all values at once,</span>
+<span class="sd">    and/or all noise measurements at once. So this object reads the input data data and &quot;transposes&quot; the ordering so that</span>
+<span class="sd">    we have a matrix of coordinates and vectors of values and noises. Compared to storing a list of SampledPoint,</span>
+<span class="sd">    these internals save on redundant data transformations and improve locality.</span>
+
+<span class="sd">    Note that the points in HistoricalData are *not* associated to any particular domain. HistoricalData could be (and is)</span>
+<span class="sd">    used for model selection as well as Gaussian Process manipulation, Expected Improvement optimization, etc. In the former,</span>
+<span class="sd">    the point-domain has no meaning (as opposed to the hyperparameter domain). In the latter, users could perform multiple</span>
+<span class="sd">    optimization runs with slightly different domains (e.g., differing levels of exploration) without changing</span>
+<span class="sd">    HistoricalData. Users may also optimize within a subdomain of the points already sampled. Thus, we are not including</span>
+<span class="sd">    domain in HistoricalData so as to place no restriction on how users can use optimal_learning and think about their</span>
+<span class="sd">    experiments.</span>
+
+<span class="sd">    TODO(eliu): it&#39;d be cool if this inherited from namedtuple (since adding new points makes sense, but changing dim or</span>
+<span class="sd">    arbitrarily changing the referrant of noise_variance does not). Not 100% sure how to do this since __new__ and</span>
+<span class="sd">    __init__ would need to take different arguments.</span>
+
+<span class="sd">    :ivar _points_sampled: (*array of float64 with shape (self.num_sampled, self.dim)*) already-sampled points</span>
+<span class="sd">    :ivar _points_sampled_value: (*array of float64 with shape (self.num_sampled)*) function value measured at each point</span>
+<span class="sd">    :ivar _points_sampled_noise_variance: (*array of float64 with shape (self.num_sampled)*) noise variance associated with ``points_sampled_value``</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;_dim&#39;</span><span class="p">,</span> <span class="s">&#39;_points_sampled&#39;</span><span class="p">,</span> <span class="s">&#39;_points_sampled_value&#39;</span><span class="p">,</span> <span class="s">&#39;_points_sampled_noise_variance&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dim</span><span class="p">,</span> <span class="n">sample_points</span><span class="o">=</span><span class="p">[],</span> <span class="n">validate</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a HistoricalData object tracking the state of an experiment (already-sampled points, values, and noise).</span>
+
+<span class="sd">        :param dim: number of spatial dimensions; must line up with len(sample_points[0]) if sample_points is empty</span>
+<span class="sd">        :type dim: int &gt; 0</span>
+<span class="sd">        :param sample_points: the already-sampled points: coordinates, objective function values, and noise variance</span>
+<span class="sd">        :type sample_points: iterable of iterables with the same structure as a list of SamplePoint</span>
+<span class="sd">        :param validate: whether to sanity-check the input sample_points</span>
+<span class="sd">        :type validate: boolean</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">num_sampled</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">sample_points</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dim</span> <span class="o">=</span> <span class="n">dim</span>
+        <span class="k">if</span> <span class="n">validate</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">validate_sample_points</span><span class="p">(</span><span class="n">dim</span><span class="p">,</span> <span class="n">sample_points</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_points_sampled</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">num_sampled</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_points_sampled_value</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">num_sampled</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_points_sampled_noise_variance</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">num_sampled</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_historical_data</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">sample_points</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Pretty-printed string representation of this HistoricalData object.</span>
+
+<span class="sd">        See self.__repr__() if you want the more traditional __str__ behavior.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">sample_point_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_list_of_sample_points</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">pprint</span><span class="o">.</span><span class="n">pformat</span><span class="p">(</span><span class="n">sample_point_list</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;String (high precision) representation of this HistoricalData object&#39;s data members.&quot;&quot;&quot;</span>
+        <span class="n">out_string</span> <span class="o">=</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_points_sampled</span><span class="p">)</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span>
+        <span class="n">out_string</span> <span class="o">+=</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_points_sampled_value</span><span class="p">)</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span>
+        <span class="n">out_string</span> <span class="o">+=</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_points_sampled_noise_variance</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">out_string</span>
+
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="HistoricalData.validate_sample_points"><a class="viewcode-back" href="../../../../../../moe.optimal_learning.EPI.src.python.html#moe.optimal_learning.EPI.src.python.data_containers.HistoricalData.validate_sample_points">[docs]</a>    <span class="k">def</span> <span class="nf">validate_sample_points</span><span class="p">(</span><span class="n">dim</span><span class="p">,</span> <span class="n">sample_points</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Check that sample_points passes basic validity checks: dimension is the same, all values are finite.</span>
+
+<span class="sd">        :param dim: number of (expected) spatial dimensions</span>
+<span class="sd">        :type dim: int &gt; 0</span>
+<span class="sd">        :param sample_points: the already-sampled points: coordinates, objective function values, and noise variance</span>
+<span class="sd">        :type sample_points: iterable of iterables with the same structure as a list of SamplePoint</span>
+<span class="sd">        :return: True if inputs are valid</span>
+<span class="sd">        :rtype: boolean</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">num_sampled</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">sample_points</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">dim</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Input dim = </span><span class="si">%d</span><span class="s"> is non-positive.&#39;</span> <span class="o">%</span> <span class="n">dim</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">num_sampled</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">sample_point</span> <span class="ow">in</span> <span class="n">sample_points</span><span class="p">:</span>
+                <span class="n">sample_point</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="n">dim</span><span class="p">)</span>
+</div>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="HistoricalData.validate_historical_data"><a class="viewcode-back" href="../../../../../../moe.optimal_learning.EPI.src.python.html#moe.optimal_learning.EPI.src.python.data_containers.HistoricalData.validate_historical_data">[docs]</a>    <span class="k">def</span> <span class="nf">validate_historical_data</span><span class="p">(</span><span class="n">dim</span><span class="p">,</span> <span class="n">points_sampled</span><span class="p">,</span> <span class="n">points_sampled_value</span><span class="p">,</span> <span class="n">points_sampled_noise_variance</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Check that the historical data components (dim, coordinates, values, noises) are consistent in dimension and all have finite values.</span>
+
+<span class="sd">        :param dim: number of (expected) spatial dimensions</span>
+<span class="sd">        :type dim: int &gt; 0</span>
+<span class="sd">        :param points_sampled: already-sampled points</span>
+<span class="sd">        :type points_sampled: array of float64 with shape (num_sampled, dim)</span>
+<span class="sd">        :param points_sampled_value: function value measured at each point</span>
+<span class="sd">        :type points_sampled_value: array of float64 with shape (num_sampled)</span>
+<span class="sd">        :param points_sampled_noise_variance: noise variance associated with ``points_sampled_value``</span>
+<span class="sd">        :type points_sampled_noise_variance: array of float64 with shape (num_sampled)</span>
+<span class="sd">        :return: True if inputs are valid</span>
+<span class="sd">        :rtype: boolean</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">dim</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Input dim = </span><span class="si">%d</span><span class="s"> is non-positive.&#39;</span> <span class="o">%</span> <span class="n">dim</span><span class="p">)</span>
+
+        <span class="c"># Check that all array leading dimensions are the same</span>
+        <span class="k">if</span> <span class="n">points_sampled</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">points_sampled_value</span><span class="o">.</span><span class="n">size</span> <span class="ow">or</span> <span class="n">points_sampled</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">points_sampled_noise_variance</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Input arrays do not have the same leading dimension: (points_sampled, value, noise) = (</span><span class="si">%d</span><span class="s">, </span><span class="si">%d</span><span class="s">, </span><span class="si">%d</span><span class="s">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">points_sampled</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">points_sampled_value</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">points_sampled_noise_variance</span><span class="o">.</span><span class="n">size</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">points_sampled</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">points_sampled</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+                <span class="n">temp</span> <span class="o">=</span> <span class="n">SamplePoint</span><span class="p">(</span><span class="n">points_sampled</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">points_sampled_value</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">points_sampled_noise_variance</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+                <span class="n">temp</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="n">dim</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="HistoricalData.append_sample_points"><a class="viewcode-back" href="../../../../../../moe.optimal_learning.EPI.src.python.html#moe.optimal_learning.EPI.src.python.data_containers.HistoricalData.append_sample_points">[docs]</a>    <span class="k">def</span> <span class="nf">append_sample_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sample_points</span><span class="p">,</span> <span class="n">validate</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Append the contents of ``sample_points`` to the data members of this class.</span>
+
+<span class="sd">        :param sample_points: the already-sampled points: coordinates, objective function values, and noise variance</span>
+<span class="sd">        :type sample_points: iterable of iterables with the same structure as a list of SamplePoint</span>
+<span class="sd">        :param validate: whether to sanity-check the input sample_points</span>
+<span class="sd">        :type validate: boolean</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sample_points</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="n">validate</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">validate_sample_points</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="n">sample_points</span><span class="p">)</span>
+
+        <span class="n">offset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_sampled</span>
+        <span class="n">num_sampled</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_sampled</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">sample_points</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_points_sampled</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="n">num_sampled</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_points_sampled_value</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">num_sampled</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_points_sampled_noise_variance</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">num_sampled</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_historical_data</span><span class="p">(</span><span class="n">offset</span><span class="p">,</span> <span class="n">sample_points</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="HistoricalData.append_historical_data"><a class="viewcode-back" href="../../../../../../moe.optimal_learning.EPI.src.python.html#moe.optimal_learning.EPI.src.python.data_containers.HistoricalData.append_historical_data">[docs]</a>    <span class="k">def</span> <span class="nf">append_historical_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points_sampled</span><span class="p">,</span> <span class="n">points_sampled_value</span><span class="p">,</span> <span class="n">points_sampled_noise_variance</span><span class="p">,</span> <span class="n">validate</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Append lists of points_sampled, their values, and their noise variances to the data members of this class.</span>
+
+<span class="sd">        This class (see class docstring) stores its data members as numpy arrays; this method provides a way for users</span>
+<span class="sd">        who already have data in this format to append directly instead of creating an intermediate SamplePoint list.</span>
+
+<span class="sd">        :param points_sampled: already-sampled points</span>
+<span class="sd">        :type points_sampled: array of float64 with shape (num_sampled, dim)</span>
+<span class="sd">        :param points_sampled_value: function value measured at each point</span>
+<span class="sd">        :type points_sampled_value: array of float64 with shape (num_sampled)</span>
+<span class="sd">        :param points_sampled_noise_variance: noise variance associated with ``points_sampled_value``</span>
+<span class="sd">        :type points_sampled_noise_variance: array of float64 with shape (num_sampled)</span>
+<span class="sd">        :param validate: whether to sanity-check the input sample_points</span>
+<span class="sd">        :type validate: boolean</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">points_sampled</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="n">validate</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">validate_historical_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="n">points_sampled</span><span class="p">,</span> <span class="n">points_sampled_value</span><span class="p">,</span> <span class="n">points_sampled_noise_variance</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_points_sampled</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_points_sampled</span><span class="p">,</span> <span class="n">points_sampled</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_points_sampled_value</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_points_sampled_value</span><span class="p">,</span> <span class="n">points_sampled_value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_points_sampled_noise_variance</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_points_sampled_noise_variance</span><span class="p">,</span> <span class="n">points_sampled_noise_variance</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="HistoricalData.to_list_of_sample_points"><a class="viewcode-back" href="../../../../../../moe.optimal_learning.EPI.src.python.html#moe.optimal_learning.EPI.src.python.data_containers.HistoricalData.to_list_of_sample_points">[docs]</a>    <span class="k">def</span> <span class="nf">to_list_of_sample_points</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert this HistoricalData into a list of SamplePoint.</span>
+
+<span class="sd">        The list of SamplePoint format is more convenient for human consumption/introspection.</span>
+
+<span class="sd">        :return: list where i-th SamplePoint has data from the i-th entry of each self.points_sampled* member.</span>
+<span class="sd">        :rtype: list of SamplePoint</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_sampled</span><span class="p">):</span>
+            <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">SamplePoint</span><span class="p">(</span>
+                <span class="n">numpy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_points_sampled</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_points_sampled_value</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                <span class="n">noise_variance</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_points_sampled_noise_variance</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+            <span class="p">))</span>
+        <span class="k">return</span> <span class="n">out</span>
+</div>
+    <span class="k">def</span> <span class="nf">_update_historical_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">sample_points</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Copy (in &quot;transposed&quot; order) data from ``sample_points`` into this object&#39;s data members, starting at index ``offset``.</span>
+
+<span class="sd">        :param offset: the index offset to the internal arrays at which to copy in sample_points</span>
+<span class="sd">        :type offset: int &gt;= 0</span>
+<span class="sd">        :param sample_points: the already-sampled points: coordinates, objective function values, and noise variance</span>
+<span class="sd">        :type sample_points: iterable of iterables with the same structure as a list of SamplePoint</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">sample_point</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sample_points</span><span class="p">):</span>
+            <span class="n">point</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">noise_variance</span> <span class="o">=</span> <span class="n">sample_point</span>
+            <span class="n">numpy</span><span class="o">.</span><span class="n">copyto</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_points_sampled</span><span class="p">[</span><span class="n">offset</span> <span class="o">+</span> <span class="n">i</span><span class="p">],</span> <span class="n">point</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_points_sampled_value</span><span class="p">[</span><span class="n">offset</span> <span class="o">+</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_points_sampled_noise_variance</span><span class="p">[</span><span class="n">offset</span> <span class="o">+</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">noise_variance</span>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="HistoricalData.dim"><a class="viewcode-back" href="../../../../../../moe.optimal_learning.EPI.src.python.html#moe.optimal_learning.EPI.src.python.data_containers.HistoricalData.dim">[docs]</a>    <span class="k">def</span> <span class="nf">dim</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the number of spatial dimensions of a point in ``self.points_sampled``.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dim</span>
+</div>
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="HistoricalData.num_sampled"><a class="viewcode-back" href="../../../../../../moe.optimal_learning.EPI.src.python.html#moe.optimal_learning.EPI.src.python.data_containers.HistoricalData.num_sampled">[docs]</a>    <span class="k">def</span> <span class="nf">num_sampled</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the number of sampled points.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_points_sampled</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</div>
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="HistoricalData.points_sampled"><a class="viewcode-back" href="../../../../../../moe.optimal_learning.EPI.src.python.html#moe.optimal_learning.EPI.src.python.data_containers.HistoricalData.points_sampled">[docs]</a>    <span class="k">def</span> <span class="nf">points_sampled</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the coordinates of the points_sampled, array of float64 with shape (self.num_sampled, self.dim).&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_points_sampled</span>
+</div>
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="HistoricalData.points_sampled_value"><a class="viewcode-back" href="../../../../../../moe.optimal_learning.EPI.src.python.html#moe.optimal_learning.EPI.src.python.data_containers.HistoricalData.points_sampled_value">[docs]</a>    <span class="k">def</span> <span class="nf">points_sampled_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the objective function values measured at each of ``self.points_sampled``, array of floa664 with shape (self.num_sampled).&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_points_sampled_value</span>
+</div>
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="HistoricalData.points_sampled_noise_variance"><a class="viewcode-back" href="../../../../../../moe.optimal_learning.EPI.src.python.html#moe.optimal_learning.EPI.src.python.data_containers.HistoricalData.points_sampled_noise_variance">[docs]</a>    <span class="k">def</span> <span class="nf">points_sampled_noise_variance</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the noise variances associated with function values measured at each of ``self.points_sampled``, array of floa664 with shape (self.num_sampled).&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_points_sampled_noise_variance</span></div></div>
+</pre></div>
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

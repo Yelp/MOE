@@ -1,0 +1,396 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>moe.tests.optimal_learning.python.geometry_utils_test &mdash; MOE 0.1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../../../_static/favicon.ico"/>
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../../../_static/breathe.css" type="text/css" />
+  
+    <link rel="top" title="MOE 0.1.0 documentation" href="../../../../../index.html"/>
+        <link rel="up" title="moe" href="../../../../moe.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="../../../../../index.html" class="fa fa-home"> MOE</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../moe.html">moe package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe.html#module-moe.resources">moe.resources module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe.html#module-moe">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../cpp_tree.html">C++ Files</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_optimization_test.html">gpp_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_domain_test.html">gpp_domain_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_exception.html">gpp_exception</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_geometry.html">gpp_geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_test_utils.html">gpp_test_utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_logging.html">gpp_logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_covariance.html">gpp_covariance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python_test.html">gpp_python_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_domain.html">gpp_domain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python_common.html">gpp_python_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_hyperparameter_optimization_demo.html">gpp_hyperparameter_optimization_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_test_utils_test.html">gpp_test_utils_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_math_test.html">gpp_math_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python_model_selection.html">gpp_python_model_selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_math.html">gpp_math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_random_test.html">gpp_random_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_random.html">gpp_random</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_geometry_test.html">gpp_geometry_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_linear_algebra.html">gpp_linear_algebra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_core.html">gpp_core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_covariance_test.html">gpp_covariance_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python.html">gpp_python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_model_selection_and_hyperparameter_optimization.html">gpp_model_selection_and_hyperparameter_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_optimization_parameters.html">gpp_optimization_parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_common.html">gpp_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_model_selection_and_hyperparameter_optimization_test.html">gpp_model_selection_and_hyperparameter_optimization_test</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../../../index.html">MOE</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../../../index.html">Module code</a> &raquo;</li>
+      
+          <li><a href="../../../../moe.html">moe</a> &raquo;</li>
+      
+    <li>moe.tests.optimal_learning.python.geometry_utils_test</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <h1>Source code for moe.tests.optimal_learning.python.geometry_utils_test</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;Tests for the functions/classes in geometry_utils.&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+<span class="kn">import</span> <span class="nn">testify</span> <span class="kn">as</span> <span class="nn">T</span>
+
+<span class="kn">from</span> <span class="nn">moe.optimal_learning.python.geometry_utils</span> <span class="kn">import</span> <span class="n">ClosedInterval</span><span class="p">,</span> <span class="n">generate_grid_points</span><span class="p">,</span> <span class="n">generate_latin_hypercube_points</span>
+<span class="kn">from</span> <span class="nn">moe.optimal_learning.python.python_version.domain</span> <span class="kn">import</span> <span class="n">TensorProductDomain</span>
+<span class="kn">from</span> <span class="nn">moe.tests.optimal_learning.python.optimal_learning_test_case</span> <span class="kn">import</span> <span class="n">OptimalLearningTestCase</span>
+
+
+<div class="viewcode-block" id="LatinHypercubeRandomPointGenerationTest"><a class="viewcode-back" href="../../../../../moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.geometry_utils_test.LatinHypercubeRandomPointGenerationTest">[docs]</a><span class="k">class</span> <span class="nc">LatinHypercubeRandomPointGenerationTest</span><span class="p">(</span><span class="n">OptimalLearningTestCase</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;Test moe.optimal_learning.python.geometry_utils.generate_latin_hypercube_points.</span>
+
+<span class="sd">    http://en.wikipedia.org/wiki/Latin_hypercube_sampling</span>
+
+<span class="sd">    From wikipedia:</span>
+<span class="sd">        In the context of statistical sampling, a square grid containing sample positions</span>
+<span class="sd">        is a Latin square if (and only if) there is only one sample in each row and each column.</span>
+<span class="sd">        A Latin hypercube is the generalisation of this concept to an arbitrary number of dimensions,</span>
+<span class="sd">        whereby each sample is the only one in each axis-aligned hyperplane containing it.</span>
+
+<span class="sd">        When sampling a function of N variables, the range of each variable is divided into</span>
+<span class="sd">        M equally probable intervals. M sample points are then placed to satisfy the Latin hypercube requirements;</span>
+<span class="sd">        note that this forces the number of divisions, M, to be equal for each variable.</span>
+<span class="sd">        Also note that this sampling scheme does not require more samples for more dimensions (variables);</span>
+<span class="sd">        this independence is one of the main advantages of this sampling scheme.</span>
+<span class="sd">        Another advantage is that random samples can be taken one at a time,</span>
+<span class="sd">        remembering which samples were taken so far.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@T.class_setup</span>
+<div class="viewcode-block" id="LatinHypercubeRandomPointGenerationTest.base_setup"><a class="viewcode-back" href="../../../../../moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.geometry_utils_test.LatinHypercubeRandomPointGenerationTest.base_setup">[docs]</a>    <span class="k">def</span> <span class="nf">base_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set up parameters for test cases.&quot;&quot;&quot;</span>
+        <span class="n">domain_bounds_to_test</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">ClosedInterval</span><span class="o">.</span><span class="n">build_closed_intervals_from_list</span><span class="p">([[</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]]),</span>
+            <span class="n">ClosedInterval</span><span class="o">.</span><span class="n">build_closed_intervals_from_list</span><span class="p">([[</span><span class="o">-</span><span class="mf">10.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">]]),</span>
+            <span class="n">ClosedInterval</span><span class="o">.</span><span class="n">build_closed_intervals_from_list</span><span class="p">([[</span><span class="o">-</span><span class="mf">500.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">490.0</span><span class="p">]]),</span>
+            <span class="n">ClosedInterval</span><span class="o">.</span><span class="n">build_closed_intervals_from_list</span><span class="p">([[</span><span class="mf">6000.0</span><span class="p">,</span> <span class="mf">6000.001</span><span class="p">]]),</span>
+            <span class="n">ClosedInterval</span><span class="o">.</span><span class="n">build_closed_intervals_from_list</span><span class="p">([[</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]]),</span>
+            <span class="n">ClosedInterval</span><span class="o">.</span><span class="n">build_closed_intervals_from_list</span><span class="p">([[</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]]),</span>
+            <span class="n">ClosedInterval</span><span class="o">.</span><span class="n">build_closed_intervals_from_list</span><span class="p">([[</span><span class="o">-</span><span class="mf">7000.0</span><span class="p">,</span> <span class="mf">10000.0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">8000.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">7999.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">10000.06</span><span class="p">,</span> <span class="mf">10000.0601</span><span class="p">]]),</span>
+        <span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">domains_to_test</span> <span class="o">=</span> <span class="p">[</span><span class="n">TensorProductDomain</span><span class="p">(</span><span class="n">domain_bounds</span><span class="p">)</span> <span class="k">for</span> <span class="n">domain_bounds</span> <span class="ow">in</span> <span class="n">domain_bounds_to_test</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_points_to_test</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">]</span>
+</div>
+<div class="viewcode-block" id="LatinHypercubeRandomPointGenerationTest.test_latin_hypercube_within_domain"><a class="viewcode-back" href="../../../../../moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.geometry_utils_test.LatinHypercubeRandomPointGenerationTest.test_latin_hypercube_within_domain">[docs]</a>    <span class="k">def</span> <span class="nf">test_latin_hypercube_within_domain</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Test that generate_latin_hypercube_points returns points within the domain.&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">domain</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">domains_to_test</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">num_points</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_points_to_test</span><span class="p">:</span>
+                <span class="n">points</span> <span class="o">=</span> <span class="n">generate_latin_hypercube_points</span><span class="p">(</span><span class="n">num_points</span><span class="p">,</span> <span class="n">domain</span><span class="o">.</span><span class="n">_domain_bounds</span><span class="p">)</span>
+
+                <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points</span><span class="p">:</span>
+                    <span class="n">T</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span><span class="n">domain</span><span class="o">.</span><span class="n">check_point_inside</span><span class="p">(</span><span class="n">point</span><span class="p">),</span> <span class="bp">True</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="LatinHypercubeRandomPointGenerationTest.test_make_rand_point_within_domain"><a class="viewcode-back" href="../../../../../moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.geometry_utils_test.LatinHypercubeRandomPointGenerationTest.test_make_rand_point_within_domain">[docs]</a>    <span class="k">def</span> <span class="nf">test_make_rand_point_within_domain</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Test that domain.generate_random_point_in_domain returns a point in the domain.&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">domain</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">domains_to_test</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+                <span class="n">point</span> <span class="o">=</span> <span class="n">domain</span><span class="o">.</span><span class="n">generate_random_point_in_domain</span><span class="p">()</span>
+                <span class="n">T</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span><span class="n">domain</span><span class="o">.</span><span class="n">check_point_inside</span><span class="p">(</span><span class="n">point</span><span class="p">),</span> <span class="bp">True</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="LatinHypercubeRandomPointGenerationTest.test_latin_hypercube_equally_spaced"><a class="viewcode-back" href="../../../../../moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.geometry_utils_test.LatinHypercubeRandomPointGenerationTest.test_latin_hypercube_equally_spaced">[docs]</a>    <span class="k">def</span> <span class="nf">test_latin_hypercube_equally_spaced</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Test that generate_latin_hypercube_points returns properly spaced points.</span>
+
+<span class="sd">        Sampling from a latin hypercube results in a set of points that in each dimension are drawn</span>
+<span class="sd">        uniformly from sub-intervals of the domain this tests that every sub-interval in each dimension</span>
+<span class="sd">        contains exactly one point.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">domain</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">domains_to_test</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">num_points</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_points_to_test</span><span class="p">:</span>
+                <span class="n">domain_bounds</span> <span class="o">=</span> <span class="n">domain</span><span class="o">.</span><span class="n">_domain_bounds</span>
+                <span class="n">points</span> <span class="o">=</span> <span class="n">generate_latin_hypercube_points</span><span class="p">(</span><span class="n">num_points</span><span class="p">,</span> <span class="n">domain_bounds</span><span class="p">)</span>
+
+                <span class="k">for</span> <span class="n">dim</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">domain</span><span class="o">.</span><span class="n">dim</span><span class="p">):</span>
+                    <span class="c"># This size of each slice</span>
+                    <span class="n">sub_domain_width</span> <span class="o">=</span> <span class="n">domain_bounds</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span><span class="o">.</span><span class="n">length</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">num_points</span><span class="p">)</span>
+                    <span class="c"># Sort in dim dimension</span>
+                    <span class="n">points</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">points</span><span class="p">:</span> <span class="n">points</span><span class="p">[</span><span class="n">dim</span><span class="p">])</span>
+                    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">point</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
+                        <span class="c"># This point must fall somewhere within the slice</span>
+                        <span class="n">min_val</span> <span class="o">=</span> <span class="n">domain_bounds</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span><span class="o">.</span><span class="n">min</span> <span class="o">+</span> <span class="n">sub_domain_width</span> <span class="o">*</span> <span class="n">i</span>
+                        <span class="n">max_val</span> <span class="o">=</span> <span class="n">min_val</span> <span class="o">+</span> <span class="n">sub_domain_width</span>
+                        <span class="n">T</span><span class="o">.</span><span class="n">assert_gte</span><span class="p">(</span><span class="n">point</span><span class="p">[</span><span class="n">dim</span><span class="p">],</span> <span class="n">min_val</span><span class="p">)</span>
+                        <span class="n">T</span><span class="o">.</span><span class="n">assert_lte</span><span class="p">(</span><span class="n">point</span><span class="p">[</span><span class="n">dim</span><span class="p">],</span> <span class="n">max_val</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="GridPointGenerationTest"><a class="viewcode-back" href="../../../../../moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.geometry_utils_test.GridPointGenerationTest">[docs]</a><span class="k">class</span> <span class="nc">GridPointGenerationTest</span><span class="p">(</span><span class="n">OptimalLearningTestCase</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;Test the generation of an evenly spaced, axis-aligned grid on a hypercube.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="GridPointGenerationTest.test_grid_generation"><a class="viewcode-back" href="../../../../../moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.geometry_utils_test.GridPointGenerationTest.test_grid_generation">[docs]</a>    <span class="k">def</span> <span class="nf">test_grid_generation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Test that ``generate_grid_points`` generates a uniform grid.</span>
+
+<span class="sd">        Test makes assumptions about the ordering of the output that may be invalidated by</span>
+<span class="sd">        changes to numpy.meshgrid.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">domain_bounds</span> <span class="o">=</span> <span class="n">ClosedInterval</span><span class="o">.</span><span class="n">build_closed_intervals_from_list</span><span class="p">([[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">2.71</span><span class="p">,</span> <span class="mf">3.14</span><span class="p">]])</span>
+        <span class="n">points_per_dimension</span> <span class="o">=</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">8</span><span class="p">]</span>
+
+        <span class="c"># Test that all points are present</span>
+        <span class="n">grid</span> <span class="o">=</span> <span class="n">generate_grid_points</span><span class="p">(</span><span class="n">points_per_dimension</span><span class="p">,</span> <span class="n">domain_bounds</span><span class="p">)</span>
+
+        <span class="n">per_axis_grid</span> <span class="o">=</span> <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">bounds</span><span class="o">.</span><span class="n">min</span><span class="p">,</span> <span class="n">bounds</span><span class="o">.</span><span class="n">max</span><span class="p">,</span> <span class="n">points_per_dimension</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+                         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">bounds</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">domain_bounds</span><span class="p">)]</span>
+
+        <span class="c"># Loop ordering assumes the output is ordered a certain way.</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">y_coord</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">per_axis_grid</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+            <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">x_coord</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">per_axis_grid</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+                <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">z_coord</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">per_axis_grid</span><span class="p">[</span><span class="mi">2</span><span class="p">]):</span>
+                    <span class="n">truth</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x_coord</span><span class="p">,</span> <span class="n">y_coord</span><span class="p">,</span> <span class="n">z_coord</span><span class="p">])</span>
+                    <span class="n">index</span> <span class="o">=</span> <span class="n">i</span> <span class="o">*</span> <span class="n">per_axis_grid</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">size</span> <span class="o">*</span> <span class="n">per_axis_grid</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span> <span class="o">+</span> <span class="n">j</span> <span class="o">*</span> <span class="n">per_axis_grid</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">size</span> <span class="o">+</span> <span class="n">k</span>
+                    <span class="n">test</span> <span class="o">=</span> <span class="n">grid</span><span class="p">[</span><span class="n">index</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">assert_vector_within_relative</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">truth</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+
+        <span class="c"># Also test that scalar points_per_dimension works</span>
+        <span class="n">points_per_dimension</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+        <span class="n">grid_truth</span> <span class="o">=</span> <span class="n">generate_grid_points</span><span class="p">(</span><span class="n">points_per_dimension</span><span class="p">,</span> <span class="n">domain_bounds</span><span class="p">)</span>
+
+        <span class="n">points_per_dimension</span> <span class="o">=</span> <span class="mi">5</span>
+        <span class="n">grid_test</span> <span class="o">=</span> <span class="n">generate_grid_points</span><span class="p">(</span><span class="n">points_per_dimension</span><span class="p">,</span> <span class="n">domain_bounds</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assert_vector_within_relative</span><span class="p">(</span><span class="n">grid_test</span><span class="p">,</span> <span class="n">grid_truth</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="ClosedIntervalTest"><a class="viewcode-back" href="../../../../../moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.geometry_utils_test.ClosedIntervalTest">[docs]</a><span class="k">class</span> <span class="nc">ClosedIntervalTest</span><span class="p">(</span><span class="n">OptimalLearningTestCase</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;Tests for ClosedInterval&#39;s member functions.&quot;&quot;&quot;</span>
+
+    <span class="nd">@T.class_setup</span>
+<div class="viewcode-block" id="ClosedIntervalTest.base_setup"><a class="viewcode-back" href="../../../../../moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.geometry_utils_test.ClosedIntervalTest.base_setup">[docs]</a>    <span class="k">def</span> <span class="nf">base_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set up test cases (described inline).&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">test_cases</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">ClosedInterval</span><span class="p">(</span><span class="mf">9.378</span><span class="p">,</span> <span class="mf">9.378</span><span class="p">),</span>    <span class="c"># min == max</span>
+            <span class="n">ClosedInterval</span><span class="p">(</span><span class="o">-</span><span class="mf">2.71</span><span class="p">,</span> <span class="mf">3.14</span><span class="p">),</span>     <span class="c"># min &lt; max</span>
+            <span class="n">ClosedInterval</span><span class="p">(</span><span class="o">-</span><span class="mf">2.71</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.14</span><span class="p">),</span>    <span class="c"># min &gt; max</span>
+            <span class="n">ClosedInterval</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">inf</span><span class="p">),</span>  <span class="c"># infinte range</span>
+        <span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">points_to_check</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">test_cases</span><span class="p">),</span> <span class="mi">5</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">case</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">test_cases</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">points_to_check</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">case</span><span class="o">.</span><span class="n">min</span> <span class="o">+</span> <span class="n">case</span><span class="o">.</span><span class="n">max</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.5</span>  <span class="c"># midpoint</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">points_to_check</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">case</span><span class="o">.</span><span class="n">min</span>                     <span class="c"># left boundary</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">points_to_check</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">case</span><span class="o">.</span><span class="n">max</span>                     <span class="c"># right boundary</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">points_to_check</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">case</span><span class="o">.</span><span class="n">min</span> <span class="o">-</span> <span class="mf">0.5</span>               <span class="c"># outside on the left</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">points_to_check</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">case</span><span class="o">.</span><span class="n">max</span> <span class="o">+</span> <span class="mf">0.5</span>               <span class="c"># outside on the right</span>
+</div>
+<div class="viewcode-block" id="ClosedIntervalTest.test_length"><a class="viewcode-back" href="../../../../../moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.geometry_utils_test.ClosedIntervalTest.test_length">[docs]</a>    <span class="k">def</span> <span class="nf">test_length</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Check that length works.&quot;&quot;&quot;</span>
+        <span class="n">truth</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_cases</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">max</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_cases</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_cases</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">max</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_cases</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">inf</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">case</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">test_cases</span><span class="p">):</span>
+            <span class="n">T</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span><span class="n">case</span><span class="o">.</span><span class="n">length</span><span class="p">,</span> <span class="n">truth</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+</div>
+<div class="viewcode-block" id="ClosedIntervalTest.test_is_inside"><a class="viewcode-back" href="../../../../../moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.geometry_utils_test.ClosedIntervalTest.test_is_inside">[docs]</a>    <span class="k">def</span> <span class="nf">test_is_inside</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Check that is_inside works.&quot;&quot;&quot;</span>
+        <span class="n">truth</span> <span class="o">=</span> <span class="p">[</span><span class="bp">True</span><span class="p">,</span> <span class="bp">True</span><span class="p">,</span> <span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">,</span> <span class="bp">False</span><span class="p">]</span>
+        <span class="n">case</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points_to_check</span><span class="p">[</span><span class="n">case</span><span class="p">,</span> <span class="o">...</span><span class="p">]):</span>
+            <span class="n">T</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">test_cases</span><span class="p">[</span><span class="n">case</span><span class="p">]</span><span class="o">.</span><span class="n">is_inside</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="n">truth</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+
+        <span class="n">truth</span> <span class="o">=</span> <span class="p">[</span><span class="bp">True</span><span class="p">,</span> <span class="bp">True</span><span class="p">,</span> <span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">,</span> <span class="bp">False</span><span class="p">]</span>
+        <span class="n">case</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points_to_check</span><span class="p">[</span><span class="n">case</span><span class="p">,</span> <span class="o">...</span><span class="p">]):</span>
+            <span class="n">T</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">test_cases</span><span class="p">[</span><span class="n">case</span><span class="p">]</span><span class="o">.</span><span class="n">is_inside</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="n">truth</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+
+        <span class="n">truth</span> <span class="o">=</span> <span class="p">[</span><span class="bp">False</span><span class="p">,</span> <span class="bp">False</span><span class="p">,</span> <span class="bp">False</span><span class="p">,</span> <span class="bp">False</span><span class="p">,</span> <span class="bp">False</span><span class="p">]</span>
+        <span class="n">case</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points_to_check</span><span class="p">[</span><span class="n">case</span><span class="p">,</span> <span class="o">...</span><span class="p">]):</span>
+            <span class="n">T</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">test_cases</span><span class="p">[</span><span class="n">case</span><span class="p">]</span><span class="o">.</span><span class="n">is_inside</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="n">truth</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+
+        <span class="n">truth</span> <span class="o">=</span> <span class="p">[</span><span class="bp">True</span><span class="p">,</span> <span class="bp">True</span><span class="p">,</span> <span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">,</span> <span class="bp">True</span><span class="p">]</span>
+        <span class="n">case</span> <span class="o">=</span> <span class="mi">3</span>
+        <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points_to_check</span><span class="p">[</span><span class="n">case</span><span class="p">,</span> <span class="o">...</span><span class="p">]):</span>
+            <span class="n">T</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">test_cases</span><span class="p">[</span><span class="n">case</span><span class="p">]</span><span class="o">.</span><span class="n">is_inside</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="n">truth</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+</div>
+<div class="viewcode-block" id="ClosedIntervalTest.test_is_empty"><a class="viewcode-back" href="../../../../../moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.geometry_utils_test.ClosedIntervalTest.test_is_empty">[docs]</a>    <span class="k">def</span> <span class="nf">test_is_empty</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Check that is_empty works.&quot;&quot;&quot;</span>
+        <span class="n">truth</span> <span class="o">=</span> <span class="p">[</span><span class="bp">False</span><span class="p">,</span> <span class="bp">False</span><span class="p">,</span> <span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">case</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">test_cases</span><span class="p">):</span>
+            <span class="n">T</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span><span class="n">case</span><span class="o">.</span><span class="n">is_empty</span><span class="p">(),</span> <span class="n">truth</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+</div></div>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">T</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,20 @@
+gpp_geometry_test
+=====
+
+**Contents:**
+
+    1. `gpp_geometry_test.hpp`_
+    2. `gpp_geometry_test.cpp`_
+
+
+gpp_geometry_test.hpp
+------
+
+.. doxygenfile:: gpp_geometry_test.hpp
+
+
+gpp_geometry_test.cpp
+------
+
+.. doxygenfile:: gpp_geometry_test.cpp
+

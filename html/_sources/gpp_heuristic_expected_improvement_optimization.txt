@@ -1,0 +1,20 @@
+gpp_heuristic_expected_improvement_optimization
+=====
+
+**Contents:**
+
+    1. `gpp_heuristic_expected_improvement_optimization.hpp`_
+    2. `gpp_heuristic_expected_improvement_optimization.cpp`_
+
+
+gpp_heuristic_expected_improvement_optimization.hpp
+------
+
+.. doxygenfile:: gpp_heuristic_expected_improvement_optimization.hpp
+
+
+gpp_heuristic_expected_improvement_optimization.cpp
+------
+
+.. doxygenfile:: gpp_heuristic_expected_improvement_optimization.cpp
+

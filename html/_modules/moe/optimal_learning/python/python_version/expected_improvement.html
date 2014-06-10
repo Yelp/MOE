@@ -1,0 +1,857 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>moe.optimal_learning.python.python_version.expected_improvement &mdash; MOE 0.1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../../../_static/favicon.ico"/>
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../../../_static/breathe.css" type="text/css" />
+  
+    <link rel="top" title="MOE 0.1.0 documentation" href="../../../../../index.html"/>
+        <link rel="up" title="moe" href="../../../../moe.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="../../../../../index.html" class="fa fa-home"> MOE</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../moe.html">moe package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe.html#module-moe.resources">moe.resources module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe.html#module-moe">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../cpp_tree.html">C++ Files</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_optimization_test.html">gpp_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_domain_test.html">gpp_domain_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_exception.html">gpp_exception</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_geometry.html">gpp_geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_test_utils.html">gpp_test_utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_logging.html">gpp_logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_covariance.html">gpp_covariance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python_test.html">gpp_python_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_domain.html">gpp_domain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python_common.html">gpp_python_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_hyperparameter_optimization_demo.html">gpp_hyperparameter_optimization_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_test_utils_test.html">gpp_test_utils_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_math_test.html">gpp_math_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python_model_selection.html">gpp_python_model_selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_math.html">gpp_math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_random_test.html">gpp_random_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_random.html">gpp_random</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_geometry_test.html">gpp_geometry_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_linear_algebra.html">gpp_linear_algebra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_core.html">gpp_core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_covariance_test.html">gpp_covariance_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python.html">gpp_python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_model_selection_and_hyperparameter_optimization.html">gpp_model_selection_and_hyperparameter_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_optimization_parameters.html">gpp_optimization_parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_common.html">gpp_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_model_selection_and_hyperparameter_optimization_test.html">gpp_model_selection_and_hyperparameter_optimization_test</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../../../index.html">MOE</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../../../index.html">Module code</a> &raquo;</li>
+      
+          <li><a href="../../../../moe.html">moe</a> &raquo;</li>
+      
+    <li>moe.optimal_learning.python.python_version.expected_improvement</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <h1>Source code for moe.optimal_learning.python.python_version.expected_improvement</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;Classes (Python) to compute the Expected Improvement, including monte carlo and analytic (where applicable) implementations.</span>
+
+<span class="sd">See interfaces/expected_improvement_interface.py or gpp_math.hpp/cpp for further details on expected improvement.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+<span class="kn">import</span> <span class="nn">scipy.linalg</span>
+<span class="kn">import</span> <span class="nn">scipy.stats</span>
+
+<span class="kn">from</span> <span class="nn">moe.optimal_learning.python.constant</span> <span class="kn">import</span> <span class="n">DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS</span><span class="p">,</span> <span class="n">DEFAULT_EXPECTED_IMPROVEMENT_MAX_NUM_THREADS</span>
+<span class="kn">from</span> <span class="nn">moe.optimal_learning.python.interfaces.expected_improvement_interface</span> <span class="kn">import</span> <span class="n">ExpectedImprovementInterface</span>
+<span class="kn">from</span> <span class="nn">moe.optimal_learning.python.interfaces.optimization_interface</span> <span class="kn">import</span> <span class="n">OptimizableInterface</span>
+<span class="kn">from</span> <span class="nn">moe.optimal_learning.python.python_version.optimization</span> <span class="kn">import</span> <span class="n">multistart_optimize</span><span class="p">,</span> <span class="n">NullOptimizer</span>
+
+
+<div class="viewcode-block" id="multistart_expected_improvement_optimization"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.expected_improvement.multistart_expected_improvement_optimization">[docs]</a><span class="k">def</span> <span class="nf">multistart_expected_improvement_optimization</span><span class="p">(</span>
+        <span class="n">ei_optimizer</span><span class="p">,</span>
+        <span class="n">num_multistarts</span><span class="p">,</span>
+        <span class="n">num_to_sample</span><span class="p">,</span>
+        <span class="n">randomness</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+        <span class="n">max_num_threads</span><span class="o">=</span><span class="n">DEFAULT_EXPECTED_IMPROVEMENT_MAX_NUM_THREADS</span><span class="p">,</span>
+        <span class="n">status</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Solve the q,p-EI problem, returning the optimal set of q points to sample CONCURRENTLY in future experiments.</span>
+
+<span class="sd">    When ``points_being_sampled.shape[0] == 0 &amp;&amp; num_to_sample == 1``, this function will use (fast) analytic EI computations.</span>
+
+<span class="sd">    .. NOTE:: The following comments are copied from multistart_expected_improvement_optimization() in cpp_wrappers/expected_improvement.py</span>
+
+<span class="sd">    This is the primary entry-point for EI optimization in the optimal_learning library. It offers our best shot at</span>
+<span class="sd">    improving robustness by combining higher accuracy methods like gradient descent with fail-safes like random/grid search.</span>
+
+<span class="sd">    Returns the optimal set of q points to sample CONCURRENTLY by solving the q,p-EI problem.  That is, we may want to run 4</span>
+<span class="sd">    experiments at the same time and maximize the EI across all 4 experiments at once while knowing of 2 ongoing experiments</span>
+<span class="sd">    (4,2-EI). This function handles this use case. Evaluation of q,p-EI (and its gradient) for q &gt; 1 or p &gt; 1 is expensive</span>
+<span class="sd">    (requires monte-carlo iteration), so this method is usually very expensive.</span>
+
+<span class="sd">    Compared to ComputeHeuristicPointsToSample() (``gpp_heuristic_expected_improvement_optimization.hpp``), this function</span>
+<span class="sd">    makes no external assumptions about the underlying objective function. Instead, it utilizes the Expected (Parallel)</span>
+<span class="sd">    Improvement, allowing the GP to account for ongoing/incomplete experiments.</span>
+
+<span class="sd">    If ``num_to_sample = 1``, this is the same as ComputeOptimalPointsToSampleWithRandomStarts().</span>
+
+<span class="sd">    TODO(eliu): (GH-56) Allow callers to pass in a source of randomness.</span>
+
+<span class="sd">    :param ei_optimizer: object that optimizes (e.g., gradient descent, newton) EI over a domain</span>
+<span class="sd">    :type ei_optimizer: interfaces.optimization_interfaces.OptimizerInterface subclass</span>
+<span class="sd">    :param num_multistarts: number of times to multistart ``ei_optimizer``</span>
+<span class="sd">    :type num_multistarts: int &gt; 0</span>
+<span class="sd">    :param num_to_sample: how many simultaneous experiments you would like to run (i.e., the q in q,p-EI) (UNUSED, specify through ei_optimizer)</span>
+<span class="sd">    :type num_to_sample: int &gt;= 1</span>
+<span class="sd">    :param randomness: random source(s) used to generate multistart points and perform monte-carlo integration (when applicable) (UNUSED)</span>
+<span class="sd">    :type randomness: (UNUSED)</span>
+<span class="sd">    :param max_num_threads: maximum number of threads to use, &gt;= 1 (UNUSED)</span>
+<span class="sd">    :type max_num_threads: int &gt; 0</span>
+<span class="sd">    :param status: status messages from C++ (e.g., reporting on optimizer success, etc.)</span>
+<span class="sd">    :type status: dict</span>
+<span class="sd">    :return: point(s) that maximize the expected improvement (solving the q,p-EI problem)</span>
+<span class="sd">    :rtype: array of float64 with shape (num_to_sample, ei_evaluator.dim)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">random_starts</span> <span class="o">=</span> <span class="n">ei_optimizer</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">generate_uniform_random_points_in_domain</span><span class="p">(</span><span class="n">num_points</span><span class="o">=</span><span class="n">num_multistarts</span><span class="p">)</span>
+    <span class="n">best_point</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">multistart_optimize</span><span class="p">(</span><span class="n">ei_optimizer</span><span class="p">,</span> <span class="n">starting_points</span><span class="o">=</span><span class="n">random_starts</span><span class="p">)</span>
+
+    <span class="c"># TODO(eliu): (GH-59) Have GD actually indicate whether updates were found.</span>
+    <span class="n">found_flag</span> <span class="o">=</span> <span class="bp">True</span>
+    <span class="k">if</span> <span class="n">status</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">status</span><span class="p">[</span><span class="s">&quot;gradient_descent_found_update&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">found_flag</span>
+
+    <span class="k">return</span> <span class="n">best_point</span>
+
+</div>
+<div class="viewcode-block" id="ExpectedImprovement"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement">[docs]</a><span class="k">class</span> <span class="nc">ExpectedImprovement</span><span class="p">(</span><span class="n">ExpectedImprovementInterface</span><span class="p">,</span> <span class="n">OptimizableInterface</span><span class="p">):</span>
+
+    <span class="sd">r&quot;&quot;&quot;Implementation of Expected Improvement computation in Python: EI and its gradient at specified point(s) sampled from a GaussianProcess.</span>
+
+<span class="sd">    A class to encapsulate the computation of expected improvement and its spatial gradient using points sampled from an</span>
+<span class="sd">    associated GaussianProcess. The general EI computation requires monte-carlo integration; it can support q,p-EI optimization.</span>
+<span class="sd">    It is designed to work with any GaussianProcess.</span>
+
+<span class="sd">    When available, fast, analytic formulas replace monte-carlo loops.</span>
+
+<span class="sd">    See interfaces/expected_improvement_interface.py docs for further details.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">gaussian_process</span><span class="p">,</span>
+            <span class="n">points_to_sample</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+            <span class="n">points_being_sampled</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+            <span class="n">num_mc_iterations</span><span class="o">=</span><span class="n">DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS</span><span class="p">,</span>
+            <span class="n">randomness</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construct an ExpectedImprovement object that supports q,p-EI.</span>
+
+<span class="sd">        TODO(eliu): (GH-56) Allow callers to pass in a source of randomness.</span>
+
+<span class="sd">        :param gaussian_process: GaussianProcess describing</span>
+<span class="sd">        :type gaussian_process: interfaces.gaussian_process_interface.GaussianProcessInterface subclass</span>
+<span class="sd">        :param points_to_sample: points at which to evaluate EI and/or its gradient to check their value in future experiments (i.e., &quot;q&quot; in q,p-EI)</span>
+<span class="sd">        :type points_to_sample: array of float64 with shape (num_to_sample, dim)</span>
+<span class="sd">        :param points_being_sampled: points being sampled in concurrent experiments (i.e., &quot;p&quot; in q,p-EI)</span>
+<span class="sd">        :type points_being_sampled: array of float64 with shape (num_being_sampled, dim)</span>
+<span class="sd">        :param num_mc_iterations: number of monte-carlo iterations to use (when monte-carlo integration is used to compute EI)</span>
+<span class="sd">        :type num_mc_iterations: int &gt; 0</span>
+<span class="sd">        :param randomness: random source(s) used for monte-carlo integration (when applicable) (UNUSED)</span>
+<span class="sd">        :type randomness: (UNUSED)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_num_mc_iterations</span> <span class="o">=</span> <span class="n">num_mc_iterations</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_gaussian_process</span> <span class="o">=</span> <span class="n">gaussian_process</span>
+        <span class="k">if</span> <span class="n">gaussian_process</span><span class="o">.</span><span class="n">_historical_data</span><span class="o">.</span><span class="n">points_sampled_value</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_best_so_far</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">amin</span><span class="p">(</span><span class="n">gaussian_process</span><span class="o">.</span><span class="n">_historical_data</span><span class="o">.</span><span class="n">points_sampled_value</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_best_so_far</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span><span class="o">.</span><span class="n">max</span>
+
+        <span class="k">if</span> <span class="n">points_being_sampled</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_points_being_sampled</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_points_being_sampled</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">points_being_sampled</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">points_to_sample</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_current_point</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="n">gaussian_process</span><span class="o">.</span><span class="n">dim</span><span class="p">)))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_current_point</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="ExpectedImprovement.dim"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.dim">[docs]</a>    <span class="k">def</span> <span class="nf">dim</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the number of spatial dimensions.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gaussian_process</span><span class="o">.</span><span class="n">dim</span>
+</div>
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="ExpectedImprovement.num_to_sample"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.num_to_sample">[docs]</a>    <span class="k">def</span> <span class="nf">num_to_sample</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Number of points at which to compute/optimize EI, aka potential points to sample in future experiments; i.e., the ``q`` in ``q,p-EI``.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_points_to_sample</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</div>
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="ExpectedImprovement.num_being_sampled"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.num_being_sampled">[docs]</a>    <span class="k">def</span> <span class="nf">num_being_sampled</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Number of points being sampled in concurrent experiments; i.e., the ``p`` in ``q,p-EI``.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_points_being_sampled</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</div>
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="ExpectedImprovement.problem_size"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.problem_size">[docs]</a>    <span class="k">def</span> <span class="nf">problem_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the number of independent parameters to optimize.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_to_sample</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span>
+</div>
+<div class="viewcode-block" id="ExpectedImprovement.get_current_point"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.get_current_point">[docs]</a>    <span class="k">def</span> <span class="nf">get_current_point</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the current_point (array of float64 with shape (problem_size)) at which this object is evaluating the objective function, ``f(x)``.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_points_to_sample</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="ExpectedImprovement.set_current_point"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.set_current_point">[docs]</a>    <span class="k">def</span> <span class="nf">set_current_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points_to_sample</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set current_point to the specified point; ordering must match.</span>
+
+<span class="sd">        :param points_to_sample: current_point at which to evaluate the objective function, ``f(x)``</span>
+<span class="sd">        :type points_to_sample: array of float64 with shape (problem_size)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_points_to_sample</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">))</span>
+</div>
+<div class="viewcode-block" id="ExpectedImprovement.evaluate_at_point_list"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.evaluate_at_point_list">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate_at_point_list</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">points_to_evaluate</span><span class="p">,</span>
+            <span class="n">randomness</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+            <span class="n">max_num_threads</span><span class="o">=</span><span class="n">DEFAULT_EXPECTED_IMPROVEMENT_MAX_NUM_THREADS</span><span class="p">,</span>
+            <span class="n">status</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Evaluate Expected Improvement (q,p-EI) over a specified list of ``points_to_evaluate``.</span>
+
+<span class="sd">        .. Note:: We use ``points_to_evaluate`` instead of ``self._points_to_sample`` and compute the EI at those points only.</span>
+<span class="sd">            ``self._points_to_sample`` will be changed.</span>
+
+<span class="sd">        Generally gradient descent is preferred but when it fails to converge this may be the only &quot;robust&quot; option.</span>
+<span class="sd">        This function is also useful for plotting or debugging purposes (just to get a bunch of EI values).</span>
+
+<span class="sd">        TODO(eliu): (GH-56) Allow callers to pass in a source of randomness.</span>
+
+<span class="sd">        :param ei_evaluator: object specifying how to evaluate the expected improvement</span>
+<span class="sd">        :type ei_evaluator: interfaces.expected_improvement_interface.ExpectedImprovementInterface subclass</span>
+<span class="sd">        :param points_to_evaluate: points at which to compute EI</span>
+<span class="sd">        :type points_to_evaluate: array of float64 with shape (num_to_evaluate, num_to_sample, ei_evaluator.dim)</span>
+<span class="sd">        :param randomness: random source(s) used for monte-carlo integration (when applicable) (UNUSED)</span>
+<span class="sd">        :type randomness: (UNUSED)</span>
+<span class="sd">        :param max_num_threads: maximum number of threads to use, &gt;= 1 (UNUSED)</span>
+<span class="sd">        :type max_num_threads: int &gt; 0</span>
+<span class="sd">        :param status: status messages from C++ (e.g., reporting on optimizer success, etc.)</span>
+<span class="sd">        :type status: dict</span>
+<span class="sd">        :return: EI evaluated at each of points_to_evaluate</span>
+<span class="sd">        :rtype: array of float64 with shape (points_to_evaluate.shape[0])</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">null_optimizer</span> <span class="o">=</span> <span class="n">NullOptimizer</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">values</span> <span class="o">=</span> <span class="n">multistart_optimize</span><span class="p">(</span><span class="n">null_optimizer</span><span class="p">,</span> <span class="n">starting_points</span><span class="o">=</span><span class="n">points_to_evaluate</span><span class="p">)</span>
+
+        <span class="c"># TODO(eliu): (GH-59) Have multistart actually indicate whether updates were found.</span>
+        <span class="n">found_flag</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="k">if</span> <span class="n">status</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">status</span><span class="p">[</span><span class="s">&quot;evaluate_EI_at_point_list&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">found_flag</span>
+
+        <span class="k">return</span> <span class="n">values</span>
+</div>
+    <span class="k">def</span> <span class="nf">_compute_expected_improvement_1d_analytic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mu_star</span><span class="p">,</span> <span class="n">var_star</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute EI when the number of potential samples is 1 (i.e., points_being_sampled.size = 0) using *fast* analytic methods.</span>
+
+<span class="sd">        This function can only support the computation of 1,0-EI. In this case, we have analytic formulas</span>
+<span class="sd">        for computing EI (and its gradient).</span>
+
+<span class="sd">        Thus this function does not perform any explicit numerical integration, nor does it require access to a</span>
+<span class="sd">        random number generator.</span>
+
+<span class="sd">        See Ginsbourger, Le Riche, and Carraro.</span>
+
+<span class="sd">        :param mu_star: the mean of the GP evaluated at points_to_sample</span>
+<span class="sd">        :type mu_star: float64</span>
+<span class="sd">        :param var_star: the variance of the GP evaluated at points_to_sample</span>
+<span class="sd">        :type var_star: float64</span>
+<span class="sd">        :return: the expected improvement from sampling ``point_to_sample``</span>
+<span class="sd">        :rtype: float64</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">sigma_star</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">var_star</span><span class="p">)</span>
+        <span class="n">temp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_best_so_far</span> <span class="o">-</span> <span class="n">mu_star</span>
+        <span class="n">expected_improvement</span> <span class="o">=</span> <span class="n">temp</span> <span class="o">*</span> <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">temp</span> <span class="o">/</span> <span class="n">sigma_star</span><span class="p">)</span> <span class="o">+</span> <span class="n">sigma_star</span> <span class="o">*</span> <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">temp</span> <span class="o">/</span> <span class="n">sigma_star</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">fmax</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">expected_improvement</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_compute_grad_expected_improvement_1d_analytic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mu_star</span><span class="p">,</span> <span class="n">var_star</span><span class="p">,</span> <span class="n">grad_mu</span><span class="p">,</span> <span class="n">grad_chol_decomp</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Compute the gradient of EI when the number of potential samples is 1 (i.e., points_being_sampled.size = 0) using *fast* analytic methods.</span>
+
+<span class="sd">        This function can only support the computation of 1,0-EI. In this case, we have analytic formulas</span>
+<span class="sd">        for computing EI and its gradient.</span>
+
+<span class="sd">        Thus this function does not perform any explicit numerical integration, nor does it require access to a</span>
+<span class="sd">        random number generator.</span>
+
+<span class="sd">        See Ginsbourger, Le Riche, and Carraro.</span>
+
+<span class="sd">        :param mu_star: the mean of the GP evaluated at points_to_sample</span>
+<span class="sd">        :type mu_star: float64</span>
+<span class="sd">        :param var_star: the variance of the GP evaluated at points_to_sample</span>
+<span class="sd">        :type var_star: float64</span>
+<span class="sd">        :param grad_mu: the gradient of the mean of the GP evaluated at points_to_sample, wrt points_to_sample</span>
+<span class="sd">        :type grad_mu: array of float64 with shape (self.dim)</span>
+<span class="sd">        :param grad_chol_decomp: the gradient of the variance of the GP evaluated at points_to_sample, wrt points_to_sample</span>
+<span class="sd">        :type grad_chol_decomp: array of float64 with shape (self.dim)</span>
+<span class="sd">        :return: gradient of EI, ``\pderiv{EI(x)}{x_d}``, where ``x`` is ``points_to_sample``</span>
+<span class="sd">        :rtype: array of float64 with shape (self.dim)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">sigma_star</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">var_star</span><span class="p">)</span>
+        <span class="n">mu_diff</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_best_so_far</span> <span class="o">-</span> <span class="n">mu_star</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">mu_diff</span> <span class="o">/</span> <span class="n">sigma_star</span>
+        <span class="n">pdf_c</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+        <span class="n">cdf_c</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+
+        <span class="n">d_c</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">sigma_star</span> <span class="o">*</span> <span class="n">grad_mu</span> <span class="o">-</span> <span class="n">grad_chol_decomp</span> <span class="o">*</span> <span class="n">mu_diff</span><span class="p">)</span> <span class="o">/</span> <span class="n">var_star</span>
+        <span class="n">d_a</span> <span class="o">=</span> <span class="o">-</span><span class="n">grad_mu</span> <span class="o">*</span> <span class="n">cdf_c</span> <span class="o">+</span> <span class="n">mu_diff</span> <span class="o">*</span> <span class="n">pdf_c</span> <span class="o">*</span> <span class="n">d_c</span>
+        <span class="n">d_b</span> <span class="o">=</span> <span class="n">grad_chol_decomp</span> <span class="o">*</span> <span class="n">pdf_c</span> <span class="o">-</span> <span class="n">sigma_star</span> <span class="o">*</span> <span class="n">c</span> <span class="o">*</span> <span class="n">pdf_c</span> <span class="o">*</span> <span class="n">d_c</span>
+
+        <span class="n">d_a</span> <span class="o">+=</span> <span class="n">d_b</span>
+        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">d_a</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_compute_expected_improvement_monte_carlo_naive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mu_star</span><span class="p">,</span> <span class="n">var_star</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute EI using (naive) monte carlo integration.</span>
+
+<span class="sd">        See _compute_expected_improvement_monte_carlo (below) for more details on EI.</span>
+
+<span class="sd">        This function produces the *exact* same output as the vectorized version. But</span>
+<span class="sd">        since the loop over num_mc_iterations runs in Python, it is &gt; 100x slower.</span>
+<span class="sd">        However, this code is easy to verify b/c it follows the algorithmic description</span>
+<span class="sd">        faithfully. We use it only for verification.</span>
+
+<span class="sd">        :param mu_star: self._gaussian_process.compute_mean_of_points(union_of_points)</span>
+<span class="sd">        :type mu_star: array of float64 with shape (num_points)</span>
+<span class="sd">        :param var_star: self._gaussian_process.compute_variance_of_points(union_of_points)</span>
+<span class="sd">        :type var_star: array of float64 with shape (num_points, num_points)</span>
+<span class="sd">        :return: the expected improvement from sampling ``points_to_sample`` with ``points_being_sampled`` concurrent experiments</span>
+<span class="sd">        :rtype: float64</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">num_points</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_to_sample</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_being_sampled</span>
+        <span class="n">chol_var</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">cholesky</span><span class="p">(</span><span class="n">var_star</span><span class="p">,</span> <span class="n">lower</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+        <span class="n">normals</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_num_mc_iterations</span><span class="p">,</span> <span class="n">num_points</span><span class="p">))</span>
+
+        <span class="n">aggregate</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="k">for</span> <span class="n">normal_draws</span> <span class="ow">in</span> <span class="n">normals</span><span class="p">:</span>
+            <span class="n">improvement_this_iter</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_best_so_far</span> <span class="o">-</span> <span class="n">mu_star</span> <span class="o">-</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">chol_var</span><span class="p">,</span> <span class="n">normal_draws</span><span class="o">.</span><span class="n">T</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">improvement_this_iter</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">:</span>
+                <span class="n">aggregate</span> <span class="o">+=</span> <span class="n">improvement_this_iter</span>
+        <span class="k">return</span> <span class="n">aggregate</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_num_mc_iterations</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_compute_expected_improvement_monte_carlo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mu_star</span><span class="p">,</span> <span class="n">var_star</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Compute EI using (vectorized) monte-carlo integration; this is a general method that works for any input.</span>
+
+<span class="sd">        This function cal support the computation of q,p-EI.</span>
+<span class="sd">        This function requires access to a random number generator.</span>
+
+<span class="sd">        .. Note:: comments here are copied from gpp_math.cpp, ExpectedImprovementEvaluator::ComputeExpectedImprovement().</span>
+
+<span class="sd">        Let ``Ls * Ls^T = Vars`` and ``w`` = vector of IID normal(0,1) variables</span>
+<span class="sd">        Then:</span>
+<span class="sd">        ``y = mus + Ls * w``  (Equation 4, from file docs)</span>
+<span class="sd">        simulates drawing from our GP with mean mus and variance Vars.</span>
+
+<span class="sd">        Then as given in the file docs, we compute the improvement:</span>
+<span class="sd">        Then the improvement for this single sample is:</span>
+<span class="sd">        ``I = { best_known - min(y)   if (best_known - min(y) &gt; 0)      (Equation 5 from file docs)``</span>
+<span class="sd">        ``    {          0               else``</span>
+<span class="sd">        This is implemented as ``max_{y} (best_known - y)``.  Notice that improvement takes the value 0 if it would be negative.</span>
+
+<span class="sd">        Since we cannot compute ``min(y)`` directly, we do so via monte-carlo (MC) integration.  That is, we draw from the GP</span>
+<span class="sd">        repeatedly, computing improvement during each iteration, and averaging the result.</span>
+
+<span class="sd">        See Scott&#39;s PhD thesis, sec 6.2.</span>
+
+<span class="sd">        For performance, this function vectorizes the monte-carlo integration loop, using numpy&#39;s mask feature to skip</span>
+<span class="sd">        iterations where the improvement is not positive.</span>
+
+<span class="sd">        :param mu_star: self._gaussian_process.compute_mean_of_points(union_of_points)</span>
+<span class="sd">        :type mu_star: array of float64 with shape (num_points)</span>
+<span class="sd">        :param var_star: self._gaussian_process.compute_variance_of_points(union_of_points)</span>
+<span class="sd">        :type var_star: array of float64 with shape (num_points, num_points)</span>
+<span class="sd">        :return: the expected improvement from sampling ``points_to_sample`` with ``points_being_sampled`` concurrent experiments</span>
+<span class="sd">        :rtype: float64</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">num_points</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_to_sample</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_being_sampled</span>
+        <span class="n">chol_var</span> <span class="o">=</span> <span class="o">-</span><span class="n">scipy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">cholesky</span><span class="p">(</span><span class="n">var_star</span><span class="p">,</span> <span class="n">lower</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+        <span class="n">normals</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_num_mc_iterations</span><span class="p">,</span> <span class="n">num_points</span><span class="p">))</span>
+
+        <span class="c"># TODO(eliu): (GH-60) Partition num_mc_iterations up into smaller blocks if it helps.</span>
+        <span class="c"># so that we don&#39;t waste as much mem bandwidth (since each entry of normals is</span>
+        <span class="c"># only used once)</span>
+        <span class="n">mu_star</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_best_so_far</span> <span class="o">-</span> <span class="n">mu_star</span>
+        <span class="c"># Compute Ls * w; note the shape is (self._num_mc_iterations, num_points)</span>
+        <span class="n">improvement_each_iter</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s">&#39;kj, ij&#39;</span><span class="p">,</span> <span class="n">chol_var</span><span class="p">,</span> <span class="n">normals</span><span class="p">)</span>
+        <span class="c"># Now we have improvement = best_so_far - y = best_so_far - (mus + Ls * w)</span>
+        <span class="n">improvement_each_iter</span> <span class="o">+=</span> <span class="n">mu_star</span>
+        <span class="c"># We want the maximum improvement each step; note the shape is (self._num_mc_iterations)</span>
+        <span class="n">best_improvement_each_iter</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">improvement_each_iter</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="c"># Only keep the *positive* improvements</span>
+        <span class="n">best_improvement_each_iter</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_less_equal</span><span class="p">(</span><span class="n">best_improvement_each_iter</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">best_improvement_each_iter</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_num_mc_iterations</span><span class="p">)</span>
+        <span class="c"># If all iterations yielded non-positive improvement, sum returns numpy.ma.masked (instead of 0.0)</span>
+        <span class="k">if</span> <span class="n">result</span> <span class="ow">is</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mf">0.0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">result</span>
+
+    <span class="k">def</span> <span class="nf">_compute_grad_expected_improvement_monte_carlo_naive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mu_star</span><span class="p">,</span> <span class="n">var_star</span><span class="p">,</span> <span class="n">grad_mu</span><span class="p">,</span> <span class="n">grad_chol_decomp</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Compute the gradient of EI using (naive) monte carlo integration.</span>
+
+<span class="sd">        See _compute_grad_expected_improvement_monte_carlo (below) for more details on grad EI and how it is computed.</span>
+
+<span class="sd">        This function produces the *exact* same output as the vectorized version. But</span>
+<span class="sd">        since the loop over num_mc_iterations runs in Python, it is &gt; 100x slower.</span>
+<span class="sd">        However, this code is easy to verify b/c it follows the algorithmic description</span>
+<span class="sd">        faithfully. We use it only for verification.</span>
+
+<span class="sd">        :param mu_star: self._gaussian_process.compute_mean_of_points(union_of_points)</span>
+<span class="sd">        :type mu_star: array of float64 with shape (num_points)</span>
+<span class="sd">        :param var_star: self._gaussian_process.compute_variance_of_points(union_of_points)</span>
+<span class="sd">        :type var_star: array of float64 with shape (num_points, num_points)</span>
+<span class="sd">        :param grad_mu: self._gaussian_process.compute_grad_mean_of_points(union_of_points)</span>
+<span class="sd">        :type grad_mu: array of float64 with shape (num_points, self.dim)</span>
+<span class="sd">        :param grad_chol_decomp: self._gaussian_process.compute_grad_cholesky_variance_of_points(union_of_points)</span>
+<span class="sd">        :type grad_chol_decomp: array of float64 with shape (self.num_to_sample, num_points, num_points, self.dim)</span>
+<span class="sd">        :return: gradient of EI, ``\pderiv{EI(Xq \cup Xp)}{Xq_{i,d}}`` where ``Xq`` is ``points_to_sample``</span>
+<span class="sd">          and ``Xp`` is ``points_being_sampled`` (grad EI from sampling ``points_to_sample`` with</span>
+<span class="sd">          ``points_being_sampled`` concurrent experiments wrt each dimension of the points in ``points_to_sample``)</span>
+<span class="sd">        :rtype: array of float64 with shape (self.num_to_sample, self.dim)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">num_points</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_to_sample</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_being_sampled</span>
+        <span class="n">chol_var</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">cholesky</span><span class="p">(</span><span class="n">var_star</span><span class="p">,</span> <span class="n">lower</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+        <span class="n">normals</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_num_mc_iterations</span><span class="p">,</span> <span class="n">num_points</span><span class="p">))</span>
+
+        <span class="c"># Differentiating wrt each point of self._points_to_sample</span>
+        <span class="n">aggregate_dx</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_points_to_sample</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">normal_draws</span> <span class="ow">in</span> <span class="n">normals</span><span class="p">:</span>
+            <span class="n">improvements_this_iter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_best_so_far</span> <span class="o">-</span> <span class="n">mu_star</span> <span class="o">-</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">chol_var</span><span class="p">,</span> <span class="n">normal_draws</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">numpy</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">improvements_this_iter</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">:</span>
+                <span class="n">winner</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">improvements_this_iter</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">winner</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_to_sample</span><span class="p">:</span>
+                    <span class="n">aggregate_dx</span><span class="p">[</span><span class="n">winner</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">-=</span> <span class="n">grad_mu</span><span class="p">[</span><span class="n">winner</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">diff_index</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_to_sample</span><span class="p">):</span>
+                    <span class="c"># grad_chol_decomp_{diff_index, winner, i, j} * normal_draws_{i}</span>
+                    <span class="n">aggregate_dx</span><span class="p">[</span><span class="n">diff_index</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">-=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">grad_chol_decomp</span><span class="p">[</span><span class="n">diff_index</span><span class="p">,</span> <span class="n">winner</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">normal_draws</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">aggregate_dx</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_num_mc_iterations</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_compute_grad_expected_improvement_monte_carlo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mu_star</span><span class="p">,</span> <span class="n">var_star</span><span class="p">,</span> <span class="n">grad_mu</span><span class="p">,</span> <span class="n">grad_chol_decomp</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Compute the gradient of EI using (vectorized) monte-carlo integration; this is a general method that works for any input.</span>
+
+<span class="sd">        This function cal support the computation of q,p-EI.</span>
+<span class="sd">        This function requires access to a random number generator.</span>
+
+<span class="sd">        .. Note:: comments here are copied from gpp_math.cpp, ExpectedImprovementEvaluator::ComputeGradExpectedImprovement().</span>
+
+<span class="sd">        Mechanism is similar to the computation of EI, where points&#39; contributions to the gradient are thrown out of their</span>
+<span class="sd">        corresponding ``improvement &lt;= 0.0``.</span>
+
+<span class="sd">        Thus ``\nabla(\mu)`` only contributes when the ``winner`` (point w/best improvement this iteration) is the current point.</span>
+<span class="sd">        That is, the gradient of ``\mu`` at ``x_i`` wrt ``x_j`` is 0 unless ``i == j`` (and only this result is stored in</span>
+<span class="sd">        ``grad_mu``).  The interaction with ``grad_chol_decomp`` is harder to know a priori (like with</span>
+<span class="sd">        ``grad_mu``) and has a more complex structure (rank 3 tensor), so the derivative wrt ``x_j`` is computed fully, and</span>
+<span class="sd">        the relevant submatrix (indexed by the current ``winner``) is accessed each iteration.</span>
+
+<span class="sd">        For performance, this function vectorizes the monte-carlo integration loop, using numpy&#39;s mask feature to skip</span>
+<span class="sd">        iterations where the improvement is not positive. Some additional cleverness is required to vectorize the</span>
+<span class="sd">        accesses into grad_chol_decomp, since we cannot afford to run a loop (even over ``normals_compressed``) in Python.</span>
+
+<span class="sd">        :param mu_star: self._gaussian_process.compute_mean_of_points(union_of_points)</span>
+<span class="sd">        :type mu_star: array of float64 with shape (num_points)</span>
+<span class="sd">        :param var_star: self._gaussian_process.compute_variance_of_points(union_of_points)</span>
+<span class="sd">        :type var_star: array of float64 with shape (num_points, num_points)</span>
+<span class="sd">        :param grad_mu: self._gaussian_process.compute_grad_mean_of_points(union_of_points)</span>
+<span class="sd">        :type grad_mu: array of float64 with shape (num_points, self.dim)</span>
+<span class="sd">        :param grad_chol_decomp: self._gaussian_process.compute_grad_cholesky_variance_of_points(union_of_points)</span>
+<span class="sd">        :type grad_chol_decomp: array of float64 with shape (self.num_to_sample, num_points, num_points, self.dim)</span>
+<span class="sd">        :return: gradient of EI, ``\pderiv{EI(Xq \cup Xp)}{Xq_{i,d}}`` where ``Xq`` is ``points_to_sample``</span>
+<span class="sd">          and ``Xp`` is ``points_being_sampled`` (grad EI from sampling ``points_to_sample`` with</span>
+<span class="sd">          ``points_being_sampled`` concurrent experiments wrt each dimension of the points in ``points_to_sample``)</span>
+<span class="sd">        :rtype: array of float64 with shape (self.num_to_sample, self.dim)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">num_points</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_to_sample</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_being_sampled</span>
+        <span class="n">chol_var</span> <span class="o">=</span> <span class="o">-</span><span class="n">scipy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">cholesky</span><span class="p">(</span><span class="n">var_star</span><span class="p">,</span> <span class="n">lower</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+        <span class="n">normals</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_num_mc_iterations</span><span class="p">,</span> <span class="n">num_points</span><span class="p">))</span>
+
+        <span class="c"># TODO(eliu): (GH-60) Partition num_mc_iterations up into smaller blocks if it helps.</span>
+        <span class="c"># so that we don&#39;t waste as much mem bandwidth (since each entry of normals is</span>
+        <span class="c"># only used once)</span>
+        <span class="n">mu_star</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_best_so_far</span> <span class="o">-</span> <span class="n">mu_star</span>
+        <span class="c"># Compute Ls * w; note the shape is (self._num_mc_iterations, num_points)</span>
+        <span class="n">improvement_each_iter</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s">&#39;kj, ij&#39;</span><span class="p">,</span> <span class="n">chol_var</span><span class="p">,</span> <span class="n">normals</span><span class="p">)</span>
+        <span class="c"># Now we have improvement = best_so_far - y = best_so_far - (mus + Ls * w)</span>
+        <span class="n">improvement_each_iter</span> <span class="o">+=</span> <span class="n">mu_star</span>
+        <span class="c"># We want the maximum improvement each step; note the shape is (self._num_mc_iterations)</span>
+        <span class="n">best_improvement_each_iter</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">improvement_each_iter</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="c"># Index of the point that yielded the best improvement</span>
+        <span class="n">winner_indexes</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">improvement_each_iter</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="c"># Only keep the *positive* improvements</span>
+        <span class="n">best_improvement_each_iter</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_less_equal</span><span class="p">(</span><span class="n">best_improvement_each_iter</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+        <span class="c"># If all improvements are positive, then the mask is a scalar.</span>
+        <span class="c"># We want to expand the mask into a full vector so that subsequent code will work. Kind of hacky.</span>
+        <span class="k">if</span> <span class="n">best_improvement_each_iter</span><span class="o">.</span><span class="n">mask</span> <span class="ow">is</span> <span class="n">numpy</span><span class="o">.</span><span class="n">False_</span><span class="p">:</span>
+            <span class="n">best_improvement_each_iter</span><span class="o">.</span><span class="n">mask</span> <span class="o">=</span> <span class="p">[</span><span class="bp">False</span><span class="p">]</span>
+
+        <span class="c"># Keep only the indexes with positive improvement</span>
+        <span class="n">winner_indexes</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">winner_indexes</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="n">best_improvement_each_iter</span><span class="o">.</span><span class="n">mask</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+        <span class="c"># Drop the masked terms</span>
+        <span class="n">winner_indexes_compressed</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">compressed</span><span class="p">(</span><span class="n">winner_indexes</span><span class="p">)</span>
+
+        <span class="n">winner_indexes_tiled</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">winner_indexes_compressed</span><span class="p">,</span> <span class="p">(</span><span class="n">num_points</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="c"># Indexes where the winner was point diff_index (the point we&#39;re differentiating against)</span>
+        <span class="c"># for each possible diff_index value</span>
+        <span class="n">winner_indexes_tiled_equal_to_diff_index</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_not_equal</span><span class="p">(</span><span class="n">winner_indexes_tiled</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">num_points</span><span class="p">))</span><span class="o">.</span><span class="n">T</span>
+
+        <span class="c"># Differentiating wrt each point of self._points_to_sample</span>
+        <span class="c"># Handle derivative terms from grad_mu; only grab terms from winners 0:self.num_to_sample</span>
+        <span class="n">aggregate_dx</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">grad_mu</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">num_to_sample</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span><span class="o">.</span><span class="n">T</span> <span class="o">*</span>
+                        <span class="n">numpy</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">winner_indexes_tiled_equal_to_diff_index</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">num_to_sample</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">T</span>
+
+        <span class="c"># Handle derivative terms from grad_chol_decomp</span>
+        <span class="c"># Mask rows of normals that did not show positive improvement</span>
+        <span class="c"># TODO(eliu): (GH-61) Use numpy.tile, numpy.repeat or something more sensical if possible.</span>
+        <span class="n">normals_mask</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">normals</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+        <span class="n">normals_mask</span><span class="p">[</span><span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="n">best_improvement_each_iter</span><span class="o">.</span><span class="n">mask</span><span class="p">[:,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+        <span class="c"># Compress out the masked data</span>
+        <span class="n">normals_compressed</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">normals</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="n">normals_mask</span><span class="p">)</span>
+        <span class="c"># We&#39;d like to use numpy.ma.compress_rows but somehow that is REALLY slow, like N^2 slow</span>
+        <span class="n">normals_compressed</span> <span class="o">=</span> <span class="n">normals_compressed</span><span class="p">[</span><span class="o">~</span><span class="n">normals_compressed</span><span class="o">.</span><span class="n">mask</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">winner_indexes_compressed</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">num_points</span><span class="p">))</span>
+
+        <span class="c"># We now want to compute: grad_chol_decomp[winner_index, i, j] * normals[k, i]</span>
+        <span class="c"># And sum over k for each winner_index.</span>
+        <span class="c"># To do this loop in numpy, we have to create grad_chol_decomp_tiled:</span>
+        <span class="c"># for k in xrange(self._num_mc_iterations):</span>
+        <span class="c">#   grad_chol_decomp_tiled[k, ...] = grad_chol_decomp[diff_index, winner_indexes[k], ...]</span>
+        <span class="c"># for each diff_index = 0:self.num_to_sample.</span>
+        <span class="c"># Except we make two optimizations:</span>
+        <span class="c"># 1) We skip all the masked terms (so we use the compressed arrays)</span>
+        <span class="c"># 2) We vectorize the tiling process.</span>
+        <span class="c"># Do not vectorize the loop over self.num_to_sample: the extra memory cost hurts performance. We store self.num_to_sample</span>
+        <span class="c"># times more copies but each copy is only used once. Not vectorizing produces better locality and self.num_to_sample</span>
+        <span class="c"># will never be very large.</span>
+        <span class="c"># This tradeoff may change when GH-60 is done.</span>
+        <span class="n">grad_chol_decomp_tiled</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">normals_compressed</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">grad_chol_decomp</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">grad_chol_decomp</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">3</span><span class="p">]))</span>
+        <span class="k">for</span> <span class="n">diff_index</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_to_sample</span><span class="p">):</span>
+            <span class="n">grad_chol_decomp_tiled</span><span class="p">[</span><span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">num_points</span><span class="p">):</span>
+                <span class="c"># Only track the iterations where point i had the best improvement (winner)</span>
+                <span class="n">winner_indexes_equal_to_i</span> <span class="o">=</span> <span class="n">winner_indexes_tiled_equal_to_diff_index</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+
+                <span class="c"># If all winners were index i, then the mask is a scalar.</span>
+                <span class="c"># We want to expand the mask into a full vector so that subsequent code will work. Kind of hacky.</span>
+                <span class="k">if</span> <span class="n">winner_indexes_equal_to_i</span><span class="o">.</span><span class="n">mask</span> <span class="ow">is</span> <span class="n">numpy</span><span class="o">.</span><span class="n">False_</span><span class="p">:</span>
+                    <span class="c"># In fact we could stop here b/c this means index i won every time</span>
+                    <span class="n">winner_indexes_equal_to_i</span><span class="o">.</span><span class="n">mask</span> <span class="o">=</span> <span class="p">[</span><span class="bp">False</span><span class="p">]</span>
+
+                <span class="c"># Expand winner_indexes_equal_to_i.mask to cover the full shape of grad_chol_decomp_tiled</span>
+                <span class="c"># This is the same idea as normals_mask above</span>
+                <span class="c"># TODO(eliu): (GH-61) Use numpy.tile, numpy.repeat or something more sensical if possible.</span>
+                <span class="n">grad_chol_decomp_block_i_tile_mask</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">grad_chol_decomp_tiled</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+                <span class="n">grad_chol_decomp_block_i_tile_mask</span><span class="p">[</span><span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="n">winner_indexes_equal_to_i</span><span class="o">.</span><span class="n">mask</span><span class="p">[:,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+
+                <span class="c"># TODO(eliu): (GH-61) Is there a way to produce the desired block pattern directly, without copy + mask? Can I avoid duplicating grad_chol entirely?</span>
+                <span class="c"># Tile the appropriate block of grad_chol_decomp to *FILL* all blocks</span>
+                <span class="n">grad_chol_decomp_block_i_tile</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span>
+                    <span class="n">grad_chol_decomp</span><span class="p">[</span><span class="n">diff_index</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>
+                    <span class="p">(</span><span class="n">normals_compressed</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">),</span>
+                <span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">grad_chol_decomp_tiled</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+                <span class="c"># Zero out blocks where the winner was not point i</span>
+                <span class="n">grad_chol_decomp_block_i_tile</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">filled</span><span class="p">(</span>
+                    <span class="n">numpy</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+                        <span class="n">grad_chol_decomp_block_i_tile</span><span class="p">,</span>
+                        <span class="n">mask</span><span class="o">=</span><span class="n">grad_chol_decomp_block_i_tile_mask</span><span class="p">,</span>
+                    <span class="p">),</span>
+                    <span class="n">fill_value</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="c"># Add the tiles for this index into grad_chol_decomp_tiled</span>
+                <span class="c"># Note that since we zero all irrelevant blocks, we are never overwriting anything</span>
+                <span class="n">grad_chol_decomp_tiled</span> <span class="o">+=</span> <span class="n">grad_chol_decomp_block_i_tile</span>
+
+            <span class="c"># Now we can compute the contribution from the variance in a fast C loop.</span>
+            <span class="n">aggregate_dx</span><span class="p">[</span><span class="n">diff_index</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">-=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s">&#39;ki, kij&#39;</span><span class="p">,</span> <span class="n">normals_compressed</span><span class="p">,</span> <span class="n">grad_chol_decomp_tiled</span><span class="p">)</span>
+
+        <span class="c"># For reference, the above block replaces the following code:</span>
+        <span class="c"># for it, normal in enumerate(normals_compressed):</span>
+        <span class="c">#     for diff_index in xrange(self.num_to_sample):</span>
+        <span class="c">#         aggregate_dx[diff_index, ...] -= numpy.dot(normal, grad_chol_decomp[diff_index, winner_indexes_compressed[it], ...])</span>
+        <span class="c"># The vectorized version performs exactly the same number of arithmetic operations in exactly the same order but</span>
+        <span class="c"># is at least 30x faster (difference grows with self._num_mc_iterations). Looping in Python is REALLY slow.</span>
+
+        <span class="n">aggregate_dx</span> <span class="o">/=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_num_mc_iterations</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">aggregate_dx</span>
+
+<div class="viewcode-block" id="ExpectedImprovement.compute_expected_improvement"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.compute_expected_improvement">[docs]</a>    <span class="k">def</span> <span class="nf">compute_expected_improvement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">force_monte_carlo</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Compute the expected improvement at ``points_to_sample``, with ``points_being_sampled`` concurrent points being sampled.</span>
+
+<span class="sd">        .. Note:: These comments were copied from this&#39;s superclass in expected_improvement_interface.py.</span>
+
+<span class="sd">        ``points_to_sample`` is the &quot;q&quot; and ``points_being_sampled`` is the &quot;p&quot; in q,p-EI.</span>
+
+<span class="sd">        Computes the expected improvement ``EI(Xs) = E_n[[f^*_n(X) - min(f(Xs_1),...,f(Xs_m))]^+]``, where ``Xs``</span>
+<span class="sd">        are potential points to sample (union of ``points_to_sample`` and ``points_being_sampled``) and ``X`` are</span>
+<span class="sd">        already sampled points.  The ``^+`` indicates that the expression in the expectation evaluates to 0 if it</span>
+<span class="sd">        is negative.  ``f^*(X)`` is the MINIMUM over all known function evaluations (``points_sampled_value``),</span>
+<span class="sd">        whereas ``f(Xs)`` are *GP-predicted* function evaluations.</span>
+
+<span class="sd">        In words, we are computing the expected improvement (over the current ``best_so_far``, best known</span>
+<span class="sd">        objective function value) that would result from sampling (aka running new experiments) at</span>
+<span class="sd">        ``points_to_sample`` with ``points_being_sampled`` concurrent/ongoing experiments.</span>
+
+<span class="sd">        In general, the EI expression is complex and difficult to evaluate; hence we use Monte-Carlo simulation to approximate it.</span>
+<span class="sd">        When faster (e.g., analytic) techniques are available, we will prefer them.</span>
+
+<span class="sd">        The idea of the MC approach is to repeatedly sample at the union of ``points_to_sample`` and</span>
+<span class="sd">        ``points_being_sampled``. This is analogous to gaussian_process_interface.sample_point_from_gp,</span>
+<span class="sd">        but we sample ``num_union`` points at once:</span>
+<span class="sd">        ``y = \mu + Lw``</span>
+<span class="sd">        where ``\mu`` is the GP-mean, ``L`` is the ``chol_factor(GP-variance)`` and ``w`` is a vector</span>
+<span class="sd">        of ``num_union`` draws from N(0, 1). Then:</span>
+<span class="sd">        ``improvement_per_step = max(max(best_so_far - y), 0.0)``</span>
+<span class="sd">        Observe that the inner ``max`` means only the smallest component of ``y`` contributes in each iteration.</span>
+<span class="sd">        We compute the improvement over many random draws and average.</span>
+
+<span class="sd">        :param force_monte_carlo: whether to force monte carlo evaluation (vs using fast/accurate analytic eval when possible)</span>
+<span class="sd">        :type force_monte_carlo: boolean</span>
+<span class="sd">        :return: the expected improvement from sampling ``points_to_sample`` with ``points_being_sampled`` concurrent experiments</span>
+<span class="sd">        :rtype: float64</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">num_points</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_to_sample</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_being_sampled</span>
+        <span class="n">union_of_points</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_points_to_sample</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_points_being_sampled</span><span class="p">),</span> <span class="p">(</span><span class="n">num_points</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">))</span>
+
+        <span class="n">mu_star</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gaussian_process</span><span class="o">.</span><span class="n">compute_mean_of_points</span><span class="p">(</span><span class="n">union_of_points</span><span class="p">)</span>
+        <span class="n">var_star</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gaussian_process</span><span class="o">.</span><span class="n">compute_variance_of_points</span><span class="p">(</span><span class="n">union_of_points</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">num_points</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">force_monte_carlo</span> <span class="ow">is</span> <span class="bp">False</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute_expected_improvement_1d_analytic</span><span class="p">(</span><span class="n">mu_star</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">var_star</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute_expected_improvement_monte_carlo</span><span class="p">(</span><span class="n">mu_star</span><span class="p">,</span> <span class="n">var_star</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="ExpectedImprovement.compute_objective_function"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.compute_objective_function">[docs]</a>    <span class="k">def</span> <span class="nf">compute_objective_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Wrapper for compute_expected_improvement; see that function&#39;s docstring.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_expected_improvement</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="ExpectedImprovement.compute_grad_expected_improvement"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.compute_grad_expected_improvement">[docs]</a>    <span class="k">def</span> <span class="nf">compute_grad_expected_improvement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">force_monte_carlo</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Compute the gradient of expected improvement at ``points_to_sample`` wrt ``points_to_sample``, with ``points_being_sampled`` concurrent samples.</span>
+
+<span class="sd">        .. Note:: These comments were copied from this&#39;s superclass in expected_improvement_interface.py.</span>
+
+<span class="sd">        ``points_to_sample`` is the &quot;q&quot; and ``points_being_sampled`` is the &quot;p&quot; in q,p-EI.</span>
+
+<span class="sd">        In general, the expressions for gradients of EI are complex and difficult to evaluate; hence we use</span>
+<span class="sd">        Monte-Carlo simulation to approximate it. When faster (e.g., analytic) techniques are available, we will prefer them.</span>
+
+<span class="sd">        The MC computation of grad EI is similar to the computation of EI (decsribed in</span>
+<span class="sd">        compute_expected_improvement). We differentiate ``y = \mu + Lw`` wrt ``points_to_sample``;</span>
+<span class="sd">        only terms from the gradient of ``\mu`` and ``L`` contribute. In EI, we computed:</span>
+<span class="sd">        ``improvement_per_step = max(max(best_so_far - y), 0.0)``</span>
+<span class="sd">        and noted that only the smallest component of ``y`` may contribute (if it is &gt; 0.0).</span>
+<span class="sd">        Call this index ``winner``. Thus in computing grad EI, we only add gradient terms</span>
+<span class="sd">        that are attributable to the ``winner``-th component of ``y``.</span>
+
+<span class="sd">        :param force_monte_carlo: whether to force monte carlo evaluation (vs using fast/accurate analytic eval when possible)</span>
+<span class="sd">        :type force_monte_carlo: boolean</span>
+<span class="sd">        :return: gradient of EI, ``\pderiv{EI(Xq \cup Xp)}{Xq_{i,d}}`` where ``Xq`` is ``points_to_sample``</span>
+<span class="sd">          and ``Xp`` is ``points_being_sampled`` (grad EI from sampling ``points_to_sample`` with</span>
+<span class="sd">          ``points_being_sampled`` concurrent experiments wrt each dimension of the points in ``points_to_sample``)</span>
+<span class="sd">        :rtype: array of float64 with shape (num_to_sample, dim)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">num_points</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_to_sample</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_being_sampled</span>
+        <span class="n">union_of_points</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_points_to_sample</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_points_being_sampled</span><span class="p">),</span> <span class="p">(</span><span class="n">num_points</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">))</span>
+
+        <span class="n">mu_star</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gaussian_process</span><span class="o">.</span><span class="n">compute_mean_of_points</span><span class="p">(</span><span class="n">union_of_points</span><span class="p">)</span>
+        <span class="n">var_star</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gaussian_process</span><span class="o">.</span><span class="n">compute_variance_of_points</span><span class="p">(</span><span class="n">union_of_points</span><span class="p">)</span>
+        <span class="n">grad_mu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gaussian_process</span><span class="o">.</span><span class="n">compute_grad_mean_of_points</span><span class="p">(</span><span class="n">union_of_points</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_to_sample</span><span class="p">)</span>
+        <span class="n">grad_chol_decomp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gaussian_process</span><span class="o">.</span><span class="n">compute_grad_cholesky_variance_of_points</span><span class="p">(</span><span class="n">union_of_points</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_to_sample</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">num_points</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">force_monte_carlo</span> <span class="ow">is</span> <span class="bp">False</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute_grad_expected_improvement_1d_analytic</span><span class="p">(</span>
+                <span class="n">mu_star</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                <span class="n">var_star</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+                <span class="n">grad_mu</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>
+                <span class="n">grad_chol_decomp</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute_grad_expected_improvement_monte_carlo</span><span class="p">(</span>
+                <span class="n">mu_star</span><span class="p">,</span>
+                <span class="n">var_star</span><span class="p">,</span>
+                <span class="n">grad_mu</span><span class="p">,</span>
+                <span class="n">grad_chol_decomp</span><span class="p">,</span>
+            <span class="p">)</span>
+</div>
+<div class="viewcode-block" id="ExpectedImprovement.compute_grad_objective_function"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.compute_grad_objective_function">[docs]</a>    <span class="k">def</span> <span class="nf">compute_grad_objective_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Wrapper for compute_grad_expected_improvement; see that function&#39;s docstring.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_grad_expected_improvement</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="ExpectedImprovement.compute_hessian_objective_function"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.compute_hessian_objective_function">[docs]</a>    <span class="k">def</span> <span class="nf">compute_hessian_objective_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;We do not currently support computation of the (spatial) hessian of Expected Improvement.&quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s">&#39;Currently we cannot compute the hessian of expected improvement.&#39;</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

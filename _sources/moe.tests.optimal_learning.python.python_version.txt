@@ -1,0 +1,46 @@
+moe.tests.optimal_learning.python.python_version package
+========================================================
+
+Submodules
+----------
+
+moe.tests.optimal_learning.python.python_version.covariance_test module
+-----------------------------------------------------------------------
+
+.. automodule:: moe.tests.optimal_learning.python.python_version.covariance_test
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+moe.tests.optimal_learning.python.python_version.expected_improvement_test module
+---------------------------------------------------------------------------------
+
+.. automodule:: moe.tests.optimal_learning.python.python_version.expected_improvement_test
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+moe.tests.optimal_learning.python.python_version.log_likelihood_test module
+---------------------------------------------------------------------------
+
+.. automodule:: moe.tests.optimal_learning.python.python_version.log_likelihood_test
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+moe.tests.optimal_learning.python.python_version.optimization_test module
+-------------------------------------------------------------------------
+
+.. automodule:: moe.tests.optimal_learning.python.python_version.optimization_test
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: moe.tests.optimal_learning.python.python_version
+    :members:
+    :undoc-members:
+    :show-inheritance:

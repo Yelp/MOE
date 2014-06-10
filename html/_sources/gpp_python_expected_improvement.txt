@@ -1,0 +1,20 @@
+gpp_python_expected_improvement
+=====
+
+**Contents:**
+
+    1. `gpp_python_expected_improvement.hpp`_
+    2. `gpp_python_expected_improvement.cpp`_
+
+
+gpp_python_expected_improvement.hpp
+------
+
+.. doxygenfile:: gpp_python_expected_improvement.hpp
+
+
+gpp_python_expected_improvement.cpp
+------
+
+.. doxygenfile:: gpp_python_expected_improvement.cpp
+

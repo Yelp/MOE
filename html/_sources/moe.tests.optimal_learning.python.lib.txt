@@ -1,0 +1,22 @@
+moe.tests.optimal_learning.python.lib package
+=============================================
+
+Submodules
+----------
+
+moe.tests.optimal_learning.python.lib.math_test module
+------------------------------------------------------
+
+.. automodule:: moe.tests.optimal_learning.python.lib.math_test
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: moe.tests.optimal_learning.python.lib
+    :members:
+    :undoc-members:
+    :show-inheritance:

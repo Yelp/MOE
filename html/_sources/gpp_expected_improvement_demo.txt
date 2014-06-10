@@ -1,0 +1,13 @@
+gpp_expected_improvement_demo
+=====
+
+**Contents:**
+
+    1. `gpp_expected_improvement_demo.cpp`_
+
+
+gpp_expected_improvement_demo.cpp
+------
+
+.. doxygenfile:: gpp_expected_improvement_demo.cpp
+

@@ -1,0 +1,325 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>moe.optimal_learning.EPI.src.python.interfaces.log_likelihood_interface &mdash; MOE 0.1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../../../../../_static/favicon.ico"/>
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../../../../../_static/breathe.css" type="text/css" />
+  
+    <link rel="top" title="MOE 0.1.0 documentation" href="../../../../../../../index.html"/>
+        <link rel="up" title="moe" href="../../../../../../moe.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="../../../../../../../index.html" class="fa fa-home"> MOE</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../moe.html">moe package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../../moe.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../../moe.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../../moe.html#module-moe.resources">moe.resources module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../../moe.html#module-moe">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../gpp_math_hpp.html">gpp_math.hpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../gpp_geometry_hpp.html">gpp_geometry.hpp</a></li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../../../../../index.html">MOE</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../../../../../index.html">Module code</a> &raquo;</li>
+      
+          <li><a href="../../../../../../moe.html">moe</a> &raquo;</li>
+      
+    <li>moe.optimal_learning.EPI.src.python.interfaces.log_likelihood_interface</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <h1>Source code for moe.optimal_learning.EPI.src.python.interfaces.log_likelihood_interface</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="sd">r&quot;&quot;&quot;Interface for computation of log likelihood (and similar) measures of model fit (of a Gaussian Process) along with its gradient and hessian.</span>
+
+<span class="sd">As a preface, you should read gpp_math.hpp&#39;s comments first (if not also gpp_math.cpp) to get an overview</span>
+<span class="sd">of Gaussian Processes (GPs) and how we are using them (Expected Improvement, EI). Python readers can get the basic</span>
+<span class="sd">overview in interfaces/gaussian_process_interface.py.</span>
+
+<span class="sd">.. Note:: these comments are copied from the file comments of gpp_model_selection_and_hyperparameter_optimization.hpp.</span>
+
+<span class="sd">This file deals with model selection via hyperparameter optimization, as the name implies.  In our discussion of GPs,</span>
+<span class="sd">we did not pay much attention to the underlying covariance function.  We noted that the covariance is extremely</span>
+<span class="sd">important since it encodes our assumptions about the objective function f(x) that we are trying to learn; i.e.,</span>
+<span class="sd">the covariance describes the nearness/similarity of points in the input space.  Also, the GP was clearly indicated</span>
+<span class="sd">to be a function of the covariance, but we simply assumed that the selection of covariance was an already-solved</span>
+<span class="sd">problem (or even worse, arbitrary!).</span>
+
+<span class="sd">MODEL SELECTION:</span>
+<span class="sd">To better understand model selection, let&#39;s look at a common covariance used in our computation, square exponential:</span>
+<span class="sd">``cov(x_1, x_2) = \alpha * \exp(-0.5*r^2), where r = \sum_{i=1}^d (x_1_i - x_2_i)^2 / L_i^2``.</span>
+<span class="sd">Here, ``\alpha`` is ``\sigma_f^2``, the signal variance, and the ``L_i`` are length scales.  The vector ``[\alpha, L_1, ... , L_d]``</span>
+<span class="sd">are called the &quot;hyperparameters&quot; or &quot;free parameters&quot; (see gpp_covariance.hpp for more details).  There is nothing in</span>
+<span class="sd">the covariance  that guides the choice of the hyperparameters; ``L_1 = 0.001`` is just as valid as ``L_1 = 1000.0.``</span>
+
+<span class="sd">Clearly, the value of the covariance changes substantially if ``L_i`` varies by a factor of two, much less 6 orders of</span>
+<span class="sd">magnitude.  That is the difference between saying variations of size \approx 1.0 in x_i, the first spatial dimension,</span>
+<span class="sd">are extremely important vs almost irrelevant.</span>
+
+<span class="sd">So how do we know what hyperparameters to choose?  This question/problem is more generally called &quot;Model Selection.&quot;</span>
+<span class="sd">Although the problem is far from solved, we will present the approaches implemented here; as usual, we use</span>
+<span class="sd">Rasmussen &amp; Williams (Chapter 5 now) as a guide/reference.</span>
+
+<span class="sd">However, we will not spend much time discussing selection across different classes of covariance functions; e.g.,</span>
+<span class="sd">Square Exponential vs Matern w/various ``\nu``, etc.  We have yet to develop any experience/intuition with this problem</span>
+<span class="sd">and are temporarily punting it.  For now, we follow the observation in Rasmussen &amp; Williams that Square Exponential</span>
+<span class="sd">is a popular choice and appears to work very well.  (This is still a very important problem; e.g., there may be</span>
+<span class="sd">scenarios when we would prefer a non-stationary or periodic covariance, and the methods discussed here do not cover</span>
+<span class="sd">this aspect of selection.  Such covariance options are not yet implemented though.)</span>
+
+<span class="sd">We do note that the techniques for selecting covariance classes more or less require hyperparameter optimization</span>
+<span class="sd">on each individual covariance.  The likely approach would be to produce the best fit (according to chosen metrics)</span>
+<span class="sd">using each type of covariance (using optimization) and then choose the best performer across the group.</span>
+
+<span class="sd">MODEL SELECTION OVERVIEW:</span>
+<span class="sd">Generally speaking, there are a great many tunable parameters in any model-based learning algorithm.  In our case,</span>
+<span class="sd">the GP takes a covariance function as input; the selection of the covariance class as well as the choice of hyperparameters</span>
+<span class="sd">are all part of the model selection process.  Determining these details of the [GP] model is the model selection problem.</span>
+
+<span class="sd">In order to evaluate the quality of models (and solve model selction), we need some kind of metric.  The literature suggests</span>
+<span class="sd">too many to cite, but R&amp;W groups them into three common approaches (5.1, p108):</span>
+<span class="sd">A) compute the probability of the model given the data (e.g., LML)</span>
+<span class="sd">B) estimate the genereralization error (e.g., LOO-CV)</span>
+<span class="sd">C) bound the generalization error</span>
+<span class="sd">where &quot;generalization error&quot; is defined as &quot;the average error on unseen test examples (from the same distribution</span>
+<span class="sd">as the training cases).&quot;  So it&#39;s a measure of how well or poorly the model predicts reality.</span>
+
+<span class="sd">For further details and examples of log likelihood measures, see gpp_model_selection_and_hyperparameter_optimization.hpp.</span>
+<span class="sd">Overview of some log likelihood measures can be found in GaussianProcessLogMarginalLikelihood and</span>
+<span class="sd">GaussianProcessLeaveOneOutLogLikelihood in cpp_wrappers/log_likelihood.py.</span>
+
+<span class="sd">OPTIMIZATION:</span>
+<span class="sd">Now that we have discussed measures of model quality, what do we do with them?  How do they help us choose hyperparameters?</span>
+
+<span class="sd">From here, we can apply anyone&#39;s favorite optimization technique to maximize log likelihoods wrt hyperparameters.  The</span>
+<span class="sd">hyperparameters that maximize log likelihood provide the model configuration that is most likely to have produced the</span>
+<span class="sd">data observed so far, ``(X, f)``.</span>
+
+<span class="sd">In principle, this approach always works.  But in practice it is often not that simple.  For example, suppose the underlying</span>
+<span class="sd">objective is periodic and we try to optimize hyperparameters for a class of covariance functions that cannot account</span>
+<span class="sd">for the periodicity.  We can always* find the set of hyperparameters that maximize our chosen log likelihood measure</span>
+<span class="sd">(LML or LOO-CV), but if the covariance is mis-specified or we otherwise make invalid assumptions about the objective</span>
+<span class="sd">function, then the results are not meaningful at best and misleading at worst.  It becomes a case of garbage in,</span>
+<span class="sd">garbage out.</span>
+
+<span class="sd">\* Even this is tricky.  Log likelihood is almost never a convex function.  For example, with LML + GPs, you often expect</span>
+<span class="sd">at least two optima, one more complex solution (short length scales, less intrinsic noise) and one less complex</span>
+<span class="sd">solution (longer length scales, higher intrinsic noise).  There are even cases where no optima (to machine precision)</span>
+<span class="sd">exist or cases where solutions lie on (lower-dimensional) manifold(s) (e.g., locally the likelihood is (nearly) independent</span>
+<span class="sd">of one or more hyperparameters).</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABCMeta</span><span class="p">,</span> <span class="n">abstractmethod</span><span class="p">,</span> <span class="n">abstractproperty</span>
+
+
+<div class="viewcode-block" id="GaussianProcessLogLikelihoodInterface"><a class="viewcode-back" href="../../../../../../../moe.optimal_learning.EPI.src.python.interfaces.html#moe.optimal_learning.EPI.src.python.interfaces.log_likelihood_interface.GaussianProcessLogLikelihoodInterface">[docs]</a><span class="k">class</span> <span class="nc">GaussianProcessLogLikelihoodInterface</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="sd">r&quot;&quot;&quot;Interface for computation of log likelihood (and log likelihood-like) measures of model fit along with its gradient and hessian.</span>
+
+<span class="sd">    See module comments for an overview of log likelihood-like measures of model fit and their role in model selection.</span>
+
+<span class="sd">    Below, let ``LL(y | X, \theta)`` denote the log likelihood of the data (``y``) given the ``points_sampled`` (``X``) and the</span>
+<span class="sd">    hyperparameters (``\theta``). ``\theta`` is the vector that is varied. ``(X, y)`` (and associated noise) should be stored</span>
+<span class="sd">    as data members by the implementation&#39;s constructor.</span>
+
+<span class="sd">    See gpp_model_selection_and_hyperparameter_optimization.hpp/cpp for further overview and in-depth discussion, respectively.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">__metaclass__</span> <span class="o">=</span> <span class="n">ABCMeta</span>
+
+    <span class="nd">@abstractproperty</span>
+<div class="viewcode-block" id="GaussianProcessLogLikelihoodInterface.dim"><a class="viewcode-back" href="../../../../../../../moe.optimal_learning.EPI.src.python.interfaces.html#moe.optimal_learning.EPI.src.python.interfaces.log_likelihood_interface.GaussianProcessLogLikelihoodInterface.dim">[docs]</a>    <span class="k">def</span> <span class="nf">dim</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the number of spatial dimensions.&quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+</div>
+    <span class="nd">@abstractproperty</span>
+<div class="viewcode-block" id="GaussianProcessLogLikelihoodInterface.num_hyperparameters"><a class="viewcode-back" href="../../../../../../../moe.optimal_learning.EPI.src.python.interfaces.html#moe.optimal_learning.EPI.src.python.interfaces.log_likelihood_interface.GaussianProcessLogLikelihoodInterface.num_hyperparameters">[docs]</a>    <span class="k">def</span> <span class="nf">num_hyperparameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the number of hyperparameters.&quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+</div>
+    <span class="nd">@abstractmethod</span>
+<div class="viewcode-block" id="GaussianProcessLogLikelihoodInterface.get_hyperparameters"><a class="viewcode-back" href="../../../../../../../moe.optimal_learning.EPI.src.python.interfaces.html#moe.optimal_learning.EPI.src.python.interfaces.log_likelihood_interface.GaussianProcessLogLikelihoodInterface.get_hyperparameters">[docs]</a>    <span class="k">def</span> <span class="nf">get_hyperparameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the hyperparameters (array of float64 with shape (num_hyperparameters)) of this covariance.&quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+</div>
+    <span class="nd">@abstractmethod</span>
+<div class="viewcode-block" id="GaussianProcessLogLikelihoodInterface.set_hyperparameters"><a class="viewcode-back" href="../../../../../../../moe.optimal_learning.EPI.src.python.interfaces.html#moe.optimal_learning.EPI.src.python.interfaces.log_likelihood_interface.GaussianProcessLogLikelihoodInterface.set_hyperparameters">[docs]</a>    <span class="k">def</span> <span class="nf">set_hyperparameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hyperparameters</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set hyperparameters to the specified hyperparameters; ordering must match.</span>
+
+<span class="sd">        :param hyperparameters: hyperparameters</span>
+<span class="sd">        :type hyperparameters: array of float64 with shape (num_hyperparameters)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+</div>
+    <span class="nd">@abstractmethod</span>
+<div class="viewcode-block" id="GaussianProcessLogLikelihoodInterface.compute_log_likelihood"><a class="viewcode-back" href="../../../../../../../moe.optimal_learning.EPI.src.python.interfaces.html#moe.optimal_learning.EPI.src.python.interfaces.log_likelihood_interface.GaussianProcessLogLikelihoodInterface.compute_log_likelihood">[docs]</a>    <span class="k">def</span> <span class="nf">compute_log_likelihood</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Compute a log likelihood measure of model fit.</span>
+
+<span class="sd">        :return: value of log_likelihood evaluated at hyperparameters (``LL(y | X, \theta)``)</span>
+<span class="sd">        :rtype: float64</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+</div>
+    <span class="nd">@abstractmethod</span>
+<div class="viewcode-block" id="GaussianProcessLogLikelihoodInterface.compute_grad_log_likelihood"><a class="viewcode-back" href="../../../../../../../moe.optimal_learning.EPI.src.python.interfaces.html#moe.optimal_learning.EPI.src.python.interfaces.log_likelihood_interface.GaussianProcessLogLikelihoodInterface.compute_grad_log_likelihood">[docs]</a>    <span class="k">def</span> <span class="nf">compute_grad_log_likelihood</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Compute the gradient (wrt hyperparameters) of this log likelihood measure of model fit.</span>
+
+<span class="sd">        :return: grad_log_likelihood: i-th entry is ``\pderiv{LL(y | X, \theta)}{\theta_i}``</span>
+<span class="sd">        :rtype: array of float64 with shape (num_hyperparameters)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+</div>
+    <span class="nd">@abstractmethod</span>
+<div class="viewcode-block" id="GaussianProcessLogLikelihoodInterface.compute_hessian_log_likelihood"><a class="viewcode-back" href="../../../../../../../moe.optimal_learning.EPI.src.python.interfaces.html#moe.optimal_learning.EPI.src.python.interfaces.log_likelihood_interface.GaussianProcessLogLikelihoodInterface.compute_hessian_log_likelihood">[docs]</a>    <span class="k">def</span> <span class="nf">compute_hessian_log_likelihood</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Compute the hessian (wrt hyperparameters) of this log likelihood measure of model fit.</span>
+
+<span class="sd">        See CovarianceInterface.hyperparameter_hessian_covariance() in interfaces/covariance_interface.py for data ordering.</span>
+
+<span class="sd">        :return: hessian_log_likelihood: ``(i,j)``-th entry is ``\mixpderiv{LL(y | X, \theta)}{\theta_i}{\theta_j}``</span>
+<span class="sd">        :rtype: array of float64 with shape (num_hyperparameters, num_hyperparameters)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div></div>
+</pre></div>
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../../../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

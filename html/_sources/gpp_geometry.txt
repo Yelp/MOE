@@ -1,0 +1,13 @@
+gpp_geometry
+=====
+
+**Contents:**
+
+    1. `gpp_geometry.hpp`_
+
+
+gpp_geometry.hpp
+------
+
+.. doxygenfile:: gpp_geometry.hpp
+

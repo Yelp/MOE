@@ -1,0 +1,315 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>moe.views.rest.gp_next_points_kriging &mdash; MOE 0.1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../../_static/breathe.css" type="text/css" />
+  
+    <link rel="top" title="MOE 0.1.0 documentation" href="../../../../index.html"/>
+        <link rel="up" title="moe" href="../../../moe.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="../../../../index.html" class="fa fa-home"> MOE</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../moe.html">moe package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe.html#module-moe.resources">moe.resources module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe.html#module-moe">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../cpp_tree.html">C++ Files</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_optimization_test.html">gpp_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_domain_test.html">gpp_domain_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_exception.html">gpp_exception</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_geometry.html">gpp_geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_test_utils.html">gpp_test_utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_logging.html">gpp_logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_covariance.html">gpp_covariance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_python_test.html">gpp_python_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_domain.html">gpp_domain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_python_common.html">gpp_python_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_hyperparameter_optimization_demo.html">gpp_hyperparameter_optimization_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_test_utils_test.html">gpp_test_utils_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_math_test.html">gpp_math_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_python_model_selection.html">gpp_python_model_selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_math.html">gpp_math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_random_test.html">gpp_random_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_random.html">gpp_random</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_geometry_test.html">gpp_geometry_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_linear_algebra.html">gpp_linear_algebra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_core.html">gpp_core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_covariance_test.html">gpp_covariance_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_python.html">gpp_python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_model_selection_and_hyperparameter_optimization.html">gpp_model_selection_and_hyperparameter_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_optimization_parameters.html">gpp_optimization_parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_common.html">gpp_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_model_selection_and_hyperparameter_optimization_test.html">gpp_model_selection_and_hyperparameter_optimization_test</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../../index.html">MOE</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+      
+          <li><a href="../../../moe.html">moe</a> &raquo;</li>
+      
+    <li>moe.views.rest.gp_next_points_kriging</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <h1>Source code for moe.views.rest.gp_next_points_kriging</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;Classes for gp_next_points_kriging endpoints.</span>
+
+<span class="sd">Includes:</span>
+<span class="sd">    1. pretty and backend views</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">colander</span>
+
+<span class="kn">from</span> <span class="nn">pyramid.view</span> <span class="kn">import</span> <span class="n">view_config</span>
+
+<span class="kn">from</span> <span class="nn">moe.views.constant</span> <span class="kn">import</span> <span class="n">GP_NEXT_POINTS_KRIGING_ROUTE_NAME</span><span class="p">,</span> <span class="n">GP_NEXT_POINTS_KRIGING_PRETTY_ROUTE_NAME</span><span class="p">,</span> <span class="n">GP_NEXT_POINTS_KRIGING_OPTIMIZATION_METHOD_NAME</span>
+<span class="kn">from</span> <span class="nn">moe.views.gp_next_points_pretty_view</span> <span class="kn">import</span> <span class="n">GpNextPointsPrettyView</span><span class="p">,</span> <span class="n">GpNextPointsRequest</span>
+<span class="kn">from</span> <span class="nn">moe.views.gp_pretty_view</span> <span class="kn">import</span> <span class="n">PRETTY_RENDERER</span>
+
+
+<div class="viewcode-block" id="GpNextPointsKrigingRequest"><a class="viewcode-back" href="../../../../moe.views.rest.html#moe.views.rest.gp_next_points_kriging.GpNextPointsKrigingRequest">[docs]</a><span class="k">class</span> <span class="nc">GpNextPointsKrigingRequest</span><span class="p">(</span><span class="n">GpNextPointsRequest</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;Extends the standard request :class:`moe.views.gp_next_points_pretty_view.GpNextPointsRequest` with kriging parameters.</span>
+
+<span class="sd">    **Required fields**</span>
+
+<span class="sd">        :gp_historical_info: a :class:`moe.views.schemas.GpHistoricalInfo` dict of historical data</span>
+<span class="sd">        :domain_info: a :class:`moe.views.schemas.BoundedDomainInfo` dict of domain information</span>
+
+<span class="sd">    **Optional fields**</span>
+
+<span class="sd">        :num_to_sample: number of next points to generate (default: 1)</span>
+<span class="sd">        :std_deviation_coef: a float used in Kriging, see Kriging implementation docs (default: 0.0)</span>
+<span class="sd">        :kriging_noise_variance: a positive (&gt;= 0) float used in Kriging, see Kriging implementation docs (default: 0.0)</span>
+<span class="sd">        :covariance_info: a :class:`moe.views.schemas.CovarianceInfo` dict of covariance information</span>
+<span class="sd">        :optimiaztion_info: a :class:`moe.views.schemas.OptimizationInfo` dict of optimization information</span>
+
+<span class="sd">    **Example Request**</span>
+
+<span class="sd">    .. sourcecode:: http</span>
+
+<span class="sd">        Content-Type: text/javascript</span>
+
+<span class="sd">        {</span>
+<span class="sd">            &#39;num_to_sample&#39;: 1,</span>
+<span class="sd">            &#39;std_deviation_coef&#39;: 0.0,</span>
+<span class="sd">            &#39;kriging_noise_variance&#39;: 0.0,</span>
+<span class="sd">            &#39;gp_historical_info&#39;: {</span>
+<span class="sd">                &#39;points_sampled&#39;: [</span>
+<span class="sd">                        {&#39;value_var&#39;: 0.01, &#39;value&#39;: 0.1, &#39;point&#39;: [0.0]},</span>
+<span class="sd">                        {&#39;value_var&#39;: 0.01, &#39;value&#39;: 0.2, &#39;point&#39;: [1.0]}</span>
+<span class="sd">                    ],</span>
+<span class="sd">                },</span>
+<span class="sd">            &#39;domain_info&#39;: {</span>
+<span class="sd">                &#39;dim&#39;: 1,</span>
+<span class="sd">                &#39;domain_bounds&#39;: [</span>
+<span class="sd">                    {&#39;min&#39;: 0.0, &#39;max&#39;: 1.0},</span>
+<span class="sd">                    ],</span>
+<span class="sd">                },</span>
+<span class="sd">        }</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">std_deviation_coef</span> <span class="o">=</span> <span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="p">(</span>
+            <span class="n">colander</span><span class="o">.</span><span class="n">Float</span><span class="p">(),</span>
+            <span class="n">missing</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+            <span class="p">)</span>
+    <span class="n">kriging_noise_variance</span> <span class="o">=</span> <span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="p">(</span>
+            <span class="n">colander</span><span class="o">.</span><span class="n">Float</span><span class="p">(),</span>
+            <span class="n">missing</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+            <span class="n">validator</span><span class="o">=</span><span class="n">colander</span><span class="o">.</span><span class="n">Range</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mf">0.0</span><span class="p">),</span>
+            <span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="GpNextPointsKriging"><a class="viewcode-back" href="../../../../moe.views.rest.html#moe.views.rest.gp_next_points_kriging.GpNextPointsKriging">[docs]</a><span class="k">class</span> <span class="nc">GpNextPointsKriging</span><span class="p">(</span><span class="n">GpNextPointsPrettyView</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;Views for gp_next_points_kriging endpoints.&quot;&quot;&quot;</span>
+
+    <span class="n">_route_name</span> <span class="o">=</span> <span class="n">GP_NEXT_POINTS_KRIGING_ROUTE_NAME</span>
+    <span class="n">_pretty_route_name</span> <span class="o">=</span> <span class="n">GP_NEXT_POINTS_KRIGING_PRETTY_ROUTE_NAME</span>
+
+    <span class="n">request_schema</span> <span class="o">=</span> <span class="n">GpNextPointsKrigingRequest</span><span class="p">()</span>
+
+    <span class="n">_pretty_default_request</span> <span class="o">=</span> <span class="n">GpNextPointsPrettyView</span><span class="o">.</span><span class="n">_pretty_default_request</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">_pretty_default_request</span><span class="p">[</span><span class="s">&#39;std_deviation_coef&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">_pretty_default_request</span><span class="p">[</span><span class="s">&#39;kriging_noise_variance&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+    <span class="nd">@view_config</span><span class="p">(</span><span class="n">route_name</span><span class="o">=</span><span class="n">_pretty_route_name</span><span class="p">,</span> <span class="n">renderer</span><span class="o">=</span><span class="n">PRETTY_RENDERER</span><span class="p">)</span>
+<div class="viewcode-block" id="GpNextPointsKriging.pretty_view"><a class="viewcode-back" href="../../../../moe.views.rest.html#moe.views.rest.gp_next_points_kriging.GpNextPointsKriging.pretty_view">[docs]</a>    <span class="k">def</span> <span class="nf">pretty_view</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;A pretty, browser interactive view for the interface. Includes form request and response.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pretty_response</span><span class="p">()</span>
+</div>
+    <span class="nd">@view_config</span><span class="p">(</span><span class="n">route_name</span><span class="o">=</span><span class="n">_route_name</span><span class="p">,</span> <span class="n">renderer</span><span class="o">=</span><span class="s">&#39;json&#39;</span><span class="p">,</span> <span class="n">request_method</span><span class="o">=</span><span class="s">&#39;POST&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="GpNextPointsKriging.gp_next_points_kriging_view"><a class="viewcode-back" href="../../../../moe.views.rest.html#moe.views.rest.gp_next_points_kriging.GpNextPointsKriging.gp_next_points_kriging_view">[docs]</a>    <span class="k">def</span> <span class="nf">gp_next_points_kriging_view</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Endpoint for gp_next_points_kriging POST requests.</span>
+
+<span class="sd">        .. http:post:: /gp/next_points/kriging</span>
+
+<span class="sd">           Calculates the next best points to sample, given historical data, using Kriging.</span>
+
+<span class="sd">           :input: :class:`moe.views.rest.gp_next_points_kriging.GpNextPointsKrigingRequest`</span>
+<span class="sd">           :output: :class:`moe.views.gp_next_points_pretty_view.GpNextPointsResponse`</span>
+
+<span class="sd">           :status 200: returns a response</span>
+<span class="sd">           :status 500: server error</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_params_from_request</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_next_points_to_sample_response</span><span class="p">(</span>
+                <span class="n">params</span><span class="p">,</span>
+                <span class="n">GP_NEXT_POINTS_KRIGING_OPTIMIZATION_METHOD_NAME</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_route_name</span><span class="p">,</span>
+                <span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

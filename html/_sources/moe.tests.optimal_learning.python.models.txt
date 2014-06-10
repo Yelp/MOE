@@ -1,0 +1,30 @@
+moe.tests.optimal_learning.python.models package
+================================================
+
+Submodules
+----------
+
+moe.tests.optimal_learning.python.models.covariance_of_process_test module
+--------------------------------------------------------------------------
+
+.. automodule:: moe.tests.optimal_learning.python.models.covariance_of_process_test
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+moe.tests.optimal_learning.python.models.optimal_gaussian_process_linked_cpp_test module
+----------------------------------------------------------------------------------------
+
+.. automodule:: moe.tests.optimal_learning.python.models.optimal_gaussian_process_linked_cpp_test
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: moe.tests.optimal_learning.python.models
+    :members:
+    :undoc-members:
+    :show-inheritance:
