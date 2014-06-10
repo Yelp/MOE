@@ -96,9 +96,9 @@ To update the online documentation::
     git checkout gh-pages
     git pull origin master
     make docs-no-tox
-    cp -r docs/_build/* .
+    cp -r docs/_build/html/* .
     git add -A
-    git commit -m "updated online docs"
+    git commit -m "updated online docs" --no-verify
     git push origin HEAD
 
 Python Documentation
