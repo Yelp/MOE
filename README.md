@@ -2,12 +2,49 @@
 
 Metric Optimization Engine. A global, black box optimization engine for real world metric optimization.
 
-  * [15 min video introduction][0]
   * [Full documentation][1]
   * [REST documentation][2]
 
-
 Or, build the documentation locally with `make docs-no-tox`.
+
+## What is MOE?
+
+MOE (Metric Optimization Engine) is a *fast and efficient*, *derivative-free*,  *black box*, *global* optimization framework for optimizing parameters of time *consuming* or *expensive* experiments and systems.
+
+An experiment or system can be time consuming or expensive if it takes a long time to recieve statistically significant results (traffic for an A/B test, complex system with long training time, etc) or the opportunity cost of trying new values is high (engineering expense, A/B testing tradeoffs, etc).
+
+MOE solves this problem through optimal experimental design and *optimal learning*.
+
+    "Optimal learning addresses the challenge of how to collect information as efficiently as possible, primarily for settings where collecting information is time consuming and expensive"
+    -- Prof. Warren Powell, http://optimallearning.princeton.edu
+
+It boils down to:
+
+    "What is the most efficient way to collect information?"
+    -- Prof. Peter Frazier, http://people.orie.cornell.edu/pfrazier
+
+The *black box* nature of MOE allows us to optimize any number of systems, requiring no internal knowledge or access. It uses some objective function (Click Through Rate (CTR), revenue, engagement, etc) and some set of parameters (constants, config values, cut-offs, ML hyperparameters) and finds the best set of parameters to maximize (or minimize) the given function in as few attempts as possible. It does not require knowledge of the specific objective, or how it is obtained, just the previous parameters and their associated objective values (historical data).
+
+Video and slidedeck introduction to MOE:
+
+    * [15 min MOE intro video][10]
+    * [MOE intro slides][11]
+    * [Full documentation][1]
+
+MOE does this internally by:
+
+1. Building a Gaussian Process (GP) with the historical data
+2. Optimizing the hyperparameters of the Gaussian Process (model selection)
+3. Finding the points of highest Expected Improvement (EI)
+4. Returning the points to sample, then repeat
+
+Externally you can use MOE through:
+
+1. [The REST interface][2]
+2. [The python interface][9]
+3. [The C++ interface][12]
+
+You can be up and optimizing in a matter of minutes.
 
 ## Running MOE
 
@@ -20,6 +57,8 @@ $ pserve --reload development.ini
 ```
 
 In your favorite browser go to: http://127.0.0.1:6543/
+
+[The REST interface documentation][2]
 
 Or, from the command line,
 
@@ -64,6 +103,8 @@ for i in xrange(20):
 print exp.best_point
 ```
 
+More examples can be found in the `<MOE_DIR>/examples` directory.
+
 # Install
 
 ## Install in docker:
@@ -83,110 +124,11 @@ The webserver and REST interface is now running on port 6543 from within the con
 
 ## Install from source:
 
-Requires:
-
-1. `python 2.6.7+` - http://python.org/download/
-2. `gcc 4.7.3+` - http://gcc.gnu.org/install/
-3. `cmake 2.8.9+` - http://www.cmake.org/cmake/help/install.html
-4. `boost 1.51+` - http://www.boost.org/users/download/
-5. `pip 1.2.1+` - http://pip.readthedocs.org/en/latest/installing.html
-6. `doxygen 1.8.5+` - http://www.stack.nl/~dimitri/doxygen/index.html
-7. We recommend using a virtualenv http://www.jontourage.com/2011/02/09/virtualenv-pip-basics/
-
-```bash
-$ git clone https://github.com/sc932/MOE.git
-$ cd MOE
-$ pip install -e .
-$ python setup.py install
-```
-
-### OSX Tips (<=10.8. For 10.9, see separate instructions below):
-
-0. Are you sure you wouldn't rather be running linux?
-1. Download MacPorts - http://www.macports.org/install.php (If you change the install directory from `/opt/local`, don't forget to update the cmake invocation.)
-2. MacPorts can resolve most dependencies. Make sure you set your `PATH` env var.
-3. Download xQuartz (needed for X11, needed for matplotlib) - http://xquartz.macosforge.org/landing/ (Also available through MacPorts, see item 5.)
-4. Getting gcc, boost, matplotlib, and xQuartz (`xorg-server`) reqs (before installing MOE):
-5. Make sure you create your virtualenv with the correct python `--python=/opt/local/bin/python` if you are using MacPorts
-6. If you are using another package manager (like homebrew) you may need to modify `opt/local` below to point to your `Cellar` directory.
-7. For the following commands, order matters, especially when selecting the proper gcc compiler.
-
-```bash
-$ sudo port selfupdate
-$ sudo port install gcc47
-$ sudo port select --set gcc mp-gcc47
-$ sudo port install boost
-$ sudo port install xorg-server
-$ sudo port install py-matplotlib
-$ sudo port install doxygen
-$ export MOE_CMAKE_OPTS=-DCMAKE_FIND_ROOT_PATH=/opt/local && export MOE_CC_PATH=/opt/local/bin/gcc && export MOE_CXX_PATH=/opt/local/bin/g++
-```
-
-#### Additional Tips for 10.9
-
-To ensure consistency, be sure to use full paths throughout the installation.
-
-1. Currently, Boost should not be installed with MacPorts. You should build it from source (see section "Building Boost").
-2. Boost, MOE, and the virtualenv must be built with the same python. We recommend using MacPorts Python: `/opt/local/bin/python`. 
-
-Under OS X 10.9, Apple switched their canonical C++ library from `libstdc++` (GNU) to `libc++` (LLVM); they are not ABI-compatible. To remain consistent, package managers are linking against `libc++`. Since MOE is built with gcc, we need `libstdc++`; thus dependencies must also be built with that C++ library. Currently, package managers do not have enough flexibility to operate several C++ libraries at once, and we do not expect this to change. Ignoring this condition leads to binary incompatibilities; e.g., see:
-http://stackoverflow.com/questions/20134223/building-a-boost-python-application-on-macos-10-9-mavericks/
-
-#### Building Boost
-
-1. Download the Boost source (http://sourceforge.net/projects/boost/files/boost/1.55.0/ has been verfied to work).
-2. From within the main directory, run (after checking additional options below):
-
-    ```bash
-    $ sudo ./bootstrap.sh --with-python=PYTHON
-    $ sudo ./b2 install
-    ```
-
-2. Make sure `which gcc` is `/opt/local/bin/gcc` (macport installed) or whatever C++11 compliant gcc you want (similarly, `which g++` should be `/opt/local/bin/g++`), and make sure Python is `/opt/local/bin/python` if using MacPorts or whichever Python you want to use. 
-3. When building MOE, add to `MOE_CMAKE_OPTS` the `BOOST_ROOT` variable containing the location of the Boost that you have installed when running CMake and verify that CMake finds it (e.g., check a link.txt file in a `moe/build/CMakeFiles/*.dir/` dir and verify the location of `libboost_python-mt` or `libboost_python`, whichever is appropriate)  
-4. You might need to prepend `BOOST_ROOT` to `CMAKE_FIND_ROOT_PATH=/opt/local` to make this work if you have separate Boost installation(s). `BOOST_ROOT` is the `path/to/your/boost_1_55_0`.
-
-    ```bash
-    $ export MOE_CMAKE_OPTS='-D BOOST_ROOT=/path/to/boost -D Boost_NO_SYSTEM_PATHS=ON -D CMAKE_FIND_ROOT_PATH=/path/to/boost:/opt/local'
-    ```
-
-5. If you elected to use a different Python than the one from MacPorts, make sure CMake is finding it (e.g., set the `-DPYTHON_LIBRARIES=path/to/python.dylib` env variable when running CMake). Check `link.txt` (see item above) to see if Python was found correctly.
-
-Additional options for `./boostrap.sh`:
-
-1. `--with-libraries=python,math,random,program_options,exception,system` compiles only the libraries we need.
-2. `--prefix=path/to/install/dir` builds Boost and pulls the libraries in the specified path. Default is `/usr/local` (recommended, especially if you already have system Boost installations; remember to set `BOOST_ROOT`).
-
-Additional options for `./b2`: 
-
-1. `--build-dir=/path/to/build/dir` builds the Boost files in a separate location instead of mixed into the source tree (recommended).
-2. `-j4` uses 4 threads to compile (faster).
-
-### Linux Tips:
-
-1. You can apt-get everything you need. Yay for real package managers!
-
-```bash
-$ apt-get update
-$ apt-get install python python-dev gcc cmake libboost-all-dev python-pip doxygen libblas-dev liblapack-dev gfortran git
-```
-
-### CMake Tips:
-
-1. Do you have dependencies installed in non-standard places? e.g., did you build your own boost? Set the env var: `export MOE_CMAKE_OPTS=-DCMAKE_FIND_ROOT_PATH=/path/to/stuff ...` (OS X users with MacPorts should set `/opt/local`) This can be used to set any number of cmake arguments.
-2. Are you using the right compiler? e.g., for `gcc`, run `export MOE_CC_PATH=gcc && export MOE_CXX_PATH=g++` (OS X users need to explicitly set this.)
+See [Intall Documentation][7]
 
 # Contributing
 
-1. Fork it.
-2. Create a branch (`git checkout -b my_moe_branch`)
-3. Develop your feature/fix (don't forget to add tests!)
-4. Run tests (`tox` or `make test-no-tox`)
-5. Test against styleguide (`tox -e pep8` or `make style-test-no-tox`)
-6. Commit your changes (`git commit -am "Added Some Mathemagics"`)
-7. Push to the branch (`git push origin my_moe_branch`)
-8. Open a [Pull Request][3]
-9. Optimize locally while you wait
+See [Contributing Documentation][8]
 
 [0]: https://www.youtube.com/watch?v=qAN6iyYPbEE
 [1]: http://sc932.github.io/MOE/
@@ -195,6 +137,9 @@ $ apt-get install python python-dev gcc cmake libboost-all-dev python-pip doxyge
 [4]: http://sc932.github.io/MOE/moe.views.rest.html#module-moe.views.rest.gp_ei
 [5]: http://sc932.github.io/MOE/moe.easy_interface.html
 [6]: http://docs.docker.io/
-
-
-
+[7]: http://sc932.github.io/MOE/install.html
+[8]: http://sc932.github.io/MOE/contributing.html
+[9]: http://sc932.github.io/MOE/moe.optimal_learning.python.python_version.html
+[10]: http://www.youtube.com/watch?v=qAN6iyYPbEE
+[11]: http://www.slideshare.net/YelpEngineering/yelp-engineering-open-house-112013-optimally-learning-for-fun-and-profit
+[12]: http://sc932.github.io/MOE/cpp_tree.html
