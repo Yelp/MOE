@@ -30,7 +30,7 @@ enum class OptimizerTypes {
   kNewton = 2,
 };
 
-// TODO(eliu): (GH-167) Remove num_multistarts from ALL OptimizerParameter structs. num_multistarts doesn't
+// TODO(GH-167): Remove num_multistarts from ALL OptimizerParameter structs. num_multistarts doesn't
 // configure the individual optimizer, it just controls how many times we call that optimizer.
 // Then num_multistarts can live in a parameter struct specifically for multistart optimization.
 

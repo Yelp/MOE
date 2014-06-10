@@ -40,7 +40,7 @@ def build_covariance_matrix(covariance, points_sampled, noise_variance=None):
             cov_mat[i, j] = covariance.covariance(point_one, point_two)
 
     # Copy into the (strict) upper triangle.
-    # TODO(eliu): (GH-62) We could avoid this step entirely and only fill the lower triangle.
+    # TODO(GH-62): We could avoid this step entirely and only fill the lower triangle.
     cov_mat += numpy.tril(cov_mat, k=-1).T
 
     if noise_variance is not None:

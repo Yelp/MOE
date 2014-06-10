@@ -334,7 +334,7 @@ OL_NORETURN void TranslateSingularMatrixException(const SingularMatrixException&
 
   instance.attr("num_rows") = except.num_rows();
   instance.attr("num_cols") = except.num_cols();
-  // TODO(eliu): (GH-159) this would make more sense as a numpy array/matrix
+  // TODO(GH-159): this would make more sense as a numpy array/matrix
   instance.attr("matrix") = VectorToPylist(except.matrix());
 
   // Note: SetObject gets ownership (*not* borrow/steal) of both references (type object and instance/value);
@@ -412,7 +412,7 @@ void RegisterOptimalLearningExceptions() {
 
 namespace {  // unnamed namespace for BOOST_PYTHON_MODULE(GPP) definition
 
-// TODO(eliu): (GH-140) improve docstrings for the GPP module and for the classes, functions, etc
+// TODO(GH-140): improve docstrings for the GPP module and for the classes, functions, etc
 //   in it exposed to Python. Many of them are a bit barebones at the moment.
 BOOST_PYTHON_MODULE(GPP) {
   boost::python::scope current_scope;
@@ -439,7 +439,7 @@ BOOST_PYTHON_MODULE(GPP) {
 
     **OVERVIEW**
 
-    TODO(eliu): (GH-25) when we come up with a "README" type overview for MOE, that or parts of that should be incorporated here.
+    TODO(GH-25): when we come up with a "README" type overview for MOE, that or parts of that should be incorporated here.
 
     MOE is a black-box global optimization method for objectives (e.g., click-through rate, delivery time, happiness)
     that are time-consuming/expensive to measure, highly complex, non-convex, nontrivial to predict, or all of the above.
@@ -484,7 +484,8 @@ BOOST_PYTHON_MODULE(GPP) {
     For further details, see the file documents for the C++ hpp and cpp files. Header (hpp) files contain more high
     level descriptions/motivation whereas source (cpp) files contain more [mathematical] details.
     gpp_math.hpp and gpp_model_selection_and_hyperparameter_optimization.hpp are good starting points for more reading.
-    TODO(eliu): (GH-25) when we have jemdoc (or whatever tool), point this to those docs as well.
+
+    TODO(GH-25): when we have jemdoc (or whatever tool), point this to those docs as well.
 
     Now we will provide an overview of the enums, classes, and endpoints provided in this module.
 

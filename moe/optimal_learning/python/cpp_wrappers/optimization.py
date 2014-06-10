@@ -175,7 +175,8 @@ Multistarting is NOT GUARANTEED to find global optima.  But it can increase the 
 Currently we let the user specify the initial guesses.  In practice, this typically means a random sampling of points.
 We do not (yet) make any effort to say sample more heavily from regions where "more stuff is happening" or any
 other heuristics.
-TODO(eliu): (GH-165) Improve multistart heuristics.
+
+TODO(GH-165): Improve multistart heuristics.
 
 Finally, MultistartOptimizer::MultistartOptimize() is also used to provide 'dumb' search functionality (optimization
 by just evaluating the objective at numerous points).  For sufficiently complex problems, gradient descent, Newton, etc.

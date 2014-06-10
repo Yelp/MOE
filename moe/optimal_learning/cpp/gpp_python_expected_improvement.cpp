@@ -131,7 +131,7 @@ void DispatchExpectedImprovementOptimization(const boost::python::object& optimi
 }
 
 boost::python::list MultistartExpectedImprovementOptimizationWrapper(const boost::python::object& optimization_parameters, const GaussianProcess& gaussian_process, const boost::python::list& domain_bounds, const boost::python::list& points_being_sampled, int num_to_sample, int num_being_sampled, double best_so_far, int max_int_steps, int max_num_threads, RandomnessSourceContainer& randomness_source, boost::python::dict& status) {
-  // TODO(eliu): (GH-131) make domain objects constructible from python; and pass them in through
+  // TODO(GH-131): make domain objects constructible from python; and pass them in through
   // the optimization_parameters python object
 
   // abort if we do not have enough sources of randomness to run with max_num_threads
@@ -232,7 +232,7 @@ void DispatchHeuristicExpectedImprovementOptimization(const boost::python::objec
 }
 
 boost::python::list HeuristicExpectedImprovementOptimizationWrapper(const boost::python::object& optimization_parameters, const GaussianProcess& gaussian_process, const boost::python::list& domain_bounds, const ObjectiveEstimationPolicyInterface& estimation_policy, int num_to_sample, double best_so_far, int max_num_threads, RandomnessSourceContainer& randomness_source, boost::python::dict& status) {
-  // TODO(eliu): (GH-131) make domain objects constructible from python; and pass them in through
+  // TODO(GH-131): make domain objects constructible from python; and pass them in through
   // the optimization_parameters python object
   int dim = gaussian_process.dim();
   std::vector<ClosedInterval> domain_bounds_C(dim);

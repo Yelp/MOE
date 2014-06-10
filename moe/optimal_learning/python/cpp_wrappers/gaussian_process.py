@@ -251,7 +251,7 @@ class GaussianProcess(GaussianProcessInterface):
         :type sampled_points: list of SampledPoint objects (or SamplePoint-like iterables)
 
         """
-        # TODO(eliu): (GH-187) Add hook to actual C++ function to make this more efficient than rebuilding the whole GP object.
+        # TODO(GH-187): Add hook to actual C++ function to make this more efficient than rebuilding the whole GP object.
         self._historical_data.append_sample_points(sampled_points)
 
         self._gaussian_process = C_GP.GaussianProcess(
@@ -286,7 +286,7 @@ class GaussianProcess(GaussianProcessInterface):
         :rtype: float64
 
         """
-        # TODO(eliu): (GH-187) C++ has a native implementation of this function; make a wrapper and call that directly.
+        # TODO(GH-187): C++ has a native implementation of this function; make a wrapper and call that directly.
         point = numpy.array(point_to_sample, copy=False, ndmin=2)
         mean = self.compute_mean_of_points(point)[0]
         variance = self.compute_variance_of_points(point)[0][0]

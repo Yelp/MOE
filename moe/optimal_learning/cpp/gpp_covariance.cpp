@@ -9,9 +9,9 @@
   The shared results are by far the most expensive part of gradient computations; they typically involve exponentiation and are
   further at least partially shared with the base covariance computation.
 
-  TODO(eliu): (GH-132) compute fcn, gradient, and hessian simultaneously for covariance (optionally skipping some terms).
+  TODO(GH-132): compute fcn, gradient, and hessian simultaneously for covariance (optionally skipping some terms).
 
-  TODO(eliu): (GH-129) Check expression simplification of gradients/hessians (esp the latter) for the various covariance functions.
+  TODO(GH-129): Check expression simplification of gradients/hessians (esp the latter) for the various covariance functions.
   Current math was done by hand and maybe I missed something.
 \endrst*/
 

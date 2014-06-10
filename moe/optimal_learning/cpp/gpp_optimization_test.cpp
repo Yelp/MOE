@@ -31,12 +31,12 @@
   This is a little tricky for the constrained case b/c we are currently assuming we can compute the location of the
   true optimum directly... which may not always be possible.
 
-  TODO(eliu): (GH-146) we should add some more complex objective functions (higher order
+  TODO(GH-146): we should add some more complex objective functions (higher order
   polynomials and/or transcendentals) and simplex domains.
   We also need a more general way of testing constrained optimization since it is not
   always possible to directly compute the location of the optima.
 
-  TODO(eliu): (GH-146) we have quite a bit of code duplication here.  For the most part, the
+  TODO(GH-146): we have quite a bit of code duplication here.  For the most part, the
   only difference is how we set up the optimizers in the beginning of each test function.
   This duplication could be reduced by encapsulating the optimizers in classes and then
   templating the testing functions on the optimizer type.

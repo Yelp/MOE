@@ -4,8 +4,8 @@
 Testing is sparse at the moment. The C++ implementations are tested thoroughly (gpp_covariance_test.hpp/cpp) and
 we rely more on cpp_wrappers/covariance_test.py's comparison with C++ for verification of the Python code.
 
-TODO(eliu): (GH-175) Ping testing for spatial gradients and hyperparameter gradients/hessian.
-TODO(eliu): (GH-176) Make test structure general enough to support other covariance functions automatically.
+TODO(GH-175): Ping testing for spatial gradients and hyperparameter gradients/hessian.
+TODO(GH-176): Make test structure general enough to support other covariance functions automatically.
 
 """
 import numpy

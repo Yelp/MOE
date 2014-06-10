@@ -6,7 +6,7 @@ import numpy
 def cppify(array):
     """Flatten a numpy array and copies it to a list for C++ consumption.
 
-    TODO(eliu): (GH-159) This function will be unnecessary when C++ accepts numpy arrays.
+    TODO(GH-159): This function will be unnecessary when C++ accepts numpy arrays.
 
     :param array: array to convert
     :type array: array-like (e.g., ndarray, list, etc.) of float64
@@ -20,7 +20,7 @@ def cppify(array):
 def uncppify(array, expected_shape):
     """Reshape a copy of the input array into the expected shape.
 
-    TODO(eliu): (GH-159) If C++ returns numpy arrays, we can kill this function (instead, call reshape directly).
+    TODO(GH-159): If C++ returns numpy arrays, we can kill this function (instead, call reshape directly).
 
     :param array: array to reshape
     :type array: array-like

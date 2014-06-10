@@ -43,7 +43,7 @@ class CovarianceInterface(object):
 
     Implementers of this ABC are required to manage their own hyperparameters.
 
-    TODO(eliu): (GH-71) getter/setter for hyperparameters.
+    TODO(GH-71): getter/setter for hyperparameters.
 
     """
 

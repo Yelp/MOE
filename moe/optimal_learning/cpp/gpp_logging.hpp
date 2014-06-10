@@ -10,7 +10,7 @@
 
   Long term, this file will connect to a real logging library.
 
-  TODO(eliu): (GH-130) connect MOE/C++ to a real logging library instead of using stdout as our log.
+  TODO(GH-130): connect MOE/C++ to a real logging library instead of using stdout as our log.
 \endrst*/
 
 #ifndef MOE_OPTIMAL_LEARNING_CPP_GPP_LOGGING_HPP_
