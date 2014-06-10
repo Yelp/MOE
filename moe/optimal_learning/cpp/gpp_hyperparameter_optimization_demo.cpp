@@ -1,5 +1,6 @@
-// gpp_hyperparameter_optimization_demo.cpp
-/*
+/*!
+  \file gpp_hyperparameter_optimization_demo.cpp
+  \rst
   This is a demo for the model selection (via hyperparameter optimization) capability
   present in this project.  These capabilities live in
   gpp_model_selection_and_hyperparameter_optimization.
@@ -7,17 +8,20 @@
   In gpp_expected_improvement_demo, we choose the hyperparameters arbitrarily.  Here,
   we will walk through an example of how one would select hyperparameters for a given
   class of covariance function; here, SquareExponential will do.  This demo supports:
-  1) User-specified training data
-  2) Randomly generated training data (more automatic)
+
+  1. User-specified training data
+  2. Randomly generated training data (more automatic)
 
   More details on the second case:
-  1) Choose a set of hyperparameters randomly: source covariance
-  2) Build a fake* training set by drawing from a GP with source covariance, at randomly
+
+  1. Choose a set of hyperparameters randomly: source covariance
+  2. Build a fake\* training set by drawing from a GP with source covariance, at randomly
      chosen locations
-     * By defining OL_USER_INPUTS to 1, you can specify your own input data.
-  3) Choose a new random set of hyperparameters and run hyperparameter optimization
-     a) Show log likelihood using the optimized hyperparameters AND the source hyperparameters
-     b) observe that with larger training sets, the optimized hyperparameters converge
+     \* By defining OL_USER_INPUTS to 1, you can specify your own input data.
+  3. Choose a new random set of hyperparameters and run hyperparameter optimization
+
+     a. Show log likelihood using the optimized hyperparameters AND the source hyperparameters
+     b. observe that with larger training sets, the optimized hyperparameters converge
         to the source values; but in smaller sets other optima may exist
 
   Further notes about [newton] optimization performance and robustness are spread throughout the
@@ -26,7 +30,7 @@
   Please read and understand gpp_expected_improvement_demo.cpp before going through
   this example.  In addition, understanding gpp_model_selection_and_hyperparameter_optimization.hpp's
   file comments (as well as cpp for devs) is prerequisite.
-*/
+\endrst*/
 
 #include <cstdio>
 
@@ -37,6 +41,7 @@
 #include "gpp_common.hpp"
 #include "gpp_covariance.hpp"
 #include "gpp_domain.hpp"
+#include "gpp_logging.hpp"
 #include "gpp_math.hpp"
 #include "gpp_model_selection_and_hyperparameter_optimization.hpp"
 #include "gpp_optimization_parameters.hpp"
@@ -55,7 +60,7 @@ int main() {
   // comments next to each parameter will indicate its purpose and domain
 
   // the "spatial" dimension, aka the number of independent (experiment) parameters
-  // i.e., this is the dimension of the points in points_sampled and points_to_sample
+  // i.e., this is the dimension of the points in points_sampled
   static const int dim = 3;  // > 0
 
   // number of points that we have already sampled; i.e., size of the training set
@@ -178,7 +183,7 @@ int main() {
   // and kill it quickly to keep cost low.
   // For now, just play around with different initial conditions or more conservative gamam settings.
 
-  // WARNING2: for small num_to_sample, it often appears that the solution becomes independent of one or more hyperparameters.
+  // WARNING2: for small num_sampled, it often appears that the solution becomes independent of one or more hyperparameters.
   // e.g., in 2D, we'd have an optimal "ridge."  Finding this robustly requires starting near it, so the random choice of
   // initial conditions can fail horribly in general.
 

@@ -1,7 +1,8 @@
-// gpp_test_utils.cpp
-/*
+/*!
+  \file gpp_test_utils.cpp
+  \rst
   Implementations of utitilies useful for unit testing.
-*/
+\endrst*/
 
 #include "gpp_test_utils.hpp"
 
@@ -36,30 +37,28 @@ namespace optimal_learning {
 
 MockExpectedImprovementEnvironment::MockExpectedImprovementEnvironment()
     : dim(-1),
-      num_to_sample(-1),
       num_sampled(-1),
-      points_to_sample_(20*4),
+      num_to_sample(-1),
+      num_being_sampled(-1),
       points_sampled_(20*4),
       points_sampled_value_(20),
-      current_point_(4),
+      points_to_sample_(4),
+      points_being_sampled_(20*4),
       uniform_generator_(kDefaultSeed),
       uniform_double_(range_min, range_max) {
 }
 
-void MockExpectedImprovementEnvironment::Initialize(int dim_in, int num_to_sample_in, int num_sampled_in, UniformRandomGenerator * uniform_generator) {
-  if (dim_in != dim || num_to_sample_in != num_to_sample || num_sampled_in != num_sampled) {
+void MockExpectedImprovementEnvironment::Initialize(int dim_in, int num_to_sample_in, int num_being_sampled_in, int num_sampled_in, UniformRandomGenerator * uniform_generator) {
+  if (dim_in != dim || num_to_sample_in != num_to_sample || num_being_sampled_in != num_being_sampled || num_sampled_in != num_sampled) {
     dim = dim_in;
     num_to_sample = num_to_sample_in;
+    num_being_sampled = num_being_sampled_in;
     num_sampled = num_sampled_in;
 
-    points_to_sample_.resize(num_to_sample*dim);
     points_sampled_.resize(num_sampled*dim);
     points_sampled_value_.resize(num_sampled);
-    current_point_.resize(dim);
-  }
-
-  for (int i = 0; i < dim*num_to_sample; ++i) {
-    points_to_sample_[i] = uniform_double_(uniform_generator->engine);
+    points_to_sample_.resize(num_to_sample*dim);
+    points_being_sampled_.resize(num_being_sampled*dim);
   }
 
   for (int i = 0; i < dim*num_sampled; ++i) {
@@ -70,8 +69,12 @@ void MockExpectedImprovementEnvironment::Initialize(int dim_in, int num_to_sampl
     points_sampled_value_[i] = uniform_double_(uniform_generator->engine);
   }
 
-  for (int i = 0; i < dim; ++i) {
-    current_point_[i] = uniform_double_(uniform_generator->engine);
+  for (int i = 0; i < dim*num_to_sample; ++i) {
+    points_to_sample_[i] = uniform_double_(uniform_generator->engine);
+  }
+
+  for (int i = 0; i < dim*num_being_sampled; ++i) {
+    points_being_sampled_[i] = uniform_double_(uniform_generator->engine);
   }
 }
 
@@ -135,27 +138,27 @@ bool CheckIntEquals(int64_t value, int64_t truth) noexcept {
   return passed;
 }
 
-/*
-  ||b - A*x||_2
-  The quantity b - A*x is called the "residual."  This is meaningful when x is
-  the solution of the linear system A*x = b.  Then having a small residual norm
-  is a *NECESSARY* but *NOT SUFFICIENT* indicator of accuracy in x; that is,
+/*!\rst
+  ``\|b - A*x\|_2``
+  The quantity ``b - A*x`` is called the "residual."  This is meaningful when ``x`` is
+  the solution of the linear system ``A*x = b``.  Then having a small residual norm
+  is a *NECESSARY* but *NOT SUFFICIENT* indicator of accuracy in ``x``; that is,
   these quantities need not be small simultaneously.  In particular, we know:
 
-  ||\delta x|| / ||x|| <= cond(A) * ||r|| / (||A|| * ||x||)
-  where x is the approximate solution and \delta x is the error.  So
-  \delta x = 0 <=> r = 0 BUT if not identically 0, ||r|| can be much larger.
+  ``\|\delta x\| / \|x\| \le cond(A) * \|r\| / (\|A\| * \|x\|)``
+  where ``x`` is the approximate solution and \delta x is the error.  So
+  ``\delta x = 0 <=> r = 0`` BUT if not identically 0, ||r|| can be much larger.
 
   However, a numerically (backward) stable algorithm will compute solutions
   with small relative residual norms *regardless* of conditioning.  Hence
-  coupled with knowledge of the particular algorithm for solving A*x = b,
+  coupled with knowledge of the particular algorithm for solving ``A*x = b``,
   residual norm is a valuable measure of correctness.
 
-  Suppose x (computed solution) satisfies: (A + \delta A)*x = b.  Then:
-  ||r||/ (||A|| * ||x||) <= ||\delta A|| / ||A|
-  So large ||r|| indicates a large backward error, implying the linear solver
+  Suppose ``x`` (computed solution) satisfies: ``(A + \delta A)*x = b``.  Then:
+  ``\|r\| / (\|A\| * \|x\|) \le \|\delta A\| / \|A\|``
+  So large ``\|r\|`` indicates a large backward error, implying the linear solver
   is not backward stable (and hence should not be used).
-*/
+\endrst*/
 double ResidualNorm(double const * restrict A, double const * restrict x, double const * restrict b, int size) noexcept {
   std::vector<double> y(b, b + size);  // y = b
   GeneralMatrixVectorMultiply(A, 'N', x, -1.0, 1.0, size, size, size, y.data());  // y -= A * x
@@ -188,9 +191,9 @@ bool CheckDoubleWithinRelative(double value, double truth, double tolerance) noe
   return passed;
 }
 
-/*
+/*!\rst
   Uses the Frobenius Norm for convenience; matrix 2-norms are expensive to compute.
-*/
+\endrst*/
 bool CheckMatrixNormWithin(double const * restrict matrix1, double const * restrict matrix2, int size_m, int size_n, double tolerance) noexcept {
   std::vector<double> difference_matrix(matrix1, matrix1+size_m*size_n);
 
@@ -221,97 +224,101 @@ int CheckPointsAreDistinct(double const * restrict point_list, int num_points, i
 
 namespace {
 
-/*
+/*!\rst
   Computes the 2nd order centered finite difference approximation to the derivative:
-  ( f(x + h) - f(x - h) )/ (2 * h)
+  ``( f(x + h) - f(x - h) )/ (2 * h)``
 
-  INPUTS:
-  function_p: f(x + h)
-  function_m: f(x - h)
-  epsilon: h
+  \input
+    :function_p: ``f(x + h)``
+    :function_m: ``f(x - h)``
+    :epsilon: ``h``
   RETURNS:
-  the finite difference approximation
-*/
+    the finite difference approximation
+\endrst*/
 OL_CONST_FUNCTION OL_WARN_UNUSED_RESULT double SecondOrderCenteredFiniteDifference(double function_p, double function_m, double epsilon) noexcept {
   return (function_p - function_m)/2.0/epsilon;
 }
 
 }  // end unnamed namespace
 
-/*
-  Pings the gradient \nabla f of a function f, using second order finite differences:
-  grad_f_approximate = ( f(x + h) - f(x - h) )/ (2 * h)
-  This converges as O(h^2) (Taylor series expansion) for twice-differentiable functions.
-  Thus for h_1 != h_2, we can compute two grad_f_approximate results and thus two errors, e_1, e_2.
+/*!\rst
+  Pings the gradient ``\nabla f`` of a function ``f``, using second order finite differences:
+  ``grad_f_approximate = ( f(x + h) - f(x - h) )/ (2 * h)``
+  This converges as ``O(h^2)`` (Taylor series expansion) for twice-differentiable functions.
+  Thus for ``h_1 != h_2``, we can compute two ``grad_f_approximate`` results and thus two errors, ``e_1, e_2``.
   Then (in exact precision), we would obtain:
-  log(e_1/e_2) / log(h_1/h_2) >= 2.
+  ``log(e_1/e_2) / log(h_1/h_2) >= 2``.
   (> sign because superconvergence can happen.)
-  Proof: By taylor-expanding grad_f_approximate, we see that:
-    e = grad_f_anlytic - grad_f_approximate = O(h^2) = c*h^2 + H.O.T (Higher Order Terms).
-  Assuming H.O.T \approx 0, then
-    e_1/e_2 \approx c*h_1^2 / (c*h_2^2) = h_1^2 / h_2^2,
+  Proof: By taylor-expanding ``grad_f_approximate``, we see that:
+    ```e = grad_f_anlytic - grad_f_approximate = O(h^2) = c*h^2 + H.O.T`` (Higher Order Terms).
+  Assuming ``H.O.T \approx 0``, then
+    ``e_1/e_2 \approx c*h_1^2 / (c*h_2^2) = h_1^2 / h_2^2``,
   and
-    log(e_1/e_2) \approx log(h_1^2 / h_2^2) = 2 * log(h_1/h_2).
+    ``log(e_1/e_2) \approx log(h_1^2 / h_2^2) = 2 * log(h_1/h_2)``.
   Hence
-    rate = log(e_1/e_2) / log(h_1/h_2) = 2, *in exact precision.*
-  If c = 0 (or is very small), then H.O.T. matters: we could have e = 0*h^2 + c_1*h^3 + H.O.T.
+    ``rate = log(e_1/e_2) / log(h_1/h_2) = 2``, *in exact precision.*
+  If ``c = 0`` (or is very small), then H.O.T. matters: we could have ``e = 0*h^2 + c_1*h^3 + H.O.T``.
   And we will compute rates larger than 2 (superconvergence). This is not true in general but it can happen.
 
   This function verifies that the expected convergence rate is obtained with acceptable accuracy in the
   presence of floating point errors.
 
-  This function knows how to deal with vector-valued f() which accepts a matrix
-  of inputs, X.  Analytic gradients and finite difference approximations
-  are computed for each output of f() with respect to each entry in the input, X.  In particular, this
-  function can handle f():
-  f_k = f(X_{d,i})
+  This function knows how to deal with vector-valued ``f()`` which accepts a matrix
+  of inputs, ``X``.  Analytic gradients and finite difference approximations
+  are computed for each output of ``f()`` with respect to each entry in the input, ``X``.  In particular, this
+  function can handle ``f()``:
+  ``f_k = f(X_{d,i})``
   computing gradients:
-  gradf_{d,i,k} = \frac{\partial f_k}{\partial X_{i,d}}.
-  So d, i index the inputs and k indexes the outputs.
+  ``gradf_{d,i,k} = \frac{\partial f_k}{\partial X_{i,d}}``.
+  So ``d, i`` index the inputs and ``k`` indexes the outputs.
 
-  The basic structure is as follows:
-  for i
-    for d
-      # Compute function values and analytic/finite difference gradients for the current
-      # input. Do this for each h value.
-      # Step 1
-      for each h = h_1, h_2
-        X_p = X; X_p[d][i] += h
-        X_m = X; X_m[d][i] -= h
+  The basic structure is as follows::
 
-        f_p = f(X_p); # k values in f
-        f_m = f(X_m); # k values in f
+    for i
+      for d
+        # Compute function values and analytic/finite difference gradients for the current
+        # input. Do this for each h value.
+        # Step 1
+        for each h = h_1, h_2
+          X_p = X; X_p[d][i] += h
+          X_m = X; X_m[d][i] -= h
 
-        # Loop over outputs and compute difference between finite difference and analytic results.
+          f_p = f(X_p); # k values in f
+          f_m = f(X_m); # k values in f
+
+          # Loop over outputs and compute difference between finite difference and analytic results.
+          for k
+            grad_f_analytic   = get_grad_f[d][i][k](X) // d,i,k entry of gradient evaluated at X
+            grad_f_finitediff = (f_p[k] - f_m[k])/(2*h)
+            error[k] = grad_f_analytic - grad_f_finitediff
+          endfor
+        endfor
+
+        # Step 2
         for k
-          grad_f_analytic   = get_grad_f[d][i][k](X) // d,i,k entry of gradient evaluated at X
-          grad_f_finitediff = (f_p[k] - f_m[k])/(2*h)
-          error[k] = grad_f_analytic - grad_f_finitediff
+          check error, convergence
         endfor
       endfor
-
-      # Step 2
-      for k
-        check error, convergence
-      endfor
     endfor
-  endfor
-  Hence all checks for a specific output (k) wrt to a specific point (d,i) happen together.
+
+  Hence all checks for a specific output (``k``) wrt to a specific point (``d,i``) happen together.
   All dimensions of a given point are grouped together.
   Keep this in mind when writing PingableMatrixInputVectorOutputInterface subclasses as it can make reading debugging output easier.
 
-  See PingableMatrixInputVectorOutputInterface (and its subclasses) for more information/examples on how f and \nabla f
+  See PingableMatrixInputVectorOutputInterface (and its subclasses) for more information/examples on how ``f`` and ``\nabla f``
   can be structured.
 
   Note that in some cases, this function will decide to skip some tests or run them
   under more relaxed tolerances.  There are many reasons for this:
-  1) When the exact gradient is near 0, finite differencing is simply trying
-     to compute (x1 - x2) = 0, which has an infinite condition number.  If our
+
+  1. When the exact gradient is near 0, finite differencing is simply trying
+     to compute ``(x1 - x2) = 0``, which has an infinite condition number.  If our
      method is correct/accurate, we will be able to reasonably closely approximate
      0, but we cannot expect convergence.
-  2) Backward stability type error analysis deals with normed bounds; for example,
+  2. Backward stability type error analysis deals with normed bounds; for example,
      see the discussion in ResidualNorm().  These normed estimates bound the error
      on the LARGEST entries. The error in the smaller entries can be much larger.
+
   However, even when errors could be large, we're trying to compute 0, etc., we do
   not want to completely ignore these scenarios since that could cause us to accept
   completely bogus outputs.  Instead we try to compensate.
@@ -324,13 +331,15 @@ OL_CONST_FUNCTION OL_WARN_UNUSED_RESULT double SecondOrderCenteredFiniteDifferen
   Generally, this function is to check at a large number of (random) points in the hopes that most of the points
   avoid ill-conditioning issues. Random points are chosen make the implementer's life easier.
 
-  The typical workflow to implement f(x) and df(x)/dx might look like:
-  1) Code f(x)
-  2) Verify f(x)
-  3) Analytically compute df/dx (on paper, with a computer algebra system, etc.)
-  4) Check df/dx
-     a) at some hand-evaluated points
-     b) Ping testing (this function)
+  The typical workflow to implement ``f(x)`` and ``df(x)/dx`` might look like:
+
+  1. Code ``f(x)``
+  2. Verify ``f(x)``
+  3. Analytically compute df/dx (on paper, with a computer algebra system, etc.)
+  4. Check ``df/dx``
+
+     a. at some hand-evaluated points
+     b. Ping testing (this function)
 
   If errors arise, this function will output some information to provide further context on what input/output
   combination failed and how. At the head of this file, define OL_PING_TEST_DEBUG_PRINT to turn on super verbose
@@ -361,8 +370,8 @@ OL_CONST_FUNCTION OL_WARN_UNUSED_RESULT double SecondOrderCenteredFiniteDifferen
   implementation that is wrong but passes this test.
 
   WARNING: Additionally, this function cannot detect errors that are not in the gradient. If you intended
-  to implement f = sin(x), f' = cos(x), but instead coded g = sin(x) + 1, this function will not find it.
-  This cannot detect small amounts of noise in the gradient either (e.g., f' = cos(x) + 1.0e-15). There is no
+  to implement ``f = sin(x)``, ``f' = cos(x)``, but instead coded ``g = sin(x) + 1``, this function will not find it.
+  This cannot detect small amounts of noise in the gradient either (e.g., ``f' = cos(x) + 1.0e-15``). There is no
   way to tell whether that is noise due to numerical error or noise due to incorrectness.
 
   TODO(eliu): put the OL_ERROR_PRINTF calls on a different "log level" so that when this stuff fails, I dont flood
@@ -372,10 +381,10 @@ OL_CONST_FUNCTION OL_WARN_UNUSED_RESULT double SecondOrderCenteredFiniteDifferen
   More generally I could consider printing only the top 10 worst offenders in terms of error or something.
 
   TODO(eliu): thresholds are an imperfect tool for this task. Loss of precision is not a binary event; you are not
-  certain at 2^{-52} but uncertain at 2^{-51}. It might be better to estimate the range over which we go from
+  certain at ``2^{-52}`` but uncertain at ``2^{-51}``. It might be better to estimate the range over which we go from
   meaningful loss of precision to complete noise and have a linear ramp for the tolerance over that space. Maybe
   it should be done in log-space?
-*/
+\endrst*/
 int PingDerivative(const PingableMatrixInputVectorOutputInterface& function_and_derivative_evaluator, double const * restrict points, double epsilon[2], double rate_tolerance_fine, double rate_tolerance_relaxed, double input_output_ratio) noexcept {
   int num_rows, num_cols;
   function_and_derivative_evaluator.GetInputSizes(&num_rows, &num_cols);

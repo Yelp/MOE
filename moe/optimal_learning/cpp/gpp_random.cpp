@@ -1,9 +1,10 @@
-// gpp_random.cpp
-/*
+/*!
+  \file gpp_random.cpp
+  \rst
   This file contains definitions of infrequently-used and/or expensive functions declared in gpp_random.hpp.
   The main purpose was to hide details and get things like boost/functional/hash.hpp and <ostream> out of the
   gpp_random header.
-*/
+\endrst*/
 
 #include "gpp_random.hpp"
 
@@ -61,7 +62,7 @@ void NormalRNG::PrintState(std::ostream * out_stream) const {
   (*out_stream) << engine << "\n";  // NOLINT(readability/streams): this is the only way pull state data out of boost's PRNG engines
 }
 
-/*
+/*!\rst
   domain specifies a domain from which to draw points at uniformly at random; it is a bounding box specification in
   dim pairs of (domain_min, domain_max) values, defining edge-lengths of the hypercube domain.
 
@@ -73,7 +74,7 @@ void NormalRNG::PrintState(std::ostream * out_stream) const {
 
   In this way, each "row" and "column" have exactly 1 point in them.  In 2D, if each point is a rook,
   then no rook attacks any other rook.
-*/
+\endrst*/
 void ComputeLatinHypercubePointsInDomain(ClosedInterval const * restrict domain, int dim, int num_samples, UniformRandomGenerator * uniform_generator, double * restrict random_points) {
   std::vector<int> index_array(num_samples);
 
@@ -97,14 +98,14 @@ void ComputeLatinHypercubePointsInDomain(ClosedInterval const * restrict domain,
   }
 }
 
-/*
-  We need to draw a set of points, x_i, (uniformly distributed by volume) such that x_i >= 0 \forall i and \sum_i x_i <= 1,
-  also implying that x_i <= 1 \forall i.
+/*!\rst
+  We need to draw a set of points, ``x_i``, (uniformly distributed by volume) such that ``x_i >= 0 \forall i`` and
+  ``\sum_i x_i <= 1``, also implying that ``x_i <= 1 \forall i``.
   This is precisely the output of the Dirichlet Distribution.  It already has the correct support (domain), and then sampling
   from the unit d-simplex is just a matter of selecting the right parameters for Dirichlet; this turns out to reduce it to
   sampling from an exponential distribution.
   http://en.wikipedia.org/wiki/User:Skinnerd/Simplex_Point_Picking
-*/
+\endrst*/
 void ComputeUniformPointsInUnitSimplex(int dim, int num_samples, UniformRandomGenerator * uniform_generator, double * restrict random_points) {
   boost::uniform_real<double> uniform_double_distribution(std::numeric_limits<double>::min(), 1.0);  // draw from open interval (0,1)
   for (int i = 0; i < num_samples; ++i) {

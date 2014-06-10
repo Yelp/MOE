@@ -1,5 +1,6 @@
-// gpp_linear_algebra.cpp
-/*
+/*!
+  \file gpp_linear_algebra.cpp
+  \rst
   Implementations of functions for linear algebra operations; the functionality here largely is a subset of that
   supported by BLAS and LAPACK.
 
@@ -14,15 +15,16 @@
 
   See gpp_linear_algebra.hpp file docs and (primarily) gpp_common.hpp for a few important implementation notes
   (e.g., restrict, memory allocation, matrix storage style, etc).  Note the matrix looping idiom (gpp_common.hpp,
-  item 8) in particular; in summary, we use:
-  for (int i = 0; i < m; ++i) {
-    y[i] = 0;
-    for (int j = 0; j < n; ++j) {
-      y[i] += A[j]*x[j];
+  item 8) in particular; in summary, we use::
+
+    for (int i = 0; i < m; ++i) {
+      y[i] = 0;
+      for (int j = 0; j < n; ++j) {
+        y[i] += A[j]*x[j];
+      }
+      A += n;
     }
-    A += n;
-  }
-*/
+\endrst*/
 
 #include "gpp_linear_algebra.hpp"
 
@@ -38,44 +40,17 @@
 
 namespace optimal_learning {
 
-/*
-  Since matrices are stored column-major and the natural screen-printed formatting
-  is by rows, we need to access the matrix in transposed order.
-*/
-void PrintMatrix(double const * restrict matrix, int num_rows, int num_cols) noexcept {
-  for (int i = 0; i < num_rows; ++i) {
-    for (int j = 0; j < num_cols; ++j) {
-      std::printf("%.18E ", matrix[j*num_rows + i]);
-    }
-    std::printf("\n");
-  }
-}
+/*!\rst
+  Slow (compared to computing ``\sqrt(x_i*x_i)``) but stable computation of ``\||vector\|_2``
 
-/*
-  Opposite PrintMatrix(), the screen formatted ordering here is the same as the
-  matrix storage ordering.
-*/
-void PrintMatrixTrans(double const * restrict matrix, int num_rows, int num_cols) noexcept {
-  // prints a matrix to stdout
-  for (int i = 0; i < num_rows; ++i) {
-    for (int j = 0; j < num_cols; ++j) {
-      std::printf("%.18E ", matrix[i*num_cols + j]);
-    }
-    std::printf("\n");
-  }
-}
-
-/*
-  Slow (compared to computing \sqrt(x_i*x_i)) but stable computation of ||vector||_2
-
-  Computing norm += Square(vector[i]) can be unsafe due to overflow & precision loss.
+  Computing ``norm += Square(vector[i])`` can be unsafe due to overflow & precision loss.
 
   Note that for very large vectors, this method is still potentially inaccurate.  BUT
   we are not using anything nearly that large right now.
   The best solution for accuracy would be to use Kahan summation.
   Around 10^16 elements, this function will fail most of the time.  Around 10^8
   elements, the loss of precision may already be substantial.
-*/
+\endrst*/
 double VectorNorm(double const * restrict vector, int size) noexcept {
   if (unlikely(size == 1)) {
     return std::fabs(vector[0]);
@@ -97,8 +72,8 @@ double VectorNorm(double const * restrict vector, int size) noexcept {
   return scale * std::sqrt(scaled_norm);
 }
 
-/*
-  Cholesky factorization, A = L * L^T (see Smith 1995 or Golub, Van Loan 1983, etc.)
+/*!\rst
+  Cholesky factorization, ``A = L * L^T`` (see Smith 1995 or Golub, Van Loan 1983, etc.)
   This implementation uses the outer-product formulation.  The outer-product version is
   2x slower than gaxpy or dot product style implementations; this is to remain consistent with
   Smith 1995's formulation of the gradient of cholesky.
@@ -109,13 +84,12 @@ double VectorNorm(double const * restrict vector, int size) noexcept {
   Instead, non-SPD matrices trigger an error printed to stdout.
 
   Should be the same as BLAS call:
-  dpotrf('L', size_m, A, size_m, &info);
-  Implementation is similar to dpotf2, the unblocked version (same arg list as dpotrf)
-*/
+  ``dpotrf('L', size_m, A, size_m, &info);``
+  Implementation is similar to ``dpotf2``, the unblocked version (same arg list as ``dpotrf``).
+\endrst*/
 // TODO(eliu): change this to be gaxpy or (block) dot-prod style
 // to improve performance & numerical characteristics
 // see if alternate formulations can still check for non-SPD-ness
-// unticketed: general optimization task
 void ComputeCholeskyFactorL(int size_m, double * restrict chol) {
   double * restrict chol_temp = chol;
   // Apply outer-product-based Cholesky algorithm: 1/3*N^3 + O(N^2)
@@ -151,16 +125,16 @@ void ComputeCholeskyFactorL(int size_m, double * restrict chol) {
   }
 }
 
-/*
-  Solve A*x = b or A^T*x = b when A is lower triangular IN-PLACE.
-  Uses the standard "backsolve" technique, instead of forming A^-1 which is
+/*!\rst
+  Solve ``A*x = b`` or ``A^T*x = b`` when ``A`` is lower triangular IN-PLACE.
+  Uses the standard "backsolve" technique, instead of forming ``A^-1`` which is
   VERY poorly conditioned.  Backsolve, however, is backward-stable.
 
   See .h file docs for information on "lda".
 
   Should be equiv to BLAS call:
-  dtrsv('L', 'N', 'N', size_m, A, lda, x, 1);
-*/
+  ``dtrsv('L', 'N', 'N', size_m, A, lda, x, 1);``
+\endrst*/
 void TriangularMatrixVectorSolve(double const * restrict A, char trans, int size_m, int lda, double * restrict x) noexcept {
   double temp;
   if (trans == 'N') {  // solve A*x = b, A lower tri
@@ -197,13 +171,13 @@ void TriangularMatrixVectorSolve(double const * restrict A, char trans, int size
 }
 
 
-/*
-  Calls dtrsv on each column of X, solving A * X_i = B_i (X_i being i-th column of X).
+/*!\rst
+  Calls dtrsv on each column of ``X``, solving ``A * X_i = B_i`` (``X_i`` being ``i``-th column of ``X``).
   Does not use blocking or any other optimization techniques.
 
   Should be equiv to BLAS call:
-  dtrsm('L', 'L', 'N', 'N', size_m, size_n, 1.0, A, lda, B, size_m);
-*/
+  ``dtrsm('L', 'L', 'N', 'N', size_m, size_n, 1.0, A, lda, B, size_m);``
+\endrst*/
 void TriangularMatrixMatrixSolve(double const * restrict A, char trans, int size_m, int size_n, int lda, double * restrict X) noexcept {
   for (int k = 0; k < size_n; ++k) {
     TriangularMatrixVectorSolve(A, trans, size_m, lda, X);
@@ -211,19 +185,20 @@ void TriangularMatrixMatrixSolve(double const * restrict A, char trans, int size
   }
 }
 
-/*
-  Computes the inverse of A when A has been previously cholesky-factored.
-  Only the lower triangle of A is read.
+/*!\rst
+  Computes ``A^-1``, the inverse of ``A`` when ``A`` has been previously cholesky-factored.
+  Only the lower triangle of ``A`` is read.
 
-  Computes inverse by successive x_i = A \ e_i operations, where e_i is the unit vector
-  with a 1 in the i-th entry.
-  Implementation saves computation (factor fo 2) by ignoring all leading zeros in x_i.  So x_0 = A \ e_0
-  is ~m^2 operations, x_1 = A \ e_1 is ~(m-1)^2 operations, ..., and x_{m-1} = A \ e_{m-1} is 1 operation.
+  Computes inverse by successive ``x_i = A \ e_i`` operations, where ``e_i`` is the unit vector
+  with a 1 in the ``i``-th entry.
+  Implementation saves computation (factor fo 2) by ignoring all leading zeros in ``x_i``.  So ``x_0 = A \ e_0``
+  is ``\approx m^2`` operations, ``x_1 = A \ e_1`` is ``\approx (m-1)^2`` operations, ..., and
+  ``x_{m-1} = A \ e_{m-1}`` is 1 operation.
 
   This is NOT backward-stable and should NOT be used!  Substantial superfluous
   numerical error can occur for poorly conditioned matrices.
   Caveat: may have utility if you are very certain of what you are doing in the face of [severe] loss of precision
-*/
+\endrst*/
 void TriangularMatrixInverse(double const * restrict matrix, int size_m, double * restrict inv_matrix) noexcept {
   double * restrict inv_matrix_ptr = inv_matrix;
   int cur_size = size_m;
@@ -247,16 +222,16 @@ void TriangularMatrixInverse(double const * restrict matrix, int size_m, double 
   }
 }
 
-/*
+/*!\rst
   Special case of GeneralMatrixVectorMultiply.  As long as A has zeros in the strict upper-triangle,
-  GeneralMatrixVectorMultiply will work too (but take >= 2x as long).
+  GeneralMatrixVectorMultiply will work too (but take ``>= 2x`` as long).
 
   Computes results IN-PLACE.
   Avoids accessing the strict upper triangle of A.
 
   Should be equivalent to BLAS call:
-  dtrmv('L', trans, 'N', size_m, A, size_m, x, 1);
-*/
+  ``dtrmv('L', trans, 'N', size_m, A, size_m, x, 1);``
+\endrst*/
 void TriangularMatrixVectorMultiply(double const * restrict A, char trans, int size_m, double * restrict x) noexcept {
   double temp;
 
@@ -289,16 +264,16 @@ void TriangularMatrixVectorMultiply(double const * restrict A, char trans, int s
   }  // end if over 'N' and 'T'
 }
 
-/*
+/*!\rst
   Special case of GeneralMatrixVectorMultiply for symmetric A (need not be SPD).
   As long as A is stored fully (i.e., upper triangle is valid),
-  GeneralMatrixVectorMultiply will work too (but take >= 2x as long).
+  GeneralMatrixVectorMultiply will work too (but take ``>= 2x`` as long).
 
   Avoids accessing the strict upper triangle of A.
 
   Should be equivalent to BLAS call:
-  dsymv('L', size_m, 1.0, A, size_m, x, 1, 0.0, y, 1);
-*/
+  ``dsymv('L', size_m, 1.0, A, size_m, x, 1, 0.0, y, 1);``
+\endrst*/
 void SymmetricMatrixVectorMultiply(double const * restrict A, double const * restrict x, int size_m, double * restrict y) noexcept {
   std::fill(y, y+size_m, 0.0);
   double temp1 = x[0], temp2 = 0.0;
@@ -319,27 +294,27 @@ void SymmetricMatrixVectorMultiply(double const * restrict A, double const * res
   }
 }
 
-/*
-  Computes matrix-vector product y = alpha * A * x + beta * y or y = alpha * A^T * x + beta * y
-  Since A is stored column-major, we need to treat the matrix-vector product as a weighted sum
-  of the columns of A, where x provides the weights.
+/*!\rst
+  Computes matrix-vector product ``y = alpha * A * x + beta * y`` or ``y = alpha * A^T * x + beta * y``.
+  Since ``A`` is stored column-major, we treat the matrix-vector product as a weighted sum
+  of the columns of ``A``, where ``x`` provides the weights.
 
-  That is, a matrix-vector product can be thought of as: (trans = 'T')
-  [  a_row1  ][   ]
-  [  a_row2  ][ x ]
-  [    ...   ][   ]
-  [  a_rowm  ][   ]
-  That is, y_i is the dot product of the i-th row of A with x.
+  That is, a matrix-vector product can be thought of as: (``trans = 'T'``)
+  ``[  a_row1  ][   ]``
+  ``[  a_row2  ][ x ]``
+  ``[    ...   ][   ]``
+  ``[  a_rowm  ][   ]``
+  That is, ``y_i`` is the dot product of the ``i``-th row of ``A`` with ``x``.
 
-  OR the "dual" view: (trans = 'N')
-  [        |        |     |        ][ x_1 ]
-  [ a_col1 | a_col2 | ... | a_coln ][ ... ] = x_1*a_col1 + ... + x_n*a_coln
-  [        |        |     |        ][ x_n ]
-  That is, y is the weighted sum of columns of A.
+  OR the "dual" view: (``trans = 'N'``)
+  ``[        |        |     |        ][ x_1 ]``
+  ``[ a_col1 | a_col2 | ... | a_coln ][ ... ] = x_1*a_col1 + ... + x_n*a_coln``
+  ``[        |        |     |        ][ x_n ]``
+  That is, ``y`` is the weighted sum of columns of ``A``.
 
   Should be equivalent to BLAS call:
-  dgemv(trans, size_m, size_n, alpha, A, size_m, x, 1, beta, y, 1);
-*/
+  ``dgemv(trans, size_m, size_n, alpha, A, size_m, x, 1, beta, y, 1);``
+\endrst*/
 void GeneralMatrixVectorMultiply(double const * restrict A, char trans, double const * restrict x, double alpha, double beta, int size_m, int size_n, int lda, double * restrict y) noexcept {
   double temp;
 
@@ -374,49 +349,16 @@ void GeneralMatrixVectorMultiply(double const * restrict A, char trans, double c
   }
 }
 
-// void ComputeCholeskyFactorLGAXPY(int size_m, double * restrict chol) {
-//   double * restrict chol_temp = chol;
-//   // apply outer-product-based Cholesky algorithm O(n^3)
-//   // here, L_{ij} = chol[j*size_m + i] is the input matrix (on input) and the cholesky factor of that matrix (on exit)
-//   double A_kk, temp;
-//   for (int k = 0; k < size_m; ++k) {
-//     A_kk = chol[k*size_m + k];
-//     // A_kk -= A_{j,1}*A_{1,j}
-//     for (int j=0; j < k; ++j) {
-//       A_kk -= chol[k + j*size_m]*chol[k + j*size_m];
-//     }
-
-//     if (unlikely(A_kk < 1.0e-16)) {
-//       printf("FUCK3 %.18E\n", A_kk);
-//       return;
-//     }
-//     A_kk = sqrt(A_kk);
-//     chol[k*size_m + k] = A_kk;
-
-//     if (likely(k < (size_m - 1))) {
-//       chol_temp = chol + k+1;
-//       for (int i = 0; i < k; ++i) {
-//         temp = chol[k + i*size_m];
-//         for (int j = 0; j < size_m - k - 1; ++j) {
-//           chol[k*size_m + k+1 + j] -= chol_temp[j]*temp;
-//         }
-//         chol_temp += size_m;
-//       }
-
-//       VectorScale(size_m - k - 1, 1.0/A_kk, chol + k+1 + k*size_m);
-//     }
-//   }
-// }
-
-/*
-  Matrix-matrix product C = alpha * op(A) * B + beta * C, where op(A) is A or A^T
-  Does so by computing matrix-vector products of A with each column of B (to generate corresponding column of C)
+/*!\rst
+  Matrix-matrix product ``C = alpha * op(A) * B + beta * C``, where ``op(A)`` is ``A`` or ``A^T``.
+  Does so by computing matrix-vector products of ``A`` with each column of ``B``
+  (to generate corresponding column of ``C``).
 
   Does not use blocking or other advanced optimization techniques.
 
   Should be equivalent to BLAS call:
-  dgemm('N', 'N', size_m, size_n, size_k, alpha, A, size_m, B, size_k, beta, C, size_m);
-*/
+  ``dgemm('N', 'N', size_m, size_n, size_k, alpha, A, size_m, B, size_k, beta, C, size_m);``
+\endrst*/
 void GeneralMatrixMatrixMultiply(double const * restrict Amat, char transA, double const * restrict Bmat, double alpha, double beta, int size_m, int size_k, int size_n, double * restrict Cmat) noexcept {
   if (transA == 'N') {
     for (int j = 0; j < size_n; ++j) {
@@ -443,17 +385,16 @@ void MatrixTranspose(double const * restrict matrix, int num_rows, int num_cols,
   }
 }
 
-/*
-  Computes A^-1 by cholesky-factoring A = L * L^T, computing L^-1, and then
-  computing A^-1 = L^-T * L^-1.
+/*!\rst
+  Computes ``A^-1`` by cholesky-factoring ``A = L * L^T``, computing ``L^-1``, and then
+  computing ``A^-1 = L^-T * L^-1``.
 
   This is NOT backward-stable and should NOT be used!  Substantial superfluous
   numerical error can occur for poorly conditioned matrices.
   Caveat: may have utility if you are very certain of what you are doing in the face of [severe] loss of precision
-*/
+\endrst*/
 void SPDMatrixInverse(double const * restrict chol_matrix, int size_m, double * restrict inv_matrix) noexcept {
   std::vector<double> L_inv(size_m*size_m);
-
   TriangularMatrixInverse(chol_matrix, size_m, L_inv.data());
   GeneralMatrixMatrixMultiply(L_inv.data(), 'T', L_inv.data(), 1.0, 0.0, size_m, size_m, size_m, inv_matrix);
 }
@@ -467,7 +408,7 @@ int ComputePLUFactorization(int r, int * restrict pivot, double * restrict A) no
       return 1;
     }
     pivot[0] = 1;
-    /* 1x1 matrix, nothing else to do */
+    // 1x1 matrix, nothing else to do
     return 0;
   }
 
@@ -578,17 +519,18 @@ int ComputePLUFactorization(int r, int * restrict pivot, double * restrict A) no
   return 0;
 }
 
-/*
-  Solves the system P*L*U * x = b.
-  First, applies the permutation P (pivot) to b.
-  Then forward-substitutes to solve Ly = Pb.  This loop is unrolled 4 times for speed.
-  Then backward-substitutes to solve Ux = y.  This loop is also unrolled 4 times.
-*/
+/*!\rst
+  Solves the system ``P * L * U * x = b``.
+
+  1. Apply the permutation ``P`` (pivot) to ``b``.
+  2. Forward-substitute to solve ``Ly = Pb``.  This loop is unrolled 4 times for speed.
+  3. Backward-substitute to solve ``Ux = y``.  This loop is also unrolled 4 times.
+\endrst*/
 void PLUMatrixVectorSolve(int r, double const * restrict LU, int const * restrict pivot, double * restrict b) noexcept {
   // First, swap rows of the vector b according to pivot array P;
   // i.e. solve Px=b, storing the result in b
   for (int k = 0; k < r; ++k) {
-    int kswap = pivot[k] - 1;  // shift 1 to match LAPACK (Fortran) index-from-1 */
+    int kswap = pivot[k] - 1;  // shift 1 to match LAPACK (Fortran) index-from-1
     // switch rows k and kswap if necessary
     if (kswap != k) {
       double temp = b[k];

@@ -1,16 +1,128 @@
-.. MOE documentation master file, created by
-   sphinx-quickstart on Tue Mar 11 16:34:26 2014.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root ``toctree`` directive.
-
 Welcome to MOE's documentation!
 ===============================
 
 **Contents:**
 
-    1. `Quick Start`_
-    2. `Install`_
-    3. `Source Documentation`_
+    #. `What is MOE?`_
+    #. `Quick Install`_ and :doc:`Full Install </install>`
+    #. `Quick Start`_
+    #. `Source Documentation`_
+    #. :doc:`Contributing </contributing>`
+
+What is MOE?
+-----------
+
+MOE (Metric Optimization Engine) is a *fast and efficient*, *derivative-free*,  *black box*, *global* optimization framework for optimizing parameters of time *consuming* or *expensive* experiments and systems.
+
+An experiment or system can be time consuming or expensive if it takes a long time to recieve statistically significant results (traffic for an A/B test, complex system with long training time, etc) or the opportunity cost of trying new values is high (engineering expense, A/B testing tradeoffs, etc).
+
+MOE solves this problem through optimal experimental design and *optimal learning*.
+
+    "Optimal learning addresses the challenge of how to collect information as efficiently as possible, primarily for settings where collecting information is time consuming and expensive"
+
+    -- Prof. Warren Powell, http://optimallearning.princeton.edu
+
+It boils down to:
+
+    "What is the most efficient way to collect information?"
+
+    -- Prof. Peter Frazier, http://people.orie.cornell.edu/pfrazier
+
+The *black box* nature of MOE allows us to optimize any number of systems, requiring no internal knowledge or access. It uses some objective function (Click Through Rate (CTR), revenue, engagement, etc) and some set of parameters (constants, config values, cut-offs, ML hyperparameters) and finds the best set of parameters to maximize (or minimize) the given function in as few attempts as possible. It does not require knowledge of the specific objective, or how it is obtained, just the previous parameters and their associated objective values (historical data).
+
+Example:
+
+.. math::
+
+    \underset{\vec{x}}{\mathrm{argmax}} \ \text{CTR} (\vec{x})
+
+Where :math:`\vec{x}` is any real valued input in some finite number of dimensions and CTR is some black box function that is difficult, expensive or time consuming to evaluate and is potentially non-convex, non-differentiable or non-continuous.
+
+We want to find the best set of parameters :math:`\vec{x}` while evaluating the underlying function (CTR) as few times as possible.
+
+It allows you to build the following loop, contantly optimizing and surfing the wave of highest returns for any set of parameters.
+
+.. image:: ../moe/static/img/moe_loop.png
+    :align: center
+    :alt: moe loop
+    :scale: 100%
+
+
+Video and slidedeck introduction to MOE:
+
+    * `15 min MOE intro video`_
+    * `MOE intro slides`_
+
+.. _15 min MOE intro video: http://www.youtube.com/watch?v=qAN6iyYPbEE
+
+.. _MOE intro slides: http://www.slideshare.net/YelpEngineering/yelp-engineering-open-house-112013-optimally-learning-for-fun-and-profit
+
+
+MOE does this internally by:
+
+1. Building a Gaussian Process (GP) with the historical data
+
+    - :doc:`gpp_math`
+    - :mod:`moe.views.rest.gp_mean_var`
+    - `RW Chapter 2`_
+
+2. Optimizing the hyperparameters of the Gaussian Process (model selection)
+
+    - :doc:`gpp_covariance`
+    - :doc:`gpp_model_selection_and_hyperparameter_optimization`
+    - :mod:`moe.views.rest.gp_hyper_opt`
+    - `RW Chapter 4`_
+    - `RW Chapter 5`_
+
+3. Finding the points of highest Expected Improvement (EI)
+
+    - :doc:`gpp_expected_improvement_demo`
+    - :mod:`moe.views.rest.gp_ei`
+    - `EGO Paper`_
+
+4. Returning the points to sample, then repeat
+
+.. _RW Chapter 2: http://www.gaussianprocess.org/gpml/chapters/RW2.pdf
+
+.. _RW Chapter 4: http://www.gaussianprocess.org/gpml/chapters/RW4.pdf
+
+.. _RW Chapter 5: http://www.gaussianprocess.org/gpml/chapters/RW5.pdf
+
+.. _EGO Paper: http://www.ressources-actuarielles.net/EXT/ISFA/1226.nsf/0/f84f7ac703bf5862c12576d8002f5259/$FILE/Jones98.pdf
+
+Externally you can use MOE through:
+
+    * :doc:`The REST interface </moe.views.rest>`
+    * :doc:`The python interface </moe.optimal_learning.python.python_version>`
+    * :doc:`The C++ interface </cpp_tree>`
+    * The CUDA kernels.
+
+You can be up and optimizing in a matter of minutes.
+
+
+Quick Install
+----
+
+Install in docker:
+....
+
+This is the recommended way to run the MOE REST server. All dependencies and building is done automatically and in an isolated container.
+
+Docker (http://docs.docker.io/) is a container based virtualization framework. Unlike traditional virtualization Docker is fast, lightweight and easy to use. Docker allows you to create containers holding all the dependencies for an application. Each container is kept isolated from any other, and nothing gets shared.
+
+::
+
+    $ git clone https://github.com/sc932/MOE.git
+    $ cd MOE
+    $ docker build -t moe_container .
+    $ docker run -p 6543:6543 moe_container
+
+The webserver and REST interface is now running on port 6543 from within the container.
+
+Build from source (linux and OSX 10.8 and 10.9 supported)
+....
+
+:doc:`Full Install </install>`
 
 Quick Start
 -----------
@@ -18,7 +130,7 @@ Quick Start
 REST/web server and interactive demo
 ........
 
-from the directory MOE is installed:
+To get the REST server running locally, from the directory MOE is installed:
 
 ::
 
@@ -26,11 +138,13 @@ from the directory MOE is installed:
 
 In your favorite browser go to: http://127.0.0.1:6543/
 
-OR
+Or, from the command line,
 
 ::
 
-    $ curl -X POST -H "Content-Type: application/json" -d '{"points_to_evaluate": [[0.06727463396075942], [0.5067300380945079], [0.9698763624056982], [0.6741416078606629], [0.3413945823872875], [0.8293462326458892], [0.1895850103202945], [0.29784241725123095], [0.7611434260204735], [0.4050181259320824]], "points_being_sampled": [], "gp_info": {"points_sampled": [{"value_var": 0.01, "value": -2.014556917682888, "point": [0.8356251271367201]}, {"value_var": 0.01, "value": -1.3556680509922945, "point": [0.5775274088974685]}, {"value_var": 0.01, "value": -0.17644452034270924, "point": [0.1299624124365485]}, {"value_var": 0.01, "value": 0.3125023458503953, "point": [0.02303611187965965]}, {"value_var": 0.01, "value": -0.5899125641251172, "point": [0.3938472181674687]}, {"value_var": 0.01, "value": -1.8568254250899945, "point": [0.9894680586912427]}, {"value_var": 0.01, "value": -1.0638344140121117, "point": [0.45444660991161895]}, {"value_var": 0.01, "value": -0.28576907668798884, "point": [0.20420919931329756]}, {"value_var": 0.01, "value": -1.568109287685418, "point": [0.6404744671911634]}, {"value_var": 0.01, "value": -1.8418398343184625, "point": [0.7168047658371041]}], "domain": [[0, 1]]}}' http://127.0.0.1:6543/gp/ei
+    $ curl -X POST -H "Content-Type: application/json" -d '{"domain_info": {"dim": 1}, "points_to_evaluate": [[0.1], [0.5], [0.9]], "gp_info": {"points_sampled": [{"value_var": 0.01, "value": 0.1, "point": [0.0]}, {"value_var": 0.01, "value": 0.2, "point": [1.0]}]}}' http://127.0.0.1:6543/gp/ei
+
+``gp_ei`` endpoint documentation: :mod:`moe.views.rest.gp_ei`
 
 From ipython
 ....
@@ -44,6 +158,8 @@ From ipython
     > exp.add_point([0, 0], 1.0, 0.01)
     > next_point_to_sample = gp_next_points(exp)
     > print next_point_to_sample
+
+``easy_interface`` documentation: :doc:`moe.easy_interface`
 
 Within python
 ....
@@ -68,98 +184,6 @@ Within python
         exp.add_point(next_point_to_sample, value_of_next_point, 0.01) # We can add some noise
 
     print exp.best_point
-
-Install
-----
-
-Install in docker:
-....
-
-This is the recommended way to run the MOE REST server. All dependencies and building is done automatically and in an isolated container.
-
-Docker (http://docs.docker.io/) is a container based virtualization framework. Unlike traditional virtualization Docker is fast, lightweight and easy to use. Docker allows you to create containers holding all the dependencies for an application. Each container is kept isolated from any other, and nothing gets shared.
-
-::
-
-    $ git clone https://github.com/sc932/MOE.git
-    $ cd MOE
-    $ docker build -t moe_container .
-    $ docker run -p 6543:6543 moe_container
-
-The webserver and REST interface is now running on port 6543 from within the container.
-
-Install from source:
-....
-
-Requires:
-
-1. ``python 2.6.7+`` - http://python.org/download/
-2. ``gcc 4.7.3+`` - http://gcc.gnu.org/install/
-3. ``cmake 2.8.9+`` - http://www.cmake.org/cmake/help/install.html
-4. ``boost 1.51+`` - http://www.boost.org/users/download/
-5. ``pip 1.2.1+`` - http://pip.readthedocs.org/en/latest/installing.html
-6. ``doxygen 1.8.5+`` - http://www.stack.nl/~dimitri/doxygen/index.html
-7. We recommend using a virtualenv http://www.jontourage.com/2011/02/09/virtualenv-pip-basics/
-
-::
-
-    $ git clone https://github.com/sc932/MOE.git
-    $ cd MOE
-    $ pip install -e .
-    $ python setup.py install
-
-OSX Tips:
-.....
-
-0. Are you sure you wouldn't rather be running linux?
-1. Download MacPorts - http://www.macports.org/install.php (If you change the install directory from ``/opt/local``, don't forget to update the cmake invocation.)
-2. MacPorts can resolve most dependencies. Make sure you set your ``PATH`` env var.
-3. Download xQuartz (needed for X11, needed for matplotlib) - http://xquartz.macosforge.org/landing/ (Also available through MacPorts, see item 4.)
-4. Getting gcc, boost, matplotlib, and xQuartz (``xorg-server``) reqs (before installing MOE):
-5. Make sure you create your virtualenv with the correct python ``--python=/opt/local/bin/python`` if you are using MacPorts
-6. If you are using another package manager (like homebrew) you may need to modify ``opt/local`` below to point to your ``Cellar`` directory.
-
-::
-
-    $ sudo port selfupdate
-    $ sudo port install gcc47
-    $ sudo port select --set gcc mp-gcc47
-    $ sudo port install boost
-    $ sudo port install xorg-server
-    $ sudo port install py-matplotlib
-    $ sudo port install doxygen
-    $ export MOE_CMAKE_OPTS=-DCMAKE_FIND_ROOT_PATH=/opt/local && export MOE_CC_PATH=/opt/local/bin/gcc && export MOE_CXX_PATH=/opt/local/bin/g++
-
-Linux Tips:
-....
-
-1. You can apt-get everything you need. Yay for real package managers!
-
-::
-
-    $ apt-get update
-    $ apt-get install python python-dev gcc cmake libboost-all-dev python-pip doxygen libblas-dev liblapack-dev gfortran git
-
-CMake Tips:
-....
-
-1. Do you have dependencies installed in non-standard places? e.g., did you build your own boost? Set the env var: ``export MOE_CMAKE_OPTS=-DCMAKE_FIND_ROOT_PATH=/path/to/stuff ...`` (OS X users with MacPorts should set ``/opt/local``) This can be used to set any number of cmake arguments.
-2. Are you using the right compiler? e.g., for ``gcc``, run ``export MOE_CC_PATH=gcc && export MOE_CXX_PATH=g++`` (OS X users need to explicitly set this.)
-
-Contributing
--------
-
-1. Fork it.
-2. Create a branch (``git checkout -b my_moe_branch``)
-3. Develop your feature/fix (don't forget to add tests!)
-4. Run tests (``tox``)
-5. Test against styleguide (``tox -e pep8 && tox -e pep257``)
-6. Commit your changes (``git commit -am "Added Some Mathemagics"``)
-7. Push to the branch (``git push origin my_moe_branch``)
-8. Open a [Pull Request][1]
-9. Optimize locally while you wait
-
-[1]: http://github.com/sc932/MOE/pulls
 
 Source Documentation
 ====================

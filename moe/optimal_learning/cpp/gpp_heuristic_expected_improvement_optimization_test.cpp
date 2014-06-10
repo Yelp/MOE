@@ -1,21 +1,24 @@
-// gpp_heuristic_expected_improvement_optimization_test.cpp
-/*
+/*!
+  \file gpp_heuristic_expected_improvement_optimization_test.cpp
+  \rst
   Routines to test the functions in gpp_heuristic_expected_improvement_optimization.cpp.
   The tests verify the subclasses of ObjectiveEstimationPolicyInterface and the correctness of
-  ComputeHeuristicSetOfPointsToSample():
-  1) ObjectiveEstimationPolicyInterface
-     a) ConstantLiarEstimationPolicy
+  ComputeHeuristicPointsToSample():
+
+  1. ObjectiveEstimationPolicyInterface
+
+     a. ConstantLiarEstimationPolicy
         Verify that constant liar gives back the same, constant output regardless of inputs (e.g., test against
         invalid inputs).
-
-     b) KrigingBelieverEstimationPolicy
+     b. KrigingBelieverEstimationPolicy
         Kriging's output depends on GP computations (mean, variance). In some special cases, we know these quantities
         analytically, so we test that Kriging gives the expected output in those cases.
-  2) ComputeHeuristicSetOfPointsToSample
+
+  2. ComputeHeuristicPointsToSample
      We have an end-to-end test of this functionality using both ConstantLiar and KrigingBeliever. We check that
      the output is valid (e.g., in the domain, distinct) and that the points correspond to local optima (i.e., each
      round of solving 1-EI succeeded).
-*/
+\endrst*/
 
 #include "gpp_heuristic_expected_improvement_optimization_test.hpp"
 
@@ -42,32 +45,32 @@ namespace optimal_learning {
 
 namespace {
 
-/*
-  Checks that |value.function_value - truth.function_value| / |truth.function_value| <= tolerance (relative error)
+/*!\rst
+  Checks that ``|value.function_value - truth.function_value| / |truth.function_value| <= tolerance`` (relative error)
   and
-  value.noise_variance == truth.noise_variance.
+  ``value.noise_variance == truth.noise_variance``.
 
-  Currently we never manipulate the noise_variance, so we check the accuracy of this value with a 0 tolerance.
+  Currently we never manipulate the ``noise_variance``, so we check the accuracy of this value with a 0 tolerance.
 
-  INPUTS:
-  function_value: FunctionValue to be tested
-  function_value_truth: FunctionValue providing the exact/desired result
-  tolerance: permissible relative difference
-  RETURNS:
-  true if value and truth match to within tolerance
-*/
+  \param
+    :function_value: FunctionValue to be tested
+    :function_value_truth: FunctionValue providing the exact/desired result
+    :tolerance: permissible relative difference
+  \return
+    true if value and truth match to within tolerance
+\endrst*/
 OL_WARN_UNUSED_RESULT bool CheckFunctionValue(const FunctionValue& function_value, const FunctionValue& function_value_truth, double tolerance) {
   return CheckDoubleWithinRelative(function_value.function_value, function_value_truth.function_value, tolerance) && CheckDoubleWithinRelative(function_value.noise_variance, function_value_truth.noise_variance, 0.0);
 }
 
-/*
+/*!\rst
   Tests ConstantLiarEstimationPolicy (construction and ComputeEstimate() method).
   ConstantLiar is very simple; it always produces the same estimates. So we test against some "bad" inputs;
   e.g., empty gaussian process, invalid sampling point, etc. to ensure that the object never looks at these.
 
-  RETURNS:
-  number of test failures: 0 if ConstantLiarEstimationPolicy is working correctly
-*/
+  \return
+    number of test failures: 0 if ConstantLiarEstimationPolicy is working correctly
+\endrst*/
 OL_WARN_UNUSED_RESULT int ConstantLiarPolicyTest() {
   int total_errors = 0;
 
@@ -100,51 +103,56 @@ OL_WARN_UNUSED_RESULT int ConstantLiarPolicyTest() {
   return total_errors;
 }
 
-/*
+/*!\rst
   Implementation Notes:
   This test relies on two provable properties of 0-noise GPs:
-  1) Setting Xs = X (points_to_sample = points_sampled), we always obtain
-     mu(Xs) = f (points_sampled_value)
-     Vars(Xs) = 0_{n,n} (n x n zero matrix; n = num_sampled)
-  2) For a point x such that dist(x, X) >> max(hyperparameter_length_scales),
-     mus \approx 0 and Vars \approx \alpha.  (dist(x, X) = \min_i ||x - X_i||_2)
 
-  So we will evaluate Kriging Believer using 1) and 2) and verify that the
+  1. Setting ``Xs = X`` (``points_to_sample = points_sampled``), we always obtain
+     ``mu(Xs) = f`` (``points_sampled_value``)
+     ``Vars(Xs) = 0_{n,n}`` (``n x n`` zero matrix; ``n = num_sampled``)
+  2. For a point ``x`` such that ``dist(x, X) >> max(hyperparameter_length_scales)``,
+     ``mus \approx 0`` and ``Vars \approx \alpha``.  (``dist(x, X) = \min_i ||x - X_i||_2``)
+
+  So we will evaluate Kriging Believer using 1. and 2. and verify that the
   expected outcomes are produced.
 
-  Proof of 1) for Xs = X_1, the first point of X.
-  Let e_i be the column vector with a 1 in the i-th slot and 0s otherwise.
-  Let K be the covariance matrix, and let K_1, K_2, ... K_n denote its *columns*. Say we are using SquareExponential.
-  Observe that Ks = K_1.
-  and Kss = \alpha (the signal variance hyperparameter)
+  Proof of 1. for ``Xs = X_1``, the first point of ``X``.
+  Let ``e_i`` be the column vector with a 1 in the ``i``-th slot and 0s otherwise.
+  Let ``K`` be the covariance matrix, and let ``K_1, K_2, ... K_n`` denote its *columns*. Say we are using SquareExponential.
+  Observe that ``Ks = K_1``.
+  and ``Kss = \alpha`` (the signal variance hyperparameter)
   From gpp_math.cpp's file comments:
-    mus = Ks^T * K^-1 * f,  (Equation 2, Rasmussen & Williams 2.19)
-    Vars = Kss - Ks^T * K^-1 * Ks, (Equation 3, Rasumussen & Williams 2.19)
-  Using Ks^T * K^{-1} = [K^{-1} * Ks]^T = [K^{-1} * K_1]^T = e_1^T,
-  mus = e_1^T * f = f_1 (first entry of f)
-  Vars = Kss - Ks^T * K^{-1} * Ks = \alpha - e_1^T * K_1^T = \alpha - \alpha = 0.
 
-  Proof of 2) for Xs = x_{far}, where ||x_{far} - X_i||_2 >> max L \forall i
-  Observe Ks \approx 0_n (vector of all 0s).
-    To see why, consider that cov(x, y) = \alpha * exp(-0.5*\sum_{i=0}^{dim} (x_i - y_i)^2/L_i^2).
-    So for x = x_{far} and any y \in X, this is \alpha * exp(-LARGE) \approx 0.
-  And Kss = \alpha (as before). Hence:
-  mus \approx 0_n^T * K^{-1} * f = 0
-  Vars \approx \alpha - 0_n^T * K^{-1} * 0_n = \alpha
-  The \approx become "equalities" in finite precision when dist(x, X) \approx
-  20 * max(hyperparameter_length_scales). (Conservative estimate.)
+  * ``mus = Ks^T * K^-1 * f,  (Equation 2, Rasmussen & Williams 2.19)``
+  * ``Vars = Kss - Ks^T * K^-1 * Ks, (Equation 3, Rasumussen & Williams 2.19)``
+
+  Using ``Ks^T * K^{-1} = [K^{-1} * Ks]^T = [K^{-1} * K_1]^T = e_1^T``,
+  ``mus = e_1^T * f = f_1`` (first entry of ``f``)
+  ``Vars = Kss - Ks^T * K^{-1} * Ks = \alpha - e_1^T * K_1^T = \alpha - \alpha = 0``.
+
+  Proof of 2. for ``Xs = x_{far}``, where ``\|x_{far} - X_i\|_2 >> max L \forall i``
+  Observe ``Ks \approx 0_n`` (vector of all 0s).
+  To see why, consider that ``cov(x, y) = \alpha * exp(-0.5*\sum_{i=0}^{dim} (x_i - y_i)^2/L_i^2)``.
+  So for ``x = x_{far}`` and any ``y \in X``, this is ``\alpha * exp(-LARGE) \approx 0``
+
+  And ``Kss = \alpha`` (as before). Hence:
+  ``mus \approx 0_n^T * K^{-1} * f = 0``
+  ``Vars \approx \alpha - 0_n^T * K^{-1} * 0_n = \alpha``
+  The ``\approx`` become "equalities" in finite precision when
+  ``dist(x, X) \approx 20 * max(hyperparameter_length_scales)``. (Conservative estimate.)
 
   Function Docs:
   Tests KrigingBelieverEstimationPolicy (construction and ComputeEstimate() method).
   KrigingBeliever uses GP.Mean() and potentially GP.Variance() as well. It is difficult to know precisely
   what these values are (without just recomputing them exactly the same way that KrigingBeliever does), so we
   check properties 1) and 2) from above. That is, we check:
-  1) At point X_i (for i = 0..num_sampled-1), KrigingBeliever spits out f_i
-  2) At random points that are "far away" (see code for details), KrigingBeliever spits out sqrt(\alpha) * std_dev_coef
 
-  RETURNS:
-  number of test failures: 0 if KrigingBelieverEstimationPolicy is working correctly
-*/
+  1. At point ``X_i`` (for i = 0..num_sampled-1), KrigingBeliever spits out f_i
+  2. At random points that are "far away" (see code for details), KrigingBeliever spits out ``sqrt(\alpha) * std_dev_coef``
+
+  \return
+    number of test failures: 0 if KrigingBelieverEstimationPolicy is working correctly
+\endrst*/
 OL_WARN_UNUSED_RESULT int KrigingBelieverPolicyTest() {
   using DomainType = TensorProductDomain;
   const int dim = 3;
@@ -266,23 +274,24 @@ int EstimationPolicyTest() {
 
 namespace {
 
-/*
-  This test assumes that ComputeOptimalPointToSampleWithRandomStarts() with num_to_sample = 0 (analytic case)
+/*!\rst
+  This test assumes that ComputeOptimalPointsToSampleWithRandomStarts() with num_being_sampled = 0 (analytic case)
   is working properly, and it assumes EstimationPolicyTest() passes. It checks:
-  1) ComputeHeuristicSetOfPointsToSample() is working correctly (found_flag is true)
-  2) points returned are all inside the specified domain
-  3) points returned are not within epsilon of each other (i.e., distinct)
-  4) as you add each new "to_sample" point to the GP (one at a time), the gradient of EI is 0 at the next
+
+  1. ComputeHeuristicPointsToSample() is working correctly (found_flag is true)
+  2. points returned are all inside the specified domain
+  3. points returned are not within epsilon of each other (i.e., distinct)
+  4. as you add each new "to_sample" point to the GP (one at a time), the gradient of EI is 0 at the next
      "to_sample" point
 
   The test sets up a toy problem by repeatedly drawing from a GP with made-up hyperparameters.
   Then it runs EI optimization, attempting to sample 3 points simultaneously.
 
-  INPUTS:
-  policy_type: which estimation policy (e.g., ConstantLiar, KrigingBeliever) to check in EI optimization
-  RETURNS:
-  number of test failures: 0 if heuristic EI optimization with the specified EstimationPolicy is working properly
-*/
+  \param
+    :policy_type: which estimation policy (e.g., ConstantLiar, KrigingBeliever) to check in EI optimization
+  \return
+    number of test failures: 0 if heuristic EI optimization with the specified EstimationPolicy is working properly
+\endrst*/
 int HeuristicExpectedImprovementOptimizationTestCore(EstimationPolicyTypes policy_type) {
   using DomainType = TensorProductDomain;
   const int dim = 3;
@@ -291,12 +300,12 @@ int HeuristicExpectedImprovementOptimizationTestCore(EstimationPolicyTypes polic
   int current_errors = 0;
 
   // gradient descent parameters
-  const double gamma = 0.5;
-  const double pre_mult = 1.0;
+  const double gamma = 0.4;
+  const double pre_mult = 1.3;
   const double max_relative_change = 1.0;
-  const double tolerance = 1.0e-9;
-  const int max_gradient_descent_steps = 1000;
-  const int max_num_restarts = 10;
+  const double tolerance = 1.0e-12;
+  const int max_gradient_descent_steps = 300;
+  const int max_num_restarts = 5;
   const int num_multistarts = 20;
   GradientDescentParameters gd_params(num_multistarts, max_gradient_descent_steps, max_num_restarts, gamma, pre_mult, max_relative_change, tolerance);
 
@@ -343,22 +352,25 @@ int HeuristicExpectedImprovementOptimizationTestCore(EstimationPolicyTypes polic
   DomainType domain(domain_bounds.data(), dim);
 
   // number of simultaneous samples
-  const int num_samples_to_generate = 3;
-  std::vector<double> best_points_to_sample(dim*num_samples_to_generate);
+  const int num_to_sample = 3;
+  std::vector<double> best_points_to_sample(dim*num_to_sample);
 
   // test optimization
   bool found_flag = false;
-  ComputeHeuristicSetOfPointsToSample(*mock_gp_data.gaussian_process_ptr, gd_params, domain, *estimation_policy, mock_gp_data.best_so_far, kMaxNumThreads, grid_search_only, num_grid_search_points, num_samples_to_generate, &found_flag, &uniform_generator, best_points_to_sample.data());
+  ComputeHeuristicPointsToSample(*mock_gp_data.gaussian_process_ptr, gd_params, domain, *estimation_policy, mock_gp_data.best_so_far, kMaxNumThreads, grid_search_only, num_grid_search_points, num_to_sample, &found_flag, &uniform_generator, best_points_to_sample.data());
   if (!found_flag) {
     ++total_errors;
   }
 
   // check points are in domain
-  current_errors = CheckPointsInDomain(domain, best_points_to_sample.data(), num_samples_to_generate);
+  RepeatedDomain<DomainType> repeated_domain(domain, num_to_sample);
+  if (!repeated_domain.CheckPointInside(best_points_to_sample.data())) {
+    ++current_errors;
+  }
 #ifdef OL_ERROR_PRINT
   if (current_errors != 0) {
     OL_ERROR_PRINTF("ERROR: points were not in domain!  points:\n");
-    PrintMatrixTrans(best_points_to_sample.data(), num_samples_to_generate, dim);
+    PrintMatrixTrans(best_points_to_sample.data(), num_to_sample, dim);
     OL_ERROR_PRINTF("domain:\n");
     PrintDomainBounds(domain_bounds.data(), dim);
   }
@@ -367,11 +379,11 @@ int HeuristicExpectedImprovementOptimizationTestCore(EstimationPolicyTypes polic
 
   // check points are distinct; points within tolerance are considered non-distinct
   const double distinct_point_tolerance = 1.0e-5;
-  current_errors = CheckPointsAreDistinct(best_points_to_sample.data(), num_samples_to_generate, dim, distinct_point_tolerance);
+  current_errors = CheckPointsAreDistinct(best_points_to_sample.data(), num_to_sample, dim, distinct_point_tolerance);
 #ifdef OL_ERROR_PRINT
   if (current_errors != 0) {
     OL_ERROR_PRINTF("ERROR: points were not distinct!  points:\n");
-    PrintMatrixTrans(best_points_to_sample.data(), num_samples_to_generate, dim);
+    PrintMatrixTrans(best_points_to_sample.data(), num_to_sample, dim);
   }
 #endif
   total_errors += current_errors;
@@ -379,8 +391,9 @@ int HeuristicExpectedImprovementOptimizationTestCore(EstimationPolicyTypes polic
   // check that the optimization succeeded on each output point
   std::vector<double> grad_ei(dim);
   OnePotentialSampleExpectedImprovementEvaluator ei_evaluator(*mock_gp_data.gaussian_process_ptr, mock_gp_data.best_so_far);
-  for (int i = 0; i < num_samples_to_generate; ++i) {
-    OnePotentialSampleExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, best_points_to_sample.data() + i*dim, 1, true, nullptr);
+  bool configure_for_gradients = true;
+  for (int i = 0; i < num_to_sample; ++i) {
+    OnePotentialSampleExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, best_points_to_sample.data() + i*dim, configure_for_gradients);
     ei_evaluator.ComputeGradExpectedImprovement(&ei_state, grad_ei.data());
 
     current_errors = 0;

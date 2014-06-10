@@ -1705,6 +1705,9 @@ output {
   -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
           transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
 }
+.mono-form {
+  font-family: "Courier New";
+}
 .form-control:focus {
   border-color: #66afe9;
   outline: 0;
@@ -5781,5 +5784,9 @@ button.close {
   .hidden-print {
     display: none !important;
   }
+}
+.middle-text {
+  vertical-align: middle;
+  margin-top: 24px;
 }
 /*# sourceMappingURL=bootstrap.css.map */

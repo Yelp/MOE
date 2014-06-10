@@ -1,9 +1,10 @@
-// gpp_mock_optimization_objective_functions.hpp
-/*
+/*!
+  \file gpp_mock_optimization_objective_functions.hpp
+  \rst
   This file contains mock objective functions *interfaces* for use with optimization routines.  This is solely for unit testing.
   Instead of testing gradient descent against log marginal likelihood with some random set of data (which is an
   integration test), we would instead like to be able to test gradient descent on something easier to understand,
-  e.g., z = -x^2 - y^2.  These simpler functions have analytic optima which makes testing optimizers
+  e.g., ``z = -x^2 - y^2``.  These simpler functions have analytic optima which makes testing optimizers
   (e.g., gradient descent, newton) much easier.
 
   See the header comments in gpp_optimization.hpp, Section 3a), for further details on what it means for an
@@ -15,17 +16,18 @@
   for running tests.  See gpp_optimization_test.cpp for examples.
 
   Following the style laid out in gpp_common.hpp (file comments, item 5), we currently define:
-  class PolynomialEvaluator;
-  struct PolynomialState;
+
+  * ``class PolynomialEvaluator;``
+  * ``struct PolynomialState;``
 
   PolynomialEvaluator defines a pure abstract base class with interface consistent with the interface that all
-  .*Evaluator classes must provide (e.g., ExpectedImprovementEvaluator, LogMarginalLikelihoodEvaluator).
+  .\*Evaluator classes must provide (e.g., ExpectedImprovementEvaluator, LogMarginalLikelihoodEvaluator).
 
   PolynomialState is simple: it's just a container class that holds a point at which to evaluate the polynomial.
-*/
+\endrst*/
 
-#ifndef OPTIMAL_LEARNING_EPI_SRC_CPP_GPP_MOCK_OPTIMIZATION_OBJECTIVE_FUNCTIONS_HPP_
-#define OPTIMAL_LEARNING_EPI_SRC_CPP_GPP_MOCK_OPTIMIZATION_OBJECTIVE_FUNCTIONS_HPP_
+#ifndef MOE_OPTIMAL_LEARNING_CPP_GPP_MOCK_OPTIMIZATION_OBJECTIVE_FUNCTIONS_HPP_
+#define MOE_OPTIMAL_LEARNING_CPP_GPP_MOCK_OPTIMIZATION_OBJECTIVE_FUNCTIONS_HPP_
 
 #include <algorithm>
 #include <vector>
@@ -36,10 +38,10 @@ namespace optimal_learning {
 
 struct PolynomialState;
 
-/*
-  Class to evaluate the function f(x_1,...,x_{dim}) = -\sum_i (x_i - s_i)^2, i = 1..dim.
-  This is a simple quadratic form with maxima at (s_1, ..., s_{dim}).
-*/
+/*!\rst
+  Class to evaluate the function ``f(x_1,...,x_{dim}) = -\sum_i (x_i - s_i)^2, i = 1..dim``.
+  This is a simple quadratic form with maxima at ``(s_1, ..., s_{dim})``.
+\endrst*/
 class PolynomialEvaluator {
  public:
   using StateType = PolynomialState;
@@ -48,42 +50,64 @@ class PolynomialEvaluator {
 
   virtual int dim() const noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT = 0;
 
-  /*
-    Helpful for testing so we know what the optimum is.  This value should be the result of:
+  /*!\rst
+    Helpful for testing so we know what the optimum is.  This value should be the result of::
+
       GetOptimumPoint(point);
       state.UpdateCurrentPoint(point);
       optimum_value = ComputeObjectiveFunction(state);
 
-    Then optimum_value == GetOptimumValue().
+    Then ``optimum_value == GetOptimumValue()``.
 
-    RETURNS:
-    the optimum value of the polynomial.
-  */
+    \return
+      the optimum value of the polynomial.
+  \endrst*/
   virtual double GetOptimumValue() const noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT = 0;
 
-  /*
+  /*!\rst
     Helpful for testing so we know where the optimum (value returned by GetOptimumValue) occurs.
 
-    NOTE: if the optimal point is not unique, this function may return one arbitrarily.
+    .. NOTE:: if the optimal point is not unique, this function may return one arbitrarily.
 
-    INPUTS:
-    point[dim]: space to write the output
+    \input
+      :point[dim]: space to write the output
     OUTPUTS:
-    point[dim]: the point at which the polynomial obtains its optimum value
-
-  */
+      :point[dim]: the point at which the polynomial obtains its optimum value
+  \endrst*/
   virtual void GetOptimumPoint(double * restrict point) const noexcept OL_NONNULL_POINTERS = 0;
 
-  /*
-  */
+  /*!\rst
+    Compute the quadratic objective function: ``f(x_1,...,x_{dim}) = -\sum_i (x_i - s_i)^2``.
+
+    \param
+      quadratic_dummy_state[1]: ptr to a FULLY CONFIGURED StateType (e.g., PolynomialState)
+    \output
+      quadratic_dummy_state[1]: ptr to a FULLY CONFIGURED StateType; only temporary state may be mutated
+    \return
+      the value of the objective at ``quadratic_dummy_state.GetCurrentPoint()``
+  \endrst*/
   virtual double ComputeObjectiveFunction(StateType * quadratic_dummy_state) const OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT = 0;
 
-  /*
-  */
+  /*!\rst
+    Compute the gradient of the objective function: ``f'(x_1,...,x_{dim})_i = -2 * (x_i - s_i)``.
+
+    \param
+      quadratic_dummy_state[1]: ptr to a FULLY CONFIGURED StateType (e.g., PolynomialState)
+    \output
+      quadratic_dummy_state[1]: ptr to a FULLY CONFIGURED StateType; only temporary state may be mutated
+      grad_polynomial[dim]: gradient of the objective
+  \endrst*/
   virtual void ComputeGradObjectiveFunction(StateType * quadratic_dummy_state, double * restrict grad_polynomial) const OL_NONNULL_POINTERS = 0;
 
-  /*
-  */
+  /*!\rst
+    Compute the gradient of the objective function: ``f''(x_1,...,x_{dim})_{i,j} = -2 * \delta_{i,j}``.
+
+    \param
+      quadratic_dummy_state[1]: ptr to a FULLY CONFIGURED StateType (e.g., PolynomialState)
+    \output
+      quadratic_dummy_state[1]: ptr to a FULLY CONFIGURED StateType; only temporary state may be mutated
+      hessian_polynomial[dim][dim]: hessian of the objective
+  \endrst*/
   virtual void ComputeHessianObjectiveFunction(StateType * quadratic_dummy_state, double * restrict hessian_polynomial) const OL_NONNULL_POINTERS = 0;
 
   OL_DISALLOW_COPY_AND_ASSIGN(PolynomialEvaluator);
@@ -112,9 +136,11 @@ struct PolynomialState final {
     std::copy(current_point_in, current_point_in + dim, current_point.begin());
   }
 
-  const int dim;  // spatial dimension (e.g., entries per point of points_sampled)
+  //! spatial dimension (e.g., entries per point of points_sampled)
+  const int dim;
 
   // state variables
+  //! the point at which to evaluate the associated objective
   std::vector<double> current_point;
 
   OL_DISALLOW_DEFAULT_AND_COPY_AND_ASSIGN(PolynomialState);
@@ -122,4 +148,4 @@ struct PolynomialState final {
 
 }  // end namespace optimal_learning
 
-#endif  // OPTIMAL_LEARNING_EPI_SRC_CPP_GPP_MOCK_OPTIMIZATION_OBJECTIVE_FUNCTIONS_HPP_
+#endif  // MOE_OPTIMAL_LEARNING_CPP_GPP_MOCK_OPTIMIZATION_OBJECTIVE_FUNCTIONS_HPP_

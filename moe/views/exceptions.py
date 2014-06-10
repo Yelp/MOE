@@ -6,11 +6,12 @@ Includes views that catch the following:
     2. colander.Invalid
 
 """
-from pyramid.response import Response
-from pyramid.view import view_config
+import pprint
 
 import colander
-import pprint
+
+from pyramid.response import Response
+from pyramid.view import view_config
 
 
 class SingularMatrixError(Exception):
@@ -32,6 +33,6 @@ def linear_algebra_error(exception, request):
 @view_config(context=colander.Invalid)
 def failed_validation(exception, request):
     """Catch colander.Invalid and give an informative 500 response."""
-    response = Response('Failed validation:\n%s' % pprint.pformat(exception.asdict()))
+    response = Response('Failed validation:\n{0:s}'.format(pprint.pformat(exception.asdict())))
     response.status_int = 500
     return response

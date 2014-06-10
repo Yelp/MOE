@@ -8,7 +8,7 @@
     <h4>Documentation</h4>
     <ul>
         <li><a href="http://sc932.github.io/MOE/">Full Documentation</a></li>
-        <li><a href="http://sc932.github.io/MOE/moe.views.html">REST Documentation</a></li>
+        <li><a href="http://sc932.github.io/MOE/moe.views.rest.html">REST Documentation</a></li>
         <li><a href="http://github.com/sc932/MOE/">Github repo</a></li>
         <li><a href="${request.route_url( 'gp_plot' )}">Demo</a></li>
     </ul>
@@ -20,5 +20,6 @@
         <li><a href="${request.route_url( 'gp_next_points_epi_pretty' )}">GP next points EPI</a></li>
         <li><a href="${request.route_url( 'gp_next_points_kriging_pretty' )}">GP next points kriging</a></li>
         <li><a href="${request.route_url( 'gp_next_points_constant_liar_pretty' )}">GP next points constant liar</a></li>
+        <li><a href="${request.route_url( 'gp_hyper_opt_pretty' )}">GP hyperparameter optimization</a></li>
     </ul>
 </div>

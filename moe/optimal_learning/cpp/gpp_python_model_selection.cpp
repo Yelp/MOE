@@ -1,12 +1,13 @@
-// gpp_python_model_selection.cpp
-/*
+/*!
+  \file gpp_python_model_selection.cpp
+  \rst
   This file has the logic to invoke C++ functions pertaining to model selection from Python.
   The data flow follows the basic 4 step from gpp_python_common.hpp.
 
   Note: several internal functions of this source file are only called from Export*() functions,
   so their description, inputs, outputs, etc. comments have been moved. These comments exist in
   Export*() as Python docstrings, so we saw no need to repeat ourselves.
-*/
+\endrst*/
 // This include violates the Google Style Guide by placing an "other" system header ahead of C and C++ system headers.  However,
 // it needs to be at the top, otherwise compilation fails on some systems with some versions of python: OS X, python 2.7.3.
 // Putting this include first prevents pyport from doing something illegal in C++; reference: http://bugs.python.org/issue10910
@@ -99,32 +100,31 @@ boost::python::list ComputeHyperparameterGradLogLikelihoodWrapper(const boost::p
   return VectorToPylist(grad_log_likelihood);
 }
 
-/*
+/*!\rst
   Utility that dispatches log likelihood optimization (wrt hyperparameters) based on optimizer type.
   This is just used to reduce copy-pasted code.
 
   Let n_hyper = covariance.GetNumberOfHyperparameters();
 
-  INPUTS:
-  optimization_parameters: EPI/src/python/optimization_parameters.HyperparameterOptimizationParameters
+  \param
+    :optimization_parameters: python/cpp_wrappers/optimization._CppOptimizationParameters
       Python object containing the LogLikelihoodTypes objective_type and OptimizerTypes optimzer_typ
       to use as well as appropriate parameter structs e.g., NewtonParameters for type kNewton).
       See comments on the python interface for multistart_hyperparameter_optimization_wrapper
-  log_likelihood_eval: object supporting evaluation of log likelihood
-  covariance: the CovarianceFunction object encoding assumptions about the GP's behavior on our data
-  hyperparameter_domain[2][n_hyper]: matrix specifying the boundaries of a n_hyper-dimensional tensor-product
-                      domain.  Specified as a list of [x_i_min, x_i_max] pairs, i = 0 .. dim-1
-                      Specify in LOG-10 SPACE!
-  optimizer_type: type of optimization to use (e.g., null, gradient descent)
-  max_num_threads: maximum number of threads for use by OpenMP (generally should be <= # cores)
-  randomness_source: object containing randomness sources for generating random points in the domain
-  status: pydict object; cannot be None
-
-  OUTPUTS:
-  randomness_source: PRNG internal states modified
-  status: modified on exit to describe whether convergence occurred
-  new_hyperparameters[n_hyper]: new hyperparameters found by optimizer to maximize the specified log likelihood measure
-*/
+    :log_likelihood_eval: object supporting evaluation of log likelihood
+    :covariance: the CovarianceFunction object encoding assumptions about the GP's behavior on our data
+    :hyperparameter_domain[2][n_hyper]: matrix specifying the boundaries of a n_hyper-dimensional tensor-product
+      domain.  Specified as a list of [x_i_min, x_i_max] pairs, i = 0 .. dim-1
+      Specify in LOG-10 SPACE!
+    :optimizer_type: type of optimization to use (e.g., null, gradient descent)
+    :max_num_threads: maximum number of threads for use by OpenMP (generally should be <= # cores)
+    :randomness_source: object containing randomness sources for generating random points in the domain
+    :status: pydict object; cannot be None
+  \output
+    :randomness_source: PRNG internal states modified
+    :status: modified on exit to describe whether convergence occurred
+    :new_hyperparameters[n_hyper]: new hyperparameters found by optimizer to maximize the specified log likelihood measure
+\endrst*/
 template <typename LogLikelihoodEvaluator>
 void DispatchHyperparameterOptimization(const boost::python::object& optimization_parameters, const LogLikelihoodEvaluator& log_likelihood_eval, const CovarianceInterface& covariance, ClosedInterval const * restrict hyperparameter_domain, OptimizerTypes optimizer_type, int max_num_threads, RandomnessSourceContainer& randomness_source, boost::python::dict& status, double * restrict new_hyperparameters) {
   bool found_flag = false;
@@ -245,98 +245,130 @@ void ExportModelSelectionFunctions() {
     Computes the specified log likelihood measure of model fit using the given
     hyperparameters.
 
-    pylist points_sampled[num_sampled][dim]: points already sampled
-    pylist points_sampled_value[num_sampled]: objective value at each sampled point
-    int dim: dimension of parameter space
-    int num_sampled: number of points already sampled
-    LogLikelihoodTypes objective_mode: describes which log likelihood measure to compute (e.g., kLogMarginalLikelihood)
-    pylist hyperparameters[2]: covariance hyperparameters; see "Details on ..." section at the top of BOOST_PYTHON_MODULE
-    pylist noise_variance[num_sampled]: \sigma_n^2, noise variance (one value per sampled point)
-
-    RETURNS:
-    double result: computed log marginal likelihood of prior
+    :param points_sampled: points that have already been sampled
+    :type points_sampled: list of float64 with shape (num_sampled, dim)
+    :param points_sampled_value: values of the already-sampled points
+    :type points_sampled_value: list of float64 with shape (num_sampled, )
+    :param dim: the spatial dimension of a point (i.e., number of independent params in experiment)
+    :type dim: int > 0
+    :param num_sampled: number of already-sampled points
+    :type num_sampled: int > 0
+    :param objective_mode: describes which log likelihood measure to compute (e.g., kLogMarginalLikelihood)
+    :type objective_mode: GPP.LogLikelihoodTypes (enum)
+    :param hyperparameters: covariance hyperparameters; see "Details on ..." section at the top of ``BOOST_PYTHON_MODULE``
+    :type hyperparameters: list of len 2; index 0 is a float64 ``\alpha`` (signal variance) and index 1 is the length scales (list of floa64 of length ``dim``)
+    :param noise_variance: the ``\sigma_n^2`` (noise variance) associated w/observation, points_sampled_value
+    :type noise_variance: list of float64 with shape (num_sampled, )
+    :return: computed log marginal likelihood of prior
+    :rtype: float64
     )%%");
 
   boost::python::def("compute_hyperparameter_grad_log_likelihood", ComputeHyperparameterGradLogLikelihoodWrapper, R"%%(
     Computes the gradient of the specified log likelihood measure of model fit using the given
     hyperparameters. Gradient computed wrt the given hyperparameters.
 
-    n_hyper denotes the number of hyperparameters.
+    ``n_hyper`` denotes the number of hyperparameters.
 
-    pylist points_sampled[num_sampled][dim]: points already sampled
-    pylist points_sampled_value[num_sampled]: objective value at each sampled point
-    int dim: dimension of parameter space
-    int num_sampled: number of points already sampled
-    LogLikelihoodTypes objective_mode: describes which log likelihood measure to compute (e.g., kLogMarginalLikelihood)
-    pylist hyperparameters[2]: covariance hyperparameters; see "Details on ..." section at the top of BOOST_PYTHON_MODULE
-    pylist noise_variance[num_sampled]: \sigma_n^2, noise variance (one value per sampled point)
-
-    RETURNS:
-    pylist result[n_hyper]: gradients of log marginal likelihood wrt hyperparameters
+    :param points_sampled: points that have already been sampled
+    :type points_sampled: list of float64 with shape (num_sampled, dim)
+    :param points_sampled_value: values of the already-sampled points
+    :type points_sampled_value: list of float64 with shape (num_sampled, )
+    :param dim: the spatial dimension of a point (i.e., number of independent params in experiment)
+    :type dim: int > 0
+    :param num_sampled: number of already-sampled points
+    :type num_sampled: int > 0
+    :param objective_mode: describes which log likelihood measure to compute (e.g., kLogMarginalLikelihood)
+    :type objective_mode: GPP.LogLikelihoodTypes (enum)
+    :param hyperparameters: covariance hyperparameters; see "Details on ..." section at the top of ``BOOST_PYTHON_MODULE``
+    :type hyperparameters: list of len 2; index 0 is a float64 ``\alpha`` (signal variance) and index 1 is the length scales (list of floa64 of length ``dim``)
+    :param noise_variance: the ``\sigma_n^2`` (noise variance) associated w/observation, points_sampled_value
+    :type noise_variance: list of float64 with shape (num_sampled, )
+    :return: gradients of log marginal likelihood wrt hyperparameters
+    :rtype: list of float64 with shape (num_hyperparameters, )
     )%%");
 
   boost::python::def("multistart_hyperparameter_optimization", MultistartHyperparameterOptimizationWrapper, R"%%(
     Optimize the specified log likelihood measure over the specified domain using the specified optimization method.
 
-    The HyperparameterOptimizationParameters object is a python class defined in:
-    EPI/src/python/optimization_parameters.HyperparameterOptimizationParameters
+    The _CppOptimizationParameters object is a python class defined in:
+    ``python/cpp_wrappers/optimization._CppOptimizationParameters``
     See that class definition for more details.
 
     This function expects it to have the fields:
-    objective_type (LogLikelihoodTypes enum from this file)
-    optimizer_type (OptimizerTypes enum from this file)
-    num_random_samples (int, number of samples to 'dumb' search over, only used if optimizer_type == kNull)
-    optimizer_parameters (*Parameters struct (gpp_optimization_parameters.hpp) where * matches optimizer_type
-                          unused if optimizer_type == kNull)
 
-    n_hyper denotes the number of hyperparameters.
+    * objective_type (LogLikelihoodTypes enum from this file)
+    * optimizer_type (OptimizerTypes enum from this file)
+    * num_random_samples (int, number of samples to 'dumb' search over, only used if optimizer_type == kNull)
+    * optimizer_parameters (*Parameters struct (gpp_optimization_parameters.hpp) where * matches optimizer_type
+      unused if optimizer_type == kNull)
 
-    INPUTS:
-    HyperparameterOptimizationParameters optimization_parameters:
-        python object containing the LogLikelihoodTypes objective to use, OptimizerTypes optimzer_type
-        to use as well as appropriate parameter structs e.g., NewtonParameters for type kNewton
-    pylist hyperparameter_domain[2*n_hyper]: [lower, upper] bound pairs for each hyperparameter dimension in LOG-10 SPACE
-    pylist points_sampled[num_sampled][dim]: points already sampled
-    pylist points_sampled_value[num_sampled]: objective value at each sampled point
-    int dim: dimension of parameter space
-    int num_sampled: number of points already sampled
-    pylist hyperparameters[2]: covariance hyperparameters; see "Details on ..." section at the top of BOOST_PYTHON_MODULE
-    pylist noise_variance[num_sampled]: \sigma_n^2, noise variance (one value per sampled point)
-    int max_num_threads: max number of threads to use during Newton optimization
-    RandomnessSourceContainer randomness_source: object containing randomness source (UniformRandomGenerator) for LHC sampling
-    pydict status: pydict object (cannot be None!); modified on exit to describe whether convergence occurred
+    ``n_hyper`` denotes the number of hyperparameters.
 
-    RETURNS::
-    pylist next_hyperparameters[n_hyper]: optimized hyperparameters
+
+    :param optimization_parameters: python object containing the LogLikelihoodTypes
+      objective to use, OptimizerTypes optimzer_type to use as well as appropriate
+      parameter structs e.g., NewtonParameters for type kNewton
+    :type optimization_parameters:  _CppOptimizationParameters
+    :param hyperparameter_domain: [lower, upper] bound pairs for each hyperparameter dimension in LOG-10 SPACE
+    :type hyperparameter_domain: list of float64 with shape (num_hyperparameters, 2)
+    :param points_sampled: points that have already been sampled
+    :type points_sampled: list of float64 with shape (num_sampled, dim)
+    :param points_sampled_value: values of the already-sampled points
+    :type points_sampled_value: list of float64 with shape (num_sampled, )
+    :param dim: the spatial dimension of a point (i.e., number of independent params in experiment)
+    :type dim: int > 0
+    :param num_sampled: number of already-sampled points
+    :type num_sampled: int > 0
+    :param hyperparameters: covariance hyperparameters; see "Details on ..." section at the top of ``BOOST_PYTHON_MODULE``
+    :type hyperparameters: list of len 2; index 0 is a float64 ``\alpha`` (signal variance) and index 1 is the length scales (list of floa64 of length ``dim``)
+    :param noise_variance: the ``\sigma_n^2`` (noise variance) associated w/observation, points_sampled_value
+    :type noise_variance: list of float64 with shape (num_sampled, )
+    :param max_num_threads: max number of threads to use during EI optimization
+    :type max_num_threads: int >= 1
+    :param randomness_source: object containing randomness sources; only thread 0's source is used
+    :type randomness_source: GPP.RandomnessSourceContainer
+    :param status: pydict object (cannot be None!); modified on exit to describe whether convergence occurred
+    :type status: dict
+    :return: optimized hyperparameters
+    :rtype: list of float64 with shape (num_hyperparameters, )
     )%%");
 
   boost::python::def("evaluate_log_likelihood_at_hyperparameter_list", EvaluateLogLikelihoodAtHyperparameterListWrapper, R"%%(
     Evaluates the specified log likelihood measure of model fit at each member of
     hyperparameter_list. Useful for plotting.
 
-    Equivalent to
-    result = []
-    for hyperparameters in hyperparameter_list:
-        result.append(compute_log_likelihood(hyperparameters, ...))
+    Equivalent to::
+
+      result = []
+      for hyperparameters in hyperparameter_list:
+          result.append(compute_log_likelihood(hyperparameters, ...))
 
     But this method is substantially faster (loops in C++ and is multithreaded).
 
-    n_hyper denotes the number of hyperparameters
+    ``n_hyper`` denotes the number of hyperparameters
 
-    INPUTS:
-    pylist hyperparameter_list[num_multistarts][n_hyper]: list of hyperparameters at which to evaluate log likelihood
-    pylist points_sampled[num_sampled][dim]: points already sampled
-    pylist points_sampled_value[num_sampled]: objective value at each sampled point
-    int dim: dimension of parameter space
-    int num_sampled: number of points already sampled
-    LogLikelihoodTypes objective_mode: describes which log likelihood measure to compute (e.g., kLogMarginalLikelihood)
-    pylist hyperparameters[2]: covariance hyperparameters; see "Details on ..." section at the top of BOOST_PYTHON_MODULE
-    pylist noise_variance[num_sampled]: \sigma_n^2, noise variance (one value per sampled point)
-    num_multistarts: number of latin hypercube samples to use
-    int max_num_threads: max number of threads to use during Newton optimization
-
-    RETURNS:
-    pylist result[num_multistarts]: log likelihood values at each point of the hyperparameter_list list, in the same order
+    :param hyperparameter_list[num_multistarts][n_hyper]: list of hyperparameters at which to evaluate log likelihood
+    :type hyperparameter_list: list of float64 with shape (num_multistarts, num_hyperparameters)
+    :param points_sampled: points that have already been sampled
+    :type points_sampled: list of float64 with shape (num_sampled, dim)
+    :param points_sampled_value: values of the already-sampled points
+    :type points_sampled_value: list of float64 with shape (num_sampled, )
+    :param dim: the spatial dimension of a point (i.e., number of independent params in experiment)
+    :type dim: int > 0
+    :param num_sampled: number of already-sampled points
+    :type num_sampled: int > 0
+    :param objective_mode: describes which log likelihood measure to compute (e.g., kLogMarginalLikelihood)
+    :type objective_mode: GPP.LogLikelihoodTypes (enum)
+    :param hyperparameters: covariance hyperparameters; see "Details on ..." section at the top of ``BOOST_PYTHON_MODULE``
+    :type hyperparameters: list of len 2; index 0 is a float64 ``\alpha`` (signal variance) and index 1 is the length scales (list of floa64 of length ``dim``)
+    :param noise_variance: the ``\sigma_n^2`` (noise variance) associated w/observation, points_sampled_value
+    :type noise_variance: list of float64 with shape (num_sampled, )
+    :param num_multistarts: number hyperparameter sets at which to compute log likelihood
+    :type num_multistarts: int > 0
+    :param max_num_threads: max number of threads to use during EI optimization
+    :type max_num_threads: int >= 1
+    :return: log likelihood values at each point of the hyperparameter_list list, in the same order
+    :rtype: list of float64 with shape (num_multistarts, )
     )%%");
 }
 

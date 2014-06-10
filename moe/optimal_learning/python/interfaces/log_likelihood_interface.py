@@ -9,12 +9,13 @@ overview in interfaces/gaussian_process_interface.py.
 
 This file deals with model selection via hyperparameter optimization, as the name implies.  In our discussion of GPs,
 we did not pay much attention to the underlying covariance function.  We noted that the covariance is extremely
-important since it encodes our assumptions about the objective function f(x) that we are trying to learn; i.e.,
+important since it encodes our assumptions about the objective function ``f(x)`` that we are trying to learn; i.e.,
 the covariance describes the nearness/similarity of points in the input space.  Also, the GP was clearly indicated
 to be a function of the covariance, but we simply assumed that the selection of covariance was an already-solved
 problem (or even worse, arbitrary!).
 
-MODEL SELECTION:
+**MODEL SELECTION**
+
 To better understand model selection, let's look at a common covariance used in our computation, square exponential:
 ``cov(x_1, x_2) = \alpha * \exp(-0.5*r^2), where r = \sum_{i=1}^d (x_1_i - x_2_i)^2 / L_i^2``.
 Here, ``\alpha`` is ``\sigma_f^2``, the signal variance, and the ``L_i`` are length scales.  The vector ``[\alpha, L_1, ... , L_d]``
@@ -40,16 +41,19 @@ We do note that the techniques for selecting covariance classes more or less req
 on each individual covariance.  The likely approach would be to produce the best fit (according to chosen metrics)
 using each type of covariance (using optimization) and then choose the best performer across the group.
 
-MODEL SELECTION OVERVIEW:
+**MODEL SELECTION OVERVIEW**
+
 Generally speaking, there are a great many tunable parameters in any model-based learning algorithm.  In our case,
 the GP takes a covariance function as input; the selection of the covariance class as well as the choice of hyperparameters
 are all part of the model selection process.  Determining these details of the [GP] model is the model selection problem.
 
 In order to evaluate the quality of models (and solve model selction), we need some kind of metric.  The literature suggests
 too many to cite, but R&W groups them into three common approaches (5.1, p108):
-A) compute the probability of the model given the data (e.g., LML)
-B) estimate the genereralization error (e.g., LOO-CV)
-C) bound the generalization error
+
+A. compute the probability of the model given the data (e.g., LML)
+B. estimate the genereralization error (e.g., LOO-CV)
+C. bound the generalization error
+
 where "generalization error" is defined as "the average error on unseen test examples (from the same distribution
 as the training cases)."  So it's a measure of how well or poorly the model predicts reality.
 
@@ -57,7 +61,8 @@ For further details and examples of log likelihood measures, see gpp_model_selec
 Overview of some log likelihood measures can be found in GaussianProcessLogMarginalLikelihood and
 GaussianProcessLeaveOneOutLogLikelihood in cpp_wrappers/log_likelihood.py.
 
-OPTIMIZATION:
+**OPTIMIZATION**
+
 Now that we have discussed measures of model quality, what do we do with them?  How do they help us choose hyperparameters?
 
 From here, we can apply anyone's favorite optimization technique to maximize log likelihoods wrt hyperparameters.  The

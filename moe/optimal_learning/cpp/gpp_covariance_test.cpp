@@ -1,11 +1,12 @@
-// gpp_covariance_test.cpp
-/*
+/*!
+  \file gpp_covariance_test.cpp
+  \rst
   This file contains two template classes: one supporting computing covariance and its analytic spatial derivatives, and the other
   for covariance and its analytic hyperparameter derivatives.  Then through a matched pair of template functions, we ping
   the analytic derivatives using finite differences for validation.  (The pinging is done through PingDerivatve() in test_utils.hpp.)
 
   The Run.*() functions invoke the derivative ping funtions on all of the covariance functions declared in gpp_covariance.hpp.
-*/
+\endrst*/
 
 #include "gpp_covariance_test.hpp"
 
@@ -25,7 +26,7 @@ namespace optimal_learning {
 
 namespace {
 
-/*
+/*!\rst
   Supports evaluating a covariance function, Covariance.Covariance() and its gradient, Covariance.GradCovariance()
 
   Covariance has the form f = cov(x_d, y_d), where x, y are vectors of size dim.
@@ -39,7 +40,7 @@ namespace {
   The output of coariance is a scalar.
 
   WARNING: this class is NOT THREAD SAFE.
-*/
+\endrst*/
 template <typename CovarianceClass>
 class PingCovarianceSpatialDerivatives final : public PingableMatrixInputVectorOutputInterface {
  public:
@@ -130,7 +131,7 @@ class PingCovarianceSpatialDerivatives final : public PingableMatrixInputVectorO
   CovarianceClass covariance_;
 };
 
-/*
+/*!\rst
   Supports evaluating a covariance function, covariance.Covariance() and its hyperparameter gradient,
   covariance.HyperparameterGradCovariance()
 
@@ -139,7 +140,7 @@ class PingCovarianceSpatialDerivatives final : public PingableMatrixInputVectorO
   (via EvaluateFunction) is supported by building additional local covariance objects.
 
   The output of coariance is a scalar.
-*/
+\endrst*/
 template <typename CovarianceClass>
 class PingGradCovarianceHyperparameters final : public PingableMatrixInputVectorOutputInterface {
  public:
@@ -324,7 +325,6 @@ class PingHessianCovarianceHyperparameters final : public PingableMatrixInputVec
   CovarianceClass covariance_;
 };
 
-
 template <typename PingCovarianceClass>
 OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT int PingCovarianceHyperparameterDerivativesTest(char const * class_name, int num_hyperparameters, double epsilon[2], double tolerance_fine, double tolerance_coarse, double input_output_ratio) {
   const int dim = 3;
@@ -333,15 +333,16 @@ OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT int PingCovarianceHyperparameterDeriva
 
   std::vector<double> hyperparameters(num_hyperparameters);
 
+  int num_being_sampled = 0;
   int num_to_sample = 1;
   int num_sampled = 1;
 
   MockExpectedImprovementEnvironment EI_environment;
-  UniformRandomGenerator uniform_generator(3141);
+  UniformRandomGenerator uniform_generator(2718);
   boost::uniform_real<double> uniform_double(3.0, 5.0);
 
   for (int i = 0; i < 10; ++i) {
-    EI_environment.Initialize(dim, num_to_sample, num_sampled);
+    EI_environment.Initialize(dim, num_to_sample, num_being_sampled, num_sampled);
 
     for (int j = 0; j < num_hyperparameters; ++j) {
       hyperparameters[j] = uniform_double(uniform_generator.engine);
@@ -461,12 +462,14 @@ OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT int PingCovarianceHyperparameterHessia
   return total_errors;
 }
 
-
-/*
+/*!\rst
   Pings the gradient of covariance functions to check their validity.
   Test cases include a couple of simple hand-checked cases as well as a run
   of 50 randomly generated tests.
-*/
+
+  \return
+    number of pings that failed
+\endrst*/
 template <typename PingCovarianceClass>
 OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT int PingCovarianceSpatialDerivativesTest(char const * class_name, double epsilon[2], double tolerance_fine, double tolerance_coarse, double input_output_ratio) {
   const  int dim = 3;
@@ -519,13 +522,14 @@ OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT int PingCovarianceSpatialDerivativesTe
     total_errors += errors_this_iteration;
   }
 
+  int num_being_sampled = 0;
   int num_to_sample = 1;
   int num_sampled = 1;
 
   MockExpectedImprovementEnvironment EI_environment;
 
   for (int i = 0; i < 50; ++i) {
-    EI_environment.Initialize(dim, num_to_sample, num_sampled);
+    EI_environment.Initialize(dim, num_to_sample, num_being_sampled, num_sampled);
 
     for (int j = 0; j < dim; ++j) {
       lengths[j] = uniform_double(uniform_generator.engine);
@@ -556,14 +560,21 @@ OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT int PingCovarianceSpatialDerivativesTe
   return total_errors;
 }
 
-// use separate scopes to prevent accidental misuse of variable names
+/*!\rst
+  Test that gradient wrt spatial coordinates of various covariance functions are working.
+
+  Uses separate scopes to prevent accidental misuse of variable names.
+
+  \return
+    Number of covariance functions where spatial gradient pings failed
+\endrst*/
 OL_WARN_UNUSED_RESULT int RunCovarianceSpatialDerivativesTests() {
   int total_errors = 0;
   int current_errors = 0;
 
   {
     double epsilon_square_exponential[2] = {1.0e-2, 1.0e-3};
-    current_errors = PingCovarianceSpatialDerivativesTest<PingCovarianceSpatialDerivatives<SquareExponential> >("Square Exponential", epsilon_square_exponential, 2.0e-3, 1.0e-2, 1.0e-18);
+    current_errors = PingCovarianceSpatialDerivativesTest<PingCovarianceSpatialDerivatives<SquareExponential> >("Square Exponential", epsilon_square_exponential, 4.0e-3, 1.0e-2, 1.0e-18);
     if (current_errors != 0) {
       OL_PARTIAL_FAILURE_PRINTF("pinging sqexp covariance failed with %d errors\n", current_errors);
     }
@@ -591,14 +602,21 @@ OL_WARN_UNUSED_RESULT int RunCovarianceSpatialDerivativesTests() {
   return total_errors;
 }
 
-// use separate scopes to prevent accidental misuse of variable names
+/*!\rst
+  Test that gradient and hessian wrt hyperparameters of various covariance functions are working.
+
+  Uses separate scopes to prevent accidental misuse of variable names.
+
+  \return
+    Number of covariance functions where hyperparameter gradients/hessian pings failed
+\endrst*/
 OL_WARN_UNUSED_RESULT int RunCovarianceHyperparameterDerivativesTests() noexcept {
   int total_errors = 0;
   int current_errors = 0;
 
   {
     double epsilon_square_exponential_hyperparameters[2] = {5.0e-2, 1.0e-2};
-    current_errors = PingCovarianceHyperparameterGradientsTest<PingGradCovarianceHyperparameters<SquareExponentialSingleLength> >("Square Exponential Single Length", 2, epsilon_square_exponential_hyperparameters, 3.0e-3, 4.0e-3, 5.0e-15);
+    current_errors = PingCovarianceHyperparameterGradientsTest<PingGradCovarianceHyperparameters<SquareExponentialSingleLength> >("Square Exponential Single Length", 2, epsilon_square_exponential_hyperparameters, 4.0e-3, 4.0e-3, 5.0e-15);
     if (current_errors != 0) {
       OL_PARTIAL_FAILURE_PRINTF("pinging sqexp covariance single length hyperparameters failed with %d errors\n", current_errors);
     }

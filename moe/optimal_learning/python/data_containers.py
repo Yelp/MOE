@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Data containers convenient for/used to interact with optimal_learning.EPI.src.python members."""
+"""Data containers convenient for/used to interact with optimal_learning.python members."""
 import collections
 import pprint
 
@@ -37,11 +37,19 @@ class SamplePoint(_BaseSamplePoint):
         if noise_variance >= 0.0 and numpy.isfinite(noise_variance):
             return super(SamplePoint, cls).__new__(cls, point, value, noise_variance)
         else:
-            raise ValueError('noise_variance = %s must be positive and finite!' % noise_variance)
+            raise ValueError('noise_variance = {0} must be positive and finite!'.format(noise_variance))
 
     def __str__(self):
         """Pretty print this object as a dict."""
         return pprint.pformat(dict(self._asdict()))
+
+    def json_payload(self):
+        """Convert the sample_point into a dict to be consumed by json for a REST request."""
+        return {
+                'point': self.point,
+                'value': self.value,
+                'value_var': self.noise_variance,
+                }
 
     def validate(self, dim=None):
         """Check this SamplePoint passes basic validity checks: dimension is expected, all values are finite.
@@ -54,15 +62,15 @@ class SamplePoint(_BaseSamplePoint):
         """
         # check that dim of points matches specified dimension
         if dim is not None and len(self.point) != dim:
-            raise ValueError('Input dim = %d and point dimension %d do not match!' % (dim, len(self.point)))
+            raise ValueError('Input dim = {0:d} and point dimension {1:d} do not match!'.format(dim, len(self.point)))
 
         # check that all values are finite
         if not numpy.isfinite(self.point).all():
-            raise ValueError('point = %s contains non-finite values!' % self.point)
+            raise ValueError('point = {0} contains non-finite values!'.format(self.point))
         if not numpy.isfinite(self.value):
-            raise ValueError('value = %s is non-finite!' % self.value)
+            raise ValueError('value = {0} is non-finite!'.format(self.value))
         if not numpy.isfinite(self.noise_variance) or self.noise_variance < 0.0:
-            raise ValueError('value = %s is non-finite or negative!' % self.noise_variance)
+            raise ValueError('value = {0} is non-finite or negative!'.format(self.noise_variance))
 
 
 class HistoricalData(object):
@@ -99,7 +107,7 @@ class HistoricalData(object):
 
     __slots__ = ('_dim', '_points_sampled', '_points_sampled_value', '_points_sampled_noise_variance')
 
-    def __init__(self, dim, sample_points=[], validate=False):
+    def __init__(self, dim, sample_points=None, validate=False):
         """Create a HistoricalData object tracking the state of an experiment (already-sampled points, values, and noise).
 
         :param dim: number of spatial dimensions; must line up with len(sample_points[0]) if sample_points is empty
@@ -110,6 +118,9 @@ class HistoricalData(object):
         :type validate: boolean
 
         """
+        if sample_points is None:
+            sample_points = []
+
         num_sampled = len(sample_points)
         self._dim = dim
         if validate:
@@ -143,6 +154,17 @@ class HistoricalData(object):
             out_string += repr(self._points_sampled_noise_variance)
             return out_string
 
+    def json_payload(self):
+        """Construct a json serializeable and MOE REST recognizeable dictionary of the historical data."""
+        json_points_sampled = []
+        for point in self.to_list_of_sample_points():
+            json_points_sampled.append({
+                    'point': point.point.tolist(),  # json needs the numpy array to be a list
+                    'value': point.value,
+                    'value_var': point.noise_variance,
+                    })
+        return {'points_sampled': json_points_sampled}
+
     @staticmethod
     def validate_sample_points(dim, sample_points):
         """Check that sample_points passes basic validity checks: dimension is the same, all values are finite.
@@ -157,7 +179,7 @@ class HistoricalData(object):
         """
         num_sampled = len(sample_points)
         if dim <= 0:
-            raise ValueError('Input dim = %d is non-positive.' % dim)
+            raise ValueError('Input dim = {0:d} is non-positive.'.format(dim))
 
         if num_sampled > 0:
             for sample_point in sample_points:
@@ -180,12 +202,11 @@ class HistoricalData(object):
 
         """
         if dim <= 0:
-            raise ValueError('Input dim = %d is non-positive.' % dim)
+            raise ValueError('Input dim = {0:d} is non-positive.'.format(dim))
 
         # Check that all array leading dimensions are the same
         if points_sampled.shape[0] != points_sampled_value.size or points_sampled.shape[0] != points_sampled_noise_variance.size:
-            raise ValueError('Input arrays do not have the same leading dimension: (points_sampled, value, noise) = (%d, %d, %d)' %
-                             (points_sampled.shape[0], points_sampled_value.size, points_sampled_noise_variance.size))
+            raise ValueError('Input arrays do not have the same leading dimension: (points_sampled, value, noise) = ({0:d}, {1:d}, {2:d})'.format(points_sampled.shape[0], points_sampled_value.size, points_sampled_noise_variance.size))
 
         if points_sampled.shape[0] > 0:
             for i in xrange(points_sampled.shape[0]):

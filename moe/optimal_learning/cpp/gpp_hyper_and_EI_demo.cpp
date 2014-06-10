@@ -1,5 +1,6 @@
-// gpp_hyper_and_EI_demo.cpp
-/*
+/*!
+  \file gpp_hyper_and_EI_demo.cpp
+  \rst
   This demo combines gpp_hyperparameter_optimization_demo.cpp and gpp_expected_improvement_demo.cpp.  If you have read
   and understood those, then this demo should be very straightforward insofar as it is currently almost a direct copy-paste.
 
@@ -8,18 +9,20 @@
   ongoing experiments.
 
   The basic layout is:
-  1) Set up input data sizes
-  2) Generate random hyperparameters
-  3) Generate (random) set of sampled point locations, noise variances
-  4) Use a randomly constructed (from inputs in steps 1-3) Gaussian Process (generator) to generate imaginary objective function values
-  5) Optimize hyperparameters on the constructed function values
-  6) Select desired concurrent experiment locations (points_to_sample)
-  7) Construct Gaussian Process (model) to model the training data "world," using the optimized hyperparameters
-  8) Optimize Expected Improvement to decide what point we would sample next
-     a) Do this once using the optimized hyperparameters
-     b) And again using wrong hyperparameters to emulate a human not knowing how to pick (but drawing from a GP with the same state).
+
+  1. Set up input data sizes
+  2. Generate random hyperparameters
+  3. Generate (random) set of sampled point locations, noise variances
+  4. Use a randomly constructed (from inputs in steps 1-3) Gaussian Process (generator) to generate imaginary objective function values
+  5. Optimize hyperparameters on the constructed function values
+  6. Select desired concurrent experiment locations (points_being_sampled)
+  7. Construct Gaussian Process (model) to model the training data "world," using the optimized hyperparameters
+  8. Optimize Expected Improvement to decide what point we would sample next
+
+     a. Do this once using the optimized hyperparameters
+     b. And again using wrong hyperparameters to emulate a human not knowing how to pick (but drawing from a GP with the same state).
         To do this, we build another GP (wrong_hyper) using the wrong hyperparameters but the same training data as the model gp
-     c) Compare resulting function values
+     c. Compare resulting function values
 
   Steps 1-4 happen in both other demos.  Step 5 is the heart of gpp_hyperparameter_optimization_demo.cpp and steps 6-7 are
   the heart of gpp_expected_improvement_demo.cpp.
@@ -27,7 +30,7 @@
   Please read and understand the file comments for gpp_expected_improvement_demo.cpp (first) and
   gpp_hyperparameter_optimization_demo.cpp (second) before going through this demo.  The comments are a lot sparser here
   than in the aforementioned two files to avoid redundancy.
-*/
+\endrst*/
 
 #include <cstdio>
 
@@ -39,6 +42,7 @@
 #include "gpp_common.hpp"
 #include "gpp_covariance.hpp"
 #include "gpp_domain.hpp"
+#include "gpp_logging.hpp"
 #include "gpp_math.hpp"
 #include "gpp_model_selection_and_hyperparameter_optimization.hpp"
 #include "gpp_optimization_parameters.hpp"
@@ -56,8 +60,11 @@ int main() {
   // the "spatial" dimension, aka the number of independent (experiment) parameters
   static const int dim = 3;  // > 0
 
-  // number of concurrent samples running alongside the optimization
-  static const int num_to_sample = 2;  // >= 0
+  // number of points to optimize simultaneously (for simult experiments); "q" in q,p-EI
+  static const int num_to_sample = 1;  // >= 1
+
+  // number of concurrent samples running alongside the optimization; "p" in q,p-EI
+  static const int num_being_sampled = 2;  // >= 0
 
   // number of points that we have already sampled; i.e., size of the training set
   static const int num_sampled = 10;  // >= 0
@@ -149,11 +156,11 @@ int main() {
   GaussianProcess gp_model(covariance_opt, points_sampled.data(), points_sampled_value.data(), noise_variance.data(), dim, num_sampled);
 
   // remaining inputs to EI optimization
-  // just an arbitrary point set for when num_to_sample = 2, as in the default setting for this demo
-  std::vector<double> points_to_sample(num_to_sample*dim);
-  if (num_to_sample == 2) {
-    points_to_sample[0] = 0.3; points_to_sample[1] = 2.7; points_to_sample[2] = 2.2;
-    points_to_sample[3] = -0.2; points_to_sample[4] = 0.6; points_to_sample[5] = 1.9;
+  // just an arbitrary point set for when num_being_sampled = 2, as in the default setting for this demo
+  std::vector<double> points_being_sampled(num_being_sampled*dim);
+  if (num_being_sampled == 2) {
+    points_being_sampled[0] = 0.3; points_being_sampled[1] = 2.7; points_being_sampled[2] = 2.2;
+    points_being_sampled[3] = -0.2; points_being_sampled[4] = 0.6; points_being_sampled[5] = 1.9;
   }
 
   // multithreading
@@ -186,7 +193,7 @@ int main() {
   {  // optimize EI using a model with the optimized hyperparameters
     printf(OL_ANSI_COLOR_CYAN "OPTIMIZING EXPECTED IMPROVEMENT... (optimized hyperparameters)\n" OL_ANSI_COLOR_RESET);
     bool found_flag = false;
-    ComputeOptimalPointToSampleWithRandomStarts(gp_model, gd_params, domain, points_to_sample.data(), num_to_sample, best_so_far, max_int_steps, max_num_threads, &found_flag, &uniform_generator, normal_rng_vec.data(), next_point_winner.data());
+    ComputeOptimalPointsToSampleWithRandomStarts(gp_model, gd_params, domain, points_being_sampled.data(), num_to_sample, num_being_sampled, best_so_far, max_int_steps, max_num_threads, &found_flag, &uniform_generator, normal_rng_vec.data(), next_point_winner.data());
     printf(OL_ANSI_COLOR_CYAN "EI OPTIMIZATION FINISHED (optimized hyperparameters). Success status: %s\n" OL_ANSI_COLOR_RESET, found_flag ? "True" : "False");
     printf("Next best sample point according to EI (opt hyper):\n");
     PrintMatrix(next_point_winner.data(), 1, dim);
@@ -212,7 +219,7 @@ int main() {
     GaussianProcess gp_wrong_hyper(covariance_wrong, points_sampled.data(), points_sampled_value.data(), noise_variance.data(), dim, num_sampled);
 
     bool found_flag = false;
-    ComputeOptimalPointToSampleWithRandomStarts(gp_wrong_hyper, gd_params, domain, points_to_sample.data(), num_to_sample, best_so_far, max_int_steps, max_num_threads, &found_flag, &uniform_generator, normal_rng_vec.data(), next_point_winner.data());
+    ComputeOptimalPointsToSampleWithRandomStarts(gp_wrong_hyper, gd_params, domain, points_being_sampled.data(), num_to_sample, num_being_sampled, best_so_far, max_int_steps, max_num_threads, &found_flag, &uniform_generator, normal_rng_vec.data(), next_point_winner.data());
     printf(OL_ANSI_COLOR_CYAN "EI OPTIMIZATION FINISHED (wrong hyperparameters). Success status: %s\n" OL_ANSI_COLOR_RESET, found_flag ? "True" : "False");
     printf("Next best sample point according to EI (wrong hyper):\n");
     PrintMatrix(next_point_winner.data(), 1, dim);
