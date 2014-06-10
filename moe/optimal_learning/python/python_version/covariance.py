@@ -153,7 +153,7 @@ class SquareExponential(CovarianceInterface):
     def hyperparameter_hessian_covariance(self, point_one, point_two):
         r"""Compute the hessian of self.covariance(point_one, point_two) with respect to its hyperparameters.
 
-        TODO(eliu): implement Hessians in Python (GH-57).
+        TODO(GH-57): Implement Hessians in Python.
 
         """
         raise NotImplementedError("Python implementation does not support computing the hessian covariance wrt hyperparameters.")

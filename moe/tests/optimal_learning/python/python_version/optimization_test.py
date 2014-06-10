@@ -150,7 +150,7 @@ class GradientDescentOptimizerTest(OptimalLearningTestCase):
     \* This is not much of a test. The problem is convex and isotropic so GD will take a more or less straight
     path to the maxima. Averaging can only reduce the accuracy of the solve.
 
-    TODO(eliu): build a simple stochastic objective and test the stochastic component fully.
+    TODO(GH-179): Build a simple stochastic objective and test the stochastic component fully.
 
     """
 

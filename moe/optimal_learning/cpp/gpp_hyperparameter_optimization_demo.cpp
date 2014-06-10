@@ -192,7 +192,6 @@ int main() {
   // norm_gradient_likelihood <= 1.0e-13 in NewtonHyperparameterOptimization() in gpp_model_selection...cpp
   // So you may need to relax this to 1.0e-10 or something so that we aren't just spinning wheels at almost-converged but
   // unable to actually move anywhere.
-  // TOOD(eliu): add stop condition as an argument
 
   printf("Result of newton:\n");
   PrintMatrix(new_newton_hyperparameters.data(), 1, covariance_original.GetNumberOfHyperparameters());

@@ -497,7 +497,7 @@ OL_WARN_UNUSED_RESULT int HyperparameterLikelihoodOptimizationTestCore(LogLikeli
     5. Rerun optimization once more starting from the optimized values: VERIFY that no change occurs (within tolerance).  Set very large time_factor for this check
     6. Verify that the log marginal likelihood after optimization is better than the likelihood before optimization
     7. Verify that the gradient is below newton tolerance.
-    8. TODO(eliu): Verify that the eigenvalues of the Hessian are all negative (=> maxima) (TODO(eliu): #49119)
+    8. TODO(GH-121): Verify that the eigenvalues of the Hessian are all negative (=> maxima)
 \endrst*/
 template <typename LogLikelihoodEvaluator, typename CovarianceClass>
 OL_WARN_UNUSED_RESULT int HyperparameterLikelihoodNewtonOptimizationTestCore(LogLikelihoodTypes OL_UNUSED(objective_mode)) {

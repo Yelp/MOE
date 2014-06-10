@@ -199,7 +199,7 @@ class GpNextPointsPrettyView(OptimizableGpPrettyView):
                 num_mc_iterations=num_mc_iterations,
                 )
 
-        # TODO(eliu): (GH-89) Make the optimal_learning library handle this case 'organically' with
+        # TODO(GH-89): Make the optimal_learning library handle this case 'organically' with
         # reasonable default behavior and remove hacks like this one.
         if gaussian_process.num_sampled == 0:
             # If there is no initial data we bootstrap with random points

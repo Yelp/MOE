@@ -11,8 +11,10 @@
      b. LEAVE ONE OUT CROSS VALIDATION (LOO-CV)
 
   4. HYPERPARAMETER OPTIMIZATION OF LOG LIKELIHOOD
+  5. IMPLEMENTATION NOTES
 
   **1. FILE OVERVIEW**
+
   As a preface, you should read gpp_math.hpp's comments first (if not also gpp_math.cpp) to get an overview
   of Gaussian Processes (GPs) and how we are using them (Expected Improvement, EI).
 
@@ -145,6 +147,7 @@
   Again, we can maximize this quanitity over hyperparameters to help us choose the "right" set for the GP.
 
   **4. HYPERPARAMETER OPTIMIZATION OF LOG LIKELIHOOD**
+
   Now that we have discussed the Log Marginal Likelihood and Leave One Out Cross Validation log pseudo-likelihood measures
   of model quality, what do we do with them?  How do they help us choose hyperparameters?
 
@@ -164,6 +167,35 @@
   solution (longer length scales, higher intrinsic noise).  There are even cases where no optima (to machine precision)
   exist or cases where solutions lie on (lower-dimensional) manifold(s) (e.g., locally the likelihood is (nearly) independent
   of one or more hyperparameters).
+
+  **5. IMPLEMENTATION NOTES**
+
+  a. This file has a few primary endpoints for model selection (aka hyperparameter optimization):
+
+     i. LatinHypercubeSearchHyperparameterOptimization<>():
+
+        Takes in a ``log_likelihood_evaluator`` describing the prior, covariance, domain, config, etc.;
+        searches over a set of (random) hyperparameters and outputs the set producing the best model fit.
+
+     ii. MultistartGradientDescentHyperparameterOptimization<>():
+
+         Takes in a ``log_likelihood_evaluator`` describing the prior, covariance, domain, config, etc.;
+         searches for the best hyperparameters (of covariance) using multiple gradient descent runs.
+
+         Single start version available in: RestartedGradientDescentHyperparameterOptimization<>().
+
+     iii. MultistartNewtonHyperparameterOptimization<>() (Recommended):
+
+          Takes in a ``log_likelihood_evaluator`` describing the prior, covariance, domain, config, etc.;
+          searches for the best hyperparameters (of covariance) using multiple Newton runs.
+
+          Single start version available in: NewtonHyperparameterOptimization<>().
+
+     .. NOTE::
+         See ``gpp_model_selection_and_hyperparameter_optimization.cpp``'s header comments for more detailed implementation notes.
+
+         There are also several other functions with external linkage in this header; these
+         are provided primarily to ease testing and to permit lower level access from python.
 \endrst*/
 
 #ifndef MOE_OPTIMAL_LEARNING_CPP_GPP_MODEL_SELECTION_AND_HYPERPARAMETER_OPTIMIZATION_HPP_

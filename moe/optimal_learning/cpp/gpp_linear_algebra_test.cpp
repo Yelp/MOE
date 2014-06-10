@@ -348,12 +348,52 @@ OL_WARN_UNUSED_RESULT int TestCholesky() {
   3. Construct RHS by doing ``A*x``.
   4. Solve ``Ax = b`` using backsolve and direct-inverse; check the size of ``\|b - Ax\|``.
 
-  TODO: add a small (well-conditioned) example with analytic solution
-
   \return
     number of test cases where the solver error is too large
 \endrst*/
 OL_WARN_UNUSED_RESULT int TestSPDLinearSolvers() {
+  int total_errors = 0;
+
+  // simple/small case where numerical factors are not present.
+  // taken from: http://en.wikipedia.org/wiki/Cholesky_decomposition#Example
+  {
+    constexpr int size = 3;
+    std::vector<double> matrix =
+        {  4.0,   12.0, -16.0,
+          12.0,   37.0, -43.0,
+         -16.0,  -43.0,  98.0};
+
+    const std::vector<double> cholesky_factor_L_truth =
+        { 2.0, 6.0, -8.0,
+          0.0, 1.0, 5.0,
+          0.0, 0.0, 3.0};
+    std::vector<double> rhs = {-20.0, -43.0, 192.0};
+    std::vector<double> solution_truth = {1.0, 2.0, 3.0};
+
+    int local_errors = 0;
+    // check factorization is correct; only check lower-triangle
+    ComputeCholeskyFactorL(size, matrix.data());
+    for (int i = 0; i < size; ++i) {
+      for (int j = 0; j < size; ++j) {
+        if (j >= i) {
+          if (!CheckDoubleWithinRelative(matrix[i*size + j], cholesky_factor_L_truth[i*size + j], 0.0)) {
+            ++local_errors;
+          }
+        }
+      }
+    }
+
+    // check the solve is correct
+    CholeskyFactorLMatrixVectorSolve(matrix.data(), size, rhs.data());
+    for (int i = 0; i < size; ++i) {
+      if (!CheckDoubleWithinRelative(rhs[i], solution_truth[i], 0.0)) {
+        ++local_errors;
+      }
+    }
+
+    total_errors += local_errors;
+  }
+
   const int num_tests = 10;
   const int num_test_sizes = 3;
   const int sizes[num_test_sizes] = {5, 11, 20};
@@ -370,7 +410,6 @@ OL_WARN_UNUSED_RESULT int TestSPDLinearSolvers() {
         {5.0e-13, 1.0e-8, 1.0e1},   // moler
         {5.0e-10, 5.0e-6, 1.0e2}    // random
       };
-  int total_errors = 0;
 
   UniformRandomGenerator uniform_generator(34187);
   // In each iteration, we form some an ill-conditioned SPD matrix.  We are using

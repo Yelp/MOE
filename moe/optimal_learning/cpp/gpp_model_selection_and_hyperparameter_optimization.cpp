@@ -21,6 +21,7 @@
   3. CODE HIERARCHY
 
   **1. FILE OVERVIEW**
+
   As a preface, if you are not already familiar with GPs and their implementation, you should read the file comments for
   gpp_math.hpp/cpp first.  If you are unfamiliar with the concept of model selection or optimization methods, please read
   the file comments for gpp_model_selection_and_hyperparameter_optimization.hpp first.
@@ -186,14 +187,45 @@
 
   **3. CODE HIERARCHY**
 
-  TODO(eliu): format this more like the other files' code hierarchy/call-tree sections (e.g., gpp_math, gpp_optimization)
+  There are currently several top-level entry points for model selection (defined in the hpp) including
+  'dumb' search, gradient descent, and Newton:
 
-  There are three top-level entry points for hyperparameter optimization, one for gradient descent, one for Newton,
-  and one for 'dumb' search.  These are defined in the header.
+  * LatinHypercubeSearchHyperparameterOptimization:
 
-  * MultistartGradientDescentHyperparameterOptimization<LogLikelihoodEvaluator>() (mutistarted, restarted gradient descent)
-  * MultistartNewtonHyperparameterOptimization<LogLikelihoodEvaluator>()  (mutistarted [modified] Newton's method)
-  * LatinHypercubeSearchHyperparameterOptimization<LogLikelihoodEvaluator>() (evaluate objective at random points)
+    * Estimates the best model fit with a 'dumb' search over hyperparameters
+    * Selects random guesses based on latin hypercube sampling
+    * This calls:
+
+      EvaluateLogLikelihoodAtPointList:
+
+      * Evaluates the selected log likelihood measure at each set of hyperparameters
+      * Multithreaded over starting locations
+      * This calls:
+
+        MultistartOptimizer<...>::MultistartOptimize(...) for multistarting (see gpp_optimization.hpp)
+        with the NullOptimizer
+
+  * MultistartGradientDescentHyperparameterOptimization:
+
+    * Finds the best model by optimizing hyperparmeters to find maxima of log likelihood metrics
+    * Selects random starting locations based on latin hypercube sampling
+    * Multithreaded over starting locations
+    * Optimizes with restarted gradient descent; collects results and updates the solution as new optima are found
+    * This calls:
+
+      MultistartOptimizer<...>::MultistartOptimize(...) for multistarting (see gpp_optimization.hpp) together with
+      GradientDescentOptimizer::Optimize<ObjectiveFunctionEvaluator, Domain>() (see gpp_optimization.hpp)
+
+  * MultistartNewtonHyperparameterOptimization: (Recommended)
+
+    * Finds the best model by optimizing hyperparmeters to find maxima of log likelihood metrics
+    * Selects random starting locations based on latin hypercube sampling
+    * Multithreaded over starting locations
+    * Optimizes with (modified) Newton's Method; collects results and updates the solution as new optima are found
+    * This calls:
+
+      MultistartOptimizer<...>::MultistartOptimize(...) for multistarting (see gpp_optimization.hpp) together with
+      NewtonOptimizer::Optimize<ObjectiveFunctionEvaluator, Domain>() (see gpp_optimization.hpp)
 
   At the moment, we have two choices for the template parameter LogLikelihoodEvaluator: LML and LOO-CV.
   Each of these make additional lower level calls to gpp_linear_algebra routines and gpp_covariance routines.  The
@@ -201,6 +233,7 @@
   will not be repeated here.
 
   * LogMarginalLikelihoodEvaluator:
+
     At the bottom level, LogMarginalLikelihoodEvaluator contains member functions for computing the LML, its gradient
     wrt hyperparameters (of covariance), and its hessian wrt hyperparameters.  Its data members are the GP model
     inputs (sampled points, function values at sampled points, noise).  It does not know what a covariance is since
@@ -209,7 +242,11 @@
     Its member functions require a LogMarginalLikelihoodState object which is where the (stateful) covariance is kept, along
     with derived quantities that are a function of covariance and model inputs, and various temporaries.
 
+    Computations optionally use a faster implementation using explicit matrix inverses; this is poorly conditioned
+    but several times faster.
+
   * LeaveOneOutLogLikelihoodEvaluator:
+
     This class contains member fucntions for computing the LOO-CV measure.  Its structure is essentially the same as
     LogMarginalLikelihoodEvaluator.  Its members require LeaveOneOutLogLikelihoodState, just as before.
 
@@ -461,13 +498,10 @@ void LogMarginalLikelihoodEvaluator::ComputeGradLogLikelihood(LogMarginalLikelih
   SPDMatrixInverse(log_likelihood_state->K_chol.data(), num_sampled_, K_inv.data());
 #endif
 
-  // TODO(eliu): only compute elements that are part of the trace instead of complete matrix products
-  // (ticket: 44765)
-
-  // TODO(eliu): is it more stable to compute tr(\alpha\alpha^T dK/d\theta) - tr( K \ dK/d\theta)
-  //       OR tr((\alpha\alpha^T - K^-1) dK/d\theta) (UNLIKELY...)
-  //       OR tr(\alpha\alpha^T dK/d\theta - K \ dK/d\theta)
-  // (ticket: 44764)
+  // TODO(GH-156): is it more stable to compute:
+  //  tr(\alpha\alpha^T dK/d\theta) - tr( K \ dK/d\theta)
+  //  OR tr((\alpha\alpha^T - K^-1) dK/d\theta) (UNLIKELY...)
+  //  OR tr(\alpha\alpha^T dK/d\theta - K \ dK/d\theta)
 
   BuildHyperparameterGradCovarianceMatrix(log_likelihood_state);
 
@@ -497,7 +531,7 @@ void LogMarginalLikelihoodEvaluator::ComputeGradLogLikelihood(LogMarginalLikelih
     grad_log_marginal[i_hyper] -= 0.5*MatrixTrace(grad_hyperparameter_cov_matrix_ptr, num_sampled_);
 #endif
 
-    grad_hyperparameter_cov_matrix_ptr += num_sampled_*num_sampled_;
+    grad_hyperparameter_cov_matrix_ptr += Square(num_sampled_);
   }
 }
 
@@ -523,8 +557,6 @@ void LogMarginalLikelihoodEvaluator::ComputeHessianLogLikelihood(LogMarginalLike
   SPDMatrixInverse(log_likelihood_state->K_chol.data(), num_sampled_, K_inv.data());
 #endif
 
-  // TODO(eliu): only compute elements that are part of the trace instead of complete matrix products
-  // (ticket: 44765)
   const int num_hyperparameters = log_likelihood_state->num_hyperparameters;
   std::vector<double> hessian_hyperparameter_cov_matrix(num_sampled_*num_sampled_*Square(num_hyperparameters));
   BuildHyperparameterGradCovarianceMatrix(log_likelihood_state);
@@ -564,8 +596,8 @@ void LogMarginalLikelihoodEvaluator::ComputeHessianLogLikelihood(LogMarginalLike
       // view this as -\beta_i * K^-1 * \beta_j, where \beta_i = \pderiv{K}{\theta_j} * \alpha is precomputed in grad_K_K_inv_y
       // note: since K^-1 is symmetric (SPD in fact), we equivalently compute -\beta_j * K^-1 * \beta_i
 
-      // TODO(eliu): #49109 the first step computes K^-1 * \beta_i, which is constant over j_hyper and should be lifted out of this loop
-      // this is less relevant for problems with few spatial dimensions though
+      // TODO(GH-185): the first step computes K^-1 * \beta_i, which is constant over j_hyper and should be lifted out
+      // of this loop. OR this whole block computing -\beta_j * K^-1 * \beta_i should be split into a separate loop over j_hyper.
       std::copy(grad_K_K_inv_y.data() + i_hyper*num_sampled_, grad_K_K_inv_y.data() + (i_hyper+1)*num_sampled_, log_likelihood_state->temp_vec.data());
       CholeskyFactorLMatrixVectorSolve(log_likelihood_state->K_chol.data(), num_sampled_, log_likelihood_state->temp_vec.data());
       hessian_log_marginal_ptr[j_hyper] = -DotProduct(grad_K_K_inv_y.data() + j_hyper*num_sampled_, log_likelihood_state->temp_vec.data(), num_sampled_);
@@ -636,6 +668,9 @@ OL_NONNULL_POINTERS void LeaveOneOutCoreAccurate(const CovarianceInterface& cova
   std::copy(noise_variance, noise_variance + index, noise_variance_loo.begin());
   std::copy(noise_variance + (index+1), noise_variance + num_sampled, noise_variance_loo.begin() + index);
 
+  // TODO(GH-191): Update the GP by removing one point. Each GP build is O(N_{sampled}^3) and we do it
+  // N_{sampled} times. This would instead be N applications of an O(N^2) transformation to the covariance matrix,
+  // available through LeaveOneOutLogLikelihoodState.
   GaussianProcess gaussian_process(covariance, points_sampled_loo.data(), points_sampled_value_loo.data(), noise_variance_loo.data(), dim, num_sampled - 1);
   int num_derivatives = 0;
   GaussianProcess::StateType points_to_sample_state(gaussian_process, point_to_sample.data(), num_to_sample, num_derivatives);
@@ -762,9 +797,7 @@ void LeaveOneOutLogLikelihoodEvaluator::ComputeGradLogLikelihood(LeaveOneOutLogL
     // Z_alpha := K^-1 * grad_hyperparameter_cov_matrix * alpha = Z * alpha = Z * K^-1 * y
     GeneralMatrixVectorMultiply(grad_hyperparameter_cov_matrix_ptr, 'N', log_likelihood_state->K_inv_y.data(), 1.0, 0.0, num_sampled_, num_sampled_, num_sampled_, log_likelihood_state->Z_alpha.data());
 
-    // TODO(eliu): investigate whether it is necessary to form this product explicitly, since we only need the diagonal
-    // entries of [Z * K^-1].
-    // (ticket: 44766)
+    // TODO(GH-180): Consider using the explicit inverse so that we only have to form the diagonal of Z * K^-1 here.
 
     // Z_K_inv := Z^T
     MatrixTranspose(grad_hyperparameter_cov_matrix_ptr, num_sampled_, num_sampled_, log_likelihood_state->Z_K_inv.data());

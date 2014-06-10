@@ -14,7 +14,7 @@ cmake_minimum_required(VERSION 2.8.9)
 # 2.8.9: CMAKE_POSITION_INDEPENDENT_CODE variable (don't have to think about platform-independent way to add -fPIC everywhere)
 #        If unavailable, you can add -fPIC (or equivalent) to CMAKE_CXX_FLAGS and remove CMAKE_POSITION_INDEPENDENT_CODE.
 #
-# TODO(eliu): (#66522) Require version 2.8.12. Instead of:
+# TODO(GH-120): Require version 2.8.12. Instead of:
 # set_target_properties(
 #   OPTIMAL_LEARNING_CORE_BUNDLE PROPERTIES
 #   COMPILE_FLAGS "${EXTRA_COMPILE_FLAGS}"
@@ -226,7 +226,7 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 # Define some extra warnings (not enabled by -Wall -Wextra) for C/C++ that are nonetheless useful for guarding
 # against potential errors, bad style, etc.
 # Note: -Weffc++ is a useful one to check periodically, but its false positive rate is annoying.
-# TODO(eliu): with later versions of gcc, add: -Wuseless-cast -Wdate-time -Wfloat-conversion
+# TODO(GH-151): With later versions of gcc, add: -Wuseless-cast -Wdate-time -Wfloat-conversion
 set(EXTRA_C_WARNINGS " -Wundef -Wshadow -Wswitch-default -Wformat-nonliteral -Wpointer-arith -Wcast-align -Wcast-qual -Wwrite-strings -Wlogical-op")
 set(EXTRA_C++_WARNINGS " -Wold-style-cast -Wnon-virtual-dtor -Wctor-dtor-privacy -Woverloaded-virtual -Wsign-promo -Wzero-as-null-pointer-constant -Wnoexcept -Wstrict-null-sentinel")
 
@@ -238,7 +238,6 @@ set(EXTRA_C++_WARNINGS " -Wold-style-cast -Wnon-virtual-dtor -Wctor-dtor-privacy
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -fopenmp -Wall -Wextra ${EXTRA_C_WARNINGS} ${EXTRA_C++_WARNINGS} -fno-trapping-math -fno-signaling-nans -fno-math-errno")
 
 # O3 takes longer to compile and the code produced is at best no faster than O2 (gcc, icc).
-# TODO(eliu): make this compiler specific?
 string(REGEX REPLACE "O3" "O2" CMAKE_CXX_FLAGS_RELEASE ${CMAKE_CXX_FLAGS_RELEASE})
 
 #### Object libraries
