@@ -164,7 +164,8 @@ Multistarting is NOT GUARANTEED to find global optima.  But it can increase the 
 Currently we let the user specify the initial guesses.  In practice, this typically means a random sampling of points.
 We do not (yet) make any effort to say sample more heavily from regions where "more stuff is happening" or any
 other heuristics.
-TODO(eliu): (GH-165) Improve multistart heuristics.
+
+TODO(GH-165): Improve multistart heuristics.
 
 Finally, MultistartOptimizer::MultistartOptimize() is also used to provide 'dumb' search functionality (optimization
 by just evaluating the objective at numerous points).  For sufficiently complex problems, gradient descent, Newton, etc.
@@ -420,7 +421,7 @@ class GradientDescentOptimizer(OptimizerInterface):
         Finally, GD terminates if updates are very small.
 
         """
-        # TODO(eliu): (GH-59) Implement restarts like in the C++ code.
+        # TODO(GH-59): Implement restarts like in the C++ code.
         initial_guess = self.objective_function.get_current_point()
         x_hat = initial_guess
         x_path = numpy.empty((self.optimization_parameters.max_num_steps + 1, ) + initial_guess.shape)
@@ -443,7 +444,7 @@ class GradientDescentOptimizer(OptimizerInterface):
             x_path[step_counter, ...] = fixed_step + x_path[step_counter - 1, ...]
 
             step_counter += 1
-            # TODO(eliu): (GH-59) tolerance control: if step is too small, stop. This goes at the loop's end, AFTER incrementing step_counter!
+            # TODO(GH-59): tolerance control: if step is too small, stop. This goes at the loop's end, AFTER incrementing step_counter!
 
         # Polyak-Ruppert averaging: postprocessing step where we replace x_n with:
         # \overbar{x} = \frac{1}{n - n_0} \sum_{t=n_0 + 1}^n x_t
@@ -507,7 +508,7 @@ class MultistartOptimizer(OptimizerInterface):
         :rtype: tuple: (array of float64 with shape (self.optimizer.dim), array of float64 with shape (self.num_multistarts))
 
         """
-        # TODO(eliu): (GH-59) Pass the best point, fcn value, etc. in thru an IOContainer-like structure.
+        # TODO(GH-59): Pass the best point, fcn value, etc. in thru an IOContainer-like structure.
         if random_starts is None:
             random_starts = self.optimizer.domain.generate_uniform_random_points_in_domain(self.num_multistarts, None)
 

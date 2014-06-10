@@ -374,7 +374,7 @@ OL_CONST_FUNCTION OL_WARN_UNUSED_RESULT double SecondOrderCenteredFiniteDifferen
   This cannot detect small amounts of noise in the gradient either (e.g., ``f' = cos(x) + 1.0e-15``). There is no
   way to tell whether that is noise due to numerical error or noise due to incorrectness.
 
-  TODO(eliu): (GH-162) thresholds are an imperfect tool for this task. Loss of precision is not a binary event; you are not
+  TODO(GH-162): thresholds are an imperfect tool for this task. Loss of precision is not a binary event; you are not
   certain at ``2^{-52}`` but uncertain at ``2^{-51}``. It might be better to estimate the range over which we go from
   meaningful loss of precision to complete noise and have a linear ramp for the tolerance over that space. Maybe
   it should be done in log-space?

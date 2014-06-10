@@ -498,7 +498,7 @@ void LogMarginalLikelihoodEvaluator::ComputeGradLogLikelihood(LogMarginalLikelih
   SPDMatrixInverse(log_likelihood_state->K_chol.data(), num_sampled_, K_inv.data());
 #endif
 
-  // TODO(eliu): (GH-156) is it more stable to compute:
+  // TODO(GH-156): is it more stable to compute:
   //  tr(\alpha\alpha^T dK/d\theta) - tr( K \ dK/d\theta)
   //  OR tr((\alpha\alpha^T - K^-1) dK/d\theta) (UNLIKELY...)
   //  OR tr(\alpha\alpha^T dK/d\theta - K \ dK/d\theta)
@@ -596,7 +596,7 @@ void LogMarginalLikelihoodEvaluator::ComputeHessianLogLikelihood(LogMarginalLike
       // view this as -\beta_i * K^-1 * \beta_j, where \beta_i = \pderiv{K}{\theta_j} * \alpha is precomputed in grad_K_K_inv_y
       // note: since K^-1 is symmetric (SPD in fact), we equivalently compute -\beta_j * K^-1 * \beta_i
 
-      // TODO(eliu): (GH-185) the first step computes K^-1 * \beta_i, which is constant over j_hyper and should be lifted out
+      // TODO(GH-185): the first step computes K^-1 * \beta_i, which is constant over j_hyper and should be lifted out
       // of this loop. OR this whole block computing -\beta_j * K^-1 * \beta_i should be split into a separate loop over j_hyper.
       std::copy(grad_K_K_inv_y.data() + i_hyper*num_sampled_, grad_K_K_inv_y.data() + (i_hyper+1)*num_sampled_, log_likelihood_state->temp_vec.data());
       CholeskyFactorLMatrixVectorSolve(log_likelihood_state->K_chol.data(), num_sampled_, log_likelihood_state->temp_vec.data());
@@ -668,7 +668,7 @@ OL_NONNULL_POINTERS void LeaveOneOutCoreAccurate(const CovarianceInterface& cova
   std::copy(noise_variance, noise_variance + index, noise_variance_loo.begin());
   std::copy(noise_variance + (index+1), noise_variance + num_sampled, noise_variance_loo.begin() + index);
 
-  // TODO(eliu): (GH-191) Update the GP by removing one point. Each GP build is O(N_{sampled}^3) and we do it
+  // TODO(GH-191): Update the GP by removing one point. Each GP build is O(N_{sampled}^3) and we do it
   // N_{sampled} times. This would instead be N applications of an O(N^2) transformation to the covariance matrix,
   // available through LeaveOneOutLogLikelihoodState.
   GaussianProcess gaussian_process(covariance, points_sampled_loo.data(), points_sampled_value_loo.data(), noise_variance_loo.data(), dim, num_sampled - 1);
@@ -797,7 +797,7 @@ void LeaveOneOutLogLikelihoodEvaluator::ComputeGradLogLikelihood(LeaveOneOutLogL
     // Z_alpha := K^-1 * grad_hyperparameter_cov_matrix * alpha = Z * alpha = Z * K^-1 * y
     GeneralMatrixVectorMultiply(grad_hyperparameter_cov_matrix_ptr, 'N', log_likelihood_state->K_inv_y.data(), 1.0, 0.0, num_sampled_, num_sampled_, num_sampled_, log_likelihood_state->Z_alpha.data());
 
-    // TODO(eliu): (GH-180) Consider using the explicit inverse so that we only have to form the diagonal of Z * K^-1 here.
+    // TODO(GH-180): Consider using the explicit inverse so that we only have to form the diagonal of Z * K^-1 here.
 
     // Z_K_inv := Z^T
     MatrixTranspose(grad_hyperparameter_cov_matrix_ptr, num_sampled_, num_sampled_, log_likelihood_state->Z_K_inv.data());

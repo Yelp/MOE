@@ -9,7 +9,7 @@
 .. Note:: the Python implementation is additionally tested against the C++ (same inputs, same results for the various
   optimal_learning features) implementation (see moe/tests/optimal_learning/python/cpp_wrappers).
 
-TODO(eliu): (GH-178) in general, the Python test suite is lacking and we rely on comparison against
+TODO(GH-178): in general, the Python test suite is lacking and we rely on comparison against
 the more extensively tested C++ implementation to check the Python.
 
 """

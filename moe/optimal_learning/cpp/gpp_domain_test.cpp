@@ -8,7 +8,7 @@
   * CheckPointInDomain: specify a domain, point list, and truth values.  checks that points are/are not inside
   * GeneratePointInDomain: generates some random points, checks that they are inside the domain
   * GenerateUniformPointsInDomain: generates uniformly distributed points, checks that they are inside the domain
-    TODO(eliu): (GH-128) Test whether computed point distribution is actually uniform
+    TODO(GH-128): Test whether computed point distribution is actually uniform
   * LimitUpdate: starting from points within the domain, checks that:
 
     * updates to another point in the domain remain unchanged
@@ -309,7 +309,7 @@ OL_WARN_UNUSED_RESULT int GeneratePointInDomainTest(const DomainTestFixture& dom
 /*!\rst
   Check whether GenerateUniformPointsInDomain generates points that are inside the input domain.
 
-  TODO(eliu): (GH-128) Test whether computed point distribution is actually uniform
+  TODO(GH-128): Test whether computed point distribution is actually uniform
 
   \return
     number of test failures

@@ -89,7 +89,7 @@ class TensorProductDomain(DomainInterface):
         :rtype: array of float64 with shape (num_points, dim)
 
         """
-        # TODO(eliu): (GH-56) Allow users to pass in a random source.
+        # TODO(GH-56): Allow users to pass in a random source.
         return generate_latin_hypercube_points(num_points, self._domain_bounds)
 
     def generate_grid_points_in_domain(self, points_per_dimension, random_source=None):
@@ -105,7 +105,7 @@ class TensorProductDomain(DomainInterface):
         :return: uniform random sampling of points from the domain
 
         """
-        # TODO(eliu): (GH-56) Allow users to pass in a random source.
+        # TODO(GH-56): Allow users to pass in a random source.
         return generate_grid_points(points_per_dimension, self._domain_bounds)
 
     def compute_update_restricted_to_domain(self, max_relative_change, current_point, update_vector):
@@ -134,7 +134,7 @@ class TensorProductDomain(DomainInterface):
         :rtype: array of float64 with shape (dim)
 
         """
-        # TODO(eliu): (GH-58) Vectorize the loop over j, step.
+        # TODO(GH-58): Vectorize the loop over j, step.
         output_update = numpy.empty(self.dim)
         # Note: since all boundary planes are axis-aligned, projecting becomes very simple.
         for j, step in enumerate(update_vector):
