@@ -429,16 +429,16 @@ OL_NONNULL_POINTERS void BuildHyperparameterHessianCovarianceMatrix(const Covari
 }  // end unnamed namespace
 
 void LogMarginalLikelihoodEvaluator::BuildHyperparameterGradCovarianceMatrix(LogMarginalLikelihoodState * log_likelihood_state) const noexcept {
-  optimal_learning::BuildHyperparameterGradCovarianceMatrix(log_likelihood_state->covariance, points_sampled_.data(), dim_, num_sampled_, log_likelihood_state->grad_hyperparameter_cov_matrix.data());
+  optimal_learning::BuildHyperparameterGradCovarianceMatrix(*log_likelihood_state->covariance_ptr, points_sampled_.data(), dim_, num_sampled_, log_likelihood_state->grad_hyperparameter_cov_matrix.data());
 }
 
 void LogMarginalLikelihoodEvaluator::BuildHyperparameterHessianCovarianceMatrix(LogMarginalLikelihoodState * log_likelihood_state, double * hessian_hyperparameter_cov_matrix) const noexcept {
-  optimal_learning::BuildHyperparameterHessianCovarianceMatrix(log_likelihood_state->covariance, points_sampled_.data(), dim_, num_sampled_, hessian_hyperparameter_cov_matrix);
+  optimal_learning::BuildHyperparameterHessianCovarianceMatrix(*log_likelihood_state->covariance_ptr, points_sampled_.data(), dim_, num_sampled_, hessian_hyperparameter_cov_matrix);
 }
 
 void LogMarginalLikelihoodEvaluator::FillLogLikelihoodState(LogMarginalLikelihoodState * log_likelihood_state) const {
   // K_chol
-  optimal_learning::BuildCovarianceMatrixWithNoiseVariance(log_likelihood_state->covariance, noise_variance_.data(), points_sampled_.data(), dim_, num_sampled_, log_likelihood_state->K_chol.data());
+  optimal_learning::BuildCovarianceMatrixWithNoiseVariance(*log_likelihood_state->covariance_ptr, noise_variance_.data(), points_sampled_.data(), dim_, num_sampled_, log_likelihood_state->K_chol.data());
 
   ComputeCholeskyFactorL(num_sampled_, log_likelihood_state->K_chol.data());
 
@@ -712,12 +712,12 @@ OL_NONNULL_POINTERS void LeaveOneOutCoreWithMatrixInverse(double const * restric
 }  // end unnamed namespace
 
 void LeaveOneOutLogLikelihoodEvaluator::BuildHyperparameterGradCovarianceMatrix(LeaveOneOutLogLikelihoodState * log_likelihood_state) const noexcept {
-  optimal_learning::BuildHyperparameterGradCovarianceMatrix(log_likelihood_state->covariance, points_sampled_.data(), dim_, num_sampled_, log_likelihood_state->grad_hyperparameter_cov_matrix.data());
+  optimal_learning::BuildHyperparameterGradCovarianceMatrix(*log_likelihood_state->covariance_ptr, points_sampled_.data(), dim_, num_sampled_, log_likelihood_state->grad_hyperparameter_cov_matrix.data());
 }
 
 void LeaveOneOutLogLikelihoodEvaluator::FillLogLikelihoodState(LeaveOneOutLogLikelihoodState * log_likelihood_state) const {
   // K_chol
-  optimal_learning::BuildCovarianceMatrixWithNoiseVariance(log_likelihood_state->covariance, noise_variance_.data(), points_sampled_.data(), dim_, num_sampled_, log_likelihood_state->K_chol.data());
+  optimal_learning::BuildCovarianceMatrixWithNoiseVariance(*log_likelihood_state->covariance_ptr, noise_variance_.data(), points_sampled_.data(), dim_, num_sampled_, log_likelihood_state->K_chol.data());
   ComputeCholeskyFactorL(num_sampled_, log_likelihood_state->K_chol.data());
 
   // K_inv

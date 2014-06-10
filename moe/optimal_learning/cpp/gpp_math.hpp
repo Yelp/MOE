@@ -285,7 +285,6 @@ class GaussianProcess final {
       : dim_(dim_in),
         num_sampled_(num_sampled_in),
         covariance_ptr_(covariance_in.Clone()),
-        covariance_(*covariance_ptr_),
         points_sampled_(points_sampled_in, points_sampled_in + num_sampled_in*dim_in),
         points_sampled_value_(points_sampled_value_in, points_sampled_value_in + num_sampled_in),
         noise_variance_(noise_variance_in, noise_variance_in + num_sampled_),
@@ -324,10 +323,10 @@ class GaussianProcess final {
          For any such objects "state", call state.SetupState(...) to restore them.
 
     \param
-      :hyperparameters_new[covariance_.GetNumberOfHyperparameters]: new hyperparameter array
+      :hyperparameters_new[covariance_ptr_->GetNumberOfHyperparameters]: new hyperparameter array
   \endrst*/
   void SetCovarianceHyperparameters(double const * restrict hyperparameters_new) OL_NONNULL_POINTERS {
-    covariance_.SetHyperparameters(hyperparameters_new);
+    covariance_ptr_->SetHyperparameters(hyperparameters_new);
     RecomputeDerivedVariables();
   }
 
@@ -504,8 +503,7 @@ class GaussianProcess final {
   explicit GaussianProcess(const GaussianProcess& source)
       : dim_(source.dim_),
         num_sampled_(source.num_sampled_),
-        covariance_ptr_(source.covariance_.Clone()),
-        covariance_(*covariance_ptr_),
+        covariance_ptr_(source.covariance_ptr_->Clone()),
         points_sampled_(source.points_sampled_),
         points_sampled_value_(source.points_sampled_value_),
         noise_variance_(source.noise_variance_),
@@ -572,8 +570,6 @@ class GaussianProcess final {
   // state variables for prior
   //! covariance class (for computing covariance and its gradients)
   std::unique_ptr<CovarianceInterface> covariance_ptr_;
-  //! reference to ``*covariance_ptr_`` object for convenience
-  CovarianceInterface& covariance_;
   //! coordinates of already-sampled points, ``X``
   std::vector<double> points_sampled_;
   //! function values at points_sampled, ``y``

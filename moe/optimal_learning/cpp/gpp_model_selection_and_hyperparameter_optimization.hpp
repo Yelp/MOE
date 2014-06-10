@@ -336,7 +336,7 @@ class LogMarginalLikelihoodEvaluator final {
   /*!\rst
     Computes the (partial) derivatives of the log marginal likelihood with respect to each hyperparameter of our covariance function.
 
-    Let ``n_hyper = covariance.GetNumberOfHyperparameters();``
+    Let ``n_hyper = covariance_ptr->GetNumberOfHyperparameters();``
 
     \param
       :log_likelihood_state[1]: properly configured state oboject
@@ -436,13 +436,12 @@ struct LogMarginalLikelihoodState final {
         num_sampled(log_likelihood_eval.num_sampled()),
         num_hyperparameters(covariance_in.GetNumberOfHyperparameters()),
         covariance_ptr(covariance_in.Clone()),
-        covariance(*covariance_ptr),
         K_chol(num_sampled*num_sampled),
         K_inv_y(num_sampled),
         grad_hyperparameter_cov_matrix(num_hyperparameters*num_sampled*num_sampled),
         temp_vec(num_sampled) {
     std::vector<double> hyperparameters(num_hyperparameters);
-    covariance.GetHyperparameters(hyperparameters.data());
+    covariance_ptr->GetHyperparameters(hyperparameters.data());
     SetupState(log_likelihood_eval, hyperparameters.data());
   }
 
@@ -467,7 +466,7 @@ struct LogMarginalLikelihoodState final {
       :hyperparameters[num_hyperparameters]: covariance's hyperparameters
   \endrst*/
   void GetHyperparameters(double * restrict hyperparameters) const noexcept OL_NONNULL_POINTERS {
-    covariance.GetHyperparameters(hyperparameters);
+    covariance_ptr->GetHyperparameters(hyperparameters);
   }
 
   /*!\rst
@@ -480,7 +479,7 @@ struct LogMarginalLikelihoodState final {
   \endrst*/
   void UpdateHyperparameters(const EvaluatorType& log_likelihood_eval, double const * restrict hyperparameters) OL_NONNULL_POINTERS {
     // update hyperparameters
-    covariance.SetHyperparameters(hyperparameters);
+    covariance_ptr->SetHyperparameters(hyperparameters);
 
     // evaluate derived quantities
     log_likelihood_eval.FillLogLikelihoodState(this);
@@ -516,14 +515,12 @@ struct LogMarginalLikelihoodState final {
   const int dim;
   //! number of points in points_sampled
   int num_sampled;
-  //! number of hyperparameters of covariance; i.e., covariance.GetNumberOfHyperparameters()
+  //! number of hyperparameters of covariance; i.e., covariance_ptr->GetNumberOfHyperparameters()
   int num_hyperparameters;
 
   // state variables
   //! covariance class (for computing covariance and its gradients)
   std::unique_ptr<CovarianceInterface> covariance_ptr;
-  //! reference to covariance object for convenience
-  CovarianceInterface& covariance;
 
   // derived variables
   //! cholesky factorization of ``K``
@@ -650,7 +647,7 @@ class LeaveOneOutLogLikelihoodEvaluator final {
   /*!\rst
     Computes the (partial) derivatives of the leave-one-out cross validation log pseudo-likelihood with respect to each hyperparameter of our covariance function.
 
-    Let ``n_hyper = covariance.GetNumberOfHyperparameters();``
+    Let ``n_hyper = covariance_ptr->GetNumberOfHyperparameters();``
 
     \param
       :log_likelihood_state[1]: properly configured state oboject
@@ -729,7 +726,6 @@ struct LeaveOneOutLogLikelihoodState final {
         num_sampled(log_likelihood_eval.num_sampled()),
         num_hyperparameters(covariance_in.GetNumberOfHyperparameters()),
         covariance_ptr(covariance_in.Clone()),
-        covariance(*covariance_ptr),
         K_chol(num_sampled*num_sampled),
         K_inv(num_sampled*num_sampled),
         K_inv_y(num_sampled),
@@ -737,7 +733,7 @@ struct LeaveOneOutLogLikelihoodState final {
         Z_alpha(num_sampled),
         Z_K_inv(num_sampled*num_sampled) {
     std::vector<double> hyperparameters(num_hyperparameters);
-    covariance.GetHyperparameters(hyperparameters.data());
+    covariance_ptr->GetHyperparameters(hyperparameters.data());
     SetupState(log_likelihood_eval, hyperparameters.data());
   }
 
@@ -762,7 +758,7 @@ struct LeaveOneOutLogLikelihoodState final {
       :hyperparameters[num_hyperparameters]: covariance's hyperparameters
   \endrst*/
   void GetHyperparameters(double * restrict hyperparameters) const noexcept OL_NONNULL_POINTERS {
-    covariance.GetHyperparameters(hyperparameters);
+    covariance_ptr->GetHyperparameters(hyperparameters);
   }
 
   /*!\rst
@@ -775,7 +771,7 @@ struct LeaveOneOutLogLikelihoodState final {
   \endrst*/
   void UpdateHyperparameters(const EvaluatorType& log_likelihood_eval, double const * restrict hyperparameters) OL_NONNULL_POINTERS {
     // update hyperparameters
-    covariance.SetHyperparameters(hyperparameters);
+    covariance_ptr->SetHyperparameters(hyperparameters);
 
     // evaluate derived quantities
     log_likelihood_eval.FillLogLikelihoodState(this);
@@ -813,14 +809,12 @@ struct LeaveOneOutLogLikelihoodState final {
   const int dim;
   //! number of points in points_sampled
   int num_sampled;
-  //! number of hyperparameters of covariance; i.e., covariance.GetNumberOfHyperparameters()
+  //! number of hyperparameters of covariance; i.e., covariance_ptr->GetNumberOfHyperparameters()
   int num_hyperparameters;
 
   // state variables
   //! covariance class (for computing covariance and its gradients)
   std::unique_ptr<CovarianceInterface> covariance_ptr;
-  //! reference to covariance object for convenience
-  CovarianceInterface& covariance;
 
   // derived variables
   //! cholesky factorization of ``K``
@@ -956,12 +950,12 @@ OL_NONNULL_POINTERS void InitializeBestKnownPoint(const LogLikelihoodEvaluator& 
   Solution is guaranteed to lie within the region specified by "domain"; note that this may not be a
   true optima (i.e., the gradient may be substantially nonzero).
 
-  Let ``n_hyper = covariance.GetNumberOfHyperparameters();``
+  Let ``n_hyper = covariance_ptr->GetNumberOfHyperparameters();``
 
   \param
     :log_likelihood_evaluator: object supporting evaluation of log likelihood and its gradient
     :covariance: the CovarianceFunction object encoding assumptions about the GP's behavior on our data
-      covariance.GetCurrentHyperparameters() will be used to obtain the initial guess
+      covariance_ptr->GetCurrentHyperparameters() will be used to obtain the initial guess
     :gd_parameters: GradientDescentParameters object that describes the parameters controlling hyperparameter optimization (e.g., number
       of iterations, tolerances, learning rate)
     :domain: object specifying the domain to optimize over (see gpp_domain.hpp)
@@ -1013,7 +1007,7 @@ OL_NONNULL_POINTERS void RestartedGradientDescentHyperparameterOptimization(cons
 
   .. Note:: the domain here must be specified in LOG-10 SPACE!
 
-  Let ``n_hyper = covariance.GetNumberOfHyperparameters();``
+  Let ``n_hyper = covariance_ptr->GetNumberOfHyperparameters();``
 
   \param
     :log_likelihood_evaluator: object supporting evaluation of gradient + hessian of log likelihood

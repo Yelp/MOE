@@ -86,6 +86,19 @@ struct UniformRandomGenerator final {
     SetRandomizedSeed(seed, thread_id);
   }
 
+  /*!\rst
+    Get a reference to the RNG engine used by this class.
+
+    Not necessary for this class since ``engine`` is public but we expose this to maintain a uniform
+    interface with NormalRNG.
+
+    \return
+      reference to the underlying RNG engine
+  \endrst*/
+  EngineType& GetEngine() noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
+    return engine;
+  }
+
   EngineType::result_type last_seed() const noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
     return last_seed_;
   }
@@ -183,7 +196,7 @@ struct NormalRNG final {
   /*!\rst
     Default-constructs a NormalRNG, seeding with kDefaultSeed.
   \endrst*/
-  NormalRNG() noexcept : uniform_generator(kDefaultSeed), engine(uniform_generator.engine), normal_distribution_(0.0, 1.0), normal_random_variable_(engine, normal_distribution_) {
+  NormalRNG() noexcept : uniform_generator(kDefaultSeed), normal_distribution_(0.0, 1.0), normal_random_variable_(uniform_generator.engine, normal_distribution_) {
   }
 
   /*!\rst
@@ -193,7 +206,7 @@ struct NormalRNG final {
     \param
       :seed: new seed to set
   \endrst*/
-  explicit NormalRNG(EngineType::result_type seed) noexcept : uniform_generator(seed), engine(uniform_generator.engine), normal_distribution_(0.0, 1.0), normal_random_variable_(engine, normal_distribution_) {
+  explicit NormalRNG(EngineType::result_type seed) noexcept : uniform_generator(seed), normal_distribution_(0.0, 1.0), normal_random_variable_(uniform_generator.engine, normal_distribution_) {
     SetExplicitSeed(seed);
   }
 
@@ -205,8 +218,18 @@ struct NormalRNG final {
       :base_seed: base value for the new seed
       :thread_id: id of the thread using this object
   \endrst*/
-  NormalRNG(EngineType::result_type seed, int thread_id) noexcept : uniform_generator(seed), engine(uniform_generator.engine), normal_distribution_(0.0, 1.0), normal_random_variable_(engine, normal_distribution_) {
+  NormalRNG(EngineType::result_type seed, int thread_id) noexcept : uniform_generator(seed), normal_distribution_(0.0, 1.0), normal_random_variable_(uniform_generator.engine, normal_distribution_) {
     SetRandomizedSeed(seed, thread_id);
+  }
+
+  /*!\rst
+    Get a reference to the RNG engine used by this class.
+
+    \return
+      reference to the underlying RNG engine
+  \endrst*/
+  EngineType& GetEngine() noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
+    return uniform_generator.engine;
   }
 
   double operator()() noexcept {
@@ -279,8 +302,6 @@ struct NormalRNG final {
 
   //! The underlying generator providing uniform PRNGs for this object to transform to N(0, 1).
   UniformGeneratorType uniform_generator;
-  //! An (boost) PRNG engine that can be passed to a ``<boost/random>`` distribution, e.g., ``uniform_real<>``.
-  EngineType& engine;
 
  private:
   //! Object for ransforming from uniform to N(0, 1); may carry internal state (e.g., normal random numbers generated 2 at a time).

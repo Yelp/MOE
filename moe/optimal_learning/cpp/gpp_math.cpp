@@ -381,11 +381,11 @@ OL_NONNULL_POINTERS void BuildMixCovarianceMatrix(const CovarianceInterface& cov
 }  // end unnamed namespace
 
 void GaussianProcess::BuildCovarianceMatrixWithNoiseVariance() noexcept {
-  optimal_learning::BuildCovarianceMatrixWithNoiseVariance(covariance_, noise_variance_.data(), points_sampled_.data(), dim_, num_sampled_, K_chol_.data());
+  optimal_learning::BuildCovarianceMatrixWithNoiseVariance(*covariance_ptr_, noise_variance_.data(), points_sampled_.data(), dim_, num_sampled_, K_chol_.data());
 }
 
 void GaussianProcess::BuildMixCovarianceMatrix(double const * restrict points_to_sample, int num_to_sample, double * restrict covariance_matrix) const noexcept {
-  optimal_learning::BuildMixCovarianceMatrix(covariance_, points_sampled_.data(), points_to_sample, dim_, num_sampled_, num_to_sample, covariance_matrix);
+  optimal_learning::BuildMixCovarianceMatrix(*covariance_ptr_, points_sampled_.data(), points_to_sample, dim_, num_sampled_, num_to_sample, covariance_matrix);
 }
 
 /*!\rst
@@ -407,7 +407,7 @@ void GaussianProcess::FillPointsToSampleState(StateType * points_to_sample_state
     // also precompute C_{d,k,i} = \pderiv{Ks_{k,i}}{Xs_{d,i}}, stored in grad_K_star_
     for (int i = 0; i < points_to_sample_state->num_derivatives; ++i) {
       for (int j = 0; j < num_sampled_; ++j) {
-        covariance_.GradCovariance(points_to_sample_state->points_to_sample.data() + i*dim_, points_sampled_.data() + j*dim_, gKs_temp);
+        covariance_ptr_->GradCovariance(points_to_sample_state->points_to_sample.data() + i*dim_, points_sampled_.data() + j*dim_, gKs_temp);
         gKs_temp += dim_;
       }
     }
@@ -469,7 +469,7 @@ void GaussianProcess::ComputeVarianceOfPoints(StateType * points_to_sample_state
   const int num_to_sample = points_to_sample_state->num_to_sample;
 
   // Vars = Kss
-  BuildCovarianceMatrix(covariance_, points_to_sample_state->points_to_sample.data(), dim_, num_to_sample, var_star);
+  BuildCovarianceMatrix(*covariance_ptr_, points_to_sample_state->points_to_sample.data(), dim_, num_to_sample, var_star);
   // following block computes Vars -= V^T*V, with the exact method depending on what quantities were precomputed
   if (unlikely(points_to_sample_state->num_derivatives == 0)) {
     std::copy(points_to_sample_state->K_star.begin(), points_to_sample_state->K_star.end(), points_to_sample_state->V.begin());
@@ -579,7 +579,7 @@ void GaussianProcess::ComputeGradVarianceOfPointsPerPoint(StateType * points_to_
   // Fill the p-th block column of the output (p = diff_index); we will then copy this into the p-th block column.
   for (int j = 0; j < num_to_sample; ++j) {
     // Compute the leading term: \pderiv{K_ss{i=p,j}}{Xs_{d,p}}.
-    covariance_.GradCovariance(points_to_sample_state->points_to_sample.data() + diff_index*dim_, points_to_sample_state->points_to_sample.data() + j*dim_, points_to_sample_state->grad_cov.data());
+    covariance_ptr_->GradCovariance(points_to_sample_state->points_to_sample.data() + diff_index*dim_, points_to_sample_state->points_to_sample.data() + j*dim_, points_to_sample_state->grad_cov.data());
     // Flip the sign, add leading term in.
     if (j == diff_index) {  // Block diagonal term needs to be multiplied by 2.
       for (int m = 0; m < dim_; ++m) {
@@ -755,7 +755,7 @@ double GaussianProcess::SamplePointFromGP(double const * restrict point_to_sampl
   const int num_to_sample = 1;  // we will only draw 1 point at a time from the GP
 
   if (unlikely(num_sampled_ == 0)) {
-    BuildCovarianceMatrix(covariance_, point_to_sample, dim_, num_to_sample, &gpp_variance);
+    BuildCovarianceMatrix(*covariance_ptr_, point_to_sample, dim_, num_to_sample, &gpp_variance);
     return std::sqrt(gpp_variance) * normal_rng_() + std::sqrt(noise_variance_this_point)*normal_rng_();  // first draw has mean 0
   } else {
     int num_derivatives = 0;
