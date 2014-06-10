@@ -59,7 +59,7 @@ void UniformRandomGenerator::PrintState(std::ostream * out_stream) const {
 }
 
 void NormalRNG::PrintState(std::ostream * out_stream) const {
-  (*out_stream) << engine << "\n";  // NOLINT(readability/streams): this is the only way pull state data out of boost's PRNG engines
+  uniform_generator.PrintState(out_stream);
 }
 
 /*!\rst
