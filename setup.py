@@ -82,6 +82,8 @@ class InstallCppComponents(install):
     def run(self):
         """Run the install."""
         install.run(self)
+        # Copy so we do not overwrite the user's environment later.
+        env = os.environ.copy()
 
         # Sometimes we want to manually build the C++ (like in Docker)
         if os.environ.get('MOE_NO_BUILD_CPP', 'False') == 'True':
@@ -104,19 +106,16 @@ class InstallCppComponents(install):
             print "Passing '{0:s}' args from MOE_CMAKE_OPTS to cmake.".format(cmake_options)
 
         # Set env dict with cc and/or cxx path
-        cc_path = os.environ.get('MOE_CC_PATH', None)
-        cxx_path = os.environ.get('MOE_CXX_PATH', None)
-        env = {}
-        if cc_path is not None:
-            env['CC'] = cc_path
-            print "Passing CC={0:s} to cmake.".format(cc_path)
-        else:
-            print "MOE_CC_PATH not set. Not passing a CC env var to cmake."
-        if cxx_path is not None:
-            env['CXX'] = cxx_path
-            print "Passing CXX={0:s} to cmake.".format(cxx_path)
-        else:
-            print "MOE_CXX_PATH not set. Not passing a CXX env var to cmake."
+        # To find C/C++ compilers, we first try read MOE_CC/CXX_PATH and if they exist, we write to CC/CXX.
+        # Then we read and pass CC/CXX to cmake if they are set.
+        if 'MOE_CC_PATH' in env:
+            env['CC'] = env['MOE_CC_PATH']
+        if 'MOE_CXX_PATH' in env:
+            env['CXX'] = env['MOE_CXX_PATH']
+        if 'CC' in env:
+            print "Passing CC={0:s} to cmake.".format(env['CC'])
+        if 'CXX' in env:
+            print "Passing CXX={0:s} to cmake.".format(env['CXX'])
 
         # Set cmake if not already set
 
