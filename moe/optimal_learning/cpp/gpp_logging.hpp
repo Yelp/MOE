@@ -6,11 +6,11 @@
   debug, verbose, warning, and error.
 
   We also have utilities for printing commonly used structures in the code. Currently this file contains
-  a printer for an array of ClosedInterval. Printers for vectors/matrices will be moved in #60254.
+  a printer for an array of ClosedInterval.
 
-  Long term, this file will connect to a real logging library (see TODO below).
+  Long term, this file will connect to a real logging library.
 
-  TODO(eliu): (#48960) connect MOE/C++ to a real logging library instead of using stdout as our log.
+  TODO(GH-130): connect MOE/C++ to a real logging library instead of using stdout as our log.
 \endrst*/
 
 #ifndef MOE_OPTIMAL_LEARNING_CPP_GPP_LOGGING_HPP_

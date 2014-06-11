@@ -149,7 +149,7 @@ boost::python::list GetGradCholVarWrapper(const GaussianProcess& gaussian_proces
 void ExportGaussianProcessFunctions() {
   boost::python::class_<GaussianProcess, boost::noncopyable>("GaussianProcess", boost::python::no_init)
       .def("__init__", boost::python::make_constructor(&make_gaussian_process), R"%%(
-    Constructor for a GaussianProcess object
+    Constructor for a ``GPP.GaussianProcess`` object.
 
     :param hyperparameters: covariance hyperparameters; see "Details on ..." section at the top of ``BOOST_PYTHON_MODULE``
     :type hyperparameters: list of len 2; index 0 is a float64 ``\alpha`` (signal variance) and index 1 is the length scales (list of floa64 of length ``dim``)

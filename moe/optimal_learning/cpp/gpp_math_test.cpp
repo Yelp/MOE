@@ -648,7 +648,6 @@ int PingGPMeanTest() {
     number of ping/test failures
 \endrst*/
 int PingGPVarianceTest() {
-  // TODO(eliu): look at improving ping testing so that we can improve tolerances to ~1.0e-3 or better (#43006)
   double epsilon_gp_variance[2] = {5.32879e-3, 0.942478e-3};
   int total_errors = PingGPComponentTest<PingGPPVariance>(epsilon_gp_variance, 2.0e-2, 4.0e-1, 1.0e-18);
   return total_errors;
@@ -661,7 +660,6 @@ int PingGPVarianceTest() {
     number of ping/test failures
 \endrst*/
 int PingGPCholeskyVarianceTest() {
-  // TODO(eliu): look at improving ping testing so that we can improve tolerances to ~1.0e-3 or better (#43006)
   double epsilon_gp_variance[2] = {5.5e-3, 0.932e-3};
   int total_errors = PingGPComponentTest<PingGPPCholeskyVariance>(epsilon_gp_variance, 9.0e-3, 3.0e-1, 1.0e-18);
   return total_errors;

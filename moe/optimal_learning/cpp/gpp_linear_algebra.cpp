@@ -87,9 +87,8 @@ double VectorNorm(double const * restrict vector, int size) noexcept {
   ``dpotrf('L', size_m, A, size_m, &info);``
   Implementation is similar to ``dpotf2``, the unblocked version (same arg list as ``dpotrf``).
 \endrst*/
-// TODO(eliu): change this to be gaxpy or (block) dot-prod style
-// to improve performance & numerical characteristics
-// see if alternate formulations can still check for non-SPD-ness
+// TODO(GH-172): change this to be gaxpy or (block) dot-prod style
+// to improve performance & numerical characteristics.
 void ComputeCholeskyFactorL(int size_m, double * restrict chol) {
   double * restrict chol_temp = chol;
   // Apply outer-product-based Cholesky algorithm: 1/3*N^3 + O(N^2)
@@ -400,7 +399,7 @@ void SPDMatrixInverse(double const * restrict chol_matrix, int size_m, double * 
 }
 
 int ComputePLUFactorization(int r, int * restrict pivot, double * restrict A) noexcept {
-  // TODO(eliu): #49095 after linking to BLAS, this code should only run for r < 64 or so
+  // TODO(GH-50): after linking to BLAS, this code should only run for r < 64 or so
   // Equivalent LAPACK call:
   // dgetrf_(&r, &r, A, &r, pivot, &info);
   if (unlikely(r == 1)) {
@@ -541,7 +540,7 @@ void PLUMatrixVectorSolve(int r, double const * restrict LU, int const * restric
   // equivalent BLAS call
   // dlaswp_(&int_one, b, &r, &int_one, &r, pivot, &inc_one);
 
-  // TODO(eliu): #49095 after linking to BLAS, this should only run for roughly r < 250
+  // TODO(GH-50): after linking to BLAS, this should only run for roughly r < 250
   // Equivalent LAPACK call:
   // dgetrs_('N', r, 1, LU, r, pivot, b, r, &info)
   // which is just (BLAS calls):

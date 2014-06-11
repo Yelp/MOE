@@ -690,14 +690,11 @@ namespace optimal_learning {
 #endif
 
 /*!\rst
-  icc ``C++11`` support is incomplete as of v13.x.x and does not include the ``override`` or ``final`` specifiers. At the
-  moment, "final" appears to work (emulation of Visual Studio's implementation), but override does not.
-  TODO(eliu): when icc includes the override and final specifiers, remove this ifdef.  This is expected to happen
-  around Dec 2013:
-  http://software.intel.com/en-us/forums/topic/343118
-  http://software.intel.com/en-us/forums/topic/346579
+  icc ``C++11`` support before v14.x.x is incomplete and does not support the ``override`
+  or ``final`` specifiers (although "final" appears to work). See:
+  https://software.intel.com/en-us/articles/c0x-features-supported-by-intel-c-compiler
 \endrst*/
-#ifdef __INTEL_COMPILER
+#if defined(__INTEL_COMPILER) && (__INTEL_COMPILER < 1400)
 #define override
 #endif
 

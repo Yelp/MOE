@@ -33,9 +33,7 @@ class OptimizableInterface(object):
     For Expected Improvement (e.g., python_version.expected_improvement.ExpectedImprovement), ``f`` would be the EI,
     ``x`` is the new experiment point (or points) being optimized, and ``problem_size`` is ``dim`` (or ``num_points*dim``).
 
-    TODO(eliu): getter/setter for current_point. maybe following this?
-    http://google-styleguide.googlecode.com/svn/trunk/pyguide.html#Function_and_Method_Decorators
-    How to make it work with ABCs?
+    TODO(GH-71): getter/setter for current_point.
 
     """
 
@@ -124,7 +122,7 @@ class OptimizerInterface(object):
         optimal point (as determined by optimization) should be available through the OptimizableInterface data
         member's ``get_current_point`` method.
 
-        # TODO(eliu): pass the best point, fcn value, etc. in thru an IOContainer-like structure (GH-59)
+        TODO(GH-59): Pass the best point, fcn value, etc. in thru an IOContainer-like structure.
 
         """
         pass

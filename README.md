@@ -15,21 +15,21 @@ An experiment or system can be time consuming or expensive if it takes a long ti
 
 MOE solves this problem through optimal experimental design and *optimal learning*.
 
-    "Optimal learning addresses the challenge of how to collect information as efficiently as possible, primarily for settings where collecting information is time consuming and expensive"
-    -- Prof. Warren Powell, http://optimallearning.princeton.edu
+> "Optimal learning addresses the challenge of how to collect information as efficiently as possible, primarily for settings where collecting information is time consuming and expensive"
+> -- Prof. Warren Powell, http://optimallearning.princeton.edu
 
 It boils down to:
 
-    "What is the most efficient way to collect information?"
-    -- Prof. Peter Frazier, http://people.orie.cornell.edu/pfrazier
+> "What is the most efficient way to collect information?"
+> -- Prof. Peter Frazier, http://people.orie.cornell.edu/pfrazier
 
 The *black box* nature of MOE allows us to optimize any number of systems, requiring no internal knowledge or access. It uses some objective function (Click Through Rate (CTR), revenue, engagement, etc) and some set of parameters (constants, config values, cut-offs, ML hyperparameters) and finds the best set of parameters to maximize (or minimize) the given function in as few attempts as possible. It does not require knowledge of the specific objective, or how it is obtained, just the previous parameters and their associated objective values (historical data).
 
 Video and slidedeck introduction to MOE:
 
-    * [15 min MOE intro video][10]
-    * [MOE intro slides][11]
-    * [Full documentation][1]
+* [15 min MOE intro video][10]
+* [MOE intro slides][11]
+* [Full documentation][1]
 
 MOE does this internally by:
 
@@ -126,7 +126,7 @@ The webserver and REST interface is now running on port 6543 from within the con
 
 See [Intall Documentation][7]
 
-# Contributing
+## Contributing
 
 See [Contributing Documentation][8]
 
