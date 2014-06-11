@@ -370,7 +370,6 @@ class PingGPPCholeskyVariance final : public PingableMatrixInputVectorOutputInte
   OL_DISALLOW_DEFAULT_AND_COPY_AND_ASSIGN(PingGPPCholeskyVariance);
 };
 
-
 /*!\rst
   Pings gradients (spatial) of GP components (e.g., mean, variance, cholesky of variance) 50 times with randomly generated test cases
 
@@ -468,7 +467,6 @@ int PingGPCholeskyVarianceTest() {
 
 /*!\rst
   Pings the gradients (spatial) of the EI 50 times with randomly generated test cases
-
   \return
     number of ping/test failures
 \endrst*/
