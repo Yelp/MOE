@@ -311,7 +311,9 @@
 
 <span class="sd">Currently we let the user specify the initial guesses.  In practice, this typically means a random sampling of points.</span>
 <span class="sd">We do not (yet) make any effort to say sample more heavily from regions where &quot;more stuff is happening&quot; or any</span>
-<span class="sd">other heuristics.  TODO(eliu): improve multistart heuristics (#57985).</span>
+<span class="sd">other heuristics.</span>
+
+<span class="sd">TODO(GH-165): Improve multistart heuristics.</span>
 
 <span class="sd">Finally, MultistartOptimizer::MultistartOptimize() is also used to provide &#39;dumb&#39; search functionality (optimization</span>
 <span class="sd">by just evaluating the objective at numerous points).  For sufficiently complex problems, gradient descent, Newton, etc.</span>
@@ -567,7 +569,7 @@
 <span class="sd">        Finally, GD terminates if updates are very small.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c"># TODO(eliu): implement restarts like in the C++ code (GH-59)</span>
+        <span class="c"># TODO(GH-59): Implement restarts like in the C++ code.</span>
         <span class="n">initial_guess</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">objective_function</span><span class="o">.</span><span class="n">get_current_point</span><span class="p">()</span>
         <span class="n">x_hat</span> <span class="o">=</span> <span class="n">initial_guess</span>
         <span class="n">x_path</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">optimization_parameters</span><span class="o">.</span><span class="n">max_num_steps</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="p">)</span> <span class="o">+</span> <span class="n">initial_guess</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
@@ -590,7 +592,7 @@
             <span class="n">x_path</span><span class="p">[</span><span class="n">step_counter</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="n">fixed_step</span> <span class="o">+</span> <span class="n">x_path</span><span class="p">[</span><span class="n">step_counter</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
 
             <span class="n">step_counter</span> <span class="o">+=</span> <span class="mi">1</span>
-            <span class="c"># TODO(eliu): tolerance control: if step is too small, stop (??). This goes at the loop&#39;s end, AFTER incrementing step_counter! (GH-59)</span>
+            <span class="c"># TODO(GH-59): tolerance control: if step is too small, stop. This goes at the loop&#39;s end, AFTER incrementing step_counter!</span>
 
         <span class="c"># Polyak-Ruppert averaging: postprocessing step where we replace x_n with:</span>
         <span class="c"># \overbar{x} = \frac{1}{n - n_0} \sum_{t=n_0 + 1}^n x_t</span>
@@ -654,7 +656,7 @@
 <span class="sd">        :rtype: tuple: (array of float64 with shape (self.optimizer.dim), array of float64 with shape (self.num_multistarts))</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c"># TODO(eliu): pass the best point, fcn value, etc. in thru an IOContainer-like structure (GH-59)</span>
+        <span class="c"># TODO(GH-59): Pass the best point, fcn value, etc. in thru an IOContainer-like structure.</span>
         <span class="k">if</span> <span class="n">random_starts</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">random_starts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">generate_uniform_random_points_in_domain</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_multistarts</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
 

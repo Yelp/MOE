@@ -302,7 +302,7 @@ either of them).  Thus the matrix of grad covariances (wrt hyperparameters) is s
 <dt id="moe.optimal_learning.python.python_version.covariance.SquareExponential.hyperparameter_hessian_covariance">
 <tt class="descname">hyperparameter_hessian_covariance</tt><big>(</big><em>point_one</em>, <em>point_two</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/covariance.html#SquareExponential.hyperparameter_hessian_covariance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.covariance.SquareExponential.hyperparameter_hessian_covariance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the hessian of self.covariance(point_one, point_two) with respect to its hyperparameters.</p>
-<p>TODO(eliu): implement Hessians in Python (GH-57).</p>
+<p>TODO(GH-57): Implement Hessians in Python.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -604,7 +604,7 @@ and <tt class="docutils literal"><span class="pre">Xp</span></tt> is <tt class="
 </div>
 <p>Generally gradient descent is preferred but when it fails to converge this may be the only &#8220;robust&#8221; option.
 This function is also useful for plotting or debugging purposes (just to get a bunch of EI values).</p>
-<p>TODO(eliu): (GH-56) Allow callers to pass in a source of randomness.</p>
+<p>TODO(GH-56): Allow callers to pass in a source of randomness.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -687,7 +687,7 @@ experiments at the same time and maximize the EI across all 4 experiments at onc
 makes no external assumptions about the underlying objective function. Instead, it utilizes the Expected (Parallel)
 Improvement, allowing the GP to account for ongoing/incomplete experiments.</p>
 <p>If <tt class="docutils literal"><span class="pre">num_to_sample</span> <span class="pre">=</span> <span class="pre">1</span></tt>, this is the same as ComputeOptimalPointsToSampleWithRandomStarts().</p>
-<p>TODO(eliu): (GH-56) Allow callers to pass in a source of randomness.</p>
+<p>TODO(GH-56): Allow callers to pass in a source of randomness.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1233,8 +1233,8 @@ This function is also useful for plotting or debugging purposes (just to get a b
 example log likelihood-like measures.</p>
 <p>Optimizers are: null (&#8216;dumb&#8217; search), gradient descent, newton
 Newton is the suggested optimizer, which is not presently available in Python (use the C++ interface). In Python,
-gradient descent is suggested.
-TODO(eliu): implement hessians and newton&#8217;s method (GH-57)</p>
+gradient descent is suggested.</p>
+<p>TODO(GH-57): Implement hessians and Newton&#8217;s method.</p>
 <p>&#8216;dumb&#8217; search means this will just evaluate the objective log likelihood measure at num_multistarts &#8216;points&#8217;
 (hyperparameters) in the domain, uniformly sampled using latin hypercube sampling.</p>
 <p>See gpp_python_common.cpp for C++ enum declarations laying out the options for objective and optimizer types.</p>
@@ -1248,7 +1248,7 @@ true optima (i.e., the gradient may be substantially nonzero).</p>
 <p class="last">this function fails if NO improvement can be found!  In that case,
 the output will always be the first randomly chosen point. status will report failure.</p>
 </div>
-<p>TODO(eliu): allow callers to pass in a source of randomness (GH-56)</p>
+<p>TODO(GH-56): Allow callers to pass in a source of randomness.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1410,7 +1410,8 @@ functionality is provided in MultistartOptimizer::MultistartOptimize(...).</p>
 Multistarting is NOT GUARANTEED to find global optima.  But it can increase the chances of success.</p>
 <p>Currently we let the user specify the initial guesses.  In practice, this typically means a random sampling of points.
 We do not (yet) make any effort to say sample more heavily from regions where &#8220;more stuff is happening&#8221; or any
-other heuristics.  TODO(eliu): improve multistart heuristics (#57985).</p>
+other heuristics.</p>
+<p>TODO(GH-165): Improve multistart heuristics.</p>
 <p>Finally, MultistartOptimizer::MultistartOptimize() is also used to provide &#8216;dumb&#8217; search functionality (optimization
 by just evaluating the objective at numerous points).  For sufficiently complex problems, gradient descent, Newton, etc.
 can have exceptionally poor convergence characteristics or run too slowly.  In cases where these more advanced techniques

@@ -274,7 +274,7 @@ and <tt class="docutils literal"><span class="pre">N_i</span></tt> = number of p
 <p>This should generally not be used unless you require direct access to the analytic gradient.</p>
 <dl class="docutils">
 <dt><strong>Returns</strong>:</dt>
-<dd>MUST be <tt class="docutils literal"><span class="pre">num_rows*num_cols*GetOutputSize()</span></tt> or undefined behavior may result.</dd>
+<dd>MUST be <tt class="docutils literal"><span class="pre">num_rows*num_cols*GetOutputSize()</span></tt> invalid memory read/writes may occur</dd>
 </dl>
  </p>
 </div></blockquote>
@@ -415,11 +415,11 @@ input matrix was specified in EvaluateAndStoreAnalyticGradient()).</dd>
 particular, this mock is used for testing GP mean, GP variance, and expected improvement (and their gradients).</p>
 <p>This class holds arrays: <tt class="docutils literal"><span class="pre">points_sampled</span></tt>, <tt class="docutils literal"><span class="pre">points_sampled_value</span></tt>, <tt class="docutils literal"><span class="pre">points_to_sample</span></tt>, and <tt class="docutils literal"><span class="pre">points_being_sampled</span></tt>
 which are sized according to the parameters specified in Initialize(), and filled with random numbers.</p>
-<p>TODO: we currently generate the point sets by repeated calls to rand().  This is generally unwise since the distribution
-of points is not particularly random.  Additionally, our current covariance functions are all stationary, so we would rather
-generate a random base point <tt class="docutils literal"><span class="pre">x</span></tt>, and then a random (direction, radius) pair so that <tt class="docutils literal"><span class="pre">y</span> <span class="pre">=</span> <span class="pre">x</span> <span class="pre">+</span> <span class="pre">direction*radius</span></tt>.
-We better cover the different behavioral regimes of our code in this case, since it&#8217;s the radius value that actually
-correlates to results. (Ticket: #44278)</p>
+<p>TODO(GH-125): we currently generate the point sets by repeated calls to rand().  This is generally
+unwise since the distribution of points is not particularly random.  Additionally, our current covariance
+functions are all stationary, so we would rather generate a random base point <tt class="docutils literal"><span class="pre">x</span></tt>, and then a random
+(direction, radius) pair so that <tt class="docutils literal"><span class="pre">y</span> <span class="pre">=</span> <span class="pre">x</span> <span class="pre">+</span> <span class="pre">direction*radius</span></tt>. We better cover the different behavioral
+regimes of our code in this case, since it&#8217;s the radius value that actually correlates to results.</p>
  </p>
 <em>Public Type</em><blockquote>
 <div><p><span class="target" id="project0classoptimal__learning_1_1_mock_expected_improvement_environment_1abc0846411620ad518bf34ae22d1bc181"></span>typedef UniformRandomGenerator::EngineType <strong>EngineType</strong></p>
@@ -1209,11 +1209,7 @@ implementation that is wrong but passes this test.</p>
 to implement <tt class="docutils literal"><span class="pre">f</span> <span class="pre">=</span> <span class="pre">sin(x)</span></tt>, <tt class="docutils literal"><span class="pre">f'</span> <span class="pre">=</span> <span class="pre">cos(x)</span></tt>, but instead coded <tt class="docutils literal"><span class="pre">g</span> <span class="pre">=</span> <span class="pre">sin(x)</span> <span class="pre">+</span> <span class="pre">1</span></tt>, this function will not find it.
 This cannot detect small amounts of noise in the gradient either (e.g., <tt class="docutils literal"><span class="pre">f'</span> <span class="pre">=</span> <span class="pre">cos(x)</span> <span class="pre">+</span> <span class="pre">1.0e-15</span></tt>). There is no
 way to tell whether that is noise due to numerical error or noise due to incorrectness.</p>
-<p>TODO(eliu): put the OL_ERROR_PRINTF calls on a different &#8220;log level&#8221; so that when this stuff fails, I dont flood
-stdout with msgs. This function can produce a very large amount of output. The workflow should be to come in and
-enable full logging when developing or modifying gradient code and things fail.</p>
-<p>More generally I could consider printing only the top 10 worst offenders in terms of error or something.</p>
-<p>TODO(eliu): thresholds are an imperfect tool for this task. Loss of precision is not a binary event; you are not
+<p>TODO(GH-162): thresholds are an imperfect tool for this task. Loss of precision is not a binary event; you are not
 certain at <tt class="docutils literal"><span class="pre">2^{-52}</span></tt> but uncertain at <tt class="docutils literal"><span class="pre">2^{-51}</span></tt>. It might be better to estimate the range over which we go from
 meaningful loss of precision to complete noise and have a linear ramp for the tolerance over that space. Maybe
 it should be done in log-space?</p>

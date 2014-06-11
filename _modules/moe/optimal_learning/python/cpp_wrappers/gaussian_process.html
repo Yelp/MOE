@@ -395,13 +395,11 @@
 
 <span class="sd">        Also forces recomputation of all derived quantities for GP to remain consistent.</span>
 
-<span class="sd">        TOOD(eliu): figure out how to deal with single or list of points (or not deal with it)</span>
-
 <span class="sd">        :param sampled_points: SampledPoint objects to load into the GP (containing point, function value, and noise variance)</span>
-<span class="sd">        :type sampled_points: single SampledPoint or list of SampledPoint objects</span>
+<span class="sd">        :type sampled_points: list of SampledPoint objects (or SamplePoint-like iterables)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c"># TODO(eliu): add hook to actual C++ function to make this more efficient than rebuilding the whole GP object</span>
+        <span class="c"># TODO(GH-187): Add hook to actual C++ function to make this more efficient than rebuilding the whole GP object.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_historical_data</span><span class="o">.</span><span class="n">append_sample_points</span><span class="p">(</span><span class="n">sampled_points</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_gaussian_process</span> <span class="o">=</span> <span class="n">C_GP</span><span class="o">.</span><span class="n">GaussianProcess</span><span class="p">(</span>
@@ -436,7 +434,7 @@
 <span class="sd">        :rtype: float64</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c"># TODO(eliu): C++ has a native implementation of this function; make a wrapper and call that directly</span>
+        <span class="c"># TODO(GH-187): C++ has a native implementation of this function; make a wrapper and call that directly.</span>
         <span class="n">point</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">point_to_sample</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">ndmin</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
         <span class="n">mean</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_mean_of_points</span><span class="p">(</span><span class="n">point</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">variance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_variance_of_points</span><span class="p">(</span><span class="n">point</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>

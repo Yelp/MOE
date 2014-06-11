@@ -188,7 +188,7 @@
             <span class="n">cov_mat</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">covariance</span><span class="o">.</span><span class="n">covariance</span><span class="p">(</span><span class="n">point_one</span><span class="p">,</span> <span class="n">point_two</span><span class="p">)</span>
 
     <span class="c"># Copy into the (strict) upper triangle.</span>
-    <span class="c"># TODO(eliu): we could avoid this step entirely and only fill the lower triangle (GH-62)</span>
+    <span class="c"># TODO(GH-62): We could avoid this step entirely and only fill the lower triangle.</span>
     <span class="n">cov_mat</span> <span class="o">+=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">tril</span><span class="p">(</span><span class="n">cov_mat</span><span class="p">,</span> <span class="n">k</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
 
     <span class="k">if</span> <span class="n">noise_variance</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>

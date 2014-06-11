@@ -242,9 +242,6 @@ optimization runs with slightly different domains (e.g., differing levels of exp
 HistoricalData. Users may also optimize within a subdomain of the points already sampled. Thus, we are not including
 domain in HistoricalData so as to place no restriction on how users can use optimal_learning and think about their
 experiments.</p>
-<p>TODO(eliu): it&#8217;d be cool if this inherited from namedtuple (since adding new points makes sense, but changing dim or
-arbitrarily changing the referrant of noise_variance does not). Not 100% sure how to do this since __new__ and
-__init__ would need to take different arguments.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />

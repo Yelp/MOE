@@ -242,7 +242,7 @@ where L is the diagonal matrix with i-th diagonal entry <tt class="docutils lite
 <dt id="moe.optimal_learning.python.cpp_wrappers.cpp_utils.cppify">
 <tt class="descclassname">moe.optimal_learning.python.cpp_wrappers.cpp_utils.</tt><tt class="descname">cppify</tt><big>(</big><em>array</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/cpp_wrappers/cpp_utils.html#cppify"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.cpp_wrappers.cpp_utils.cppify" title="Permalink to this definition">¶</a></dt>
 <dd><p>Flatten a numpy array and copies it to a list for C++ consumption.</p>
-<p>TOOD(eliu): C++ to accept numpy arrays instead?</p>
+<p>TODO(GH-159): This function will be unnecessary when C++ accepts numpy arrays.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -282,7 +282,7 @@ hyperparameters[1]: list = length scales (len = dim, one length per spatial dime
 <dt id="moe.optimal_learning.python.cpp_wrappers.cpp_utils.uncppify">
 <tt class="descclassname">moe.optimal_learning.python.cpp_wrappers.cpp_utils.</tt><tt class="descname">uncppify</tt><big>(</big><em>array</em>, <em>expected_shape</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/cpp_wrappers/cpp_utils.html#uncppify"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.cpp_wrappers.cpp_utils.uncppify" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reshape a copy of the input array into the expected shape.</p>
-<p>TODO(eliu): Ideally we can avoid the copy here and get rid of this function (instead, call reshape directly).</p>
+<p>TODO(GH-159): If C++ returns numpy arrays, we can kill this function (instead, call reshape directly).</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -789,12 +789,11 @@ both point sets with the GP, so we simply call the union of point sets <tt class
 <tt class="descname">add_sampled_points</tt><big>(</big><em>sampled_points</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/cpp_wrappers/gaussian_process.html#GaussianProcess.add_sampled_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.cpp_wrappers.gaussian_process.GaussianProcess.add_sampled_points" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add sampled point(s) (point, value, noise) to the GP&#8217;s prior data.</p>
 <p>Also forces recomputation of all derived quantities for GP to remain consistent.</p>
-<p>TOOD(eliu): figure out how to deal with single or list of points (or not deal with it)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>sampled_points</strong> (<em>single SampledPoint or list of SampledPoint objects</em>) &#8211; SampledPoint objects to load into the GP (containing point, function value, and noise variance)</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>sampled_points</strong> (<em>list of SampledPoint objects (or SamplePoint-like iterables)</em>) &#8211; SampledPoint objects to load into the GP (containing point, function value, and noise variance)</td>
 </tr>
 </tbody>
 </table>
@@ -1457,7 +1456,8 @@ functionality is provided in MultistartOptimizer::MultistartOptimize(...).</p>
 Multistarting is NOT GUARANTEED to find global optima.  But it can increase the chances of success.</p>
 <p>Currently we let the user specify the initial guesses.  In practice, this typically means a random sampling of points.
 We do not (yet) make any effort to say sample more heavily from regions where &#8220;more stuff is happening&#8221; or any
-other heuristics.  TODO(eliu): improve multistart heuristics (#57985).</p>
+other heuristics.</p>
+<p>TODO(GH-165): Improve multistart heuristics.</p>
 <p>Finally, MultistartOptimizer::MultistartOptimize() is also used to provide &#8216;dumb&#8217; search functionality (optimization
 by just evaluating the objective at numerous points).  For sufficiently complex problems, gradient descent, Newton, etc.
 can have exceptionally poor convergence characteristics or run too slowly.  In cases where these more advanced techniques

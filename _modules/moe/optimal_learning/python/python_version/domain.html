@@ -237,7 +237,7 @@
 <span class="sd">        :rtype: array of float64 with shape (num_points, dim)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c"># TODO(eliu): actually allow users to pass in a random source (GH-56)</span>
+        <span class="c"># TODO(GH-56): Allow users to pass in a random source.</span>
         <span class="k">return</span> <span class="n">generate_latin_hypercube_points</span><span class="p">(</span><span class="n">num_points</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_domain_bounds</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="TensorProductDomain.generate_grid_points_in_domain"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.domain.TensorProductDomain.generate_grid_points_in_domain">[docs]</a>    <span class="k">def</span> <span class="nf">generate_grid_points_in_domain</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points_per_dimension</span><span class="p">,</span> <span class="n">random_source</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
@@ -253,7 +253,7 @@
 <span class="sd">        :return: uniform random sampling of points from the domain</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c"># TODO(eliu): actually allow users to pass in a random source (GH-56)</span>
+        <span class="c"># TODO(GH-56): Allow users to pass in a random source.</span>
         <span class="k">return</span> <span class="n">generate_grid_points</span><span class="p">(</span><span class="n">points_per_dimension</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_domain_bounds</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="TensorProductDomain.compute_update_restricted_to_domain"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.domain.TensorProductDomain.compute_update_restricted_to_domain">[docs]</a>    <span class="k">def</span> <span class="nf">compute_update_restricted_to_domain</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_relative_change</span><span class="p">,</span> <span class="n">current_point</span><span class="p">,</span> <span class="n">update_vector</span><span class="p">):</span>
@@ -282,7 +282,7 @@
 <span class="sd">        :rtype: array of float64 with shape (dim)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c"># TODO(eliu): vectorize this (GH-58)</span>
+        <span class="c"># TODO(GH-58): Vectorize the loop over j, step.</span>
         <span class="n">output_update</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
         <span class="c"># Note: since all boundary planes are axis-aligned, projecting becomes very simple.</span>
         <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">step</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">update_vector</span><span class="p">):</span>

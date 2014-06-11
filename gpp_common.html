@@ -822,12 +822,9 @@ makes the required behavior clear.</p>
 </p>
 <blockquote>
 <div><p></p>
-<p><p>icc <tt class="docutils literal"><span class="pre">C++11</span></tt> support is incomplete as of v13.x.x and does not include the <tt class="docutils literal"><span class="pre">override</span></tt> or <tt class="docutils literal"><span class="pre">final</span></tt> specifiers. At the
-moment, &#8220;final&#8221; appears to work (emulation of Visual Studio&#8217;s implementation), but override does not.
-TODO(eliu): when icc includes the override and final specifiers, remove this ifdef.  This is expected to happen
-around Dec 2013:
-<a class="reference external" href="http://software.intel.com/en-us/forums/topic/343118">http://software.intel.com/en-us/forums/topic/343118</a>
-<a class="reference external" href="http://software.intel.com/en-us/forums/topic/346579">http://software.intel.com/en-us/forums/topic/346579</a></p>
+<p><p>icc <tt class="docutils literal"><span class="pre">C++11</span></tt> support before v14.x.x is incomplete and does not support the <tt class="docutils literal"><span class="pre">override`</span>
+<span class="pre">or</span> <span class="pre">``final</span></tt> specifiers (although &#8220;final&#8221; appears to work). See:
+<a class="reference external" href="https://software.intel.com/en-us/articles/c0x-features-supported-by-intel-c-compiler">https://software.intel.com/en-us/articles/c0x-features-supported-by-intel-c-compiler</a></p>
 <p><p>Square a <tt class="docutils literal"><span class="pre">constexpr</span></tt> value.
 For details on what <tt class="docutils literal"><span class="pre">constexpr</span></tt> expects:
 <a class="reference external" href="http://www.stroustrup.com/C++11FAQ.html#constexpr">http://www.stroustrup.com/C++11FAQ.html#constexpr</a>

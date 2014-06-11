@@ -213,7 +213,8 @@
 <span class="sd">    Optimizers are: null (&#39;dumb&#39; search), gradient descent, newton</span>
 <span class="sd">    Newton is the suggested optimizer, which is not presently available in Python (use the C++ interface). In Python,</span>
 <span class="sd">    gradient descent is suggested.</span>
-<span class="sd">    TODO(eliu): implement hessians and newton&#39;s method (GH-57)</span>
+
+<span class="sd">    TODO(GH-57): Implement hessians and Newton&#39;s method.</span>
 
 <span class="sd">    &#39;dumb&#39; search means this will just evaluate the objective log likelihood measure at num_multistarts &#39;points&#39;</span>
 <span class="sd">    (hyperparameters) in the domain, uniformly sampled using latin hypercube sampling.</span>
@@ -230,7 +231,7 @@
 <span class="sd">    .. WARNING:: this function fails if NO improvement can be found!  In that case,</span>
 <span class="sd">       the output will always be the first randomly chosen point. status will report failure.</span>
 
-<span class="sd">    TODO(eliu): allow callers to pass in a source of randomness (GH-56)</span>
+<span class="sd">    TODO(GH-56): Allow callers to pass in a source of randomness.</span>
 
 <span class="sd">    :param hyperparameter_optimizer: object that optimizes (e.g., gradient descent, newton) the desired log_likelihood</span>
 <span class="sd">        measure over a domain (wrt the hyperparameters of covariance)</span>
@@ -255,7 +256,7 @@
 
     <span class="n">best_hyperparameters</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">multistart_optimize</span><span class="p">(</span><span class="n">hyperparameter_optimizer</span><span class="p">,</span> <span class="n">starting_points</span><span class="o">=</span><span class="n">random_starts</span><span class="p">)</span>
 
-    <span class="c"># TODO(eliu): have GD actually indicate whether updates were found (GH-59)</span>
+    <span class="c"># TODO(GH-59): Have GD actually indicate whether updates were found, e.g., in an IOContainer-like structure.</span>
     <span class="n">found_flag</span> <span class="o">=</span> <span class="bp">True</span>
     <span class="k">if</span> <span class="n">status</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
         <span class="n">status</span><span class="p">[</span><span class="s">&quot;gradient_descent_found_update&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">found_flag</span>
@@ -439,7 +440,7 @@
             <span class="c"># compute -0.5 * tr(K^-1 * dK/d\theta)</span>
             <span class="n">temp</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">cho_solve</span><span class="p">(</span><span class="n">K_chol</span><span class="p">,</span> <span class="n">grad_cov_block</span><span class="p">,</span> <span class="n">overwrite_b</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
             <span class="n">grad_log_marginal</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">-=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">temp</span><span class="o">.</span><span class="n">trace</span><span class="p">()</span>
-            <span class="c"># TODO(eliu): this can be much faster if we form K^-1 explicitly (see below), but that is less accurate</span>
+            <span class="c"># TODO(GH-180): this can be much faster if we form K^-1 explicitly (see below), but that is less accurate</span>
             <span class="c"># grad_log_marginal[k] -= 0.5 * numpy.einsum(&#39;ij,ji&#39;, K_inv, grad_cov_block)</span>
 
         <span class="k">return</span> <span class="n">grad_log_marginal</span>

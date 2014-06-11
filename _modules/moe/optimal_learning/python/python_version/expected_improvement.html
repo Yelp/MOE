@@ -191,7 +191,7 @@
 
 <span class="sd">    If ``num_to_sample = 1``, this is the same as ComputeOptimalPointsToSampleWithRandomStarts().</span>
 
-<span class="sd">    TODO(eliu): (GH-56) Allow callers to pass in a source of randomness.</span>
+<span class="sd">    TODO(GH-56): Allow callers to pass in a source of randomness.</span>
 
 <span class="sd">    :param ei_optimizer: object that optimizes (e.g., gradient descent, newton) EI over a domain</span>
 <span class="sd">    :type ei_optimizer: interfaces.optimization_interfaces.OptimizerInterface subclass</span>
@@ -212,7 +212,7 @@
     <span class="n">random_starts</span> <span class="o">=</span> <span class="n">ei_optimizer</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">generate_uniform_random_points_in_domain</span><span class="p">(</span><span class="n">num_points</span><span class="o">=</span><span class="n">num_multistarts</span><span class="p">)</span>
     <span class="n">best_point</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">multistart_optimize</span><span class="p">(</span><span class="n">ei_optimizer</span><span class="p">,</span> <span class="n">starting_points</span><span class="o">=</span><span class="n">random_starts</span><span class="p">)</span>
 
-    <span class="c"># TODO(eliu): (GH-59) Have GD actually indicate whether updates were found.</span>
+    <span class="c"># TODO(GH-59): Have GD actually indicate whether updates were found.</span>
     <span class="n">found_flag</span> <span class="o">=</span> <span class="bp">True</span>
     <span class="k">if</span> <span class="n">status</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
         <span class="n">status</span><span class="p">[</span><span class="s">&quot;gradient_descent_found_update&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">found_flag</span>
@@ -244,7 +244,7 @@
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct an ExpectedImprovement object that supports q,p-EI.</span>
 
-<span class="sd">        TODO(eliu): (GH-56) Allow callers to pass in a source of randomness.</span>
+<span class="sd">        TODO(GH-56): Allow callers to pass in a source of randomness.</span>
 
 <span class="sd">        :param gaussian_process: GaussianProcess describing</span>
 <span class="sd">        :type gaussian_process: interfaces.gaussian_process_interface.GaussianProcessInterface subclass</span>
@@ -323,7 +323,7 @@
 <span class="sd">        Generally gradient descent is preferred but when it fails to converge this may be the only &quot;robust&quot; option.</span>
 <span class="sd">        This function is also useful for plotting or debugging purposes (just to get a bunch of EI values).</span>
 
-<span class="sd">        TODO(eliu): (GH-56) Allow callers to pass in a source of randomness.</span>
+<span class="sd">        TODO(GH-56): Allow callers to pass in a source of randomness.</span>
 
 <span class="sd">        :param ei_evaluator: object specifying how to evaluate the expected improvement</span>
 <span class="sd">        :type ei_evaluator: interfaces.expected_improvement_interface.ExpectedImprovementInterface subclass</span>
@@ -342,7 +342,7 @@
         <span class="n">null_optimizer</span> <span class="o">=</span> <span class="n">NullOptimizer</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
         <span class="n">_</span><span class="p">,</span> <span class="n">values</span> <span class="o">=</span> <span class="n">multistart_optimize</span><span class="p">(</span><span class="n">null_optimizer</span><span class="p">,</span> <span class="n">starting_points</span><span class="o">=</span><span class="n">points_to_evaluate</span><span class="p">)</span>
 
-        <span class="c"># TODO(eliu): (GH-59) Have multistart actually indicate whether updates were found.</span>
+        <span class="c"># TODO(GH-59): Have multistart actually indicate whether updates were found.</span>
         <span class="n">found_flag</span> <span class="o">=</span> <span class="bp">True</span>
         <span class="k">if</span> <span class="n">status</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">status</span><span class="p">[</span><span class="s">&quot;evaluate_EI_at_point_list&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">found_flag</span>
@@ -479,7 +479,7 @@
 
         <span class="n">normals</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_num_mc_iterations</span><span class="p">,</span> <span class="n">num_points</span><span class="p">))</span>
 
-        <span class="c"># TODO(eliu): (GH-60) Partition num_mc_iterations up into smaller blocks if it helps.</span>
+        <span class="c"># TODO(GH-60): Partition num_mc_iterations up into smaller blocks if it helps.</span>
         <span class="c"># so that we don&#39;t waste as much mem bandwidth (since each entry of normals is</span>
         <span class="c"># only used once)</span>
         <span class="n">mu_star</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_best_so_far</span> <span class="o">-</span> <span class="n">mu_star</span>
@@ -581,7 +581,7 @@
 
         <span class="n">normals</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_num_mc_iterations</span><span class="p">,</span> <span class="n">num_points</span><span class="p">))</span>
 
-        <span class="c"># TODO(eliu): (GH-60) Partition num_mc_iterations up into smaller blocks if it helps.</span>
+        <span class="c"># TODO(GH-60): Partition num_mc_iterations up into smaller blocks if it helps.</span>
         <span class="c"># so that we don&#39;t waste as much mem bandwidth (since each entry of normals is</span>
         <span class="c"># only used once)</span>
         <span class="n">mu_star</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_best_so_far</span> <span class="o">-</span> <span class="n">mu_star</span>
@@ -618,7 +618,7 @@
 
         <span class="c"># Handle derivative terms from grad_chol_decomp</span>
         <span class="c"># Mask rows of normals that did not show positive improvement</span>
-        <span class="c"># TODO(eliu): (GH-61) Use numpy.tile, numpy.repeat or something more sensical if possible.</span>
+        <span class="c"># TODO(GH-61): Use numpy.tile, numpy.repeat or something more sensical if possible.</span>
         <span class="n">normals_mask</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">normals</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
         <span class="n">normals_mask</span><span class="p">[</span><span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="n">best_improvement_each_iter</span><span class="o">.</span><span class="n">mask</span><span class="p">[:,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
         <span class="c"># Compress out the masked data</span>
@@ -654,11 +654,11 @@
 
                 <span class="c"># Expand winner_indexes_equal_to_i.mask to cover the full shape of grad_chol_decomp_tiled</span>
                 <span class="c"># This is the same idea as normals_mask above</span>
-                <span class="c"># TODO(eliu): (GH-61) Use numpy.tile, numpy.repeat or something more sensical if possible.</span>
+                <span class="c"># TODO(GH-61): Use numpy.tile, numpy.repeat or something more sensical if possible.</span>
                 <span class="n">grad_chol_decomp_block_i_tile_mask</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">grad_chol_decomp_tiled</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
                 <span class="n">grad_chol_decomp_block_i_tile_mask</span><span class="p">[</span><span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="n">winner_indexes_equal_to_i</span><span class="o">.</span><span class="n">mask</span><span class="p">[:,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
 
-                <span class="c"># TODO(eliu): (GH-61) Is there a way to produce the desired block pattern directly, without copy + mask? Can I avoid duplicating grad_chol entirely?</span>
+                <span class="c"># TODO(GH-61): Is there a way to produce the desired block pattern directly, without copy + mask? Can I avoid duplicating grad_chol entirely?</span>
                 <span class="c"># Tile the appropriate block of grad_chol_decomp to *FILL* all blocks</span>
                 <span class="n">grad_chol_decomp_block_i_tile</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span>
                     <span class="n">grad_chol_decomp</span><span class="p">[</span><span class="n">diff_index</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>

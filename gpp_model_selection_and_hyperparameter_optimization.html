@@ -169,9 +169,10 @@
 </ol>
 </li>
 <li>HYPERPARAMETER OPTIMIZATION OF LOG LIKELIHOOD</li>
+<li>IMPLEMENTATION NOTES</li>
 </ol>
-<p><strong>1. FILE OVERVIEW</strong>
-As a preface, you should read gpp_math.hpp&#8217;s comments first (if not also gpp_math.cpp) to get an overview
+<p><strong>1. FILE OVERVIEW</strong></p>
+<p>As a preface, you should read gpp_math.hpp&#8217;s comments first (if not also gpp_math.cpp) to get an overview
 of Gaussian Processes (GPs) and how we are using them (Expected Improvement, EI).</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -280,8 +281,8 @@ original training data, we can compute the error.  In effect we are examining ho
 being the sole member of the validation set.  Then for each validation set, we compute a log pseudo-likelihood, measuring
 how probable that validation set is given the remaining training data and model hyperparameters.</p>
 <p>Again, we can maximize this quanitity over hyperparameters to help us choose the &#8220;right&#8221; set for the GP.</p>
-<p><strong>4. HYPERPARAMETER OPTIMIZATION OF LOG LIKELIHOOD</strong>
-Now that we have discussed the Log Marginal Likelihood and Leave One Out Cross Validation log pseudo-likelihood measures
+<p><strong>4. HYPERPARAMETER OPTIMIZATION OF LOG LIKELIHOOD</strong></p>
+<p>Now that we have discussed the Log Marginal Likelihood and Leave One Out Cross Validation log pseudo-likelihood measures
 of model quality, what do we do with them?  How do they help us choose hyperparameters?</p>
 <p>From here, we can apply anyone&#8217;s favorite optimization technique to maximize log likelihoods wrt hyperparameters.  The
 hyperparameters that maximize log likelihood provide the model configuration that is most likely to have produced the
@@ -297,6 +298,33 @@ at least two optima, one more complex solution (short length scales, less intrin
 solution (longer length scales, higher intrinsic noise).  There are even cases where no optima (to machine precision)
 exist or cases where solutions lie on (lower-dimensional) manifold(s) (e.g., locally the likelihood is (nearly) independent
 of one or more hyperparameters).</p>
+<p><strong>5. IMPLEMENTATION NOTES</strong></p>
+<ol class="loweralpha">
+<li><p class="first">This file has a few primary endpoints for model selection (aka hyperparameter optimization):</p>
+<ol class="lowerroman">
+<li><p class="first">LatinHypercubeSearchHyperparameterOptimization&lt;&gt;():</p>
+<p>Takes in a <tt class="docutils literal"><span class="pre">log_likelihood_evaluator</span></tt> describing the prior, covariance, domain, config, etc.;
+searches over a set of (random) hyperparameters and outputs the set producing the best model fit.</p>
+</li>
+<li><p class="first">MultistartGradientDescentHyperparameterOptimization&lt;&gt;():</p>
+<p>Takes in a <tt class="docutils literal"><span class="pre">log_likelihood_evaluator</span></tt> describing the prior, covariance, domain, config, etc.;
+searches for the best hyperparameters (of covariance) using multiple gradient descent runs.</p>
+<p>Single start version available in: RestartedGradientDescentHyperparameterOptimization&lt;&gt;().</p>
+</li>
+<li><p class="first">MultistartNewtonHyperparameterOptimization&lt;&gt;() (Recommended):</p>
+<p>Takes in a <tt class="docutils literal"><span class="pre">log_likelihood_evaluator</span></tt> describing the prior, covariance, domain, config, etc.;
+searches for the best hyperparameters (of covariance) using multiple Newton runs.</p>
+<p>Single start version available in: NewtonHyperparameterOptimization&lt;&gt;().</p>
+</li>
+</ol>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>See <tt class="docutils literal"><span class="pre">gpp_model_selection_and_hyperparameter_optimization.cpp</span></tt>&#8216;s header comments for more detailed implementation notes.</p>
+<p class="last">There are also several other functions with external linkage in this header; these
+are provided primarily to ease testing and to permit lower level access from python.</p>
+</div>
+</li>
+</ol>
  </p>
 <p><p id="project0namespaceoptimal__learning"><em>namespace</em> <strong>optimal_learning</strong></p>
 <blockquote>
@@ -503,7 +531,7 @@ Generally, calling that function should be preferred.  This function is meant fo
 </ol>
 <p>Solution is guaranteed to lie within the region specified by &#8220;domain&#8221;; note that this may not be a
 true optima (i.e., the gradient may be substantially nonzero).</p>
-<p>Let <tt class="docutils literal"><span class="pre">n_hyper</span> <span class="pre">=</span> <span class="pre">covariance.GetNumberOfHyperparameters();</span></tt></p>
+<p>Let <tt class="docutils literal"><span class="pre">n_hyper</span> <span class="pre">=</span> <span class="pre">covariance_ptr-&gt;GetNumberOfHyperparameters();</span></tt></p>
 <dl class="docutils">
 <dt><strong>Parameters</strong>:</dt>
 <dd><table class="first last docutils field-list" frame="void" rules="none">
@@ -514,7 +542,7 @@ true optima (i.e., the gradient may be substantially nonzero).</p>
 <tr class="field-odd field"><td>&nbsp;</td><td class="field-body">object supporting evaluation of log likelihood and its gradient</td>
 </tr>
 <tr class="field-even field"><th class="field-name">covariance:</th><td class="field-body">the CovarianceFunction object encoding assumptions about the GP&#8217;s behavior on our data
-covariance.GetCurrentHyperparameters() will be used to obtain the initial guess</td>
+covariance_ptr-&gt;GetCurrentHyperparameters() will be used to obtain the initial guess</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">gd_parameters:</th><td class="field-body">GradientDescentParameters object that describes the parameters controlling hyperparameter optimization (e.g., number
 of iterations, tolerances, learning rate)</td>
@@ -579,7 +607,7 @@ true optima (i.e., the gradient may be substantially nonzero).</p>
 <p class="first admonition-title">Note</p>
 <p class="last">the domain here must be specified in LOG-10 SPACE!</p>
 </div>
-<p>Let <tt class="docutils literal"><span class="pre">n_hyper</span> <span class="pre">=</span> <span class="pre">covariance.GetNumberOfHyperparameters();</span></tt></p>
+<p>Let <tt class="docutils literal"><span class="pre">n_hyper</span> <span class="pre">=</span> <span class="pre">covariance_ptr-&gt;GetNumberOfHyperparameters();</span></tt></p>
 <dl class="docutils">
 <dt><strong>Parameters</strong>:</dt>
 <dd><table class="first last docutils field-list" frame="void" rules="none">
@@ -1087,7 +1115,7 @@ and (possibly) better numerical conditioning.</p>
 <blockquote>
 <div><p></p>
 <p><p>Computes the (partial) derivatives of the log marginal likelihood with respect to each hyperparameter of our covariance function.</p>
-<p>Let <tt class="docutils literal"><span class="pre">n_hyper</span> <span class="pre">=</span> <span class="pre">covariance.GetNumberOfHyperparameters();</span></tt></p>
+<p>Let <tt class="docutils literal"><span class="pre">n_hyper</span> <span class="pre">=</span> <span class="pre">covariance_ptr-&gt;GetNumberOfHyperparameters();</span></tt></p>
 <dl class="docutils">
 <dt><strong>Parameters</strong>:</dt>
 <dd><table class="first last docutils field-list" frame="void" rules="none">
@@ -1471,17 +1499,12 @@ SetupState() should be called again in such a situation.</p>
 </div></blockquote>
 <p><span class="target" id="project0structoptimal__learning_1_1_log_marginal_likelihood_state_1a2480db26de45d04ee774c00b17643150"></span>int <strong>num_hyperparameters</strong></p>
 <blockquote>
-<div><p>number of hyperparameters of covariance; i.e., covariance.GetNumberOfHyperparameters() </p>
+<div><p>number of hyperparameters of covariance; i.e., covariance_ptr-&gt;GetNumberOfHyperparameters() </p>
 <p></p>
 </div></blockquote>
 <p><span class="target" id="project0structoptimal__learning_1_1_log_marginal_likelihood_state_1a9279caa4cc8874e49aedafa0622798ab"></span>std::unique_ptr&lt;  <a class="reference internal" href="gpp_covariance.html#project0classoptimal__learning_1_1_covariance_interface"><em>CovarianceInterface</em></a>  &gt; <strong>covariance_ptr</strong></p>
 <blockquote>
 <div><p>covariance class (for computing covariance and its gradients) </p>
-<p></p>
-</div></blockquote>
-<p><span class="target" id="project0structoptimal__learning_1_1_log_marginal_likelihood_state_1ace4e60ccf525fbd73aaf62e57172e263"></span><a class="reference internal" href="gpp_covariance.html#project0classoptimal__learning_1_1_covariance_interface"><em>CovarianceInterface</em></a>  &amp; <strong>covariance</strong></p>
-<blockquote>
-<div><p>reference to covariance object for convenience </p>
 <p></p>
 </div></blockquote>
 <p><span class="target" id="project0structoptimal__learning_1_1_log_marginal_likelihood_state_1af0203e06adea657ca843454632185999"></span>std::vector&lt; double &gt; <strong>K_chol</strong></p>
@@ -1701,7 +1724,7 @@ suspected.</p>
 <blockquote>
 <div><p></p>
 <p><p><p>Computes the (partial) derivatives of the leave-one-out cross validation log pseudo-likelihood with respect to each hyperparameter of our covariance function.</p>
-<p>Let <tt class="docutils literal"><span class="pre">n_hyper</span> <span class="pre">=</span> <span class="pre">covariance.GetNumberOfHyperparameters();</span></tt></p>
+<p>Let <tt class="docutils literal"><span class="pre">n_hyper</span> <span class="pre">=</span> <span class="pre">covariance_ptr-&gt;GetNumberOfHyperparameters();</span></tt></p>
 <dl class="docutils">
 <dt><strong>Parameters</strong>:</dt>
 <dd><table class="first last docutils field-list" frame="void" rules="none">
@@ -2021,17 +2044,12 @@ SetupState() should be called again in such a situation.</p>
 </div></blockquote>
 <p><span class="target" id="project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state_1a486a30f23a841d78ca416c3c8104e10f"></span>int <strong>num_hyperparameters</strong></p>
 <blockquote>
-<div><p>number of hyperparameters of covariance; i.e., covariance.GetNumberOfHyperparameters() </p>
+<div><p>number of hyperparameters of covariance; i.e., covariance_ptr-&gt;GetNumberOfHyperparameters() </p>
 <p></p>
 </div></blockquote>
 <p><span class="target" id="project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state_1ac6f099fffb77406de55de41fbae4056a"></span>std::unique_ptr&lt;  <a class="reference internal" href="gpp_covariance.html#project0classoptimal__learning_1_1_covariance_interface"><em>CovarianceInterface</em></a>  &gt; <strong>covariance_ptr</strong></p>
 <blockquote>
 <div><p>covariance class (for computing covariance and its gradients) </p>
-<p></p>
-</div></blockquote>
-<p><span class="target" id="project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state_1ab5ff768891479ede9d8e8b33ca6904b8"></span><a class="reference internal" href="gpp_covariance.html#project0classoptimal__learning_1_1_covariance_interface"><em>CovarianceInterface</em></a>  &amp; <strong>covariance</strong></p>
-<blockquote>
-<div><p>reference to covariance object for convenience </p>
 <p></p>
 </div></blockquote>
 <p><span class="target" id="project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state_1ac75d90cb4edc345b7c53f6d536de1689"></span>std::vector&lt; double &gt; <strong>K_chol</strong></p>
@@ -2101,8 +2119,8 @@ SetupState() should be called again in such a situation.</p>
 <li><p class="first">CODE HIERARCHY</p>
 </li>
 </ol>
-<p><strong>1. FILE OVERVIEW</strong>
-As a preface, if you are not already familiar with GPs and their implementation, you should read the file comments for
+<p><strong>1. FILE OVERVIEW</strong></p>
+<p>As a preface, if you are not already familiar with GPs and their implementation, you should read the file comments for
 gpp_math.hpp/cpp first.  If you are unfamiliar with the concept of model selection or optimization methods, please read
 the file comments for gpp_model_selection_and_hyperparameter_optimization.hpp first.</p>
 <p>This file provides implementations for various log likelihood measures of model quality (marginal likelihood,
@@ -2232,29 +2250,80 @@ say, &#8220;[the LML gives] the probability of the observations emph{given the a
 may be fulfilled.&#8221;  Thus Wahba (1990, sec 4.8) argues that LOO-CV should be more robust to model mis-specification
 (e.g., wrong class of covariance function).</p>
 <p><strong>3. CODE HIERARCHY</strong></p>
-<p>TODO(eliu): format this more like the other files&#8217; code hierarchy/call-tree sections (e.g., gpp_math, gpp_optimization)</p>
-<p>There are three top-level entry points for hyperparameter optimization, one for gradient descent, one for Newton,
-and one for &#8216;dumb&#8217; search.  These are defined in the header.</p>
-<ul class="simple">
-<li>MultistartGradientDescentHyperparameterOptimization&lt;LogLikelihoodEvaluator&gt;() (mutistarted, restarted gradient descent)</li>
-<li>MultistartNewtonHyperparameterOptimization&lt;LogLikelihoodEvaluator&gt;()  (mutistarted [modified] Newton&#8217;s method)</li>
-<li>LatinHypercubeSearchHyperparameterOptimization&lt;LogLikelihoodEvaluator&gt;() (evaluate objective at random points)</li>
+<p>There are currently several top-level entry points for model selection (defined in the hpp) including
+&#8216;dumb&#8217; search, gradient descent, and Newton:</p>
+<ul>
+<li><p class="first">LatinHypercubeSearchHyperparameterOptimization:</p>
+<ul>
+<li><p class="first">Estimates the best model fit with a &#8216;dumb&#8217; search over hyperparameters</p>
+</li>
+<li><p class="first">Selects random guesses based on latin hypercube sampling</p>
+</li>
+<li><p class="first">This calls:</p>
+<p>EvaluateLogLikelihoodAtPointList:</p>
+<ul>
+<li><p class="first">Evaluates the selected log likelihood measure at each set of hyperparameters</p>
+</li>
+<li><p class="first">Multithreaded over starting locations</p>
+</li>
+<li><p class="first">This calls:</p>
+<p>MultistartOptimizer&lt;...&gt;::MultistartOptimize(...) for multistarting (see gpp_optimization.hpp)
+with the NullOptimizer</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p class="first">MultistartGradientDescentHyperparameterOptimization:</p>
+<ul>
+<li><p class="first">Finds the best model by optimizing hyperparmeters to find maxima of log likelihood metrics</p>
+</li>
+<li><p class="first">Selects random starting locations based on latin hypercube sampling</p>
+</li>
+<li><p class="first">Multithreaded over starting locations</p>
+</li>
+<li><p class="first">Optimizes with restarted gradient descent; collects results and updates the solution as new optima are found</p>
+</li>
+<li><p class="first">This calls:</p>
+<p>MultistartOptimizer&lt;...&gt;::MultistartOptimize(...) for multistarting (see gpp_optimization.hpp) together with
+GradientDescentOptimizer::Optimize&lt;ObjectiveFunctionEvaluator, Domain&gt;() (see gpp_optimization.hpp)</p>
+</li>
+</ul>
+</li>
+<li><p class="first">MultistartNewtonHyperparameterOptimization: (Recommended)</p>
+<ul>
+<li><p class="first">Finds the best model by optimizing hyperparmeters to find maxima of log likelihood metrics</p>
+</li>
+<li><p class="first">Selects random starting locations based on latin hypercube sampling</p>
+</li>
+<li><p class="first">Multithreaded over starting locations</p>
+</li>
+<li><p class="first">Optimizes with (modified) Newton&#8217;s Method; collects results and updates the solution as new optima are found</p>
+</li>
+<li><p class="first">This calls:</p>
+<p>MultistartOptimizer&lt;...&gt;::MultistartOptimize(...) for multistarting (see gpp_optimization.hpp) together with
+NewtonOptimizer::Optimize&lt;ObjectiveFunctionEvaluator, Domain&gt;() (see gpp_optimization.hpp)</p>
+</li>
+</ul>
+</li>
 </ul>
 <p>At the moment, we have two choices for the template parameter LogLikelihoodEvaluator: LML and LOO-CV.
 Each of these make additional lower level calls to gpp_linear_algebra routines and gpp_covariance routines.  The
 details (with derivations and optimizations where appropriate) are specified in the function implementation docs and
 will not be repeated here.</p>
 <ul>
-<li><p class="first">LogMarginalLikelihoodEvaluator:
-At the bottom level, LogMarginalLikelihoodEvaluator contains member functions for computing the LML, its gradient
+<li><p class="first">LogMarginalLikelihoodEvaluator:</p>
+<p>At the bottom level, LogMarginalLikelihoodEvaluator contains member functions for computing the LML, its gradient
 wrt hyperparameters (of covariance), and its hessian wrt hyperparameters.  Its data members are the GP model
 inputs (sampled points, function values at sampled points, noise).  It does not know what a covariance is since
 the covariance (i.e., hyperparameters) is meant to change during optimization.</p>
 <p>Its member functions require a LogMarginalLikelihoodState object which is where the (stateful) covariance is kept, along
 with derived quantities that are a function of covariance and model inputs, and various temporaries.</p>
+<p>Computations optionally use a faster implementation using explicit matrix inverses; this is poorly conditioned
+but several times faster.</p>
 </li>
-<li><p class="first">LeaveOneOutLogLikelihoodEvaluator:
-This class contains member fucntions for computing the LOO-CV measure.  Its structure is essentially the same as
+<li><p class="first">LeaveOneOutLogLikelihoodEvaluator:</p>
+<p>This class contains member fucntions for computing the LOO-CV measure.  Its structure is essentially the same as
 LogMarginalLikelihoodEvaluator.  Its members require LeaveOneOutLogLikelihoodState, just as before.</p>
 <p>In the discussion of LOO-CV, we indicated two possible methods to compute the quantities <tt class="docutils literal"><span class="pre">\mu_i,</span> <span class="pre">\sigma_i^2</span></tt>.
 Both are implemented in the code, although it is currently configured to use the faster computation:</p>

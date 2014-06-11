@@ -173,35 +173,42 @@ and verifies that the optimizers can find the solutions.</p>
 <div class="section" id="gpp-optimization-test-cpp">
 <h2>gpp_optimization_test.cpp<a class="headerlink" href="#gpp-optimization-test-cpp" title="Permalink to this headline">¶</a></h2>
 <p></p>
-<p><p>Unit tests for the optimization algorithms in gpp_optimization.hpp.  Currently we have tests for:
-1. restarted gradient descent (which uses gradient descent)
-2. newton</p>
-<p>And each optimizer is tested against:
-1. a quadratic objective function</p>
-<p>performing:
-1. Unconstrained optimization: optimal point is set away from domain boundaries
-2. Constrained optimization: optimal point is set outside the boundaries</p>
-<p>on:
-1. tensor product domains</p>
-<p>Generally the tests verify that:
-0. The expected optimum is actually an optimum (gradients are small).
-1. When started from the optimum value, the optimizer does not move away from it
-2. When started away from the optimum value, the optimizer finds it.
-Where &#8220;finds it&#8221; is checked by seeing whether the point returned by the optimizer is within tolerance of the true
+<p><p>Unit tests for the optimization algorithms in gpp_optimization.hpp.  Currently we have tests for:</p>
+<ol class="arabic simple">
+<li>restarted gradient descent (which uses gradient descent)</li>
+<li>newton</li>
+</ol>
+<p>And each optimizer is tested against:</p>
+<ol class="arabic simple">
+<li>a quadratic objective function</li>
+</ol>
+<p>performing:</p>
+<ol class="arabic simple">
+<li>Unconstrained optimization: optimal point is set away from domain boundaries</li>
+<li>Constrained optimization: optimal point is set outside the boundaries</li>
+</ol>
+<p>on:</p>
+<ol class="arabic simple">
+<li>tensor product domains</li>
+</ol>
+<p>Generally the tests verify that:</p>
+<ol class="arabic simple">
+<li>The expected optimum is actually an optimum (gradients are small).</li>
+<li>When started from the optimum value, the optimizer does not move away from it</li>
+<li>When started away from the optimum value, the optimizer finds it.</li>
+</ol>
+<p>Where &#8220;finds it&#8221; is checked by seeing whether the point returned by the optimizer is within tolerance of the true
 optimum and whether the gradients are within tolerance of 0.</p>
 <p>This is a little tricky for the constrained case b/c we are currently assuming we can compute the location of the
 true optimum directly... which may not always be possible.</p>
-<p>TODO(eliu): we should add some more complex objective functions (higher order polynomials and/or transcendentals)
-and simplex domains.
-We also need a more general way of testing constrained optimization since it is not always possible to directly compute
-the location of the optima.
-(ticket 55778)</p>
-<p>TODO(eliu): we have quite a bit of code duplication here.  For the most part, the only difference is how we set up
-the optimizers in the beginning of each test function.  This duplication could be reduced by encapsulating the optimizers
-in classes and then templating the testing functions on the optimizer type.
-(ticket 55779)</p>
-<p>TODO(eliu): verifying item 0 (claimed optimum is an optimum) should be done in a SEPARATE unit test!
-(ticket 55779)</p>
+<p>TODO(GH-146): we should add some more complex objective functions (higher order
+polynomials and/or transcendentals) and simplex domains.
+We also need a more general way of testing constrained optimization since it is not
+always possible to directly compute the location of the optima.</p>
+<p>TODO(GH-146): we have quite a bit of code duplication here.  For the most part, the
+only difference is how we set up the optimizers in the beginning of each test function.
+This duplication could be reduced by encapsulating the optimizers in classes and then
+templating the testing functions on the optimizer type.</p>
  </p>
 <em>Variables</em><blockquote>
 <div><p><span class="target" id="project0gpp__optimization__test_8cpp_1a844805bf936642eb8849d76b506abf8d"></span>int <strong>dim_</strong></p>

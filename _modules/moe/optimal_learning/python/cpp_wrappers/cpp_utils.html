@@ -154,7 +154,7 @@
 <div class="viewcode-block" id="cppify"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.cpp_utils.cppify">[docs]</a><span class="k">def</span> <span class="nf">cppify</span><span class="p">(</span><span class="n">array</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Flatten a numpy array and copies it to a list for C++ consumption.</span>
 
-<span class="sd">    TOOD(eliu): C++ to accept numpy arrays instead?</span>
+<span class="sd">    TODO(GH-159): This function will be unnecessary when C++ accepts numpy arrays.</span>
 
 <span class="sd">    :param array: array to convert</span>
 <span class="sd">    :type array: array-like (e.g., ndarray, list, etc.) of float64</span>
@@ -168,7 +168,7 @@
 <div class="viewcode-block" id="uncppify"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.cpp_utils.uncppify">[docs]</a><span class="k">def</span> <span class="nf">uncppify</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">expected_shape</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Reshape a copy of the input array into the expected shape.</span>
 
-<span class="sd">    TODO(eliu): Ideally we can avoid the copy here and get rid of this function (instead, call reshape directly).</span>
+<span class="sd">    TODO(GH-159): If C++ returns numpy arrays, we can kill this function (instead, call reshape directly).</span>
 
 <span class="sd">    :param array: array to reshape</span>
 <span class="sd">    :type array: array-like</span>
@@ -178,7 +178,7 @@
 <span class="sd">    :rtype: array of float64 with shape ``expected_shape``</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">array</span><span class="p">),</span> <span class="n">expected_shape</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">expected_shape</span><span class="p">)</span>
 
 </div>
 <div class="viewcode-block" id="cppify_hyperparameters"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.cpp_utils.cppify_hyperparameters">[docs]</a><span class="k">def</span> <span class="nf">cppify_hyperparameters</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">):</span>

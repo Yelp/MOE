@@ -204,7 +204,7 @@
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">covariance_function</span><span class="p">,</span> <span class="n">historical_data</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct a GaussianProcess object that knows how to call C++ for evaluation of member functions.</span>
 
-<span class="sd">        TODO(eliu): have a way to set private RNG state for self.sample_point_from_gp() (GH-56)</span>
+<span class="sd">        TODO(GH-56): Have a way to set private RNG state for self.sample_point_from_gp()</span>
 
 <span class="sd">        :param covariance_function: covariance object encoding assumptions about the GP&#39;s behavior on our data</span>
 <span class="sd">        :type covariance_function: Covariance object exposing hyperparameters (e.g., from python_version.covariance)</span>
@@ -361,7 +361,7 @@
 <span class="sd">        :rtype: array of float64 with shape (num_to_sample, num_to_sample, dim)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c"># TODO(eliu): this can be improved/optimized. see: gpp_math.cpp, GaussianProcess::ComputeGradVarianceOfPoints (GH-62)</span>
+        <span class="c"># TODO(GH-62): This can be improved/optimized. see: gpp_math.cpp, GaussianProcess::ComputeGradVarianceOfPoints</span>
         <span class="n">num_to_sample</span> <span class="o">=</span> <span class="n">points_to_sample</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
         <span class="c"># Compute grad variance</span>
@@ -431,7 +431,7 @@
 <span class="sd">        :rtype: array of float64 with shape (num_to_sample, num_to_sample, dim)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c"># TODO(eliu): this can be improved/optimized. see: gpp_math.cpp, GaussianProcess::ComputeGradCholeskyVarianceOfPoints (GH-62)</span>
+        <span class="c"># TODO(GH-62): This can be improved/optimized. see: gpp_math.cpp, GaussianProcess::ComputeGradCholeskyVarianceOfPoints</span>
         <span class="n">num_to_sample</span> <span class="o">=</span> <span class="n">points_to_sample</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
         <span class="c"># Compute grad cholesky</span>
@@ -502,8 +502,8 @@
 <span class="sd">        :type validate: boolean</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c"># TODO(eliu): make this more efficient than rebuilding all precomputed data (e.g., can update the existing K_chol</span>
-        <span class="c"># instead of recomputing it from scratch. (ADS-3583)</span>
+        <span class="c"># TODO(GH-192): Insert the new covariance (and cholesky covariance) rows into the current matrix  (O(N^2))</span>
+        <span class="c"># instead of recomputing everything (O(N^3))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_historical_data</span><span class="o">.</span><span class="n">append_sample_points</span><span class="p">(</span><span class="n">sampled_points</span><span class="p">,</span> <span class="n">validate</span><span class="o">=</span><span class="n">validate</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_build_precomputed_data</span><span class="p">()</span>
 </div>

@@ -310,6 +310,21 @@ See UniformRandomGenerator::SetRandomizedSeed for details.</p>
 </dl>
  </p>
 </div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_uniform_random_generator_1a0b09f543efda96b2df1b304f913e2799"></span><div class="line-block">
+<div class="line">EngineType &amp; <strong>GetEngine</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Get a reference to the RNG engine used by this class.</p>
+<p>Not necessary for this class since <tt class="docutils literal"><span class="pre">engine</span></tt> is public but we expose this to maintain a uniform
+interface with NormalRNG.</p>
+<dl class="docutils">
+<dt><strong>Returns</strong>:</dt>
+<dd>reference to the underlying RNG engine</dd>
+</dl>
+ </p>
+</div></blockquote>
 <p><span class="target" id="project0structoptimal__learning_1_1_uniform_random_generator_1ac43e16cd2b99023f5bbd3c4e1852ca83"></span><div class="line-block">
 <div class="line">EngineType::result_type <strong>last_seed</strong>()</div>
 </div>
@@ -540,6 +555,19 @@ See NormalRNG::SetRandomizedSeed for details.</p>
 </dl>
  </p>
 </div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_normal_r_n_g_1a554ff066c63004596ac4e1e0f4a1d21f"></span><div class="line-block">
+<div class="line">EngineType &amp; <strong>GetEngine</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Get a reference to the RNG engine used by this class.</p>
+<dl class="docutils">
+<dt><strong>Returns</strong>:</dt>
+<dd>reference to the underlying RNG engine</dd>
+</dl>
+ </p>
+</div></blockquote>
 <p><span class="target" id="project0structoptimal__learning_1_1_normal_r_n_g_1a2c4eef5427f763c292270a1dfbf072d1"></span><div class="line-block">
 <div class="line">double <strong>operator()</strong>()</div>
 </div>
@@ -660,11 +688,6 @@ Useful for testing&#8211;e.g., can conduct multiple runs with the same initial c
 <div><p><span class="target" id="project0structoptimal__learning_1_1_normal_r_n_g_1a7fb6420e82ad2db1b18972d6acfebb51"></span><a class="reference internal" href="#project0structoptimal__learning_1_1_uniform_random_generator"><em>UniformGeneratorType</em></a> <strong>uniform_generator</strong></p>
 <blockquote>
 <div><p>The underlying generator providing uniform PRNGs for this object to transform to N(0, 1). </p>
-<p></p>
-</div></blockquote>
-<p><span class="target" id="project0structoptimal__learning_1_1_normal_r_n_g_1a83ab756cb9c067636038a2a77753841e"></span>EngineType &amp; <strong>engine</strong></p>
-<blockquote>
-<div><p>An (boost) PRNG engine that can be passed to a <tt class="docutils literal"><span class="pre">&lt;boost/random&gt;</span></tt> distribution, e.g., <tt class="docutils literal"><span class="pre">uniform_real&lt;&gt;</span></tt>. </p>
 <p></p>
 </div></blockquote>
 </div></blockquote>

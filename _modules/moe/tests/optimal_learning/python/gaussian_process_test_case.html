@@ -193,7 +193,20 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dim</span><span class="p">,</span> <span class="n">num_hyperparameters</span><span class="p">,</span> <span class="n">num_sampled</span><span class="p">,</span> <span class="n">noise_variance_base</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">hyperparameter_interval</span><span class="o">=</span><span class="n">ClosedInterval</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">1.3</span><span class="p">),</span> <span class="n">lower_bound_interval</span><span class="o">=</span><span class="n">ClosedInterval</span><span class="p">(</span><span class="o">-</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="n">upper_bound_interval</span><span class="o">=</span><span class="n">ClosedInterval</span><span class="p">(</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">),</span> <span class="n">covariance_class</span><span class="o">=</span><span class="n">SquareExponential</span><span class="p">,</span> <span class="n">spatial_domain_class</span><span class="o">=</span><span class="n">TensorProductDomain</span><span class="p">,</span> <span class="n">hyperparameter_domain_class</span><span class="o">=</span><span class="n">TensorProductDomain</span><span class="p">,</span> <span class="n">gaussian_process_class</span><span class="o">=</span><span class="n">GaussianProcess</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">dim</span><span class="p">,</span>
+            <span class="n">num_hyperparameters</span><span class="p">,</span>
+            <span class="n">num_sampled</span><span class="p">,</span>
+            <span class="n">noise_variance_base</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+            <span class="n">hyperparameter_interval</span><span class="o">=</span><span class="n">ClosedInterval</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">1.3</span><span class="p">),</span>
+            <span class="n">lower_bound_interval</span><span class="o">=</span><span class="n">ClosedInterval</span><span class="p">(</span><span class="o">-</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span>
+            <span class="n">upper_bound_interval</span><span class="o">=</span><span class="n">ClosedInterval</span><span class="p">(</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">),</span>
+            <span class="n">covariance_class</span><span class="o">=</span><span class="n">SquareExponential</span><span class="p">,</span>
+            <span class="n">spatial_domain_class</span><span class="o">=</span><span class="n">TensorProductDomain</span><span class="p">,</span>
+            <span class="n">hyperparameter_domain_class</span><span class="o">=</span><span class="n">TensorProductDomain</span><span class="p">,</span>
+            <span class="n">gaussian_process_class</span><span class="o">=</span><span class="n">GaussianProcess</span><span class="p">,</span>
+    <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a test environment: object with enough info to construct a Gaussian Process prior from repeated random draws.</span>
 
 <span class="sd">        :param dim: number of (expected) spatial dimensions; None to skip check</span>
@@ -321,7 +334,11 @@
             <span class="n">covariance_type</span><span class="o">=</span><span class="n">test_environment</span><span class="o">.</span><span class="n">covariance_class</span><span class="p">,</span>
         <span class="p">)</span>
 
-        <span class="n">domain_bounds</span> <span class="o">=</span> <span class="n">gp_utils</span><span class="o">.</span><span class="n">fill_random_domain_bounds</span><span class="p">(</span><span class="n">test_environment</span><span class="o">.</span><span class="n">lower_bound_interval</span><span class="p">,</span> <span class="n">test_environment</span><span class="o">.</span><span class="n">upper_bound_interval</span><span class="p">,</span> <span class="n">test_environment</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
+        <span class="n">domain_bounds</span> <span class="o">=</span> <span class="n">gp_utils</span><span class="o">.</span><span class="n">fill_random_domain_bounds</span><span class="p">(</span>
+            <span class="n">test_environment</span><span class="o">.</span><span class="n">lower_bound_interval</span><span class="p">,</span>
+            <span class="n">test_environment</span><span class="o">.</span><span class="n">upper_bound_interval</span><span class="p">,</span>
+            <span class="n">test_environment</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="n">domain</span> <span class="o">=</span> <span class="n">test_environment</span><span class="o">.</span><span class="n">spatial_domain_class</span><span class="p">(</span><span class="n">ClosedInterval</span><span class="o">.</span><span class="n">build_closed_intervals_from_list</span><span class="p">(</span><span class="n">domain_bounds</span><span class="p">))</span>
         <span class="n">points_sampled</span> <span class="o">=</span> <span class="n">domain</span><span class="o">.</span><span class="n">generate_uniform_random_points_in_domain</span><span class="p">(</span><span class="n">test_environment</span><span class="o">.</span><span class="n">num_sampled</span><span class="p">)</span>
 

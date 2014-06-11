@@ -166,7 +166,7 @@
 <li>NOTATION</li>
 <li>CITATIONS</li>
 </ol>
-<p><strong>1 OVERVIEW OF GAUSSIAN PROCESSES AND EXPECTED IMPROVEMENT; WHAT ARE WE TRYING TO DO?</strong></p>
+<p><strong>1. OVERVIEW OF GAUSSIAN PROCESSES AND EXPECTED IMPROVEMENT; WHAT ARE WE TRYING TO DO?</strong></p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">these comments are copied in Python: interfaces/__init__.py</p>
@@ -245,7 +245,7 @@ GD as well as the template definition.</p>
 well-chosen, GD can fail to converge.  If this happens, we can fall back on heuristics;
 e.g., &#8216;dumb&#8217; search (i.e., evaluate EI at a large number of random points and take the best
 one). Naive search lives in: ComputeOptimalPointsToSampleViaLatinHypercubeSearch&lt;&gt;().</p>
-<p><strong>2 FILE OVERVIEW</strong></p>
+<p><strong>2. FILE OVERVIEW</strong></p>
 <p>This file contains mathematical functions supporting optimal learning.
 These include functions to compute characteristics of Gaussian Processes
 (e.g., variance, mean) and the gradients of these quantities as well as functions to
@@ -260,42 +260,36 @@ Rasmussen and Williams, Gaussian Processes for Machine Learning (2006).
 A bare-bones summary is provided in <tt class="docutils literal"><span class="pre">gpp_math.cpp</span></tt>.</p>
 <p>For further details about expected improvement and the optimization thereof,
 see Scott Clark&#8217;s PhD thesis.  Again, a summary is provided in <tt class="docutils literal"><span class="pre">gpp_math.cpp</span></tt>&#8216;s file comments.</p>
-<p><strong>3 IMPLEMENTATION NOTES</strong></p>
+<p><strong>3. IMPLEMENTATION NOTES</strong></p>
 <ol class="loweralpha">
 <li><p class="first">This file has a few primary endpoints for EI optimization:</p>
 <ol class="lowerroman">
-<li><dl class="first docutils">
-<dt>ComputeOptimalPointsToSampleWithRandomStarts&lt;&gt;()</dt>
-<dd><p class="first last">Solves the q,p-EI problem.
-Takes in a gaussian_process describing the prior, domain, config, etc.; outputs the next best point(s) (experiment)
+<li><p class="first">ComputeOptimalPointsToSampleWithRandomStarts&lt;&gt;():</p>
+<p>Solves the q,p-EI problem.</p>
+<p>Takes in a gaussian_process describing the prior, domain, config, etc.; outputs the next best point(s) (experiment)
 to sample (run). Uses gradient descent.</p>
-</dd>
-</dl>
 </li>
-<li><dl class="first docutils">
-<dt>ComputeOptimalPointsToSampleViaLatinHypercubeSearch&lt;&gt;()</dt>
-<dd><p class="first last">Estimates the q,p-EI problem.
-Takes in a gaussian_process describing the prior, domain, etc.; outputs the next best point(s) (experiment)
+<li><p class="first">ComputeOptimalPointsToSampleViaLatinHypercubeSearch&lt;&gt;():</p>
+<p>Estimates the q,p-EI problem.</p>
+<p>Takes in a gaussian_process describing the prior, domain, etc.; outputs the next best point(s) (experiment)
 to sample (run). Uses &#8216;dumb&#8217; search.</p>
-</dd>
-</dl>
 </li>
-<li><p class="first">ComputeOptimalPointsToSample&lt;&gt;()
-Solves the q,p-EI problem.
-Wraps the previous two items; relies on gradient descent and falls back to &#8220;dumb&#8221; search if it fails.</p>
+<li><p class="first">ComputeOptimalPointsToSample&lt;&gt;() (Recommended):</p>
+<p>Solves the q,p-EI problem.</p>
+<p>Wraps the previous two items; relies on gradient descent and falls back to &#8220;dumb&#8221; search if it fails.</p>
 </li>
 </ol>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p>See <tt class="docutils literal"><span class="pre">gpp_math.cpp</span></tt>&#8216;s header comments for more detailed implementation notes.</p>
 <p class="last">There are also several other functions with external linkage in this header; these
-are provided to ease testing and to permit lower level access from python.</p>
+are provided primarily to ease testing and to permit lower level access from python.</p>
 </div>
 </li>
 <li><p class="first">See <tt class="docutils literal"><span class="pre">gpp_common.hpp</span></tt> header comments for additional implementation notes.</p>
 </li>
 </ol>
-<p><strong>4 NOTATION</strong></p>
+<p><strong>4. NOTATION</strong></p>
 <p>And domain-specific notation, following Rasmussen, Williams:</p>
 <blockquote>
 <div><ul class="simple">
@@ -315,7 +309,7 @@ notation has been repalced with <tt class="docutils literal"><span class="pre">K
 </div>
 <p>Connecting to the q,p-EI notation, both the points represented by &#8220;q&#8221; and &#8220;p&#8221; are represented by <tt class="docutils literal"><span class="pre">Xs</span></tt>. Within
 the GP, there is no distinction between points being sampled by ongoing experiments and new points to sample.</p>
-<p><strong>5 CITATIONS</strong></p>
+<p><strong>5. CITATIONS</strong></p>
 <p>a. Gaussian Processes for Machine Learning.
 Carl Edward Rasmussen and Christopher K. I. Williams. 2006.
 Massachusetts Institute of Technology.  55 Hayward St., Cambridge, MA 02142.
@@ -397,22 +391,6 @@ Journal of Global Optimization, 13, 455-492.</p>
 <div><p></p>
 <p><p>Set up vector of ExpectedImprovementEvaluator::StateType.</p>
 <p>This is a utility function just for reducing code duplication.</p>
-<p>TODO(eliu): this is pretty similar to the version directly above it for OnePotentialSampleExpectedImprovementEvaluator.
-I could merge them and use template-fu to pick the execution path (at compile-time), e.g.,</p>
-<div class="highlight-python"><div class="highlight"><pre>template &lt;typename ExpectedImprovementEvaluator&gt;
-void SetupExpectedImprovementState(const ExpectedImprovementEvaluator&amp; ei_evaluator, ...) {
-  for (...) {
-    if (std::is_same&lt;ExpectedImprovementEvaluator, OnePotentialSampleExpectedImprovementEvaluator&gt;::value) {
-      state_vector-&gt;emplace_back(ei_evaluator, points_to_sample, configure_for_gradients);
-    } else {
-      state_vector-&gt;emplace_back(ei_evaluator, points_to_sample, points_being_sampled, num_to_sample, num_being_sampled, configure_for_gradients, normal_rng + i);
-    }
-  }
-}
-</pre></div>
-</div>
-<p><tt class="docutils literal"><span class="pre">is_same&lt;&gt;::value</span></tt> resolves to &#8216;true&#8217; or &#8216;false&#8217; at compile-time, so the compiler will ditch the unused paths.  I&#8217;m not
-sure if there&#8217;s a nicer way to template-fu this.</p>
 <dl class="docutils">
 <dt><strong>Parameters</strong>:</dt>
 <dd><table class="first last docutils field-list" frame="void" rules="none">
@@ -983,7 +961,7 @@ For any such objects &#8220;state&#8221;, call state.SetupState(...) to restore 
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">hyperparameters_new[<a href="#id1"><span class="problematic" id="id2">covariance_</span></a>.GetNumberOfHyperparameters]:</th></tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">hyperparameters_new[<a href="#id1"><span class="problematic" id="id2">covariance_ptr_</span></a>-&gt;GetNumberOfHyperparameters]:</th></tr>
 <tr class="field-odd field"><td>&nbsp;</td><td class="field-body">new hyperparameter array</td>
 </tr>
 </tbody>
@@ -1609,11 +1587,6 @@ This function should be called any time state variables are changed.</p>
 <p><span class="target" id="project0classoptimal__learning_1_1_gaussian_process_1a430bc4ffcb629edb4bdc5766cbfffe54"></span>std::unique_ptr&lt;  <a class="reference internal" href="gpp_covariance.html#project0classoptimal__learning_1_1_covariance_interface"><em>CovarianceInterface</em></a>  &gt; <strong>covariance_ptr_</strong></p>
 <blockquote>
 <div><p>covariance class (for computing covariance and its gradients) </p>
-<p></p>
-</div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_gaussian_process_1a686c2e58e0074cd71acac1439720195b"></span><a class="reference internal" href="gpp_covariance.html#project0classoptimal__learning_1_1_covariance_interface"><em>CovarianceInterface</em></a>  &amp; <strong>covariance_</strong></p>
-<blockquote>
-<div><p>reference to <tt class="docutils literal"><span class="pre">*covariance_ptr_</span></tt> object for convenience </p>
 <p></p>
 </div></blockquote>
 <p><span class="target" id="project0classoptimal__learning_1_1_gaussian_process_1a0b4b241a7161698b50bcf462bc9f4a41"></span>std::vector&lt; double &gt; <strong>points_sampled_</strong></p>
@@ -2800,10 +2773,10 @@ SetupState is mutated! SetupState() should be called again in such a situation.<
 </li>
 <li>CODE HIERARCHY / CALL-TREE</li>
 </ol>
-<p><strong>1 FILE OVERVIEW</strong></p>
+<p><strong>1. FILE OVERVIEW</strong></p>
 <p>Implementations of functions for Gaussian Processes (mean, variance of GPs and their gradients) and for
 computing and optimizing Expected Improvement (EI).</p>
-<p><strong>2 IMPLEMENTATION NOTES</strong></p>
+<p><strong>2. IMPLEMENTATION NOTES</strong></p>
 <p>See gpp_math.hpp file docs and gpp_common.hpp for a few important implementation notes
 (e.g., restrict, memory allocation, matrix storage style, etc), as well as citation details.</p>
 <p>Additionally, the matrix looping idioms used in this file deserve further mention: see the file comments
@@ -2817,13 +2790,13 @@ for gpp_common.hpp, item 8 for further details.  In summary, using matrix-vector
 }
 </pre></div>
 </div>
-<p><strong>3 MATHEMATICAL OVERVIEW</strong></p>
+<p><strong>3. MATHEMATICAL OVERVIEW</strong></p>
 <p>Next, we provide a high-level discussion of GPs and the EI optimization process used in this file.  See
 Rasmussen &amp; Williams for more details on the former and Scott Clark&#8217;s thesis for details on the latter.  This segment
 is more focused on concepts and mathematical ideas.  We subsequently discuss how the classes and functions
 in this file map onto these mathematical concepts.  If it wasn&#8217;t clear, please read the file comments for
 gpp_math.hpp before continuing (a conceptual overview).</p>
-<p><strong>3a GAUSSIAN PROCESSES</strong></p>
+<p><strong>3a. GAUSSIAN PROCESSES</strong></p>
 <p>First, a Gaussian Process (GP) is defined as a collection of normally distributed random variables (RVs); these
 RVs are not independent nor identically-distributed (i.e., all normal but different mean/var) in general.  Since
 the GP is a collection of RVs, it defines a distribution over FUNCTIONS.  So drawing from the GP realizes
@@ -2851,7 +2824,7 @@ where the test outputs are drawn from the prior.
 <tt class="docutils literal"><span class="pre">K(X,Xs)</span></tt> is computed by BuildMixCovarianceMatrix(); and <tt class="docutils literal"><span class="pre">K(Xs,X)</span></tt> is its transpose.
 <tt class="docutils literal"><span class="pre">K</span> <span class="pre">+</span> <span class="pre">\sigma^2</span></tt> is computed in BuildCovarianceMatrixWithNoiseVariance(); almost all practical uses of GPs and EI will
 be over data with nonzero noise variance.  However this is immaterial to the rest of the discussion here.</p>
-<p><strong>3b SAMPLING FROM GPs</strong></p>
+<p><strong>3b. SAMPLING FROM GPs</strong></p>
 <p>So to obtain the posterior distribution, fs, we again sample this joint prior and throw out any function
 realizations that do not satisfy the observations (i.e., pass through all <tt class="docutils literal"><span class="pre">(X,f)</span></tt> pairs).  This is expensive.</p>
 <p>Instead, we can use math to compute the posterior by conditioning it on the prior:
@@ -2864,7 +2837,7 @@ which is implemented in GaussianProcess::ComputeVarianceOfPoints (and provably S
 <tt class="docutils literal"><span class="pre">y</span> <span class="pre">=</span> <span class="pre">mus</span> <span class="pre">+</span> <span class="pre">L</span> <span class="pre">*</span> <span class="pre">w</span>&nbsp;&nbsp;&nbsp; <span class="pre">(Equation</span> <span class="pre">4)</span></tt>
 where <tt class="docutils literal"><span class="pre">L</span> <span class="pre">*</span> <span class="pre">L^T</span> <span class="pre">=</span> <span class="pre">Vars</span></tt> (cholesky-factorization) and w is a vector of samples from <tt class="docutils literal"><span class="pre">N(0,1)</span></tt>
 Note that if our GP has 10 dimensions (variables), then y contains 10 sample values.</p>
-<p><strong>3c EXPECTED IMPROVEMENT</strong></p>
+<p><strong>3c. EXPECTED IMPROVEMENT</strong></p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">these comments are copied in Python: interfaces/expected_improvement_interface.py</p>
@@ -2883,10 +2856,10 @@ optimization in gpp_heuristic_expected_improvement_optimization.hpp estimates q,
 and apply multistart, restarted gradient descent to find the optimum.  The use of gradient descent
 implies the need for all of the various &#8220;grad&#8221; functions, e.g., GP::ComputeGradMeanOfPoints().
 This is handled starting in the highest level functions of file, ComputeOptimalPointsToSample().</p>
-<p><strong>4 CODE OVERVIEW</strong></p>
+<p><strong>4. CODE OVERVIEW</strong></p>
 <p>Finally, we give some further details about how the previous ideas map into the code.  We begin with an overview
 of important classes and functions in this file, and end by going over the call stack for the EI optimization entry point.</p>
-<p><strong>4a First, the GaussianProcess (GP) class</strong></p>
+<p><strong>4a. First, the GaussianProcess (GP) class</strong></p>
 <p>The GaussianProcess class abstracts the handling of GPs and their properties; quickly going over the functionality: it
 provides methods for computing mean, variance, cholesky of variance, and their gradients (wrt spatial dimensions).
 GP also allows the user to sample function values from it, distributed according to the GP prior.  Lastly GP provides
@@ -2904,7 +2877,7 @@ member functions; it also precomputes (per <tt class="docutils literal"><span cl
 by GP member functions.</p>
 <p>In current usage, users generally will not need to access GaussianProcess&#8217;s member functions directly; instead these are
 used indirectly when users compute or optimize EI.  Plotting/visualization might be one reason to call GP members directly.</p>
-<p><strong>4b Next, the ExpectedImprovementEvaluator and OnePotentialSampleExpectedImprovementEvaulator classes</strong></p>
+<p><strong>4b. Next, the ExpectedImprovementEvaluator and OnePotentialSampleExpectedImprovementEvaulator classes</strong></p>
 <p>ExpectedImprovementEvaluator abstracts the computation of EI and its gradient.  This class references a single
 GaussianProcess that it uses to compute EI/grad EI as described above.  Equations 4, 5 above detailed the EI computation;
 further details can be found below in the call tree discussion as well as in the implementation docs for these
@@ -2921,42 +2894,56 @@ a different object for each thread!  Notably, both EI State classes construct th
 object for use with GP members.  As long as there is only one EI state per thread, This ensures thread safety since there
 is never a reason (or a way) for multiple threads to accidentally use the same GP state.  Finally, the EI state classes
 hold some pre-allocated vectors for use as local temporaries by EI and GradEI computation.</p>
-<p><strong>4c And finally, we discuss selecting optimal experiments with ComputeOptimalPointsToSampleWithRandomStarts()</strong></p>
+<p><strong>4c. And finally, we discuss selecting optimal experiments with ComputeOptimalPointsToSampleWithRandomStarts()</strong></p>
 <p>This function is the top of the hierarchy for EI optimization.  It encompasses a multistart, restarted gradient descent
 method.  Since this is not a convex optimization problem, there could be multiple local optima (or even 0 optima).  So
 we start GD from multiple locations (multistart) as a heuristic in hopes of finding the global optima.</p>
 <p>See the file comments of gpp_optimization.hpp for more details on the base gradient descent implementation and the restart
 component of restarted gradient descent.</p>
-<p><strong>5 CODE HIERARCHY / CALL-TREE</strong></p>
+<p><strong>5. CODE HIERARCHY / CALL-TREE</strong></p>
 <p>For obtaining multiple new points to sample (q,p-EI), we have two main paths for optimization: multistart gradient
 descent and &#8216;dumb&#8217; search. The optimization hierarchy looks like (these optimization functions are in the header;
 they are templates):
 ComputeOptimalPointsToSampleWithRandomStarts&lt;...&gt;(...)  (selects random points; defined in math.hpp)</p>
-<ul class="simple">
-<li>Solves q,p-EI.</li>
-<li>Selects random starting locations based on latin hypercube sampling</li>
-<li>This calls:
-ComputeOptimalPointsToSampleViaMultistartGradientDescent&lt;...&gt;(...)  (multistart gradient descent)<ul>
-<li>Switches into analytic OnePotentialSample case when appropriate</li>
-<li>Multithreaded over starting locations</li>
-<li>Optimizes with restarted gradient descent; collects results and updates the solution as new optima are found</li>
-<li>This calls:
-MultistartOptimizer&lt;...&gt;::MultistartOptimize(...) for multistarting (see gpp_optimization.hpp) which in turn uses
-GradientDescentOptimizer::Optimize&lt;ObjectiveFunctionEvaluator, Domain&gt;() (see gpp_optimization.hpp)</li>
+<ul>
+<li><p class="first">Solves q,p-EI.</p>
+</li>
+<li><p class="first">Selects random starting locations based on random sampling from the domain (e.g., latin hypercube)</p>
+</li>
+<li><p class="first">This calls:</p>
+<p>ComputeOptimalPointsToSampleViaMultistartGradientDescent&lt;...&gt;(...)  (multistart gradient descent)</p>
+<ul>
+<li><p class="first">Switches into analytic OnePotentialSample case when appropriate</p>
+</li>
+<li><p class="first">Multithreaded over starting locations</p>
+</li>
+<li><p class="first">Optimizes with restarted gradient descent; collects results and updates the solution as new optima are found</p>
+</li>
+<li><p class="first">This calls:</p>
+<p>MultistartOptimizer&lt;...&gt;::MultistartOptimize(...) for multistarting (see gpp_optimization.hpp) which in turn uses
+GradientDescentOptimizer::Optimize&lt;ObjectiveFunctionEvaluator, Domain&gt;() (see gpp_optimization.hpp)</p>
+</li>
 </ul>
 </li>
 </ul>
 <p>ComputeOptimalPointsToSampleViaLatinHypercubeSearch&lt;...&gt;(...)  (defined in gpp_math.hpp)</p>
-<ul class="simple">
-<li>Estimates q,p-EI with a &#8216;dumb&#8217; search.</li>
-<li>Selects random starting locations based on latin hypercube sampling</li>
-<li>This calls:
-EvaluateEIAtPointList&lt;...&gt;(...)<ul>
-<li>Evaluates EI at each starting location</li>
-<li>Switches into analytic OnePotentialSample case when appropriate</li>
-<li>Multithreaded over starting locations</li>
-<li>This calls:
-MultistartOptimizer&lt;...&gt;::MultistartOptimize(...) for multistarting (see gpp_optimization.hpp)</li>
+<ul>
+<li><p class="first">Estimates q,p-EI with a &#8216;dumb&#8217; search.</p>
+</li>
+<li><p class="first">Selects random starting locations based on random sampling from the domain (e.g., latin hypercube)</p>
+</li>
+<li><p class="first">This calls:</p>
+<p>EvaluateEIAtPointList&lt;...&gt;(...)</p>
+<ul>
+<li><p class="first">Evaluates EI at each starting location</p>
+</li>
+<li><p class="first">Switches into analytic OnePotentialSample case when appropriate</p>
+</li>
+<li><p class="first">Multithreaded over starting locations</p>
+</li>
+<li><p class="first">This calls:</p>
+<p>MultistartOptimizer&lt;...&gt;::MultistartOptimize(...) for multistarting (see gpp_optimization.hpp)</p>
+</li>
 </ul>
 </li>
 </ul>
@@ -3016,7 +3003,7 @@ relevant derivations for gradients of these quantities.  Suffice to say there&#8
 <p><p><p>This is a simple wrapper around ComputeOptimalPointsToSampleWithRandomStarts() and
 ComputeOptimalPointsToSampleViaLatinHypercubeSearch(). That is, this method attempts multistart gradient descent
 and falls back to latin hypercube search if gradient descent fails (or is not desired).</p>
-<p>TODO(eliu): (GH-77) Instead of random search, we may want to fall back on the methods in
+<p>TODO(GH-77): Instead of random search, we may want to fall back on the methods in
 <tt class="docutils literal"><span class="pre">gpp_heuristic_expected_improvement_optimization.hpp</span></tt> if gradient descent fails; esp for larger q
 (even <tt class="docutils literal"><span class="pre">q</span> <span class="pre">\approx</span> <span class="pre">4</span></tt>), latin hypercube search does a pretty terrible job.
 This is more for general q,p-EI as these two things are equivalent for 1,0-EI.</p>
