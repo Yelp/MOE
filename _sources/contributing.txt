@@ -127,3 +127,15 @@ MOE currently uses ``testify`` (https://github.com/Yelp/Testify) to run all unit
     All new code should be tested before submitting a pull request.
 
 Documentation for and examples of tests can be found at :doc:`moe.tests`
+
+Style
+----
+
+MOE uses the google style guides found here:
+
+* python - http://google-styleguide.googlecode.com/svn/trunk/pyguide.html
+* C++ - http://google-styleguide.googlecode.com/svn/trunk/cppguide.xml
+
+.. Note::
+
+    All new code should conform to these style guides
