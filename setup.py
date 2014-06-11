@@ -82,7 +82,7 @@ class InstallCppComponents(install):
     def run(self):
         """Run the install."""
         install.run(self)
-        """Copy so we do not overwrite the user's environment later."""
+        # Copy so we do not overwrite the user's environment later.
         env = os.environ.copy()
 
         # Sometimes we want to manually build the C++ (like in Docker)
@@ -106,8 +106,8 @@ class InstallCppComponents(install):
             print "Passing '{0:s}' args from MOE_CMAKE_OPTS to cmake.".format(cmake_options)
 
         # Set env dict with cc and/or cxx path
-        """TO find C/C++ compilers, we first try read MOE_CC/CXX_PATH and if they exist, we write to CC/CXX.
-        Then we read and pass CC/CXX to cmake if they are set."""
+        # To find C/C++ compilers, we first try read MOE_CC/CXX_PATH and if they exist, we write to CC/CXX.
+        # Then we read and pass CC/CXX to cmake if they are set.
         if 'MOE_CC_PATH' in env:
             env['CC'] = env['MOE_CC_PATH']
         if 'MOE_CXX_PATH' in env:
