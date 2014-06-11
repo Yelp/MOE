@@ -395,3 +395,17 @@ if (${MOE_USE_GPU} MATCHES "1")
     add_dependencies(EPI GPU_LIB)
     target_link_libraries(EPI ${CUDA_LIBRARIES} ${CMAKE_BINARY_DIR}/gpu/libGPU.so)
 endif()
+
+#### Demo executables
+set(dependencies $<TARGET_OBJECTS:OPTIMAL_LEARNING_CORE_BUNDLE> gpp_test_utils.cpp)
+configure_exec_targets(
+  "${DEMO_NAMES}"
+  "${DEMO_SOURCES}"
+  "${dependencies}"
+  "${EXTRA_COMPILE_FLAGS}"
+  "${EXTRA_COMPILE_DEFINITIONS}"
+  )
+
+# Dummy target named "demos" that builds all demos
+add_custom_target(demos)
+add_dependencies(demos ${DEMO_NAMES})
