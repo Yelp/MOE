@@ -33,14 +33,14 @@ namespace optimal_learning {
           :num_mc_iterations: number of monte carlo iterations
           :best_so_far: best (minimum) objective function value (in ``points_sampled_value``)
       \endrst*/
-      CudaExpectedImprovementEvaluator(const GaussianProcess& gaussian_process_in, double best_so_far) : dim_(gaussian_process_in.dim()), best_so_far_(best_so_far), gaussian_process_(&gaussian_process_in) {
+      CudaExpectedImprovementEvaluator(const GaussianProcess& gaussian_process_in, int num_mc_in, double best_so_far) : dim_(gaussian_process_in.dim()),  num_mc(num_mc_in), best_so_far_(best_so_far), gaussian_process_(&gaussian_process_in) {
           setupGPU(0);
       }
 
       /*!\rst
         Constructor that also specify which gpu you want to use (for multi-gpu system)
       \endrst*/
-      CudaExpectedImprovementEvaluator(const GaussianProcess& gaussian_process_in, double best_so_far, int devID_in) : dim_(gaussian_process_in.dim()), best_so_far_(best_so_far), gaussian_process_(&gaussian_process_in) {
+      CudaExpectedImprovementEvaluator(const GaussianProcess& gaussian_process_in, int num_mc_in, double best_so_far, int devID_in) : dim_(gaussian_process_in.dim()), num_mc(num_mc_in), best_so_far_(best_so_far), gaussian_process_(&gaussian_process_in) {
           setupGPU(devID_in);
       }
 
@@ -98,6 +98,8 @@ namespace optimal_learning {
      private:
       //! spatial dimension (e.g., entries per point of points_sampled)
       const int dim_;
+      //! number of mc iterations
+      int num_mc;
       //! best (minimum) objective function value (in points_sampled_value)
       double best_so_far_;
       //! pointer to gaussian process used in EI computations

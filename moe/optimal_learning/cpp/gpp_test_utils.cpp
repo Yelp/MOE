@@ -185,7 +185,7 @@ bool CheckDoubleWithinRelative(double value, double truth, double tolerance) noe
   double diff = std::fabs((value - truth)/denom);
   bool passed = diff <= tolerance;
   if (passed != true) {
-    OL_ERROR_PRINTF("value = %.18E, truth = %.18E, diff = %.18E, tol = %.18E\n", value, truth, diff, tolerance);
+    OL_ERROR_PRINTF("value = %.18E, truth = %.18E, relative_diff = %.18E, tol = %.18E\n", value, truth, diff, tolerance);
   }
 
   return passed;

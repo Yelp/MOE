@@ -43,7 +43,7 @@
 #include "gpp_test_utils.hpp"
 #include "gpp_test_utils_test.hpp"
 #include "gpp_expected_improvement_gpu.hpp"
-
+#include "gpp_expected_improvement_gpu_test.hpp"
 
 using namespace optimal_learning;  // NOLINT, i'm lazy in this file which has no external linkage anyway
 
@@ -58,7 +58,7 @@ using namespace optimal_learning;  // NOLINT, i'm lazy in this file which has no
 // 7: speed test multistart GD hyper
 // 8: speed test log likelihood eval
 
-#define OL_MODE 10
+#define OL_MODE 11
 #if OL_MODE == -1
 
 double function_to_minimize(double const * restrict point, UniformRandomGenerator * uniform_generator) {
@@ -2173,7 +2173,7 @@ int main() {
   std::vector<double> points_being_sampled(num_being_sampled*dim);
   domain_gp_source.GenerateUniformPointsInDomain(num_being_sampled, &uniform_generator, points_being_sampled.data());
 
-  CudaExpectedImprovementEvaluator cuda_ei_evaluator(gaussian_process, best_so_far);
+  CudaExpectedImprovementEvaluator cuda_ei_evaluator(gaussian_process,666, best_so_far);
   CudaExpectedImprovementState cuda_ei_state(cuda_ei_evaluator, points_to_sample.data(), points_being_sampled.data(), num_to_sample, num_being_sampled, true, &normal_rng);
 
   // calculation
@@ -2200,4 +2200,18 @@ int main() {
 
   return 0;
 }
+
+#elif OL_MODE == 11
+
+int main() {
+    int consistency_num_err = RunCudaEIConsistencyTests();
+    printf("consistency error number = %d\n", consistency_num_err) ;
+
+    int gpuvscpu_num_err = RunCudaEIvsCpuEI();
+    printf("GPU vs CPU error number = %d\n", gpuvscpu_num_err);
+    SpeedComparison();
+
+    return 0;
+}
+
 #endif

@@ -229,9 +229,9 @@ namespace optimal_learning {
         checkCudaErrors(cudaFree(dev_EIs));
     }
 
-    extern "C" double cuda_get_EI(double * __restrict__ mu, double * __restrict__ L, double best, int num_union_of_pts, double * __restrict__ dev_mu, double * __restrict__ dev_L, double * __restrict__ dev_EIs, unsigned int seed)
+    extern "C" double cuda_get_EI(double * __restrict__ mu, double * __restrict__ L, double best, int num_union_of_pts, double * __restrict__ dev_mu, double * __restrict__ dev_L, double * __restrict__ dev_EIs, unsigned int seed, int num_mc)
     {
-        int NUM_ITS = 6300;
+        int NUM_ITS = 2441;
         const unsigned int EI_thread_no = 256;
         const unsigned int EI_block_no = 16;
         dim3 threads(EI_thread_no, 1, 1);
@@ -258,9 +258,9 @@ namespace optimal_learning {
     }
 
      // grad_EI[dim][num_to_sample]
-     extern "C" void cuda_get_gradEI(double * __restrict__ mu, double * __restrict__ grad_mu, double * __restrict__ L, double * __restrict__ grad_L, double best, int num_union_of_pts, int num_to_sample, int dimension, double * __restrict__ dev_mu, double * __restrict__ dev_grad_mu, double * __restrict__ dev_L, double * __restrict__ dev_grad_L, double * __restrict__ dev_grad_EIs, unsigned int seed, double * __restrict__ grad_EI)
+     extern "C" void cuda_get_gradEI(double * __restrict__ mu, double * __restrict__ grad_mu, double * __restrict__ L, double * __restrict__ grad_L, double best, int num_union_of_pts, int num_to_sample, int dimension, double * __restrict__ dev_mu, double * __restrict__ dev_grad_mu, double * __restrict__ dev_L, double * __restrict__ dev_grad_L, double * __restrict__ dev_grad_EIs, unsigned int seed, int num_mc, double * __restrict__ grad_EI)
      {
-         int NUM_ITS = 1000;
+         int NUM_ITS = 2441;
          const unsigned int gradEI_thread_no = 256;
          const unsigned int gradEI_block_no = 16;
          dim3 threads(gradEI_thread_no, 1, 1);
