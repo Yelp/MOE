@@ -23,7 +23,9 @@ It boils down to:
 > "What is the most efficient way to collect information?"
 > -- Prof. Peter Frazier, http://people.orie.cornell.edu/pfrazier
 
-The *black box* nature of MOE allows us to optimize any number of systems, requiring no internal knowledge or access. It uses some objective function (Click Through Rate (CTR), revenue, engagement, etc) and some set of parameters (constants, config values, cut-offs, ML hyperparameters) and finds the best set of parameters to maximize (or minimize) the given function in as few attempts as possible. It does not require knowledge of the specific objective, or how it is obtained, just the previous parameters and their associated objective values (historical data).
+The *black box* nature of MOE allows us to optimize any number of systems, requiring no internal knowledge or access. It uses some [objective function][14] and some set of [parameters][15] and finds the best set of parameters to maximize (or minimize) the given function in as few attempts as possible. It does not require knowledge of the specific objective, or how it is obtained, just the previous parameters and their associated objective values (historical data).
+
+[Why do we need MOE?][16]
 
 Video and slidedeck introduction to MOE:
 
@@ -44,7 +46,7 @@ Externally you can use MOE through:
 2. [The python interface][9]
 3. [The C++ interface][12]
 
-You can be up and optimizing in a matter of minutes.
+You can be up and optimizing in a matter of minutes. [Examples of using MOE][13]
 
 ## Running MOE
 
@@ -143,3 +145,7 @@ See [Contributing Documentation][8]
 [10]: http://www.youtube.com/watch?v=qAN6iyYPbEE
 [11]: http://www.slideshare.net/YelpEngineering/yelp-engineering-open-house-112013-optimally-learning-for-fun-and-profit
 [12]: http://sc932.github.io/MOE/cpp_tree.html
+[13]: http://sc932.github.io/MOE/examples.html
+[14]: http://sc932.github.io/MOE/objective_functions.html
+[15]: http://sc932.github.io/MOE/objective_functions.html#parameters
+[16]: http://sc932.github.io/MOE/why_moe.html
