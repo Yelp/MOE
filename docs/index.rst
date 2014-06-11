@@ -31,7 +31,7 @@ It boils down to:
 
     -- Prof. Peter Frazier, http://people.orie.cornell.edu/pfrazier
 
-The *black box* nature of MOE allows us to optimize any number of systems, requiring no internal knowledge or access. It uses some `objective function </objective_functions>` and some set of `parameters </objective_functions>` and finds the best set of parameters to maximize (or minimize) the given function in as few attempts as possible. It does not require knowledge of the specific objective, or how it is obtained, just the previous parameters and their associated objective values (historical data).
+The *black box* nature of MOE allows us to optimize any number of systems, requiring no internal knowledge or access. It uses some :doc:`objective function </objective_functions>` and some set of :doc:`parameters </objective_functions>` and finds the best set of parameters to maximize (or minimize) the given function in as few attempts as possible. It does not require knowledge of the specific objective, or how it is obtained, just the previous parameters and their associated objective values (historical data).
 
 Example:
 
@@ -41,7 +41,7 @@ Example:
 
 Where :math:`\vec{x}` is any real valued input in some finite number of dimensions and CTR is some black box function that is difficult, expensive or time consuming to evaluate and is potentially non-convex, non-differentiable or non-continuous.
 
-We want to find the best set of parameters :math:`\vec{x}` while evaluating the underlying function (CTR) as few times as possible. See `Objective Functions </objective_functions>` for more examples of objective functions and the best ways to combine metrics.
+We want to find the best set of parameters :math:`\vec{x}` while evaluating the underlying function (CTR) as few times as possible. See :doc:`Objective Functions </objective_functions>` for more examples of objective functions and the best ways to combine metrics.
 
 It allows you to build the following loop, contantly optimizing and surfing the wave of highest returns for any set of parameters.
 
@@ -198,7 +198,6 @@ Documentation
 .. toctree::
    :maxdepth: 2
 
-   index.rst
    why_moe.rst
    install.rst
    objective_functions.rst
@@ -227,4 +226,3 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-
