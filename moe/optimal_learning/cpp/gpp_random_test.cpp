@@ -314,14 +314,14 @@ OL_WARN_UNUSED_RESULT int RandomNumberGeneratorContainerTestCore() {
     current_errors = 0;
     RNGContainer rng;
 
-    typename RNGContainer::EngineType original_engine(rng.engine);  // copy ctor
-    rng.engine.discard(13);
-    if (rng.engine == original_engine) {
+    typename RNGContainer::EngineType original_engine(rng.GetEngine());  // copy ctor
+    rng.GetEngine().discard(13);
+    if (rng.GetEngine() == original_engine) {
       ++current_errors;  // engine state should have changed
     }
 
     rng.ResetToMostRecentSeed();
-    if (rng.engine != original_engine) {
+    if (rng.GetEngine() != original_engine) {
       ++current_errors;  // engine state should have been reset
     }
 

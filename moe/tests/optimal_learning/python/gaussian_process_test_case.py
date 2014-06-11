@@ -45,7 +45,20 @@ class GaussianProcessTestEnvironmentInput(object):
 
     """
 
-    def __init__(self, dim, num_hyperparameters, num_sampled, noise_variance_base=0.0, hyperparameter_interval=ClosedInterval(0.2, 1.3), lower_bound_interval=ClosedInterval(-2.0, 0.5), upper_bound_interval=ClosedInterval(2.0, 3.5), covariance_class=SquareExponential, spatial_domain_class=TensorProductDomain, hyperparameter_domain_class=TensorProductDomain, gaussian_process_class=GaussianProcess):
+    def __init__(
+            self,
+            dim,
+            num_hyperparameters,
+            num_sampled,
+            noise_variance_base=0.0,
+            hyperparameter_interval=ClosedInterval(0.2, 1.3),
+            lower_bound_interval=ClosedInterval(-2.0, 0.5),
+            upper_bound_interval=ClosedInterval(2.0, 3.5),
+            covariance_class=SquareExponential,
+            spatial_domain_class=TensorProductDomain,
+            hyperparameter_domain_class=TensorProductDomain,
+            gaussian_process_class=GaussianProcess,
+    ):
         """Create a test environment: object with enough info to construct a Gaussian Process prior from repeated random draws.
 
         :param dim: number of (expected) spatial dimensions; None to skip check
@@ -173,7 +186,11 @@ class GaussianProcessTestCase(OptimalLearningTestCase):
             covariance_type=test_environment.covariance_class,
         )
 
-        domain_bounds = gp_utils.fill_random_domain_bounds(test_environment.lower_bound_interval, test_environment.upper_bound_interval, test_environment.dim)
+        domain_bounds = gp_utils.fill_random_domain_bounds(
+            test_environment.lower_bound_interval,
+            test_environment.upper_bound_interval,
+            test_environment.dim,
+        )
         domain = test_environment.spatial_domain_class(ClosedInterval.build_closed_intervals_from_list(domain_bounds))
         points_sampled = domain.generate_uniform_random_points_in_domain(test_environment.num_sampled)
 

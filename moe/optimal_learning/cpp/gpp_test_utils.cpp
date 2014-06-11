@@ -374,13 +374,7 @@ OL_CONST_FUNCTION OL_WARN_UNUSED_RESULT double SecondOrderCenteredFiniteDifferen
   This cannot detect small amounts of noise in the gradient either (e.g., ``f' = cos(x) + 1.0e-15``). There is no
   way to tell whether that is noise due to numerical error or noise due to incorrectness.
 
-  TODO(eliu): put the OL_ERROR_PRINTF calls on a different "log level" so that when this stuff fails, I dont flood
-  stdout with msgs. This function can produce a very large amount of output. The workflow should be to come in and
-  enable full logging when developing or modifying gradient code and things fail.
-
-  More generally I could consider printing only the top 10 worst offenders in terms of error or something.
-
-  TODO(eliu): thresholds are an imperfect tool for this task. Loss of precision is not a binary event; you are not
+  TODO(GH-162): thresholds are an imperfect tool for this task. Loss of precision is not a binary event; you are not
   certain at ``2^{-52}`` but uncertain at ``2^{-51}``. It might be better to estimate the range over which we go from
   meaningful loss of precision to complete noise and have a linear ramp for the tolerance over that space. Maybe
   it should be done in log-space?
@@ -471,8 +465,7 @@ int PingDerivative(const PingableMatrixInputVectorOutputInterface& function_and_
 
         // At the end, if none of the "continue" statements are hit, then we are confident that the computed convergence
         // rate is accurate, and we will check that it is within tolerance of the expected convergence rate.
-        // TODO(eliu): prob good to mention false positives here? we want to eliminate false positives so that errors
-        // genuinely indicate something broken in the code.
+        // In general, we want to eliminate false positives so that errors genuinely indicate something broken in the code.
 
         // First, we do checks based on the magnitude of the error relative to the function value (f) and input value (X).
 

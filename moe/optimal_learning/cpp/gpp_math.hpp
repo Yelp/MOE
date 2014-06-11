@@ -7,7 +7,7 @@
   4. NOTATION
   5. CITATIONS
 
-  **1 OVERVIEW OF GAUSSIAN PROCESSES AND EXPECTED IMPROVEMENT; WHAT ARE WE TRYING TO DO?**
+  **1. OVERVIEW OF GAUSSIAN PROCESSES AND EXPECTED IMPROVEMENT; WHAT ARE WE TRYING TO DO?**
 
   .. Note:: these comments are copied in Python: interfaces/__init__.py
 
@@ -100,7 +100,7 @@
   e.g., 'dumb' search (i.e., evaluate EI at a large number of random points and take the best
   one). Naive search lives in: ComputeOptimalPointsToSampleViaLatinHypercubeSearch<>().
 
-  **2 FILE OVERVIEW**
+  **2. FILE OVERVIEW**
 
   This file contains mathematical functions supporting optimal learning.
   These include functions to compute characteristics of Gaussian Processes
@@ -120,31 +120,39 @@
   For further details about expected improvement and the optimization thereof,
   see Scott Clark's PhD thesis.  Again, a summary is provided in ``gpp_math.cpp``'s file comments.
 
-  **3 IMPLEMENTATION NOTES**
+  **3. IMPLEMENTATION NOTES**
 
   a. This file has a few primary endpoints for EI optimization:
 
-     i. ComputeOptimalPointsToSampleWithRandomStarts<>()
+     i. ComputeOptimalPointsToSampleWithRandomStarts<>():
+
+        Solves the q,p-EI problem.
+
+        Takes in a gaussian_process describing the prior, domain, config, etc.; outputs the next best point(s) (experiment)
+        to sample (run). Uses gradient descent.
+
+     ii. ComputeOptimalPointsToSampleViaLatinHypercubeSearch<>():
+
+         Estimates the q,p-EI problem.
+
+         Takes in a gaussian_process describing the prior, domain, etc.; outputs the next best point(s) (experiment)
+         to sample (run). Uses 'dumb' search.
+
+     iii. ComputeOptimalPointsToSample<>() (Recommended):
+
           Solves the q,p-EI problem.
-          Takes in a gaussian_process describing the prior, domain, config, etc.; outputs the next best point(s) (experiment)
-          to sample (run). Uses gradient descent.
-     ii. ComputeOptimalPointsToSampleViaLatinHypercubeSearch<>()
-          Estimates the q,p-EI problem.
-          Takes in a gaussian_process describing the prior, domain, etc.; outputs the next best point(s) (experiment)
-          to sample (run). Uses 'dumb' search.
-     iii. ComputeOptimalPointsToSample<>()
-          Solves the q,p-EI problem.
+
           Wraps the previous two items; relies on gradient descent and falls back to "dumb" search if it fails.
 
      .. NOTE::
          See ``gpp_math.cpp``'s header comments for more detailed implementation notes.
 
          There are also several other functions with external linkage in this header; these
-         are provided to ease testing and to permit lower level access from python.
+         are provided primarily to ease testing and to permit lower level access from python.
 
   b. See ``gpp_common.hpp`` header comments for additional implementation notes.
 
-  **4 NOTATION**
+  **4. NOTATION**
 
   And domain-specific notation, following Rasmussen, Williams:
 
@@ -163,7 +171,7 @@
   Connecting to the q,p-EI notation, both the points represented by "q" and "p" are represented by ``Xs``. Within
   the GP, there is no distinction between points being sampled by ongoing experiments and new points to sample.
 
-  **5 CITATIONS**
+  **5. CITATIONS**
 
   a. Gaussian Processes for Machine Learning.
   Carl Edward Rasmussen and Christopher K. I. Williams. 2006.
@@ -277,7 +285,6 @@ class GaussianProcess final {
       : dim_(dim_in),
         num_sampled_(num_sampled_in),
         covariance_ptr_(covariance_in.Clone()),
-        covariance_(*covariance_ptr_),
         points_sampled_(points_sampled_in, points_sampled_in + num_sampled_in*dim_in),
         points_sampled_value_(points_sampled_value_in, points_sampled_value_in + num_sampled_in),
         noise_variance_(noise_variance_in, noise_variance_in + num_sampled_),
@@ -316,10 +323,10 @@ class GaussianProcess final {
          For any such objects "state", call state.SetupState(...) to restore them.
 
     \param
-      :hyperparameters_new[covariance_.GetNumberOfHyperparameters]: new hyperparameter array
+      :hyperparameters_new[covariance_ptr_->GetNumberOfHyperparameters]: new hyperparameter array
   \endrst*/
   void SetCovarianceHyperparameters(double const * restrict hyperparameters_new) OL_NONNULL_POINTERS {
-    covariance_.SetHyperparameters(hyperparameters_new);
+    covariance_ptr_->SetHyperparameters(hyperparameters_new);
     RecomputeDerivedVariables();
   }
 
@@ -496,8 +503,7 @@ class GaussianProcess final {
   explicit GaussianProcess(const GaussianProcess& source)
       : dim_(source.dim_),
         num_sampled_(source.num_sampled_),
-        covariance_ptr_(source.covariance_.Clone()),
-        covariance_(*covariance_ptr_),
+        covariance_ptr_(source.covariance_ptr_->Clone()),
         points_sampled_(source.points_sampled_),
         points_sampled_value_(source.points_sampled_value_),
         noise_variance_(source.noise_variance_),
@@ -564,8 +570,6 @@ class GaussianProcess final {
   // state variables for prior
   //! covariance class (for computing covariance and its gradients)
   std::unique_ptr<CovarianceInterface> covariance_ptr_;
-  //! reference to ``*covariance_ptr_`` object for convenience
-  CovarianceInterface& covariance_;
   //! coordinates of already-sampled points, ``X``
   std::vector<double> points_sampled_;
   //! function values at points_sampled, ``y``
@@ -1266,23 +1270,6 @@ inline OL_NONNULL_POINTERS void SetupExpectedImprovementState(const OnePotential
 
   This is a utility function just for reducing code duplication.
 
-  TODO(eliu): this is pretty similar to the version directly above it for OnePotentialSampleExpectedImprovementEvaluator.
-  I could merge them and use template-fu to pick the execution path (at compile-time), e.g., ::
-
-    template <typename ExpectedImprovementEvaluator>
-    void SetupExpectedImprovementState(const ExpectedImprovementEvaluator& ei_evaluator, ...) {
-      for (...) {
-        if (std::is_same<ExpectedImprovementEvaluator, OnePotentialSampleExpectedImprovementEvaluator>::value) {
-          state_vector->emplace_back(ei_evaluator, points_to_sample, configure_for_gradients);
-        } else {
-          state_vector->emplace_back(ei_evaluator, points_to_sample, points_being_sampled, num_to_sample, num_being_sampled, configure_for_gradients, normal_rng + i);
-        }
-      }
-    }
-
-  ``is_same<>::value`` resolves to 'true' or 'false' at compile-time, so the compiler will ditch the unused paths.  I'm not
-  sure if there's a nicer way to template-fu this.
-
   \param
     :ei_evaluator: evaluator object associated w/the state objects being constructed
     :points_to_sample[dim][num_to_sample]: initial points to load into state (must be a valid point for the problem);
@@ -1523,7 +1510,7 @@ void ComputeOptimalPointsToSampleWithRandomStarts(const GaussianProcess& gaussia
     :best_next_point[dim][num_to_sample]: points yielding the best EI according to dumb search
 \endrst*/
 template <typename DomainType>
-void EvaluateEIAtPointList(const GaussianProcess& gaussian_process, const DomainType& domain, double const * restrict initial_guesses, double const * restrict points_being_sampled, int num_multistarts, int num_to_sample, int num_being_sampled, double best_so_far, int max_int_steps, int max_num_threads, bool *  restrict found_flag, NormalRNG * normal_rng, double * restrict function_values, double * restrict best_next_point) {
+void EvaluateEIAtPointList(const GaussianProcess& gaussian_process, const DomainType& domain, double const * restrict initial_guesses, double const * restrict points_being_sampled, int num_multistarts, int num_to_sample, int num_being_sampled, double best_so_far, int max_int_steps, int max_num_threads, bool * restrict found_flag, NormalRNG * normal_rng, double * restrict function_values, double * restrict best_next_point) {
   // set chunk_size; see gpp_common.hpp header comments, item 7
   const int chunk_size = std::max(std::min(40, std::max(1, num_multistarts/max_num_threads)), num_multistarts/(max_num_threads*120));
 

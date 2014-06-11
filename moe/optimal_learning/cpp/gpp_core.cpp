@@ -820,7 +820,6 @@ void run_core_test(int *processor_count_list, int num_processor_count_list, int 
       rotate_point_list(points_to_sample.data(), procs, dim);
       // pick a new point
 
-      // TODO(sclark): tail off correctly so taht we dont sample the end points repeatedly
       if (num_sampled - stencil_rows*stencil_columns + procs - 1 < num_samples) {
         printf("picking a new point\n");
         ComputeOptimalPointsToSampleWithRandomStarts(gp, gd_params_ei, domain, points_to_sample.data(), num_to_sample, procs-1, best_so_far, max_int_steps, max_num_threads, &found_flag, &uniform_generator, normal_rng_vec.data(), points_to_sample.data() + (procs-1)*dim);
