@@ -62,19 +62,6 @@
         
         
             <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="index.html">Welcome to MOE&#8217;s documentation!</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="index.html#what-is-moe">What is MOE?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#quick-install">Quick Install</a></li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#quick-start">Quick Start</a></li>
-</ul>
-</li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html#source-documentation">Source Documentation</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="index.html#documentation">Documentation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#python-files">Python Files</a></li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#c-files">C++ Files</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="index.html#indices-and-tables">Indices and tables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="why_moe.html">Why Do We Need MOE?</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="why_moe.html#what-is-moe">What is MOE?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="why_moe.html#why-is-this-hard">Why is this hard?</a></li>
@@ -211,11 +198,11 @@
 <p>The objective function is the function <em>f</em> that we are trying to minimize/maximize over some set of <a class="reference internal" href="#parameters">Parameters</a>.</p>
 <div class="math">
 \[\begin{split}\begin{eqnarray*}
-    \underset{\vec{x}}{\mathrm{argmax}} \ f (\vec{x}) \\
-    f : \vec{x} \rightarrow \mathbb{R}
-\end{eqnarray}\end{split}\]</div>
+    \underset{\vec{x} \in \mathbb{R}^{d}}{\mathrm{argmax}} \ f (\vec{x}) \\
+    f : \mathbb{R}^{d} \rightarrow \mathbb{R}
+\end{eqnarray*}\end{split}\]</div>
 <p>The objective function is considered a <strong>black box</strong> (<a class="reference external" href="http://en.wikipedia.org/wiki/Black_box">http://en.wikipedia.org/wiki/Black_box</a>) function. We require no internal knowledge or access to the function. In fact it can potentially be non-convex, non-differentiable or non-continuous. Furthermore, we assume that evaluating the function, <em>f</em>, is <strong>expensive</strong> and we need to find the best set of parameters/inputs <span class="math">\(\vec{x}\)</span> with as few function evaluations as possible.</p>
-<p>The input to MOE is some set of historical parameters sampled <span class="math">\(\{\vec{x}_{1}, \ldots, \vec{x}_{n}\}\)</span> and their associated function valuations <span class="math">\(\{f(\vec{x}_{1}), \ldots, f(\vec{x}_{n})\}\)</span>. The evaluations may require A/B testing, an map reduce job or some other expensive or time consuming process.</p>
+<p>The input to MOE is some set of historical parameters sampled <span class="math">\(\{\vec{x}_{1}, \ldots, \vec{x}_{n}\}\)</span> and their associated function valuations <span class="math">\(\{f(\vec{x}_{1}), \ldots, f(\vec{x}_{n})\}\)</span>. The evaluations may require A/B testing, an map reduce job or some other expensive or time consuming process. MOE will never need to evaluate <em>f</em>, it only takes the outputs you provide and suggests new optimal inputs to test/evaluate.</p>
 <p>Using this information MOE builds a model the function space <em>f</em> is drawn from (using a Gaussian Process (GP) <a class="reference internal" href="gpp_covariance.html"><em>gpp_covariance</em></a>) over values of <span class="math">\(\vec{x} \in \mathbb{R}^{d}\)</span> and maximizes the Expected Improvement (EI, <a class="reference internal" href="gpp_expected_improvement_demo.html"><em>gpp_expected_improvement_demo</em></a>) of sampling different potential values <span class="math">\(\vec{x}\)</span> in this space, without actually evaluating <em>f</em>. MOE then outputs the <em>q</em> value(s) in <span class="math">\(\mathbb{R}^{d \times q}\)</span> that have the highest EI to be sampled next by the user.</p>
 </div>
 <div class="section" id="properties-of-an-objective-function">
@@ -286,7 +273,7 @@
 \[\begin{equation}
     \mathcal{H} \left(\text{sgn}\left(\omega_{M}\right)\left(\frac{M(C_{i})}{M(C_{S})} - \tau_{M}\right)\right)
 \end{equation}\]</div>
-<p>If the relative gain (or loss if <span class="math">\(\omega_{M} &lt; 0\)</span>) of the metric <span class="math">\(M\)</span> for the set of parameters <span class="math">\(C_{i}\)</span> is below the threshold <span class="math">\(\tau_{M}\)</span> this component will have value 0. Note that this will cancel all gains in all other metrics and give the objective function its lowest possible value.</p>
+<p>If the relative gain (or loss if <span class="math">\(\omega_{M} &lt; 0\)</span>) of the metric <span class="math">\(M\)</span> for the set of parameters <span class="math">\(C_{i}\)</span> is below the threshold <span class="math">\(\tau_{M}\)</span> this component will have value 0. Note that this will cancel all gains in all other metrics and give the objective function its lowest possible value. One can also replace the Heavyside function with a logistic function, or a probability of violating the constraints.</p>
 </div>
 <div class="section" id="the-metrics">
 <h3>The Metrics<a class="headerlink" href="#the-metrics" title="Permalink to this headline">¶</a></h3>

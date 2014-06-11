@@ -95,6 +95,7 @@ To update the online documentation::
 
     git checkout gh-pages
     git pull origin master
+    rm -r docs/_build/html
     make docs-no-tox
     cp -r docs/_build/html/* .
     git add -A

@@ -15,13 +15,13 @@ The objective function is the function *f* that we are trying to minimize/maximi
 
 .. math::
     \begin{eqnarray*}
-        \underset{\vec{x}}{\mathrm{argmax}} \ f (\vec{x}) \\
-        f : \vec{x} \rightarrow \mathbb{R}
-    \end{eqnarray}
+        \underset{\vec{x} \in \mathbb{R}^{d}}{\mathrm{argmax}} \ f (\vec{x}) \\
+        f : \mathbb{R}^{d} \rightarrow \mathbb{R}
+    \end{eqnarray*}
 
 The objective function is considered a **black box** (http://en.wikipedia.org/wiki/Black_box) function. We require no internal knowledge or access to the function. In fact it can potentially be non-convex, non-differentiable or non-continuous. Furthermore, we assume that evaluating the function, *f*, is **expensive** and we need to find the best set of parameters/inputs :math:`\vec{x}` with as few function evaluations as possible.
 
-The input to MOE is some set of historical parameters sampled :math:`\{\vec{x}_{1}, \ldots, \vec{x}_{n}\}` and their associated function valuations :math:`\{f(\vec{x}_{1}), \ldots, f(\vec{x}_{n})\}`. The evaluations may require A/B testing, an map reduce job or some other expensive or time consuming process.
+The input to MOE is some set of historical parameters sampled :math:`\{\vec{x}_{1}, \ldots, \vec{x}_{n}\}` and their associated function valuations :math:`\{f(\vec{x}_{1}), \ldots, f(\vec{x}_{n})\}`. The evaluations may require A/B testing, an map reduce job or some other expensive or time consuming process. MOE will never need to evaluate *f*, it only takes the outputs you provide and suggests new optimal inputs to test/evaluate.
 
 Using this information MOE builds a model the function space *f* is drawn from (using a Gaussian Process (GP) :doc:`gpp_covariance`) over values of :math:`\vec{x} \in \mathbb{R}^{d}` and maximizes the Expected Improvement (EI, :doc:`gpp_expected_improvement_demo`) of sampling different potential values :math:`\vec{x}` in this space, without actually evaluating *f*. MOE then outputs the *q* value(s) in :math:`\mathbb{R}^{d \times q}` that have the highest EI to be sampled next by the user.
 
@@ -110,7 +110,7 @@ The second component of the objective function is the threshold,
         \mathcal{H} \left(\text{sgn}\left(\omega_{M}\right)\left(\frac{M(C_{i})}{M(C_{S})} - \tau_{M}\right)\right)
     \end{equation}
 
-If the relative gain (or loss if :math:`\omega_{M} < 0`) of the metric :math:`M` for the set of parameters :math:`C_{i}` is below the threshold :math:`\tau_{M}` this component will have value 0. Note that this will cancel all gains in all other metrics and give the objective function its lowest possible value.
+If the relative gain (or loss if :math:`\omega_{M} < 0`) of the metric :math:`M` for the set of parameters :math:`C_{i}` is below the threshold :math:`\tau_{M}` this component will have value 0. Note that this will cancel all gains in all other metrics and give the objective function its lowest possible value. One can also replace the Heavyside function with a logistic function, or a probability of violating the constraints.
 
 The Metrics
 ....
@@ -154,6 +154,10 @@ The threshold represents how far we are willing to allow the specific metric to 
     \begin{equation}
         \tau_{M} \in [0, 1]
     \end{equation}
+
+.. Note:
+
+    It is also possible to use other thresholding functions like the logistic function (smoother) or some probability of violating the constraints.
 
 Log Space
 ....
