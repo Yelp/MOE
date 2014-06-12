@@ -280,19 +280,19 @@ if ($ENV{MOE_USE_GPU} MATCHES "1")
             COMMAND CC=${GPU_CC} CXX=${GPU_CXX} cmake ${CMAKE_SOURCE_DIR}/gpu/
             COMMAND make
             )
-    else()
-        add_custom_target(
-            GPU_FOLDER
-            WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-            COMMAND mkdir ${CMAKE_BINARY_DIR}/gpu/
-            )
-        add_custom_target(
-            GPU_LIB
-            DEPENDS GPU_FOLDER
-            WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/gpu/
-            COMMAND CC=${GPU_CC} CXX=${GPU_CXX} cmake ${CMAKE_SOURCE_DIR}/gpu/
-            COMMAND make
-            )
+        else()
+            add_custom_target(
+                GPU_FOLDER
+                WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+                COMMAND mkdir ${CMAKE_BINARY_DIR}/gpu/
+                )
+            add_custom_target(
+                GPU_LIB
+                DEPENDS GPU_FOLDER
+                WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/gpu/
+                COMMAND CC=${GPU_CC} CXX=${GPU_CXX} cmake ${CMAKE_SOURCE_DIR}/gpu/
+                COMMAND make
+                )
     endif()
 endif()
 
@@ -352,6 +352,7 @@ add_library(
   $<TARGET_OBJECTS:OPTIMAL_LEARNING_CORE_BUNDLE>
   $<TARGET_OBJECTS:OPTIMAL_LEARNING_TEST_BUNDLE>
   $<TARGET_OBJECTS:OPTIMAL_LEARNING_GPU_BUNDLE>
+  $<TARGET_OBJECTS:OPTIMAL_LEARNING_GPU_TEST_BUNDLE>
   ${CMAKE_BINARY_DIR}/__init__.py
   )
 if ($ENV{MOE_USE_GPU} MATCHES "1")

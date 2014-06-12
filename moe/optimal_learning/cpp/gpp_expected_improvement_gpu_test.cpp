@@ -177,7 +177,7 @@ namespace optimal_learning {
     int RunCudaEIvsCpuEI() {
       int total_errors = 0;
 
-      const int num_mc_iter = 10000000;
+      const int num_mc_iter = 20000000;
       const int dim = 3;
       const int num_being_sampled = 4;
       const int num_to_sample = 4;
@@ -213,7 +213,7 @@ namespace optimal_learning {
           gpu_EI_evaluator.EvaluateFunction(EI_environment.points_to_sample(), &EI_gpu);
 
           int ei_errors_this_iteration = 0;
-          if (!CheckDoubleWithinRelative(EI_cpu, EI_gpu, 5.0e-4)) {
+          if (!CheckDoubleWithinRelativeWithThreshold(EI_cpu, EI_gpu, 5.0e-4, 1.0e-6)) {
             ++ei_errors_this_iteration;
           }
           if (ei_errors_this_iteration != 0) {
@@ -223,7 +223,7 @@ namespace optimal_learning {
 
           int grad_ei_errors_this_iteration = 0;
           for (int j = 0; j < dim*num_to_sample; ++j) {
-            if (!CheckDoubleWithinRelative(grad_EI_cpu[j], grad_EI_gpu[j], 4.5e-2)) {
+            if (!CheckDoubleWithinRelativeWithThreshold(grad_EI_cpu[j], grad_EI_gpu[j], 2.0e-2, 1.0e-3)) {
               ++grad_ei_errors_this_iteration;
             }
           }
