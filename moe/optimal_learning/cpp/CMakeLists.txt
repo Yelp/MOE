@@ -35,13 +35,18 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 #### External dependencies
-find_package(Boost 1.55.0 EXACT REQUIRED COMPONENTS python)
-set(PYTHON_INCLUDE_DIRS
-    /usr/local/python/test/include/python2.7
-    )
-set(PYTHON_LIBRARIES
-    /usr/local/python/test/lib/libpython2.7.so
-    )
+find_package(PythonLibs REQUIRED)
+find_package(Boost 1.51 REQUIRED COMPONENTS python)
+if (EXISTS ${MOE_PYTHON_INC_DIR})
+    set(PYTHON_INCLUDE_DIRS
+        ${MOE_PYTHON_INC_DIR}
+        )
+endif()
+if (EXISTS ${MOE_PYTHON_LIB})
+    set(PYTHON_LIBRARIES
+        ${MOE_PYTHON_LIB}
+        )
+endif()
 
 include_directories(${PYTHON_INCLUDE_DIRS})
 include_directories(${Boost_INCLUDE_DIRS})
@@ -261,14 +266,14 @@ set(EXTRA_COMPILE_DEFINITIONS_GPU OL_GPU_ENABLED)
 
 set(GPU_CC "")
 set(GPU_CXX "")
-if (EXISTS $ENV{MOE_GPU_CC})
-    set(GPU_CC $ENV{MOE_GPU_CC})
+if (EXISTS ${MOE_GPU_CC})
+    set(GPU_CC ${MOE_GPU_CC})
 endif()
-if (EXISTS $ENV{MOE_GPU_CXX})
-    set(GPU_CXX $ENV{MOE_GPU_CXX})
+if (EXISTS ${MOE_GPU_CXX})
+    set(GPU_CXX ${MOE_GPU_CXX})
 endif()
 
-if ($ENV{MOE_USE_GPU} MATCHES "1")
+if (${MOE_USE_GPU} MATCHES "1")
     find_package(CUDA)
     include_directories(${CUDA_INCLUDE_DIRS})
     set(EXTRA_COMPILE_DEFINITIONS ${EXTRA_COMPILE_DEFINITIONS}
@@ -355,11 +360,11 @@ add_library(
   $<TARGET_OBJECTS:OPTIMAL_LEARNING_GPU_TEST_BUNDLE>
   ${CMAKE_BINARY_DIR}/__init__.py
   )
-if ($ENV{MOE_USE_GPU} MATCHES "1")
+if (${MOE_USE_GPU} MATCHES "1")
     add_dependencies(GPP GPU_LIB)
 endif()
 
-if ($ENV{MOE_USE_GPU} MATCHES "1")
+if (${MOE_USE_GPU} MATCHES "1")
     target_link_libraries(GPP ${PYTHON_LIBRARIES} ${Boost_LIBRARIES}
         ${CUDA_LIBRARIES} ${CMAKE_BINARY_DIR}/gpu/libGPU.so)
 else()
@@ -391,7 +396,7 @@ configure_exec_targets(
   "${EXTRA_COMPILE_FLAGS}"
   "${EXTRA_COMPILE_DEFINITIONS}"
   )
-if ($ENV{MOE_USE_GPU} MATCHES "1")
+if (${MOE_USE_GPU} MATCHES "1")
     add_dependencies(EPI GPU_LIB)
     target_link_libraries(EPI ${CUDA_LIBRARIES} ${CMAKE_BINARY_DIR}/gpu/libGPU.so)
 endif()
