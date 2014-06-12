@@ -261,14 +261,14 @@ set(EXTRA_COMPILE_DEFINITIONS_GPU OL_GPU_ENABLED)
 
 set(GPU_CC "")
 set(GPU_CXX "")
-if (EXISTS ${MOE_GPU_CC})
-    set(GPU_CC ${MOE_GPU_CC})
+if (EXISTS $ENV{MOE_GPU_CC})
+    set(GPU_CC $ENV{MOE_GPU_CC})
 endif()
-if (EXISTS ${MOE_GPU_CXX})
-    set(GPU_CXX ${MOE_GPU_CXX})
+if (EXISTS $ENV{MOE_GPU_CXX})
+    set(GPU_CXX $ENV{MOE_GPU_CXX})
 endif()
 
-if (${MOE_USE_GPU} MATCHES "1")
+if ($ENV{MOE_USE_GPU} MATCHES "1")
     find_package(CUDA)
     include_directories(${CUDA_INCLUDE_DIRS})
     set(EXTRA_COMPILE_DEFINITIONS ${EXTRA_COMPILE_DEFINITIONS}
@@ -354,11 +354,11 @@ add_library(
   $<TARGET_OBJECTS:OPTIMAL_LEARNING_GPU_BUNDLE>
   ${CMAKE_BINARY_DIR}/__init__.py
   )
-if (${MOE_USE_GPU} MATCHES "1")
+if ($ENV{MOE_USE_GPU} MATCHES "1")
     add_dependencies(GPP GPU_LIB)
 endif()
 
-if (${MOE_USE_GPU} MATCHES "1")
+if ($ENV{MOE_USE_GPU} MATCHES "1")
     target_link_libraries(GPP ${PYTHON_LIBRARIES} ${Boost_LIBRARIES}
         ${CUDA_LIBRARIES} ${CMAKE_BINARY_DIR}/gpu/libGPU.so)
 else()
@@ -390,7 +390,7 @@ configure_exec_targets(
   "${EXTRA_COMPILE_FLAGS}"
   "${EXTRA_COMPILE_DEFINITIONS}"
   )
-if (${MOE_USE_GPU} MATCHES "1")
+if ($ENV{MOE_USE_GPU} MATCHES "1")
     add_dependencies(EPI GPU_LIB)
     target_link_libraries(EPI ${CUDA_LIBRARIES} ${CMAKE_BINARY_DIR}/gpu/libGPU.so)
 endif()
