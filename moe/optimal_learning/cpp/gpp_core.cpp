@@ -42,6 +42,8 @@
 #include "gpp_random_test.hpp"
 #include "gpp_test_utils.hpp"
 #include "gpp_test_utils_test.hpp"
+#include "gpp_expected_improvement_gpu.hpp"
+#include "gpp_expected_improvement_gpu_test.hpp"
 
 using namespace optimal_learning;  // NOLINT, i'm lazy in this file which has no external linkage anyway
 
@@ -56,7 +58,7 @@ using namespace optimal_learning;  // NOLINT, i'm lazy in this file which has no
 // 7: speed test multistart GD hyper
 // 8: speed test log likelihood eval
 
-#define OL_MODE 1
+#define OL_MODE 10
 #if OL_MODE == -1
 
 double function_to_minimize(double const * restrict point, UniformRandomGenerator * uniform_generator) {
@@ -2108,4 +2110,17 @@ int main() {
   return 0;
 }
 
+#elif OL_MODE == 10
+
+int main() {
+    int consistency_num_err = RunCudaEIConsistencyTests();
+    printf("consistency error number = %d\n", consistency_num_err) ;
+
+    int gpuvscpu_num_err = RunCudaEIvsCpuEI();
+    printf("GPU vs CPU error number = %d\n", gpuvscpu_num_err);
+
+    // SpeedComparison();
+
+    return 0;
+}
 #endif
