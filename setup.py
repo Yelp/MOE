@@ -136,8 +136,7 @@ class InstallCppComponents(install):
         # Build the full cmake command using properly tokenized options
         cmake_full_command = [cmake_path]
         cmake_full_command.extend(cmake_options_split)
-        cmake_full_command.extend([cpp_location])
-        print cmake_full_command
+        cmake_full_command.append(cpp_location)
 
         # Run cmake
         proc = subprocess.Popen(
