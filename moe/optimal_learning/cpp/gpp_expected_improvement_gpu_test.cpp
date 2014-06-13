@@ -101,7 +101,7 @@ namespace optimal_learning {
     int RunCudaEIConsistencyTests() {
       int total_errors = 0;
 
-      const int num_mc_iter = 1000000;
+      const int num_mc_iter = 20000000;
       const int dim = 3;
       const int num_being_sampled = 0;
       const int num_to_sample = 1;
