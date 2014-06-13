@@ -236,7 +236,8 @@ namespace optimal_learning {
         dim3 threads(EI_thread_no, 1, 1);
         dim3 grid(EI_block_no, 1, 1);
         double EIs[EI_thread_no * EI_block_no];
-        int NUM_ITS = num_mc / (EI_thread_no * EI_block_no);
+        // make sure NUM_ITS is always >= 1
+        int NUM_ITS = num_mc / (EI_thread_no * EI_block_no) + 1;
         int mem_size_mu = num_union_of_pts * sizeof(double);
         int mem_size_L = num_union_of_pts * num_union_of_pts * sizeof(double);
         int mem_size_EIs = EI_thread_no * EI_block_no * sizeof(double);
@@ -264,7 +265,8 @@ namespace optimal_learning {
          const unsigned int gradEI_block_no = 16;
          dim3 threads(gradEI_thread_no, 1, 1);
          dim3 grid(gradEI_block_no, 1, 1);
-         int NUM_ITS = num_mc / (gradEI_thread_no * gradEI_block_no);
+         // make sure NUM_ITS is always >= 1
+         int NUM_ITS = num_mc / (gradEI_thread_no * gradEI_block_no) + 1;
          int mem_size_mu = num_union_of_pts * sizeof(double);
          int mem_size_grad_mu = num_to_sample * dimension * sizeof(double);
          int mem_size_L = num_union_of_pts * num_union_of_pts *sizeof(double);
