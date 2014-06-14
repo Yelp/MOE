@@ -193,15 +193,6 @@ bool CheckMatrixIsSymmetric(double const * restrict matrix, int size, double tol
   return symmetric_flag;
 }
 
-void ZeroUpperTriangle(int size, double * restrict matrix) noexcept {
-  for (int i = 0; i < size; ++i) {
-    for (int j = 0; j < i; ++j) {
-      matrix[j] = 0.0;
-    }
-    matrix += size;
-  }
-}
-
 namespace {
 
 /*!\rst

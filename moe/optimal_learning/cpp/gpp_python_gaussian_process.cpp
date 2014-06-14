@@ -25,6 +25,7 @@
 
 #include "gpp_common.hpp"
 #include "gpp_covariance.hpp"
+#include "gpp_linear_algebra.hpp"
 #include "gpp_math.hpp"
 #include "gpp_python_common.hpp"
 
@@ -105,13 +106,7 @@ boost::python::list GetCholVarWrapper(const GaussianProcess& gaussian_process, c
 
   boost::python::list result;
 
-  // zero upper triangle of chol_var b/c python expects a proper triangular matrix
-  for (int i = 0; i < num_to_sample; ++i) {
-    for (int j = 0; j < i; ++j) {
-      chol_var[i*num_to_sample + j] = 0.0;
-    }
-  }
-
+  ZeroUpperTriangle(num_to_sample, chol_var.data());
   for (int i = 0; i < num_to_sample; ++i) {
     for (int j = 0; j < num_to_sample; ++j) {
       result.append(chol_var[j*num_to_sample + i]);

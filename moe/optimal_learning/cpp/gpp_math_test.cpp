@@ -46,7 +46,7 @@
 #include "gpp_domain.hpp"
 #include "gpp_exception.hpp"
 #include "gpp_geometry.hpp"
-#include "gpp_linear_algebra_test.hpp"
+#include "gpp_linear_algebra.hpp"
 #include "gpp_logging.hpp"
 #include "gpp_math.hpp"
 #include "gpp_mock_optimization_objective_functions.hpp"

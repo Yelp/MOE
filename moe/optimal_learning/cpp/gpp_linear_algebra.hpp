@@ -64,6 +64,17 @@ double VectorNorm(double const * restrict vector, int size) noexcept OL_PURE_FUN
 void MatrixTranspose(double const * restrict matrix, int num_rows, int num_cols, double * restrict transpose) noexcept OL_NONNULL_POINTERS;
 
 /*!\rst
+  Zeroes the strict upper triangle of a matrix (assuming column-major storage)
+
+  \param
+    :size: dimension of matrix
+    :matrix[size][size]: matrix whose upper tri is to be zeroed (on input)
+  \output
+    :matrix[size][size]: lower triangular part of input matrix
+\endrst*/
+OL_NONNULL_POINTERS void ZeroUpperTriangle(int size, double * restrict matrix) noexcept;
+
+/*!\rst
   Multiplies first ``size`` elements of ``vector`` by ``alpha``, ``vector := vector*alpha``.
 
   Should be equivalent to BLAS call:

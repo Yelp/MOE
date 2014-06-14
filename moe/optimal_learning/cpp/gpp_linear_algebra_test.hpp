@@ -195,17 +195,6 @@ OL_NONNULL_POINTERS void BuildRandomVector(int size, double left_bound, double r
 OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT bool CheckMatrixIsSymmetric(double const * restrict matrix, int size, double tolerance) noexcept;
 
 /*!\rst
-  Zeroes the strict upper triangle of a matrix (assuming column-major storage)
-
-  \param
-    :size: dimension of matrix
-    :matrix[size][size]: matrix whose upper tri is to be zeroed (on input)
-  \output
-    :matrix[size][size]: lower triangular part of input matrix
-\endrst*/
-OL_NONNULL_POINTERS void ZeroUpperTriangle(int size, double * restrict matrix) noexcept;
-
-/*!\rst
   Runs a battery of tests on (supporting) linear algebra routines:
   * cholesky factorization
   * Solving ``A * x = b`` when ``A`` is SPD

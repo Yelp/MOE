@@ -72,6 +72,24 @@ double VectorNorm(double const * restrict vector, int size) noexcept {
   return scale * std::sqrt(scaled_norm);
 }
 
+void MatrixTranspose(double const * restrict matrix, int num_rows, int num_cols, double * restrict transpose) noexcept {
+  for (int i = 0; i < num_rows; ++i) {
+    for (int j = 0; j < num_cols; ++j) {
+      transpose[j] = matrix[j*num_rows + i];
+    }
+    transpose += num_cols;
+  }
+}
+
+void ZeroUpperTriangle(int size, double * restrict matrix) noexcept {
+  for (int i = 0; i < size; ++i) {
+    for (int j = 0; j < i; ++j) {
+      matrix[j] = 0.0;
+    }
+    matrix += size;
+  }
+}
+
 /*!\rst
   Cholesky factorization, ``A = L * L^T`` (see Smith 1995 or Golub, Van Loan 1983, etc.)
   This implementation uses the outer-product formulation.  The outer-product version is
@@ -371,16 +389,6 @@ void GeneralMatrixMatrixMultiply(double const * restrict Amat, char transA, doub
       Bmat += size_k;
       Cmat += size_m;
     }
-  }
-}
-
-void MatrixTranspose(double const * restrict matrix, int num_rows, int num_cols, double * restrict transpose) noexcept {
-  // returns the transpose of a matrix
-  for (int i = 0; i < num_rows; ++i) {
-    for (int j = 0; j < num_cols; ++j) {
-      transpose[j] = matrix[j*num_rows + i];
-    }
-    transpose += num_cols;
   }
 }
 
