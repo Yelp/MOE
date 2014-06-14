@@ -821,7 +821,7 @@ void LeaveOneOutLogLikelihoodEvaluator::ComputeGradLogLikelihood(LeaveOneOutLogL
   Kludge to make it so that I can use general template code w/o special casing LeaveOneOutLogLikelihoodEvaluator.
 \endrst*/
 void LeaveOneOutLogLikelihoodEvaluator::ComputeHessianLogLikelihood(LeaveOneOutLogLikelihoodState * OL_UNUSED(log_likelihood_state), double * restrict OL_UNUSED(hessian_loo)) const {
-  OL_THROW_EXCEPTION(RuntimeException, "LeaveOneOutLogLikelihoodEvaluator::ComputeHessianLogLikelihood is NOT IMPLEMENTED.");
+  OL_THROW_EXCEPTION(OptimalLearningException, "LeaveOneOutLogLikelihoodEvaluator::ComputeHessianLogLikelihood is NOT IMPLEMENTED.");
 }
 
 }  // end namespace optimal_learning

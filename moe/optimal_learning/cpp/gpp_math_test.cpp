@@ -125,7 +125,7 @@ class PingGPPMean final : public PingableMatrixInputVectorOutputInterface {
 
   virtual double GetAnalyticGradient(int row_index, int column_index, int output_index) const OL_WARN_UNUSED_RESULT {
     if (gradients_already_computed_ == false) {
-      OL_THROW_EXCEPTION(RuntimeException, "PingGPPMean::GetAnalyticGradient() called BEFORE EvaluateAndStoreAnalyticGradient. NO DATA!");
+      OL_THROW_EXCEPTION(OptimalLearningException, "PingGPPMean::GetAnalyticGradient() called BEFORE EvaluateAndStoreAnalyticGradient. NO DATA!");
     }
 
     if (column_index == output_index) {
@@ -219,13 +219,13 @@ class PingGPPVariance final : public PingableMatrixInputVectorOutputInterface {
     gaussian_process_.ComputeGradVarianceOfPoints(&points_to_sample_state, grad_variance_.data());
 
     if (gradients != nullptr) {
-      OL_THROW_EXCEPTION(RuntimeException, "PingGPPVariance::EvaluateAndStoreAnalyticGradient() does not support direct gradient output.");
+      OL_THROW_EXCEPTION(OptimalLearningException, "PingGPPVariance::EvaluateAndStoreAnalyticGradient() does not support direct gradient output.");
     }
   }
 
   virtual double GetAnalyticGradient(int row_index, int column_index, int output_index) const override OL_WARN_UNUSED_RESULT {
     if (gradients_already_computed_ == false) {
-      OL_THROW_EXCEPTION(RuntimeException, "PingGPPVariance::GetAnalyticGradient() called BEFORE EvaluateAndStoreAnalyticGradient. NO DATA!");
+      OL_THROW_EXCEPTION(OptimalLearningException, "PingGPPVariance::GetAnalyticGradient() called BEFORE EvaluateAndStoreAnalyticGradient. NO DATA!");
     }
 
     return grad_variance_[column_index*Square(num_to_sample_)*dim_ + output_index*dim_ + row_index];
@@ -323,13 +323,13 @@ class PingGPPCholeskyVariance final : public PingableMatrixInputVectorOutputInte
     gaussian_process_.ComputeGradCholeskyVarianceOfPoints(&points_to_sample_state, variance_of_points.data(), grad_variance_.data());
 
     if (gradients != nullptr) {
-      OL_THROW_EXCEPTION(RuntimeException, "PingGPPCholeskyVariance::EvaluateAndStoreAnalyticGradient() does not support direct gradient output.");
+      OL_THROW_EXCEPTION(OptimalLearningException, "PingGPPCholeskyVariance::EvaluateAndStoreAnalyticGradient() does not support direct gradient output.");
     }
   }
 
   virtual double GetAnalyticGradient(int row_index, int column_index, int output_index) const override OL_WARN_UNUSED_RESULT {
     if (gradients_already_computed_ == false) {
-      OL_THROW_EXCEPTION(RuntimeException, "PingGPPCholeskyVariance::GetAnalyticGradient() called BEFORE EvaluateAndStoreAnalyticGradient. NO DATA!");
+      OL_THROW_EXCEPTION(OptimalLearningException, "PingGPPCholeskyVariance::GetAnalyticGradient() called BEFORE EvaluateAndStoreAnalyticGradient. NO DATA!");
     }
 
     return grad_variance_[column_index*Square(num_to_sample_)*dim_ + output_index*dim_ + row_index];
@@ -429,7 +429,7 @@ class PingExpectedImprovement final : public PingableMatrixInputVectorOutputInte
 
   virtual double GetAnalyticGradient(int row_index, int column_index, int OL_UNUSED(output_index)) const override OL_WARN_UNUSED_RESULT {
     if (gradients_already_computed_ == false) {
-      OL_THROW_EXCEPTION(RuntimeException, "PingExpectedImprovement::GetAnalyticGradient() called BEFORE EvaluateAndStoreAnalyticGradient. NO DATA!");
+      OL_THROW_EXCEPTION(OptimalLearningException, "PingExpectedImprovement::GetAnalyticGradient() called BEFORE EvaluateAndStoreAnalyticGradient. NO DATA!");
     }
 
     return grad_EI_[column_index*dim_ + row_index];
@@ -532,7 +532,7 @@ class PingOnePotentialSampleExpectedImprovement final : public PingableMatrixInp
 
   virtual double GetAnalyticGradient(int row_index, int OL_UNUSED(column_index), int OL_UNUSED(output_index)) const override OL_WARN_UNUSED_RESULT {
     if (gradients_already_computed_ == false) {
-      OL_THROW_EXCEPTION(RuntimeException, "PingOnePotentialSampleExpectedImprovement::GetAnalyticGradient() called BEFORE EvaluateAndStoreAnalyticGradient. NO DATA!");
+      OL_THROW_EXCEPTION(OptimalLearningException, "PingOnePotentialSampleExpectedImprovement::GetAnalyticGradient() called BEFORE EvaluateAndStoreAnalyticGradient. NO DATA!");
     }
 
     return grad_EI_[row_index];

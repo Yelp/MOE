@@ -14,7 +14,9 @@
 
   These are analogous to boost::throw_exception() and BOOST_THROW_EXCEPTION.
 
-  ALL exception objects MUST inherit publicly from std::exception.
+  ALL exception objects MUST inherit publicly from std::exception. No exceptions (ha ha).
+  This file defines the base OptimalLearningException (derived from std::exception) and
+  derives several exceptions from it.
 
   Additionally, to use the OL_THROW_EXCEPTION macro (see its #define for details), the
   first two arguments in MyException's ctor must be char *.
@@ -142,6 +144,7 @@ OL_NORETURN inline void ThrowException(const ExceptionType& except) {
 /*!\rst
   Exception to handle general runtime errors (e.g., not fitting into other exception types).
   Subclasses std::exception.
+  Serves as the superclass for all other custom exceptions in the ``optimal_learning`` library.
 
   This class is essentially the same as std::runtime_error but it includes a ctor with
   some extra logic for formatting the error message.
@@ -149,20 +152,20 @@ OL_NORETURN inline void ThrowException(const ExceptionType& except) {
   Holds only a std::string containing the message produced by what(). Note that
   any exceptions from std::string operations (e.g., std::bad_alloc) will cause std::terminate().
 \endrst*/
-class RuntimeException : public std::exception {
+class OptimalLearningException : public std::exception {
  public:
   //! String name of this exception for logging.
-  constexpr static char const * kName = "RuntimeException";
+  constexpr static char const * kName = "OptimalLearningException";
 
   /*!\rst
-    Constructs a RuntimeException with the specified message.
+    Constructs a OptimalLearningException with the specified message.
 
     \param
       :line_info[]: ptr to char array containing __FILE__ and __LINE__ info; e.g., from OL_STRINGIFY_FILE_AND_LINE
       :func_info[]: optional ptr to char array from OL_CURRENT_FUNCTION_NAME or similar
       :custom_message[]: optional ptr to char array with any additional text/info to print/log
   \endrst*/
-  RuntimeException(char const * line_info, char const * func_info, char const * custom_message);
+  OptimalLearningException(char const * line_info, char const * func_info, char const * custom_message);
 
   /*!\rst
     Provides a C-string containing information about the conditions of the exception.
@@ -171,7 +174,7 @@ class RuntimeException : public std::exception {
     The message is formatted in the class ctor (capitals indicate variable information)::
 
       R"%%(
-      RuntimeException: CUSTOM_MESSAGE FUNCTION_NAME FILE_LINE_INFO
+      OptimalLearningException: CUSTOM_MESSAGE FUNCTION_NAME FILE_LINE_INFO
       )%%"
 
     \return
@@ -181,16 +184,37 @@ class RuntimeException : public std::exception {
     return message_.c_str();
   }
 
-  RuntimeException() = delete;
+  OptimalLearningException() = delete;
 
- private:
+ protected:
+  /*!\rst
+    Constructs a OptimalLearningException with the specified name.
+    This is used by subclasses to override the class name in the message text.
+
+    \param
+      :name[]: the exception name to write into the message
+  \endrst*/
+  explicit OptimalLearningException(char const * name);
+
+  /*!\rst
+    Utility function to append some additional info (file/line number, function name,
+    and/or a custom message) to a specified string.
+    This is meant to be used for constructing what() messages for the exception classes
+    in gpp_exception.hpp.
+
+    \param
+      :line_info[]: ptr to char array containing __FILE__ and __LINE__ info; e.g., from OL_STRINGIFY_FILE_AND_LINE
+      :func_info[]: optional ptr to char array from OL_CURRENT_FUNCTION_NAME or similar
+      :custom_message[]: optional ptr to char array with any additional text/info to print/log
+\endrst*/
+  void AppendCustomMessageAndDebugInfo(char const * line_info, char const * func_info, char const * custom_message);
+
   //! a custom message describing this exception, produced by ``what()``.
   std::string message_;
 };
 
 /*!\rst
   Exception to capture value < min_value OR value > max_value.
-  Subclasses std::exception.
 
   Stores value, min, and max for debugging/logging/reacting purposes.
 
@@ -198,7 +222,7 @@ class RuntimeException : public std::exception {
   any exceptions from std::string operations (e.g., std::bad_alloc) will cause std::terminate().
 \endrst*/
 template <typename ValueType>
-class BoundsException : public std::exception {
+class BoundsException : public OptimalLearningException {
  public:
   //! String name of this exception for logging.
   constexpr static char const * kName = "BoundsException";
@@ -255,8 +279,6 @@ class BoundsException : public std::exception {
  private:
   //! The errorneous value_ and the ``[min_, max_]`` bounds that it should lie in.
   ValueType value_, min_, max_;
-  //! a custom message describing this exception, produced by ``what()``.
-  std::string message_;
 };
 
 // template explicit instantiation declarations, see gpp_common.hpp header comments, item 6
@@ -318,7 +340,6 @@ class UpperBoundException : public BoundsException<ValueType> {
 /*!\rst
   Exception to capture value != truth (+/- tolerance).
   The tolerance parameter is optional and only usable with floating point data types.
-  Subclasses std::exception.
 
   Stores value and truth (and tolerance as applicable) for debugging/logging/reacting purposes.
 
@@ -326,7 +347,7 @@ class UpperBoundException : public BoundsException<ValueType> {
   any exceptions from std::string operations (e.g., std::bad_alloc) will cause std::terminate().
 \endrst*/
 template <typename ValueType>
-class InvalidValueException : public std::exception {
+class InvalidValueException : public OptimalLearningException {
  public:
   //! String name of this exception for logging.
   constexpr static char const * kName = "InvalidValueException";
@@ -402,8 +423,6 @@ class InvalidValueException : public std::exception {
  private:
   //! the erroneous ``value_`` and the ``truth_ +/- tolerance_`` range that it should lie in
   ValueType value_, truth_, tolerance_;
-  //! a custom message describing this exception, produced by ``what()``.
-  std::string message_;
 };
 
 // template explicit instantiation definitions, see gpp_common.hpp header comments, item 6
@@ -413,7 +432,6 @@ extern template InvalidValueException<double>::InvalidValueException(char const 
 
 /*!\rst
   Exception to capture when a matrix A (\in R^{m x n}) is singular.
-  Subclasses std::exception.
 
   Stores the matrix (in a std::vector) and its dimensions.
 
@@ -421,7 +439,7 @@ extern template InvalidValueException<double>::InvalidValueException(char const 
   any exceptions from std::string operations (e.g., std::bad_alloc) will cause std::terminate().
   Similarly the std::vector<double> ctor can throw and cause std::terminate().
 \endrst*/
-class SingularMatrixException : public std::exception {
+class SingularMatrixException : public OptimalLearningException {
  public:
   //! String name of this exception for logging.
   constexpr static char const * kName = "SingularMatrixException";
@@ -480,8 +498,6 @@ class SingularMatrixException : public std::exception {
   int num_rows_, num_cols_;
   //! the data of the singular matrix, ordered column-major
   std::vector<double> matrix_;
-  //! a custom message describing this exception, produced by ``what()``.
-  std::string message_;
 };
 
 }  // end namespace optimal_learning

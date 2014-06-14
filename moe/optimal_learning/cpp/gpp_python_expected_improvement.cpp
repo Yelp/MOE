@@ -124,7 +124,7 @@ void DispatchExpectedImprovementOptimization(const boost::python::object& optimi
     }  // end case kGradientDescent optimizer_type
     default: {
       std::fill(best_points_to_sample, best_points_to_sample + input_container.dim*num_to_sample, 0.0);
-      OL_THROW_EXCEPTION(RuntimeException, "ERROR: invalid optimizer choice. Setting all coordinates to 0.0.");
+      OL_THROW_EXCEPTION(OptimalLearningException, "ERROR: invalid optimizer choice. Setting all coordinates to 0.0.");
       break;
     }
   }  // end switch over optimizer_type
@@ -164,7 +164,7 @@ boost::python::list MultistartExpectedImprovementOptimizationWrapper(const boost
     }  // end case OptimizerTypes::kSimplex
     default: {
       std::fill(best_points_to_sample_C.begin(), best_points_to_sample_C.end(), 0.0);
-      OL_THROW_EXCEPTION(RuntimeException, "ERROR: invalid domain choice. Setting all coordinates to 0.0.");
+      OL_THROW_EXCEPTION(OptimalLearningException, "ERROR: invalid domain choice. Setting all coordinates to 0.0.");
       break;
     }
   }  // end switch over domain_type
@@ -225,7 +225,7 @@ void DispatchHeuristicExpectedImprovementOptimization(const boost::python::objec
     }  // end case kGradientDescent optimizer_type
     default: {
       std::fill(best_points_to_sample, best_points_to_sample + gaussian_process.dim()*num_to_sample, 0.0);
-      OL_THROW_EXCEPTION(RuntimeException, "ERROR: invalid optimizer choice. Setting all coordinates to 0.0.");
+      OL_THROW_EXCEPTION(OptimalLearningException, "ERROR: invalid optimizer choice. Setting all coordinates to 0.0.");
       break;
     }
   }  // end switch over optimizer_type
@@ -257,7 +257,7 @@ boost::python::list HeuristicExpectedImprovementOptimizationWrapper(const boost:
     }  // end case OptimizerTypes::kSimplex
     default: {
       std::fill(best_points_to_sample_C.begin(), best_points_to_sample_C.end(), 0.0);
-      OL_THROW_EXCEPTION(RuntimeException, "ERROR: invalid domain choice. Setting all coordinates to 0.0.");
+      OL_THROW_EXCEPTION(OptimalLearningException, "ERROR: invalid domain choice. Setting all coordinates to 0.0.");
       break;
     }
   }  // end switch over domain_type
