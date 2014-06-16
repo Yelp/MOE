@@ -258,6 +258,7 @@
 #include "gpp_common.hpp"
 #include "gpp_covariance.hpp"
 #include "gpp_domain.hpp"
+#include "gpp_exception.hpp"
 #include "gpp_geometry.hpp"
 #include "gpp_linear_algebra.hpp"
 #include "gpp_linear_algebra-inl.hpp"
@@ -473,9 +474,9 @@ void GaussianProcess::ComputeVarianceOfPoints(StateType * points_to_sample_state
   // following block computes Vars -= V^T*V, with the exact method depending on what quantities were precomputed
   if (unlikely(points_to_sample_state->num_derivatives == 0)) {
     std::copy(points_to_sample_state->K_star.begin(), points_to_sample_state->K_star.end(), points_to_sample_state->V.begin());
+
+    // V := L^-1 * K_star
     TriangularMatrixMatrixSolve(K_chol_.data(), 'N', num_sampled_, num_to_sample, num_sampled_, points_to_sample_state->V.data());
-    // now V := L^-1 * K_star
-    // Would computing this as Ks * (K \ Ks^T) reduce numerical errors?  Is it worth the extra expense?
 
     // compute V^T V = (L^-1 * Ks)^T * (L^-1 * Ks).
     GeneralMatrixMatrixMultiply(points_to_sample_state->V.data(), 'T', points_to_sample_state->V.data(), -1.0, 1.0, num_to_sample, num_sampled_, num_to_sample, var_star);
@@ -791,7 +792,9 @@ double ExpectedImprovementEvaluator::ComputeExpectedImprovement(StateType * ei_s
   int num_union = ei_state->num_union;
   gaussian_process_->ComputeMeanOfPoints(ei_state->points_to_sample_state, ei_state->to_sample_mean.data());
   gaussian_process_->ComputeVarianceOfPoints(&(ei_state->points_to_sample_state), ei_state->cholesky_to_sample_var.data());
-  ComputeCholeskyFactorL(num_union, ei_state->cholesky_to_sample_var.data());
+  if (unlikely(ComputeCholeskyFactorL(num_union, ei_state->cholesky_to_sample_var.data())) != 0) {
+    OL_THROW_EXCEPTION(SingularMatrixException, "GP-Variance matrix singular. Check for duplicate points_to_sample/being_sampled or points_to_sample/being_sampled duplicating points_sampled with 0 noise.", ei_state->cholesky_to_sample_var.data(), num_union);
+  }
 
   double aggregate = 0.0;
   for (int i = 0; i < num_mc_iterations_; ++i) {
@@ -838,7 +841,9 @@ void ExpectedImprovementEvaluator::ComputeGradExpectedImprovement(StateType * ei
   gaussian_process_->ComputeMeanOfPoints(ei_state->points_to_sample_state, ei_state->to_sample_mean.data());
   gaussian_process_->ComputeGradMeanOfPoints(ei_state->points_to_sample_state, ei_state->grad_mu.data());
   gaussian_process_->ComputeVarianceOfPoints(&(ei_state->points_to_sample_state), ei_state->cholesky_to_sample_var.data());
-  ComputeCholeskyFactorL(num_union, ei_state->cholesky_to_sample_var.data());
+  if (unlikely(ComputeCholeskyFactorL(num_union, ei_state->cholesky_to_sample_var.data()) != 0)) {
+    OL_THROW_EXCEPTION(SingularMatrixException, "GP-Variance matrix singular. Check for duplicate points_to_sample/being_sampled or points_to_sample/being_sampled duplicating points_sampled with 0 noise.", ei_state->cholesky_to_sample_var.data(), num_union);
+  }
 
   gaussian_process_->ComputeGradCholeskyVarianceOfPoints(&(ei_state->points_to_sample_state), ei_state->cholesky_to_sample_var.data(), ei_state->grad_chol_decomp.data());
 

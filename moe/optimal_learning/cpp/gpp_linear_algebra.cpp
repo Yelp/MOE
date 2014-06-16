@@ -107,7 +107,7 @@ void ZeroUpperTriangle(int size, double * restrict matrix) noexcept {
 \endrst*/
 // TODO(GH-172): change this to be gaxpy or (block) dot-prod style
 // to improve performance & numerical characteristics.
-void ComputeCholeskyFactorL(int size_m, double * restrict chol) {
+int ComputeCholeskyFactorL(int size_m, double * restrict chol) noexcept {
   double * restrict chol_temp = chol;
   // Apply outer-product-based Cholesky algorithm: 1/3*N^3 + O(N^2)
   // Here, L_{ij} = chol[j*size_m + i] is the input matrix (on input) and the cholesky factor of that matrix (on exit).
@@ -136,10 +136,16 @@ void ComputeCholeskyFactorL(int size_m, double * restrict chol) {
       }
 #undef OL_CHOL
     } else {
+      // We fail if the matrix is singular. In the outer-product formulation here,
+      // you can ignore the "0" diagonal entry and continue, which produces a
+      // semi-positive definite factorization (see Golub, Van Loan 1983).
       OL_ERROR_PRINTF("cholesky matrix singular %.18E", chol_temp[k]);
+      return k + 1;
     }
     chol_temp += size_m;
   }
+
+  return 0;
 }
 
 /*!\rst

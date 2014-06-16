@@ -554,7 +554,9 @@ class GaussianProcess final {
 
     // recompute derived quantities
     BuildCovarianceMatrixWithNoiseVariance();
-    ComputeCholeskyFactorL(num_sampled_, K_chol_.data());
+    if (unlikely(ComputeCholeskyFactorL(num_sampled_, K_chol_.data()) != 0)) {
+      OL_THROW_EXCEPTION(SingularMatrixException, "Covariance matrix (K) singular. Check for duplicate points_sampled (with 0 noise) and/or extreme hyperparameter values.", K_chol_.data(), num_sampled_);
+    }
 
     std::copy(points_sampled_value_.begin(), points_sampled_value_.end(), K_inv_y_.begin());
     CholeskyFactorLMatrixVectorSolve(K_chol_.data(), num_sampled_, K_inv_y_.data());

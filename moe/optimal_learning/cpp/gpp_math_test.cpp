@@ -318,7 +318,7 @@ class PingGPPCholeskyVariance final : public PingableMatrixInputVectorOutputInte
     GaussianProcess::StateType points_to_sample_state(gaussian_process_, points_to_sample, num_to_sample_, num_derivatives);
     std::vector<double> variance_of_points(Square(num_to_sample_));
     gaussian_process_.ComputeVarianceOfPoints(&points_to_sample_state, variance_of_points.data());
-    ComputeCholeskyFactorL(num_to_sample_, variance_of_points.data());
+    int OL_UNUSED(chol_info) = ComputeCholeskyFactorL(num_to_sample_, variance_of_points.data());
 
     gaussian_process_.ComputeGradCholeskyVarianceOfPoints(&points_to_sample_state, variance_of_points.data(), grad_variance_.data());
 
@@ -340,7 +340,7 @@ class PingGPPCholeskyVariance final : public PingableMatrixInputVectorOutputInte
     GaussianProcess::StateType points_to_sample_state(gaussian_process_, points_to_sample, num_to_sample_, num_derivatives);
     std::vector<double> chol_temp(Square(num_to_sample_));
     gaussian_process_.ComputeVarianceOfPoints(&points_to_sample_state, chol_temp.data());
-    ComputeCholeskyFactorL(num_to_sample_, chol_temp.data());
+    int OL_UNUSED(chol_info) = ComputeCholeskyFactorL(num_to_sample_, chol_temp.data());
     ZeroUpperTriangle(num_to_sample_, chol_temp.data());
     MatrixTranspose(chol_temp.data(), num_to_sample_, num_to_sample_, function_values);
   }
