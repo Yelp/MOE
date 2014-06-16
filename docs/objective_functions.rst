@@ -122,7 +122,7 @@ Possible examples include:
 #. Click Through Rate (CTR)
 #. Sell Through Rate (STR, the number of ads shown per page)
 #. Revenue Per Opportunity (RPO)
-#. Average/median/95:math:`^\text{th}` delivery timings
+#. Average/median/95th delivery timings
 #. Any happiness metric defined on the reals
 #. Number of reviews written
 #. Photo contributions/views in a session
