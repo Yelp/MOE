@@ -71,8 +71,8 @@ template class InvalidValueException<int>;
 template class InvalidValueException<double>;
 template InvalidValueException<double>::InvalidValueException(char const * line_info, char const * func_info, char const * custom_message, double value_in, double truth_in, double tolerance_in);
 
-SingularMatrixException::SingularMatrixException(char const * line_info, char const * func_info, char const * custom_message, double const * matrix_in, int num_rows_in) : OptimalLearningException(kName), num_rows_(num_rows_in), matrix_(matrix_in, matrix_in + Square(num_rows_)) {
-  message_ += ": " + std::to_string(num_rows_) + " x " + std::to_string(num_rows_) + " matrix is singular.\n";
+SingularMatrixException::SingularMatrixException(char const * line_info, char const * func_info, char const * custom_message, double const * matrix_in, int num_rows_in, int leading_minor_index_in) : OptimalLearningException(kName), num_rows_(num_rows_in), leading_minor_index_(leading_minor_index_in), matrix_(matrix_in, matrix_in + Square(num_rows_)) {
+  message_ += ": " + std::to_string(num_rows_) + " x " + std::to_string(num_rows_) + " matrix is singular; " + std::to_string(leading_minor_index_) + "-th leading minor is not SPD.\n";
   AppendCustomMessageAndDebugInfo(line_info, func_info, custom_message);
 }
 

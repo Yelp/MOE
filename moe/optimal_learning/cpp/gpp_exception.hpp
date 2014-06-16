@@ -453,8 +453,9 @@ class SingularMatrixException : public OptimalLearningException {
       :custom_message[]: optional ptr to char array with any additional text/info to print/log
       :matrix[num_rows][num_cols]: the singular matrix
       :num_rows: number of rows (= number of columns) in the matrix
+      :leading_minor_index: index of the first non-positive definite (principal) leading minor
   \endrst*/
-  SingularMatrixException(char const * line_info, char const * func_info, char const * custom_message, double const * matrix_in, int num_rows_in);
+  SingularMatrixException(char const * line_info, char const * func_info, char const * custom_message, double const * matrix_in, int num_rows_in, int leading_minor_index_in);
 
   /*!\rst
     Provides a C-string containing information about the conditions of the exception.
@@ -463,7 +464,7 @@ class SingularMatrixException : public OptimalLearningException {
     The message is formatted in the class ctor (capitals indicate variable information)::
 
       R"%%(
-      SingularMatrixException: M x M matrix is singular.
+      SingularMatrixException: M x M matrix is singular; i-th leading minor is not SPD.
       CUSTOM_MESSAGE FUNCTION_NAME FILE_LINE_INFO
       )%%"
 
@@ -482,6 +483,10 @@ class SingularMatrixException : public OptimalLearningException {
     return num_rows_;
   }
 
+  int leading_minor_index() const noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
+    return leading_minor_index_;
+  }
+
   const std::vector<double>& matrix() const noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
     return matrix_;
   }
@@ -491,6 +496,8 @@ class SingularMatrixException : public OptimalLearningException {
  private:
   //! the number of rows (= number of columns) in the singular matrix
   int num_rows_;
+  //! index of the first non-positive definite (principal) leading minor
+  int leading_minor_index_;
   //! the data of the singular matrix, ordered column-major
   std::vector<double> matrix_;
 };

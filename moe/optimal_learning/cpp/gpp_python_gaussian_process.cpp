@@ -103,8 +103,9 @@ boost::python::list GetCholVarWrapper(const GaussianProcess& gaussian_process, c
   int num_derivatives = 0;
   GaussianProcess::StateType points_to_sample_state(gaussian_process, input_container.points_to_sample.data(), input_container.num_to_sample, num_derivatives);
   gaussian_process.ComputeVarianceOfPoints(&points_to_sample_state, chol_var.data());
-  if (unlikely(ComputeCholeskyFactorL(num_to_sample, chol_var.data()) != 0)) {
-    OL_THROW_EXCEPTION(SingularMatrixException, "GP-Variance matrix singular. Check for duplicate points_to_sample or points_to_sample duplicating points_sampled with 0 noise.", chol_var.data(), num_to_sample);
+  int leading_minor = ComputeCholeskyFactorL(num_to_sample, chol_var.data());
+  if (unlikely(leading_minor != 0)) {
+    OL_THROW_EXCEPTION(SingularMatrixException, "GP-Variance matrix singular. Check for duplicate points_to_sample or points_to_sample duplicating points_sampled with 0 noise.", chol_var.data(), num_to_sample, leading_minor);
   }
 
   boost::python::list result;
@@ -136,8 +137,9 @@ boost::python::list GetGradCholVarWrapper(const GaussianProcess& gaussian_proces
   std::vector<double> chol_var(Square(input_container.num_to_sample));
   GaussianProcess::StateType points_to_sample_state(gaussian_process, input_container.points_to_sample.data(), input_container.num_to_sample, num_derivatives);
   gaussian_process.ComputeVarianceOfPoints(&points_to_sample_state, chol_var.data());
-  if (unlikely(ComputeCholeskyFactorL(input_container.num_to_sample, chol_var.data()) != 0)) {
-    OL_THROW_EXCEPTION(SingularMatrixException, "GP-Variance matrix singular. Check for duplicate points_to_sample or points_to_sample duplicating points_sampled with 0 noise.", chol_var.data(), num_to_sample);
+  int leading_minor = ComputeCholeskyFactorL(input_container.num_to_sample, chol_var.data());
+  if (unlikely(leading_minor != 0)) {
+    OL_THROW_EXCEPTION(SingularMatrixException, "GP-Variance matrix singular. Check for duplicate points_to_sample or points_to_sample duplicating points_sampled with 0 noise.", chol_var.data(), num_to_sample, leading_minor);
   }
   gaussian_process.ComputeGradCholeskyVarianceOfPoints(&points_to_sample_state, chol_var.data(), to_sample_grad_var.data());
 
