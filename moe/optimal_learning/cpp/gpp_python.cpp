@@ -365,7 +365,6 @@ OL_NORETURN void TranslateSingularMatrixException(const SingularMatrixException&
   boost::python::object instance = base_except_type(except.what());  // analogue of PyObject_CallObject(base_except.ptr(), args)
 
   instance.attr("num_rows") = except.num_rows();
-  instance.attr("num_cols") = except.num_cols();
   // TODO(GH-159): this would make more sense as a numpy array/matrix
   instance.attr("matrix") = VectorToPylist(except.matrix());
 

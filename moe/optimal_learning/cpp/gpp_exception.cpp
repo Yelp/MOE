@@ -71,8 +71,8 @@ template class InvalidValueException<int>;
 template class InvalidValueException<double>;
 template InvalidValueException<double>::InvalidValueException(char const * line_info, char const * func_info, char const * custom_message, double value_in, double truth_in, double tolerance_in);
 
-SingularMatrixException::SingularMatrixException(char const * line_info, char const * func_info, char const * custom_message, double const * matrix_in, int num_rows_in, int num_cols_in) : OptimalLearningException(kName), num_rows_(num_rows_in), num_cols_(num_cols_in), matrix_(matrix_in, matrix_in + num_rows_*num_cols_) {
-  message_ += ": " + std::to_string(num_rows_) + " x " + std::to_string(num_cols_) + " matrix is singular.\n";
+SingularMatrixException::SingularMatrixException(char const * line_info, char const * func_info, char const * custom_message, double const * matrix_in, int num_rows_in) : OptimalLearningException(kName), num_rows_(num_rows_in), matrix_(matrix_in, matrix_in + Square(num_rows_)) {
+  message_ += ": " + std::to_string(num_rows_) + " x " + std::to_string(num_rows_) + " matrix is singular.\n";
   AppendCustomMessageAndDebugInfo(line_info, func_info, custom_message);
 }
 

@@ -431,7 +431,7 @@ extern template class InvalidValueException<double>;
 extern template InvalidValueException<double>::InvalidValueException(char const * line_info, char const * func_info, char const * custom_message, double value_in, double truth_in, double tolerance_in);
 
 /*!\rst
-  Exception to capture when a matrix A (\in R^{m x n}) is singular.
+  Exception to capture when a *square* matrix A (\in R^{m x m}) is singular.
 
   Stores the matrix (in a std::vector) and its dimensions.
 
@@ -452,10 +452,9 @@ class SingularMatrixException : public OptimalLearningException {
       :func_info[]: optional ptr to char array from OL_CURRENT_FUNCTION_NAME or similar
       :custom_message[]: optional ptr to char array with any additional text/info to print/log
       :matrix[num_rows][num_cols]: the singular matrix
-      :num_rows: number of rows in the matrix
-      :num_cols: number of columns in the matrix
+      :num_rows: number of rows (= number of columns) in the matrix
   \endrst*/
-  SingularMatrixException(char const * line_info, char const * func_info, char const * custom_message, double const * matrix_in, int num_rows_in, int num_cols_in);
+  SingularMatrixException(char const * line_info, char const * func_info, char const * custom_message, double const * matrix_in, int num_rows_in);
 
   /*!\rst
     Provides a C-string containing information about the conditions of the exception.
@@ -464,7 +463,7 @@ class SingularMatrixException : public OptimalLearningException {
     The message is formatted in the class ctor (capitals indicate variable information)::
 
       R"%%(
-      SingularMatrixException: M x N matrix is singular.
+      SingularMatrixException: M x M matrix is singular.
       CUSTOM_MESSAGE FUNCTION_NAME FILE_LINE_INFO
       )%%"
 
@@ -483,10 +482,6 @@ class SingularMatrixException : public OptimalLearningException {
     return num_rows_;
   }
 
-  int num_cols() const noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
-    return num_cols_;
-  }
-
   const std::vector<double>& matrix() const noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
     return matrix_;
   }
@@ -494,8 +489,8 @@ class SingularMatrixException : public OptimalLearningException {
   OL_DISALLOW_DEFAULT_AND_ASSIGN(SingularMatrixException);
 
  private:
-  //! the number of rows and columns in the singular matrix
-  int num_rows_, num_cols_;
+  //! the number of rows (= number of columns) in the singular matrix
+  int num_rows_;
   //! the data of the singular matrix, ordered column-major
   std::vector<double> matrix_;
 };
