@@ -16,22 +16,53 @@
 #include "gpp_exception.hpp"
 
 #ifdef OL_GPU_ENABLED
-#include <cuda_runtime.h>
+#include <string>
 #include "gpu/gpp_cuda_math.hpp"
+#include "driver_types.h"
+#include "cuda_runtime.h"
+#define OL_CUDA_THROW_EXCEPTION(_ERR) ThrowException(RuntimeException(std::to_string(_ERR.line).c_str(), _ERR.file, cudaGetErrorString(_ERR.err)));
 #endif
 
+#include <cstdio>
 namespace optimal_learning {
 #ifdef OL_GPU_ENABLED
+    CudaDevicePointer::CudaDevicePointer(int num_doubles_in)
+        : num_doubles(num_doubles_in) {
+            if (num_doubles_in > 0) {
+                CUDA_ERR _err = cuda_allocate_mem_for_double_vector(num_doubles, &ptr);
+                if (_err.err != cudaSuccess) {
+                    ptr = nullptr;
+                    OL_CUDA_THROW_EXCEPTION(_err)
+                }
+            } else {
+                ptr = nullptr;
+            }
+          }
+
+    CudaDevicePointer::~CudaDevicePointer() {
+        if (ptr != nullptr) {
+            cuda_free_mem(ptr);
+        }
+    }
+
     double CudaExpectedImprovementEvaluator::ComputeExpectedImprovement(StateType * ei_state) const {
+      double EI_val;
       int num_union = ei_state->num_union;
       gaussian_process_->ComputeMeanOfPoints(ei_state->points_to_sample_state, ei_state->to_sample_mean.data());
       gaussian_process_->ComputeVarianceOfPoints(&(ei_state->points_to_sample_state), ei_state->cholesky_to_sample_var.data());
       ComputeCholeskyFactorL(num_union, ei_state->cholesky_to_sample_var.data());
       unsigned int seed_in = (ei_state->normal_rng->GetEngine())();
-      return cuda_get_EI(ei_state->to_sample_mean.data(), ei_state->cholesky_to_sample_var.data(), best_so_far_, num_union, ei_state->dev_mu, ei_state->dev_L, ei_state->dev_EIs, seed_in, num_mc);
+      CUDA_ERR _err = cuda_get_EI(ei_state->to_sample_mean.data(), ei_state->cholesky_to_sample_var.data(), best_so_far_, num_union, (ei_state->dev_mu).ptr, (ei_state->dev_L).ptr, (ei_state->dev_EIs).ptr, seed_in, num_mc, &EI_val);
+        if (_err.err != cudaSuccess) {
+            OL_CUDA_THROW_EXCEPTION(_err)
+        }
+      return EI_val;
     }
 
     void CudaExpectedImprovementEvaluator::ComputeGradExpectedImprovement(StateType * ei_state, double * restrict grad_EI) const {
+      if (ei_state->num_derivatives == 0) {
+        OL_THROW_EXCEPTION(RuntimeException, "configure_for_gradients set to false, gradient computation is disabled!");
+      }
       const int num_union = ei_state->num_union;
       const int num_to_sample = ei_state->num_to_sample;
       gaussian_process_->ComputeMeanOfPoints(ei_state->points_to_sample_state, ei_state->to_sample_mean.data());
@@ -42,60 +73,81 @@ namespace optimal_learning {
       gaussian_process_->ComputeGradCholeskyVarianceOfPoints(&(ei_state->points_to_sample_state), ei_state->cholesky_to_sample_var.data(), ei_state->grad_chol_decomp.data());
       unsigned int seed_in = (ei_state->normal_rng->GetEngine())();
 
-      cuda_get_gradEI(ei_state->to_sample_mean.data(), ei_state->grad_mu.data(), ei_state->cholesky_to_sample_var.data(), ei_state->grad_chol_decomp.data(), best_so_far_, num_union, num_to_sample, dim_, ei_state->dev_mu, ei_state->dev_grad_mu, ei_state->dev_L, ei_state->dev_grad_L, ei_state->dev_grad_EIs, seed_in, num_mc, grad_EI);
+      CUDA_ERR _err = cuda_get_gradEI(ei_state->to_sample_mean.data(), ei_state->grad_mu.data(), ei_state->cholesky_to_sample_var.data(), ei_state->grad_chol_decomp.data(), best_so_far_, num_union, num_to_sample, dim_, (ei_state->dev_mu).ptr, (ei_state->dev_grad_mu).ptr, (ei_state->dev_L).ptr, (ei_state->dev_grad_L).ptr, (ei_state->dev_grad_EIs).ptr, seed_in, num_mc, grad_EI);
+        if (_err.err != cudaSuccess) {
+            OL_CUDA_THROW_EXCEPTION(_err)
+        } 
     }
 
-    // hackhack: need some error handle
-    // It's nice to have "findCudaDevice()" functionality, however the required header is in Cuda SDK Sample folder, which need not be existed for Cuda to run
     void CudaExpectedImprovementEvaluator::setupGPU(int devID) {
-        cudaSetDevice(devID);
-    }
-
-    void CudaExpectedImprovementEvaluator::resetGPU() {
-        cudaDeviceReset();
+        CUDA_ERR _err = cuda_set_device(devID);
+        if (_err.err != cudaSuccess) {
+            OL_CUDA_THROW_EXCEPTION(_err)
+        }
     }
 
     CudaExpectedImprovementEvaluator::~CudaExpectedImprovementEvaluator() {
-          resetGPU();
+          cudaDeviceReset();
     }
 
-    CudaExpectedImprovementState::~CudaExpectedImprovementState() {
-          cuda_memory_deallocation();
-    }
+    CudaExpectedImprovementState::CudaExpectedImprovementState(const EvaluatorType& ei_evaluator, double const * restrict points_to_sample, double const * restrict points_being_sampled, int num_to_sample_in, int num_being_sampled_in, bool configure_for_gradients, NormalRNG * normal_rng_in)
+          : dim(ei_evaluator.dim()),
+            num_to_sample(num_to_sample_in),
+            num_being_sampled(num_being_sampled_in),
+            num_derivatives(configure_for_gradients ? num_to_sample : 0),
+            num_union(num_to_sample + num_being_sampled),
+            union_of_points(BuildUnionOfPoints(points_to_sample, points_being_sampled, num_to_sample, num_being_sampled, dim)),
+            points_to_sample_state(*ei_evaluator.gaussian_process(), union_of_points.data(), num_union, num_derivatives),
+            normal_rng(normal_rng_in),
+            to_sample_mean(num_union),
+            grad_mu(dim*num_derivatives),
+            cholesky_to_sample_var(Square(num_union)),
+            grad_chol_decomp(dim*Square(num_union)*num_derivatives),
+            dev_mu(num_union),
+            dev_L(Square(num_union)),
+            dev_grad_mu(dim * num_derivatives),
+            dev_grad_L(dim * Square(num_union) * num_derivatives),
+            dev_EIs(EI_THREAD_NO * EI_BLOCK_NO), 
+            dev_grad_EIs(GRADEI_THREAD_NO * GRADEI_BLOCK_NO * dim * num_derivatives) {
+            }
 
-    void CudaExpectedImprovementState::cuda_memory_allocation() {
-        cuda_allocate_mem(num_union, num_to_sample, dim, &dev_mu, &dev_grad_mu, &dev_L, &dev_grad_L, &dev_grad_EIs, &dev_EIs);
-    }
-
-    void CudaExpectedImprovementState::cuda_memory_deallocation() {
-        cuda_free_mem(dev_mu, dev_grad_mu, dev_L, dev_grad_L, dev_grad_EIs, dev_EIs);
-    }
 
 #else
     double CudaExpectedImprovementEvaluator::ComputeExpectedImprovement(StateType * ei_state) const {
-        OL_THROW_EXCEPTION(RuntimeException, "GPU component is disabled or unavailable, cannot call gpu function!");
-        return 0.0;
+        OL_THROW_EXCEPTION(RuntimeException, "GPU component is disabled or unavailable, cannot call gpu function!\n");
     }
+
     void CudaExpectedImprovementEvaluator::ComputeGradExpectedImprovement(StateType * ei_state, double * restrict grad_EI) const {
-        OL_THROW_EXCEPTION(RuntimeException, "GPU component is disabled or unavailable, cannot call gpu function!");
+        OL_THROW_EXCEPTION(RuntimeException, "GPU component is disabled or unavailable, cannot call gpu function!\n");
     }
+
     void CudaExpectedImprovementEvaluator::setupGPU(int devID) {
-        OL_THROW_EXCEPTION(RuntimeException, "GPU component is disabled or unavailable, cannot call gpu function!");
+        OL_THROW_EXCEPTION(RuntimeException, "GPU component is disabled or unavailable, cannot call gpu function!\n");
     }
-    void CudaExpectedImprovementEvaluator::resetGPU() {
-        OL_THROW_EXCEPTION(RuntimeException, "GPU component is disabled or unavailable, cannot call gpu function!");
-    }
+
     CudaExpectedImprovementEvaluator::~CudaExpectedImprovementEvaluator() {
-        OL_THROW_EXCEPTION(RuntimeException, "GPU component is disabled or unavailable, cannot call gpu function!");
     }
-    CudaExpectedImprovementState::~CudaExpectedImprovementState() {
-        OL_THROW_EXCEPTION(RuntimeException, "GPU component is disabled or unavailable, cannot call gpu function!");
-    }
-    void CudaExpectedImprovementState::cuda_memory_allocation() {
-        OL_THROW_EXCEPTION(RuntimeException, "GPU component is disabled or unavailable, cannot call gpu function!");
-    }
-    void CudaExpectedImprovementState::cuda_memory_deallocation() {
-        OL_THROW_EXCEPTION(RuntimeException, "GPU component is disabled or unavailable, cannot call gpu function!");
+
+    CudaExpectedImprovementState::CudaExpectedImprovementState(const EvaluatorType& ei_evaluator, double const * restrict points_to_sample, double const * restrict points_being_sampled, int num_to_sample_in, int num_being_sampled_in, bool configure_for_gradients, NormalRNG * normal_rng_in) 
+          : dim(ei_evaluator.dim()),
+            num_to_sample(num_to_sample_in),
+            num_being_sampled(num_being_sampled_in),
+            num_derivatives(configure_for_gradients ? num_to_sample : 0),
+            num_union(num_to_sample + num_being_sampled),
+            union_of_points(BuildUnionOfPoints(points_to_sample, points_being_sampled, num_to_sample, num_being_sampled, dim)),
+            points_to_sample_state(*ei_evaluator.gaussian_process(), union_of_points.data(), num_union, num_derivatives),
+            normal_rng(normal_rng_in),
+            to_sample_mean(num_union),
+            grad_mu(dim*num_derivatives),
+            cholesky_to_sample_var(Square(num_union)),
+            grad_chol_decomp(dim*Square(num_union)*num_derivatives),
+            dev_mu(0),
+            dev_L(0),
+            dev_grad_mu(0),
+            dev_grad_L(0),
+            dev_EIs(0), 
+            dev_grad_EIs(0) {
+        OL_THROW_EXCEPTION(RuntimeException, "GPU component is disabled or unavailable, cannot call gpu function!\n");
     }
 #endif
 }

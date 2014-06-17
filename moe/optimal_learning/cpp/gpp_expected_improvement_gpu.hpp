@@ -16,6 +16,26 @@
 
 
 namespace optimal_learning {
+    /*!\rst
+      This struct contains pointer to memory location on GPU, its constructor and destructor also take care of memory allocation/deallocation on GPU. When GPU is not enabled, it becomes some dummy struct.
+    \endrst*/
+#ifdef OL_GPU_ENABLED
+    struct CudaDevicePointer final {
+        CudaDevicePointer(int num_doubles_in);
+        ~CudaDevicePointer();
+
+        double* ptr;
+        int num_doubles;
+    };
+#else
+    struct CudaDevicePointer final {
+        CudaDevicePointer(int dummy_in)
+            : dummy(dummy_in) {}
+
+        int dummy;
+    };
+#endif
+
     struct CudaExpectedImprovementState;
 
     /*!\rst
@@ -91,8 +111,6 @@ namespace optimal_learning {
 
       void setupGPU(int devID);
 
-      void resetGPU();
-
       OL_DISALLOW_DEFAULT_AND_COPY_AND_ASSIGN(CudaExpectedImprovementEvaluator);
 
      private:
@@ -136,25 +154,9 @@ namespace optimal_learning {
              * The NormalRNG object must already be seeded.  If multithreaded computation is used for EI, then every state object
              must have a different NormalRNG (different seeds, not just different objects).
       \endrst*/
-      CudaExpectedImprovementState(const EvaluatorType& ei_evaluator, double const * restrict points_to_sample, double const * restrict points_being_sampled, int num_to_sample_in, int num_being_sampled_in, bool configure_for_gradients, NormalRNG * normal_rng_in)
-          : dim(ei_evaluator.dim()),
-            num_to_sample(num_to_sample_in),
-            num_being_sampled(num_being_sampled_in),
-            num_derivatives(configure_for_gradients ? num_to_sample : 0),
-            num_union(num_to_sample + num_being_sampled),
-            union_of_points(BuildUnionOfPoints(points_to_sample, points_being_sampled, num_to_sample, num_being_sampled, dim)),
-            points_to_sample_state(*ei_evaluator.gaussian_process(), union_of_points.data(), num_union, num_derivatives),
-            normal_rng(normal_rng_in),
-            to_sample_mean(num_union),
-            grad_mu(dim*num_derivatives),
-            cholesky_to_sample_var(Square(num_union)),
-            grad_chol_decomp(dim*Square(num_union)*num_derivatives) {
-                cuda_memory_allocation();
-      }
+      CudaExpectedImprovementState(const EvaluatorType& ei_evaluator, double const * restrict points_to_sample, double const * restrict points_being_sampled, int num_to_sample_in, int num_being_sampled_in, bool configure_for_gradients, NormalRNG * normal_rng_in);
 
       CudaExpectedImprovementState(CudaExpectedImprovementState&& OL_UNUSED(other)) = default;
-
-      ~CudaExpectedImprovementState(); 
 
       /*!\rst
         Create a vector with the union of points_to_sample and points_being_sampled (the latter is appended to the former).
@@ -225,9 +227,6 @@ namespace optimal_learning {
         // update quantities derived from points_to_sample
         UpdateCurrentPoint(ei_evaluator, points_to_sample);
       }
-      void cuda_memory_allocation();
-
-      void cuda_memory_deallocation();
 
       // size information
       //! spatial dimension (e.g., entries per point of ``points_sampled``)
@@ -261,13 +260,13 @@ namespace optimal_learning {
       //! the gradient of the cholesky (``LL^T``) factorization of the GP variance evaluated at union_of_points wrt union_of_points[0:num_to_sample]
       std::vector<double> grad_chol_decomp;
 
-      //! pointers to store the memory locations of variables on GPU
-      double * dev_mu;
-      double * dev_L;
-      double * dev_grad_mu;
-      double * dev_grad_L;
-      double * dev_EIs;
-      double * dev_grad_EIs;
+      //! structs containing pointers to store the memory locations of variables on GPU
+      CudaDevicePointer dev_mu;
+      CudaDevicePointer dev_L;
+      CudaDevicePointer dev_grad_mu;
+      CudaDevicePointer dev_grad_L;
+      CudaDevicePointer dev_EIs;
+      CudaDevicePointer dev_grad_EIs;
 
       OL_DISALLOW_DEFAULT_AND_COPY_AND_ASSIGN(CudaExpectedImprovementState);
     };

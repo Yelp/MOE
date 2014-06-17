@@ -5,6 +5,8 @@
 #include <helper_functions.h>
 #include "gpp_cuda_math.hpp"
 
+#define OL_CUDA_ERROR_RETURN(X) {if(X != cudaSuccess){CUDA_ERR _err(X, __FILE__, __LINE__); return _err;}}
+
 namespace optimal_learning {
     /*
       Special case of GeneralMatrixVectorMultiply.  As long as A has zeros in the strict upper-triangle,
@@ -200,39 +202,23 @@ namespace optimal_learning {
          free(normals_copy);
      }
         
-    extern "C" void cuda_allocate_mem(int num_union_of_pts, int num_to_sample, int dimension, double** __restrict__ pointer_dev_mu, double** __restrict__ pointer_dev_grad_mu, double** __restrict__ pointer_dev_L, double** __restrict__ pointer_dev_grad_L, double** __restrict__ pointer_dev_grad_EIs, double ** __restrict__ pointer_dev_EIs) {
-        const unsigned int gradEI_thread_no = 256;
-        const unsigned int gradEI_block_no = 16;
-        const unsigned int EI_thread_no = 1024;
-        const unsigned int EI_block_no = 16;
-        int mem_size_mu = num_union_of_pts * sizeof(double);
-        int mem_size_grad_mu = num_to_sample * dimension * sizeof(double);
-        int mem_size_L = num_union_of_pts * num_union_of_pts *sizeof(double);
-        int mem_size_grad_L = num_to_sample * num_union_of_pts * num_union_of_pts * dimension * sizeof(double);
-        int mem_size_grad_EIs = gradEI_thread_no * gradEI_block_no * num_to_sample * dimension * sizeof(double);
-        int mem_size_EIs = EI_thread_no * EI_block_no * sizeof(double);
-        checkCudaErrors(cudaMalloc((void**) pointer_dev_mu, mem_size_mu)); 
-        checkCudaErrors(cudaMalloc((void**) pointer_dev_grad_mu, mem_size_grad_mu)); 
-        checkCudaErrors(cudaMalloc((void**) pointer_dev_L, mem_size_L));
-        checkCudaErrors(cudaMalloc((void**) pointer_dev_grad_L, mem_size_grad_L));
-        checkCudaErrors(cudaMalloc((void**) pointer_dev_grad_EIs, mem_size_grad_EIs));
-        checkCudaErrors(cudaMalloc((void**) pointer_dev_EIs, mem_size_EIs));
+    extern "C" CUDA_ERR cuda_allocate_mem_for_double_vector(int num_doubles, double** __restrict__ ptr_to_ptr) {
+        CUDA_ERR _success(cudaSuccess, __FILE__, __LINE__);
+        int mem_size = num_doubles * sizeof(double);
+        OL_CUDA_ERROR_RETURN(cudaMalloc((void**) ptr_to_ptr, mem_size))
+        return _success;
     }
 
-    extern "C" void cuda_free_mem(double* __restrict__ dev_mu, double* __restrict__ dev_grad_mu, double* __restrict__ dev_L, double* __restrict__ dev_grad_L, double* __restrict__ dev_grad_EIs, double* __restrict__ dev_EIs) {
-        // free memory
-        checkCudaErrors(cudaFree(dev_mu));
-        checkCudaErrors(cudaFree(dev_grad_mu));
-        checkCudaErrors(cudaFree(dev_L));
-        checkCudaErrors(cudaFree(dev_grad_L));
-        checkCudaErrors(cudaFree(dev_grad_EIs));
-        checkCudaErrors(cudaFree(dev_EIs));
+    extern "C" void cuda_free_mem(double* __restrict__ ptr) {
+        cudaFree(ptr);
     }
 
-    extern "C" double cuda_get_EI(double * __restrict__ mu, double * __restrict__ L, double best, int num_union_of_pts, double * __restrict__ dev_mu, double * __restrict__ dev_L, double * __restrict__ dev_EIs, unsigned int seed, int num_mc)
+    extern "C" CUDA_ERR cuda_get_EI(double * __restrict__ mu, double * __restrict__ L, double best, int num_union_of_pts, double * __restrict__ dev_mu, double * __restrict__ dev_L, double * __restrict__ dev_EIs, unsigned int seed, int num_mc, double* __restrict__ ei_val)
     {
-        const unsigned int EI_thread_no = 256;
-        const unsigned int EI_block_no = 16;
+        *ei_val = 0.0;
+        CUDA_ERR _success(cudaSuccess, __FILE__, __LINE__);
+        const unsigned int EI_thread_no = EI_THREAD_NO;
+        const unsigned int EI_block_no = EI_BLOCK_NO;
         dim3 threads(EI_thread_no, 1, 1);
         dim3 grid(EI_block_no, 1, 1);
         double EIs[EI_thread_no * EI_block_no];
@@ -241,28 +227,35 @@ namespace optimal_learning {
         int mem_size_mu = num_union_of_pts * sizeof(double);
         int mem_size_L = num_union_of_pts * num_union_of_pts * sizeof(double);
         int mem_size_EIs = EI_thread_no * EI_block_no * sizeof(double);
-        // copy mu, L to GPU
-        checkCudaErrors(cudaMemcpy(dev_mu, mu, mem_size_mu, cudaMemcpyHostToDevice));
-        checkCudaErrors(cudaMemcpy(dev_L, L, mem_size_L, cudaMemcpyHostToDevice));
-        // execute kernel
-        EI_gpu<<< grid, threads, num_union_of_pts*sizeof(double)+num_union_of_pts*num_union_of_pts*sizeof(double)>>>(dev_L, dev_mu, num_union_of_pts, NUM_ITS, best, seed, dev_EIs); 
-        getLastCudaError("EI_gpu execution failed");
-        // copy dev_EIs back to CPU
-        checkCudaErrors(cudaMemcpy(EIs, dev_EIs, mem_size_EIs, cudaMemcpyDeviceToHost));
-        // average EIs
-        double ave = 0.0;
-        for (int i=0;i<(EI_thread_no*EI_block_no);i++) {
-            ave += EIs[i];
-        }
-        ave /= (double)(EI_thread_no*EI_block_no);
-        return ave;
+        // try {
+            // copy mu, L to GPU
+            OL_CUDA_ERROR_RETURN(cudaMemcpy(dev_mu, mu, mem_size_mu, cudaMemcpyHostToDevice))
+            OL_CUDA_ERROR_RETURN(cudaMemcpy(dev_L, L, mem_size_L, cudaMemcpyHostToDevice))
+            // execute kernel
+            EI_gpu<<< grid, threads, num_union_of_pts*sizeof(double)+num_union_of_pts*num_union_of_pts*sizeof(double)>>>(dev_L, dev_mu, num_union_of_pts, NUM_ITS, best, seed, dev_EIs); 
+            OL_CUDA_ERROR_RETURN(cudaPeekAtLastError())
+            // copy dev_EIs back to CPU
+            OL_CUDA_ERROR_RETURN(cudaMemcpy(EIs, dev_EIs, mem_size_EIs, cudaMemcpyDeviceToHost))
+            // average EIs
+            double ave = 0.0;
+            for (int i=0;i<(EI_thread_no*EI_block_no);i++) {
+                ave += EIs[i];
+            }
+            *ei_val = ave/ (double)(EI_thread_no*EI_block_no);
+            return _success;
+         // }
+         // catch (const std::exception& e) {
+         //     printf("wjl gpu EI failed\n");
+         //     return 0.0;
+         // }
     }
 
      // grad_EI[dim][num_to_sample]
-     extern "C" void cuda_get_gradEI(double * __restrict__ mu, double * __restrict__ grad_mu, double * __restrict__ L, double * __restrict__ grad_L, double best, int num_union_of_pts, int num_to_sample, int dimension, double * __restrict__ dev_mu, double * __restrict__ dev_grad_mu, double * __restrict__ dev_L, double * __restrict__ dev_grad_L, double * __restrict__ dev_grad_EIs, unsigned int seed, int num_mc, double * __restrict__ grad_EI)
+     extern "C" CUDA_ERR cuda_get_gradEI(double * __restrict__ mu, double * __restrict__ grad_mu, double * __restrict__ L, double * __restrict__ grad_L, double best, int num_union_of_pts, int num_to_sample, int dimension, double * __restrict__ dev_mu, double * __restrict__ dev_grad_mu, double * __restrict__ dev_L, double * __restrict__ dev_grad_L, double * __restrict__ dev_grad_EIs, unsigned int seed, int num_mc, double * __restrict__ grad_EI)
      {
-         const unsigned int gradEI_thread_no = 256;
-         const unsigned int gradEI_block_no = 16;
+         CUDA_ERR _success(cudaSuccess, __FILE__, __LINE__);
+         const unsigned int gradEI_thread_no = GRADEI_THREAD_NO;
+         const unsigned int gradEI_block_no = GRADEI_BLOCK_NO;
          dim3 threads(gradEI_thread_no, 1, 1);
          dim3 grid(gradEI_block_no, 1, 1);
          // make sure NUM_ITS is always >= 1
@@ -273,34 +266,49 @@ namespace optimal_learning {
          int mem_size_grad_L = num_to_sample * num_union_of_pts * num_union_of_pts * dimension * sizeof(double);
          int mem_size_grad_EIs = gradEI_thread_no * gradEI_block_no * num_to_sample * dimension * sizeof(double);
          double grad_EIs[num_to_sample * dimension * gradEI_thread_no * gradEI_block_no];
-         // copy data to GPU
-         checkCudaErrors(cudaMemcpy(dev_mu, mu, mem_size_mu, cudaMemcpyHostToDevice));
-         checkCudaErrors(cudaMemcpy(dev_grad_mu, grad_mu, mem_size_grad_mu, cudaMemcpyHostToDevice));
-         checkCudaErrors(cudaMemcpy(dev_L, L, mem_size_L, cudaMemcpyHostToDevice));
-         checkCudaErrors(cudaMemcpy(dev_grad_L, grad_L, mem_size_grad_L, cudaMemcpyHostToDevice));
-         // execute kernel
-         grad_EI_gpu<<< grid, threads, mem_size_mu+mem_size_L+mem_size_grad_mu+mem_size_grad_L >>>(dev_mu, dev_L, dev_grad_mu, dev_grad_L, best, num_union_of_pts, num_to_sample, dimension, NUM_ITS, seed, dev_grad_EIs); 
-         getLastCudaError("grad_EI_gpu execution failed");
-         // copy result back to CPU
-         checkCudaErrors(cudaMemcpy(grad_EIs, dev_grad_EIs, mem_size_grad_EIs, cudaMemcpyDeviceToHost));
-         // get grad_EI
+         // initialize grad_EI
          for (int i = 0; i < num_to_sample; ++i) {
              for (int k = 0; k < dimension; ++k) {
                  grad_EI[i*dimension + k] = 0.0;
              }
          }
-         for (int n = 0; n < (gradEI_thread_no*gradEI_block_no); ++n) {
-             for (int i = 0; i < num_to_sample; ++i) {
-                 for (int k = 0; k < dimension; ++k) {
-                     grad_EI[i*dimension + k] += grad_EIs[n*num_to_sample*dimension + i*dimension + k];
+         // staff run on gpu
+         // try {
+             // copy data to GPU
+             OL_CUDA_ERROR_RETURN(cudaMemcpy(dev_mu, mu, mem_size_mu, cudaMemcpyHostToDevice))
+             OL_CUDA_ERROR_RETURN(cudaMemcpy(dev_grad_mu, grad_mu, mem_size_grad_mu, cudaMemcpyHostToDevice))
+             OL_CUDA_ERROR_RETURN(cudaMemcpy(dev_L, L, mem_size_L, cudaMemcpyHostToDevice))
+             OL_CUDA_ERROR_RETURN(cudaMemcpy(dev_grad_L, grad_L, mem_size_grad_L, cudaMemcpyHostToDevice))
+             // execute kernel
+             grad_EI_gpu<<< grid, threads, mem_size_mu+mem_size_L+mem_size_grad_mu+mem_size_grad_L >>>(dev_mu, dev_L, dev_grad_mu, dev_grad_L, best, num_union_of_pts, num_to_sample, dimension, NUM_ITS, seed, dev_grad_EIs); 
+             OL_CUDA_ERROR_RETURN(cudaPeekAtLastError())
+             // copy result back to CPU
+             OL_CUDA_ERROR_RETURN(cudaMemcpy(grad_EIs, dev_grad_EIs, mem_size_grad_EIs, cudaMemcpyDeviceToHost))
+             // get grad_EI
+             for (int n = 0; n < (gradEI_thread_no*gradEI_block_no); ++n) {
+                 for (int i = 0; i < num_to_sample; ++i) {
+                     for (int k = 0; k < dimension; ++k) {
+                         grad_EI[i*dimension + k] += grad_EIs[n*num_to_sample*dimension + i*dimension + k];
+                     }
                  }
              }
-         }
-         for (int i = 0; i < num_to_sample; ++i) {
-             for (int k = 0; k < dimension; ++k) {
-                 grad_EI[i*dimension + k] /= (double)(gradEI_thread_no*gradEI_block_no);
+             for (int i = 0; i < num_to_sample; ++i) {
+                 for (int k = 0; k < dimension; ++k) {
+                     grad_EI[i*dimension + k] /= (double)(gradEI_thread_no*gradEI_block_no);
+                 }
              }
-         }
+         // }
+         // catch (const std::exception& e) {
+         //     printf("wjl gpu grad_EI failed\n");
+         // }
+             return _success;
      }
+
+     extern "C" CUDA_ERR cuda_set_device(int devID) {
+         CUDA_ERR _success(cudaSuccess, __FILE__, __LINE__);
+         OL_CUDA_ERROR_RETURN(cudaSetDevice(devID))
+         return _success;
+     }
+
 }    // end namespace optimal_learning
 
