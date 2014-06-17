@@ -170,9 +170,7 @@ class GpEiView(GpPrettyView):
         # (num_to_evaluate, num_to_sample, dim)
         # Here we assume the shape is (num_to_evaluate, dim) so we insert an axis, making num_to_sample = 1.
         points_to_evaluate = numpy.array(params.get('points_to_evaluate'))[:, numpy.newaxis, :]
-        points_being_sampled = params.get('points_being_sampled')
-        if points_being_sampled is not None:
-            points_being_sampled = numpy.array(points_being_sampled)
+        points_being_sampled = numpy.array(params.get('points_being_sampled'))
         gaussian_process = _make_gp_from_params(params)
 
         expected_improvement_evaluator = ExpectedImprovement(
