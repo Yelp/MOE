@@ -65,6 +65,7 @@ set(OPTIMAL_LEARNING_CORE_SOURCES
   gpp_math.cpp
   gpp_model_selection_and_hyperparameter_optimization.cpp
   gpp_random.cpp
+  gpp_expected_improvement_gpu.cpp
   )
 
 # readonly
@@ -80,6 +81,7 @@ set(OPTIMAL_LEARNING_TEST_SOURCES
   gpp_random_test.cpp
   gpp_test_utils.cpp
   gpp_test_utils_test.cpp
+  gpp_expected_improvement_gpu_test.cpp
   )
 
 # readonly
@@ -91,16 +93,6 @@ set(OPTIMAL_LEARNING_PYTHON_SOURCES
   gpp_python_model_selection.cpp
   gpp_python_test.cpp
   )
-
-# readonly
-set(OPTIMAL_LEARNING_GPU_SOURCES
-  gpp_expected_improvement_gpu.cpp
-  )
-
-# readonly
-set(OPTIMAL_LEARNING_GPU_TEST_SOURCES
-    gpp_expected_improvement_gpu_test.cpp
-    )
 
 # readonly
 set(DEMO_NAMES
@@ -230,6 +222,10 @@ function(configure_exec_targets exec_names exec_sources dependencies compile_fla
       COMPILE_DEFINITIONS "${compile_definitions}"
       LINK_FLAGS "${EXTRA_LINK_FLAGS}"
       )
+    if (${MOE_USE_GPU} MATCHES "1")
+        add_dependencies(${name} GPU_LIB)
+        target_link_libraries(${name} ${CUDA_LIBRARIES} ${CMAKE_BINARY_DIR}/gpu/libGPU.so)
+    endif()
   endforeach()
 endfunction(configure_exec_targets)
 
@@ -326,21 +322,6 @@ configure_object_library(
   "${EXTRA_COMPILE_DEFINITIONS}"
   )
 
-configure_object_library(
-    OPTIMAL_LEARNING_GPU_BUNDLE
-    "${OPTIMAL_LEARNING_GPU_SOURCES}"
-    "${EXTRA_COMPILE_FLAGS}"
-    "${EXTRA_COMPILE_DEFINITIONS}"
-  )
-
-configure_object_library(
-  OPTIMAL_LEARNING_GPU_TEST_BUNDLE
-  "${OPTIMAL_LEARNING_GPU_TEST_SOURCES}"
-  "${EXTRA_COMPILE_FLAGS}"
-  "${EXTRA_COMPILE_DEFINITIONS}"
-  )
-
-
 #### "GPP" library: for connecting Python to C++
 # Make an empty __init__.py file to turn the build directory into a package.
 # This file is required to do "import path.to.library.GPP" in Python.
@@ -356,8 +337,6 @@ add_library(
   $<TARGET_OBJECTS:OPTIMAL_LEARNING_PYTHON_BUNDLE>
   $<TARGET_OBJECTS:OPTIMAL_LEARNING_CORE_BUNDLE>
   $<TARGET_OBJECTS:OPTIMAL_LEARNING_TEST_BUNDLE>
-  $<TARGET_OBJECTS:OPTIMAL_LEARNING_GPU_BUNDLE>
-  $<TARGET_OBJECTS:OPTIMAL_LEARNING_GPU_TEST_BUNDLE>
   ${CMAKE_BINARY_DIR}/__init__.py
   )
 if (${MOE_USE_GPU} MATCHES "1")
@@ -386,8 +365,6 @@ set(
   dependencies
   $<TARGET_OBJECTS:OPTIMAL_LEARNING_CORE_BUNDLE>
   $<TARGET_OBJECTS:OPTIMAL_LEARNING_TEST_BUNDLE>
-  $<TARGET_OBJECTS:OPTIMAL_LEARNING_GPU_BUNDLE>
-  $<TARGET_OBJECTS:OPTIMAL_LEARNING_GPU_TEST_BUNDLE>
   )
 configure_exec_targets(
   EPI
@@ -396,10 +373,6 @@ configure_exec_targets(
   "${EXTRA_COMPILE_FLAGS}"
   "${EXTRA_COMPILE_DEFINITIONS}"
   )
-if (${MOE_USE_GPU} MATCHES "1")
-    add_dependencies(EPI GPU_LIB)
-    target_link_libraries(EPI ${CUDA_LIBRARIES} ${CMAKE_BINARY_DIR}/gpu/libGPU.so)
-endif()
 
 #### Demo executables
 set(dependencies $<TARGET_OBJECTS:OPTIMAL_LEARNING_CORE_BUNDLE> gpp_test_utils.cpp)
