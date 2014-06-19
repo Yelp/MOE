@@ -31,10 +31,11 @@ class GaussianProcessTest(GaussianProcessTestCase):
         super(GaussianProcessTest, self).base_setup()
 
     def test_gp_construction_singular_covariance_matrix(self):
-        """Test that the GaussianProcess ctor indicates a singular covariance matrix on bad input."""
+        """Test that the GaussianProcess ctor indicates a singular covariance matrix when points_sampled contains duplicates (0 noise)."""
         index = numpy.argmax(numpy.greater_equal(self.num_sampled_list, 1))
         domain, covariance, _ = self.gp_test_environments[index]
         point_one = SamplePoint([0.0] * domain.dim, 1.0, 0.0)
+        # points two and three have duplicate coordinates and we have noise_variance = 0.0
         point_two = SamplePoint([1.0] * domain.dim, 1.0, 0.0)
         point_three = point_two
 
@@ -42,11 +43,13 @@ class GaussianProcessTest(GaussianProcessTestCase):
         T.assert_raises(C_GP.SingularMatrixException, GaussianProcess, covariance, historical_data)
 
     def test_gp_add_sampled_points_singular_covariance_matrix(self):
-        """Test that GaussianProcess.add_sampled_points indicates a singular covariance matrix on bad input."""
+        """Test that GaussianProcess.add_sampled_points indicates a singular covariance matrix when points_sampled contains duplicates (0 noise)."""
         test_environment_input = copy.copy(self.gp_test_environment_input)
         test_environment_input.num_sampled = 1
         test_environment_input.gaussian_process_class = GaussianProcess
         _, _, gaussian_process = self._build_gaussian_process_test_data(test_environment_input)
+
+        # points one and three have duplicate coordinates and we have noise_variance = 0.0
         point_one = SamplePoint([0.5] * gaussian_process.dim, 1.0, 0.0)
         point_two = SamplePoint([1.0] * gaussian_process.dim, -1.0, 0.0)
         point_three = point_one

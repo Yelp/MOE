@@ -146,8 +146,8 @@ class GaussianProcessTestCase(OptimalLearningTestCase):
         gaussian_process_class=GaussianProcess,
     )
 
-    num_sampled_list = [1, 2, 3, 5, 10, 16, 20, 42]
-    num_to_sample_list = [1, 2, 3, 8]
+    num_sampled_list = (1, 2, 3, 5, 10, 16, 20, 42)
+    num_to_sample_list = (1, 2, 3, 8)
 
     @T.class_setup
     def base_setup(self):

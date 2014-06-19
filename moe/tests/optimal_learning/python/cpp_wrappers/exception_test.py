@@ -14,7 +14,7 @@ class ExceptionStructureTest(T.TestCase):
         # Base class inherits from Exception
         T.assert_true(issubclass(C_GP.OptimalLearningException, Exception))
 
-        type_objects = [C_GP.BoundsException, C_GP.InvalidValueException, C_GP.SingularMatrixException]
+        type_objects = (C_GP.BoundsException, C_GP.InvalidValueException, C_GP.SingularMatrixException)
         for type_object in type_objects:
             T.assert_true(issubclass(type_object, C_GP.OptimalLearningException))
 

@@ -34,7 +34,7 @@ class LogLikelihoodTest(GaussianProcessTestCase):
         hyperparameter_domain_class=moe.optimal_learning.python.python_version.domain.TensorProductDomain,
     )
 
-    num_sampled_list = [1, 2, 5, 10, 16, 20, 42]
+    num_sampled_list = (1, 2, 5, 10, 16, 20, 42)
 
     def test_python_and_cpp_return_same_log_likelihood_and_gradient(self):
         """Check that the C++ and Python log likelihood + gradients match over a series of randomly built data sets."""
