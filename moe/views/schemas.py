@@ -12,38 +12,27 @@ class PositiveFloat(colander.MappingSchema):
     """Colander positive (finite) float."""
 
     schema_type = colander.Float
-    default = None
     title = 'Positive Float'
-    validator = colander.Range(min=0)
 
+    def validator(self, node, cstruct):
+        """Raise an exception if the node value (cstruct) is non-positive or non-finite.
 
-def positive_validator(node, cstruct):
-    """Raise an exception if the node value (cstruct) is non-positive or non-finite.
+        :param node: the node being validated (usually self)
+        :type node: colander.SchemaNode subclass instance
+        :param cstruct: the value being validated
+        :type cstruct: float
+        :raise: colander.Invalid if cstruct value is bad
 
-    :param node: the node being validated (usually self)
-    :type node: colander.SchemaNode subclass instance
-    :param cstruct: the value being validated
-    :type cstruct: float
-    :raise: colander.Invalid if cstruct value is bad
-
-    """
-    if not 0.0 < cstruct < float('inf'):
-        raise colander.Invalid(node, msg='Value = {:f} must be positive and finite.'.format(cstruct))
-
-
-positive_float = colander.SchemaNode(
-    colander.Float(),
-    validator=positive_validator,
-    title='Positive Float',
-    default=None,
-)
+        """
+        if not 0.0 < cstruct < float('inf'):
+            raise colander.Invalid(node, msg='Value = {:f} must be positive and finite.'.format(cstruct))
 
 
 class ListOfPositiveFloats(colander.SequenceSchema):
 
     """Colander list of positive floats."""
 
-    float_in_list = positive_float
+    float_in_list = PositiveFloat()
 
 
 class ListOfFloats(colander.SequenceSchema):
