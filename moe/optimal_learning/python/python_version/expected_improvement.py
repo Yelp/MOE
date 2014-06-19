@@ -201,6 +201,99 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
 
         return values
 
+    def _compute_expected_improvement_qd_analytic(self, mu_star, var_star):
+        """Compute EI when the number of potential samples is any number q.
+
+        This function is deterministic; it does not perform explicit numerical integration or require access
+        to a random number generator.
+
+        If we denote PHI_q by the q-dimensional multivariate gaussian, this method requires q calls to PHI_q, 
+        where q is also the number of points being sampled, and q^2 calls to PHI_(q-1). This approach is therefore
+        more tractable with moderate q (lower than 10). Higher values of q may require the Monte-Carlo approach.
+
+        See Chevalier, and Ginsbourger (2012)
+
+        :param mu_star: a vector of the means of the GP evaluated at points_to_sample
+        :type mu_star: array of float64
+        :param var_star: the covariance matrix of the GP evaluated at points_to_sample
+        :type var_star: matrix of float64
+        :return: the expected improvement from sampling ``point_to_sample``
+        :rtype: float64
+
+        """
+        q = len(mu_star)
+        best_so_far = self._best_so_far
+        print "best so far: {0}".format(best_so_far)
+        print "Entered qd with mu_star: {0} and \nvar_star: \n{1}".format(mu_star, var_star)
+
+        # PDF of univariate Gaussian centered at m with variance var
+        def phi(m, var, param):
+            return scipy.stats.norm.pdf(param, m, numpy.sqrt(var))
+
+        # CDF of multivariate Gaussian centered at 0 with covariance matrix cov_matrix. CDF is taken from -inf to u.
+        def PHI(u, cov_matrix):
+            if len(u) == 1:
+                return scipy.stats.norm.cdf(u[0], 0, numpy.sqrt(cov_matrix[0][0]))  # phi(0, cov_matrix[0][0], u[0])
+            std = numpy.sqrt(numpy.diag(cov_matrix))  # get standard deviation
+            corr_matrix = cov_matrix / std / std[:, numpy.newaxis]  # standardize -> correlation matrix
+            ind = numpy.triu_indices(len(u), 1)
+            return scipy.stats.kde.mvn.mvndst(numpy.array([-numpy.inf] * len(u)), u, numpy.array([0]*len(u)), corr_matrix[ind])[1]
+        
+        #Calculation of outer sum
+        expected_improvement = 0
+        for k in range(0, q):
+            # Calculation of m_k, which is the mean of Z_k introduced in Proposition 2
+            m_k = -(mu_star - mu_star[k])
+            m_k[k] = mu_star[k]
+            print "\nm_k: {0}".format(m_k)
+
+            # Calculation of cov_k, which is the covariance matrix of Z_k introduced in Proposition 2
+            # Matrix of cov(Y_j - Y_k, Y_i - Y_k) for i, j != k and cov(Y_j - Y_k, Y_i) for i = k.
+            # Calculated using linearity of covariance: 
+            # cov(Y_j - Y_k, Y_i - Y_k) = cov(Y_i, Y_j) - cov(Y_i, Y_k) - cov(Y_j, Y_k) + cov(Y_k, Y_k)
+            cov_k = var_star + var_star[k][k]
+            cov_k = cov_k - var_star[:][k]
+            cov_k = cov_k - var_star[:][k][:, numpy.newaxis]
+            cov_k[k, :] = -var_star[:][k] + var_star[k][k]
+            cov_k[:, k] = -var_star[:][k] + var_star[k][k]
+            cov_k[k, k] = var_star[k][k]
+            print "cov_k: \n{0}".format(cov_k)
+            b_k = numpy.zeros(q)            
+            b_k[k] = best_so_far
+            
+            prob_term = -(mu_star[k] - best_so_far) * PHI(b_k - m_k, cov_k) 
+            
+            # Calculation of inner sum
+            sum_term = 0
+            for i in range(0, q):
+                if q == 1:
+                    sum_term += cov_k[0][0] * phi(m_k[0], cov_k[0][0], b_k[0])
+                    break
+
+                # c_k introduced on top of page 4
+                c_k = numpy.zeros(q)
+                for j in range(0, q):
+                    c_k[j] = ((b_k[j] - m_k[j]) - (b_k[i] - m_k[i]) * cov_k[i][j]/cov_k[i][i])
+                print "c_k before deletion: \n{0}".format(c_k)
+                c_k = numpy.delete(c_k, i)
+                print "c_k after deletion: \n{0}".format(c_k)
+
+                # cov_k_no_i introduced on top of page 4
+                cov_k_no_i = numpy.zeros((q, q))
+                for u in range(0, q):
+                    for v in range(0, q):
+                        cov_k_no_i[u][v] = cov_k[u][v] - cov_k[i][u] * cov_k[i][v] / cov_k[i][i]
+                print "cov_k_no_i before deletion: \n{0}".format(cov_k_no_i)
+                cov_k_no_i = numpy.delete(cov_k_no_i, i, axis=0)
+                cov_k_no_i = numpy.delete(cov_k_no_i, i, axis=1)
+                print "cov_k_no_i after deletion: \n{0}".format(cov_k_no_i)
+
+                sum_term += cov_k[i][k] * phi(m_k[i], cov_k[i][i], b_k[i]) * PHI(c_k, cov_k_no_i)
+            print "\n\nSUM TERM: {0} PROB TERM: {1}".format(sum_term, prob_term)
+            expected_improvement += (prob_term + sum_term)
+        print "Expected improvement: {0}".format(expected_improvement)
+        return numpy.fmax(0.0, expected_improvement)
+
     def _compute_expected_improvement_1d_analytic(self, mu_star, var_star):
         """Compute EI when the number of potential samples is 1 (i.e., points_being_sampled.size = 0) using *fast* analytic methods.
 
@@ -541,7 +634,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         aggregate_dx /= float(self._num_mc_iterations)
         return aggregate_dx
 
-    def compute_expected_improvement(self, force_monte_carlo=False):
+    def compute_expected_improvement(self, force_monte_carlo=False, force_qD_analytic=False):
         r"""Compute the expected improvement at ``points_to_sample``, with ``points_being_sampled`` concurrent points being sampled.
 
         .. Note:: These comments were copied from this's superclass in expected_improvement_interface.py.
@@ -583,8 +676,10 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         mu_star = self._gaussian_process.compute_mean_of_points(union_of_points)
         var_star = self._gaussian_process.compute_variance_of_points(union_of_points)
 
-        if num_points == 1 and force_monte_carlo is False:
+        if num_points == 1 and force_monte_carlo is False and force_qD_analytic is False:
             return self._compute_expected_improvement_1d_analytic(mu_star[0], var_star[0, 0])
+        elif force_qD_analytic is True:
+            return self._compute_expected_improvement_qd_analytic(mu_star, var_star)
         else:
             return self._compute_expected_improvement_monte_carlo(mu_star, var_star)
 

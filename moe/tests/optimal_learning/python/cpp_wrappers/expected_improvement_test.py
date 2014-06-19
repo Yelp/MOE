@@ -86,6 +86,46 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
                 python_grad_ei = python_ei_eval.compute_grad_expected_improvement()
                 self.assert_vector_within_relative(python_grad_ei, cpp_grad_ei, grad_ei_tolerance)
 
+    def test_qd_and_1d_return_same_analytic_ei(self):
+        """Compare the 1D analytic EI results to the qD analytic EI results, checking several random points per test case."""
+        num_tests_per_case = 10
+        ei_tolerance = 6.0e-14
+
+        for test_case in self.gp_test_environments:
+            domain, python_cov, python_gp = test_case
+            points_to_sample = domain.generate_random_point_in_domain()
+            python_ei_eval = moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement(python_gp, points_to_sample)
+
+            for _ in xrange(num_tests_per_case):
+                points_to_sample = domain.generate_random_point_in_domain()
+                python_ei_eval.set_current_point(points_to_sample)
+
+                python_1d_ei = python_ei_eval.compute_expected_improvement()
+                python_qd_ei = python_ei_eval.compute_expected_improvement(force_qD_analytic=True)
+                self.assert_scalar_within_relative(python_1d_ei, python_qd_ei, ei_tolerance)
+
+    def test_qd_and_monte_carlo_return_same_analytic_ei(self):
+        """Compare the 1D analytic EI results to the qD analytic EI results, checking several random points per test case."""
+        num_tests_per_case = 10
+        ei_tolerance = 6.0e-14
+
+        for test_case in self.gp_test_environments:
+            domain, python_cov, python_gp = test_case
+            points_to_sample = domain.generate_uniform_random_points_in_domain(2)
+            python_ei_eval = moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement(python_gp, points_to_sample)
+
+            cpp_cov = moe.optimal_learning.python.cpp_wrappers.covariance.SquareExponential(python_cov.get_hyperparameters())
+            cpp_gp = moe.optimal_learning.python.cpp_wrappers.gaussian_process.GaussianProcess(cpp_cov, python_gp._historical_data)
+            cpp_ei_eval = moe.optimal_learning.python.cpp_wrappers.expected_improvement.ExpectedImprovement(cpp_gp, points_to_sample, num_mc_iterations=100000000)
+
+            for _ in xrange(num_tests_per_case):
+                points_to_sample = domain.generate_uniform_random_points_in_domain(2)
+                python_ei_eval.set_current_point(points_to_sample)
+                cpp_ei_eval.set_current_point(points_to_sample)
+
+                cpp_ei = cpp_ei_eval.compute_expected_improvement(force_monte_carlo=True)
+                python_qd_ei = python_ei_eval.compute_expected_improvement(force_qD_analytic=True)
+                self.assert_scalar_within_relative(python_qd_ei, cpp_ei, ei_tolerance)
 
 if __name__ == "__main__":
     T.run()
