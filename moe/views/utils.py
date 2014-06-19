@@ -115,6 +115,7 @@ def _make_gp_from_params(params):
     domain_info = params.get("domain_info")
     points_sampled = gp_historical_info.get('points_sampled')
 
+    # TODO(GH-205): Do not add points one at a time here; construct the GP directly.
     covariance_of_process = _make_covariance_of_process_from_params(params)
     gaussian_process = GaussianProcess(
             covariance_of_process,

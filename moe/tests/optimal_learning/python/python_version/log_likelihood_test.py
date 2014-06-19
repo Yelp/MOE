@@ -46,7 +46,7 @@ class GaussianProcessLogMarginalLikelihoodTest(GaussianProcessTestCase):
         gaussian_process_class=GaussianProcess,
     )
 
-    num_sampled_list = [1, 2, 5, 10, 16, 20, 42]
+    num_sampled_list = (1, 2, 5, 10, 16, 20, 42)
 
     def test_grad_log_likelihood_pings(self):
         """Ping test (compare analytic result to finite difference) the log likelihood gradient wrt hyperparameters."""

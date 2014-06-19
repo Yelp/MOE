@@ -45,7 +45,7 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
         gaussian_process_class=moe.optimal_learning.python.python_version.gaussian_process.GaussianProcess,
     )
 
-    num_sampled_list = [1, 2, 5, 10, 16, 20, 42, 50]
+    num_sampled_list = (1, 2, 5, 10, 16, 20, 42, 50)
 
     @T.class_setup
     def base_setup(self):
