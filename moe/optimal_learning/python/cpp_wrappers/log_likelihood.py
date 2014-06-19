@@ -239,6 +239,8 @@ class GaussianProcessLogLikelihood(GaussianProcessLogLikelihoodInterface, Optimi
         """
         self.set_hyperparameters(current_point)
 
+    current_point = property(get_current_point, set_current_point)
+
     def compute_log_likelihood(self):
         r"""Compute the objective_type measure at the specified hyperparameters.
 

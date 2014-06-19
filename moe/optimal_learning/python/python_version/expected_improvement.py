@@ -160,6 +160,8 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         """
         self._points_to_sample = numpy.copy(numpy.atleast_2d(points_to_sample))
 
+    current_point = property(get_current_point, set_current_point)
+
     def evaluate_at_point_list(
             self,
             points_to_evaluate,

@@ -59,6 +59,8 @@ class OptimizableInterface(object):
         """
         pass
 
+    current_point = abstractproperty(get_current_point, set_current_point)
+
     @abstractmethod
     def compute_objective_function(self, **kwargs):
         r"""Compute ``f(current_point)``.

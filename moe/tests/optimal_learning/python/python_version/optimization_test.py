@@ -57,6 +57,8 @@ class QuadraticFunction(OptimizableInterface):
         """
         self._current_point = numpy.copy(current_point)
 
+    current_point = property(get_current_point, set_current_point)
+
     def compute_objective_function(self, **kwargs):
         r"""Compute ``f(current_point)``.
 
