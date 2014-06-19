@@ -15,8 +15,10 @@
   These are analogous to boost::throw_exception() and BOOST_THROW_EXCEPTION.
 
   ALL exception objects MUST inherit publicly from std::exception. No exceptions (ha ha).
+
   This file defines the base OptimalLearningException (derived from std::exception) and
-  derives several exceptions from it.
+  derives several exceptions from it. Each exception type has docs describing the
+  output of what() in the class comments.
 
   Additionally, to use the OL_THROW_EXCEPTION macro (see its #define for details), the
   first two arguments in MyException's ctor must be char *.
@@ -142,6 +144,8 @@ OL_NORETURN inline void ThrowException(const ExceptionType& except) {
 #define OL_THROW_EXCEPTION(ExceptionType, Args...) ThrowException(ExceptionType(OL_STRINGIFY_FILE_AND_LINE, OL_CURRENT_FUNCTION_NAME, Args))
 
 /*!\rst
+  **Overview**
+
   Exception to handle general runtime errors (e.g., not fitting into other exception types).
   Subclasses std::exception.
   Serves as the superclass for all other custom exceptions in the ``optimal_learning`` library.
@@ -149,8 +153,19 @@ OL_NORETURN inline void ThrowException(const ExceptionType& except) {
   This class is essentially the same as std::runtime_error but it includes a ctor with
   some extra logic for formatting the error message.
 
-  Holds only a std::string containing the message produced by what(). Note that
-  any exceptions from std::string operations (e.g., std::bad_alloc) will cause std::terminate().
+  Holds only a std::string containing the message produced by what().
+
+  .. Note: exceptions from std::string operations (e.g., std::bad_alloc) will cause std::terminate().
+
+  **Message Format**
+
+  The ``what()`` message is formatted in the class ctor (capitals indicate variable information)::
+
+    R"%%(
+    OptimalLearningException: CUSTOM_MESSAGE FUNCTION_NAME FILE_LINE_INFO
+    )%%"
+
+  This format should be overriden by subclasses (at the minimum showing a different exception name).
 \endrst*/
 class OptimalLearningException : public std::exception {
  public:
@@ -170,12 +185,6 @@ class OptimalLearningException : public std::exception {
   /*!\rst
     Provides a C-string containing information about the conditions of the exception.
     See: http://en.cppreference.com/w/cpp/error/exception
-
-    The message is formatted in the class ctor (capitals indicate variable information)::
-
-      R"%%(
-      OptimalLearningException: CUSTOM_MESSAGE FUNCTION_NAME FILE_LINE_INFO
-      )%%"
 
     \return
       C-style char string describing the exception.
@@ -214,12 +223,20 @@ class OptimalLearningException : public std::exception {
 };
 
 /*!\rst
+  **Overview**
+
   Exception to capture value < min_value OR value > max_value.
 
   Stores value, min, and max for debugging/logging/reacting purposes.
 
-  Also holds a std::string containing the message produced by what(). Note that
-  any exceptions from std::string operations (e.g., std::bad_alloc) will cause std::terminate().
+  **Message Format**
+
+  The ``what()`` message is formatted in the class ctor (capitals indicate variable information)::
+
+    R"%%(
+    BoundsException: VALUE is not in range [MIN, MAX].
+    CUSTOM_MESSAGE FUNCTION_NAME FILE_LINE_INFO
+    )%%"
 \endrst*/
 template <typename ValueType>
 class BoundsException : public OptimalLearningException {
@@ -239,24 +256,6 @@ class BoundsException : public OptimalLearningException {
       :max: the maximum bound for value
   \endrst*/
   BoundsException(char const * line_info, char const * func_info, char const * custom_message, ValueType value_in, ValueType min_in, ValueType max_in) : BoundsException(kName, line_info, func_info, custom_message, value_in, min_in, max_in) {
-  }
-
-  /*!\rst
-    Provides a C-string containing information about the conditions of the exception.
-    See: http://en.cppreference.com/w/cpp/error/exception
-
-    The message is formatted in the class ctor (capitals indicate variable information)::
-
-      R"%%(
-      BoundsException: VALUE is not in range [MIN, MAX].
-      CUSTOM_MESSAGE FUNCTION_NAME FILE_LINE_INFO
-      )%%"
-
-    \return
-      C-style char string describing the exception.
-  \endrst*/
-  virtual const char* what() const noexcept override OL_WARN_UNUSED_RESULT {
-    return message_.c_str();
   }
 
   ValueType value() const noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
@@ -288,6 +287,8 @@ extern template class BoundsException<double>;
 /*!\rst
   Exception to capture value < min_value.
   Simple subclass of BoundsException that sets the max argument to std::numeric_limits<ValueType>::max()
+
+  See BoundsException for ``what()`` message format.
 \endrst*/
 template <typename ValueType>
 class LowerBoundException : public BoundsException<ValueType> {
@@ -314,6 +315,8 @@ class LowerBoundException : public BoundsException<ValueType> {
 /*!\rst
   Exception to capture value > max_value.
   Simple subclass of BoundsException that sets the min argument to std::numeric_limits<ValueType>::lowest()
+
+  See BoundsException for ``what()`` message format.
 \endrst*/
 template <typename ValueType>
 class UpperBoundException : public BoundsException<ValueType> {
@@ -338,13 +341,30 @@ class UpperBoundException : public BoundsException<ValueType> {
 };
 
 /*!\rst
+  **Overview**
+
   Exception to capture value != truth (+/- tolerance).
   The tolerance parameter is optional and only usable with floating point data types.
 
   Stores value and truth (and tolerance as applicable) for debugging/logging/reacting purposes.
 
-  Also holds a std::string containing the message produced by what(). Note that
-  any exceptions from std::string operations (e.g., std::bad_alloc) will cause std::terminate().
+  **Message Format**
+
+  The ``what()`` message is formatted in the class ctor (capitals indicate variable information)::
+
+    R"%%(
+    InvalidValueException: VALUE != TRUTH (value != truth).
+    CUSTOM_MESSAGE FUNCTION_NAME FILE_LINE_INFO
+    )%%"
+
+  OR ::
+
+    R"%%(
+    InvalidValueException: VALUE != TRUTH ± TOLERANCE (value != truth ± tolerance).
+    CUSTOM_MESSAGE FUNCTION_NAME FILE_LINE_INFO
+    )%%"
+
+  Depending on which ctor was used.
 \endrst*/
 template <typename ValueType>
 class InvalidValueException : public OptimalLearningException {
@@ -379,33 +399,6 @@ class InvalidValueException : public OptimalLearningException {
   template <typename ValueTypeIn = ValueType, class = typename std::enable_if<std::is_floating_point<ValueType>::value, ValueTypeIn>::type>
   InvalidValueException(char const * line_info, char const * func_info, char const * custom_message, ValueType value_in, ValueType truth_in, ValueType tolerance_in);
 
-  /*!\rst
-    Provides a C-string containing information about the conditions of the exception.
-    See: http://en.cppreference.com/w/cpp/error/exception
-
-    The message is formatted in the class ctor (capitals indicate variable information)::
-
-      R"%%(
-      InvalidValueException: VALUE != TRUTH (value != truth).
-      CUSTOM_MESSAGE FUNCTION_NAME FILE_LINE_INFO
-      )%%"
-
-    OR ::
-
-      R"%%(
-      InvalidValueException: VALUE != TRUTH ± TOLERANCE (value != truth ± tolerance).
-      CUSTOM_MESSAGE FUNCTION_NAME FILE_LINE_INFO
-      )%%"
-
-    Depending on which ctor was used.
-
-    \return
-      C-style char string describing the exception.
-  \endrst*/
-  virtual const char* what() const noexcept override OL_WARN_UNUSED_RESULT {
-    return message_.c_str();
-  }
-
   ValueType value() const noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
     return value_;
   }
@@ -431,13 +424,26 @@ extern template class InvalidValueException<double>;
 extern template InvalidValueException<double>::InvalidValueException(char const * line_info, char const * func_info, char const * custom_message, double value_in, double truth_in, double tolerance_in);
 
 /*!\rst
-  Exception to capture when a *square* matrix A (\in R^{m x m}) is singular.
+  **Overview**
 
-  Stores the matrix (in a std::vector) and its dimensions.
+  Exception to capture when a *square* matrix ``A`` (``\in R^{m x m}``) is singular.
 
-  Also holds a std::string containing the message produced by what(). Note that
-  any exceptions from std::string operations (e.g., std::bad_alloc) will cause std::terminate().
-  Similarly the std::vector<double> ctor can throw and cause std::terminate().
+  Stores the matrix (in a std::vector) and its dimensions along with the index of the leading minor that is non-SPD.
+
+  .. Note:: std::vector<double> ctor can throw and cause std::terminate().
+
+  **Message Format**
+
+  The ``what()`` message is formatted in the class ctor (capitals indicate variable information)::
+
+    R"%%(
+    SingularMatrixException: M x M matrix is singular; i-th leading minor is not SPD.
+    CUSTOM_MESSAGE FUNCTION_NAME FILE_LINE_INFO
+    )%%"
+
+  .. Note:: this exception currently does not print the full matrix. Use a debugger
+    and call PrintMatrix() (gpp_logging.hpp) or catch the exception and
+    proecss the matrix.
 \endrst*/
 class SingularMatrixException : public OptimalLearningException {
  public:
@@ -456,28 +462,6 @@ class SingularMatrixException : public OptimalLearningException {
       :leading_minor_index: index of the first non-positive definite (principal) leading minor
   \endrst*/
   SingularMatrixException(char const * line_info, char const * func_info, char const * custom_message, double const * matrix_in, int num_rows_in, int leading_minor_index_in);
-
-  /*!\rst
-    Provides a C-string containing information about the conditions of the exception.
-    See: http://en.cppreference.com/w/cpp/error/exception
-
-    The message is formatted in the class ctor (capitals indicate variable information)::
-
-      R"%%(
-      SingularMatrixException: M x M matrix is singular; i-th leading minor is not SPD.
-      CUSTOM_MESSAGE FUNCTION_NAME FILE_LINE_INFO
-      )%%"
-
-    .. Note:: this exception currently does not print the full matrix. Use a debugger
-      and call PrintMatrix() (gpp_logging.hpp) or catch the exception and
-      proecss the matrix.
-
-    \return
-      C-style char string describing the exception.
-  \endrst*/
-  virtual const char* what() const noexcept override OL_WARN_UNUSED_RESULT {
-    return message_.c_str();
-  }
 
   int num_rows() const noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
     return num_rows_;

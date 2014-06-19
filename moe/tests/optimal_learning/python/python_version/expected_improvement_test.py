@@ -46,7 +46,7 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
         gaussian_process_class=GaussianProcess,
     )
 
-    num_sampled_list = [1, 2, 5, 10, 16, 20, 50]
+    num_sampled_list = (1, 2, 5, 10, 16, 20, 50)
 
     num_mc_iterations = 747
     rng_seed = 314
@@ -74,7 +74,7 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
           between the naive and vectorized versions.
 
         """
-        num_points_p_q_list = [(1, 0), (1, 1), (2, 1), (1, 4), (5, 3)]
+        num_points_p_q_list = ((1, 0), (1, 1), (2, 1), (1, 4), (5, 3))
         ei_tolerance = numpy.finfo('float64').eps
         grad_ei_tolerance = 1.0e-13
         numpy.random.seed(78532)

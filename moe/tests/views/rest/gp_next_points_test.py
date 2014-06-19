@@ -18,7 +18,7 @@ class TestGpNextPointsViews(RestGaussianProcessTestCase):
     """Test that the /gp/next_points/* endpoints do the same thing as the C++ interface."""
 
     precompute_gaussian_process_data = True
-    num_sampled_list = [1, 2, 10]
+    num_sampled_list = (1, 2, 10)
 
     def _build_json_payload(self, domain, gaussian_process, covariance, num_to_sample, lie_value=None):
         """Create a json_payload to POST to the /gp/next_points/* endpoint with all needed info."""
@@ -89,7 +89,7 @@ class TestGpNextPointsViews(RestGaussianProcessTestCase):
         """Test that the /gp/next_points/* endpoints do the same thing as the C++ interface."""
         for moe_route in ALL_NEXT_POINTS_MOE_ROUTES:
             for test_case in self.gp_test_environments:
-                for num_to_sample in [1, 2, 4]:
+                for num_to_sample in (1, 2, 4):
                     python_domain, python_cov, python_gp = test_case
 
                     # Next point from REST
