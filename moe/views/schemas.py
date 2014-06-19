@@ -6,6 +6,46 @@ from moe.optimal_learning.python.constant import DEFAULT_NEWTON_PARAMETERS, DEFA
 from moe.optimal_learning.python.linkers import DOMAIN_TYPES_TO_DOMAIN_LINKS, OPTIMIZATION_TYPES_TO_OPTIMIZATION_METHODS, COVARIANCE_TYPES_TO_CLASSES
 
 
+# TODO: upgrade colander and replace positive_float (below) with a proper class
+class PositiveFloat(colander.MappingSchema):
+
+    """Colander positive (finite) float."""
+
+    schema_type = colander.Float
+    default = None
+    title = 'Positive Float'
+    validator = colander.Range(min=0)
+
+
+def positive_validator(node, cstruct):
+    """Raise an exception if the node value (cstruct) is non-positive or non-finite.
+
+    :param node: the node being validated (usually self)
+    :type node: colander.SchemaNode subclass instance
+    :param cstruct: the value being validated
+    :type cstruct: float
+    :raise: colander.Invalid if cstruct value is bad
+
+    """
+    if not 0.0 < cstruct < float('inf'):
+        raise colander.Invalid(node, msg='Value = {:f} must be positive and finite.'.format(cstruct))
+
+
+positive_float = colander.SchemaNode(
+    colander.Float(),
+    validator=positive_validator,
+    title='Positive Float',
+    default=None,
+)
+
+
+class ListOfPositiveFloats(colander.SequenceSchema):
+
+    """Colander list of positive floats."""
+
+    float_in_list = positive_float
+
+
 class ListOfFloats(colander.SequenceSchema):
 
     """Colander list of floats."""
@@ -203,7 +243,9 @@ class CovarianceInfo(colander.MappingSchema):
             validator=colander.OneOf(COVARIANCE_TYPES_TO_CLASSES),
             missing=SQUARE_EXPONENTIAL_COVARIANCE_TYPE,
             )
-    hyperparameters = ListOfFloats(
+    # TODO(GH-216): Improve hyperparameter validation. All > 0 is ok for now but eventually individual covariance objects should
+    # provide their own validation.
+    hyperparameters = ListOfPositiveFloats(
             missing=None,
             )
 
