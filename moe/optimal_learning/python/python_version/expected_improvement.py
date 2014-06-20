@@ -226,6 +226,10 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         print "best so far: {0}".format(best_so_far)
         print "Entered qd with mu_star: {0} and \nvar_star: \n{1}".format(mu_star, var_star)
 
+        # FLIP IT ALL!
+        best_so_far = -best_so_far
+        mu_star = -mu_star
+
         # PDF of univariate Gaussian centered at m with variance var
         def phi(m, var, param):
             return scipy.stats.norm.pdf(param, m, numpy.sqrt(var))
@@ -243,8 +247,8 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         expected_improvement = 0
         for k in range(0, q):
             # Calculation of m_k, which is the mean of Z_k introduced in Proposition 2
-            m_k = -(mu_star - mu_star[k])
-            m_k[k] = mu_star[k]
+            m_k = mu_star - mu_star[k]
+            m_k[k] = -mu_star[k]
             print "\nm_k: {0}".format(m_k)
 
             # Calculation of cov_k, which is the covariance matrix of Z_k introduced in Proposition 2
@@ -259,21 +263,21 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
             cov_k[k, k] = var_star[k][k]
             print "cov_k: \n{0}".format(cov_k)
             b_k = numpy.zeros(q)            
-            b_k[k] = best_so_far
-            
-            prob_term = -(mu_star[k] - best_so_far) * PHI(b_k - m_k, cov_k) 
-            
+            b_k[k] = -best_so_far
+
+            prob_term = (mu_star[k] - best_so_far) * PHI(b_k - m_k, cov_k) 
+
             # Calculation of inner sum
             sum_term = 0
             for i in range(0, q):
                 if q == 1:
-                    sum_term += cov_k[0][0] * phi(m_k[0], cov_k[0][0], b_k[0])
+                    sum_term += cov_k[i][k] * phi(m_k[i], cov_k[i][i], b_k[i])
                     break
 
                 # c_k introduced on top of page 4
                 c_k = numpy.zeros(q)
                 for j in range(0, q):
-                    c_k[j] = ((b_k[j] - m_k[j]) - (b_k[i] - m_k[i]) * cov_k[i][j]/cov_k[i][i])
+                    c_k[j] = ((b_k[j] - m_k[j]) - (b_k[i] - m_k[i]) * (cov_k[i][j] / cov_k[i][i]))
                 print "c_k before deletion: \n{0}".format(c_k)
                 c_k = numpy.delete(c_k, i)
                 print "c_k after deletion: \n{0}".format(c_k)
@@ -282,14 +286,20 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
                 cov_k_no_i = numpy.zeros((q, q))
                 for u in range(0, q):
                     for v in range(0, q):
-                        cov_k_no_i[u][v] = cov_k[u][v] - cov_k[i][u] * cov_k[i][v] / cov_k[i][i]
+                        cov_k_no_i[u][v] = cov_k[u][v] - ( cov_k[i][u] * cov_k[i][v] ) / cov_k[i][i]
                 print "cov_k_no_i before deletion: \n{0}".format(cov_k_no_i)
                 cov_k_no_i = numpy.delete(cov_k_no_i, i, axis=0)
                 cov_k_no_i = numpy.delete(cov_k_no_i, i, axis=1)
                 print "cov_k_no_i after deletion: \n{0}".format(cov_k_no_i)
 
                 sum_term += cov_k[i][k] * phi(m_k[i], cov_k[i][i], b_k[i]) * PHI(c_k, cov_k_no_i)
-            print "\n\nSUM TERM: {0} PROB TERM: {1}".format(sum_term, prob_term)
+                print "\n inner sum round\n {0} * {1} * {2} = {3}".format(
+                    cov_k[i][k],
+                    phi(m_k[i], cov_k[i][i], b_k[i]),
+                    PHI(c_k, cov_k_no_i),
+                    cov_k[i][k] * phi(m_k[i], cov_k[i][i], b_k[i]) * PHI(c_k, cov_k_no_i)
+                    )
+            print "\n\nSUM TERM: {0} PROB TERM: {1} = {2}".format(sum_term, prob_term, sum_term+prob_term)
             expected_improvement += (prob_term + sum_term)
         print "Expected improvement: {0}".format(expected_improvement)
         return numpy.fmax(0.0, expected_improvement)

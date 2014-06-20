@@ -109,8 +109,27 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
         num_tests_per_case = 10
         ei_tolerance = 6.0e-14
 
+        from moe.optimal_learning.python.data_containers import HistoricalData
+
         for test_case in self.gp_test_environments:
             domain, python_cov, python_gp = test_case
+            python_gp = moe.optimal_learning.python.python_version.gaussian_process.GaussianProcess(
+                    python_cov,
+                    HistoricalData(
+                        dim=3,
+                        sample_points=(
+                            ([0,0.5,0], -1, 0.01),
+                            )
+                        )
+                    )
+
+            print python_gp._historical_data
+            domain._domain_bounds= [
+                    ClosedInterval(-1.0, 1.0),
+                    ClosedInterval(-1.0, 1.0),
+                    ClosedInterval(-1.0, 1.0),
+                    ]
+            print domain._domain_bounds
             points_to_sample = domain.generate_uniform_random_points_in_domain(2)
             python_ei_eval = moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement(python_gp, points_to_sample)
 
@@ -120,6 +139,11 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
 
             for _ in xrange(num_tests_per_case):
                 points_to_sample = domain.generate_uniform_random_points_in_domain(2)
+                points_to_sample = [
+                        [0, 0, 0],
+                        [0, 1.0, 0],
+                        ]
+                print points_to_sample
                 python_ei_eval.set_current_point(points_to_sample)
                 cpp_ei_eval.set_current_point(points_to_sample)
 
