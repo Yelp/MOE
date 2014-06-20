@@ -68,7 +68,7 @@ class GaussianProcessTest(GaussianProcessTestCase):
         for test_case in self.gp_test_environments:
             domain, python_cov, python_gp = test_case
 
-            cpp_cov = SquareExponential(python_cov.get_hyperparameters())
+            cpp_cov = SquareExponential(python_cov.hyperparameters)
             cpp_gp = GaussianProcess(cpp_cov, python_gp._historical_data)
 
             for num_to_sample in self.num_to_sample_list:
@@ -92,7 +92,7 @@ class GaussianProcessTest(GaussianProcessTestCase):
         for test_case in self.gp_test_environments:
             domain, python_cov, python_gp = test_case
 
-            cpp_cov = SquareExponential(python_cov.get_hyperparameters())
+            cpp_cov = SquareExponential(python_cov.hyperparameters)
             cpp_gp = GaussianProcess(cpp_cov, python_gp._historical_data)
 
             for num_to_sample in self.num_to_sample_list:
@@ -116,7 +116,7 @@ class GaussianProcessTest(GaussianProcessTestCase):
         for test_case in self.gp_test_environments:
             domain, python_cov, python_gp = test_case
 
-            cpp_cov = SquareExponential(python_cov.get_hyperparameters())
+            cpp_cov = SquareExponential(python_cov.hyperparameters)
             cpp_gp = GaussianProcess(cpp_cov, python_gp._historical_data)
 
             for num_to_sample in self.num_to_sample_list:

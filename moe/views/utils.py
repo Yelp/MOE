@@ -45,7 +45,7 @@ def _build_covariance_info(covariance):
     """Create and return a covariance_info dictionary from a :class:`~moe.optimal_learning.python.python_version.covaraince.Covaraince` object."""
     return {
             'covariance_type': covariance.covariance_type,
-            'hyperparameters': covariance.get_hyperparameters().tolist(),
+            'hyperparameters': covariance.hyperparameters.tolist(),
             }
 
 

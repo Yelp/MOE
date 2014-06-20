@@ -56,6 +56,8 @@ class SquareExponential(CovarianceInterface):
         """Set hyperparameters to the specified hyperparameters; ordering must match."""
         self._hyperparameters = numpy.copy(hyperparameters)
 
+    hyperparameters = property(get_hyperparameters, set_hyperparameters)
+
     def covariance(self, point_one, point_two):
         r"""Compute the covariance function of two points, cov(``point_one``, ``point_two``).
 

@@ -45,7 +45,7 @@ class LogLikelihoodTest(GaussianProcessTestCase):
             self.gp_test_environment_input.num_sampled = num_sampled
             _, python_cov, python_gp = self._build_gaussian_process_test_data(self.gp_test_environment_input)
             python_lml = moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood(python_cov, python_gp._historical_data)
-            cpp_cov = moe.optimal_learning.python.cpp_wrappers.covariance.SquareExponential(python_cov.get_hyperparameters())
+            cpp_cov = moe.optimal_learning.python.cpp_wrappers.covariance.SquareExponential(python_cov.hyperparameters)
             cpp_lml = moe.optimal_learning.python.cpp_wrappers.log_likelihood.GaussianProcessLogMarginalLikelihood(cpp_cov, python_gp._historical_data)
 
             python_log_like = python_lml.compute_log_likelihood()

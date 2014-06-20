@@ -152,7 +152,7 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
         test_values = ei_eval.evaluate_at_point_list(points_to_evaluate)
 
         for i, value in enumerate(test_values):
-            ei_eval.set_current_point(points_to_evaluate[i, ...])
+            ei_eval.current_point = points_to_evaluate[i, ...]
             truth = ei_eval.compute_expected_improvement()
             T.assert_equal(value, truth)
 
@@ -192,7 +192,7 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
         best_point = multistart_expected_improvement_optimization(ei_optimizer, num_multistarts, num_to_sample)
 
         # Check that gradients are small
-        ei_eval.set_current_point(best_point)
+        ei_eval.current_point = best_point
         gradient = ei_eval.compute_grad_expected_improvement()
         self.assert_vector_within_relative(gradient, numpy.zeros(gradient.shape), tolerance)
 
@@ -240,7 +240,7 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
         best_point = multistart_expected_improvement_optimization(ei_optimizer, num_multistarts, num_to_sample)
 
         # Check that gradients are "small"
-        ei_eval.set_current_point(best_point)
+        ei_eval.current_point = best_point
         ei_final = ei_eval.compute_expected_improvement()
         grad_ei_final = ei_eval.compute_grad_expected_improvement()
         self.assert_vector_within_relative(grad_ei_final, numpy.zeros(grad_ei_final.shape), tolerance)

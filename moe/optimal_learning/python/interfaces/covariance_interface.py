@@ -54,12 +54,10 @@ class CovarianceInterface(object):
         """Return the number of hyperparameters of this covariance function."""
         pass
 
-    @abstractmethod
     def get_hyperparameters(self):
         """Get the hyperparameters (array of float64 with shape (num_hyperparameters)) of this covariance."""
         pass
 
-    @abstractmethod
     def set_hyperparameters(self, hyperparameters):
         """Set hyperparameters to the specified hyperparameters; ordering must match.
 
@@ -68,6 +66,8 @@ class CovarianceInterface(object):
 
         """
         pass
+
+    hyperparameters = abstractproperty(get_hyperparameters, set_hyperparameters)
 
     @abstractmethod
     def covariance(self, point_one, point_two):
