@@ -118,6 +118,7 @@ class GpNextPointsRequest(colander.MappingSchema):
             missing=[],
             )
 
+
 class GpNextPointsResponse(colander.MappingSchema):
 
     """A ``gp_next_points_*`` response colander schema.
