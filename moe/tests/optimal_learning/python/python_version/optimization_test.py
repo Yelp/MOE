@@ -115,9 +115,9 @@ class NullOptimizerTest(OptimalLearningTestCase):
 
     def test_null_optimizer(self):
         """Test that null optimizer does not change current_point."""
-        current_point_old = self.null_optimizer.objective_function.get_current_point()
+        current_point_old = self.null_optimizer.objective_function.current_point
         self.null_optimizer.optimize()
-        current_point_new = self.null_optimizer.objective_function.get_current_point()
+        current_point_new = self.null_optimizer.objective_function.current_point
         self.assert_vector_within_relative(current_point_old, current_point_new, 0.0)
 
     def test_multistarted_null_optimizer(self):
@@ -127,7 +127,7 @@ class NullOptimizerTest(OptimalLearningTestCase):
 
         truth = numpy.empty(num_points)
         for i, point in enumerate(points):
-            self.null_optimizer.objective_function.set_current_point(point)
+            self.null_optimizer.objective_function.current_point = (point)
             truth[i] = self.null_optimizer.objective_function.compute_objective_function()
 
         best_index = numpy.argmax(truth)
@@ -188,22 +188,22 @@ class GradientDescentOptimizerTest(OptimalLearningTestCase):
         """Check that gradient descent can find the optimum of the quadratic test objective."""
         # Check the claimed optima is an optima
         optimum_point = self.polynomial.optimum_point
-        self.polynomial.set_current_point(optimum_point)
+        self.polynomial.current_point = (optimum_point)
         gradient = self.polynomial.compute_grad_objective_function()
         self.assert_vector_within_relative(gradient, numpy.zeros(self.polynomial.dim), 0.0)
 
         # Verify that gradient descent does not move from the optima if we start it there.
         gradient_descent_optimizer = GradientDescentOptimizer(self.domain, self.polynomial, self.gd_parameters)
         gradient_descent_optimizer.optimize()
-        output = gradient_descent_optimizer.objective_function.get_current_point()
+        output = gradient_descent_optimizer.objective_function.current_point
         self.assert_vector_within_relative(output, optimum_point, 0.0)
 
         # Start at a wrong point and check optimization
         tolerance = 2.0e-13
         initial_guess = numpy.full(self.polynomial.dim, 0.2)
-        gradient_descent_optimizer.objective_function.set_current_point(initial_guess)
+        gradient_descent_optimizer.objective_function.current_point = (initial_guess)
         gradient_descent_optimizer.optimize()
-        output = gradient_descent_optimizer.objective_function.get_current_point()
+        output = gradient_descent_optimizer.objective_function.current_point
         # Verify coordinates
         self.assert_vector_within_relative(output, optimum_point, tolerance)
 
@@ -246,22 +246,22 @@ class GradientDescentOptimizerTest(OptimalLearningTestCase):
         )
         # Check the claimed optima is an optima
         optimum_point = self.polynomial.optimum_point
-        self.polynomial.set_current_point(optimum_point)
+        self.polynomial.current_point = (optimum_point)
         gradient = self.polynomial.compute_grad_objective_function()
         self.assert_vector_within_relative(gradient, numpy.zeros(self.polynomial.dim), 0.0)
 
         # Verify that gradient descent does not move from the optima if we start it there.
         gradient_descent_optimizer = GradientDescentOptimizer(self.domain, self.polynomial, gd_parameters_averaging)
         gradient_descent_optimizer.optimize()
-        output = gradient_descent_optimizer.objective_function.get_current_point()
+        output = gradient_descent_optimizer.objective_function.current_point
         self.assert_vector_within_relative(output, optimum_point, 0.0)
 
         # Start at a wrong point and check optimization
         tolerance = 2.0e-10
         initial_guess = numpy.full(self.polynomial.dim, 0.2)
-        gradient_descent_optimizer.objective_function.set_current_point(initial_guess)
+        gradient_descent_optimizer.objective_function.current_point = (initial_guess)
         gradient_descent_optimizer.optimize()
-        output = gradient_descent_optimizer.objective_function.get_current_point()
+        output = gradient_descent_optimizer.objective_function.current_point
         # Verify coordinates
         self.assert_vector_within_relative(output, optimum_point, tolerance)
 
@@ -290,10 +290,10 @@ class GradientDescentOptimizerTest(OptimalLearningTestCase):
 
         tolerance = 2.0e-13
         initial_guess = numpy.full(self.polynomial.dim, 0.2)
-        gradient_descent_optimizer.objective_function.set_current_point(initial_guess)
+        gradient_descent_optimizer.objective_function.current_point = (initial_guess)
         initial_value = gradient_descent_optimizer.objective_function.compute_objective_function()
         gradient_descent_optimizer.optimize()
-        output = gradient_descent_optimizer.objective_function.get_current_point()
+        output = gradient_descent_optimizer.objective_function.current_point
         # Verify coordinates
         self.assert_vector_within_relative(output, constrained_optimum_point, tolerance)
 

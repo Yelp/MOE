@@ -194,15 +194,17 @@ class GaussianProcessLogMarginalLikelihood(GaussianProcessLogLikelihoodInterface
 
     def get_hyperparameters(self):
         """Get the hyperparameters (array of float64 with shape (num_hyperparameters)) of this covariance."""
-        return self._covariance.get_hyperparameters()
+        return self._covariance.hyperparameters
 
     def set_hyperparameters(self, hyperparameters):
         """Set hyperparameters to the specified hyperparameters; ordering must match."""
-        self._covariance.set_hyperparameters(hyperparameters)
+        self._covariance.hyperparameters = (hyperparameters)
+
+    hyperparameters = property(get_hyperparameters, set_hyperparameters)
 
     def get_current_point(self):
         """Get the current_point (array of float64 with shape (problem_size)) at which this object is evaluating the objective function, ``f(x)``."""
-        return self.get_hyperparameters()
+        return self.hyperparameters
 
     def set_current_point(self, current_point):
         """Set current_point to the specified point; ordering must match.
@@ -211,7 +213,7 @@ class GaussianProcessLogMarginalLikelihood(GaussianProcessLogLikelihoodInterface
         :type current_point: array of float64 with shape (problem_size)
 
         """
-        self.set_hyperparameters(current_point)
+        self.hyperparameters = (current_point)
 
     current_point = property(get_current_point, set_current_point)
 

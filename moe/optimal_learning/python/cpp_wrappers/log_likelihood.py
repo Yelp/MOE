@@ -130,7 +130,7 @@ def multistart_hyperparameter_optimization(
         cpp_utils.cppify(log_likelihood_optimizer.objective_function._historical_data.points_sampled_value),
         log_likelihood_optimizer.objective_function._historical_data.dim,
         log_likelihood_optimizer.objective_function._historical_data.num_sampled,
-        cpp_utils.cppify_hyperparameters(log_likelihood_optimizer.objective_function._covariance.get_hyperparameters()),
+        cpp_utils.cppify_hyperparameters(log_likelihood_optimizer.objective_function._covariance.hyperparameters),
         cpp_utils.cppify(log_likelihood_optimizer.objective_function._historical_data.points_sampled_noise_variance),
         max_num_threads,
         randomness,
@@ -166,7 +166,7 @@ def evaluate_log_likelihood_at_hyperparameter_list(log_likelihood_evaluator, hyp
         log_likelihood_evaluator._historical_data.dim,
         log_likelihood_evaluator._historical_data.num_sampled,
         log_likelihood_evaluator.objective_type,
-        cpp_utils.cppify_hyperparameters(log_likelihood_evaluator._covariance.get_hyperparameters()),
+        cpp_utils.cppify_hyperparameters(log_likelihood_evaluator._covariance.hyperparameters),
         cpp_utils.cppify(log_likelihood_evaluator._historical_data.points_sampled_noise_variance),
         hyperparameters_to_evaluate.shape[0],
         max_num_threads,
@@ -220,15 +220,17 @@ class GaussianProcessLogLikelihood(GaussianProcessLogLikelihoodInterface, Optimi
 
     def get_hyperparameters(self):
         """Get the hyperparameters (array of float64 with shape (num_hyperparameters)) of this covariance."""
-        return self._covariance.get_hyperparameters()
+        return self._covariance.hyperparameters
 
     def set_hyperparameters(self, hyperparameters):
         """Set hyperparameters to the specified hyperparameters; ordering must match."""
-        self._covariance.set_hyperparameters(hyperparameters)
+        self._covariance.hyperparameters = (hyperparameters)
+
+    hyperparameters = property(get_hyperparameters, set_hyperparameters)
 
     def get_current_point(self):
         """Get the current_point (array of float64 with shape (problem_size)) at which this object is evaluating the objective function, ``f(x)``."""
-        return self.get_hyperparameters()
+        return self.hyperparameters
 
     def set_current_point(self, current_point):
         """Set current_point to the specified point; ordering must match.
@@ -237,7 +239,7 @@ class GaussianProcessLogLikelihood(GaussianProcessLogLikelihoodInterface, Optimi
         :type current_point: array of float64 with shape (problem_size)
 
         """
-        self.set_hyperparameters(current_point)
+        self.hyperparameters = (current_point)
 
     current_point = property(get_current_point, set_current_point)
 

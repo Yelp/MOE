@@ -123,9 +123,9 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
             self._points_being_sampled = numpy.copy(points_being_sampled)
 
         if points_to_sample is None:
-            self.set_current_point(numpy.zeros((1, gaussian_process.dim)))
+            self.current_point = (numpy.zeros((1, gaussian_process.dim)))
         else:
-            self.set_current_point(points_to_sample)
+            self.current_point = (points_to_sample)
 
     @property
     def dim(self):

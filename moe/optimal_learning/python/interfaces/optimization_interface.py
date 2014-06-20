@@ -44,12 +44,10 @@ class OptimizableInterface(object):
         """Return the number of independent parameters to optimize."""
         pass
 
-    @abstractmethod
     def get_current_point(self):
         """Get the current_point (array of float64 with shape (problem_size)) at which this object is evaluating the objective function, ``f(x)``."""
         pass
 
-    @abstractmethod
     def set_current_point(self, current_point):
         """Set current_point to the specified point; ordering must match.
 

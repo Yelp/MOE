@@ -190,21 +190,21 @@ class SquareExponentialTest(OptimalLearningTestCase):
 
             analytic_grad = covariance.hyperparameter_grad_covariance(point_one, point_two)
             for k in xrange(covariance.num_hyperparameters):
-                hyperparameters_old = covariance.get_hyperparameters()
+                hyperparameters_old = covariance.hyperparameters
 
                 # hyperparamter + h
                 hyperparameters_p = numpy.copy(hyperparameters_old)
                 hyperparameters_p[k] += h
-                covariance.set_hyperparameters(hyperparameters_p)
+                covariance.hyperparameters = (hyperparameters_p)
                 cov_p = covariance.covariance(point_one, point_two)
-                covariance.set_hyperparameters(hyperparameters_old)
+                covariance.hyperparameters = (hyperparameters_old)
 
                 # hyperparamter - h
                 hyperparameters_m = numpy.copy(hyperparameters_old)
                 hyperparameters_m[k] -= h
-                covariance.set_hyperparameters(hyperparameters_m)
+                covariance.hyperparameters = (hyperparameters_m)
                 cov_m = covariance.covariance(point_one, point_two)
-                covariance.set_hyperparameters(hyperparameters_old)
+                covariance.hyperparameters = (hyperparameters_old)
 
                 # calculate finite diff
                 fd_grad = (cov_p - cov_m) / (2.0 * h)
