@@ -223,8 +223,6 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         """
         q = len(mu_star)
         best_so_far = self._best_so_far
-        print "best so far: {0}".format(best_so_far)
-        print "Entered qd with mu_star: {0} and \nvar_star: \n{1}".format(mu_star, var_star)
 
         # PDF of univariate Gaussian centered at m with variance var
         def phi(m, var, param):
@@ -236,6 +234,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
                 return scipy.stats.norm.cdf(u[0], 0, numpy.sqrt(cov_matrix[0][0]))  # phi(0, cov_matrix[0][0], u[0])
             std = numpy.sqrt(numpy.diag(cov_matrix))  # get standard deviation
             corr_matrix = cov_matrix / std / std[:, numpy.newaxis]  # standardize -> correlation matrix
+            u = u / std
             ind = numpy.triu_indices(len(u), 1)
             return scipy.stats.kde.mvn.mvndst(numpy.array([-numpy.inf] * len(u)), u, numpy.array([0]*len(u)), corr_matrix[ind])[1]
         
@@ -245,7 +244,6 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
             # Calculation of m_k, which is the mean of Z_k introduced in Proposition 2
             m_k = -(mu_star - mu_star[k])
             m_k[k] = mu_star[k]
-            print "\nm_k: {0}".format(m_k)
 
             # Calculation of cov_k, which is the covariance matrix of Z_k introduced in Proposition 2
             # Matrix of cov(Y_j - Y_k, Y_i - Y_k) for i, j != k and cov(Y_j - Y_k, Y_i) for i = k.
@@ -257,7 +255,6 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
             cov_k[k, :] = -var_star[:][k] + var_star[k][k]
             cov_k[:, k] = -var_star[:][k] + var_star[k][k]
             cov_k[k, k] = var_star[k][k]
-            print "cov_k: \n{0}".format(cov_k)
             b_k = numpy.zeros(q)            
             b_k[k] = best_so_far
             
@@ -274,24 +271,18 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
                 c_k = numpy.zeros(q)
                 for j in range(0, q):
                     c_k[j] = ((b_k[j] - m_k[j]) - (b_k[i] - m_k[i]) * cov_k[i][j]/cov_k[i][i])
-                print "c_k before deletion: \n{0}".format(c_k)
                 c_k = numpy.delete(c_k, i)
-                print "c_k after deletion: \n{0}".format(c_k)
 
                 # cov_k_no_i introduced on top of page 4
                 cov_k_no_i = numpy.zeros((q, q))
                 for u in range(0, q):
                     for v in range(0, q):
                         cov_k_no_i[u][v] = cov_k[u][v] - cov_k[i][u] * cov_k[i][v] / cov_k[i][i]
-                print "cov_k_no_i before deletion: \n{0}".format(cov_k_no_i)
                 cov_k_no_i = numpy.delete(cov_k_no_i, i, axis=0)
                 cov_k_no_i = numpy.delete(cov_k_no_i, i, axis=1)
-                print "cov_k_no_i after deletion: \n{0}".format(cov_k_no_i)
 
                 sum_term += cov_k[i][k] * phi(m_k[i], cov_k[i][i], b_k[i]) * PHI(c_k, cov_k_no_i)
-            print "\n\nSUM TERM: {0} PROB TERM: {1}".format(sum_term, prob_term)
             expected_improvement += (prob_term + sum_term)
-        print "Expected improvement: {0}".format(expected_improvement)
         return numpy.fmax(0.0, expected_improvement)
 
     def _compute_expected_improvement_1d_analytic(self, mu_star, var_star):
