@@ -75,8 +75,8 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
 
             for _ in xrange(num_tests_per_case):
                 points_to_sample = domain.generate_random_point_in_domain()
-                cpp_ei_eval.current_point = (points_to_sample)
-                python_ei_eval.current_point = (points_to_sample)
+                cpp_ei_eval.current_point = points_to_sample
+                python_ei_eval.current_point = points_to_sample
 
                 cpp_ei = cpp_ei_eval.compute_expected_improvement()
                 python_ei = python_ei_eval.compute_expected_improvement()
