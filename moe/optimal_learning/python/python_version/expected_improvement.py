@@ -224,12 +224,12 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         q = len(mu_star)
         best_so_far = self._best_so_far
 
-        # PDF of univariate Gaussian centered at m with variance var
-        def phi(m, var, param):
+        # PDF of univariate Gaussian centered at m with variance var. Corresponds to phi in the paper. 
+        def single_variable_pdf(m, var, param):
             return scipy.stats.norm.pdf(param, m, numpy.sqrt(var))
 
-        # CDF of multivariate Gaussian centered at 0 with covariance matrix cov_matrix. CDF is taken from -inf to u.
-        def PHI(u, cov_matrix):
+        # CDF of multivariate Gaussian centered at 0 with covariance matrix cov_matrix. CDF is taken from -inf to u. Corresponds to PHI in the paper.
+        def multivariate_cdf(u, cov_matrix):
             if len(u) == 1:
                 return scipy.stats.norm.cdf(u[0], 0, numpy.sqrt(cov_matrix[0][0]))  # phi(0, cov_matrix[0][0], u[0])
             std = numpy.sqrt(numpy.diag(cov_matrix))  # get standard deviation
@@ -258,13 +258,13 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
             b_k = numpy.zeros(q)            
             b_k[k] = best_so_far
             
-            prob_term = -(mu_star[k] - best_so_far) * PHI(b_k - m_k, cov_k) 
+            prob_term = -(mu_star[k] - best_so_far) * multivariate_cdf(b_k - m_k, cov_k) 
             
             # Calculation of inner sum
             sum_term = 0
             for i in range(0, q):
                 if q == 1:
-                    sum_term += cov_k[0][0] * phi(m_k[0], cov_k[0][0], b_k[0])
+                    sum_term += cov_k[0][0] * single_variable_pdf(m_k[0], cov_k[0][0], b_k[0])
                     break
 
                 # c_k introduced on top of page 4
@@ -281,7 +281,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
                 cov_k_no_i = numpy.delete(cov_k_no_i, i, axis=0)
                 cov_k_no_i = numpy.delete(cov_k_no_i, i, axis=1)
 
-                sum_term += cov_k[i][k] * phi(m_k[i], cov_k[i][i], b_k[i]) * PHI(c_k, cov_k_no_i)
+                sum_term += cov_k[i][k] * single_variable_pdf(m_k[i], cov_k[i][i], b_k[i]) * multivariate_cdf(c_k, cov_k_no_i)
             expected_improvement += (prob_term + sum_term)
         return numpy.fmax(0.0, expected_improvement)
 
@@ -625,7 +625,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         aggregate_dx /= float(self._num_mc_iterations)
         return aggregate_dx
 
-    def compute_expected_improvement(self, force_monte_carlo=False, force_qD_analytic=False):
+    def compute_expected_improvement(self, force_monte_carlo=False):
         r"""Compute the expected improvement at ``points_to_sample``, with ``points_being_sampled`` concurrent points being sampled.
 
         .. Note:: These comments were copied from this's superclass in expected_improvement_interface.py.
@@ -667,12 +667,12 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         mu_star = self._gaussian_process.compute_mean_of_points(union_of_points)
         var_star = self._gaussian_process.compute_variance_of_points(union_of_points)
 
-        if num_points == 1 and force_monte_carlo is False and force_qD_analytic is False:
+        if num_points == 1 and force_monte_carlo is False:
             return self._compute_expected_improvement_1d_analytic(mu_star[0], var_star[0, 0])
-        elif force_qD_analytic is True:
-            return self._compute_expected_improvement_qd_analytic(mu_star, var_star)
-        else:
+        elif force_monte_carlo is True:
             return self._compute_expected_improvement_monte_carlo(mu_star, var_star)
+        else:
+            return self._compute_expected_improvement_qd_analytic(mu_star, var_star)
 
     def compute_objective_function(self, **kwargs):
         """Wrapper for compute_expected_improvement; see that function's docstring."""
