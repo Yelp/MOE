@@ -49,7 +49,7 @@ class SquareExponential(CovarianceInterface):
         :type hyperparameters: array-like of size dim+1
 
         """
-        self.hyperparameters = (hyperparameters)
+        self.hyperparameters = hyperparameters
 
     @property
     def num_hyperparameters(self):

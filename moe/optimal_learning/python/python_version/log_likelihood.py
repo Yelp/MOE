@@ -198,7 +198,7 @@ class GaussianProcessLogMarginalLikelihood(GaussianProcessLogLikelihoodInterface
 
     def set_hyperparameters(self, hyperparameters):
         """Set hyperparameters to the specified hyperparameters; ordering must match."""
-        self._covariance.hyperparameters = (hyperparameters)
+        self._covariance.hyperparameters = hyperparameters
 
     hyperparameters = property(get_hyperparameters, set_hyperparameters)
 
@@ -213,7 +213,7 @@ class GaussianProcessLogMarginalLikelihood(GaussianProcessLogLikelihoodInterface
         :type current_point: array of float64 with shape (problem_size)
 
         """
-        self.hyperparameters = (current_point)
+        self.hyperparameters = current_point
 
     current_point = property(get_current_point, set_current_point)
 
