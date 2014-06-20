@@ -625,7 +625,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         aggregate_dx /= float(self._num_mc_iterations)
         return aggregate_dx
 
-    def compute_expected_improvement(self, force_monte_carlo=False):
+    def compute_expected_improvement(self, force_monte_carlo=False, force_qD_analytic=False):
         r"""Compute the expected improvement at ``points_to_sample``, with ``points_being_sampled`` concurrent points being sampled.
 
         .. Note:: These comments were copied from this's superclass in expected_improvement_interface.py.
@@ -671,8 +671,10 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
             return self._compute_expected_improvement_1d_analytic(mu_star[0], var_star[0, 0])
         elif force_monte_carlo is True:
             return self._compute_expected_improvement_monte_carlo(mu_star, var_star)
-        else:
+        elif force_qD_analytic is True:
             return self._compute_expected_improvement_qd_analytic(mu_star, var_star)
+        else:
+            return self._compute_expected_improvement_monte_carlo(mu_star, var_star)
 
     def compute_objective_function(self, **kwargs):
         """Wrapper for compute_expected_improvement; see that function's docstring."""

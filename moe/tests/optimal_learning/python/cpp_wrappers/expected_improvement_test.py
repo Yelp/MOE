@@ -124,7 +124,7 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
                 cpp_ei_eval.set_current_point(points_to_sample)
 
                 cpp_ei = cpp_ei_eval.compute_expected_improvement(force_monte_carlo=True)
-                python_qd_ei = python_ei_eval.compute_expected_improvement()
+                python_qd_ei = python_ei_eval.compute_expected_improvement(force_qD_analytic=True)
                 self.assert_scalar_within_relative(python_qd_ei, cpp_ei, ei_tolerance)
 
 if __name__ == "__main__":
