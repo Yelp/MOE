@@ -72,7 +72,7 @@ __device__ void GeneralMatrixVectorMultiply_gpu(double const * __restrict__ A, d
   }
 }
 
-__global__ void EI_gpu(double const * __restrict__ L, double const * __restrict__ mu, int no_of_pts, int NUM_ITS, double best, unsigned int seed, double * __restrict__ EIs)
+__global__ void EI_gpu(double const * __restrict__ L, double const * __restrict__ mu, int no_of_pts, int NUM_ITS, double best, unsigned int seed, double * __restrict__ EIs, double* __restrict__ dev_random_number_EI, bool configure_for_test)
 {
   // copy mu, L to shared memory mu_local & L_local 
   // For multiple dynamically sized arrays in a single kernel, declare a single extern unsized array, and use
@@ -105,26 +105,44 @@ __global__ void EI_gpu(double const * __restrict__ L, double const * __restrict_
   double improvement_this_step;
   double EI;
 
-  for(int mc = 0; mc < NUM_ITS; ++mc) {
-    improvement_this_step = 0.0;
-    for(int i = 0; i < no_of_pts; ++i) {
-        normals[i] = curand_normal_double(&s);
-    }
-    TriangularMatrixVectorMultiply_gpu(L_local, no_of_pts, normals);
-    for(int i = 0; i < no_of_pts; ++i) {
-        EI = best - (mu_local[i] + normals[i]);
-        if(EI > improvement_this_step) {
-            improvement_this_step = EI;
+  if (configure_for_test) {
+      for(int mc = 0; mc < NUM_ITS; ++mc) {
+        improvement_this_step = 0.0;
+        for(int i = 0; i < no_of_pts; ++i) {
+            normals[i] = curand_normal_double(&s);
+            dev_random_number_EI[IDX * NUM_ITS * no_of_pts + mc * no_of_pts + i] = normals[i];
         }
-    }
-    agg += improvement_this_step;
+        TriangularMatrixVectorMultiply_gpu(L_local, no_of_pts, normals);
+        for(int i = 0; i < no_of_pts; ++i) {
+            EI = best - (mu_local[i] + normals[i]);
+            if(EI > improvement_this_step) {
+                improvement_this_step = EI;
+            }
+        }
+        agg += improvement_this_step;
+      }
+  } else {
+      for(int mc = 0; mc < NUM_ITS; ++mc) {
+        improvement_this_step = 0.0;
+        for(int i = 0; i < no_of_pts; ++i) {
+            normals[i] = curand_normal_double(&s);
+        }
+        TriangularMatrixVectorMultiply_gpu(L_local, no_of_pts, normals);
+        for(int i = 0; i < no_of_pts; ++i) {
+            EI = best - (mu_local[i] + normals[i]);
+            if(EI > improvement_this_step) {
+                improvement_this_step = EI;
+            }
+        }
+        agg += improvement_this_step;
+      }
   }
   EIs[IDX] = agg/(double)NUM_ITS;
   free(normals);
 }
 
 // grad_EIs[dim][num_to_sample][num_threads]
-__global__ void grad_EI_gpu(double const * __restrict__ mu, double const * __restrict__ L, double const * __restrict__ grad_mu, double const * __restrict__ grad_L, double best, int num_union_of_pts, int num_to_sample, int dimension, int NUM_ITS, unsigned int seed,  double * __restrict__ grad_EIs)
+__global__ void grad_EI_gpu(double const * __restrict__ mu, double const * __restrict__ L, double const * __restrict__ grad_mu, double const * __restrict__ grad_L, double best, int num_union_of_pts, int num_to_sample, int dimension, int NUM_ITS, unsigned int seed,  double * __restrict__ grad_EIs, double* __restrict__ dev_random_number_gradEI, bool configure_for_test)
 {
   // copy mu, L, grad_mu, grad_L to shared memory 
   extern __shared__ double storage[];
@@ -132,10 +150,7 @@ __global__ void grad_EI_gpu(double const * __restrict__ mu, double const * __res
   double * L_local = &mu_local[num_union_of_pts];
   double * grad_mu_local = &L_local[num_union_of_pts * num_union_of_pts];
   double * grad_L_local = &grad_mu_local[num_to_sample * dimension];
-  // mu_local[num_union_of_pts],
-  // L_local[num_union_of_pts * num_union_of_pts],
-  // grad_mu_local[num_to_sample * dimension],
-  // grad_L_local[num_to_sample * num_union_of_pts * num_union_of_pts * dimension];
+
   const int idx = threadIdx.x;
   const int IDX = threadIdx.x + blockDim.x * blockIdx.x;
   const int loop_no = num_to_sample * num_union_of_pts * num_union_of_pts * dimension / blockDim.x;
@@ -167,33 +182,64 @@ __global__ void grad_EI_gpu(double const * __restrict__ mu, double const * __res
       }
   }
   // MC step start
-  for(mc = 0; mc < NUM_ITS; ++mc) {
-      improvement_this_step = 0.0;
-      winner = -1;
-      for(i = 0; i < num_union_of_pts; ++i) {
-          normals[i] = curand_normal_double(&s);
-          normals_copy[i] = normals[i];
-      }
-      TriangularMatrixVectorMultiply_gpu(L_local, num_union_of_pts, normals);
-      for(i = 0; i < num_union_of_pts; ++i){
-          EI = best - (mu_local[i] + normals[i]);
-          if(EI > improvement_this_step){
-              improvement_this_step = EI;
-              winner = i;
+  if (configure_for_test) {
+      for(mc = 0; mc < NUM_ITS; ++mc) {
+          improvement_this_step = 0.0;
+          winner = -1;
+          for(i = 0; i < num_union_of_pts; ++i) {
+              normals[i] = curand_normal_double(&s);
+              normals_copy[i] = normals[i];
+              dev_random_number_gradEI[IDX * NUM_ITS * num_union_of_pts + mc * num_union_of_pts + i] = normals[i];
           }
-      }
-      //printf("grad_mu %f \n", grad_mu[which_point * dimension]);
-      if(improvement_this_step > 0.0) {
-          if (winner < num_to_sample) {
-              for (k = 0; k < dimension; ++k) {
-                  grad_EIs[IDX*num_to_sample*dimension + winner * dimension + k] -= grad_mu_local[winner * dimension + k];
+          TriangularMatrixVectorMultiply_gpu(L_local, num_union_of_pts, normals);
+          for(i = 0; i < num_union_of_pts; ++i){
+              EI = best - (mu_local[i] + normals[i]);
+              if(EI > improvement_this_step){
+                  improvement_this_step = EI;
+                  winner = i;
               }
           }
-          for (i = 0; i < num_to_sample; ++i) {   // derivative w.r.t ith point
-              GeneralMatrixVectorMultiply_gpu(grad_L_local + i*num_union_of_pts*num_union_of_pts*dimension + winner*num_union_of_pts*dimension, normals_copy, dimension, num_union_of_pts, dimension, grad_EIs + IDX*num_to_sample*dimension + i*dimension);
+          if(improvement_this_step > 0.0) {
+              if (winner < num_to_sample) {
+                  for (k = 0; k < dimension; ++k) {
+                      grad_EIs[IDX*num_to_sample*dimension + winner * dimension + k] -= grad_mu_local[winner * dimension + k];
+                  }
+              }
+              for (i = 0; i < num_to_sample; ++i) {   // derivative w.r.t ith point
+                  GeneralMatrixVectorMultiply_gpu(grad_L_local + i*num_union_of_pts*num_union_of_pts*dimension + winner*num_union_of_pts*dimension, normals_copy, dimension, num_union_of_pts, dimension, grad_EIs + IDX*num_to_sample*dimension + i*dimension);
+              }
+          }
+      }
+  } else {
+      for(mc = 0; mc < NUM_ITS; ++mc) {
+          improvement_this_step = 0.0;
+          winner = -1;
+          for(i = 0; i < num_union_of_pts; ++i) {
+              normals[i] = curand_normal_double(&s);
+              normals_copy[i] = normals[i];
+          }
+          TriangularMatrixVectorMultiply_gpu(L_local, num_union_of_pts, normals);
+          for(i = 0; i < num_union_of_pts; ++i){
+              EI = best - (mu_local[i] + normals[i]);
+              if(EI > improvement_this_step){
+                  improvement_this_step = EI;
+                  winner = i;
+              }
+          }
+          //printf("grad_mu %f \n", grad_mu[which_point * dimension]);
+          if(improvement_this_step > 0.0) {
+              if (winner < num_to_sample) {
+                  for (k = 0; k < dimension; ++k) {
+                      grad_EIs[IDX*num_to_sample*dimension + winner * dimension + k] -= grad_mu_local[winner * dimension + k];
+                  }
+              }
+              for (i = 0; i < num_to_sample; ++i) {   // derivative w.r.t ith point
+                  GeneralMatrixVectorMultiply_gpu(grad_L_local + i*num_union_of_pts*num_union_of_pts*dimension + winner*num_union_of_pts*dimension, normals_copy, dimension, num_union_of_pts, dimension, grad_EIs + IDX*num_to_sample*dimension + i*dimension);
+              }
           }
       }
   }
+
   for (int i = 0; i < num_to_sample; ++i) {
       for (int k = 0; k < dimension; ++k) {
           grad_EIs[IDX*num_to_sample*dimension + i*dimension + k] /= (double)NUM_ITS;
@@ -217,7 +263,7 @@ extern "C" void cuda_free_mem(double* __restrict__ ptr) {
   cudaFree(ptr);
 }
 
-extern "C" CudaError cuda_get_EI(double * __restrict__ mu, double * __restrict__ L, double best, int num_union_of_pts, double * __restrict__ dev_mu, double * __restrict__ dev_L, double * __restrict__ dev_EIs, unsigned int seed, int num_mc, double* __restrict__ ei_val) {
+extern "C" CudaError cuda_get_EI(double * __restrict__ mu, double * __restrict__ L, double best, int num_union_of_pts, double * __restrict__ dev_mu, double * __restrict__ dev_L, double * __restrict__ dev_EIs, unsigned int seed, int num_mc, double* __restrict__ ei_val, double* __restrict__ dev_random_number_EI, double* __restrict__ random_number_EI, bool configure_for_test) {
   *ei_val = 0.0;
   CudaError _success = {cudaSuccess, __FILE__, __LINE__};
   const unsigned int EI_thread_no = EI_THREAD_NO;
@@ -234,10 +280,15 @@ extern "C" CudaError cuda_get_EI(double * __restrict__ mu, double * __restrict__
   OL_CUDA_ERROR_RETURN(cudaMemcpy(dev_mu, mu, mem_size_mu, cudaMemcpyHostToDevice))
   OL_CUDA_ERROR_RETURN(cudaMemcpy(dev_L, L, mem_size_L, cudaMemcpyHostToDevice))
   // execute kernel
-  EI_gpu<<< grid, threads, num_union_of_pts*sizeof(double)+num_union_of_pts*num_union_of_pts*sizeof(double)>>>(dev_L, dev_mu, num_union_of_pts, NUM_ITS, best, seed, dev_EIs); 
+  EI_gpu<<< grid, threads, num_union_of_pts*sizeof(double)+num_union_of_pts*num_union_of_pts*sizeof(double)>>>(dev_L, dev_mu, num_union_of_pts, NUM_ITS, best, seed, dev_EIs, dev_random_number_EI, configure_for_test); 
   OL_CUDA_ERROR_RETURN(cudaPeekAtLastError())
   // copy dev_EIs back to CPU
   OL_CUDA_ERROR_RETURN(cudaMemcpy(EIs, dev_EIs, mem_size_EIs, cudaMemcpyDeviceToHost))
+  // copy dev_random_number_EI back to CPU if configure_for_test is on
+  if (configure_for_test) {
+      int mem_size_random_number_EI = NUM_ITS * EI_thread_no * EI_block_no * num_union_of_pts * sizeof(double);
+      OL_CUDA_ERROR_RETURN(cudaMemcpy(random_number_EI, dev_random_number_EI, mem_size_random_number_EI, cudaMemcpyDeviceToHost))
+  }
   // average EIs
   double ave = 0.0;
   for (int i=0;i<(EI_thread_no*EI_block_no);i++) {
@@ -248,7 +299,8 @@ extern "C" CudaError cuda_get_EI(double * __restrict__ mu, double * __restrict__
 }
 
  // grad_EI[dim][num_to_sample]
- extern "C" CudaError cuda_get_gradEI(double * __restrict__ mu, double * __restrict__ grad_mu, double * __restrict__ L, double * __restrict__ grad_L, double best, int num_union_of_pts, int num_to_sample, int dimension, double * __restrict__ dev_mu, double * __restrict__ dev_grad_mu, double * __restrict__ dev_L, double * __restrict__ dev_grad_L, double * __restrict__ dev_grad_EIs, unsigned int seed, int num_mc, double * __restrict__ grad_EI) {
+ extern "C" CudaError cuda_get_gradEI(double * __restrict__ mu, double * __restrict__ grad_mu, double * __restrict__ L, double * __restrict__ grad_L, double best, int num_union_of_pts, int num_to_sample, int dimension, double * __restrict__ dev_mu, double * __restrict__ dev_grad_mu, double * __restrict__ dev_L, double * __restrict__ dev_grad_L, double * __restrict__ dev_grad_EIs, unsigned int seed, int num_mc, double * __restrict__ grad_EI, double* __restrict__
+         dev_random_number_gradEI, double* __restrict__ random_number_gradEI, bool configure_for_test) {
   CudaError _success = {cudaSuccess, __FILE__, __LINE__};
   const unsigned int gradEI_thread_no = GRADEI_THREAD_NO;
   const unsigned int gradEI_block_no = GRADEI_BLOCK_NO;
@@ -275,10 +327,15 @@ extern "C" CudaError cuda_get_EI(double * __restrict__ mu, double * __restrict__
   OL_CUDA_ERROR_RETURN(cudaMemcpy(dev_L, L, mem_size_L, cudaMemcpyHostToDevice))
   OL_CUDA_ERROR_RETURN(cudaMemcpy(dev_grad_L, grad_L, mem_size_grad_L, cudaMemcpyHostToDevice))
   // execute kernel
-  grad_EI_gpu<<< grid, threads, mem_size_mu+mem_size_L+mem_size_grad_mu+mem_size_grad_L >>>(dev_mu, dev_L, dev_grad_mu, dev_grad_L, best, num_union_of_pts, num_to_sample, dimension, NUM_ITS, seed, dev_grad_EIs); 
+  grad_EI_gpu<<< grid, threads, mem_size_mu+mem_size_L+mem_size_grad_mu+mem_size_grad_L >>>(dev_mu, dev_L, dev_grad_mu, dev_grad_L, best, num_union_of_pts, num_to_sample, dimension, NUM_ITS, seed, dev_grad_EIs, dev_random_number_gradEI, configure_for_test); 
   OL_CUDA_ERROR_RETURN(cudaPeekAtLastError())
   // copy result back to CPU
   OL_CUDA_ERROR_RETURN(cudaMemcpy(grad_EIs, dev_grad_EIs, mem_size_grad_EIs, cudaMemcpyDeviceToHost))
+  // copy dev_random_number_gradEI back to CPU if configure_for_test is on
+  if (configure_for_test) {
+      int mem_size_random_number_gradEI = NUM_ITS * gradEI_thread_no * gradEI_block_no * num_union_of_pts * sizeof(double);
+      OL_CUDA_ERROR_RETURN(cudaMemcpy(random_number_gradEI, dev_random_number_gradEI, mem_size_random_number_gradEI, cudaMemcpyDeviceToHost))
+  }
   // get grad_EI
   for (int n = 0; n < (gradEI_thread_no*gradEI_block_no); ++n) {
       for (int i = 0; i < num_to_sample; ++i) {
@@ -292,8 +349,8 @@ extern "C" CudaError cuda_get_EI(double * __restrict__ mu, double * __restrict__
           grad_EI[i*dimension + k] /= (double)(gradEI_thread_no*gradEI_block_no);
       }
   }
-      return _success;
- }
+  return _success;
+}
 
 extern "C" CudaError cuda_set_device(int devID) {
   CudaError _success = {cudaSuccess, __FILE__, __LINE__};

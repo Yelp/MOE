@@ -68,6 +68,10 @@ class CudaExpectedImprovementEvaluator final {
     return dim_;
   }
 
+  int num_mc_itr() const noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
+    return num_mc;
+  }
+
   const GaussianProcess * gaussian_process() const noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
     return gaussian_process_;
   }
@@ -153,6 +157,11 @@ struct CudaExpectedImprovementState final {
          must have a different NormalRNG (different seeds, not just different objects).
   \endrst*/
   CudaExpectedImprovementState(const EvaluatorType& ei_evaluator, double const * restrict points_to_sample, double const * restrict points_being_sampled, int num_to_sample_in, int num_being_sampled_in, bool configure_for_gradients, NormalRNG * normal_rng_in);
+
+#ifdef OL_GPU_ENABLED
+  // constructor for setting up unit test
+  CudaExpectedImprovementState(const EvaluatorType& ei_evaluator, double const * restrict points_to_sample, double const * restrict points_being_sampled, int num_to_sample_in, int num_being_sampled_in, bool configure_for_gradients, NormalRNG * normal_rng_in, bool configure_for_test);
+#endif
 
   CudaExpectedImprovementState(CudaExpectedImprovementState&& OL_UNUSED(other)) = default;
 
@@ -259,6 +268,7 @@ struct CudaExpectedImprovementState final {
   std::vector<double> grad_chol_decomp;
 
 #ifdef OL_GPU_ENABLED
+  bool configure_for_test;
   //! structs containing pointers to store the memory locations of variables on GPU
   CudaDevicePointer dev_mu;
   CudaDevicePointer dev_L;
@@ -266,6 +276,13 @@ struct CudaExpectedImprovementState final {
   CudaDevicePointer dev_grad_L;
   CudaDevicePointer dev_EIs;
   CudaDevicePointer dev_grad_EIs;
+  CudaDevicePointer dev_random_number_EI;
+  CudaDevicePointer dev_random_number_gradEI;
+
+  //! storage for random numbers used in computing EI & grad_EI, this is only
+  //used to setup unit test
+  std::vector<double> random_number_EI;
+  std::vector<double> random_number_gradEI;
 #endif
 
   OL_DISALLOW_DEFAULT_AND_COPY_AND_ASSIGN(CudaExpectedImprovementState);
