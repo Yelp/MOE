@@ -34,19 +34,24 @@ if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE RelWithDebInfo)
 endif()
 
-#### External dependencies
-find_package(PythonLibs REQUIRED)
-find_package(Boost 1.51 REQUIRED COMPONENTS python)
+#### User configured external dependencies
 if (EXISTS ${MOE_PYTHON_INC_DIR})
-    set(PYTHON_INCLUDE_DIRS
+    set(PYTHON_INCLUDE_DIR
         ${MOE_PYTHON_INC_DIR}
+        CACHE PATH "Path to where Python.h is found"
         )
 endif()
 if (EXISTS ${MOE_PYTHON_LIB})
-    set(PYTHON_LIBRARIES
+    set(PYTHON_LIBRARY
         ${MOE_PYTHON_LIB}
+        CACHE FILEPATH "Python shared object"
         )
 endif()
+
+#### External dependencies
+find_package(PythonLibs REQUIRED)
+find_package(Boost 1.51 REQUIRED COMPONENTS python)
+
 
 include_directories(${PYTHON_INCLUDE_DIRS})
 include_directories(${Boost_INCLUDE_DIRS})
@@ -281,19 +286,19 @@ if (${MOE_USE_GPU} MATCHES "1")
             COMMAND CC=${GPU_CC} CXX=${GPU_CXX} cmake ${CMAKE_SOURCE_DIR}/gpu/
             COMMAND make
             )
-        else()
-            add_custom_target(
-                GPU_FOLDER
-                WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-                COMMAND mkdir ${CMAKE_BINARY_DIR}/gpu/
-                )
-            add_custom_target(
-                GPU_LIB
-                DEPENDS GPU_FOLDER
-                WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/gpu/
-                COMMAND CC=${GPU_CC} CXX=${GPU_CXX} cmake ${CMAKE_SOURCE_DIR}/gpu/
-                COMMAND make
-                )
+    else()
+        add_custom_target(
+            GPU_FOLDER
+            WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+            COMMAND mkdir ${CMAKE_BINARY_DIR}/gpu/
+            )
+        add_custom_target(
+            GPU_LIB
+            DEPENDS GPU_FOLDER
+            WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/gpu/
+            COMMAND CC=${GPU_CC} CXX=${GPU_CXX} cmake ${CMAKE_SOURCE_DIR}/gpu/
+            COMMAND make
+            )
     endif()
 endif()
 
