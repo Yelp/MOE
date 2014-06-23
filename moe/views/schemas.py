@@ -6,7 +6,6 @@ from moe.optimal_learning.python.constant import DEFAULT_NEWTON_PARAMETERS, DEFA
 from moe.optimal_learning.python.linkers import DOMAIN_TYPES_TO_DOMAIN_LINKS, OPTIMIZATION_TYPES_TO_OPTIMIZATION_METHODS, COVARIANCE_TYPES_TO_CLASSES
 
 
-# TODO: upgrade colander and replace positive_float (below) with a proper class
 class PositiveFloat(colander.MappingSchema):
 
     """Colander positive (finite) float."""
