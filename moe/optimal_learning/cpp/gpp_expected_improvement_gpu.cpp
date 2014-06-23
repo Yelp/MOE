@@ -6,7 +6,6 @@
 
 #include "gpp_expected_improvement_gpu.hpp"
 
-
 #include <vector>
 
 #include "gpp_common.hpp"
@@ -16,14 +15,14 @@
 #include "gpp_exception.hpp"
 
 #ifdef OL_GPU_ENABLED
-#include <string>
 #include "gpu/gpp_cuda_math.hpp"
 #include "driver_types.h"
 #include "cuda_runtime.h"
-#define OL_CUDA_THROW_EXCEPTION(_ERR) ThrowException(RuntimeException(std::to_string(_ERR.line).c_str(), _ERR.file, cudaGetErrorString(_ERR.err)));
+
+#define OL_CUDA_THROW_EXCEPTION(_ERR) ThrowException(RuntimeException((_ERR).line_info, (_ERR).func_info, cudaGetErrorString((_ERR).err)));
+#define OL_CUDA_ERROR_THROW(_ERR) {if((_ERR).err != cudaSuccess) {OL_CUDA_THROW_EXCEPTION(_ERR)}}
 #endif
 
-#include <cstdio>
 namespace optimal_learning {
 #ifdef OL_GPU_ENABLED
 CudaDevicePointer::CudaDevicePointer(int num_doubles_in)
@@ -53,9 +52,7 @@ double CudaExpectedImprovementEvaluator::ComputeExpectedImprovement(StateType * 
   ComputeCholeskyFactorL(num_union, ei_state->cholesky_to_sample_var.data());
   unsigned int seed_in = (ei_state->normal_rng->GetEngine())();
   CudaError _err = cuda_get_EI(ei_state->to_sample_mean.data(), ei_state->cholesky_to_sample_var.data(), best_so_far_, num_union, (ei_state->dev_mu).ptr, (ei_state->dev_L).ptr, (ei_state->dev_EIs).ptr, seed_in, num_mc, &EI_val);
-  if (_err.err != cudaSuccess) {
-      OL_CUDA_THROW_EXCEPTION(_err)
-  }
+  OL_CUDA_ERROR_THROW(_err)
   return EI_val;
 }
 
@@ -74,16 +71,12 @@ void CudaExpectedImprovementEvaluator::ComputeGradExpectedImprovement(StateType 
   unsigned int seed_in = (ei_state->normal_rng->GetEngine())();
 
   CudaError _err = cuda_get_gradEI(ei_state->to_sample_mean.data(), ei_state->grad_mu.data(), ei_state->cholesky_to_sample_var.data(), ei_state->grad_chol_decomp.data(), best_so_far_, num_union, num_to_sample, dim_, (ei_state->dev_mu).ptr, (ei_state->dev_grad_mu).ptr, (ei_state->dev_L).ptr, (ei_state->dev_grad_L).ptr, (ei_state->dev_grad_EIs).ptr, seed_in, num_mc, grad_EI);
-  if (_err.err != cudaSuccess) {
-      OL_CUDA_THROW_EXCEPTION(_err)
-  }
+  OL_CUDA_ERROR_THROW(_err)
 }
 
 void CudaExpectedImprovementEvaluator::setupGPU(int devID) {
   CudaError _err = cuda_set_device(devID);
-  if (_err.err != cudaSuccess) {
-      OL_CUDA_THROW_EXCEPTION(_err)
-  }
+  OL_CUDA_ERROR_THROW(_err)
 }
 
 CudaExpectedImprovementEvaluator::~CudaExpectedImprovementEvaluator() {
@@ -107,12 +100,12 @@ CudaExpectedImprovementState::CudaExpectedImprovementState(const EvaluatorType& 
     dev_L(Square(num_union)),
     dev_grad_mu(dim * num_derivatives),
     dev_grad_L(dim * Square(num_union) * num_derivatives),
-    dev_EIs(EI_THREAD_NO * EI_BLOCK_NO),
-    dev_grad_EIs(GRADEI_THREAD_NO * GRADEI_BLOCK_NO * dim * num_derivatives) {
+    dev_EIs(OL_EI_THREAD_NO * OL_EI_BLOCK_NO),
+    dev_grad_EIs(OL_GRAD_EI_THREAD_NO * OL_GRAD_EI_BLOCK_NO * dim * num_derivatives) {
     }
 
-
 #else
+
 double CudaExpectedImprovementEvaluator::ComputeExpectedImprovement(StateType * ei_state) const {
   OL_THROW_EXCEPTION(RuntimeException, "GPU component is disabled or unavailable, cannot call gpu function!\n");
 }

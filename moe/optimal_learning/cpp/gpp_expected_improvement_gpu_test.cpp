@@ -15,10 +15,7 @@
 
 #include "gpp_expected_improvement_gpu_test.hpp"
 
-#include <cstdio>
-
 #include <vector>
-#include <ctime>
 #include <algorithm>
 
 #include <boost/random/uniform_real.hpp>  // NOLINT(build/include_order)
@@ -244,77 +241,17 @@ int RunCudaEIvsCpuEI() {
     return total_errors;
 }
 
-void SpeedComparison() {
-  const int num_mc_iter = 10000000;
-  const int dim = 3;
-  const int num_being_sampled = 8;
-  const int num_to_sample = 4;
-  const int num_sampled = 20;
-
-  double alpha = 2.80723;
-  // set best_so_far to be larger than max(points_sampled_value) (but don't make it huge or stability will be suffer)
-  double best_so_far = 10.0;
-
-  UniformRandomGenerator uniform_generator(31278);
-  boost::uniform_real<double> uniform_double(0.5, 2.5);
-
-  MockExpectedImprovementEnvironment EI_environment;
-
-  std::vector<double> lengths(dim);
-  std::vector<double> grad_EI_cpu(dim*num_to_sample);
-  std::vector<double> grad_EI_gpu(dim*num_to_sample);
-  double EI_cpu;
-  double EI_gpu;
-
-  EI_environment.Initialize(dim, num_to_sample, num_being_sampled, num_sampled, &uniform_generator);
-  for (int j = 0; j < dim; ++j) {
-      lengths[j] = uniform_double(uniform_generator.engine);
-  }
-  std::vector<double> noise_variance_(num_sampled, 0.0);
-  SquareExponential sqexp_covariance_(dim, alpha, lengths);
-  GaussianProcess gaussian_process_(sqexp_covariance_, EI_environment.points_sampled(), EI_environment.points_sampled_value(), noise_variance_.data(), EI_environment.dim, EI_environment.num_sampled);
-  bool configure_for_gradients = true;
-  // gpu computation
-  int device_no = 0;
-  NormalRNG gpu_normal_rng(3141);
-  CudaExpectedImprovementEvaluator gpu_ei_evaluator(gaussian_process_, num_mc_iter, best_so_far, device_no);
-  CudaExpectedImprovementEvaluator::StateType gpu_ei_state(gpu_ei_evaluator, EI_environment.points_to_sample(), EI_environment.points_being_sampled(), EI_environment.num_to_sample, EI_environment.num_being_sampled, configure_for_gradients, &gpu_normal_rng);
-  std::clock_t start = std::clock();
-  gpu_ei_evaluator.ComputeGradExpectedImprovement(&gpu_ei_state, grad_EI_gpu.data());
-  double duration = (std::clock() - start) / static_cast<double>(CLOCKS_PER_SEC);
-  printf("gpu grad_EI time duration is: %f\n", duration);
-
-  start = std::clock();
-  EI_gpu = gpu_ei_evaluator.ComputeExpectedImprovement(&gpu_ei_state);
-  duration = (std::clock() - start) / static_cast<double>(CLOCKS_PER_SEC);
-  printf("gpu EI time duration is: %f\n", duration);
-
-  // cpu computation
-  NormalRNG cpu_normal_rng(3141);
-  ExpectedImprovementEvaluator cpu_ei_evaluator(gaussian_process_, num_mc_iter, best_so_far);
-  ExpectedImprovementEvaluator::StateType cpu_ei_state(cpu_ei_evaluator, EI_environment.points_to_sample(), EI_environment.points_being_sampled(), EI_environment.num_to_sample, EI_environment.num_being_sampled, configure_for_gradients, &cpu_normal_rng);
-  start = std::clock();
-  cpu_ei_evaluator.ComputeGradExpectedImprovement(&cpu_ei_state, grad_EI_cpu.data());
-  duration = (std::clock() - start) / static_cast<double>(CLOCKS_PER_SEC);
-  printf("cpu grad_EI time duration is: %f\n", duration);
-
-  start = std::clock();
-  EI_cpu = cpu_ei_evaluator.ComputeExpectedImprovement(&cpu_ei_state);
-  duration = (std::clock() - start) / static_cast<double>(CLOCKS_PER_SEC);
-  printf("cpu EI time duration is: %f\n", duration);
-}
 #else
+
 int RunCudaEIConsistencyTests() {
-  printf("no gpu component is enabled, this test did not run.\n");
+  OL_WARNING_PRINTF("no gpu component is enabled, this test did not run.\n");
   return 0;
 }
+
 int RunCudaEIvsCpuEI() {
-  printf("no gpu component is enabled, this test did not run.\n");
+  OL_WARNING_PRINTF("no gpu component is enabled, this test did not run.\n");
   return 0;
-}
-void SpeedComparison() {
-  printf("no gpu component is enabled, this test did not run.\n");
 }
 #endif
-}  // end namespace optimal_learning
 
+}  // end namespace optimal_learning

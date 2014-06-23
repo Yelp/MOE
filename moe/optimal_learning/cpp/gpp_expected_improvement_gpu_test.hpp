@@ -106,14 +106,6 @@ OL_WARN_UNUSED_RESULT int RunCudaEIConsistencyTests();
 \endrst*/
 OL_WARN_UNUSED_RESULT int RunCudaEIvsCpuEI();
 
-/*!\rst
-  speed comparison between gpu & cpu computation
-
-  \return
-    No return values
-\endrst*/
-OL_WARN_UNUSED_RESULT void SpeedComparison();
-
 }  // end namespace optimal_learning
 #endif  // MOE_OPTIMAL_LEARNING_CPP_GPP_EXPECTED_IMPROVEMENT_GPU_TEST_HPP_
 
