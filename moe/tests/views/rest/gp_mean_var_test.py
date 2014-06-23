@@ -37,7 +37,7 @@ class TestGpMeanVarView(RestGaussianProcessTestCase):
         for test_case in self.gp_test_environments:
             python_domain, python_cov, python_gp = test_case
 
-            cpp_cov = SquareExponential(python_cov.get_hyperparameters())
+            cpp_cov = SquareExponential(python_cov.hyperparameters)
             cpp_gp = GaussianProcess(cpp_cov, python_gp._historical_data)
 
             points_to_sample = python_domain.generate_uniform_random_points_in_domain(10)

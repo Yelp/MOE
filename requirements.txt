@@ -7,7 +7,7 @@ tox
 numpy
 scipy
 simplejson
-colander
+colander>=1.0b1
 sphinx
 breathe
 sphinxcontrib-httpdomain

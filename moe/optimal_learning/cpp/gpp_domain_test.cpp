@@ -855,9 +855,9 @@ OL_WARN_UNUSED_RESULT int CheckDomain(const std::vector<ClosedInterval>& domain_
   try {
     DomainType domain(domain_bounds.data(), domain_bounds.size());
     domain_valid = true;
-  } catch (const RuntimeException& exception) {
-    domain_valid = false;
   } catch (const BoundsException<double>& exception) {
+    domain_valid = false;
+  } catch (const OptimalLearningException& exception) {
     domain_valid = false;
   }
   return domain_valid;

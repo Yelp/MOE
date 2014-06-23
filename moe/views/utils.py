@@ -1,12 +1,9 @@
 # -*- coding: utf-8 -*-
 """Utilities for MOE views."""
-from numpy.linalg import LinAlgError
-
 from moe.optimal_learning.python.cpp_wrappers.gaussian_process import GaussianProcess
 from moe.optimal_learning.python.data_containers import SamplePoint, HistoricalData
 from moe.optimal_learning.python.geometry_utils import ClosedInterval
 from moe.optimal_learning.python.linkers import DOMAIN_TYPES_TO_DOMAIN_LINKS, COVARIANCE_TYPES_TO_CLASSES, OPTIMIZATION_TYPES_TO_OPTIMIZATION_METHODS
-from moe.views.exceptions import SingularMatrixError
 
 
 def _build_domain_info(domain):
@@ -45,7 +42,7 @@ def _build_covariance_info(covariance):
     """Create and return a covariance_info dictionary from a :class:`~moe.optimal_learning.python.python_version.covaraince.Covaraince` object."""
     return {
             'covariance_type': covariance.covariance_type,
-            'hyperparameters': covariance.get_hyperparameters().tolist(),
+            'hyperparameters': covariance.hyperparameters.tolist(),
             }
 
 
@@ -116,21 +113,20 @@ def _make_gp_from_params(params):
     points_sampled = gp_historical_info.get('points_sampled')
 
     covariance_of_process = _make_covariance_of_process_from_params(params)
-    gaussian_process = GaussianProcess(
-            covariance_of_process,
-            HistoricalData(domain_info.get('dim')),
-            )
 
-    # Sample from the process
+    sample_point_list = []
     for point in points_sampled:
-        sample_point = SamplePoint(
+        sample_point_list.append(
+            SamplePoint(
                 point['point'],
                 point['value'],
                 point['value_var'],
-                )
-        try:
-            gaussian_process.add_sampled_points([sample_point])
-        except LinAlgError:
-            raise(SingularMatrixError)
+            )
+        )
+
+    gaussian_process = GaussianProcess(
+            covariance_of_process,
+            HistoricalData(domain_info.get('dim'), sample_point_list),
+            )
 
     return gaussian_process

@@ -46,7 +46,7 @@ class GaussianProcessLogMarginalLikelihoodTest(GaussianProcessTestCase):
         gaussian_process_class=GaussianProcess,
     )
 
-    num_sampled_list = [1, 2, 5, 10, 16, 20, 42]
+    num_sampled_list = (1, 2, 5, 10, 16, 20, 42)
 
     def test_grad_log_likelihood_pings(self):
         """Ping test (compare analytic result to finite difference) the log likelihood gradient wrt hyperparameters."""
@@ -60,21 +60,21 @@ class GaussianProcessLogMarginalLikelihoodTest(GaussianProcessTestCase):
 
             analytic_grad = lml.compute_grad_log_likelihood()
             for k in xrange(lml.num_hyperparameters):
-                hyperparameters_old = lml.get_hyperparameters()
+                hyperparameters_old = lml.hyperparameters
 
                 # hyperparamter + h
                 hyperparameters_p = numpy.copy(hyperparameters_old)
                 hyperparameters_p[k] += h
-                lml.set_hyperparameters(hyperparameters_p)
+                lml.hyperparameters = hyperparameters_p
                 cov_p = lml.compute_log_likelihood()
-                lml.set_hyperparameters(hyperparameters_old)
+                lml.hyperparameters = hyperparameters_old
 
                 # hyperparamter - h
                 hyperparameters_m = numpy.copy(hyperparameters_old)
                 hyperparameters_m[k] -= h
-                lml.set_hyperparameters(hyperparameters_m)
+                lml.hyperparameters = hyperparameters_m
                 cov_m = lml.compute_log_likelihood()
-                lml.set_hyperparameters(hyperparameters_old)
+                lml.hyperparameters = hyperparameters_old
 
                 # calculate finite diff
                 fd_grad = (cov_p - cov_m) / (2.0 * h)
@@ -97,7 +97,7 @@ class GaussianProcessLogMarginalLikelihoodTest(GaussianProcessTestCase):
         test_values = evaluate_log_likelihood_at_hyperparameter_list(lml, hyperparameters_to_evaluate)
 
         for i, value in enumerate(test_values):
-            lml.set_hyperparameters(hyperparameters_to_evaluate[i, ...])
+            lml.hyperparameters = hyperparameters_to_evaluate[i, ...]
             truth = lml.compute_log_likelihood()
             T.assert_equal(value, truth)
 
@@ -135,7 +135,7 @@ class GaussianProcessLogMarginalLikelihoodTest(GaussianProcessTestCase):
         best_hyperparameters = multistart_hyperparameter_optimization(hyperparameter_optimizer, num_multistarts)
 
         # Check that gradients are small
-        lml.set_hyperparameters(best_hyperparameters)
+        lml.hyperparameters = best_hyperparameters
         gradient = lml.compute_grad_log_likelihood()
         self.assert_vector_within_relative(gradient, numpy.zeros(self.num_hyperparameters), tolerance)
 

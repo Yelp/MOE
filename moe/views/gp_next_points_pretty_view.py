@@ -32,7 +32,8 @@ class GpNextPointsRequest(colander.MappingSchema):
         :num_to_sample: number of next points to generate (default: 1)
         :mc_iterations: number of Monte Carlo (MC) iterations to perform in numerical integration to calculate EI
         :covariance_info: a :class:`moe.views.schemas.CovarianceInfo` dict of covariance information
-        :optimiaztion_info: a :class:`moe.views.schemas.OptimizationInfo` dict of optimization information
+        :optimization_info: a :class:`moe.views.schemas.OptimizationInfo` dict of optimization information
+        :points_being_sampled: list of points in domain being sampled in concurrent experiments (default: [])
 
     **Example Minimal Request**
 
@@ -64,6 +65,7 @@ class GpNextPointsRequest(colander.MappingSchema):
 
         {
             'num_to_sample': 1,
+            'points_being_sampled': [[0.2], [0.7]],
             'mc_iterations': 10000,
             'gp_historical_info': {
                 'points_sampled': [
@@ -111,6 +113,9 @@ class GpNextPointsRequest(colander.MappingSchema):
             )
     optimization_info = OptimizationInfo(
             missing=OptimizationInfo().deserialize({}),
+            )
+    points_being_sampled = ListOfPointsInDomain(
+            missing=[],
             )
 
 
@@ -185,9 +190,7 @@ class GpNextPointsPrettyView(OptimizableGpPrettyView):
         :param ``**kwargs``: extra kwargs to be passed to optimization method
 
         """
-        points_being_sampled = params.get('points_being_sampled')
-        if points_being_sampled is not None:
-            points_being_sampled = numpy.array(points_being_sampled)
+        points_being_sampled = numpy.array(params.get('points_being_sampled'))
         num_to_sample = params.get('num_to_sample')
         num_mc_iterations = params.get('mc_iterations')
 
@@ -228,7 +231,7 @@ class GpNextPointsPrettyView(OptimizableGpPrettyView):
                     **kwargs
                     )
 
-        expected_improvement_evaluator.set_current_point(next_points)
+        expected_improvement_evaluator.current_point = next_points
         expected_improvement = expected_improvement_evaluator.compute_expected_improvement()
 
         return self.form_response({

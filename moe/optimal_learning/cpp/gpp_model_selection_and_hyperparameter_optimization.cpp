@@ -440,7 +440,8 @@ void LogMarginalLikelihoodEvaluator::FillLogLikelihoodState(LogMarginalLikelihoo
   // K_chol
   optimal_learning::BuildCovarianceMatrixWithNoiseVariance(*log_likelihood_state->covariance_ptr, noise_variance_.data(), points_sampled_.data(), dim_, num_sampled_, log_likelihood_state->K_chol.data());
 
-  ComputeCholeskyFactorL(num_sampled_, log_likelihood_state->K_chol.data());
+  // TODO(GH-211): Re-examine ignoring singular covariance matrices here
+  int OL_UNUSED(chol_info) = ComputeCholeskyFactorL(num_sampled_, log_likelihood_state->K_chol.data());
 
   // K_inv_y
   std::copy(points_sampled_value_.begin(), points_sampled_value_.end(), log_likelihood_state->K_inv_y.begin());
@@ -718,7 +719,8 @@ void LeaveOneOutLogLikelihoodEvaluator::BuildHyperparameterGradCovarianceMatrix(
 void LeaveOneOutLogLikelihoodEvaluator::FillLogLikelihoodState(LeaveOneOutLogLikelihoodState * log_likelihood_state) const {
   // K_chol
   optimal_learning::BuildCovarianceMatrixWithNoiseVariance(*log_likelihood_state->covariance_ptr, noise_variance_.data(), points_sampled_.data(), dim_, num_sampled_, log_likelihood_state->K_chol.data());
-  ComputeCholeskyFactorL(num_sampled_, log_likelihood_state->K_chol.data());
+  // TODO(GH-211): Re-examine ignoring singular covariance matrices here
+  int OL_UNUSED(chol_info) = ComputeCholeskyFactorL(num_sampled_, log_likelihood_state->K_chol.data());
 
   // K_inv
   SPDMatrixInverse(log_likelihood_state->K_chol.data(), num_sampled_, log_likelihood_state->K_inv.data());
@@ -821,7 +823,7 @@ void LeaveOneOutLogLikelihoodEvaluator::ComputeGradLogLikelihood(LeaveOneOutLogL
   Kludge to make it so that I can use general template code w/o special casing LeaveOneOutLogLikelihoodEvaluator.
 \endrst*/
 void LeaveOneOutLogLikelihoodEvaluator::ComputeHessianLogLikelihood(LeaveOneOutLogLikelihoodState * OL_UNUSED(log_likelihood_state), double * restrict OL_UNUSED(hessian_loo)) const {
-  OL_THROW_EXCEPTION(RuntimeException, "LeaveOneOutLogLikelihoodEvaluator::ComputeHessianLogLikelihood is NOT IMPLEMENTED.");
+  OL_THROW_EXCEPTION(OptimalLearningException, "LeaveOneOutLogLikelihoodEvaluator::ComputeHessianLogLikelihood is NOT IMPLEMENTED.");
 }
 
 }  // end namespace optimal_learning

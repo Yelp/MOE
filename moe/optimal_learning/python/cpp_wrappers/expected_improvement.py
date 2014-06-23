@@ -370,9 +370,9 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
 
         if points_to_sample is None:
             # set an arbitrary point
-            self.set_current_point(numpy.zeros((1, gaussian_process.dim)))
+            self.current_point = numpy.zeros((1, gaussian_process.dim))
         else:
-            self.set_current_point(points_to_sample)
+            self.current_point = points_to_sample
 
         if randomness is None:
             self._randomness = C_GP.RandomnessSourceContainer(1)  # create randomness for only 1 thread
@@ -416,6 +416,8 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
 
         """
         self._points_to_sample = numpy.copy(numpy.atleast_2d(points_to_sample))
+
+    current_point = property(get_current_point, set_current_point)
 
     def evaluate_at_point_list(
             self,
