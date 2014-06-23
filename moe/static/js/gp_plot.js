@@ -1,5 +1,6 @@
-function plot_graphs(gp_data, ei_raw_data, xvals, points_sampled, highest_ei_point) {
+var optimalLearning = optimalLearning || {};
 
+optimalLearning.plotGraphs = function (gp_data, ei_raw_data, xvals, points_sampled, highest_ei_point) {
     var margin = {top: 20, right: 20, bottom: 30, left: 50},
         width = 750 - margin.left - margin.right,
         height = 300 - margin.top - margin.bottom;
@@ -155,13 +156,13 @@ function plot_graphs(gp_data, ei_raw_data, xvals, points_sampled, highest_ei_poi
         .y0(function(d) { return y(d.y0); })
         .y1(function(d) { return y(d.y1); });
 
-    function make_gp_var_plot(data){
+    function makeGpVarPlot(data){
         svg.append("path")
             .attr("d", area(data))
             .style("fill", "#CBDDB9");
     }
-    make_gp_var_plot(gp_var_upper_data);
-    make_gp_var_plot(gp_var_lower_data);
+    makeGpVarPlot(gp_var_upper_data);
+    makeGpVarPlot(gp_var_lower_data);
 
     // mu line
     var mu_line_graph = svg.append("path")
@@ -244,4 +245,4 @@ function plot_graphs(gp_data, ei_raw_data, xvals, points_sampled, highest_ei_poi
       .attr("y", -6)
       .style("text-anchor", "end")
       .text("Dimension");
-}
+};

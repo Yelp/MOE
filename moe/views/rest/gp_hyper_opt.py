@@ -207,9 +207,9 @@ class GpHyperOptView(OptimizableGpPrettyView):
             status=hyperopt_status,
         )
 
-        covariance_of_process.set_hyperparameters(optimized_hyperparameters)
+        covariance_of_process.hyperparameters = optimized_hyperparameters
 
-        log_likelihood_eval.set_current_point(optimized_hyperparameters)
+        log_likelihood_eval.current_point = optimized_hyperparameters
 
         return self.form_response({
                 'endpoint': self._route_name,

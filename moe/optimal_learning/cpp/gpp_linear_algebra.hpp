@@ -64,6 +64,17 @@ double VectorNorm(double const * restrict vector, int size) noexcept OL_PURE_FUN
 void MatrixTranspose(double const * restrict matrix, int num_rows, int num_cols, double * restrict transpose) noexcept OL_NONNULL_POINTERS;
 
 /*!\rst
+  Zeroes the strict upper triangle of a matrix (assuming column-major storage)
+
+  \param
+    :size: dimension of matrix
+    :matrix[size][size]: matrix whose upper tri is to be zeroed (on input)
+  \output
+    :matrix[size][size]: lower triangular part of input matrix
+\endrst*/
+void ZeroUpperTriangle(int size, double * restrict matrix) noexcept OL_NONNULL_POINTERS;
+
+/*!\rst
   Multiplies first ``size`` elements of ``vector`` by ``alpha``, ``vector := vector*alpha``.
 
   Should be equivalent to BLAS call:
@@ -139,8 +150,11 @@ inline OL_PURE_FUNCTION OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT double DotProd
   \output
     :chol[size_m][size_m]: cholesky factor of ``A`` (``L``).  ``L`` is stored in the lower triangle
                            of ``A``.  Do not acccess the upper triangle of ``L``. (on exit)
+  \return
+    0 if successful. Otherwise the matrix is NOT positive definite and this returns ``i``, the
+    index of the ``i``-th leading minor that is not positive definite.
 \endrst*/
-void ComputeCholeskyFactorL(int size_m, double * restrict chol) OL_NONNULL_POINTERS;
+int ComputeCholeskyFactorL(int size_m, double * restrict chol) noexcept OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT;
 
 /*!\rst
   Solves the system ``A*x = b`` or ``A^T * x = b`` when ``A`` is lower triangular. ``A`` must be nonsingular.

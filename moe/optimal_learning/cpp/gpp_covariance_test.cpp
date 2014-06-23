@@ -84,7 +84,7 @@ class PingCovarianceSpatialDerivatives final : public PingableMatrixInputVectorO
 
   int CheckSymmetry() const OL_WARN_UNUSED_RESULT {
     if (gradients_already_computed_ == false) {
-      OL_THROW_EXCEPTION(RuntimeException, "PingCovarianceSpatialDerivatives::CheckSymmetry() called BEFORE EvaluateAndStoreAnalyticGradient. NO DATA!");
+      OL_THROW_EXCEPTION(OptimalLearningException, "PingCovarianceSpatialDerivatives::CheckSymmetry() called BEFORE EvaluateAndStoreAnalyticGradient. NO DATA!");
     }
     ShiftScaleReferencePoint(point_delta_base_.data());
     double covariance_val = covariance_.Covariance(point_.data(), reference_point_.data());
@@ -99,7 +99,7 @@ class PingCovarianceSpatialDerivatives final : public PingableMatrixInputVectorO
 
   virtual double GetAnalyticGradient(int row_index, int OL_UNUSED(column_index), int OL_UNUSED(output_index)) const override OL_WARN_UNUSED_RESULT {
     if (gradients_already_computed_ == false) {
-      OL_THROW_EXCEPTION(RuntimeException, "PingCovarianceSpatialDerivatives::GetAnalyticGradient() called BEFORE EvaluateAndStoreAnalyticGradient. NO DATA!");
+      OL_THROW_EXCEPTION(OptimalLearningException, "PingCovarianceSpatialDerivatives::GetAnalyticGradient() called BEFORE EvaluateAndStoreAnalyticGradient. NO DATA!");
     }
 
     return grad_covariance_[row_index];
@@ -185,7 +185,7 @@ class PingGradCovarianceHyperparameters final : public PingableMatrixInputVector
 
   int CheckSymmetry() const OL_WARN_UNUSED_RESULT {
     if (gradients_already_computed_ == false) {
-      OL_THROW_EXCEPTION(RuntimeException, "PingGradCovarianceHyperparameters::CheckSymmetry() called BEFORE EvaluateAndStoreAnalyticGradient. NO DATA!");
+      OL_THROW_EXCEPTION(OptimalLearningException, "PingGradCovarianceHyperparameters::CheckSymmetry() called BEFORE EvaluateAndStoreAnalyticGradient. NO DATA!");
     }
     std::vector<double> gradients_transpose(num_hyperparameters_);
     covariance_.HyperparameterGradCovariance(point2_.data(), point1_.data(), gradients_transpose.data());
@@ -201,7 +201,7 @@ class PingGradCovarianceHyperparameters final : public PingableMatrixInputVector
 
   virtual double GetAnalyticGradient(int row_index, int OL_UNUSED(column_index), int OL_UNUSED(output_index)) const override OL_WARN_UNUSED_RESULT {
     if (gradients_already_computed_ == false) {
-      OL_THROW_EXCEPTION(RuntimeException, "PingGradCovarianceHyperparameters::GetAnalyticGradient() called BEFORE EvaluateAndStoreAnalyticGradient. NO DATA!");
+      OL_THROW_EXCEPTION(OptimalLearningException, "PingGradCovarianceHyperparameters::GetAnalyticGradient() called BEFORE EvaluateAndStoreAnalyticGradient. NO DATA!");
     }
 
     return grad_hyperparameter_covariance_[row_index];
@@ -271,7 +271,7 @@ class PingHessianCovarianceHyperparameters final : public PingableMatrixInputVec
 
   int CheckSymmetry() const OL_WARN_UNUSED_RESULT {
     if (gradients_already_computed_ == false) {
-      OL_THROW_EXCEPTION(RuntimeException, "PingHessianCovarianceHyperparameters::CheckSymmetry() called BEFORE EvaluateAndStoreAnalyticGradient. NO DATA!");
+      OL_THROW_EXCEPTION(OptimalLearningException, "PingHessianCovarianceHyperparameters::CheckSymmetry() called BEFORE EvaluateAndStoreAnalyticGradient. NO DATA!");
     }
     // check that output is symmetric to ordering of points
     // this is equivalent to checking that the matrix is exactly symmetric
@@ -299,7 +299,7 @@ class PingHessianCovarianceHyperparameters final : public PingableMatrixInputVec
 
   virtual double GetAnalyticGradient(int row_index, int OL_UNUSED(column_index), int output_index) const override OL_WARN_UNUSED_RESULT {
     if (gradients_already_computed_ == false) {
-      OL_THROW_EXCEPTION(RuntimeException, "PingHessianCovarianceHyperparameters::GetAnalyticGradient() called BEFORE EvaluateAndStoreAnalyticGradient. NO DATA!");
+      OL_THROW_EXCEPTION(OptimalLearningException, "PingHessianCovarianceHyperparameters::GetAnalyticGradient() called BEFORE EvaluateAndStoreAnalyticGradient. NO DATA!");
     }
 
     return hessian_hyperparameter_covariance_[row_index*num_hyperparameters_ + output_index];

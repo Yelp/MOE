@@ -46,7 +46,7 @@
 #include "gpp_domain.hpp"
 #include "gpp_exception.hpp"
 #include "gpp_geometry.hpp"
-#include "gpp_linear_algebra_test.hpp"
+#include "gpp_linear_algebra.hpp"
 #include "gpp_logging.hpp"
 #include "gpp_math.hpp"
 #include "gpp_mock_optimization_objective_functions.hpp"
@@ -125,7 +125,7 @@ class PingGPPMean final : public PingableMatrixInputVectorOutputInterface {
 
   virtual double GetAnalyticGradient(int row_index, int column_index, int output_index) const OL_WARN_UNUSED_RESULT {
     if (gradients_already_computed_ == false) {
-      OL_THROW_EXCEPTION(RuntimeException, "PingGPPMean::GetAnalyticGradient() called BEFORE EvaluateAndStoreAnalyticGradient. NO DATA!");
+      OL_THROW_EXCEPTION(OptimalLearningException, "PingGPPMean::GetAnalyticGradient() called BEFORE EvaluateAndStoreAnalyticGradient. NO DATA!");
     }
 
     if (column_index == output_index) {
@@ -219,13 +219,13 @@ class PingGPPVariance final : public PingableMatrixInputVectorOutputInterface {
     gaussian_process_.ComputeGradVarianceOfPoints(&points_to_sample_state, grad_variance_.data());
 
     if (gradients != nullptr) {
-      OL_THROW_EXCEPTION(RuntimeException, "PingGPPVariance::EvaluateAndStoreAnalyticGradient() does not support direct gradient output.");
+      OL_THROW_EXCEPTION(OptimalLearningException, "PingGPPVariance::EvaluateAndStoreAnalyticGradient() does not support direct gradient output.");
     }
   }
 
   virtual double GetAnalyticGradient(int row_index, int column_index, int output_index) const override OL_WARN_UNUSED_RESULT {
     if (gradients_already_computed_ == false) {
-      OL_THROW_EXCEPTION(RuntimeException, "PingGPPVariance::GetAnalyticGradient() called BEFORE EvaluateAndStoreAnalyticGradient. NO DATA!");
+      OL_THROW_EXCEPTION(OptimalLearningException, "PingGPPVariance::GetAnalyticGradient() called BEFORE EvaluateAndStoreAnalyticGradient. NO DATA!");
     }
 
     return grad_variance_[column_index*Square(num_to_sample_)*dim_ + output_index*dim_ + row_index];
@@ -318,18 +318,18 @@ class PingGPPCholeskyVariance final : public PingableMatrixInputVectorOutputInte
     GaussianProcess::StateType points_to_sample_state(gaussian_process_, points_to_sample, num_to_sample_, num_derivatives);
     std::vector<double> variance_of_points(Square(num_to_sample_));
     gaussian_process_.ComputeVarianceOfPoints(&points_to_sample_state, variance_of_points.data());
-    ComputeCholeskyFactorL(num_to_sample_, variance_of_points.data());
+    int OL_UNUSED(chol_info) = ComputeCholeskyFactorL(num_to_sample_, variance_of_points.data());
 
     gaussian_process_.ComputeGradCholeskyVarianceOfPoints(&points_to_sample_state, variance_of_points.data(), grad_variance_.data());
 
     if (gradients != nullptr) {
-      OL_THROW_EXCEPTION(RuntimeException, "PingGPPCholeskyVariance::EvaluateAndStoreAnalyticGradient() does not support direct gradient output.");
+      OL_THROW_EXCEPTION(OptimalLearningException, "PingGPPCholeskyVariance::EvaluateAndStoreAnalyticGradient() does not support direct gradient output.");
     }
   }
 
   virtual double GetAnalyticGradient(int row_index, int column_index, int output_index) const override OL_WARN_UNUSED_RESULT {
     if (gradients_already_computed_ == false) {
-      OL_THROW_EXCEPTION(RuntimeException, "PingGPPCholeskyVariance::GetAnalyticGradient() called BEFORE EvaluateAndStoreAnalyticGradient. NO DATA!");
+      OL_THROW_EXCEPTION(OptimalLearningException, "PingGPPCholeskyVariance::GetAnalyticGradient() called BEFORE EvaluateAndStoreAnalyticGradient. NO DATA!");
     }
 
     return grad_variance_[column_index*Square(num_to_sample_)*dim_ + output_index*dim_ + row_index];
@@ -340,7 +340,7 @@ class PingGPPCholeskyVariance final : public PingableMatrixInputVectorOutputInte
     GaussianProcess::StateType points_to_sample_state(gaussian_process_, points_to_sample, num_to_sample_, num_derivatives);
     std::vector<double> chol_temp(Square(num_to_sample_));
     gaussian_process_.ComputeVarianceOfPoints(&points_to_sample_state, chol_temp.data());
-    ComputeCholeskyFactorL(num_to_sample_, chol_temp.data());
+    int OL_UNUSED(chol_info) = ComputeCholeskyFactorL(num_to_sample_, chol_temp.data());
     ZeroUpperTriangle(num_to_sample_, chol_temp.data());
     MatrixTranspose(chol_temp.data(), num_to_sample_, num_to_sample_, function_values);
   }
@@ -368,6 +368,208 @@ class PingGPPCholeskyVariance final : public PingableMatrixInputVectorOutputInte
   GaussianProcess gaussian_process_;
 
   OL_DISALLOW_DEFAULT_AND_COPY_AND_ASSIGN(PingGPPCholeskyVariance);
+};
+
+/*!\rst
+  Supports evaluating the expected improvement, ExpectedImprovementEvaluator::ComputeExpectedImprovement() and
+  its gradient, ExpectedImprovementEvaluator::ComputeGradExpectedImprovement()
+
+  The gradient is taken wrt ``points_to_sample[dim]``, so this is the ``input_matrix``, ``X_{d,i}``.
+  The other inputs to EI are not differentiated against, so they are taken as input and stored by the constructor.
+
+  The output of EI is a scalar.
+\endrst*/
+class PingExpectedImprovement final : public PingableMatrixInputVectorOutputInterface {
+ public:
+  constexpr static char const * const kName = "EI with MC integration";
+
+  PingExpectedImprovement(double const * restrict lengths, double const * restrict points_being_sampled, double const * restrict points_sampled, double const * restrict points_sampled_value, double alpha, double best_so_far, int dim, int num_to_sample, int num_being_sampled, int num_sampled, int num_mc_iter) OL_NONNULL_POINTERS
+      : dim_(dim),
+        num_to_sample_(num_to_sample),
+        num_being_sampled_(num_being_sampled),
+        num_sampled_(num_sampled),
+        gradients_already_computed_(false),
+        noise_variance_(num_sampled_, 0.0),
+        points_sampled_(points_sampled, points_sampled + dim_*num_sampled_),
+        points_sampled_value_(points_sampled_value, points_sampled_value + num_sampled_),
+        points_being_sampled_(points_being_sampled, points_being_sampled + num_being_sampled_*dim_),
+        grad_EI_(num_to_sample_*dim_),
+        sqexp_covariance_(dim_, alpha, lengths),
+        gaussian_process_(sqexp_covariance_, points_sampled_.data(), points_sampled_value_.data(), noise_variance_.data(), dim_, num_sampled_), ei_evaluator_(gaussian_process_, num_mc_iter, best_so_far) {
+  }
+
+  virtual void GetInputSizes(int * num_rows, int * num_cols) const noexcept override OL_NONNULL_POINTERS {
+    *num_rows = dim_;
+    *num_cols = num_to_sample_;
+  }
+
+  virtual int GetGradientsSize() const noexcept override OL_WARN_UNUSED_RESULT {
+    return dim_*GetOutputSize();
+  }
+
+  virtual int GetOutputSize() const noexcept override OL_WARN_UNUSED_RESULT {
+    return 1;
+  }
+
+  virtual void EvaluateAndStoreAnalyticGradient(double const * restrict points_to_sample, double * restrict gradients) noexcept override OL_NONNULL_POINTERS_LIST(2) {
+    if (gradients_already_computed_ == true) {
+      OL_WARNING_PRINTF("WARNING: grad_EI data already set.  Overwriting...\n");
+    }
+    gradients_already_computed_ = true;
+
+    NormalRNG normal_rng(3141);
+    bool configure_for_gradients = true;
+    ExpectedImprovementEvaluator::StateType ei_state(ei_evaluator_, points_to_sample, points_being_sampled_.data(), num_to_sample_, num_being_sampled_, configure_for_gradients, &normal_rng);
+    ei_evaluator_.ComputeGradExpectedImprovement(&ei_state, grad_EI_.data());
+
+    if (gradients != nullptr) {
+      std::copy(grad_EI_.begin(), grad_EI_.end(), gradients);
+    }
+  }
+
+  virtual double GetAnalyticGradient(int row_index, int column_index, int OL_UNUSED(output_index)) const override OL_WARN_UNUSED_RESULT {
+    if (gradients_already_computed_ == false) {
+      OL_THROW_EXCEPTION(OptimalLearningException, "PingExpectedImprovement::GetAnalyticGradient() called BEFORE EvaluateAndStoreAnalyticGradient. NO DATA!");
+    }
+
+    return grad_EI_[column_index*dim_ + row_index];
+  }
+
+  virtual void EvaluateFunction(double const * restrict points_to_sample, double * restrict function_values) const noexcept override OL_NONNULL_POINTERS {
+    NormalRNG normal_rng(3141);
+    bool configure_for_gradients = false;
+    ExpectedImprovementEvaluator::StateType ei_state(ei_evaluator_, points_to_sample, points_being_sampled_.data(), num_to_sample_, num_being_sampled_, configure_for_gradients, &normal_rng);
+    *function_values = ei_evaluator_.ComputeExpectedImprovement(&ei_state);
+  }
+
+ private:
+  //! spatial dimension (e.g., entries per point of ``points_sampled``)
+  int dim_;
+  //! number of potential future samples; gradients are evaluated wrt these points (i.e., the "q" in q,p-EI)
+  int num_to_sample_;
+  //! number of points being sampled concurrently (i.e., the "p" in q,p-EI)
+  int num_being_sampled_;
+  //! number of points in ``points_sampled``
+  int num_sampled_;
+  //! whether gradients been computed and stored--whether this class is ready for use
+  bool gradients_already_computed_;
+
+  //! ``\sigma_n^2``, the noise variance
+  std::vector<double> noise_variance_;
+  //! coordinates of already-sampled points, ``X``
+  std::vector<double> points_sampled_;
+  //! function values at points_sampled, ``y``
+  std::vector<double> points_sampled_value_;
+  //! points that are being sampled in concurrently experiments
+  std::vector<double> points_being_sampled_;
+  //! the gradient of EI at union_of_points, wrt union_of_points[0:num_to_sample]
+  std::vector<double> grad_EI_;
+
+  //! covariance class (for computing covariance and its gradients)
+  SquareExponential sqexp_covariance_;
+  //! gaussian process used for computations
+  GaussianProcess gaussian_process_;
+  //! expected improvement evaluator object that specifies the parameters & GP for EI evaluation
+  ExpectedImprovementEvaluator ei_evaluator_;
+
+  OL_DISALLOW_DEFAULT_AND_COPY_AND_ASSIGN(PingExpectedImprovement);
+};
+
+/*!\rst
+  Supports evaluating an analytic special case of expected improvement via OnePotentialSampleExpectedImprovementEvaluator.
+
+  The gradient is taken wrt ``points_to_sample[dim]``, so this is the ``input_matrix``, ``X_{d,i}`` (with i always indexing 0).
+  The other inputs to EI are not differentiated against, so they are taken as input and stored by the constructor.
+
+  The output of EI is a scalar.
+\endrst*/
+class PingOnePotentialSampleExpectedImprovement final : public PingableMatrixInputVectorOutputInterface {
+ public:
+  constexpr static char const * const kName = "EI ONE potential sample analytic";
+
+  PingOnePotentialSampleExpectedImprovement(double const * restrict lengths, double const * restrict OL_UNUSED(points_being_sampled), double const * restrict points_sampled, double const * restrict points_sampled_value, double alpha, double best_so_far, int dim, int OL_UNUSED(num_to_sample), int num_being_sampled, int num_sampled, int OL_UNUSED(num_mc_iter)) OL_NONNULL_POINTERS
+      : dim_(dim),
+        num_sampled_(num_sampled),
+        gradients_already_computed_(false),
+        noise_variance_(num_sampled_, 0.0),
+        points_sampled_(points_sampled, points_sampled + dim_*num_sampled_),
+        points_sampled_value_(points_sampled_value, points_sampled_value + num_sampled_),
+        grad_EI_(dim_),
+        sqexp_covariance_(dim_, alpha, lengths),
+        gaussian_process_(sqexp_covariance_, points_sampled_.data(), points_sampled_value_.data(), noise_variance_.data(), dim_, num_sampled_), ei_evaluator_(gaussian_process_, best_so_far) {
+    if (num_being_sampled != 0) {
+      OL_THROW_EXCEPTION(InvalidValueException<int>, "PingOnePotentialSample: num_being_sampled MUST be 0!", num_being_sampled, 0);
+    }
+  }
+
+  virtual void GetInputSizes(int * num_rows, int * num_cols) const noexcept override OL_NONNULL_POINTERS {
+    *num_rows = dim_;
+    *num_cols = 1;
+  }
+
+  virtual int GetGradientsSize() const noexcept override OL_WARN_UNUSED_RESULT {
+    return dim_*GetOutputSize();
+  }
+
+  virtual int GetOutputSize() const noexcept override OL_WARN_UNUSED_RESULT {
+    return 1;
+  }
+
+  virtual void EvaluateAndStoreAnalyticGradient(double const * restrict points_to_sample, double * restrict gradients) noexcept override OL_NONNULL_POINTERS_LIST(2) {
+    if (gradients_already_computed_ == true) {
+      OL_WARNING_PRINTF("WARNING: grad_EI data already set.  Overwriting...\n");
+    }
+    gradients_already_computed_ = true;
+
+    bool configure_for_gradients = true;
+    OnePotentialSampleExpectedImprovementEvaluator::StateType ei_state(ei_evaluator_, points_to_sample, configure_for_gradients);
+    ei_evaluator_.ComputeGradExpectedImprovement(&ei_state, grad_EI_.data());
+
+    if (gradients != nullptr) {
+      std::copy(grad_EI_.begin(), grad_EI_.end(), gradients);
+    }
+  }
+
+  virtual double GetAnalyticGradient(int row_index, int OL_UNUSED(column_index), int OL_UNUSED(output_index)) const override OL_WARN_UNUSED_RESULT {
+    if (gradients_already_computed_ == false) {
+      OL_THROW_EXCEPTION(OptimalLearningException, "PingOnePotentialSampleExpectedImprovement::GetAnalyticGradient() called BEFORE EvaluateAndStoreAnalyticGradient. NO DATA!");
+    }
+
+    return grad_EI_[row_index];
+  }
+
+  virtual void EvaluateFunction(double const * restrict points_to_sample, double * restrict function_values) const noexcept override OL_NONNULL_POINTERS {
+    bool configure_for_gradients = false;
+    OnePotentialSampleExpectedImprovementEvaluator::StateType ei_state(ei_evaluator_, points_to_sample, configure_for_gradients);
+    *function_values = ei_evaluator_.ComputeExpectedImprovement(&ei_state);
+  }
+
+ private:
+  //! spatial dimension (e.g., entries per point of ``points_sampled``)
+  int dim_;
+  //! number of points in ``points_sampled``
+  int num_sampled_;
+  //! number of points being sampled concurrently (i.e., the "p" in q,p-EI). Must be 0 for the analytic case.
+  const int num_being_sampled_ = 0;
+  bool gradients_already_computed_;
+
+  //! ``\sigma_n^2``, the noise variance
+  std::vector<double> noise_variance_;
+  //! coordinates of already-sampled points, ``X``
+  std::vector<double> points_sampled_;
+  //! function values at points_sampled, ``y``
+  std::vector<double> points_sampled_value_;
+  //! the gradient of EI at union_of_points, wrt union_of_points[0:num_to_sample]
+  std::vector<double> grad_EI_;
+
+  //! covariance class (for computing covariance and its gradients)
+  SquareExponential sqexp_covariance_;
+  //! gaussian process used for computations
+  GaussianProcess gaussian_process_;
+  //! expected improvement evaluator object that specifies the parameters & GP for EI evaluation
+  OnePotentialSampleExpectedImprovementEvaluator ei_evaluator_;
+
+  OL_DISALLOW_DEFAULT_AND_COPY_AND_ASSIGN(PingOnePotentialSampleExpectedImprovement);
 };
 
 /*!\rst

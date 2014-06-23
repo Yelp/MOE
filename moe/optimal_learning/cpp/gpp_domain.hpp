@@ -71,7 +71,7 @@ class TensorProductDomain {
       OL_ERROR_PRINTF("WARNING: Tensor product region is EMPTY!\n");
       PrintDomainBounds(domain_.data(), dim_);
 #endif
-      OL_THROW_EXCEPTION(RuntimeException, "Tensor product region is EMPTY.");
+      OL_THROW_EXCEPTION(OptimalLearningException, "Tensor product region is EMPTY.");
     }
   }
 

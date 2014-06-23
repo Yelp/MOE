@@ -118,6 +118,7 @@ class GpNextPointsRequest(colander.MappingSchema):
             missing=[],
             )
 
+
 class GpNextPointsResponse(colander.MappingSchema):
 
     """A ``gp_next_points_*`` response colander schema.
@@ -230,7 +231,7 @@ class GpNextPointsPrettyView(OptimizableGpPrettyView):
                     **kwargs
                     )
 
-        expected_improvement_evaluator.set_current_point(next_points)
+        expected_improvement_evaluator.current_point = next_points
         expected_improvement = expected_improvement_evaluator.compute_expected_improvement()
 
         return self.form_response({

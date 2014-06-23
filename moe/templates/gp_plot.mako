@@ -129,48 +129,31 @@
     </div>
 </div>
 
+<script language="javascript" type="text/javascript" src="${request.static_url('moe:static/js/gp_plot.js')}"></script>
+<script language="javascript" type="text/javascript" src="${request.static_url('moe:static/js/exception.js')}"></script>
 <script>
-var points_sampled = [];
+var optimalLearning = optimalLearning || {};
 
-function update_points_sampled(){
-    $('#points-sampled ul').html('');
-    for (i in points_sampled){
-        point = points_sampled[i];
-        $('#points-sampled ul').append('<li id=' + i + '>f(' + point.point[0].toFixed(4) + ') = ' + point.value.toFixed(4) + ' &plusmn ' + point.value_var.toFixed(4) + ' <a class="itemDelete"><button type="button" class="btn btn-danger btn-xs">remove</button></a></li>');
-    }
-    update_graphs();
+/*
+ *  normRand: returns normally distributed random numbers
+ */
+optimalLearning.normRand = function() {
+  var x1, x2, rad;
 
-    $('.itemDelete').click(function() {
-        var idx = $.parseJSON($(this).closest('li')[0].id);
-        points_sampled.splice(idx, 1);
-        console.log(points_sampled);
-        update_points_sampled();
-    });
-}
+  do {
+      x1 = 2 * Math.random() - 1;
+      x2 = 2 * Math.random() - 1;
+      rad = x1 * x1 + x2 * x2;
+  } while(rad >= 1 || rad == 0);
 
-$("#add-point").click(function() {
-    points_sampled.push(
-        {
-            'point': [
-                $.parseJSON($("#x1").val())
-                ],
-            'value': $.parseJSON($("#y1").val()),
-            'value_var': $.parseJSON($("#v1").val()),
-        }
-    );
-    console.log(points_sampled);
-    update_points_sampled();
-});
+  var c = Math.sqrt(-2 * Math.log(rad) / rad);
 
-update_points_sampled();
+  return x1 * c;
+};
 
-console.log(points_sampled);
+optimalLearning.pointsSampled = [];
 
-$("#submit").click(function() {
-    update_graphs();
-});
-
-function update_graphs(){
+optimalLearning.updateGraphs = function() {
     var xvals = [];
     for (i = 0; i <= 200; i++) {
         xvals.push( [i / 200.0] );
@@ -180,7 +163,7 @@ function update_graphs(){
         'points_to_sample': xvals,
         'points_to_evaluate': xvals,
         'gp_historical_info': {
-            'points_sampled': points_sampled,
+            'points_sampled': optimalLearning.pointsSampled,
             },
         'domain_info': {
             'dim': 1,
@@ -215,9 +198,7 @@ function update_graphs(){
             gp_data = data;
         }
     );
-    jqxhr1.fail(function() {
-        alert("500 error gp_mean_var");
-    });
+    jqxhr1.fail(optimalLearning.errorAlert);
 
     var jqxhr2 = $.post(
         "${request.route_url('gp_ei')}",
@@ -226,9 +207,7 @@ function update_graphs(){
             ei_raw_data = data;
         }
     );
-    jqxhr2.fail(function() {
-        alert("500 error gp_ei");
-    });
+    jqxhr2.fail(optimalLearning.errorAlert);
 
     post_data['num_to_sample'] = 1;
     var jqxhr3 = $.post(
@@ -238,9 +217,7 @@ function update_graphs(){
             next_points_raw_data = data;
         }
     );
-    jqxhr3.fail(function() {
-        alert("500 error gp_next_points_epi");
-    });
+    jqxhr3.fail(optimalLearning.errorAlert);
 
     $("#loading-screen").html('<h1>Processing...</h1><div class="progress progress-striped active"><div class="progress-bar"  role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"><span class="sr-only">100% Complete</span></div></div>');
     
@@ -253,7 +230,7 @@ function update_graphs(){
             jqxhr2.done(function() {
                 $(".gp-graph").html("");
                 $(".ei-graph").html("");
-                plot_graphs(gp_data, ei_raw_data, xvals, points_sampled, next_points_raw_data['points_to_sample'][0][0]);
+                optimalLearning.plotGraphs(gp_data, ei_raw_data, xvals, optimalLearning.pointsSampled, next_points_raw_data['points_to_sample'][0][0]);
             });
         });
 
@@ -266,37 +243,57 @@ function update_graphs(){
                 single_point_gp_data = data;
             }
         );
-        jqxhr4.fail(function() {
-            alert("500 error gp_mean_var of gp_next_points_epi");
-        });
+        jqxhr4.fail(optimalLearning.errorAlert);
 
         jqxhr4.done(function() {
-            var y_value = $.parseJSON(single_point_gp_data['mean'][0]) + $.parseJSON(single_point_gp_data['var'][0][0]) * normRand();
+            var y_value = $.parseJSON(single_point_gp_data['mean'][0]) + $.parseJSON(single_point_gp_data['var'][0][0]) * optimalLearning.normRand();
             $("#y1").val(y_value.toFixed(4));
             $("#v1").val('0.1000');
         });
     });
-}
-
-/*
- *  normRand: returns normally distributed random numbers
- */
-function normRand() {
-    var x1, x2, rad;
- 
-    do {
-        x1 = 2 * Math.random() - 1;
-        x2 = 2 * Math.random() - 1;
-        rad = x1 * x1 + x2 * x2;
-    } while(rad >= 1 || rad == 0);
- 
-    var c = Math.sqrt(-2 * Math.log(rad) / rad);
- 
-    return x1 * c;
 };
+
+optimalLearning.updatePointsSampled = function() {
+    $('#points-sampled ul').html('');
+    for (i in optimalLearning.pointsSampled){
+        point = optimalLearning.pointsSampled[i];
+        $('#points-sampled ul').append('<li id=' + i + '>f(' + point.point[0].toFixed(4) + ') = ' + point.value.toFixed(4) + ' &plusmn ' + point.value_var.toFixed(4) + ' <a class="itemDelete"><button type="button" class="btn btn-danger btn-xs">remove</button></a></li>');
+    }
+    optimalLearning.updateGraphs();
+
+    $('.itemDelete').click(function() {
+        var idx = $.parseJSON($(this).closest('li')[0].id);
+        optimalLearning.pointsSampled.splice(idx, 1);
+        console.log(optimalLearning.pointsSampled);
+        optimalLearning.updatePointsSampled();
+    });
+};
+
+optimalLearning.addPointClickAction = function() {
+  optimalLearning.pointsSampled.push(
+      {
+          'point': [
+              $.parseJSON($("#x1").val())
+              ],
+          'value': $.parseJSON($("#y1").val()),
+          'value_var': $.parseJSON($("#v1").val()),
+      }
+  );
+  console.log(optimalLearning.pointsSampled);
+  optimalLearning.updatePointsSampled();
+};
+
+$("#add-point").click(optimalLearning.addPointClickAction);
+
+optimalLearning.updatePointsSampled();
+
+console.log(optimalLearning.pointsSampled);
+
+$("#submit").click(function() {
+    optimalLearning.updateGraphs();
+});
 
 $(document).ready(function() {
     $(".tooltip-rdy").tooltip();
 });
 </script>
-<script language="javascript" type="text/javascript" src="${request.static_url('moe:static/js/gp_plot.js')}"></script>
