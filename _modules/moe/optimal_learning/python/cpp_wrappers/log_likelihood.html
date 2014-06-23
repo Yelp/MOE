@@ -67,11 +67,12 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../install.html">Install</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#install-in-docker">Install in docker:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#install-from-source">Install from source:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below):</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#linux-tips">Linux Tips:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#cmake-tips">CMake Tips:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#install-in-docker">Install in docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#install-from-source">Install from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#building-boost">Building Boost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#linux-tips">Linux Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#cmake-tips">CMake Tips</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../objective_functions.html">Objective Functions</a><ul>
@@ -316,7 +317,7 @@
         <span class="n">cpp_utils</span><span class="o">.</span><span class="n">cppify</span><span class="p">(</span><span class="n">log_likelihood_optimizer</span><span class="o">.</span><span class="n">objective_function</span><span class="o">.</span><span class="n">_historical_data</span><span class="o">.</span><span class="n">points_sampled_value</span><span class="p">),</span>
         <span class="n">log_likelihood_optimizer</span><span class="o">.</span><span class="n">objective_function</span><span class="o">.</span><span class="n">_historical_data</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span>
         <span class="n">log_likelihood_optimizer</span><span class="o">.</span><span class="n">objective_function</span><span class="o">.</span><span class="n">_historical_data</span><span class="o">.</span><span class="n">num_sampled</span><span class="p">,</span>
-        <span class="n">cpp_utils</span><span class="o">.</span><span class="n">cppify_hyperparameters</span><span class="p">(</span><span class="n">log_likelihood_optimizer</span><span class="o">.</span><span class="n">objective_function</span><span class="o">.</span><span class="n">_covariance</span><span class="o">.</span><span class="n">get_hyperparameters</span><span class="p">()),</span>
+        <span class="n">cpp_utils</span><span class="o">.</span><span class="n">cppify_hyperparameters</span><span class="p">(</span><span class="n">log_likelihood_optimizer</span><span class="o">.</span><span class="n">objective_function</span><span class="o">.</span><span class="n">_covariance</span><span class="o">.</span><span class="n">hyperparameters</span><span class="p">),</span>
         <span class="n">cpp_utils</span><span class="o">.</span><span class="n">cppify</span><span class="p">(</span><span class="n">log_likelihood_optimizer</span><span class="o">.</span><span class="n">objective_function</span><span class="o">.</span><span class="n">_historical_data</span><span class="o">.</span><span class="n">points_sampled_noise_variance</span><span class="p">),</span>
         <span class="n">max_num_threads</span><span class="p">,</span>
         <span class="n">randomness</span><span class="p">,</span>
@@ -352,7 +353,7 @@
         <span class="n">log_likelihood_evaluator</span><span class="o">.</span><span class="n">_historical_data</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span>
         <span class="n">log_likelihood_evaluator</span><span class="o">.</span><span class="n">_historical_data</span><span class="o">.</span><span class="n">num_sampled</span><span class="p">,</span>
         <span class="n">log_likelihood_evaluator</span><span class="o">.</span><span class="n">objective_type</span><span class="p">,</span>
-        <span class="n">cpp_utils</span><span class="o">.</span><span class="n">cppify_hyperparameters</span><span class="p">(</span><span class="n">log_likelihood_evaluator</span><span class="o">.</span><span class="n">_covariance</span><span class="o">.</span><span class="n">get_hyperparameters</span><span class="p">()),</span>
+        <span class="n">cpp_utils</span><span class="o">.</span><span class="n">cppify_hyperparameters</span><span class="p">(</span><span class="n">log_likelihood_evaluator</span><span class="o">.</span><span class="n">_covariance</span><span class="o">.</span><span class="n">hyperparameters</span><span class="p">),</span>
         <span class="n">cpp_utils</span><span class="o">.</span><span class="n">cppify</span><span class="p">(</span><span class="n">log_likelihood_evaluator</span><span class="o">.</span><span class="n">_historical_data</span><span class="o">.</span><span class="n">points_sampled_noise_variance</span><span class="p">),</span>
         <span class="n">hyperparameters_to_evaluate</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
         <span class="n">max_num_threads</span><span class="p">,</span>
@@ -406,15 +407,17 @@
 </div>
 <div class="viewcode-block" id="GaussianProcessLogLikelihood.get_hyperparameters"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.log_likelihood.GaussianProcessLogLikelihood.get_hyperparameters">[docs]</a>    <span class="k">def</span> <span class="nf">get_hyperparameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get the hyperparameters (array of float64 with shape (num_hyperparameters)) of this covariance.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_covariance</span><span class="o">.</span><span class="n">get_hyperparameters</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_covariance</span><span class="o">.</span><span class="n">hyperparameters</span>
 </div>
 <div class="viewcode-block" id="GaussianProcessLogLikelihood.set_hyperparameters"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.log_likelihood.GaussianProcessLogLikelihood.set_hyperparameters">[docs]</a>    <span class="k">def</span> <span class="nf">set_hyperparameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hyperparameters</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set hyperparameters to the specified hyperparameters; ordering must match.&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_covariance</span><span class="o">.</span><span class="n">set_hyperparameters</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_covariance</span><span class="o">.</span><span class="n">hyperparameters</span> <span class="o">=</span> <span class="n">hyperparameters</span>
 </div>
+    <span class="n">hyperparameters</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">get_hyperparameters</span><span class="p">,</span> <span class="n">set_hyperparameters</span><span class="p">)</span>
+
 <div class="viewcode-block" id="GaussianProcessLogLikelihood.get_current_point"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.log_likelihood.GaussianProcessLogLikelihood.get_current_point">[docs]</a>    <span class="k">def</span> <span class="nf">get_current_point</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get the current_point (array of float64 with shape (problem_size)) at which this object is evaluating the objective function, ``f(x)``.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_hyperparameters</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">hyperparameters</span>
 </div>
 <div class="viewcode-block" id="GaussianProcessLogLikelihood.set_current_point"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.log_likelihood.GaussianProcessLogLikelihood.set_current_point">[docs]</a>    <span class="k">def</span> <span class="nf">set_current_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">current_point</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set current_point to the specified point; ordering must match.</span>
@@ -423,8 +426,10 @@
 <span class="sd">        :type current_point: array of float64 with shape (problem_size)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_hyperparameters</span><span class="p">(</span><span class="n">current_point</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hyperparameters</span> <span class="o">=</span> <span class="n">current_point</span>
 </div>
+    <span class="n">current_point</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">get_current_point</span><span class="p">,</span> <span class="n">set_current_point</span><span class="p">)</span>
+
 <div class="viewcode-block" id="GaussianProcessLogLikelihood.compute_log_likelihood"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.log_likelihood.GaussianProcessLogLikelihood.compute_log_likelihood">[docs]</a>    <span class="k">def</span> <span class="nf">compute_log_likelihood</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">r&quot;&quot;&quot;Compute the objective_type measure at the specified hyperparameters.</span>
 

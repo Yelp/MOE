@@ -69,11 +69,12 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Install</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="install.html#install-in-docker">Install in docker:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#install-from-source">Install from source:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below):</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#install-in-docker">Install in docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#install-from-source">Install from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#building-boost">Building Boost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="objective_functions.html">Objective Functions</a><ul>
@@ -663,41 +664,6 @@ tolerance should be set to 0.0.  Otherwise tolerance should usually be near std:
 </dd>
 <dt><strong>Returns</strong>:</dt>
 <dd>true if matrix is symmetric</dd>
-</dl>
- </p>
-</div></blockquote>
-<p><span class="target" id="project0namespaceoptimal__learning_1aa8b6f201a877bde93224723e9a189649"></span><div class="line-block">
-<div class="line">void <strong>ZeroUpperTriangle</strong>(int size, double *restrict matrix)</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p><p>Zeroes the strict upper triangle of a matrix (assuming column-major storage)</p>
-<dl class="docutils">
-<dt><strong>Parameters</strong>:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">size:</th><td class="field-body">dimension of matrix</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">matrix[size][size]:</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">matrix whose upper tri is to be zeroed (on input)</td>
-</tr>
-</tbody>
-</table>
-</dd>
-<dt><strong>Outputs</strong>:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">matrix[size][size]:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">lower triangular part of input matrix</td>
-</tr>
-</tbody>
-</table>
-</dd>
 </dl>
  </p>
 </div></blockquote>

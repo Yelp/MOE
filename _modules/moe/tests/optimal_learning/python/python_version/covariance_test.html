@@ -67,11 +67,12 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../../install.html">Install</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../../install.html#install-in-docker">Install in docker:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../../install.html#install-from-source">Install from source:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../../install.html#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below):</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../../install.html#linux-tips">Linux Tips:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../../install.html#cmake-tips">CMake Tips:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../install.html#install-in-docker">Install in docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../install.html#install-from-source">Install from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../install.html#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../install.html#building-boost">Building Boost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../install.html#linux-tips">Linux Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../install.html#cmake-tips">CMake Tips</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../../objective_functions.html">Objective Functions</a><ul>
@@ -376,21 +377,21 @@
 
             <span class="n">analytic_grad</span> <span class="o">=</span> <span class="n">covariance</span><span class="o">.</span><span class="n">hyperparameter_grad_covariance</span><span class="p">(</span><span class="n">point_one</span><span class="p">,</span> <span class="n">point_two</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">covariance</span><span class="o">.</span><span class="n">num_hyperparameters</span><span class="p">):</span>
-                <span class="n">hyperparameters_old</span> <span class="o">=</span> <span class="n">covariance</span><span class="o">.</span><span class="n">get_hyperparameters</span><span class="p">()</span>
+                <span class="n">hyperparameters_old</span> <span class="o">=</span> <span class="n">covariance</span><span class="o">.</span><span class="n">hyperparameters</span>
 
                 <span class="c"># hyperparamter + h</span>
                 <span class="n">hyperparameters_p</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">hyperparameters_old</span><span class="p">)</span>
                 <span class="n">hyperparameters_p</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">+=</span> <span class="n">h</span>
-                <span class="n">covariance</span><span class="o">.</span><span class="n">set_hyperparameters</span><span class="p">(</span><span class="n">hyperparameters_p</span><span class="p">)</span>
+                <span class="n">covariance</span><span class="o">.</span><span class="n">hyperparameters</span> <span class="o">=</span> <span class="n">hyperparameters_p</span>
                 <span class="n">cov_p</span> <span class="o">=</span> <span class="n">covariance</span><span class="o">.</span><span class="n">covariance</span><span class="p">(</span><span class="n">point_one</span><span class="p">,</span> <span class="n">point_two</span><span class="p">)</span>
-                <span class="n">covariance</span><span class="o">.</span><span class="n">set_hyperparameters</span><span class="p">(</span><span class="n">hyperparameters_old</span><span class="p">)</span>
+                <span class="n">covariance</span><span class="o">.</span><span class="n">hyperparameters</span> <span class="o">=</span> <span class="n">hyperparameters_old</span>
 
                 <span class="c"># hyperparamter - h</span>
                 <span class="n">hyperparameters_m</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">hyperparameters_old</span><span class="p">)</span>
                 <span class="n">hyperparameters_m</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">-=</span> <span class="n">h</span>
-                <span class="n">covariance</span><span class="o">.</span><span class="n">set_hyperparameters</span><span class="p">(</span><span class="n">hyperparameters_m</span><span class="p">)</span>
+                <span class="n">covariance</span><span class="o">.</span><span class="n">hyperparameters</span> <span class="o">=</span> <span class="n">hyperparameters_m</span>
                 <span class="n">cov_m</span> <span class="o">=</span> <span class="n">covariance</span><span class="o">.</span><span class="n">covariance</span><span class="p">(</span><span class="n">point_one</span><span class="p">,</span> <span class="n">point_two</span><span class="p">)</span>
-                <span class="n">covariance</span><span class="o">.</span><span class="n">set_hyperparameters</span><span class="p">(</span><span class="n">hyperparameters_old</span><span class="p">)</span>
+                <span class="n">covariance</span><span class="o">.</span><span class="n">hyperparameters</span> <span class="o">=</span> <span class="n">hyperparameters_old</span>
 
                 <span class="c"># calculate finite diff</span>
                 <span class="n">fd_grad</span> <span class="o">=</span> <span class="p">(</span><span class="n">cov_p</span> <span class="o">-</span> <span class="n">cov_m</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">h</span><span class="p">)</span>

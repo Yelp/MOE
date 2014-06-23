@@ -67,11 +67,12 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../../install.html">Install</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../../install.html#install-in-docker">Install in docker:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../../install.html#install-from-source">Install from source:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../../install.html#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below):</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../../install.html#linux-tips">Linux Tips:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../../install.html#cmake-tips">CMake Tips:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../install.html#install-in-docker">Install in docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../install.html#install-from-source">Install from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../install.html#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../install.html#building-boost">Building Boost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../install.html#linux-tips">Linux Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../install.html#cmake-tips">CMake Tips</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../../objective_functions.html">Objective Functions</a><ul>
@@ -186,12 +187,16 @@
   <h1>Source code for moe.tests.optimal_learning.python.cpp_wrappers.gaussian_process_test</h1><div class="highlight"><pre>
 <span class="c"># -*- coding: utf-8 -*-</span>
 <span class="sd">&quot;&quot;&quot;Test the C++ implementation of Gaussian Process properties (mean, var, gradients thereof) against the Python version.&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+
 <span class="kn">import</span> <span class="nn">numpy</span>
 
 <span class="kn">import</span> <span class="nn">testify</span> <span class="kn">as</span> <span class="nn">T</span>
 
+<span class="kn">import</span> <span class="nn">moe.build.GPP</span> <span class="kn">as</span> <span class="nn">C_GP</span>
 <span class="kn">from</span> <span class="nn">moe.optimal_learning.python.cpp_wrappers.covariance</span> <span class="kn">import</span> <span class="n">SquareExponential</span>
 <span class="kn">from</span> <span class="nn">moe.optimal_learning.python.cpp_wrappers.gaussian_process</span> <span class="kn">import</span> <span class="n">GaussianProcess</span>
+<span class="kn">from</span> <span class="nn">moe.optimal_learning.python.data_containers</span> <span class="kn">import</span> <span class="n">HistoricalData</span><span class="p">,</span> <span class="n">SamplePoint</span>
 <span class="kn">from</span> <span class="nn">moe.tests.optimal_learning.python.gaussian_process_test_case</span> <span class="kn">import</span> <span class="n">GaussianProcessTestCase</span>
 
 
@@ -212,6 +217,35 @@
         <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">8794</span><span class="p">)</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">GaussianProcessTest</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">base_setup</span><span class="p">()</span>
 </div>
+<div class="viewcode-block" id="GaussianProcessTest.test_gp_construction_singular_covariance_matrix"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.gaussian_process_test.GaussianProcessTest.test_gp_construction_singular_covariance_matrix">[docs]</a>    <span class="k">def</span> <span class="nf">test_gp_construction_singular_covariance_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Test that the GaussianProcess ctor indicates a singular covariance matrix when points_sampled contains duplicates (0 noise).&quot;&quot;&quot;</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">greater_equal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_sampled_list</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">domain</span><span class="p">,</span> <span class="n">covariance</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gp_test_environments</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+        <span class="n">point_one</span> <span class="o">=</span> <span class="n">SamplePoint</span><span class="p">([</span><span class="mf">0.0</span><span class="p">]</span> <span class="o">*</span> <span class="n">domain</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+        <span class="c"># points two and three have duplicate coordinates and we have noise_variance = 0.0</span>
+        <span class="n">point_two</span> <span class="o">=</span> <span class="n">SamplePoint</span><span class="p">([</span><span class="mf">1.0</span><span class="p">]</span> <span class="o">*</span> <span class="n">domain</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+        <span class="n">point_three</span> <span class="o">=</span> <span class="n">point_two</span>
+
+        <span class="n">historical_data</span> <span class="o">=</span> <span class="n">HistoricalData</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">point_one</span><span class="o">.</span><span class="n">point</span><span class="p">),</span> <span class="p">[</span><span class="n">point_one</span><span class="p">,</span> <span class="n">point_two</span><span class="p">,</span> <span class="n">point_three</span><span class="p">])</span>
+        <span class="n">T</span><span class="o">.</span><span class="n">assert_raises</span><span class="p">(</span><span class="n">C_GP</span><span class="o">.</span><span class="n">SingularMatrixException</span><span class="p">,</span> <span class="n">GaussianProcess</span><span class="p">,</span> <span class="n">covariance</span><span class="p">,</span> <span class="n">historical_data</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="GaussianProcessTest.test_gp_add_sampled_points_singular_covariance_matrix"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.gaussian_process_test.GaussianProcessTest.test_gp_add_sampled_points_singular_covariance_matrix">[docs]</a>    <span class="k">def</span> <span class="nf">test_gp_add_sampled_points_singular_covariance_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Test that GaussianProcess.add_sampled_points indicates a singular covariance matrix when points_sampled contains duplicates (0 noise).&quot;&quot;&quot;</span>
+        <span class="n">test_environment_input</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gp_test_environment_input</span><span class="p">)</span>
+        <span class="n">test_environment_input</span><span class="o">.</span><span class="n">num_sampled</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">test_environment_input</span><span class="o">.</span><span class="n">gaussian_process_class</span> <span class="o">=</span> <span class="n">GaussianProcess</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">gaussian_process</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_gaussian_process_test_data</span><span class="p">(</span><span class="n">test_environment_input</span><span class="p">)</span>
+
+        <span class="c"># points one and three have duplicate coordinates and we have noise_variance = 0.0</span>
+        <span class="n">point_one</span> <span class="o">=</span> <span class="n">SamplePoint</span><span class="p">([</span><span class="mf">0.5</span><span class="p">]</span> <span class="o">*</span> <span class="n">gaussian_process</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+        <span class="n">point_two</span> <span class="o">=</span> <span class="n">SamplePoint</span><span class="p">([</span><span class="mf">1.0</span><span class="p">]</span> <span class="o">*</span> <span class="n">gaussian_process</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+        <span class="n">point_three</span> <span class="o">=</span> <span class="n">point_one</span>
+
+        <span class="c"># points one and two are different, so this is safe</span>
+        <span class="n">gaussian_process</span><span class="o">.</span><span class="n">add_sampled_points</span><span class="p">([</span><span class="n">point_one</span><span class="p">,</span> <span class="n">point_two</span><span class="p">])</span>
+        <span class="c"># point_three is identical to point_one; this will produce a singular covariance matrix</span>
+        <span class="n">T</span><span class="o">.</span><span class="n">assert_raises</span><span class="p">(</span><span class="n">C_GP</span><span class="o">.</span><span class="n">SingularMatrixException</span><span class="p">,</span> <span class="n">gaussian_process</span><span class="o">.</span><span class="n">add_sampled_points</span><span class="p">,</span> <span class="p">[</span><span class="n">point_three</span><span class="p">])</span>
+</div>
 <div class="viewcode-block" id="GaussianProcessTest.test_python_and_cpp_return_same_mu_and_gradient"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.gaussian_process_test.GaussianProcessTest.test_python_and_cpp_return_same_mu_and_gradient">[docs]</a>    <span class="k">def</span> <span class="nf">test_python_and_cpp_return_same_mu_and_gradient</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Compare mu/grad mu results from Python &amp; C++, checking seeral random points per test case.&quot;&quot;&quot;</span>
         <span class="n">num_tests_per_case</span> <span class="o">=</span> <span class="mi">4</span>
@@ -221,7 +255,7 @@
         <span class="k">for</span> <span class="n">test_case</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">gp_test_environments</span><span class="p">:</span>
             <span class="n">domain</span><span class="p">,</span> <span class="n">python_cov</span><span class="p">,</span> <span class="n">python_gp</span> <span class="o">=</span> <span class="n">test_case</span>
 
-            <span class="n">cpp_cov</span> <span class="o">=</span> <span class="n">SquareExponential</span><span class="p">(</span><span class="n">python_cov</span><span class="o">.</span><span class="n">get_hyperparameters</span><span class="p">())</span>
+            <span class="n">cpp_cov</span> <span class="o">=</span> <span class="n">SquareExponential</span><span class="p">(</span><span class="n">python_cov</span><span class="o">.</span><span class="n">hyperparameters</span><span class="p">)</span>
             <span class="n">cpp_gp</span> <span class="o">=</span> <span class="n">GaussianProcess</span><span class="p">(</span><span class="n">cpp_cov</span><span class="p">,</span> <span class="n">python_gp</span><span class="o">.</span><span class="n">_historical_data</span><span class="p">)</span>
 
             <span class="k">for</span> <span class="n">num_to_sample</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_to_sample_list</span><span class="p">:</span>
@@ -245,7 +279,7 @@
         <span class="k">for</span> <span class="n">test_case</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">gp_test_environments</span><span class="p">:</span>
             <span class="n">domain</span><span class="p">,</span> <span class="n">python_cov</span><span class="p">,</span> <span class="n">python_gp</span> <span class="o">=</span> <span class="n">test_case</span>
 
-            <span class="n">cpp_cov</span> <span class="o">=</span> <span class="n">SquareExponential</span><span class="p">(</span><span class="n">python_cov</span><span class="o">.</span><span class="n">get_hyperparameters</span><span class="p">())</span>
+            <span class="n">cpp_cov</span> <span class="o">=</span> <span class="n">SquareExponential</span><span class="p">(</span><span class="n">python_cov</span><span class="o">.</span><span class="n">hyperparameters</span><span class="p">)</span>
             <span class="n">cpp_gp</span> <span class="o">=</span> <span class="n">GaussianProcess</span><span class="p">(</span><span class="n">cpp_cov</span><span class="p">,</span> <span class="n">python_gp</span><span class="o">.</span><span class="n">_historical_data</span><span class="p">)</span>
 
             <span class="k">for</span> <span class="n">num_to_sample</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_to_sample_list</span><span class="p">:</span>
@@ -269,7 +303,7 @@
         <span class="k">for</span> <span class="n">test_case</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">gp_test_environments</span><span class="p">:</span>
             <span class="n">domain</span><span class="p">,</span> <span class="n">python_cov</span><span class="p">,</span> <span class="n">python_gp</span> <span class="o">=</span> <span class="n">test_case</span>
 
-            <span class="n">cpp_cov</span> <span class="o">=</span> <span class="n">SquareExponential</span><span class="p">(</span><span class="n">python_cov</span><span class="o">.</span><span class="n">get_hyperparameters</span><span class="p">())</span>
+            <span class="n">cpp_cov</span> <span class="o">=</span> <span class="n">SquareExponential</span><span class="p">(</span><span class="n">python_cov</span><span class="o">.</span><span class="n">hyperparameters</span><span class="p">)</span>
             <span class="n">cpp_gp</span> <span class="o">=</span> <span class="n">GaussianProcess</span><span class="p">(</span><span class="n">cpp_cov</span><span class="p">,</span> <span class="n">python_gp</span><span class="o">.</span><span class="n">_historical_data</span><span class="p">)</span>
 
             <span class="k">for</span> <span class="n">num_to_sample</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_to_sample_list</span><span class="p">:</span>

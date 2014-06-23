@@ -69,11 +69,12 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Install</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="install.html#install-in-docker">Install in docker:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#install-from-source">Install from source:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below):</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#install-in-docker">Install in docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#install-from-source">Install from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#building-boost">Building Boost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="objective_functions.html">Objective Functions</a><ul>
@@ -341,6 +342,12 @@ either of them).  Thus the matrix of grad covariances (wrt hyperparameters) is s
 <tt class="descname">hyperparameter_hessian_covariance</tt><big>(</big><em>point_one</em>, <em>point_two</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/covariance.html#SquareExponential.hyperparameter_hessian_covariance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.covariance.SquareExponential.hyperparameter_hessian_covariance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the hessian of self.covariance(point_one, point_two) with respect to its hyperparameters.</p>
 <p>TODO(GH-57): Implement Hessians in Python.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="moe.optimal_learning.python.python_version.covariance.SquareExponential.hyperparameters">
+<tt class="descname">hyperparameters</tt><a class="headerlink" href="#moe.optimal_learning.python.python_version.covariance.SquareExponential.hyperparameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the hyperparameters (array of float64 with shape (num_hyperparameters)) of this covariance.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -623,6 +630,12 @@ and <tt class="docutils literal"><span class="pre">Xp</span></tt> is <tt class="
 <dt id="moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.compute_objective_function">
 <tt class="descname">compute_objective_function</tt><big>(</big><em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/expected_improvement.html#ExpectedImprovement.compute_objective_function"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.compute_objective_function" title="Permalink to this definition">¶</a></dt>
 <dd><p>Wrapper for compute_expected_improvement; see that function&#8217;s docstring.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.current_point">
+<tt class="descname">current_point</tt><a class="headerlink" href="#moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.current_point" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the current_point (array of float64 with shape (problem_size)) at which this object is evaluating the objective function, <tt class="docutils literal"><span class="pre">f(x)</span></tt>.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1181,6 +1194,12 @@ and (possibly) better numerical conditioning.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.current_point">
+<tt class="descname">current_point</tt><a class="headerlink" href="#moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.current_point" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the current_point (array of float64 with shape (problem_size)) at which this object is evaluating the objective function, <tt class="docutils literal"><span class="pre">f(x)</span></tt>.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.dim">
 <tt class="descname">dim</tt><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/log_likelihood.html#GaussianProcessLogMarginalLikelihood.dim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.dim" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the number of spatial dimensions.</p>
@@ -1195,6 +1214,12 @@ and (possibly) better numerical conditioning.</p>
 <dl class="method">
 <dt id="moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.get_hyperparameters">
 <tt class="descname">get_hyperparameters</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/log_likelihood.html#GaussianProcessLogMarginalLikelihood.get_hyperparameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.get_hyperparameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the hyperparameters (array of float64 with shape (num_hyperparameters)) of this covariance.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.hyperparameters">
+<tt class="descname">hyperparameters</tt><a class="headerlink" href="#moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.hyperparameters" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the hyperparameters (array of float64 with shape (num_hyperparameters)) of this covariance.</p>
 </dd></dl>
 

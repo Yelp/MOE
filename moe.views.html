@@ -69,11 +69,12 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Install</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="install.html#install-in-docker">Install in docker:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#install-from-source">Install from source:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below):</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#install-in-docker">Install in docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#install-from-source">Install from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#building-boost">Building Boost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="objective_functions.html">Objective Functions</a><ul>
@@ -285,32 +286,84 @@ GP_NEXT_POINTS_&lt;NAME&gt;_OPTIMIZATION_METHOD_NAME = &lt;method name from moe.
 </div>
 <div class="section" id="module-moe.views.exceptions">
 <span id="moe-views-exceptions-module"></span><h2>moe.views.exceptions module<a class="headerlink" href="#module-moe.views.exceptions" title="Permalink to this headline">¶</a></h2>
-<p>Views for handling exceptions.</p>
+<p>Views for handling Python exceptions.</p>
 <dl class="docutils">
-<dt>Includes views that catch the following:</dt>
+<dt>Includes special views that catch the following:</dt>
 <dd><ol class="first last arabic simple">
-<li>SingularMatrixError</li>
 <li>colander.Invalid</li>
 </ol>
 </dd>
 </dl>
-<dl class="exception">
-<dt id="moe.views.exceptions.SingularMatrixError">
-<em class="property">exception </em><tt class="descclassname">moe.views.exceptions.</tt><tt class="descname">SingularMatrixError</tt><a class="reference internal" href="_modules/moe/views/exceptions.html#SingularMatrixError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.views.exceptions.SingularMatrixError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></tt></p>
-<p>Throw this exception when you have constructed a singular matrix.</p>
+<dl class="function">
+<dt id="moe.views.exceptions.failed_colander_validation">
+<tt class="descclassname">moe.views.exceptions.</tt><tt class="descname">failed_colander_validation</tt><big>(</big><em>exception</em>, <em>request</em><big>)</big><a class="reference internal" href="_modules/moe/views/exceptions.html#failed_colander_validation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.views.exceptions.failed_colander_validation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Catch <tt class="docutils literal"><span class="pre">colander.Invalid</span></tt> and give an informative 500 response.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>exception</strong> (<em>colander.Invalid</em>) &#8211; exception to be handled</li>
+<li><strong>request</strong> (<em>pyramid.request.Request</em>) &#8211; the pyramid request that lead to the exception being raised.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the pyramid response to be rendered</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">pyramid.response.Response</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
-<dt id="moe.views.exceptions.failed_validation">
-<tt class="descclassname">moe.views.exceptions.</tt><tt class="descname">failed_validation</tt><big>(</big><em>exception</em>, <em>request</em><big>)</big><a class="reference internal" href="_modules/moe/views/exceptions.html#failed_validation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.views.exceptions.failed_validation" title="Permalink to this definition">¶</a></dt>
-<dd><p>Catch colander.Invalid and give an informative 500 response.</p>
+<dt id="moe.views.exceptions.general_error">
+<tt class="descclassname">moe.views.exceptions.</tt><tt class="descname">general_error</tt><big>(</big><em>exception</em>, <em>request</em><big>)</big><a class="reference internal" href="_modules/moe/views/exceptions.html#general_error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.views.exceptions.general_error" title="Permalink to this definition">¶</a></dt>
+<dd><p>Catch any Python <tt class="docutils literal"><span class="pre">Exception</span></tt>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>exception</strong> (<em>Exception</em>) &#8211; exception to be handled</li>
+<li><strong>request</strong> (<em>pyramid.request.Request</em>) &#8211; the pyramid request that lead to the exception being raised.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the pyramid response to be rendered</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">pyramid.response.Response</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
-<dt id="moe.views.exceptions.linear_algebra_error">
-<tt class="descclassname">moe.views.exceptions.</tt><tt class="descname">linear_algebra_error</tt><big>(</big><em>exception</em>, <em>request</em><big>)</big><a class="reference internal" href="_modules/moe/views/exceptions.html#linear_algebra_error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.views.exceptions.linear_algebra_error" title="Permalink to this definition">¶</a></dt>
-<dd><p>Catch SingularMatrixError and give an informative 500 response.</p>
+<dt id="moe.views.exceptions.pyramid_error_view">
+<tt class="descclassname">moe.views.exceptions.</tt><tt class="descname">pyramid_error_view</tt><big>(</big><em>exception</em>, <em>request</em><big>)</big><a class="reference internal" href="_modules/moe/views/exceptions.html#pyramid_error_view"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.views.exceptions.pyramid_error_view" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register a pyramid view to handle exceptions; i.e., log them and generate a Response.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>exception</strong> (Exception (Python base exception type) (i.e., type of <tt class="docutils literal"><span class="pre">context</span></tt>)) &#8211; exception to be handled</li>
+<li><strong>request</strong> (<em>pyramid.request.Request</em>) &#8211; the pyramid request that lead to the exception being raised.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the pyramid response to be rendered</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">pyramid.response.Response</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div>
@@ -437,12 +490,12 @@ GP_NEXT_POINTS_&lt;NAME&gt;_OPTIMIZATION_METHOD_NAME = &lt;method name from moe.
 
 <dl class="attribute">
 <dt id="moe.views.gp_next_points_pretty_view.GpNextPointsPrettyView.request_schema">
-<tt class="descname">request_schema</tt><em class="property"> = &lt;moe.views.gp_next_points_pretty_view.GpNextPointsRequest object at 4651337552 (named )&gt;</em><a class="headerlink" href="#moe.views.gp_next_points_pretty_view.GpNextPointsPrettyView.request_schema" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">request_schema</tt><em class="property"> = &lt;moe.views.gp_next_points_pretty_view.GpNextPointsRequest object at 4628879120 (named )&gt;</em><a class="headerlink" href="#moe.views.gp_next_points_pretty_view.GpNextPointsPrettyView.request_schema" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="moe.views.gp_next_points_pretty_view.GpNextPointsPrettyView.response_schema">
-<tt class="descname">response_schema</tt><em class="property"> = &lt;moe.views.gp_next_points_pretty_view.GpNextPointsResponse object at 4651337744 (named )&gt;</em><a class="headerlink" href="#moe.views.gp_next_points_pretty_view.GpNextPointsPrettyView.response_schema" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">response_schema</tt><em class="property"> = &lt;moe.views.gp_next_points_pretty_view.GpNextPointsResponse object at 4628879312 (named )&gt;</em><a class="headerlink" href="#moe.views.gp_next_points_pretty_view.GpNextPointsPrettyView.response_schema" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -479,8 +532,11 @@ GP_NEXT_POINTS_&lt;NAME&gt;_OPTIMIZATION_METHOD_NAME = &lt;method name from moe.
 <tr class="field-odd field"><th class="field-name" colspan="2">covariance_info:</th></tr>
 <tr class="field-odd field"><td>&nbsp;</td><td class="field-body">a <a class="reference internal" href="#moe.views.schemas.CovarianceInfo" title="moe.views.schemas.CovarianceInfo"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.CovarianceInfo</span></tt></a> dict of covariance information</td>
 </tr>
-<tr class="field-even field"><th class="field-name" colspan="2">optimiaztion_info:</th></tr>
+<tr class="field-even field"><th class="field-name" colspan="2">optimization_info:</th></tr>
 <tr class="field-even field"><td>&nbsp;</td><td class="field-body">a <a class="reference internal" href="#moe.views.schemas.OptimizationInfo" title="moe.views.schemas.OptimizationInfo"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.OptimizationInfo</span></tt></a> dict of optimization information</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">points_being_sampled:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">list of points in domain being sampled in concurrent experiments (default: [])</td>
 </tr>
 </tbody>
 </table>
@@ -510,6 +566,7 @@ GP_NEXT_POINTS_&lt;NAME&gt;_OPTIMIZATION_METHOD_NAME = &lt;method name from moe.
 
 {
     &#39;num_to_sample&#39;: 1,
+    &#39;points_being_sampled&#39;: [[0.2], [0.7]],
     &#39;mc_iterations&#39;: 10000,
     &#39;gp_historical_info&#39;: {
         &#39;points_sampled&#39;: [
@@ -797,6 +854,13 @@ This is necessary because we cannot dynamically assign the parameters schema wit
 </dd></dl>
 
 <dl class="class">
+<dt id="moe.views.schemas.ListOfPositiveFloats">
+<em class="property">class </em><tt class="descclassname">moe.views.schemas.</tt><tt class="descname">ListOfPositiveFloats</tt><big>(</big><em>*args</em>, <em>**kw</em><big>)</big><a class="reference internal" href="_modules/moe/views/schemas.html#ListOfPositiveFloats"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.views.schemas.ListOfPositiveFloats" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">colander.SequenceSchema</span></tt></p>
+<p>Colander list of positive floats.</p>
+</dd></dl>
+
+<dl class="class">
 <dt id="moe.views.schemas.MatrixOfFloats">
 <em class="property">class </em><tt class="descclassname">moe.views.schemas.</tt><tt class="descname">MatrixOfFloats</tt><big>(</big><em>*args</em>, <em>**kw</em><big>)</big><a class="reference internal" href="_modules/moe/views/schemas.html#MatrixOfFloats"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.views.schemas.MatrixOfFloats" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">colander.SequenceSchema</span></tt></p>
@@ -845,6 +909,45 @@ This is necessary because we cannot dynamically assign the parameters schema wit
 <em class="property">class </em><tt class="descclassname">moe.views.schemas.</tt><tt class="descname">PointsSampled</tt><big>(</big><em>*args</em>, <em>**kw</em><big>)</big><a class="reference internal" href="_modules/moe/views/schemas.html#PointsSampled"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.views.schemas.PointsSampled" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">colander.SequenceSchema</span></tt></p>
 <p>A list of SinglePoint objects.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="moe.views.schemas.PositiveFloat">
+<em class="property">class </em><tt class="descclassname">moe.views.schemas.</tt><tt class="descname">PositiveFloat</tt><big>(</big><em>*arg</em>, <em>**kw</em><big>)</big><a class="reference internal" href="_modules/moe/views/schemas.html#PositiveFloat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.views.schemas.PositiveFloat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">colander.SchemaNode</span></tt></p>
+<p>Colander positive (finite) float.</p>
+<dl class="attribute">
+<dt id="moe.views.schemas.PositiveFloat.schema_type">
+<tt class="descname">schema_type</tt><a class="headerlink" href="#moe.views.schemas.PositiveFloat.schema_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">Float</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="moe.views.schemas.PositiveFloat.title">
+<tt class="descname">title</tt><em class="property"> = 'Positive Float'</em><a class="headerlink" href="#moe.views.schemas.PositiveFloat.title" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="moe.views.schemas.PositiveFloat.validator">
+<tt class="descname">validator</tt><big>(</big><em>node</em>, <em>cstruct</em><big>)</big><a class="reference internal" href="_modules/moe/views/schemas.html#PositiveFloat.validator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.views.schemas.PositiveFloat.validator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raise an exception if the node value (cstruct) is non-positive or non-finite.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>node</strong> (<em>colander.SchemaNode subclass instance</em>) &#8211; the node being validated (usually self)</li>
+<li><strong>cstruct</strong> (<em>float</em>) &#8211; the value being validated</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first last">colander.Invalid if cstruct value is bad</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">

@@ -69,11 +69,12 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Install</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="install.html#install-in-docker">Install in docker:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#install-from-source">Install from source:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below):</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#install-in-docker">Install in docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#install-from-source">Install from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#building-boost">Building Boost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="objective_functions.html">Objective Functions</a><ul>
@@ -500,8 +501,83 @@ elements, the loss of precision may already be substantial.</p>
  </p>
 </p>
 </div></blockquote>
-<p><span class="target" id="project0namespaceoptimal__learning_1a6b98e93913d0d448b9f3dbd74ca4b77c"></span><div class="line-block">
-<div class="line">void <strong>ComputeCholeskyFactorL</strong>(int size_m, double *restrict chol)</div>
+<p><span class="target" id="project0namespaceoptimal__learning_1a71d22dd78feea3f809a928927017acf3"></span><div class="line-block">
+<div class="line">void <strong>MatrixTranspose</strong>(double const *restrict matrix, int num_rows, int num_cols, double *restrict transpose)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Transposes a 2D matrix. <tt class="docutils literal"><span class="pre">O(num_rows*num_cols)</span> <span class="pre">=</span> <span class="pre">O(n^2)</span></tt> for square matrices
+Would have no effect on symmetric matrices.</p>
+<p>For example, <tt class="docutils literal"><span class="pre">A[3][4]</span> <span class="pre">=</span> <span class="pre">[4</span> <span class="pre">53</span> <span class="pre">81</span> <span class="pre">32</span> <span class="pre">12</span> <span class="pre">2</span> <span class="pre">5</span> <span class="pre">8</span> <span class="pre">93</span> <span class="pre">2</span> <span class="pre">1</span> <span class="pre">0]</span></tt>
+becomes      <tt class="docutils literal"><span class="pre">A[4][3]</span> <span class="pre">=</span> <span class="pre">[4</span> <span class="pre">32</span> <span class="pre">5</span> <span class="pre">2</span> <span class="pre">53</span> <span class="pre">12</span> <span class="pre">8</span> <span class="pre">1</span> <span class="pre">81</span> <span class="pre">2</span> <span class="pre">93</span> <span class="pre">0]</span></tt></p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">matrix[num_rows][num_cols]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">matrix to be transposed</td>
+</tr>
+<tr class="field-even field"><th class="field-name">num_rows:</th><td class="field-body">number of rows in matrix</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">num_cols:</th><td class="field-body">number of columns in matrix</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Outputs</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">transpose[num_cols][num_rows]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">transpose of matrix</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0namespaceoptimal__learning_1a595a4b34763b0d6c46cb39760766961c"></span><div class="line-block">
+<div class="line">void <strong>ZeroUpperTriangle</strong>(int size, double *restrict matrix)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Zeroes the strict upper triangle of a matrix (assuming column-major storage)</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">size:</th><td class="field-body">dimension of matrix</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">matrix[size][size]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">matrix whose upper tri is to be zeroed (on input)</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Outputs</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">matrix[size][size]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">lower triangular part of input matrix</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0namespaceoptimal__learning_1a28f49995eee21e9b290a2b6b654b84f0"></span><div class="line-block">
+<div class="line">int <strong>ComputeCholeskyFactorL</strong>(int size_m, double *restrict chol)</div>
 </div>
 </p>
 <blockquote>
@@ -552,6 +628,9 @@ of <tt class="docutils literal"><span class="pre">A</span></tt>.  Do not acccess
 </tbody>
 </table>
 </dd>
+<dt><strong>Returns</strong>:</dt>
+<dd>0 if successful. Otherwise the matrix is NOT positive definite and this returns <tt class="docutils literal"><span class="pre">i</span></tt>, the
+index of the <tt class="docutils literal"><span class="pre">i</span></tt>-th leading minor that is not positive definite.</dd>
 </dl>
  </p>
 </p>
@@ -927,46 +1006,6 @@ No inputs may be nullptr.</p>
 </dl>
  </p>
 </p>
-</div></blockquote>
-<p><span class="target" id="project0namespaceoptimal__learning_1a71d22dd78feea3f809a928927017acf3"></span><div class="line-block">
-<div class="line">void <strong>MatrixTranspose</strong>(double const *restrict matrix, int num_rows, int num_cols, double *restrict transpose)</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p><p>Transposes a 2D matrix. <tt class="docutils literal"><span class="pre">O(num_rows*num_cols)</span> <span class="pre">=</span> <span class="pre">O(n^2)</span></tt> for square matrices
-Would have no effect on symmetric matrices.</p>
-<p>For example, <tt class="docutils literal"><span class="pre">A[3][4]</span> <span class="pre">=</span> <span class="pre">[4</span> <span class="pre">53</span> <span class="pre">81</span> <span class="pre">32</span> <span class="pre">12</span> <span class="pre">2</span> <span class="pre">5</span> <span class="pre">8</span> <span class="pre">93</span> <span class="pre">2</span> <span class="pre">1</span> <span class="pre">0]</span></tt>
-becomes      <tt class="docutils literal"><span class="pre">A[4][3]</span> <span class="pre">=</span> <span class="pre">[4</span> <span class="pre">32</span> <span class="pre">5</span> <span class="pre">2</span> <span class="pre">53</span> <span class="pre">12</span> <span class="pre">8</span> <span class="pre">1</span> <span class="pre">81</span> <span class="pre">2</span> <span class="pre">93</span> <span class="pre">0]</span></tt></p>
-<dl class="docutils">
-<dt><strong>Parameters</strong>:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">matrix[num_rows][num_cols]:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">matrix to be transposed</td>
-</tr>
-<tr class="field-even field"><th class="field-name">num_rows:</th><td class="field-body">number of rows in matrix</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">num_cols:</th><td class="field-body">number of columns in matrix</td>
-</tr>
-</tbody>
-</table>
-</dd>
-<dt><strong>Outputs</strong>:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">transpose[num_cols][num_rows]:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">transpose of matrix</td>
-</tr>
-</tbody>
-</table>
-</dd>
-</dl>
- </p>
 </div></blockquote>
 <p><span class="target" id="project0namespaceoptimal__learning_1ac90ed324d76a0a9a643ccb78580908cd"></span><div class="line-block">
 <div class="line">void <strong>SPDMatrixInverse</strong>(double const *restrict chol_matrix matrix, int size_m, double *restrict inv_matrix)</div>

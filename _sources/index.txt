@@ -43,7 +43,7 @@ Where :math:`\vec{x}` is any real valued input in some finite number of dimensio
 
 We want to find the best set of parameters :math:`\vec{x}` while evaluating the underlying function (CTR) as few times as possible. See :doc:`Objective Functions </objective_functions>` for more examples of objective functions and the best ways to combine metrics.
 
-It allows you to build the following loop, contantly optimizing and surfing the wave of highest returns for any set of parameters.
+It allows you to build the following loop, contantly optimizing and trading off the exploration and exploitation of the underlying parameter space. By continuing to optimize over many iterations MOE readily finds maxima in the objective function optimally (climbing the mountains of traditional optimization). By sampling and optimizing over many iterations of the MOE loop in time, we can also allow to surf these shifting optima as features and the world change in time. MOE surfs these waves of optima, attempting to stay at the peak of the potentially changing objective function in parameter space as time advances.
 
 .. image:: ../moe/static/img/moe_loop.png
     :align: center

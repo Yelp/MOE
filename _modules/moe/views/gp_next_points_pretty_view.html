@@ -67,11 +67,12 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../install.html">Install</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../install.html#install-in-docker">Install in docker:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../install.html#install-from-source">Install from source:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../install.html#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below):</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../install.html#linux-tips">Linux Tips:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../install.html#cmake-tips">CMake Tips:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../install.html#install-in-docker">Install in docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../install.html#install-from-source">Install from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../install.html#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../install.html#building-boost">Building Boost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../install.html#linux-tips">Linux Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../install.html#cmake-tips">CMake Tips</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../objective_functions.html">Objective Functions</a><ul>
@@ -218,7 +219,8 @@
 <span class="sd">        :num_to_sample: number of next points to generate (default: 1)</span>
 <span class="sd">        :mc_iterations: number of Monte Carlo (MC) iterations to perform in numerical integration to calculate EI</span>
 <span class="sd">        :covariance_info: a :class:`moe.views.schemas.CovarianceInfo` dict of covariance information</span>
-<span class="sd">        :optimiaztion_info: a :class:`moe.views.schemas.OptimizationInfo` dict of optimization information</span>
+<span class="sd">        :optimization_info: a :class:`moe.views.schemas.OptimizationInfo` dict of optimization information</span>
+<span class="sd">        :points_being_sampled: list of points in domain being sampled in concurrent experiments (default: [])</span>
 
 <span class="sd">    **Example Minimal Request**</span>
 
@@ -250,6 +252,7 @@
 
 <span class="sd">        {</span>
 <span class="sd">            &#39;num_to_sample&#39;: 1,</span>
+<span class="sd">            &#39;points_being_sampled&#39;: [[0.2], [0.7]],</span>
 <span class="sd">            &#39;mc_iterations&#39;: 10000,</span>
 <span class="sd">            &#39;gp_historical_info&#39;: {</span>
 <span class="sd">                &#39;points_sampled&#39;: [</span>
@@ -297,6 +300,9 @@
             <span class="p">)</span>
     <span class="n">optimization_info</span> <span class="o">=</span> <span class="n">OptimizationInfo</span><span class="p">(</span>
             <span class="n">missing</span><span class="o">=</span><span class="n">OptimizationInfo</span><span class="p">()</span><span class="o">.</span><span class="n">deserialize</span><span class="p">({}),</span>
+            <span class="p">)</span>
+    <span class="n">points_being_sampled</span> <span class="o">=</span> <span class="n">ListOfPointsInDomain</span><span class="p">(</span>
+            <span class="n">missing</span><span class="o">=</span><span class="p">[],</span>
             <span class="p">)</span>
 
 </div>
@@ -371,9 +377,7 @@
 <span class="sd">        :param ``**kwargs``: extra kwargs to be passed to optimization method</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">points_being_sampled</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;points_being_sampled&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">points_being_sampled</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">points_being_sampled</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">points_being_sampled</span><span class="p">)</span>
+        <span class="n">points_being_sampled</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;points_being_sampled&#39;</span><span class="p">))</span>
         <span class="n">num_to_sample</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;num_to_sample&#39;</span><span class="p">)</span>
         <span class="n">num_mc_iterations</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;mc_iterations&#39;</span><span class="p">)</span>
 
@@ -414,7 +418,7 @@
                     <span class="o">**</span><span class="n">kwargs</span>
                     <span class="p">)</span>
 
-        <span class="n">expected_improvement_evaluator</span><span class="o">.</span><span class="n">set_current_point</span><span class="p">(</span><span class="n">next_points</span><span class="p">)</span>
+        <span class="n">expected_improvement_evaluator</span><span class="o">.</span><span class="n">current_point</span> <span class="o">=</span> <span class="n">next_points</span>
         <span class="n">expected_improvement</span> <span class="o">=</span> <span class="n">expected_improvement_evaluator</span><span class="o">.</span><span class="n">compute_expected_improvement</span><span class="p">()</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">form_response</span><span class="p">({</span>

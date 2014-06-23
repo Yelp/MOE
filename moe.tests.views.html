@@ -69,11 +69,12 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Install</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="install.html#install-in-docker">Install in docker:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#install-from-source">Install from source:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below):</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#install-in-docker">Install in docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#install-from-source">Install from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#building-boost">Building Boost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="objective_functions.html">Objective Functions</a><ul>
@@ -214,7 +215,19 @@
 <dt id="moe.tests.views.exceptions_test.RestGaussianProcessTestCaseWithExceptions">
 <em class="property">class </em><tt class="descclassname">moe.tests.views.exceptions_test.</tt><tt class="descname">RestGaussianProcessTestCaseWithExceptions</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/tests/views/exceptions_test.html#RestGaussianProcessTestCaseWithExceptions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.views.exceptions_test.RestGaussianProcessTestCaseWithExceptions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#moe.tests.views.rest_gaussian_process_test_case.RestGaussianProcessTestCase" title="moe.tests.views.rest_gaussian_process_test_case.RestGaussianProcessTestCase"><tt class="xref py py-class docutils literal"><span class="pre">moe.tests.views.rest_gaussian_process_test_case.RestGaussianProcessTestCase</span></tt></a></p>
-<p>Test that proper errors are thrown when endpoints get universally bad data.</p>
+<p>Test that proper errors are thrown when endpoints bad data.</p>
+<dl class="method">
+<dt id="moe.tests.views.exceptions_test.RestGaussianProcessTestCaseWithExceptions.disable_logging">
+<tt class="descname">disable_logging</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/views/exceptions_test.html#RestGaussianProcessTestCaseWithExceptions.disable_logging"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.views.exceptions_test.RestGaussianProcessTestCaseWithExceptions.disable_logging" title="Permalink to this definition">¶</a></dt>
+<dd><p>Disable logging (for the duration of this test case).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.views.exceptions_test.RestGaussianProcessTestCaseWithExceptions.enable_logging">
+<tt class="descname">enable_logging</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/views/exceptions_test.html#RestGaussianProcessTestCaseWithExceptions.enable_logging"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.views.exceptions_test.RestGaussianProcessTestCaseWithExceptions.enable_logging" title="Permalink to this definition">¶</a></dt>
+<dd><p>Re-enable logging (so other test cases are unaffected).</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="moe.tests.views.exceptions_test.RestGaussianProcessTestCaseWithExceptions.test_badly_formed_json_payload_invalid">
 <tt class="descname">test_badly_formed_json_payload_invalid</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/views/exceptions_test.html#RestGaussianProcessTestCaseWithExceptions.test_badly_formed_json_payload_invalid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.views.exceptions_test.RestGaussianProcessTestCaseWithExceptions.test_badly_formed_json_payload_invalid" title="Permalink to this definition">¶</a></dt>
@@ -225,6 +238,18 @@
 <dt id="moe.tests.views.exceptions_test.RestGaussianProcessTestCaseWithExceptions.test_empty_json_payload_invalid">
 <tt class="descname">test_empty_json_payload_invalid</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/views/exceptions_test.html#RestGaussianProcessTestCaseWithExceptions.test_empty_json_payload_invalid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.views.exceptions_test.RestGaussianProcessTestCaseWithExceptions.test_empty_json_payload_invalid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Test empty json payload causes an AppError.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.views.exceptions_test.RestGaussianProcessTestCaseWithExceptions.test_invalid_hyperparameters_input">
+<tt class="descname">test_invalid_hyperparameters_input</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/views/exceptions_test.html#RestGaussianProcessTestCaseWithExceptions.test_invalid_hyperparameters_input"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.views.exceptions_test.RestGaussianProcessTestCaseWithExceptions.test_invalid_hyperparameters_input" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test that invalid hyperparameters (via GP_MEAN_VAR_ENDPOINT) generate expected Response with error message.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.views.exceptions_test.RestGaussianProcessTestCaseWithExceptions.test_invalid_points_sampled_input">
+<tt class="descname">test_invalid_points_sampled_input</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/views/exceptions_test.html#RestGaussianProcessTestCaseWithExceptions.test_invalid_points_sampled_input"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.views.exceptions_test.RestGaussianProcessTestCaseWithExceptions.test_invalid_points_sampled_input" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test that duplicate points_sampled (via GP_NEXT_POINTS_EPI_ENDPOINT) generate expected Response with error message.</p>
 </dd></dl>
 
 </dd></dl>

@@ -67,11 +67,12 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../install.html">Install</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../../install.html#install-in-docker">Install in docker:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../install.html#install-from-source">Install from source:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../install.html#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below):</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../install.html#linux-tips">Linux Tips:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../install.html#cmake-tips">CMake Tips:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../install.html#install-in-docker">Install in docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../install.html#install-from-source">Install from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../install.html#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../install.html#building-boost">Building Boost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../install.html#linux-tips">Linux Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../install.html#cmake-tips">CMake Tips</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../objective_functions.html">Objective Functions</a><ul>
@@ -393,9 +394,9 @@
             <span class="n">status</span><span class="o">=</span><span class="n">hyperopt_status</span><span class="p">,</span>
         <span class="p">)</span>
 
-        <span class="n">covariance_of_process</span><span class="o">.</span><span class="n">set_hyperparameters</span><span class="p">(</span><span class="n">optimized_hyperparameters</span><span class="p">)</span>
+        <span class="n">covariance_of_process</span><span class="o">.</span><span class="n">hyperparameters</span> <span class="o">=</span> <span class="n">optimized_hyperparameters</span>
 
-        <span class="n">log_likelihood_eval</span><span class="o">.</span><span class="n">set_current_point</span><span class="p">(</span><span class="n">optimized_hyperparameters</span><span class="p">)</span>
+        <span class="n">log_likelihood_eval</span><span class="o">.</span><span class="n">current_point</span> <span class="o">=</span> <span class="n">optimized_hyperparameters</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">form_response</span><span class="p">({</span>
                 <span class="s">&#39;endpoint&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_route_name</span><span class="p">,</span>

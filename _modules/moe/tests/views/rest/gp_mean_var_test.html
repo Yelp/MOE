@@ -67,11 +67,12 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../install.html">Install</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#install-in-docker">Install in docker:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#install-from-source">Install from source:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below):</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#linux-tips">Linux Tips:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#cmake-tips">CMake Tips:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#install-in-docker">Install in docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#install-from-source">Install from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#building-boost">Building Boost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#linux-tips">Linux Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#cmake-tips">CMake Tips</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../objective_functions.html">Objective Functions</a><ul>
@@ -223,7 +224,7 @@
         <span class="k">for</span> <span class="n">test_case</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">gp_test_environments</span><span class="p">:</span>
             <span class="n">python_domain</span><span class="p">,</span> <span class="n">python_cov</span><span class="p">,</span> <span class="n">python_gp</span> <span class="o">=</span> <span class="n">test_case</span>
 
-            <span class="n">cpp_cov</span> <span class="o">=</span> <span class="n">SquareExponential</span><span class="p">(</span><span class="n">python_cov</span><span class="o">.</span><span class="n">get_hyperparameters</span><span class="p">())</span>
+            <span class="n">cpp_cov</span> <span class="o">=</span> <span class="n">SquareExponential</span><span class="p">(</span><span class="n">python_cov</span><span class="o">.</span><span class="n">hyperparameters</span><span class="p">)</span>
             <span class="n">cpp_gp</span> <span class="o">=</span> <span class="n">GaussianProcess</span><span class="p">(</span><span class="n">cpp_cov</span><span class="p">,</span> <span class="n">python_gp</span><span class="o">.</span><span class="n">_historical_data</span><span class="p">)</span>
 
             <span class="n">points_to_sample</span> <span class="o">=</span> <span class="n">python_domain</span><span class="o">.</span><span class="n">generate_uniform_random_points_in_domain</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>

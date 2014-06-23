@@ -4,6 +4,14 @@ moe.tests.optimal_learning.python.cpp_wrappers package
 Submodules
 ----------
 
+moe.tests.optimal_learning.python.cpp_wrappers.exception_test module
+--------------------------------------------------------------------
+
+.. automodule:: moe.tests.optimal_learning.python.cpp_wrappers.exception_test
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 moe.tests.optimal_learning.python.cpp_wrappers.expected_improvement_test module
 -------------------------------------------------------------------------------
 

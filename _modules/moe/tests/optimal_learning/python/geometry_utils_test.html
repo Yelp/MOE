@@ -67,11 +67,12 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../install.html">Install</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#install-in-docker">Install in docker:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#install-from-source">Install from source:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below):</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#linux-tips">Linux Tips:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#cmake-tips">CMake Tips:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#install-in-docker">Install in docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#install-from-source">Install from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#building-boost">Building Boost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#linux-tips">Linux Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#cmake-tips">CMake Tips</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../objective_functions.html">Objective Functions</a><ul>
@@ -231,7 +232,7 @@
         <span class="p">]</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">domains_to_test</span> <span class="o">=</span> <span class="p">[</span><span class="n">TensorProductDomain</span><span class="p">(</span><span class="n">domain_bounds</span><span class="p">)</span> <span class="k">for</span> <span class="n">domain_bounds</span> <span class="ow">in</span> <span class="n">domain_bounds_to_test</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">num_points_to_test</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_points_to_test</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="LatinHypercubeRandomPointGenerationTest.test_latin_hypercube_within_domain"><a class="viewcode-back" href="../../../../../moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.geometry_utils_test.LatinHypercubeRandomPointGenerationTest.test_latin_hypercube_within_domain">[docs]</a>    <span class="k">def</span> <span class="nf">test_latin_hypercube_within_domain</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Test that generate_latin_hypercube_points returns points within the domain.&quot;&quot;&quot;</span>

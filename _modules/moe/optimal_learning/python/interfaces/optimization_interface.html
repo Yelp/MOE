@@ -67,11 +67,12 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../install.html">Install</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#install-in-docker">Install in docker:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#install-from-source">Install from source:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below):</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#linux-tips">Linux Tips:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#cmake-tips">CMake Tips:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#install-in-docker">Install in docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#install-from-source">Install from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#building-boost">Building Boost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#linux-tips">Linux Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#cmake-tips">CMake Tips</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../objective_functions.html">Objective Functions</a><ul>
@@ -230,12 +231,10 @@
         <span class="sd">&quot;&quot;&quot;Return the number of independent parameters to optimize.&quot;&quot;&quot;</span>
         <span class="k">pass</span>
 </div>
-    <span class="nd">@abstractmethod</span>
 <div class="viewcode-block" id="OptimizableInterface.get_current_point"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.interfaces.html#moe.optimal_learning.python.interfaces.optimization_interface.OptimizableInterface.get_current_point">[docs]</a>    <span class="k">def</span> <span class="nf">get_current_point</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get the current_point (array of float64 with shape (problem_size)) at which this object is evaluating the objective function, ``f(x)``.&quot;&quot;&quot;</span>
         <span class="k">pass</span>
 </div>
-    <span class="nd">@abstractmethod</span>
 <div class="viewcode-block" id="OptimizableInterface.set_current_point"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.interfaces.html#moe.optimal_learning.python.interfaces.optimization_interface.OptimizableInterface.set_current_point">[docs]</a>    <span class="k">def</span> <span class="nf">set_current_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">current_point</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set current_point to the specified point; ordering must match.</span>
 
@@ -245,6 +244,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span>
 </div>
+    <span class="n">current_point</span> <span class="o">=</span> <span class="n">abstractproperty</span><span class="p">(</span><span class="n">get_current_point</span><span class="p">,</span> <span class="n">set_current_point</span><span class="p">)</span>
+
     <span class="nd">@abstractmethod</span>
 <div class="viewcode-block" id="OptimizableInterface.compute_objective_function"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.interfaces.html#moe.optimal_learning.python.interfaces.optimization_interface.OptimizableInterface.compute_objective_function">[docs]</a>    <span class="k">def</span> <span class="nf">compute_objective_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">r&quot;&quot;&quot;Compute ``f(current_point)``.</span>

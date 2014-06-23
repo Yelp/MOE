@@ -69,11 +69,12 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Install</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="install.html#install-in-docker">Install in docker:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#install-from-source">Install from source:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below):</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#install-in-docker">Install in docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#install-from-source">Install from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#building-boost">Building Boost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="objective_functions.html">Objective Functions</a><ul>
@@ -203,6 +204,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="moe.tests.optimal_learning.python.cpp_wrappers.html">moe.tests.optimal_learning.python.cpp_wrappers package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="moe.tests.optimal_learning.python.cpp_wrappers.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.tests.optimal_learning.python.cpp_wrappers.html#module-moe.tests.optimal_learning.python.cpp_wrappers.exception_test">moe.tests.optimal_learning.python.cpp_wrappers.exception_test module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe.tests.optimal_learning.python.cpp_wrappers.html#module-moe.tests.optimal_learning.python.cpp_wrappers.expected_improvement_test">moe.tests.optimal_learning.python.cpp_wrappers.expected_improvement_test module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe.tests.optimal_learning.python.cpp_wrappers.html#module-moe.tests.optimal_learning.python.cpp_wrappers.gaussian_process_test">moe.tests.optimal_learning.python.cpp_wrappers.gaussian_process_test module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe.tests.optimal_learning.python.cpp_wrappers.html#module-moe.tests.optimal_learning.python.cpp_wrappers.log_likelihood_test">moe.tests.optimal_learning.python.cpp_wrappers.log_likelihood_test module</a></li>
@@ -261,7 +263,7 @@ specified problem sizes (<tt class="docutils literal"><span class="pre">self.num
 
 <dl class="attribute">
 <dt id="moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestCase.gp_test_environment_input">
-<tt class="descname">gp_test_environment_input</tt><em class="property"> = &lt;moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestEnvironmentInput object at 0x1154ac4d0&gt;</em><a class="headerlink" href="#moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestCase.gp_test_environment_input" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">gp_test_environment_input</tt><em class="property"> = &lt;moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestEnvironmentInput object at 0x113f21610&gt;</em><a class="headerlink" href="#moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestCase.gp_test_environment_input" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -276,12 +278,12 @@ specified problem sizes (<tt class="docutils literal"><span class="pre">self.num
 
 <dl class="attribute">
 <dt id="moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestCase.num_sampled_list">
-<tt class="descname">num_sampled_list</tt><em class="property"> = [1, 2, 3, 5, 10, 16, 20, 42]</em><a class="headerlink" href="#moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestCase.num_sampled_list" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">num_sampled_list</tt><em class="property"> = (1, 2, 3, 5, 10, 16, 20, 42)</em><a class="headerlink" href="#moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestCase.num_sampled_list" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestCase.num_to_sample_list">
-<tt class="descname">num_to_sample_list</tt><em class="property"> = [1, 2, 3, 8]</em><a class="headerlink" href="#moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestCase.num_to_sample_list" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">num_to_sample_list</tt><em class="property"> = (1, 2, 3, 8)</em><a class="headerlink" href="#moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestCase.num_to_sample_list" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">

@@ -67,11 +67,12 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Install</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="install.html#install-in-docker">Install in docker:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#install-from-source">Install from source:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below):</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#install-in-docker">Install in docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#install-from-source">Install from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#building-boost">Building Boost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="objective_functions.html">Objective Functions</a><ul>
@@ -214,7 +215,7 @@
 \[\underset{\vec{x}}{\mathrm{argmax}} \ \text{CTR} (\vec{x})\]</div>
 <p>Where <span class="math">\(\vec{x}\)</span> is any real valued input in some finite number of dimensions and CTR is some black box function that is difficult, expensive or time consuming to evaluate and is potentially non-convex, non-differentiable or non-continuous.</p>
 <p>We want to find the best set of parameters <span class="math">\(\vec{x}\)</span> while evaluating the underlying function (CTR) as few times as possible. See <a class="reference internal" href="objective_functions.html"><em>Objective Functions</em></a> for more examples of objective functions and the best ways to combine metrics.</p>
-<p>It allows you to build the following loop, contantly optimizing and surfing the wave of highest returns for any set of parameters.</p>
+<p>It allows you to build the following loop, contantly optimizing and trading off the exploration and exploitation of the underlying parameter space. By continuing to optimize over many iterations MOE readily finds maxima in the objective function optimally (climbing the mountains of traditional optimization). By sampling and optimizing over many iterations of the MOE loop in time, we can also allow to surf these shifting optima as features and the world change in time. MOE surfs these waves of optima, attempting to stay at the peak of the potentially changing objective function in parameter space as time advances.</p>
 <a class="reference internal image-reference" href="_images/moe_loop.png"><img alt="moe loop" class="align-center" src="_images/moe_loop.png" /></a>
 <p>For more examples on how MOE can be used see <a class="reference internal" href="examples.html"><em>Examples</em></a></p>
 <p>Video and slidedeck introduction to MOE:</p>
@@ -353,11 +354,12 @@ $ docker run -p 6543:6543 moe_container
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Install</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="install.html#install-in-docker">Install in docker:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#install-from-source">Install from source:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below):</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#install-in-docker">Install in docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#install-from-source">Install from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#building-boost">Building Boost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="objective_functions.html">Objective Functions</a><ul>

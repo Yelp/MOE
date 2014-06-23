@@ -69,11 +69,12 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Install</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="install.html#install-in-docker">Install in docker:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#install-from-source">Install from source:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below):</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#install-in-docker">Install in docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#install-from-source">Install from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#building-boost">Building Boost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="objective_functions.html">Objective Functions</a><ul>
@@ -371,6 +372,12 @@ f is twice continuously differentiable).</p>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="moe.optimal_learning.python.interfaces.covariance_interface.CovarianceInterface.hyperparameters">
+<tt class="descname">hyperparameters</tt><a class="headerlink" href="#moe.optimal_learning.python.interfaces.covariance_interface.CovarianceInterface.hyperparameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the hyperparameters (array of float64 with shape (num_hyperparameters)) of this covariance.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1084,6 +1091,12 @@ as data members by the implementation&#8217;s constructor.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="moe.optimal_learning.python.interfaces.log_likelihood_interface.GaussianProcessLogLikelihoodInterface.hyperparameters">
+<tt class="descname">hyperparameters</tt><a class="headerlink" href="#moe.optimal_learning.python.interfaces.log_likelihood_interface.GaussianProcessLogLikelihoodInterface.hyperparameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the hyperparameters (array of float64 with shape (num_hyperparameters)) of this covariance.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="moe.optimal_learning.python.interfaces.log_likelihood_interface.GaussianProcessLogLikelihoodInterface.num_hyperparameters">
 <tt class="descname">num_hyperparameters</tt><a class="reference internal" href="_modules/moe/optimal_learning/python/interfaces/log_likelihood_interface.html#GaussianProcessLogLikelihoodInterface.num_hyperparameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.interfaces.log_likelihood_interface.GaussianProcessLogLikelihoodInterface.num_hyperparameters" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the number of hyperparameters.</p>
@@ -1182,6 +1195,12 @@ For Expected Improvement (e.g., python_version.expected_improvement.ExpectedImpr
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="moe.optimal_learning.python.interfaces.optimization_interface.OptimizableInterface.current_point">
+<tt class="descname">current_point</tt><a class="headerlink" href="#moe.optimal_learning.python.interfaces.optimization_interface.OptimizableInterface.current_point" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the current_point (array of float64 with shape (problem_size)) at which this object is evaluating the objective function, <tt class="docutils literal"><span class="pre">f(x)</span></tt>.</p>
 </dd></dl>
 
 <dl class="method">

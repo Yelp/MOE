@@ -67,11 +67,12 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../install.html">Install</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../install.html#install-in-docker">Install in docker:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../install.html#install-from-source">Install from source:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../install.html#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below):</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../install.html#linux-tips">Linux Tips:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../install.html#cmake-tips">CMake Tips:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../install.html#install-in-docker">Install in docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../install.html#install-from-source">Install from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../install.html#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../install.html#building-boost">Building Boost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../install.html#linux-tips">Linux Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../install.html#cmake-tips">CMake Tips</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../objective_functions.html">Objective Functions</a><ul>
@@ -192,6 +193,34 @@
 <span class="kn">from</span> <span class="nn">moe.optimal_learning.python.linkers</span> <span class="kn">import</span> <span class="n">DOMAIN_TYPES_TO_DOMAIN_LINKS</span><span class="p">,</span> <span class="n">OPTIMIZATION_TYPES_TO_OPTIMIZATION_METHODS</span><span class="p">,</span> <span class="n">COVARIANCE_TYPES_TO_CLASSES</span>
 
 
+<div class="viewcode-block" id="PositiveFloat"><a class="viewcode-back" href="../../../moe.views.html#moe.views.schemas.PositiveFloat">[docs]</a><span class="k">class</span> <span class="nc">PositiveFloat</span><span class="p">(</span><span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;Colander positive (finite) float.&quot;&quot;&quot;</span>
+
+    <span class="n">schema_type</span> <span class="o">=</span> <span class="n">colander</span><span class="o">.</span><span class="n">Float</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="s">&#39;Positive Float&#39;</span>
+
+<div class="viewcode-block" id="PositiveFloat.validator"><a class="viewcode-back" href="../../../moe.views.html#moe.views.schemas.PositiveFloat.validator">[docs]</a>    <span class="k">def</span> <span class="nf">validator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">cstruct</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Raise an exception if the node value (cstruct) is non-positive or non-finite.</span>
+
+<span class="sd">        :param node: the node being validated (usually self)</span>
+<span class="sd">        :type node: colander.SchemaNode subclass instance</span>
+<span class="sd">        :param cstruct: the value being validated</span>
+<span class="sd">        :type cstruct: float</span>
+<span class="sd">        :raise: colander.Invalid if cstruct value is bad</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="mf">0.0</span> <span class="o">&lt;</span> <span class="n">cstruct</span> <span class="o">&lt;</span> <span class="nb">float</span><span class="p">(</span><span class="s">&#39;inf&#39;</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">colander</span><span class="o">.</span><span class="n">Invalid</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">msg</span><span class="o">=</span><span class="s">&#39;Value = {:f} must be positive and finite.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cstruct</span><span class="p">))</span>
+
+</div></div>
+<div class="viewcode-block" id="ListOfPositiveFloats"><a class="viewcode-back" href="../../../moe.views.html#moe.views.schemas.ListOfPositiveFloats">[docs]</a><span class="k">class</span> <span class="nc">ListOfPositiveFloats</span><span class="p">(</span><span class="n">colander</span><span class="o">.</span><span class="n">SequenceSchema</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;Colander list of positive floats.&quot;&quot;&quot;</span>
+
+    <span class="n">float_in_list</span> <span class="o">=</span> <span class="n">PositiveFloat</span><span class="p">()</span>
+
+</div>
 <div class="viewcode-block" id="ListOfFloats"><a class="viewcode-back" href="../../../moe.views.html#moe.views.schemas.ListOfFloats">[docs]</a><span class="k">class</span> <span class="nc">ListOfFloats</span><span class="p">(</span><span class="n">colander</span><span class="o">.</span><span class="n">SequenceSchema</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;Colander list of floats.&quot;&quot;&quot;</span>
@@ -389,7 +418,9 @@
             <span class="n">validator</span><span class="o">=</span><span class="n">colander</span><span class="o">.</span><span class="n">OneOf</span><span class="p">(</span><span class="n">COVARIANCE_TYPES_TO_CLASSES</span><span class="p">),</span>
             <span class="n">missing</span><span class="o">=</span><span class="n">SQUARE_EXPONENTIAL_COVARIANCE_TYPE</span><span class="p">,</span>
             <span class="p">)</span>
-    <span class="n">hyperparameters</span> <span class="o">=</span> <span class="n">ListOfFloats</span><span class="p">(</span>
+    <span class="c"># TODO(GH-216): Improve hyperparameter validation. All &gt; 0 is ok for now but eventually individual covariance objects should</span>
+    <span class="c"># provide their own validation.</span>
+    <span class="n">hyperparameters</span> <span class="o">=</span> <span class="n">ListOfPositiveFloats</span><span class="p">(</span>
             <span class="n">missing</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
             <span class="p">)</span>
 

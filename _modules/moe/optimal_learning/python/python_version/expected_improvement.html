@@ -67,11 +67,12 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../install.html">Install</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#install-in-docker">Install in docker:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#install-from-source">Install from source:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below):</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#linux-tips">Linux Tips:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#cmake-tips">CMake Tips:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#install-in-docker">Install in docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#install-from-source">Install from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#building-boost">Building Boost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#linux-tips">Linux Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#cmake-tips">CMake Tips</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../objective_functions.html">Objective Functions</a><ul>
@@ -309,9 +310,9 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_points_being_sampled</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">points_being_sampled</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">points_to_sample</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">set_current_point</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="n">gaussian_process</span><span class="o">.</span><span class="n">dim</span><span class="p">)))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_point</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="n">gaussian_process</span><span class="o">.</span><span class="n">dim</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">set_current_point</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_point</span> <span class="o">=</span> <span class="n">points_to_sample</span>
 
     <span class="nd">@property</span>
 <div class="viewcode-block" id="ExpectedImprovement.dim"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.dim">[docs]</a>    <span class="k">def</span> <span class="nf">dim</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -346,6 +347,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_points_to_sample</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">))</span>
 </div>
+    <span class="n">current_point</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">get_current_point</span><span class="p">,</span> <span class="n">set_current_point</span><span class="p">)</span>
+
 <div class="viewcode-block" id="ExpectedImprovement.evaluate_at_point_list"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.evaluate_at_point_list">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate_at_point_list</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
             <span class="n">points_to_evaluate</span><span class="p">,</span>

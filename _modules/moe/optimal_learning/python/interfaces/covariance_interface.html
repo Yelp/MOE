@@ -67,11 +67,12 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../install.html">Install</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#install-in-docker">Install in docker:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#install-from-source">Install from source:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below):</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#linux-tips">Linux Tips:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#cmake-tips">CMake Tips:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#install-in-docker">Install in docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#install-from-source">Install from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#building-boost">Building Boost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#linux-tips">Linux Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#cmake-tips">CMake Tips</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../objective_functions.html">Objective Functions</a><ul>
@@ -240,12 +241,10 @@
         <span class="sd">&quot;&quot;&quot;Return the number of hyperparameters of this covariance function.&quot;&quot;&quot;</span>
         <span class="k">pass</span>
 </div>
-    <span class="nd">@abstractmethod</span>
 <div class="viewcode-block" id="CovarianceInterface.get_hyperparameters"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.interfaces.html#moe.optimal_learning.python.interfaces.covariance_interface.CovarianceInterface.get_hyperparameters">[docs]</a>    <span class="k">def</span> <span class="nf">get_hyperparameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get the hyperparameters (array of float64 with shape (num_hyperparameters)) of this covariance.&quot;&quot;&quot;</span>
         <span class="k">pass</span>
 </div>
-    <span class="nd">@abstractmethod</span>
 <div class="viewcode-block" id="CovarianceInterface.set_hyperparameters"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.interfaces.html#moe.optimal_learning.python.interfaces.covariance_interface.CovarianceInterface.set_hyperparameters">[docs]</a>    <span class="k">def</span> <span class="nf">set_hyperparameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hyperparameters</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set hyperparameters to the specified hyperparameters; ordering must match.</span>
 
@@ -255,6 +254,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span>
 </div>
+    <span class="n">hyperparameters</span> <span class="o">=</span> <span class="n">abstractproperty</span><span class="p">(</span><span class="n">get_hyperparameters</span><span class="p">,</span> <span class="n">set_hyperparameters</span><span class="p">)</span>
+
     <span class="nd">@abstractmethod</span>
 <div class="viewcode-block" id="CovarianceInterface.covariance"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.interfaces.html#moe.optimal_learning.python.interfaces.covariance_interface.CovarianceInterface.covariance">[docs]</a>    <span class="k">def</span> <span class="nf">covariance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point_one</span><span class="p">,</span> <span class="n">point_two</span><span class="p">):</span>
         <span class="sd">r&quot;&quot;&quot;Compute the covariance function of two points, cov(``point_one``, ``point_two``).</span>

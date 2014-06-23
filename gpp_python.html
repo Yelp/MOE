@@ -69,11 +69,12 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Install</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="install.html#install-in-docker">Install in docker:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#install-from-source">Install from source:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below):</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#install-in-docker">Install in docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#install-from-source">Install from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#building-boost">Building Boost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="objective_functions.html">Objective Functions</a><ul>
@@ -203,22 +204,12 @@ tools like GP mean, variance, and gradients as well as EI optimizers and model s
 <p>This file also includes the logic for translating C++ exceptions to Python exceptions.</p>
  </p>
 <em>Variables</em><blockquote>
-<div><p><span class="target" id="project0gpp__python_8cpp_1abd3c2c2d6c6555cac64d182e0646c024"></span>constexpr char const *const <strong>bounds_exception_name_</strong></p>
+<div><p><span class="target" id="project0gpp__python_8cpp_1a8235ad840d1cf47fb8c182ae082c0dff"></span>PyObject *const <strong>default_exception_type_object_</strong></p>
 <blockquote>
 <div><p></p>
 <p></p>
 </div></blockquote>
-<p><span class="target" id="project0gpp__python_8cpp_1a25aebbbfef2af00265b460dc4399a753"></span>constexpr char const *const <strong>invalid_value_exception_name_</strong></p>
-<blockquote>
-<div><p></p>
-<p></p>
-</div></blockquote>
-<p><span class="target" id="project0gpp__python_8cpp_1aad7d64ab3d3e606f997b4b31524b611c"></span>constexpr char const *const <strong>singular_matrix_exception_name_</strong></p>
-<blockquote>
-<div><p></p>
-<p></p>
-</div></blockquote>
-<p><span class="target" id="project0gpp__python_8cpp_1a8235ad840d1cf47fb8c182ae082c0dff"></span>PyObject *const <strong>default_exception_type_object_</strong></p>
+<p><span class="target" id="project0gpp__python_8cpp_1a1514303674445c29b311f1570787cc5b"></span>PyObject * <strong>optimal_learning_exception_type_object_</strong></p>
 <blockquote>
 <div><p></p>
 <p></p>
