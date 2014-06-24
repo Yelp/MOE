@@ -73,6 +73,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#building-boost">Building Boost</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#linux-tips">Linux Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#cmake-tips">CMake Tips</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="objective_functions.html">Objective Functions</a><ul>
@@ -231,7 +232,7 @@ $ python setup.py install
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">MOE&#8217;s <tt class="docutils literal"><span class="pre">setup.py</span></tt> invokes cmake. Users can pass command line arguments to cmake via the <tt class="docutils literal"><span class="pre">MOE_CMAKE_OPTS</span></tt> environment variable. Other sections (e.g., <a class="reference internal" href="#python-tips">Python Tips</a>, <a href="#id1"><span class="problematic" id="id2">`CMake Tips`_</span></a>) detail additional environment variables that may be needed to customize cmake&#8217;s behavior.</p>
+<p class="last">MOE&#8217;s <tt class="docutils literal"><span class="pre">setup.py</span></tt> invokes cmake. Users can pass command line arguments to cmake via the <tt class="docutils literal"><span class="pre">MOE_CMAKE_OPTS</span></tt> environment variable. Other sections (e.g., <a class="reference internal" href="#python-tips">Python Tips</a>, <a class="reference internal" href="#cmake-tips">CMake Tips</a>) detail additional environment variables that may be needed to customize cmake&#8217;s behavior.</p>
 </div>
 </li>
 </ol>
@@ -261,7 +262,7 @@ $ python setup.py install
 </li>
 <li><p class="first">Outside of a virtual environment, running <tt class="docutils literal"><span class="pre">which</span> <span class="pre">python</span></tt> (and tracking through the symlinks; the first level should be in <tt class="docutils literal"><span class="pre">/opt/local/...</span></tt> if you are using MacPorts in OS X) will show you specifically which Python is being used.</p>
 </li>
-<li><p class="first">Inside of a virtual environment, <tt class="docutils literal"><span class="pre">yolk</span> <span class="pre">-l</span></tt> will show you what software versions are in use. The path to Python should match the Python used to install Boost and MOE. (Running <tt class="docutils literal"><span class="pre">which</span> <span class="pre">python</span></tt> still works here if you trace through the symlinks.)</p>
+<li><p class="first">Inside of a virtual environment, <tt class="docutils literal"><span class="pre">yolk</span> <span class="pre">-l</span></tt> will show you what software versions are in use. The path to Python should match the Python used to install Boost and MOE. (Running <tt class="docutils literal"><span class="pre">which</span> <span class="pre">python</span></tt> still works here if you trace through the symlinks.) Get <tt class="docutils literal"><span class="pre">yolk</span></tt> via <tt class="docutils literal"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">yolk</span></tt>.</p>
 </li>
 <li><p class="first">Check binary shared library dependencies (only works if you are not linking statically). <tt class="docutils literal"><span class="pre">locate</span> <span class="pre">libboost_python</span></tt> and run <tt class="docutils literal"><span class="pre">ldd</span></tt> (Linux) or <tt class="docutils literal"><span class="pre">otool</span> <span class="pre">-L</span></tt> (OS X) on the dynamic library.  (Note: <tt class="docutils literal"><span class="pre">ldd</span></tt> in Linux may not show the Python dependency since this linkage may be delayed till actual use.)  Similarly, running those commands on <tt class="docutils literal"><span class="pre">moe/build/GPP.so</span></tt> should show you the same Python as above; for example:</p>
 <div class="highlight-python"><div class="highlight"><pre>LINUX:
@@ -288,7 +289,7 @@ yields:
 </li>
 <li><p class="first">Download <a class="reference external" href="http://www.macports.org/install.php">MacPorts</a>. (If you change the install directory from <tt class="docutils literal"><span class="pre">/opt/local</span></tt>, don&#8217;t forget to update the cmake invocation.)</p>
 </li>
-<li><p class="first">Read <a class="reference internal" href="#general-macports-tips">General MacPorts Tips</a> if you are not familiar with MacPorts. MacPorts is a (one of many) OS X package manager; we will use it to install MOE&#8217;s core requirements.</p>
+<li><p class="first">Read <a class="reference internal" href="#general-macports-tips">General MacPorts Tips</a> if you are not familiar with MacPorts. MacPorts is one of many OS X package managers; we will use it to install MOE&#8217;s core requirements.</p>
 </li>
 <li><p class="first">MacPorts requires that your <tt class="docutils literal"><span class="pre">PATH</span></tt> variable include <tt class="docutils literal"><span class="pre">/opt/local/bin:/opt/local/sbin</span></tt>. It sets this in your shell&#8217;s <tt class="docutils literal"><span class="pre">rcfile</span></tt> (e.g., <tt class="docutils literal"><span class="pre">.bashrc</span></tt>), but that command will not run immediately after MacPorts installation. So start a new shell or run <tt class="docutils literal"><span class="pre">export</span> <span class="pre">PATH=/opt/local/bin:/opt/local/sbin:$PATH</span></tt>.</p>
 </li>
@@ -312,7 +313,7 @@ $ sudo port install doxygen
 $ export MOE_CMAKE_OPTS=-DCMAKE_FIND_ROOT_PATH=/opt/local &amp;&amp; export MOE_CC_PATH=/opt/local/bin/gcc &amp;&amp; export MOE_CXX_PATH=/opt/local/bin/g++
 </pre></div>
 </div>
-<p>Assuming that you want to use <tt class="docutils literal"><span class="pre">gcc</span> <span class="pre">4.7</span></tt> and <tt class="docutils literal"><span class="pre">Python</span> <span class="pre">2.7</span></tt>.</p>
+<p>The previous assumes that you want to use <tt class="docutils literal"><span class="pre">gcc</span> <span class="pre">4.7</span></tt> and <tt class="docutils literal"><span class="pre">Python</span> <span class="pre">2.7</span></tt>; modify the <tt class="docutils literal"><span class="pre">install</span></tt> and <tt class="docutils literal"><span class="pre">set</span></tt> invocations if you want other versions.</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p class="last">If you are using OS-X 10.9, <em>DO NOT</em> run <tt class="docutils literal"><span class="pre">sudo</span> <span class="pre">port</span> <span class="pre">install</span> <span class="pre">boost</span></tt>! See <a class="reference internal" href="#additional-tips-for-10-9">Additional Tips for 10.9</a> for more information. If you have installed Boost with MacPorts, then uninstall it.</p>
@@ -417,9 +418,9 @@ $ apt-get install python python-dev gcc cmake libboost-all-dev python-pip doxyge
 <li><p class="first">If you are having strange errors (no current thread, segfault, etc.) or need to specify different versions of software (Boost, Python, etc.), check <a class="reference internal" href="#python-tips">Python Tips</a> and/or <a class="reference internal" href="#connecting-boost-to-moe">Connecting Boost to MOE</a>.</p>
 </li>
 </ol>
-<blockquote>
-<div>CMake Tips</div></blockquote>
-<hr class="docutils" />
+</div>
+<div class="section" id="cmake-tips">
+<h2>CMake Tips<a class="headerlink" href="#cmake-tips" title="Permalink to this headline">¶</a></h2>
 <ol class="arabic simple">
 <li>Do you have dependencies installed in non-standard places? e.g., did you build your own boost? Set the env var: <tt class="docutils literal"><span class="pre">export</span> <span class="pre">MOE_CMAKE_OPTS=-DCMAKE_FIND_ROOT_PATH=/path/to/your/dependencies</span> <span class="pre">...</span></tt> (OS X users with MacPorts should set <tt class="docutils literal"><span class="pre">/opt/local</span></tt>.) This can be used to set any number of cmake arguments.</li>
 <li>Have you checked <a class="reference internal" href="#connecting-boost-to-moe">Connecting Boost to MOE</a> and <a class="reference internal" href="#python-tips">Python Tips</a>?</li>
