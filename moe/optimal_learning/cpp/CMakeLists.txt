@@ -40,13 +40,13 @@ endif()
 # See documentation in FindPythonLibs.cmake for more information.
 if (EXISTS ${MOE_PYTHON_INCLUDE_DIR})
   set(PYTHON_INCLUDE_DIR
-    ${MOE_PYTHON_INC_DIR}
+    ${MOE_PYTHON_INCLUDE_DIR}
     CACHE PATH "Path to where Python.h is found."
     )
 endif()
 if (EXISTS ${MOE_PYTHON_LIBRARY})
   set(PYTHON_LIBRARY
-    ${MOE_PYTHON_LIB}
+    ${MOE_PYTHON_LIBRARY}
     CACHE FILEPATH "Path to Python shared object (e.g., libpython2.7.so or .dylib)."
     )
 endif()
