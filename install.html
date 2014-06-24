@@ -73,7 +73,6 @@
 <li class="toctree-l2"><a class="reference internal" href="#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#building-boost">Building Boost</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#linux-tips">Linux Tips</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#cmake-tips">CMake Tips</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="objective_functions.html">Objective Functions</a><ul>
@@ -200,21 +199,42 @@ $ docker run -p 6543:6543 moe_container
 <div class="section" id="install-from-source">
 <h2>Install from source<a class="headerlink" href="#install-from-source" title="Permalink to this headline">¶</a></h2>
 <p>Requires:</p>
-<ol class="arabic simple">
-<li><tt class="docutils literal"><span class="pre">python</span> <span class="pre">2.6.7+</span></tt> - <a class="reference external" href="http://python.org/download/">http://python.org/download/</a></li>
-<li><tt class="docutils literal"><span class="pre">gcc</span> <span class="pre">4.7.3+</span></tt> - <a class="reference external" href="http://gcc.gnu.org/install/">http://gcc.gnu.org/install/</a></li>
-<li><tt class="docutils literal"><span class="pre">cmake</span> <span class="pre">2.8.9+</span></tt> - <a class="reference external" href="http://www.cmake.org/cmake/help/install.html">http://www.cmake.org/cmake/help/install.html</a></li>
-<li><tt class="docutils literal"><span class="pre">boost</span> <span class="pre">1.51+</span></tt> - <a class="reference external" href="http://www.boost.org/users/download/">http://www.boost.org/users/download/</a></li>
-<li><tt class="docutils literal"><span class="pre">pip</span> <span class="pre">1.2.1+</span></tt> - <a class="reference external" href="http://pip.readthedocs.org/en/latest/installing.html">http://pip.readthedocs.org/en/latest/installing.html</a></li>
-<li><tt class="docutils literal"><span class="pre">doxygen</span> <span class="pre">1.8.5+</span></tt> - <a class="reference external" href="http://www.stack.nl/~dimitri/doxygen/index.html">http://www.stack.nl/~dimitri/doxygen/index.html</a></li>
-<li>We recommend using a virtualenv <a class="reference external" href="http://www.jontourage.com/2011/02/09/virtualenv-pip-basics/">http://www.jontourage.com/2011/02/09/virtualenv-pip-basics/</a></li>
-</ol>
+<ol class="arabic">
+<li><p class="first"><tt class="docutils literal"><span class="pre">python</span> <span class="pre">2.6.7+</span></tt> - <a class="reference external" href="http://python.org/download/">http://python.org/download/</a></p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">gcc</span> <span class="pre">4.7.3+</span></tt> - <a class="reference external" href="http://gcc.gnu.org/install/">http://gcc.gnu.org/install/</a></p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">cmake</span> <span class="pre">2.8.9+</span></tt> - <a class="reference external" href="http://www.cmake.org/cmake/help/install.html">http://www.cmake.org/cmake/help/install.html</a></p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">boost</span> <span class="pre">1.51+</span></tt> - <a class="reference external" href="http://www.boost.org/users/download/">http://www.boost.org/users/download/</a></p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">pip</span> <span class="pre">1.2.1+</span></tt> - <a class="reference external" href="http://pip.readthedocs.org/en/latest/installing.html">http://pip.readthedocs.org/en/latest/installing.html</a></p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">doxygen</span> <span class="pre">1.8.5+</span></tt> - <a class="reference external" href="http://www.stack.nl/~dimitri/doxygen/index.html">http://www.stack.nl/~dimitri/doxygen/index.html</a></p>
+</li>
+<li id="virtualenv-quickstart"><p class="first">We recommend using a <tt class="docutils literal"><span class="pre">virtualenv</span></tt>: <a class="reference external" href="http://www.jontourage.com/2011/02/09/virtualenv-pip-basics/">http://www.jontourage.com/2011/02/09/virtualenv-pip-basics/</a></p>
+<p>Install it with <tt class="docutils literal"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">virtualenv</span></tt>. <tt class="docutils literal"><span class="pre">virtualenv</span></tt> requires that Python and pip are already installed. See <a class="reference internal" href="#linux-tips">Linux Tips</a> or <a class="reference internal" href="#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below)</a> for tips on how to install these. Build your virtualenv with:</p>
+<div class="highlight-python"><div class="highlight"><pre># Using straight virtualenv
+$ virtualenv --no-site-packages --python=path/to/python ENV_NAME
+# Or using virtualenvwrapper
+$ mkvirtualenv --no-site-packages --python=path/to/python ENV_NAME
+</pre></div>
+</div>
+<p>The option <tt class="docutils literal"><span class="pre">--python</span></tt> is only necessary if you want to specify a version of Python different from the active Python (i.e., the result of <tt class="docutils literal"><span class="pre">which</span> <span class="pre">python</span></tt>). OS X users in particular want to do this (see <a class="reference internal" href="#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below)</a>).</p>
+</li>
+<li><p class="first">After all the core requirements are installed, pip and MOE will handle the rest. Run these commands to clone MOE, build its python dependencies, and build MOE. These commands should preferably be run from the virtualenv you built in the <a class="reference internal" href="#virtualenv-quickstart">virtualenv quickstart</a>:</p>
 <div class="highlight-python"><div class="highlight"><pre>$ git clone https://github.com/sc932/MOE.git
 $ cd MOE
 $ pip install -e .
 $ python setup.py install
 </pre></div>
 </div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">MOE&#8217;s <tt class="docutils literal"><span class="pre">setup.py</span></tt> invokes cmake. Users can pass command line arguments to cmake via the <tt class="docutils literal"><span class="pre">MOE_CMAKE_OPTS</span></tt> environment variable. Other sections (e.g., <a class="reference internal" href="#python-tips">Python Tips</a>, <a href="#id1"><span class="problematic" id="id2">`CMake Tips`_</span></a>) detail additional environment variables that may be needed to customize cmake&#8217;s behavior.</p>
+</div>
+</li>
+</ol>
 <div class="section" id="python-tips">
 <h3>Python Tips<a class="headerlink" href="#python-tips" title="Permalink to this headline">¶</a></h3>
 <p>Sometimes cmake will fail to find your Python installation or you will want to specify an alternate Python. To specify Python, add:</p>
@@ -226,29 +246,65 @@ $ python setup.py install
 <div class="highlight-python"><div class="highlight"><pre>export MOE_CMAKE_OPTS=&#39;-D CMAKE_FIND_ROOT_PATH=/opt/local -D MOE_PYTHON_INCLUDE_DIR=/System/Library/Frameworks/Python.framework/Versions/2.7/include/python2.7/ -D MOE_PYTHON_LIBRARY=/opt/local/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/config/libpython2.7.dylib&#39;
 </pre></div>
 </div>
-<p>In OS X, the python library will be a <tt class="docutils literal"><span class="pre">.dylib</span></tt> file; in Linux, it will be a <tt class="docutils literal"><span class="pre">.so</span></tt> file.</p>
+<p>In OS X, the python dynamic library will be a <tt class="docutils literal"><span class="pre">.dylib</span></tt> file; in Linux, it will be a <tt class="docutils literal"><span class="pre">.so</span></tt> file.</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p class="last">Mis-matched Python versions between your virtual environment, Boost, and/or MOE&#8217;s installer can lead to a plethora of strange bugs. Anywhere from <tt class="docutils literal"><span class="pre">Fatal</span> <span class="pre">Python</span> <span class="pre">error:</span> <span class="pre">PyThreadState_Get:</span> <span class="pre">no</span> <span class="pre">current</span> <span class="pre">thread</span></tt> to segmentation faults and beyond. (You are hitting a binary incompatibility so it is hard to predict the specific error.)  You may need to instruct your package manager to build Boost against a particular version of Python, indicate a different Python to MOE, etc. to make these versions line up.</p>
 </div>
-<p>You can verify that cmake found the correct version by checking the values of <tt class="docutils literal"><span class="pre">PYTHON_INCLUDE_DIR</span></tt> and <tt class="docutils literal"><span class="pre">PYTHON_LIBRARY</span></tt> in <tt class="docutils literal"><span class="pre">moe/build/CMakeCache.txt</span></tt>.</p>
+<p>Here are some ways to check/ensure that Python was found and linked correctly:</p>
+<ol class="arabic">
+<li><p class="first">You can verify that cmake found the correct version by checking the values of <tt class="docutils literal"><span class="pre">PYTHON_INCLUDE_DIR</span></tt> and <tt class="docutils literal"><span class="pre">PYTHON_LIBRARY</span></tt> in <tt class="docutils literal"><span class="pre">moe/build/CMakeCache.txt</span></tt>.</p>
+</li>
+<li><p class="first">In <a class="reference internal" href="#general-macports-tips">General MacPorts Tips</a>, <em>notice</em> that Boost is built against <tt class="docutils literal"><span class="pre">python27</span></tt>. Checking <tt class="docutils literal"><span class="pre">port</span> <span class="pre">installed</span> <span class="pre">&quot;python*&quot;</span></tt>, you should see (amongst others) <tt class="docutils literal"><span class="pre">python27</span> <span class="pre">&#64;2.7.6_0</span> <span class="pre">(active)</span></tt>.</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">python</span> <span class="pre">--version</span></tt> will show you what version of Python is called by default.</p>
+</li>
+<li><p class="first">Outside of a virtual environment, running <tt class="docutils literal"><span class="pre">which</span> <span class="pre">python</span></tt> (and tracking through the symlinks; the first level should be in <tt class="docutils literal"><span class="pre">/opt/local/...</span></tt> if you are using MacPorts in OS X) will show you specifically which Python is being used.</p>
+</li>
+<li><p class="first">Inside of a virtual environment, <tt class="docutils literal"><span class="pre">yolk</span> <span class="pre">-l</span></tt> will show you what software versions are in use. The path to Python should match the Python used to install Boost and MOE. (Running <tt class="docutils literal"><span class="pre">which</span> <span class="pre">python</span></tt> still works here if you trace through the symlinks.)</p>
+</li>
+<li><p class="first">Check binary shared library dependencies (only works if you are not linking statically). <tt class="docutils literal"><span class="pre">locate</span> <span class="pre">libboost_python</span></tt> and run <tt class="docutils literal"><span class="pre">ldd</span></tt> (Linux) or <tt class="docutils literal"><span class="pre">otool</span> <span class="pre">-L</span></tt> (OS X) on the dynamic library.  (Note: <tt class="docutils literal"><span class="pre">ldd</span></tt> in Linux may not show the Python dependency since this linkage may be delayed till actual use.)  Similarly, running those commands on <tt class="docutils literal"><span class="pre">moe/build/GPP.so</span></tt> should show you the same Python as above; for example:</p>
+<div class="highlight-python"><div class="highlight"><pre>LINUX:
+$ ldd moe/build/GPP.so
+yields lines like:
+libpython2.7.so.1.0 =&gt; /usr/lib/libpython2.7.so.1.0 (0x00007f7d7a9fc000)
+
+OS X:
+$ otool -L moe/build/GPP.so
+yields:
+/opt/local/Library/Frameworks/Python.framework/Versions/2.7/Python (compatibility version 2.7.0, current version 2.7.0)
+</pre></div>
+</div>
+<p>This should be the same Python that you see in the other steps.</p>
+<p>If you linked statically, you need to check your link lines manually. Since MOE links dynamically by default, we assume that you know what you are doing if you changed it.</p>
+</li>
+</ol>
 </div>
 </div>
 <div class="section" id="osx-tips-10-8-for-10-9-see-separate-instructions-below">
 <h2>OSX Tips (&lt;=10.8. For 10.9, see separate instructions below)<a class="headerlink" href="#osx-tips-10-8-for-10-9-see-separate-instructions-below" title="Permalink to this headline">¶</a></h2>
-<ol class="arabic simple" start="0">
-<li>Are you sure you wouldn&#8217;t rather be running linux?</li>
-<li>Download <a class="reference external" href="http://www.macports.org/install.php">MacPorts</a>. (If you change the install directory from <tt class="docutils literal"><span class="pre">/opt/local</span></tt>, don&#8217;t forget to update the cmake invocation.)</li>
-<li>MacPorts can resolve most dependencies. Make sure you set your <tt class="docutils literal"><span class="pre">PATH</span></tt> env var.</li>
-<li>Download <a class="reference external" href="http://xquartz.macosforge.org/landing/">xQuartz</a> (needed for X11 and matplotlib). (Also available through MacPorts, see item 4.)</li>
-<li>Get the gcc, boost, matplotlib, and xQuartz (<tt class="docutils literal"><span class="pre">xorg-server</span></tt>) requirements from MacPorts (before installing MOE).</li>
-<li>Make sure you create your virtualenv with the correct python <tt class="docutils literal"><span class="pre">--python=/opt/local/bin/python</span></tt> if you are using MacPorts.</li>
-<li>If you are using another package manager (like homebrew) you may need to modify <tt class="docutils literal"><span class="pre">opt/local</span></tt> below to point to your <tt class="docutils literal"><span class="pre">Cellar</span></tt> directory.</li>
-<li>For the following commands, order matters, especially when selecting the proper gcc compiler.</li>
-</ol>
+<ol class="arabic" start="0">
+<li><p class="first">Are you sure you wouldn&#8217;t rather be running linux?</p>
+</li>
+<li><p class="first">Download <a class="reference external" href="http://www.macports.org/install.php">MacPorts</a>. (If you change the install directory from <tt class="docutils literal"><span class="pre">/opt/local</span></tt>, don&#8217;t forget to update the cmake invocation.)</p>
+</li>
+<li><p class="first">Read <a class="reference internal" href="#general-macports-tips">General MacPorts Tips</a> if you are not familiar with MacPorts. MacPorts is a (one of many) OS X package manager; we will use it to install MOE&#8217;s core requirements.</p>
+</li>
+<li><p class="first">MacPorts requires that your <tt class="docutils literal"><span class="pre">PATH</span></tt> variable include <tt class="docutils literal"><span class="pre">/opt/local/bin:/opt/local/sbin</span></tt>. It sets this in your shell&#8217;s <tt class="docutils literal"><span class="pre">rcfile</span></tt> (e.g., <tt class="docutils literal"><span class="pre">.bashrc</span></tt>), but that command will not run immediately after MacPorts installation. So start a new shell or run <tt class="docutils literal"><span class="pre">export</span> <span class="pre">PATH=/opt/local/bin:/opt/local/sbin:$PATH</span></tt>.</p>
+</li>
+<li><p class="first">Make sure you create your virtualenv with the correct python <tt class="docutils literal"><span class="pre">--python=/opt/local/bin/python</span></tt> if you are using MacPorts.</p>
+</li>
+<li><p class="first">If you are using another package manager (like homebrew) you may need to modify <tt class="docutils literal"><span class="pre">opt/local</span></tt> below to point to your <tt class="docutils literal"><span class="pre">Cellar</span></tt> directory.</p>
+</li>
+<li><p class="first">For the following commands, <em>order matters</em>; items further down the list may depend on previous installs. In addition to this list, double check that all items on <a class="reference internal" href="#install-from-source">Install from source</a> are also installed.</p>
 <div class="highlight-python"><div class="highlight"><pre>$ sudo port selfupdate
 $ sudo port install gcc47
 $ sudo port select --set gcc mp-gcc47
+$ sudo port install cmake
+$ sudo port install python27
+$ sudo port select --set python python27
+$ sudo port install py27-pip
+$ sudo port select --set pip pip27
 $ sudo port install boost
 $ sudo port install xorg-server
 $ sudo port install py-matplotlib
@@ -256,14 +312,48 @@ $ sudo port install doxygen
 $ export MOE_CMAKE_OPTS=-DCMAKE_FIND_ROOT_PATH=/opt/local &amp;&amp; export MOE_CC_PATH=/opt/local/bin/gcc &amp;&amp; export MOE_CXX_PATH=/opt/local/bin/g++
 </pre></div>
 </div>
-<ol class="arabic simple" start="8">
-<li>If you are having strange errors (no current thread, segfault, etc.), check <a class="reference internal" href="#python-tips">Python Tips</a>.</li>
+<p>Assuming that you want to use <tt class="docutils literal"><span class="pre">gcc</span> <span class="pre">4.7</span></tt> and <tt class="docutils literal"><span class="pre">Python</span> <span class="pre">2.7</span></tt>.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">If you are using OS-X 10.9, <em>DO NOT</em> run <tt class="docutils literal"><span class="pre">sudo</span> <span class="pre">port</span> <span class="pre">install</span> <span class="pre">boost</span></tt>! See <a class="reference internal" href="#additional-tips-for-10-9">Additional Tips for 10.9</a> for more information. If you have installed Boost with MacPorts, then uninstall it.</p>
+</div>
+</li>
+<li><p class="first">Using <tt class="docutils literal"><span class="pre">port</span> <span class="pre">select</span> <span class="pre">--list</span></tt>, check that the active versions of gcc, python, etc. are correct. In particular, OS X users want to see <tt class="docutils literal"><span class="pre">python27</span> <span class="pre">(active)</span></tt>, not <tt class="docutils literal"><span class="pre">python27-apple</span> <span class="pre">(active)</span></tt>. See <a class="reference internal" href="#port-select-information">port select information</a>.</p>
+</li>
+<li><p class="first">If you are having strange errors (no current thread, segfault, etc.), check <a class="reference internal" href="#python-tips">Python Tips</a>.</p>
+</li>
 </ol>
+<div class="section" id="general-macports-tips">
+<h3>General MacPorts Tips<a class="headerlink" href="#general-macports-tips" title="Permalink to this headline">¶</a></h3>
+<p>The <a class="reference external" href="https://guide.macports.org/">MacPorts Guide</a> provides a detailed introduction to all of MacPorts&#8217; features; we will provide a brief overview here.</p>
+<ol class="arabic">
+<li><p class="first"><tt class="docutils literal"><span class="pre">port</span> <span class="pre">install</span></tt> and <tt class="docutils literal"><span class="pre">port</span> <span class="pre">uninstall</span></tt> are pretty self-explanatory, being already demonstrated in <a class="reference internal" href="#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below)</a>.</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">port</span> <span class="pre">selfupdate</span></tt> updates MacPorts. MacPorts will warn you when it is out of date.</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">port</span> <span class="pre">upgrade</span> <span class="pre">outdated</span></tt> upgrades outdated ports. <tt class="docutils literal"><span class="pre">port</span> <span class="pre">outdated</span></tt> will show you which ports are outdated.</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">port</span> <span class="pre">list</span> <span class="pre">NAME</span></tt> lists all ports available for a name. <tt class="docutils literal"><span class="pre">port</span> <span class="pre">installed</span> <span class="pre">NAME</span></tt> lists all installed ports with that name.  <tt class="docutils literal"><span class="pre">NAME</span></tt> can be a regular expression.  For example,</p>
+<div class="highlight-python"><div class="highlight"><pre>$ port installed &quot;boost*&quot;
+yields something like:
+boost @1.51.0_1+no_single+no_static+python27
+boost @1.55.0_2+no_single+no_static+python27 (active)
+boost-build @2.0-m12_2 (active)
+boost-jam @3.1.18_0 (active)
+</pre></div>
+</div>
+<p>showing all ports related to Boost. As another example, <tt class="docutils literal"><span class="pre">port</span> <span class="pre">list</span> <span class="pre">&quot;gcc*&quot;</span></tt> will show you all ports available related to gcc. These are useful for checking how MacPorts names a particular port, what ports are on your system, and what ports are active.</p>
+</li>
+<li id="port-select-information"><p class="first"><tt class="docutils literal"><span class="pre">port</span> <span class="pre">select</span> <span class="pre">--list</span> <span class="pre">NAME</span></tt> will show you available versions of some versioned software managed by MacPorts (e.g., gcc, python, pip). You can change the active version of <tt class="docutils literal"><span class="pre">NAME</span></tt> by: <tt class="docutils literal"><span class="pre">port</span> <span class="pre">select</span> <span class="pre">--list</span> <span class="pre">NAME</span> <span class="pre">desired-NAME-version</span></tt> where <tt class="docutils literal"><span class="pre">desired-foo-version</span></tt> is displayed in <tt class="docutils literal"><span class="pre">port</span> <span class="pre">select</span> <span class="pre">--list</span> <span class="pre">NAME</span></tt>.</p>
+</li>
+</ol>
+</div>
 <div class="section" id="additional-tips-for-10-9">
 <h3>Additional Tips for 10.9<a class="headerlink" href="#additional-tips-for-10-9" title="Permalink to this headline">¶</a></h3>
 <p>To ensure consistency, be sure to use full paths throughout the installation.</p>
-<ol class="arabic simple">
-<li>Currently, Boost should not be installed with MacPorts. You should build it from source (see section &#8220;Building Boost&#8221;).</li>
+<ol class="arabic simple" start="0">
+<li>Follow the steps in <a class="reference internal" href="#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below)</a>, but <em>DO NOT</em> install Boost. Instead, follow the instructions here and resume.</li>
+<li>Currently, Boost should not be installed with MacPorts. You should build it from source (see section <a class="reference internal" href="#building-boost">Building Boost</a>).</li>
 <li>Boost, MOE, and the virtualenv must be built with the same python. We recommend using MacPorts Python: <tt class="docutils literal"><span class="pre">/opt/local/bin/python</span></tt>.</li>
 <li>If you are having strange errors (no current thread, segfault, etc.), check <a class="reference internal" href="#python-tips">Python Tips</a>.</li>
 </ol>
@@ -273,17 +363,18 @@ $ export MOE_CMAKE_OPTS=-DCMAKE_FIND_ROOT_PATH=/opt/local &amp;&amp; export MOE_
 </div>
 <div class="section" id="building-boost">
 <h2>Building Boost<a class="headerlink" href="#building-boost" title="Permalink to this headline">¶</a></h2>
-<ol class="arabic simple">
-<li>Download the <a class="reference external" href="http://sourceforge.net/projects/boost/files/boost/1.55.0/">Boost source</a>.</li>
-<li>From within the main directory, run (after checking additional options below):</li>
-</ol>
+<ol class="arabic">
+<li><p class="first">Download the <a class="reference external" href="http://sourceforge.net/projects/boost/files/boost/1.55.0/">Boost source</a>.</p>
+</li>
+<li><p class="first">From within the main directory, run (after checking additional options below):</p>
 <div class="highlight-python"><div class="highlight"><pre>$ sudo ./bootstrap.sh --with-python=PYTHON
 $ sudo ./b2 install
 </pre></div>
 </div>
 <p>where <tt class="docutils literal"><span class="pre">PYTHON</span></tt> is the path to your python executable. If you have been following along in OS X, this is <tt class="docutils literal"><span class="pre">/opt/local/bin/python</span></tt>.</p>
-<ol class="arabic simple" start="3">
-<li>Make sure <tt class="docutils literal"><span class="pre">which</span> <span class="pre">gcc</span></tt> is <tt class="docutils literal"><span class="pre">/opt/local/bin/gcc</span></tt> (macport installed) or whatever C++11 compliant gcc you want (similarly, <tt class="docutils literal"><span class="pre">which</span> <span class="pre">g++</span></tt> should be <tt class="docutils literal"><span class="pre">/opt/local/bin/g++</span></tt>), and make sure <tt class="docutils literal"><span class="pre">python</span></tt> is correct (e.g., <tt class="docutils literal"><span class="pre">/opt/local/bin/python</span></tt> if using MacPorts).</li>
+</li>
+<li><p class="first">Make sure <tt class="docutils literal"><span class="pre">which</span> <span class="pre">gcc</span></tt> is <tt class="docutils literal"><span class="pre">/opt/local/bin/gcc</span></tt> (macport installed) or whatever C++11 compliant gcc you want (similarly, <tt class="docutils literal"><span class="pre">which</span> <span class="pre">g++</span></tt> should be <tt class="docutils literal"><span class="pre">/opt/local/bin/g++</span></tt>), and make sure <tt class="docutils literal"><span class="pre">python</span></tt> is correct (e.g., <tt class="docutils literal"><span class="pre">/opt/local/bin/python</span></tt> if using MacPorts).</p>
+</li>
 </ol>
 <p>Additional options for <tt class="docutils literal"><span class="pre">./boostrap.sh</span></tt>:</p>
 <ul class="simple">
@@ -298,36 +389,40 @@ $ sudo ./b2 install
 <div class="section" id="connecting-boost-to-moe">
 <h3>Connecting Boost to MOE<a class="headerlink" href="#connecting-boost-to-moe" title="Permalink to this headline">¶</a></h3>
 <p>If cmake is unable to find Boost, finds the wrong version of Boost, etc. then try the following:</p>
-<ol class="arabic simple" start="0">
-<li>How to specify the <tt class="docutils literal"><span class="pre">BOOST_ROOT</span></tt> variable: this variable should point to where Boost is installed (e.g., <tt class="docutils literal"><span class="pre">/usr/local</span></tt>). In particular, <tt class="docutils literal"><span class="pre">libboost_.*[.a|.so|.dylib]</span></tt> files should live in <tt class="docutils literal"><span class="pre">${BOOST_ROOT}/lib</span></tt> or <tt class="docutils literal"><span class="pre">${BOOST_ROOT}/stage/lib</span></tt> and boost header files (e.g., <tt class="docutils literal"><span class="pre">python.hpp</span></tt>) should live in <tt class="docutils literal"><span class="pre">${BOOST_ROOT}/boost</span></tt> or <tt class="docutils literal"><span class="pre">${BOOST_ROOT}/include/boost</span></tt>.</li>
-<li>When building MOE, add the <tt class="docutils literal"><span class="pre">BOOST_ROOT</span></tt> variable (described above) to <tt class="docutils literal"><span class="pre">MOE_CMAKE_OPTS</span></tt>. Verify that CMake finds the correct Boost (e.g., in <tt class="docutils literal"><span class="pre">moe/build/CMakeCache.txt</span></tt>, check that the variables <tt class="docutils literal"><span class="pre">Boost_INCLUDE_DIR</span></tt> and <tt class="docutils literal"><span class="pre">Boost_LIBRARY_DIR</span></tt> point to your Boost).</li>
-<li>You might also need to prepend <tt class="docutils literal"><span class="pre">BOOST_ROOT</span></tt> to <tt class="docutils literal"><span class="pre">CMAKE_FIND_ROOT_PATH</span></tt> to make this work if you have separate Boost installation(s). For example:</li>
-</ol>
+<ol class="arabic" start="0">
+<li><p class="first">How to specify the <tt class="docutils literal"><span class="pre">BOOST_ROOT</span></tt> variable: this variable should point to where Boost is installed (e.g., <tt class="docutils literal"><span class="pre">/usr/local</span></tt>). In particular, <tt class="docutils literal"><span class="pre">libboost_.*[.a|.so|.dylib]</span></tt> files should live in <tt class="docutils literal"><span class="pre">${BOOST_ROOT}/lib</span></tt> or <tt class="docutils literal"><span class="pre">${BOOST_ROOT}/stage/lib</span></tt> and boost header files (e.g., <tt class="docutils literal"><span class="pre">python.hpp</span></tt>) should live in <tt class="docutils literal"><span class="pre">${BOOST_ROOT}/boost</span></tt> or <tt class="docutils literal"><span class="pre">${BOOST_ROOT}/include/boost</span></tt>.</p>
+</li>
+<li><p class="first">When building MOE, add the <tt class="docutils literal"><span class="pre">BOOST_ROOT</span></tt> variable (described above) to <tt class="docutils literal"><span class="pre">MOE_CMAKE_OPTS</span></tt>. Verify that CMake finds the correct Boost (e.g., in <tt class="docutils literal"><span class="pre">moe/build/CMakeCache.txt</span></tt>, check that the variables <tt class="docutils literal"><span class="pre">Boost_INCLUDE_DIR</span></tt> and <tt class="docutils literal"><span class="pre">Boost_LIBRARY_DIR</span></tt> point to your Boost).</p>
+</li>
+<li><p class="first">You might also need to prepend <tt class="docutils literal"><span class="pre">BOOST_ROOT</span></tt> to <tt class="docutils literal"><span class="pre">CMAKE_FIND_ROOT_PATH</span></tt> to make this work if you have separate Boost installation(s). For example:</p>
 <div class="highlight-python"><div class="highlight"><pre>$ export MOE_CMAKE_OPTS=&#39;-D BOOST_ROOT=/path/to/boost -D Boost_NO_SYSTEM_PATHS=ON -D CMAKE_FIND_ROOT_PATH=/path/to/boost:/opt/local -D OTHER_OPTIONS...&#39;
 </pre></div>
 </div>
-<ol class="arabic simple" start="3">
-<li>If you elected to use a different Python than the one from MacPorts or are encountering any strange problems, check <a class="reference internal" href="#python-tips">Python Tips</a> for how to manually specify Python.</li>
+<p><tt class="docutils literal"><span class="pre">/opt/local</span></tt> is for MacPorts users; it is not needed in Linux and users of other OS X package managers should change this path accordingly.</p>
+</li>
+<li><p class="first">If you elected to use a different Python than the one from MacPorts or are encountering any strange problems, check <a class="reference internal" href="#python-tips">Python Tips</a> for how to manually specify Python.</p>
+</li>
 </ol>
 </div>
 </div>
 <div class="section" id="linux-tips">
 <h2>Linux Tips<a class="headerlink" href="#linux-tips" title="Permalink to this headline">¶</a></h2>
-<ol class="arabic simple">
-<li>You can apt-get everything you need. Yay for real package managers!</li>
-</ol>
+<ol class="arabic">
+<li><p class="first">You can apt-get everything you need. Yay for real package managers!</p>
 <div class="highlight-python"><div class="highlight"><pre>$ apt-get update
 $ apt-get install python python-dev gcc cmake libboost-all-dev python-pip doxygen libblas-dev liblapack-dev gfortran git
 </pre></div>
 </div>
-<ol class="arabic simple" start="2">
-<li>If you are having strange errors (no current thread, segfault, etc.) or need to specify different versions of software (Boost, Python, etc.), check <a class="reference internal" href="#python-tips">Python Tips</a> and/or <a class="reference internal" href="#connecting-boost-to-moe">Connecting Boost to MOE</a>.</li>
+</li>
+<li><p class="first">If you are having strange errors (no current thread, segfault, etc.) or need to specify different versions of software (Boost, Python, etc.), check <a class="reference internal" href="#python-tips">Python Tips</a> and/or <a class="reference internal" href="#connecting-boost-to-moe">Connecting Boost to MOE</a>.</p>
+</li>
 </ol>
-</div>
-<div class="section" id="cmake-tips">
-<h2>CMake Tips<a class="headerlink" href="#cmake-tips" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div>CMake Tips</div></blockquote>
+<hr class="docutils" />
 <ol class="arabic simple">
-<li>Do you have dependencies installed in non-standard places? e.g., did you build your own boost? Set the env var: <tt class="docutils literal"><span class="pre">export</span> <span class="pre">MOE_CMAKE_OPTS=-DCMAKE_FIND_ROOT_PATH=/path/to/your/dependencies</span> <span class="pre">...</span></tt> (OS X users with MacPorts should set <tt class="docutils literal"><span class="pre">/opt/local</span></tt>) This can be used to set any number of cmake arguments. Check <a class="reference internal" href="#connecting-boost-to-moe">Connecting Boost to MOE</a> and <a class="reference internal" href="#python-tips">Python Tips</a> for more uncommon problems.</li>
+<li>Do you have dependencies installed in non-standard places? e.g., did you build your own boost? Set the env var: <tt class="docutils literal"><span class="pre">export</span> <span class="pre">MOE_CMAKE_OPTS=-DCMAKE_FIND_ROOT_PATH=/path/to/your/dependencies</span> <span class="pre">...</span></tt> (OS X users with MacPorts should set <tt class="docutils literal"><span class="pre">/opt/local</span></tt>.) This can be used to set any number of cmake arguments.</li>
+<li>Have you checked <a class="reference internal" href="#connecting-boost-to-moe">Connecting Boost to MOE</a> and <a class="reference internal" href="#python-tips">Python Tips</a>?</li>
 <li>Are you using the right compiler? e.g., for <tt class="docutils literal"><span class="pre">gcc</span></tt>, run <tt class="docutils literal"><span class="pre">export</span> <span class="pre">MOE_CC_PATH=/path/to/your/gcc</span> <span class="pre">&amp;&amp;</span> <span class="pre">export</span> <span class="pre">MOE_CXX_PATH=/path/to/your/g++</span></tt> (OS X users need to explicitly set this.)</li>
 </ol>
 </div>
