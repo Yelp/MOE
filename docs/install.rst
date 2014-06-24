@@ -83,7 +83,7 @@ Here are some ways to check/ensure that Python was found and linked correctly:
 2. In `General MacPorts Tips`_, *notice* that Boost is built against ``python27``. Checking ``port installed "python*"``, you should see (amongst others) ``python27 @2.7.6_0 (active)``.
 3. ``python --version`` will show you what version of Python is called by default.
 4. Outside of a virtual environment, running ``which python`` (and tracking through the symlinks; the first level should be in ``/opt/local/...`` if you are using MacPorts in OS X) will show you specifically which Python is being used.
-5. Inside of a virtual environment, ``yolk -l`` will show you what software versions are in use. The path to Python should match the Python used to install Boost and MOE. (Running ``which python`` still works here if you trace through the symlinks.)
+5. Inside of a virtual environment, ``yolk -l`` will show you what software versions are in use. The path to Python should match the Python used to install Boost and MOE. (Running ``which python`` still works here if you trace through the symlinks.) Get ``yolk`` via ``pip install yolk``.
 6. Check binary shared library dependencies (only works if you are not linking statically). ``locate libboost_python`` and run ``ldd`` (Linux) or ``otool -L`` (OS X) on the dynamic library.  (Note: ``ldd`` in Linux may not show the Python dependency since this linkage may be delayed till actual use.)  Similarly, running those commands on ``moe/build/GPP.so`` should show you the same Python as above; for example:
 
    ::
@@ -107,7 +107,7 @@ OSX Tips (<=10.8. For 10.9, see separate instructions below)
 
 0. Are you sure you wouldn't rather be running linux?
 1. Download `MacPorts`_. (If you change the install directory from ``/opt/local``, don't forget to update the cmake invocation.)
-2. Read `General MacPorts Tips`_ if you are not familiar with MacPorts. MacPorts is a (one of many) OS X package manager; we will use it to install MOE's core requirements.
+2. Read `General MacPorts Tips`_ if you are not familiar with MacPorts. MacPorts is one of many OS X package managers; we will use it to install MOE's core requirements.
 3. MacPorts requires that your ``PATH`` variable include ``/opt/local/bin:/opt/local/sbin``. It sets this in your shell's ``rcfile`` (e.g., ``.bashrc``), but that command will not run immediately after MacPorts installation. So start a new shell or run ``export PATH=/opt/local/bin:/opt/local/sbin:$PATH``.
 4. Make sure you create your virtualenv with the correct python ``--python=/opt/local/bin/python`` if you are using MacPorts.
 5. If you are using another package manager (like homebrew) you may need to modify ``opt/local`` below to point to your ``Cellar`` directory.
@@ -131,13 +131,12 @@ OSX Tips (<=10.8. For 10.9, see separate instructions below)
       $ sudo port install doxygen
       $ export MOE_CMAKE_OPTS=-DCMAKE_FIND_ROOT_PATH=/opt/local && export MOE_CC_PATH=/opt/local/bin/gcc && export MOE_CXX_PATH=/opt/local/bin/g++
 
-   Assuming that you want to use ``gcc 4.7`` and ``Python 2.7``.
+   The previous assumes that you want to use ``gcc 4.7`` and ``Python 2.7``; modify the ``install`` and ``set`` invocations if you want other versions.
 
    .. Warning:: If you are using OS-X 10.9, *DO NOT* run ``sudo port install boost``! See `Additional Tips for 10.9`_ for more information. If you have installed Boost with MacPorts, then uninstall it.
 
 7. Using ``port select --list``, check that the active versions of gcc, python, etc. are correct. In particular, OS X users want to see ``python27 (active)``, not ``python27-apple (active)``. See `port select information`_.
 8. If you are having strange errors (no current thread, segfault, etc.), check `Python Tips`_.
-
 
 General MacPorts Tips
 ^^^^^^^^^^^^^^^^^^^^^
@@ -235,7 +234,7 @@ Linux Tips
 
 2. If you are having strange errors (no current thread, segfault, etc.) or need to specify different versions of software (Boost, Python, etc.), check `Python Tips`_ and/or `Connecting Boost to MOE`_.
 
- CMake Tips
+CMake Tips
 ----------
 
 1. Do you have dependencies installed in non-standard places? e.g., did you build your own boost? Set the env var: ``export MOE_CMAKE_OPTS=-DCMAKE_FIND_ROOT_PATH=/path/to/your/dependencies ...`` (OS X users with MacPorts should set ``/opt/local``.) This can be used to set any number of cmake arguments.
