@@ -70,7 +70,7 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="">Install</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#install-in-docker">Install in docker</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#install-from-source">Install from source</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#osx-tips">OSX Tips</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#building-boost">Building Boost</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#linux-tips">Linux Tips</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#cmake-tips">CMake Tips</a></li>
@@ -199,6 +199,7 @@ $ docker run -p 6543:6543 moe_container
 </div>
 <div class="section" id="install-from-source">
 <h2>Install from source<a class="headerlink" href="#install-from-source" title="Permalink to this headline">¶</a></h2>
+<p>To ensure consistency, be sure to use full paths throughout the installation.</p>
 <p>Requires:</p>
 <ol class="arabic">
 <li><p class="first"><tt class="docutils literal"><span class="pre">python</span> <span class="pre">2.6.7+</span></tt> - <a class="reference external" href="http://python.org/download/">http://python.org/download/</a></p>
@@ -214,14 +215,14 @@ $ docker run -p 6543:6543 moe_container
 <li><p class="first"><tt class="docutils literal"><span class="pre">doxygen</span> <span class="pre">1.8.5+</span></tt> - <a class="reference external" href="http://www.stack.nl/~dimitri/doxygen/index.html">http://www.stack.nl/~dimitri/doxygen/index.html</a></p>
 </li>
 <li id="virtualenv-quickstart"><p class="first">We recommend using a <tt class="docutils literal"><span class="pre">virtualenv</span></tt>: <a class="reference external" href="http://www.jontourage.com/2011/02/09/virtualenv-pip-basics/">http://www.jontourage.com/2011/02/09/virtualenv-pip-basics/</a></p>
-<p>Install it with <tt class="docutils literal"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">virtualenv</span></tt>. <tt class="docutils literal"><span class="pre">virtualenv</span></tt> requires that Python and pip are already installed. See <a class="reference internal" href="#linux-tips">Linux Tips</a> or <a class="reference internal" href="#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below)</a> for tips on how to install these. Build your virtualenv with:</p>
+<p>Install it with <tt class="docutils literal"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">virtualenv</span></tt>. <tt class="docutils literal"><span class="pre">virtualenv</span></tt> requires that Python and pip are already installed. See <a class="reference internal" href="#linux-tips">Linux Tips</a> or <a class="reference internal" href="#osx-tips">OSX Tips</a> for tips on how to install these. Build your virtualenv with:</p>
 <div class="highlight-python"><div class="highlight"><pre># Using straight virtualenv
 $ virtualenv --no-site-packages --python=path/to/python ENV_NAME
 # Or using virtualenvwrapper
 $ mkvirtualenv --no-site-packages --python=path/to/python ENV_NAME
 </pre></div>
 </div>
-<p>The option <tt class="docutils literal"><span class="pre">--python</span></tt> is only necessary if you want to specify a version of Python different from the active Python (i.e., the result of <tt class="docutils literal"><span class="pre">which</span> <span class="pre">python</span></tt>). OS X users in particular want to do this (see <a class="reference internal" href="#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below)</a>).</p>
+<p>The option <tt class="docutils literal"><span class="pre">--python</span></tt> is only necessary if you want to specify a version of Python different from the active Python (i.e., the result of <tt class="docutils literal"><span class="pre">which</span> <span class="pre">python</span></tt>). OS X users in particular want to do this (see <a class="reference internal" href="#osx-tips">OSX Tips</a>).</p>
 </li>
 <li><p class="first">After all the core requirements are installed, pip and MOE will handle the rest. Run these commands to clone MOE, build its python dependencies, and build MOE. These commands should preferably be run from the virtualenv you built in the <a class="reference internal" href="#virtualenv-quickstart">virtualenv quickstart</a>:</p>
 <div class="highlight-python"><div class="highlight"><pre>$ git clone https://github.com/sc932/MOE.git
@@ -233,6 +234,10 @@ $ python setup.py install
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">MOE&#8217;s <tt class="docutils literal"><span class="pre">setup.py</span></tt> invokes cmake. Users can pass command line arguments to cmake via the <tt class="docutils literal"><span class="pre">MOE_CMAKE_OPTS</span></tt> environment variable. Other sections (e.g., <a class="reference internal" href="#python-tips">Python Tips</a>, <a class="reference internal" href="#cmake-tips">CMake Tips</a>) detail additional environment variables that may be needed to customize cmake&#8217;s behavior.</p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Boost, MOE, and the virtualenv must be built with the same python. (OS X users: we recommend using the MacPorts Python: <tt class="docutils literal"><span class="pre">/opt/local/bin/python</span></tt>.)</p>
 </div>
 </li>
 </ol>
@@ -282,8 +287,9 @@ yields:
 </ol>
 </div>
 </div>
-<div class="section" id="osx-tips-10-8-for-10-9-see-separate-instructions-below">
-<h2>OSX Tips (&lt;=10.8. For 10.9, see separate instructions below)<a class="headerlink" href="#osx-tips-10-8-for-10-9-see-separate-instructions-below" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="osx-tips">
+<h2>OSX Tips<a class="headerlink" href="#osx-tips" title="Permalink to this headline">¶</a></h2>
+<p>OS X 10.9 users beware: do not install boost with MacPorts. You <em>must</em> install it from source; see warnings below.</p>
 <ol class="arabic" start="0">
 <li><p class="first">Are you sure you wouldn&#8217;t rather be running linux?</p>
 </li>
@@ -298,6 +304,10 @@ yields:
 <li><p class="first">If you are using another package manager (like homebrew) you may need to modify <tt class="docutils literal"><span class="pre">opt/local</span></tt> below to point to your <tt class="docutils literal"><span class="pre">Cellar</span></tt> directory.</p>
 </li>
 <li><p class="first">For the following commands, <em>order matters</em>; items further down the list may depend on previous installs. In addition to this list, double check that all items on <a class="reference internal" href="#install-from-source">Install from source</a> are also installed.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">If you are using OS-X 10.9, <em>DO NOT</em> run <tt class="docutils literal"><span class="pre">sudo</span> <span class="pre">port</span> <span class="pre">install</span> <span class="pre">boost</span></tt>! Instead, you must build boost from source: see <a class="reference internal" href="#building-boost">Building Boost</a>. If you have installed Boost with MacPorts, then uninstall it. For the curious, <a class="reference internal" href="#boost-macports-and-os-x-10-9">Boost, MacPorts, and OS X 10.9</a> details why this is an issue.</p>
+</div>
 <div class="highlight-python"><div class="highlight"><pre>$ sudo port selfupdate
 $ sudo port install gcc47
 $ sudo port select --set gcc mp-gcc47
@@ -306,7 +316,7 @@ $ sudo port install python27
 $ sudo port select --set python python27
 $ sudo port install py27-pip
 $ sudo port select --set pip pip27
-$ sudo port install boost
+$ sudo port install boost  ### &lt;------ DO NOT run this in OS X 10.9!
 $ sudo port install xorg-server
 $ sudo port install py-matplotlib
 $ sudo port install doxygen
@@ -314,10 +324,6 @@ $ export MOE_CMAKE_OPTS=-DCMAKE_FIND_ROOT_PATH=/opt/local &amp;&amp; export MOE_
 </pre></div>
 </div>
 <p>The previous assumes that you want to use <tt class="docutils literal"><span class="pre">gcc</span> <span class="pre">4.7</span></tt> and <tt class="docutils literal"><span class="pre">Python</span> <span class="pre">2.7</span></tt>; modify the <tt class="docutils literal"><span class="pre">install</span></tt> and <tt class="docutils literal"><span class="pre">set</span></tt> invocations if you want other versions.</p>
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">If you are using OS-X 10.9, <em>DO NOT</em> run <tt class="docutils literal"><span class="pre">sudo</span> <span class="pre">port</span> <span class="pre">install</span> <span class="pre">boost</span></tt>! See <a class="reference internal" href="#additional-tips-for-10-9">Additional Tips for 10.9</a> for more information. If you have installed Boost with MacPorts, then uninstall it.</p>
-</div>
 </li>
 <li><p class="first">Using <tt class="docutils literal"><span class="pre">port</span> <span class="pre">select</span> <span class="pre">--list</span></tt>, check that the active versions of gcc, python, etc. are correct. In particular, OS X users want to see <tt class="docutils literal"><span class="pre">python27</span> <span class="pre">(active)</span></tt>, not <tt class="docutils literal"><span class="pre">python27-apple</span> <span class="pre">(active)</span></tt>. See <a class="reference internal" href="#port-select-information">port select information</a>.</p>
 </li>
@@ -328,7 +334,7 @@ $ export MOE_CMAKE_OPTS=-DCMAKE_FIND_ROOT_PATH=/opt/local &amp;&amp; export MOE_
 <h3>General MacPorts Tips<a class="headerlink" href="#general-macports-tips" title="Permalink to this headline">¶</a></h3>
 <p>The <a class="reference external" href="https://guide.macports.org/">MacPorts Guide</a> provides a detailed introduction to all of MacPorts&#8217; features; we will provide a brief overview here.</p>
 <ol class="arabic">
-<li><p class="first"><tt class="docutils literal"><span class="pre">port</span> <span class="pre">install</span></tt> and <tt class="docutils literal"><span class="pre">port</span> <span class="pre">uninstall</span></tt> are pretty self-explanatory, being already demonstrated in <a class="reference internal" href="#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below)</a>.</p>
+<li><p class="first"><tt class="docutils literal"><span class="pre">port</span> <span class="pre">install</span></tt> and <tt class="docutils literal"><span class="pre">port</span> <span class="pre">uninstall</span></tt> are pretty self-explanatory, being already demonstrated in <a class="reference internal" href="#osx-tips">OSX Tips</a>.</p>
 </li>
 <li><p class="first"><tt class="docutils literal"><span class="pre">port</span> <span class="pre">selfupdate</span></tt> updates MacPorts. MacPorts will warn you when it is out of date.</p>
 </li>
@@ -349,15 +355,9 @@ boost-jam @3.1.18_0 (active)
 </li>
 </ol>
 </div>
-<div class="section" id="additional-tips-for-10-9">
-<h3>Additional Tips for 10.9<a class="headerlink" href="#additional-tips-for-10-9" title="Permalink to this headline">¶</a></h3>
-<p>To ensure consistency, be sure to use full paths throughout the installation.</p>
-<ol class="arabic simple" start="0">
-<li>Follow the steps in <a class="reference internal" href="#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below)</a>, but <em>DO NOT</em> install Boost. Instead, follow the instructions here and resume.</li>
-<li>Currently, Boost should not be installed with MacPorts. You should build it from source (see section <a class="reference internal" href="#building-boost">Building Boost</a>).</li>
-<li>Boost, MOE, and the virtualenv must be built with the same python. We recommend using MacPorts Python: <tt class="docutils literal"><span class="pre">/opt/local/bin/python</span></tt>.</li>
-<li>If you are having strange errors (no current thread, segfault, etc.), check <a class="reference internal" href="#python-tips">Python Tips</a>.</li>
-</ol>
+<div class="section" id="boost-macports-and-os-x-10-9">
+<h3>Boost, MacPorts, and OS X 10.9<a class="headerlink" href="#boost-macports-and-os-x-10-9" title="Permalink to this headline">¶</a></h3>
+<p>We apologize for the extra complexity around Boost and OS X 10.9. To our knowledge, building Boost from source (<a class="reference internal" href="#building-boost">Building Boost</a>) is the best solution.</p>
 <p>Under OS X 10.9, Apple switched their canonical C++ library from <tt class="docutils literal"><span class="pre">libstdc++</span></tt> (GNU) to <tt class="docutils literal"><span class="pre">libc++</span></tt> (LLVM); they are not ABI-compatible. To remain consistent, package managers are linking against <tt class="docutils literal"><span class="pre">libc++</span></tt>. Since MOE is built with gcc, we need <tt class="docutils literal"><span class="pre">libstdc++</span></tt>; thus dependencies must also be built with that C++ library. Currently, package managers do not have enough flexibility to operate several C++ libraries at once, and we do not expect this to change. Ignoring this condition leads to binary incompatibilities; e.g., see:
 <a class="reference external" href="http://stackoverflow.com/questions/20134223/building-a-boost-python-application-on-macos-10-9-mavericks/">http://stackoverflow.com/questions/20134223/building-a-boost-python-application-on-macos-10-9-mavericks/</a></p>
 </div>

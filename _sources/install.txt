@@ -22,6 +22,8 @@ The webserver and REST interface is now running on port 6543 from within the con
 Install from source
 -------------------
 
+To ensure consistency, be sure to use full paths throughout the installation.
+
 Requires:
 
 1. ``python 2.6.7+`` - http://python.org/download/
@@ -35,7 +37,7 @@ Requires:
 
 7. We recommend using a ``virtualenv``: http://www.jontourage.com/2011/02/09/virtualenv-pip-basics/
 
-   Install it with ``pip install virtualenv``. ``virtualenv`` requires that Python and pip are already installed. See `Linux Tips`_ or `OSX Tips (<=10.8. For 10.9, see separate instructions below)`_ for tips on how to install these. Build your virtualenv with:
+   Install it with ``pip install virtualenv``. ``virtualenv`` requires that Python and pip are already installed. See `Linux Tips`_ or `OSX Tips`_ for tips on how to install these. Build your virtualenv with:
 
    ::
 
@@ -44,7 +46,7 @@ Requires:
       # Or using virtualenvwrapper
       $ mkvirtualenv --no-site-packages --python=path/to/python ENV_NAME
 
-   The option ``--python`` is only necessary if you want to specify a version of Python different from the active Python (i.e., the result of ``which python``). OS X users in particular want to do this (see `OSX Tips (<=10.8. For 10.9, see separate instructions below)`_).
+   The option ``--python`` is only necessary if you want to specify a version of Python different from the active Python (i.e., the result of ``which python``). OS X users in particular want to do this (see `OSX Tips`_).
 
 8. After all the core requirements are installed, pip and MOE will handle the rest. Run these commands to clone MOE, build its python dependencies, and build MOE. These commands should preferably be run from the virtualenv you built in the `virtualenv quickstart`_:
 
@@ -56,6 +58,8 @@ Requires:
       $ python setup.py install
 
    .. Note:: MOE's ``setup.py`` invokes cmake. Users can pass command line arguments to cmake via the ``MOE_CMAKE_OPTS`` environment variable. Other sections (e.g., `Python Tips`_, `CMake Tips`_) detail additional environment variables that may be needed to customize cmake's behavior.
+
+   .. Warning:: Boost, MOE, and the virtualenv must be built with the same python. (OS X users: we recommend using the MacPorts Python: ``/opt/local/bin/python``.)
 
 Python Tips
 ^^^^^^^^^^^
@@ -102,8 +106,10 @@ Here are some ways to check/ensure that Python was found and linked correctly:
 
    If you linked statically, you need to check your link lines manually. Since MOE links dynamically by default, we assume that you know what you are doing if you changed it.
 
-OSX Tips (<=10.8. For 10.9, see separate instructions below)
-------------------------------------------------------------
+OSX Tips
+--------
+
+OS X 10.9 users beware: do not install boost with MacPorts. You *must* install it from source; see warnings below.
 
 0. Are you sure you wouldn't rather be running linux?
 1. Download `MacPorts`_. (If you change the install directory from ``/opt/local``, don't forget to update the cmake invocation.)
@@ -115,6 +121,8 @@ OSX Tips (<=10.8. For 10.9, see separate instructions below)
 
    .. _MacPorts: http://www.macports.org/install.php
 
+   .. Warning:: If you are using OS-X 10.9, *DO NOT* run ``sudo port install boost``! Instead, you must build boost from source: see `Building Boost`_. If you have installed Boost with MacPorts, then uninstall it. For the curious, `Boost, MacPorts, and OS X 10.9`_ details why this is an issue.
+
    ::
 
       $ sudo port selfupdate
@@ -125,15 +133,13 @@ OSX Tips (<=10.8. For 10.9, see separate instructions below)
       $ sudo port select --set python python27
       $ sudo port install py27-pip
       $ sudo port select --set pip pip27
-      $ sudo port install boost
+      $ sudo port install boost  ### <------ DO NOT run this in OS X 10.9!
       $ sudo port install xorg-server
       $ sudo port install py-matplotlib
       $ sudo port install doxygen
       $ export MOE_CMAKE_OPTS=-DCMAKE_FIND_ROOT_PATH=/opt/local && export MOE_CC_PATH=/opt/local/bin/gcc && export MOE_CXX_PATH=/opt/local/bin/g++
 
    The previous assumes that you want to use ``gcc 4.7`` and ``Python 2.7``; modify the ``install`` and ``set`` invocations if you want other versions.
-
-   .. Warning:: If you are using OS-X 10.9, *DO NOT* run ``sudo port install boost``! See `Additional Tips for 10.9`_ for more information. If you have installed Boost with MacPorts, then uninstall it.
 
 7. Using ``port select --list``, check that the active versions of gcc, python, etc. are correct. In particular, OS X users want to see ``python27 (active)``, not ``python27-apple (active)``. See `port select information`_.
 8. If you are having strange errors (no current thread, segfault, etc.), check `Python Tips`_.
@@ -145,7 +151,7 @@ The `MacPorts Guide`_ provides a detailed introduction to all of MacPorts' featu
 
 .. _MacPorts Guide: https://guide.macports.org/
 
-1. ``port install`` and ``port uninstall`` are pretty self-explanatory, being already demonstrated in `OSX Tips (<=10.8. For 10.9, see separate instructions below)`_.
+1. ``port install`` and ``port uninstall`` are pretty self-explanatory, being already demonstrated in `OSX Tips`_.
 2. ``port selfupdate`` updates MacPorts. MacPorts will warn you when it is out of date.
 3. ``port upgrade outdated`` upgrades outdated ports. ``port outdated`` will show you which ports are outdated.
 4. ``port list NAME`` lists all ports available for a name. ``port installed NAME`` lists all installed ports with that name.  ``NAME`` can be a regular expression.  For example,
@@ -165,15 +171,10 @@ The `MacPorts Guide`_ provides a detailed introduction to all of MacPorts' featu
 
 5. ``port select --list NAME`` will show you available versions of some versioned software managed by MacPorts (e.g., gcc, python, pip). You can change the active version of ``NAME`` by: ``port select --list NAME desired-NAME-version`` where ``desired-foo-version`` is displayed in ``port select --list NAME``.
 
-Additional Tips for 10.9
-^^^^^^^^^^^^^^^^^^^^^^^^
+Boost, MacPorts, and OS X 10.9
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-To ensure consistency, be sure to use full paths throughout the installation.
-
-0. Follow the steps in `OSX Tips (<=10.8. For 10.9, see separate instructions below)`_, but *DO NOT* install Boost. Instead, follow the instructions here and resume.
-1. Currently, Boost should not be installed with MacPorts. You should build it from source (see section `Building Boost`_).
-2. Boost, MOE, and the virtualenv must be built with the same python. We recommend using MacPorts Python: ``/opt/local/bin/python``. 
-3. If you are having strange errors (no current thread, segfault, etc.), check `Python Tips`_.
+We apologize for the extra complexity around Boost and OS X 10.9. To our knowledge, building Boost from source (`Building Boost`_) is the best solution.
 
 Under OS X 10.9, Apple switched their canonical C++ library from ``libstdc++`` (GNU) to ``libc++`` (LLVM); they are not ABI-compatible. To remain consistent, package managers are linking against ``libc++``. Since MOE is built with gcc, we need ``libstdc++``; thus dependencies must also be built with that C++ library. Currently, package managers do not have enough flexibility to operate several C++ libraries at once, and we do not expect this to change. Ignoring this condition leads to binary incompatibilities; e.g., see:
 http://stackoverflow.com/questions/20134223/building-a-boost-python-application-on-macos-10-9-mavericks/
