@@ -1124,7 +1124,7 @@ int main() {
   std::vector<double> initial_guesses(dim*num_to_sample*num_grid_search_points);
   num_grid_search_points = domain.GenerateUniformPointsInDomain(num_grid_search_points, &uniform_generator, initial_guesses.data());
 
-  EvaluateEIAtPointList(gaussian_process, domain, initial_guesses.data(), points_being_sampled.data(), num_grid_search_points, num_to_sample, num_being_sampled, best_so_far, max_int_steps, kMaxNumThreads, &found_flag, normal_rng_vec.data(), function_values.data(), grid_search_best_point.data());
+  EvaluateEIAtPointList(gaussian_process, initial_guesses.data(), points_being_sampled.data(), num_grid_search_points, num_to_sample, num_being_sampled, best_so_far, max_int_steps, kMaxNumThreads, &found_flag, normal_rng_vec.data(), function_values.data(), grid_search_best_point.data());
 
   gettimeofday(&tv1, nullptr);
   c1 = clock();

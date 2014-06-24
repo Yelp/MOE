@@ -958,6 +958,51 @@ void OnePotentialSampleExpectedImprovementEvaluator::ComputeGradExpectedImprovem
 }
 
 /*!\rst
+  Routes the EI computation through MultistartOptimizer + NullOptimizer to perform EI function evaluations at the list of input
+  points, using the appropriate EI evaluator (e.g., monte carlo vs analytic) depending on inputs.
+\endrst*/
+void EvaluateEIAtPointList(const GaussianProcess& gaussian_process, double const * restrict initial_guesses, double const * restrict points_being_sampled, int num_multistarts, int num_to_sample, int num_being_sampled, double best_so_far, int max_int_steps, int max_num_threads, bool * restrict found_flag, NormalRNG * normal_rng, double * restrict function_values, double * restrict best_next_point) {
+  // set chunk_size; see gpp_common.hpp header comments, item 7
+  const int chunk_size = std::max(std::min(40, std::max(1, num_multistarts/max_num_threads)), num_multistarts/(max_num_threads*120));
+
+  using DomainType = DummyDomain;
+  DomainType dummy_domain;
+  bool configure_for_gradients = false;
+  if (num_to_sample == 1 && num_being_sampled == 0) {
+    // special analytic case when we are not using (or not accounting for) multiple, simultaneous experiments
+    OnePotentialSampleExpectedImprovementEvaluator ei_evaluator(gaussian_process, best_so_far);
+
+    std::vector<typename OnePotentialSampleExpectedImprovementEvaluator::StateType> ei_state_vector;
+    SetupExpectedImprovementState(ei_evaluator, initial_guesses, max_num_threads, configure_for_gradients, &ei_state_vector);
+
+    // init winner to be first point in set and 'force' its value to be 0.0; we cannot do worse than this
+    OptimizationIOContainer io_container(ei_state_vector[0].GetProblemSize(), 0.0, initial_guesses);
+
+    NullOptimizer<OnePotentialSampleExpectedImprovementEvaluator, DomainType> null_opt;
+    typename NullOptimizer<OnePotentialSampleExpectedImprovementEvaluator, DomainType>::ParameterStruct null_parameters;
+    MultistartOptimizer<NullOptimizer<OnePotentialSampleExpectedImprovementEvaluator, DomainType> > multistart_optimizer;
+    multistart_optimizer.MultistartOptimize(null_opt, ei_evaluator, null_parameters, dummy_domain, initial_guesses, num_multistarts, max_num_threads, chunk_size, ei_state_vector.data(), function_values, &io_container);
+    *found_flag = io_container.found_flag;
+    std::copy(io_container.best_point.begin(), io_container.best_point.end(), best_next_point);
+  } else {
+    ExpectedImprovementEvaluator ei_evaluator(gaussian_process, max_int_steps, best_so_far);
+
+    std::vector<typename ExpectedImprovementEvaluator::StateType> ei_state_vector;
+    SetupExpectedImprovementState(ei_evaluator, initial_guesses, points_being_sampled, num_to_sample, num_being_sampled, max_num_threads, configure_for_gradients, normal_rng, &ei_state_vector);
+
+    // init winner to be first point in set and 'force' its value to be 0.0; we cannot do worse than this
+    OptimizationIOContainer io_container(ei_state_vector[0].GetProblemSize(), 0.0, initial_guesses);
+
+    NullOptimizer<ExpectedImprovementEvaluator, DomainType> null_opt;
+    typename NullOptimizer<ExpectedImprovementEvaluator, DomainType>::ParameterStruct null_parameters;
+    MultistartOptimizer<NullOptimizer<ExpectedImprovementEvaluator, DomainType> > multistart_optimizer;
+    multistart_optimizer.MultistartOptimize(null_opt, ei_evaluator, null_parameters, dummy_domain, initial_guesses, num_multistarts, max_num_threads, chunk_size, ei_state_vector.data(), function_values, &io_container);
+    *found_flag = io_container.found_flag;
+    std::copy(io_container.best_point.begin(), io_container.best_point.end(), best_next_point);
+  }
+}
+
+/*!\rst
   This is a simple wrapper around ComputeOptimalPointsToSampleWithRandomStarts() and
   ComputeOptimalPointsToSampleViaLatinHypercubeSearch(). That is, this method attempts multistart gradient descent
   and falls back to latin hypercube search if gradient descent fails (or is not desired).

@@ -1495,7 +1495,6 @@ void ComputeOptimalPointsToSampleWithRandomStarts(const GaussianProcess& gaussia
   \param
     :gaussian_process: GaussianProcess object (holds ``points_sampled``, ``values``, ``noise_variance``, derived quantities)
       that describes the underlying GP
-    :domain: object specifying the domain to optimize over (see ``gpp_domain.hpp``)
     :initial_guesses[dim][num_to_sample][num_multistarts]: list of points at which to compute EI
     :points_being_sampled[dim][num_being_sampled]: points that are being sampled in concurrent experiments
     :num_multistarts: number of points to check
@@ -1512,47 +1511,7 @@ void ComputeOptimalPointsToSampleWithRandomStarts(const GaussianProcess& gaussia
       ``initial_guesses``; never dereferenced if nullptr
     :best_next_point[dim][num_to_sample]: points yielding the best EI according to dumb search
 \endrst*/
-template <typename DomainType>
-void EvaluateEIAtPointList(const GaussianProcess& gaussian_process, const DomainType& domain, double const * restrict initial_guesses, double const * restrict points_being_sampled, int num_multistarts, int num_to_sample, int num_being_sampled, double best_so_far, int max_int_steps, int max_num_threads, bool * restrict found_flag, NormalRNG * normal_rng, double * restrict function_values, double * restrict best_next_point) {
-  // set chunk_size; see gpp_common.hpp header comments, item 7
-  const int chunk_size = std::max(std::min(40, std::max(1, num_multistarts/max_num_threads)), num_multistarts/(max_num_threads*120));
-
-  bool configure_for_gradients = false;
-  if (num_to_sample == 1 && num_being_sampled == 0) {
-    // special analytic case when we are not using (or not accounting for) multiple, simultaneous experiments
-    OnePotentialSampleExpectedImprovementEvaluator ei_evaluator(gaussian_process, best_so_far);
-
-    std::vector<typename OnePotentialSampleExpectedImprovementEvaluator::StateType> ei_state_vector;
-    SetupExpectedImprovementState(ei_evaluator, initial_guesses, max_num_threads, configure_for_gradients, &ei_state_vector);
-
-    // init winner to be first point in set and 'force' its value to be 0.0; we cannot do worse than this
-    OptimizationIOContainer io_container(ei_state_vector[0].GetProblemSize(), 0.0, initial_guesses);
-
-    NullOptimizer<OnePotentialSampleExpectedImprovementEvaluator, DomainType> null_opt;
-    typename NullOptimizer<OnePotentialSampleExpectedImprovementEvaluator, DomainType>::ParameterStruct null_parameters;
-    MultistartOptimizer<NullOptimizer<OnePotentialSampleExpectedImprovementEvaluator, DomainType> > multistart_optimizer;
-    multistart_optimizer.MultistartOptimize(null_opt, ei_evaluator, null_parameters, domain, initial_guesses, num_multistarts, max_num_threads, chunk_size, ei_state_vector.data(), function_values, &io_container);
-    *found_flag = io_container.found_flag;
-    std::copy(io_container.best_point.begin(), io_container.best_point.end(), best_next_point);
-  } else {
-    ExpectedImprovementEvaluator ei_evaluator(gaussian_process, max_int_steps, best_so_far);
-
-    std::vector<typename ExpectedImprovementEvaluator::StateType> ei_state_vector;
-    SetupExpectedImprovementState(ei_evaluator, initial_guesses, points_being_sampled, num_to_sample, num_being_sampled, max_num_threads, configure_for_gradients, normal_rng, &ei_state_vector);
-
-    // init winner to be first point in set and 'force' its value to be 0.0; we cannot do worse than this
-    OptimizationIOContainer io_container(ei_state_vector[0].GetProblemSize(), 0.0, initial_guesses);
-
-    using RepeatedDomain = RepeatedDomain<DomainType>;
-    RepeatedDomain repeated_domain(domain, num_to_sample);
-    NullOptimizer<ExpectedImprovementEvaluator, RepeatedDomain> null_opt;
-    typename NullOptimizer<ExpectedImprovementEvaluator, RepeatedDomain>::ParameterStruct null_parameters;
-    MultistartOptimizer<NullOptimizer<ExpectedImprovementEvaluator, RepeatedDomain> > multistart_optimizer;
-    multistart_optimizer.MultistartOptimize(null_opt, ei_evaluator, null_parameters, repeated_domain, initial_guesses, num_multistarts, max_num_threads, chunk_size, ei_state_vector.data(), function_values, &io_container);
-    *found_flag = io_container.found_flag;
-    std::copy(io_container.best_point.begin(), io_container.best_point.end(), best_next_point);
-  }
-}
+void EvaluateEIAtPointList(const GaussianProcess& gaussian_process, double const * restrict initial_guesses, double const * restrict points_being_sampled, int num_multistarts, int num_to_sample, int num_being_sampled, double best_so_far, int max_int_steps, int max_num_threads, bool * restrict found_flag, NormalRNG * normal_rng, double * restrict function_values, double * restrict best_next_point);
 
 /*!\rst
   Perform a random, naive search to "solve" the q,p-EI problem (see ComputeOptimalPointsToSample and/or
@@ -1591,7 +1550,7 @@ void ComputeOptimalPointsToSampleViaLatinHypercubeSearch(const GaussianProcess& 
   RepeatedDomain<DomainType> repeated_domain(domain, num_to_sample);
   num_multistarts = repeated_domain.GenerateUniformPointsInDomain(num_multistarts, uniform_generator, initial_guesses.data());
 
-  EvaluateEIAtPointList(gaussian_process, domain, initial_guesses.data(), points_being_sampled, num_multistarts, num_to_sample, num_being_sampled, best_so_far, max_int_steps, max_num_threads, found_flag, normal_rng, nullptr, best_next_point);
+  EvaluateEIAtPointList(gaussian_process, initial_guesses.data(), points_being_sampled, num_multistarts, num_to_sample, num_being_sampled, best_so_far, max_int_steps, max_num_threads, found_flag, normal_rng, nullptr, best_next_point);
 }
 
 /*!\rst

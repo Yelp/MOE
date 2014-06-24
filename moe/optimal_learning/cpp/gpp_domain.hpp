@@ -41,6 +41,29 @@ enum class DomainTypes {
 };
 
 /*!\rst
+  A dummy domain; commonly paired with the NullOptimizer. Use when domain is irrelevant.
+
+  It does not track any member data and claims all points are inside.
+\endrst*/
+class DummyDomain {
+ public:
+  //! string name of this domain for logging
+  constexpr static char const * kName = "dummy_domain";
+
+  /*!\rst
+    Always returns true: DummyDomain contains all points.
+
+    \param
+      :point[dim_]: point to check
+    \return
+      true if point is inside the domain or on its boundary, false otherwise
+  \endrst*/
+  bool CheckPointInside(double const * restrict OL_UNUSED(point)) const OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT {
+    return true;
+  }
+};
+
+/*!\rst
   Domain type for a tensor product domain.
 
   A d-dimensional tensor product domain is ``D = [x_0_{min}, x_0_{max}] X [x_1_{min}, x_1_{max}] X ... X [x_d_{min}, x_d_{max}]``
