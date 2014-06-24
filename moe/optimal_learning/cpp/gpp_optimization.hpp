@@ -341,6 +341,8 @@
 #include <cmath>
 
 #include <algorithm>
+#include <exception>
+#include <mutex>
 #include <vector>
 
 #include <omp.h>  // NOLINT(build/include_order)
@@ -1063,6 +1065,11 @@ class MultistartOptimizer final {
                                          at each point of initial_guesses.  Never dereferenced if nullptr
       :io_container[1]: object container new best_objective_value_so_far and corresponding best_point IF found_flag is true.
                         unchanged from input otherwise. See struct docs in gpp_optimization.hpp for details.
+    \raise
+      if any of objective_state_vector->UpdateCurrentPoint(), optimizer.Optimize(), or
+      objective_evaluator.ComputeObjectiveFunction() throws, the exception (or one of the exceptions in the
+      event of multiple throws due to threading, usually the first temporally) will be saved and rethrown by
+      this function. ``io_container`` will be in a valid state; ``function_values`` may not.
 
     TODO(GH-150): consider having multiple versions of this for static/guided/dynamic scheduling.
     Unforutnately openmp doesn't let you choose that parameter programmatically. This would be nice for testing.
@@ -1070,6 +1077,15 @@ class MultistartOptimizer final {
   \endrst*/
   void MultistartOptimize(const Optimizer& optimizer, const ObjectiveFunctionEvaluator& objective_evaluator, const ParameterStruct& optimizer_parameters, const DomainType& domain, double const * restrict initial_guesses, int num_multistarts, int max_num_threads, int chunk_size, typename ObjectiveFunctionEvaluator::StateType * objective_state_vector, double * restrict function_values, OptimizationIOContainer * restrict io_container) {
     const int problem_size = objective_state_vector[0].GetProblemSize();
+
+    // exception_capture_flag "guards" captured_exception. std::called_once() guarantees that will only execute
+    // any of its Callable(s) ONCE for each unique std::once_flag. See C++11 Standard Library documentation (``<mutex>``).
+    // These tools together ensure that we can capture exceptions from OpenMP parallel regions in a thread-safe way.
+    std::once_flag exception_capture_flag;
+    // pointer-like object that manages an exception captured with std::capture_exception(). We use this to capture
+    // exceptions thrown from the OpenMP parallel region.
+    // See the try-catch block in the ``#pragma omp for`` region for more information.
+    std::exception_ptr captured_exception;
 
     io_container->found_flag = false;
     const double best_objective_value_so_far_init = io_container->best_objective_value_so_far;
@@ -1080,35 +1096,61 @@ class MultistartOptimizer final {
       double objective_value;
       std::vector<double> next_point_local(problem_size);
       std::vector<double> best_next_point_local(problem_size);
-      int tid = omp_get_thread_num();
+      int thread_id = omp_get_thread_num();
 
 #pragma omp for nowait schedule(guided, chunk_size) reduction(+:total_errors)
       for (int i = 0; i < num_multistarts; ++i) {
-        objective_state_vector[tid].UpdateCurrentPoint(objective_evaluator, initial_guesses + i*problem_size);
+        // It is illegal for exceptions to leave OpenMP blocks. Violating this condition leads to undefined behavior
+        // (usually program termination). See:
+        // http://www.thinkingparallel.com/2006/11/30/making-exceptions-work-with-openmp-some-tiny-workarounds/
+        // As noted in the spec:
+        //   "A 'structured block' is a single statement or a compound statement with a single entry at the top and a
+        //   single exit at the bottom."
+        //   http://www.openmp.org/mp-documents/OpenMP3.0-SummarySpec.pdf
+        // Exceptions, break, and other control-flow modifying statements violate the single exit condition by allowing
+        // execution to leave the block on a different path (e.g., catch statement).
 
-        if (unlikely(optimizer.Optimize(objective_evaluator, optimizer_parameters, domain, objective_state_vector + tid) != 0)) {
-          ++total_errors;
-        }
+        // Thus, we must catch and handle *all* exceptions within this ``omp for`` region. To propagate an
+        // exception out of this structured block, we will capture an active exception into a std::exception_ptr.
+        // Typically, the *first* exception thrown (temporally) will be captured.
+        try {
+          objective_state_vector[thread_id].UpdateCurrentPoint(objective_evaluator, initial_guesses + i*problem_size);
 
-        // compute objective at the new potential optimum; note Optimize() guarantees optimum point is already in state
-        objective_value = objective_evaluator.ComputeObjectiveFunction(objective_state_vector + tid);
+          if (unlikely(optimizer.Optimize(objective_evaluator, optimizer_parameters, domain, objective_state_vector + thread_id) != 0)) {
+            ++total_errors;
+          }
 
-        if (unlikely(function_values != nullptr)) {
-          function_values[i] = objective_value;
-        }
+          // compute objective at the new potential optimum; note Optimize() guarantees optimum point is already in state
+          objective_value = objective_evaluator.ComputeObjectiveFunction(objective_state_vector + thread_id);
 
-        // update thread-locally if we found improvement
-        if (best_objective_value_so_far_local < objective_value) {
-          objective_state_vector[tid].GetCurrentPoint(next_point_local.data());
-          best_objective_value_so_far_local = objective_value;
-          std::copy(next_point_local.begin(), next_point_local.end(), best_next_point_local.begin());
+          if (unlikely(function_values != nullptr)) {
+            function_values[i] = objective_value;
+          }
+
+          // update thread-locally if we found improvement
+          if (best_objective_value_so_far_local < objective_value) {
+            objective_state_vector[thread_id].GetCurrentPoint(next_point_local.data());
+            best_objective_value_so_far_local = objective_value;
+            std::copy(next_point_local.begin(), next_point_local.end(), best_next_point_local.begin());
 
 #ifdef OL_OPTIMIZATION_VERBOSE_PRINT
-          if (domain.CheckPointInside(best_next_point_local.data()) == false) {
-            OL_VERBOSE_PRINTF("WARNING: point outside of domain! point:\n");
-            PrintMatrix(best_next_point_local.data(), 1, problem_size);
-          }
+            if (domain.CheckPointInside(best_next_point_local.data()) == false) {
+              OL_VERBOSE_PRINTF("WARNING: point outside of domain! point:\n");
+              PrintMatrix(best_next_point_local.data(), 1, problem_size);
+            }
 #endif
+          }
+        } catch (const std::exception& except) {
+          OL_ERROR_PRINTF("thread %d of %d failed on iteration %d of %d\n", thread_id, max_num_threads, i, num_multistarts);
+          // std::call_once() ensures that the code body here is executed *once* for each unique std::once_flag (we
+          // only have 1 instance). Additionally, the operations inside are "atomic" in the sense that no invocation of
+          // call_once() will return before the aforementioned single execution is complete (so no risk of partially
+          // allocated objects, bad state, etc).
+
+          // Guarantee: only one exception will ever be captured; only one thread will ever execute the lambda function.
+          std::call_once(exception_capture_flag, [&captured_exception]() {
+              captured_exception = std::current_exception();
+            });
         }
       }
 
@@ -1133,6 +1175,11 @@ class MultistartOptimizer final {
       PrintMatrix(io_container->best_point.data(), 1, problem_size);
     }
 #endif
+
+    if (captured_exception != nullptr) {
+      // rethrowing nullptr is illegal
+      std::rethrow_exception(captured_exception);
+    }
   }
 
   OL_DISALLOW_COPY_AND_ASSIGN(MultistartOptimizer);
