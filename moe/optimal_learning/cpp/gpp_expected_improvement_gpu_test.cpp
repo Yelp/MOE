@@ -75,7 +75,7 @@ void PingCudaExpectedImprovement::EvaluateAndStoreAnalyticGradient(double const 
 
 double PingCudaExpectedImprovement::GetAnalyticGradient(int row_index, int column_index, int OL_UNUSED(output_index)) const {
   if (gradients_already_computed_ == false) {
-    OL_THROW_EXCEPTION(RuntimeException, "PingExpectedImprovement::GetAnalyticGradient() called BEFORE EvaluateAndStoreAnalyticGradient. NO DATA!");
+    OL_THROW_EXCEPTION(OptimalLearningException, "PingExpectedImprovement::GetAnalyticGradient() called BEFORE EvaluateAndStoreAnalyticGradient. NO DATA!");
   }
 
   return grad_EI_[column_index*dim_ + row_index];

@@ -1664,7 +1664,7 @@ PingExpectedImprovement::PingExpectedImprovement(double const * restrict lengths
 
   double PingExpectedImprovement::GetAnalyticGradient(int row_index, int column_index, int OL_UNUSED(output_index)) const {
     if (gradients_already_computed_ == false) {
-      OL_THROW_EXCEPTION(RuntimeException, "PingExpectedImprovement::GetAnalyticGradient() called BEFORE EvaluateAndStoreAnalyticGradient. NO DATA!");
+      OL_THROW_EXCEPTION(OptimalLearningException, "PingExpectedImprovement::GetAnalyticGradient() called BEFORE EvaluateAndStoreAnalyticGradient. NO DATA!");
     }
 
     return grad_EI_[column_index*dim_ + row_index];
@@ -1723,7 +1723,7 @@ PingOnePotentialSampleExpectedImprovement::PingOnePotentialSampleExpectedImprove
 
   double PingOnePotentialSampleExpectedImprovement::GetAnalyticGradient(int row_index, int OL_UNUSED(column_index), int OL_UNUSED(output_index)) const {
     if (gradients_already_computed_ == false) {
-      OL_THROW_EXCEPTION(RuntimeException, "PingOnePotentialSampleExpectedImprovement::GetAnalyticGradient() called BEFORE EvaluateAndStoreAnalyticGradient. NO DATA!");
+      OL_THROW_EXCEPTION(OptimalLearningException, "PingOnePotentialSampleExpectedImprovement::GetAnalyticGradient() called BEFORE EvaluateAndStoreAnalyticGradient. NO DATA!");
     }
 
     return grad_EI_[row_index];

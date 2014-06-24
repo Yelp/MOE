@@ -19,7 +19,7 @@
 #include "driver_types.h"
 #include "cuda_runtime.h"
 
-#define OL_CUDA_THROW_EXCEPTION(_ERR) ThrowException(RuntimeException((_ERR).line_info, (_ERR).func_info, cudaGetErrorString((_ERR).err)));
+#define OL_CUDA_THROW_EXCEPTION(_ERR) ThrowException(OptimalLearningException((_ERR).line_info, (_ERR).func_info, cudaGetErrorString((_ERR).err)));
 #define OL_CUDA_ERROR_THROW(_ERR) {if((_ERR).err != cudaSuccess) {OL_CUDA_THROW_EXCEPTION(_ERR)}}
 #endif
 
@@ -58,7 +58,7 @@ double CudaExpectedImprovementEvaluator::ComputeExpectedImprovement(StateType * 
 
 void CudaExpectedImprovementEvaluator::ComputeGradExpectedImprovement(StateType * ei_state, double * restrict grad_EI) const {
   if (ei_state->num_derivatives == 0) {
-    OL_THROW_EXCEPTION(RuntimeException, "configure_for_gradients set to false, gradient computation is disabled!");
+    OL_THROW_EXCEPTION(OptimalLearningException, "configure_for_gradients set to false, gradient computation is disabled!");
   }
   const int num_union = ei_state->num_union;
   const int num_to_sample = ei_state->num_to_sample;
@@ -107,15 +107,15 @@ CudaExpectedImprovementState::CudaExpectedImprovementState(const EvaluatorType& 
 #else
 
 double CudaExpectedImprovementEvaluator::ComputeExpectedImprovement(StateType * ei_state) const {
-  OL_THROW_EXCEPTION(RuntimeException, "GPU component is disabled or unavailable, cannot call gpu function!\n");
+  OL_THROW_EXCEPTION(OptimalLearningException, "GPU component is disabled or unavailable, cannot call gpu function!\n");
 }
 
 void CudaExpectedImprovementEvaluator::ComputeGradExpectedImprovement(StateType * ei_state, double * restrict grad_EI) const {
-  OL_THROW_EXCEPTION(RuntimeException, "GPU component is disabled or unavailable, cannot call gpu function!\n");
+  OL_THROW_EXCEPTION(OptimalLearningException, "GPU component is disabled or unavailable, cannot call gpu function!\n");
 }
 
 void CudaExpectedImprovementEvaluator::setupGPU(int devID) {
-  OL_THROW_EXCEPTION(RuntimeException, "GPU component is disabled or unavailable, cannot call gpu function!\n");
+  OL_THROW_EXCEPTION(OptimalLearningException, "GPU component is disabled or unavailable, cannot call gpu function!\n");
 }
 
 CudaExpectedImprovementEvaluator::~CudaExpectedImprovementEvaluator() {
@@ -134,7 +134,7 @@ CudaExpectedImprovementState::CudaExpectedImprovementState(const EvaluatorType& 
     grad_mu(dim*num_derivatives),
     cholesky_to_sample_var(Square(num_union)),
     grad_chol_decomp(dim*Square(num_union)*num_derivatives) {
-        OL_THROW_EXCEPTION(RuntimeException, "GPU component is disabled or unavailable, cannot call gpu function!\n");
+        OL_THROW_EXCEPTION(OptimalLearningException, "GPU component is disabled or unavailable, cannot call gpu function!\n");
     }
 #endif
 }  // end namespace optimal_learning

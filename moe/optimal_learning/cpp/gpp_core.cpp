@@ -2164,7 +2164,7 @@ int main() {
         printf ("EI_gpu is %.18E\n", EI_gpu);
         printf ("job finished\n");
     }
-    catch (const RuntimeException& exception) {
+    catch (const OptimalLearningException& exception) {
         std::cerr << exception.what() << std::endl;
     }
 }
