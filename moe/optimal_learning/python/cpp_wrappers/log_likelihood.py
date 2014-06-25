@@ -54,6 +54,7 @@ import copy
 import numpy
 
 import moe.build.GPP as C_GP
+from moe.optimal_learning.python.constant import DEFAULT_MAX_NUM_THREADS
 from moe.optimal_learning.python.cpp_wrappers import cpp_utils
 from moe.optimal_learning.python.interfaces.log_likelihood_interface import GaussianProcessLogLikelihoodInterface
 from moe.optimal_learning.python.interfaces.optimization_interface import OptimizableInterface
@@ -63,7 +64,7 @@ def multistart_hyperparameter_optimization(
         log_likelihood_optimizer,
         num_multistarts,
         randomness=None,
-        max_num_threads=1,
+        max_num_threads=DEFAULT_MAX_NUM_THREADS,
         status=None,
 ):
     r"""Select the hyperparameters that maximize the specified log likelihood measure of model fit (over the historical data) within the specified domain.
@@ -139,7 +140,11 @@ def multistart_hyperparameter_optimization(
     return numpy.array(hyperparameters_opt)
 
 
-def evaluate_log_likelihood_at_hyperparameter_list(log_likelihood_evaluator, hyperparameters_to_evaluate, max_num_threads=1):
+def evaluate_log_likelihood_at_hyperparameter_list(
+        log_likelihood_evaluator,
+        hyperparameters_to_evaluate,
+        max_num_threads=DEFAULT_MAX_NUM_THREADS,
+):
     """Compute the specified log likelihood measure at each input set of hyperparameters.
 
     Generally Newton or gradient descent is preferred but when they fail to converge this may be the only "robust" option.
