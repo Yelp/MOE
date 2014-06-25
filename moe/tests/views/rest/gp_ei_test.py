@@ -38,9 +38,9 @@ class TestGpEiView(RestGaussianProcessTestCase):
         """Test that the /gp/ei endpoint does the same thing as the C++ interface."""
         tolerance = 1.0e-11
         for test_case in self.gp_test_environments:
-            python_domain, python_cov, python_gp = test_case
+            python_domain, python_gp = test_case
 
-            cpp_cov = SquareExponential(python_cov.hyperparameters)
+            cpp_cov = SquareExponential(python_gp._covariance.hyperparameters)
             cpp_gp = GaussianProcess(cpp_cov, python_gp._historical_data)
 
             points_to_evaluate = python_domain.generate_uniform_random_points_in_domain(10)
@@ -59,7 +59,7 @@ class TestGpEiView(RestGaussianProcessTestCase):
                     )
 
             # EI from REST
-            json_payload = self._build_json_payload(python_domain, python_gp, python_cov, points_to_evaluate.tolist())
+            json_payload = self._build_json_payload(python_domain, python_gp, python_gp._covariance, points_to_evaluate.tolist())
             resp = self.testapp.post(self.endpoint, json_payload)
             resp_schema = GpEiResponse()
             resp_dict = resp_schema.deserialize(json.loads(resp.body))

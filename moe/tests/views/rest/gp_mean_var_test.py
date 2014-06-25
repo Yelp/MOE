@@ -35,9 +35,9 @@ class TestGpMeanVarView(RestGaussianProcessTestCase):
         """Test that the /gp/mean_var endpoint does the same thing as the C++ interface."""
         tolerance = 1.0e-11
         for test_case in self.gp_test_environments:
-            python_domain, python_cov, python_gp = test_case
+            python_domain, python_gp = test_case
 
-            cpp_cov = SquareExponential(python_cov.hyperparameters)
+            cpp_cov = SquareExponential(python_gp._covariance.hyperparameters)
             cpp_gp = GaussianProcess(cpp_cov, python_gp._historical_data)
 
             points_to_sample = python_domain.generate_uniform_random_points_in_domain(10)
@@ -47,7 +47,7 @@ class TestGpMeanVarView(RestGaussianProcessTestCase):
             cpp_var = cpp_gp.compute_variance_of_points(points_to_sample)
 
             # mean and var from REST
-            json_payload = self._build_json_payload(python_domain, python_gp, python_cov, points_to_sample.tolist())
+            json_payload = self._build_json_payload(python_domain, python_gp, python_gp._covariance, points_to_sample.tolist())
             resp = self.testapp.post(self.endpoint, json_payload)
             resp_schema = GpMeanVarResponse()
             resp_dict = resp_schema.deserialize(json.loads(resp.body))
