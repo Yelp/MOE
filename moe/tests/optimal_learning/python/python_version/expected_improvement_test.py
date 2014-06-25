@@ -80,7 +80,7 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
         numpy.random.seed(78532)
 
         for test_case in self.gp_test_environments:
-            domain, _, gaussian_process = test_case
+            domain, gaussian_process = test_case
 
             for num_to_sample, num_being_sampled in num_points_p_q_list:
                 points_to_sample = domain.generate_uniform_random_points_in_domain(num_to_sample)
@@ -140,7 +140,7 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
     def test_evaluate_ei_at_points(self):
         """Check that ``evaluate_expected_improvement_at_point_list`` computes and orders results correctly (using 1D analytic EI)."""
         index = numpy.argmax(numpy.greater_equal(self.num_sampled_list, 5))
-        domain, _, gaussian_process = self.gp_test_environments[index]
+        domain, gaussian_process = self.gp_test_environments[index]
 
         points_to_sample = domain.generate_random_point_in_domain()
         ei_eval = ExpectedImprovement(gaussian_process, points_to_sample)
@@ -160,7 +160,7 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
         """Check that multistart optimization (gradient descent) can find the optimum point to sample (using 1D analytic EI)."""
         numpy.random.seed(3148)
         index = numpy.argmax(numpy.greater_equal(self.num_sampled_list, 20))
-        domain, _, gaussian_process = self.gp_test_environments[index]
+        domain, gaussian_process = self.gp_test_environments[index]
 
         max_num_steps = 200  # this is generally *too few* steps; we configure it this way so the test will run quickly
         max_num_restarts = 5
@@ -203,7 +203,7 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
         """Check that multistart optimization (gradient descent) can find the optimum point to sample (using 2-EI)."""
         numpy.random.seed(7858)
         index = numpy.argmax(numpy.greater_equal(self.num_sampled_list, 20))
-        domain, _, gaussian_process = self.gp_test_environments[index]
+        domain, gaussian_process = self.gp_test_environments[index]
 
         max_num_steps = 75  # this is *too few* steps; we configure it this way so the test will run quickly
         max_num_restarts = 5
