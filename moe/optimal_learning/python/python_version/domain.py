@@ -49,6 +49,14 @@ class TensorProductDomain(DomainInterface):
         """Return the number of spatial dimensions."""
         return len(self._domain_bounds)
 
+    def get_json_serializable_info(self):
+        """Create and return a domain_info dictionary of this domain object."""
+        return {
+                'domain_type': self.domain_type,
+                'dim': self.dim,
+                'domain_bounds': self._domain_bounds,
+                }
+
     def check_point_inside(self, point):
         r"""Check if a point is inside the domain/on its boundary or outside.
 
