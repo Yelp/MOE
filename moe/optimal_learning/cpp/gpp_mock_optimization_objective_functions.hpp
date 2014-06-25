@@ -124,6 +124,8 @@ struct PolynomialState final {
         current_point(current_point_in, current_point_in + dim) {
   }
 
+  PolynomialState(PolynomialState&& OL_UNUSED(other)) = default;
+
   int GetProblemSize() const noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
     return dim;
   }

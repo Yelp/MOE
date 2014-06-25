@@ -45,7 +45,14 @@
 
 // #define OL_VERBOSE_PRINT
 
+// HACK: temporarily disable printing (this will go away when we switch to GoogleTest)
+#define OL_TEMP_ERROR_PRINT OL_ERROR_PRINT
+#define OL_TEMP_WARNING_PRINT OL_WARNING_PRINT
+#undef OL_ERROR_PRINT
+#undef OL_WARNING_PRINT
 #include "gpp_optimization_test.hpp"
+#define OL_ERROR_PRINT OL_TEMP_ERROR_PRINT
+#define OL_WARNING_PRINT OL_TEMP_WARNING_PRINT
 
 #include <cmath>
 
@@ -54,6 +61,7 @@
 
 #include "gpp_common.hpp"
 #include "gpp_domain.hpp"
+#include "gpp_exception.hpp"
 #include "gpp_logging.hpp"
 #include "gpp_mock_optimization_objective_functions.hpp"
 #include "gpp_optimization.hpp"
@@ -66,6 +74,47 @@ namespace {  // mock objective functions and tests for various optimizers
 
 using optimal_learning::PolynomialEvaluator;
 using optimal_learning::Square;
+
+/*!\rst
+  Class to evaluate the function: f(x) = x. It may raise an exception when x == 1.0 or when x != 1.0 depending on construction.
+
+  This evaluator only has value in testing the exception handling in MultistartOptimize().
+\endrst*/
+class ExceptionEvaluator final : public PolynomialEvaluator {
+ public:
+  explicit ExceptionEvaluator(bool exception_mode_in) : exception_mode(exception_mode_in) {}
+
+  virtual int dim() const noexcept override OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
+    return 1;
+  }
+
+  virtual double GetOptimumValue() const noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
+    return 0.0;
+  }
+
+  virtual void GetOptimumPoint(double * restrict point) const noexcept OL_NONNULL_POINTERS {
+    point[0] = 0.0;
+  }
+
+  virtual double ComputeObjectiveFunction(StateType * quadratic_dummy_state) const override OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT {
+    if ((exception_mode && quadratic_dummy_state->current_point[0] == 1.0) || (!exception_mode && quadratic_dummy_state->current_point[0] != 1.0)) {
+      OL_THROW_EXCEPTION(InvalidValueException<double>, "ExceptionEvaluator test.", quadratic_dummy_state->current_point[0], 1.0);
+    }
+
+    return quadratic_dummy_state->current_point[0];
+  }
+
+  virtual void ComputeGradObjectiveFunction(StateType * OL_UNUSED(quadratic_dummy_state), double * restrict grad_objective) const noexcept override OL_NONNULL_POINTERS {
+    grad_objective[0] = 1.0;
+  }
+
+  virtual void ComputeHessianObjectiveFunction(StateType * OL_UNUSED(quadratic_dummy_state), double * restrict hessian_objective) const OL_NONNULL_POINTERS {
+    hessian_objective[0] = 0.0;
+  }
+
+  //! flag indicating whether to throw excptions on x == 1.0 (true) or x != 1.0 (false)
+  bool exception_mode;
+};
 
 /*!\rst
   Class to evaluate the function ``f(x_1,...,x_{dim}) = -\sum_i (x_i - s_i)^2, i = 1..dim``.
@@ -677,9 +726,93 @@ OL_WARN_UNUSED_RESULT int MockObjectiveNewtonConstrainedOptimizationTestCore() {
   return total_errors;
 }
 
-}  // end unnamed namespace
+int MultistartOptimizeExceptionHandlingTest() {
+  using DomainType = DummyDomain;
+  DomainType dummy_domain;
+  NullOptimizer<ExceptionEvaluator, DomainType> null_opt;
+  typename NullOptimizer<ExceptionEvaluator, DomainType>::ParameterStruct null_parameters;
+  MultistartOptimizer<NullOptimizer<ExceptionEvaluator, DomainType> > multistart_optimizer;
 
-int RunOptimizationTests(OptimizerTypes optimizer_type) {
+  int num_multistarts = 100;
+  int max_num_threads = 4;
+  int chunk_size = 1;
+  std::vector<double> initial_guesses(num_multistarts);
+  std::iota(initial_guesses.begin(), initial_guesses.end(), -20.0);
+  auto max_value = *std::max_element(initial_guesses.begin(), initial_guesses.end());
+
+  double current_point = 0.0;
+  ExceptionEvaluator exception_eval(true);
+  std::vector<typename ExceptionEvaluator::StateType> state_vector;
+  state_vector.reserve(max_num_threads);
+  for (int i = 0; i < max_num_threads; ++i) {
+    state_vector.emplace_back(exception_eval, &current_point);
+  }
+
+  int total_errors = 0;
+
+  // test case where only 1 exception is thrown, when current_point is 1.0
+  {
+    double dummy_value = -100.0;
+    OptimizationIOContainer io_container(state_vector[0].GetProblemSize(), dummy_value, &dummy_value);
+
+    exception_eval.exception_mode = true;
+    try {
+      // increment errors: we must catch an exception to decrement
+      total_errors += 1;
+      multistart_optimizer.MultistartOptimize(null_opt, exception_eval, null_parameters, dummy_domain, initial_guesses.data(), num_multistarts, max_num_threads, chunk_size, state_vector.data(), nullptr, &io_container);
+    } catch (const InvalidValueException<double>& except) {
+      // only x == 1.0 would have thrown an exception and it would set the value to 1.0.
+      if (except.value() != 1.0) {
+        ++total_errors;
+      }
+      // exception occurred, good! remove the increment from the try block.
+      total_errors -= 1;
+    }
+
+    if (io_container.best_objective_value_so_far != max_value || io_container.best_point[0] != max_value) {
+      ++total_errors;
+    }
+  }
+
+  // test case where only x == 1.0 does *not* throw
+  {
+    double dummy_value = -100.0;
+    OptimizationIOContainer io_container(state_vector[0].GetProblemSize(), dummy_value, &dummy_value);
+
+    exception_eval.exception_mode = false;
+    try {
+      // increment errors: we must catch an exception to decrement
+      total_errors += 1;
+      multistart_optimizer.MultistartOptimize(null_opt, exception_eval, null_parameters, dummy_domain, initial_guesses.data(), num_multistarts, max_num_threads, chunk_size, state_vector.data(), nullptr, &io_container);
+    } catch (const InvalidValueException<double>& except) {
+      // TODO(GH-226): if we specify static thread schedule, then except.value() should be the *first* point in initial_guesses
+      // exception occurred, good! remove the increment from the try block.
+      total_errors -= 1;
+    }
+
+    if (io_container.best_objective_value_so_far != 1.0 || io_container.best_point[0] != 1.0) {
+      ++total_errors;
+    }
+  }
+
+  return total_errors;
+}
+
+/*!\rst
+  Checks that specified optimizer is working correctly:
+
+  * kGradientDescent
+  * kNewton
+
+  Checks unconstrained and constrained optimization against polynomial
+  objective function(s).
+
+  \param
+    :optimizer_type: which optimizer to test
+  \return
+    number of test failures: 0 if optimizer is working properly
+\endrst*/
+int RunSimpleObjectiveOptimizationTests(OptimizerTypes optimizer_type) {
   switch (optimizer_type) {
     case OptimizerTypes::kGradientDescent: {  // gradient descent tests
       int errors = 0;
@@ -700,5 +833,14 @@ int RunOptimizationTests(OptimizerTypes optimizer_type) {
   }
 }
 
+}  // end unnamed namespace
+
+int RunOptimizationTests() {
+  int total_errors = 0;
+  total_errors += RunSimpleObjectiveOptimizationTests(OptimizerTypes::kGradientDescent);
+  total_errors += RunSimpleObjectiveOptimizationTests(OptimizerTypes::kNewton);
+  total_errors += MultistartOptimizeExceptionHandlingTest();
+  return total_errors;
+}
 
 }  // end namespace optimal_learning

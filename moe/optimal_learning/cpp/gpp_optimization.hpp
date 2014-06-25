@@ -1141,7 +1141,7 @@ class MultistartOptimizer final {
 #endif
           }
         } catch (const std::exception& except) {
-          OL_ERROR_PRINTF("thread %d of %d failed on iteration %d of %d\n", thread_id, max_num_threads, i, num_multistarts);
+          OL_ERROR_PRINTF("Thread %d of %d failed on iteration %d of %d. Message:\n%s\n", thread_id, max_num_threads, i, num_multistarts, except.what());
           // std::call_once() ensures that the code body here is executed *once* for each unique std::once_flag (we
           // only have 1 instance). Additionally, the operations inside are "atomic" in the sense that no invocation of
           // call_once() will return before the aforementioned single execution is complete (so no risk of partially

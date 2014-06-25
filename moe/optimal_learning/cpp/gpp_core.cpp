@@ -1178,8 +1178,7 @@ int main() {
   // error += HyperparameterLikelihoodOptimizationTest(OptimizerTypes::kGradientDescent, LogLikelihoodTypes::kLeaveOneOutLogLikelihood);
   // error += EvaluateLogLikelihoodAtPointListTest();
   // error = RandomNumberGeneratorContainerTest();
-  // error += RunOptimizationTests(0);
-  // error += RunOptimizationTests(1);
+  // error += RunOptimizationTests();
   // error += DomainTests();
   // error += RunEIConsistencyTests();
   // error += MultithreadedEIOptimizationTest(ExpectedImprovementEvaluationMode::kAnalytic);
@@ -1366,19 +1365,11 @@ int main() {
   }
   total_errors += error;
 
-  error = RunOptimizationTests(OptimizerTypes::kGradientDescent);
+  error = RunOptimizationTests();
   if (error != 0) {
-    OL_FAILURE_PRINTF("quadratic mock gradient descent optimization\n");
+    OL_FAILURE_PRINTF("basic optimization tests (simple objectives, exception handling)\n");
   } else {
-    OL_SUCCESS_PRINTF("quadratic mock gradient descent optimization\n");
-  }
-  total_errors += error;
-
-  error = RunOptimizationTests(OptimizerTypes::kNewton);
-  if (error != 0) {
-    OL_FAILURE_PRINTF("quadratic mock newton optimization\n");
-  } else {
-    OL_SUCCESS_PRINTF("quadratic mock newton optimization\n");
+    OL_SUCCESS_PRINTF("basic optimization tests (simple objectives, exception handling)\n");
   }
   total_errors += error;
 
