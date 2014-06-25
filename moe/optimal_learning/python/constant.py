@@ -4,6 +4,8 @@ from collections import namedtuple
 
 import moe.optimal_learning.python.python_version.optimization as python_optimization
 
+# Multithreading constants
+DEFAULT_MAX_NUM_THREADS = 1
 
 # Covariance constants
 SQUARE_EXPONENTIAL_COVARIANCE_TYPE = 'square_exponential'
@@ -31,8 +33,6 @@ NEWTON_OPTIMIZER = 'newton_optimizer'
 GRADIENT_DESCENT_OPTIMIZER = 'gradient_descent_optimizer'
 
 # EI Defaults
-DEFAULT_EXPECTED_IMPROVEMENT_MAX_NUM_THREADS = 1
-
 DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS = 10000
 TEST_EXPECTED_IMPROVEMENT_MC_ITERATIONS = 50
 
