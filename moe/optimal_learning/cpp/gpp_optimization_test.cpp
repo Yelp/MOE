@@ -57,6 +57,7 @@
 #include <cmath>
 
 #include <algorithm>
+#include <string>
 #include <vector>
 
 #include "gpp_common.hpp"
@@ -72,7 +73,7 @@ namespace optimal_learning {
 
 namespace {  // mock objective functions and tests for various optimizers
 
-using optimal_learning::PolynomialEvaluator;
+using optimal_learning::SimpleObjectiveFunctionEvaluator;
 using optimal_learning::Square;
 
 /*!\rst
@@ -80,9 +81,9 @@ using optimal_learning::Square;
 
   This evaluator only has value in testing the exception handling in MultistartOptimize().
 \endrst*/
-class ExceptionEvaluator final : public PolynomialEvaluator {
+class ExceptionEvaluator final : public SimpleObjectiveFunctionEvaluator {
  public:
-  explicit ExceptionEvaluator(bool exception_mode_in) : exception_mode(exception_mode_in) {}
+  explicit ExceptionEvaluator(const std::string& exception_condition_in) : exception_condition(exception_condition_in) {}
 
   virtual int dim() const noexcept override OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
     return 1;
@@ -97,7 +98,8 @@ class ExceptionEvaluator final : public PolynomialEvaluator {
   }
 
   virtual double ComputeObjectiveFunction(StateType * quadratic_dummy_state) const override OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT {
-    if ((exception_mode && quadratic_dummy_state->current_point[0] == 1.0) || (!exception_mode && quadratic_dummy_state->current_point[0] != 1.0)) {
+    if ((exception_condition == "x == 1" && quadratic_dummy_state->current_point[0] == 1.0) ||
+        (exception_condition == "x != 1" && quadratic_dummy_state->current_point[0] != 1.0)) {
       OL_THROW_EXCEPTION(InvalidValueException<double>, "ExceptionEvaluator test.", quadratic_dummy_state->current_point[0], 1.0);
     }
 
@@ -112,15 +114,15 @@ class ExceptionEvaluator final : public PolynomialEvaluator {
     hessian_objective[0] = 0.0;
   }
 
-  //! flag indicating whether to throw excptions on x == 1.0 (true) or x != 1.0 (false)
-  bool exception_mode;
+  //! "x == 1.0" to throw when current_point, aka x == 1.0 and "x != 1.0" to throw when x != 1.0
+  std::string exception_condition;
 };
 
 /*!\rst
   Class to evaluate the function ``f(x_1,...,x_{dim}) = -\sum_i (x_i - s_i)^2, i = 1..dim``.
   This is a simple quadratic form with maxima at ``(s_1, ..., s_{dim})``.
 \endrst*/
-class SimpleQuadraticEvaluator final : public PolynomialEvaluator {
+class SimpleQuadraticEvaluator final : public SimpleObjectiveFunctionEvaluator {
  public:
   SimpleQuadraticEvaluator(double const * restrict maxima_point, int dim_in) : dim_(dim_in), maxima_point_(maxima_point, maxima_point + dim_) {
   }
@@ -741,7 +743,7 @@ int MultistartOptimizeExceptionHandlingTest() {
   auto max_value = *std::max_element(initial_guesses.begin(), initial_guesses.end());
 
   double current_point = 0.0;
-  ExceptionEvaluator exception_eval(true);
+  ExceptionEvaluator exception_eval("x == 1");
   std::vector<typename ExceptionEvaluator::StateType> state_vector;
   state_vector.reserve(max_num_threads);
   for (int i = 0; i < max_num_threads; ++i) {
@@ -755,11 +757,13 @@ int MultistartOptimizeExceptionHandlingTest() {
     double dummy_value = -100.0;
     OptimizationIOContainer io_container(state_vector[0].GetProblemSize(), dummy_value, &dummy_value);
 
-    exception_eval.exception_mode = true;
+    exception_eval.exception_condition = "x == 1";
     try {
       // increment errors: we must catch an exception to decrement
       total_errors += 1;
-      multistart_optimizer.MultistartOptimize(null_opt, exception_eval, null_parameters, dummy_domain, initial_guesses.data(), num_multistarts, max_num_threads, chunk_size, state_vector.data(), nullptr, &io_container);
+      multistart_optimizer.MultistartOptimize(null_opt, exception_eval, null_parameters, dummy_domain,
+                                              initial_guesses.data(), num_multistarts, max_num_threads,
+                                              chunk_size, state_vector.data(), nullptr, &io_container);
     } catch (const InvalidValueException<double>& except) {
       // only x == 1.0 would have thrown an exception and it would set the value to 1.0.
       if (except.value() != 1.0) {
@@ -779,11 +783,13 @@ int MultistartOptimizeExceptionHandlingTest() {
     double dummy_value = -100.0;
     OptimizationIOContainer io_container(state_vector[0].GetProblemSize(), dummy_value, &dummy_value);
 
-    exception_eval.exception_mode = false;
+    exception_eval.exception_condition = "x != 1";
     try {
       // increment errors: we must catch an exception to decrement
       total_errors += 1;
-      multistart_optimizer.MultistartOptimize(null_opt, exception_eval, null_parameters, dummy_domain, initial_guesses.data(), num_multistarts, max_num_threads, chunk_size, state_vector.data(), nullptr, &io_container);
+      multistart_optimizer.MultistartOptimize(null_opt, exception_eval, null_parameters, dummy_domain,
+                                              initial_guesses.data(), num_multistarts, max_num_threads,
+                                              chunk_size, state_vector.data(), nullptr, &io_container);
     } catch (const InvalidValueException<double>& except) {
       // TODO(GH-226): if we specify static thread schedule, then except.value() should be the *first* point in initial_guesses
       // exception occurred, good! remove the increment from the try block.
