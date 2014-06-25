@@ -39,32 +39,32 @@ class GpHyperOptRequest(colander.MappingSchema):
         Content-Type: text/javascript
 
         {
-            'gp_historical_info': {
-                'points_sampled': [
-                        {'value_var': 0.01, 'value': 0.1, 'point': [0.0]},
-                        {'value_var': 0.01, 'value': 0.2, 'point': [1.0]}
+            "gp_historical_info": {
+                "points_sampled": [
+                        {"value_var": 0.01, "value": 0.1, "point": [0.0]},
+                        {"value_var": 0.01, "value": 0.2, "point": [1.0]}
                     ],
                 },
-            'domain_info': {
-                'dim': 1,
+            "domain_info": {
+                "dim": 1,
                 },
-            'covariance_info': {
-                'covariance_type': 'square_exponential',
-                'hyperparameters': [1.0, 1.0],
+            "covariance_info": {
+                "covariance_type": "square_exponential",
+                "hyperparameters": [1.0, 1.0],
                 },
-            'hyperparameter_domain_info': {
-                'dim': 2,
-                'domain_bounds': [
-                    {'min': 0.1, 'max': 2.0},
-                    {'min': 0.1, 'max': 2.0},
+            "hyperparameter_domain_info": {
+                "dim": 2,
+                "domain_bounds": [
+                    {"min": 0.1, "max": 2.0},
+                    {"min": 0.1, "max": 2.0},
                     ],
                 },
-            'optimization_info': {
-                'optimization_type': 'gradient_descent_optimizer',
-                'num_multistarts': 200,
-                'num_random_samples': 4000,
-                'optimization_parameters': {
-                    'gamma': 0.5,
+            "optimization_info": {
+                "optimization_type": "gradient_descent_optimizer",
+                "num_multistarts": 200,
+                "num_random_samples": 4000,
+                "optimization_parameters": {
+                    "gamma": 0.5,
                     ...
                     },
                 },
@@ -115,9 +115,9 @@ class GpHyperOptResponse(colander.MappingSchema):
 
         {
             "endpoint":"gp_hyper_opt",
-            'covariance_info': {
-                'covariance_type': 'square_exponential',
-                'hyperparameters': [0.88, 1.24],
+            "covariance_info": {
+                "covariance_type": "square_exponential",
+                "hyperparameters": [0.88, 1.24],
                 },
         }
 
