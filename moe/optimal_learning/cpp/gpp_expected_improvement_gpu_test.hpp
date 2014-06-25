@@ -21,10 +21,10 @@
 
 #include "gpp_common.hpp"
 #include "gpp_domain.hpp"
-#include "gpp_test_utils.hpp"
 #include "gpp_exception.hpp"
 #include "gpp_expected_improvement_gpu.hpp"
 #include "gpp_math.hpp"
+#include "gpp_test_utils.hpp"
 
 namespace optimal_learning {
 /*!\rst
