@@ -394,7 +394,8 @@ struct OptimizationIOContainer final {
     \param
       :problem_size: number of dimensions in the optimization problem (e.g., size of best_point)
   \endrst*/
-  explicit OptimizationIOContainer(int problem_size_in) : problem_size(problem_size_in), best_objective_value_so_far(0.0), best_point(problem_size), found_flag(false) {
+  explicit OptimizationIOContainer(int problem_size_in)
+      : problem_size(problem_size_in), best_objective_value_so_far(0.0), best_point(problem_size), found_flag(false) {
   }
 
   /*!\rst
@@ -405,7 +406,11 @@ struct OptimizationIOContainer final {
       :best_objective_value: the best objective function value seen so far
       :best_point: the point to associate with best_objective_value
   \endrst*/
-  OptimizationIOContainer(int problem_size_in, double best_objective_value, double const * restrict best_point_in) : problem_size(problem_size_in), best_objective_value_so_far(best_objective_value), best_point(best_point_in, best_point_in + problem_size), found_flag(false) {
+  OptimizationIOContainer(int problem_size_in, double best_objective_value, double const * restrict best_point_in)
+      : problem_size(problem_size_in),
+        best_objective_value_so_far(best_objective_value),
+        best_point(best_point_in, best_point_in + problem_size),
+        found_flag(false) {
   }
 
   OptimizationIOContainer(OptimizationIOContainer&& OL_UNUSED(other)) = default;
@@ -414,7 +419,8 @@ struct OptimizationIOContainer final {
   const int problem_size;
   //! the best objective function value seen
   double best_objective_value_so_far;
-  //! the point producing ``best_objective_value_so_far`` after successful optimizzation (``found_flag = true``); otherwise it contains the original, unmodified values from when the function was called
+  //! the point producing ``best_objective_value_so_far`` after successful optimizzation (``found_flag = true``);
+  //! otherwise it contains the original, unmodified values from when the function was called
   std::vector<double> best_point;
   //! true if the optimizer found improvement
   bool found_flag;
@@ -491,7 +497,12 @@ struct OptimizationIOContainer final {
   TODO(GH-186): The next_point output is redundant with objective_state.GetCurrentPoint(). Remove it.
 \endrst*/
 template <typename ObjectiveFunctionEvaluator, typename DomainType>
-OL_NONNULL_POINTERS void GradientDescentOptimization(const ObjectiveFunctionEvaluator& objective_evaluator, const GradientDescentParameters& gd_parameters, const DomainType& domain, typename ObjectiveFunctionEvaluator::StateType * objective_state, double * restrict next_point) {
+OL_NONNULL_POINTERS void GradientDescentOptimization(
+    const ObjectiveFunctionEvaluator& objective_evaluator,
+    const GradientDescentParameters& gd_parameters,
+    const DomainType& domain,
+    typename ObjectiveFunctionEvaluator::StateType * objective_state,
+    double * restrict next_point) {
   const int problem_size = objective_state->GetProblemSize();
   std::vector<double> grad_objective(problem_size);
   std::vector<double> step(problem_size);
@@ -686,7 +697,11 @@ OL_NONNULL_POINTERS void GradientDescentOptimization(const ObjectiveFunctionEval
     number of errors
 \endrst*/
 template <typename ObjectiveFunctionEvaluator, typename DomainType>
-OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT int NewtonOptimization(const ObjectiveFunctionEvaluator& objective_evaluator, const NewtonParameters& newton_parameters, const DomainType& domain, typename ObjectiveFunctionEvaluator::StateType * objective_state) {
+OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT int NewtonOptimization(
+    const ObjectiveFunctionEvaluator& objective_evaluator,
+    const NewtonParameters& newton_parameters,
+    const DomainType& domain,
+    typename ObjectiveFunctionEvaluator::StateType * objective_state) {
   if (unlikely(newton_parameters.max_num_restarts <= 0)) {
     return 0;
   }
@@ -820,7 +835,10 @@ class NullOptimizer final {
     \return
       number of errors, always 0
   \endrst*/
-  int Optimize(const ObjectiveFunctionEvaluator& OL_UNUSED(objective_evaluator), const ParameterStruct& OL_UNUSED(parameters), const DomainType& OL_UNUSED(domain), typename ObjectiveFunctionEvaluator::StateType * OL_UNUSED(objective_state)) const noexcept OL_NONNULL_POINTERS OL_PURE_FUNCTION {
+  int Optimize(const ObjectiveFunctionEvaluator& OL_UNUSED(objective_evaluator),
+               const ParameterStruct& OL_UNUSED(parameters), const DomainType& OL_UNUSED(domain),
+               typename ObjectiveFunctionEvaluator::StateType * OL_UNUSED(objective_state))
+      const noexcept OL_NONNULL_POINTERS OL_PURE_FUNCTION {
     return 0;
   }
 
@@ -879,7 +897,9 @@ class GradientDescentOptimizer final {
     \return
       number of errors, always 0
   \endrst*/
-  int Optimize(const ObjectiveFunctionEvaluator& objective_evaluator, const ParameterStruct& gd_parameters, const DomainType& domain, typename ObjectiveFunctionEvaluator::StateType * objective_state) const OL_NONNULL_POINTERS {
+  int Optimize(const ObjectiveFunctionEvaluator& objective_evaluator, const ParameterStruct& gd_parameters,
+               const DomainType& domain, typename ObjectiveFunctionEvaluator::StateType * objective_state)
+      const OL_NONNULL_POINTERS {
     if (unlikely(gd_parameters.max_num_restarts <= 0)) {
       return 0;
     }
@@ -964,7 +984,9 @@ class NewtonOptimizer final {
     \return
       number of errors
   \endrst*/
-  int Optimize(const ObjectiveFunctionEvaluator& objective_evaluator, const ParameterStruct& newton_parameters, const DomainType& domain, typename ObjectiveFunctionEvaluator::StateType * objective_state) const OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT {
+  int Optimize(const ObjectiveFunctionEvaluator& objective_evaluator, const ParameterStruct& newton_parameters,
+               const DomainType& domain, typename ObjectiveFunctionEvaluator::StateType * objective_state)
+      const OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT {
     int total_errors = 0;
 
     total_errors += NewtonOptimization(objective_evaluator, newton_parameters, domain, objective_state);
@@ -972,7 +994,13 @@ class NewtonOptimizer final {
     // TODO(GH-174): If newton_parameters becomes a class member, so should this refinement version.
     const int max_num_steps_refinement = 10;  // max number of newton steps; don't need many here b/c it should already be converged
     const double time_factor_refinement = 1.0e40;  // scaling factor high enough to remove diagonal dominance adjustment
-    ParameterStruct newton_parameters_refinement(1, max_num_steps_refinement, newton_parameters.gamma, time_factor_refinement, newton_parameters.max_relative_change, newton_parameters.tolerance);
+    ParameterStruct newton_parameters_refinement(
+        1,
+        max_num_steps_refinement,
+        newton_parameters.gamma,
+        time_factor_refinement, newton_parameters.max_relative_change,
+        newton_parameters.tolerance);
+
     total_errors += NewtonOptimization(objective_evaluator, newton_parameters_refinement, domain, objective_state);
     return total_errors;
   }
@@ -1075,7 +1103,11 @@ class MultistartOptimizer final {
     Unforutnately openmp doesn't let you choose that parameter programmatically. This would be nice for testing.
     enough
   \endrst*/
-  void MultistartOptimize(const Optimizer& optimizer, const ObjectiveFunctionEvaluator& objective_evaluator, const ParameterStruct& optimizer_parameters, const DomainType& domain, double const * restrict initial_guesses, int num_multistarts, int max_num_threads, int chunk_size, typename ObjectiveFunctionEvaluator::StateType * objective_state_vector, double * restrict function_values, OptimizationIOContainer * restrict io_container) {
+  void MultistartOptimize(const Optimizer& optimizer, const ObjectiveFunctionEvaluator& objective_evaluator,
+                          const ParameterStruct& optimizer_parameters, const DomainType& domain,
+                          double const * restrict initial_guesses, int num_multistarts, int max_num_threads,
+                          int chunk_size, typename ObjectiveFunctionEvaluator::StateType * objective_state_vector,
+                          double * restrict function_values, OptimizationIOContainer * restrict io_container) {
     const int problem_size = objective_state_vector[0].GetProblemSize();
 
     // exception_capture_flag "guards" captured_exception. std::called_once() guarantees that will only execute
