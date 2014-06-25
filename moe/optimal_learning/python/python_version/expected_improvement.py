@@ -9,7 +9,7 @@ import numpy
 import scipy.linalg
 import scipy.stats
 
-from moe.optimal_learning.python.constant import DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS, DEFAULT_EXPECTED_IMPROVEMENT_MAX_NUM_THREADS
+from moe.optimal_learning.python.constant import DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS, DEFAULT_MAX_NUM_THREADS
 from moe.optimal_learning.python.interfaces.expected_improvement_interface import ExpectedImprovementInterface
 from moe.optimal_learning.python.interfaces.optimization_interface import OptimizableInterface
 from moe.optimal_learning.python.python_version.optimization import multistart_optimize, NullOptimizer
@@ -20,7 +20,7 @@ def multistart_expected_improvement_optimization(
         num_multistarts,
         num_to_sample,
         randomness=None,
-        max_num_threads=DEFAULT_EXPECTED_IMPROVEMENT_MAX_NUM_THREADS,
+        max_num_threads=DEFAULT_MAX_NUM_THREADS,
         status=None,
 ):
     """Solve the q,p-EI problem, returning the optimal set of q points to sample CONCURRENTLY in future experiments.
@@ -166,7 +166,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
             self,
             points_to_evaluate,
             randomness=None,
-            max_num_threads=DEFAULT_EXPECTED_IMPROVEMENT_MAX_NUM_THREADS,
+            max_num_threads=DEFAULT_MAX_NUM_THREADS,
             status=None,
     ):
         """Evaluate Expected Improvement (q,p-EI) over a specified list of ``points_to_evaluate``.

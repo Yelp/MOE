@@ -6,15 +6,6 @@ from moe.optimal_learning.python.geometry_utils import ClosedInterval
 from moe.optimal_learning.python.linkers import DOMAIN_TYPES_TO_DOMAIN_LINKS, COVARIANCE_TYPES_TO_CLASSES, OPTIMIZATION_TYPES_TO_OPTIMIZATION_METHODS
 
 
-def _build_domain_info(domain):
-    """Create and return a domain_info dictionary from a :class:`~moe.optimal_learning.python.python_version.domain.Domain` object."""
-    return {
-            'domain_type': domain.domain_type,
-            'dim': domain.dim,
-            'domain_bounds': domain._domain_bounds,
-            }
-
-
 def _make_domain_from_params(params, domain_info_key="domain_info", python_version=False):
     """Create and return a C++ ingestable domain from the request params.
 
@@ -36,14 +27,6 @@ def _make_domain_from_params(params, domain_info_key="domain_info", python_versi
         domain_class = DOMAIN_TYPES_TO_DOMAIN_LINKS[domain_info.get('domain_type')].cpp_domain_class
 
     return domain_class(domain_bounds_iterable)
-
-
-def _build_covariance_info(covariance):
-    """Create and return a covariance_info dictionary from a :class:`~moe.optimal_learning.python.python_version.covaraince.Covaraince` object."""
-    return {
-            'covariance_type': covariance.covariance_type,
-            'hyperparameters': covariance.hyperparameters.tolist(),
-            }
 
 
 def _make_covariance_of_process_from_params(params):

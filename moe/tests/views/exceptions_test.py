@@ -14,8 +14,8 @@ from webtest.app import AppError
 from moe.tests.views.rest_gaussian_process_test_case import RestGaussianProcessTestCase
 from moe.views.constant import ALL_REST_MOE_ROUTES, GP_MEAN_VAR_ENDPOINT, GP_NEXT_POINTS_EPI_ENDPOINT
 from moe.views.exceptions import general_error, failed_colander_validation
-from moe.views.rest.gp_mean_var import GpMeanVarRequest, GpMeanVarView
 from moe.views.gp_next_points_pretty_view import GpNextPointsRequest, GpNextPointsPrettyView
+from moe.views.rest.gp_mean_var import GpMeanVarRequest, GpMeanVarView
 from moe.views.utils import _make_gp_from_params
 
 
