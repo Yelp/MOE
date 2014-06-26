@@ -1166,7 +1166,7 @@ struct OnePotentialSampleExpectedImprovementState final {
   /*!\rst
     Constructor wrapper to match the signature of the ctor for ExpectedImprovementState().
   \endrst*/
-  OnePotentialSampleExpectedImprovementState(const EvaluatorType& ei_evaluator, double const * restrict points_to_sample, double const * restrict OL_UNUSED(points_being_sampled), int OL_UNUSED(num_to_sample_in), int OL_UNUSED(num_being_sampled_in), bool configure_for_gradients, NormalRNG * OL_UNUSED(normal_rng_in))
+  OnePotentialSampleExpectedImprovementState(const EvaluatorType& ei_evaluator, double const * restrict points_to_sample, double const * restrict OL_UNUSED(points_being_sampled), int OL_UNUSED(num_to_sample_in), int OL_UNUSED(num_being_sampled_in), bool configure_for_gradients, NormalRNGInterface * OL_UNUSED(normal_rng_in))
       : OnePotentialSampleExpectedImprovementState(ei_evaluator, points_to_sample, configure_for_gradients) {
   }
 

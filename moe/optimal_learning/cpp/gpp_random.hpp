@@ -44,12 +44,19 @@
 namespace optimal_learning {
 
 /*!\rst
-  Abstract class implemented by both NormalRNG & NormalRNGSimulator. Currently it only has two pure virtual functions, generate a standard normal random number and reset seed, which provide the most basic functionality a NormalRNG can do.
+  Abstract class for a functor for generating random numbers distributed ~ N(0, 1) (i.e., standard normal).
+  This interface currently does not specify many facilities for seeding the underlying RNG as these 
+  (particularly variable width) can vary by implementation.
+
+  This class *only* has pure virtual functions.
 \endrst*/
 class NormalRNGInterface {
  public:
   /*!\rst
     Generate a random number from standard normal distribution.
+
+    \return
+      a random number from a standard (``N(0, 1)``) normal distribution
   \endrst*/
   virtual double operator()() =0;
 

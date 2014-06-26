@@ -42,18 +42,6 @@ int RunRandomPointGeneratorTests() OL_WARN_UNUSED_RESULT;
 \endrst*/
 int RandomNumberGeneratorContainerTest() OL_WARN_UNUSED_RESULT;
 
-/*!\rst
-  Checks that NormalRNGSimulator is behaving correctly:
-
-  * Tests index increments as expected
-  * Tests ResetToMostRecentSeed reset index to 0
-  * Tests exception handling when number of queries of random numbers exceeds
-  * size of the random table
-
-  \return
-    number of test failures: 0 if NormalRNGSimulator behaving correctly
-\endrst*/
-int NormalRNGSimulatorTest() OL_WARN_UNUSED_RESULT;
 }  // end namespace optimal_learning
 
 #endif  // MOE_OPTIMAL_LEARNING_CPP_GPP_RANDOM_TEST_HPP_

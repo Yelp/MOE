@@ -365,35 +365,17 @@ OL_WARN_UNUSED_RESULT int RandomNumberGeneratorContainerTestCore() {
   return total_errors;
 }
 
-}  // end unnamed namespace
-
 /*!\rst
-  .. Note:: only NormalRNG is meant to be used multi-threaded, so UniformRandomGenerator
-      is not tested for generating unique seeds in a multi-threaded environment
+  Checks that NormalRNGSimulator is behaving correctly:
+
+  * Tests index increments as expected
+  * Tests ResetToMostRecentSeed reset index to 0
+  * Tests exception handling when number of queries of random numbers exceeds
+  * size of the random table
+
+  \return
+    number of test failures: 0 if NormalRNGSimulator behaving correctly
 \endrst*/
-int RandomNumberGeneratorContainerTest() {
-  int total_errors = 0;
-  int current_errors = 0;
-
-  current_errors = RandomNumberGeneratorContainerTestCore<UniformRandomGenerator>();
-  if (current_errors != 0) {
-    OL_PARTIAL_FAILURE_PRINTF("UniformRandomGenerator failed with %d errors\n", current_errors);
-  } else {
-    OL_PARTIAL_SUCCESS_PRINTF("UniformRandomGenerator passed all tests\n");
-  }
-  total_errors += current_errors;
-
-  current_errors = RandomNumberGeneratorContainerTestCore<NormalRNG>();
-  if (current_errors != 0) {
-    OL_PARTIAL_FAILURE_PRINTF("NormalRNG failed with %d errors\n", current_errors);
-  } else {
-    OL_PARTIAL_SUCCESS_PRINTF("NormalRNG passed all tests\n");
-  }
-  total_errors += current_errors;
-
-  return total_errors;
-}
-
 int NormalRNGSimulatorTest() {
   int total_errors = 0;
   int random_table_size = 500;
@@ -422,15 +404,45 @@ int NormalRNGSimulatorTest() {
     ++total_errors;
   } catch (const OptimalLearningException& exception) {
   }
-  if (total_errors != 0) {
-    OL_PARTIAL_FAILURE_PRINTF("NormalRNGSimulator failed with %d errors\n", total_errors);
-  } else {
-    OL_PARTIAL_SUCCESS_PRINTF("NormalRNGSimulator passed all tests\n");
-  }
+
   return total_errors;
 }
 
+}  // end unnamed namespace
 
+/*!\rst
+  .. Note:: only NormalRNG is meant to be used multi-threaded, so UniformRandomGenerator
+      is not tested for generating unique seeds in a multi-threaded environment
+\endrst*/
+int RandomNumberGeneratorContainerTest() {
+  int total_errors = 0;
+  int current_errors = 0;
 
+  current_errors = RandomNumberGeneratorContainerTestCore<UniformRandomGenerator>();
+  if (current_errors != 0) {
+    OL_PARTIAL_FAILURE_PRINTF("UniformRandomGenerator failed with %d errors\n", current_errors);
+  } else {
+    OL_PARTIAL_SUCCESS_PRINTF("UniformRandomGenerator passed all tests\n");
+  }
+  total_errors += current_errors;
+
+  current_errors = RandomNumberGeneratorContainerTestCore<NormalRNG>();
+  if (current_errors != 0) {
+    OL_PARTIAL_FAILURE_PRINTF("NormalRNG failed with %d errors\n", current_errors);
+  } else {
+    OL_PARTIAL_SUCCESS_PRINTF("NormalRNG passed all tests\n");
+  }
+  total_errors += current_errors;
+
+  current_errors = NormalRNGSimulatorTest();
+  if (current_errors != 0) {
+    OL_PARTIAL_FAILURE_PRINTF("NormalRNGSimulator failed with %d errors\n", current_errors);
+  } else {
+    OL_PARTIAL_SUCCESS_PRINTF("NormalRNGSimulator passed all tests\n");
+  }
+  total_errors += current_errors;
+
+  return total_errors;
+}
 
 }  // end namespace optimal_learning
