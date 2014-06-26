@@ -30,7 +30,7 @@ class GpHyperOptRequest(colander.MappingSchema):
     **Optional fields**
 
         :covariance_info: a :class:`moe.views.schemas.CovarianceInfo` dict of covariance information, used as a starting point for optimization
-        :optimiaztion_info: a :class:`moe.views.schemas.OptimizationInfo` dict of optimization information
+        :optimization_info: a :class:`moe.views.schemas.OptimizationInfo` dict of optimization information
 
     **Example Request**
 
@@ -68,6 +68,9 @@ class GpHyperOptRequest(colander.MappingSchema):
                     ...
                     },
                 },
+            'log_likelihood_info': {
+                'log_likelihood': 'log_marginal_likelihood'
+                }
         }
 
     """
@@ -80,6 +83,10 @@ class GpHyperOptRequest(colander.MappingSchema):
     hyperparameter_domain_info = BoundedDomainInfo()
     optimization_info = OptimizationInfo(
             missing=OptimizationInfo().deserialize({}),
+            )
+    log_likelihood_info = colander.SchemaNode(
+            colander.String(),
+            validator=colander.OneOf(LOGLIKELIHOOD_TYPES_TO_LOGLIKELIHOOD_METHODS)
             )
 
 
@@ -187,10 +194,15 @@ class GpHyperOptView(OptimizableGpPrettyView):
         gaussian_process = _make_gp_from_params(params)
         covariance_of_process = gaussian_process._covariance
         optimizer_class, optimization_parameters, num_random_samples = _make_optimization_parameters_from_params(params)
+        log_likelihood_type =  _make_log_likelihood_from_params(params)
+
+        if optimizer_class != cpp_optimization.NullOptimizer and log_likelihood_type == C_GP.LogLikelihoodTypes.leave_one_out_log_likelihood:
+            raise NotImplementedError('LeaveOneOutLogLikehood is not compatible with Newton\'s Method or Gradient Descent')
 
         log_likelihood_eval = GaussianProcessLogLikelihood(
             covariance_of_process,
             gaussian_process._historical_data,
+            log_likelihood_type,
         )
 
         log_likelihood_optimizer = optimizer_class(

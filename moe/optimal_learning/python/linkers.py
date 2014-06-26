@@ -2,14 +2,14 @@
 """Links between the python and cpp_wrapper implementations of domains, covariances and optimizations."""
 from collections import namedtuple
 
-from moe.optimal_learning.python.constant import SQUARE_EXPONENTIAL_COVARIANCE_TYPE, TENSOR_PRODUCT_DOMAIN_TYPE, SIMPLEX_INTERSECT_TENSOR_PRODUCT_DOMAIN_TYPE, NULL_OPTIMIZER, NEWTON_OPTIMIZER, GRADIENT_DESCENT_OPTIMIZER
+from moe.optimal_learning.python.constant import SQUARE_EXPONENTIAL_COVARIANCE_TYPE, TENSOR_PRODUCT_DOMAIN_TYPE, SIMPLEX_INTERSECT_TENSOR_PRODUCT_DOMAIN_TYPE, NULL_OPTIMIZER, NEWTON_OPTIMIZER, GRADIENT_DESCENT_OPTIMIZER, LOGLIKELIHOOD_TYPES_TO_LOGLIKELIHOOD_METHODS, LOG_LEAVE_ONE_OUT_LIKELIHOOD, LOG_MARGINAL_LIKELIHOOD  
 import moe.optimal_learning.python.cpp_wrappers.covariance as cpp_covariance
 import moe.optimal_learning.python.cpp_wrappers.domain as cpp_domain
 import moe.optimal_learning.python.cpp_wrappers.optimization as cpp_optimization
 import moe.optimal_learning.python.python_version.covariance as python_covariance
 import moe.optimal_learning.python.python_version.domain as python_domain
 import moe.optimal_learning.python.python_version.optimization as python_optimization
-
+import moe.build.GPP as C_GP
 
 # Covariance
 CovarianceLinks = namedtuple(
@@ -82,3 +82,24 @@ OPTIMIZATION_TYPES_TO_OPTIMIZATION_METHODS = {
             cpp_optimizer_class=cpp_optimization.GradientDescentOptimizer,
             ),
         }
+
+# Log Likelihood
+LogLikelihoodMethod = namedtuple(
+        'LogLikelihoodMethod',
+        [
+            'loglikelihood_type'
+            'cpp_loglikelihood_method',
+            ]
+        )
+
+LOGLIKELIHOOD_TYPES_TO_LOGLIKELIHOOD_METHODS = {
+        LOG_MARGINAL_LIKELIHOOD: LogLikelihoodMethod(
+            loglikelihood_type=LOG_MARGINAL_LIKELIHOOD
+            cpp_loglikelihood_method=C_GP.LogLikelihoodTypes.log_marginal_likelihood
+            ),
+        LEAVE_ONE_OUT_LOG_LIKELIHOOD: LogLikelihoodMethod(
+            loglikelihood_type=LOG_LEAVE_ONE_OUT_LIKELIHOOD
+            cpp_loglikelihood_method=C_GP.LogLikelihoodTypes.leave_one_out_log_likelihood
+            ),
+        }
+

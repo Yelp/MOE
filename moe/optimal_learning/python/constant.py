@@ -30,6 +30,9 @@ NULL_OPTIMIZER = 'null_optimizer'
 NEWTON_OPTIMIZER = 'newton_optimizer'
 GRADIENT_DESCENT_OPTIMIZER = 'gradient_descent_optimizer'
 
+LOG_LEAVE_ONE_OUT_LIKELIHOOD = 'log_leave_one_out_likelihood'
+LOG_MARGINAL_LIKELIHOOD = 'log_marginal_likelihood'
+
 # EI Defaults
 DEFAULT_EXPECTED_IMPROVEMENT_MAX_NUM_THREADS = 1
 

@@ -95,6 +95,10 @@ def _make_optimization_parameters_from_params(params):
     return optimization_method.cpp_optimizer_class, optimization_parameters, num_random_samples
 
 
+def _make_log_likelihood_from_params(params):
+    return LOGLIKELIHOOD_TYPES_TO_LOGLIKELIHOOD_METHODS[params.get('log_likelihood_info')] 
+
+
 def _make_gp_from_params(params):
     """Create and return a C++ backed gaussian_process from the request params as a dict.
 
