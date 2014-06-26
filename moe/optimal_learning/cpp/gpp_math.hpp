@@ -898,7 +898,7 @@ struct ExpectedImprovementState final {
          \* The NormalRNG object must already be seeded.  If multithreaded computation is used for EI, then every state object
          must have a different NormalRNG (different seeds, not just different objects).
   \endrst*/
-  ExpectedImprovementState(const EvaluatorType& ei_evaluator, double const * restrict points_to_sample, double const * restrict points_being_sampled, int num_to_sample_in, int num_being_sampled_in, bool configure_for_gradients, NormalRNG * normal_rng_in)
+  ExpectedImprovementState(const EvaluatorType& ei_evaluator, double const * restrict points_to_sample, double const * restrict points_being_sampled, int num_to_sample_in, int num_being_sampled_in, bool configure_for_gradients, NormalRNGInterface * normal_rng_in)
       : dim(ei_evaluator.dim()),
         num_to_sample(num_to_sample_in),
         num_being_sampled(num_being_sampled_in),
@@ -1012,7 +1012,7 @@ struct ExpectedImprovementState final {
   GaussianProcess::StateType points_to_sample_state;
 
   //! random number generator
-  NormalRNG * normal_rng;
+  NormalRNGInterface * normal_rng;
 
   // temporary storage: preallocated space used by ExpectedImprovementEvaluator's member functions
   //! the mean of the GP evaluated at union_of_points
