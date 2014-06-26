@@ -15,7 +15,7 @@ from moe.views.utils import _make_optimization_parameters_from_params
 
 class TestGpNextPointsViews(RestGaussianProcessTestCase):
 
-    """Test that the /gp/next_points/* endpoints do the same thing as the C++ interface."""
+    """Integration test for the /gp/next_points/* endpoints."""
 
     precompute_gaussian_process_data = True
     num_sampled_list = (1, 2, 10)
@@ -86,7 +86,7 @@ class TestGpNextPointsViews(RestGaussianProcessTestCase):
                 )
 
     def test_interface_returns_same_as_cpp(self):
-        """Test that the /gp/next_points/* endpoints do the same thing as the C++ interface."""
+        """Integration test for the /gp/next_points/* endpoints."""
         for moe_route in ALL_NEXT_POINTS_MOE_ROUTES:
             for test_case in self.gp_test_environments:
                 for num_to_sample in (1, 2, 4):

@@ -15,7 +15,7 @@ from moe.views.utils import _make_optimization_parameters_from_params
 
 class TestGpHyperOptViews(RestGaussianProcessTestCase):
 
-    """Test that the /gp/hyper_opt/* endpoints do the same thing as the C++ interface."""
+    """Integration test for the /gp/hyper_opt endpoint."""
 
     precompute_gaussian_process_data = True
 
@@ -123,7 +123,7 @@ class TestGpHyperOptViews(RestGaussianProcessTestCase):
                 )
 
     def test_interface_returns_same_as_cpp(self):
-        """Test that the /gp/hyper_opt endpoint do the same thing as the C++ interface."""
+        """Integration test for the /gp/hyper_opt endpoint."""
         moe_route = GP_HYPER_OPT_MOE_ROUTE
         for test_case in self.gp_test_environments:
             python_domain, python_gp = test_case
