@@ -20,7 +20,7 @@ class TestGpHyperOptViews(RestGaussianProcessTestCase):
     precompute_gaussian_process_data = True
 
     def _build_json_payload(self, domain, gaussian_process, covariance):
-        """Create a json_payload to POST to the /gp/next_points/* endpoint with all needed info."""
+        """Create a json_payload to POST to the /gp/hyper_opt endpoint with all needed info."""
         hyper_dim = domain.dim + 1
         dict_to_dump = {
             'mc_iterations': TEST_EXPECTED_IMPROVEMENT_MC_ITERATIONS,
