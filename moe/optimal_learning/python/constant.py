@@ -4,6 +4,8 @@ from collections import namedtuple
 
 import moe.optimal_learning.python.python_version.optimization as python_optimization
 
+# Multithreading constants
+DEFAULT_MAX_NUM_THREADS = 1
 
 # Covariance constants
 SQUARE_EXPONENTIAL_COVARIANCE_TYPE = 'square_exponential'
@@ -34,8 +36,6 @@ LOG_LEAVE_ONE_OUT_LIKELIHOOD = 'log_leave_one_out_likelihood'
 LOG_MARGINAL_LIKELIHOOD = 'log_marginal_likelihood'
 
 # EI Defaults
-DEFAULT_EXPECTED_IMPROVEMENT_MAX_NUM_THREADS = 1
-
 DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS = 10000
 TEST_EXPECTED_IMPROVEMENT_MC_ITERATIONS = 50
 

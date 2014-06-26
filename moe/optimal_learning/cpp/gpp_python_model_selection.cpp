@@ -62,7 +62,7 @@ double ComputeLogLikelihoodWrapper(const boost::python::list& points_sampled, co
     }
     default: {
       double log_likelihood = -std::numeric_limits<double>::max();
-      OL_THROW_EXCEPTION(RuntimeException, "ERROR: invalid objective mode choice. Setting log likelihood to -DBL_MAX.");
+      OL_THROW_EXCEPTION(OptimalLearningException, "ERROR: invalid objective mode choice. Setting log likelihood to -DBL_MAX.");
       return log_likelihood;
     }
   }  // end switch over objective_type
@@ -92,7 +92,7 @@ boost::python::list ComputeHyperparameterGradLogLikelihoodWrapper(const boost::p
     }
     default: {
       std::fill(grad_log_likelihood.begin(), grad_log_likelihood.end(), std::numeric_limits<double>::max());
-      OL_THROW_EXCEPTION(RuntimeException, "ERROR: invalid objective mode choice. Setting all gradients to DBL_MAX.");
+      OL_THROW_EXCEPTION(OptimalLearningException, "ERROR: invalid objective mode choice. Setting all gradients to DBL_MAX.");
       break;
     }
   }  // end switch over objective_type
@@ -159,7 +159,7 @@ void DispatchHyperparameterOptimization(const boost::python::object& optimizatio
     }  // end case kNewton for optimizer_type
     default: {
       std::fill(new_hyperparameters, new_hyperparameters + covariance.GetNumberOfHyperparameters(), 1.0);
-      OL_THROW_EXCEPTION(RuntimeException, "ERROR: invalid optimizer choice. Setting all hyperparameters to 1.0.");
+      OL_THROW_EXCEPTION(OptimalLearningException, "ERROR: invalid optimizer choice. Setting all hyperparameters to 1.0.");
       break;
     }
   }  // end switch over optimzer_type for LogLikelihoodTypes::kLogMarginalLikelihood
@@ -196,7 +196,7 @@ boost::python::list MultistartHyperparameterOptimizationWrapper(const boost::pyt
     }  // end case LogLikelihoodTypes::kLeaveOneOutLogLikelihood
     default: {
       std::fill(new_hyperparameters.begin(), new_hyperparameters.end(), 1.0);
-      OL_THROW_EXCEPTION(RuntimeException, "ERROR: invalid objective type choice. Setting all hyperparameters to 1.0.");
+      OL_THROW_EXCEPTION(OptimalLearningException, "ERROR: invalid objective type choice. Setting all hyperparameters to 1.0.");
       break;
     }
   }  // end switch over objective_type
@@ -232,7 +232,7 @@ boost::python::list EvaluateLogLikelihoodAtHyperparameterListWrapper(const boost
     }
     default: {
       std::fill(result_function_values_C.begin(), result_function_values_C.end(), -std::numeric_limits<double>::max());
-      OL_THROW_EXCEPTION(RuntimeException, "ERROR: invalid objective mode choice. Setting all results to -DBL_MAX.");
+      OL_THROW_EXCEPTION(OptimalLearningException, "ERROR: invalid objective mode choice. Setting all results to -DBL_MAX.");
       break;
     }
   }

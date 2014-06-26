@@ -11,7 +11,7 @@ import scipy.linalg
 import scipy.stats
 import moe.optimal_learning.python.python_version.python_utils as python_utils
 
-from moe.optimal_learning.python.constant import DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS, DEFAULT_EXPECTED_IMPROVEMENT_MAX_NUM_THREADS
+from moe.optimal_learning.python.constant import DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS, DEFAULT_MAX_NUM_THREADS
 from moe.optimal_learning.python.interfaces.expected_improvement_interface import ExpectedImprovementInterface
 from moe.optimal_learning.python.interfaces.optimization_interface import OptimizableInterface
 from moe.optimal_learning.python.python_version.optimization import multistart_optimize, NullOptimizer
@@ -22,7 +22,7 @@ def multistart_expected_improvement_optimization(
         num_multistarts,
         num_to_sample,
         randomness=None,
-        max_num_threads=DEFAULT_EXPECTED_IMPROVEMENT_MAX_NUM_THREADS,
+        max_num_threads=DEFAULT_MAX_NUM_THREADS,
         status=None,
 ):
     """Solve the q,p-EI problem, returning the optimal set of q points to sample CONCURRENTLY in future experiments.
@@ -125,9 +125,9 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
             self._points_being_sampled = numpy.copy(points_being_sampled)
 
         if points_to_sample is None:
-            self.set_current_point(numpy.zeros((1, gaussian_process.dim)))
+            self.current_point = numpy.zeros((1, gaussian_process.dim))
         else:
-            self.set_current_point(points_to_sample)
+            self.current_point = points_to_sample
 
     @property
     def dim(self):
@@ -162,11 +162,13 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         """
         self._points_to_sample = numpy.copy(numpy.atleast_2d(points_to_sample))
 
+    current_point = property(get_current_point, set_current_point)
+
     def evaluate_at_point_list(
             self,
             points_to_evaluate,
             randomness=None,
-            max_num_threads=DEFAULT_EXPECTED_IMPROVEMENT_MAX_NUM_THREADS,
+            max_num_threads=DEFAULT_MAX_NUM_THREADS,
             status=None,
     ):
         """Evaluate Expected Improvement (q,p-EI) over a specified list of ``points_to_evaluate``.

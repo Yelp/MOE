@@ -6,7 +6,6 @@ from moe.optimal_learning.python.constant import TENSOR_PRODUCT_DOMAIN_TYPE
 from moe.optimal_learning.python.data_containers import HistoricalData
 from moe.optimal_learning.python.geometry_utils import ClosedInterval
 from moe.optimal_learning.python.linkers import DOMAIN_TYPES_TO_DOMAIN_LINKS
-from moe.views.utils import _build_domain_info
 
 DEFAULT_DOMAIN = TENSOR_PRODUCT_DOMAIN_TYPE
 
@@ -41,7 +40,7 @@ class Experiment(object):
     def build_json_payload(self):
         """Construct a json serializeable and MOE REST recognizeable dictionary of the experiment."""
         return {
-                'domain_info': _build_domain_info(self.domain),
+                'domain_info': self.domain.get_json_serializable_info(),
                 'gp_historical_info': self.historical_data.json_payload(),
                 }
 

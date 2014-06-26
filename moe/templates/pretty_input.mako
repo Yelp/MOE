@@ -9,6 +9,7 @@
     <div id="loading-screen"></div>
 </div>
 
+<script language="javascript" type="text/javascript" src="${request.static_url('moe:static/js/exception.js')}"></script>
 <script>
 $("#submit").click(function() {
     $("#loading-screen").html('<h1>Processing...</h1><div class="progress progress-striped active"><div class="progress-bar"  role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"><span class="sr-only">100% Complete</span></div></div>');
@@ -19,16 +20,9 @@ $("#submit").click(function() {
             $("#json-out").val( JSON.stringify(data) );
         }
     );
-    jqxhr.fail(function(jqXHR, textStatus, errorThrown) {
-        if (jqXHR.responseText.indexOf('DOCTYPE') !== -1){
-            alert("INTERNAL 500 ERROR\nCheck console.");
-        }else{
-            alert("500 ERROR\n" + jqXHR.responseText);
-        }
-    });
+    jqxhr.fail(optimalLearning.errorAlert);
     jqxhr.done(function() {
         $("#loading-screen").html('');
     });
 });
 </script>
-    

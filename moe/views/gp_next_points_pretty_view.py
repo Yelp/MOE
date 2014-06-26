@@ -42,17 +42,17 @@ class GpNextPointsRequest(colander.MappingSchema):
         Content-Type: text/javascript
 
         {
-            'num_to_sample': 1,
-            'gp_historical_info': {
-                'points_sampled': [
-                        {'value_var': 0.01, 'value': 0.1, 'point': [0.0]},
-                        {'value_var': 0.01, 'value': 0.2, 'point': [1.0]}
+            "num_to_sample": 1,
+            "gp_historical_info": {
+                "points_sampled": [
+                        {"value_var": 0.01, "value": 0.1, "point": [0.0]},
+                        {"value_var": 0.01, "value": 0.2, "point": [1.0]}
                     ],
                 },
-            'domain_info': {
-                'dim': 1,
-                'domain_bounds': [
-                    {'min': 0.0, 'max': 1.0},
+            "domain_info": {
+                "dim": 1,
+                "domain_bounds": [
+                    {"min": 0.0, "max": 1.0},
                     ],
                 },
         }
@@ -64,32 +64,32 @@ class GpNextPointsRequest(colander.MappingSchema):
         Content-Type: text/javascript
 
         {
-            'num_to_sample': 1,
-            'points_being_sampled': [[0.2], [0.7]],
-            'mc_iterations': 10000,
-            'gp_historical_info': {
-                'points_sampled': [
-                        {'value_var': 0.01, 'value': 0.1, 'point': [0.0]},
-                        {'value_var': 0.01, 'value': 0.2, 'point': [1.0]}
+            "num_to_sample": 1,
+            "points_being_sampled": [[0.2], [0.7]],
+            "mc_iterations": 10000,
+            "gp_historical_info": {
+                "points_sampled": [
+                        {"value_var": 0.01, "value": 0.1, "point": [0.0]},
+                        {"value_var": 0.01, "value": 0.2, "point": [1.0]}
                     ],
                 },
-            'domain_info': {
-                'domain_type': 'tensor_product'
-                'dim': 1,
-                'domain_bounds': [
-                    {'min': 0.0, 'max': 1.0},
+            "domain_info": {
+                "domain_type": "tensor_product"
+                "dim": 1,
+                "domain_bounds": [
+                    {"min": 0.0, "max": 1.0},
                     ],
                 },
-            'covariance_info': {
-                'covariance_type': 'square_exponential',
-                'hyperparameters': [1.0, 1.0],
+            "covariance_info": {
+                "covariance_type": "square_exponential",
+                "hyperparameters": [1.0, 1.0],
                 },
-            'optimization_info': {
-                'optimization_type': 'gradient_descent_optimizer',
-                'num_multistarts': 200,
-                'num_random_samples': 4000,
-                'optimization_parameters': {
-                    'gamma': 0.5,
+            "optimization_info": {
+                "optimization_type": "gradient_descent_optimizer",
+                "num_multistarts": 200,
+                "num_random_samples": 4000,
+                "optimization_parameters": {
+                    "gamma": 0.5,
                     ...
                     },
                 },
@@ -231,7 +231,7 @@ class GpNextPointsPrettyView(OptimizableGpPrettyView):
                     **kwargs
                     )
 
-        expected_improvement_evaluator.set_current_point(next_points)
+        expected_improvement_evaluator.current_point = next_points
         expected_improvement = expected_improvement_evaluator.compute_expected_improvement()
 
         return self.form_response({
