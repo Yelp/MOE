@@ -9,7 +9,7 @@ import testify as T
 
 from moe.optimal_learning.python.constant import TEST_OPTIMIZATION_MULTISTARTS, TEST_GRADIENT_DESCENT_PARAMETERS, TEST_OPTIMIZATION_NUM_RANDOM_SAMPLES, TEST_EXPECTED_IMPROVEMENT_MC_ITERATIONS
 from moe.tests.views.rest_gaussian_process_test_case import RestGaussianProcessTestCase
-from moe.views.constant import GP_HYPER_OPT_MOE_ROUTE, GP_HYPER_OPT_PRETTY_ROUTE_NAME, GP_HYPER_OPT_ROUTE_NAME
+from moe.views.constant import GP_HYPER_OPT_MOE_ROUTE
 from moe.views.rest.gp_hyper_opt import GpHyperOptResponse, GpHyperOptView
 from moe.views.utils import _make_optimization_parameters_from_params
 
@@ -56,24 +56,22 @@ class TestGpHyperOptViews(RestGaussianProcessTestCase):
 
         # Test default test parameters get passed through
         json_payload = json.loads(self._build_json_payload(python_domain, python_gp, python_gp._covariance))
-        hyperparameter_domain_info = json_payload['hyperparameter_domain_info']
 
         request = pyramid.testing.DummyRequest(post=json_payload)
         request.json_body = json_payload
         view = GpHyperOptView(request)
         params = view.get_params_from_request()
-        request_hyperparameters = params['hyperparameter_domain_info']
-        
+
         T.assert_dicts_equal(params['hyperparameter_domain_info'], json_payload['hyperparameter_domain_info'])
 
         # Test arbitrary parameters get passed through
         json_payload['hyperparameter_domain_info']['domain_bounds'] = []
         for i in range(json_payload['hyperparameter_domain_info']['dim']):
             json_payload['hyperparameter_domain_info']['domain_bounds'].append({
-                'min': 0.2*i,
-                'max': 0.5*i,
+                'min': 0.2 * i,
+                'max': 0.5 * i,
                 })
-        
+
         request = pyramid.testing.DummyRequest(post=json_payload)
         request.json_body = json_payload
         view = GpHyperOptView(request)
