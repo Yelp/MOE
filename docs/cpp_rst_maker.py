@@ -67,11 +67,11 @@ def create_rst_file(file_base, files):
     )
     fout.write(
 """{0:s}
-=====
+{1:s}
 
 **Contents:**
 
-""".format(file_base)
+""".format(file_base, "="*len(file_base))
     )
     index_count = 1
     for file_type in ['hpp', 'cpp']:
@@ -84,11 +84,11 @@ def create_rst_file(file_base, files):
         if files[file_type] is not None:
             fout.write("""
 {0:s}
-------
+{1:s}
 
-.. doxygenfile:: {1:s}
+.. doxygenfile:: {2:s}
 
-""".format(files[file_type], files[file_type])
+""".format(files[file_type], '-'*len(files[file_type]), files[file_type])
             )
     fout.close()
 
