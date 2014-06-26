@@ -13,7 +13,7 @@ Welcome to MOE's documentation!
 .. _Github repo: https://github.com/sc932/MOE
 
 What is MOE?
------------
+------------
 
 MOE (Metric Optimization Engine) is a *fast and efficient*, *derivative-free*,  *black box*, *global* optimization framework for optimizing parameters of time *consuming* or *expensive* experiments and systems.
 
@@ -105,10 +105,10 @@ You can be up and optimizing in a matter of minutes.
 
 
 Quick Install
-----
+-------------
 
 Install in docker:
-....
+..................
 
 This is the recommended way to run the MOE REST server. All dependencies and building is done automatically and in an isolated container.
 
@@ -124,7 +124,7 @@ Docker (http://docs.docker.io/) is a container based virtualization framework. U
 The webserver and REST interface is now running on port 6543 from within the container.
 
 Build from source (linux and OSX 10.8 and 10.9 supported)
-....
+.........................................................
 
 :doc:`Full Install </install>`
 
@@ -132,7 +132,7 @@ Quick Start
 -----------
 
 REST/web server and interactive demo
-........
+....................................
 
 To get the REST server running locally, from the directory MOE is installed:
 
@@ -151,7 +151,7 @@ Or, from the command line,
 ``gp_ei`` endpoint documentation: :mod:`moe.views.rest.gp_ei`
 
 From ipython
-....
+............
 
 ::
 
@@ -166,7 +166,7 @@ From ipython
 ``easy_interface`` documentation: :doc:`moe.easy_interface`
 
 Within python
-....
+.............
 
 .. code-block:: python
 

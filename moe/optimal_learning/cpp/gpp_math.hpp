@@ -838,7 +838,7 @@ struct ExpectedImprovementState final {
   \endrst*/
   ExpectedImprovementState(const EvaluatorType& ei_evaluator, double const * restrict points_to_sample,
                            double const * restrict points_being_sampled, int num_to_sample_in,
-                           int num_being_sampled_in, bool configure_for_gradients, NormalRNG * normal_rng_in);
+                           int num_being_sampled_in, bool configure_for_gradients, NormalRNGInterface * normal_rng_in);
 
   ExpectedImprovementState(ExpectedImprovementState&& other);
 
@@ -928,7 +928,7 @@ struct ExpectedImprovementState final {
   GaussianProcess::StateType points_to_sample_state;
 
   //! random number generator
-  NormalRNG * normal_rng;
+  NormalRNGInterface * normal_rng;
 
   // temporary storage: preallocated space used by ExpectedImprovementEvaluator's member functions
   //! the mean of the GP evaluated at union_of_points
@@ -1079,7 +1079,7 @@ struct OnePotentialSampleExpectedImprovementState final {
                                              double const * restrict points_to_sample,
                                              double const * restrict OL_UNUSED(points_being_sampled),
                                              int OL_UNUSED(num_to_sample_in), int OL_UNUSED(num_being_sampled_in),
-                                             bool configure_for_gradients, NormalRNG * OL_UNUSED(normal_rng_in));
+                                             bool configure_for_gradients, NormalRNGInterface * OL_UNUSED(normal_rng_in));
 
   OnePotentialSampleExpectedImprovementState(OnePotentialSampleExpectedImprovementState&& other);
 

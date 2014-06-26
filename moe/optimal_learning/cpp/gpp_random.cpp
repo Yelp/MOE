@@ -96,8 +96,38 @@ NormalRNG::NormalRNG(EngineType::result_type seed, int thread_id) noexcept
   SetRandomizedSeed(seed, thread_id);
 }
 
+double NormalRNG::operator()() {
+  return normal_random_variable_();
+}
+
+void NormalRNG::ResetToMostRecentSeed() noexcept {
+  uniform_generator.ResetToMostRecentSeed();
+  // this is important: the underlying normal distribution likely generates numbers \emph{two} at a time.
+  // so re-seeding will not clear this pre-existing state without reseting.
+  ResetGenerator();
+}
+
 void NormalRNG::PrintState(std::ostream * out_stream) const {
   uniform_generator.PrintState(out_stream);
+}
+
+NormalRNGSimulator::NormalRNGSimulator(const std::vector<double>& random_number_table_in)
+    : random_number_table_(random_number_table_in),
+      index_(0) {
+}
+
+double NormalRNGSimulator::operator()() {
+  int size_of_table = random_number_table_.size();
+  if (index_ < size_of_table) {
+    ++index_;
+    return random_number_table_[index_];
+  } else {
+    OL_THROW_EXCEPTION(InvalidValueException<int>, "All random numbers stored in the RNG have been used up!", index_, size_of_table);
+  }
+}
+
+void NormalRNGSimulator::ResetToMostRecentSeed() noexcept {
+  index_ = 0;
 }
 
 /*!\rst

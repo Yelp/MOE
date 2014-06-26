@@ -14,7 +14,7 @@ from moe.views.constant import GP_HYPER_OPT_ROUTE_NAME, GP_HYPER_OPT_PRETTY_ROUT
 from moe.views.gp_pretty_view import GpPrettyView, PRETTY_RENDERER
 from moe.views.optimizable_gp_pretty_view import OptimizableGpPrettyView
 from moe.views.schemas import GpHistoricalInfo, CovarianceInfo, BoundedDomainInfo, OptimizationInfo, DomainInfo, ListOfFloats
-from moe.views.utils import _build_covariance_info, _make_domain_from_params, _make_gp_from_params, _make_optimization_parameters_from_params
+from moe.views.utils import _make_domain_from_params, _make_gp_from_params, _make_optimization_parameters_from_params
 
 
 class GpHyperOptRequest(colander.MappingSchema):
@@ -39,32 +39,32 @@ class GpHyperOptRequest(colander.MappingSchema):
         Content-Type: text/javascript
 
         {
-            'gp_historical_info': {
-                'points_sampled': [
-                        {'value_var': 0.01, 'value': 0.1, 'point': [0.0]},
-                        {'value_var': 0.01, 'value': 0.2, 'point': [1.0]}
+            "gp_historical_info": {
+                "points_sampled": [
+                        {"value_var": 0.01, "value": 0.1, "point": [0.0]},
+                        {"value_var": 0.01, "value": 0.2, "point": [1.0]}
                     ],
                 },
-            'domain_info': {
-                'dim': 1,
+            "domain_info": {
+                "dim": 1,
                 },
-            'covariance_info': {
-                'covariance_type': 'square_exponential',
-                'hyperparameters': [1.0, 1.0],
+            "covariance_info": {
+                "covariance_type": "square_exponential",
+                "hyperparameters": [1.0, 1.0],
                 },
-            'hyperparameter_domain_info': {
-                'dim': 2,
-                'domain_bounds': [
-                    {'min': 0.1, 'max': 2.0},
-                    {'min': 0.1, 'max': 2.0},
+            "hyperparameter_domain_info": {
+                "dim": 2,
+                "domain_bounds": [
+                    {"min": 0.1, "max": 2.0},
+                    {"min": 0.1, "max": 2.0},
                     ],
                 },
-            'optimization_info': {
-                'optimization_type': 'gradient_descent_optimizer',
-                'num_multistarts': 200,
-                'num_random_samples': 4000,
-                'optimization_parameters': {
-                    'gamma': 0.5,
+            "optimization_info": {
+                "optimization_type": "gradient_descent_optimizer",
+                "num_multistarts": 200,
+                "num_random_samples": 4000,
+                "optimization_parameters": {
+                    "gamma": 0.5,
                     ...
                     },
                 },
@@ -115,9 +115,9 @@ class GpHyperOptResponse(colander.MappingSchema):
 
         {
             "endpoint":"gp_hyper_opt",
-            'covariance_info': {
-                'covariance_type': 'square_exponential',
-                'hyperparameters': [0.88, 1.24],
+            "covariance_info": {
+                "covariance_type": "square_exponential",
+                "hyperparameters": [0.88, 1.24],
                 },
         }
 
@@ -213,7 +213,7 @@ class GpHyperOptView(OptimizableGpPrettyView):
 
         return self.form_response({
                 'endpoint': self._route_name,
-                'covariance_info': _build_covariance_info(covariance_of_process),
+                'covariance_info': covariance_of_process.get_json_serializable_info(),
                 'status': {
                     'log_likelihood': log_likelihood_eval.compute_log_likelihood(),
                     'grad_log_likelihood': log_likelihood_eval.compute_grad_log_likelihood().tolist(),

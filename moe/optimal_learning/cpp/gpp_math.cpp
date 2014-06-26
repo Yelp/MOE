@@ -1074,7 +1074,7 @@ ExpectedImprovementState::ExpectedImprovementState(const EvaluatorType& ei_evalu
                                                    double const * restrict points_to_sample,
                                                    double const * restrict points_being_sampled,
                                                    int num_to_sample_in, int num_being_sampled_in,
-                                                   bool configure_for_gradients, NormalRNG * normal_rng_in)
+                                                   bool configure_for_gradients, NormalRNGInterface * normal_rng_in)
     : dim(ei_evaluator.dim()),
       num_to_sample(num_to_sample_in),
       num_being_sampled(num_being_sampled_in),
@@ -1200,7 +1200,8 @@ OnePotentialSampleExpectedImprovementState::OnePotentialSampleExpectedImprovemen
     double const * restrict OL_UNUSED(points_being_sampled),
     int OL_UNUSED(num_to_sample_in),
     int OL_UNUSED(num_being_sampled_in),
-    bool configure_for_gradients, NormalRNG * OL_UNUSED(normal_rng_in))
+    bool configure_for_gradients,
+    NormalRNGInterface * OL_UNUSED(normal_rng_in))
     : OnePotentialSampleExpectedImprovementState(ei_evaluator, points_to_sample, configure_for_gradients) {
 }
 

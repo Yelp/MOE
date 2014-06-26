@@ -1,5 +1,5 @@
 Why Do We Need MOE?
-=======
+===================
 
 **Contents:**
 
@@ -7,7 +7,7 @@ Why Do We Need MOE?
     #. `Why is this hard?`_
 
 What is MOE?
------
+------------
 
 MOE (Metric Optimization Engine) is a *fast and efficient*, *derivative-free*,  *black box*, *global* optimization framework for optimizing parameters of time *consuming* or *expensive* experiments and systems.
 
@@ -28,7 +28,7 @@ It boils down to:
 The *black box* nature of MOE allows us to optimize any number of systems, requiring no internal knowledge or access. It uses some `objective function </objective_functions>` and some set of `parameters </objective_functions>` and finds the best set of parameters to maximize (or minimize) the given function in as few attempts as possible. It does not require knowledge of the specific objective, or how it is obtained, just the previous parameters and their associated objective values (historical data).
 
 Why is this hard?
------
+-----------------
 
 #. Parameter optimization is hard
 
