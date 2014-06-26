@@ -58,15 +58,15 @@ class NormalRNGInterface {
     \return
       a random number from a standard (``N(0, 1)``) normal distribution
   \endrst*/
-  virtual double operator()() =0;
+  virtual double operator()() = 0;
 
   /*!\rst
     Reseeds the generator with its most recently specified seed value.
     Useful for testing--e.g., can conduct multiple runs with the same initial conditions
   \endrst*/
-  virtual void ResetToMostRecentSeed() noexcept =0;
+  virtual void ResetToMostRecentSeed() noexcept = 0;
 
-  virtual ~NormalRNGInterface() {}
+  virtual ~NormalRNGInterface() = default;
 };
 
 /*!\rst
@@ -362,10 +362,10 @@ class NormalRNGSimulator final : public NormalRNGInterface {
   
   virtual double operator()() {
     if (index < size_of_table) {
-      index++;
+      ++index;
       return random_number_table[index];
     } else {
-      OL_THROW_EXCEPTION(OptimalLearningException, "All random numbers stored in the RNG have been used up!\n");
+      OL_THROW_EXCEPTION(InvalidValueException<int>, "All random numbers stored in the RNG have been used up!", index, size_of_table);
     }
   }
 
@@ -373,7 +373,7 @@ class NormalRNGSimulator final : public NormalRNGInterface {
     index = 0;
   }
 
-  int get_index() {
+  int GetIndex() {
     return index;
   }
 

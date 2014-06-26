@@ -387,14 +387,14 @@ int NormalRNGSimulatorTest() {
   NormalRNGSimulator rng_simulator(random_table.data(), random_table_size);
 
   for (int n=0; n<40; ++n) {
-    int current_idx = rng_simulator.get_index();
+    int current_idx = rng_simulator.GetIndex();
     rng_simulator();
-    int next_idx = rng_simulator.get_index();
+    int next_idx = rng_simulator.GetIndex();
     total_errors = ((next_idx - current_idx) == 1) ? total_errors : (total_errors+1);
   }
 
   rng_simulator.ResetToMostRecentSeed();
-  total_errors = (rng_simulator.get_index() == 0) ? total_errors : (total_errors+1);
+  total_errors = (rng_simulator.GetIndex() == 0) ? total_errors : (total_errors+1);
 
   for (int n=0; n<500; ++n) {
     rng_simulator();
