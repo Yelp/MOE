@@ -68,6 +68,13 @@ class SquareExponential(CovarianceInterface):
 
     hyperparameters = property(get_hyperparameters, set_hyperparameters)
 
+    def get_json_serializable_info(self):
+        """Create and return a covariance_info dictionary of this covariance object."""
+        return {
+                'covariance_type': self.covariance_type,
+                'hyperparameters': self.hyperparameters.tolist(),
+                }
+
     def covariance(self, point_one, point_two):
         r"""Compute the square exponential covariance function of two points, cov(``point_one``, ``point_two``).
 
