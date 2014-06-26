@@ -408,6 +408,56 @@ void GaussianProcess::BuildMixCovarianceMatrix(double const * restrict points_to
                                              num_to_sample, covariance_matrix);
 }
 
+void GaussianProcess::RecomputeDerivedVariables() {
+  // resize if needed
+  if (unlikely(static_cast<int>(K_inv_y_.size()) != num_sampled_)) {
+    K_chol_.resize(num_sampled_*num_sampled_);
+    K_inv_y_.resize(num_sampled_);
+  }
+
+  // recompute derived quantities
+  BuildCovarianceMatrixWithNoiseVariance();
+  int leading_minor_index = ComputeCholeskyFactorL(num_sampled_, K_chol_.data());
+  if (unlikely(leading_minor_index != 0)) {
+    OL_THROW_EXCEPTION(SingularMatrixException,
+                       "Covariance matrix (K) singular. Check for duplicate points_sampled "
+                       "(with 0 noise) and/or extreme hyperparameter values.",
+                       K_chol_.data(), num_sampled_, leading_minor_index);
+  }
+
+  std::copy(points_sampled_value_.begin(), points_sampled_value_.end(), K_inv_y_.begin());
+  CholeskyFactorLMatrixVectorSolve(K_chol_.data(), num_sampled_, K_inv_y_.data());
+}
+
+GaussianProcess::GaussianProcess(const CovarianceInterface& covariance_in,
+                                 double const * restrict points_sampled_in,
+                                 double const * restrict points_sampled_value_in,
+                                 double const * restrict noise_variance_in,
+                                 int dim_in, int num_sampled_in)
+    : dim_(dim_in),
+      num_sampled_(num_sampled_in),
+      covariance_ptr_(covariance_in.Clone()),
+      points_sampled_(points_sampled_in, points_sampled_in + num_sampled_in*dim_in),
+      points_sampled_value_(points_sampled_value_in, points_sampled_value_in + num_sampled_in),
+      noise_variance_(noise_variance_in, noise_variance_in + num_sampled_),
+      K_chol_(num_sampled_in*num_sampled_in),
+      K_inv_y_(num_sampled_),
+      normal_rng_(kDefaultSeed) {
+  RecomputeDerivedVariables();
+}
+
+GaussianProcess::GaussianProcess(const GaussianProcess& source)
+    : dim_(source.dim_),
+      num_sampled_(source.num_sampled_),
+      covariance_ptr_(source.covariance_ptr_->Clone()),
+      points_sampled_(source.points_sampled_),
+      points_sampled_value_(source.points_sampled_value_),
+      noise_variance_(source.noise_variance_),
+      K_chol_(source.K_chol_),
+      K_inv_y_(source.K_inv_y_),
+      normal_rng_(source.normal_rng_) {
+}
+
 /*!\rst
   Sets up precomputed quantities needed for mean, variance, and gradients thereof.  These quantities are:
   ``Ks := Ks_{k,i} = cov(X_k, Xs_i)`` (used by mean, variance)
@@ -814,6 +864,66 @@ double GaussianProcess::SamplePointFromGP(double const * restrict point_to_sampl
   }
 }
 
+GaussianProcess * GaussianProcess::Clone() const {
+  return new GaussianProcess(*this);
+}
+
+void PointsToSampleState::SetupState(const GaussianProcess& gaussian_process, double const * restrict points_to_sample_in,
+                                     int num_to_sample_in, int num_derivatives_in) {
+  // resize data depending on to sample points
+  if (unlikely(num_to_sample != num_to_sample_in || num_derivatives != num_derivatives_in)) {
+    // update sizes
+    num_to_sample = num_to_sample_in;
+    num_derivatives = num_derivatives_in;
+    // resize vectors
+    points_to_sample.resize(dim*num_to_sample);
+    K_star.resize(num_to_sample*num_sampled);
+    grad_K_star.resize(num_derivatives*num_sampled*dim);
+    V.resize(num_to_sample*num_sampled);
+    K_inv_times_K_star.resize(num_to_sample*num_sampled);
+  }
+
+  // resize data depending on sampled points
+  if (unlikely(num_sampled != gaussian_process.num_sampled())) {
+    num_sampled = gaussian_process.num_sampled();
+    K_star.resize(num_to_sample*num_sampled);
+    grad_K_star.resize(num_to_sample*num_sampled*dim);
+    V.resize(num_to_sample*num_sampled);
+    K_inv_times_K_star.resize(num_to_sample*num_sampled);
+  }
+
+  // set new points to sample
+  std::copy(points_to_sample_in, points_to_sample_in + dim*num_to_sample, points_to_sample.begin());
+
+  gaussian_process.FillPointsToSampleState(this);
+}
+
+PointsToSampleState::PointsToSampleState(const GaussianProcess& gaussian_process,
+                                         double const * restrict points_to_sample_in,
+                                         int num_to_sample_in, int num_derivatives_in)
+    : dim(gaussian_process.dim()),
+      num_sampled(gaussian_process.num_sampled()),
+      num_to_sample(num_to_sample_in),
+      num_derivatives(num_derivatives_in),
+      points_to_sample(dim*num_to_sample),
+      K_star(num_to_sample*num_sampled),
+      grad_K_star(num_derivatives*num_sampled*dim),
+      V(num_to_sample*num_sampled),
+      K_inv_times_K_star(num_to_sample*num_sampled),
+      grad_cov(dim) {
+  SetupState(gaussian_process, points_to_sample_in, num_to_sample_in, num_derivatives_in);
+}
+
+PointsToSampleState::PointsToSampleState(PointsToSampleState&& OL_UNUSED(other)) = default;
+
+ExpectedImprovementEvaluator::ExpectedImprovementEvaluator(const GaussianProcess& gaussian_process_in,
+                                                           int num_mc_iterations, double best_so_far)
+    : dim_(gaussian_process_in.dim()),
+      num_mc_iterations_(num_mc_iterations),
+      best_so_far_(best_so_far),
+      gaussian_process_(&gaussian_process_in) {
+}
+
 /*!\rst
   Let ``Ls * Ls^T = Vars`` and ``w`` = vector of IID normal(0,1) variables
   Then:
@@ -950,6 +1060,59 @@ void ExpectedImprovementEvaluator::ComputeGradExpectedImprovement(StateType * ei
   }
 }
 
+void ExpectedImprovementState::UpdateCurrentPoint(const EvaluatorType& ei_evaluator,
+                          double const * restrict points_to_sample) {
+  // update points_to_sample in union_of_points
+  std::copy(points_to_sample, points_to_sample + num_to_sample*dim, union_of_points.data());
+
+  // evaluate derived quantities for the GP
+  points_to_sample_state.SetupState(*ei_evaluator.gaussian_process(), union_of_points.data(),
+                                    num_union, num_derivatives);
+}
+
+ExpectedImprovementState::ExpectedImprovementState(const EvaluatorType& ei_evaluator,
+                                                   double const * restrict points_to_sample,
+                                                   double const * restrict points_being_sampled,
+                                                   int num_to_sample_in, int num_being_sampled_in,
+                                                   bool configure_for_gradients, NormalRNG * normal_rng_in)
+    : dim(ei_evaluator.dim()),
+      num_to_sample(num_to_sample_in),
+      num_being_sampled(num_being_sampled_in),
+      num_derivatives(configure_for_gradients ? num_to_sample : 0),
+      num_union(num_to_sample + num_being_sampled),
+      union_of_points(BuildUnionOfPoints(points_to_sample, points_being_sampled, num_to_sample, num_being_sampled, dim)),
+      points_to_sample_state(*ei_evaluator.gaussian_process(), union_of_points.data(), num_union, num_derivatives),
+      normal_rng(normal_rng_in),
+      to_sample_mean(num_union),
+      grad_mu(dim*num_derivatives),
+      cholesky_to_sample_var(Square(num_union)),
+      grad_chol_decomp(dim*Square(num_union)*num_derivatives),
+      EI_this_step_from_var(num_union),
+      aggregate(dim*num_derivatives),
+      normals(num_union) {
+}
+
+ExpectedImprovementState::ExpectedImprovementState(ExpectedImprovementState&& OL_UNUSED(other)) = default;
+
+void ExpectedImprovementState::SetupState(const EvaluatorType& ei_evaluator,
+                                          double const * restrict points_to_sample) {
+  if (unlikely(dim != ei_evaluator.dim())) {
+    OL_THROW_EXCEPTION(InvalidValueException<int>, "Evaluator's and State's dim do not match!", dim, ei_evaluator.dim());
+  }
+
+  // update quantities derived from points_to_sample
+  UpdateCurrentPoint(ei_evaluator, points_to_sample);
+}
+
+OnePotentialSampleExpectedImprovementEvaluator::OnePotentialSampleExpectedImprovementEvaluator(
+    const GaussianProcess& gaussian_process_in,
+    double best_so_far)
+    : dim_(gaussian_process_in.dim()),
+      best_so_far_(best_so_far),
+      normal_(0.0, 1.0),
+      gaussian_process_(&gaussian_process_in) {
+}
+
 /*!\rst
   Uses analytic formulas to compute EI when ``num_to_sample = 1`` and ``num_being_sampled = 0`` (occurs only in 1,0-EI).
   In this case, the single-parameter (posterior) GP is just a Gaussian.  So the integral in EI (previously eval'd with MC)
@@ -1007,6 +1170,50 @@ void OnePotentialSampleExpectedImprovementEvaluator::ComputeGradExpectedImprovem
 
     exp_grad_EI[i] = d_A + d_B;
   }
+}
+
+void OnePotentialSampleExpectedImprovementState::UpdateCurrentPoint(const EvaluatorType& ei_evaluator,
+                                                                    double const * restrict point_to_sample_in) {
+  // update current point in union_of_points
+  std::copy(point_to_sample_in, point_to_sample_in + dim, point_to_sample.data());
+
+  // evaluate derived quantities
+  points_to_sample_state.SetupState(*ei_evaluator.gaussian_process(), point_to_sample.data(),
+                                    num_to_sample, num_derivatives);
+}
+
+OnePotentialSampleExpectedImprovementState::OnePotentialSampleExpectedImprovementState(
+    const EvaluatorType& ei_evaluator,
+    double const * restrict point_to_sample_in,
+    bool configure_for_gradients)
+    : dim(ei_evaluator.dim()),
+      num_derivatives(configure_for_gradients ? num_to_sample : 0),
+      point_to_sample(point_to_sample_in, point_to_sample_in + dim),
+      points_to_sample_state(*ei_evaluator.gaussian_process(), point_to_sample.data(), num_to_sample, num_derivatives),
+      grad_mu(dim*num_derivatives),
+      grad_chol_decomp(dim*num_derivatives) {
+}
+
+OnePotentialSampleExpectedImprovementState::OnePotentialSampleExpectedImprovementState(
+    const EvaluatorType& ei_evaluator,
+    double const * restrict points_to_sample,
+    double const * restrict OL_UNUSED(points_being_sampled),
+    int OL_UNUSED(num_to_sample_in),
+    int OL_UNUSED(num_being_sampled_in),
+    bool configure_for_gradients, NormalRNG * OL_UNUSED(normal_rng_in))
+    : OnePotentialSampleExpectedImprovementState(ei_evaluator, points_to_sample, configure_for_gradients) {
+}
+
+OnePotentialSampleExpectedImprovementState::OnePotentialSampleExpectedImprovementState(
+    OnePotentialSampleExpectedImprovementState&& OL_UNUSED(other)) = default;
+
+void OnePotentialSampleExpectedImprovementState::SetupState(const EvaluatorType& ei_evaluator,
+                                                            double const * restrict point_to_sample_in) {
+  if (unlikely(dim != ei_evaluator.dim())) {
+    OL_THROW_EXCEPTION(InvalidValueException<int>, "Evaluator's and State's dim do not match!", dim, ei_evaluator.dim());
+  }
+
+  UpdateCurrentPoint(ei_evaluator, point_to_sample_in);
 }
 
 /*!\rst

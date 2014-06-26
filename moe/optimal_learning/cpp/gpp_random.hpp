@@ -60,8 +60,7 @@ struct UniformRandomGenerator final {
   /*!\rst
     Default-constructs a UniformRandomGenerator, seeding with kDefaultSeed.
   \endrst*/
-  UniformRandomGenerator() noexcept : engine(kDefaultSeed), last_seed_(kDefaultSeed) {
-  }
+  UniformRandomGenerator() noexcept;
 
   /*!\rst
     Construct a UniformRandomGenerator, seeding with the specified seed.
@@ -70,9 +69,7 @@ struct UniformRandomGenerator final {
     \param
       :seed: new seed to set
   \endrst*/
-  explicit UniformRandomGenerator(EngineType::result_type seed) noexcept : engine(seed), last_seed_(seed) {
-    SetExplicitSeed(seed);
-  }
+  explicit UniformRandomGenerator(EngineType::result_type seed) noexcept;
 
   /*!\rst
     Construct a UniformRandomGenerator, seeding with an automatically selected seed based on time, thread_id, etc.
@@ -82,9 +79,7 @@ struct UniformRandomGenerator final {
       :base_seed: base value for the new seed
       :thread_id: id of the thread using this object
   \endrst*/
-  UniformRandomGenerator(EngineType::result_type seed, int thread_id) noexcept : engine(seed), last_seed_(seed) {
-    SetRandomizedSeed(seed, thread_id);
-  }
+  UniformRandomGenerator(EngineType::result_type seed, int thread_id) noexcept;
 
   /*!\rst
     Get a reference to the RNG engine used by this class.
@@ -161,12 +156,9 @@ struct UniformRandomGenerator final {
   \endrst*/
   void PrintState(std::ostream * out_stream) const OL_NONNULL_POINTERS;
 
-  bool operator==(const UniformRandomGenerator& other) const {
-    return (engine == other.engine) && (last_seed_ == other.last_seed_);
-  }
-  bool operator!=(const UniformRandomGenerator& other) const {
-    return !(*this == other);
-  }
+  bool operator==(const UniformRandomGenerator& other) const;
+
+  bool operator!=(const UniformRandomGenerator& other) const;
 
   //! An (boost) PRNG engine that can be passed to a ``<boost/random>`` distribution, e.g., ``uniform_real<>``.
   EngineType engine;
@@ -196,8 +188,7 @@ struct NormalRNG final {
   /*!\rst
     Default-constructs a NormalRNG, seeding with kDefaultSeed.
   \endrst*/
-  NormalRNG() noexcept : uniform_generator(kDefaultSeed), normal_distribution_(0.0, 1.0), normal_random_variable_(uniform_generator.engine, normal_distribution_) {
-  }
+  NormalRNG() noexcept;
 
   /*!\rst
     Construct a NormalRNG, seeding with the specified seed.
@@ -206,9 +197,7 @@ struct NormalRNG final {
     \param
       :seed: new seed to set
   \endrst*/
-  explicit NormalRNG(EngineType::result_type seed) noexcept : uniform_generator(seed), normal_distribution_(0.0, 1.0), normal_random_variable_(uniform_generator.engine, normal_distribution_) {
-    SetExplicitSeed(seed);
-  }
+  explicit NormalRNG(EngineType::result_type seed) noexcept;
 
   /*!\rst
     Construct a NormalRNG, seeding with an automatically selected seed based on time, thread_id, etc.
@@ -218,9 +207,7 @@ struct NormalRNG final {
       :base_seed: base value for the new seed
       :thread_id: id of the thread using this object
   \endrst*/
-  NormalRNG(EngineType::result_type seed, int thread_id) noexcept : uniform_generator(seed), normal_distribution_(0.0, 1.0), normal_random_variable_(uniform_generator.engine, normal_distribution_) {
-    SetRandomizedSeed(seed, thread_id);
-  }
+  NormalRNG(EngineType::result_type seed, int thread_id) noexcept;
 
   /*!\rst
     Get a reference to the RNG engine used by this class.

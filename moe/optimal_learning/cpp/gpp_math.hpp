@@ -212,9 +212,7 @@
 #include "gpp_domain.hpp"
 #include "gpp_exception.hpp"
 #include "gpp_covariance.hpp"
-#include "gpp_linear_algebra.hpp"
 #include "gpp_logging.hpp"
-#include "gpp_mock_optimization_objective_functions.hpp"
 #include "gpp_optimization.hpp"
 #include "gpp_optimization_parameters.hpp"
 #include "gpp_random.hpp"
@@ -285,18 +283,7 @@ class GaussianProcess final {
                   double const * restrict points_sampled_in,
                   double const * restrict points_sampled_value_in,
                   double const * restrict noise_variance_in,
-                  int dim_in, int num_sampled_in) OL_NONNULL_POINTERS
-      : dim_(dim_in),
-        num_sampled_(num_sampled_in),
-        covariance_ptr_(covariance_in.Clone()),
-        points_sampled_(points_sampled_in, points_sampled_in + num_sampled_in*dim_in),
-        points_sampled_value_(points_sampled_value_in, points_sampled_value_in + num_sampled_in),
-        noise_variance_(noise_variance_in, noise_variance_in + num_sampled_),
-        K_chol_(num_sampled_in*num_sampled_in),
-        K_inv_y_(num_sampled_),
-        normal_rng_(kDefaultSeed) {
-    RecomputeDerivedVariables();
-  }
+                  int dim_in, int num_sampled_in) OL_NONNULL_POINTERS;
 
   int dim() const noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
     return dim_;
@@ -505,24 +492,12 @@ class GaussianProcess final {
     \return
       Pointer to a constructed object that is a copy of "this"
   \endrst*/
-  GaussianProcess * Clone() const OL_WARN_UNUSED_RESULT {
-    return new GaussianProcess(*this);
-  }
+  GaussianProcess * Clone() const OL_WARN_UNUSED_RESULT;
 
   OL_DISALLOW_DEFAULT_AND_ASSIGN(GaussianProcess);
 
  protected:
-  explicit GaussianProcess(const GaussianProcess& source)
-      : dim_(source.dim_),
-        num_sampled_(source.num_sampled_),
-        covariance_ptr_(source.covariance_ptr_->Clone()),
-        points_sampled_(source.points_sampled_),
-        points_sampled_value_(source.points_sampled_value_),
-        noise_variance_(source.noise_variance_),
-        K_chol_(source.K_chol_),
-        K_inv_y_(source.K_inv_y_),
-        normal_rng_(source.normal_rng_) {
-  }
+  explicit GaussianProcess(const GaussianProcess& source);
 
  private:
   void BuildCovarianceMatrixWithNoiseVariance() noexcept;
@@ -561,26 +536,7 @@ class GaussianProcess final {
     Recomputes (including resizing as needed) the derived quantities in this class.
     This function should be called any time state variables are changed.
   \endrst*/
-  void RecomputeDerivedVariables() {
-    // resize if needed
-    if (unlikely(static_cast<int>(K_inv_y_.size()) != num_sampled_)) {
-      K_chol_.resize(num_sampled_*num_sampled_);
-      K_inv_y_.resize(num_sampled_);
-    }
-
-    // recompute derived quantities
-    BuildCovarianceMatrixWithNoiseVariance();
-    int leading_minor_index = ComputeCholeskyFactorL(num_sampled_, K_chol_.data());
-    if (unlikely(leading_minor_index != 0)) {
-      OL_THROW_EXCEPTION(SingularMatrixException,
-                         "Covariance matrix (K) singular. Check for duplicate points_sampled "
-                         "(with 0 noise) and/or extreme hyperparameter values.",
-                         K_chol_.data(), num_sampled_, leading_minor_index);
-    }
-
-    std::copy(points_sampled_value_.begin(), points_sampled_value_.end(), K_inv_y_.begin());
-    CholeskyFactorLMatrixVectorSolve(K_chol_.data(), num_sampled_, K_inv_y_.data());
-  }
+  void RecomputeDerivedVariables();
 
 
   // size information
@@ -651,21 +607,9 @@ struct PointsToSampleState final {
   \endrst*/
   PointsToSampleState(const GaussianProcess& gaussian_process,
                       double const * restrict points_to_sample_in,
-                      int num_to_sample_in, int num_derivatives_in) OL_NONNULL_POINTERS
-      : dim(gaussian_process.dim()),
-        num_sampled(gaussian_process.num_sampled()),
-        num_to_sample(num_to_sample_in),
-        num_derivatives(num_derivatives_in),
-        points_to_sample(dim*num_to_sample),
-        K_star(num_to_sample*num_sampled),
-        grad_K_star(num_derivatives*num_sampled*dim),
-        V(num_to_sample*num_sampled),
-        K_inv_times_K_star(num_to_sample*num_sampled),
-        grad_cov(dim) {
-    SetupState(gaussian_process, points_to_sample_in, num_to_sample_in, num_derivatives_in);
-  }
+                      int num_to_sample_in, int num_derivatives_in) OL_NONNULL_POINTERS;
 
-  PointsToSampleState(PointsToSampleState&& OL_UNUSED(other)) = default;
+  PointsToSampleState(PointsToSampleState&& other);
 
   /*!\rst
     Configures this object with new ``points_to_sample``.
@@ -688,34 +632,7 @@ struct PointsToSampleState final {
         points_to_sample[:][0:num_derivatives]; 0 means no gradient computation will be performed.
   \endrst*/
   void SetupState(const GaussianProcess& gaussian_process, double const * restrict points_to_sample_in,
-                  int num_to_sample_in, int num_derivatives_in) OL_NONNULL_POINTERS {
-    // resize data depending on to sample points
-    if (unlikely(num_to_sample != num_to_sample_in || num_derivatives != num_derivatives_in)) {
-      // update sizes
-      num_to_sample = num_to_sample_in;
-      num_derivatives = num_derivatives_in;
-      // resize vectors
-      points_to_sample.resize(dim*num_to_sample);
-      K_star.resize(num_to_sample*num_sampled);
-      grad_K_star.resize(num_derivatives*num_sampled*dim);
-      V.resize(num_to_sample*num_sampled);
-      K_inv_times_K_star.resize(num_to_sample*num_sampled);
-    }
-
-    // resize data depending on sampled points
-    if (unlikely(num_sampled != gaussian_process.num_sampled())) {
-      num_sampled = gaussian_process.num_sampled();
-      K_star.resize(num_to_sample*num_sampled);
-      grad_K_star.resize(num_to_sample*num_sampled*dim);
-      V.resize(num_to_sample*num_sampled);
-      K_inv_times_K_star.resize(num_to_sample*num_sampled);
-    }
-
-    // set new points to sample
-    std::copy(points_to_sample_in, points_to_sample_in + dim*num_to_sample, points_to_sample.begin());
-
-    gaussian_process.FillPointsToSampleState(this);
-  }
+                  int num_to_sample_in, int num_derivatives_in) OL_NONNULL_POINTERS;
 
   //! spatial dimension (e.g., entries per point of ``points_sampled``)
   const int dim;
@@ -771,12 +688,7 @@ class ExpectedImprovementEvaluator final {
       :num_mc_iterations: number of monte carlo iterations
       :best_so_far: best (minimum) objective function value (in ``points_sampled_value``)
   \endrst*/
-  ExpectedImprovementEvaluator(const GaussianProcess& gaussian_process_in, int num_mc_iterations, double best_so_far)
-      : dim_(gaussian_process_in.dim()),
-        num_mc_iterations_(num_mc_iterations),
-        best_so_far_(best_so_far),
-        gaussian_process_(&gaussian_process_in) {
-  }
+  ExpectedImprovementEvaluator(const GaussianProcess& gaussian_process_in, int num_mc_iterations, double best_so_far);
 
   int dim() const noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
     return dim_;
@@ -926,25 +838,9 @@ struct ExpectedImprovementState final {
   \endrst*/
   ExpectedImprovementState(const EvaluatorType& ei_evaluator, double const * restrict points_to_sample,
                            double const * restrict points_being_sampled, int num_to_sample_in,
-                           int num_being_sampled_in, bool configure_for_gradients, NormalRNG * normal_rng_in)
-      : dim(ei_evaluator.dim()),
-        num_to_sample(num_to_sample_in),
-        num_being_sampled(num_being_sampled_in),
-        num_derivatives(configure_for_gradients ? num_to_sample : 0),
-        num_union(num_to_sample + num_being_sampled),
-        union_of_points(BuildUnionOfPoints(points_to_sample, points_being_sampled, num_to_sample, num_being_sampled, dim)),
-        points_to_sample_state(*ei_evaluator.gaussian_process(), union_of_points.data(), num_union, num_derivatives),
-        normal_rng(normal_rng_in),
-        to_sample_mean(num_union),
-        grad_mu(dim*num_derivatives),
-        cholesky_to_sample_var(Square(num_union)),
-        grad_chol_decomp(dim*Square(num_union)*num_derivatives),
-        EI_this_step_from_var(num_union),
-        aggregate(dim*num_derivatives),
-        normals(num_union) {
-  }
+                           int num_being_sampled_in, bool configure_for_gradients, NormalRNG * normal_rng_in);
 
-  ExpectedImprovementState(ExpectedImprovementState&& OL_UNUSED(other)) = default;
+  ExpectedImprovementState(ExpectedImprovementState&& other);
 
   /*!\rst
     Create a vector with the union of points_to_sample and points_being_sampled (the latter is appended to the former).
@@ -995,14 +891,7 @@ struct ExpectedImprovementState final {
       :points_to_sample[dim][num_to_sample]: potential future samples whose EI (and/or gradients) are being evaluated
   \endrst*/
   void UpdateCurrentPoint(const EvaluatorType& ei_evaluator,
-                          double const * restrict points_to_sample) OL_NONNULL_POINTERS {
-    // update points_to_sample in union_of_points
-    std::copy(points_to_sample, points_to_sample + num_to_sample*dim, union_of_points.data());
-
-    // evaluate derived quantities for the GP
-    points_to_sample_state.SetupState(*ei_evaluator.gaussian_process(), union_of_points.data(),
-                                      num_union, num_derivatives);
-  }
+                          double const * restrict points_to_sample) OL_NONNULL_POINTERS;
 
   /*!\rst
     Configures this state object with new ``points_to_sample``, the location of the potential samples whose EI is to be evaluated.
@@ -1017,14 +906,7 @@ struct ExpectedImprovementState final {
       :ei_evaluator: expected improvement evaluator object that specifies the parameters & GP for EI evaluation
       :points_to_sample[dim][num_to_sample]: potential future samples whose EI (and/or gradients) are being evaluated
   \endrst*/
-  void SetupState(const EvaluatorType& ei_evaluator, double const * restrict points_to_sample) OL_NONNULL_POINTERS {
-    if (unlikely(dim != ei_evaluator.dim())) {
-      OL_THROW_EXCEPTION(InvalidValueException<int>, "Evaluator's and State's dim do not match!", dim, ei_evaluator.dim());
-    }
-
-    // update quantities derived from points_to_sample
-    UpdateCurrentPoint(ei_evaluator, points_to_sample);
-  }
+  void SetupState(const EvaluatorType& ei_evaluator, double const * restrict points_to_sample);
 
   // size information
   //! spatial dimension (e.g., entries per point of ``points_sampled``)
@@ -1095,12 +977,7 @@ class OnePotentialSampleExpectedImprovementEvaluator final {
         that describes the underlying GP
       :best_so_far: best (minimum) objective function value (in ``points_sampled_value``)
   \endrst*/
-  OnePotentialSampleExpectedImprovementEvaluator(const GaussianProcess& gaussian_process_in, double best_so_far)
-      : dim_(gaussian_process_in.dim()),
-        best_so_far_(best_so_far),
-        normal_(0.0, 1.0),
-        gaussian_process_(&gaussian_process_in) {
-  }
+  OnePotentialSampleExpectedImprovementEvaluator(const GaussianProcess& gaussian_process_in, double best_so_far);
 
   int dim() const noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
     return dim_;
@@ -1193,14 +1070,7 @@ struct OnePotentialSampleExpectedImprovementState final {
       :configure_for_gradients: true if this object will be used to compute gradients, false otherwise
   \endrst*/
   OnePotentialSampleExpectedImprovementState(const EvaluatorType& ei_evaluator,
-                                             double const * restrict point_to_sample_in, bool configure_for_gradients)
-      : dim(ei_evaluator.dim()),
-        num_derivatives(configure_for_gradients ? num_to_sample : 0),
-        point_to_sample(point_to_sample_in, point_to_sample_in + dim),
-        points_to_sample_state(*ei_evaluator.gaussian_process(), point_to_sample.data(), num_to_sample, num_derivatives),
-        grad_mu(dim*num_derivatives),
-        grad_chol_decomp(dim*num_derivatives) {
-  }
+                                             double const * restrict point_to_sample_in, bool configure_for_gradients);
 
   /*!\rst
     Constructor wrapper to match the signature of the ctor for ExpectedImprovementState().
@@ -1209,11 +1079,9 @@ struct OnePotentialSampleExpectedImprovementState final {
                                              double const * restrict points_to_sample,
                                              double const * restrict OL_UNUSED(points_being_sampled),
                                              int OL_UNUSED(num_to_sample_in), int OL_UNUSED(num_being_sampled_in),
-                                             bool configure_for_gradients, NormalRNG * OL_UNUSED(normal_rng_in))
-      : OnePotentialSampleExpectedImprovementState(ei_evaluator, points_to_sample, configure_for_gradients) {
-  }
+                                             bool configure_for_gradients, NormalRNG * OL_UNUSED(normal_rng_in));
 
-  OnePotentialSampleExpectedImprovementState(OnePotentialSampleExpectedImprovementState&& OL_UNUSED(other)) = default;
+  OnePotentialSampleExpectedImprovementState(OnePotentialSampleExpectedImprovementState&& other);
 
   int GetProblemSize() const noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
     return dim;
@@ -1237,14 +1105,8 @@ struct OnePotentialSampleExpectedImprovementState final {
       :ei_evaluator: expected improvement evaluator object that specifies the parameters & GP for EI evaluation
       :point_to_sample[dim]: potential future sample whose EI (and/or gradients) is being evaluated
   \endrst*/
-  void UpdateCurrentPoint(const EvaluatorType& ei_evaluator, double const * restrict point_to_sample_in) OL_NONNULL_POINTERS {
-    // update current point in union_of_points
-    std::copy(point_to_sample_in, point_to_sample_in + dim, point_to_sample.data());
-
-    // evaluate derived quantities
-    points_to_sample_state.SetupState(*ei_evaluator.gaussian_process(), point_to_sample.data(),
-                                      num_to_sample, num_derivatives);
-  }
+  void UpdateCurrentPoint(const EvaluatorType& ei_evaluator,
+                          double const * restrict point_to_sample_in) OL_NONNULL_POINTERS;
 
   /*!\rst
     Configures this state object with a new ``point_to_sample``, the location of the potential sample whose EI is to be evaluated.
@@ -1259,13 +1121,8 @@ struct OnePotentialSampleExpectedImprovementState final {
       :ei_evaluator: expected improvement evaluator object that specifies the parameters & GP for EI evaluation
       :point_to_sample[dim]: potential future sample whose EI (and/or gradients) is being evaluated
   \endrst*/
-  void SetupState(const EvaluatorType& ei_evaluator, double const * restrict point_to_sample_in) OL_NONNULL_POINTERS {
-    if (unlikely(dim != ei_evaluator.dim())) {
-      OL_THROW_EXCEPTION(InvalidValueException<int>, "Evaluator's and State's dim do not match!", dim, ei_evaluator.dim());
-    }
-
-    UpdateCurrentPoint(ei_evaluator, point_to_sample_in);
-  }
+  void SetupState(const EvaluatorType& ei_evaluator,
+                  double const * restrict point_to_sample_in) OL_NONNULL_POINTERS;
 
   // size information
   //! spatial dimension (e.g., entries per point of ``points_sampled``)

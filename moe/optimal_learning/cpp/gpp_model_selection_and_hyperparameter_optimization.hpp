@@ -272,13 +272,7 @@ class LogMarginalLikelihoodEvaluator final {
   LogMarginalLikelihoodEvaluator(double const * restrict points_sampled_in,
                                  double const * restrict points_sampled_value_in,
                                  double const * restrict noise_variance_in,
-                                 int dim_in, int num_sampled_in) OL_NONNULL_POINTERS
-      : dim_(dim_in),
-        num_sampled_(num_sampled_in),
-        points_sampled_(points_sampled_in, points_sampled_in + num_sampled_in*dim_in),
-        points_sampled_value_(points_sampled_value_in, points_sampled_value_in + num_sampled_in),
-        noise_variance_(noise_variance_in, noise_variance_in + num_sampled_) {
-  }
+                                 int dim_in, int num_sampled_in) OL_NONNULL_POINTERS;
 
   int dim() const noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
     return dim_;
@@ -439,21 +433,9 @@ struct LogMarginalLikelihoodState final {
       :log_likelihood_eval: LogMarginalLikelihoodEvaluator object that this state is being used with
       :covariance_in: the CovarianceFunction object encoding assumptions about the GP's behavior on our data
   \endrst*/
-  LogMarginalLikelihoodState(const EvaluatorType& log_likelihood_eval, const CovarianceInterface& covariance_in)
-      : dim(log_likelihood_eval.dim()),
-        num_sampled(log_likelihood_eval.num_sampled()),
-        num_hyperparameters(covariance_in.GetNumberOfHyperparameters()),
-        covariance_ptr(covariance_in.Clone()),
-        K_chol(num_sampled*num_sampled),
-        K_inv_y(num_sampled),
-        grad_hyperparameter_cov_matrix(num_hyperparameters*num_sampled*num_sampled),
-        temp_vec(num_sampled) {
-    std::vector<double> hyperparameters(num_hyperparameters);
-    covariance_ptr->GetHyperparameters(hyperparameters.data());
-    SetupState(log_likelihood_eval, hyperparameters.data());
-  }
+  LogMarginalLikelihoodState(const EvaluatorType& log_likelihood_eval, const CovarianceInterface& covariance_in);
 
-  LogMarginalLikelihoodState(LogMarginalLikelihoodState&& OL_UNUSED(other)) = default;
+  LogMarginalLikelihoodState(LogMarginalLikelihoodState&& other);
 
   int GetProblemSize() const noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
     return num_hyperparameters;
@@ -487,13 +469,7 @@ struct LogMarginalLikelihoodState final {
       :hyperparameters[num_hyperparameters]: hyperparameters to change to
   \endrst*/
   void UpdateHyperparameters(const EvaluatorType& log_likelihood_eval,
-                             double const * restrict hyperparameters) OL_NONNULL_POINTERS {
-    // update hyperparameters
-    covariance_ptr->SetHyperparameters(hyperparameters);
-
-    // evaluate derived quantities
-    log_likelihood_eval.FillLogLikelihoodState(this);
-  }
+                             double const * restrict hyperparameters) OL_NONNULL_POINTERS;
 
   /*!\rst
     Configures this state object with new hyperparameters.
@@ -508,18 +484,7 @@ struct LogMarginalLikelihoodState final {
       :hyperparameters[num_hyperparameters]: hyperparameters to change to
   \endrst*/
   void SetupState(const EvaluatorType& log_likelihood_eval,
-                  double const * restrict hyperparameters) OL_NONNULL_POINTERS {
-    if (unlikely(num_sampled != log_likelihood_eval.num_sampled())) {
-      num_sampled = log_likelihood_eval.num_sampled();
-      K_chol.resize(num_sampled*num_sampled);
-      K_inv_y.resize(num_sampled);
-      grad_hyperparameter_cov_matrix.resize(num_hyperparameters*num_sampled*num_sampled);
-      temp_vec.resize(num_sampled);
-    }
-
-    // set hyperparameters and derived quantities
-    UpdateHyperparameters(log_likelihood_eval, hyperparameters);
-  }
+                  double const * restrict hyperparameters) OL_NONNULL_POINTERS;
 
   // size information
   //! spatial dimension (e.g., entries per point of points_sampled)
@@ -593,13 +558,7 @@ class LeaveOneOutLogLikelihoodEvaluator final {
   LeaveOneOutLogLikelihoodEvaluator(double const * restrict points_sampled_in,
                                     double const * restrict points_sampled_value_in,
                                     double const * restrict noise_variance_in,
-                                    int dim_in, int num_sampled_in) OL_NONNULL_POINTERS
-      : dim_(dim_in),
-        num_sampled_(num_sampled_in),
-        points_sampled_(points_sampled_in, points_sampled_in + num_sampled_in*dim_in),
-        points_sampled_value_(points_sampled_value_in, points_sampled_value_in + num_sampled_in),
-        noise_variance_(noise_variance_in, noise_variance_in + num_sampled_) {
-  }
+                                    int dim_in, int num_sampled_in) OL_NONNULL_POINTERS;
 
   int dim() const noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
     return dim_;
@@ -738,23 +697,9 @@ struct LeaveOneOutLogLikelihoodState final {
       :log_likelihood_eval: LogMarginalLikelihoodEvaluator object that this state is being used with
       :covariance_in: the CovarianceFunction object encoding assumptions about the GP's behavior on our data
   \endrst*/
-  LeaveOneOutLogLikelihoodState(const EvaluatorType& log_likelihood_eval, const CovarianceInterface& covariance_in)
-      : dim(log_likelihood_eval.dim()),
-        num_sampled(log_likelihood_eval.num_sampled()),
-        num_hyperparameters(covariance_in.GetNumberOfHyperparameters()),
-        covariance_ptr(covariance_in.Clone()),
-        K_chol(num_sampled*num_sampled),
-        K_inv(num_sampled*num_sampled),
-        K_inv_y(num_sampled),
-        grad_hyperparameter_cov_matrix(num_hyperparameters*num_sampled*num_sampled),
-        Z_alpha(num_sampled),
-        Z_K_inv(num_sampled*num_sampled) {
-    std::vector<double> hyperparameters(num_hyperparameters);
-    covariance_ptr->GetHyperparameters(hyperparameters.data());
-    SetupState(log_likelihood_eval, hyperparameters.data());
-  }
+  LeaveOneOutLogLikelihoodState(const EvaluatorType& log_likelihood_eval, const CovarianceInterface& covariance_in);
 
-  LeaveOneOutLogLikelihoodState(LeaveOneOutLogLikelihoodState&& OL_UNUSED(other)) = default;
+  LeaveOneOutLogLikelihoodState(LeaveOneOutLogLikelihoodState&& other);
 
   int GetProblemSize() const noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
     return num_hyperparameters;
@@ -788,13 +733,7 @@ struct LeaveOneOutLogLikelihoodState final {
       :hyperparameters[num_hyperparameters]: hyperparameters to change to
   \endrst*/
   void UpdateHyperparameters(const EvaluatorType& log_likelihood_eval,
-                             double const * restrict hyperparameters) OL_NONNULL_POINTERS {
-    // update hyperparameters
-    covariance_ptr->SetHyperparameters(hyperparameters);
-
-    // evaluate derived quantities
-    log_likelihood_eval.FillLogLikelihoodState(this);
-  }
+                             double const * restrict hyperparameters) OL_NONNULL_POINTERS;
 
   /*!\rst
     Configures this state object with new hyperparameters.
@@ -809,20 +748,7 @@ struct LeaveOneOutLogLikelihoodState final {
       :hyperparameters[num_hyperparameters]: hyperparameters to change to
   \endrst*/
   void SetupState(const EvaluatorType& log_likelihood_eval,
-                  double const * restrict hyperparameters) OL_NONNULL_POINTERS {
-    if (unlikely(num_sampled != log_likelihood_eval.num_sampled())) {
-      num_sampled = log_likelihood_eval.num_sampled();
-      K_chol.resize(num_sampled*num_sampled);
-      K_inv.resize(num_sampled*num_sampled);
-      K_inv_y.resize(num_sampled);
-      grad_hyperparameter_cov_matrix.resize(num_hyperparameters*num_sampled*num_sampled);
-      Z_alpha.resize(num_sampled);
-      Z_K_inv.resize(num_sampled*num_sampled);
-    }
-
-    // set hyperparameters and derived quantities
-    UpdateHyperparameters(log_likelihood_eval, hyperparameters);
-  }
+                  double const * restrict hyperparameters) OL_NONNULL_POINTERS;
 
   // size information
   //! spatial dimension (e.g., entries per point of points_sampled)

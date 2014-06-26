@@ -439,6 +439,17 @@ OL_NONNULL_POINTERS void BuildHyperparameterHessianCovarianceMatrix(const Covari
 
 }  // end unnamed namespace
 
+LogMarginalLikelihoodEvaluator::LogMarginalLikelihoodEvaluator(double const * restrict points_sampled_in,
+                                                               double const * restrict points_sampled_value_in,
+                                                               double const * restrict noise_variance_in,
+                                                               int dim_in, int num_sampled_in)
+    : dim_(dim_in),
+      num_sampled_(num_sampled_in),
+      points_sampled_(points_sampled_in, points_sampled_in + num_sampled_in*dim_in),
+      points_sampled_value_(points_sampled_value_in, points_sampled_value_in + num_sampled_in),
+      noise_variance_(noise_variance_in, noise_variance_in + num_sampled_) {
+}
+
 void LogMarginalLikelihoodEvaluator::BuildHyperparameterGradCovarianceMatrix(
     LogMarginalLikelihoodState * log_likelihood_state) const noexcept {
   optimal_learning::BuildHyperparameterGradCovarianceMatrix(*log_likelihood_state->covariance_ptr,
@@ -682,6 +693,46 @@ void LogMarginalLikelihoodEvaluator::ComputeHessianLogLikelihood(LogMarginalLike
   }
 }
 
+void LogMarginalLikelihoodState::UpdateHyperparameters(const EvaluatorType& log_likelihood_eval,
+                                                       double const * restrict hyperparameters) {
+  // update hyperparameters
+  covariance_ptr->SetHyperparameters(hyperparameters);
+
+  // evaluate derived quantities
+  log_likelihood_eval.FillLogLikelihoodState(this);
+}
+
+void LogMarginalLikelihoodState::SetupState(const EvaluatorType& log_likelihood_eval,
+                                            double const * restrict hyperparameters) {
+  if (unlikely(num_sampled != log_likelihood_eval.num_sampled())) {
+    num_sampled = log_likelihood_eval.num_sampled();
+    K_chol.resize(num_sampled*num_sampled);
+    K_inv_y.resize(num_sampled);
+    grad_hyperparameter_cov_matrix.resize(num_hyperparameters*num_sampled*num_sampled);
+    temp_vec.resize(num_sampled);
+  }
+
+  // set hyperparameters and derived quantities
+  UpdateHyperparameters(log_likelihood_eval, hyperparameters);
+}
+
+LogMarginalLikelihoodState::LogMarginalLikelihoodState(const EvaluatorType& log_likelihood_eval,
+                                                       const CovarianceInterface& covariance_in)
+    : dim(log_likelihood_eval.dim()),
+      num_sampled(log_likelihood_eval.num_sampled()),
+      num_hyperparameters(covariance_in.GetNumberOfHyperparameters()),
+      covariance_ptr(covariance_in.Clone()),
+      K_chol(num_sampled*num_sampled),
+      K_inv_y(num_sampled),
+      grad_hyperparameter_cov_matrix(num_hyperparameters*num_sampled*num_sampled),
+      temp_vec(num_sampled) {
+  std::vector<double> hyperparameters(num_hyperparameters);
+  covariance_ptr->GetHyperparameters(hyperparameters.data());
+  SetupState(log_likelihood_eval, hyperparameters.data());
+}
+
+LogMarginalLikelihoodState::LogMarginalLikelihoodState(LogMarginalLikelihoodState&& OL_UNUSED(other)) = default;
+
 namespace {  // utilities for Leave One Out log pseudo-likelihood computations
 
 /*!\rst
@@ -773,6 +824,17 @@ OL_NONNULL_POINTERS void LeaveOneOutCoreWithMatrixInverse(double const * restric
 }
 
 }  // end unnamed namespace
+
+LeaveOneOutLogLikelihoodEvaluator::LeaveOneOutLogLikelihoodEvaluator(double const * restrict points_sampled_in,
+                                                                     double const * restrict points_sampled_value_in,
+                                                                     double const * restrict noise_variance_in,
+                                                                     int dim_in, int num_sampled_in)
+    : dim_(dim_in),
+      num_sampled_(num_sampled_in),
+      points_sampled_(points_sampled_in, points_sampled_in + num_sampled_in*dim_in),
+      points_sampled_value_(points_sampled_value_in, points_sampled_value_in + num_sampled_in),
+      noise_variance_(noise_variance_in, noise_variance_in + num_sampled_) {
+}
 
 void LeaveOneOutLogLikelihoodEvaluator::BuildHyperparameterGradCovarianceMatrix(
     LeaveOneOutLogLikelihoodState * log_likelihood_state) const noexcept {
@@ -910,5 +972,49 @@ void LeaveOneOutLogLikelihoodEvaluator::ComputeHessianLogLikelihood(
     double * restrict OL_UNUSED(hessian_loo)) const {
   OL_THROW_EXCEPTION(OptimalLearningException, "LeaveOneOutLogLikelihoodEvaluator::ComputeHessianLogLikelihood is NOT IMPLEMENTED.");
 }
+
+void LeaveOneOutLogLikelihoodState::UpdateHyperparameters(const EvaluatorType& log_likelihood_eval,
+                                                        double const * restrict hyperparameters) {
+  // update hyperparameters
+  covariance_ptr->SetHyperparameters(hyperparameters);
+
+  // evaluate derived quantities
+  log_likelihood_eval.FillLogLikelihoodState(this);
+}
+
+void LeaveOneOutLogLikelihoodState::SetupState(const EvaluatorType& log_likelihood_eval,
+                                               double const * restrict hyperparameters) {
+  if (unlikely(num_sampled != log_likelihood_eval.num_sampled())) {
+    num_sampled = log_likelihood_eval.num_sampled();
+    K_chol.resize(num_sampled*num_sampled);
+    K_inv.resize(num_sampled*num_sampled);
+    K_inv_y.resize(num_sampled);
+    grad_hyperparameter_cov_matrix.resize(num_hyperparameters*num_sampled*num_sampled);
+    Z_alpha.resize(num_sampled);
+    Z_K_inv.resize(num_sampled*num_sampled);
+  }
+
+  // set hyperparameters and derived quantities
+  UpdateHyperparameters(log_likelihood_eval, hyperparameters);
+}
+
+LeaveOneOutLogLikelihoodState::LeaveOneOutLogLikelihoodState(const EvaluatorType& log_likelihood_eval,
+                                                             const CovarianceInterface& covariance_in)
+    : dim(log_likelihood_eval.dim()),
+      num_sampled(log_likelihood_eval.num_sampled()),
+      num_hyperparameters(covariance_in.GetNumberOfHyperparameters()),
+      covariance_ptr(covariance_in.Clone()),
+      K_chol(num_sampled*num_sampled),
+      K_inv(num_sampled*num_sampled),
+      K_inv_y(num_sampled),
+      grad_hyperparameter_cov_matrix(num_hyperparameters*num_sampled*num_sampled),
+      Z_alpha(num_sampled),
+      Z_K_inv(num_sampled*num_sampled) {
+  std::vector<double> hyperparameters(num_hyperparameters);
+  covariance_ptr->GetHyperparameters(hyperparameters.data());
+  SetupState(log_likelihood_eval, hyperparameters.data());
+}
+
+LeaveOneOutLogLikelihoodState::LeaveOneOutLogLikelihoodState(LeaveOneOutLogLikelihoodState&& OL_UNUSED(other)) = default;
 
 }  // end namespace optimal_learning
