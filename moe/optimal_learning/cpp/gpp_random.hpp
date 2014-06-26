@@ -31,6 +31,7 @@
 #define MOE_OPTIMAL_LEARNING_CPP_GPP_RANDOM_HPP_
 
 #include <iosfwd>
+#include <vector>
 
 #include <boost/random/mersenne_twister.hpp>  // NOLINT(build/include_order)
 #include <boost/random/normal_distribution.hpp>  // NOLINT(build/include_order)
@@ -354,38 +355,36 @@ class NormalRNGSimulator final : public NormalRNGInterface {
       :random_number_table_in: pointer to the table storing random numbers
       :size_of_table_in: size of the random table
   \endrst*/
-  NormalRNGSimulator(double const * restrict random_number_table_in, int size_of_table_in)
-      : random_number_table(random_number_table_in, random_number_table_in + size_of_table_in),
-        size_of_table(size_of_table_in),
-        index(0) {
-        }
-  
+  explicit NormalRNGSimulator(const std::vector<double>& random_number_table_in)
+            : random_number_table_(random_number_table_in),
+              index_(0) {
+            }
+
   virtual double operator()() {
-    if (index < size_of_table) {
-      ++index;
-      return random_number_table[index];
+    int size_of_table = random_number_table_.size();
+    if (index_ < size_of_table) {
+      ++index_;
+      return random_number_table_[index_];
     } else {
-      OL_THROW_EXCEPTION(InvalidValueException<int>, "All random numbers stored in the RNG have been used up!", index, size_of_table);
+      OL_THROW_EXCEPTION(InvalidValueException<int>, "All random numbers stored in the RNG have been used up!", index_, size_of_table);
     }
   }
 
   virtual void ResetToMostRecentSeed() noexcept {
-    index = 0;
+    index_= 0;
   }
 
-  int GetIndex() {
-    return index;
+  int index() const {
+    return index_;
   }
 
   OL_DISALLOW_DEFAULT_AND_COPY_AND_ASSIGN(NormalRNGSimulator);
 
  private:
   //! Table that stores all random numbers.
-  std::vector<double> random_number_table;
-  //! Size of this random table.
-  int size_of_table;
+  std::vector<double> random_number_table_;
   //! Index of the random number in the table to return when the generator is called.
-  int index;
+  int index_;
 };
 
 /*!\rst

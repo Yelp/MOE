@@ -380,29 +380,31 @@ int NormalRNGSimulatorTest() {
   int total_errors = 0;
   int random_table_size = 500;
   std::vector<double> random_table(random_table_size);
-  NormalRNG rng;
-  for (int i=0; i<random_table_size; ++i) {
-    random_table[i] = rng();
+  for (int i = 0; i < random_table_size; ++i) {
+    random_table[i] = static_cast<double>(i);
   }
-  NormalRNGSimulator rng_simulator(random_table.data(), random_table_size);
+  NormalRNGSimulator rng_simulator(random_table);
 
-  for (int n=0; n<40; ++n) {
-    int current_idx = rng_simulator.GetIndex();
+  for (int n = 0; n < 40; ++n) {
+    int current_idx = rng_simulator.index();
     rng_simulator();
-    int next_idx = rng_simulator.GetIndex();
+    int next_idx = rng_simulator.index();
     total_errors = ((next_idx - current_idx) == 1) ? total_errors : (total_errors+1);
   }
 
   rng_simulator.ResetToMostRecentSeed();
-  total_errors = (rng_simulator.GetIndex() == 0) ? total_errors : (total_errors+1);
+  total_errors = (rng_simulator.index() == 0) ? total_errors : (total_errors+1);
 
-  for (int n=0; n<500; ++n) {
+  for (int n = 0; n < random_table_size; ++n) {
     rng_simulator();
   }
+  ++total_errors;
   try {
     rng_simulator();
-    ++total_errors;
-  } catch (const OptimalLearningException& exception) {
+  } catch (const InvalidValueException<int>& exception) {
+    if ((exception.value() == random_table_size) && (exception.truth() == random_table_size)) {
+      --total_errors;
+    }
   }
 
   return total_errors;
