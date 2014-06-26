@@ -99,6 +99,14 @@ int RunCppTestsWrapper() {
   }
   total_errors += error;
 
+  error = NormalRNGSimulatorTest();
+  if (error != 0) {
+    OL_FAILURE_PRINTF("normal random number generator simulator\n");
+  } else {
+    OL_SUCCESS_PRINTF("normal random number generator simulator\n");
+  }
+  total_errors += error;
+
   error = DomainTests();
   if (error != 0) {
     OL_FAILURE_PRINTF("domain classes\n");

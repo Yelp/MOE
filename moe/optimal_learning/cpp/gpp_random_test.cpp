@@ -16,6 +16,7 @@
 #include <boost/random/uniform_real.hpp>  // NOLINT(build/include_order)
 
 #include "gpp_common.hpp"
+#include "gpp_exception.hpp"
 #include "gpp_geometry.hpp"
 #include "gpp_logging.hpp"
 #include "gpp_random.hpp"
@@ -392,5 +393,44 @@ int RandomNumberGeneratorContainerTest() {
 
   return total_errors;
 }
+
+int NormalRNGSimulatorTest() {
+  int total_errors = 0;
+  int random_table_size = 500;
+  std::vector<double> random_table(random_table_size);
+  NormalRNG rng;
+  for (int i=0; i<random_table_size; ++i) {
+    random_table[i] = rng();
+  }
+  NormalRNGSimulator rng_simulator(random_table.data(), random_table_size);
+
+  for (int n=0; n<40; ++n) {
+    int current_idx = rng_simulator.get_index();
+    rng_simulator();
+    int next_idx = rng_simulator.get_index();
+    total_errors = ((next_idx - current_idx) == 1) ? total_errors : (total_errors+1);
+  }
+
+  rng_simulator.ResetToMostRecentSeed();
+  total_errors = (rng_simulator.get_index() == 0) ? total_errors : (total_errors+1);
+
+  for (int n=0; n<500; ++n) {
+    rng_simulator();
+  }
+  try {
+    rng_simulator();
+    ++total_errors;
+  } catch (const OptimalLearningException& exception) {
+  }
+  if (total_errors != 0) {
+    OL_PARTIAL_FAILURE_PRINTF("NormalRNGSimulator failed with %d errors\n", total_errors);
+  } else {
+    OL_PARTIAL_SUCCESS_PRINTF("NormalRNGSimulator passed all tests\n");
+  }
+  return total_errors;
+}
+
+
+
 
 }  // end namespace optimal_learning

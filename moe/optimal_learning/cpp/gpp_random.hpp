@@ -38,9 +38,29 @@
 #include <boost/random/variate_generator.hpp>  // NOLINT(build/include_order)
 
 #include "gpp_common.hpp"
+#include "gpp_exception.hpp"
 #include "gpp_geometry.hpp"
 
 namespace optimal_learning {
+
+/*!\rst
+  Abstract class implemented by both NormalRNG & NormalRNGSimulator. Currently it only has two pure virtual functions, generate a standard normal random number and reset seed, which provide the most basic functionality a NormalRNG can do.
+\endrst*/
+class NormalRNGInterface {
+ public:
+  /*!\rst
+    Generate a random number from standard normal distribution.
+  \endrst*/
+  virtual double operator()() =0;
+
+  /*!\rst
+    Reseeds the generator with its most recently specified seed value.
+    Useful for testing--e.g., can conduct multiple runs with the same initial conditions
+  \endrst*/
+  virtual void ResetToMostRecentSeed() noexcept =0;
+
+  virtual ~NormalRNGInterface() {}
+};
 
 /*!\rst
   Container for an uniform random generator (e.g., mersenne twister).  Member functions are for easy manipulation
@@ -186,7 +206,8 @@ struct UniformRandomGenerator final {
   WARNING: this class is NOT THREAD-SAFE. You must construct one object per thread (and
   ensure that the seeds are different for practical computations).
 \endrst*/
-struct NormalRNG final {
+class NormalRNG final : public NormalRNGInterface {
+ public:
   using UniformGeneratorType = UniformRandomGenerator;
   using EngineType = UniformRandomGenerator::EngineType;
 
@@ -232,7 +253,7 @@ struct NormalRNG final {
     return uniform_generator.engine;
   }
 
-  double operator()() noexcept {
+  virtual double operator()() {
     return normal_random_variable_();
   }
 
@@ -283,7 +304,7 @@ struct NormalRNG final {
     Reseeds the generator with its most recently specified seed value.
     Useful for testing--e.g., can conduct multiple runs with the same initial conditions
   \endrst*/
-  void ResetToMostRecentSeed() noexcept {
+  virtual void ResetToMostRecentSeed() noexcept {
     uniform_generator.ResetToMostRecentSeed();
     // this is important: the underlying normal distribution likely generates numbers \emph{two} at a time.
     // so re-seeding will not clear this pre-existing state without reseting.
@@ -308,6 +329,56 @@ struct NormalRNG final {
   boost::normal_distribution<double> normal_distribution_;
   //! Object (for convenience) providing operator() that returns a value distributed ~ N(0, 1).
   boost::variate_generator<EngineType&, boost::normal_distribution<double> > normal_random_variable_;
+};
+
+/*!\rst
+  RNG that generates normally districuted (N(0,1)) random numbers simply by reading random numbers stored in its "random_number_table", a data member in this class.
+
+  Note: this class is used in unit test only, and you have to be careful to ensure the total number of random numbers generated from last reset must be smaller than size of "random_number_table", otherwise exception will be thrown.
+
+  WARNING: this class is NOT THREAD-SAFE. You must construct one object per thread. 
+\endrst*/
+class NormalRNGSimulator final : public NormalRNGInterface {
+ public:
+  /*!\rst
+    Construct a NormalRNGSimulator by providing table storing random numbers, and size of this random table.
+
+    \param
+      :random_number_table_in: pointer to the table storing random numbers
+      :size_of_table_in: size of the random table
+  \endrst*/
+  NormalRNGSimulator(double const * restrict random_number_table_in, int size_of_table_in)
+      : random_number_table(random_number_table_in, random_number_table_in + size_of_table_in),
+        size_of_table(size_of_table_in),
+        index(0) {
+        }
+  
+  virtual double operator()() {
+    if (index < size_of_table) {
+      index++;
+      return random_number_table[index];
+    } else {
+      OL_THROW_EXCEPTION(OptimalLearningException, "All random numbers stored in the RNG have been used up!\n");
+    }
+  }
+
+  virtual void ResetToMostRecentSeed() noexcept {
+    index = 0;
+  }
+
+  int get_index() {
+    return index;
+  }
+
+  OL_DISALLOW_DEFAULT_AND_COPY_AND_ASSIGN(NormalRNGSimulator);
+
+ private:
+  //! Table that stores all random numbers.
+  std::vector<double> random_number_table;
+  //! Size of this random table.
+  int size_of_table;
+  //! Index of the random number in the table to return when the generator is called.
+  int index;
 };
 
 /*!\rst
