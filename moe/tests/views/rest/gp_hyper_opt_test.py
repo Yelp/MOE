@@ -6,7 +6,6 @@ import simplejson as json
 
 import testify as T
 
-
 from moe.optimal_learning.python.constant import TEST_OPTIMIZATION_MULTISTARTS, TEST_GRADIENT_DESCENT_PARAMETERS, TEST_OPTIMIZATION_NUM_RANDOM_SAMPLES, TEST_EXPECTED_IMPROVEMENT_MC_ITERATIONS
 from moe.tests.views.rest_gaussian_process_test_case import RestGaussianProcessTestCase
 from moe.views.constant import GP_HYPER_OPT_MOE_ROUTE
@@ -22,6 +21,7 @@ class TestGpHyperOptViews(RestGaussianProcessTestCase):
 
     def _build_json_payload(self, domain, gaussian_process, covariance):
         """Create a json_payload to POST to the /gp/next_points/* endpoint with all needed info."""
+        hyper_dim = domain.dim + 1
         dict_to_dump = {
             'mc_iterations': TEST_EXPECTED_IMPROVEMENT_MC_ITERATIONS,
             'gp_historical_info': self._build_gp_historical_info(gaussian_process),
@@ -32,14 +32,12 @@ class TestGpHyperOptViews(RestGaussianProcessTestCase):
                 'num_random_samples': TEST_OPTIMIZATION_NUM_RANDOM_SAMPLES,
                 'optimization_parameters': dict(TEST_GRADIENT_DESCENT_PARAMETERS._asdict()),
                 },
-            }
-
-        hyper_dim = domain.dim + 1
-        dict_to_dump['hyperparameter_domain_info'] = {
+            'hyperparameter_domain_info': {
                 'dim': hyper_dim,
                 'domain_type': 'tensor_product',
                 'domain_bounds': [],
-                }
+                },
+            }
 
         for _ in range(hyper_dim):
             dict_to_dump['hyperparameter_domain_info']['domain_bounds'].append({
