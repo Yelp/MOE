@@ -99,6 +99,7 @@ class GpNextPointsRequest(colander.MappingSchema):
 
     num_to_sample = colander.SchemaNode(
             colander.Int(),
+            missing=1,
             validator=colander.Range(min=1),
             )
     mc_iterations = colander.SchemaNode(
