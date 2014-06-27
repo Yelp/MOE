@@ -9,10 +9,10 @@
 #include <vector>
 
 #include "gpp_common.hpp"
-#include "gpp_logging.hpp"
-#include "gpp_random.hpp"
-#include "gpp_math.hpp"
 #include "gpp_exception.hpp"
+#include "gpp_logging.hpp"
+#include "gpp_math.hpp"
+#include "gpp_random.hpp"
 
 #ifdef OL_GPU_ENABLED
 #include "gpu/gpp_cuda_math.hpp"
@@ -51,7 +51,7 @@ double CudaExpectedImprovementEvaluator::ComputeExpectedImprovement(StateType * 
   gaussian_process_->ComputeVarianceOfPoints(&(ei_state->points_to_sample_state), ei_state->cholesky_to_sample_var.data());
   ComputeCholeskyFactorL(num_union, ei_state->cholesky_to_sample_var.data());
   unsigned int seed_in = (ei_state->normal_rng->GetEngine())();
-  CudaError _err = cuda_get_EI(ei_state->to_sample_mean.data(), ei_state->cholesky_to_sample_var.data(), best_so_far_, num_union, (ei_state->dev_mu).ptr, (ei_state->dev_L).ptr, (ei_state->dev_EIs).ptr, seed_in, num_mc, &EI_val);
+  CudaError _err = cuda_get_EI(ei_state->to_sample_mean.data(), ei_state->cholesky_to_sample_var.data(), best_so_far_, num_union, (ei_state->gpu_mu).ptr, (ei_state->gpu_L).ptr, (ei_state->gpu_EI_storage).ptr, seed_in, num_mc, &EI_val);
   OL_CUDA_ERROR_THROW(_err)
   return EI_val;
 }
@@ -70,7 +70,7 @@ void CudaExpectedImprovementEvaluator::ComputeGradExpectedImprovement(StateType 
   gaussian_process_->ComputeGradCholeskyVarianceOfPoints(&(ei_state->points_to_sample_state), ei_state->cholesky_to_sample_var.data(), ei_state->grad_chol_decomp.data());
   unsigned int seed_in = (ei_state->normal_rng->GetEngine())();
 
-  CudaError _err = cuda_get_gradEI(ei_state->to_sample_mean.data(), ei_state->grad_mu.data(), ei_state->cholesky_to_sample_var.data(), ei_state->grad_chol_decomp.data(), best_so_far_, num_union, num_to_sample, dim_, (ei_state->dev_mu).ptr, (ei_state->dev_grad_mu).ptr, (ei_state->dev_L).ptr, (ei_state->dev_grad_L).ptr, (ei_state->dev_grad_EIs).ptr, seed_in, num_mc, grad_EI);
+  CudaError _err = cuda_get_gradEI(ei_state->to_sample_mean.data(), ei_state->grad_mu.data(), ei_state->cholesky_to_sample_var.data(), ei_state->grad_chol_decomp.data(), best_so_far_, num_union, num_to_sample, dim_, (ei_state->gpu_mu).ptr, (ei_state->gpu_grad_mu).ptr, (ei_state->gpu_L).ptr, (ei_state->gpu_grad_L).ptr, (ei_state->gpu_grad_EI_storage).ptr, seed_in, num_mc, grad_EI);
   OL_CUDA_ERROR_THROW(_err)
 }
 
@@ -96,12 +96,12 @@ CudaExpectedImprovementState::CudaExpectedImprovementState(const EvaluatorType& 
     grad_mu(dim*num_derivatives),
     cholesky_to_sample_var(Square(num_union)),
     grad_chol_decomp(dim*Square(num_union)*num_derivatives),
-    dev_mu(num_union),
-    dev_L(Square(num_union)),
-    dev_grad_mu(dim * num_derivatives),
-    dev_grad_L(dim * Square(num_union) * num_derivatives),
-    dev_EIs(OL_EI_THREAD_NO * OL_EI_BLOCK_NO),
-    dev_grad_EIs(OL_GRAD_EI_THREAD_NO * OL_GRAD_EI_BLOCK_NO * dim * num_derivatives) {
+    gpu_mu(num_union),
+    gpu_L(Square(num_union)),
+    gpu_grad_mu(dim * num_derivatives),
+    gpu_grad_L(dim * Square(num_union) * num_derivatives),
+    gpu_EI_storage(OL_EI_THREAD_NO * OL_EI_BLOCK_NO),
+    gpu_grad_EI_storage(OL_GRAD_EI_THREAD_NO * OL_GRAD_EI_BLOCK_NO * dim * num_derivatives) {
     }
 
 #else

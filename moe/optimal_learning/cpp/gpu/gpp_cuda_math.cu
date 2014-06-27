@@ -204,15 +204,15 @@ __global__ void grad_EI_gpu(double const * __restrict__ mu, double const * __res
 
 } // end unnamed namespace
     
-extern "C" CudaError cuda_allocate_mem_for_double_vector(int num_doubles, double** __restrict__ ptr_to_ptr) {
+extern "C" CudaError cuda_allocate_mem_for_double_vector(int num_doubles, double** __restrict__ address_of_ptr_to_gpu_memory) {
   CudaError _success = {cudaSuccess, OL_CUDA_STRINGIFY_FILE_AND_LINE, __func__};
   int mem_size = num_doubles * sizeof(double);
-  OL_CUDA_ERROR_RETURN(cudaMalloc((void**) ptr_to_ptr, mem_size))
+  OL_CUDA_ERROR_RETURN(cudaMalloc((void**) address_of_ptr_to_gpu_memory, mem_size))
   return _success;
 }
 
-extern "C" void cuda_free_mem(double* __restrict__ ptr) {
-  cudaFree(ptr);
+extern "C" void cuda_free_mem(double* __restrict__ ptr_to_gpu_memory) {
+  cudaFree(ptr_to_gpu_memory);
 }
 
 extern "C" CudaError cuda_get_EI(double * __restrict__ mu, double * __restrict__ L, double best, int num_union_of_pts, double * __restrict__ gpu_mu, double * __restrict__ gpu_L, double * __restrict__ gpu_EI_storage, unsigned int seed, int num_mc, double* __restrict__ ei_val) {

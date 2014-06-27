@@ -131,7 +131,7 @@ int RunCudaEIConsistencyTests() {
     GaussianProcess gaussian_process(sqexp_covariance, EI_environment.points_sampled(), EI_environment.points_sampled_value(), noise_variance.data(), dim, num_sampled);
 
     OnePotentialSampleExpectedImprovementEvaluator one_potential_sample_ei_evaluator(gaussian_process, best_so_far);
-    OnePotentialSampleExpectedImprovementEvaluator::StateType one_potential_sample_ei_state(one_potential_sample_ei_evaluator, EI_environment.points_to_sample(), configure_for_gradients); 
+    OnePotentialSampleExpectedImprovementEvaluator::StateType one_potential_sample_ei_state(one_potential_sample_ei_evaluator, EI_environment.points_to_sample(), configure_for_gradients);
 
     CudaExpectedImprovementEvaluator cuda_ei_evaluator(gaussian_process, num_mc_iter, best_so_far);
     CudaExpectedImprovementEvaluator::StateType cuda_ei_state(cuda_ei_evaluator, EI_environment.points_to_sample(), EI_environment.points_being_sampled(), num_to_sample, num_being_sampled, configure_for_gradients, &normal_rng);
@@ -215,7 +215,7 @@ int RunCudaEIvsCpuEI() {
     GaussianProcess gaussian_process(sqexp_covariance, EI_environment.points_sampled(), EI_environment.points_sampled_value(), noise_variance.data(), dim, num_sampled);
 
     ExpectedImprovementEvaluator ei_evaluator(gaussian_process, num_mc_iter, best_so_far);
-    ExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, EI_environment.points_to_sample(), EI_environment.points_being_sampled(), num_to_sample, num_being_sampled, configure_for_gradients, &normal_rng); 
+    ExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, EI_environment.points_to_sample(), EI_environment.points_being_sampled(), num_to_sample, num_being_sampled, configure_for_gradients, &normal_rng);
 
     CudaExpectedImprovementEvaluator cuda_ei_evaluator(gaussian_process, num_mc_iter, best_so_far);
     CudaExpectedImprovementEvaluator::StateType cuda_ei_state(cuda_ei_evaluator, EI_environment.points_to_sample(), EI_environment.points_being_sampled(), num_to_sample, num_being_sampled, configure_for_gradients, &normal_rng);

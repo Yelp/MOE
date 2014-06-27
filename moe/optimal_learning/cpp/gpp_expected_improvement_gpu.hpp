@@ -260,12 +260,12 @@ struct CudaExpectedImprovementState final {
 
 #ifdef OL_GPU_ENABLED
   //! structs containing pointers to store the memory locations of variables on GPU
-  CudaDevicePointer dev_mu;
-  CudaDevicePointer dev_L;
-  CudaDevicePointer dev_grad_mu;
-  CudaDevicePointer dev_grad_L;
-  CudaDevicePointer dev_EIs;
-  CudaDevicePointer dev_grad_EIs;
+  CudaDevicePointer gpu_mu;
+  CudaDevicePointer gpu_L;
+  CudaDevicePointer gpu_grad_mu;
+  CudaDevicePointer gpu_grad_L;
+  CudaDevicePointer gpu_EI_storage;
+  CudaDevicePointer gpu_grad_EI_storage;
 #endif
 
   OL_DISALLOW_DEFAULT_AND_COPY_AND_ASSIGN(CudaExpectedImprovementState);
