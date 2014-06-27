@@ -62,9 +62,9 @@ void PingCudaExpectedImprovement::EvaluateAndStoreAnalyticGradient(double const 
   }
   gradients_already_computed_ = true;
 
-  NormalRNG normal_rng(3141);
+  UniformRandomGenerator uniform_rng(3141);
   bool configure_for_gradients = true;
-  CudaExpectedImprovementEvaluator::StateType ei_state(ei_evaluator_, points_to_sample, points_being_sampled_.data(), num_to_sample_, num_being_sampled_, configure_for_gradients, &normal_rng);
+  CudaExpectedImprovementEvaluator::StateType ei_state(ei_evaluator_, points_to_sample, points_being_sampled_.data(), num_to_sample_, num_being_sampled_, configure_for_gradients, &uniform_rng);
   ei_evaluator_.ComputeGradExpectedImprovement(&ei_state, grad_EI_.data());
 
   if (gradients != nullptr) {
@@ -81,9 +81,9 @@ double PingCudaExpectedImprovement::GetAnalyticGradient(int row_index, int colum
 }
 
 void PingCudaExpectedImprovement::EvaluateFunction(double const * restrict points_to_sample, double * restrict function_values) const noexcept {
-  NormalRNG normal_rng(3141);
+  UniformRandomGenerator uniform_rng(3141);
   bool configure_for_gradients = false;
-  CudaExpectedImprovementEvaluator::StateType ei_state(ei_evaluator_, points_to_sample, points_being_sampled_.data(), num_to_sample_, num_being_sampled_, configure_for_gradients, &normal_rng);
+  CudaExpectedImprovementEvaluator::StateType ei_state(ei_evaluator_, points_to_sample, points_being_sampled_.data(), num_to_sample_, num_being_sampled_, configure_for_gradients, &uniform_rng);
   *function_values = ei_evaluator_.ComputeExpectedImprovement(&ei_state);
 }
 #ifdef OL_GPU_ENABLED
@@ -113,7 +113,6 @@ int RunCudaEIConsistencyTests() {
   boost::uniform_real<double> uniform_double(0.5, 2.5);
 
   MockExpectedImprovementEnvironment EI_environment;
-  NormalRNG normal_rng(3141);
 
   std::vector<double> lengths(dim);
   std::vector<double> noise_variance(num_sampled, 0.0);
@@ -134,7 +133,7 @@ int RunCudaEIConsistencyTests() {
     OnePotentialSampleExpectedImprovementEvaluator::StateType one_potential_sample_ei_state(one_potential_sample_ei_evaluator, EI_environment.points_to_sample(), configure_for_gradients);
 
     CudaExpectedImprovementEvaluator cuda_ei_evaluator(gaussian_process, num_mc_iter, best_so_far);
-    CudaExpectedImprovementEvaluator::StateType cuda_ei_state(cuda_ei_evaluator, EI_environment.points_to_sample(), EI_environment.points_being_sampled(), num_to_sample, num_being_sampled, configure_for_gradients, &normal_rng);
+    CudaExpectedImprovementEvaluator::StateType cuda_ei_state(cuda_ei_evaluator, EI_environment.points_to_sample(), EI_environment.points_being_sampled(), num_to_sample, num_being_sampled, configure_for_gradients, &uniform_generator);
 
     EI_cuda = cuda_ei_evaluator.ComputeObjectiveFunction(&cuda_ei_state);
     cuda_ei_evaluator.ComputeGradObjectiveFunction(&cuda_ei_state, grad_EI_cuda.data());
@@ -182,7 +181,7 @@ int RunCudaEIConsistencyTests() {
 int RunCudaEIvsCpuEI() {
   int total_errors = 0;
 
-  const int num_mc_iter = 20000000;
+  const int num_mc_iter = 20000;
   const int dim = 3;
   const int num_being_sampled = 4;
   const int num_to_sample = 4;
@@ -218,7 +217,7 @@ int RunCudaEIvsCpuEI() {
     ExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, EI_environment.points_to_sample(), EI_environment.points_being_sampled(), num_to_sample, num_being_sampled, configure_for_gradients, &normal_rng);
 
     CudaExpectedImprovementEvaluator cuda_ei_evaluator(gaussian_process, num_mc_iter, best_so_far);
-    CudaExpectedImprovementEvaluator::StateType cuda_ei_state(cuda_ei_evaluator, EI_environment.points_to_sample(), EI_environment.points_being_sampled(), num_to_sample, num_being_sampled, configure_for_gradients, &normal_rng);
+    CudaExpectedImprovementEvaluator::StateType cuda_ei_state(cuda_ei_evaluator, EI_environment.points_to_sample(), EI_environment.points_being_sampled(), num_to_sample, num_being_sampled, configure_for_gradients, &uniform_generator);
 
     EI_gpu = cuda_ei_evaluator.ComputeObjectiveFunction(&cuda_ei_state);
     cuda_ei_evaluator.ComputeGradObjectiveFunction(&cuda_ei_state, grad_EI_gpu.data());

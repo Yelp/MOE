@@ -50,7 +50,7 @@ double CudaExpectedImprovementEvaluator::ComputeExpectedImprovement(StateType * 
   gaussian_process_->ComputeMeanOfPoints(ei_state->points_to_sample_state, ei_state->to_sample_mean.data());
   gaussian_process_->ComputeVarianceOfPoints(&(ei_state->points_to_sample_state), ei_state->cholesky_to_sample_var.data());
   ComputeCholeskyFactorL(num_union, ei_state->cholesky_to_sample_var.data());
-  unsigned int seed_in = (ei_state->normal_rng->GetEngine())();
+  unsigned int seed_in = (ei_state->uniform_rng->GetEngine())();
   CudaError _err = cuda_get_EI(ei_state->to_sample_mean.data(), ei_state->cholesky_to_sample_var.data(), best_so_far_, num_union, (ei_state->gpu_mu).ptr, (ei_state->gpu_L).ptr, (ei_state->gpu_EI_storage).ptr, seed_in, num_mc, &EI_val);
   OL_CUDA_ERROR_THROW(_err)
   return EI_val;
@@ -68,7 +68,7 @@ void CudaExpectedImprovementEvaluator::ComputeGradExpectedImprovement(StateType 
   ComputeCholeskyFactorL(num_union, ei_state->cholesky_to_sample_var.data());
 
   gaussian_process_->ComputeGradCholeskyVarianceOfPoints(&(ei_state->points_to_sample_state), ei_state->cholesky_to_sample_var.data(), ei_state->grad_chol_decomp.data());
-  unsigned int seed_in = (ei_state->normal_rng->GetEngine())();
+  unsigned int seed_in = (ei_state->uniform_rng->GetEngine())();
 
   CudaError _err = cuda_get_gradEI(ei_state->to_sample_mean.data(), ei_state->grad_mu.data(), ei_state->cholesky_to_sample_var.data(), ei_state->grad_chol_decomp.data(), best_so_far_, num_union, num_to_sample, dim_, (ei_state->gpu_mu).ptr, (ei_state->gpu_grad_mu).ptr, (ei_state->gpu_L).ptr, (ei_state->gpu_grad_L).ptr, (ei_state->gpu_grad_EI_storage).ptr, seed_in, num_mc, grad_EI);
   OL_CUDA_ERROR_THROW(_err)
@@ -83,7 +83,7 @@ CudaExpectedImprovementEvaluator::~CudaExpectedImprovementEvaluator() {
   cudaDeviceReset();
 }
 
-CudaExpectedImprovementState::CudaExpectedImprovementState(const EvaluatorType& ei_evaluator, double const * restrict points_to_sample, double const * restrict points_being_sampled, int num_to_sample_in, int num_being_sampled_in, bool configure_for_gradients, NormalRNG * normal_rng_in)
+CudaExpectedImprovementState::CudaExpectedImprovementState(const EvaluatorType& ei_evaluator, double const * restrict points_to_sample, double const * restrict points_being_sampled, int num_to_sample_in, int num_being_sampled_in, bool configure_for_gradients, UniformRandomGenerator * uniform_rng_in)
   : dim(ei_evaluator.dim()),
     num_to_sample(num_to_sample_in),
     num_being_sampled(num_being_sampled_in),
@@ -91,7 +91,7 @@ CudaExpectedImprovementState::CudaExpectedImprovementState(const EvaluatorType& 
     num_union(num_to_sample + num_being_sampled),
     union_of_points(BuildUnionOfPoints(points_to_sample, points_being_sampled, num_to_sample, num_being_sampled, dim)),
     points_to_sample_state(*ei_evaluator.gaussian_process(), union_of_points.data(), num_union, num_derivatives),
-    normal_rng(normal_rng_in),
+    uniform_rng(uniform_rng_in),
     to_sample_mean(num_union),
     grad_mu(dim*num_derivatives),
     cholesky_to_sample_var(Square(num_union)),
@@ -121,7 +121,7 @@ void CudaExpectedImprovementEvaluator::setupGPU(int devID) {
 CudaExpectedImprovementEvaluator::~CudaExpectedImprovementEvaluator() {
 }
 
-CudaExpectedImprovementState::CudaExpectedImprovementState(const EvaluatorType& ei_evaluator, double const * restrict points_to_sample, double const * restrict points_being_sampled, int num_to_sample_in, int num_being_sampled_in, bool configure_for_gradients, NormalRNG * normal_rng_in)
+CudaExpectedImprovementState::CudaExpectedImprovementState(const EvaluatorType& ei_evaluator, double const * restrict points_to_sample, double const * restrict points_being_sampled, int num_to_sample_in, int num_being_sampled_in, bool configure_for_gradients, UniformRandomGenerator * uniform_rng_in)
   : dim(ei_evaluator.dim()),
     num_to_sample(num_to_sample_in),
     num_being_sampled(num_being_sampled_in),
@@ -129,7 +129,7 @@ CudaExpectedImprovementState::CudaExpectedImprovementState(const EvaluatorType& 
     num_union(num_to_sample + num_being_sampled),
     union_of_points(BuildUnionOfPoints(points_to_sample, points_being_sampled, num_to_sample, num_being_sampled, dim)),
     points_to_sample_state(*ei_evaluator.gaussian_process(), union_of_points.data(), num_union, num_derivatives),
-    normal_rng(normal_rng_in),
+    uniform_rng(uniform_rng_in),
     to_sample_mean(num_union),
     grad_mu(dim*num_derivatives),
     cholesky_to_sample_var(Square(num_union)),

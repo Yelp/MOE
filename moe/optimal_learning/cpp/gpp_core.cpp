@@ -2130,7 +2130,6 @@ int main() {
 
         UniformRandomGenerator uniform_generator(31278);
         boost::uniform_real<double> uniform_double(0.5, 2.5);
-        NormalRNG normal_rng(3141);
         bool configure_for_gradients = true;
 
         MockExpectedImprovementEnvironment EI_environment;
@@ -2148,7 +2147,7 @@ int main() {
         SquareExponential sqexp_cov(dim, alpha, lengths);
         GaussianProcess gaussian_process(sqexp_cov, EI_environment.points_sampled(), EI_environment.points_sampled_value(), noise_var.data(), dim, num_sampled); 
         CudaExpectedImprovementEvaluator gpu_EI_evaluator(gaussian_process, num_mc_iter, best_so_far);
-        CudaExpectedImprovementEvaluator::StateType ei_state(gpu_EI_evaluator, EI_environment.points_to_sample(), EI_environment.points_being_sampled(), num_to_sample, num_being_sampled, configure_for_gradients, &normal_rng);
+        CudaExpectedImprovementEvaluator::StateType ei_state(gpu_EI_evaluator, EI_environment.points_to_sample(), EI_environment.points_being_sampled(), num_to_sample, num_being_sampled, configure_for_gradients, &uniform_generator);
 
         EI_gpu = gpu_EI_evaluator.ComputeExpectedImprovement(&ei_state);
         gpu_EI_evaluator.ComputeGradExpectedImprovement(&ei_state, grad_EI_gpu.data());
