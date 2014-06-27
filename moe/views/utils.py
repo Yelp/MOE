@@ -76,7 +76,7 @@ def _make_optimization_parameters_from_params(params):
 
 
 def _make_log_likelihood_from_params(params):
-    return LOGLIKELIHOOD_TYPES_TO_LOGLIKELIHOOD_METHODS[params.get('log_likelihood_info')] 
+    return params.get('log_likelihood_info')
 
 
 def _make_gp_from_params(params):

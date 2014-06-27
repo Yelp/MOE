@@ -14,8 +14,12 @@ from moe.views.constant import GP_HYPER_OPT_ROUTE_NAME, GP_HYPER_OPT_PRETTY_ROUT
 from moe.views.gp_pretty_view import GpPrettyView, PRETTY_RENDERER
 from moe.views.optimizable_gp_pretty_view import OptimizableGpPrettyView
 from moe.views.schemas import GpHistoricalInfo, CovarianceInfo, BoundedDomainInfo, OptimizationInfo, DomainInfo, ListOfFloats
-from moe.views.utils import _make_domain_from_params, _make_gp_from_params, _make_optimization_parameters_from_params
+from moe.views.utils import _make_domain_from_params, _make_gp_from_params, _make_optimization_parameters_from_params, _make_log_likelihood_from_params
 from moe.optimal_learning.python.linkers import LOGLIKELIHOOD_TYPES_TO_LOGLIKELIHOOD_METHODS
+from moe.optimal_learning.python.constant import LOG_MARGINAL_LIKELIHOOD, LEAVE_ONE_OUT_LOG_LIKELIHOOD
+
+import moe.optimal_learning.python.cpp_wrappers.optimization as cpp_optimization
+import moe.build.GPP as C_GP
 
 class GpHyperOptRequest(colander.MappingSchema):
 
@@ -86,7 +90,8 @@ class GpHyperOptRequest(colander.MappingSchema):
             )
     log_likelihood_info = colander.SchemaNode(
             colander.String(),
-            validator=colander.OneOf(LOGLIKELIHOOD_TYPES_TO_LOGLIKELIHOOD_METHODS)
+            validator=colander.OneOf(LOGLIKELIHOOD_TYPES_TO_LOGLIKELIHOOD_METHODS),
+            missing=LOG_MARGINAL_LIKELIHOOD,
             )
 
 
@@ -196,14 +201,19 @@ class GpHyperOptView(OptimizableGpPrettyView):
         optimizer_class, optimization_parameters, num_random_samples = _make_optimization_parameters_from_params(params)
         log_likelihood_type =  _make_log_likelihood_from_params(params)
 
-        if optimizer_class != cpp_optimization.NullOptimizer and log_likelihood_type == C_GP.LogLikelihoodTypes.leave_one_out_log_likelihood:
+        if optimizer_class != cpp_optimization.NullOptimizer and log_likelihood_type == LEAVE_ONE_OUT_LOG_LIKELIHOOD:
             raise NotImplementedError('LeaveOneOutLogLikehood is not compatible with Newton\'s Method or Gradient Descent')
-
-        log_likelihood_eval = GaussianProcessLogLikelihood(
-            covariance_of_process,
-            gaussian_process._historical_data,
-            log_likelihood_type,
-        )
+        
+        if log_likelihood_type == LEAVE_ONE_OUT_LOG_LIKELIHOOD:
+            log_likelihood_eval = GaussianProcessLeaveOneOutLogLikelihood(
+                covariance_of_process,
+                gaussian_process._historical_data,
+            )
+        else:
+            log_likelihood_eval = GaussianProcessLogLikelihood(
+                covariance_of_process,
+                gaussian_process._historical_data,
+            )
 
         log_likelihood_optimizer = optimizer_class(
             hyperparameter_domain,
