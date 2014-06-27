@@ -15,7 +15,7 @@ Contributors
 - Peter Frazier (pf98@cornell.edu, http://people.orie.cornell.edu/pfrazier/)
 - JiaLei Wang (jw865@cornell.edu, [@garywang304][5])
 - Deniz Oktay (denizokt@mit.edu)
-
+- Norases Vesdapunt (norases@cs.stanford.edu)
 [0]: http://www.yelp.com/careers
 [1]: http://www.orie.cornell.edu/
 [2]: https://github.com/sc932/Thesis
