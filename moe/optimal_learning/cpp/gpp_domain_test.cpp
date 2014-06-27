@@ -51,14 +51,7 @@
 #include <boost/random/uniform_int.hpp>  // NOLINT(build/include_order)
 
 #include "gpp_common.hpp"
-// HACK: temporarily disable printing (this will go away when we switch to GoogleTest)
-#define OL_TEMP_ERROR_PRINT OL_ERROR_PRINT
-#define OL_TEMP_WARNING_PRINT OL_WARNING_PRINT
-#undef OL_ERROR_PRINT
-#undef OL_WARNING_PRINT
 #include "gpp_domain.hpp"
-#define OL_ERROR_PRINT OL_TEMP_ERROR_PRINT
-#define OL_WARNING_PRINT OL_TEMP_WARNING_PRINT
 #include "gpp_geometry.hpp"
 #include "gpp_linear_algebra.hpp"
 #include "gpp_logging.hpp"

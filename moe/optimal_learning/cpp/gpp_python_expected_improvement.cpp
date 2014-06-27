@@ -281,8 +281,7 @@ boost::python::list EvaluateEIAtPointListWrapper(const GaussianProcess& gaussian
   CopyPylistToVector(initial_guesses, input_container.dim * num_multistarts, initial_guesses_C);
 
   bool found_flag = false;
-  TensorProductDomain dummy_domain(nullptr, 0);
-  EvaluateEIAtPointList(gaussian_process, dummy_domain, initial_guesses_C.data(), input_container.points_being_sampled.data(), num_multistarts, num_to_sample, input_container.num_being_sampled, best_so_far, max_int_steps, max_num_threads, &found_flag, randomness_source.normal_rng_vec.data(), result_function_values_C.data(), result_point_C.data());
+  EvaluateEIAtPointList(gaussian_process, initial_guesses_C.data(), input_container.points_being_sampled.data(), num_multistarts, num_to_sample, input_container.num_being_sampled, best_so_far, max_int_steps, max_num_threads, &found_flag, randomness_source.normal_rng_vec.data(), result_function_values_C.data(), result_point_C.data());
 
   status["evaluate_EI_at_point_list"] = found_flag;
 

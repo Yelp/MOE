@@ -216,7 +216,8 @@ class OptimalLearningException : public std::exception {
       :func_info[]: optional ptr to char array from OL_CURRENT_FUNCTION_NAME or similar
       :custom_message[]: optional ptr to char array with any additional text/info to print/log
 \endrst*/
-  void AppendCustomMessageAndDebugInfo(char const * line_info, char const * func_info, char const * custom_message);
+  void AppendCustomMessageAndDebugInfo(char const * line_info, char const * func_info,
+                                       char const * custom_message);
 
   //! a custom message describing this exception, produced by ``what()``.
   std::string message_;
@@ -255,8 +256,9 @@ class BoundsException : public OptimalLearningException {
       :min: the minimum bound for value
       :max: the maximum bound for value
   \endrst*/
-  BoundsException(char const * line_info, char const * func_info, char const * custom_message, ValueType value_in, ValueType min_in, ValueType max_in) : BoundsException(kName, line_info, func_info, custom_message, value_in, min_in, max_in) {
-  }
+  BoundsException(char const * line_info, char const * func_info,
+                  char const * custom_message, ValueType value_in,
+                  ValueType min_in, ValueType max_in);
 
   ValueType value() const noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
     return value_;
@@ -273,7 +275,9 @@ class BoundsException : public OptimalLearningException {
   OL_DISALLOW_DEFAULT_AND_ASSIGN(BoundsException);
 
  protected:
-  BoundsException(char const * name_in, char const * line_info, char const * func_info, char const * custom_message, ValueType value_in, ValueType min_in, ValueType max_in);
+  BoundsException(char const * name_in, char const * line_info,
+                  char const * func_info, char const * custom_message,
+                  ValueType value_in, ValueType min_in, ValueType max_in);
 
  private:
   //! The errorneous value_ and the ``[min_, max_]`` bounds that it should lie in.
@@ -306,7 +310,11 @@ class LowerBoundException : public BoundsException<ValueType> {
       :value: the value that violates its min or max bound
       :min: the minimum bound for value
   \endrst*/
-  LowerBoundException(char const * line_info, char const * func_info, char const * custom_message, ValueType value_in, ValueType min_in) : BoundsException<ValueType>(kName, line_info, func_info, custom_message, value_in, min_in, std::numeric_limits<ValueType>::max()) {
+  LowerBoundException(char const * line_info, char const * func_info,
+                      char const * custom_message, ValueType value_in,
+                      ValueType min_in)
+      : BoundsException<ValueType>(kName, line_info, func_info, custom_message, value_in,
+                                   min_in, std::numeric_limits<ValueType>::max()) {
   }
 
   OL_DISALLOW_DEFAULT_AND_ASSIGN(LowerBoundException);
@@ -334,7 +342,11 @@ class UpperBoundException : public BoundsException<ValueType> {
       :value: the value that violates its min or max bound
       :max: the maximum bound for value
   \endrst*/
-  UpperBoundException(char const * line_info, char const * func_info, char const * custom_message, ValueType value_in, ValueType max_in) : BoundsException<ValueType>(kName, line_info, func_info, custom_message, value_in, std::numeric_limits<ValueType>::lowest(), max_in) {
+  UpperBoundException(char const * line_info, char const * func_info,
+                      char const * custom_message, ValueType value_in,
+                      ValueType max_in)
+      : BoundsException<ValueType>(kName, line_info, func_info, custom_message, value_in,
+                                   std::numeric_limits<ValueType>::lowest(), max_in) {
   }
 
   OL_DISALLOW_DEFAULT_AND_ASSIGN(UpperBoundException);
@@ -382,7 +394,8 @@ class InvalidValueException : public OptimalLearningException {
       :value: the invalid value
       :truth: what "value" is supposed to be
   \endrst*/
-  InvalidValueException(char const * line_info, char const * func_info, char const * custom_message, ValueType value_in, ValueType truth_in);
+  InvalidValueException(char const * line_info, char const * func_info,
+                        char const * custom_message, ValueType value_in, ValueType truth_in);
 
   /*!\rst
     Constructs a InvalidValueException object with extra fields to flesh out the what() message.
@@ -397,7 +410,9 @@ class InvalidValueException : public OptimalLearningException {
       :tolerance: the maximum acceptable error in ``|value - truth|``
   \endrst*/
   template <typename ValueTypeIn = ValueType, class = typename std::enable_if<std::is_floating_point<ValueType>::value, ValueTypeIn>::type>
-  InvalidValueException(char const * line_info, char const * func_info, char const * custom_message, ValueType value_in, ValueType truth_in, ValueType tolerance_in);
+  InvalidValueException(char const * line_info, char const * func_info,
+                        char const * custom_message, ValueType value_in,
+                        ValueType truth_in, ValueType tolerance_in);
 
   ValueType value() const noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
     return value_;
@@ -421,7 +436,9 @@ class InvalidValueException : public OptimalLearningException {
 // template explicit instantiation definitions, see gpp_common.hpp header comments, item 6
 extern template class InvalidValueException<int>;
 extern template class InvalidValueException<double>;
-extern template InvalidValueException<double>::InvalidValueException(char const * line_info, char const * func_info, char const * custom_message, double value_in, double truth_in, double tolerance_in);
+extern template InvalidValueException<double>::InvalidValueException(
+    char const * line_info, char const * func_info, char const * custom_message,
+    double value_in, double truth_in, double tolerance_in);
 
 /*!\rst
   **Overview**
@@ -461,7 +478,8 @@ class SingularMatrixException : public OptimalLearningException {
       :num_rows: number of rows (= number of columns) in the matrix
       :leading_minor_index: index of the first non-positive definite (principal) leading minor
   \endrst*/
-  SingularMatrixException(char const * line_info, char const * func_info, char const * custom_message, double const * matrix_in, int num_rows_in, int leading_minor_index_in);
+  SingularMatrixException(char const * line_info, char const * func_info, char const * custom_message,
+                          double const * matrix_in, int num_rows_in, int leading_minor_index_in);
 
   int num_rows() const noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
     return num_rows_;

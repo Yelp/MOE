@@ -1601,7 +1601,7 @@ int EvaluateEIAtPointListTest() {
   std::vector<double> initial_guesses(dim*num_to_sample*num_grid_search_points);
   num_grid_search_points = mock_gp_data.domain_ptr->GenerateUniformPointsInDomain(num_grid_search_points, &uniform_generator, initial_guesses.data());
 
-  EvaluateEIAtPointList(*mock_gp_data.gaussian_process_ptr, *mock_gp_data.domain_ptr, initial_guesses.data(), points_being_sampled.data(), num_grid_search_points, num_to_sample, num_being_sampled, mock_gp_data.best_so_far, max_int_steps, kMaxNumThreads, &found_flag, normal_rng_vec.data(), function_values.data(), grid_search_best_point.data());
+  EvaluateEIAtPointList(*mock_gp_data.gaussian_process_ptr, initial_guesses.data(), points_being_sampled.data(), num_grid_search_points, num_to_sample, num_being_sampled, mock_gp_data.best_so_far, max_int_steps, kMaxNumThreads, &found_flag, normal_rng_vec.data(), function_values.data(), grid_search_best_point.data());
   if (!found_flag) {
     ++total_errors;
   }
@@ -1623,7 +1623,7 @@ int EvaluateEIAtPointListTest() {
     std::vector<double> function_values_single_thread(num_grid_search_points);
     int single_thread = 1;
     found_flag = false;
-    EvaluateEIAtPointList(*mock_gp_data.gaussian_process_ptr, *mock_gp_data.domain_ptr, initial_guesses.data(), points_being_sampled.data(), num_grid_search_points, num_to_sample, num_being_sampled, mock_gp_data.best_so_far, max_int_steps, single_thread, &found_flag, normal_rng_vec.data(), function_values_single_thread.data(), grid_search_best_point_single_thread.data());
+    EvaluateEIAtPointList(*mock_gp_data.gaussian_process_ptr, initial_guesses.data(), points_being_sampled.data(), num_grid_search_points, num_to_sample, num_being_sampled, mock_gp_data.best_so_far, max_int_steps, single_thread, &found_flag, normal_rng_vec.data(), function_values_single_thread.data(), grid_search_best_point_single_thread.data());
 
     // check against multi-threaded result matches single
     for (int i = 0; i < dim*num_to_sample; ++i) {
