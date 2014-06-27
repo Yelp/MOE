@@ -160,7 +160,7 @@ struct CudaExpectedImprovementState final {
 
 #ifdef OL_GPU_ENABLED
   // constructor for setting up unit test
-  CudaExpectedImprovementState(const EvaluatorType& ei_evaluator, double const * restrict points_to_sample, double const * restrict points_being_sampled, int num_to_sample_in, int num_being_sampled_in, bool configure_for_gradients, NormalRNG * normal_rng_in, bool configure_for_test);
+  CudaExpectedImprovementState(const EvaluatorType& ei_evaluator, double const * restrict points_to_sample, double const * restrict points_being_sampled, int num_to_sample_in, int num_being_sampled_in, bool configure_for_gradients, UniformRandomGenerator * uniform_rng_in, bool configure_for_test);
 #endif
 
   CudaExpectedImprovementState(CudaExpectedImprovementState&& OL_UNUSED(other)) = default;

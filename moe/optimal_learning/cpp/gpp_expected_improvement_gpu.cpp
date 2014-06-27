@@ -49,7 +49,11 @@ double CudaExpectedImprovementEvaluator::ComputeExpectedImprovement(StateType * 
   int num_union = ei_state->num_union;
   gaussian_process_->ComputeMeanOfPoints(ei_state->points_to_sample_state, ei_state->to_sample_mean.data());
   gaussian_process_->ComputeVarianceOfPoints(&(ei_state->points_to_sample_state), ei_state->cholesky_to_sample_var.data());
-  ComputeCholeskyFactorL(num_union, ei_state->cholesky_to_sample_var.data());
+  int leading_minor_index = ComputeCholeskyFactorL(num_union, ei_state->cholesky_to_sample_var.data());
+  if (unlikely(leading_minor_index != 0)) {
+    OL_THROW_EXCEPTION(SingularMatrixException, "GP-Variance matrix singular. Check for duplicate points_to_sample/being_sampled or points_to_sample/being_sampled duplicating points_sampled with 0 noise.", ei_state->cholesky_to_sample_var.data(), num_union, leading_minor_index);
+  }
+  
   unsigned int seed_in = (ei_state->uniform_rng->GetEngine())();
   CudaError _err = cuda_get_EI(ei_state->to_sample_mean.data(), ei_state->cholesky_to_sample_var.data(), best_so_far_, num_union, ei_state->gpu_mu.ptr, ei_state->gpu_L.ptr, ei_state->gpu_EI_storage.ptr, seed_in, num_mc, &EI_val, ei_state->gpu_random_number_EI.ptr, ei_state->random_number_EI.data(), ei_state->configure_for_test);
   OL_CUDA_ERROR_THROW(_err)
@@ -65,7 +69,10 @@ void CudaExpectedImprovementEvaluator::ComputeGradExpectedImprovement(StateType 
   gaussian_process_->ComputeMeanOfPoints(ei_state->points_to_sample_state, ei_state->to_sample_mean.data());
   gaussian_process_->ComputeGradMeanOfPoints(ei_state->points_to_sample_state, ei_state->grad_mu.data());
   gaussian_process_->ComputeVarianceOfPoints(&(ei_state->points_to_sample_state), ei_state->cholesky_to_sample_var.data());
-  ComputeCholeskyFactorL(num_union, ei_state->cholesky_to_sample_var.data());
+  int leading_minor_index = ComputeCholeskyFactorL(num_union, ei_state->cholesky_to_sample_var.data());
+  if (unlikely(leading_minor_index != 0)) {
+    OL_THROW_EXCEPTION(SingularMatrixException, "GP-Variance matrix singular. Check for duplicate points_to_sample/being_sampled or points_to_sample/being_sampled duplicating points_sampled with 0 noise.", ei_state->cholesky_to_sample_var.data(), num_union, leading_minor_index);
+  }
 
   gaussian_process_->ComputeGradCholeskyVarianceOfPoints(&(ei_state->points_to_sample_state), ei_state->cholesky_to_sample_var.data(), ei_state->grad_chol_decomp.data());
   unsigned int seed_in = (ei_state->uniform_rng->GetEngine())();
@@ -101,7 +108,7 @@ CudaExpectedImprovementState::CudaExpectedImprovementState(const EvaluatorType& 
     gpu_L(Square(num_union)),
     gpu_grad_mu(dim * num_derivatives),
     gpu_grad_L(dim * Square(num_union) * num_derivatives),
-    gpu_EI_storage(EI_THREAD_NO * EI_BLOCK_NO),
+    gpu_EI_storage(OL_EI_THREAD_NO * OL_EI_BLOCK_NO),
     gpu_grad_EI_storage(OL_GRAD_EI_THREAD_NO * OL_GRAD_EI_BLOCK_NO * dim * num_derivatives), 
     gpu_random_number_EI(0),
     gpu_random_number_gradEI(0),
@@ -109,7 +116,7 @@ CudaExpectedImprovementState::CudaExpectedImprovementState(const EvaluatorType& 
     random_number_gradEI(0) {
     }
 
-CudaExpectedImprovementState::CudaExpectedImprovementState(const EvaluatorType& ei_evaluator, double const * restrict points_to_sample, double const * restrict points_being_sampled, int num_to_sample_in, int num_being_sampled_in, bool configure_for_gradients, NormalRNG * normal_rng_in, bool configure_for_test_in)
+CudaExpectedImprovementState::CudaExpectedImprovementState(const EvaluatorType& ei_evaluator, double const * restrict points_to_sample, double const * restrict points_being_sampled, int num_to_sample_in, int num_being_sampled_in, bool configure_for_gradients, UniformRandomGenerator * uniform_rng_in, bool configure_for_test_in)
   : dim(ei_evaluator.dim()),
     num_to_sample(num_to_sample_in),
     num_being_sampled(num_being_sampled_in),
@@ -117,7 +124,7 @@ CudaExpectedImprovementState::CudaExpectedImprovementState(const EvaluatorType& 
     num_union(num_to_sample + num_being_sampled),
     union_of_points(BuildUnionOfPoints(points_to_sample, points_being_sampled, num_to_sample, num_being_sampled, dim)),
     points_to_sample_state(*ei_evaluator.gaussian_process(), union_of_points.data(), num_union, num_derivatives),
-    normal_rng(normal_rng_in),
+    uniform_rng(uniform_rng_in),
     to_sample_mean(num_union),
     grad_mu(dim*num_derivatives),
     cholesky_to_sample_var(Square(num_union)),
@@ -127,11 +134,11 @@ CudaExpectedImprovementState::CudaExpectedImprovementState(const EvaluatorType& 
     gpu_L(Square(num_union)),
     gpu_grad_mu(dim * num_derivatives),
     gpu_grad_L(dim * Square(num_union) * num_derivatives),
-    gpu_EI_storage(EI_THREAD_NO * EI_BLOCK_NO),
+    gpu_EI_storage(OL_EI_THREAD_NO * OL_EI_BLOCK_NO),
     gpu_grad_EI_storage(OL_GRAD_EI_THREAD_NO * OL_GRAD_EI_BLOCK_NO * dim * num_derivatives), 
-    gpu_random_number_EI(configure_for_test ? (static_cast<int>(ei_evaluator.num_mc_itr() / (EI_THREAD_NO * EI_BLOCK_NO)) + 1) * (EI_THREAD_NO * EI_BLOCK_NO) * num_union : 0),
+    gpu_random_number_EI(configure_for_test ? (static_cast<int>(ei_evaluator.num_mc_itr() / (OL_EI_THREAD_NO * OL_EI_BLOCK_NO)) + 1) * (OL_EI_THREAD_NO * OL_EI_BLOCK_NO) * num_union : 0),
     gpu_random_number_gradEI(configure_for_test ? (static_cast<int>(ei_evaluator.num_mc_itr() / (OL_GRAD_EI_THREAD_NO * OL_GRAD_EI_BLOCK_NO)) + 1) * (OL_GRAD_EI_THREAD_NO * OL_GRAD_EI_BLOCK_NO) * num_union : 0),
-    random_number_EI(configure_for_test ? (static_cast<int>(ei_evaluator.num_mc_itr() / (EI_THREAD_NO * EI_BLOCK_NO)) + 1) * (EI_THREAD_NO * EI_BLOCK_NO) * num_union : 0),
+    random_number_EI(configure_for_test ? (static_cast<int>(ei_evaluator.num_mc_itr() / (OL_EI_THREAD_NO * OL_EI_BLOCK_NO)) + 1) * (OL_EI_THREAD_NO * OL_EI_BLOCK_NO) * num_union : 0),
     random_number_gradEI(configure_for_test ? (static_cast<int>(ei_evaluator.num_mc_itr() / (OL_GRAD_EI_THREAD_NO * OL_GRAD_EI_BLOCK_NO)) + 1) * (OL_GRAD_EI_THREAD_NO * OL_GRAD_EI_BLOCK_NO) * num_union : 0) {
     }
 

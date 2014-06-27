@@ -114,7 +114,7 @@ __global__ void EI_gpu(double const * __restrict__ L, double const * __restrict_
       for(int mc = 0; mc < NUM_ITS; ++mc) {
         improvement_this_step = 0.0;
         for(int i = 0; i < no_of_pts; ++i) {
-            normals[i] = curand_normal_double(&s);
+            normals[i] = curand_normal_double(&random_state);
             gpu_random_number_EI[IDX * NUM_ITS * no_of_pts + mc * no_of_pts + i] = normals[i];
         }
         TriangularMatrixVectorMultiply_gpu(L_local, no_of_pts, normals);
@@ -130,7 +130,7 @@ __global__ void EI_gpu(double const * __restrict__ L, double const * __restrict_
       for(int mc = 0; mc < NUM_ITS; ++mc) {
         improvement_this_step = 0.0;
         for(int i = 0; i < no_of_pts; ++i) {
-            normals[i] = curand_normal_double(&s);
+            normals[i] = curand_normal_double(&random_state);
         }
         TriangularMatrixVectorMultiply_gpu(L_local, no_of_pts, normals);
         for(int i = 0; i < no_of_pts; ++i) {
@@ -190,7 +190,7 @@ __global__ void grad_EI_gpu(double const * __restrict__ mu, double const * __res
           improvement_this_step = 0.0;
           winner = -1;
           for(i = 0; i < num_union_of_pts; ++i) {
-              normals[i] = curand_normal_double(&s);
+              normals[i] = curand_normal_double(&random_state);
               normals_copy[i] = normals[i];
               gpu_random_number_gradEI[IDX * NUM_ITS * num_union_of_pts + mc * num_union_of_pts + i] = normals[i];
           }
@@ -218,7 +218,7 @@ __global__ void grad_EI_gpu(double const * __restrict__ mu, double const * __res
           improvement_this_step = 0.0;
           winner = -1;
           for(i = 0; i < num_union_of_pts; ++i) {
-              normals[i] = curand_normal_double(&s);
+              normals[i] = curand_normal_double(&random_state);
               normals_copy[i] = normals[i];
           }
           TriangularMatrixVectorMultiply_gpu(L_local, num_union_of_pts, normals);
@@ -333,7 +333,11 @@ extern "C" CudaError cuda_get_EI(double * __restrict__ mu, double * __restrict__
      inputs: gpu_mu, gpu_L, gpu_grad_mu, gpu_grad_L, best, num_union_of_pts, num_to_sample, dimension, NUM_ITS, seed
      output: gpu_grad_EI_storage
   */
-  grad_EI_gpu<<< grid, threads, mem_size_mu+mem_size_L+mem_size_grad_mu+mem_size_grad_L >>>(gpu_mu, gpu_L, gpu_grad_mu, gpu_grad_L, best, num_union_of_pts, num_to_sample, dimension, NUM_ITS, seed, gpu_grad_EI_storage); 
+  grad_EI_gpu<<< grid, threads,
+    mem_size_mu+mem_size_L+mem_size_grad_mu+mem_size_grad_L >>>(gpu_mu, gpu_L,
+            gpu_grad_mu, gpu_grad_L, best, num_union_of_pts, num_to_sample,
+            dimension, NUM_ITS, seed, gpu_grad_EI_storage,
+            gpu_random_number_gradEI, configure_for_test); 
   OL_CUDA_ERROR_RETURN(cudaPeekAtLastError())
 
   OL_CUDA_ERROR_RETURN(cudaMemcpy(grad_EI_storage, gpu_grad_EI_storage, mem_size_grad_EI_storage, cudaMemcpyDeviceToHost))
