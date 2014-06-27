@@ -95,7 +95,7 @@ class CudaExpectedImprovementEvaluator final {
     \param
       :ei_state[1]: properly configured state object
     \output
-      :ei_state[1]: state with temporary storage modified; ``normal_rng`` modified
+      :ei_state[1]: state with temporary storage modified; ``uniform_rng`` modified
     \return
       the expected improvement from sampling ``points_to_sample`` with ``points_being_sampled`` concurrent experiments
   \endrst*/
@@ -106,7 +106,7 @@ class CudaExpectedImprovementEvaluator final {
     \param
       :ei_state[1]: properly configured state object
     \output
-      :ei_state[1]: state with temporary storage modified; ``normal_rng`` modified
+      :ei_state[1]: state with temporary storage modified; ``uniform_rng`` modified
       :grad_EI[dim][num_to_sample]: gradient of EI
   \endrst*/
   void ComputeGradExpectedImprovement(StateType * ei_state, double * restrict grad_EI) const OL_NONNULL_POINTERS;
@@ -150,13 +150,13 @@ struct CudaExpectedImprovementState final {
       :num_to_sample: number of potential future samples; gradients are evaluated wrt these points (i.e., the "q" in q,p-EI)
       :num_being_sampled: number of points being sampled in concurrent experiments (i.e., the "p" in q,p-EI)
       :configure_for_gradients: true if this object will be used to compute gradients, false otherwise
-      :normal_rng[1]: pointer to a properly initialized* NormalRNG object
+      :uniform_rng[1]: pointer to a properly initialized* UniformRandomGenerator object
 
     .. NOTE::
-         * The NormalRNG object must already be seeded.  If multithreaded computation is used for EI, then every state object
-         must have a different NormalRNG (different seeds, not just different objects).
+         * The UniformRandomGenerator object must already be seeded.  If multithreaded computation is used for EI, then every state object
+         must have a different UniformRandomGenerator (different seeds, not just different objects).
   \endrst*/
-  CudaExpectedImprovementState(const EvaluatorType& ei_evaluator, double const * restrict points_to_sample, double const * restrict points_being_sampled, int num_to_sample_in, int num_being_sampled_in, bool configure_for_gradients, NormalRNG * normal_rng_in);
+  CudaExpectedImprovementState(const EvaluatorType& ei_evaluator, double const * restrict points_to_sample, double const * restrict points_being_sampled, int num_to_sample_in, int num_being_sampled_in, bool configure_for_gradients, UniformRandomGenerator* uniform_rng_in);
 
 #ifdef OL_GPU_ENABLED
   // constructor for setting up unit test
@@ -255,7 +255,7 @@ struct CudaExpectedImprovementState final {
   GaussianProcess::StateType points_to_sample_state;
 
   //! random number generator
-  NormalRNG * normal_rng;
+  UniformRandomGenerator* uniform_rng;
 
   // temporary storage: preallocated space used by CudaExpectedImprovementEvaluator's member functions
   //! the mean of the GP evaluated at union_of_points
@@ -270,14 +270,14 @@ struct CudaExpectedImprovementState final {
 #ifdef OL_GPU_ENABLED
   bool configure_for_test;
   //! structs containing pointers to store the memory locations of variables on GPU
-  CudaDevicePointer dev_mu;
-  CudaDevicePointer dev_L;
-  CudaDevicePointer dev_grad_mu;
-  CudaDevicePointer dev_grad_L;
-  CudaDevicePointer dev_EIs;
-  CudaDevicePointer dev_grad_EIs;
-  CudaDevicePointer dev_random_number_EI;
-  CudaDevicePointer dev_random_number_gradEI;
+  CudaDevicePointer gpu_mu;
+  CudaDevicePointer gpu_L;
+  CudaDevicePointer gpu_grad_mu;
+  CudaDevicePointer gpu_grad_L;
+  CudaDevicePointer gpu_EI_storage;
+  CudaDevicePointer gpu_grad_EI_storage;
+  CudaDevicePointer gpu_random_number_EI;
+  CudaDevicePointer gpu_random_number_gradEI;
 
   //! storage for random numbers used in computing EI & grad_EI, this is only
   //used to setup unit test

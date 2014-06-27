@@ -21,10 +21,10 @@
 
 #include "gpp_common.hpp"
 #include "gpp_domain.hpp"
-#include "gpp_test_utils.hpp"
 #include "gpp_exception.hpp"
 #include "gpp_expected_improvement_gpu.hpp"
 #include "gpp_math.hpp"
+#include "gpp_test_utils.hpp"
 
 namespace optimal_learning {
 /*!\rst
@@ -105,14 +105,6 @@ OL_WARN_UNUSED_RESULT int RunCudaEIConsistencyTests();
     number of test failures: 0 if all is working well.
 \endrst*/
 OL_WARN_UNUSED_RESULT int RunCudaEIvsCpuEI();
-
-/*!\rst
-  speed comparison between gpu & cpu computation
-
-  \return
-    No return values
-\endrst*/
-OL_WARN_UNUSED_RESULT void SpeedComparison();
 
 }  // end namespace optimal_learning
 #endif  // MOE_OPTIMAL_LEARNING_CPP_GPP_EXPECTED_IMPROVEMENT_GPU_TEST_HPP_
