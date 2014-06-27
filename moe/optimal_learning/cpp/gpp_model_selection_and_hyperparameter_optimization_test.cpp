@@ -445,8 +445,10 @@ OL_WARN_UNUSED_RESULT int HyperparameterLikelihoodOptimizationTestCore(LogLikeli
   std::vector<double> grad_log_marginal(num_hyperparameters);
   log_likelihood_eval.ComputeGradLogLikelihood(&log_likelihood_state, grad_log_marginal.data());
 
-  printf("grad log marginal: ");
+#ifdef OL_VERBOSE_PRINT
+  OL_VERBOSE_PRINTF("grad log marginal: ");
   PrintMatrix(grad_log_marginal.data(), 1, grad_log_marginal.size());
+#endif
 
   current_errors = 0;
   for (const auto& entry : grad_log_marginal) {
@@ -561,8 +563,10 @@ OL_WARN_UNUSED_RESULT int HyperparameterLikelihoodNewtonOptimizationTestCore(Log
   std::vector<double> grad_log_marginal(num_hyperparameters);
   log_likelihood_eval.ComputeGradLogLikelihood(&log_likelihood_state, grad_log_marginal.data());
 
-  printf("grad log marginal: ");
+#ifdef OL_VERBOSE_PRINT
+  OL_VERBOSE_PRINTF("grad log marginal: ");
   PrintMatrix(grad_log_marginal.data(), 1, grad_log_marginal.size());
+#endif
 
   current_errors = 0;
   for (const auto& entry : grad_log_marginal) {
@@ -702,8 +706,10 @@ OL_WARN_UNUSED_RESULT int MultistartHyperparameterLikelihoodNewtonOptimizationTe
   std::vector<double> grad_log_marginal(num_hyperparameters);
   log_likelihood_eval.ComputeGradLogLikelihood(&log_likelihood_state, grad_log_marginal.data());
 
-  printf("grad log marginal: ");
+#ifdef OL_VERBOSE_PRINT
+  OL_VERBOSE_PRINTF("grad log marginal: ");
   PrintMatrix(grad_log_marginal.data(), 1, grad_log_marginal.size());
+#endif
 
   current_errors = 0;
   for (const auto& entry : grad_log_marginal) {
@@ -878,8 +884,6 @@ int EvaluateLogLikelihoodAtPointListTest() {
   HyperparameterDomainType hyperparameter_domain_linearspace(hyperparameter_domain_linearspace_bounds.data(), num_hyperparameters);
 
   EvaluateLogLikelihoodAtPointList(log_marginal_eval, *mock_gp_data.covariance_ptr, hyperparameter_domain_linearspace, initial_guesses.data(), num_grid_search_points, kMaxNumThreads, function_values.data(), grid_search_best_point.data());
-
-  PrintMatrix(grid_search_best_point.data(), 1, num_hyperparameters);
 
   // find the max function_value and the index at which it occurs
   auto max_value_ptr = std::max_element(function_values.begin(), function_values.end());

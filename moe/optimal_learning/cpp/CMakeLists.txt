@@ -53,8 +53,7 @@ endif()
 
 #### External dependencies
 find_package(PythonLibs REQUIRED)
-find_package(Boost 1.51 REQUIRED COMPONENTS python)
-
+find_package(Boost 1.51 COMPONENTS python REQUIRED)
 
 include_directories(${PYTHON_INCLUDE_DIRS})
 include_directories(${Boost_INCLUDE_DIRS})
@@ -66,6 +65,7 @@ include_directories(${Boost_INCLUDE_DIRS})
 # readonly
 set(OPTIMAL_LEARNING_CORE_SOURCES
   gpp_covariance.cpp
+  gpp_domain.cpp
   gpp_exception.cpp
   gpp_heuristic_expected_improvement_optimization.cpp
   gpp_linear_algebra.cpp

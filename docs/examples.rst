@@ -1,5 +1,5 @@
 Examples
-======
+========
 
 Below are some examples for use cases in which MOE can provide value
 
@@ -12,7 +12,7 @@ Below are some examples for use cases in which MOE can provide value
     #. `Setting thresholds for advertising units`_
 
 Minimizing an arbitrary function
-----
+--------------------------------
 
 This example can be found in ``<MOE_DIR>/examples/next_point_via_simple_endpoint.py``
 
@@ -70,7 +70,7 @@ We can also use other GP optimization methods:
     * :mod:`moe.views.rest.gp_next_points_constant_liar`
 
 Gaussian Process regression given historical data
-----
+-------------------------------------------------
 
 This example can be found in ``<MOE_DIR>/examples/mean_and_var_of_gp_from_historic_data.py``
 
@@ -103,7 +103,7 @@ The mean vector and covariance matrix is now available for printing, plotting or
 For examples of more options we can pass this endpoint see the documentation here: :mod:`moe.views.rest.gp_mean_var`.
 
 Hyperparameter optimization of a Gaussian Process
-----
+-------------------------------------------------
 
 This example can be found in ``<MOE_DIR>/examples/hyper_opt_of_gp_from_historical_data.py``
 
@@ -122,7 +122,7 @@ In this example we use :mod:`moe.easy_interface.simple_endpoint` to use the endp
 For examples of more options we can pass this endpoint see the documentation here: :mod:`moe.views.rest.gp_hyper_opt`.
 
 All above examples combined
-----
+---------------------------
 
 This example can be found in ``<MOE_DIR>/examples/combined_example.py``
 
@@ -131,7 +131,7 @@ In this example we use :mod:`moe.easy_interface.simple_endpoint` to use the endp
 See the code for the full example, and the individual endpoints for examples on more options for each.
 
 Setting thresholds for advertising units
-----
+----------------------------------------
 
 This example was refrenced in
 

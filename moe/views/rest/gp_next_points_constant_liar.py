@@ -59,19 +59,19 @@ class GpNextPointsConstantLiarRequest(GpNextPointsRequest):
         Content-Type: text/javascript
 
         {
-            'num_to_sample': 1,
-            'lie_value': 0.0,
-            'lie_noise_variance': 0.0,
-            'gp_historical_info': {
-                'points_sampled': [
-                        {'value_var': 0.01, 'value': 0.1, 'point': [0.0]},
-                        {'value_var': 0.01, 'value': 0.2, 'point': [1.0]}
+            "num_to_sample": 1,
+            "lie_value": 0.0,
+            "lie_noise_variance": 0.0,
+            "gp_historical_info": {
+                "points_sampled": [
+                        {"value_var": 0.01, "value": 0.1, "point": [0.0]},
+                        {"value_var": 0.01, "value": 0.2, "point": [1.0]}
                     ],
                 },
-            'domain_info': {
-                'dim': 1,
-                'domain_bounds': [
-                    {'min': 0.0, 'max': 1.0},
+            "domain_info": {
+                "dim": 1,
+                "domain_bounds": [
+                    {"min": 0.0, "max": 1.0},
                     ],
                 },
         }
