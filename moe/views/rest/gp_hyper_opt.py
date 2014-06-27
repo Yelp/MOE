@@ -15,7 +15,7 @@ from moe.views.gp_pretty_view import GpPrettyView, PRETTY_RENDERER
 from moe.views.optimizable_gp_pretty_view import OptimizableGpPrettyView
 from moe.views.schemas import GpHistoricalInfo, CovarianceInfo, BoundedDomainInfo, OptimizationInfo, DomainInfo, ListOfFloats
 from moe.views.utils import _make_domain_from_params, _make_gp_from_params, _make_optimization_parameters_from_params
-
+from moe.optimal_learning.python.linkers import LOGLIKELIHOOD_TYPES_TO_LOGLIKELIHOOD_METHODS
 
 class GpHyperOptRequest(colander.MappingSchema):
 

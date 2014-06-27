@@ -32,7 +32,7 @@ NULL_OPTIMIZER = 'null_optimizer'
 NEWTON_OPTIMIZER = 'newton_optimizer'
 GRADIENT_DESCENT_OPTIMIZER = 'gradient_descent_optimizer'
 
-LOG_LEAVE_ONE_OUT_LIKELIHOOD = 'log_leave_one_out_likelihood'
+LEAVE_ONE_OUT_LOG_LIKELIHOOD = 'leave_one_out_log_likelihood'
 LOG_MARGINAL_LIKELIHOOD = 'log_marginal_likelihood'
 
 # EI Defaults

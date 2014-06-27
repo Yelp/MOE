@@ -2,7 +2,7 @@
 """Links between the python and cpp_wrapper implementations of domains, covariances and optimizations."""
 from collections import namedtuple
 
-from moe.optimal_learning.python.constant import SQUARE_EXPONENTIAL_COVARIANCE_TYPE, TENSOR_PRODUCT_DOMAIN_TYPE, SIMPLEX_INTERSECT_TENSOR_PRODUCT_DOMAIN_TYPE, NULL_OPTIMIZER, NEWTON_OPTIMIZER, GRADIENT_DESCENT_OPTIMIZER, LOGLIKELIHOOD_TYPES_TO_LOGLIKELIHOOD_METHODS, LOG_LEAVE_ONE_OUT_LIKELIHOOD, LOG_MARGINAL_LIKELIHOOD  
+from moe.optimal_learning.python.constant import SQUARE_EXPONENTIAL_COVARIANCE_TYPE, TENSOR_PRODUCT_DOMAIN_TYPE, SIMPLEX_INTERSECT_TENSOR_PRODUCT_DOMAIN_TYPE, NULL_OPTIMIZER, NEWTON_OPTIMIZER, GRADIENT_DESCENT_OPTIMIZER, LOG_MARGINAL_LIKELIHOOD, LEAVE_ONE_OUT_LOG_LIKELIHOOD 
 import moe.optimal_learning.python.cpp_wrappers.covariance as cpp_covariance
 import moe.optimal_learning.python.cpp_wrappers.domain as cpp_domain
 import moe.optimal_learning.python.cpp_wrappers.optimization as cpp_optimization
@@ -87,19 +87,19 @@ OPTIMIZATION_TYPES_TO_OPTIMIZATION_METHODS = {
 LogLikelihoodMethod = namedtuple(
         'LogLikelihoodMethod',
         [
-            'loglikelihood_type'
+            'loglikelihood_type',
             'cpp_loglikelihood_method',
             ]
         )
 
 LOGLIKELIHOOD_TYPES_TO_LOGLIKELIHOOD_METHODS = {
         LOG_MARGINAL_LIKELIHOOD: LogLikelihoodMethod(
-            loglikelihood_type=LOG_MARGINAL_LIKELIHOOD
-            cpp_loglikelihood_method=C_GP.LogLikelihoodTypes.log_marginal_likelihood
+            loglikelihood_type=LOG_MARGINAL_LIKELIHOOD,
+            cpp_loglikelihood_method=C_GP.LogLikelihoodTypes.log_marginal_likelihood,
             ),
         LEAVE_ONE_OUT_LOG_LIKELIHOOD: LogLikelihoodMethod(
-            loglikelihood_type=LOG_LEAVE_ONE_OUT_LIKELIHOOD
-            cpp_loglikelihood_method=C_GP.LogLikelihoodTypes.leave_one_out_log_likelihood
+            loglikelihood_type=LEAVE_ONE_OUT_LOG_LIKELIHOOD,
+            cpp_loglikelihood_method=C_GP.LogLikelihoodTypes.leave_one_out_log_likelihood,
             ),
         }
 
