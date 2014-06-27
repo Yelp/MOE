@@ -16,6 +16,7 @@
 #include <boost/random/uniform_real.hpp>  // NOLINT(build/include_order)
 
 #include "gpp_common.hpp"
+#include "gpp_exception.hpp"
 #include "gpp_geometry.hpp"
 #include "gpp_logging.hpp"
 #include "gpp_random.hpp"
@@ -364,6 +365,51 @@ OL_WARN_UNUSED_RESULT int RandomNumberGeneratorContainerTestCore() {
   return total_errors;
 }
 
+/*!\rst
+  Checks that NormalRNGSimulator is behaving correctly:
+
+  * Tests index increments as expected
+  * Tests ResetToMostRecentSeed reset index to 0
+  * Tests exception handling when number of queries of random numbers exceeds
+  * size of the random table
+
+  \return
+    number of test failures: 0 if NormalRNGSimulator behaving correctly
+\endrst*/
+int NormalRNGSimulatorTest() {
+  int total_errors = 0;
+  int random_table_size = 500;
+  std::vector<double> random_table(random_table_size);
+  for (int i = 0; i < random_table_size; ++i) {
+    random_table[i] = static_cast<double>(i);
+  }
+  NormalRNGSimulator rng_simulator(random_table);
+
+  for (int n = 0; n < 40; ++n) {
+    int current_idx = rng_simulator.index();
+    rng_simulator();
+    int next_idx = rng_simulator.index();
+    total_errors = ((next_idx - current_idx) == 1) ? total_errors : (total_errors+1);
+  }
+
+  rng_simulator.ResetToMostRecentSeed();
+  total_errors = (rng_simulator.index() == 0) ? total_errors : (total_errors+1);
+
+  for (int n = 0; n < random_table_size; ++n) {
+    rng_simulator();
+  }
+  ++total_errors;
+  try {
+    rng_simulator();
+  } catch (const InvalidValueException<int>& exception) {
+    if ((exception.value() == random_table_size) && (exception.truth() == random_table_size)) {
+      --total_errors;
+    }
+  }
+
+  return total_errors;
+}
+
 }  // end unnamed namespace
 
 /*!\rst
@@ -387,6 +433,14 @@ int RandomNumberGeneratorContainerTest() {
     OL_PARTIAL_FAILURE_PRINTF("NormalRNG failed with %d errors\n", current_errors);
   } else {
     OL_PARTIAL_SUCCESS_PRINTF("NormalRNG passed all tests\n");
+  }
+  total_errors += current_errors;
+
+  current_errors = NormalRNGSimulatorTest();
+  if (current_errors != 0) {
+    OL_PARTIAL_FAILURE_PRINTF("NormalRNGSimulator failed with %d errors\n", current_errors);
+  } else {
+    OL_PARTIAL_SUCCESS_PRINTF("NormalRNGSimulator passed all tests\n");
   }
   total_errors += current_errors;
 
