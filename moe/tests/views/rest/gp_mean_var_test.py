@@ -11,7 +11,6 @@ from moe.optimal_learning.python.cpp_wrappers.gaussian_process import GaussianPr
 from moe.tests.views.rest_gaussian_process_test_case import RestGaussianProcessTestCase
 from moe.views.constant import GP_MEAN_VAR_ENDPOINT
 from moe.views.rest.gp_mean_var import GpMeanVarResponse
-from moe.views.utils import _build_domain_info, _build_covariance_info
 
 
 class TestGpMeanVarView(RestGaussianProcessTestCase):
@@ -26,8 +25,8 @@ class TestGpMeanVarView(RestGaussianProcessTestCase):
         json_payload = json.dumps({
             'points_to_sample': points_to_sample,
             'gp_historical_info': self._build_gp_historical_info(gaussian_process),
-            'covariance_info': _build_covariance_info(covariance),
-            'domain_info': _build_domain_info(domain),
+            'covariance_info': covariance.get_json_serializable_info(),
+            'domain_info': domain.get_json_serializable_info(),
             })
         return json_payload
 
@@ -35,9 +34,9 @@ class TestGpMeanVarView(RestGaussianProcessTestCase):
         """Test that the /gp/mean_var endpoint does the same thing as the C++ interface."""
         tolerance = 1.0e-11
         for test_case in self.gp_test_environments:
-            python_domain, python_cov, python_gp = test_case
+            python_domain, python_gp = test_case
 
-            cpp_cov = SquareExponential(python_cov.get_hyperparameters())
+            cpp_cov = SquareExponential(python_gp._covariance.hyperparameters)
             cpp_gp = GaussianProcess(cpp_cov, python_gp._historical_data)
 
             points_to_sample = python_domain.generate_uniform_random_points_in_domain(10)
@@ -47,7 +46,7 @@ class TestGpMeanVarView(RestGaussianProcessTestCase):
             cpp_var = cpp_gp.compute_variance_of_points(points_to_sample)
 
             # mean and var from REST
-            json_payload = self._build_json_payload(python_domain, python_gp, python_cov, points_to_sample.tolist())
+            json_payload = self._build_json_payload(python_domain, python_gp, python_gp._covariance, points_to_sample.tolist())
             resp = self.testapp.post(self.endpoint, json_payload)
             resp_schema = GpMeanVarResponse()
             resp_dict = resp_schema.deserialize(json.loads(resp.body))

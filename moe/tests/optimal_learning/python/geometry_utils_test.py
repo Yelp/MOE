@@ -45,7 +45,7 @@ class LatinHypercubeRandomPointGenerationTest(OptimalLearningTestCase):
         ]
 
         self.domains_to_test = [TensorProductDomain(domain_bounds) for domain_bounds in domain_bounds_to_test]
-        self.num_points_to_test = [1, 2, 5, 10, 20]
+        self.num_points_to_test = (1, 2, 5, 10, 20)
 
     def test_latin_hypercube_within_domain(self):
         """Test that generate_latin_hypercube_points returns points within the domain."""

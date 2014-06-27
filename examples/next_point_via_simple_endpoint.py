@@ -23,7 +23,7 @@ def function_to_minimize(x):
     return math.sin(x[0]) * math.cos(x[1]) + math.cos(x[0] + x[1]) + random.uniform(-0.02, 0.02)
 
 if __name__ == '__main__':
-    exp = Experiment([[0, 2], [0, 4]])
+    exp = Experiment([[0, 2], [0, 4]])  # 2D experiment, we build a tensor product domain
     # Bootstrap with some known or already sampled point(s)
     exp.historical_data.append_sample_points([
         SamplePoint([0, 0], function_to_minimize([0, 0]), 0.05),  # Iterables of the form [point, f_val, f_var] are also allowed

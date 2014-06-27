@@ -41,15 +41,15 @@ class GpEiRequest(colander.MappingSchema):
         Content-Type: text/javascript
 
         {
-            'points_to_evaluate': [[0.1], [0.5], [0.9]],
-            'gp_historical_info': {
-                'points_sampled': [
-                        {'value_var': 0.01, 'value': 0.1, 'point': [0.0]},
-                        {'value_var': 0.01, 'value': 0.2, 'point': [1.0]}
+            "points_to_evaluate": [[0.1], [0.5], [0.9]],
+            "gp_historical_info": {
+                "points_sampled": [
+                        {"value_var": 0.01, "value": 0.1, "point": [0.0]},
+                        {"value_var": 0.01, "value": 0.2, "point": [1.0]}
                     ],
                 },
-            'domain_info': {
-                'dim': 1,
+            "domain_info": {
+                "dim": 1,
                 },
         }
 
@@ -60,22 +60,22 @@ class GpEiRequest(colander.MappingSchema):
         Content-Type: text/javascript
 
         {
-            'points_to_evaluate': [[0.1], [0.5], [0.9]],
-            'points_being_sampled': [[0.2], [0.7]],
-            'mc_iterations': 10000,
-            'gp_historical_info': {
-                'points_sampled': [
-                        {'value_var': 0.01, 'value': 0.1, 'point': [0.0]},
-                        {'value_var': 0.01, 'value': 0.2, 'point': [1.0]}
+            "points_to_evaluate": [[0.1], [0.5], [0.9]],
+            "points_being_sampled": [[0.2], [0.7]],
+            "mc_iterations": 10000,
+            "gp_historical_info": {
+                "points_sampled": [
+                        {"value_var": 0.01, "value": 0.1, "point": [0.0]},
+                        {"value_var": 0.01, "value": 0.2, "point": [1.0]}
                     ],
                 },
-            'domain_info': {
-                'domain_type': 'tensor_product'
-                'dim': 1,
+            "domain_info": {
+                "domain_type": "tensor_product"
+                "dim": 1,
                 },
-            'covariance_info': {
-                'covariance_type': 'square_exponential',
-                'hyperparameters': [1.0, 1.0],
+            "covariance_info": {
+                "covariance_type": "square_exponential",
+                "hyperparameters": [1.0, 1.0],
                 },
         }
 

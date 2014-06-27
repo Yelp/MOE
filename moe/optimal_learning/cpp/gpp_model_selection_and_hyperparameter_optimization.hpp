@@ -269,13 +269,10 @@ class LogMarginalLikelihoodEvaluator final {
       :dim: the spatial dimension of a point (i.e., number of independent params in experiment)
       :num_sampled: number of already-sampled points
   \endrst*/
-  LogMarginalLikelihoodEvaluator(double const * restrict points_sampled_in, double const * restrict points_sampled_value_in, double const * restrict noise_variance_in, int dim_in, int num_sampled_in) OL_NONNULL_POINTERS
-      : dim_(dim_in),
-        num_sampled_(num_sampled_in),
-        points_sampled_(points_sampled_in, points_sampled_in + num_sampled_in*dim_in),
-        points_sampled_value_(points_sampled_value_in, points_sampled_value_in + num_sampled_in),
-        noise_variance_(noise_variance_in, noise_variance_in + num_sampled_) {
-  }
+  LogMarginalLikelihoodEvaluator(double const * restrict points_sampled_in,
+                                 double const * restrict points_sampled_value_in,
+                                 double const * restrict noise_variance_in,
+                                 int dim_in, int num_sampled_in) OL_NONNULL_POINTERS;
 
   int dim() const noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
     return dim_;
@@ -295,14 +292,16 @@ class LogMarginalLikelihoodEvaluator final {
   /*!\rst
     Wrapper for ComputeGradLogLikelihood(); see that function for details.
   \endrst*/
-  void ComputeGradObjectiveFunction(StateType * log_likelihood_state, double * restrict grad_log_marginal) const noexcept OL_NONNULL_POINTERS {
+  void ComputeGradObjectiveFunction(StateType * log_likelihood_state,
+                                    double * restrict grad_log_marginal) const noexcept OL_NONNULL_POINTERS {
     ComputeGradLogLikelihood(log_likelihood_state, grad_log_marginal);
   }
 
   /*!\rst
     Wrapper for ComputeHessianLogLikelihood(); see that function for details.
   \endrst*/
-  void ComputeHessianObjectiveFunction(StateType * log_likelihood_state, double * restrict hessian_log_marginal) const noexcept OL_NONNULL_POINTERS {
+  void ComputeHessianObjectiveFunction(StateType * log_likelihood_state,
+                                       double * restrict hessian_log_marginal) const noexcept OL_NONNULL_POINTERS {
     ComputeHessianLogLikelihood(log_likelihood_state, hessian_log_marginal);
   }
 
@@ -344,7 +343,8 @@ class LogMarginalLikelihoodEvaluator final {
       :log_likelihood_state[1]: state with temporary storage modified
       :grad_log_marginal[n_hyper]: gradient of log marginal likelihood wrt each hyperparameter of covariance
   \endrst*/
-  void ComputeGradLogLikelihood(StateType * log_likelihood_state, double * restrict grad_log_marginal) const noexcept OL_NONNULL_POINTERS;
+  void ComputeGradLogLikelihood(StateType * log_likelihood_state,
+                                double * restrict grad_log_marginal) const noexcept OL_NONNULL_POINTERS;
 
   /*!\rst
     Constructs the Hessian matrix of the log marginal likelihood function.  This matrix is symmetric.  It is also
@@ -359,7 +359,8 @@ class LogMarginalLikelihoodEvaluator final {
       :log_likelihood_state[1]: state with temporary storage modified
       :hessian_log_marginal[n_hyper][n_hyper]: ``(i,j)``-th entry is ``\mixpderiv{LML}{\theta_i}{\theta_j}``, where ``LML = log(p(y | X, \theta))``
   \endrst*/
-  void ComputeHessianLogLikelihood(StateType * log_likelihood_state, double * restrict hessian_log_marginal) const noexcept OL_NONNULL_POINTERS;
+  void ComputeHessianLogLikelihood(StateType * log_likelihood_state,
+                                   double * restrict hessian_log_marginal) const noexcept OL_NONNULL_POINTERS;
 
   OL_DISALLOW_DEFAULT_AND_COPY_AND_ASSIGN(LogMarginalLikelihoodEvaluator);
 
@@ -392,7 +393,8 @@ class LogMarginalLikelihoodEvaluator final {
       :hessian_hyperparameter_cov_matrix[num_sampled_][num_sampled_][n_hyper][n_hyper]:
         ``(i,j,k,l)``-th entry is ``\mixpderiv{cov(X_i, X_j)}{\theta_k}{\theta_l}``
   \endrst*/
-  void BuildHyperparameterHessianCovarianceMatrix(StateType * log_likelihood_state, double * hessian_hyperparameter_cov_matrix) const noexcept;
+  void BuildHyperparameterHessianCovarianceMatrix(StateType * log_likelihood_state,
+                                                  double * hessian_hyperparameter_cov_matrix) const noexcept;
 
   // size information
   //! spatial dimension (e.g., entries per point of points_sampled)
@@ -431,27 +433,16 @@ struct LogMarginalLikelihoodState final {
       :log_likelihood_eval: LogMarginalLikelihoodEvaluator object that this state is being used with
       :covariance_in: the CovarianceFunction object encoding assumptions about the GP's behavior on our data
   \endrst*/
-  LogMarginalLikelihoodState(const EvaluatorType& log_likelihood_eval, const CovarianceInterface& covariance_in)
-      : dim(log_likelihood_eval.dim()),
-        num_sampled(log_likelihood_eval.num_sampled()),
-        num_hyperparameters(covariance_in.GetNumberOfHyperparameters()),
-        covariance_ptr(covariance_in.Clone()),
-        K_chol(num_sampled*num_sampled),
-        K_inv_y(num_sampled),
-        grad_hyperparameter_cov_matrix(num_hyperparameters*num_sampled*num_sampled),
-        temp_vec(num_sampled) {
-    std::vector<double> hyperparameters(num_hyperparameters);
-    covariance_ptr->GetHyperparameters(hyperparameters.data());
-    SetupState(log_likelihood_eval, hyperparameters.data());
-  }
+  LogMarginalLikelihoodState(const EvaluatorType& log_likelihood_eval, const CovarianceInterface& covariance_in);
 
-  LogMarginalLikelihoodState(LogMarginalLikelihoodState&& OL_UNUSED(other)) = default;
+  LogMarginalLikelihoodState(LogMarginalLikelihoodState&& other);
 
   int GetProblemSize() const noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
     return num_hyperparameters;
   }
 
-  void UpdateCurrentPoint(const EvaluatorType& log_likelihood_eval, double const * restrict hyperparameters) OL_NONNULL_POINTERS {
+  void UpdateCurrentPoint(const EvaluatorType& log_likelihood_eval,
+                          double const * restrict hyperparameters) OL_NONNULL_POINTERS {
     UpdateHyperparameters(log_likelihood_eval, hyperparameters);
   }
 
@@ -477,13 +468,8 @@ struct LogMarginalLikelihoodState final {
       :log_likelihood_eval: LogMarginalLikelihoodEvaluator object that this state is being used with
       :hyperparameters[num_hyperparameters]: hyperparameters to change to
   \endrst*/
-  void UpdateHyperparameters(const EvaluatorType& log_likelihood_eval, double const * restrict hyperparameters) OL_NONNULL_POINTERS {
-    // update hyperparameters
-    covariance_ptr->SetHyperparameters(hyperparameters);
-
-    // evaluate derived quantities
-    log_likelihood_eval.FillLogLikelihoodState(this);
-  }
+  void UpdateHyperparameters(const EvaluatorType& log_likelihood_eval,
+                             double const * restrict hyperparameters) OL_NONNULL_POINTERS;
 
   /*!\rst
     Configures this state object with new hyperparameters.
@@ -497,18 +483,8 @@ struct LogMarginalLikelihoodState final {
       :log_likelihood_eval: log likelihood evaluator object that describes the training/already-measured data
       :hyperparameters[num_hyperparameters]: hyperparameters to change to
   \endrst*/
-  void SetupState(const EvaluatorType& log_likelihood_eval, double const * restrict hyperparameters) OL_NONNULL_POINTERS {
-    if (unlikely(num_sampled != log_likelihood_eval.num_sampled())) {
-      num_sampled = log_likelihood_eval.num_sampled();
-      K_chol.resize(num_sampled*num_sampled);
-      K_inv_y.resize(num_sampled);
-      grad_hyperparameter_cov_matrix.resize(num_hyperparameters*num_sampled*num_sampled);
-      temp_vec.resize(num_sampled);
-    }
-
-    // set hyperparameters and derived quantities
-    UpdateHyperparameters(log_likelihood_eval, hyperparameters);
-  }
+  void SetupState(const EvaluatorType& log_likelihood_eval,
+                  double const * restrict hyperparameters) OL_NONNULL_POINTERS;
 
   // size information
   //! spatial dimension (e.g., entries per point of points_sampled)
@@ -579,13 +555,10 @@ class LeaveOneOutLogLikelihoodEvaluator final {
       :dim: the spatial dimension of a point (i.e., number of independent params in experiment)
       :num_sampled: number of already-sampled points
   \endrst*/
-  LeaveOneOutLogLikelihoodEvaluator(double const * restrict points_sampled_in, double const * restrict points_sampled_value_in, double const * restrict noise_variance_in, int dim_in, int num_sampled_in) OL_NONNULL_POINTERS
-      : dim_(dim_in),
-        num_sampled_(num_sampled_in),
-        points_sampled_(points_sampled_in, points_sampled_in + num_sampled_in*dim_in),
-        points_sampled_value_(points_sampled_value_in, points_sampled_value_in + num_sampled_in),
-        noise_variance_(noise_variance_in, noise_variance_in + num_sampled_) {
-  }
+  LeaveOneOutLogLikelihoodEvaluator(double const * restrict points_sampled_in,
+                                    double const * restrict points_sampled_value_in,
+                                    double const * restrict noise_variance_in,
+                                    int dim_in, int num_sampled_in) OL_NONNULL_POINTERS;
 
   int dim() const noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
     return dim_;
@@ -605,14 +578,16 @@ class LeaveOneOutLogLikelihoodEvaluator final {
   /*!\rst
     Wrapper for ComputeGradLogLikelihood(); see that function for details.
   \endrst*/
-  void ComputeGradObjectiveFunction(StateType * log_likelihood_state, double * restrict grad_loo) const noexcept OL_NONNULL_POINTERS {
+  void ComputeGradObjectiveFunction(StateType * log_likelihood_state,
+                                    double * restrict grad_loo) const noexcept OL_NONNULL_POINTERS {
     ComputeGradLogLikelihood(log_likelihood_state, grad_loo);
   }
 
   /*!\rst
     Wrapper for ComputeHessianLogLikelihood(); see that function for details.
   \endrst*/
-  void ComputeHessianObjectiveFunction(StateType * log_likelihood_state, double * restrict hessian_loo) const OL_NONNULL_POINTERS {
+  void ComputeHessianObjectiveFunction(StateType * log_likelihood_state,
+                                       double * restrict hessian_loo) const OL_NONNULL_POINTERS {
     ComputeHessianLogLikelihood(log_likelihood_state, hessian_loo);
   }
 
@@ -655,8 +630,8 @@ class LeaveOneOutLogLikelihoodEvaluator final {
       :log_likelihood_state[1]: state with temporary storage modified
       :grad_loo[n_hyper]: gradient of leave one out cross validation log likelihood wrt each hyperparameter of covariance
   \endrst*/
-  void ComputeGradLogLikelihood(StateType * log_likelihood_state, double * restrict grad_loo) const noexcept OL_NONNULL_POINTERS;
-
+  void ComputeGradLogLikelihood(StateType * log_likelihood_state,
+                                double * restrict grad_loo) const noexcept OL_NONNULL_POINTERS;
 
   /*!\rst
     NOT IMPLEMENTED.
@@ -664,7 +639,8 @@ class LeaveOneOutLogLikelihoodEvaluator final {
     gpp_python.cpp. It is an error to select NewtonOptimization with LeaveOneOutLogLikelihoodEvaluator, but I can't find a nicer
     way to generate this error while still being able to treat MultistartNewtonOptimization<> generically.
   \endrst*/
-  void ComputeHessianLogLikelihood(StateType * log_likelihood_state, double * restrict hessian_loo) const OL_NONNULL_POINTERS;
+  void ComputeHessianLogLikelihood(StateType * log_likelihood_state,
+                                   double * restrict hessian_loo) const OL_NONNULL_POINTERS;
 
   OL_DISALLOW_DEFAULT_AND_COPY_AND_ASSIGN(LeaveOneOutLogLikelihoodEvaluator);
 
@@ -721,29 +697,16 @@ struct LeaveOneOutLogLikelihoodState final {
       :log_likelihood_eval: LogMarginalLikelihoodEvaluator object that this state is being used with
       :covariance_in: the CovarianceFunction object encoding assumptions about the GP's behavior on our data
   \endrst*/
-  LeaveOneOutLogLikelihoodState(const EvaluatorType& log_likelihood_eval, const CovarianceInterface& covariance_in)
-      : dim(log_likelihood_eval.dim()),
-        num_sampled(log_likelihood_eval.num_sampled()),
-        num_hyperparameters(covariance_in.GetNumberOfHyperparameters()),
-        covariance_ptr(covariance_in.Clone()),
-        K_chol(num_sampled*num_sampled),
-        K_inv(num_sampled*num_sampled),
-        K_inv_y(num_sampled),
-        grad_hyperparameter_cov_matrix(num_hyperparameters*num_sampled*num_sampled),
-        Z_alpha(num_sampled),
-        Z_K_inv(num_sampled*num_sampled) {
-    std::vector<double> hyperparameters(num_hyperparameters);
-    covariance_ptr->GetHyperparameters(hyperparameters.data());
-    SetupState(log_likelihood_eval, hyperparameters.data());
-  }
+  LeaveOneOutLogLikelihoodState(const EvaluatorType& log_likelihood_eval, const CovarianceInterface& covariance_in);
 
-  LeaveOneOutLogLikelihoodState(LeaveOneOutLogLikelihoodState&& OL_UNUSED(other)) = default;
+  LeaveOneOutLogLikelihoodState(LeaveOneOutLogLikelihoodState&& other);
 
   int GetProblemSize() const noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
     return num_hyperparameters;
   }
 
-  void UpdateCurrentPoint(const EvaluatorType& log_likelihood_eval, double const * restrict hyperparameters) OL_NONNULL_POINTERS {
+  void UpdateCurrentPoint(const EvaluatorType& log_likelihood_eval,
+                          double const * restrict hyperparameters) OL_NONNULL_POINTERS {
     UpdateHyperparameters(log_likelihood_eval, hyperparameters);
   }
 
@@ -769,13 +732,8 @@ struct LeaveOneOutLogLikelihoodState final {
       :log_likelihood_eval: LeaveOneOutLogLikelihoodEvaluator object that this state is being used with
       :hyperparameters[num_hyperparameters]: hyperparameters to change to
   \endrst*/
-  void UpdateHyperparameters(const EvaluatorType& log_likelihood_eval, double const * restrict hyperparameters) OL_NONNULL_POINTERS {
-    // update hyperparameters
-    covariance_ptr->SetHyperparameters(hyperparameters);
-
-    // evaluate derived quantities
-    log_likelihood_eval.FillLogLikelihoodState(this);
-  }
+  void UpdateHyperparameters(const EvaluatorType& log_likelihood_eval,
+                             double const * restrict hyperparameters) OL_NONNULL_POINTERS;
 
   /*!\rst
     Configures this state object with new hyperparameters.
@@ -789,20 +747,8 @@ struct LeaveOneOutLogLikelihoodState final {
       :log_likelihood_eval: log likelihood evaluator object that describes the training/already-measured data
       :hyperparameters[num_hyperparameters]: hyperparameters to change to
   \endrst*/
-  void SetupState(const EvaluatorType& log_likelihood_eval, double const * restrict hyperparameters) OL_NONNULL_POINTERS {
-    if (unlikely(num_sampled != log_likelihood_eval.num_sampled())) {
-      num_sampled = log_likelihood_eval.num_sampled();
-      K_chol.resize(num_sampled*num_sampled);
-      K_inv.resize(num_sampled*num_sampled);
-      K_inv_y.resize(num_sampled);
-      grad_hyperparameter_cov_matrix.resize(num_hyperparameters*num_sampled*num_sampled);
-      Z_alpha.resize(num_sampled);
-      Z_K_inv.resize(num_sampled*num_sampled);
-    }
-
-    // set hyperparameters and derived quantities
-    UpdateHyperparameters(log_likelihood_eval, hyperparameters);
-  }
+  void SetupState(const EvaluatorType& log_likelihood_eval,
+                  double const * restrict hyperparameters) OL_NONNULL_POINTERS;
 
   // size information
   //! spatial dimension (e.g., entries per point of points_sampled)
@@ -857,8 +803,14 @@ struct LeaveOneOutLogLikelihoodState final {
     :domain_bounds[1]: overwritten with the domain bounds in linear space
     :initial_guesses[1]: overwritten with num_multistarts points sampled uniformly from the log10-space domain
 \endrst*/
-inline OL_NONNULL_POINTERS void ConvertFromLogToLinearDomainAndBuildInitialGuesses(int num_hyperparameters, int num_multistarts, UniformRandomGenerator * uniform_generator, std::vector<ClosedInterval> * restrict domain_bounds, std::vector<double> * restrict initial_guesses) {
-  ComputeLatinHypercubePointsInDomain(domain_bounds->data(), num_hyperparameters, num_multistarts, uniform_generator, initial_guesses->data());
+inline OL_NONNULL_POINTERS void ConvertFromLogToLinearDomainAndBuildInitialGuesses(
+    int num_hyperparameters,
+    int num_multistarts,
+    UniformRandomGenerator * uniform_generator,
+    std::vector<ClosedInterval> * restrict domain_bounds,
+    std::vector<double> * restrict initial_guesses) {
+  ComputeLatinHypercubePointsInDomain(domain_bounds->data(), num_hyperparameters, num_multistarts,
+                                      uniform_generator, initial_guesses->data());
 
   // exponentiate since domain_bounds is specified in log space
   for (auto& point : *initial_guesses) {
@@ -884,7 +836,9 @@ inline OL_NONNULL_POINTERS void ConvertFromLogToLinearDomainAndBuildInitialGuess
     :state_vector[max_num_threads]: vector of states containing max_num_threads properly initialized state objects
 \endrst*/
 template <typename LogLikelihoodEvaluator>
-OL_NONNULL_POINTERS void SetupLogLikelihoodState(const LogLikelihoodEvaluator& log_likelihood_evaluator, const CovarianceInterface& covariance, int max_num_threads, std::vector<typename LogLikelihoodEvaluator::StateType> * state_vector) {
+OL_NONNULL_POINTERS void SetupLogLikelihoodState(const LogLikelihoodEvaluator& log_likelihood_evaluator,
+                                                 const CovarianceInterface& covariance, int max_num_threads,
+                                                 std::vector<typename LogLikelihoodEvaluator::StateType> * state_vector) {
   state_vector->reserve(max_num_threads);
   for (int i = 0; i < max_num_threads; ++i) {
     state_vector->emplace_back(log_likelihood_evaluator, covariance);
@@ -909,7 +863,12 @@ OL_NONNULL_POINTERS void SetupLogLikelihoodState(const LogLikelihoodEvaluator& l
     :io_container[1]: OptimizationIOContainer with its best_objective_value and best_point fields set (according to check_all_points flag)
 \endrst*/
 template <typename LogLikelihoodEvaluator>
-OL_NONNULL_POINTERS void InitializeBestKnownPoint(const LogLikelihoodEvaluator& log_likelihood_evaluator, double const * restrict initial_guesses, int num_hyperparameters, int num_multistarts, bool check_all_points, typename LogLikelihoodEvaluator::StateType * log_likelihood_state, OptimizationIOContainer * io_container) {
+OL_NONNULL_POINTERS void InitializeBestKnownPoint(const LogLikelihoodEvaluator& log_likelihood_evaluator,
+                                                  double const * restrict initial_guesses,
+                                                  int num_hyperparameters, int num_multistarts,
+                                                  bool check_all_points,
+                                                  typename LogLikelihoodEvaluator::StateType * log_likelihood_state,
+                                                  OptimizationIOContainer * io_container) {
   // initialize io_container to the first point (arbitrary, but valid choice)
   log_likelihood_state->UpdateCurrentPoint(log_likelihood_evaluator, initial_guesses);
   io_container->best_objective_value_so_far = log_likelihood_evaluator.ComputeObjectiveFunction(log_likelihood_state);
@@ -922,7 +881,8 @@ OL_NONNULL_POINTERS void InitializeBestKnownPoint(const LogLikelihoodEvaluator& 
       double log_likelihood = log_likelihood_evaluator.ComputeObjectiveFunction(log_likelihood_state);
       if (io_container->best_objective_value_so_far < log_likelihood) {
         io_container->best_objective_value_so_far = log_likelihood;
-        std::copy(initial_guesses + i*num_hyperparameters, initial_guesses + (i+1)*num_hyperparameters, io_container->best_point.data());
+        std::copy(initial_guesses + i*num_hyperparameters, initial_guesses + (i+1)*num_hyperparameters,
+                  io_container->best_point.data());
       }
     }
   }
@@ -963,7 +923,12 @@ OL_NONNULL_POINTERS void InitializeBestKnownPoint(const LogLikelihoodEvaluator& 
     :next_hyperparameters[n_hyper]: the new hyperparameters found by gradient descent
 \endrst*/
 template <typename LogLikelihoodEvaluator, typename DomainType>
-OL_NONNULL_POINTERS void RestartedGradientDescentHyperparameterOptimization(const LogLikelihoodEvaluator& log_likelihood_evaluator, const CovarianceInterface& covariance, const GradientDescentParameters& gd_parameters, const DomainType& domain, double * restrict next_hyperparameters) {
+OL_NONNULL_POINTERS void RestartedGradientDescentHyperparameterOptimization(
+    const LogLikelihoodEvaluator& log_likelihood_evaluator,
+    const CovarianceInterface& covariance,
+    const GradientDescentParameters& gd_parameters,
+    const DomainType& domain,
+    double * restrict next_hyperparameters) {
   if (unlikely(gd_parameters.max_num_restarts <= 0)) {
     return;
   }
@@ -1024,11 +989,19 @@ OL_NONNULL_POINTERS void RestartedGradientDescentHyperparameterOptimization(cons
     :next_hyperparameters[n_hyper]: the new hyperparameters found by gradient descent
 \endrst*/
 template <typename LogLikelihoodEvaluator>
-OL_NONNULL_POINTERS void MultistartGradientDescentHyperparameterOptimization(const LogLikelihoodEvaluator& log_likelihood_evaluator, const CovarianceInterface& covariance, const GradientDescentParameters& gd_parameters, ClosedInterval const * restrict domain, int max_num_threads, bool * restrict found_flag, UniformRandomGenerator * uniform_generator, double * restrict next_hyperparameters) {
+OL_NONNULL_POINTERS void MultistartGradientDescentHyperparameterOptimization(
+    const LogLikelihoodEvaluator& log_likelihood_evaluator,
+    const CovarianceInterface& covariance,
+    const GradientDescentParameters& gd_parameters,
+    ClosedInterval const * restrict domain,
+    int max_num_threads, bool * restrict found_flag,
+    UniformRandomGenerator * uniform_generator,
+    double * restrict next_hyperparameters) {
   const int num_hyperparameters = covariance.GetNumberOfHyperparameters();
   std::vector<double> initial_guesses(num_hyperparameters*gd_parameters.num_multistarts);
   std::vector<ClosedInterval> domain_linearspace_bounds(domain, domain + num_hyperparameters);
-  ConvertFromLogToLinearDomainAndBuildInitialGuesses(num_hyperparameters, gd_parameters.num_multistarts, uniform_generator, &domain_linearspace_bounds, &initial_guesses);
+  ConvertFromLogToLinearDomainAndBuildInitialGuesses(num_hyperparameters, gd_parameters.num_multistarts,
+                                                     uniform_generator, &domain_linearspace_bounds, &initial_guesses);
 
   TensorProductDomain domain_linearspace(domain_linearspace_bounds.data(), num_hyperparameters);
 
@@ -1037,14 +1010,20 @@ OL_NONNULL_POINTERS void MultistartGradientDescentHyperparameterOptimization(con
   SetupLogLikelihoodState(log_likelihood_evaluator, covariance, max_num_threads, &log_likelihood_state_vector);
 
   // set chunk_size, see gpp_common.hpp header comments, item 7
-  const int chunk_size = std::max(std::min(15, std::max(1, gd_parameters.num_multistarts/max_num_threads)), gd_parameters.num_multistarts/(max_num_threads*20));
+  const int chunk_size = std::max(std::min(15, std::max(1, gd_parameters.num_multistarts/max_num_threads)),
+                                  gd_parameters.num_multistarts/(max_num_threads*20));
 
   OptimizationIOContainer io_container(log_likelihood_state_vector[0].GetProblemSize());
-  InitializeBestKnownPoint(log_likelihood_evaluator, initial_guesses.data(), num_hyperparameters, gd_parameters.num_multistarts, true, log_likelihood_state_vector.data(), &io_container);
+  InitializeBestKnownPoint(log_likelihood_evaluator, initial_guesses.data(), num_hyperparameters,
+                           gd_parameters.num_multistarts, true, log_likelihood_state_vector.data(), &io_container);
 
   GradientDescentOptimizer<LogLikelihoodEvaluator, TensorProductDomain> gd_opt;
   MultistartOptimizer<GradientDescentOptimizer<LogLikelihoodEvaluator, TensorProductDomain> > multistart_optimizer;
-  multistart_optimizer.MultistartOptimize(gd_opt, log_likelihood_evaluator, gd_parameters, domain_linearspace, initial_guesses.data(), gd_parameters.num_multistarts, max_num_threads, chunk_size, log_likelihood_state_vector.data(), nullptr, &io_container);
+  multistart_optimizer.MultistartOptimize(gd_opt, log_likelihood_evaluator, gd_parameters,
+                                          domain_linearspace, initial_guesses.data(),
+                                          gd_parameters.num_multistarts, max_num_threads,
+                                          chunk_size, log_likelihood_state_vector.data(),
+                                          nullptr, &io_container);
 
   *found_flag = io_container.found_flag;
   std::copy(io_container.best_point.begin(), io_container.best_point.end(), next_hyperparameters);
@@ -1085,7 +1064,12 @@ OL_NONNULL_POINTERS void MultistartGradientDescentHyperparameterOptimization(con
     :next_hyperparameters[n_hyper]: the new hyperparameters found by newton
 \endrst*/
 template <typename LogLikelihoodEvaluator, typename DomainType>
-OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT int NewtonHyperparameterOptimization(const LogLikelihoodEvaluator& log_likelihood_evaluator, const CovarianceInterface& covariance, const NewtonParameters& newton_parameters, const DomainType& domain, double * restrict next_hyperparameters) {
+OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT int NewtonHyperparameterOptimization(
+    const LogLikelihoodEvaluator& log_likelihood_evaluator,
+    const CovarianceInterface& covariance,
+    const NewtonParameters& newton_parameters,
+    const DomainType& domain,
+    double * restrict next_hyperparameters) {
   if (unlikely(newton_parameters.max_num_restarts <= 0)) {
     return 0;
   }
@@ -1143,11 +1127,20 @@ OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT int NewtonHyperparameterOptimization(c
     :next_hyperparameters[n_hyper]: the new hyperparameters found by newton
 \endrst*/
 template <typename LogLikelihoodEvaluator>
-OL_NONNULL_POINTERS void MultistartNewtonHyperparameterOptimization(const LogLikelihoodEvaluator& log_likelihood_evaluator, const CovarianceInterface& covariance, const NewtonParameters& newton_parameters, ClosedInterval const * restrict domain, int max_num_threads, bool * restrict found_flag, UniformRandomGenerator * uniform_generator, double * restrict next_hyperparameters) {
+OL_NONNULL_POINTERS void MultistartNewtonHyperparameterOptimization(
+    const LogLikelihoodEvaluator& log_likelihood_evaluator,
+    const CovarianceInterface& covariance,
+    const NewtonParameters& newton_parameters,
+    ClosedInterval const * restrict domain,
+    int max_num_threads,
+    bool * restrict found_flag,
+    UniformRandomGenerator * uniform_generator,
+    double * restrict next_hyperparameters) {
   const int num_hyperparameters = covariance.GetNumberOfHyperparameters();
   std::vector<double> initial_guesses(num_hyperparameters*newton_parameters.num_multistarts);
   std::vector<ClosedInterval> domain_linearspace_bounds(domain, domain + num_hyperparameters);
-  ConvertFromLogToLinearDomainAndBuildInitialGuesses(num_hyperparameters, newton_parameters.num_multistarts, uniform_generator, &domain_linearspace_bounds, &initial_guesses);
+  ConvertFromLogToLinearDomainAndBuildInitialGuesses(num_hyperparameters, newton_parameters.num_multistarts,
+                                                     uniform_generator, &domain_linearspace_bounds, &initial_guesses);
 
   TensorProductDomain domain_linearspace(domain_linearspace_bounds.data(), num_hyperparameters);
 
@@ -1156,14 +1149,20 @@ OL_NONNULL_POINTERS void MultistartNewtonHyperparameterOptimization(const LogLik
   SetupLogLikelihoodState(log_likelihood_evaluator, covariance, max_num_threads, &log_likelihood_state_vector);
 
   // set chunk_size, see gpp_common.hpp header comments, item 7
-  const int chunk_size = std::max(std::min(4, std::max(1, newton_parameters.num_multistarts/max_num_threads)), newton_parameters.num_multistarts/(max_num_threads*8));
+  const int chunk_size = std::max(std::min(4, std::max(1, newton_parameters.num_multistarts/max_num_threads)),
+                                  newton_parameters.num_multistarts/(max_num_threads*8));
 
   OptimizationIOContainer io_container(log_likelihood_state_vector[0].GetProblemSize());
-  InitializeBestKnownPoint(log_likelihood_evaluator, initial_guesses.data(), num_hyperparameters, newton_parameters.num_multistarts, true, log_likelihood_state_vector.data(), &io_container);
+  InitializeBestKnownPoint(log_likelihood_evaluator, initial_guesses.data(), num_hyperparameters,
+                           newton_parameters.num_multistarts, true, log_likelihood_state_vector.data(), &io_container);
 
   NewtonOptimizer<LogLikelihoodEvaluator, TensorProductDomain> newton_opt;
   MultistartOptimizer<NewtonOptimizer<LogLikelihoodEvaluator, TensorProductDomain> > multistart_optimizer;
-  multistart_optimizer.MultistartOptimize(newton_opt, log_likelihood_evaluator, newton_parameters, domain_linearspace, initial_guesses.data(), newton_parameters.num_multistarts, max_num_threads, chunk_size, log_likelihood_state_vector.data(), nullptr, &io_container);
+  multistart_optimizer.MultistartOptimize(newton_opt, log_likelihood_evaluator, newton_parameters,
+                                          domain_linearspace, initial_guesses.data(),
+                                          newton_parameters.num_multistarts, max_num_threads,
+                                          chunk_size, log_likelihood_state_vector.data(),
+                                          nullptr, &io_container);
 
   *found_flag = io_container.found_flag;
   std::copy(io_container.best_point.begin(), io_container.best_point.end(), next_hyperparameters);
@@ -1194,22 +1193,35 @@ OL_NONNULL_POINTERS void MultistartNewtonHyperparameterOptimization(const LogLik
     :next_hyperparameters[n_hyper]: the new hyperparameters found by "dumb" search
 \endrst*/
 template <typename LogLikelihoodEvaluator, typename DomainType>
-void EvaluateLogLikelihoodAtPointList(const LogLikelihoodEvaluator& log_likelihood_evaluator, const CovarianceInterface& covariance, const DomainType& domain_linearspace, double const * restrict initial_guesses, int num_multistarts, int max_num_threads, double * restrict function_values, double * restrict next_hyperparameters) {
+void EvaluateLogLikelihoodAtPointList(
+    const LogLikelihoodEvaluator& log_likelihood_evaluator,
+    const CovarianceInterface& covariance,
+    const DomainType& domain_linearspace,
+    double const * restrict initial_guesses,
+    int num_multistarts,
+    int max_num_threads,
+    double * restrict function_values,
+    double * restrict next_hyperparameters) {
   std::vector<typename LogLikelihoodEvaluator::StateType> log_likelihood_state_vector;
   SetupLogLikelihoodState(log_likelihood_evaluator, covariance, max_num_threads, &log_likelihood_state_vector);
 
   // set chunk_size, see gpp_common.hpp header comments, item 7
-  const int chunk_size = std::max(std::min(40, std::max(1, num_multistarts/max_num_threads)), num_multistarts/(max_num_threads*120));
+  const int chunk_size = std::max(std::min(40, std::max(1, num_multistarts/max_num_threads)),
+                                  num_multistarts/(max_num_threads*120));
 
   NullOptimizer<LogLikelihoodEvaluator, DomainType> null_opt;
 
   const int num_hyperparameters = covariance.GetNumberOfHyperparameters();
   OptimizationIOContainer io_container(log_likelihood_state_vector[0].GetProblemSize());
-  InitializeBestKnownPoint(log_likelihood_evaluator, initial_guesses, num_hyperparameters, num_multistarts, false, log_likelihood_state_vector.data(), &io_container);
+  InitializeBestKnownPoint(log_likelihood_evaluator, initial_guesses, num_hyperparameters, num_multistarts,
+                           false, log_likelihood_state_vector.data(), &io_container);
 
   typename NullOptimizer<LogLikelihoodEvaluator, DomainType>::ParameterStruct null_parameters;
   MultistartOptimizer<NullOptimizer<LogLikelihoodEvaluator, DomainType> > multistart_optimizer;
-  multistart_optimizer.MultistartOptimize(null_opt, log_likelihood_evaluator, null_parameters, domain_linearspace, initial_guesses, num_multistarts, max_num_threads, chunk_size, log_likelihood_state_vector.data(), function_values, &io_container);
+  multistart_optimizer.MultistartOptimize(null_opt, log_likelihood_evaluator, null_parameters,
+                                          domain_linearspace, initial_guesses, num_multistarts,
+                                          max_num_threads, chunk_size, log_likelihood_state_vector.data(),
+                                          function_values, &io_container);
 
   std::copy(io_container.best_point.begin(), io_container.best_point.end(), next_hyperparameters);
 }
@@ -1243,15 +1255,25 @@ void EvaluateLogLikelihoodAtPointList(const LogLikelihoodEvaluator& log_likeliho
     :next_hyperparameters[n_hyper]: the new hyperparameters found by "dumb" search
 \endrst*/
 template <typename LogLikelihoodEvaluator>
-OL_NONNULL_POINTERS void LatinHypercubeSearchHyperparameterOptimization(const LogLikelihoodEvaluator& log_likelihood_evaluator, const CovarianceInterface& covariance, ClosedInterval const * restrict domain, int num_multistarts, int max_num_threads, UniformRandomGenerator * uniform_generator, double * restrict next_hyperparameters) {
+OL_NONNULL_POINTERS void LatinHypercubeSearchHyperparameterOptimization(
+    const LogLikelihoodEvaluator& log_likelihood_evaluator,
+    const CovarianceInterface& covariance,
+    ClosedInterval const * restrict domain,
+    int num_multistarts,
+    int max_num_threads,
+    UniformRandomGenerator * uniform_generator,
+    double * restrict next_hyperparameters) {
   const int num_hyperparameters = covariance.GetNumberOfHyperparameters();
   std::vector<double> initial_guesses(num_hyperparameters*num_multistarts);
   std::vector<ClosedInterval> domain_linearspace_bounds(domain, domain + num_hyperparameters);
-  ConvertFromLogToLinearDomainAndBuildInitialGuesses(num_hyperparameters, num_multistarts, uniform_generator, &domain_linearspace_bounds, &initial_guesses);
+  ConvertFromLogToLinearDomainAndBuildInitialGuesses(num_hyperparameters, num_multistarts, uniform_generator,
+                                                     &domain_linearspace_bounds, &initial_guesses);
 
   TensorProductDomain domain_linearspace(domain_linearspace_bounds.data(), num_hyperparameters);
 
-  EvaluateLogLikelihoodAtPointList(log_likelihood_evaluator, covariance, domain_linearspace, initial_guesses.data(), num_multistarts, max_num_threads, nullptr, next_hyperparameters);
+  EvaluateLogLikelihoodAtPointList(log_likelihood_evaluator, covariance, domain_linearspace,
+                                   initial_guesses.data(), num_multistarts, max_num_threads,
+                                   nullptr, next_hyperparameters);
 }
 
 }  // end namespace optimal_learning
