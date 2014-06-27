@@ -398,7 +398,9 @@ int NormalRNGSimulatorTest() {
   for (int n = 0; n < random_table_size; ++n) {
     rng_simulator();
   }
+
   ++total_errors;
+
   try {
     rng_simulator();
   } catch (const InvalidValueException<int>& exception) {

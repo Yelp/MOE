@@ -88,8 +88,7 @@ struct UniformRandomGenerator final {
   /*!\rst
     Default-constructs a UniformRandomGenerator, seeding with kDefaultSeed.
   \endrst*/
-  UniformRandomGenerator() noexcept : engine(kDefaultSeed), last_seed_(kDefaultSeed) {
-  }
+  UniformRandomGenerator() noexcept;
 
   /*!\rst
     Construct a UniformRandomGenerator, seeding with the specified seed.
@@ -98,9 +97,7 @@ struct UniformRandomGenerator final {
     \param
       :seed: new seed to set
   \endrst*/
-  explicit UniformRandomGenerator(EngineType::result_type seed) noexcept : engine(seed), last_seed_(seed) {
-    SetExplicitSeed(seed);
-  }
+  explicit UniformRandomGenerator(EngineType::result_type seed) noexcept;
 
   /*!\rst
     Construct a UniformRandomGenerator, seeding with an automatically selected seed based on time, thread_id, etc.
@@ -110,9 +107,7 @@ struct UniformRandomGenerator final {
       :base_seed: base value for the new seed
       :thread_id: id of the thread using this object
   \endrst*/
-  UniformRandomGenerator(EngineType::result_type seed, int thread_id) noexcept : engine(seed), last_seed_(seed) {
-    SetRandomizedSeed(seed, thread_id);
-  }
+  UniformRandomGenerator(EngineType::result_type seed, int thread_id) noexcept;
 
   /*!\rst
     Get a reference to the RNG engine used by this class.
@@ -189,12 +184,9 @@ struct UniformRandomGenerator final {
   \endrst*/
   void PrintState(std::ostream * out_stream) const OL_NONNULL_POINTERS;
 
-  bool operator==(const UniformRandomGenerator& other) const {
-    return (engine == other.engine) && (last_seed_ == other.last_seed_);
-  }
-  bool operator!=(const UniformRandomGenerator& other) const {
-    return !(*this == other);
-  }
+  bool operator==(const UniformRandomGenerator& other) const;
+
+  bool operator!=(const UniformRandomGenerator& other) const;
 
   //! An (boost) PRNG engine that can be passed to a ``<boost/random>`` distribution, e.g., ``uniform_real<>``.
   EngineType engine;
@@ -209,10 +201,10 @@ struct UniformRandomGenerator final {
   Uses/maintains an uniform RNG (currently UniformRandomGenerator) and transforms the output to be
   distributed ~ N(0, 1).
 
-  Note: seed values take type ``EngineType::result_type``. Do not pass in a wider integer type!
+  .. Note:: seed values take type ``EngineType::result_type``. Do not pass in a wider integer type!
 
-  WARNING: this class is NOT THREAD-SAFE. You must construct one object per thread (and
-  ensure that the seeds are different for practical computations).
+  .. WARNING:: this class is NOT THREAD-SAFE. You must construct one object per thread (and
+    ensure that the seeds are different for practical computations).
 \endrst*/
 class NormalRNG final : public NormalRNGInterface {
  public:
@@ -225,8 +217,7 @@ class NormalRNG final : public NormalRNGInterface {
   /*!\rst
     Default-constructs a NormalRNG, seeding with kDefaultSeed.
   \endrst*/
-  NormalRNG() noexcept : uniform_generator(kDefaultSeed), normal_distribution_(0.0, 1.0), normal_random_variable_(uniform_generator.engine, normal_distribution_) {
-  }
+  NormalRNG() noexcept;
 
   /*!\rst
     Construct a NormalRNG, seeding with the specified seed.
@@ -235,9 +226,7 @@ class NormalRNG final : public NormalRNGInterface {
     \param
       :seed: new seed to set
   \endrst*/
-  explicit NormalRNG(EngineType::result_type seed) noexcept : uniform_generator(seed), normal_distribution_(0.0, 1.0), normal_random_variable_(uniform_generator.engine, normal_distribution_) {
-    SetExplicitSeed(seed);
-  }
+  explicit NormalRNG(EngineType::result_type seed) noexcept;
 
   /*!\rst
     Construct a NormalRNG, seeding with an automatically selected seed based on time, thread_id, etc.
@@ -247,9 +236,7 @@ class NormalRNG final : public NormalRNGInterface {
       :base_seed: base value for the new seed
       :thread_id: id of the thread using this object
   \endrst*/
-  NormalRNG(EngineType::result_type seed, int thread_id) noexcept : uniform_generator(seed), normal_distribution_(0.0, 1.0), normal_random_variable_(uniform_generator.engine, normal_distribution_) {
-    SetRandomizedSeed(seed, thread_id);
-  }
+  NormalRNG(EngineType::result_type seed, int thread_id) noexcept;
 
   /*!\rst
     Get a reference to the RNG engine used by this class.
@@ -261,9 +248,7 @@ class NormalRNG final : public NormalRNGInterface {
     return uniform_generator.engine;
   }
 
-  virtual double operator()() {
-    return normal_random_variable_();
-  }
+  virtual double operator()();
 
   EngineType::result_type last_seed() const noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
     return uniform_generator.last_seed();
@@ -312,12 +297,7 @@ class NormalRNG final : public NormalRNGInterface {
     Reseeds the generator with its most recently specified seed value.
     Useful for testing--e.g., can conduct multiple runs with the same initial conditions
   \endrst*/
-  virtual void ResetToMostRecentSeed() noexcept {
-    uniform_generator.ResetToMostRecentSeed();
-    // this is important: the underlying normal distribution likely generates numbers \emph{two} at a time.
-    // so re-seeding will not clear this pre-existing state without reseting.
-    ResetGenerator();
-  }
+  virtual void ResetToMostRecentSeed() noexcept;
 
   /*!\rst
     Prints the state of the generator to specified ostream.  For testing.
@@ -340,11 +320,13 @@ class NormalRNG final : public NormalRNGInterface {
 };
 
 /*!\rst
-  RNG that generates normally districuted (N(0,1)) random numbers simply by reading random numbers stored in its "random_number_table", a data member in this class.
+  RNG that generates normally distributed (N(0,1)) random numbers simply by reading random numbers stored in
+  its "random_number_table", a data member in this class.
 
-  Note: this class is used in unit test only, and you have to be careful to ensure the total number of random numbers generated from last reset must be smaller than size of "random_number_table", otherwise exception will be thrown.
+  .. Note:: this class is used in unit test only, and you have to be careful to ensure the total number of random numbers
+    generated from last reset must be smaller than size of "random_number_table", otherwise exception will be thrown.
 
-  WARNING: this class is NOT THREAD-SAFE. You must construct one object per thread. 
+  .. Warning:: this class is NOT THREAD-SAFE. You must construct one object per thread.
 \endrst*/
 class NormalRNGSimulator final : public NormalRNGInterface {
  public:
@@ -355,24 +337,11 @@ class NormalRNGSimulator final : public NormalRNGInterface {
       :random_number_table_in: pointer to the table storing random numbers
       :size_of_table_in: size of the random table
   \endrst*/
-  explicit NormalRNGSimulator(const std::vector<double>& random_number_table_in)
-            : random_number_table_(random_number_table_in),
-              index_(0) {
-            }
+  explicit NormalRNGSimulator(const std::vector<double>& random_number_table_in);
 
-  virtual double operator()() {
-    int size_of_table = random_number_table_.size();
-    if (index_ < size_of_table) {
-      ++index_;
-      return random_number_table_[index_];
-    } else {
-      OL_THROW_EXCEPTION(InvalidValueException<int>, "All random numbers stored in the RNG have been used up!", index_, size_of_table);
-    }
-  }
+  virtual double operator()();
 
-  virtual void ResetToMostRecentSeed() noexcept {
-    index_= 0;
-  }
+  virtual void ResetToMostRecentSeed() noexcept;
 
   int index() const {
     return index_;

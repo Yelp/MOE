@@ -16,20 +16,20 @@
 namespace optimal_learning {
 
 /*!\rst
-  Checks that specified optimizer is working correctly:
+  Checks that the following optimizers are working correctly with simple objectives:
 
   * kGradientDescent
   * kNewton
 
-  Checks unconstrained and constrained optimization against polynomial
+  by checking unconstrained and constrained optimization against polynomial
   objective function(s).
 
-  \param
-    :optimizer_type: which optimizer to test
+  Also checks that MultistartOptimizer::MultistartOptimize() handles exceptions correctly and without crashing.
+
   \return
     number of test failures: 0 if optimizer is working properly
 \endrst*/
-int RunOptimizationTests(OptimizerTypes optimizer_type);
+int RunOptimizationTests();
 
 }  // end namespace optimal_learning
 
