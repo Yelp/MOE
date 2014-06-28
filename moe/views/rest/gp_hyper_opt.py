@@ -9,6 +9,7 @@ import colander
 
 from pyramid.view import view_config
 
+from moe.optimal_learning.python.constant import DEFAULT_MAX_NUM_THREADS
 from moe.optimal_learning.python.cpp_wrappers.log_likelihood import GaussianProcessLogLikelihood, multistart_hyperparameter_optimization
 from moe.views.constant import GP_HYPER_OPT_ROUTE_NAME, GP_HYPER_OPT_PRETTY_ROUTE_NAME
 from moe.views.gp_pretty_view import GpPrettyView, PRETTY_RENDERER
@@ -39,6 +40,7 @@ class GpHyperOptRequest(colander.MappingSchema):
         Content-Type: text/javascript
 
         {
+            "max_num_threads": 1,
             "gp_historical_info": {
                 "points_sampled": [
                         {"value_var": 0.01, "value": 0.1, "point": [0.0]},
@@ -72,6 +74,11 @@ class GpHyperOptRequest(colander.MappingSchema):
 
     """
 
+    max_num_threads = colander.SchemaNode(
+            colander.Int(),
+            validator=colander.Range(min=1),
+            missing=DEFAULT_MAX_NUM_THREADS,
+            )
     gp_historical_info = GpHistoricalInfo()
     domain_info = DomainInfo()
     covariance_info = CovarianceInfo(
@@ -183,6 +190,7 @@ class GpHyperOptView(OptimizableGpPrettyView):
         """
         params = self.get_params_from_request()
 
+        max_num_threads = params.get('max_num_threads')
         hyperparameter_domain = _make_domain_from_params(params, domain_info_key='hyperparameter_domain_info')
         gaussian_process = _make_gp_from_params(params)
         covariance_of_process = gaussian_process._covariance
@@ -204,6 +212,7 @@ class GpHyperOptView(OptimizableGpPrettyView):
         optimized_hyperparameters = multistart_hyperparameter_optimization(
             log_likelihood_optimizer,
             optimization_parameters.num_multistarts,
+            max_num_threads=max_num_threads,
             status=hyperopt_status,
         )
 
