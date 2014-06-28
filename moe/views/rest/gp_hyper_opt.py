@@ -30,6 +30,7 @@ class GpHyperOptRequest(colander.MappingSchema):
 
     **Optional fields**
 
+        :max_num_threads: maximum number of threads to use in computation (default: 1)
         :covariance_info: a :class:`moe.views.schemas.CovarianceInfo` dict of covariance information, used as a starting point for optimization
         :optimiaztion_info: a :class:`moe.views.schemas.OptimizationInfo` dict of optimization information
 
