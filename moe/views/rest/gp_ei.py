@@ -32,6 +32,7 @@ class GpEiRequest(colander.MappingSchema):
 
         :points_being_sampled: list of points in domain being sampled in concurrent experiments (default: []) (:class:`moe.views.schemas.ListOfPointsInDomain`)
         :mc_iterations: number of Monte Carlo (MC) iterations to perform in numerical integration to calculate EI
+        :max_num_threads: maximum number of threads to use in computation (default: 1)
         :covariance_info: a :class:`moe.views.schemas.CovarianceInfo` dict of covariance information
 
     **Example Minimal Request**

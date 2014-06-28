@@ -31,6 +31,7 @@ class GpNextPointsRequest(colander.MappingSchema):
 
         :num_to_sample: number of next points to generate (default: 1)
         :mc_iterations: number of Monte Carlo (MC) iterations to perform in numerical integration to calculate EI
+        :max_num_threads: maximum number of threads to use in computation (default: 1)
         :covariance_info: a :class:`moe.views.schemas.CovarianceInfo` dict of covariance information
         :optimization_info: a :class:`moe.views.schemas.OptimizationInfo` dict of optimization information
         :points_being_sampled: list of points in domain being sampled in concurrent experiments (default: [])
