@@ -249,7 +249,6 @@
 #include <cmath>
 
 #include <algorithm>
-#include <limits>
 #include <memory>
 #include <vector>
 
@@ -762,7 +761,7 @@ void GaussianProcess::ComputeGradCholeskyVarianceOfPointsPerPoint(StateType * po
     // L_kk := L_{kk}
     const double L_kk = OL_CHOL_VAR(k, k);
 
-    if (likely(L_kk > 1.0e-16)) {
+    if (likely(L_kk > kMinimumStdDev)) {
       // differentiates L_kk := L_{kk}
       // GL_{mkk} = 0.5 * GV_{mkk}/L_{kk}
       for (int m = 0; m < dim_; ++m) {
@@ -1126,7 +1125,7 @@ double OnePotentialSampleExpectedImprovementEvaluator::ComputeExpectedImprovemen
 
   gaussian_process_->ComputeMeanOfPoints(ei_state->points_to_sample_state, &to_sample_mean);
   gaussian_process_->ComputeVarianceOfPoints(&(ei_state->points_to_sample_state), &to_sample_var);
-  to_sample_var = std::sqrt(to_sample_var);
+  to_sample_var = std::sqrt(std::fmax(kMinimumVarianceEI, to_sample_var));
 
   double temp = best_so_far_ - to_sample_mean;
   double EI = temp*boost::math::cdf(normal_, temp/to_sample_var) + to_sample_var*boost::math::pdf(normal_, temp/to_sample_var);
@@ -1152,6 +1151,7 @@ void OnePotentialSampleExpectedImprovementEvaluator::ComputeGradExpectedImprovem
   gaussian_process_->ComputeMeanOfPoints(ei_state->points_to_sample_state, &to_sample_mean);
   gaussian_process_->ComputeGradMeanOfPoints(ei_state->points_to_sample_state, grad_mu);
   gaussian_process_->ComputeVarianceOfPoints(&(ei_state->points_to_sample_state), &to_sample_var);
+  to_sample_var = std::fmax(kMinimumVarianceGradEI, to_sample_var);
   double sigma = std::sqrt(to_sample_var);
 
   double * restrict grad_chol_decomp = ei_state->grad_chol_decomp.data();

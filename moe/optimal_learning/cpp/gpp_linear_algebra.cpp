@@ -139,7 +139,7 @@ int ComputeCholeskyFactorL(int size_m, double * restrict chol) noexcept {
       // We fail if the matrix is singular. In the outer-product formulation here,
       // you can ignore the "0" diagonal entry and continue, which produces a
       // semi-positive definite factorization (see Golub, Van Loan 1983).
-      OL_ERROR_PRINTF("cholesky matrix singular %.18E", chol_temp[k]);
+      OL_ERROR_PRINTF("cholesky matrix singular %.18E ", chol_temp[k]);
       return k + 1;
     }
     chol_temp += size_m;
