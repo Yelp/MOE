@@ -2,7 +2,7 @@
   \file gpp_python_model_selection.hpp
   \rst
   This file registers the translation layer for invoking functions in
-  gpp_model_selection_and_hyperparameter_optimization.hpp from Python.
+  gpp_model_selection.hpp from Python.
 
   The functions exported expect hyperparameters input like "pylist hyperparameters[2]:"
   This will be a python list such that:

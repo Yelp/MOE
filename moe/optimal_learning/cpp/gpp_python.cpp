@@ -516,7 +516,7 @@ BOOST_PYTHON_MODULE(GPP) {
     These docstrings currently provide fairly high level (and sometimes sparse) descriptions.
     For further details, see the file documents for the C++ hpp and cpp files. Header (hpp) files contain more high
     level descriptions/motivation whereas source (cpp) files contain more [mathematical] details.
-    gpp_math.hpp and gpp_model_selection_and_hyperparameter_optimization.hpp are good starting points for more reading.
+    gpp_math.hpp and gpp_model_selection.hpp are good starting points for more reading.
 
     TODO(GH-25): when we have jemdoc (or whatever tool), point this to those docs as well.
 

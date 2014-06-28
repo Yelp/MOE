@@ -1,7 +1,7 @@
 /*!
-  \file gpp_model_selection_and_hyperparameter_optimization_test.cpp
+  \file gpp_model_selection_test.cpp
   \rst
-  Routines to test the functions in gpp_model_selection_and_hyperparameter_optimization.cpp.
+  Routines to test the functions in gpp_model_selection.cpp.
 
   These tests verify LogMarginalLikelihoodEvaluator and LeaveOneOutLogLikelihoodEvaluator and their optimizers:
 
@@ -21,7 +21,7 @@
 
 // #define OL_VERBOSE_PRINT
 
-#include "gpp_model_selection_and_hyperparameter_optimization_test.hpp"
+#include "gpp_model_selection_test.hpp"
 
 #include <cmath>
 
@@ -40,7 +40,7 @@
 #include "gpp_logging.hpp"
 #include "gpp_math.hpp"
 #include "gpp_mock_optimization_objective_functions.hpp"
-#include "gpp_model_selection_and_hyperparameter_optimization.hpp"
+#include "gpp_model_selection.hpp"
 #include "gpp_random.hpp"
 #include "gpp_optimization.hpp"
 #include "gpp_optimization_parameters.hpp"
