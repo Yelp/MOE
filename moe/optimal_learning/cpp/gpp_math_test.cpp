@@ -11,7 +11,7 @@
         evaluating those functions + their spatial gradients.
 
         Some Pingable classes for GP functions are less general than their gpp_covariance_test or
-        gpp_model_selection_and_hyperparameter_optimization_test counterparts, since GP derivative functions sometimes return sparse
+        gpp_model_selection_test counterparts, since GP derivative functions sometimes return sparse
         or incomplete data (e.g., gradient of mean returned as a vector instead of a diagonal matrix; gradient of variance
         only differentiates wrt a single point at a time); hence we need specialized handlers for testing.
      b. Ping for derivative accuracy (PingGPComponentTest, PingEITest); these unit test the analytic derivatives.

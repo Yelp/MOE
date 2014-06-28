@@ -114,7 +114,7 @@
   \*, \*\* See "IMPLEMENTATION DETAILS" comments section for details.
 
   Recall that Newton indiscriminately finds solutions where ``f'(x) = 0``; the eigenvalues of the Hessian classify these
-  ``x`` as optima, saddle points, or indeterminate. We multistart Newton (e.g., gpp_model_selection_and_hyperparameter_optimization)
+  ``x`` as optima, saddle points, or indeterminate. We multistart Newton (e.g., gpp_model_selection)
   but just take the best objective value without classifying solutions.
   The MultistartOptimizer template class in this file provides generic multistart functionality.
 
@@ -218,7 +218,7 @@
     void GetCurrentPoint(double * point);  // get current point at which Evalutor is computing results
     void UpdateCurrentPoint(double const * point);  // set current point at which Evalutor is computing results
 
-  gpp_math.hpp and gpp_model_selection_and_hyperparameter_optimization.hpp have (Evaluator, State) examples that implement
+  gpp_math.hpp and gpp_model_selection.hpp have (Evaluator, State) examples that implement
   the above interface:
 
   * gpp_math.hpp:
@@ -226,7 +226,7 @@
     * (ExpectedImprovement, ExpectedImprovementState)
     * (OnePotentialSampleExpectedImprovement, OnePotentialSampleExpectedImprovementState)
 
-  * gpp_model_selection_and_hyperparameter_optimization.hpp:
+  * gpp_model_selection.hpp:
 
     * (LogMarginalLikelihoodEvaluator, LogMarginalLikelihoodState)
     * (LeaveOneOutLogLikelihoodEvaluator, LeaveOneOutLogLikelihoodState)

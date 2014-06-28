@@ -73,7 +73,7 @@ MOE does this internally by:
 2. Optimizing the hyperparameters of the Gaussian Process (model selection)
 
     - :doc:`gpp_covariance`
-    - :doc:`gpp_model_selection_and_hyperparameter_optimization`
+    - :doc:`gpp_model_selection`
     - :mod:`moe.views.rest.gp_hyper_opt`
     - `RW Chapter 4`_
     - `RW Chapter 5`_
