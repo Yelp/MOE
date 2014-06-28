@@ -25,7 +25,7 @@
   currently support non-axis-aligned anisotropy.
 
   Specifying hyperparameters is tricky because changing them fundamentally changes the behavior of the GP.
-  gpp_model_selection_and_hyperparameter_optimization.hpp provides some functions for optimizing
+  gpp_model_selection.hpp provides some functions for optimizing
   hyperparameters based on the current training data.
 
   For more details, see:
