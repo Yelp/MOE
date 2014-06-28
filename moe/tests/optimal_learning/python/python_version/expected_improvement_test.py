@@ -75,7 +75,7 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
 
         """
         num_points_p_q_list = ((1, 0), (1, 1), (2, 1), (1, 4), (5, 3))
-        ei_tolerance = numpy.finfo('float64').eps
+        ei_tolerance = numpy.finfo(numpy.float64).eps
         grad_ei_tolerance = 1.0e-13
         numpy.random.seed(78532)
 
