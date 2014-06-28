@@ -12,6 +12,7 @@ import scipy.stats
 from moe.optimal_learning.python.constant import DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS, DEFAULT_MAX_NUM_THREADS
 from moe.optimal_learning.python.interfaces.expected_improvement_interface import ExpectedImprovementInterface
 from moe.optimal_learning.python.interfaces.optimization_interface import OptimizableInterface
+from moe.optimal_learning.python.python_version.gaussian_process import GaussianProcess
 from moe.optimal_learning.python.python_version.optimization import multistart_optimize, NullOptimizer
 
 
@@ -85,6 +86,14 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
     See interfaces/expected_improvement_interface.py docs for further details.
 
     """
+
+    # Minimum allowed variance value in the "1D" analytic EI and grad EI computations.
+    # Values that are too small result in problems b/c we may compute ``std_dev/var`` (which is enormous
+    # if ``std_dev = 1.0e-150`` and ``var = 1.0e-300``) since this only arises when we fail to compute ``std_dev = var = 0.0``.
+    # Note: this is only relevant if noise = 0.0; this minimum will not affect EI computation with noise since this value
+    # is below the smallest amount of noise users can meaningfully add.
+    MINIMUM_VARIANCE_EI = numpy.finfo(numpy.float64).tiny
+    MINIMUM_VARIANCE_GRAD_EI = 150 * GaussianProcess.MINIMUM_STD_DEV ** 2
 
     def __init__(
             self,
@@ -586,6 +595,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         var_star = self._gaussian_process.compute_variance_of_points(union_of_points)
 
         if num_points == 1 and force_monte_carlo is False:
+            var_star = numpy.fmax(self.MINIMUM_VARIANCE_EI, var_star)
             return self._compute_expected_improvement_1d_analytic(mu_star[0], var_star[0, 0])
         else:
             return self._compute_expected_improvement_monte_carlo(mu_star, var_star)
@@ -626,9 +636,16 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         mu_star = self._gaussian_process.compute_mean_of_points(union_of_points)
         var_star = self._gaussian_process.compute_variance_of_points(union_of_points)
         grad_mu = self._gaussian_process.compute_grad_mean_of_points(union_of_points, self.num_to_sample)
-        grad_chol_decomp = self._gaussian_process.compute_grad_cholesky_variance_of_points(union_of_points, self.num_to_sample)
 
         if num_points == 1 and force_monte_carlo is False:
+            var_star = numpy.fmax(self.MINIMUM_VARIANCE_GRAD_EI, var_star)
+            sigma = numpy.sqrt(var_star)
+            grad_chol_decomp = self._gaussian_process.compute_grad_cholesky_variance_of_points(
+                union_of_points,
+                chol_var=sigma,
+                num_derivatives=self.num_to_sample,
+            )
+
             return self._compute_grad_expected_improvement_1d_analytic(
                 mu_star[0],
                 var_star[0, 0],
@@ -636,6 +653,12 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
                 grad_chol_decomp[0, 0, 0, ...],
             )
         else:
+            chol_var = scipy.linalg.cho_factor(var_star, lower=True, overwrite_a=True)[0]
+            grad_chol_decomp = self._gaussian_process.compute_grad_cholesky_variance_of_points(
+                union_of_points,
+                chol_var=chol_var,
+                num_derivatives=self.num_to_sample,
+            )
             return self._compute_grad_expected_improvement_monte_carlo(
                 mu_star,
                 var_star,
