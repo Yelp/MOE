@@ -212,7 +212,7 @@ def constant_liar_expected_improvement_optimization(
         lie_value,
         lie_noise_variance=0.0,
         randomness=None,
-        max_num_threads=1,
+        max_num_threads=DEFAULT_MAX_NUM_THREADS,
         status=None,
 ):
     """Heuristically solves q,0-EI using the Constant Liar policy; this wraps heuristic_expected_improvement_optimization().
@@ -273,7 +273,7 @@ def kriging_believer_expected_improvement_optimization(
         std_deviation_coef=0.0,
         kriging_noise_variance=0.0,
         randomness=None,
-        max_num_threads=1,
+        max_num_threads=DEFAULT_MAX_NUM_THREADS,
         status=None,
 ):
     """Heuristically solves q,0-EI using the Kriging Believer policy; this wraps heuristic_expected_improvement_optimization().
@@ -341,7 +341,14 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
 
     """
 
-    def __init__(self, gaussian_process, points_to_sample=None, points_being_sampled=None, num_mc_iterations=DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS, randomness=None):
+    def __init__(
+            self,
+            gaussian_process,
+            points_to_sample=None,
+            points_being_sampled=None,
+            num_mc_iterations=DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS,
+            randomness=None
+    ):
         """Construct an ExpectedImprovement object that knows how to call C++ for evaluation of member functions.
 
         :param gaussian_process: GaussianProcess describing
@@ -448,7 +455,13 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         """
         # Create enough randomness sources if none are specified.
         if randomness is None:
-            randomness = self._randomness
+            if max_num_threads == 1:
+                randomness = self._randomness
+            else:
+                randomness = C_GP.RandomnessSourceContainer(max_num_threads)
+                # Set seeds based on less repeatable factors (e.g,. time)
+                randomness.SetRandomizedUniformGeneratorSeed(0)
+                randomness.SetRandomizedNormalRNGSeed(0)
 
         # status must be an initialized dict for the call to C++.
         if status is None:

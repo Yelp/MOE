@@ -3,7 +3,7 @@
   \rst
   This is a demo for the model selection (via hyperparameter optimization) capability
   present in this project.  These capabilities live in
-  gpp_model_selection_and_hyperparameter_optimization.
+  gpp_model_selection.
 
   In gpp_expected_improvement_demo, we choose the hyperparameters arbitrarily.  Here,
   we will walk through an example of how one would select hyperparameters for a given
@@ -28,7 +28,7 @@
   demo code, placed near the function call/object construction that they are relevant to.
 
   Please read and understand gpp_expected_improvement_demo.cpp before going through
-  this example.  In addition, understanding gpp_model_selection_and_hyperparameter_optimization.hpp's
+  this example.  In addition, understanding gpp_model_selection.hpp's
   file comments (as well as cpp for devs) is prerequisite.
 \endrst*/
 
@@ -43,7 +43,7 @@
 #include "gpp_domain.hpp"
 #include "gpp_logging.hpp"
 #include "gpp_math.hpp"
-#include "gpp_model_selection_and_hyperparameter_optimization.hpp"
+#include "gpp_model_selection.hpp"
 #include "gpp_optimization_parameters.hpp"
 #include "gpp_random.hpp"
 #include "gpp_test_utils.hpp"

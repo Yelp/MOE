@@ -31,7 +31,7 @@
 #include "gpp_domain.hpp"
 #include "gpp_exception.hpp"
 #include "gpp_geometry.hpp"
-#include "gpp_model_selection_and_hyperparameter_optimization.hpp"
+#include "gpp_model_selection.hpp"
 #include "gpp_optimization_parameters.hpp"
 #include "gpp_python_common.hpp"
 

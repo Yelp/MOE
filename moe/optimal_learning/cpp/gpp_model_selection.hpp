@@ -1,5 +1,5 @@
 /*!
-  \file gpp_model_selection_and_hyperparameter_optimization.hpp
+  \file gpp_model_selection.hpp
   \rst
   Table of Contents:
 
@@ -192,14 +192,14 @@
           Single start version available in: NewtonHyperparameterOptimization<>().
 
      .. NOTE::
-         See ``gpp_model_selection_and_hyperparameter_optimization.cpp``'s header comments for more detailed implementation notes.
+         See ``gpp_model_selection.cpp``'s header comments for more detailed implementation notes.
 
          There are also several other functions with external linkage in this header; these
          are provided primarily to ease testing and to permit lower level access from python.
 \endrst*/
 
-#ifndef MOE_OPTIMAL_LEARNING_CPP_GPP_MODEL_SELECTION_AND_HYPERPARAMETER_OPTIMIZATION_HPP_
-#define MOE_OPTIMAL_LEARNING_CPP_GPP_MODEL_SELECTION_AND_HYPERPARAMETER_OPTIMIZATION_HPP_
+#ifndef MOE_OPTIMAL_LEARNING_CPP_GPP_MODEL_SELECTION_HPP_
+#define MOE_OPTIMAL_LEARNING_CPP_GPP_MODEL_SELECTION_HPP_
 
 #include <cmath>
 
@@ -1278,4 +1278,4 @@ OL_NONNULL_POINTERS void LatinHypercubeSearchHyperparameterOptimization(
 
 }  // end namespace optimal_learning
 
-#endif  // MOE_OPTIMAL_LEARNING_CPP_GPP_MODEL_SELECTION_AND_HYPERPARAMETER_OPTIMIZATION_HPP_
+#endif  // MOE_OPTIMAL_LEARNING_CPP_GPP_MODEL_SELECTION_HPP_
