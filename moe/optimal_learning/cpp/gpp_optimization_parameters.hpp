@@ -6,7 +6,7 @@
   specified through these structs.
 
   These structs also specify multistart behavior pertaining to the multistart optimization code in gpp_math and
-  gpp_model_selection_and_hyperparameter_optimization.
+  gpp_model_selection.
 \endrst*/
 
 #ifndef MOE_OPTIMAL_LEARNING_CPP_GPP_OPTIMIZATION_PARAMETERS_HPP_
