@@ -13,7 +13,7 @@
                     </div>
                     <div class="col-md-6 middle-text">
                         Endpoint(s):
-                        <a href="http://sc932.github.io/MOE/moe.views.rest.html#module-moe.views.rest.gp_mean_var"><strong><code>gp_mean_var</code></strong></a>
+                        <a href="http://sc932.github.io/MOE/moe.views.rest.html#module-moe.views.rest.gp_mean_var_diag"><strong><code>gp_mean_var_diag</code></strong></a>
                         <span class="glyphicon glyphicon-question-sign tooltip-rdy small" data-original-title="The endpoint(s) (and docs) used to generate the below graph." data-placement="top"><span>
                     </div>
                 </div>
@@ -192,7 +192,7 @@ optimalLearning.updateGraphs = function() {
 
     var gp_data, ei_raw_data, next_points_raw_data, single_point_gp_data;
     var jqxhr1 = $.post(
-        "${request.route_url('gp_mean_var')}",
+        "${request.route_url('gp_mean_var_diag')}",
         JSON.stringify(post_data),
         function( data ) {
             gp_data = data;
@@ -237,7 +237,7 @@ optimalLearning.updateGraphs = function() {
         var single_point_gp_data;
         post_data['points_to_sample'] = next_points_raw_data['points_to_sample'];
         var jqxhr4 = $.post(
-            "${request.route_url('gp_mean_var')}",
+            "${request.route_url('gp_mean_var_diag')}",
             JSON.stringify(post_data),
             function( data ) {
                 single_point_gp_data = data;
@@ -246,7 +246,7 @@ optimalLearning.updateGraphs = function() {
         jqxhr4.fail(optimalLearning.errorAlert);
 
         jqxhr4.done(function() {
-            var y_value = $.parseJSON(single_point_gp_data['mean'][0]) + $.parseJSON(single_point_gp_data['var'][0][0]) * optimalLearning.normRand();
+            var y_value = $.parseJSON(single_point_gp_data['mean'][0]) + $.parseJSON(single_point_gp_data['var'][0]) * optimalLearning.normRand();
             $("#y1").val(y_value.toFixed(4));
             $("#v1").val('0.1000');
         });
