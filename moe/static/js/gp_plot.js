@@ -105,8 +105,8 @@ optimalLearning.plotGraphs = function (gp_data, ei_raw_data, xvals, points_sampl
         gp_var_upper_data.push({
             'x': xvals[xpoint][0],
             'y0': parseFloat(gp_data['mean'][xpoint]),
-            'y1': parseFloat(gp_data['mean'][xpoint]) + parseFloat(gp_data['var'][xpoint][xpoint]),
-            'bound': parseFloat(gp_data['mean'][xpoint]) + parseFloat(gp_data['var'][xpoint][xpoint]),
+            'y1': parseFloat(gp_data['mean'][xpoint]) + parseFloat(gp_data['var'][xpoint]),
+            'bound': parseFloat(gp_data['mean'][xpoint]) + parseFloat(gp_data['var'][xpoint]),
         });
     }
     gp_var_upper_data.sort(function(a,b){
@@ -117,9 +117,9 @@ optimalLearning.plotGraphs = function (gp_data, ei_raw_data, xvals, points_sampl
     for (xpoint in xvals) {
         gp_var_lower_data.push({
             'x': xvals[xpoint][0],
-            'y0': parseFloat(gp_data['mean'][xpoint]) - parseFloat(gp_data['var'][xpoint][xpoint]),
+            'y0': parseFloat(gp_data['mean'][xpoint]) - parseFloat(gp_data['var'][xpoint]),
             'y1': parseFloat(gp_data['mean'][xpoint]),
-            'bound': parseFloat(gp_data['mean'][xpoint]) - parseFloat(gp_data['var'][xpoint][xpoint]),
+            'bound': parseFloat(gp_data['mean'][xpoint]) - parseFloat(gp_data['var'][xpoint]),
         });
     }
     gp_var_lower_data.sort(function(a,b){
