@@ -73,6 +73,7 @@ set(OPTIMAL_LEARNING_CORE_SOURCES
   gpp_math.cpp
   gpp_model_selection.cpp
   gpp_random.cpp
+  gpp_expected_improvement_gpu.cpp
   )
 
 # readonly
@@ -88,6 +89,7 @@ set(OPTIMAL_LEARNING_TEST_SOURCES
   gpp_random_test.cpp
   gpp_test_utils.cpp
   gpp_test_utils_test.cpp
+  gpp_expected_improvement_gpu_test.cpp
   )
 
 # readonly
@@ -228,6 +230,10 @@ function(configure_exec_targets exec_names exec_sources dependencies compile_fla
       COMPILE_DEFINITIONS "${compile_definitions}"
       LINK_FLAGS "${EXTRA_LINK_FLAGS}"
       )
+    if (${MOE_USE_GPU} MATCHES "1")
+        add_dependencies(${name} GPU_LIB)
+        target_link_libraries(${name} ${CUDA_LIBRARIES} ${CMAKE_BINARY_DIR}/gpu/libGPU.so)
+    endif()
   endforeach()
 endfunction(configure_exec_targets)
 
@@ -257,6 +263,48 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -fopenmp -Wall -Wextra ${EXTR
 
 # O3 takes longer to compile and the code produced is at best no faster than O2 (gcc, icc).
 string(REGEX REPLACE "O3" "O2" CMAKE_CXX_FLAGS_RELEASE ${CMAKE_CXX_FLAGS_RELEASE})
+
+#### GPU Component
+# readonly
+set(EXTRA_COMPILE_DEFINITIONS_GPU OL_GPU_ENABLED)
+
+set(GPU_CC "")
+set(GPU_CXX "")
+if (EXISTS ${MOE_GPU_CC})
+    set(GPU_CC ${MOE_GPU_CC})
+endif()
+if (EXISTS ${MOE_GPU_CXX})
+    set(GPU_CXX ${MOE_GPU_CXX})
+endif()
+
+if (${MOE_USE_GPU} MATCHES "1")
+    find_package(CUDA)
+    include_directories(${CUDA_INCLUDE_DIRS})
+    set(EXTRA_COMPILE_DEFINITIONS ${EXTRA_COMPILE_DEFINITIONS}
+       ${EXTRA_COMPILE_DEFINITIONS_GPU})
+    if(EXISTS ${CMAKE_BINARY_DIR}/gpu/)
+        add_custom_target(
+            GPU_LIB
+            WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/gpu/
+            COMMAND CC=${GPU_CC} CXX=${GPU_CXX} cmake ${CMAKE_SOURCE_DIR}/gpu/
+            COMMAND make
+            )
+    else()
+        add_custom_target(
+            GPU_FOLDER
+            WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+            COMMAND mkdir ${CMAKE_BINARY_DIR}/gpu/
+            )
+        add_custom_target(
+            GPU_LIB
+            DEPENDS GPU_FOLDER
+            WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/gpu/
+            COMMAND CC=${GPU_CC} CXX=${GPU_CXX} cmake ${CMAKE_SOURCE_DIR}/gpu/
+            COMMAND make
+            )
+    endif()
+endif()
+
 
 #### Object libraries
 # See configure_object_library() function comments for more details.
@@ -299,9 +347,17 @@ add_library(
   $<TARGET_OBJECTS:OPTIMAL_LEARNING_TEST_BUNDLE>
   ${CMAKE_BINARY_DIR}/__init__.py
   )
+if (${MOE_USE_GPU} MATCHES "1")
+    add_dependencies(GPP GPU_LIB)
+endif()
 
-target_link_libraries(GPP ${PYTHON_LIBRARIES} ${Boost_LIBRARIES})
-
+if (${MOE_USE_GPU} MATCHES "1")
+    target_link_libraries(GPP ${PYTHON_LIBRARIES} ${Boost_LIBRARIES}
+        ${CUDA_LIBRARIES} ${CMAKE_BINARY_DIR}/gpu/libGPU.so)
+else()
+    target_link_libraries(GPP ${PYTHON_LIBRARIES} ${Boost_LIBRARIES})
+endif()
+        
 # Make sure lib ends in ".so"
 set_target_properties(
   GPP PROPERTIES
@@ -312,7 +368,7 @@ set_target_properties(
   LINK_FLAGS "${EXTRA_LINK_FLAGS}"
   )
 
-#### "EPI" executable: for testing purposes
+##### "EPI" executable: for testing purposes
 set(
   dependencies
   $<TARGET_OBJECTS:OPTIMAL_LEARNING_CORE_BUNDLE>

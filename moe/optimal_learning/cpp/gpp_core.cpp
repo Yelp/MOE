@@ -19,6 +19,7 @@
 #include <numeric>
 #include <random>
 #include <vector>
+#include <iostream>
 
 #include "gpp_common.hpp"
 #include "gpp_covariance.hpp"
@@ -42,6 +43,8 @@
 #include "gpp_random_test.hpp"
 #include "gpp_test_utils.hpp"
 #include "gpp_test_utils_test.hpp"
+#include "gpp_expected_improvement_gpu.hpp"
+#include "gpp_expected_improvement_gpu_test.hpp"
 
 using namespace optimal_learning;  // NOLINT, i'm lazy in this file which has no external linkage anyway
 
@@ -56,7 +59,7 @@ using namespace optimal_learning;  // NOLINT, i'm lazy in this file which has no
 // 7: speed test multistart GD hyper
 // 8: speed test log likelihood eval
 
-#define OL_MODE 1
+#define OL_MODE 11
 #if OL_MODE == -1
 
 double function_to_minimize(double const * restrict point, UniformRandomGenerator * uniform_generator) {
@@ -2099,4 +2102,60 @@ int main() {
   return 0;
 }
 
+#elif OL_MODE == 10
+
+int main() {
+    int consistency_num_err = RunCudaEIConsistencyTests();
+    printf("consistency error number = %d\n", consistency_num_err) ;
+    int gpuvscpu_num_err = RunCudaEIvsCpuEI();
+    printf("GPU vs CPU error number = %d\n", gpuvscpu_num_err);
+    // SpeedComparison();
+
+    return 0;
+}
+
+// test if runtime error in gpu can be caught
+#elif OL_MODE == 11 
+
+int main() {
+    try {
+      const int num_mc_iter = 20000000;
+      const int dim = 3;
+      const int num_being_sampled = 4;
+      const int num_to_sample = 4;
+      const int num_sampled = 20;
+
+      double alpha = 2.80723;
+      double best_so_far = 10.0;
+
+        UniformRandomGenerator uniform_generator(31278);
+        boost::uniform_real<double> uniform_double(0.5, 2.5);
+        bool configure_for_gradients = true;
+
+        MockExpectedImprovementEnvironment EI_environment;
+
+        std::vector<double> lengths(dim);
+        std::vector<double> grad_EI_gpu(dim*num_to_sample);
+        double EI_gpu;
+        std::vector<double> noise_var(num_sampled, 0.0);
+
+        EI_environment.Initialize(dim, num_to_sample, num_being_sampled, num_sampled, &uniform_generator);
+        for (int j = 0; j < dim; ++j) {
+          lengths[j] = uniform_double(uniform_generator.engine);
+        }
+
+        SquareExponential sqexp_cov(dim, alpha, lengths);
+        GaussianProcess gaussian_process(sqexp_cov, EI_environment.points_sampled(), EI_environment.points_sampled_value(), noise_var.data(), dim, num_sampled); 
+        CudaExpectedImprovementEvaluator gpu_EI_evaluator(gaussian_process, num_mc_iter, best_so_far);
+        CudaExpectedImprovementEvaluator::StateType ei_state(gpu_EI_evaluator, EI_environment.points_to_sample(), EI_environment.points_being_sampled(), num_to_sample, num_being_sampled, configure_for_gradients, &uniform_generator);
+
+        EI_gpu = gpu_EI_evaluator.ComputeExpectedImprovement(&ei_state);
+        gpu_EI_evaluator.ComputeGradExpectedImprovement(&ei_state, grad_EI_gpu.data());
+        printf ("EI_gpu is %.18E\n", EI_gpu);
+        printf ("job finished\n");
+    }
+    catch (const OptimalLearningException& exception) {
+        std::cerr << exception.what() << std::endl;
+    }
+}
 #endif

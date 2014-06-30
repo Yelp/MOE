@@ -26,6 +26,7 @@
 #include "gpp_optimization_test.hpp"
 #include "gpp_random_test.hpp"
 #include "gpp_test_utils_test.hpp"
+#include "gpp_expected_improvement_gpu_test.hpp"
 
 namespace optimal_learning {
 
@@ -74,6 +75,23 @@ int RunCppTestsWrapper() {
     OL_SUCCESS_PRINTF("analytic, MC EI match for 1 potential sample case\n");
   }
   total_errors += error;
+
+  error = RunCudaEIConsistencyTests();
+  if (error != 0) {
+    OL_FAILURE_PRINTF("analytic, Cuda EI do not match for 1 potential sample case\n");
+  } else {
+    OL_SUCCESS_PRINTF("analytic, Cuda EI match for 1 potential sample case\n");
+  }
+  total_errors += error;
+
+  error = RunCudaEIvsCpuEI();
+  if (error != 0) {
+    OL_FAILURE_PRINTF("cudaEI vs cpuEI consistency check failed\n");
+  } else {
+    OL_SUCCESS_PRINTF("cudaEI vs cpuEI consistency check successed\n");
+  }
+  total_errors += error;
+
 
   error = RunLogLikelihoodPingTests();
   if (error != 0) {

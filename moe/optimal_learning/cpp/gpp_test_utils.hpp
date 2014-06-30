@@ -429,6 +429,21 @@ bool CheckDoubleWithin(double value, double truth, double tolerance) noexcept OL
 bool CheckDoubleWithinRelative(double value, double truth, double tolerance) noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT;
 
 /*!\rst
+  Checks if ``|value - truth| / |truth| <= tolerance`` (relative error)
+
+  If truth < threshold, CheckDoubleWithin() is performed.
+
+  \param
+    :value: number to be tested
+    :truth: the exact/desired result
+    :tolerance: permissible relative difference
+    :threshold: tolerance = |value - truth| if |truth| < threshold, this is to control unexpected large or undefined relative diff when truth is "too small" (0 for example)
+  \return
+    true if value, truth differ relatively by no more than tolerance.
+\endrst*/
+bool CheckDoubleWithinRelativeWithThreshold(double value, double truth, double tolerance, double threshold) noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT;
+
+/*!\rst
   Checks that ``||A - B||_F <= tolerance``
 
   Note: the user may want to scale this norm by \sqrt(size) because ||I||_F = \sqrt(size),
