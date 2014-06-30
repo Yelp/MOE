@@ -1171,7 +1171,7 @@ int main() {
 
 #if OL_PINGMODE == 0
   // error += RunCovarianceTests();
-  // error += RunGPPingTests();
+  // error += RunGPTests();
   // error += RunLogLikelihoodPingTests();
   // error += HyperparameterLikelihoodOptimizationTest(OptimizerTypes::kNewton, LogLikelihoodTypes::kLogMarginalLikelihood);
   // error += HyperparameterLikelihoodOptimizationTest(OptimizerTypes::kGradientDescent, LogLikelihoodTypes::kLogMarginalLikelihood);
@@ -1293,7 +1293,7 @@ int main() {
   }
   total_errors += error;
 
-  error = RunGPPingTests();
+  error = RunGPTests();
   if (error != 0) {
     OL_FAILURE_PRINTF("GP ping\n");
   } else {

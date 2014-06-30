@@ -59,7 +59,7 @@ int RunCppTestsWrapper() {
   }
   total_errors += error;
 
-  error = RunGPPingTests();
+  error = RunGPTests();
   if (error != 0) {
     OL_FAILURE_PRINTF("GP (mean, var, EI) tests failed\n");
   } else {

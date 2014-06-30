@@ -78,7 +78,7 @@ OL_WARN_UNUSED_RESULT int PingEIGeneralTest();
 OL_WARN_UNUSED_RESULT int PingEIOnePotentialSampleTest();
 
 /*!\rst
-  Runs a battery of ping tests for the GP and optimization functions:
+  Runs a battery of tests for the GP and EI functions, including ping tests for:
 
   * GP mean
   * GP variance
@@ -86,10 +86,14 @@ OL_WARN_UNUSED_RESULT int PingEIOnePotentialSampleTest();
   * Expected Improvement
   * Expected Improvement special case: only *ONE* potential point to sample
 
+  and edge case testing for:
+
+  * 1D Analytic Expected Improvement
+
   \return
     number of test failures: 0 if all is working well.
 \endrst*/
-OL_WARN_UNUSED_RESULT int RunGPPingTests();
+OL_WARN_UNUSED_RESULT int RunGPTests();
 
 /*!\rst
   Tests that the general EI + grad EI computation (using MC integration) is consistent

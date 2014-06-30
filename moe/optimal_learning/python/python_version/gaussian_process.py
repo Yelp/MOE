@@ -16,6 +16,16 @@ from moe.optimal_learning.python.interfaces.gaussian_process_interface import Ga
 from moe.optimal_learning.python.python_version import python_utils
 
 
+# Minimum allowed standard deviation value in ComputeGradCholeskyVarianceOfPointsPerPoint (= machine precision).
+# Values that are too small result in problems b/c we may compute ``std_dev/var`` (which is enormous
+# if ``std_dev = 1.0e-150`` and ``var = 1.0e-300``) since this only arises when we fail to compute ``std_dev = var = 0.0``.
+# Note: this is only relevant if noise = 0.0; this minimum will not affect GPs with noise since this value
+# is below the smallest amount of noise users can meaningfully add.
+# This value was chosen to be consistent with the singularity condition in scipy.linalg.cho_factor
+# and tested for robustness with the setup in test_1d_analytic_ei_edge_cases().
+MINIMUM_STD_DEV = numpy.finfo(numpy.float64).eps
+
+
 class GaussianProcess(GaussianProcessInterface):
 
     r"""Implementation of a GaussianProcess strictly in Python.
@@ -297,7 +307,7 @@ class GaussianProcess(GaussianProcessInterface):
         # Step 2 of Appendix 2
         for k in xrange(num_to_sample):
             L_kk = chol_var[k, k]
-            if L_kk > 1.0e-16:
+            if L_kk > MINIMUM_STD_DEV:
                 grad_chol[k, k, ...] *= 0.5 / L_kk
                 for j in xrange(k + 1, num_to_sample):
                     grad_chol[j, k, ...] = (grad_chol[j, k, ...] - chol_var[j, k] * grad_chol[k, k, ...]) / L_kk
@@ -307,7 +317,7 @@ class GaussianProcess(GaussianProcessInterface):
 
         return grad_chol
 
-    def compute_grad_cholesky_variance_of_points(self, points_to_sample, num_derivatives=-1):
+    def compute_grad_cholesky_variance_of_points(self, points_to_sample, chol_var=None, num_derivatives=-1):
         r"""Compute the gradient of the cholesky factorization of the variance (matrix) of this GP at each point of ``Xs`` (``points_to_sample``) wrt ``Xs``.
 
         .. Warning:: ``points_to_sample`` should not contain duplicate points.
@@ -324,6 +334,8 @@ class GaussianProcess(GaussianProcessInterface):
 
         :param points_to_sample: num_to_sample points (in dim dimensions) being sampled from the GP
         :type points_to_sample: array of float64 with shape (num_to_sample, dim)
+        :param chol_var: the cholesky factorization (L) of the variance matrix; only the lower triangle is accessed
+        :type chol_var: array of float64 with shape (num_to_sample, num_to_sample)
         :param num_derivatives: return derivatives wrt points_to_sample[0:num_derivatives]; large or negative values are clamped
         :type num_derivatives: int
         :return: grad_chol: gradient of the cholesky factorization of the variance matrix of this GP.
@@ -334,9 +346,13 @@ class GaussianProcess(GaussianProcessInterface):
 
         """
         num_derivatives = self._clamp_num_derivatives(points_to_sample.shape[0], num_derivatives)
-        var_star = self.compute_variance_of_points(points_to_sample)
-        # Note: only access the lower triangle of chol_var; upper triangle is garbage
-        chol_var = scipy.linalg.cho_factor(var_star, lower=True, overwrite_a=True)[0]
+
+        # Users can pass this in directly b/c it has often been computed already.
+        if chol_var is None:
+            var_star = self.compute_variance_of_points(points_to_sample)
+            # Note: only access the lower triangle of chol_var; upper triangle is garbage
+            # cho_factor returns a tuple, (factorized_matrix, lower_tri_flag); grab the matrix
+            chol_var = scipy.linalg.cho_factor(var_star, lower=True, overwrite_a=True)[0]
 
         grad_chol_decomp = numpy.empty((num_derivatives, points_to_sample.shape[0], points_to_sample.shape[0], self.dim))
         for i in xrange(num_derivatives):
