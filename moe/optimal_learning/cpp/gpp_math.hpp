@@ -203,6 +203,7 @@
 #define MOE_OPTIMAL_LEARNING_CPP_GPP_MATH_HPP_
 
 #include <algorithm>
+#include <limits>
 #include <memory>
 #include <vector>
 
@@ -263,7 +264,17 @@ class GaussianProcess final {
   using NormalGeneratorType = NormalRNG;
   using EngineType = NormalGeneratorType::EngineType;
 
+  //! Default seed value to make reproducing test results simple.
   static constexpr EngineType::result_type kDefaultSeed = 87214;
+
+  //! Minimum allowed standard deviation value in ComputeGradCholeskyVarianceOfPointsPerPoint (= machine precision).
+  //! Values that are too small result in problems b/c we may compute ``std_dev/var`` (which is enormous
+  //! if ``std_dev = 1.0e-150`` and ``var = 1.0e-300``) since this only arises when we fail to compute ``std_dev = var = 0.0``.
+  //! Note: this is only relevant if noise = 0.0; this minimum will not affect GPs with noise since this value
+  //! is below the smallest amount of noise users can meaningfully add.
+  //! This value was chosen to be consistent with the singularity condition in CholeskyFactorL
+  //! and tested for robustness with the setup in EIOnePotentialSampleEdgeCasesTest().
+  static constexpr double kMinimumStdDev = std::numeric_limits<double>::epsilon();
 
   /*!\rst
     Constructs a GaussianProcess object.  All inputs are required; no default constructor nor copy/assignment are allowed.
@@ -445,6 +456,8 @@ class GaussianProcess final {
 
     \param
       :points_to_sample_state[1]: ptr to a FULLY CONFIGURED PointsToSampleState (configure via PointsToSampleState::SetupState)
+      :chol_var[num_to_sample][num_to_sample]: the variance (matrix) of this GP at each point of ``Xs`` (``points_to_sample``)
+        e.g., from the cholesky factorization of ``ComputeVarianceOfPoints``
     \output
       :points_to_sample_state[1]: ptr to a FULLY CONFIGURED PointsToSampleState; only temporary state may be mutated
       :grad_chol[dim][num_to_sample][num_to_sample][state->num_derivatives]: gradient of the cholesky-factored
@@ -521,6 +534,8 @@ class GaussianProcess final {
     \param
       :points_to_sample_state[1]: ptr to a FULLY CONFIGURED PointsToSampleState (configure via PointsToSampleState::SetupState)
       :diff_index: index of ``points_to_sample`` in {0, .. ``num_to_sample``-1} to be differentiated against
+      :chol_var[num_to_sample][num_to_sample]: the variance (matrix) of this GP at each point of ``Xs`` (``points_to_sample``)
+        e.g., from the cholesky factorization of ``ComputeVarianceOfPoints``
     \output
       :points_to_sample_state[1]: ptr to a FULLY CONFIGURED PointsToSampleState; only temporary state may be mutated
       :grad_chol[dim][num_to_sample][num_to_sample]: gradient of the cholesky-factored
@@ -968,6 +983,22 @@ struct ExpectedImprovementState final {
 class OnePotentialSampleExpectedImprovementEvaluator final {
  public:
   using StateType = OnePotentialSampleExpectedImprovementState;
+
+  //! Minimum allowed variance value in the "1D" analytic EI computation.
+  //! Values that are too small result in problems b/c we may compute ``std_dev/var`` (which is enormous
+  //! if ``std_dev = 1.0e-150`` and ``var = 1.0e-300``) since this only arises when we fail to compute ``std_dev = var = 0.0``.
+  //! Note: this is only relevant if noise = 0.0; this minimum will not affect EI computation with noise since this value
+  //! is below the smallest amount of noise users can meaningfully add.
+  //! This is the smallest possible value that prevents the denominator (best_so_far - mean) / sqrt(variance)
+  //! from being 0. 1D analytic EI is simple and no other robustness considerations are needed.
+  static constexpr double kMinimumVarianceEI = std::numeric_limits<double>::min();
+
+  //! Minimum allowed variance value in the "1D" analytic grad EI computation.
+  //! See kMinimumVarianceEI for more details.
+  //! This value was chosen so its sqrt would be a little larger than GaussianProcess::kMinimumStdDev (by ~12x).
+  //! The 150.0 was determined by numerical experiment with the setup in EIOnePotentialSampleEdgeCasesTest
+  //! in order to find a setting that would be robust (no 0/0) while introducing minimal error.
+  static constexpr double kMinimumVarianceGradEI = 150.0*Square(GaussianProcess::kMinimumStdDev);
 
   /*!\rst
     Constructs a OnePotentialSampleExpectedImprovementEvaluator object.  All inputs are required; no default constructor nor copy/assignment are allowed.

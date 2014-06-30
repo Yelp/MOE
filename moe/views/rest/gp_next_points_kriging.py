@@ -105,4 +105,6 @@ class GpNextPointsKriging(GpNextPointsPrettyView):
                 params,
                 GP_NEXT_POINTS_KRIGING_OPTIMIZATION_METHOD_NAME,
                 self._route_name,
+                std_deviation_coef=params.get('std_deviation_coef'),
+                kriging_noise_variance=params.get('kriging_noise_variance'),
                 )

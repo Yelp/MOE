@@ -11,7 +11,7 @@
         evaluating those functions + their spatial gradients.
 
         Some Pingable classes for GP functions are less general than their gpp_covariance_test or
-        gpp_model_selection_and_hyperparameter_optimization_test counterparts, since GP derivative functions sometimes return sparse
+        gpp_model_selection_test counterparts, since GP derivative functions sometimes return sparse
         or incomplete data (e.g., gradient of mean returned as a vector instead of a diagonal matrix; gradient of variance
         only differentiates wrt a single point at a time); hence we need specialized handlers for testing.
      b. Ping for derivative accuracy (PingGPComponentTest, PingEITest); these unit test the analytic derivatives.
@@ -35,6 +35,7 @@
 
 #include <algorithm>
 #include <iterator>
+#include <limits>
 #include <stdexcept>
 #include <vector>
 
@@ -755,6 +756,116 @@ int PingEIOnePotentialSampleTest() {
 }
 
 /*!\rst
+  Test cases where analytic EI would attempt to compute 0/0 without variance lower bounds.
+
+  The bounds are OnePotentialSampleExpectedImprovementEvaluator::kMinimumVarianceEI and
+  kMinimumVarianceGradEI. See those class docs for more details.
+
+  These particular test cases arose from plotting EI (easy since dim = 1) and checking
+  that EI and grad_EI were being computed appropriately at the specified locations.
+  The test cases are purposely simple; the requirement was that they trigger behavior
+  that would result in 0/0 without minimum variance thresholds.
+
+  Without the aforementioned thresholds, 1D analytic EI could attempt
+  ``0/0 = (best_so_far - gp_mean) / sqrt(gp_variance)``
+  The easiest way to do cause these conditions is to compute EI at (or near) one of
+  points_sampled such that ``gp_mean == best_so_far`` and ``gp_variance == 0``.
+  (Although these conditions can arise elsewhere; try plotting the test case in the code.)
+
+  \return
+    number of test failures
+\endrst*/
+int EIOnePotentialSampleEdgeCasesTest() {
+  int total_errors = 0;
+
+  const int dim = 1;
+  const double base_coord = 0.5;
+  std::vector<double> points_sampled = {base_coord, 2.0 * base_coord};
+  std::vector<double> points_sampled_value = {-1.809342, -1.09342};
+  std::vector<double> noise_variance = {0.0, 0.0};
+  auto best_so_far = *std::min_element(points_sampled_value.begin(), points_sampled_value.end());
+
+  SquareExponential covariance(dim, 0.2, 0.3);
+  // First a symmetric case: only one historical point
+  GaussianProcess gaussian_process(covariance, points_sampled.data(), points_sampled_value.data(),
+                                   noise_variance.data(), dim, 1);
+
+  double point_to_sample = base_coord;
+
+  OnePotentialSampleExpectedImprovementEvaluator ei_evaluator(gaussian_process, best_so_far);
+  bool configure_for_gradients = true;
+  OnePotentialSampleExpectedImprovementState ei_state(ei_evaluator, &point_to_sample,
+                                                      configure_for_gradients);
+
+  double ei;
+  double grad_ei;
+
+  ei = ei_evaluator.ComputeExpectedImprovement(&ei_state);
+  ei_evaluator.ComputeGradExpectedImprovement(&ei_state, &grad_ei);
+
+  // check that EI and gradient are 0 when computed at the one historical data point
+  double tolerance = 4.0 * std::numeric_limits<double>::epsilon();
+  if (!CheckDoubleWithinRelative(ei, 0.0, tolerance)) {
+    ++total_errors;
+  }
+  if (!CheckDoubleWithinRelative(grad_ei, 0.0, tolerance)) {
+    ++total_errors;
+  }
+
+  // Compute ei at point_to_sample +/- shifts and check for equality
+  {
+    double left_ei, right_ei;
+    double left_grad_ei, right_grad_ei;
+    std::vector<double> shifts = {1.0e-15, 4.0e-11, 3.14e-6, 8.89e-1, 2.71};
+
+    for (auto shift : shifts) {
+      point_to_sample = base_coord - shift;
+      ei_state.UpdateCurrentPoint(ei_evaluator, &point_to_sample);
+      left_ei = ei_evaluator.ComputeExpectedImprovement(&ei_state);
+      ei_evaluator.ComputeGradExpectedImprovement(&ei_state, &left_grad_ei);
+
+      point_to_sample = base_coord + shift;
+      ei_state.UpdateCurrentPoint(ei_evaluator, &point_to_sample);
+      right_ei = ei_evaluator.ComputeExpectedImprovement(&ei_state);
+      ei_evaluator.ComputeGradExpectedImprovement(&ei_state, &right_grad_ei);
+
+      if (!CheckDoubleWithinRelative(left_ei, right_ei, 0.0)) {
+        ++total_errors;
+      }
+      if (!CheckDoubleWithinRelative(left_grad_ei, -right_grad_ei, 0.0)) {
+          ++total_errors;
+      }
+    }  // end for shift : shifts
+  }  // end ei symmetry check
+
+  // Now introduce some asymmetry with a second point
+  // Right side has a larger objetive value, so the EI minimum
+  // is shifted *slightly* to the left of best_so_far.
+  gaussian_process.AddPointToGP(points_sampled.data() + dim, points_sampled_value[1], noise_variance[1]);
+
+  double shift = 3.0e-12;
+  point_to_sample = base_coord - shift;
+  ei_state.UpdateCurrentPoint(ei_evaluator, &point_to_sample);
+  ei = ei_evaluator.ComputeExpectedImprovement(&ei_state);
+  ei_evaluator.ComputeGradExpectedImprovement(&ei_state, &grad_ei);
+
+  if (!CheckDoubleWithinRelative(ei, 0.0, 0.0)) {
+    ++total_errors;
+  }
+  if (!CheckDoubleWithinRelative(grad_ei, 0.0, 0.0)) {
+    ++total_errors;
+  }
+
+  if (total_errors != 0) {
+    OL_PARTIAL_FAILURE_PRINTF("1D analytic EI 0/0 edge case tests failed with %d errors\n", total_errors);
+  } else {
+    OL_PARTIAL_SUCCESS_PRINTF("1D analytic EI 0/0 edge case tests passed\n");
+  }
+
+  return total_errors;
+}
+
+/*!\rst
   Generates a set of 50 random test cases for expected improvement with only one potential sample.
   The general EI (which uses MC integration) is evaluated to reasonably high accuracy (while not taking too long to run)
   and compared against the analytic formula version for consistency.  The gradients (spatial) of EI are also checked.
@@ -840,7 +951,7 @@ int RunEIConsistencyTests() {
   return total_errors;
 }
 
-int RunGPPingTests() {
+int RunGPTests() {
   int total_errors = 0;
   int current_errors = 0;
 
@@ -884,10 +995,18 @@ int RunGPPingTests() {
     total_errors += current_errors;
   }
 
+  {
+    current_errors = EIOnePotentialSampleEdgeCasesTest();
+    if (current_errors != 0) {
+      OL_PARTIAL_FAILURE_PRINTF("analytic (one potential sample) EI 0/0 cases failed with %d errors\n", current_errors);
+    }
+    total_errors += current_errors;
+  }
+
   if (total_errors != 0) {
-    OL_PARTIAL_FAILURE_PRINTF("Pinging GP functions failed with %d errors\n\n", total_errors);
+    OL_PARTIAL_FAILURE_PRINTF("GP functions failed with %d errors\n\n", total_errors);
   } else {
-    OL_PARTIAL_SUCCESS_PRINTF("Pinging GP functions passed\n");
+    OL_PARTIAL_SUCCESS_PRINTF("GP functions passed\n");
   }
 
   return total_errors;

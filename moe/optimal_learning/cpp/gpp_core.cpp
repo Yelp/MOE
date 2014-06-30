@@ -34,8 +34,8 @@
 #include "gpp_logging.hpp"
 #include "gpp_math.hpp"
 #include "gpp_math_test.hpp"
-#include "gpp_model_selection_and_hyperparameter_optimization.hpp"
-#include "gpp_model_selection_and_hyperparameter_optimization_test.hpp"
+#include "gpp_model_selection.hpp"
+#include "gpp_model_selection_test.hpp"
 #include "gpp_optimization.hpp"
 #include "gpp_optimization_parameters.hpp"
 #include "gpp_optimization_test.hpp"
@@ -1174,7 +1174,7 @@ int main() {
 
 #if OL_PINGMODE == 0
   // error += RunCovarianceTests();
-  // error += RunGPPingTests();
+  // error += RunGPTests();
   // error += RunLogLikelihoodPingTests();
   // error += HyperparameterLikelihoodOptimizationTest(OptimizerTypes::kNewton, LogLikelihoodTypes::kLogMarginalLikelihood);
   // error += HyperparameterLikelihoodOptimizationTest(OptimizerTypes::kGradientDescent, LogLikelihoodTypes::kLogMarginalLikelihood);
@@ -1296,7 +1296,7 @@ int main() {
   }
   total_errors += error;
 
-  error = RunGPPingTests();
+  error = RunGPTests();
   if (error != 0) {
     OL_FAILURE_PRINTF("GP ping\n");
   } else {

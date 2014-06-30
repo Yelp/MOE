@@ -102,7 +102,7 @@ step size and direction to ensure rapid\*\* convergence.
 \*, \*\* See "IMPLEMENTATION DETAILS" comments section for details.
 
 Recall that Newton indiscriminately finds solutions where ``f'(x) = 0``; the eigenvalues of the Hessian classify these
-``x`` as optima, saddle points, or indeterminate. We multistart Newton (e.g., gpp_model_selection_and_hyperparameter_optimization)
+``x`` as optima, saddle points, or indeterminate. We multistart Newton (e.g., gpp_model_selection)
 but just take the best objective value without classifying solutions.
 The MultistartOptimizer template class in this file provides generic multistart functionality.
 

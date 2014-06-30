@@ -225,7 +225,7 @@ class GaussianProcessLogMarginalLikelihood(GaussianProcessLogLikelihoodInterface
     def compute_log_likelihood(self):
         r"""Compute the _log_likelihood_type measure at the specified hyperparameters.
 
-        .. NOTE:: These comments are copied from LogMarginalLikelihoodEvaluator::ComputeLogLikelihood in gpp_model_selection_and_hyperparameter_optimization.cpp.
+        .. NOTE:: These comments are copied from LogMarginalLikelihoodEvaluator::ComputeLogLikelihood in gpp_model_selection.cpp.
 
         ``log p(y | X, \theta) = -\frac{1}{2} * y^T * K^-1 * y - \frac{1}{2} * \log(det(K)) - \frac{n}{2} * \log(2*pi)``
         where n is ``num_sampled``, ``\theta`` are the hyperparameters, and ``\log`` is the natural logarithm.  In the following,
@@ -266,7 +266,7 @@ class GaussianProcessLogMarginalLikelihood(GaussianProcessLogLikelihoodInterface
     def compute_grad_log_likelihood(self):
         r"""Compute the gradient (wrt hyperparameters) of the _log_likelihood_type measure at the specified hyperparameters.
 
-        .. NOTE:: These comments are copied from LogMarginalLikelihoodEvaluator::ComputeGradLogLikelihood in gpp_model_selection_and_hyperparameter_optimization.cpp.
+        .. NOTE:: These comments are copied from LogMarginalLikelihoodEvaluator::ComputeGradLogLikelihood in gpp_model_selection.cpp.
 
         Computes ``\pderiv{log(p(y | X, \theta))}{\theta_k} = \frac{1}{2} * y_i * \pderiv{K_{ij}}{\theta_k} * y_j - \frac{1}{2}``
         ``* trace(K^{-1}_{ij}\pderiv{K_{ij}}{\theta_k})``
