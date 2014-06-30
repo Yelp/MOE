@@ -279,8 +279,7 @@ struct CudaExpectedImprovementState final {
   CudaDevicePointer gpu_random_number_EI;
   CudaDevicePointer gpu_random_number_gradEI;
 
-  //! storage for random numbers used in computing EI & grad_EI, this is only
-  //used to setup unit test
+  //! storage for random numbers used in computing EI & grad_EI, this is only used to setup unit test
   std::vector<double> random_number_EI;
   std::vector<double> random_number_gradEI;
 #endif

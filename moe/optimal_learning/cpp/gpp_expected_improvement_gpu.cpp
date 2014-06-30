@@ -53,7 +53,6 @@ double CudaExpectedImprovementEvaluator::ComputeExpectedImprovement(StateType * 
   if (unlikely(leading_minor_index != 0)) {
     OL_THROW_EXCEPTION(SingularMatrixException, "GP-Variance matrix singular. Check for duplicate points_to_sample/being_sampled or points_to_sample/being_sampled duplicating points_sampled with 0 noise.", ei_state->cholesky_to_sample_var.data(), num_union, leading_minor_index);
   }
-  
   unsigned int seed_in = (ei_state->uniform_rng->GetEngine())();
   CudaError _err = cuda_get_EI(ei_state->to_sample_mean.data(), ei_state->cholesky_to_sample_var.data(), best_so_far_, num_union, ei_state->gpu_mu.ptr, ei_state->gpu_L.ptr, ei_state->gpu_EI_storage.ptr, seed_in, num_mc, &EI_val, ei_state->gpu_random_number_EI.ptr, ei_state->random_number_EI.data(), ei_state->configure_for_test);
   OL_CUDA_ERROR_THROW(_err)
@@ -109,7 +108,7 @@ CudaExpectedImprovementState::CudaExpectedImprovementState(const EvaluatorType& 
     gpu_grad_mu(dim * num_derivatives),
     gpu_grad_L(dim * Square(num_union) * num_derivatives),
     gpu_EI_storage(OL_EI_THREAD_NO * OL_EI_BLOCK_NO),
-    gpu_grad_EI_storage(OL_GRAD_EI_THREAD_NO * OL_GRAD_EI_BLOCK_NO * dim * num_derivatives), 
+    gpu_grad_EI_storage(OL_GRAD_EI_THREAD_NO * OL_GRAD_EI_BLOCK_NO * dim * num_derivatives),
     gpu_random_number_EI(0),
     gpu_random_number_gradEI(0),
     random_number_EI(0),
@@ -135,7 +134,7 @@ CudaExpectedImprovementState::CudaExpectedImprovementState(const EvaluatorType& 
     gpu_grad_mu(dim * num_derivatives),
     gpu_grad_L(dim * Square(num_union) * num_derivatives),
     gpu_EI_storage(OL_EI_THREAD_NO * OL_EI_BLOCK_NO),
-    gpu_grad_EI_storage(OL_GRAD_EI_THREAD_NO * OL_GRAD_EI_BLOCK_NO * dim * num_derivatives), 
+    gpu_grad_EI_storage(OL_GRAD_EI_THREAD_NO * OL_GRAD_EI_BLOCK_NO * dim * num_derivatives),
     gpu_random_number_EI(configure_for_test ? (static_cast<int>(ei_evaluator.num_mc_itr() / (OL_EI_THREAD_NO * OL_EI_BLOCK_NO)) + 1) * (OL_EI_THREAD_NO * OL_EI_BLOCK_NO) * num_union : 0),
     gpu_random_number_gradEI(configure_for_test ? (static_cast<int>(ei_evaluator.num_mc_itr() / (OL_GRAD_EI_THREAD_NO * OL_GRAD_EI_BLOCK_NO)) + 1) * (OL_GRAD_EI_THREAD_NO * OL_GRAD_EI_BLOCK_NO) * num_union : 0),
     random_number_EI(configure_for_test ? (static_cast<int>(ei_evaluator.num_mc_itr() / (OL_EI_THREAD_NO * OL_EI_BLOCK_NO)) + 1) * (OL_EI_THREAD_NO * OL_EI_BLOCK_NO) * num_union : 0),

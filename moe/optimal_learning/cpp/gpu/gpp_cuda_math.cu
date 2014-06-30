@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include <curand_kernel.h>
 #include <cuda_runtime.h>
 #include <helper_cuda.h>
@@ -8,11 +7,11 @@
 #define OL_CUDA_STRINGIFY_EXPANSION_INNER(x) #x
 #define OL_CUDA_STRINGIFY_EXPANSION(x) OL_CUDA_STRINGIFY_EXPANSION_INNER(x)
 #define OL_CUDA_STRINGIFY_FILE_AND_LINE "(" __FILE__ ": " OL_CUDA_STRINGIFY_EXPANSION(__LINE__) ")"
-#define OL_CUDA_ERROR_RETURN(X) do{if((X) != cudaSuccess) {CudaError _err = {(X), OL_CUDA_STRINGIFY_FILE_AND_LINE, __func__}; return _err;}} while(0);
+#define OL_CUDA_ERROR_RETURN(X) do {if((X) != cudaSuccess) {CudaError _err = {(X), OL_CUDA_STRINGIFY_FILE_AND_LINE, __func__}; return _err;}} while (0);
 
 namespace optimal_learning {
 
-namespace { // functions run on gpu device
+namespace {  // functions run on gpu device
 /*
 Special case of GeneralMatrixVectorMultiply.  As long as A has zeros in the strict upper-triangle,
 GeneralMatrixVectorMultiply will work too (but take >= 2x as long).
@@ -26,17 +25,17 @@ dtrmv('L', trans, 'N', size_m, A, size_m, x, 1);
 comment: This function is copied from gpp_linear_algebra.cpp
 */
 __device__ void TriangularMatrixVectorMultiply_gpu(double const * __restrict__ A, int size_m, double * __restrict__ x) {
- double temp;
- A += size_m * (size_m-1);
- for (int j = size_m-1; j >= 0; --j) {  // i.e., j >= 0
-   temp = x[j];
-   for (int i = size_m-1; i >= j+1; --i) {  
-     // handles sub-diagonal contributions from j-th column
-     x[i] += temp*A[i];
-   }
-   x[j] *= A[j];  // handles j-th on-diagonal component
-   A -= size_m;
- }
+  double temp;
+  A += size_m * (size_m-1);
+  for (int j = size_m-1; j >= 0; --j) {  // i.e., j >= 0
+    temp = x[j];
+    for (int i = size_m-1; i >= j+1; --i) {
+      // handles sub-diagonal contributions from j-th column
+      x[i] += temp*A[i];
+    }
+    x[j] *= A[j];  // handles j-th on-diagonal component
+    A -= size_m;
+  }
 }
 
 /*
@@ -76,8 +75,7 @@ __device__ void GeneralMatrixVectorMultiply_gpu(double const * __restrict__ A, d
 }
 
 // EI_storage: A vector storing calculation result of EI from each thread
-__global__ void EI_gpu(double const * __restrict__ L, double const * __restrict__ mu, int no_of_pts, int NUM_ITS, double best, unsigned int seed, double * __restrict__ EI_storage, double* __restrict__ gpu_random_number_EI, bool configure_for_test)
-{
+__global__ void EI_gpu(double const * __restrict__ L, double const * __restrict__ mu, int no_of_pts, int NUM_ITS, double best, unsigned int seed, double * __restrict__ EI_storage, double* __restrict__ gpu_random_number_EI, bool configure_for_test) {
 /*
   copy mu, L to shared memory mu_local & L_local 
   For multiple dynamically sized arrays in a single kernel, declare a single extern unsized array, and use
@@ -105,51 +103,50 @@ __global__ void EI_gpu(double const * __restrict__ L, double const * __restrict_
   // seed a random number generator
   curand_init(local_seed, 0, 0, &random_state);
 
-  double *normals = (double *)malloc(sizeof(double)*no_of_pts);
+  double *normals = reinterpret_cast<double *>(malloc(sizeof(double)*no_of_pts));
   double agg = 0.0;
   double improvement_this_step;
   double EI;
 
   if (configure_for_test) {
-      for(int mc = 0; mc < NUM_ITS; ++mc) {
+      for (int mc = 0; mc < NUM_ITS; ++mc) {
         improvement_this_step = 0.0;
-        for(int i = 0; i < no_of_pts; ++i) {
+        for (int i = 0; i < no_of_pts; ++i) {
             normals[i] = curand_normal_double(&random_state);
             gpu_random_number_EI[IDX * NUM_ITS * no_of_pts + mc * no_of_pts + i] = normals[i];
         }
         TriangularMatrixVectorMultiply_gpu(L_local, no_of_pts, normals);
-        for(int i = 0; i < no_of_pts; ++i) {
+        for (int i = 0; i < no_of_pts; ++i) {
             EI = best - (mu_local[i] + normals[i]);
-            if(EI > improvement_this_step) {
+            if (EI > improvement_this_step) {
                 improvement_this_step = EI;
             }
         }
         agg += improvement_this_step;
       }
   } else {
-      for(int mc = 0; mc < NUM_ITS; ++mc) {
+      for (int mc = 0; mc < NUM_ITS; ++mc) {
         improvement_this_step = 0.0;
-        for(int i = 0; i < no_of_pts; ++i) {
+        for (int i = 0; i < no_of_pts; ++i) {
             normals[i] = curand_normal_double(&random_state);
         }
         TriangularMatrixVectorMultiply_gpu(L_local, no_of_pts, normals);
-        for(int i = 0; i < no_of_pts; ++i) {
+        for (int i = 0; i < no_of_pts; ++i) {
             EI = best - (mu_local[i] + normals[i]);
-            if(EI > improvement_this_step) {
+            if (EI > improvement_this_step) {
                 improvement_this_step = EI;
             }
         }
         agg += improvement_this_step;
       }
   }
-  EI_storage[IDX] = agg/(double)NUM_ITS;
+  EI_storage[IDX] = agg / static_cast<double>(NUM_ITS);
   free(normals);
 }
 
 // grad_EI_storage[dim][num_to_sample][num_threads]: A vector storing result of grad_EI from each thread
-__global__ void grad_EI_gpu(double const * __restrict__ mu, double const * __restrict__ L, double const * __restrict__ grad_mu, double const * __restrict__ grad_L, double best, int num_union_of_pts, int num_to_sample, int dimension, int NUM_ITS, unsigned int seed,  double * __restrict__ grad_EI_storage, double* __restrict__ gpu_random_number_gradEI, bool configure_for_test)
-{
-  // copy mu, L, grad_mu, grad_L to shared memory 
+__global__ void grad_EI_gpu(double const * __restrict__ mu, double const * __restrict__ L, double const * __restrict__ grad_mu, double const * __restrict__ grad_L, double best, int num_union_of_pts, int num_to_sample, int dimension, int NUM_ITS, unsigned int seed,  double * __restrict__ grad_EI_storage, double* __restrict__ gpu_random_number_gradEI, bool configure_for_test) {
+  // copy mu, L, grad_mu, grad_L to shared memory
   extern __shared__ double storage[];
   double * mu_local = storage;
   double * L_local = &mu_local[num_union_of_pts];
@@ -169,16 +166,16 @@ __global__ void grad_EI_gpu(double const * __restrict__ mu, double const * __res
           mu_local[k*blockDim.x+idx] = mu[k*blockDim.x+idx];
   }
   __syncthreads();
- 
+
   int i, k, mc, winner;
   double EI, improvement_this_step;
   // RNG setup
-  unsigned int local_seed = seed + IDX; 
+  unsigned int local_seed = seed + IDX;
   curandState random_state;
   curand_init(local_seed, 0, 0, &random_state);
-  double* normals = (double*)malloc(sizeof(double) * num_union_of_pts);
-  double* normals_copy = (double*)malloc(sizeof(double) * num_union_of_pts);
-  // initialize grad_EI_storage 
+  double* normals = reinterpret_cast<double*>(malloc(sizeof(double) * num_union_of_pts));
+  double* normals_copy = reinterpret_cast<double*>(malloc(sizeof(double) * num_union_of_pts));
+  // initialize grad_EI_storage
   for (int i = 0; i < num_to_sample; ++i) {
       for (int k = 0; k < dimension; ++k) {
           grad_EI_storage[IDX*num_to_sample*dimension + i*dimension + k] = 0.0;
@@ -186,23 +183,23 @@ __global__ void grad_EI_gpu(double const * __restrict__ mu, double const * __res
   }
   // MC step start
   if (configure_for_test) {
-      for(mc = 0; mc < NUM_ITS; ++mc) {
+      for (mc = 0; mc < NUM_ITS; ++mc) {
           improvement_this_step = 0.0;
           winner = -1;
-          for(i = 0; i < num_union_of_pts; ++i) {
+          for (i = 0; i < num_union_of_pts; ++i) {
               normals[i] = curand_normal_double(&random_state);
               normals_copy[i] = normals[i];
               gpu_random_number_gradEI[IDX * NUM_ITS * num_union_of_pts + mc * num_union_of_pts + i] = normals[i];
           }
           TriangularMatrixVectorMultiply_gpu(L_local, num_union_of_pts, normals);
-          for(i = 0; i < num_union_of_pts; ++i){
+          for (i = 0; i < num_union_of_pts; ++i) {
               EI = best - (mu_local[i] + normals[i]);
-              if(EI > improvement_this_step){
+              if (EI > improvement_this_step) {
                   improvement_this_step = EI;
                   winner = i;
               }
           }
-          if(improvement_this_step > 0.0) {
+          if (improvement_this_step > 0.0) {
               if (winner < num_to_sample) {
                   for (k = 0; k < dimension; ++k) {
                       grad_EI_storage[IDX*num_to_sample*dimension + winner * dimension + k] -= grad_mu_local[winner * dimension + k];
@@ -214,23 +211,22 @@ __global__ void grad_EI_gpu(double const * __restrict__ mu, double const * __res
           }
       }
   } else {
-      for(mc = 0; mc < NUM_ITS; ++mc) {
+      for (mc = 0; mc < NUM_ITS; ++mc) {
           improvement_this_step = 0.0;
           winner = -1;
-          for(i = 0; i < num_union_of_pts; ++i) {
+          for (i = 0; i < num_union_of_pts; ++i) {
               normals[i] = curand_normal_double(&random_state);
               normals_copy[i] = normals[i];
           }
           TriangularMatrixVectorMultiply_gpu(L_local, num_union_of_pts, normals);
-          for(i = 0; i < num_union_of_pts; ++i){
+          for (i = 0; i < num_union_of_pts; ++i) {
               EI = best - (mu_local[i] + normals[i]);
-              if(EI > improvement_this_step){
+              if (EI > improvement_this_step) {
                   improvement_this_step = EI;
                   winner = i;
               }
           }
-          //printf("grad_mu %f \n", grad_mu[which_point * dimension]);
-          if(improvement_this_step > 0.0) {
+          if (improvement_this_step > 0.0) {
               if (winner < num_to_sample) {
                   for (k = 0; k < dimension; ++k) {
                       grad_EI_storage[IDX*num_to_sample*dimension + winner * dimension + k] -= grad_mu_local[winner * dimension + k];
@@ -245,19 +241,19 @@ __global__ void grad_EI_gpu(double const * __restrict__ mu, double const * __res
 
   for (int i = 0; i < num_to_sample; ++i) {
       for (int k = 0; k < dimension; ++k) {
-          grad_EI_storage[IDX*num_to_sample*dimension + i*dimension + k] /= (double)NUM_ITS;
+          grad_EI_storage[IDX*num_to_sample*dimension + i*dimension + k] /= static_cast<double>(NUM_ITS);
       }
   }
   free(normals);
   free(normals_copy);
 }
 
-} // end unnamed namespace
-    
+}  // end unnamed namespace
+
 extern "C" CudaError cuda_allocate_mem_for_double_vector(int num_doubles, double** __restrict__ address_of_ptr_to_gpu_memory) {
   CudaError _success = {cudaSuccess, OL_CUDA_STRINGIFY_FILE_AND_LINE, __func__};
   int mem_size = num_doubles * sizeof(double);
-  OL_CUDA_ERROR_RETURN(cudaMalloc((void**) address_of_ptr_to_gpu_memory, mem_size))
+  OL_CUDA_ERROR_RETURN(cudaMalloc(reinterpret_cast<void**>(address_of_ptr_to_gpu_memory), mem_size))
   return _success;
 }
 
@@ -273,7 +269,7 @@ extern "C" CudaError cuda_get_EI(double * __restrict__ mu, double * __restrict__
   const unsigned int EI_block_no = OL_EI_BLOCK_NO;
   dim3 threads(EI_thread_no, 1, 1);
   dim3 grid(EI_block_no, 1, 1);
-  double EI_storage[EI_thread_no * EI_block_no];   
+  double EI_storage[EI_thread_no * EI_block_no];
   int NUM_ITS = num_mc / (EI_thread_no * EI_block_no) + 1;   // make sure NUM_ITS is always >= 1
 
   int mem_size_mu = num_union_of_pts * sizeof(double);
@@ -283,7 +279,7 @@ extern "C" CudaError cuda_get_EI(double * __restrict__ mu, double * __restrict__
   OL_CUDA_ERROR_RETURN(cudaMemcpy(gpu_mu, mu, mem_size_mu, cudaMemcpyHostToDevice))
   OL_CUDA_ERROR_RETURN(cudaMemcpy(gpu_L, L, mem_size_L, cudaMemcpyHostToDevice))
   // execute kernel
-  EI_gpu<<< grid, threads, num_union_of_pts*sizeof(double)+num_union_of_pts*num_union_of_pts*sizeof(double)>>>(gpu_L, gpu_mu, num_union_of_pts, NUM_ITS, best, seed, gpu_EI_storage, gpu_random_number_EI, configure_for_test); 
+  EI_gpu <<< grid, threads, num_union_of_pts*sizeof(double)+num_union_of_pts*num_union_of_pts*sizeof(double) >>> (gpu_L, gpu_mu, num_union_of_pts, NUM_ITS, best, seed, gpu_EI_storage, gpu_random_number_EI, configure_for_test);
   OL_CUDA_ERROR_RETURN(cudaPeekAtLastError())
   // copy gpu_EI_storage back to CPU
   OL_CUDA_ERROR_RETURN(cudaMemcpy(EI_storage, gpu_EI_storage, mem_size_EI_storage, cudaMemcpyDeviceToHost))
@@ -294,16 +290,15 @@ extern "C" CudaError cuda_get_EI(double * __restrict__ mu, double * __restrict__
   }
   // average EI_storage
   double ave = 0.0;
-  for (int i=0;i<(EI_thread_no*EI_block_no);i++) {
+  for (int i = 0; i < (EI_thread_no*EI_block_no); ++i) {
       ave += EI_storage[i];
   }
-  *ei_val = ave/ (double)(EI_thread_no*EI_block_no);
+  *ei_val = ave / static_cast<double>(EI_thread_no*EI_block_no);
   return _success;
 }
 
- // grad_EI[dim][num_to_sample]
- extern "C" CudaError cuda_get_gradEI(double * __restrict__ mu, double * __restrict__ grad_mu, double * __restrict__ L, double * __restrict__ grad_L, double best, int num_union_of_pts, int num_to_sample, int dimension, double * __restrict__ gpu_mu, double * __restrict__ gpu_grad_mu, double * __restrict__ gpu_L, double * __restrict__ gpu_grad_L, double * __restrict__ gpu_grad_EI_storage, unsigned int seed, int num_mc, double * __restrict__ grad_EI, double* __restrict__
-         gpu_random_number_gradEI, double* __restrict__ random_number_gradEI, bool configure_for_test) {
+// grad_EI[dim][num_to_sample]
+extern "C" CudaError cuda_get_gradEI(double * __restrict__ mu, double * __restrict__ grad_mu, double * __restrict__ L, double * __restrict__ grad_L, double best, int num_union_of_pts, int num_to_sample, int dimension, double * __restrict__ gpu_mu, double * __restrict__ gpu_grad_mu, double * __restrict__ gpu_L, double * __restrict__ gpu_grad_L, double * __restrict__ gpu_grad_EI_storage, unsigned int seed, int num_mc, double * __restrict__ grad_EI, double* __restrict__ gpu_random_number_gradEI, double* __restrict__ random_number_gradEI, bool configure_for_test) {
   CudaError _success = {cudaSuccess, OL_CUDA_STRINGIFY_FILE_AND_LINE, __func__};
 
   const unsigned int gradEI_thread_no = OL_GRAD_EI_THREAD_NO;
@@ -333,11 +328,7 @@ extern "C" CudaError cuda_get_EI(double * __restrict__ mu, double * __restrict__
      inputs: gpu_mu, gpu_L, gpu_grad_mu, gpu_grad_L, best, num_union_of_pts, num_to_sample, dimension, NUM_ITS, seed
      output: gpu_grad_EI_storage
   */
-  grad_EI_gpu<<< grid, threads,
-    mem_size_mu+mem_size_L+mem_size_grad_mu+mem_size_grad_L >>>(gpu_mu, gpu_L,
-            gpu_grad_mu, gpu_grad_L, best, num_union_of_pts, num_to_sample,
-            dimension, NUM_ITS, seed, gpu_grad_EI_storage,
-            gpu_random_number_gradEI, configure_for_test); 
+  grad_EI_gpu <<< grid, threads, mem_size_mu+mem_size_L+mem_size_grad_mu+mem_size_grad_L >>> (gpu_mu, gpu_L, gpu_grad_mu, gpu_grad_L, best, num_union_of_pts, num_to_sample, dimension, NUM_ITS, seed, gpu_grad_EI_storage, gpu_random_number_gradEI, configure_for_test);
   OL_CUDA_ERROR_RETURN(cudaPeekAtLastError())
 
   OL_CUDA_ERROR_RETURN(cudaMemcpy(grad_EI_storage, gpu_grad_EI_storage, mem_size_grad_EI_storage, cudaMemcpyDeviceToHost))
@@ -359,7 +350,7 @@ extern "C" CudaError cuda_get_EI(double * __restrict__ mu, double * __restrict__
   }
   for (int i = 0; i < num_to_sample; ++i) {
       for (int k = 0; k < dimension; ++k) {
-          grad_EI[i*dimension + k] /= (double)(gradEI_thread_no*gradEI_block_no);
+          grad_EI[i*dimension + k] /= static_cast<double>(gradEI_thread_no*gradEI_block_no);
       }
   }
   return _success;

@@ -120,7 +120,7 @@ double NormalRNGSimulator::operator()() {
   int size_of_table = random_number_table_.size();
   if (index_ < size_of_table) {
     ++index_;
-    return random_number_table_[index_];
+    return random_number_table_[index_-1];
   } else {
     OL_THROW_EXCEPTION(InvalidValueException<int>, "All random numbers stored in the RNG have been used up!", index_, size_of_table);
   }

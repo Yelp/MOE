@@ -4,8 +4,8 @@
   This file contains declaration of gpu functions (host code) that are called by C++ code. The functions include calculating ExpectedImprovement, gradient of ExpectedImprovement, and gpu utility functions (memory allocation, setup gpu device, etc)
 \endrst*/
 
-#ifndef MOE_OPTIMAL_LEARNING_CPP_GPU_GPP_CUDA_MATH_HPP
-#define MOE_OPTIMAL_LEARNING_CPP_GPU_GPP_CUDA_MATH_HPP
+#ifndef MOE_OPTIMAL_LEARNING_CPP_GPU_GPP_CUDA_MATH_HPP_
+#define MOE_OPTIMAL_LEARNING_CPP_GPU_GPP_CUDA_MATH_HPP_
 
 #define OL_EI_THREAD_NO 256
 #define OL_EI_BLOCK_NO 32
@@ -19,7 +19,7 @@ namespace optimal_learning {
 /*
   This C struct contains error information that are used by exception handling in gpp_expected_improvement_gpu.hpp/cpp
 */
-struct CudaError{
+struct CudaError {
   cudaError_t err;
   char const * line_info;
   char const * func_info;
@@ -37,5 +37,4 @@ extern "C" void cuda_free_mem(double* __restrict__ ptr_to_gpu_memory);
 extern "C" CudaError cuda_set_device(int devID);
 
 }   // end namespace optimal_learning
-#endif  // MOE_OPTIMAL_LEARNING_CPP_GPU_GPP_CUDA_MATH_HPP
-
+#endif  // MOE_OPTIMAL_LEARNING_CPP_GPU_GPP_CUDA_MATH_HPP_
