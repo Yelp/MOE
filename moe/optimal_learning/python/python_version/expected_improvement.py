@@ -653,6 +653,8 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
                 grad_chol_decomp[0, 0, 0, ...],
             )
         else:
+            # Note: only access the lower triangle of chol_var; upper triangle is garbage
+            # cho_factor returns a tuple, (factorized_matrix, lower_tri_flag); grab the matrix
             chol_var = scipy.linalg.cho_factor(var_star, lower=True, overwrite_a=True)[0]
             grad_chol_decomp = self._gaussian_process.compute_grad_cholesky_variance_of_points(
                 union_of_points,

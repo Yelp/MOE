@@ -348,6 +348,7 @@ class GaussianProcess(GaussianProcessInterface):
         if chol_var is None:
             var_star = self.compute_variance_of_points(points_to_sample)
             # Note: only access the lower triangle of chol_var; upper triangle is garbage
+            # cho_factor returns a tuple, (factorized_matrix, lower_tri_flag); grab the matrix
             chol_var = scipy.linalg.cho_factor(var_star, lower=True, overwrite_a=True)[0]
 
         grad_chol_decomp = numpy.empty((num_derivatives, points_to_sample.shape[0], points_to_sample.shape[0], self.dim))
