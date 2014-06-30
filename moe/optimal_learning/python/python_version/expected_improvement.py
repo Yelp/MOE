@@ -12,7 +12,7 @@ import scipy.stats
 from moe.optimal_learning.python.constant import DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS, DEFAULT_MAX_NUM_THREADS
 from moe.optimal_learning.python.interfaces.expected_improvement_interface import ExpectedImprovementInterface
 from moe.optimal_learning.python.interfaces.optimization_interface import OptimizableInterface
-from moe.optimal_learning.python.python_version.gaussian_process import GaussianProcess
+from moe.optimal_learning.python.python_version.gaussian_process import MINIMUM_STD_DEV_GRAD_CHOLESKY
 from moe.optimal_learning.python.python_version.optimization import multistart_optimize, NullOptimizer
 
 
@@ -30,7 +30,7 @@ MINIMUM_VARIANCE_EI = numpy.finfo(numpy.float64).tiny
 # This value was chosen so its sqrt would be a little larger than GaussianProcess::kMinimumStdDev (by ~12x).
 # The 150.0 was determined by numerical experiment with the setup in test_1d_analytic_ei_edge_cases()
 # in order to find a setting that would be robust (no 0/0) while introducing minimal error.
-MINIMUM_VARIANCE_GRAD_EI = 150 * GaussianProcess.MINIMUM_STD_DEV ** 2
+MINIMUM_VARIANCE_GRAD_EI = 150 * MINIMUM_STD_DEV_GRAD_CHOLESKY ** 2
 
 
 def multistart_expected_improvement_optimization(
