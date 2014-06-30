@@ -268,8 +268,9 @@ string(REGEX REPLACE "O3" "O2" CMAKE_CXX_FLAGS_RELEASE ${CMAKE_CXX_FLAGS_RELEASE
 # readonly
 set(EXTRA_COMPILE_DEFINITIONS_GPU OL_GPU_ENABLED)
 
-set(GPU_CC "")
-set(GPU_CXX "")
+set(GPU_CC ${CMAKE_C_COMPILER})
+set(GPU_CXX ${CMAKE_CXX_COMPILER})
+
 if (EXISTS ${MOE_GPU_CC})
     set(GPU_CC ${MOE_GPU_CC})
 endif()
@@ -282,27 +283,18 @@ if (${MOE_USE_GPU} MATCHES "1")
     include_directories(${CUDA_INCLUDE_DIRS})
     set(EXTRA_COMPILE_DEFINITIONS ${EXTRA_COMPILE_DEFINITIONS}
        ${EXTRA_COMPILE_DEFINITIONS_GPU})
-    if(EXISTS ${CMAKE_BINARY_DIR}/gpu/)
-        add_custom_target(
-            GPU_LIB
-            WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/gpu/
-            COMMAND CC=${GPU_CC} CXX=${GPU_CXX} cmake ${CMAKE_SOURCE_DIR}/gpu/
-            COMMAND make
-            )
-    else()
-        add_custom_target(
-            GPU_FOLDER
-            WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-            COMMAND mkdir ${CMAKE_BINARY_DIR}/gpu/
-            )
-        add_custom_target(
-            GPU_LIB
-            DEPENDS GPU_FOLDER
-            WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/gpu/
-            COMMAND CC=${GPU_CC} CXX=${GPU_CXX} cmake ${CMAKE_SOURCE_DIR}/gpu/
-            COMMAND make
-            )
-    endif()
+    add_custom_target(
+        GPU_FOLDER
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+        COMMAND mkdir -p ${CMAKE_BINARY_DIR}/gpu/
+        )
+    add_custom_target(
+        GPU_LIB
+        DEPENDS GPU_FOLDER
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/gpu/
+        COMMAND CC=${GPU_CC} CXX=${GPU_CXX} cmake ${CMAKE_SOURCE_DIR}/gpu/
+        COMMAND make
+        )
 endif()
 
 
