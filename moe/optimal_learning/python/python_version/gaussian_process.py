@@ -23,7 +23,7 @@ from moe.optimal_learning.python.python_version import python_utils
 # is below the smallest amount of noise users can meaningfully add.
 # This value was chosen to be consistent with the singularity condition in scipy.linalg.cho_factor
 # and tested for robustness with the setup in test_1d_analytic_ei_edge_cases().
-MINIMUM_STD_DEV = numpy.finfo(numpy.float64).eps
+MINIMUM_STD_DEV_GRAD_CHOLESKY = numpy.finfo(numpy.float64).eps
 
 
 class GaussianProcess(GaussianProcessInterface):
@@ -307,7 +307,7 @@ class GaussianProcess(GaussianProcessInterface):
         # Step 2 of Appendix 2
         for k in xrange(num_to_sample):
             L_kk = chol_var[k, k]
-            if L_kk > MINIMUM_STD_DEV:
+            if L_kk > MINIMUM_STD_DEV_GRAD_CHOLESKY:
                 grad_chol[k, k, ...] *= 0.5 / L_kk
                 for j in xrange(k + 1, num_to_sample):
                     grad_chol[j, k, ...] = (grad_chol[j, k, ...] - chol_var[j, k] * grad_chol[k, k, ...]) / L_kk
