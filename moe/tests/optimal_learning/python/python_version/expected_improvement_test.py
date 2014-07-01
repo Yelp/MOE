@@ -233,7 +233,7 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
         points_to_sample = repeated_domain.generate_random_point_in_domain()
         ei_eval = ExpectedImprovement(gaussian_process, points_to_sample, num_mc_iterations=num_mc_iterations)
         # Compute EI and its gradient for the sake of comparison
-        ei_initial = ei_eval.compute_expected_improvement()
+        ei_initial = ei_eval.compute_expected_improvement(force_monte_carlo=True)
         grad_ei_initial = ei_eval.compute_grad_expected_improvement()
 
         ei_optimizer = GradientDescentOptimizer(repeated_domain, ei_eval, gd_parameters)
@@ -241,7 +241,7 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
 
         # Check that gradients are "small"
         ei_eval.set_current_point(best_point)
-        ei_final = ei_eval.compute_expected_improvement()
+        ei_final = ei_eval.compute_expected_improvement(force_monte_carlo=True)
         grad_ei_final = ei_eval.compute_grad_expected_improvement()
         self.assert_vector_within_relative(grad_ei_final, numpy.zeros(grad_ei_final.shape), tolerance)
 

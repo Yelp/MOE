@@ -80,7 +80,7 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
                 python_ei_eval.set_current_point(points_to_sample)
 
                 cpp_ei = cpp_ei_eval.compute_expected_improvement()
-                python_ei = python_ei_eval.compute_expected_improvement()
+                python_ei = python_ei_eval.compute_expected_improvement(force_1d_ei=True)
                 self.assert_scalar_within_relative(python_ei, cpp_ei, ei_tolerance)
 
                 cpp_grad_ei = cpp_ei_eval.compute_grad_expected_improvement()
@@ -101,42 +101,16 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
                 points_to_sample = domain.generate_random_point_in_domain()
                 python_ei_eval.set_current_point(points_to_sample)
 
-                python_1d_ei = python_ei_eval.compute_expected_improvement()
-                python_qd_ei = python_ei_eval.compute_expected_improvement(force_qD_analytic=True)
+                python_1d_ei = python_ei_eval.compute_expected_improvement(force_1d_ei=True)
+                python_qd_ei = python_ei_eval.compute_expected_improvement()
                 self.assert_scalar_within_relative(python_1d_ei, python_qd_ei, ei_tolerance)
 
-    def test_qd_and_monte_carlo_return_same_analytic_ei(self):
+    def test_qd_ei_with_self(self):
         """Compare the 1D analytic EI results to the qD analytic EI results, checking several random points per test case."""
         num_tests_per_case = 10
-        ei_tolerance = 6.0 # TODO FIX!!!
+        ei_tolerance = 6.0e-10
 
         for test_case in self.gp_test_environments[:1]:
-            domain, python_cov, python_gp = test_case
-            points_to_sample = domain.generate_uniform_random_points_in_domain(9)
-            python_ei_eval = moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement(python_gp, points_to_sample, num_mc_iterations=10000000)
-
-            cpp_cov = moe.optimal_learning.python.cpp_wrappers.covariance.SquareExponential(python_cov.get_hyperparameters())
-            cpp_gp = moe.optimal_learning.python.cpp_wrappers.gaussian_process.GaussianProcess(cpp_cov, python_gp._historical_data)
-            cpp_ei_eval = moe.optimal_learning.python.cpp_wrappers.expected_improvement.ExpectedImprovement(cpp_gp, points_to_sample, num_mc_iterations=10000000)
-
-            #for _ in xrange(num_tests_per_case):
-            #    points_to_sample = domain.generate_uniform_random_points_in_domain(9)
-            python_ei_eval.set_current_point(points_to_sample)
-            cpp_ei_eval.set_current_point(points_to_sample)
-
-            cpp_ei = cpp_ei_eval.compute_expected_improvement(force_monte_carlo=True)
-            print "\nMonte-Carlo: {0}".format(cpp_ei)
-            python_qd_ei = python_ei_eval.compute_expected_improvement(force_qD_analytic=True)
-            print "Analytic: {0}".format(python_qd_ei)
-            print "Error term: {0}".format(cpp_ei - python_qd_ei)
-            self.assert_scalar_within_relative(python_qd_ei, cpp_ei, ei_tolerance)
-
-    def test_generate_plot_for_qd_ei(self):
-        """Compare the 1D analytic EI results to the qD analytic EI results, checking several random points per test case."""
-        num_tests_per_case = 10
-        ei_tolerance = 6.0 # TODO FIX!!!
-
-        for test_case in self.gp_test_environments:
 
             mc_answers = list()
             qd_answers = list()
@@ -144,16 +118,20 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
             domain, python_cov, python_gp = test_case
             all_points = domain.generate_uniform_random_points_in_domain(14)
             
-            for i in range(1, 15):
+            f = open('qEI_answers.txt', 'r')
+
+            for i in range(1, 11):
                 points_to_sample = all_points[0:i]
                 python_ei_eval = moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement(python_gp, points_to_sample, num_mc_iterations=10000000)
 
-                cpp_cov = moe.optimal_learning.python.cpp_wrappers.covariance.SquareExponential(python_cov.get_hyperparameters())
-                cpp_gp = moe.optimal_learning.python.cpp_wrappers.gaussian_process.GaussianProcess(cpp_cov, python_gp._historical_data)
-                cpp_ei_eval = moe.optimal_learning.python.cpp_wrappers.expected_improvement.ExpectedImprovement(cpp_gp, points_to_sample, num_mc_iterations=10000000)
 
                 python_ei_eval.set_current_point(points_to_sample)
-                python_qd_ei = python_ei_eval.compute_expected_improvement(force_qD_analytic=True)
+                python_qd_ei = python_ei_eval.compute_expected_improvement()
+#                f.write(str(python_qd_ei)+'\n')
+                test_ans = float(f.readline().rstrip())
+                self.assert_scalar_within_relative(python_qd_ei, test_ans, ei_tolerance)
+
+'''Below code will be useful for comparison/generating plots:
                 cpp_ei_eval.set_current_point(points_to_sample)
                 Oned_sum = 0
                 for point in points_to_sample:
@@ -161,12 +139,13 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
                     Oned_sum += python_ei_eval.compute_expected_improvement()
                 cpp_ei = cpp_ei_eval.compute_expected_improvement(force_monte_carlo=True)
                 print "MC answer: {0}, qEI answer: {1}".format(cpp_ei, python_qd_ei)
+                print "qEI answer: {0}".format(python_qd_ei)
                 mc_answers.append(cpp_ei)
                 qd_answers.append(python_qd_ei)
                 Oned_answers.append(Oned_sum)
-
-                #self.assert_scalar_within_relative(python_qd_ei, cpp_ei, ei_tolerance)
-                
+                cpp_cov = moe.optimal_learning.python.cpp_wrappers.covariance.SquareExponential(python_cov.get_hyperparameters())
+                cpp_gp = moe.optimal_learning.python.cpp_wrappers.gaussian_process.GaussianProcess(cpp_cov, python_gp._historical_data)
+                cpp_ei_eval = moe.optimal_learning.python.cpp_wrappers.expected_improvement.ExpectedImprovement(cpp_gp, points_to_sample, num_mc_iterations=10000000)
             fig, ax = plt.subplots()
             ind = numpy.arange(14)
             width = 0.35
@@ -183,6 +162,7 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
             ax.legend( (rects1[0], rects2[0], rects3[0]), ('MC', 'qEI', '1-EI') )
 
             plt.show()
+'''
 
 if __name__ == "__main__":
     T.run()

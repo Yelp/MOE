@@ -646,7 +646,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         aggregate_dx /= float(self._num_mc_iterations)
         return aggregate_dx
 
-    def compute_expected_improvement(self, force_monte_carlo=False, force_qD_analytic=False):
+    def compute_expected_improvement(self, force_monte_carlo=False, force_1d_ei=False):
         r"""Compute the expected improvement at ``points_to_sample``, with ``points_being_sampled`` concurrent points being sampled.
 
         .. Note:: These comments were copied from this's superclass in expected_improvement_interface.py.
@@ -678,6 +678,8 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
 
         :param force_monte_carlo: whether to force monte carlo evaluation (vs using fast/accurate analytic eval when possible)
         :type force_monte_carlo: boolean
+        :param force_1d_ei: whether to force using the 1EI method. Used for testing purposes only. Takes precedence when force_monte_carlo is also True
+        :type force_1d_ei: boolean
         :return: the expected improvement from sampling ``points_to_sample`` with ``points_being_sampled`` concurrent experiments
         :rtype: float64
 
@@ -688,12 +690,10 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         mu_star = self._gaussian_process.compute_mean_of_points(union_of_points)
         var_star = self._gaussian_process.compute_variance_of_points(union_of_points)
 
-        if num_points == 1 and force_monte_carlo is False:
-            return self._compute_expected_improvement_1d_analytic(mu_star[0], var_star[0, 0])
-        elif force_monte_carlo is True:
-            return self._compute_expected_improvement_monte_carlo(mu_star, var_star)
-        elif force_qD_analytic is True:
+        if force_monte_carlo is False and force_1d_ei is False:
             return self._compute_expected_improvement_qd_analytic(mu_star, var_star)
+        elif force_1d_ei is True:
+            return self._compute_expected_improvement_1d_analytic(mu_star[0], var_star[0, 0])
         else:
             return self._compute_expected_improvement_monte_carlo(mu_star, var_star)
 
