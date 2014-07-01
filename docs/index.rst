@@ -3,14 +3,17 @@ Welcome to MOE's documentation!
 
 **Contents:**
 
+    #. `Github repo`_
     #. `What is MOE?`_
     #. `Quick Install`_ and :doc:`Full Install </install>`
     #. `Quick Start`_
     #. `Source Documentation`_
     #. :doc:`Contributing </contributing>`
 
+.. _Github repo: https://github.com/sc932/MOE
+
 What is MOE?
------------
+------------
 
 MOE (Metric Optimization Engine) is a *fast and efficient*, *derivative-free*,  *black box*, *global* optimization framework for optimizing parameters of time *consuming* or *expensive* experiments and systems.
 
@@ -28,7 +31,7 @@ It boils down to:
 
     -- Prof. Peter Frazier, http://people.orie.cornell.edu/pfrazier
 
-The *black box* nature of MOE allows us to optimize any number of systems, requiring no internal knowledge or access. It uses some objective function (Click Through Rate (CTR), revenue, engagement, etc) and some set of parameters (constants, config values, cut-offs, ML hyperparameters) and finds the best set of parameters to maximize (or minimize) the given function in as few attempts as possible. It does not require knowledge of the specific objective, or how it is obtained, just the previous parameters and their associated objective values (historical data).
+The *black box* nature of MOE allows us to optimize any number of systems, requiring no internal knowledge or access. It uses some :doc:`objective function </objective_functions>` and some set of :doc:`parameters </objective_functions>` and finds the best set of parameters to maximize (or minimize) the given function in as few attempts as possible. It does not require knowledge of the specific objective, or how it is obtained, just the previous parameters and their associated objective values (historical data).
 
 Example:
 
@@ -38,15 +41,16 @@ Example:
 
 Where :math:`\vec{x}` is any real valued input in some finite number of dimensions and CTR is some black box function that is difficult, expensive or time consuming to evaluate and is potentially non-convex, non-differentiable or non-continuous.
 
-We want to find the best set of parameters :math:`\vec{x}` while evaluating the underlying function (CTR) as few times as possible.
+We want to find the best set of parameters :math:`\vec{x}` while evaluating the underlying function (CTR) as few times as possible. See :doc:`Objective Functions </objective_functions>` for more examples of objective functions and the best ways to combine metrics.
 
-It allows you to build the following loop, contantly optimizing and surfing the wave of highest returns for any set of parameters.
+It allows you to build the following loop, contantly optimizing and trading off the exploration and exploitation of the underlying parameter space. By continuing to optimize over many iterations MOE readily finds maxima in the objective function optimally (climbing the mountains of traditional optimization). By sampling and optimizing over many iterations of the MOE loop in time, we can also allow to surf these shifting optima as features and the world change in time. MOE surfs these waves of optima, attempting to stay at the peak of the potentially changing objective function in parameter space as time advances.
 
 .. image:: ../moe/static/img/moe_loop.png
     :align: center
     :alt: moe loop
     :scale: 100%
 
+For more examples on how MOE can be used see :doc:`examples`
 
 Video and slidedeck introduction to MOE:
 
@@ -69,7 +73,7 @@ MOE does this internally by:
 2. Optimizing the hyperparameters of the Gaussian Process (model selection)
 
     - :doc:`gpp_covariance`
-    - :doc:`gpp_model_selection_and_hyperparameter_optimization`
+    - :doc:`gpp_model_selection`
     - :mod:`moe.views.rest.gp_hyper_opt`
     - `RW Chapter 4`_
     - `RW Chapter 5`_
@@ -101,10 +105,10 @@ You can be up and optimizing in a matter of minutes.
 
 
 Quick Install
-----
+-------------
 
 Install in docker:
-....
+..................
 
 This is the recommended way to run the MOE REST server. All dependencies and building is done automatically and in an isolated container.
 
@@ -120,7 +124,7 @@ Docker (http://docs.docker.io/) is a container based virtualization framework. U
 The webserver and REST interface is now running on port 6543 from within the container.
 
 Build from source (linux and OSX 10.8 and 10.9 supported)
-....
+.........................................................
 
 :doc:`Full Install </install>`
 
@@ -128,7 +132,7 @@ Quick Start
 -----------
 
 REST/web server and interactive demo
-........
+....................................
 
 To get the REST server running locally, from the directory MOE is installed:
 
@@ -147,7 +151,7 @@ Or, from the command line,
 ``gp_ei`` endpoint documentation: :mod:`moe.views.rest.gp_ei`
 
 From ipython
-....
+............
 
 ::
 
@@ -162,7 +166,7 @@ From ipython
 ``easy_interface`` documentation: :doc:`moe.easy_interface`
 
 Within python
-....
+.............
 
 .. code-block:: python
 
@@ -188,6 +192,18 @@ Within python
 Source Documentation
 ====================
 
+Documentation
+-------------
+
+.. toctree::
+   :maxdepth: 2
+
+   why_moe.rst
+   install.rst
+   objective_functions.rst
+   examples.rst
+   contributing.rst
+
 Python Files
 ------------
 
@@ -210,4 +226,3 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-

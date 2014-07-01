@@ -102,7 +102,7 @@ step size and direction to ensure rapid\*\* convergence.
 \*, \*\* See "IMPLEMENTATION DETAILS" comments section for details.
 
 Recall that Newton indiscriminately finds solutions where ``f'(x) = 0``; the eigenvalues of the Hessian classify these
-``x`` as optima, saddle points, or indeterminate. We multistart Newton (e.g., gpp_model_selection_and_hyperparameter_optimization)
+``x`` as optima, saddle points, or indeterminate. We multistart Newton (e.g., gpp_model_selection)
 but just take the best objective value without classifying solutions.
 The MultistartOptimizer template class in this file provides generic multistart functionality.
 
@@ -422,7 +422,7 @@ class GradientDescentOptimizer(OptimizerInterface):
 
         """
         # TODO(GH-59): Implement restarts like in the C++ code.
-        initial_guess = self.objective_function.get_current_point()
+        initial_guess = self.objective_function.current_point
         x_hat = initial_guess
         x_path = numpy.empty((self.optimization_parameters.max_num_steps + 1, ) + initial_guess.shape)
         x_path[0, ...] = initial_guess
@@ -431,7 +431,7 @@ class GradientDescentOptimizer(OptimizerInterface):
         while step_counter <= self.optimization_parameters.max_num_steps:
             alpha_n = self.optimization_parameters.pre_mult * numpy.power(float(step_counter), -self.optimization_parameters.gamma)
 
-            self.objective_function.set_current_point(x_path[step_counter - 1, ...])
+            self.objective_function.current_point = x_path[step_counter - 1, ...]
             orig_step = self.objective_function.compute_grad_objective_function(**kwargs)
 
             orig_step *= alpha_n
@@ -451,7 +451,7 @@ class GradientDescentOptimizer(OptimizerInterface):
         # n_0 = 0 averages all steps; n_0 = n - 1 is equivalent to returning x_n directly.
         start, end = self._get_averaging_range(self.optimization_parameters.num_steps_averaged, step_counter - 1)
         x_hat = numpy.mean(x_path[start:end, ...], axis=0)
-        self.objective_function.set_current_point(x_hat)
+        self.objective_function.current_point = x_hat
 
 
 class MultistartOptimizer(OptimizerInterface):
@@ -517,13 +517,13 @@ class MultistartOptimizer(OptimizerInterface):
         function_value_list = numpy.empty(random_starts.shape[0])
 
         for i, point in enumerate(random_starts):
-            self.optimizer.objective_function.set_current_point(point)
+            self.optimizer.objective_function.current_point = point
             self.optimizer.optimize(**kwargs)
             function_value = self.optimizer.objective_function.compute_objective_function(**kwargs)
             function_value_list[i] = function_value
 
             if function_value > best_function_value:
                 best_function_value = function_value
-                best_point = self.optimizer.objective_function.get_current_point()
+                best_point = self.optimizer.objective_function.current_point
 
         return best_point, function_value_list

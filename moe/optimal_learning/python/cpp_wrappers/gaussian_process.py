@@ -67,7 +67,7 @@ class GaussianProcess(GaussianProcessInterface):
 
         # C++ will maintain its own copy of the contents of hyperparameters and historical_data
         self._gaussian_process = C_GP.GaussianProcess(
-            cpp_utils.cppify_hyperparameters(self._covariance.get_hyperparameters()),
+            cpp_utils.cppify_hyperparameters(self._covariance.hyperparameters),
             cpp_utils.cppify(historical_data.points_sampled),
             cpp_utils.cppify(historical_data.points_sampled_value),
             cpp_utils.cppify(historical_data.points_sampled_noise_variance),
@@ -255,7 +255,7 @@ class GaussianProcess(GaussianProcessInterface):
         self._historical_data.append_sample_points(sampled_points)
 
         self._gaussian_process = C_GP.GaussianProcess(
-            cpp_utils.cppify_hyperparameters(self._covariance.get_hyperparameters()),
+            cpp_utils.cppify_hyperparameters(self._covariance.hyperparameters),
             cpp_utils.cppify(self._historical_data.points_sampled),
             cpp_utils.cppify(self._historical_data.points_sampled_value),
             cpp_utils.cppify(self._historical_data.points_sampled_noise_variance),

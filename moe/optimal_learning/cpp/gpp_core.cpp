@@ -33,8 +33,8 @@
 #include "gpp_logging.hpp"
 #include "gpp_math.hpp"
 #include "gpp_math_test.hpp"
-#include "gpp_model_selection_and_hyperparameter_optimization.hpp"
-#include "gpp_model_selection_and_hyperparameter_optimization_test.hpp"
+#include "gpp_model_selection.hpp"
+#include "gpp_model_selection_test.hpp"
 #include "gpp_optimization.hpp"
 #include "gpp_optimization_parameters.hpp"
 #include "gpp_optimization_test.hpp"
@@ -1124,7 +1124,7 @@ int main() {
   std::vector<double> initial_guesses(dim*num_to_sample*num_grid_search_points);
   num_grid_search_points = domain.GenerateUniformPointsInDomain(num_grid_search_points, &uniform_generator, initial_guesses.data());
 
-  EvaluateEIAtPointList(gaussian_process, domain, initial_guesses.data(), points_being_sampled.data(), num_grid_search_points, num_to_sample, num_being_sampled, best_so_far, max_int_steps, kMaxNumThreads, &found_flag, normal_rng_vec.data(), function_values.data(), grid_search_best_point.data());
+  EvaluateEIAtPointList(gaussian_process, initial_guesses.data(), points_being_sampled.data(), num_grid_search_points, num_to_sample, num_being_sampled, best_so_far, max_int_steps, kMaxNumThreads, &found_flag, normal_rng_vec.data(), function_values.data(), grid_search_best_point.data());
 
   gettimeofday(&tv1, nullptr);
   c1 = clock();
@@ -1171,15 +1171,14 @@ int main() {
 
 #if OL_PINGMODE == 0
   // error += RunCovarianceTests();
-  // error += RunGPPingTests();
+  // error += RunGPTests();
   // error += RunLogLikelihoodPingTests();
   // error += HyperparameterLikelihoodOptimizationTest(OptimizerTypes::kNewton, LogLikelihoodTypes::kLogMarginalLikelihood);
   // error += HyperparameterLikelihoodOptimizationTest(OptimizerTypes::kGradientDescent, LogLikelihoodTypes::kLogMarginalLikelihood);
   // error += HyperparameterLikelihoodOptimizationTest(OptimizerTypes::kGradientDescent, LogLikelihoodTypes::kLeaveOneOutLogLikelihood);
   // error += EvaluateLogLikelihoodAtPointListTest();
   // error = RandomNumberGeneratorContainerTest();
-  // error += RunOptimizationTests(0);
-  // error += RunOptimizationTests(1);
+  // error += RunOptimizationTests();
   // error += DomainTests();
   // error += RunEIConsistencyTests();
   // error += MultithreadedEIOptimizationTest(ExpectedImprovementEvaluationMode::kAnalytic);
@@ -1294,7 +1293,7 @@ int main() {
   }
   total_errors += error;
 
-  error = RunGPPingTests();
+  error = RunGPTests();
   if (error != 0) {
     OL_FAILURE_PRINTF("GP ping\n");
   } else {
@@ -1366,19 +1365,11 @@ int main() {
   }
   total_errors += error;
 
-  error = RunOptimizationTests(OptimizerTypes::kGradientDescent);
+  error = RunOptimizationTests();
   if (error != 0) {
-    OL_FAILURE_PRINTF("quadratic mock gradient descent optimization\n");
+    OL_FAILURE_PRINTF("basic optimization tests (simple objectives, exception handling)\n");
   } else {
-    OL_SUCCESS_PRINTF("quadratic mock gradient descent optimization\n");
-  }
-  total_errors += error;
-
-  error = RunOptimizationTests(OptimizerTypes::kNewton);
-  if (error != 0) {
-    OL_FAILURE_PRINTF("quadratic mock newton optimization\n");
-  } else {
-    OL_SUCCESS_PRINTF("quadratic mock newton optimization\n");
+    OL_SUCCESS_PRINTF("basic optimization tests (simple objectives, exception handling)\n");
   }
   total_errors += error;
 

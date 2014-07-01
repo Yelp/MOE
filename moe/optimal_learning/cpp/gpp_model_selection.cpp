@@ -1,5 +1,5 @@
 /*!
-  \file gpp_model_selection_and_hyperparameter_optimization.cpp
+  \file gpp_model_selection.cpp
   \rst
   Table of Contents:
 
@@ -24,7 +24,7 @@
 
   As a preface, if you are not already familiar with GPs and their implementation, you should read the file comments for
   gpp_math.hpp/cpp first.  If you are unfamiliar with the concept of model selection or optimization methods, please read
-  the file comments for gpp_model_selection_and_hyperparameter_optimization.hpp first.
+  the file comments for gpp_model_selection.hpp first.
 
   This file provides implementations for various log likelihood measures of model quality (marginal likelihood,
   leave one out cross validation).  The functions to optimize these measures all live in the header file (they are
@@ -258,7 +258,7 @@
       may be heavily affected by numerical error (if K is poorly conditioned).
 \endrst*/
 
-#include "gpp_model_selection_and_hyperparameter_optimization.hpp"
+#include "gpp_model_selection.hpp"
 
 #include <cmath>
 
@@ -303,7 +303,11 @@ namespace {  // utilities for building covariance matrix and its hyperparameter 
   \output
     :cov_matrix[num_sampled][num_sampled]: computed covariance matrix
 \endrst*/
-OL_NONNULL_POINTERS void BuildCovarianceMatrixWithNoiseVariance(const CovarianceInterface& covariance, double const * restrict noise_variance, double const * restrict points_sampled, int dim, int num_sampled, double * restrict cov_matrix) noexcept {
+OL_NONNULL_POINTERS void BuildCovarianceMatrixWithNoiseVariance(const CovarianceInterface& covariance,
+                                                                double const * restrict noise_variance,
+                                                                double const * restrict points_sampled,
+                                                                int dim, int num_sampled,
+                                                                double * restrict cov_matrix) noexcept {
   // we only work with lower triangular parts of symmetric matrices, so only fill half of it
   for (int i = 0; i < num_sampled; ++i) {
     for (int j = i; j < num_sampled; ++j) {
@@ -339,7 +343,10 @@ OL_NONNULL_POINTERS void BuildCovarianceMatrixWithNoiseVariance(const Covariance
   \output
     :grad_cov_matrix[num_sampled][num_sampled][covariance.GetNumberOfHyperparameters()]: gradients of covariance matrix wrt hyperparameters
 \endrst*/
-OL_NONNULL_POINTERS void BuildHyperparameterGradCovarianceMatrix(const CovarianceInterface& covariance, double const * restrict points_sampled, int dim, int num_sampled, double * restrict grad_cov_matrix) noexcept {
+OL_NONNULL_POINTERS void BuildHyperparameterGradCovarianceMatrix(const CovarianceInterface& covariance,
+                                                                 double const * restrict points_sampled,
+                                                                 int dim, int num_sampled,
+                                                                 double * restrict grad_cov_matrix) noexcept {
   const int num_hyperparameters = covariance.GetNumberOfHyperparameters();
   const int offset = num_sampled*num_sampled;
 
@@ -395,7 +402,10 @@ OL_NONNULL_POINTERS void BuildHyperparameterGradCovarianceMatrix(const Covarianc
   \output
     :hessian_cov_matrix[num_sampled][num_sampled][n_hyper][n_hyper]: hessian of covariance matrix wrt hyperparameters
 \endrst*/
-OL_NONNULL_POINTERS void BuildHyperparameterHessianCovarianceMatrix(const CovarianceInterface& covariance, double const * restrict points_sampled, int dim, int num_sampled, double * restrict hessian_cov_matrix) noexcept {
+OL_NONNULL_POINTERS void BuildHyperparameterHessianCovarianceMatrix(const CovarianceInterface& covariance,
+                                                                    double const * restrict points_sampled,
+                                                                    int dim, int num_sampled,
+                                                                    double * restrict hessian_cov_matrix) noexcept {
   const int num_hyperparameters = covariance.GetNumberOfHyperparameters();
   const int offset = num_sampled*num_sampled;
 
@@ -415,7 +425,8 @@ OL_NONNULL_POINTERS void BuildHyperparameterHessianCovarianceMatrix(const Covari
     hessian_cov_matrix_row -= i*num_sampled;
     for (int j = i; j < num_sampled; ++j) {
       // compute all hyperparameter derivs at once for efficiency
-      covariance.HyperparameterHessianCovariance(points_sampled + i*dim, points_sampled+j*dim, hessian_hyperparameters.data());
+      covariance.HyperparameterHessianCovariance(points_sampled + i*dim, points_sampled+j*dim,
+                                                 hessian_hyperparameters.data());
       for (int i_hyper = 0; i_hyper < num_hessian_elem; ++i_hyper) {
         // have to write each deriv to the correct block, due to the block structure of the output
         hessian_cov_matrix[i_hyper*offset + j] = hessian_hyperparameters[i_hyper];
@@ -428,23 +439,47 @@ OL_NONNULL_POINTERS void BuildHyperparameterHessianCovarianceMatrix(const Covari
 
 }  // end unnamed namespace
 
-void LogMarginalLikelihoodEvaluator::BuildHyperparameterGradCovarianceMatrix(LogMarginalLikelihoodState * log_likelihood_state) const noexcept {
-  optimal_learning::BuildHyperparameterGradCovarianceMatrix(*log_likelihood_state->covariance_ptr, points_sampled_.data(), dim_, num_sampled_, log_likelihood_state->grad_hyperparameter_cov_matrix.data());
+LogMarginalLikelihoodEvaluator::LogMarginalLikelihoodEvaluator(double const * restrict points_sampled_in,
+                                                               double const * restrict points_sampled_value_in,
+                                                               double const * restrict noise_variance_in,
+                                                               int dim_in, int num_sampled_in)
+    : dim_(dim_in),
+      num_sampled_(num_sampled_in),
+      points_sampled_(points_sampled_in, points_sampled_in + num_sampled_in*dim_in),
+      points_sampled_value_(points_sampled_value_in, points_sampled_value_in + num_sampled_in),
+      noise_variance_(noise_variance_in, noise_variance_in + num_sampled_) {
 }
 
-void LogMarginalLikelihoodEvaluator::BuildHyperparameterHessianCovarianceMatrix(LogMarginalLikelihoodState * log_likelihood_state, double * hessian_hyperparameter_cov_matrix) const noexcept {
-  optimal_learning::BuildHyperparameterHessianCovarianceMatrix(*log_likelihood_state->covariance_ptr, points_sampled_.data(), dim_, num_sampled_, hessian_hyperparameter_cov_matrix);
+void LogMarginalLikelihoodEvaluator::BuildHyperparameterGradCovarianceMatrix(
+    LogMarginalLikelihoodState * log_likelihood_state) const noexcept {
+  optimal_learning::BuildHyperparameterGradCovarianceMatrix(*log_likelihood_state->covariance_ptr,
+                                                            points_sampled_.data(), dim_, num_sampled_,
+                                                            log_likelihood_state->grad_hyperparameter_cov_matrix.data());
+}
+
+void LogMarginalLikelihoodEvaluator::BuildHyperparameterHessianCovarianceMatrix(
+    LogMarginalLikelihoodState * log_likelihood_state,
+    double * hessian_hyperparameter_cov_matrix) const noexcept {
+  optimal_learning::BuildHyperparameterHessianCovarianceMatrix(*log_likelihood_state->covariance_ptr,
+                                                               points_sampled_.data(), dim_, num_sampled_,
+                                                               hessian_hyperparameter_cov_matrix);
 }
 
 void LogMarginalLikelihoodEvaluator::FillLogLikelihoodState(LogMarginalLikelihoodState * log_likelihood_state) const {
   // K_chol
-  optimal_learning::BuildCovarianceMatrixWithNoiseVariance(*log_likelihood_state->covariance_ptr, noise_variance_.data(), points_sampled_.data(), dim_, num_sampled_, log_likelihood_state->K_chol.data());
+  optimal_learning::BuildCovarianceMatrixWithNoiseVariance(*log_likelihood_state->covariance_ptr,
+                                                           noise_variance_.data(), points_sampled_.data(),
+                                                           dim_, num_sampled_, log_likelihood_state->K_chol.data());
 
-  ComputeCholeskyFactorL(num_sampled_, log_likelihood_state->K_chol.data());
+  // TODO(GH-211): Re-examine ignoring singular covariance matrices here
+  int OL_UNUSED(chol_info) = ComputeCholeskyFactorL(num_sampled_,
+                                                    log_likelihood_state->K_chol.data());
 
   // K_inv_y
-  std::copy(points_sampled_value_.begin(), points_sampled_value_.end(), log_likelihood_state->K_inv_y.begin());
-  CholeskyFactorLMatrixVectorSolve(log_likelihood_state->K_chol.data(), num_sampled_, log_likelihood_state->K_inv_y.data());
+  std::copy(points_sampled_value_.begin(), points_sampled_value_.end(),
+            log_likelihood_state->K_inv_y.begin());
+  CholeskyFactorLMatrixVectorSolve(log_likelihood_state->K_chol.data(), num_sampled_,
+                                   log_likelihood_state->K_inv_y.data());
 }
 
 /*!\rst
@@ -464,7 +499,8 @@ void LogMarginalLikelihoodEvaluator::FillLogLikelihoodState(LogMarginalLikelihoo
   The latter method is (currently) preferred for computing ``\log(det(K))`` due to reduced chance for overflow
   and (possibly) better numerical conditioning.
 \endrst*/
-double LogMarginalLikelihoodEvaluator::ComputeLogLikelihood(const LogMarginalLikelihoodState& log_likelihood_state) const noexcept {
+double LogMarginalLikelihoodEvaluator::ComputeLogLikelihood(
+    const LogMarginalLikelihoodState& log_likelihood_state) const noexcept {
   // compute term2 = - \frac{1}{2} * \log(det(K)) using the SPD matrix simplification given above (i.e., without computing det directly)
   double log_marginal_term2 = 0.0;
   double const * restrict K_chol_ptr = log_likelihood_state.K_chol.data();
@@ -475,7 +511,8 @@ double LogMarginalLikelihoodEvaluator::ComputeLogLikelihood(const LogMarginalLik
 
   // compute term1 = -\frac{1}{2} * y^T * K^-1 * y
   // term1 = y^T * K_inv_y
-  double log_marginal_term1 = -0.5*DotProduct(points_sampled_value_.data(), log_likelihood_state.K_inv_y.data(), num_sampled_);
+  double log_marginal_term1 = -0.5*DotProduct(points_sampled_value_.data(),
+                                              log_likelihood_state.K_inv_y.data(), num_sampled_);
 
   // compute term3 = -\frac{n}{2} * \log(2*pi), where log(2*pi) has been precomputed
   double log_marginal_term3 = -0.5*static_cast<double>(num_sampled_)*kLog2Pi;
@@ -492,7 +529,8 @@ double LogMarginalLikelihoodEvaluator::ComputeLogLikelihood(const LogMarginalLik
   where ``\alpha_i = K^{-1}_{ij} * y_j``
 \endrst*/
 #define OL_USE_INVERSE 0
-void LogMarginalLikelihoodEvaluator::ComputeGradLogLikelihood(LogMarginalLikelihoodState * log_likelihood_state, double * restrict grad_log_marginal) const noexcept {
+void LogMarginalLikelihoodEvaluator::ComputeGradLogLikelihood(LogMarginalLikelihoodState * log_likelihood_state,
+                                                              double * restrict grad_log_marginal) const noexcept {
 #if OL_USE_INVERSE == 1
   std::vector<double> K_inv(num_sampled_*num_sampled_);
   SPDMatrixInverse(log_likelihood_state->K_chol.data(), num_sampled_, K_inv.data());
@@ -509,25 +547,30 @@ void LogMarginalLikelihoodEvaluator::ComputeGradLogLikelihood(LogMarginalLikelih
   const int num_hyperparameters = log_likelihood_state->num_hyperparameters;
   // compute gradient  as 0.5 * \alpha^T * (dK/d\theta) * \alpha - 0.5 * tr(K^-1 * dK/d\theta)
   for (int i_hyper = 0; i_hyper < num_hyperparameters; ++i_hyper) {
-    // grad_hyperparameter_cov_matrix for the i_hyper-th hyperparameter is not needed after the i_hyper-th iteration of this loop
-    // thus we overwrite it with K^-1 * grad_hyperparameter_cov_matrix
+    // grad_hyperparameter_cov_matrix for the i_hyper-th hyperparameter is not needed after the
+    // i_hyper-th iteration of this loop. Thus we overwrite it with K^-1 * grad_hyperparameter_cov_matrix
 
     // computing 0.5 * \alpha^T * grad_hyperparameter_cov_matrix * \alpha, where \alpha = K^-1 * y (aka K_inv_y)
     // temp_vec := grad_hyperparameter_cov_matrix * K_inv_y
-    GeneralMatrixVectorMultiply(grad_hyperparameter_cov_matrix_ptr, 'N', log_likelihood_state->K_inv_y.data(), 1.0, 0.0, num_sampled_, num_sampled_, num_sampled_, log_likelihood_state->temp_vec.data());
+    GeneralMatrixVectorMultiply(grad_hyperparameter_cov_matrix_ptr, 'N', log_likelihood_state->K_inv_y.data(),
+                                1.0, 0.0, num_sampled_, num_sampled_, num_sampled_,
+                                log_likelihood_state->temp_vec.data());
     // could use dsymv here but it appears to be slightly slower in practice
     // SymmetricMatrixVectorMultiply(grad_hyperparameter_cov_matrix_ptr, K_inv_y.data(), num_sampled_, temp_vec.data());
     // computes 0.5 * K_inv_y^T * temp_vec
-    grad_log_marginal[i_hyper] = 0.5*DotProduct(log_likelihood_state->K_inv_y.data(), log_likelihood_state->temp_vec.data(), num_sampled_);
+    grad_log_marginal[i_hyper] = 0.5*DotProduct(log_likelihood_state->K_inv_y.data(),
+                                                log_likelihood_state->temp_vec.data(), num_sampled_);
 
     // compute -0.5 * tr(K^-1 * dK/d\theta)
 #if OL_USE_INVERSE == 1
     // avoid performing the matrix product; only calculate terms needed for trace
-    grad_log_marginal[i_hyper] -= 0.5*TraceOfGeneralMatrixMatrixMultiply(K_inv.data(), grad_hyperparameter_cov_matrix_ptr, num_sampled_);
+    grad_log_marginal[i_hyper] -= 0.5*TraceOfGeneralMatrixMatrixMultiply(K_inv.data(),
+                                                                         grad_hyperparameter_cov_matrix_ptr, num_sampled_);
 #else
     // avoid forming the matrix inverse explicitly; improves numerical accuracy
     // overwrites grad_hyperparameter_cov_matrix := K^-1 * grad_hyperparameter_cov_matrix
-    CholeskyFactorLMatrixMatrixSolve(log_likelihood_state->K_chol.data(), num_sampled_, num_sampled_, grad_hyperparameter_cov_matrix_ptr);
+    CholeskyFactorLMatrixMatrixSolve(log_likelihood_state->K_chol.data(), num_sampled_, num_sampled_,
+                                     grad_hyperparameter_cov_matrix_ptr);
     grad_log_marginal[i_hyper] -= 0.5*MatrixTrace(grad_hyperparameter_cov_matrix_ptr, num_sampled_);
 #endif
 
@@ -551,7 +594,8 @@ void LogMarginalLikelihoodEvaluator::ComputeGradLogLikelihood(LogMarginalLikelih
   with the differential operator;
   and the various symmetries of the gradient/hessians of K (see function declaration comments for details on symmetry).
 \endrst*/
-void LogMarginalLikelihoodEvaluator::ComputeHessianLogLikelihood(LogMarginalLikelihoodState * log_likelihood_state, double * restrict hessian_log_marginal) const noexcept {
+void LogMarginalLikelihoodEvaluator::ComputeHessianLogLikelihood(LogMarginalLikelihoodState * log_likelihood_state,
+                                                                 double * restrict hessian_log_marginal) const noexcept {
 #if OL_USE_INVERSE == 1
   std::vector<double> K_inv(num_sampled_*num_sampled_);
   SPDMatrixInverse(log_likelihood_state->K_chol.data(), num_sampled_, K_inv.data());
@@ -568,12 +612,15 @@ void LogMarginalLikelihoodEvaluator::ComputeHessianLogLikelihood(LogMarginalLike
   for (int i_hyper = 0; i_hyper < num_hyperparameters; ++i_hyper) {
     // grad_K_K_inv_y stores |\theta_k| blocks, each block containing \pderiv{K}{\theta_k} * (K^-1 * y)
     // where K^-1*y has been precomputed in K_inv_y
-    GeneralMatrixVectorMultiply(grad_hyperparameter_cov_matrix_ptr, 'N', log_likelihood_state->K_inv_y.data(), 1.0, 0.0, num_sampled_, num_sampled_, num_sampled_, grad_K_K_inv_y.data() + i_hyper*num_sampled_);
+    GeneralMatrixVectorMultiply(grad_hyperparameter_cov_matrix_ptr, 'N', log_likelihood_state->K_inv_y.data(),
+                                1.0, 0.0, num_sampled_, num_sampled_, num_sampled_,
+                                grad_K_K_inv_y.data() + i_hyper*num_sampled_);
 
     // previous line is the only other use of grad_hyperparameter_cov_matrix, so we can safely overwite each block with
     // K^-1 * grad_hyperparameter_cov_matrix
     // as usual, do not form K^-1 explicitly
-    CholeskyFactorLMatrixMatrixSolve(log_likelihood_state->K_chol.data(), num_sampled_, num_sampled_, grad_hyperparameter_cov_matrix_ptr);
+    CholeskyFactorLMatrixMatrixSolve(log_likelihood_state->K_chol.data(), num_sampled_, num_sampled_,
+                                     grad_hyperparameter_cov_matrix_ptr);
     grad_hyperparameter_cov_matrix_ptr += Square(num_sampled_);
   }
 
@@ -593,36 +640,50 @@ void LogMarginalLikelihoodEvaluator::ComputeHessianLogLikelihood(LogMarginalLike
 
     for (int j_hyper = i_hyper; j_hyper < num_hyperparameters; ++j_hyper) {
       // (-\alpha * \pderiv{K}{\theta_i} * K^-1 * \pderiv{K}{\theta_j} * \alpha)
-      // view this as -\beta_i * K^-1 * \beta_j, where \beta_i = \pderiv{K}{\theta_j} * \alpha is precomputed in grad_K_K_inv_y
-      // note: since K^-1 is symmetric (SPD in fact), we equivalently compute -\beta_j * K^-1 * \beta_i
+      // view this as -\beta_i * K^-1 * \beta_j, where \beta_i = \pderiv{K}{\theta_j} * \alpha
+      //  is precomputed in grad_K_K_inv_y
+      // Note: since K^-1 is symmetric (SPD in fact), we equivalently compute -\beta_j * K^-1 * \beta_i
 
       // TODO(GH-185): the first step computes K^-1 * \beta_i, which is constant over j_hyper and should be lifted out
       // of this loop. OR this whole block computing -\beta_j * K^-1 * \beta_i should be split into a separate loop over j_hyper.
-      std::copy(grad_K_K_inv_y.data() + i_hyper*num_sampled_, grad_K_K_inv_y.data() + (i_hyper+1)*num_sampled_, log_likelihood_state->temp_vec.data());
-      CholeskyFactorLMatrixVectorSolve(log_likelihood_state->K_chol.data(), num_sampled_, log_likelihood_state->temp_vec.data());
-      hessian_log_marginal_ptr[j_hyper] = -DotProduct(grad_K_K_inv_y.data() + j_hyper*num_sampled_, log_likelihood_state->temp_vec.data(), num_sampled_);
+      std::copy(grad_K_K_inv_y.data() + i_hyper*num_sampled_, grad_K_K_inv_y.data() + (i_hyper+1)*num_sampled_,
+                log_likelihood_state->temp_vec.data());
+      CholeskyFactorLMatrixVectorSolve(log_likelihood_state->K_chol.data(), num_sampled_,
+                                       log_likelihood_state->temp_vec.data());
+      hessian_log_marginal_ptr[j_hyper] = -DotProduct(grad_K_K_inv_y.data() + j_hyper*num_sampled_,
+                                                      log_likelihood_state->temp_vec.data(), num_sampled_);
 
       // (\alpha * \mixpderiv{K}{\theta_i}{\theta_j} * \alpha)
       // mixed deriv term has already been computed, so we first multiply by \alpha
-      GeneralMatrixVectorMultiply(hessian_hyperparameter_cov_matrix_ptr, 'N', log_likelihood_state->K_inv_y.data(), 1.0, 0.0, num_sampled_, num_sampled_, num_sampled_, log_likelihood_state->temp_vec.data());
+      GeneralMatrixVectorMultiply(hessian_hyperparameter_cov_matrix_ptr, 'N', log_likelihood_state->K_inv_y.data(),
+                                  1.0, 0.0, num_sampled_, num_sampled_, num_sampled_,
+                                  log_likelihood_state->temp_vec.data());
       // and then dot the result with \alpha
-      hessian_log_marginal_ptr[j_hyper] += 0.5*DotProduct(log_likelihood_state->K_inv_y.data(), log_likelihood_state->temp_vec.data(), num_sampled_);
+      hessian_log_marginal_ptr[j_hyper] += 0.5*DotProduct(log_likelihood_state->K_inv_y.data(),
+                                                          log_likelihood_state->temp_vec.data(), num_sampled_);
 
       // 0.5*tr(K^-1 * \pderiv{K}{\theta_i} * K^-1 * \pderiv{K}{\theta_j})
       // note that since tr(A) = tr(A^T), the order of multiplication is irrelevant
       // we do not need to form the full matrix product first, since only the diagonal of that result is required
       // finally, recall that grad_hyperparameter_cov_matrix has already been premultiplied by K^-1
-      hessian_log_marginal_ptr[j_hyper] += 0.5*TraceOfGeneralMatrixMatrixMultiply(log_likelihood_state->grad_hyperparameter_cov_matrix.data() + i_hyper*Square(num_sampled_), log_likelihood_state->grad_hyperparameter_cov_matrix.data() + j_hyper*Square(num_sampled_), num_sampled_);
+      hessian_log_marginal_ptr[j_hyper] += 0.5*TraceOfGeneralMatrixMatrixMultiply(
+          log_likelihood_state->grad_hyperparameter_cov_matrix.data() + i_hyper*Square(num_sampled_),
+          log_likelihood_state->grad_hyperparameter_cov_matrix.data() + j_hyper*Square(num_sampled_),
+          num_sampled_);
 
       // - 0.5 * tr(K^-1 * \mixpderiv{K}{\theta_i}{\theta_j})
 #if OL_USE_INVERSE == 1
       // avoid performing the matrix product (as in previous trace step); only calculate terms needed for trace
-      hessian_log_marginal_ptr[j_hyper] -= 0.5*TraceOfGeneralMatrixMatrixMultiply(K_inv.data(), hessian_hyperparameter_cov_matrix_ptr, num_sampled_);
+      hessian_log_marginal_ptr[j_hyper] -= 0.5*TraceOfGeneralMatrixMatrixMultiply(
+          K_inv.data(),
+          hessian_hyperparameter_cov_matrix_ptr,
+          num_sampled_);
 #else
       // overwrites i,j-th block of hessian_hyperparameter_cov_matrix, which we do not need anymore
       // for maximum numerical stability, we form K^-1*\mixpderiv{K}{\theta_i}{\theta_j} explicitly using backsolves first
       // then take the trace of the resulting matrix
-      CholeskyFactorLMatrixMatrixSolve(log_likelihood_state->K_chol.data(), num_sampled_, num_sampled_, hessian_hyperparameter_cov_matrix_ptr);
+      CholeskyFactorLMatrixMatrixSolve(log_likelihood_state->K_chol.data(), num_sampled_, num_sampled_,
+                                       hessian_hyperparameter_cov_matrix_ptr);
       hessian_log_marginal_ptr[j_hyper] -= 0.5*MatrixTrace(hessian_hyperparameter_cov_matrix_ptr, num_sampled_);
 #endif
       hessian_hyperparameter_cov_matrix_ptr += Square(num_sampled_);
@@ -631,6 +692,46 @@ void LogMarginalLikelihoodEvaluator::ComputeHessianLogLikelihood(LogMarginalLike
     hessian_log_marginal_row += 1;
   }
 }
+
+void LogMarginalLikelihoodState::UpdateHyperparameters(const EvaluatorType& log_likelihood_eval,
+                                                       double const * restrict hyperparameters) {
+  // update hyperparameters
+  covariance_ptr->SetHyperparameters(hyperparameters);
+
+  // evaluate derived quantities
+  log_likelihood_eval.FillLogLikelihoodState(this);
+}
+
+void LogMarginalLikelihoodState::SetupState(const EvaluatorType& log_likelihood_eval,
+                                            double const * restrict hyperparameters) {
+  if (unlikely(num_sampled != log_likelihood_eval.num_sampled())) {
+    num_sampled = log_likelihood_eval.num_sampled();
+    K_chol.resize(num_sampled*num_sampled);
+    K_inv_y.resize(num_sampled);
+    grad_hyperparameter_cov_matrix.resize(num_hyperparameters*num_sampled*num_sampled);
+    temp_vec.resize(num_sampled);
+  }
+
+  // set hyperparameters and derived quantities
+  UpdateHyperparameters(log_likelihood_eval, hyperparameters);
+}
+
+LogMarginalLikelihoodState::LogMarginalLikelihoodState(const EvaluatorType& log_likelihood_eval,
+                                                       const CovarianceInterface& covariance_in)
+    : dim(log_likelihood_eval.dim()),
+      num_sampled(log_likelihood_eval.num_sampled()),
+      num_hyperparameters(covariance_in.GetNumberOfHyperparameters()),
+      covariance_ptr(covariance_in.Clone()),
+      K_chol(num_sampled*num_sampled),
+      K_inv_y(num_sampled),
+      grad_hyperparameter_cov_matrix(num_hyperparameters*num_sampled*num_sampled),
+      temp_vec(num_sampled) {
+  std::vector<double> hyperparameters(num_hyperparameters);
+  covariance_ptr->GetHyperparameters(hyperparameters.data());
+  SetupState(log_likelihood_eval, hyperparameters.data());
+}
+
+LogMarginalLikelihoodState::LogMarginalLikelihoodState(LogMarginalLikelihoodState&& OL_UNUSED(other)) = default;
 
 namespace {  // utilities for Leave One Out log pseudo-likelihood computations
 
@@ -652,17 +753,24 @@ namespace {  // utilities for Leave One Out log pseudo-likelihood computations
     :mean[1]: the GP mean evaluated at ``X_i, y_i``
     :variance[1]: the GP variance evaluated at ``X_i``
 \endrst*/
-OL_NONNULL_POINTERS void LeaveOneOutCoreAccurate(const CovarianceInterface& covariance, double const * restrict noise_variance, double const * restrict points_sampled, double const * restrict points_sampled_value, int dim, int num_sampled, int index, double * restrict mean, double * restrict variance) noexcept {
+OL_NONNULL_POINTERS void LeaveOneOutCoreAccurate(const CovarianceInterface& covariance,
+                                                 double const * restrict noise_variance,
+                                                 double const * restrict points_sampled,
+                                                 double const * restrict points_sampled_value,
+                                                 int dim, int num_sampled, int index,
+                                                 double * restrict mean, double * restrict variance) noexcept {
   // strip out index-th training point, value
   std::vector<double> point_to_sample(points_sampled + index*dim, points_sampled + (index+1)*dim);
   const int num_to_sample = 1;
   std::vector<double> points_sampled_loo((num_sampled-1)*dim);
   std::copy(points_sampled, points_sampled + index*dim, points_sampled_loo.begin());
-  std::copy(points_sampled + (index+1)*dim, points_sampled + num_sampled*dim, points_sampled_loo.begin() + index*dim);
+  std::copy(points_sampled + (index+1)*dim, points_sampled + num_sampled*dim,
+            points_sampled_loo.begin() + index*dim);
 
   std::vector<double> points_sampled_value_loo(num_sampled-1);
   std::copy(points_sampled_value, points_sampled_value + index, points_sampled_value_loo.begin());
-  std::copy(points_sampled_value + (index+1), points_sampled_value + num_sampled, points_sampled_value_loo.begin() + index);
+  std::copy(points_sampled_value + (index+1), points_sampled_value + num_sampled,
+            points_sampled_value_loo.begin() + index);
 
   std::vector<double> noise_variance_loo(num_sampled-1);
   std::copy(noise_variance, noise_variance + index, noise_variance_loo.begin());
@@ -671,9 +779,11 @@ OL_NONNULL_POINTERS void LeaveOneOutCoreAccurate(const CovarianceInterface& cova
   // TODO(GH-191): Update the GP by removing one point. Each GP build is O(N_{sampled}^3) and we do it
   // N_{sampled} times. This would instead be N applications of an O(N^2) transformation to the covariance matrix,
   // available through LeaveOneOutLogLikelihoodState.
-  GaussianProcess gaussian_process(covariance, points_sampled_loo.data(), points_sampled_value_loo.data(), noise_variance_loo.data(), dim, num_sampled - 1);
+  GaussianProcess gaussian_process(covariance, points_sampled_loo.data(), points_sampled_value_loo.data(),
+                                   noise_variance_loo.data(), dim, num_sampled - 1);
   int num_derivatives = 0;
-  GaussianProcess::StateType points_to_sample_state(gaussian_process, point_to_sample.data(), num_to_sample, num_derivatives);
+  GaussianProcess::StateType points_to_sample_state(gaussian_process, point_to_sample.data(), num_to_sample,
+                                                    num_derivatives);
   gaussian_process.ComputeMeanOfPoints(points_to_sample_state, mean);
   gaussian_process.ComputeVarianceOfPoints(&points_to_sample_state, variance);
 }
@@ -704,28 +814,52 @@ OL_NONNULL_POINTERS void LeaveOneOutCoreAccurate(const CovarianceInterface& cova
     :mean[1]: the GP mean evaluated at ``X_i, y_i``
     :variance[1]: the GP variance evaluated at ``X_i``
 \endrst*/
-OL_NONNULL_POINTERS void LeaveOneOutCoreWithMatrixInverse(double const * restrict K_inv, double const * restrict K_inv_y, double const * restrict points_sampled_value, int index, double * restrict mean, double * restrict variance) noexcept {
+OL_NONNULL_POINTERS void LeaveOneOutCoreWithMatrixInverse(double const * restrict K_inv,
+                                                          double const * restrict K_inv_y,
+                                                          double const * restrict points_sampled_value,
+                                                          int index, double * restrict mean,
+                                                          double * restrict variance) noexcept {
   *mean = points_sampled_value[index] - K_inv_y[index]/K_inv[index];
   *variance = 1.0/K_inv[index];
 }
 
 }  // end unnamed namespace
 
-void LeaveOneOutLogLikelihoodEvaluator::BuildHyperparameterGradCovarianceMatrix(LeaveOneOutLogLikelihoodState * log_likelihood_state) const noexcept {
-  optimal_learning::BuildHyperparameterGradCovarianceMatrix(*log_likelihood_state->covariance_ptr, points_sampled_.data(), dim_, num_sampled_, log_likelihood_state->grad_hyperparameter_cov_matrix.data());
+LeaveOneOutLogLikelihoodEvaluator::LeaveOneOutLogLikelihoodEvaluator(double const * restrict points_sampled_in,
+                                                                     double const * restrict points_sampled_value_in,
+                                                                     double const * restrict noise_variance_in,
+                                                                     int dim_in, int num_sampled_in)
+    : dim_(dim_in),
+      num_sampled_(num_sampled_in),
+      points_sampled_(points_sampled_in, points_sampled_in + num_sampled_in*dim_in),
+      points_sampled_value_(points_sampled_value_in, points_sampled_value_in + num_sampled_in),
+      noise_variance_(noise_variance_in, noise_variance_in + num_sampled_) {
 }
 
-void LeaveOneOutLogLikelihoodEvaluator::FillLogLikelihoodState(LeaveOneOutLogLikelihoodState * log_likelihood_state) const {
+void LeaveOneOutLogLikelihoodEvaluator::BuildHyperparameterGradCovarianceMatrix(
+    LeaveOneOutLogLikelihoodState * log_likelihood_state) const noexcept {
+  optimal_learning::BuildHyperparameterGradCovarianceMatrix(*log_likelihood_state->covariance_ptr,
+                                                            points_sampled_.data(), dim_, num_sampled_,
+                                                            log_likelihood_state->grad_hyperparameter_cov_matrix.data());
+}
+
+void LeaveOneOutLogLikelihoodEvaluator::FillLogLikelihoodState(
+    LeaveOneOutLogLikelihoodState * log_likelihood_state) const {
   // K_chol
-  optimal_learning::BuildCovarianceMatrixWithNoiseVariance(*log_likelihood_state->covariance_ptr, noise_variance_.data(), points_sampled_.data(), dim_, num_sampled_, log_likelihood_state->K_chol.data());
-  ComputeCholeskyFactorL(num_sampled_, log_likelihood_state->K_chol.data());
+  optimal_learning::BuildCovarianceMatrixWithNoiseVariance(*log_likelihood_state->covariance_ptr,
+                                                           noise_variance_.data(), points_sampled_.data(),
+                                                           dim_, num_sampled_, log_likelihood_state->K_chol.data());
+  // TODO(GH-211): Re-examine ignoring singular covariance matrices here
+  int OL_UNUSED(chol_info) = ComputeCholeskyFactorL(num_sampled_, log_likelihood_state->K_chol.data());
 
   // K_inv
   SPDMatrixInverse(log_likelihood_state->K_chol.data(), num_sampled_, log_likelihood_state->K_inv.data());
 
   // K_inv_y
-  std::copy(points_sampled_value_.begin(), points_sampled_value_.end(), log_likelihood_state->K_inv_y.begin());
-  CholeskyFactorLMatrixVectorSolve(log_likelihood_state->K_chol.data(), num_sampled_, log_likelihood_state->K_inv_y.data());
+  std::copy(points_sampled_value_.begin(), points_sampled_value_.end(),
+            log_likelihood_state->K_inv_y.begin());
+  CholeskyFactorLMatrixVectorSolve(log_likelihood_state->K_chol.data(), num_sampled_,
+                                   log_likelihood_state->K_inv_y.data());
 }
 
 /*!\rst
@@ -742,15 +876,19 @@ void LeaveOneOutLogLikelihoodEvaluator::FillLogLikelihoodState(LeaveOneOutLogLik
 
   See Rasmussen & Williams 5.4.2 for more details.
 \endrst*/
-double LeaveOneOutLogLikelihoodEvaluator::ComputeLogLikelihood(const LeaveOneOutLogLikelihoodState& log_likelihood_state) const noexcept {
+double LeaveOneOutLogLikelihoodEvaluator::ComputeLogLikelihood(
+    const LeaveOneOutLogLikelihoodState& log_likelihood_state) const noexcept {
   double mean_fast, variance_fast;
   double loo_fast = 0.0;
   // double mean_accurate, variance_accurate;
   // double loo_accurate = 0.0;
   for (int i = 0; i < num_sampled_; ++i) {
     // compute \mu_i, \sigma_i^2 using explicit matrix inverse
-    LeaveOneOutCoreWithMatrixInverse(log_likelihood_state.K_inv.data() + i*num_sampled_, log_likelihood_state.K_inv_y.data(), points_sampled_value_.data(), i, &mean_fast, &variance_fast);
-    double probability_fast = -0.5*std::log(variance_fast) - 0.5*Square(points_sampled_value_[i] - mean_fast)/variance_fast - 0.5*kLog2Pi;
+    LeaveOneOutCoreWithMatrixInverse(log_likelihood_state.K_inv.data() + i*num_sampled_,
+                                     log_likelihood_state.K_inv_y.data(), points_sampled_value_.data(), i,
+                                     &mean_fast, &variance_fast);
+    double probability_fast = -0.5*std::log(variance_fast) -
+        0.5*Square(points_sampled_value_[i] - mean_fast)/variance_fast - 0.5*kLog2Pi;
     loo_fast += probability_fast;
 
     // LeaveOneOutCoreAccurate(covariance_, noise_variance.data(), points_sampled.data(), points_sampled_value.data(), dim_, num_sampled_, i, &mean_accurate, &variance_accurate);
@@ -785,7 +923,8 @@ double LeaveOneOutLogLikelihoodEvaluator::ComputeLogLikelihood(const LeaveOneOut
 
   See Rasmussen & Williams 5.4.2 for details.
 \endrst*/
-void LeaveOneOutLogLikelihoodEvaluator::ComputeGradLogLikelihood(LeaveOneOutLogLikelihoodState * log_likelihood_state, double * restrict grad_loo) const noexcept {
+void LeaveOneOutLogLikelihoodEvaluator::ComputeGradLogLikelihood(LeaveOneOutLogLikelihoodState * log_likelihood_state,
+                                                                 double * restrict grad_loo) const noexcept {
   BuildHyperparameterGradCovarianceMatrix(log_likelihood_state);
 
   double * restrict grad_hyperparameter_cov_matrix_ptr = log_likelihood_state->grad_hyperparameter_cov_matrix.data();
@@ -793,23 +932,31 @@ void LeaveOneOutLogLikelihoodEvaluator::ComputeGradLogLikelihood(LeaveOneOutLogL
   const int num_hyperparameters = log_likelihood_state->num_hyperparameters;
   for (int i_hyper = 0; i_hyper < num_hyperparameters; ++i_hyper) {
     // overwrite grad_hyperparameter_cov_matrix := K^-1 * grad_hyperparameter_cov_matrix, aka Z
-    CholeskyFactorLMatrixMatrixSolve(log_likelihood_state->K_chol.data(), num_sampled_, num_sampled_, grad_hyperparameter_cov_matrix_ptr);
+    CholeskyFactorLMatrixMatrixSolve(log_likelihood_state->K_chol.data(), num_sampled_, num_sampled_,
+                                     grad_hyperparameter_cov_matrix_ptr);
     // Z_alpha := K^-1 * grad_hyperparameter_cov_matrix * alpha = Z * alpha = Z * K^-1 * y
-    GeneralMatrixVectorMultiply(grad_hyperparameter_cov_matrix_ptr, 'N', log_likelihood_state->K_inv_y.data(), 1.0, 0.0, num_sampled_, num_sampled_, num_sampled_, log_likelihood_state->Z_alpha.data());
+    GeneralMatrixVectorMultiply(grad_hyperparameter_cov_matrix_ptr, 'N', log_likelihood_state->K_inv_y.data(),
+                                1.0, 0.0, num_sampled_, num_sampled_, num_sampled_,
+                                log_likelihood_state->Z_alpha.data());
 
     // TODO(GH-180): Consider using the explicit inverse so that we only have to form the diagonal of Z * K^-1 here.
 
     // Z_K_inv := Z^T
-    MatrixTranspose(grad_hyperparameter_cov_matrix_ptr, num_sampled_, num_sampled_, log_likelihood_state->Z_K_inv.data());
+    MatrixTranspose(grad_hyperparameter_cov_matrix_ptr, num_sampled_, num_sampled_,
+                    log_likelihood_state->Z_K_inv.data());
     // Z_K_inv := K^-1 * Z^T
-    CholeskyFactorLMatrixMatrixSolve(log_likelihood_state->K_chol.data(), num_sampled_, num_sampled_, log_likelihood_state->Z_K_inv.data());
+    CholeskyFactorLMatrixMatrixSolve(log_likelihood_state->K_chol.data(), num_sampled_, num_sampled_,
+                                     log_likelihood_state->Z_K_inv.data());
     // overwrite grad_hyperparameter_cov_matrix := (K^-1 * Z^T)^T = Z * K^-1 (recall: K^-1 is SPD)
-    MatrixTranspose(log_likelihood_state->Z_K_inv.data(), num_sampled_, num_sampled_, grad_hyperparameter_cov_matrix_ptr);
+    MatrixTranspose(log_likelihood_state->Z_K_inv.data(), num_sampled_, num_sampled_,
+                    grad_hyperparameter_cov_matrix_ptr);
 
     grad_loo[i_hyper] = 0.0;
     K_inv_ptr = log_likelihood_state->K_inv.data();
     for (int i = 0; i < num_sampled_; ++i) {
-      grad_loo[i_hyper] += (log_likelihood_state->K_inv_y[i]*log_likelihood_state->Z_alpha[i] - 0.5*(1.0 + Square(log_likelihood_state->K_inv_y[i])/K_inv_ptr[i])*grad_hyperparameter_cov_matrix_ptr[i]) / K_inv_ptr[i];
+      grad_loo[i_hyper] += (log_likelihood_state->K_inv_y[i]*log_likelihood_state->Z_alpha[i] -
+                            0.5*(1.0 + Square(log_likelihood_state->K_inv_y[i])/K_inv_ptr[i]) *
+                            grad_hyperparameter_cov_matrix_ptr[i]) / K_inv_ptr[i];
       K_inv_ptr += num_sampled_;
       grad_hyperparameter_cov_matrix_ptr += num_sampled_;
     }
@@ -820,8 +967,54 @@ void LeaveOneOutLogLikelihoodEvaluator::ComputeGradLogLikelihood(LeaveOneOutLogL
   NOT IMPLEMENTED
   Kludge to make it so that I can use general template code w/o special casing LeaveOneOutLogLikelihoodEvaluator.
 \endrst*/
-void LeaveOneOutLogLikelihoodEvaluator::ComputeHessianLogLikelihood(LeaveOneOutLogLikelihoodState * OL_UNUSED(log_likelihood_state), double * restrict OL_UNUSED(hessian_loo)) const {
-  OL_THROW_EXCEPTION(RuntimeException, "LeaveOneOutLogLikelihoodEvaluator::ComputeHessianLogLikelihood is NOT IMPLEMENTED.");
+void LeaveOneOutLogLikelihoodEvaluator::ComputeHessianLogLikelihood(
+    LeaveOneOutLogLikelihoodState * OL_UNUSED(log_likelihood_state),
+    double * restrict OL_UNUSED(hessian_loo)) const {
+  OL_THROW_EXCEPTION(OptimalLearningException, "LeaveOneOutLogLikelihoodEvaluator::ComputeHessianLogLikelihood is NOT IMPLEMENTED.");
 }
+
+void LeaveOneOutLogLikelihoodState::UpdateHyperparameters(const EvaluatorType& log_likelihood_eval,
+                                                        double const * restrict hyperparameters) {
+  // update hyperparameters
+  covariance_ptr->SetHyperparameters(hyperparameters);
+
+  // evaluate derived quantities
+  log_likelihood_eval.FillLogLikelihoodState(this);
+}
+
+void LeaveOneOutLogLikelihoodState::SetupState(const EvaluatorType& log_likelihood_eval,
+                                               double const * restrict hyperparameters) {
+  if (unlikely(num_sampled != log_likelihood_eval.num_sampled())) {
+    num_sampled = log_likelihood_eval.num_sampled();
+    K_chol.resize(num_sampled*num_sampled);
+    K_inv.resize(num_sampled*num_sampled);
+    K_inv_y.resize(num_sampled);
+    grad_hyperparameter_cov_matrix.resize(num_hyperparameters*num_sampled*num_sampled);
+    Z_alpha.resize(num_sampled);
+    Z_K_inv.resize(num_sampled*num_sampled);
+  }
+
+  // set hyperparameters and derived quantities
+  UpdateHyperparameters(log_likelihood_eval, hyperparameters);
+}
+
+LeaveOneOutLogLikelihoodState::LeaveOneOutLogLikelihoodState(const EvaluatorType& log_likelihood_eval,
+                                                             const CovarianceInterface& covariance_in)
+    : dim(log_likelihood_eval.dim()),
+      num_sampled(log_likelihood_eval.num_sampled()),
+      num_hyperparameters(covariance_in.GetNumberOfHyperparameters()),
+      covariance_ptr(covariance_in.Clone()),
+      K_chol(num_sampled*num_sampled),
+      K_inv(num_sampled*num_sampled),
+      K_inv_y(num_sampled),
+      grad_hyperparameter_cov_matrix(num_hyperparameters*num_sampled*num_sampled),
+      Z_alpha(num_sampled),
+      Z_K_inv(num_sampled*num_sampled) {
+  std::vector<double> hyperparameters(num_hyperparameters);
+  covariance_ptr->GetHyperparameters(hyperparameters.data());
+  SetupState(log_likelihood_eval, hyperparameters.data());
+}
+
+LeaveOneOutLogLikelihoodState::LeaveOneOutLogLikelihoodState(LeaveOneOutLogLikelihoodState&& OL_UNUSED(other)) = default;
 
 }  // end namespace optimal_learning

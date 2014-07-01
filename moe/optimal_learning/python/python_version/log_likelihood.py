@@ -40,6 +40,7 @@ import numpy
 
 import scipy.linalg
 
+from moe.optimal_learning.python.constant import DEFAULT_MAX_NUM_THREADS
 from moe.optimal_learning.python.geometry_utils import ClosedInterval
 from moe.optimal_learning.python.interfaces.log_likelihood_interface import GaussianProcessLogLikelihoodInterface
 from moe.optimal_learning.python.interfaces.optimization_interface import OptimizableInterface
@@ -52,7 +53,7 @@ def multistart_hyperparameter_optimization(
         hyperparameter_optimizer,
         num_multistarts,
         randomness=None,
-        max_num_threads=1,
+        max_num_threads=DEFAULT_MAX_NUM_THREADS,
         status=None,
 ):
     r"""Select the hyperparameters that maximize the specified log likelihood measure of model fit (over the historical data) within the specified domain.
@@ -116,7 +117,11 @@ def multistart_hyperparameter_optimization(
     return best_hyperparameters
 
 
-def evaluate_log_likelihood_at_hyperparameter_list(log_likelihood_evaluator, hyperparameters_to_evaluate, max_num_threads=1):
+def evaluate_log_likelihood_at_hyperparameter_list(
+        log_likelihood_evaluator,
+        hyperparameters_to_evaluate,
+        max_num_threads=DEFAULT_MAX_NUM_THREADS,
+):
     """Compute the specified log likelihood measure at each input set of hyperparameters.
 
     Generally Newton or gradient descent is preferred but when they fail to converge this may be the only "robust" option.
@@ -194,15 +199,17 @@ class GaussianProcessLogMarginalLikelihood(GaussianProcessLogLikelihoodInterface
 
     def get_hyperparameters(self):
         """Get the hyperparameters (array of float64 with shape (num_hyperparameters)) of this covariance."""
-        return self._covariance.get_hyperparameters()
+        return self._covariance.hyperparameters
 
     def set_hyperparameters(self, hyperparameters):
         """Set hyperparameters to the specified hyperparameters; ordering must match."""
-        self._covariance.set_hyperparameters(hyperparameters)
+        self._covariance.hyperparameters = hyperparameters
+
+    hyperparameters = property(get_hyperparameters, set_hyperparameters)
 
     def get_current_point(self):
         """Get the current_point (array of float64 with shape (problem_size)) at which this object is evaluating the objective function, ``f(x)``."""
-        return self.get_hyperparameters()
+        return self.hyperparameters
 
     def set_current_point(self, current_point):
         """Set current_point to the specified point; ordering must match.
@@ -211,12 +218,14 @@ class GaussianProcessLogMarginalLikelihood(GaussianProcessLogLikelihoodInterface
         :type current_point: array of float64 with shape (problem_size)
 
         """
-        self.set_hyperparameters(current_point)
+        self.hyperparameters = current_point
+
+    current_point = property(get_current_point, set_current_point)
 
     def compute_log_likelihood(self):
         r"""Compute the _log_likelihood_type measure at the specified hyperparameters.
 
-        .. NOTE:: These comments are copied from LogMarginalLikelihoodEvaluator::ComputeLogLikelihood in gpp_model_selection_and_hyperparameter_optimization.cpp.
+        .. NOTE:: These comments are copied from LogMarginalLikelihoodEvaluator::ComputeLogLikelihood in gpp_model_selection.cpp.
 
         ``log p(y | X, \theta) = -\frac{1}{2} * y^T * K^-1 * y - \frac{1}{2} * \log(det(K)) - \frac{n}{2} * \log(2*pi)``
         where n is ``num_sampled``, ``\theta`` are the hyperparameters, and ``\log`` is the natural logarithm.  In the following,
@@ -257,7 +266,7 @@ class GaussianProcessLogMarginalLikelihood(GaussianProcessLogLikelihoodInterface
     def compute_grad_log_likelihood(self):
         r"""Compute the gradient (wrt hyperparameters) of the _log_likelihood_type measure at the specified hyperparameters.
 
-        .. NOTE:: These comments are copied from LogMarginalLikelihoodEvaluator::ComputeGradLogLikelihood in gpp_model_selection_and_hyperparameter_optimization.cpp.
+        .. NOTE:: These comments are copied from LogMarginalLikelihoodEvaluator::ComputeGradLogLikelihood in gpp_model_selection.cpp.
 
         Computes ``\pderiv{log(p(y | X, \theta))}{\theta_k} = \frac{1}{2} * y_i * \pderiv{K_{ij}}{\theta_k} * y_j - \frac{1}{2}``
         ``* trace(K^{-1}_{ij}\pderiv{K_{ij}}{\theta_k})``

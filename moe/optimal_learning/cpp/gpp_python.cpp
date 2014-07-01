@@ -14,6 +14,7 @@
 #include "Python.h"  // NOLINT(build/include)
 
 // NOLINT-ing the C, C++ header includes as well; otherwise cpplint gets confused
+#include <exception>  // NOLINT(build/include_order)
 #include <string>  // NOLINT(build/include_order)
 #include <type_traits>  // NOLINT(build/include_order)
 
@@ -55,13 +56,16 @@ namespace {  // unnamed namespace for exception translation (for BOOST_PYTHON_MO
   \param
     :name[]: ptr to char array containing the desired name of the new Python exception type
     :docstring[]: ptr to char array with the docstring for the new Python exception type
+    :base_type[1]: nullptr or ptr to the Python type object serving as the base class for the new exception.
+      nullptr means PyExc_Exception (Python type Exception) will be used.
     :scope[1]: the scope to add the new exception types to
   \output
+    :base_type[1]: python object modified through PyErr_NewException call (incref'd).
     :scope[1]: the input scope with the new exception types added
   \return
     PyObject pointer to the (callable) type object (the new exception type) that was created
 \endrst*/
-OL_WARN_UNUSED_RESULT PyObject * CreatePyExceptionClass(const char * name, const char * docstring, boost::python::scope * scope) {
+OL_WARN_UNUSED_RESULT PyObject * CreatePyExceptionClass(const char * name, const char * docstring, PyObject * base_type, boost::python::scope * scope) {
   std::string scope_name = boost::python::extract<std::string>(scope->attr("__name__"));
   std::string qualified_name = scope_name + "." + name;
 
@@ -100,13 +104,13 @@ OL_WARN_UNUSED_RESULT PyObject * CreatePyExceptionClass(const char * name, const
   // first nullptr: base class for NewException will be PyExc_Exception unless overriden
   // second nullptr: no default member fields (could pass a dict with default fields)
 #if defined(PY_MAJOR_VERSION) && ((PY_MAJOR_VERSION > 2) || ((PY_MAJOR_VERSION == 2) && (PY_MINOR_VERSION >= 7)))
-  PyObject * type_object = PyErr_NewExceptionWithDoc(const_cast<char *>(qualified_name.c_str()), const_cast<char *>(docstring), nullptr, nullptr);
+  PyObject * type_object = PyErr_NewExceptionWithDoc(const_cast<char *>(qualified_name.c_str()), const_cast<char *>(docstring), base_type, nullptr);
 #else
   // PyErr_NewExceptionWithDoc did not exist before Python 2.7, so we "cannot" attach a docstring to our new type object.
   // Attributes of metaclassses (i.e., type objects) are not writeable after creation of that type object. So the only
   // way to add a docstring here would be to build the type from scratch, which is too much pain for just a docstring.
   (void) docstring;  // quiet the compiler warning (unused variable)
-  PyObject * type_object = PyErr_NewException(const_cast<char *>(qualified_name.c_str()), nullptr, nullptr);
+  PyObject * type_object = PyErr_NewException(const_cast<char *>(qualified_name.c_str()), base_type, nullptr);
 #endif
   if (!type_object) {
     boost::python::throw_error_already_set();
@@ -186,14 +190,17 @@ class PyExceptionClassContainer {
 
       // Note: If listing exception type objects here gets unwieldly, we can store them in an
       // array<> of typle<>, making Initialize() just a simple for (item : array) { ... } loop.
+      static char const * optimal_learning_exception_docstring = "Base exception class for errors thrown/raised from the (C++) ``optimal_learning`` library.";
+      optimal_learning_exception_type_object_ = CreatePyExceptionClass(OptimalLearningException::kName, optimal_learning_exception_docstring, nullptr, scope_);
+
       static char const * bounds_exception_docstring = "value not in range [min, max].";
-      bounds_exception_type_object_ = CreatePyExceptionClass(bounds_exception_name_, bounds_exception_docstring, scope_);
+      bounds_exception_type_object_ = CreatePyExceptionClass(BoundsException<double>::kName, bounds_exception_docstring, optimal_learning_exception_type_object_, scope_);
 
       static char const * invalid_value_exception_docstring = "value != truth (+/- tolerance)";
-      invalid_value_exception_type_object_ = CreatePyExceptionClass(invalid_value_exception_name_, invalid_value_exception_docstring, scope_);
+      invalid_value_exception_type_object_ = CreatePyExceptionClass(InvalidValueException<double>::kName, invalid_value_exception_docstring, optimal_learning_exception_type_object_, scope_);
 
       static char const * singular_matrix_exception_docstring = "num_rows X num_cols matrix is singular";
-      singular_matrix_exception_type_object_ = CreatePyExceptionClass(singular_matrix_exception_name_, singular_matrix_exception_docstring, scope_);
+      singular_matrix_exception_type_object_ = CreatePyExceptionClass(SingularMatrixException::kName, singular_matrix_exception_docstring, optimal_learning_exception_type_object_, scope_);
 
       initialized_ = true;
     }
@@ -220,6 +227,10 @@ class PyExceptionClassContainer {
     singular_matrix_exception_type_object_ = default_exception_type_object_;
   }
 
+  PyObject * optimal_learning_exception_type_object() const noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
+    return optimal_learning_exception_type_object_;
+  }
+
   PyObject * bounds_exception_type_object() const noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
     return bounds_exception_type_object_;
   }
@@ -233,15 +244,11 @@ class PyExceptionClassContainer {
   }
 
  private:
-  // names to use in Python (just for convenience)
-  constexpr static char const * const bounds_exception_name_ = BoundsException<double>::kName;
-  constexpr static char const * const invalid_value_exception_name_ = InvalidValueException<double>::kName;
-  constexpr static char const * const singular_matrix_exception_name_ = SingularMatrixException::kName;
-
   // Fall back to this type object if something has not been initialized or we are otherwise confused.
   static PyObject * const default_exception_type_object_;
 
   // pointers to Python callable objects that build the Python exception classes
+  static PyObject * optimal_learning_exception_type_object_;
   static PyObject * bounds_exception_type_object_;
   static PyObject * invalid_value_exception_type_object_;
   static PyObject * singular_matrix_exception_type_object_;
@@ -254,11 +261,36 @@ class PyExceptionClassContainer {
 };
 
 PyObject * const PyExceptionClassContainer::default_exception_type_object_ = PyExc_RuntimeError;
+PyObject * PyExceptionClassContainer::optimal_learning_exception_type_object_ = PyExceptionClassContainer::default_exception_type_object_;
 PyObject * PyExceptionClassContainer::bounds_exception_type_object_ = PyExceptionClassContainer::default_exception_type_object_;
 PyObject * PyExceptionClassContainer::invalid_value_exception_type_object_ = PyExceptionClassContainer::default_exception_type_object_;
 PyObject * PyExceptionClassContainer::singular_matrix_exception_type_object_ = PyExceptionClassContainer::default_exception_type_object_;
 boost::python::scope * PyExceptionClassContainer::scope_ = nullptr;
 bool PyExceptionClassContainer::initialized_ = false;
+
+/*!\rst
+  Translate std::exception to a Python exception, maintaining the data fields.
+  This translator can capture *any* std::exception, so make sure it does not mask your other translators.
+
+  \param
+    :except: C++ exception to translate
+    :py_exception_type_objects: PyExceptionClassContainer with the appropriate type object for constructing the
+      translated Python exception base class. We assume that this type inherits from Exception.
+  \return
+    **NEVER RETURNS**
+\endrst*/
+OL_NORETURN void TranslateStdException(const std::exception& except, const PyExceptionClassContainer& py_exception_type_objects) {
+  PyObject * base_exception_class = py_exception_type_objects.optimal_learning_exception_type_object();
+
+  boost::python::object base_except_type(boost::python::handle<>(boost::python::borrowed(base_exception_class)));
+  boost::python::object instance = base_except_type(except.what());  // analogue of PyObject_CallObject(base_except.ptr(), args)
+
+  // Note: SetObject gets ownership (*not* borrow) of both references (type object and instance/value);
+  // i.e., it INCREFs at the start and objects will be DECREF'd when the exception handling completes.
+  PyErr_SetObject(base_except_type.ptr(), instance.ptr());
+  boost::python::throw_error_already_set();
+  throw;  // suppress warning; throw_error_already_set() never returns but isn't marked noreturn: https://svn.boost.org/trac/boost/ticket/1482
+}
 
 /*!\rst
   Translate BoundsException to a Python exception, maintaining the data fields.
@@ -333,7 +365,6 @@ OL_NORETURN void TranslateSingularMatrixException(const SingularMatrixException&
   boost::python::object instance = base_except_type(except.what());  // analogue of PyObject_CallObject(base_except.ptr(), args)
 
   instance.attr("num_rows") = except.num_rows();
-  instance.attr("num_cols") = except.num_cols();
   // TODO(GH-159): this would make more sense as a numpy array/matrix
   instance.attr("matrix") = VectorToPylist(except.matrix());
 
@@ -401,6 +432,8 @@ void RegisterOptimalLearningExceptions() {
   // Note: boost python stores exception translators in a LIFO stack. The most recently (in code execution order)
   // registered translator gets "first shot" at matching incoming exceptions. Reference:
   // http://www.boost.org/doc/libs/1_55_0/libs/python/doc/v2/exception_translator.html
+  // TranslateStdException MUST appear first! Otherwise it will *mask* other translate preceding it.
+  RegisterExceptionTranslatorWithPayload<std::exception>(py_exception_type_objects, &TranslateStdException);
   RegisterExceptionTranslatorWithPayload<SingularMatrixException>(py_exception_type_objects, &TranslateSingularMatrixException);
   RegisterExceptionTranslatorWithPayload<InvalidValueException<int>>(py_exception_type_objects, &TranslateInvalidValueException<int>);
   RegisterExceptionTranslatorWithPayload<InvalidValueException<double>>(py_exception_type_objects, &TranslateInvalidValueException<double>);
@@ -483,7 +516,7 @@ BOOST_PYTHON_MODULE(GPP) {
     These docstrings currently provide fairly high level (and sometimes sparse) descriptions.
     For further details, see the file documents for the C++ hpp and cpp files. Header (hpp) files contain more high
     level descriptions/motivation whereas source (cpp) files contain more [mathematical] details.
-    gpp_math.hpp and gpp_model_selection_and_hyperparameter_optimization.hpp are good starting points for more reading.
+    gpp_math.hpp and gpp_model_selection.hpp are good starting points for more reading.
 
     TODO(GH-25): when we have jemdoc (or whatever tool), point this to those docs as well.
 

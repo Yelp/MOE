@@ -72,6 +72,24 @@ double VectorNorm(double const * restrict vector, int size) noexcept {
   return scale * std::sqrt(scaled_norm);
 }
 
+void MatrixTranspose(double const * restrict matrix, int num_rows, int num_cols, double * restrict transpose) noexcept {
+  for (int i = 0; i < num_rows; ++i) {
+    for (int j = 0; j < num_cols; ++j) {
+      transpose[j] = matrix[j*num_rows + i];
+    }
+    transpose += num_cols;
+  }
+}
+
+void ZeroUpperTriangle(int size, double * restrict matrix) noexcept {
+  for (int i = 0; i < size; ++i) {
+    for (int j = 0; j < i; ++j) {
+      matrix[j] = 0.0;
+    }
+    matrix += size;
+  }
+}
+
 /*!\rst
   Cholesky factorization, ``A = L * L^T`` (see Smith 1995 or Golub, Van Loan 1983, etc.)
   This implementation uses the outer-product formulation.  The outer-product version is
@@ -89,7 +107,7 @@ double VectorNorm(double const * restrict vector, int size) noexcept {
 \endrst*/
 // TODO(GH-172): change this to be gaxpy or (block) dot-prod style
 // to improve performance & numerical characteristics.
-void ComputeCholeskyFactorL(int size_m, double * restrict chol) {
+int ComputeCholeskyFactorL(int size_m, double * restrict chol) noexcept {
   double * restrict chol_temp = chol;
   // Apply outer-product-based Cholesky algorithm: 1/3*N^3 + O(N^2)
   // Here, L_{ij} = chol[j*size_m + i] is the input matrix (on input) and the cholesky factor of that matrix (on exit).
@@ -118,10 +136,16 @@ void ComputeCholeskyFactorL(int size_m, double * restrict chol) {
       }
 #undef OL_CHOL
     } else {
-      OL_ERROR_PRINTF("cholesky matrix singular %.18E", chol_temp[k]);
+      // We fail if the matrix is singular. In the outer-product formulation here,
+      // you can ignore the "0" diagonal entry and continue, which produces a
+      // semi-positive definite factorization (see Golub, Van Loan 1983).
+      OL_ERROR_PRINTF("cholesky matrix singular %.18E ", chol_temp[k]);
+      return k + 1;
     }
     chol_temp += size_m;
   }
+
+  return 0;
 }
 
 /*!\rst
@@ -371,16 +395,6 @@ void GeneralMatrixMatrixMultiply(double const * restrict Amat, char transA, doub
       Bmat += size_k;
       Cmat += size_m;
     }
-  }
-}
-
-void MatrixTranspose(double const * restrict matrix, int num_rows, int num_cols, double * restrict transpose) noexcept {
-  // returns the transpose of a matrix
-  for (int i = 0; i < num_rows; ++i) {
-    for (int j = 0; j < num_cols; ++j) {
-      transpose[j] = matrix[j*num_rows + i];
-    }
-    transpose += num_cols;
   }
 }
 

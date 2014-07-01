@@ -6,9 +6,6 @@ import simplejson as json
 
 from moe.optimal_learning.python.data_containers import HistoricalData
 from moe.views.constant import ALL_REST_ROUTES_ROUTE_NAME_TO_ENDPOINT, GP_NEXT_POINTS_EPI_ROUTE_NAME, GP_MEAN_VAR_ROUTE_NAME, GP_HYPER_OPT_ROUTE_NAME
-from moe.views.gp_next_points_pretty_view import GpNextPointsResponse
-from moe.views.rest.gp_hyper_opt import GpHyperOptResponse
-from moe.views.rest.gp_mean_var import GpMeanVarResponse
 
 
 DEFAULT_HOST = '127.0.0.1'
@@ -46,11 +43,15 @@ def gp_next_points(
 
     url = "http://{0}:{1:d}{2}".format(rest_host, rest_port, endpoint)
 
-    json_response = call_endpoint_with_payload(url, json_payload)
+    output = call_endpoint_with_payload(url, json_payload)
 
-    output = GpNextPointsResponse().deserialize(json_response)
+    # TODO(GH-248) Clean this up, deserialize in a cleaner way
+    # Convert to floats
+    points_to_sample = [list(point) for point in output['points_to_sample']]
+    for i, point in enumerate(points_to_sample):
+        points_to_sample[i] = [float(coordinate) for coordinate in point]
 
-    return output["points_to_sample"]
+    return points_to_sample
 
 
 def _build_gp_historical_info_from_points_sampled(points_sampled):
@@ -92,11 +93,13 @@ def gp_hyper_opt(
 
     url = "http://{0}:{1:d}{2}".format(rest_host, rest_port, endpoint)
 
-    json_response = call_endpoint_with_payload(url, json_payload)
+    output = call_endpoint_with_payload(url, json_payload)
 
-    output = GpHyperOptResponse().deserialize(json_response)
+    # TODO(GH-248) Clean this up, deserialize in a cleaner way
+    covariance_info = output.get('covariance_info')
+    covariance_info['hyperparameters'] = [float(hyperparameter) for hyperparameter in covariance_info['hyperparameters']]
 
-    return output.get('covariance_info')
+    return covariance_info
 
 
 def gp_mean_var(
@@ -125,8 +128,13 @@ def gp_mean_var(
 
     url = "http://{0}:{1:d}{2}".format(rest_host, rest_port, endpoint)
 
-    json_response = call_endpoint_with_payload(url, json_payload)
+    output = call_endpoint_with_payload(url, json_payload)
 
-    output = GpMeanVarResponse().deserialize(json_response)
+    # TODO(GH-248) Clean this up, deserialize in a cleaner way
+    mean = output.get('mean')
+    var = output.get('var')
+    mean = [float(point_mean) for point_mean in mean]
+    for col, col_var in enumerate(var):
+        var[col] = [float(col_var_el) for col_var_el in col_var]
 
-    return output.get('mean'), output.get('var')
+    return mean, var

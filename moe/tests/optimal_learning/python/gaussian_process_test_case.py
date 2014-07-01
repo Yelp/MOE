@@ -17,7 +17,6 @@ from moe.tests.optimal_learning.python.optimal_learning_test_case import Optimal
 # See GaussianProcessTestEnvironment (below) for docstring.
 _BaseGaussianProcessTestEnvironment = collections.namedtuple('GaussianProcessTestEnvironment', [
     'domain',
-    'covariance',
     'gaussian_process',
 ])
 
@@ -27,7 +26,6 @@ class GaussianProcessTestEnvironment(_BaseGaussianProcessTestEnvironment):
     """An object for representing a (randomly generated) Gaussian Process.
 
     :ivar domain: (*interfaces.domain_interface.DomainInterface subclass*) domain the GP was built on
-    :ivar covariance: (*interfaces.covariance_interface.CovarianceInterface subclass*) covariance function of the GP
     :ivar gaussian_process: (*interfaces.gaussian_process_interface.GaussianProcessInterface subclass*) the constructed GP
 
     """
@@ -146,8 +144,8 @@ class GaussianProcessTestCase(OptimalLearningTestCase):
         gaussian_process_class=GaussianProcess,
     )
 
-    num_sampled_list = [1, 2, 3, 5, 10, 16, 20, 42]
-    num_to_sample_list = [1, 2, 3, 8]
+    num_sampled_list = (1, 2, 3, 5, 10, 16, 20, 42)
+    num_to_sample_list = (1, 2, 3, 8)
 
     @T.class_setup
     def base_setup(self):
@@ -200,4 +198,4 @@ class GaussianProcessTestCase(OptimalLearningTestCase):
             noise_variance=test_environment.noise_variance,
             gaussian_process_type=test_environment.gaussian_process_class,
         )
-        return GaussianProcessTestEnvironment(domain, covariance, gaussian_process)
+        return GaussianProcessTestEnvironment(domain, gaussian_process)

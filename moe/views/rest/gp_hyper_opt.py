@@ -9,12 +9,13 @@ import colander
 
 from pyramid.view import view_config
 
+from moe.optimal_learning.python.constant import DEFAULT_MAX_NUM_THREADS
 from moe.optimal_learning.python.cpp_wrappers.log_likelihood import GaussianProcessLogLikelihood, multistart_hyperparameter_optimization
 from moe.views.constant import GP_HYPER_OPT_ROUTE_NAME, GP_HYPER_OPT_PRETTY_ROUTE_NAME
 from moe.views.gp_pretty_view import GpPrettyView, PRETTY_RENDERER
 from moe.views.optimizable_gp_pretty_view import OptimizableGpPrettyView
 from moe.views.schemas import GpHistoricalInfo, CovarianceInfo, BoundedDomainInfo, OptimizationInfo, DomainInfo, ListOfFloats
-from moe.views.utils import _build_covariance_info, _make_domain_from_params, _make_gp_from_params, _make_optimization_parameters_from_params
+from moe.views.utils import _make_domain_from_params, _make_gp_from_params, _make_optimization_parameters_from_params
 
 
 class GpHyperOptRequest(colander.MappingSchema):
@@ -29,6 +30,7 @@ class GpHyperOptRequest(colander.MappingSchema):
 
     **Optional fields**
 
+        :max_num_threads: maximum number of threads to use in computation (default: 1)
         :covariance_info: a :class:`moe.views.schemas.CovarianceInfo` dict of covariance information, used as a starting point for optimization
         :optimiaztion_info: a :class:`moe.views.schemas.OptimizationInfo` dict of optimization information
 
@@ -39,32 +41,33 @@ class GpHyperOptRequest(colander.MappingSchema):
         Content-Type: text/javascript
 
         {
-            'gp_historical_info': {
-                'points_sampled': [
-                        {'value_var': 0.01, 'value': 0.1, 'point': [0.0]},
-                        {'value_var': 0.01, 'value': 0.2, 'point': [1.0]}
+            "max_num_threads": 1,
+            "gp_historical_info": {
+                "points_sampled": [
+                        {"value_var": 0.01, "value": 0.1, "point": [0.0]},
+                        {"value_var": 0.01, "value": 0.2, "point": [1.0]}
                     ],
                 },
-            'domain_info': {
-                'dim': 1,
+            "domain_info": {
+                "dim": 1,
                 },
-            'covariance_info': {
-                'covariance_type': 'square_exponential',
-                'hyperparameters': [1.0, 1.0],
+            "covariance_info": {
+                "covariance_type": "square_exponential",
+                "hyperparameters": [1.0, 1.0],
                 },
-            'hyperparameter_domain_info': {
-                'dim': 2,
-                'domain_bounds': [
-                    {'min': 0.1, 'max': 2.0},
-                    {'min': 0.1, 'max': 2.0},
+            "hyperparameter_domain_info": {
+                "dim": 2,
+                "domain_bounds": [
+                    {"min": 0.1, "max": 2.0},
+                    {"min": 0.1, "max": 2.0},
                     ],
                 },
-            'optimization_info': {
-                'optimization_type': 'gradient_descent_optimizer',
-                'num_multistarts': 200,
-                'num_random_samples': 4000,
-                'optimization_parameters': {
-                    'gamma': 0.5,
+            "optimization_info": {
+                "optimization_type": "gradient_descent_optimizer",
+                "num_multistarts": 200,
+                "num_random_samples": 4000,
+                "optimization_parameters": {
+                    "gamma": 0.5,
                     ...
                     },
                 },
@@ -72,6 +75,11 @@ class GpHyperOptRequest(colander.MappingSchema):
 
     """
 
+    max_num_threads = colander.SchemaNode(
+            colander.Int(),
+            validator=colander.Range(min=1),
+            missing=DEFAULT_MAX_NUM_THREADS,
+            )
     gp_historical_info = GpHistoricalInfo()
     domain_info = DomainInfo()
     covariance_info = CovarianceInfo(
@@ -115,9 +123,9 @@ class GpHyperOptResponse(colander.MappingSchema):
 
         {
             "endpoint":"gp_hyper_opt",
-            'covariance_info': {
-                'covariance_type': 'square_exponential',
-                'hyperparameters': [0.88, 1.24],
+            "covariance_info": {
+                "covariance_type": "square_exponential",
+                "hyperparameters": [0.88, 1.24],
                 },
         }
 
@@ -183,6 +191,7 @@ class GpHyperOptView(OptimizableGpPrettyView):
         """
         params = self.get_params_from_request()
 
+        max_num_threads = params.get('max_num_threads')
         hyperparameter_domain = _make_domain_from_params(params, domain_info_key='hyperparameter_domain_info')
         gaussian_process = _make_gp_from_params(params)
         covariance_of_process = gaussian_process._covariance
@@ -204,16 +213,17 @@ class GpHyperOptView(OptimizableGpPrettyView):
         optimized_hyperparameters = multistart_hyperparameter_optimization(
             log_likelihood_optimizer,
             optimization_parameters.num_multistarts,
+            max_num_threads=max_num_threads,
             status=hyperopt_status,
         )
 
-        covariance_of_process.set_hyperparameters(optimized_hyperparameters)
+        covariance_of_process.hyperparameters = optimized_hyperparameters
 
-        log_likelihood_eval.set_current_point(optimized_hyperparameters)
+        log_likelihood_eval.current_point = optimized_hyperparameters
 
         return self.form_response({
                 'endpoint': self._route_name,
-                'covariance_info': _build_covariance_info(covariance_of_process),
+                'covariance_info': covariance_of_process.get_json_serializable_info(),
                 'status': {
                     'log_likelihood': log_likelihood_eval.compute_log_likelihood(),
                     'grad_log_likelihood': log_likelihood_eval.compute_grad_log_likelihood().tolist(),

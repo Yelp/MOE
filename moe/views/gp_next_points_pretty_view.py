@@ -9,7 +9,7 @@ import colander
 
 import numpy
 
-from moe.optimal_learning.python.constant import DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS
+from moe.optimal_learning.python.constant import DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS, DEFAULT_MAX_NUM_THREADS
 import moe.optimal_learning.python.cpp_wrappers.expected_improvement
 from moe.optimal_learning.python.cpp_wrappers.expected_improvement import ExpectedImprovement
 from moe.views.gp_pretty_view import GpPrettyView
@@ -31,6 +31,7 @@ class GpNextPointsRequest(colander.MappingSchema):
 
         :num_to_sample: number of next points to generate (default: 1)
         :mc_iterations: number of Monte Carlo (MC) iterations to perform in numerical integration to calculate EI
+        :max_num_threads: maximum number of threads to use in computation (default: 1)
         :covariance_info: a :class:`moe.views.schemas.CovarianceInfo` dict of covariance information
         :optimization_info: a :class:`moe.views.schemas.OptimizationInfo` dict of optimization information
         :points_being_sampled: list of points in domain being sampled in concurrent experiments (default: [])
@@ -42,17 +43,17 @@ class GpNextPointsRequest(colander.MappingSchema):
         Content-Type: text/javascript
 
         {
-            'num_to_sample': 1,
-            'gp_historical_info': {
-                'points_sampled': [
-                        {'value_var': 0.01, 'value': 0.1, 'point': [0.0]},
-                        {'value_var': 0.01, 'value': 0.2, 'point': [1.0]}
+            "num_to_sample": 1,
+            "gp_historical_info": {
+                "points_sampled": [
+                        {"value_var": 0.01, "value": 0.1, "point": [0.0]},
+                        {"value_var": 0.01, "value": 0.2, "point": [1.0]}
                     ],
                 },
-            'domain_info': {
-                'dim': 1,
-                'domain_bounds': [
-                    {'min': 0.0, 'max': 1.0},
+            "domain_info": {
+                "dim": 1,
+                "domain_bounds": [
+                    {"min": 0.0, "max": 1.0},
                     ],
                 },
         }
@@ -64,32 +65,33 @@ class GpNextPointsRequest(colander.MappingSchema):
         Content-Type: text/javascript
 
         {
-            'num_to_sample': 1,
-            'points_being_sampled': [[0.2], [0.7]],
-            'mc_iterations': 10000,
-            'gp_historical_info': {
-                'points_sampled': [
-                        {'value_var': 0.01, 'value': 0.1, 'point': [0.0]},
-                        {'value_var': 0.01, 'value': 0.2, 'point': [1.0]}
+            "num_to_sample": 1,
+            "points_being_sampled": [[0.2], [0.7]],
+            "mc_iterations": 10000,
+            "max_num_threads": 1,
+            "gp_historical_info": {
+                "points_sampled": [
+                        {"value_var": 0.01, "value": 0.1, "point": [0.0]},
+                        {"value_var": 0.01, "value": 0.2, "point": [1.0]}
                     ],
                 },
-            'domain_info': {
-                'domain_type': 'tensor_product'
-                'dim': 1,
-                'domain_bounds': [
-                    {'min': 0.0, 'max': 1.0},
+            "domain_info": {
+                "domain_type": "tensor_product"
+                "dim": 1,
+                "domain_bounds": [
+                    {"min": 0.0, "max": 1.0},
                     ],
                 },
-            'covariance_info': {
-                'covariance_type': 'square_exponential',
-                'hyperparameters': [1.0, 1.0],
+            "covariance_info": {
+                "covariance_type": "square_exponential",
+                "hyperparameters": [1.0, 1.0],
                 },
-            'optimization_info': {
-                'optimization_type': 'gradient_descent_optimizer',
-                'num_multistarts': 200,
-                'num_random_samples': 4000,
-                'optimization_parameters': {
-                    'gamma': 0.5,
+            "optimization_info": {
+                "optimization_type": "gradient_descent_optimizer",
+                "num_multistarts": 200,
+                "num_random_samples": 4000,
+                "optimization_parameters": {
+                    "gamma": 0.5,
                     ...
                     },
                 },
@@ -99,12 +101,18 @@ class GpNextPointsRequest(colander.MappingSchema):
 
     num_to_sample = colander.SchemaNode(
             colander.Int(),
+            missing=1,
             validator=colander.Range(min=1),
             )
     mc_iterations = colander.SchemaNode(
             colander.Int(),
             validator=colander.Range(min=1),
             missing=DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS,
+            )
+    max_num_threads = colander.SchemaNode(
+            colander.Int(),
+            validator=colander.Range(min=1),
+            missing=DEFAULT_MAX_NUM_THREADS,
             )
     gp_historical_info = GpHistoricalInfo()
     domain_info = BoundedDomainInfo()
@@ -193,6 +201,7 @@ class GpNextPointsPrettyView(OptimizableGpPrettyView):
         points_being_sampled = numpy.array(params.get('points_being_sampled'))
         num_to_sample = params.get('num_to_sample')
         num_mc_iterations = params.get('mc_iterations')
+        max_num_threads = params.get('max_num_threads')
 
         gaussian_process = _make_gp_from_params(params)
 
@@ -227,11 +236,12 @@ class GpNextPointsPrettyView(OptimizableGpPrettyView):
                     expected_improvement_optimizer,
                     optimization_parameters.num_multistarts,
                     num_to_sample,
+                    max_num_threads=max_num_threads,
                     *args,
                     **kwargs
                     )
 
-        expected_improvement_evaluator.set_current_point(next_points)
+        expected_improvement_evaluator.current_point = next_points
         expected_improvement = expected_improvement_evaluator.compute_expected_improvement()
 
         return self.form_response({

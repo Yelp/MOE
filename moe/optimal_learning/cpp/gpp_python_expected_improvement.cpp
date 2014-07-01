@@ -124,7 +124,7 @@ void DispatchExpectedImprovementOptimization(const boost::python::object& optimi
     }  // end case kGradientDescent optimizer_type
     default: {
       std::fill(best_points_to_sample, best_points_to_sample + input_container.dim*num_to_sample, 0.0);
-      OL_THROW_EXCEPTION(RuntimeException, "ERROR: invalid optimizer choice. Setting all coordinates to 0.0.");
+      OL_THROW_EXCEPTION(OptimalLearningException, "ERROR: invalid optimizer choice. Setting all coordinates to 0.0.");
       break;
     }
   }  // end switch over optimizer_type
@@ -164,7 +164,7 @@ boost::python::list MultistartExpectedImprovementOptimizationWrapper(const boost
     }  // end case OptimizerTypes::kSimplex
     default: {
       std::fill(best_points_to_sample_C.begin(), best_points_to_sample_C.end(), 0.0);
-      OL_THROW_EXCEPTION(RuntimeException, "ERROR: invalid domain choice. Setting all coordinates to 0.0.");
+      OL_THROW_EXCEPTION(OptimalLearningException, "ERROR: invalid domain choice. Setting all coordinates to 0.0.");
       break;
     }
   }  // end switch over domain_type
@@ -225,7 +225,7 @@ void DispatchHeuristicExpectedImprovementOptimization(const boost::python::objec
     }  // end case kGradientDescent optimizer_type
     default: {
       std::fill(best_points_to_sample, best_points_to_sample + gaussian_process.dim()*num_to_sample, 0.0);
-      OL_THROW_EXCEPTION(RuntimeException, "ERROR: invalid optimizer choice. Setting all coordinates to 0.0.");
+      OL_THROW_EXCEPTION(OptimalLearningException, "ERROR: invalid optimizer choice. Setting all coordinates to 0.0.");
       break;
     }
   }  // end switch over optimizer_type
@@ -257,7 +257,7 @@ boost::python::list HeuristicExpectedImprovementOptimizationWrapper(const boost:
     }  // end case OptimizerTypes::kSimplex
     default: {
       std::fill(best_points_to_sample_C.begin(), best_points_to_sample_C.end(), 0.0);
-      OL_THROW_EXCEPTION(RuntimeException, "ERROR: invalid domain choice. Setting all coordinates to 0.0.");
+      OL_THROW_EXCEPTION(OptimalLearningException, "ERROR: invalid domain choice. Setting all coordinates to 0.0.");
       break;
     }
   }  // end switch over domain_type
@@ -281,8 +281,7 @@ boost::python::list EvaluateEIAtPointListWrapper(const GaussianProcess& gaussian
   CopyPylistToVector(initial_guesses, input_container.dim * num_multistarts, initial_guesses_C);
 
   bool found_flag = false;
-  TensorProductDomain dummy_domain(nullptr, 0);
-  EvaluateEIAtPointList(gaussian_process, dummy_domain, initial_guesses_C.data(), input_container.points_being_sampled.data(), num_multistarts, num_to_sample, input_container.num_being_sampled, best_so_far, max_int_steps, max_num_threads, &found_flag, randomness_source.normal_rng_vec.data(), result_function_values_C.data(), result_point_C.data());
+  EvaluateEIAtPointList(gaussian_process, initial_guesses_C.data(), input_container.points_being_sampled.data(), num_multistarts, num_to_sample, input_container.num_being_sampled, best_so_far, max_int_steps, max_num_threads, &found_flag, randomness_source.normal_rng_vec.data(), result_function_values_C.data(), result_point_C.data());
 
   status["evaluate_EI_at_point_list"] = found_flag;
 

@@ -11,7 +11,7 @@ See interfaces/expected_improvement_interface.py or gpp_math.hpp/cpp for further
 import numpy
 
 import moe.build.GPP as C_GP
-from moe.optimal_learning.python.constant import DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS, DEFAULT_EXPECTED_IMPROVEMENT_MAX_NUM_THREADS
+from moe.optimal_learning.python.constant import DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS, DEFAULT_MAX_NUM_THREADS
 import moe.optimal_learning.python.cpp_wrappers.cpp_utils as cpp_utils
 from moe.optimal_learning.python.interfaces.expected_improvement_interface import ExpectedImprovementInterface
 from moe.optimal_learning.python.interfaces.optimization_interface import OptimizableInterface
@@ -22,7 +22,7 @@ def multistart_expected_improvement_optimization(
         num_multistarts,
         num_to_sample,
         randomness=None,
-        max_num_threads=DEFAULT_EXPECTED_IMPROVEMENT_MAX_NUM_THREADS,
+        max_num_threads=DEFAULT_MAX_NUM_THREADS,
         status=None,
 ):
     """Solve the q,p-EI problem, returning the optimal set of q points to sample CONCURRENTLY in future experiments.
@@ -97,7 +97,7 @@ def _heuristic_expected_improvement_optimization(
         num_to_sample,
         estimation_policy,
         randomness=None,
-        max_num_threads=DEFAULT_EXPECTED_IMPROVEMENT_MAX_NUM_THREADS,
+        max_num_threads=DEFAULT_MAX_NUM_THREADS,
         status=None,
 ):
     r"""Heuristically solve the q,0-EI problem (estimating multistart_expected_improvement_optimization()) using 1,0-EI solves.
@@ -212,7 +212,7 @@ def constant_liar_expected_improvement_optimization(
         lie_value,
         lie_noise_variance=0.0,
         randomness=None,
-        max_num_threads=1,
+        max_num_threads=DEFAULT_MAX_NUM_THREADS,
         status=None,
 ):
     """Heuristically solves q,0-EI using the Constant Liar policy; this wraps heuristic_expected_improvement_optimization().
@@ -273,7 +273,7 @@ def kriging_believer_expected_improvement_optimization(
         std_deviation_coef=0.0,
         kriging_noise_variance=0.0,
         randomness=None,
-        max_num_threads=1,
+        max_num_threads=DEFAULT_MAX_NUM_THREADS,
         status=None,
 ):
     """Heuristically solves q,0-EI using the Kriging Believer policy; this wraps heuristic_expected_improvement_optimization().
@@ -341,7 +341,14 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
 
     """
 
-    def __init__(self, gaussian_process, points_to_sample=None, points_being_sampled=None, num_mc_iterations=DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS, randomness=None):
+    def __init__(
+            self,
+            gaussian_process,
+            points_to_sample=None,
+            points_being_sampled=None,
+            num_mc_iterations=DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS,
+            randomness=None
+    ):
         """Construct an ExpectedImprovement object that knows how to call C++ for evaluation of member functions.
 
         :param gaussian_process: GaussianProcess describing
@@ -370,9 +377,9 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
 
         if points_to_sample is None:
             # set an arbitrary point
-            self.set_current_point(numpy.zeros((1, gaussian_process.dim)))
+            self.current_point = numpy.zeros((1, gaussian_process.dim))
         else:
-            self.set_current_point(points_to_sample)
+            self.current_point = points_to_sample
 
         if randomness is None:
             self._randomness = C_GP.RandomnessSourceContainer(1)  # create randomness for only 1 thread
@@ -417,11 +424,13 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         """
         self._points_to_sample = numpy.copy(numpy.atleast_2d(points_to_sample))
 
+    current_point = property(get_current_point, set_current_point)
+
     def evaluate_at_point_list(
             self,
             points_to_evaluate,
             randomness=None,
-            max_num_threads=DEFAULT_EXPECTED_IMPROVEMENT_MAX_NUM_THREADS,
+            max_num_threads=DEFAULT_MAX_NUM_THREADS,
             status=None,
     ):
         """Evaluate Expected Improvement (1,p-EI) over a specified list of ``points_to_evaluate``.
@@ -446,7 +455,13 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         """
         # Create enough randomness sources if none are specified.
         if randomness is None:
-            randomness = self._randomness
+            if max_num_threads == 1:
+                randomness = self._randomness
+            else:
+                randomness = C_GP.RandomnessSourceContainer(max_num_threads)
+                # Set seeds based on less repeatable factors (e.g,. time)
+                randomness.SetRandomizedUniformGeneratorSeed(0)
+                randomness.SetRandomizedNormalRNGSeed(0)
 
         # status must be an initialized dict for the call to C++.
         if status is None:
