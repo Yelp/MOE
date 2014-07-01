@@ -94,7 +94,7 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
         ei_tolerance = 6.0e-14
 
         for test_case in self.gp_test_environments:
-            domain, python_cov, python_gp = test_case
+            domain, python_gp = test_case
             points_to_sample = domain.generate_random_point_in_domain()
             python_ei_eval = moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement(python_gp, points_to_sample)
 
@@ -116,7 +116,7 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
             mc_answers = list()
             qd_answers = list()
             Oned_answers = list()
-            domain, python_cov, python_gp = test_case
+            domain, python_gp = test_case
             all_points = domain.generate_uniform_random_points_in_domain(14)
             
             f = open('qEI_answers.txt', 'r')
