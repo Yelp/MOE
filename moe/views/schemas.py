@@ -24,7 +24,7 @@ class PositiveFloat(colander.SchemaNode):
 
         """
         if not 0.0 < cstruct < float('inf'):
-            raise colander.Invalid(node, msg='Value = {:f} must be positive and finite.'.format(cstruct))
+            raise colander.Invalid(node, msg='Value = {0:f} must be positive and finite.'.format(cstruct))
 
 
 class ListOfPositiveFloats(colander.SequenceSchema):
