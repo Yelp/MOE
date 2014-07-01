@@ -204,117 +204,105 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         return values
 
     def _compute_expected_improvement_qd_analytic(self, mu_star, var_star):
-        """Compute EI when the number of potential samples is any number q using *fast* analytic methods.
+        """Compute EI when the number of potential samples is any number q.
 
-        This function generalizes the 1-EI case to compute q-EI using a recent result from Chevalier and Ginsbourger (2012).
-        Paper Title: "Fast Computation of the Multi-points Expected Improvement with Applications in Batch Selection"
-        All further references to page numbers will refer to this paper.
+        This function is deterministic; it does not perform explicit numerical integration or require access
+        to a random number generator.
 
-        Thus this function does not perform any explicit numerical integration, nor does it require access to a
-        random number generator.
+        If we denote PHI_q by the q-dimensional multivariate gaussian, this method requires q calls to PHI_q,
+        where q is also the number of points being sampled, and q^2 calls to PHI_(q-1). This approach is therefore
+        more tractable with moderate q (lower than 10). Higher values of q may require the Monte-Carlo approach.
+
+        See Chevalier, and Ginsbourger (2012)
 
         :param mu_star: a vector of the means of the GP evaluated at points_to_sample
-        :type mu_star: array of float64 with shape (num_points)
+        :type mu_star: array of float64
         :param var_star: the covariance matrix of the GP evaluated at points_to_sample
-        :type var_star: array of float64 with shape (num_points, num_points)
+        :type var_star: matrix of float64
         :return: the expected improvement from sampling ``point_to_sample``
         :rtype: float64
 
         """
-#        var_star = python_utils.build_covariance_matrix(self._gaussian_process._covariance, self._points_to_sample)  # this is K_star_star
-        num_points_q = len(mu_star)
-        best_so_far = -self._best_so_far
-        mu_star = -mu_star
-        print "Minimization of gaussian vectors with mean: {0} and covariance: \n".format(mu_star), var_star
+        # q value
+        num_p = len(mu_star)
+        best_so_far = self._best_so_far
 
-        def _single_variable_pdf(mean, var, param):
-            """PDF of univariate Gaussian centered at m with variance var. 
-            PDF is calculated at point param. Corresponds to phi in the paper.
-            """
-            return scipy.stats.norm.pdf(param, mean, numpy.sqrt(var))
+        # PDF of univariate Gaussian centered at m with variance var
+        def singlevar_pdf(m, var, param):
+            return scipy.stats.norm.pdf(param, m, numpy.sqrt(var))
 
-        def _multivariate_cdf(upper_lim, cov_matrix):
-            """CDF of multivariate Gaussian centered at 0 with covariance matrix cov_matrix. 
-            CDF is taken from -inf to u. Corresponds to PHI in the paper.
-            """
-            num_dimensions = len(upper_lim)
-            if num_dimensions == 1:
-                return scipy.stats.norm.cdf(upper_lim[0], 0, numpy.sqrt(cov_matrix[0, 0]))
-            
-            # Compute correlation matrix: http://en.wikipedia.org/wiki/Correlation_and_dependence#Pearson.27s_product-moment_coefficient
-            std = numpy.sqrt(numpy.diag(cov_matrix))
-            corr_matrix = cov_matrix / std / std.reshape(num_dimensions, 1)
-           
-            # Normalize the upper limit
-            upper_lim = upper_lim / std
+        # CDF of multivariate Gaussian centered at 0 with covariance matrix cov_matrix. CDF is taken from -inf to u.
+        def multivar_cdf(u, cov_matrix):
+            if len(u) == 1:
+                return scipy.stats.norm.cdf(u[0], 0, numpy.sqrt(cov_matrix[0][0]))  # phi(0, cov_matrix[0][0], u[0])
 
-            # Flatten the strict upper triangle of the correlation matrix (as required by mvndst): 
-            ind = numpy.triu_indices(num_dimensions, 1)
-            flattened_corr = corr_matrix[ind]
-            temp = scipy.stats.kde.mvn.mvndst(numpy.array([-numpy.inf] * num_dimensions), upper_lim, numpy.array([0] * num_dimensions), flattened_corr, abseps=1.0e-12, releps=1.0e-12,maxpts=(10000*num_dimensions))
-            return temp[1]
-            #return scipy.stats.kde.mvn.mvndst(numpy.array([-numpy.inf] * num_dimensions), upper_lim, numpy.array([0] * num_dimensions), flattened_corr)[1]
-        
+            std = numpy.sqrt(numpy.diag(cov_matrix))  # get standard deviation
+            std_u = u/std
+
+            std_mat = numpy.eye(len(u)) * 1.0 / std
+
+            # corr_matrix = cov_matrix.copy() / std / std[:, numpy.newaxis]  # standardize -> correlation matrix
+            corr_matrix = numpy.dot(numpy.dot(std_mat, cov_matrix.copy()), std_mat)
+            ind = numpy.tril_indices(len(u), -1)
+            out = scipy.stats.kde.mvn.mvndst(
+                                             numpy.array([-1e308] * len(u)),
+                                             std_u,
+                                             numpy.array([0]*len(u)),
+                                             corr_matrix[ind],
+                                             maxpts=20000*len(u),
+                                             abseps=1e-5,
+                                             )
+            return out[1]
+
         #Calculation of outer sum
         expected_improvement = 0
-        for k in range(0, num_points_q):
+        for k in range(0, num_p):
             # Calculation of m_k, which is the mean of Z_k introduced in Proposition 2
-            m_k = (mu_star - mu_star[k])
+            m_k = mu_star - mu_star[k]
             m_k[k] = -mu_star[k]
-            print "best so far: {0}".format(best_so_far)
-            print "New calculated mean: {0}".format(m_k)
-            # Calculation of cov_k, which is the covariance matrix of Z_k introduced in Proposition 2
-            # Matrix of cov(Y_j - Y_k, Y_i - Y_k) for i, j != k and cov(Y_j - Y_k, -Y_k) for i = k.
-            # Calculated using linearity of covariance: 
-            # cov(Y_j - Y_k, Y_i - Y_k) = cov(Y_i, Y_j) - cov(Y_i, Y_k) - cov(Y_j, Y_k) + cov(Y_k, Y_k) for i, j != k
-            cov_k = var_star + var_star[k, k]
-            cov_k = cov_k - var_star[..., k]
-            cov_k = cov_k - var_star[..., k].reshape(num_points_q, 1)
+            m_k = -m_k  # min
 
-            # When i = k xor j = k, we have cov(-Y_k, Y_j - Y_k) = cov(Y_k, Y_k) - cov(Y_k, Y_j)
-            cov_k[k, ...] = -var_star[..., k] + var_star[k, k]
-            cov_k[..., k] = -var_star[..., k] + var_star[k, k]
-
-            # Finally when i = k and j = k, we have cov(-Y_k, -Y_k) = cov(Y_k, Y_k)
-            cov_k[k, k] = var_star[k, k]
-#            print "cov_k ", cov_k
-            print "New calculated covariance: \n{0}".format(cov_k)
-            b_k = numpy.zeros(num_points_q)
+            b_k = numpy.zeros(num_p)
             b_k[k] = -best_so_far
-#            print "limit: {0}, cov: {1}".format(b_k-m_k, cov_k)
-#            print "answer: {0}".format(_multivariate_cdf(b_k - m_k, cov_k))
-            prob_term = (mu_star[k] - best_so_far) * (_multivariate_cdf(b_k - m_k, cov_k))
-            
+            b_k = -b_k  # min
+
+            # Calculation of cov_k, which is the covariance matrix of Z_k introduced in Proposition 2
+            # Matrix of cov(Y_j - Y_k, Y_i - Y_k) for i, j != k and cov(Y_j - Y_k, Y_i) for i = k.
+            # Calculated using linearity of covariance:
+            # cov(Y_j - Y_k, Y_i - Y_k) = cov(Y_i, Y_j) - cov(Y_i, Y_k) - cov(Y_j, Y_k) + cov(Y_k, Y_k)
+            cov_k = var_star + var_star[k][k]
+            cov_k = cov_k - var_star[:][k]
+            cov_k = cov_k - var_star[:][k][:, numpy.newaxis]
+            cov_k[k, :] = -var_star[:][k] + var_star[k][k]
+            cov_k[:, k] = -var_star[:][k] + var_star[k][k]
+            cov_k[k, k] = var_star[k][k]
+
+            prob_term = (mu_star[k] - best_so_far) * multivar_cdf(b_k - m_k, cov_k)
+            prob_term = -prob_term  # min
+
             # Calculation of inner sum
             sum_term = 0
-            for i in range(0, num_points_q):
-                if num_points_q == 1:
-                    sum_term += cov_k[0, 0] * _single_variable_pdf(m_k[0], cov_k[0, 0], b_k[0])
+            for i in range(0, num_p):
+                if num_p == 1:
+                    sum_term += cov_k[i][k] * singlevar_pdf(m_k[i], cov_k[i][i], b_k[i])
                     break
 
                 # c_k introduced on top of page 4
-                c_k = numpy.zeros(num_points_q)
-                for j in range(0, num_points_q):
-                    if i == 0 and j == 1 and k == 0:
-                        print "ATTENTION *_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*"
-                        print "b_k[1] is {0}, m_k is {1}, b_k[0] is {2}, m_k[0] is {3}, cov_k[i, j] is {4}, cov_k[i, i] is {5}".format(b_k[j], m_k[j], b_k[i], m_k[i], cov_k[i, j], cov_k[i, i])
-                    c_k[j] = (b_k[j] - m_k[j]) - (b_k[i] - m_k[i]) * cov_k[i, j] / cov_k[i, i]
-                indices_no_i = range(0, i) + range(i + 1, num_points_q)
-                c_k = c_k[indices_no_i]
-                print "----------------------CALCULATING FOR i = {1} c_no_i: {0}".format(c_k, i)
+                c_k = numpy.zeros(num_p)
+                for j in range(0, num_p):
+                    c_k[j] = ((b_k[j] - m_k[j]) - (b_k[i] - m_k[i]) * (cov_k[i][j] / cov_k[i][i]))
+                c_k = numpy.delete(c_k, i)
+
                 # cov_k_no_i introduced on top of page 4
-                cov_k_no_i = numpy.zeros((num_points_q, num_points_q))
-                for u in range(0, num_points_q):
-                    for v in range(0, num_points_q):
-                        cov_k_no_i[u, v] = cov_k[u, v] - cov_k[i, u] * cov_k[i, v] / cov_k[i, i]
-                cov_k_no_i = cov_k_no_i[..., indices_no_i][indices_no_i, ...]
-#                print "limit: {0}, cov: {1}".format(c_k, cov_k_no_i)
-#                print "answer: {0}".format(_multivariate_cdf(c_k, cov_k_no_i))
-#                print "PDF mean: {0}, cov: {1}, lim: {2}".format(m_k, cov_k[i,i], b_k[i])
-#                print "answer: {0}".format(_single_variable_pdf(m_k[i], cov_k[i, i], b_k[i]))
-                sum_term += cov_k[i, k] * _single_variable_pdf(m_k[i], cov_k[i, i], b_k[i]) * (_multivariate_cdf(c_k, cov_k_no_i))
-            print "Point: {0}, Sum: {1}".format(k+1, prob_term + sum_term)
-            print "Sum term: {0}, Prob Term: {1}".format(sum_term, prob_term)
+                cov_k_no_i = numpy.zeros((num_p, num_p))
+                for u in range(0, num_p):
+                    for v in range(0, num_p):
+                        cov_k_no_i[u][v] = cov_k[u][v] - ( cov_k[i][u] * cov_k[i][v] ) / cov_k[i][i]
+                cov_k_no_i = numpy.delete(cov_k_no_i, i, axis=0)
+                cov_k_no_i = numpy.delete(cov_k_no_i, i, axis=1)
+
+                sum_term += cov_k[i][k] * singlevar_pdf(m_k[i], cov_k[i][i], b_k[i]) * multivar_cdf(c_k, cov_k_no_i)
+
             expected_improvement += (prob_term + sum_term)
         return numpy.fmax(0.0, expected_improvement)
 

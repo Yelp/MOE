@@ -153,15 +153,14 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
                 cpp_ei_eval = moe.optimal_learning.python.cpp_wrappers.expected_improvement.ExpectedImprovement(cpp_gp, points_to_sample, num_mc_iterations=10000000)
 
                 python_ei_eval.set_current_point(points_to_sample)
-                cpp_ei_eval.set_current_point(points_to_sample)
-                
-                print "\nEvaluating qd with: \n{0}".format(python_ei_eval.get_current_point())
                 python_qd_ei = python_ei_eval.compute_expected_improvement(force_qD_analytic=True)
+                cpp_ei_eval.set_current_point(points_to_sample)
                 Oned_sum = 0
                 for point in points_to_sample:
                     python_ei_eval.set_current_point([point])
                     Oned_sum += python_ei_eval.compute_expected_improvement()
                 cpp_ei = cpp_ei_eval.compute_expected_improvement(force_monte_carlo=True)
+                print "MC answer: {0}, qEI answer: {1}".format(cpp_ei, python_qd_ei)
                 mc_answers.append(cpp_ei)
                 qd_answers.append(python_qd_ei)
                 Oned_answers.append(Oned_sum)
