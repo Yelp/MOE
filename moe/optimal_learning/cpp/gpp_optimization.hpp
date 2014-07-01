@@ -356,6 +356,111 @@
 namespace optimal_learning {
 
 /*!\rst
+  **Overview**
+
+  When we ask openmp to parallelize a for loop, we can give it additional information on how to
+  distribute the work. In particular, the overall work (N iterations) needs to be divided up amongst
+  the threads. We have two major ways to affect how openmp structures the loop:
+  ``schedule`` and ``chunk_size``.
+
+  ``chunk_size`` changes meaning depending on ``schedule``. Here we list out the options for
+  ``schedule`` as ``name (ENV_NAME, enum_name)`` where ``ENV_NAME`` is the corresponding value
+  of ``OMP_SCHEDULE`` (not used by ``optimal_learning``) and ``enum_name`` is the corresponding
+  type from ``opm_sched_t`` in ``omp.h``. Below, "work" refers to loop iterations (``N`` total).
+
+  **Schedule Types**
+
+  a. static ("static", omp_sched_static):
+
+     Work is divided into ``N/chunk_size`` *contiguous* chunks (of ``chunk_size`` iterations) and
+     distributed amongst the threads statically in a round-robin fashion. Use when you are
+     confident all chunks will take the same amount of time.
+
+     Low control overhead but high waste if one iteration is very slow (since the other
+     threads will sit idle).
+
+     Default ``chunk_size``: ``N / number_of_threads``.
+
+     This schedule type is *repeatable*: repeated runs/calls (with the same work) will produce the
+     same mapping of loop iterations to threads every time.
+
+  b. dynamic ("dynamic", omp_sched_dynamic):
+
+     Work is divided into ``N/chunk_size`` *contiguous* chunks (of ``chunk_size`` iterations) and
+     distributed to threads as they complete their work, first-come first-serve. If there is
+     a chunk that is very slow, the other threads can finish all remaining work instead of
+     sitting idle.
+
+     High control overhead, use when you have no idea how long each chunk will take.
+
+     Default ``chunk_size``: 1.
+
+     This schedule type does not produce repeatable mappings of iterations to threads.
+
+  c. guided ("guided", omp_sched_guided):
+
+     Work is divided into progressively smaller chunks; ``chunk_size`` sets the minimum value.
+     As with dynamic, chunks are assigned on a first-come, first-serve basis.  Less overhead than
+     dynamic (b/c ``chunk_size`` scale down).
+
+     Useful when iteration times are similar but not identical.  Less overhead than dynamic while
+     guaranteeing the waste case of static doesn't arise.
+
+     Default ``chunk_size``: approximately ``N / number_of_threads``.
+
+     This schedule type does not produce repeatable mappings of iterations to threads.
+
+  d. auto ("auto", omp_sched_auto):
+
+     The compiler decides how to map iterations to threads; this mapping is not required
+     to be one of the previous choices.
+
+     chunk_size has *no meaning* when the schedule is auto.
+     See: https://gcc.gnu.org/onlinedocs/libgomp/omp_005fset_005fschedule.html
+
+     This schedule type is not guaranteed to be repeatable.
+
+  Further documentation:
+  http://openmp.org/mp-documents/OpenMP3.1-CCard.pdf
+  https://software.intel.com/en-us/articles/openmp-loop-scheduling
+  http://publib.boulder.ibm.com/infocenter/comphelp/v8v101/index.jsp?topic=%2Fcom.ibm.xlcpp8a.doc%2Fcompiler%2Fref%2Fruompfor.htm
+\endrst*/
+struct ThreadSchedule {
+  /*!\rst
+    Construct a ThreadSchedule using the specified schedule type and chunk_size.
+
+    \param
+      :schedule: static, dynamic, guided, or auto. See class comments for more details.
+      :chunk_size: how to distribute work to threads; the precise meaning depends on schedule.
+        Zero or negative chunk_size ask OpenMP to use its default behavior. See class comments for details.
+  \endrst*/
+  ThreadSchedule(omp_sched_t schedule_in, int chunk_size_in) : schedule(schedule_in), chunk_size(chunk_size_in) {
+  }
+
+  /*!\rst
+    Construct a ThreadSchedule using the specified schedule type and default chunk_size.
+
+    \param
+      :schedule: static, dynamic, guided, or auto. See class comments for more details.
+  \endrst*/
+  explicit ThreadSchedule(omp_sched_t schedule_in) : ThreadSchedule(schedule_in, 0) {
+  }
+
+  /*!\rst
+    Construct a ThreadSchedule using the default schedule type and chunk_size.
+  \endrst*/
+  ThreadSchedule() : ThreadSchedule(omp_sched_auto, 0) {
+  }
+
+  //! The thread schedule to use: static, dynamic, guided, or auto. See class comments for more details.
+  omp_sched_t schedule;
+
+  //! Chunk size to use when distributing work to threads; the precise meaning depends on schedule.
+  //! Zero or negative chunk_size ask OpenMP to use its default behavior. See class comments for details.
+  int chunk_size;
+};
+
+/*!\rst
   This object holds the input/output fields for optimizers (maximization).  On input, this can be used to specify the current
   best known point (i.e., the optimizer will indicate no new optima found if it cannot beat this value).
   Upon completion, this struct should be read to determine the result of optimization.
@@ -1075,11 +1180,11 @@ class MultistartOptimizer final {
       :optimizer_parameters: Optimizer::ParameterStruct object that describes the parameters for optimization
         (e.g., number of iterations, tolerances, scale factors, etc.)
       :domain: object specifying the domain to optimize over (see gpp_domain.hpp)
+      :thread_schedule: struct instructing OpenMP on how to schedule threads (schedule type, chunk_size)
       :initial_guesses[problem_size][num_multistarts]: list of points at which to start optimization runs; all points must lie
                                                        INSIDE the specified domain
       :num_multistarts: number of random points to use from initial guesses
       :max_num_threads: maximum number of threads for use by OpenMP (generally should be <= # cores)
-      :chunk_size: (a guide to) how much work to give each thread at a time, see gpp_common.hpp header comments, item 7
       :objective_state_vector[max_num_threads]: properly constructed/configured ObjectiveFunctionEvaluator::State objects,
                                                 at least one per thread
                                                 objective_state.GetCurrentPoint() will be used to obtain the initial guess
@@ -1098,15 +1203,12 @@ class MultistartOptimizer final {
       objective_evaluator.ComputeObjectiveFunction() throws, the exception (or one of the exceptions in the
       event of multiple throws due to threading, usually the first temporally) will be saved and rethrown by
       this function. ``io_container`` will be in a valid state; ``function_values`` may not.
-
-    TODO(GH-150): consider having multiple versions of this for static/guided/dynamic scheduling.
-    Unforutnately openmp doesn't let you choose that parameter programmatically. This would be nice for testing.
-    enough
   \endrst*/
   void MultistartOptimize(const Optimizer& optimizer, const ObjectiveFunctionEvaluator& objective_evaluator,
                           const ParameterStruct& optimizer_parameters, const DomainType& domain,
-                          double const * restrict initial_guesses, int num_multistarts, int max_num_threads,
-                          int chunk_size, typename ObjectiveFunctionEvaluator::StateType * objective_state_vector,
+                          const ThreadSchedule& thread_schedule, double const * restrict initial_guesses,
+                          int num_multistarts, int max_num_threads,
+                          typename ObjectiveFunctionEvaluator::StateType * objective_state_vector,
                           double * restrict function_values, OptimizationIOContainer * restrict io_container) {
     const int problem_size = objective_state_vector[0].GetProblemSize();
 
@@ -1122,6 +1224,8 @@ class MultistartOptimizer final {
     io_container->found_flag = false;
     const double best_objective_value_so_far_init = io_container->best_objective_value_so_far;
     int total_errors = 0;
+
+    omp_set_schedule(thread_schedule.schedule, thread_schedule.chunk_size);
 #pragma omp parallel num_threads(max_num_threads)
     {
       double best_objective_value_so_far_local = best_objective_value_so_far_init;
@@ -1130,7 +1234,7 @@ class MultistartOptimizer final {
       std::vector<double> best_next_point_local(problem_size);
       int thread_id = omp_get_thread_num();
 
-#pragma omp for nowait schedule(guided, chunk_size) reduction(+:total_errors)
+#pragma omp for nowait schedule(runtime) reduction(+:total_errors)
       for (int i = 0; i < num_multistarts; ++i) {
         // It is illegal for exceptions to leave OpenMP blocks. Violating this condition leads to undefined behavior
         // (usually program termination). See:

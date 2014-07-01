@@ -1952,9 +1952,6 @@ int main() {
   using HyperparameterDomainType = TensorProductDomain;
   const int dim = 3;
 
-  int total_errors = 0;
-  int current_errors = 0;
-
   // grid search parameters
   int num_grid_search_points = 100000;
 
@@ -2002,9 +1999,6 @@ int main() {
     points_sampled_value.data()[j] = gaussian_process.SamplePointFromGP(points_sampled.data() + dim*j, noise_variance[j]);
     gaussian_process.AddPointToGP(points_sampled.data() + dim*j, points_sampled_value[j], noise_variance[j]);
   }
-
-  // get best point
-  double best_so_far = *std::min_element(points_sampled_value.begin(), points_sampled_value.end());
 
   using LogLikelihoodEvaluator = LogMarginalLikelihoodEvaluator;
   // log likelihood evaluator object

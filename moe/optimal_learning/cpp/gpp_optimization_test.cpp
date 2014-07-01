@@ -737,7 +737,6 @@ int MultistartOptimizeExceptionHandlingTest() {
 
   int num_multistarts = 100;
   int max_num_threads = 4;
-  int chunk_size = 1;
   std::vector<double> initial_guesses(num_multistarts);
   std::iota(initial_guesses.begin(), initial_guesses.end(), -20.0);
   auto max_value = *std::max_element(initial_guesses.begin(), initial_guesses.end());
@@ -762,8 +761,8 @@ int MultistartOptimizeExceptionHandlingTest() {
       // increment errors: we must catch an exception to decrement
       total_errors += 1;
       multistart_optimizer.MultistartOptimize(null_opt, exception_eval, null_parameters, dummy_domain,
-                                              initial_guesses.data(), num_multistarts, max_num_threads,
-                                              chunk_size, state_vector.data(), nullptr, &io_container);
+                                              ThreadSchedule(), initial_guesses.data(), num_multistarts,
+                                              max_num_threads, state_vector.data(), nullptr, &io_container);
     } catch (const InvalidValueException<double>& except) {
       // only x == 1.0 would have thrown an exception and it would set the value to 1.0.
       if (except.value() != 1.0) {
@@ -788,12 +787,19 @@ int MultistartOptimizeExceptionHandlingTest() {
       // increment errors: we must catch an exception to decrement
       total_errors += 1;
       multistart_optimizer.MultistartOptimize(null_opt, exception_eval, null_parameters, dummy_domain,
-                                              initial_guesses.data(), num_multistarts, max_num_threads,
-                                              chunk_size, state_vector.data(), nullptr, &io_container);
+                                              ThreadSchedule(omp_sched_static, 1), initial_guesses.data(),
+                                              num_multistarts, max_num_threads, state_vector.data(),
+                                              nullptr, &io_container);
     } catch (const InvalidValueException<double>& except) {
-      // TODO(GH-226): if we specify static thread schedule, then except.value() should be the *first* point in initial_guesses
       // exception occurred, good! remove the increment from the try block.
       total_errors -= 1;
+
+      // static scheduling with chunk_size 1 means one of the first max_num_threads entries
+      // of initial_guesses MUST execute first--and the first one will throw an exception.
+      if (std::none_of(initial_guesses.begin(), initial_guesses.begin() + max_num_threads,
+                       [&except](double d) { return d == except.value(); })) {
+        ++total_errors;
+      }
     }
 
     if (io_container.best_objective_value_so_far != 1.0 || io_container.best_point[0] != 1.0) {

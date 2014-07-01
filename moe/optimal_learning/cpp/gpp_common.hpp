@@ -268,44 +268,7 @@
       http://msdn.microsoft.com/en-us/library/7k8twfx7.aspx
       http://stackoverflow.com/questions/2351148/explicit-instantiation-when-is-it-used
 
-   7. chunk_size in #pragma omp for
-      When we ask openmp to parallelize a for loop, we can give it additional information on how to do so.  In particular,
-      the overall work (N iterations) needs to be divided up amongst the threads.  We have two major ways to affect how
-      openmp structures the loop: schedule and chunk_size.  chunk_size changes meaning depending on schedule:
-
-      a. static: work is divided into N/chunk_size chunks and distributed amongst the threads statically.  Use when you are
-         confident all chunks will take the same amount of time.  Low control overhead but high waste if one thread is very slow
-         (since the others will sit idle).
-      b. dynamic: work is divided into N/chunk_size chunks and distributed to threads as they complete their work,
-         first-come first-serve. Now if there is a chunk that is very slow, the other threads can finish all remaining work
-         instead of sitting idle.  High control overhead, use when you have no idea how long each chunk will take.
-      c. guided: Work is divided into progressively smaller chunks; chunk_size sets the minimum value.  As with dynamic,
-         chunks are assigned on a first-come, first-serve basis.  Less overhead than dynamic (b/c of chunk_size scale down).
-         Useful when iteration times are similar but not identical.  Less overhead than dynamic while guaranteeing the waste
-         case of static doesn't arise.
-
-      **Setting chunk_size**
-
-      If we have more threads than things to do, we want to use as many threads as possible (size = 1);
-      in particular, multi-threaded unit tests become single threaded tests (b/c the work count is low to keep runtime low).
-      In the other extreme (much more work than threads), we do not want to assign too much work to a thread at a time or
-      too little. Too much = if any thread finishes early, it sits idle; too little = lots of extra overhead.
-
-      The values used in the implementation are from a little testing; better than doing nothing but definitely not optimal.
-      Usually the chunk_size settings look like:
-      int chunk_size = std::max(std::min(15, std::max(1, num_iterations/max_num_threads)), gd_parameters.num_iterations/(max_num_threads*20));
-
-      * A = std::max(1, num_iterations/max_num_threads): divide the work evenly (as evenly as possible), triggers when there
-            are tiny numbers of iterations.  (mostly for testing so that parallel tests don't serialize through chunk_size)
-      * B = std::min(15, A): for "middle" sized problems, pick a "reasonable" chunk_size
-
-      chunk = std::max(B, num_iterations/(max_num_threads*20)): for very large numbers of iterations, scale chunk_size up so
-          we don't end up with too much loop overhead
-
-      Further documentation:
-      http://publib.boulder.ibm.com/infocenter/comphelp/v8v101/index.jsp?topic=%2Fcom.ibm.xlcpp8a.doc%2Fcompiler%2Fref%2Fruompfor.htm
-
-   8. Matrix-loop Idiom
+   7. Matrix-loop Idiom
       The matrix looping idioms used in this file deserve some explanation; we'll use matrix-vector-multiply
       as an example.  One common implementation of ``y = A * x``, with a ``m x n``, row-major matrix is::
 
@@ -346,7 +309,7 @@
          dereference unallocated space.
       c. Is not the most common idiom and may feel unfamiliar to some programmers.
 
-   9. RAII (Resource Acquisition Is Initialization)
+   8. RAII (Resource Acquisition Is Initialization)
       We use RAII, no exceptions.
       RAII ensures (amongst other things) that allocation/deallocation are always tightly coupled (through dtors): when
       an object goes out of scope, its resources are released. So it is impossible to forget to call delete after new and
@@ -359,7 +322,7 @@
       http://en.wikipedia.org/wiki/Resource_Acquisition_Is_Initialization
       http://www.stroustrup.com/except.pdf
 
-   10. Exception Safety
+   9. Exception Safety
       All library components provide "basic" exception safety. "Basic" safety means that all invariants of the component
       are preserved and no resources are leaked. See references below for more details/definitions. RAII (see item 9)
       makes providing the basic guarantee all but trivial.

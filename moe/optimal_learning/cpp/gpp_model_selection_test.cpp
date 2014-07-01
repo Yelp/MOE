@@ -765,16 +765,19 @@ OL_WARN_UNUSED_RESULT int MultistartHyperparameterLikelihoodNewtonOptimizationTe
     std::vector<typename LogLikelihoodEvaluator::StateType> log_likelihood_state_vector;
     SetupLogLikelihoodState(log_likelihood_eval, *mock_gp_data.covariance_ptr, max_num_threads, &log_likelihood_state_vector);
 
-    int chunk_size = 2;
-
     OptimizationIOContainer io_container(log_likelihood_state_vector[0].GetProblemSize());
     InitializeBestKnownPoint(log_likelihood_eval, initial_guesses.data(), num_hyperparameters, newton_parameters.num_multistarts, true, log_likelihood_state_vector.data(), &io_container);
 
     io_container.found_flag = true;  // want to see that this flag is flipped to false
 
+    ThreadSchedule thread_schedule(omp_sched_dynamic);
     NewtonOptimizer<LogLikelihoodEvaluator, TensorProductDomain> newton_opt;
     MultistartOptimizer<NewtonOptimizer<LogLikelihoodEvaluator, TensorProductDomain> > multistart_optimizer;
-    multistart_optimizer.MultistartOptimize(newton_opt, log_likelihood_eval, newton_parameters, hyperparameter_domain, initial_guesses.data(), newton_parameters.num_multistarts, max_num_threads, chunk_size, log_likelihood_state_vector.data(), nullptr, &io_container);
+    multistart_optimizer.MultistartOptimize(newton_opt, log_likelihood_eval, newton_parameters,
+                                            hyperparameter_domain, thread_schedule,
+                                            initial_guesses.data(), newton_parameters.num_multistarts,
+                                            max_num_threads, log_likelihood_state_vector.data(),
+                                            nullptr, &io_container);
 
     found_flag = io_container.found_flag;
     std::copy(io_container.best_point.begin(), io_container.best_point.end(), hyperparameters_temp.begin());

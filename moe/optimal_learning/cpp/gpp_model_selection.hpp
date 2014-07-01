@@ -1009,9 +1009,7 @@ OL_NONNULL_POINTERS void MultistartGradientDescentHyperparameterOptimization(
   std::vector<typename LogLikelihoodEvaluator::StateType> log_likelihood_state_vector;
   SetupLogLikelihoodState(log_likelihood_evaluator, covariance, max_num_threads, &log_likelihood_state_vector);
 
-  // set chunk_size, see gpp_common.hpp header comments, item 7
-  const int chunk_size = std::max(std::min(15, std::max(1, gd_parameters.num_multistarts/max_num_threads)),
-                                  gd_parameters.num_multistarts/(max_num_threads*20));
+  ThreadSchedule thread_schedule(omp_sched_dynamic);
 
   OptimizationIOContainer io_container(log_likelihood_state_vector[0].GetProblemSize());
   InitializeBestKnownPoint(log_likelihood_evaluator, initial_guesses.data(), num_hyperparameters,
@@ -1020,9 +1018,9 @@ OL_NONNULL_POINTERS void MultistartGradientDescentHyperparameterOptimization(
   GradientDescentOptimizer<LogLikelihoodEvaluator, TensorProductDomain> gd_opt;
   MultistartOptimizer<GradientDescentOptimizer<LogLikelihoodEvaluator, TensorProductDomain> > multistart_optimizer;
   multistart_optimizer.MultistartOptimize(gd_opt, log_likelihood_evaluator, gd_parameters,
-                                          domain_linearspace, initial_guesses.data(),
-                                          gd_parameters.num_multistarts, max_num_threads,
-                                          chunk_size, log_likelihood_state_vector.data(),
+                                          domain_linearspace, thread_schedule,
+                                          initial_guesses.data(), gd_parameters.num_multistarts,
+                                          max_num_threads, log_likelihood_state_vector.data(),
                                           nullptr, &io_container);
 
   *found_flag = io_container.found_flag;
@@ -1148,9 +1146,7 @@ OL_NONNULL_POINTERS void MultistartNewtonHyperparameterOptimization(
   std::vector<typename LogLikelihoodEvaluator::StateType> log_likelihood_state_vector;
   SetupLogLikelihoodState(log_likelihood_evaluator, covariance, max_num_threads, &log_likelihood_state_vector);
 
-  // set chunk_size, see gpp_common.hpp header comments, item 7
-  const int chunk_size = std::max(std::min(4, std::max(1, newton_parameters.num_multistarts/max_num_threads)),
-                                  newton_parameters.num_multistarts/(max_num_threads*8));
+  ThreadSchedule thread_schedule(omp_sched_dynamic);
 
   OptimizationIOContainer io_container(log_likelihood_state_vector[0].GetProblemSize());
   InitializeBestKnownPoint(log_likelihood_evaluator, initial_guesses.data(), num_hyperparameters,
@@ -1159,9 +1155,9 @@ OL_NONNULL_POINTERS void MultistartNewtonHyperparameterOptimization(
   NewtonOptimizer<LogLikelihoodEvaluator, TensorProductDomain> newton_opt;
   MultistartOptimizer<NewtonOptimizer<LogLikelihoodEvaluator, TensorProductDomain> > multistart_optimizer;
   multistart_optimizer.MultistartOptimize(newton_opt, log_likelihood_evaluator, newton_parameters,
-                                          domain_linearspace, initial_guesses.data(),
+                                          domain_linearspace, thread_schedule, initial_guesses.data(),
                                           newton_parameters.num_multistarts, max_num_threads,
-                                          chunk_size, log_likelihood_state_vector.data(),
+                                          log_likelihood_state_vector.data(),
                                           nullptr, &io_container);
 
   *found_flag = io_container.found_flag;
@@ -1205,22 +1201,19 @@ void EvaluateLogLikelihoodAtPointList(
   std::vector<typename LogLikelihoodEvaluator::StateType> log_likelihood_state_vector;
   SetupLogLikelihoodState(log_likelihood_evaluator, covariance, max_num_threads, &log_likelihood_state_vector);
 
-  // set chunk_size, see gpp_common.hpp header comments, item 7
-  const int chunk_size = std::max(std::min(40, std::max(1, num_multistarts/max_num_threads)),
-                                  num_multistarts/(max_num_threads*120));
-
-  NullOptimizer<LogLikelihoodEvaluator, DomainType> null_opt;
+  ThreadSchedule thread_schedule(omp_sched_guided);
 
   const int num_hyperparameters = covariance.GetNumberOfHyperparameters();
   OptimizationIOContainer io_container(log_likelihood_state_vector[0].GetProblemSize());
   InitializeBestKnownPoint(log_likelihood_evaluator, initial_guesses, num_hyperparameters, num_multistarts,
                            false, log_likelihood_state_vector.data(), &io_container);
 
+  NullOptimizer<LogLikelihoodEvaluator, DomainType> null_opt;
   typename NullOptimizer<LogLikelihoodEvaluator, DomainType>::ParameterStruct null_parameters;
   MultistartOptimizer<NullOptimizer<LogLikelihoodEvaluator, DomainType> > multistart_optimizer;
   multistart_optimizer.MultistartOptimize(null_opt, log_likelihood_evaluator, null_parameters,
-                                          domain_linearspace, initial_guesses, num_multistarts,
-                                          max_num_threads, chunk_size, log_likelihood_state_vector.data(),
+                                          domain_linearspace, thread_schedule, initial_guesses,
+                                          num_multistarts, max_num_threads, log_likelihood_state_vector.data(),
                                           function_values, &io_container);
 
   std::copy(io_container.best_point.begin(), io_container.best_point.end(), next_hyperparameters);

@@ -1334,6 +1334,7 @@ void RestartedGradientDescentEIOptimization(const ExpectedImprovementEvaluator& 
     :optimization_parameters: GradientDescentParameters object that describes the parameters controlling EI optimization
       (e.g., number of iterations, tolerances, learning rate)
     :domain: object specifying the domain to optimize over (see ``gpp_domain.hpp``)
+    :thread_schedule: struct instructing OpenMP on how to schedule threads (schedule type, chunk_size)
     :start_point_set[dim][num_to_sample][num_multistarts]: set of initial guesses for MGD (one block of num_to_sample points per multistart)
     :points_being_sampled[dim][num_being_sampled]: points that are being sampled in concurrent experiments
     :num_multistarts: number of points in set of initial guesses
@@ -1353,6 +1354,7 @@ OL_NONNULL_POINTERS void ComputeOptimalPointsToSampleViaMultistartGradientDescen
     const GaussianProcess& gaussian_process,
     const GradientDescentParameters& optimization_parameters,
     const DomainType& domain,
+    const ThreadSchedule thread_schedule,
     double const * restrict start_point_set,
     double const * restrict points_being_sampled,
     int num_multistarts,
@@ -1364,10 +1366,6 @@ OL_NONNULL_POINTERS void ComputeOptimalPointsToSampleViaMultistartGradientDescen
     NormalRNG * normal_rng,
     bool * restrict found_flag,
     double * restrict best_next_point) {
-  // set chunk_size; see gpp_common.hpp header comments, item 7
-  const int chunk_size = std::max(std::min(4, std::max(1, num_multistarts/max_num_threads)),
-                                  num_multistarts/(max_num_threads*10));
-
   bool configure_for_gradients = true;
   if (num_to_sample == 1 && num_being_sampled == 0) {
     // special analytic case when we are not using (or not accounting for) multiple, simultaneous experiments
@@ -1383,9 +1381,9 @@ OL_NONNULL_POINTERS void ComputeOptimalPointsToSampleViaMultistartGradientDescen
     GradientDescentOptimizer<OnePotentialSampleExpectedImprovementEvaluator, DomainType> gd_opt;
     MultistartOptimizer<GradientDescentOptimizer<OnePotentialSampleExpectedImprovementEvaluator, DomainType> > multistart_optimizer;
     multistart_optimizer.MultistartOptimize(gd_opt, ei_evaluator, optimization_parameters,
-                                            domain, start_point_set, num_multistarts,
-                                            max_num_threads, chunk_size, ei_state_vector.data(),
-                                            nullptr, &io_container);
+                                            domain, thread_schedule, start_point_set,
+                                            num_multistarts, max_num_threads,
+                                            ei_state_vector.data(), nullptr, &io_container);
     *found_flag = io_container.found_flag;
     std::copy(io_container.best_point.begin(), io_container.best_point.end(), best_next_point);
   } else {
@@ -1404,9 +1402,9 @@ OL_NONNULL_POINTERS void ComputeOptimalPointsToSampleViaMultistartGradientDescen
     GradientDescentOptimizer<ExpectedImprovementEvaluator, RepeatedDomain> gd_opt;
     MultistartOptimizer<GradientDescentOptimizer<ExpectedImprovementEvaluator, RepeatedDomain> > multistart_optimizer;
     multistart_optimizer.MultistartOptimize(gd_opt, ei_evaluator, optimization_parameters,
-                                            repeated_domain, start_point_set, num_multistarts,
-                                            max_num_threads, chunk_size, ei_state_vector.data(),
-                                            nullptr, &io_container);
+                                            repeated_domain, thread_schedule, start_point_set,
+                                            num_multistarts, max_num_threads,
+                                            ei_state_vector.data(), nullptr, &io_container);
     *found_flag = io_container.found_flag;
     std::copy(io_container.best_point.begin(), io_container.best_point.end(), best_next_point);
   }
@@ -1428,6 +1426,7 @@ OL_NONNULL_POINTERS void ComputeOptimalPointsToSampleViaMultistartGradientDescen
     :optimization_parameters: GradientDescentParameters object that describes the parameters controlling EI optimization
       (e.g., number of iterations, tolerances, learning rate)
     :domain: object specifying the domain to optimize over (see ``gpp_domain.hpp``)
+    :thread_schedule: struct instructing OpenMP on how to schedule threads (schedule type, chunk_size)
     :points_being_sampled[dim][num_being_sampled]: points that are being sampled in concurrent experiments
     :num_to_sample: number of potential future samples; gradients are evaluated wrt these points (i.e., the "q" in q,p-EI)
     :num_being_sampled: number of points being sampled concurrently (i.e., the "p" in q,p-EI)
@@ -1443,9 +1442,9 @@ OL_NONNULL_POINTERS void ComputeOptimalPointsToSampleViaMultistartGradientDescen
     :best_next_point[dim][num_to_sample]: points yielding the best EI according to MGD
 \endrst*/
 template <typename DomainType>
-void ComputeOptimalPointsToSampleWithRandomStarts(const GaussianProcess& gaussian_process,
+void ComputeOptimalPointsToSampleWithRandomStartsWithSchedule(const GaussianProcess& gaussian_process,
                                                   const GradientDescentParameters& optimization_parameters,
-                                                  const DomainType& domain,
+                                                  const DomainType& domain, const ThreadSchedule& thread_schedule,
                                                   double const * restrict points_being_sampled,
                                                   int num_to_sample, int num_being_sampled, double best_so_far,
                                                   int max_int_steps, int max_num_threads, bool * restrict found_flag,
@@ -1459,10 +1458,10 @@ void ComputeOptimalPointsToSampleWithRandomStarts(const GaussianProcess& gaussia
                                                                       uniform_generator, starting_points.data());
 
   ComputeOptimalPointsToSampleViaMultistartGradientDescent(gaussian_process, optimization_parameters, domain,
-                                                           starting_points.data(), points_being_sampled,
-                                                           num_multistarts, num_to_sample, num_being_sampled,
-                                                           best_so_far, max_int_steps, max_num_threads,
-                                                           normal_rng, found_flag, best_next_point);
+                                                           thread_schedule, starting_points.data(),
+                                                           points_being_sampled, num_multistarts, num_to_sample,
+                                                           num_being_sampled, best_so_far, max_int_steps,
+                                                           max_num_threads, normal_rng, found_flag, best_next_point);
 #ifdef OL_WARNING_PRINT
   if (false == *found_flag) {
     OL_WARNING_PRINTF("WARNING: %s DID NOT CONVERGE\n", OL_CURRENT_FUNCTION_NAME);
@@ -1470,6 +1469,31 @@ void ComputeOptimalPointsToSampleWithRandomStarts(const GaussianProcess& gaussia
     PrintMatrixTrans(starting_points.data(), num_to_sample, gaussian_process.dim());
   }
 #endif
+}
+
+/*!\rst
+  This function is exactly the same as
+  ComputeOptimalPointsToSampleWithRandomStartsWithSchedule()
+  with the ``const ThreadSchedule& thread_schedule`` argument removed. The schedule is chosen
+  automatically in this function.
+
+  See that function's docs for further details and argument list.
+\endrst*/
+template <typename DomainType>
+void ComputeOptimalPointsToSampleWithRandomStarts(const GaussianProcess& gaussian_process,
+                                                  const GradientDescentParameters& optimization_parameters,
+                                                  const DomainType& domain,
+                                                  double const * restrict points_being_sampled,
+                                                  int num_to_sample, int num_being_sampled, double best_so_far,
+                                                  int max_int_steps, int max_num_threads, bool * restrict found_flag,
+                                                  UniformRandomGenerator * uniform_generator, NormalRNG * normal_rng,
+                                                  double * restrict best_next_point) {
+  ThreadSchedule thread_schedule(omp_sched_dynamic);
+  ComputeOptimalPointsToSampleWithRandomStartsWithSchedule(gaussian_process, optimization_parameters, domain,
+                                                           thread_schedule, points_being_sampled, num_to_sample,
+                                                           num_being_sampled, best_so_far, max_int_steps,
+                                                           max_num_threads, found_flag, uniform_generator,
+                                                           normal_rng, best_next_point);
 }
 
 /*!\rst
@@ -1502,10 +1526,14 @@ void ComputeOptimalPointsToSampleWithRandomStarts(const GaussianProcess& gaussia
       ``initial_guesses``; never dereferenced if nullptr
     :best_next_point[dim][num_to_sample]: points yielding the best EI according to dumb search
 \endrst*/
-void EvaluateEIAtPointList(const GaussianProcess& gaussian_process, double const * restrict initial_guesses,
-                           double const * restrict points_being_sampled, int num_multistarts, int num_to_sample,
-                           int num_being_sampled, double best_so_far, int max_int_steps, int max_num_threads,
-                           bool * restrict found_flag, NormalRNG * normal_rng, double * restrict function_values,
+void EvaluateEIAtPointList(const GaussianProcess& gaussian_process,
+                           double const * restrict initial_guesses,
+                           double const * restrict points_being_sampled,
+                           int num_multistarts, int num_to_sample,
+                           int num_being_sampled, double best_so_far,
+                           int max_int_steps, int max_num_threads,
+                           bool * restrict found_flag, NormalRNG * normal_rng,
+                           double * restrict function_values,
                            double * restrict best_next_point);
 
 /*!\rst
@@ -1548,14 +1576,16 @@ void ComputeOptimalPointsToSampleViaLatinHypercubeSearch(const GaussianProcess& 
                                                          int max_int_steps, int max_num_threads,
                                                          bool * restrict found_flag,
                                                          UniformRandomGenerator * uniform_generator,
-                                                         NormalRNG * normal_rng, double * restrict best_next_point) {
+                                                         NormalRNG * normal_rng,
+                                                         double * restrict best_next_point) {
   std::vector<double> initial_guesses(gaussian_process.dim()*num_multistarts*num_to_sample);
   RepeatedDomain<DomainType> repeated_domain(domain, num_to_sample);
   num_multistarts = repeated_domain.GenerateUniformPointsInDomain(num_multistarts, uniform_generator,
                                                                   initial_guesses.data());
 
-  EvaluateEIAtPointList(gaussian_process, initial_guesses.data(), points_being_sampled, num_multistarts,
-                        num_to_sample, num_being_sampled, best_so_far, max_int_steps, max_num_threads,
+  EvaluateEIAtPointList(gaussian_process, initial_guesses.data(),
+                        points_being_sampled, num_multistarts, num_to_sample,
+                        num_being_sampled, best_so_far, max_int_steps, max_num_threads,
                         found_flag, normal_rng, nullptr, best_next_point);
 }
 
@@ -1585,6 +1615,7 @@ void ComputeOptimalPointsToSampleViaLatinHypercubeSearch(const GaussianProcess& 
     :optimization_parameters: GradientDescentParameters object that describes the parameters controlling EI optimization
       (e.g., number of iterations, tolerances, learning rate)
     :domain: object specifying the domain to optimize over (see ``gpp_domain.hpp``)
+    :thread_schedule: struct instructing OpenMP on how to schedule threads (schedule type, chunk_size)
     :points_being_sampled[dim][num_being_sampled]: points that are being sampled in concurrent experiments
     :num_to_sample: how many simultaneous experiments you would like to run (i.e., the q in q,p-EI)
     :num_being_sampled: number of points being sampled concurrently (i.e., the p in q,p-EI)
@@ -1602,6 +1633,41 @@ void ComputeOptimalPointsToSampleViaLatinHypercubeSearch(const GaussianProcess& 
     :best_points_to_sample[num_to_sample*dim]: point yielding the best EI according to MGD
 \endrst*/
 template <typename DomainType>
+void ComputeOptimalPointsToSampleWithSchedule(const GaussianProcess& gaussian_process,
+                                              const GradientDescentParameters& optimization_parameters,
+                                              const DomainType& domain, const ThreadSchedule& thread_schedule,
+                                              double const * restrict points_being_sampled,
+                                              int num_to_sample, int num_being_sampled, double best_so_far,
+                                              int max_int_steps, int max_num_threads, bool lhc_search_only,
+                                              int num_lhc_samples, bool * restrict found_flag,
+                                              UniformRandomGenerator * uniform_generator,
+                                              NormalRNG * normal_rng, double * restrict best_points_to_sample);
+
+// template explicit instantiation declarations, see gpp_common.hpp header comments, item 6
+extern template void ComputeOptimalPointsToSampleWithSchedule(
+    const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters,
+    const TensorProductDomain& domain, const ThreadSchedule& thread_schedule,
+    double const * restrict points_being_sampled, int num_to_sample,
+    int num_being_sampled, double best_so_far, int max_int_steps, int max_num_threads, bool lhc_search_only,
+    int num_lhc_samples, bool * restrict found_flag, UniformRandomGenerator * uniform_generator,
+    NormalRNG * normal_rng, double * restrict best_points_to_sample);
+extern template void ComputeOptimalPointsToSampleWithSchedule(
+    const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters,
+    const SimplexIntersectTensorProductDomain& domain, const ThreadSchedule& thread_schedule,
+    double const * restrict points_being_sampled,
+    int num_to_sample, int num_being_sampled, double best_so_far, int max_int_steps, int max_num_threads,
+    bool lhc_search_only, int num_lhc_samples, bool * restrict found_flag,
+    UniformRandomGenerator * uniform_generator, NormalRNG * normal_rng, double * restrict best_points_to_sample);
+
+/*!\rst
+  This function is exactly the same as
+  ComputeOptimalPointsToSampleWithSchedule()
+  with the ``const ThreadSchedule& thread_schedule`` argument removed. The schedule is chosen
+  automatically in this function.
+
+  See that function's docs for further details and argument list.
+\endrst*/
+template <typename DomainType>
 void ComputeOptimalPointsToSample(const GaussianProcess& gaussian_process,
                                   const GradientDescentParameters& optimization_parameters,
                                   const DomainType& domain, double const * restrict points_being_sampled,
@@ -1609,21 +1675,15 @@ void ComputeOptimalPointsToSample(const GaussianProcess& gaussian_process,
                                   int max_int_steps, int max_num_threads, bool lhc_search_only,
                                   int num_lhc_samples, bool * restrict found_flag,
                                   UniformRandomGenerator * uniform_generator,
-                                  NormalRNG * normal_rng, double * restrict best_points_to_sample);
-
-// template explicit instantiation declarations, see gpp_common.hpp header comments, item 6
-extern template void ComputeOptimalPointsToSample(
-    const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters,
-    const TensorProductDomain& domain, double const * restrict points_being_sampled, int num_to_sample,
-    int num_being_sampled, double best_so_far, int max_int_steps, int max_num_threads, bool lhc_search_only,
-    int num_lhc_samples, bool * restrict found_flag, UniformRandomGenerator * uniform_generator,
-    NormalRNG * normal_rng, double * restrict best_points_to_sample);
-extern template void ComputeOptimalPointsToSample(
-    const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters,
-    const SimplexIntersectTensorProductDomain& domain, double const * restrict points_being_sampled,
-    int num_to_sample, int num_being_sampled, double best_so_far, int max_int_steps, int max_num_threads,
-    bool lhc_search_only, int num_lhc_samples, bool * restrict found_flag,
-    UniformRandomGenerator * uniform_generator, NormalRNG * normal_rng, double * restrict best_points_to_sample);
+                                  NormalRNG * normal_rng, double * restrict best_points_to_sample) {
+  ThreadSchedule thread_schedule(omp_sched_dynamic);
+  ComputeOptimalPointsToSampleWithSchedule(gaussian_process, optimization_parameters, domain,
+                                           thread_schedule, points_being_sampled, num_to_sample,
+                                           num_being_sampled, best_so_far, max_int_steps,
+                                           max_num_threads, lhc_search_only, num_lhc_samples,
+                                           found_flag, uniform_generator,
+                                           normal_rng, best_points_to_sample);
+}
 
 }  // end namespace optimal_learning
 
