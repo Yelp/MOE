@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """Test the C++ implementation of expected improvement against the Python implementation."""
 import numpy
-import matplotlib.pyplot as plt
 
 import testify as T
 
@@ -107,63 +106,45 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
                 self.assert_scalar_within_relative(python_1d_ei, python_qd_ei, ei_tolerance)
 
     def test_qd_ei_with_self(self):
-        """Compare the 1D analytic EI results to the qD analytic EI results, checking several random points per test case."""
+        """Compare the 1D analytic EI results to the qD analytic EI results, checking several random points per test case.
+        
+        This test case (unfortunately) suffers from a lot of random variation in the qEI parameters. The tolerance is high because
+        changing the number of iterations or the maximum relative error allowed in the mvndst function leads to different answers.
+        
+        These precomputed answers were calculated from:
+        maxpts = 20,000 * q
+        releps = 1e-5
+
+        These values are a tradeoff between accuracy / speed.
+        """
         num_tests_per_case = 10
-        ei_tolerance = 6.0e-10
+        ei_tolerance = 6.0e-8
+        numpy.random.seed(8790)
+
+        precomputed_answers = [
+            0.0447239829581,
+            0.0844060926313,
+            0.119761506674,
+            0.151392981174,
+            0.179810984207,
+            0.20532396992,
+            0.228557714942,
+            0.249686586053,
+            0.268972737603,
+        ]
 
         for test_case in self.gp_test_environments[:1]:
-
-            mc_answers = list()
-            qd_answers = list()
-            Oned_answers = list()
             domain, python_gp = test_case
             all_points = domain.generate_uniform_random_points_in_domain(14)
             
-            f = open('qEI_answers.txt', 'r')
-
-            for i in range(1, 11):
+            for i in range(1, 10):
                 points_to_sample = all_points[0:i]
                 python_ei_eval = moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement(python_gp, points_to_sample, num_mc_iterations=10000000)
 
-
-                python_ei_eval.set_current_point(points_to_sample)
+                python_ei_eval.current_point = points_to_sample
                 python_qd_ei = python_ei_eval.compute_expected_improvement()
-#                f.write(str(python_qd_ei)+'\n')
-                test_ans = float(f.readline().rstrip())
-                self.assert_scalar_within_relative(python_qd_ei, test_ans, ei_tolerance)
+                self.assert_scalar_within_relative(python_qd_ei, precomputed_answers[i-1], ei_tolerance)
 
-'''Below code will be useful for comparison/generating plots:
-                cpp_ei_eval.set_current_point(points_to_sample)
-                Oned_sum = 0
-                for point in points_to_sample:
-                    python_ei_eval.set_current_point([point])
-                    Oned_sum += python_ei_eval.compute_expected_improvement()
-                cpp_ei = cpp_ei_eval.compute_expected_improvement(force_monte_carlo=True)
-                print "MC answer: {0}, qEI answer: {1}".format(cpp_ei, python_qd_ei)
-                print "qEI answer: {0}".format(python_qd_ei)
-                mc_answers.append(cpp_ei)
-                qd_answers.append(python_qd_ei)
-                Oned_answers.append(Oned_sum)
-                cpp_cov = moe.optimal_learning.python.cpp_wrappers.covariance.SquareExponential(python_cov.get_hyperparameters())
-                cpp_gp = moe.optimal_learning.python.cpp_wrappers.gaussian_process.GaussianProcess(cpp_cov, python_gp._historical_data)
-                cpp_ei_eval = moe.optimal_learning.python.cpp_wrappers.expected_improvement.ExpectedImprovement(cpp_gp, points_to_sample, num_mc_iterations=10000000)
-            fig, ax = plt.subplots()
-            ind = numpy.arange(14)
-            width = 0.35
-
-            rects1 = ax.bar(ind, tuple(mc_answers), width, color='r')
-            rects2 = ax.bar(ind+width, tuple(qd_answers), width, color='y')
-            rects3 = ax.bar(ind+width*2, tuple(Oned_answers), width, color='b')
-
-            ax.set_ylabel('EI Values')
-            ax.set_title('EI Values of various methods by q value')
-            ax.set_xticks(ind + width * 2.5)
-            ax.set_xticklabels(('1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14'))
-
-            ax.legend( (rects1[0], rects2[0], rects3[0]), ('MC', 'qEI', '1-EI') )
-
-            plt.show()
-'''
 
 if __name__ == "__main__":
     T.run()
