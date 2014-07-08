@@ -246,12 +246,12 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         num_p = len(mu_star)
         best_so_far = self._best_so_far
 
-        # PDF of univariate Gaussian centered at m with variance var
         def singlevar_pdf(m, var, param):
+            """PDF of univariate Gaussian centered at m with variance var"""
             return scipy.stats.norm.pdf(param, m, numpy.sqrt(var))
 
-        # CDF of multivariate Gaussian centered at 0 with covariance matrix cov_matrix. CDF is taken from -inf to u.
         def multivar_cdf(u, cov_matrix):
+            """CDF of multivariate Gaussian centered at 0 with covariance matrix cov_matrix. CDF is taken from -inf to u."""
             if len(u) == 1:
                 return scipy.stats.norm.cdf(u[0], 0, numpy.sqrt(cov_matrix[0, 0]))
 
@@ -259,7 +259,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
             std = numpy.sqrt(numpy.diag(cov_matrix))
             std_u = u / std
 
-            # Convert covariance matrix into correlation matrix
+            # Convert covariance matrix into correlation matrix: http://en.wikipedia.org/wiki/Correlation_and_dependence#Correlation_matrices
             corr_matrix = cov_matrix.copy() / std / std[:, numpy.newaxis]  # standardize -> correlation matrix
 
             # Indices for traversing the lower diagonal elements of corr_matrix in column major, as required by the fortran mvndst function.
@@ -276,7 +276,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
                                              )
             return out[1]  # Index 1 corresponds to the actual value. 0 has the error, and 2 is a flag denoting whether releps was reached
 
-        #Calculation of outer sum
+        # Calculation of outer sum (from Proposition 2, equation 3)
         expected_improvement = 0
         for k in range(0, num_p):
             # Calculation of m_k, which is the mean of Z_k introduced in Proposition 2
