@@ -8,7 +8,6 @@ import numpy
 
 import scipy.linalg
 import scipy.stats
-import moe.optimal_learning.python.python_version.python_utils as python_utils
 
 from moe.optimal_learning.python.constant import DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS, DEFAULT_MAX_NUM_THREADS
 from moe.optimal_learning.python.interfaces.expected_improvement_interface import ExpectedImprovementInterface
@@ -247,7 +246,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         best_so_far = self._best_so_far
 
         def singlevar_pdf(m, var, param):
-            """PDF of univariate Gaussian centered at m with variance var"""
+            """PDF of univariate Gaussian centered at m with variance var."""
             return scipy.stats.norm.pdf(param, m, numpy.sqrt(var))
 
         def multivar_cdf(u, cov_matrix):
@@ -268,10 +267,10 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
             # Call into the scipy wrapper for the fortran method "mvndst"
             out = scipy.stats.kde.mvn.mvndst(
                                              numpy.array([-1e308] * len(u)),  # The lower bound of integration
-                                             std_u, # The upper bound of integration
-                                             numpy.array([0]*len(u)),  # For each dim, 0 means -inf for lower bound
+                                             std_u,  # The upper bound of integration
+                                             numpy.array([0] * len(u)),  # For each dim, 0 means -inf for lower bound
                                              corr_matrix[ind],  # The vector of lower diagonal correlation coefficients
-                                             maxpts=20000*len(u),  # Maximum number of iterations for the mvndst function
+                                             maxpts=20000 * len(u),  # Maximum number of iterations for the mvndst function
                                              releps=1e-5,  # The error allowed relative to actual value
                                              )
             return out[1]  # Index 1 corresponds to the actual value. 0 has the error, and 2 is a flag denoting whether releps was reached
@@ -296,7 +295,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
             cov_k = cov_k - var_star[..., k].reshape(1, num_p)
             cov_k = cov_k - var_star[..., k].reshape(num_p, 1)
 
-            # When i or j = k, then 
+            # When i or j = k, then
             # cov(Y_j - Y_k, -Y_k) = cov(Y_k, Y_k) - cov(Y_j, Y_k)
             cov_k[k, ...] = -var_star[..., k] + var_star[k, k]
             cov_k[..., k] = -var_star[..., k] + var_star[k, k]
@@ -313,8 +312,8 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
                 if num_p == 1:
                     sum_term += cov_k[i, k] * singlevar_pdf(m_k[i], cov_k[i, i], b_k[i])
                     break
-                
-                index_no_i = range(0, i) + range(i+1, num_p)
+
+                index_no_i = range(0, i) + range(i + 1, num_p)
 
                 # c_k introduced on top of page 4
                 c_k = (b_k - m_k) - (b_k[i] - m_k[i]) * cov_k[i, :] / cov_k[i, i]
@@ -714,7 +713,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         var_star = self._gaussian_process.compute_variance_of_points(union_of_points)
 
         if force_monte_carlo is False and force_1d_ei is False:
-            var_star = numpy.fmax(MINIMUM_VARIANCE_EI, var_star)  # TODO: eliu 
+            var_star = numpy.fmax(MINIMUM_VARIANCE_EI, var_star)  # TODO(272): Check if this is needed.
             return self._compute_expected_improvement_qd_analytic(mu_star, var_star)
         elif force_1d_ei is True:
             var_star = numpy.fmax(MINIMUM_VARIANCE_EI, var_star)

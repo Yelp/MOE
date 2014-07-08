@@ -301,7 +301,7 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
 
         # Check that gradients are "small"
         ei_eval.current_point = best_point
-        ei_final = ei_eval.compute_expected_improvement(force_monte_carlo=True)  # TODO(271) 
+        ei_final = ei_eval.compute_expected_improvement(force_monte_carlo=True)  # TODO(271)
         grad_ei_final = ei_eval.compute_grad_expected_improvement()
         self.assert_vector_within_relative(grad_ei_final, numpy.zeros(grad_ei_final.shape), tolerance)
 
