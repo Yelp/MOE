@@ -4,15 +4,16 @@ import numpy
 
 import testify as T
 
+from moe.optimal_learning.python.geometry_utils import ClosedInterval
+from moe.tests.optimal_learning.python.gaussian_process_test_case import GaussianProcessTestCase, GaussianProcessTestEnvironmentInput
+
 import moe.optimal_learning.python.cpp_wrappers.covariance
 import moe.optimal_learning.python.cpp_wrappers.expected_improvement
 import moe.optimal_learning.python.cpp_wrappers.gaussian_process
-from moe.optimal_learning.python.geometry_utils import ClosedInterval
 import moe.optimal_learning.python.python_version.covariance
 import moe.optimal_learning.python.python_version.domain
 import moe.optimal_learning.python.python_version.expected_improvement
 import moe.optimal_learning.python.python_version.gaussian_process
-from moe.tests.optimal_learning.python.gaussian_process_test_case import GaussianProcessTestCase, GaussianProcessTestEnvironmentInput
 
 
 class ExpectedImprovementTest(GaussianProcessTestCase):
@@ -99,7 +100,7 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
 
             for _ in xrange(num_tests_per_case):
                 points_to_sample = domain.generate_random_point_in_domain()
-                python_ei_eval.set_current_point(points_to_sample)
+                python_ei_eval.current_point = points_to_sample
 
                 python_1d_ei = python_ei_eval.compute_expected_improvement(force_1d_ei=True)
                 python_qd_ei = python_ei_eval.compute_expected_improvement()

@@ -234,9 +234,9 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         See Chevalier, and Ginsbourger (2012)
 
         :param mu_star: a vector of the means of the GP evaluated at points_to_sample
-        :type mu_star: array of float64
+        :type mu_star: array of float64 with shape (num_points)
         :param var_star: the covariance matrix of the GP evaluated at points_to_sample
-        :type var_star: matrix of float64
+        :type var_star: array of float64 with shape (num_points, num_points)
         :return: the expected improvement from sampling ``point_to_sample``
         :rtype: float64
 
@@ -699,9 +699,9 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         We compute the improvement over many random draws and average.
 
         :param force_monte_carlo: whether to force monte carlo evaluation (vs using fast/accurate analytic eval when possible)
-        :type force_monte_carlo: boolean
+        :type force_monte_carlo: bool
         :param force_1d_ei: whether to force using the 1EI method. Used for testing purposes only. Takes precedence when force_monte_carlo is also True
-        :type force_1d_ei: boolean
+        :type force_1d_ei: bool
         :return: the expected improvement from sampling ``points_to_sample`` with ``points_being_sampled`` concurrent experiments
         :rtype: float64
 
