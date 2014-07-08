@@ -310,6 +310,7 @@ int HeuristicExpectedImprovementOptimizationTestCore(EstimationPolicyTypes polic
   GradientDescentParameters gd_params(num_multistarts, max_gradient_descent_steps, max_num_restarts, gamma, pre_mult, max_relative_change, tolerance);
 
   static const int kMaxNumThreads = 4;
+  ThreadSchedule thread_schedule(kMaxNumThreads, omp_sched_dynamic);
 
   // grid search parameters
   bool grid_search_only = false;
@@ -357,7 +358,10 @@ int HeuristicExpectedImprovementOptimizationTestCore(EstimationPolicyTypes polic
 
   // test optimization
   bool found_flag = false;
-  ComputeHeuristicPointsToSample(*mock_gp_data.gaussian_process_ptr, gd_params, domain, *estimation_policy, mock_gp_data.best_so_far, kMaxNumThreads, grid_search_only, num_grid_search_points, num_to_sample, &found_flag, &uniform_generator, best_points_to_sample.data());
+  ComputeHeuristicPointsToSample(*mock_gp_data.gaussian_process_ptr, gd_params, domain, *estimation_policy,
+                                 thread_schedule, mock_gp_data.best_so_far, grid_search_only,
+                                 num_grid_search_points, num_to_sample, &found_flag, &uniform_generator,
+                                 best_points_to_sample.data());
   if (!found_flag) {
     ++total_errors;
   }
