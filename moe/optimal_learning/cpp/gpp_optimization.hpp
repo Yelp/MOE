@@ -427,30 +427,47 @@ namespace optimal_learning {
 \endrst*/
 struct ThreadSchedule {
   /*!\rst
-    Construct a ThreadSchedule using the specified schedule type and chunk_size.
+    Construct a ThreadSchedule using the specified number of threads, schedule type, and chunk_size.
 
     \param
+      :max_num_threads: maximum number of threads for use by OpenMP (generally should be <= # cores)
       :schedule: static, dynamic, guided, or auto. See class comments for more details.
       :chunk_size: how to distribute work to threads; the precise meaning depends on schedule.
         Zero or negative chunk_size ask OpenMP to use its default behavior. See class comments for details.
   \endrst*/
-  ThreadSchedule(omp_sched_t schedule_in, int chunk_size_in) : schedule(schedule_in), chunk_size(chunk_size_in) {
+  ThreadSchedule(int max_num_threads_in, omp_sched_t schedule_in, int chunk_size_in)
+      : max_num_threads(max_num_threads_in), schedule(schedule_in), chunk_size(chunk_size_in) {
   }
 
   /*!\rst
-    Construct a ThreadSchedule using the specified schedule type and default chunk_size.
+    Construct a ThreadSchedule using the specified number of threads and schedule type with default chunk_size.
 
     \param
+      :max_num_threads: maximum number of threads for use by OpenMP (generally should be <= # cores)
       :schedule: static, dynamic, guided, or auto. See class comments for more details.
   \endrst*/
-  explicit ThreadSchedule(omp_sched_t schedule_in) : ThreadSchedule(schedule_in, 0) {
+  ThreadSchedule(int max_num_threads_in, omp_sched_t schedule_in) : ThreadSchedule(max_num_threads_in, schedule_in, 0) {
   }
 
   /*!\rst
-    Construct a ThreadSchedule using the default schedule type and chunk_size.
+    Construct a ThreadSchedule using the specified number of threads with default schedule type and chunk_size.
+
+    \param
+      :max_num_threads: maximum number of threads for use by OpenMP (generally should be <= # cores)
   \endrst*/
-  ThreadSchedule() : ThreadSchedule(omp_sched_auto, 0) {
+  explicit ThreadSchedule(int max_num_threads_in) : ThreadSchedule(max_num_threads_in, omp_sched_auto) {
   }
+
+  /*!\rst
+    Construct a ThreadSchedule using the default number of threads, schedule type, and chunk_size.
+  \endrst*/
+  ThreadSchedule() : ThreadSchedule(0) {
+  }
+
+  //! The maximum number of threads for use by OpenMP (generally should be <= # cores).
+  //! The (default) value of 0 results in omp_get_num_procs() threads; note that this
+  //! is limited by omp_get_thread_limit() (set in OMP_THREAD_LIMIT).
+  int max_num_threads;
 
   //! The thread schedule to use: static, dynamic, guided, or auto. See class comments for more details.
   omp_sched_t schedule;
@@ -1148,18 +1165,21 @@ class MultistartOptimizer final {
   MultistartOptimizer() = default;
 
   /*!\rst
-    Performs multistart optimization with the specified Optimizer (class template parameter) to optimize the specified
-    ObjectiveFunctionEvaluator over the specified DomainType. Optimizer behavior is controlled by the specified ParameterStruct.
-    See class docs and header docs of this file, section 2c and 3b, iii), for more information.
+    Performs multistart optimization with the specified Optimizer (class template parameter)
+    to optimize the specified ObjectiveFunctionEvaluator over the specified DomainType.
+    Optimizer behavior is controlled by the specified ParameterStruct. See class docs and header
+    docs of this file, section 2c and 3b, iii), for more information.
 
-    The method allows you to specify what the current best is, so that if optimization cannot beat it, no improvement will be
-    reported.  It will otherwise report the overall best improvement (through io_container) as well as the result of every
-    individual multistart run if desired (through function_values).
+    The method allows you to specify what the current best is, so that if optimization cannot
+    beat it, no improvement will be reported.  It will otherwise report the overall best
+    improvement (through io_container) as well as the result of every individual multistart run
+    if desired (through function_values).
 
     .. Note:: comments copied to MultistartOptimizer.optimize() in python_version/optimization.py.
 
-    Generally, you will not call this function directly.  Instead, it is intended to be used in wrappers that set up state,
-    chunk_size, etc. for the specific optimization problem at hand.  For examples with Expected Improvement (EI), see gpp_math:
+    Generally, you will not call this function directly.  Instead, it is intended to be used in
+    wrappers that set up state, thread_schedule, etc. for the specific optimization problem at hand.
+    For examples with Expected Improvement (EI), see gpp_math:
 
     * ``EvaluateEIAtPointList()``
     * ``ComputeOptimalPointsToSampleViaMultistartGradientDescent()``
@@ -1170,34 +1190,38 @@ class MultistartOptimizer final {
     * ``MultistartGradientDescentHyperparameterOptimization()``
     * ``MultistartNewtonHyperparameterOptimization()``
 
-    problem_size refers to objective_state->GetProblemSize(), the number of dimensions in a "point" aka the number of
-    variables being optimized.  (This might be the spatial dimension for EI or the number of hyperparameters for log likelihood.)
+    problem_size refers to objective_state->GetProblemSize(), the number of dimensions in a "point"
+    aka the number of variables being optimized.  (This might be the spatial dimension for EI or the
+    number of hyperparameters for log likelihood.)
 
     \param
-      :optimizer: object with the desired Optimize() functionality (e.g., do nothing for 'dumb' search, gradient descent, etc.)
-      :objective_evaluator: reference to object that can compute the objective function, its gradient, and/or its hessian,
-                            depending on the needs of optimizer
-      :optimizer_parameters: Optimizer::ParameterStruct object that describes the parameters for optimization
-        (e.g., number of iterations, tolerances, scale factors, etc.)
+      :optimizer: object with the desired Optimize() functionality (e.g., do nothing for
+        'dumb' search, gradient descent, etc.)
+      :objective_evaluator: reference to object that can compute the objective function,
+        its gradient, and/or its hessian, depending on the needs of optimizer
+      :optimizer_parameters: Optimizer::ParameterStruct object that describes the parameters
+        for optimization (e.g., number of iterations, tolerances, scale factors, etc.)
       :domain: object specifying the domain to optimize over (see gpp_domain.hpp)
-      :thread_schedule: struct instructing OpenMP on how to schedule threads (schedule type, chunk_size)
-      :initial_guesses[problem_size][num_multistarts]: list of points at which to start optimization runs; all points must lie
-                                                       INSIDE the specified domain
+      :thread_schedule: struct instructing OpenMP on how to schedule threads; i.e.,
+        max_num_threads, schedule type, chunk_size
+      :initial_guesses[problem_size][num_multistarts]: list of points at which to start
+        optimization runs; all points must lie INSIDE the specified domain
       :num_multistarts: number of random points to use from initial guesses
-      :max_num_threads: maximum number of threads for use by OpenMP (generally should be <= # cores)
-      :objective_state_vector[max_num_threads]: properly constructed/configured ObjectiveFunctionEvaluator::State objects,
-                                                at least one per thread
-                                                objective_state.GetCurrentPoint() will be used to obtain the initial guess
+      :objective_state_vector[thread_schedule.max_num_threads]:
+        properly constructed/configured ObjectiveFunctionEvaluator::State objects,
+        at least one per thread objective_state.GetCurrentPoint() will be used to obtain the initial guess
       :io_container[1]: object with best_objective_value_so_far and corresponding best_point properly initialized.
                         See struct docs in gpp_optimization.hpp for details.
     \output
-      :objective_state_vector[max_num_threads]: internal states of state objects may be modified
-      :function_values[num_multistarts]: objective fcn value at the end of each optimization run, in the same order as
-                                         initial_guesses. Can be used to check what each optimization run converged to.
-                                         More commonly used only with NullOptimizer to get a list of objective values
-                                         at each point of initial_guesses.  Never dereferenced if nullptr
-      :io_container[1]: object container new best_objective_value_so_far and corresponding best_point IF found_flag is true.
-                        unchanged from input otherwise. See struct docs in gpp_optimization.hpp for details.
+      :objective_state_vector[thread_schedule.max_num_threads]: internal states of state objects may be modified
+      :function_values[num_multistarts]: objective fcn value at the end of each
+        optimization run, in the same order as initial_guesses. Can be used to check
+        what each optimization run converged to.
+        More commonly used only with NullOptimizer to get a list of objective values  at each point of initial_guesses.
+        Never dereferenced if nullptr.
+      :io_container[1]: object container new best_objective_value_so_far and corresponding
+        best_point IF found_flag is true.
+        Unchanged from input otherwise. See struct docs in gpp_optimization.hpp for details.
     \raise
       if any of objective_state_vector->UpdateCurrentPoint(), optimizer.Optimize(), or
       objective_evaluator.ComputeObjectiveFunction() throws, the exception (or one of the exceptions in the
@@ -1207,7 +1231,7 @@ class MultistartOptimizer final {
   void MultistartOptimize(const Optimizer& optimizer, const ObjectiveFunctionEvaluator& objective_evaluator,
                           const ParameterStruct& optimizer_parameters, const DomainType& domain,
                           const ThreadSchedule& thread_schedule, double const * restrict initial_guesses,
-                          int num_multistarts, int max_num_threads,
+                          int num_multistarts,
                           typename ObjectiveFunctionEvaluator::StateType * objective_state_vector,
                           double * restrict function_values, OptimizationIOContainer * restrict io_container) {
     const int problem_size = objective_state_vector[0].GetProblemSize();
@@ -1226,7 +1250,7 @@ class MultistartOptimizer final {
     int total_errors = 0;
 
     omp_set_schedule(thread_schedule.schedule, thread_schedule.chunk_size);
-#pragma omp parallel num_threads(max_num_threads)
+#pragma omp parallel num_threads(thread_schedule.max_num_threads)
     {
       double best_objective_value_so_far_local = best_objective_value_so_far_init;
       double objective_value;
@@ -1277,7 +1301,7 @@ class MultistartOptimizer final {
 #endif
           }
         } catch (const std::exception& except) {
-          OL_ERROR_PRINTF("Thread %d of %d failed on iteration %d of %d. Message:\n%s\n", thread_id, max_num_threads, i, num_multistarts, except.what());
+          OL_ERROR_PRINTF("Thread %d of %d failed on iteration %d of %d. Message:\n%s\n", thread_id, thread_schedule.max_num_threads, i, num_multistarts, except.what());
           // std::call_once() ensures that the code body here is executed *once* for each unique std::once_flag (we
           // only have 1 instance). Additionally, the operations inside are "atomic" in the sense that no invocation of
           // call_once() will return before the aforementioned single execution is complete (so no risk of partially

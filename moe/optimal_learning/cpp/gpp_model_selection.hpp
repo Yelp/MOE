@@ -981,7 +981,8 @@ OL_NONNULL_POINTERS void RestartedGradientDescentHyperparameterOptimization(
       of iterations, tolerances, learning rate)
     :domain[n_hyper]: array of ClosedInterval specifying the boundaries of a n_hyper-dimensional tensor-product domain.
       Specify in LOG-10 SPACE!
-    :max_num_threads: maximum number of threads for use by OpenMP (generally should be <= # cores)
+    :thread_schedule: struct instructing OpenMP on how to schedule threads; i.e., (suggestions in parens)
+      max_num_threads (num cpu cores), schedule type (omp_sched_dynamic), chunk_size (0).
     :uniform_generator[1]: a UniformRandomGenerator object providing the random engine for uniform random numbers
   \output
     :found_flag[1]: true if next_hyperparameters corresponds to a converged solution
@@ -994,7 +995,8 @@ OL_NONNULL_POINTERS void MultistartGradientDescentHyperparameterOptimization(
     const CovarianceInterface& covariance,
     const GradientDescentParameters& gd_parameters,
     ClosedInterval const * restrict domain,
-    int max_num_threads, bool * restrict found_flag,
+    const ThreadSchedule& thread_schedule,
+    bool * restrict found_flag,
     UniformRandomGenerator * uniform_generator,
     double * restrict next_hyperparameters) {
   const int num_hyperparameters = covariance.GetNumberOfHyperparameters();
@@ -1007,9 +1009,8 @@ OL_NONNULL_POINTERS void MultistartGradientDescentHyperparameterOptimization(
 
   // we need 1 state object per thread
   std::vector<typename LogLikelihoodEvaluator::StateType> log_likelihood_state_vector;
-  SetupLogLikelihoodState(log_likelihood_evaluator, covariance, max_num_threads, &log_likelihood_state_vector);
-
-  ThreadSchedule thread_schedule(omp_sched_dynamic);
+  SetupLogLikelihoodState(log_likelihood_evaluator, covariance, thread_schedule.max_num_threads,
+                          &log_likelihood_state_vector);
 
   OptimizationIOContainer io_container(log_likelihood_state_vector[0].GetProblemSize());
   InitializeBestKnownPoint(log_likelihood_evaluator, initial_guesses.data(), num_hyperparameters,
@@ -1020,7 +1021,7 @@ OL_NONNULL_POINTERS void MultistartGradientDescentHyperparameterOptimization(
   multistart_optimizer.MultistartOptimize(gd_opt, log_likelihood_evaluator, gd_parameters,
                                           domain_linearspace, thread_schedule,
                                           initial_guesses.data(), gd_parameters.num_multistarts,
-                                          max_num_threads, log_likelihood_state_vector.data(),
+                                          log_likelihood_state_vector.data(),
                                           nullptr, &io_container);
 
   *found_flag = io_container.found_flag;
@@ -1117,7 +1118,8 @@ OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT int NewtonHyperparameterOptimization(
       of iterations, tolerances, diagonal dominance)
     :domain[n_hyper]: array of ClosedInterval specifying the boundaries of a n_hyper-dimensional tensor-product domain.
       Specify in LOG-10 SPACE!
-    :max_num_threads: maximum number of threads for use by OpenMP (generally should be <= # cores)
+    :thread_schedule: struct instructing OpenMP on how to schedule threads; i.e., (suggestions in parens)
+      max_num_threads (num cpu cores), schedule type (omp_sched_dynamic), chunk_size (0).
     :uniform_generator[1]: a UniformRandomGenerator object providing the random engine for uniform random numbers
   \output
     :found_flag[1]: true if next_hyperparameters corresponds to a converged solution
@@ -1130,7 +1132,7 @@ OL_NONNULL_POINTERS void MultistartNewtonHyperparameterOptimization(
     const CovarianceInterface& covariance,
     const NewtonParameters& newton_parameters,
     ClosedInterval const * restrict domain,
-    int max_num_threads,
+    const ThreadSchedule& thread_schedule,
     bool * restrict found_flag,
     UniformRandomGenerator * uniform_generator,
     double * restrict next_hyperparameters) {
@@ -1144,9 +1146,8 @@ OL_NONNULL_POINTERS void MultistartNewtonHyperparameterOptimization(
 
   // we need 1 state object per thread
   std::vector<typename LogLikelihoodEvaluator::StateType> log_likelihood_state_vector;
-  SetupLogLikelihoodState(log_likelihood_evaluator, covariance, max_num_threads, &log_likelihood_state_vector);
-
-  ThreadSchedule thread_schedule(omp_sched_dynamic);
+  SetupLogLikelihoodState(log_likelihood_evaluator, covariance, thread_schedule.max_num_threads,
+                          &log_likelihood_state_vector);
 
   OptimizationIOContainer io_container(log_likelihood_state_vector[0].GetProblemSize());
   InitializeBestKnownPoint(log_likelihood_evaluator, initial_guesses.data(), num_hyperparameters,
@@ -1156,7 +1157,7 @@ OL_NONNULL_POINTERS void MultistartNewtonHyperparameterOptimization(
   MultistartOptimizer<NewtonOptimizer<LogLikelihoodEvaluator, TensorProductDomain> > multistart_optimizer;
   multistart_optimizer.MultistartOptimize(newton_opt, log_likelihood_evaluator, newton_parameters,
                                           domain_linearspace, thread_schedule, initial_guesses.data(),
-                                          newton_parameters.num_multistarts, max_num_threads,
+                                          newton_parameters.num_multistarts,
                                           log_likelihood_state_vector.data(),
                                           nullptr, &io_container);
 
@@ -1181,9 +1182,10 @@ OL_NONNULL_POINTERS void MultistartNewtonHyperparameterOptimization(
     :log_likelihood_evaluator: object supporting evaluation of log likelihood
     :covariance: the CovarianceFunction object encoding assumptions about the GP's behavior on our data
     :domain: object specifying the domain to optimize over (see gpp_domain.hpp), specify in LINEAR SPACE!
-   :initial_guesses[n_hyper][num_multistarts]: list of hyperparameters at which to compute log likelihood
+    :thread_schedule: struct instructing OpenMP on how to schedule threads; i.e., (suggestions in parens)
+      max_num_threads (num cpu cores), schedule type (omp_sched_guided), chunk_size (0).
+    :initial_guesses[n_hyper][num_multistarts]: list of hyperparameters at which to compute log likelihood
     :num_multistarts: number of random points to generate for use as initial guesses
-    :max_num_threads: maximum number of threads for use by OpenMP (generally should be <= # cores)
   \output
     :function_values[num_multistarts]: log likelihood evaluated at each point of initial_guesses, in the same order as initial_guesses; never dereferenced if nullptr
     :next_hyperparameters[n_hyper]: the new hyperparameters found by "dumb" search
@@ -1193,15 +1195,14 @@ void EvaluateLogLikelihoodAtPointList(
     const LogLikelihoodEvaluator& log_likelihood_evaluator,
     const CovarianceInterface& covariance,
     const DomainType& domain_linearspace,
+    const ThreadSchedule& thread_schedule,
     double const * restrict initial_guesses,
     int num_multistarts,
-    int max_num_threads,
     double * restrict function_values,
     double * restrict next_hyperparameters) {
   std::vector<typename LogLikelihoodEvaluator::StateType> log_likelihood_state_vector;
-  SetupLogLikelihoodState(log_likelihood_evaluator, covariance, max_num_threads, &log_likelihood_state_vector);
-
-  ThreadSchedule thread_schedule(omp_sched_guided);
+  SetupLogLikelihoodState(log_likelihood_evaluator, covariance, thread_schedule.max_num_threads,
+                          &log_likelihood_state_vector);
 
   const int num_hyperparameters = covariance.GetNumberOfHyperparameters();
   OptimizationIOContainer io_container(log_likelihood_state_vector[0].GetProblemSize());
@@ -1213,7 +1214,7 @@ void EvaluateLogLikelihoodAtPointList(
   MultistartOptimizer<NullOptimizer<LogLikelihoodEvaluator, DomainType> > multistart_optimizer;
   multistart_optimizer.MultistartOptimize(null_opt, log_likelihood_evaluator, null_parameters,
                                           domain_linearspace, thread_schedule, initial_guesses,
-                                          num_multistarts, max_num_threads, log_likelihood_state_vector.data(),
+                                          num_multistarts, log_likelihood_state_vector.data(),
                                           function_values, &io_container);
 
   std::copy(io_container.best_point.begin(), io_container.best_point.end(), next_hyperparameters);
@@ -1240,8 +1241,9 @@ void EvaluateLogLikelihoodAtPointList(
     :covariance: the CovarianceFunction object encoding assumptions about the GP's behavior on our data
     :domain[n_hyper]: array of ClosedInterval specifying the boundaries of a n_hyper-dimensional tensor-product domain.
       Specify in LOG-10 SPACE!
+    :thread_schedule: struct instructing OpenMP on how to schedule threads; i.e., (suggestions in parens)
+      max_num_threads (num cpu cores), schedule type (omp_sched_guided), chunk_size (0).
     :num_multistarts: number of random points to generate for use as initial guesses
-    :max_num_threads: maximum number of threads for use by OpenMP (generally should be <= # cores)
     :uniform_generator[1]: a UniformRandomGenerator object providing the random engine for uniform random numbers
   \output
     :uniform_generator[1]: UniformRandomGenerator object will have its state changed due to random draws
@@ -1252,8 +1254,8 @@ OL_NONNULL_POINTERS void LatinHypercubeSearchHyperparameterOptimization(
     const LogLikelihoodEvaluator& log_likelihood_evaluator,
     const CovarianceInterface& covariance,
     ClosedInterval const * restrict domain,
+    const ThreadSchedule& thread_schedule,
     int num_multistarts,
-    int max_num_threads,
     UniformRandomGenerator * uniform_generator,
     double * restrict next_hyperparameters) {
   const int num_hyperparameters = covariance.GetNumberOfHyperparameters();
@@ -1265,7 +1267,7 @@ OL_NONNULL_POINTERS void LatinHypercubeSearchHyperparameterOptimization(
   TensorProductDomain domain_linearspace(domain_linearspace_bounds.data(), num_hyperparameters);
 
   EvaluateLogLikelihoodAtPointList(log_likelihood_evaluator, covariance, domain_linearspace,
-                                   initial_guesses.data(), num_multistarts, max_num_threads,
+                                   thread_schedule, initial_guesses.data(), num_multistarts,
                                    nullptr, next_hyperparameters);
 }
 

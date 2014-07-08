@@ -761,8 +761,8 @@ int MultistartOptimizeExceptionHandlingTest() {
       // increment errors: we must catch an exception to decrement
       total_errors += 1;
       multistart_optimizer.MultistartOptimize(null_opt, exception_eval, null_parameters, dummy_domain,
-                                              ThreadSchedule(), initial_guesses.data(), num_multistarts,
-                                              max_num_threads, state_vector.data(), nullptr, &io_container);
+                                              ThreadSchedule(max_num_threads), initial_guesses.data(),
+                                              num_multistarts, state_vector.data(), nullptr, &io_container);
     } catch (const InvalidValueException<double>& except) {
       // only x == 1.0 would have thrown an exception and it would set the value to 1.0.
       if (except.value() != 1.0) {
@@ -787,8 +787,9 @@ int MultistartOptimizeExceptionHandlingTest() {
       // increment errors: we must catch an exception to decrement
       total_errors += 1;
       multistart_optimizer.MultistartOptimize(null_opt, exception_eval, null_parameters, dummy_domain,
-                                              ThreadSchedule(omp_sched_static, 1), initial_guesses.data(),
-                                              num_multistarts, max_num_threads, state_vector.data(),
+                                              ThreadSchedule(max_num_threads, omp_sched_static, 1),
+                                              initial_guesses.data(),
+                                              num_multistarts, state_vector.data(),
                                               nullptr, &io_container);
     } catch (const InvalidValueException<double>& except) {
       // exception occurred, good! remove the increment from the try block.

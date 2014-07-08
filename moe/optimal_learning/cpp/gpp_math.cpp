@@ -1221,14 +1221,11 @@ void OnePotentialSampleExpectedImprovementState::SetupState(const EvaluatorType&
   Routes the EI computation through MultistartOptimizer + NullOptimizer to perform EI function evaluations at the list of input
   points, using the appropriate EI evaluator (e.g., monte carlo vs analytic) depending on inputs.
 \endrst*/
-void EvaluateEIAtPointList(const GaussianProcess& gaussian_process,
+void EvaluateEIAtPointList(const GaussianProcess& gaussian_process, const ThreadSchedule& thread_schedule,
                            double const * restrict initial_guesses, double const * restrict points_being_sampled,
                            int num_multistarts, int num_to_sample, int num_being_sampled, double best_so_far,
-                           int max_int_steps, int max_num_threads, bool * restrict found_flag, NormalRNG * normal_rng,
+                           int max_int_steps, bool * restrict found_flag, NormalRNG * normal_rng,
                            double * restrict function_values, double * restrict best_next_point) {
-  // Note: using a schedule different than "static" may lead to flakiness in monte-carlo EI optimization tests.
-  // Besides, this is the fastest setting.
-  ThreadSchedule thread_schedule(omp_sched_static);
   using DomainType = DummyDomain;
   DomainType dummy_domain;
   bool configure_for_gradients = false;
@@ -1237,7 +1234,7 @@ void EvaluateEIAtPointList(const GaussianProcess& gaussian_process,
     OnePotentialSampleExpectedImprovementEvaluator ei_evaluator(gaussian_process, best_so_far);
 
     std::vector<typename OnePotentialSampleExpectedImprovementEvaluator::StateType> ei_state_vector;
-    SetupExpectedImprovementState(ei_evaluator, initial_guesses, max_num_threads,
+    SetupExpectedImprovementState(ei_evaluator, initial_guesses, thread_schedule.max_num_threads,
                                   configure_for_gradients, &ei_state_vector);
 
     // init winner to be first point in set and 'force' its value to be 0.0; we cannot do worse than this
@@ -1247,7 +1244,7 @@ void EvaluateEIAtPointList(const GaussianProcess& gaussian_process,
     typename NullOptimizer<OnePotentialSampleExpectedImprovementEvaluator, DomainType>::ParameterStruct null_parameters;
     MultistartOptimizer<NullOptimizer<OnePotentialSampleExpectedImprovementEvaluator, DomainType> > multistart_optimizer;
     multistart_optimizer.MultistartOptimize(null_opt, ei_evaluator, null_parameters, dummy_domain,
-                                            thread_schedule, initial_guesses, num_multistarts, max_num_threads,
+                                            thread_schedule, initial_guesses, num_multistarts,
                                             ei_state_vector.data(), function_values, &io_container);
     *found_flag = io_container.found_flag;
     std::copy(io_container.best_point.begin(), io_container.best_point.end(), best_next_point);
@@ -1256,8 +1253,8 @@ void EvaluateEIAtPointList(const GaussianProcess& gaussian_process,
 
     std::vector<typename ExpectedImprovementEvaluator::StateType> ei_state_vector;
     SetupExpectedImprovementState(ei_evaluator, initial_guesses, points_being_sampled, num_to_sample,
-                                  num_being_sampled, max_num_threads, configure_for_gradients,
-                                  normal_rng, &ei_state_vector);
+                                  num_being_sampled, thread_schedule.max_num_threads,
+                                  configure_for_gradients, normal_rng, &ei_state_vector);
 
     // init winner to be first point in set and 'force' its value to be 0.0; we cannot do worse than this
     OptimizationIOContainer io_container(ei_state_vector[0].GetProblemSize(), 0.0, initial_guesses);
@@ -1266,7 +1263,7 @@ void EvaluateEIAtPointList(const GaussianProcess& gaussian_process,
     typename NullOptimizer<ExpectedImprovementEvaluator, DomainType>::ParameterStruct null_parameters;
     MultistartOptimizer<NullOptimizer<ExpectedImprovementEvaluator, DomainType> > multistart_optimizer;
     multistart_optimizer.MultistartOptimize(null_opt, ei_evaluator, null_parameters, dummy_domain,
-                                            thread_schedule, initial_guesses, num_multistarts, max_num_threads,
+                                            thread_schedule, initial_guesses, num_multistarts,
                                             ei_state_vector.data(), function_values, &io_container);
     *found_flag = io_container.found_flag;
     std::copy(io_container.best_point.begin(), io_container.best_point.end(), best_next_point);
@@ -1284,15 +1281,15 @@ void EvaluateEIAtPointList(const GaussianProcess& gaussian_process,
   This is more for general q,p-EI as these two things are equivalent for 1,0-EI.
 \endrst*/
 template <typename DomainType>
-void ComputeOptimalPointsToSampleWithSchedule(const GaussianProcess& gaussian_process,
-                                              const GradientDescentParameters& optimization_parameters,
-                                              const DomainType& domain, const ThreadSchedule& thread_schedule,
-                                              double const * restrict points_being_sampled,
-                                              int num_to_sample, int num_being_sampled, double best_so_far,
-                                              int max_int_steps, int max_num_threads, bool lhc_search_only,
-                                              int num_lhc_samples, bool * restrict found_flag,
-                                              UniformRandomGenerator * uniform_generator,
-                                              NormalRNG * normal_rng, double * restrict best_points_to_sample) {
+void ComputeOptimalPointsToSample(const GaussianProcess& gaussian_process,
+                                  const GradientDescentParameters& optimization_parameters,
+                                  const DomainType& domain, const ThreadSchedule& thread_schedule,
+                                  double const * restrict points_being_sampled,
+                                  int num_to_sample, int num_being_sampled, double best_so_far,
+                                  int max_int_steps, bool lhc_search_only,
+                                  int num_lhc_samples, bool * restrict found_flag,
+                                  UniformRandomGenerator * uniform_generator,
+                                  NormalRNG * normal_rng, double * restrict best_points_to_sample) {
   if (unlikely(num_to_sample <= 0)) {
     return;
   }
@@ -1301,12 +1298,12 @@ void ComputeOptimalPointsToSampleWithSchedule(const GaussianProcess& gaussian_pr
 
   bool found_flag_local = false;
   if (lhc_search_only == false) {
-    ComputeOptimalPointsToSampleWithRandomStartsWithSchedule(gaussian_process, optimization_parameters,
-                                                             domain, thread_schedule, points_being_sampled,
-                                                             num_to_sample, num_being_sampled,
-                                                             best_so_far, max_int_steps, max_num_threads,
-                                                             &found_flag_local, uniform_generator, normal_rng,
-                                                             next_points_to_sample.data());
+    ComputeOptimalPointsToSampleWithRandomStarts(gaussian_process, optimization_parameters,
+                                                 domain, thread_schedule, points_being_sampled,
+                                                 num_to_sample, num_being_sampled,
+                                                 best_so_far, max_int_steps,
+                                                 &found_flag_local, uniform_generator, normal_rng,
+                                                 next_points_to_sample.data());
   }
 
   // if gradient descent EI optimization failed OR we're only doing latin hypercube searches
@@ -1316,11 +1313,16 @@ void ComputeOptimalPointsToSampleWithSchedule(const GaussianProcess& gaussian_pr
       OL_WARNING_PRINTF("Attempting latin hypercube search\n");
     }
 
+    // Note: using a schedule different than "static" may lead to flakiness in monte-carlo EI optimization tests.
+    // Besides, this is the fastest setting.
+    ThreadSchedule thread_schedule_naive_search(thread_schedule);
+    thread_schedule_naive_search.schedule = omp_sched_static;
     ComputeOptimalPointsToSampleViaLatinHypercubeSearch(gaussian_process, domain,
+                                                        thread_schedule_naive_search,
                                                         points_being_sampled,
                                                         num_lhc_samples, num_to_sample,
                                                         num_being_sampled, best_so_far,
-                                                        max_int_steps, max_num_threads,
+                                                        max_int_steps,
                                                         &found_flag_local, uniform_generator,
                                                         normal_rng, next_points_to_sample.data());
 
@@ -1336,18 +1338,18 @@ void ComputeOptimalPointsToSampleWithSchedule(const GaussianProcess& gaussian_pr
 }
 
 // template explicit instantiation definitions, see gpp_common.hpp header comments, item 6
-template void ComputeOptimalPointsToSampleWithSchedule(
+template void ComputeOptimalPointsToSample(
     const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters,
     const TensorProductDomain& domain, const ThreadSchedule& thread_schedule,
     double const * restrict points_being_sampled, int num_to_sample,
-    int num_being_sampled, double best_so_far, int max_int_steps, int max_num_threads, bool lhc_search_only,
+    int num_being_sampled, double best_so_far, int max_int_steps, bool lhc_search_only,
     int num_lhc_samples, bool * restrict found_flag, UniformRandomGenerator * uniform_generator,
     NormalRNG * normal_rng, double * restrict best_points_to_sample);
-template void ComputeOptimalPointsToSampleWithSchedule(
+template void ComputeOptimalPointsToSample(
     const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters,
     const SimplexIntersectTensorProductDomain& domain, const ThreadSchedule& thread_schedule,
     double const * restrict points_being_sampled,
-    int num_to_sample, int num_being_sampled, double best_so_far, int max_int_steps, int max_num_threads,
+    int num_to_sample, int num_being_sampled, double best_so_far, int max_int_steps,
     bool lhc_search_only, int num_lhc_samples, bool * restrict found_flag,
     UniformRandomGenerator * uniform_generator, NormalRNG * normal_rng, double * restrict best_points_to_sample);
 
