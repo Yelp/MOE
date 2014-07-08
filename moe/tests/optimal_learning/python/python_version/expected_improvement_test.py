@@ -10,7 +10,7 @@ from moe.optimal_learning.python.python_version.covariance import SquareExponent
 from moe.optimal_learning.python.python_version.domain import TensorProductDomain
 from moe.optimal_learning.python.python_version.expected_improvement import multistart_expected_improvement_optimization, ExpectedImprovement
 from moe.optimal_learning.python.python_version.gaussian_process import GaussianProcess
-from moe.optimal_learning.python.python_version.optimization import GradientDescentParameters, GradientDescentOptimizer
+from moe.optimal_learning.python.python_version.optimization import GradientDescentParameters, GradientDescentOptimizer, LBFGSBParameters, LBFGSBOptimizer
 from moe.optimal_learning.python.repeated_domain import RepeatedDomain
 from moe.tests.optimal_learning.python.gaussian_process_test_case import GaussianProcessTestCase, GaussianProcessTestEnvironmentInput
 
@@ -249,6 +249,50 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
         num_to_sample = 1
         repeated_domain = RepeatedDomain(ei_eval.num_to_sample, expanded_domain)
         ei_optimizer = GradientDescentOptimizer(repeated_domain, ei_eval, gd_parameters)
+        best_point = multistart_expected_improvement_optimization(ei_optimizer, num_multistarts, num_to_sample)
+
+        # Check that gradients are small
+        ei_eval.current_point = best_point
+        gradient = ei_eval.compute_grad_expected_improvement()
+        self.assert_vector_within_relative(gradient, numpy.zeros(gradient.shape), tolerance)
+        
+        # Check that output is in the domain
+        T.assert_equal(repeated_domain.check_point_inside(best_point), True)
+
+    def test_multistart_analytic_expected_improvement_optimization_bfgs(self):
+        """Check that multistart optimization (gradient descent) can find the optimum point to sample (using 1D analytic EI)."""
+        numpy.random.seed(3148)
+        index = numpy.argmax(numpy.greater_equal(self.num_sampled_list, 20))
+        domain, gaussian_process = self.gp_test_environments[index]
+
+        approx_grad = True
+        max_func_evals = 150000
+        max_iters = 150000
+        max_metric_correc = 10
+        factr = 100000.0
+        pgtol = 1e-05
+        epsilon = 1e-8
+        tolerance = 1.0e-5
+        BFGS_parameters = LBFGSBParameters(
+            approx_grad,
+            max_func_evals,
+            max_iters,
+            max_metric_correc,
+            factr,
+            pgtol,
+            epsilon,
+        )
+        num_multistarts = 3
+
+        points_to_sample = domain.generate_random_point_in_domain()
+        ei_eval = ExpectedImprovement(gaussian_process, points_to_sample)
+
+        # expand the domain so that we are definitely not doing constrained optimization
+        expanded_domain = TensorProductDomain([ClosedInterval(-4.0, 2.0)] * self.dim)
+
+        num_to_sample = 1
+        repeated_domain = RepeatedDomain(ei_eval.num_to_sample, expanded_domain)
+        ei_optimizer = LBFGSBOptimizer(repeated_domain, ei_eval, BFGS_parameters)
         best_point = multistart_expected_improvement_optimization(ei_optimizer, num_multistarts, num_to_sample)
 
         # Check that gradients are small

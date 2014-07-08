@@ -176,6 +176,7 @@ fail, we commonly fall back to 'dumb' search.
 import collections
 
 import numpy
+import scipy.optimize as optimize
 
 from moe.optimal_learning.python.interfaces.optimization_interface import OptimizerInterface
 
@@ -292,6 +293,25 @@ class GradientDescentParameters(_BaseGradientDescentParameters):
 
     """
 
+    __slots__ = ()
+
+
+# See LBFGSBParameters (below) for docstring.
+_BaseLBFGSBParameters = collections.namedtuple('_BaseLBFGSBParameters', [
+    'approx_grad',
+    'max_func_evals',
+    'max_iters',
+    'max_metric_correc',
+    'factr',
+    'pgtol',
+    'epsilon',
+])
+
+
+class LBFGSBParameters(_BaseLBFGSBParameters):
+    """Parameters for the L-BFGS-B optimization.
+
+    """
     __slots__ = ()
 
 
@@ -527,3 +547,60 @@ class MultistartOptimizer(OptimizerInterface):
                 best_point = self.optimizer.objective_function.current_point
 
         return best_point, function_value_list
+
+
+class LBFGSBOptimizer():
+
+    """Optimizes an objective function over the specified domain with the L-BFGS-B method.
+
+    .. Note:: See optimize() docstring for more details.
+
+    """
+
+    def __init__(self, domain, optimizable, optimization_parameters):
+        """Construct a LBFGSBOptimizer.
+
+        :param domain: the domain that this optimizer operates over
+        :type domain: interfaces.domain_interface.DomainInterface subclass. Only supports TensorProductDomain.
+        :param optimizable: object representing the objective function being optimized
+        :type optimizable: interfaces.optimization_interface.OptimizableInterface subclass
+        :param optimization_parameters: parameters describing how to perform optimization (tolerances, iterations, etc.)
+        :type optimization_parameters: python_version.optimization.LBFGSBParameters object
+
+        """
+        self.domain = domain
+        self.objective_function = optimizable
+        self.optimization_parameters = optimization_parameters
+
+    def optimize(self, **kwargs):
+        """Perform an L-BFGS-B optimization given the parameters in optimization_parameters.
+
+        OptimizableInterface (objective function) over the specified DomainInterface. Optimizer behavior is controlled
+        by the specified ParameterStruct. See class docs and header docs of this file, section 2c and 3b, iii),
+        for more information.
+
+        The method allows you to specify what the current best is, so that if optimization cannot beat it, no improvement will be
+        reported.  It will otherwise report the overall best improvement (through io_container) as well as the result of every
+        individual multistart run if desired (through function_values).
+
+        :return: (best point found, objective function values at the end of each optimization run)
+        :rtype: tuple: (array of float64 with shape (self.optimizer.dim), array of float64 with shape (self.num_multistarts))
+
+        """
+        
+        def objective_func(point):
+            self.objective_function.current_point = point
+            return -self.objective_function.compute_objective_function(**kwargs)
+
+        def grad(point):
+            self.objective_function.current_point = point
+            return -self.objective_function.compute_grad_objective_function(**kwargs)
+
+        return optimize.fmin_l_bfgs_b(func=objective_func, x0=self.objective_function.current_point, fprime=grad, bounds=self.domain.domain_bounds_as_list(), \
+                                        approx_grad=self.optimization_parameters.approx_grad, \
+                                        factr=self.optimization_parameters.factr, \
+                                        maxfun=self.optimization_parameters.max_func_evals, \
+                                        maxiter=self.optimization_parameters.max_iters, \
+                                        m=self.optimization_parameters.max_metric_correc, \
+                                        pgtol=self.optimization_parameters.pgtol, \
+                                        epsilon=self.optimization_parameters.epsilon)[0], None
