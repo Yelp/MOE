@@ -269,10 +269,10 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
         max_func_evals = 150000
         max_iters = 150000
         max_metric_correc = 10
-        factr = 100000.0
-        pgtol = 1e-05
+        factr = 1000.0
+        pgtol = 1e-10
         epsilon = 1e-8
-        tolerance = 1.0e-5
+        tolerance = 6.0e-6
         BFGS_parameters = LBFGSBParameters(
             approx_grad,
             max_func_evals,

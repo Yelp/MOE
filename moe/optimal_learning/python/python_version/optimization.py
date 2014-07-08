@@ -298,13 +298,13 @@ class GradientDescentParameters(_BaseGradientDescentParameters):
 
 # See LBFGSBParameters (below) for docstring.
 _BaseLBFGSBParameters = collections.namedtuple('_BaseLBFGSBParameters', [
-    'approx_grad',
-    'max_func_evals',
-    'max_iters',
-    'max_metric_correc',
-    'factr',
-    'pgtol',
-    'epsilon',
+    'approx_grad',  # If true, BFGS will approximate the gradient.
+    'max_func_evals',  # Maximum number of objcetive function calls to make.
+    'max_iters',  # Maximum number of iterations for optimization.
+    'max_metric_correc',  # Maximum number of variable metric corrections used to define the limited memory matrix.
+    'factr',  # 1e12 for low accuracy, 1e7 for moderate accuracy, and 10 for extremely high accuracy.
+    'pgtol',  # Cutoff for highest component of gradient to be considered a critical point.
+    'epsilon',  # Step size for approximating the gradient.
 ])
 
 
@@ -553,6 +553,14 @@ class LBFGSBOptimizer():
 
     """Optimizes an objective function over the specified domain with the L-BFGS-B method.
 
+    The BFGS (Broyden-Fletcher-Goldfarb-Shanno) algorithm is a quasi-Newton algorithm for optimization. It can 
+    be used for DFO (Derivative-Free Optimization) when the gradient is not available, such as is the case for 
+    the analytic qEI algorithm.
+
+    L-BFGS is a memory efficient version of BFGS, and BFGS-B is a variant that handles simple box constraints. 
+    We use L-BFGS-B, which is a combination of the two, and is often the optimization algorithm of choice for 
+    these types of problems.
+    
     .. Note:: See optimize() docstring for more details.
 
     """
@@ -587,13 +595,15 @@ class LBFGSBOptimizer():
         :rtype: tuple: (array of float64 with shape (self.optimizer.dim), array of float64 with shape (self.num_multistarts))
 
         """
-        
+
         def objective_func(point):
             self.objective_function.current_point = point
+            # Notice the negative sign. Build-in L-BFGS-B is a minimization while we want a maximization.
             return -self.objective_function.compute_objective_function(**kwargs)
 
         def grad(point):
             self.objective_function.current_point = point
+            # Negative sign necessary, as mentioned above.
             return -self.objective_function.compute_grad_objective_function(**kwargs)
 
         return optimize.fmin_l_bfgs_b(func=objective_func, x0=self.objective_function.current_point, fprime=grad, bounds=self.domain.domain_bounds_as_list(), \

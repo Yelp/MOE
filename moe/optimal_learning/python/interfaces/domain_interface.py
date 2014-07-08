@@ -27,6 +27,11 @@ class DomainInterface(object):
         pass
 
     @abstractmethod
+    def domain_bounds_as_list(self):
+        """Return a list of (min, max) pairs, one for each dimension of the domain"""
+        pass
+
+    @abstractmethod
     def generate_random_point_in_domain(self, random_source=None):
         """Generate ``point`` uniformly at random such that ``self.check_point_inside(point)`` is True.
 
