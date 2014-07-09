@@ -10,17 +10,15 @@ import colander
 from pyramid.view import view_config
 
 from moe.optimal_learning.python.constant import DEFAULT_MAX_NUM_THREADS
-from moe.optimal_learning.python.cpp_wrappers.log_likelihood import GaussianProcessLogLikelihood, multistart_hyperparameter_optimization
+from moe.optimal_learning.python.constant import LOG_MARGINAL_LIKELIHOOD, LEAVE_ONE_OUT_LOG_LIKELIHOOD
+from moe.optimal_learning.python.cpp_wrappers.log_likelihood import GaussianProcessLogLikelihood, GaussianProcessLeaveOneOutLogLikelihood, multistart_hyperparameter_optimization
+from moe.optimal_learning.python.linkers import LOGLIKELIHOOD_TYPES_TO_LOGLIKELIHOOD_METHODS
 from moe.views.constant import GP_HYPER_OPT_ROUTE_NAME, GP_HYPER_OPT_PRETTY_ROUTE_NAME
 from moe.views.gp_pretty_view import GpPrettyView, PRETTY_RENDERER
 from moe.views.optimizable_gp_pretty_view import OptimizableGpPrettyView
 from moe.views.schemas import GpHistoricalInfo, CovarianceInfo, BoundedDomainInfo, OptimizationInfo, DomainInfo, ListOfFloats
 from moe.views.utils import _make_domain_from_params, _make_gp_from_params, _make_optimization_parameters_from_params, _make_log_likelihood_from_params
-from moe.optimal_learning.python.linkers import LOGLIKELIHOOD_TYPES_TO_LOGLIKELIHOOD_METHODS
-from moe.optimal_learning.python.constant import LOG_MARGINAL_LIKELIHOOD, LEAVE_ONE_OUT_LOG_LIKELIHOOD
 
-import moe.optimal_learning.python.cpp_wrappers.optimization as cpp_optimization
-import moe.build.GPP as C_GP
 
 class GpHyperOptRequest(colander.MappingSchema):
 
@@ -75,9 +73,7 @@ class GpHyperOptRequest(colander.MappingSchema):
                     ...
                     },
                 },
-            'log_likelihood_info': {
-                'log_likelihood': 'log_marginal_likelihood'
-                }
+            'log_likelihood_info': 'log_marginal_likelihood'
         }
 
     """
@@ -208,11 +204,8 @@ class GpHyperOptView(OptimizableGpPrettyView):
         gaussian_process = _make_gp_from_params(params)
         covariance_of_process = gaussian_process._covariance
         optimizer_class, optimization_parameters, num_random_samples = _make_optimization_parameters_from_params(params)
-        log_likelihood_type =  _make_log_likelihood_from_params(params)
+        log_likelihood_type = _make_log_likelihood_from_params(params)
 
-        if optimizer_class != cpp_optimization.NullOptimizer and log_likelihood_type == LEAVE_ONE_OUT_LOG_LIKELIHOOD:
-            raise NotImplementedError('LeaveOneOutLogLikehood is not compatible with Newton\'s Method or Gradient Descent')
-        
         if log_likelihood_type == LEAVE_ONE_OUT_LOG_LIKELIHOOD:
             log_likelihood_eval = GaussianProcessLeaveOneOutLogLikelihood(
                 covariance_of_process,

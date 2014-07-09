@@ -3,7 +3,7 @@
 from moe.optimal_learning.python.cpp_wrappers.gaussian_process import GaussianProcess
 from moe.optimal_learning.python.data_containers import SamplePoint, HistoricalData
 from moe.optimal_learning.python.geometry_utils import ClosedInterval
-from moe.optimal_learning.python.linkers import DOMAIN_TYPES_TO_DOMAIN_LINKS, COVARIANCE_TYPES_TO_CLASSES, OPTIMIZATION_TYPES_TO_OPTIMIZATION_METHODS, LOGLIKELIHOOD_TYPES_TO_LOGLIKELIHOOD_METHODS
+from moe.optimal_learning.python.linkers import DOMAIN_TYPES_TO_DOMAIN_LINKS, COVARIANCE_TYPES_TO_CLASSES, OPTIMIZATION_TYPES_TO_OPTIMIZATION_METHODS
 
 
 def _make_domain_from_params(params, domain_info_key="domain_info", python_version=False):
