@@ -168,6 +168,9 @@ class GaussianProcessLogMarginalLikelihood(GaussianProcessLogLikelihoodInterface
     hyperparameters (or even changing covariance functions) to improve our model quality.  Hence this class provides access
     to functions for computing log marginal likelihood and its hyperparameter gradients.
 
+    .. Note:: Equivalent methods of LogLikelihoodInterface and OptimizableInterface are aliased below (e.g.,
+      problem_size and num_hyperparameters, compute_log_likelihood and compute_objective_function, etc).
+
     """
 
     def __init__(self, covariance_function, historical_data):
@@ -189,38 +192,30 @@ class GaussianProcessLogMarginalLikelihood(GaussianProcessLogLikelihoodInterface
 
     @property
     def num_hyperparameters(self):
-        """Return the number of hyperparameters."""
+        """Return the number of hyperparameters aka the number of independent parameters to optimize."""
         return self._covariance.num_hyperparameters
 
-    @property
-    def problem_size(self):
-        """Return the number of independent parameters to optimize."""
-        return self.num_hyperparameters
+    problem_size = num_hyperparameters
 
     def get_hyperparameters(self):
-        """Get the hyperparameters (array of float64 with shape (num_hyperparameters)) of this covariance."""
+        """Get the hyperparameters (array of float64 with shape (num_hyperparameters)) of this covariance.
+
+        Equivalently, get the current_point at which this object is evaluating the objective function, ``f(x)``
+
+        """
         return self._covariance.hyperparameters
 
     def set_hyperparameters(self, hyperparameters):
-        """Set hyperparameters to the specified hyperparameters; ordering must match."""
+        """Set hyperparameters to the specified hyperparameters; ordering must match.
+
+        :param hyperparameters: hyperparameters at which to evaluate the log likelihood (objective function), ``f(x)``
+        :type hyperparameters: array of float64 with shape (num_hyperparameters)
+
+        """
         self._covariance.hyperparameters = hyperparameters
 
     hyperparameters = property(get_hyperparameters, set_hyperparameters)
-
-    def get_current_point(self):
-        """Get the current_point (array of float64 with shape (problem_size)) at which this object is evaluating the objective function, ``f(x)``."""
-        return self.hyperparameters
-
-    def set_current_point(self, current_point):
-        """Set current_point to the specified point; ordering must match.
-
-        :param current_point: current_point at which to evaluate the objective function, ``f(x)``
-        :type current_point: array of float64 with shape (problem_size)
-
-        """
-        self.hyperparameters = current_point
-
-    current_point = property(get_current_point, set_current_point)
+    current_point = hyperparameters
 
     def compute_log_likelihood(self):
         r"""Compute the _log_likelihood_type measure at the specified hyperparameters.
@@ -259,9 +254,7 @@ class GaussianProcessLogMarginalLikelihood(GaussianProcessLogLikelihoodInterface
         log_marginal_term3 = -0.5 * numpy.float64(self._historical_data.points_sampled_value.size) * numpy.log(2.0 * numpy.pi)
         return log_marginal_term1 + log_marginal_term2 + log_marginal_term3
 
-    def compute_objective_function(self):
-        """Wrapper for compute_log_likelihood; see that function's docstring."""
-        return self.compute_log_likelihood()
+    compute_objective_function = compute_log_likelihood
 
     def compute_grad_log_likelihood(self):
         r"""Compute the gradient (wrt hyperparameters) of the _log_likelihood_type measure at the specified hyperparameters.
@@ -306,14 +299,10 @@ class GaussianProcessLogMarginalLikelihood(GaussianProcessLogLikelihoodInterface
 
         return grad_log_marginal
 
-    def compute_grad_objective_function(self):
-        """Wrapper for compute_grad_log_likelihood; see that function's docstring."""
-        return self.compute_grad_log_likelihood()
+    compute_grad_objective_function = compute_grad_log_likelihood
 
     def compute_hessian_log_likelihood(self):
         """We do not currently support computation of the (hyperparameter) hessian of log likelihood-like metrics."""
         raise NotImplementedError('Currently C++ does not expose Hessian computation of log likelihood-like metrics.')
 
-    def compute_hessian_objective_function(self):
-        """Wrapper for compute_hessian_log_likelihood; see that function's docstring."""
-        return self.compute_hessian_log_likelihood()
+    compute_hessian_objective_function = compute_hessian_log_likelihood

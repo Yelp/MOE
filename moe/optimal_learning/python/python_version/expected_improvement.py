@@ -100,6 +100,9 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
 
     When available, fast, analytic formulas replace monte-carlo loops.
 
+    .. Note:: Equivalent methods of ExpectedImprovementInterface and OptimizableInterface are aliased below (e.g.,
+      compute_expected_improvement and compute_objective_function, etc).
+
     See interfaces/expected_improvement_interface.py docs for further details.
 
     """
@@ -609,9 +612,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         else:
             return self._compute_expected_improvement_monte_carlo(mu_star, var_star)
 
-    def compute_objective_function(self, **kwargs):
-        """Wrapper for compute_expected_improvement; see that function's docstring."""
-        return self.compute_expected_improvement(**kwargs)
+    compute_objective_function = compute_expected_improvement
 
     def compute_grad_expected_improvement(self, force_monte_carlo=False):
         r"""Compute the gradient of expected improvement at ``points_to_sample`` wrt ``points_to_sample``, with ``points_being_sampled`` concurrent samples.
@@ -677,9 +678,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
                 grad_chol_decomp,
             )
 
-    def compute_grad_objective_function(self, **kwargs):
-        """Wrapper for compute_grad_expected_improvement; see that function's docstring."""
-        return self.compute_grad_expected_improvement(**kwargs)
+    compute_grad_objective_function = compute_grad_expected_improvement
 
     def compute_hessian_objective_function(self, **kwargs):
         """We do not currently support computation of the (spatial) hessian of Expected Improvement."""
