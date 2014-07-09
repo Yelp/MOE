@@ -241,49 +241,50 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         :rtype: float64
 
         """
-        # q value
-        num_p = len(mu_star)
+        num_points = self.num_to_sample + self.num_being_sampled
         best_so_far = self._best_so_far
 
-        def singlevar_pdf(m, var, param):
+        def singlevar_norm_pdf(mean, var, param):
             """PDF of univariate Gaussian centered at m with variance var."""
-            return scipy.stats.norm.pdf(param, m, numpy.sqrt(var))
+            return scipy.stats.norm.pdf(param, mean, numpy.sqrt(var))
 
-        def multivar_cdf(u, cov_matrix):
+        def multivar_norm_cdf(upper, cov_matrix):
             """CDF of multivariate Gaussian centered at 0 with covariance matrix cov_matrix. CDF is taken from -inf to u."""
-            if len(u) == 1:
-                return scipy.stats.norm.cdf(u[0], 0, numpy.sqrt(cov_matrix[0, 0]))
+            if upper.size == 1:
+                return scipy.stats.norm.cdf(upper[0], 0, numpy.sqrt(cov_matrix[0, 0]))
 
             # Standardize the upper bound u using the standard deviation
             std = numpy.sqrt(numpy.diag(cov_matrix))
-            std_u = u / std
+            std_upper = upper / std
 
             # Convert covariance matrix into correlation matrix: http://en.wikipedia.org/wiki/Correlation_and_dependence#Correlation_matrices
-            corr_matrix = cov_matrix.copy() / std / std[:, numpy.newaxis]  # standardize -> correlation matrix
+            corr_matrix = cov_matrix / std / std.reshape(upper.size, 1)  # standardize -> correlation matrix
 
-            # Indices for traversing the lower diagonal elements of corr_matrix in column major, as required by the fortran mvndst function.
-            ind = numpy.tril_indices(len(u), -1)
+            # Indices for traversing the strict lower triangular elements of corr_matrix in column major, as required by the fortran mvndst function.
+            strict_lower_diag_indices = numpy.tril_indices(upper.size, -1)
 
             # Call into the scipy wrapper for the fortran method "mvndst"
+            # Link: http://www.math.wsu.edu/faculty/genz/software/fort77/mvtdstpack.f
             out = scipy.stats.kde.mvn.mvndst(
-                                             numpy.array([-1e308] * len(u)),  # The lower bound of integration
-                                             std_u,  # The upper bound of integration
-                                             numpy.array([0] * len(u)),  # For each dim, 0 means -inf for lower bound
-                                             corr_matrix[ind],  # The vector of lower diagonal correlation coefficients
-                                             maxpts=20000 * len(u),  # Maximum number of iterations for the mvndst function
+                                             numpy.zeros(upper.size, dtype=int),  # The lower bound of integration. We initialize with 0 because it is ignored (because of the third argument).
+                                             std_upper,  # The upper bound of integration
+                                             numpy.zeros(upper.size, dtype=int),  # For each dim, 0 means -inf for lower bound
+                                             corr_matrix[strict_lower_diag_indices],  # The vector of strict lower triangular correlation coefficients
+                                             maxpts=20000 * upper.size,  # Maximum number of iterations for the mvndst function
                                              releps=1e-5,  # The error allowed relative to actual value
                                              )
             return out[1]  # Index 1 corresponds to the actual value. 0 has the error, and 2 is a flag denoting whether releps was reached
 
         # Calculation of outer sum (from Proposition 2, equation 3)
+        # Although the paper describes a minimization, we can achieve a maximization by inverting m_k and b_k, as labeled below with 'min'.
         expected_improvement = 0
-        for k in range(0, num_p):
+        for k in range(0, num_points):
             # Calculation of m_k, which is the mean of Z_k introduced in Proposition 2
             m_k = mu_star - mu_star[k]
             m_k[k] = -mu_star[k]
             m_k = -m_k  # min
 
-            b_k = numpy.zeros(num_p)
+            b_k = numpy.zeros(num_points)
             b_k[k] = -best_so_far
             b_k = -b_k  # min
 
@@ -292,8 +293,8 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
             # Calculated using linearity of covariance:
             # cov(Y_j - Y_k, Y_i - Y_k) = cov(Y_i, Y_j) - cov(Y_i, Y_k) - cov(Y_j, Y_k) + cov(Y_k, Y_k)
             cov_k = var_star + var_star[k, k]
-            cov_k = cov_k - var_star[..., k].reshape(1, num_p)
-            cov_k = cov_k - var_star[..., k].reshape(num_p, 1)
+            cov_k = cov_k - var_star[..., k]
+            cov_k = cov_k - var_star[..., k].reshape(num_points, 1)
 
             # When i or j = k, then
             # cov(Y_j - Y_k, -Y_k) = cov(Y_k, Y_k) - cov(Y_j, Y_k)
@@ -303,17 +304,17 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
             # Finally, when i and j = k, we have cov(Y_k, Y_k)
             cov_k[k, k] = var_star[k, k]
 
-            prob_term = (mu_star[k] - best_so_far) * multivar_cdf(b_k - m_k, cov_k)
+            prob_term = (mu_star[k] - best_so_far) * multivar_norm_cdf(b_k - m_k, cov_k)
             prob_term = -prob_term  # min
 
             # Calculation of inner sum
             sum_term = 0
-            for i in range(0, num_p):
-                if num_p == 1:
-                    sum_term += cov_k[i, k] * singlevar_pdf(m_k[i], cov_k[i, i], b_k[i])
+            for i in range(0, num_points):
+                if num_points == 1:
+                    sum_term += cov_k[i, k] * singlevar_norm_pdf(m_k[i], cov_k[i, i], b_k[i])
                     break
 
-                index_no_i = range(0, i) + range(i + 1, num_p)
+                index_no_i = range(0, i) + range(i + 1, num_points)
 
                 # c_k introduced on top of page 4
                 c_k = (b_k - m_k) - (b_k[i] - m_k[i]) * cov_k[i, :] / cov_k[i, i]
@@ -323,7 +324,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
                 cov_k_no_i = cov_k - numpy.outer(cov_k[i, :], cov_k[i, :]) / cov_k[i, i]
                 cov_k_no_i = cov_k_no_i[index_no_i, ...][..., index_no_i]
 
-                sum_term += cov_k[i, k] * singlevar_pdf(m_k[i], cov_k[i, i], b_k[i]) * multivar_cdf(c_k, cov_k_no_i)
+                sum_term += cov_k[i, k] * singlevar_norm_pdf(m_k[i], cov_k[i, i], b_k[i]) * multivar_norm_cdf(c_k, cov_k_no_i)
 
             expected_improvement += (prob_term + sum_term)
         return numpy.fmax(0.0, expected_improvement)
