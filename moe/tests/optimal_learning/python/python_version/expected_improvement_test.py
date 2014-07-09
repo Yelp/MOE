@@ -4,6 +4,7 @@ import numpy
 
 import testify as T
 
+import moe
 from moe.optimal_learning.python.data_containers import HistoricalData, SamplePoint
 from moe.optimal_learning.python.geometry_utils import ClosedInterval
 from moe.optimal_learning.python.python_version.covariance import SquareExponential
@@ -315,6 +316,60 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
         # grad EI should have improved
         for index in numpy.ndindex(grad_ei_final.shape):
             T.assert_lt(numpy.fabs(grad_ei_final[index]), numpy.fabs(grad_ei_initial[index]))
+
+    def test_qd_ei_with_self(self):
+        """Compare the 1D analytic EI results to the qD analytic EI results, checking several random points per test case.
+
+        This test case (unfortunately) suffers from a lot of random variation in the qEI parameters. The tolerance is high because
+        changing the number of iterations or the maximum relative error allowed in the mvndst function leads to different answers.
+
+        These precomputed answers were calculated from:
+        maxpts = 20,000 * q
+        releps = 1e-5
+
+        These values are a tradeoff between accuracy / speed.
+        """
+        ei_tolerance = 6.0e-8
+        numpy.random.seed(8790)
+
+        precomputed_answers = [
+            2.40173428629e-07,
+            0.349595038583,
+            0.350524127677,
+            0.350524626087,
+            0.35052474122,
+            0.409583836365,
+        ]
+
+        for test_case in self.gp_test_environments[2:3]:
+            domain, python_gp = test_case
+            all_points = domain.generate_uniform_random_points_in_domain(9)
+
+            for i in range(4, 10):
+                points_to_sample = all_points[0:i]
+                python_ei_eval = moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement(python_gp, points_to_sample)
+
+                python_ei_eval.current_point = points_to_sample
+                python_qd_ei = python_ei_eval.compute_expected_improvement()
+                self.assert_scalar_within_relative(python_qd_ei, precomputed_answers[i - 4], ei_tolerance)
+
+    def test_qd_and_1d_return_same_analytic_ei(self):
+        """Compare the 1D analytic EI results to the qD analytic EI results, checking several random points per test case."""
+        num_tests_per_case = 10
+        ei_tolerance = 6.0e-10
+
+        for test_case in self.gp_test_environments:
+            domain, python_gp = test_case
+            points_to_sample = domain.generate_random_point_in_domain()
+            python_ei_eval = moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement(python_gp, points_to_sample)
+
+            for _ in xrange(num_tests_per_case):
+                points_to_sample = domain.generate_random_point_in_domain()
+                python_ei_eval.current_point = points_to_sample
+
+                python_1d_ei = python_ei_eval.compute_expected_improvement(force_1d_ei=True)
+                python_qd_ei = python_ei_eval.compute_expected_improvement()
+                self.assert_scalar_within_relative(python_1d_ei, python_qd_ei, ei_tolerance)
 
 
 if __name__ == "__main__":
