@@ -59,7 +59,7 @@ using namespace optimal_learning;  // NOLINT, i'm lazy in this file which has no
 // 7: speed test multistart GD hyper
 // 8: speed test log likelihood eval
 
-#define OL_MODE 11
+#define OL_MODE 12
 #if OL_MODE == -1
 
 double function_to_minimize(double const * restrict point, UniformRandomGenerator * uniform_generator) {
@@ -2158,4 +2158,12 @@ int main() {
         std::cerr << exception.what() << std::endl;
     }
 }
+
+#elif OL_MODE == 12
+
+int main() {
+  CudaExpectedImprovementOptimizationMultipleSamplesTest();
+  return 0;
+}
+
 #endif

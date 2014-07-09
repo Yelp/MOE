@@ -174,5 +174,128 @@ CudaExpectedImprovementState::CudaExpectedImprovementState(const EvaluatorType& 
         OL_THROW_EXCEPTION(OptimalLearningException, "GPU component is disabled or unavailable, cannot call gpu function!\n");
     }
 #endif
+
+
+/*!\rst
+  Routes the EI computation through MultistartOptimizer + NullOptimizer to perform EI function evaluations at the list of input
+  points, using the appropriate EI evaluator (e.g., monte carlo vs analytic) depending on inputs.
+\endrst*/
+void CudaEvaluateEIAtPointList(const GaussianProcess& gaussian_process, double const * restrict initial_guesses,
+                           double const * restrict points_being_sampled, int num_multistarts, int num_to_sample,
+                           int num_being_sampled, double best_so_far, int max_int_steps, int which_gpu, int max_num_threads,
+                           bool * restrict found_flag, UniformRandomGenerator* uniform_rng, double * restrict function_values,
+                           double * restrict best_next_point) {
+  // set chunk_size; see gpp_common.hpp header comments, item 7
+  const int chunk_size = std::max(std::min(40, std::max(1, num_multistarts/max_num_threads)),
+                                  num_multistarts/(max_num_threads*120));
+
+  using DomainType = DummyDomain;
+  DomainType dummy_domain;
+  bool configure_for_gradients = false;
+  if (num_to_sample == 1 && num_being_sampled == 0) {
+    // special analytic case when we are not using (or not accounting for) multiple, simultaneous experiments
+    OnePotentialSampleExpectedImprovementEvaluator ei_evaluator(gaussian_process, best_so_far);
+
+    std::vector<typename OnePotentialSampleExpectedImprovementEvaluator::StateType> ei_state_vector;
+    SetupExpectedImprovementState(ei_evaluator, initial_guesses, max_num_threads,
+                                  configure_for_gradients, &ei_state_vector);
+
+    // init winner to be first point in set and 'force' its value to be 0.0; we cannot do worse than this
+    OptimizationIOContainer io_container(ei_state_vector[0].GetProblemSize(), 0.0, initial_guesses);
+
+    NullOptimizer<OnePotentialSampleExpectedImprovementEvaluator, DomainType> null_opt;
+    typename NullOptimizer<OnePotentialSampleExpectedImprovementEvaluator, DomainType>::ParameterStruct null_parameters;
+    MultistartOptimizer<NullOptimizer<OnePotentialSampleExpectedImprovementEvaluator, DomainType> > multistart_optimizer;
+    multistart_optimizer.MultistartOptimize(null_opt, ei_evaluator, null_parameters, dummy_domain,
+                                            initial_guesses, num_multistarts, max_num_threads, chunk_size,
+                                            ei_state_vector.data(), function_values, &io_container);
+    *found_flag = io_container.found_flag;
+    std::copy(io_container.best_point.begin(), io_container.best_point.end(), best_next_point);
+  } else {
+    CudaExpectedImprovementEvaluator ei_evaluator(gaussian_process, max_int_steps, best_so_far, which_gpu);
+
+    typename CudaExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, initial_guesses, points_being_sampled, num_to_sample, num_being_sampled, configure_for_gradients, uniform_rng);
+
+    // init winner to be first point in set and 'force' its value to be 0.0; we cannot do worse than this
+    OptimizationIOContainer io_container(ei_state.GetProblemSize(), 0.0, initial_guesses);
+
+    NullOptimizer<CudaExpectedImprovementEvaluator, DomainType> null_opt;
+    typename NullOptimizer<CudaExpectedImprovementEvaluator, DomainType>::ParameterStruct null_parameters;
+    MultistartOptimizer<NullOptimizer<CudaExpectedImprovementEvaluator, DomainType> > multistart_optimizer;
+    multistart_optimizer.MultistartOptimize(null_opt, ei_evaluator, null_parameters, dummy_domain,
+                                            initial_guesses, num_multistarts, 1, 1,
+                                            &ei_state, function_values, &io_container);
+    *found_flag = io_container.found_flag;
+    std::copy(io_container.best_point.begin(), io_container.best_point.end(), best_next_point);
+  }
+}
+
+/*!\rst
+  This is a simple wrapper around CudaComputeOptimalPointsToSampleWithRandomStarts() and
+  ComputeOptimalPointsToSampleViaLatinHypercubeSearch(). That is, this method attempts multistart gradient descent
+  and falls back to latin hypercube search if gradient descent fails (or is not desired).
+\endrst*/
+template <typename DomainType>
+void CudaComputeOptimalPointsToSample(const GaussianProcess& gaussian_process,
+                                  const GradientDescentParameters& optimization_parameters,
+                                  const DomainType& domain, double const * restrict points_being_sampled,
+                                  int num_to_sample, int num_being_sampled, double best_so_far,
+                                  int max_int_steps, int which_gpu, int max_num_threads, bool lhc_search_only,
+                                  int num_lhc_samples, bool * restrict found_flag,
+                                  UniformRandomGenerator * uniform_generator,
+                                  double * restrict best_points_to_sample) {
+  if (unlikely(num_to_sample <= 0)) {
+    return;
+  }
+
+  std::vector<double> next_points_to_sample(gaussian_process.dim()*num_to_sample);
+
+  bool found_flag_local = false;
+  if (lhc_search_only == false) {
+    CudaComputeOptimalPointsToSampleWithRandomStarts(gaussian_process, optimization_parameters, domain,
+                                                 points_being_sampled, num_to_sample, num_being_sampled,
+                                                 best_so_far, max_int_steps, which_gpu, max_num_threads,
+                                                 &found_flag_local, uniform_generator,
+                                                 next_points_to_sample.data());
+  }
+
+  // if gradient descent EI optimization failed OR we're only doing latin hypercube searches
+  if (found_flag_local == false || lhc_search_only == true) {
+    if (unlikely(lhc_search_only == false)) {
+      OL_WARNING_PRINTF("WARNING: %d,%d-EI opt DID NOT CONVERGE\n", num_to_sample, num_being_sampled);
+      OL_WARNING_PRINTF("Attempting latin hypercube search\n");
+    }
+
+    CudaComputeOptimalPointsToSampleViaLatinHypercubeSearch(gaussian_process, domain, points_being_sampled,
+                                                        num_lhc_samples, num_to_sample, num_being_sampled,
+                                                        best_so_far, max_int_steps, which_gpu, max_num_threads,
+                                                        &found_flag_local, uniform_generator,
+                                                        next_points_to_sample.data());
+
+    // if latin hypercube 'dumb' search failed
+    if (unlikely(found_flag_local == false)) {
+      OL_ERROR_PRINTF("ERROR: %d,%d-EI latin hypercube search FAILED on\n", num_to_sample, num_being_sampled);
+    }
+  }
+
+  // set outputs
+  *found_flag = found_flag_local;
+  std::copy(next_points_to_sample.begin(), next_points_to_sample.end(), best_points_to_sample);
+}
+
+// template explicit instantiation definitions, see gpp_common.hpp header comments, item 6
+template void CudaComputeOptimalPointsToSample(
+    const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters,
+    const TensorProductDomain& domain, double const * restrict points_being_sampled, int num_to_sample,
+    int num_being_sampled, double best_so_far, int max_int_steps, int which_gpu, int max_num_threads, bool lhc_search_only,
+    int num_lhc_samples, bool * restrict found_flag, UniformRandomGenerator * uniform_generator,
+    double * restrict best_points_to_sample);
+template void CudaComputeOptimalPointsToSample(
+    const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters,
+    const SimplexIntersectTensorProductDomain& domain, double const * restrict points_being_sampled,
+    int num_to_sample, int num_being_sampled, double best_so_far, int max_int_steps, int which_gpu,
+    int max_num_threads, bool lhc_search_only, int num_lhc_samples, bool * restrict found_flag,
+    UniformRandomGenerator * uniform_generator, double * restrict best_points_to_sample);
+
 }  // end namespace optimal_learning
 

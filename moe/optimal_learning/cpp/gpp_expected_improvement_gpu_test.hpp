@@ -106,6 +106,15 @@ OL_WARN_UNUSED_RESULT int RunCudaEIConsistencyTests();
 \endrst*/
 OL_WARN_UNUSED_RESULT int RunCudaEIvsCpuEI();
 
+/*!\rst
+  Checks that ComputeOptimalPointsToSample works on a tensor product domain.
+  This test checks the generation of multiple, simultaneous experimental points to sample.
+
+  \return
+    number of test failures: 0 if CudaEI optimization is working properly
+\endrst*/
+OL_WARN_UNUSED_RESULT int CudaExpectedImprovementOptimizationMultipleSamplesTest();
+
 }  // end namespace optimal_learning
 #endif  // MOE_OPTIMAL_LEARNING_CPP_GPP_EXPECTED_IMPROVEMENT_GPU_TEST_HPP_
 
