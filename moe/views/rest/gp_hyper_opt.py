@@ -73,7 +73,7 @@ class GpHyperOptRequest(colander.MappingSchema):
                     ...
                     },
                 },
-            'log_likelihood_info': 'log_marginal_likelihood'
+            "log_likelihood_info": "log_marginal_likelihood"
         }
 
     """
