@@ -127,12 +127,12 @@ def multistart_hyperparameter_optimization(
     hyperparameters_opt = C_GP.multistart_hyperparameter_optimization(
         log_likelihood_optimizer.optimization_parameters,
         cpp_utils.cppify(domain_bounds_log10),
-        cpp_utils.cppify(log_likelihood_optimizer.objective_function._historical_data.points_sampled),
-        cpp_utils.cppify(log_likelihood_optimizer.objective_function._historical_data.points_sampled_value),
-        log_likelihood_optimizer.objective_function._historical_data.dim,
-        log_likelihood_optimizer.objective_function._historical_data.num_sampled,
-        cpp_utils.cppify_hyperparameters(log_likelihood_optimizer.objective_function._covariance.hyperparameters),
-        cpp_utils.cppify(log_likelihood_optimizer.objective_function._historical_data.points_sampled_noise_variance),
+        cpp_utils.cppify(log_likelihood_optimizer.objective_function._points_sampled),
+        cpp_utils.cppify(log_likelihood_optimizer.objective_function._points_sampled_value),
+        log_likelihood_optimizer.objective_function.dim,
+        log_likelihood_optimizer.objective_function._num_sampled,
+        cpp_utils.cppify_hyperparameters(log_likelihood_optimizer.objective_function.hyperparameters),
+        cpp_utils.cppify(log_likelihood_optimizer.objective_function._points_sampled_noise_variance),
         max_num_threads,
         randomness,
         status,
@@ -166,13 +166,13 @@ def evaluate_log_likelihood_at_hyperparameter_list(
     # the looping in C++ where it can be multithreaded.
     log_likelihood_list = C_GP.evaluate_log_likelihood_at_hyperparameter_list(
         cpp_utils.cppify(hyperparameters_to_evaluate),
-        cpp_utils.cppify(log_likelihood_evaluator._historical_data.points_sampled),
-        cpp_utils.cppify(log_likelihood_evaluator._historical_data.points_sampled_value),
-        log_likelihood_evaluator._historical_data.dim,
-        log_likelihood_evaluator._historical_data.num_sampled,
+        cpp_utils.cppify(log_likelihood_evaluator._points_sampled),
+        cpp_utils.cppify(log_likelihood_evaluator._points_sampled_value),
+        log_likelihood_evaluator.dim,
+        log_likelihood_evaluator._num_sampled,
         log_likelihood_evaluator.objective_type,
-        cpp_utils.cppify_hyperparameters(log_likelihood_evaluator._covariance.hyperparameters),
-        cpp_utils.cppify(log_likelihood_evaluator._historical_data.points_sampled_noise_variance),
+        cpp_utils.cppify_hyperparameters(log_likelihood_evaluator.hyperparameters),
+        cpp_utils.cppify(log_likelihood_evaluator._points_sampled_noise_variance),
         hyperparameters_to_evaluate.shape[0],
         max_num_threads,
     )
@@ -243,6 +243,44 @@ class GaussianProcessLogLikelihood(GaussianProcessLogLikelihoodInterface, Optimi
     hyperparameters = property(get_hyperparameters, set_hyperparameters)
     current_point = hyperparameters
 
+    @property
+    def _num_sampled(self):
+        """Return the number of sampled points."""
+        return self._historical_data.num_sampled
+
+    @property
+    def _points_sampled(self):
+        """Return the coordinates of the already-sampled points; see data_containers.HistoricalData."""
+        return self._historical_data.points_sampled
+
+    @property
+    def _points_sampled_value(self):
+        """Return the function values measured at each of points_sampled; see data_containers.HistoricalData."""
+        return self._historical_data.points_sampled_value
+
+    @property
+    def _points_sampled_noise_variance(self):
+        """Return the noise variance associated with points_sampled_value; see data_containers.HistoricalData."""
+        return self._historical_data.points_sampled_noise_variance
+
+    def get_covariance_copy(self):
+        """Return a copy of the covariance object specifying the Gaussian Process.
+
+        :return: covariance object encoding assumptions about the GP's behavior on our data
+        :rtype: interfaces.covariance_interface.CovarianceInterface subclass
+
+        """
+        return copy.deepcopy(self._covariance)
+
+    def get_historical_data_copy(self):
+        """Return the data (points, function values, noise) specifying the prior of the Gaussian Process.
+
+        :return: object specifying the already-sampled points, the objective value at those points, and the noise variance associated with each observation
+        :rtype: data_containers.HistoricalData
+
+        """
+        return copy.deepcopy(self._historical_data)
+
     def compute_log_likelihood(self):
         r"""Compute the objective_type measure at the specified hyperparameters.
 
@@ -251,13 +289,13 @@ class GaussianProcessLogLikelihood(GaussianProcessLogLikelihoodInterface, Optimi
 
         """
         return C_GP.compute_log_likelihood(
-            cpp_utils.cppify(self._historical_data.points_sampled),
-            cpp_utils.cppify(self._historical_data.points_sampled_value),
+            cpp_utils.cppify(self._points_sampled),
+            cpp_utils.cppify(self._points_sampled_value),
             self.dim,
-            self._historical_data.num_sampled,
+            self._num_sampled,
             self.objective_type,
-            cpp_utils.cppify_hyperparameters(self._covariance._hyperparameters),
-            cpp_utils.cppify(self._historical_data.points_sampled_noise_variance),
+            cpp_utils.cppify_hyperparameters(self.hyperparameters),
+            cpp_utils.cppify(self._points_sampled_noise_variance),
         )
 
     compute_objective_function = compute_log_likelihood
@@ -270,13 +308,13 @@ class GaussianProcessLogLikelihood(GaussianProcessLogLikelihoodInterface, Optimi
 
         """
         grad_log_marginal = C_GP.compute_hyperparameter_grad_log_likelihood(
-            cpp_utils.cppify(self._historical_data.points_sampled),
-            cpp_utils.cppify(self._historical_data.points_sampled_value),
+            cpp_utils.cppify(self._points_sampled),
+            cpp_utils.cppify(self._points_sampled_value),
             self.dim,
-            self._historical_data.num_sampled,
+            self._num_sampled,
             self.objective_type,
-            cpp_utils.cppify_hyperparameters(self._covariance._hyperparameters),
-            cpp_utils.cppify(self._historical_data.points_sampled_noise_variance),
+            cpp_utils.cppify_hyperparameters(self.hyperparameters),
+            cpp_utils.cppify(self._points_sampled_noise_variance),
         )
         return numpy.array(grad_log_marginal)
 

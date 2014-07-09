@@ -133,8 +133,8 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         """
         self._num_mc_iterations = num_mc_iterations
         self._gaussian_process = gaussian_process
-        if gaussian_process._historical_data.points_sampled_value.size > 0:
-            self._best_so_far = numpy.amin(gaussian_process._historical_data.points_sampled_value)
+        if gaussian_process._points_sampled_value.size > 0:
+            self._best_so_far = numpy.amin(gaussian_process._points_sampled_value)
         else:
             self._best_so_far = numpy.finfo(numpy.float64).max
 

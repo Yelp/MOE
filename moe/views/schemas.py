@@ -57,7 +57,8 @@ class SinglePoint(colander.MappingSchema):
     value = colander.SchemaNode(colander.Float())
     value_var = colander.SchemaNode(
             colander.Float(),
-            validator=colander.Range(min=0),
+            validator=colander.Range(min=0.0),
+            missing=0.0,
             )
 
 
