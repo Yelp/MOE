@@ -5,6 +5,7 @@ testify
 webtest
 tox
 simplejson
+numpy
 colander>=1.0b1
 sphinx
 breathe
