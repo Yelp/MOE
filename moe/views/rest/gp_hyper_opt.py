@@ -10,9 +10,9 @@ import colander
 from pyramid.view import view_config
 
 from moe.optimal_learning.python.constant import DEFAULT_MAX_NUM_THREADS
-from moe.optimal_learning.python.constant import LOG_MARGINAL_LIKELIHOOD, LEAVE_ONE_OUT_LOG_LIKELIHOOD
-from moe.optimal_learning.python.cpp_wrappers.log_likelihood import GaussianProcessLogLikelihood, GaussianProcessLeaveOneOutLogLikelihood, multistart_hyperparameter_optimization
-from moe.optimal_learning.python.linkers import LOGLIKELIHOOD_TYPES_TO_LOGLIKELIHOOD_METHODS
+from moe.optimal_learning.python.constant import LOG_MARGINAL_LIKELIHOOD
+from moe.optimal_learning.python.cpp_wrappers.log_likelihood import multistart_hyperparameter_optimization
+from moe.optimal_learning.python.linkers import LOG_LIKELIHOOD_TYPES_TO_LOG_LIKELIHOOD_METHODS
 from moe.views.constant import GP_HYPER_OPT_ROUTE_NAME, GP_HYPER_OPT_PRETTY_ROUTE_NAME
 from moe.views.gp_pretty_view import GpPrettyView, PRETTY_RENDERER
 from moe.views.optimizable_gp_pretty_view import OptimizableGpPrettyView
@@ -94,7 +94,7 @@ class GpHyperOptRequest(colander.MappingSchema):
             )
     log_likelihood_info = colander.SchemaNode(
             colander.String(),
-            validator=colander.OneOf(LOGLIKELIHOOD_TYPES_TO_LOGLIKELIHOOD_METHODS),
+            validator=colander.OneOf(LOG_LIKELIHOOD_TYPES_TO_LOG_LIKELIHOOD_METHODS),
             missing=LOG_MARGINAL_LIKELIHOOD,
             )
 
@@ -206,16 +206,10 @@ class GpHyperOptView(OptimizableGpPrettyView):
         optimizer_class, optimization_parameters, num_random_samples = _make_optimization_parameters_from_params(params)
         log_likelihood_type = _make_log_likelihood_from_params(params)
 
-        if log_likelihood_type == LEAVE_ONE_OUT_LOG_LIKELIHOOD:
-            log_likelihood_eval = GaussianProcessLeaveOneOutLogLikelihood(
-                covariance_of_process,
-                gaussian_process._historical_data,
-            )
-        else:
-            log_likelihood_eval = GaussianProcessLogLikelihood(
-                covariance_of_process,
-                gaussian_process._historical_data,
-            )
+        log_likelihood_eval = LOG_LIKELIHOOD_TYPES_TO_LOG_LIKELIHOOD_METHODS[log_likelihood_type].log_likelihood_class(
+            covariance_of_process,
+            gaussian_process._historical_data,
+        )
 
         log_likelihood_optimizer = optimizer_class(
             hyperparameter_domain,
