@@ -1,3 +1,5 @@
+[![Build Status](https://magnum.travis-ci.com/sc932/MOE.svg?token=E3yRnCAkWnWzepuxbk6A&branch=master)](https://magnum.travis-ci.com/sc932/MOE)
+
 # MOE
 
 Metric Optimization Engine. A global, black box optimization engine for real world metric optimization.
