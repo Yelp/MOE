@@ -204,7 +204,7 @@ class GpHyperOptView(OptimizableGpPrettyView):
         gaussian_process = _make_gp_from_params(params)
         covariance_of_process = gaussian_process._covariance
         optimizer_class, optimization_parameters, num_random_samples = _make_optimization_parameters_from_params(params)
-        log_likelihood_type = _make_log_likelihood_from_params(params)
+        log_likelihood_type = params.get('log_likelihood_info')
 
         log_likelihood_eval = LOG_LIKELIHOOD_TYPES_TO_LOG_LIKELIHOOD_METHODS[log_likelihood_type].log_likelihood_class(
             covariance_of_process,

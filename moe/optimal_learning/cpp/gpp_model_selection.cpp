@@ -970,7 +970,7 @@ void LeaveOneOutLogLikelihoodEvaluator::ComputeGradLogLikelihood(LeaveOneOutLogL
 void LeaveOneOutLogLikelihoodEvaluator::ComputeHessianLogLikelihood(
     LeaveOneOutLogLikelihoodState * OL_UNUSED(log_likelihood_state),
     double * restrict OL_UNUSED(hessian_loo)) const {
-  OL_THROW_EXCEPTION(OptimalLearningException, "LeaveOneOutLogLikelihoodEvaluator::ComputeHessianLogLikelihood is NOT IMPLEMENTED.");
+  OL_THROW_EXCEPTION(OptimalLearningException, "LeaveOneOutLogLikelihoodEvaluator::ComputeHessianLogLikelihood is NOT IMPLEMENTED. Try using Gradient Descent instead of Newton.");
 }
 
 void LeaveOneOutLogLikelihoodState::UpdateHyperparameters(const EvaluatorType& log_likelihood_eval,
