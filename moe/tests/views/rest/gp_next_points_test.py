@@ -20,12 +20,12 @@ class TestGpNextPointsViews(RestGaussianProcessTestCase):
     precompute_gaussian_process_data = True
     num_sampled_list = (1, 2, 10)
 
-    def _build_json_payload(self, domain, gaussian_process, covariance, num_to_sample, lie_value=None):
+    def _build_json_payload(self, domain, covariance, historical_data, num_to_sample, lie_value=None):
         """Create a json_payload to POST to the /gp/next_points/* endpoint with all needed info."""
         dict_to_dump = {
             'num_to_sample': num_to_sample,
             'mc_iterations': TEST_EXPECTED_IMPROVEMENT_MC_ITERATIONS,
-            'gp_historical_info': self._build_gp_historical_info(gaussian_process),
+            'gp_historical_info': historical_data.json_payload(),
             'covariance_info': covariance.get_json_serializable_info(),
             'domain_info': domain.get_json_serializable_info(),
             'optimization_info': {
@@ -45,9 +45,10 @@ class TestGpNextPointsViews(RestGaussianProcessTestCase):
         num_to_sample = 1
 
         python_domain, python_gp = test_case
+        python_cov, historical_data = python_gp.get_core_data_copy()
 
         # Test default test parameters get passed through
-        json_payload = json.loads(self._build_json_payload(python_domain, python_gp, python_gp._covariance, num_to_sample))
+        json_payload = json.loads(self._build_json_payload(python_domain, python_cov, historical_data, num_to_sample))
 
         request = pyramid.testing.DummyRequest(post=json_payload)
         request.json_body = json_payload
@@ -91,12 +92,13 @@ class TestGpNextPointsViews(RestGaussianProcessTestCase):
             for test_case in self.gp_test_environments:
                 for num_to_sample in (1, 2, 4):
                     python_domain, python_gp = test_case
+                    python_cov, historical_data = python_gp.get_core_data_copy()
 
                     # Next point from REST
                     if moe_route.route_name == GP_NEXT_POINTS_CONSTANT_LIAR_ROUTE_NAME:
-                        json_payload = self._build_json_payload(python_domain, python_gp, python_gp._covariance, num_to_sample, lie_value=0.0)
+                        json_payload = self._build_json_payload(python_domain, python_cov, historical_data, num_to_sample, lie_value=0.0)
                     else:
-                        json_payload = self._build_json_payload(python_domain, python_gp, python_gp._covariance, num_to_sample)
+                        json_payload = self._build_json_payload(python_domain, python_cov, historical_data, num_to_sample)
                     resp = self.testapp.post(moe_route.endpoint, json_payload)
                     resp_schema = GpNextPointsResponse()
                     resp_dict = resp_schema.deserialize(json.loads(resp.body))

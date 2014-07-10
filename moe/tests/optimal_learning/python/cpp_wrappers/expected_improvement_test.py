@@ -67,11 +67,13 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
 
         for test_case in self.gp_test_environments:
             domain, python_gp = test_case
+            python_cov, historical_data = python_gp.get_core_data_copy()
+
             points_to_sample = domain.generate_random_point_in_domain()
             python_ei_eval = moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement(python_gp, points_to_sample)
 
-            cpp_cov = moe.optimal_learning.python.cpp_wrappers.covariance.SquareExponential(python_gp._covariance.hyperparameters)
-            cpp_gp = moe.optimal_learning.python.cpp_wrappers.gaussian_process.GaussianProcess(cpp_cov, python_gp._historical_data)
+            cpp_cov = moe.optimal_learning.python.cpp_wrappers.covariance.SquareExponential(python_cov.hyperparameters)
+            cpp_gp = moe.optimal_learning.python.cpp_wrappers.gaussian_process.GaussianProcess(cpp_cov, historical_data)
             cpp_ei_eval = moe.optimal_learning.python.cpp_wrappers.expected_improvement.ExpectedImprovement(cpp_gp, points_to_sample)
 
             for _ in xrange(num_tests_per_case):

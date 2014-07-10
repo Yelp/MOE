@@ -194,12 +194,12 @@ class GpHyperOptView(OptimizableGpPrettyView):
         max_num_threads = params.get('max_num_threads')
         hyperparameter_domain = _make_domain_from_params(params, domain_info_key='hyperparameter_domain_info')
         gaussian_process = _make_gp_from_params(params)
-        covariance_of_process = gaussian_process._covariance
+        covariance_of_process, historical_data = gaussian_process.get_core_data_copy()
         optimizer_class, optimization_parameters, num_random_samples = _make_optimization_parameters_from_params(params)
 
         log_likelihood_eval = GaussianProcessLogLikelihood(
             covariance_of_process,
-            gaussian_process._historical_data,
+            historical_data,
         )
 
         log_likelihood_optimizer = optimizer_class(
