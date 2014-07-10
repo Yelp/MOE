@@ -476,9 +476,7 @@ class GaussianProcess final {
     \param
       :seed: new seed to set
   \endrst*/
-  void SetExplicitSeed(EngineType::result_type seed) noexcept {
-    normal_rng_.SetExplicitSeed(seed);
-  }
+  void SetExplicitSeed(EngineType::result_type seed) noexcept;
 
   /*!\rst
     Re-seed the random number generator using a combination of the specified seed,
@@ -488,17 +486,13 @@ class GaussianProcess final {
     \param
       :seed: base value for new seed
   \endrst*/
-  void SetRandommizedSeed(EngineType::result_type seed) noexcept {
-    normal_rng_.SetRandomizedSeed(seed, 0);  // this is intended for single-threaded use only, so thread_id = 0
-  }
+  void SetRandommizedSeed(EngineType::result_type seed) noexcept;
 
   /*!\rst
     Reseeds the generator with its last used seed value.
     Useful for testing--e.g., can conduct multiple runs with the same initial conditions
   \endrst*/
-  void ResetToMostRecentSeed() noexcept {
-    normal_rng_.ResetToMostRecentSeed();
-  }
+  void ResetToMostRecentSeed() noexcept;
 
   /*!\rst
     Clones "this" GaussianProcess.

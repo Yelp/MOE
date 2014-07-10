@@ -863,6 +863,18 @@ double GaussianProcess::SamplePointFromGP(double const * restrict point_to_sampl
   }
 }
 
+void GaussianProcess::SetExplicitSeed(EngineType::result_type seed) noexcept {
+  normal_rng_.SetExplicitSeed(seed);
+}
+
+void GaussianProcess::SetRandommizedSeed(EngineType::result_type seed) noexcept {
+  normal_rng_.SetRandomizedSeed(seed, 0);  // this is intended for single-threaded use only, so thread_id = 0
+}
+
+void GaussianProcess::ResetToMostRecentSeed() noexcept {
+  normal_rng_.ResetToMostRecentSeed();
+}
+
 GaussianProcess * GaussianProcess::Clone() const {
   return new GaussianProcess(*this);
 }
