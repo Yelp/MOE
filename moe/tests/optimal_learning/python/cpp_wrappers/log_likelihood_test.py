@@ -38,7 +38,7 @@ class LogLikelihoodTest(GaussianProcessTestCase):
 
     def test_python_and_cpp_return_same_log_likelihood_and_gradient(self):
         """Check that the C++ and Python log likelihood + gradients match over a series of randomly built data sets."""
-        tolerance_log_like = 1.0e-13
+        tolerance_log_like = 5.0e-11
         tolerance_grad_log_like = 4.0e-12
 
         for num_sampled in self.num_sampled_list:
