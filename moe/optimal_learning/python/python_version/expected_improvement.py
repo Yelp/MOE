@@ -266,17 +266,17 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
             # Call into the scipy wrapper for the fortran method "mvndst"
             # Link: http://www.math.wsu.edu/faculty/genz/software/fort77/mvtdstpack.f
             out = scipy.stats.kde.mvn.mvndst(
-                                             numpy.zeros(upper.size, dtype=int),  # The lower bound of integration. We initialize with 0 because it is ignored (because of the third argument).
-                                             std_upper,  # The upper bound of integration
-                                             numpy.zeros(upper.size, dtype=int),  # For each dim, 0 means -inf for lower bound
-                                             corr_matrix[strict_lower_diag_indices],  # The vector of strict lower triangular correlation coefficients
-                                             maxpts=20000 * upper.size,  # Maximum number of iterations for the mvndst function
-                                             releps=1e-5,  # The error allowed relative to actual value
-                                             )
+                 numpy.zeros(upper.size, dtype=int),  # The lower bound of integration. We initialize with 0 because it is ignored (because of the third argument).
+                 std_upper,  # The upper bound of integration
+                 numpy.zeros(upper.size, dtype=int),  # For each dim, 0 means -inf for lower bound
+                 corr_matrix[strict_lower_diag_indices],  # The vector of strict lower triangular correlation coefficients
+                 maxpts=20000 * upper.size,  # Maximum number of iterations for the mvndst function
+                 releps=1e-5,  # The error allowed relative to actual value
+                 )
             return out[1]  # Index 1 corresponds to the actual value. 0 has the error, and 2 is a flag denoting whether releps was reached
 
         # Calculation of outer sum (from Proposition 2, equation 3)
-        # Although the paper describes a minimization, we can achieve a maximization by inverting m_k and b_k, as labeled below with 'min'.
+        # Although the paper describes a minimization, we can achieve a maximization by inverting m_k and b_k, and then the probability term, as labeled below with 'min'.
         expected_improvement = 0
         for k in range(0, num_points):
             # Calculation of m_k, which is the mean of Z_k introduced in Proposition 2
@@ -309,22 +309,21 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
 
             # Calculation of inner sum
             sum_term = 0
-            for i in range(0, num_points):
-                if num_points == 1:
-                    sum_term += cov_k[i, k] * singlevar_norm_pdf(m_k[i], cov_k[i, i], b_k[i])
-                    break
+            if num_points == 1:
+                sum_term += cov_k[0, k] * singlevar_norm_pdf(m_k[0], cov_k[0, 0], b_k[0])
+            else:
+                for i in range(0, num_points):
+                    index_no_i = range(0, i) + range(i + 1, num_points)
 
-                index_no_i = range(0, i) + range(i + 1, num_points)
+                    # c_k introduced on top of page 4
+                    c_k = (b_k - m_k) - (b_k[i] - m_k[i]) * cov_k[i, :] / cov_k[i, i]
+                    c_k = c_k[index_no_i]
 
-                # c_k introduced on top of page 4
-                c_k = (b_k - m_k) - (b_k[i] - m_k[i]) * cov_k[i, :] / cov_k[i, i]
-                c_k = c_k[index_no_i]
+                    # cov_k_no_i introduced on top of page 4
+                    cov_k_no_i = cov_k - numpy.outer(cov_k[i, :], cov_k[i, :]) / cov_k[i, i]
+                    cov_k_no_i = cov_k_no_i[index_no_i, ...][..., index_no_i]
 
-                # cov_k_no_i introduced on top of page 4
-                cov_k_no_i = cov_k - numpy.outer(cov_k[i, :], cov_k[i, :]) / cov_k[i, i]
-                cov_k_no_i = cov_k_no_i[index_no_i, ...][..., index_no_i]
-
-                sum_term += cov_k[i, k] * singlevar_norm_pdf(m_k[i], cov_k[i, i], b_k[i]) * multivar_norm_cdf(c_k, cov_k_no_i)
+                    sum_term += cov_k[i, k] * singlevar_norm_pdf(m_k[i], cov_k[i, i], b_k[i]) * multivar_norm_cdf(c_k, cov_k_no_i)
 
             expected_improvement += (prob_term + sum_term)
         return numpy.fmax(0.0, expected_improvement)

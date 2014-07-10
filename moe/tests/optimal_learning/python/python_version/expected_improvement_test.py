@@ -260,7 +260,7 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
         # Check that output is in the domain
         T.assert_equal(repeated_domain.check_point_inside(best_point), True)
 
-    def test_multistart_mmonte_carlo_expected_improvement_optimization(self):
+    def test_multistart_monte_carlo_expected_improvement_optimization(self):
         """Check that multistart optimization (gradient descent) can find the optimum point to sample (using 2-EI)."""
         numpy.random.seed(7858)  # TODO(271): Monte Carlo only works for this seed
         index = numpy.argmax(numpy.greater_equal(self.num_sampled_list, 20))
@@ -329,29 +329,31 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
 
         These values are a tradeoff between accuracy / speed.
         """
-        ei_tolerance = 6.0e-8
+        ei_tolerance = 6.0e-10
         numpy.random.seed(8790)
 
         precomputed_answers = [
-            2.40173428629e-07,
-            0.349595038583,
-            0.350524127677,
-            0.350524626087,
-            0.35052474122,
-            0.409583836365,
+            5.83583593191e-08,
+            5.83583593328e-08, 
+            2.40176803674e-07,
+            0.349595041008,
+            0.350524308404,
+            0.350524856612,
+            0.350524821708,
+            0.409582656814,
         ]
 
         for test_case in self.gp_test_environments[2:3]:
             domain, python_gp = test_case
             all_points = domain.generate_uniform_random_points_in_domain(9)
 
-            for i in range(4, 10):
+            for i in range(2, 10):
                 points_to_sample = all_points[0:i]
                 python_ei_eval = moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement(python_gp, points_to_sample)
 
                 python_ei_eval.current_point = points_to_sample
                 python_qd_ei = python_ei_eval.compute_expected_improvement()
-                self.assert_scalar_within_relative(python_qd_ei, precomputed_answers[i - 4], ei_tolerance)
+                self.assert_scalar_within_relative(python_qd_ei, precomputed_answers[i - 2], ei_tolerance)
 
     def test_qd_and_1d_return_same_analytic_ei(self):
         """Compare the 1D analytic EI results to the qD analytic EI results, checking several random points per test case."""
