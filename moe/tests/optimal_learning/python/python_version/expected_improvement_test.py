@@ -334,7 +334,7 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
 
         precomputed_answers = [
             5.83583593191e-08,
-            5.83583593328e-08, 
+            5.83583593328e-08,
             2.40176803674e-07,
             0.349595041008,
             0.350524308404,
