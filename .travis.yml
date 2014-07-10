@@ -10,4 +10,6 @@ before_install:
 install:
     - sudo python setup.py install
 script:
-    - make test-no-tox
+    - pwd
+    - ls
+    - testify -v moe.tests
