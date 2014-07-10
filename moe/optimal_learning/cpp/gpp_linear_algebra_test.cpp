@@ -407,7 +407,7 @@ OL_WARN_UNUSED_RESULT int TestSPDLinearSolvers() {
   const double tolerance_inverse_max_list[3][num_test_sizes] =
       { {1.0e-13, 1.0e-9, 1.0e-2},  // prolate
         {5.0e-13, 2.0e-8, 1.0e1},   // moler
-        {5.0e-10, 7.0e-6, 1.0e2}    // random
+        {7.0e-10, 7.0e-6, 1.0e2}    // random
       };
 
   UniformRandomGenerator uniform_generator(34187);
