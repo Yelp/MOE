@@ -15,9 +15,9 @@ Making a pull request
 1. Fork it.
 2. Create a branch (``git checkout -b my_moe_branch``)
 3. Develop your feature/fix (don't forget to add tests and docs!)
-4. Run tests (``tox`` or ``make test-no-tox``)
-5. Build docs (``make docs-no-tox``)
-6. Test against styleguide (``tox -e pep8`` or ``make style-test-no-tox``)
+4. Run tests (``make test``)
+5. Build docs (``make docs``)
+6. Test against styleguide (``make style-test``)
 7. Commit your changes (``git commit -am "Added Some Mathemagics"``)
 8. Push to the branch (``git push origin my_moe_branch``)
 9. Open a Pull Request - http://github.com/sc932/MOE/pulls
@@ -76,8 +76,9 @@ Tell us about your work!
 
 What testing have you done? You should AT LEAST have compiled your code (if appplicable, e.g., C++ changes) and run::
 
-  make test-no-tox
-  make style-test-no-tox
+  make test
+  make style-test
+  make docs
 
 If your changes are uncovered by tests:
 
@@ -92,14 +93,14 @@ Documentation is a very important component for MOE. The complex math and multip
 Building the documentation
 ..........................
 
-First check it locally (``make docs-no-tox``), the built docs will be in <MOE_DIR>/docs/_build/html/index.html.
+First check it locally (``make docs``), the built docs will be in <MOE_DIR>/docs/_build/html/index.html.
 
 To update the online documentation::
 
     git checkout gh-pages
     git pull origin master
     rm -r docs/_build/html
-    make docs-no-tox
+    make docs
     cp -r docs/_build/html/* .
     git add -A
     git commit -m "updated online docs" --no-verify
@@ -108,7 +109,7 @@ To update the online documentation::
 Python Documentation
 ....................
 
-MOE follows the pep257 (http://legacy.python.org/dev/peps/pep-0257) conventions for docstrings and (most of) ``pep8`` for style (http://legacy.python.org/dev/peps/pep-0008). These conventions are inforced using the ``flake8`` docstrings module (run using ``make style-test-no-tox``).
+MOE follows the pep257 (http://legacy.python.org/dev/peps/pep-0257) conventions for docstrings and (most of) ``pep8`` for style (http://legacy.python.org/dev/peps/pep-0008). These conventions are inforced using the ``flake8`` docstrings module (run using ``make style-test``).
 
 .. Note::
 

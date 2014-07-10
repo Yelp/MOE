@@ -7,7 +7,7 @@ Metric Optimization Engine. A global, black box optimization engine for real wor
   * [Full documentation][1]
   * [REST documentation][2]
 
-Or, build the documentation locally with `make docs-no-tox`.
+Or, build the documentation locally with `make docs`.
 
 ## What is MOE?
 
