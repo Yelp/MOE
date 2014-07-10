@@ -5,11 +5,9 @@ before_install:
     - sudo apt-get install -y build-essential python python-dev python2.7 python2.7-dev doxygen libblas-dev liblapack-dev gfortran git make flex bison libssl-dev libedit-dev python-scipy
     - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test && sudo apt-get update -q && sudo apt-get install -y gcc-4.7 g++-4.7 && sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.7 20 && sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.7 20 && sudo update-alternatives --config gcc && sudo update-alternatives --config g++
     - sudo add-apt-repository -y ppa:boost-latest/ppa && sudo apt-get update -q && sudo apt-get install -y boost1.55
-    - sudo wget http://www.cmake.org/files/v2.8/cmake-2.8.12.2.tar.gz && tar -zxf cmake-2.8.12.2.tar.gz && mv cmake-2.8.12.2/* . && ls && sudo chmod +x bootstrap && sudo ./bootstrap && sudo make && sudo make install
+    - sudo wget http://www.cmake.org/files/v2.8/cmake-2.8.12.2.tar.gz && tar -zxf cmake-2.8.12.2.tar.gz && mv cmake-2.8.12.2/* . && sudo chmod +x bootstrap && sudo ./bootstrap && sudo make && sudo make install
     - sudo pip install -r requirements.txt
 install:
     - sudo python setup.py install
 script:
-    - pwd
-    - ls
     - testify -v moe.tests
