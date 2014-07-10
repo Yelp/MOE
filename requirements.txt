@@ -4,8 +4,6 @@ WebError
 testify
 webtest
 tox
-numpy
-scipy
 simplejson
 colander>=1.0b1
 sphinx
