@@ -127,7 +127,7 @@ Testing
 
 MOE currently uses ``testify`` (https://github.com/Yelp/Testify) to run all unit and integration tests.
 
-Tests can be run using ``testify -v moe.tests``. Continuous integration testing is provided by (http://travis-ci.org). All builds are tested in a fresh ubuntu VM and need to be passing before being pulled into master.
+Tests can be run using ``make test``. Continuous integration testing is provided by http://travis-ci.org. All builds are tested in a fresh ubuntu VM and need to be passing before being pulled into master.
 
 .. Note::
 
