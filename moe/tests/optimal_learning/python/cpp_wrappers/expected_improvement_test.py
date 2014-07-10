@@ -80,7 +80,7 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
                 python_ei_eval.current_point = points_to_sample
 
                 cpp_ei = cpp_ei_eval.compute_expected_improvement()
-                python_ei = python_ei_eval.compute_expected_improvement()
+                python_ei = python_ei_eval.compute_expected_improvement(force_1d_ei=True)
                 self.assert_scalar_within_relative(python_ei, cpp_ei, ei_tolerance)
 
                 cpp_grad_ei = cpp_ei_eval.compute_grad_expected_improvement()
