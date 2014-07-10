@@ -8,7 +8,11 @@ before_install:
     - sudo add-apt-repository -y ppa:kalakris/cmake && sudo apt-get update -q && sudo apt-get install -y cmake
     - sudo add-apt-repository -y ppa:chris-lea/python-numpy && sudo apt-get update -q && sudo apt-get install -y python-numpy
     - sudo pip install -r requirements.txt
+    - sudo pip install flake8 flake8-import-order pep8-naming flake8-docstrings
 install:
     - sudo python setup.py install
 script:
     - testify -v moe.tests
+    - flake8 --ignore=E501,E126,E123,I101,N806 moe
+    - pep257 moe
+    - python docs/cpp_rst_maker.py && doxygen docs/doxygen_config && sphinx-apidoc -f -o docs moe && sphinx-build -b html docs docs/_build/html
