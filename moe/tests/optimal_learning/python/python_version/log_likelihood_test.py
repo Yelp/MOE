@@ -50,6 +50,7 @@ class GaussianProcessLogMarginalLikelihoodTest(GaussianProcessTestCase):
 
     def test_grad_log_likelihood_pings(self):
         """Ping test (compare analytic result to finite difference) the log likelihood gradient wrt hyperparameters."""
+        numpy.random.seed(2014)
         h = 2.0e-4
         tolerance = 5.0e-6
 
