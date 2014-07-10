@@ -3,7 +3,7 @@ cache:
 before_install:
     - sudo apt-get update -qq
     - sudo apt-get install -y build-essential gcc python python-dev python2.7 python2.7-dev libboost-all-dev doxygen libblas-dev liblapack-dev gfortran git make flex bison libssl-dev libedit-dev python-numpy python-scipy
-    - sudo wget http://www.cmake.org/files/v2.8/cmake-2.8.12.2.tar.gz && tar -zxf cmake-2.8.12.2.tar.gz && mv cmake-2.8.12.2/* . && sudo ./bootstrap.sh && sudo make && sudo make install
+    - sudo wget http://www.cmake.org/files/v2.8/cmake-2.8.12.2.tar.gz && tar -zxf cmake-2.8.12.2.tar.gz && mv cmake-2.8.12.2/* . && ls && sudo chmod +x bootstrap.sh && sudo ./bootstrap.sh && sudo make && sudo make install
     - sudo pip install -r requirements.txt
 install:
     - sudo python setup.py install
