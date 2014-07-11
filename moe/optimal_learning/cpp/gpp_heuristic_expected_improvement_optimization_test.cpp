@@ -307,7 +307,9 @@ int HeuristicExpectedImprovementOptimizationTestCore(EstimationPolicyTypes polic
   const int max_gradient_descent_steps = 300;
   const int max_num_restarts = 5;
   const int num_multistarts = 20;
-  GradientDescentParameters gd_params(num_multistarts, max_gradient_descent_steps, max_num_restarts, gamma, pre_mult, max_relative_change, tolerance);
+  GradientDescentParameters gd_params(num_multistarts, max_gradient_descent_steps,
+                                      max_num_restarts, gamma, pre_mult,
+                                      max_relative_change, tolerance);
 
   static const int kMaxNumThreads = 4;
   ThreadSchedule thread_schedule(kMaxNumThreads, omp_sched_dynamic);
@@ -324,7 +326,12 @@ int HeuristicExpectedImprovementOptimizationTestCore(EstimationPolicyTypes polic
 
   int num_sampled = 20;  // need to keep this similar to the number of multistarts
   std::vector<double> noise_variance(num_sampled, 0.002);
-  MockGaussianProcessPriorData<DomainType> mock_gp_data(SquareExponential(dim, 1.0, 1.0), noise_variance, dim, num_sampled, uniform_double_lower_bound, uniform_double_upper_bound, uniform_double_hyperparameter, &uniform_generator);
+  MockGaussianProcessPriorData<DomainType> mock_gp_data(SquareExponential(dim, 1.0, 1.0),
+                                                        noise_variance, dim, num_sampled,
+                                                        uniform_double_lower_bound,
+                                                        uniform_double_upper_bound,
+                                                        uniform_double_hyperparameter,
+                                                        &uniform_generator);
 
   // Estimation Policy
   std::unique_ptr<ObjectiveEstimationPolicyInterface> estimation_policy;
@@ -397,7 +404,9 @@ int HeuristicExpectedImprovementOptimizationTestCore(EstimationPolicyTypes polic
   OnePotentialSampleExpectedImprovementEvaluator ei_evaluator(*mock_gp_data.gaussian_process_ptr, mock_gp_data.best_so_far);
   bool configure_for_gradients = true;
   for (int i = 0; i < num_to_sample; ++i) {
-    OnePotentialSampleExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, best_points_to_sample.data() + i*dim, configure_for_gradients);
+    OnePotentialSampleExpectedImprovementEvaluator::StateType ei_state(ei_evaluator,
+                                                                       best_points_to_sample.data() + i*dim,
+                                                                       configure_for_gradients);
     ei_evaluator.ComputeGradExpectedImprovement(&ei_state, grad_ei.data());
 
     current_errors = 0;
@@ -408,8 +417,11 @@ int HeuristicExpectedImprovementOptimizationTestCore(EstimationPolicyTypes polic
     }
     total_errors += current_errors;
 
-    FunctionValue estimate = estimation_policy->ComputeEstimate(*mock_gp_data.gaussian_process_ptr, best_points_to_sample.data() + i*dim, i);
-    mock_gp_data.gaussian_process_ptr->AddPointToGP(best_points_to_sample.data() + i*dim, estimate.function_value, estimate.noise_variance);
+    FunctionValue estimate = estimation_policy->ComputeEstimate(*mock_gp_data.gaussian_process_ptr,
+                                                                best_points_to_sample.data() + i*dim, i);
+    mock_gp_data.gaussian_process_ptr->AddPointsToGP(best_points_to_sample.data() + i*dim,
+                                                     &estimate.function_value,
+                                                     &estimate.noise_variance, 1);
   }
 
   return total_errors;

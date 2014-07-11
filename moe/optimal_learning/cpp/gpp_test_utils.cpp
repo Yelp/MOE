@@ -594,7 +594,7 @@ void FillRandomGaussianProcess(double const * restrict points_to_sample, double 
     // draw function value from the GP
     points_to_sample_value[j] = gaussian_process->SamplePointFromGP(points_to_sample, noise_variance[j]);
     // add function value back into the GP
-    gaussian_process->AddPointToGP(points_to_sample, points_to_sample_value[j], noise_variance[j]);
+    gaussian_process->AddPointsToGP(points_to_sample, points_to_sample_value + j, noise_variance + j, 1);
     points_to_sample += dim;
   }
 }
