@@ -32,6 +32,9 @@ NULL_OPTIMIZER = 'null_optimizer'
 NEWTON_OPTIMIZER = 'newton_optimizer'
 GRADIENT_DESCENT_OPTIMIZER = 'gradient_descent_optimizer'
 
+LEAVE_ONE_OUT_LOG_LIKELIHOOD = 'leave_one_out_log_likelihood'
+LOG_MARGINAL_LIKELIHOOD = 'log_marginal_likelihood'
+
 # EI Defaults
 DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS = 10000
 TEST_EXPECTED_IMPROVEMENT_MC_ITERATIONS = 50
