@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """An example for accessing the all the functions in moe/easy_interface/simple_endpoint.
 
 The following functions are used:
@@ -14,9 +15,6 @@ We then update the hyperparameters of the GP (model selection)
 This process is repeated until we have sampled 20 points in total
 We then calculate the posterior mean and variance of the GP at several points
 """
-import math
-import random
-
 import numpy
 
 from moe.easy_interface.experiment import Experiment
@@ -28,7 +26,7 @@ def function_to_minimize(x):
 
     This function has a minimum near [1, 2.6].
     """
-    return math.sin(x[0]) * math.cos(x[1]) + math.cos(x[0] + x[1]) + random.uniform(-0.02, 0.02)
+    return numpy.sin(x[0]) * numpy.cos(x[1]) + numpy.cos(x[0] + x[1]) + numpy.random.uniform(-0.02, 0.02)
 
 if __name__ == '__main__':
     exp = Experiment([[0, 2], [0, 4]])

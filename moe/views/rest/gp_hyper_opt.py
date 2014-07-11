@@ -10,7 +10,9 @@ import colander
 from pyramid.view import view_config
 
 from moe.optimal_learning.python.constant import DEFAULT_MAX_NUM_THREADS
-from moe.optimal_learning.python.cpp_wrappers.log_likelihood import GaussianProcessLogLikelihood, multistart_hyperparameter_optimization
+from moe.optimal_learning.python.constant import LOG_MARGINAL_LIKELIHOOD
+from moe.optimal_learning.python.cpp_wrappers.log_likelihood import multistart_hyperparameter_optimization
+from moe.optimal_learning.python.linkers import LOG_LIKELIHOOD_TYPES_TO_LOG_LIKELIHOOD_METHODS
 from moe.views.constant import GP_HYPER_OPT_ROUTE_NAME, GP_HYPER_OPT_PRETTY_ROUTE_NAME
 from moe.views.gp_pretty_view import GpPrettyView, PRETTY_RENDERER
 from moe.views.optimizable_gp_pretty_view import OptimizableGpPrettyView
@@ -32,7 +34,7 @@ class GpHyperOptRequest(colander.MappingSchema):
 
         :max_num_threads: maximum number of threads to use in computation (default: 1)
         :covariance_info: a :class:`moe.views.schemas.CovarianceInfo` dict of covariance information, used as a starting point for optimization
-        :optimiaztion_info: a :class:`moe.views.schemas.OptimizationInfo` dict of optimization information
+        :optimization_info: a :class:`moe.views.schemas.OptimizationInfo` dict of optimization information
 
     **Example Request**
 
@@ -71,6 +73,7 @@ class GpHyperOptRequest(colander.MappingSchema):
                     ...
                     },
                 },
+            "log_likelihood_info": "log_marginal_likelihood"
         }
 
     """
@@ -88,6 +91,11 @@ class GpHyperOptRequest(colander.MappingSchema):
     hyperparameter_domain_info = BoundedDomainInfo()
     optimization_info = OptimizationInfo(
             missing=OptimizationInfo().deserialize({}),
+            )
+    log_likelihood_info = colander.SchemaNode(
+            colander.String(),
+            validator=colander.OneOf(LOG_LIKELIHOOD_TYPES_TO_LOG_LIKELIHOOD_METHODS),
+            missing=LOG_MARGINAL_LIKELIHOOD,
             )
 
 
@@ -194,12 +202,13 @@ class GpHyperOptView(OptimizableGpPrettyView):
         max_num_threads = params.get('max_num_threads')
         hyperparameter_domain = _make_domain_from_params(params, domain_info_key='hyperparameter_domain_info')
         gaussian_process = _make_gp_from_params(params)
-        covariance_of_process = gaussian_process._covariance
+        covariance_of_process, historical_data = gaussian_process.get_core_data_copy()
         optimizer_class, optimization_parameters, num_random_samples = _make_optimization_parameters_from_params(params)
+        log_likelihood_type = params.get('log_likelihood_info')
 
-        log_likelihood_eval = GaussianProcessLogLikelihood(
+        log_likelihood_eval = LOG_LIKELIHOOD_TYPES_TO_LOG_LIKELIHOOD_METHODS[log_likelihood_type].log_likelihood_class(
             covariance_of_process,
-            gaussian_process._historical_data,
+            historical_data,
         )
 
         log_likelihood_optimizer = optimizer_class(

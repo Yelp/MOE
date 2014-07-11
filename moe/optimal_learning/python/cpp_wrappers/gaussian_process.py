@@ -85,6 +85,24 @@ class GaussianProcess(GaussianProcessInterface):
         """Return the number of sampled points."""
         return self._historical_data.num_sampled
 
+    def get_covariance_copy(self):
+        """Return a copy of the covariance object specifying the Gaussian Process.
+
+        :return: covariance object encoding assumptions about the GP's behavior on our data
+        :rtype: interfaces.covariance_interface.CovarianceInterface subclass
+
+        """
+        return copy.deepcopy(self._covariance)
+
+    def get_historical_data_copy(self):
+        """Return the data (points, function values, noise) specifying the prior of the Gaussian Process.
+
+        :return: object specifying the already-sampled points, the objective value at those points, and the noise variance associated with each observation
+        :rtype: data_containers.HistoricalData
+
+        """
+        return copy.deepcopy(self._historical_data)
+
     def compute_mean_of_points(self, points_to_sample):
         r"""Compute the mean of this GP at each of point of ``Xs`` (``points_to_sample``).
 

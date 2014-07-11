@@ -406,8 +406,8 @@ OL_WARN_UNUSED_RESULT int TestSPDLinearSolvers() {
       };
   const double tolerance_inverse_max_list[3][num_test_sizes] =
       { {1.0e-13, 1.0e-9, 1.0e-2},  // prolate
-        {5.0e-13, 1.0e-8, 1.0e1},   // moler
-        {5.0e-10, 5.0e-6, 1.0e2}    // random
+        {5.0e-13, 2.0e-8, 1.0e1},   // moler
+        {7.0e-10, 7.0e-6, 1.0e2}    // random
       };
 
   UniformRandomGenerator uniform_generator(34187);
@@ -683,7 +683,7 @@ OL_WARN_UNUSED_RESULT int TestGeneralMatrixMatrixMultiply() noexcept {
     GeneralMatrixMatrixMultiply(matrix_A, 'N', matrix_B, 1.0, 0.0, kSize_m, kSize_k, kSize_n, matrix_AB_computed);
 
     for (int i = 0; i < kSize_m*kSize_n; ++i) {
-      if (!CheckDoubleWithinRelative(matrix_AB_computed[i], matrix_AB_exact[i], std::numeric_limits<double>::epsilon())) {
+      if (!CheckDoubleWithinRelative(matrix_AB_computed[i], matrix_AB_exact[i], 3.0 * std::numeric_limits<double>::epsilon())) {
         ++total_errors;
       }
     }

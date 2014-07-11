@@ -88,6 +88,39 @@ class GaussianProcess(GaussianProcessInterface):
         """Return the number of sampled points."""
         return self._historical_data.num_sampled
 
+    @property
+    def _points_sampled(self):
+        """Return the coordinates of the already-sampled points; see data_containers.HistoricalData."""
+        return self._historical_data.points_sampled
+
+    @property
+    def _points_sampled_value(self):
+        """Return the function values measured at each of points_sampled; see data_containers.HistoricalData."""
+        return self._historical_data.points_sampled_value
+
+    @property
+    def _points_sampled_noise_variance(self):
+        """Return the noise variance associated with points_sampled_value; see data_containers.HistoricalData."""
+        return self._historical_data.points_sampled_noise_variance
+
+    def get_covariance_copy(self):
+        """Return a copy of the covariance object specifying the Gaussian Process.
+
+        :return: covariance object encoding assumptions about the GP's behavior on our data
+        :rtype: interfaces.covariance_interface.CovarianceInterface subclass
+
+        """
+        return copy.deepcopy(self._covariance)
+
+    def get_historical_data_copy(self):
+        """Return the data (points, function values, noise) specifying the prior of the Gaussian Process.
+
+        :return: object specifying the already-sampled points, the objective value at those points, and the noise variance associated with each observation
+        :rtype: data_containers.HistoricalData
+
+        """
+        return copy.deepcopy(self._historical_data)
+
     def _build_precomputed_data(self):
         """Set up precomputed data (cholesky factorization of K and K^-1 * y)."""
         if self.num_sampled == 0:
@@ -96,11 +129,11 @@ class GaussianProcess(GaussianProcessInterface):
         else:
             covariance_matrix = python_utils.build_covariance_matrix(
                 self._covariance,
-                self._historical_data.points_sampled,
-                noise_variance=self._historical_data.points_sampled_noise_variance,
+                self._points_sampled,
+                noise_variance=self._points_sampled_noise_variance,
             )
             self._K_chol = scipy.linalg.cho_factor(covariance_matrix, lower=True, overwrite_a=True)
-            self._K_inv_y = scipy.linalg.cho_solve(self._K_chol, self._historical_data.points_sampled_value)
+            self._K_inv_y = scipy.linalg.cho_solve(self._K_chol, self._points_sampled_value)
 
     def compute_mean_of_points(self, points_to_sample):
         r"""Compute the mean of this GP at each of point of ``Xs`` (``points_to_sample``).
@@ -120,7 +153,7 @@ class GaussianProcess(GaussianProcessInterface):
 
         K_star = python_utils.build_mix_covariance_matrix(
             self._covariance,
-            self._historical_data.points_sampled,
+            self._points_sampled,
             points_to_sample,
         )
         mu_star = numpy.dot(K_star.T, self._K_inv_y)
@@ -149,9 +182,9 @@ class GaussianProcess(GaussianProcessInterface):
 
         """
         num_derivatives = self._clamp_num_derivatives(points_to_sample.shape[0], num_derivatives)
-        grad_K_star = numpy.empty((num_derivatives, self._historical_data.points_sampled.shape[0], self.dim))
+        grad_K_star = numpy.empty((num_derivatives, self._points_sampled.shape[0], self.dim))
         for i, point_one in enumerate(points_to_sample[:num_derivatives, ...]):
-            for j, point_two in enumerate(self._historical_data.points_sampled):
+            for j, point_two in enumerate(self._points_sampled):
                 grad_K_star[i, j, ...] = self._covariance.grad_covariance(point_one, point_two)
 
         # y_{k,i} = A_{k,j,i} * x_j
@@ -179,7 +212,7 @@ class GaussianProcess(GaussianProcessInterface):
 
         K_star = python_utils.build_mix_covariance_matrix(
             self._covariance,
-            self._historical_data.points_sampled,
+            self._points_sampled,
             points_to_sample,
         )
         V = scipy.linalg.solve_triangular(
@@ -231,7 +264,7 @@ class GaussianProcess(GaussianProcessInterface):
 
         K_star = python_utils.build_mix_covariance_matrix(
             self._covariance,
-            self._historical_data.points_sampled,
+            self._points_sampled,
             points_to_sample,
         )
         K_inv_times_K_star = scipy.linalg.cho_solve(self._K_chol, K_star, overwrite_b=True)
@@ -239,15 +272,15 @@ class GaussianProcess(GaussianProcessInterface):
             for j, point_two in enumerate(points_to_sample):
                 if var_of_grad == i and var_of_grad == j:
                     grad_var[i, j, ...] = self._covariance.grad_covariance(point_one, point_two)
-                    for idx_two, sampled_two in enumerate(self._historical_data.points_sampled):
+                    for idx_two, sampled_two in enumerate(self._points_sampled):
                         grad_var[i, j, ...] -= 2.0 * K_inv_times_K_star[idx_two, i] * self._covariance.grad_covariance(point_one, sampled_two)
                 elif var_of_grad == i:
                     grad_var[i, j, ...] = self._covariance.grad_covariance(point_one, point_two)
-                    for idx_two, sampled_two in enumerate(self._historical_data.points_sampled):
+                    for idx_two, sampled_two in enumerate(self._points_sampled):
                         grad_var[i, j, ...] -= K_inv_times_K_star[idx_two, j] * self._covariance.grad_covariance(point_one, sampled_two)
                 elif var_of_grad == j:
                     grad_var[i, j, ...] = self._covariance.grad_covariance(point_two, point_one)
-                    for idx_one, sampled_one in enumerate(self._historical_data.points_sampled):
+                    for idx_one, sampled_one in enumerate(self._points_sampled):
                         grad_var[i, j, ...] -= K_inv_times_K_star[idx_one, i] * self._covariance.grad_covariance(point_two, sampled_one)
         return grad_var
 

@@ -57,7 +57,9 @@ class GaussianProcessLogMarginalLikelihoodTest(GaussianProcessTestCase):
         for num_sampled in self.num_sampled_list:
             self.gp_test_environment_input.num_sampled = num_sampled
             _, gaussian_process = self._build_gaussian_process_test_data(self.gp_test_environment_input)
-            lml = GaussianProcessLogMarginalLikelihood(gaussian_process._covariance, gaussian_process._historical_data)
+            python_cov, historical_data = gaussian_process.get_core_data_copy()
+
+            lml = GaussianProcessLogMarginalLikelihood(python_cov, historical_data)
 
             analytic_grad = lml.compute_grad_log_likelihood()
             for k in xrange(lml.num_hyperparameters):
@@ -88,7 +90,9 @@ class GaussianProcessLogMarginalLikelihoodTest(GaussianProcessTestCase):
 
         self.gp_test_environment_input.num_sampled = num_sampled
         _, gaussian_process = self._build_gaussian_process_test_data(self.gp_test_environment_input)
-        lml = GaussianProcessLogMarginalLikelihood(gaussian_process._covariance, gaussian_process._historical_data)
+        python_cov, historical_data = gaussian_process.get_core_data_copy()
+
+        lml = GaussianProcessLogMarginalLikelihood(python_cov, historical_data)
 
         num_to_eval = 10
         domain_bounds = [self.gp_test_environment_input.hyperparameter_interval] * self.gp_test_environment_input.num_hyperparameters
@@ -128,7 +132,9 @@ class GaussianProcessLogMarginalLikelihoodTest(GaussianProcessTestCase):
         num_sampled = 10
         self.gp_test_environment_input.num_sampled = num_sampled
         _, gaussian_process = self._build_gaussian_process_test_data(self.gp_test_environment_input)
-        lml = GaussianProcessLogMarginalLikelihood(gaussian_process._covariance, gaussian_process._historical_data)
+        python_cov, historical_data = gaussian_process.get_core_data_copy()
+
+        lml = GaussianProcessLogMarginalLikelihood(python_cov, historical_data)
 
         domain = TensorProductDomain([ClosedInterval(1.0, 4.0)] * self.gp_test_environment_input.num_hyperparameters)
 
