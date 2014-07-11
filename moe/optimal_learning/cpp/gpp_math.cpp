@@ -810,20 +810,22 @@ void GaussianProcess::ComputeGradCholeskyVarianceOfPoints(StateType * points_to_
   }
 }
 
-void GaussianProcess::AddPointToGP(double const * restrict new_point, double new_point_value,
-                                   double new_point_noise_variance) {
+void GaussianProcess::AddPointsToGP(double const * restrict new_points,
+                                    double const * restrict new_points_value,
+                                    double const * restrict new_points_noise_variance,
+                                    int num_new_points) {
   // update sizes
-  num_sampled_++;
+  num_sampled_ += num_new_points;
 
   // update state variables
   points_sampled_.resize(num_sampled_*dim_);
-  std::copy_backward(new_point, new_point + dim_, points_sampled_.end());
+  std::copy_backward(new_points, new_points + num_new_points*dim_, points_sampled_.end());
 
   points_sampled_value_.resize(num_sampled_);
-  *(points_sampled_value_.end() - 1) = new_point_value;
+  std::copy_backward(new_points_value, new_points_value + num_new_points, points_sampled_value_.end());
 
   noise_variance_.resize(num_sampled_);
-  *(noise_variance_.end() - 1) = new_point_noise_variance;
+  std::copy_backward(new_points_noise_variance, new_points_noise_variance + num_new_points, noise_variance_.end());
 
   // recompute derived quantities
   // TODO(GH-192): Insert the new covariance (and cholesky covariance) rows into the current matrix  (O(N^2))
@@ -867,7 +869,7 @@ void GaussianProcess::SetExplicitSeed(EngineType::result_type seed) noexcept {
   normal_rng_.SetExplicitSeed(seed);
 }
 
-void GaussianProcess::SetRandommizedSeed(EngineType::result_type seed) noexcept {
+void GaussianProcess::SetRandomizedSeed(EngineType::result_type seed) noexcept {
   normal_rng_.SetRandomizedSeed(seed, 0);  // this is intended for single-threaded use only, so thread_id = 0
 }
 

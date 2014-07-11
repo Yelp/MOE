@@ -138,7 +138,7 @@ int main() {
 
     points_sampled_value[i] = function_to_minimize(best_points_to_sample.data(), &uniform_generator);
     // add function value back into the GP
-    gaussian_process.AddPointToGP(best_points_to_sample.data(), points_sampled_value[i], noise_variance[i]);
+    gaussian_process.AddPointsToGP(best_points_to_sample.data(), &points_sampled_value[i], &noise_variance[i], 1);
 
     best_so_far = *std::min_element(points_sampled_value.begin(), points_sampled_value.begin() + i + 1);
   }
@@ -223,7 +223,7 @@ int main() {
     // draw function value from the GP
     points_sampled_value.data()[j] = gp_generator.SamplePointFromGP(points_sampled.data() + dim*j, noise_variance.data()[j]);
     // add function value back into the GP
-    gp_generator.AddPointToGP(points_sampled.data() + dim*j, points_sampled_value.data()[j], noise_variance.data()[j]);
+    gp_generator.AddPointsToGP(points_sampled.data() + dim*j, &points_sampled_value[j], &noise_variance[j], 1);
   }
 
   // set up unbounded hyperparameter domain
@@ -677,12 +677,12 @@ void run_core_test(int *processor_count_list, int num_processor_count_list, int 
 #if OL_FUNC_MODE == 0
   for (int j = 0; j < stencil_rows*stencil_columns; ++j) {
     points_sampled_value[j] = branin_func(points_sampled.data() + (j)*dim);
-    gp.AddPointToGP(points_sampled.data() + dim*(j), points_sampled_value.data()[j], noise_variance.data()[j]);
+    gp.AddPointsToGP(points_sampled.data() + dim*(j), &points_sampled_value[j], &noise_variance[j], 1);
   }
 #elif OL_FUNC_MODE == 1
   for (int j = 0; j < stencil_rows*stencil_columns; ++j) {
     points_sampled_value.data()[j] = gp.SamplePointFromGP(points_sampled.data() + dim*(j), noise_variance.data()[j]);
-    gp.AddPointToGP(points_sampled.data() + dim*(j), points_sampled_value.data()[j], noise_variance.data()[j]);
+    gp.AddPointsToGP(points_sampled.data() + dim*(j), &points_sampled_value[j], &noise_variance[j], 1);
   }
 #else
   exit(-1);
@@ -839,7 +839,7 @@ void run_core_test(int *processor_count_list, int num_processor_count_list, int 
       points_sampled_value[stencil_rows*stencil_columns+j] = branin_func(points_sampled.data() + (stencil_rows*stencil_columns+j)*dim);
 #elif OL_FUNC_MODE == 1
       points_sampled_value[stencil_rows*stencil_columns + j] = gp.SamplePointFromGP(points_sampled.data() + dim*(stencil_rows*stencil_columns + j), noise_variance[stencil_rows*stencil_columns + j]);
-      gp.AddPointToGP(points_sampled.data() + dim*(stencil_rows*stencil_columns + j), points_sampled_value[stencil_rows*stencil_columns + j], noise_variance[stencil_rows*stencil_columns + j]);
+      gp.AddPointsToGP(points_sampled.data() + dim*(stencil_rows*stencil_columns + j), &points_sampled_value[stencil_rows*stencil_columns + j], &noise_variance[stencil_rows*stencil_columns + j], 1);
 #endif
 
       printf("checking against best_so_far\n");
@@ -1106,7 +1106,7 @@ int main() {
   // generate the "world"
   for (int j = 0; j < num_sampled; ++j) {
     points_sampled_value.data()[j] = gaussian_process.SamplePointFromGP(points_sampled.data() + dim*j, noise_variance[j]);
-    gaussian_process.AddPointToGP(points_sampled.data() + dim*j, points_sampled_value[j], noise_variance[j]);
+    gaussian_process.AddPointsToGP(points_sampled.data() + dim*j, &points_sampled_value[j], &noise_variance[j], 1);
   }
 
   // get best point
@@ -1601,7 +1601,7 @@ int main() {
   GaussianProcess gp(covariance, points_sampled.data(), points_sampled_value.data(), noise_variance.data(), dim, 0);
   for (int j = 0; j < stencil_rows*stencil_columns; ++j) {
     points_sampled_value.data()[j] = gp.SamplePointFromGP(points_sampled.data() + dim*(j), noise_variance.data()[j]);
-    gp.AddPointToGP(points_sampled.data() + dim*(j), points_sampled_value.data()[j], noise_variance.data()[j]);
+    gp.AddPointsToGP(points_sampled.data() + dim*(j), &points_sampled_value[j], &noise_variance[j], 1);
   }
 #else
   exit(-1);
@@ -1762,7 +1762,7 @@ int main() {
   GaussianProcess gp(covariance, points_sampled.data(), points_sampled_value.data(), noise_variance.data(), dim, 0);
   for (int j = 0; j < stencil_rows*stencil_columns; ++j) {
     points_sampled_value.data()[j] = gp.SamplePointFromGP(points_sampled.data() + dim*(j), noise_variance.data()[j]);
-    gp.AddPointToGP(points_sampled.data() + dim*(j), points_sampled_value.data()[j], noise_variance.data()[j]);
+    gp.AddPointsToGP(points_sampled.data() + dim*(j), &points_sampled_value[j], &noise_variance[j], 1);
   }
 #else
   exit(-1);
@@ -1955,7 +1955,7 @@ int main() {
   GaussianProcess gp(covariance, points_sampled.data(), points_sampled_value.data(), noise_variance.data(), dim, 0);
   for (int j = 0; j < stencil_rows*stencil_columns; ++j) {
     points_sampled_value.data()[j] = gp.SamplePointFromGP(points_sampled.data() + dim*(j), noise_variance.data()[j]);
-    gp.AddPointToGP(points_sampled.data() + dim*(j), points_sampled_value.data()[j], noise_variance.data()[j]);
+    gp.AddPointsToGP(points_sampled.data() + dim*(j), &points_sampled_value[j], &noise_variance[j], 1);
   }
 
   std::vector<double> new_hyperparameters(covariance.GetNumberOfHyperparameters());
@@ -2064,7 +2064,7 @@ int main() {
   // generate the "world"
   for (int j = 0; j < num_sampled; ++j) {
     points_sampled_value.data()[j] = gaussian_process.SamplePointFromGP(points_sampled.data() + dim*j, noise_variance[j]);
-    gaussian_process.AddPointToGP(points_sampled.data() + dim*j, points_sampled_value[j], noise_variance[j]);
+    gaussian_process.AddPointsToGP(points_sampled.data() + dim*j, &points_sampled_value[j], &noise_variance[j], 1);
   }
 
   using LogLikelihoodEvaluator = LogMarginalLikelihoodEvaluator;

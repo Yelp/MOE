@@ -71,19 +71,19 @@ class GaussianProcess(GaussianProcessInterface):
             cpp_utils.cppify(historical_data.points_sampled),
             cpp_utils.cppify(historical_data.points_sampled_value),
             cpp_utils.cppify(historical_data.points_sampled_noise_variance),
-            self.dim,
-            self.num_sampled,
+            self._historical_data.dim,
+            self._historical_data.num_sampled,
         )
 
     @property
     def dim(self):
         """Return the number of spatial dimensions."""
-        return self._historical_data.dim
+        return self._gaussian_process.dim
 
     @property
     def num_sampled(self):
         """Return the number of sampled points."""
-        return self._historical_data.num_sampled
+        return self._gaussian_process.num_sampled
 
     def get_covariance_copy(self):
         """Return a copy of the covariance object specifying the Gaussian Process.
@@ -116,8 +116,7 @@ class GaussianProcess(GaussianProcessInterface):
         :rtype: array of float64 with shape (num_to_sample)
 
         """
-        mu = C_GP.get_mean(
-            self._gaussian_process,
+        mu = self._gaussian_process.compute_mean_of_points(
             cpp_utils.cppify(points_to_sample),
             points_to_sample.shape[0],
         )
@@ -146,8 +145,7 @@ class GaussianProcess(GaussianProcessInterface):
 
         """
         num_derivatives = self._clamp_num_derivatives(points_to_sample.shape[0], num_derivatives)
-        grad_mu = C_GP.get_grad_mean(
-            self._gaussian_process,
+        grad_mu = self._gaussian_process.compute_grad_mean_of_points(
             cpp_utils.cppify(points_to_sample[:num_derivatives, ...]),
             num_derivatives,
         )
@@ -169,8 +167,7 @@ class GaussianProcess(GaussianProcessInterface):
 
         """
         num_to_sample = points_to_sample.shape[0]
-        variance = C_GP.get_var(
-            self._gaussian_process,
+        variance = self._gaussian_process.compute_variance_of_points(
             cpp_utils.cppify(points_to_sample),
             num_to_sample,
         )
@@ -188,8 +185,7 @@ class GaussianProcess(GaussianProcessInterface):
 
         """
         num_to_sample = points_to_sample.shape[0]
-        cholesky_variance = C_GP.get_chol_var(
-            self._gaussian_process,
+        cholesky_variance = self._gaussian_process.compute_cholesky_variance_of_points(
             cpp_utils.cppify(points_to_sample),
             num_to_sample,
         )
@@ -216,8 +212,7 @@ class GaussianProcess(GaussianProcessInterface):
         num_derivatives = self._clamp_num_derivatives(points_to_sample.shape[0], num_derivatives)
         num_to_sample = points_to_sample.shape[0]
 
-        grad_variance = C_GP.get_grad_var(
-            self._gaussian_process,
+        grad_variance = self._gaussian_process.compute_grad_variance_of_points(
             cpp_utils.cppify(points_to_sample),
             num_to_sample,
             num_derivatives,
@@ -252,8 +247,7 @@ class GaussianProcess(GaussianProcessInterface):
         num_derivatives = self._clamp_num_derivatives(points_to_sample.shape[0], num_derivatives)
         num_to_sample = points_to_sample.shape[0]
 
-        grad_chol_decomp = C_GP.get_grad_chol_var(
-            self._gaussian_process,
+        grad_chol_decomp = self._gaussian_process.compute_grad_cholesky_variance_of_points(
             cpp_utils.cppify(points_to_sample),
             num_to_sample,
             num_derivatives,
@@ -269,16 +263,17 @@ class GaussianProcess(GaussianProcessInterface):
         :type sampled_points: list of SampledPoint objects (or SamplePoint-like iterables)
 
         """
-        # TODO(GH-187): Add hook to actual C++ function to make this more efficient than rebuilding the whole GP object.
+        # TODO(GH-159): When C++ can pass back numpy arrays, we can stop keeping a duplicate in self._historical_data.
+        num_sampled_prev = self.num_sampled
+        num_to_add = len(sampled_points)
         self._historical_data.append_sample_points(sampled_points)
 
-        self._gaussian_process = C_GP.GaussianProcess(
-            cpp_utils.cppify_hyperparameters(self._covariance.hyperparameters),
-            cpp_utils.cppify(self._historical_data.points_sampled),
-            cpp_utils.cppify(self._historical_data.points_sampled_value),
-            cpp_utils.cppify(self._historical_data.points_sampled_noise_variance),
-            self.dim,
-            self.num_sampled,
+        # new_historical_data = HistoricalData(self.dim, sampled_points)
+        self._gaussian_process.add_sampled_points(
+            cpp_utils.cppify(self._historical_data.points_sampled[num_sampled_prev:, ...]),
+            cpp_utils.cppify(self._historical_data.points_sampled_value[num_sampled_prev:]),
+            cpp_utils.cppify(self._historical_data.points_sampled_noise_variance[num_sampled_prev:]),
+            num_to_add,
         )
 
     def sample_point_from_gp(self, point_to_sample, noise_variance=0.0):
@@ -287,7 +282,7 @@ class GaussianProcess(GaussianProcessInterface):
         Uses the formula ``function_value = gpp_mean + sqrt(gpp_variance) * w1 + sqrt(noise_variance) * w2``, where ``w1, w2``
         are draws from N(0,1).
 
-        Implementers are responsible for providing a N(0,1) source.
+        Normal RNG source is held within the C++ GaussianProcess object.
 
         .. NOTE::
              Set noise_variance to 0 if you want "accurate" draws from the GP.
@@ -304,9 +299,7 @@ class GaussianProcess(GaussianProcessInterface):
         :rtype: float64
 
         """
-        # TODO(GH-187): C++ has a native implementation of this function; make a wrapper and call that directly.
-        point = numpy.array(point_to_sample, copy=False, ndmin=2)
-        mean = self.compute_mean_of_points(point)[0]
-        variance = self.compute_variance_of_points(point)[0][0]
-
-        return mean + numpy.sqrt(variance) * numpy.random.normal() + numpy.sqrt(noise_variance) * numpy.random.normal()
+        return self._gaussian_process.sample_point_from_gp(
+            cpp_utils.cppify(point_to_sample),
+            noise_variance,
+        )

@@ -347,17 +347,20 @@ class GaussianProcess final {
   void FillPointsToSampleState(StateType * points_to_sample_state) const OL_NONNULL_POINTERS;
 
   /*!\rst
-    Adds a single (point, fcn value) pair to the GP with the option of noise variance (set to 0.0 if undesired).
+    Add the specified (point, fcn value, noise variance) historical data to this GP.
 
-    Also forces recomputation of all derived quantities for GP to remain consistent.
+    Forces recomputation of all derived quantities for GP to remain consistent.
 
     \param
-      :new_point[dim]: coordinates of the new point to add
-      :new_point_value: function value at the new point
-      :noise_variance: \sigma_n^2 corresponding to the signal noise in measuring new_point_value
+      :new_points[dim][num_new_points]: coordinates of each new point to add
+      :new_points_value[num_new_points]: function value at each new point
+      :new_points_noise_variance[num_new_points]: \sigma_n^2 corresponding to the signal noise in measuring new_points_value
+      :num_new_points: number of new points to add to the GP
   \endrst*/
-  void AddPointToGP(double const * restrict new_point, double new_point_value,
-                    double noise_variance) OL_NONNULL_POINTERS;
+  void AddPointsToGP(double const * restrict new_points,
+                     double const * restrict new_points_value,
+                     double const * restrict new_points_noise_variance,
+                     int num_new_points);
 
   /*!\rst
     Sample a function value from a Gaussian Process prior, provided a point at which to sample.
@@ -470,7 +473,7 @@ class GaussianProcess final {
                                            double * restrict grad_chol) const noexcept OL_NONNULL_POINTERS;
 
   /*!\rst
-    Re-seed the random number generator with the specified seed.
+    Seed the random number generator with the specified seed.
     See gpp_random, struct NormalRNG for details.
 
     \param
@@ -479,17 +482,17 @@ class GaussianProcess final {
   void SetExplicitSeed(EngineType::result_type seed) noexcept;
 
   /*!\rst
-    Re-seed the random number generator using a combination of the specified seed,
+    Seed the random number generator using a combination of the specified seed,
     current time, and potentially other factors.
     See gpp_random, struct NormalRNG for details.
 
     \param
       :seed: base value for new seed
   \endrst*/
-  void SetRandommizedSeed(EngineType::result_type seed) noexcept;
+  void SetRandomizedSeed(EngineType::result_type seed) noexcept;
 
   /*!\rst
-    Reseeds the generator with its last used seed value.
+    Seeds the generator with its last used seed value.
     Useful for testing--e.g., can conduct multiple runs with the same initial conditions
   \endrst*/
   void ResetToMostRecentSeed() noexcept;

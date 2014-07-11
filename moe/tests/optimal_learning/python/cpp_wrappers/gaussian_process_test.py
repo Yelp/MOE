@@ -30,6 +30,30 @@ class GaussianProcessTest(GaussianProcessTestCase):
         numpy.random.seed(8794)
         super(GaussianProcessTest, self).base_setup()
 
+    def test_sample_point_from_gp(self):
+        """Test that sampling points from the GP works."""
+        point_one = SamplePoint([0.0, 1.0], -1.0, 0.0)
+        point_two = SamplePoint([2.0, 2.5], 1.0, 0.1)
+        covariance = SquareExponential([1.0, 1.0, 1.0])
+        historical_data = HistoricalData(len(point_one.point), [point_one, point_two])
+
+        gaussian_process = GaussianProcess(covariance, historical_data)
+        out_values = numpy.zeros(3)
+        for i in xrange(3):
+            out_values[i] = gaussian_process.sample_point_from_gp(point_two.point, 0.001)
+
+        gaussian_process._gaussian_process.reset_to_most_recent_seed()
+        out_values_test = numpy.ones(3)
+        for i in xrange(3):
+            out_values_test[i] = gaussian_process.sample_point_from_gp(point_two.point, 0.001)
+
+        # Exact match b/c we should've run over the exact same computations
+        self.assert_vector_within_relative(out_values_test, out_values, 0.0)
+
+        # Sampling from a historical point (that had 0 noise) should produce the same value associated w/that point
+        value = gaussian_process.sample_point_from_gp(point_one.point, 0.0)
+        self.assert_scalar_within_relative(value, point_one.value, numpy.finfo(numpy.float64).eps)
+
     def test_gp_construction_singular_covariance_matrix(self):
         """Test that the GaussianProcess ctor indicates a singular covariance matrix when points_sampled contains duplicates (0 noise)."""
         index = numpy.argmax(numpy.greater_equal(self.num_sampled_list, 1))

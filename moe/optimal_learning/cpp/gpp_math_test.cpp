@@ -841,7 +841,7 @@ int EIOnePotentialSampleEdgeCasesTest() {
   // Now introduce some asymmetry with a second point
   // Right side has a larger objetive value, so the EI minimum
   // is shifted *slightly* to the left of best_so_far.
-  gaussian_process.AddPointToGP(points_sampled.data() + dim, points_sampled_value[1], noise_variance[1]);
+  gaussian_process.AddPointsToGP(points_sampled.data() + dim, &points_sampled_value[1], &noise_variance[1], 1);
 
   double shift = 3.0e-12;
   point_to_sample = base_coord - shift;
