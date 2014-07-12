@@ -226,7 +226,7 @@ If cmake is unable to find Boost, finds the wrong version of Boost, etc. then tr
 Linux Tips
 ----------
 
-1. You can apt-get everything you need. Yay for real package managers!
+1. For Ubuntu 13.04+ can apt-get everything you need. Yay for real package managers!
 
    ::
 
@@ -259,6 +259,8 @@ Ubuntu 12.04 repositories don't contain the versions of ``gcc``, ``cmake``, ``py
     $ sudo update-alternatives --config g++
     $ pip install -r requirements.txt
     $ python setup.py install
+
+If you are having strange errors (no current thread, segfault, etc.) or need to specify different versions of software (Boost, Python, etc.), check `Python Tips`_ and/or `Connecting Boost to MOE`_.
 
 CMake Tips
 ----------
