@@ -12,6 +12,6 @@ before_install:
 install:
     - sudo python setup.py install
 script:
-    - make test
-    - make style-test
-    - make docs
+    - make -B test
+    - make -B style-test
+    - make -B docs
