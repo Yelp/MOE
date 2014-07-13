@@ -205,6 +205,9 @@ class GpNextPointsPrettyView(OptimizableGpPrettyView):
 
         gaussian_process = _make_gp_from_params(params)
 
+        if gaussian_process.num_sampled < num_to_sample:
+            self.log.warning("Attempting to find {0} optimal points with only {1} (< {0}) historical points sampled. This can cause matrix issues under some conditions. Try requesting < {0} points for better performance. To bootstrap more points try sampling at random, or from a grid.".format(num_to_sample, gaussian_process.num_sampled))
+
         expected_improvement_evaluator = ExpectedImprovement(
                 gaussian_process,
                 points_being_sampled=points_being_sampled,
@@ -241,6 +244,7 @@ class GpNextPointsPrettyView(OptimizableGpPrettyView):
                     **kwargs
                     )
 
+        # TODO(GH-285): Use analytic q-EI here
         expected_improvement_evaluator.current_point = next_points
         expected_improvement = expected_improvement_evaluator.compute_expected_improvement()
 

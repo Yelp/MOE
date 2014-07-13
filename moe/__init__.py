@@ -23,28 +23,6 @@ def main(global_config, **settings):
                 moe_route.endpoint
                 )
 
-    # MongoDB
-    if settings['use_mongo'] == 'true':
-        import pymongo
-
-        def add_mongo_db(event):
-            settings = event.request.registry.settings
-            db_name = settings['mongodb.db_name']
-            db = settings['mongodb_conn'][db_name]
-            event.request.db = db
-        db_uri = settings['mongodb.url']
-        db_port = int(settings['mongodb.port'])
-        mongodb = pymongo.Connection
-        if 'pyramid_debugtoolbar' in set(settings.values()):
-            class MongoDB(pymongo.Connection):
-                def __html__(self):
-                    return 'MongoDB: <b>{}></b>'.format(self)
-        conn = mongodb(
-                db_uri,
-                db_port,
-                )
-        config.registry.settings['mongodb_conn'] = conn
-        config.add_subscriber(add_mongo_db, NewRequest)
     config.scan(
             ignore=[
                 'moe.optimal_learning.python.lib.cuda_linkers',

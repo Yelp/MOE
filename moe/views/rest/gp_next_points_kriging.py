@@ -62,7 +62,7 @@ class GpNextPointsKrigingRequest(GpNextPointsRequest):
             )
     kriging_noise_variance = colander.SchemaNode(
             colander.Float(),
-            missing=0.0,
+            missing=1e-8,
             validator=colander.Range(min=0.0),
             )
 
@@ -78,7 +78,7 @@ class GpNextPointsKriging(GpNextPointsPrettyView):
 
     _pretty_default_request = GpNextPointsPrettyView._pretty_default_request.copy()
     _pretty_default_request['std_deviation_coef'] = 0.0
-    _pretty_default_request['kriging_noise_variance'] = 0.0
+    _pretty_default_request['kriging_noise_variance'] = 1e-8
 
     @view_config(route_name=_pretty_route_name, renderer=PRETTY_RENDERER)
     def pretty_view(self):

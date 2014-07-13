@@ -89,7 +89,7 @@ class GpNextPointsConstantLiarRequest(GpNextPointsRequest):
             )
     lie_noise_variance = colander.SchemaNode(
             colander.Float(),
-            missing=0.0,
+            missing=1e-8,
             validator=colander.Range(min=0.0),
             )
 
@@ -105,8 +105,6 @@ class GpNextPointsConstantLiar(GpNextPointsPrettyView):
 
     _pretty_default_request = GpNextPointsPrettyView._pretty_default_request.copy()
     _pretty_default_request['lie_method'] = CONSTANT_LIAR_MIN
-    _pretty_default_request['lie_value'] = None
-    _pretty_default_request['lie_noise_variance'] = 0.0
 
     @view_config(route_name=_pretty_route_name, renderer=PRETTY_RENDERER)
     def pretty_view(self):
@@ -123,7 +121,7 @@ class GpNextPointsConstantLiar(GpNextPointsPrettyView):
             return params.get('lie_value')
 
         gaussian_process = _make_gp_from_params(params)
-        points_sampled_values = gaussian_process._historical_data._points_sampled_value.to_list()
+        points_sampled_values = gaussian_process._historical_data._points_sampled_value.tolist()
 
         if params.get('lie_method') == CONSTANT_LIAR_MIN:
             return numpy.amin(points_sampled_values)
