@@ -46,7 +46,7 @@ class GpNextPointsConstantLiarRequest(GpNextPointsRequest):
     **Optional fields**
 
         :num_to_sample: number of next points to generate (default: 1)
-        :lie_method: a string from `CONSTANT_LIAR_METHODS` representing the liar method to use (default: 'constant_liar_min')
+        :lie_method: a string from `CONSTANT_LIAR_METHODS` representing the liar method to use (default: 'constant_liar_max')
         :lie_value: a float representing the 'lie' the Constant Liar heuristic will use (default: None). If `lie_value` is not None the algorithm will use this value instead of one calculated using `lie_method`.
         :lie_noise_variance: a positive (>= 0) float representing the noise variance of the 'lie' value (default: 0.0)
         :covariance_info: a :class:`moe.views.schemas.CovarianceInfo` dict of covariance information
@@ -80,16 +80,17 @@ class GpNextPointsConstantLiarRequest(GpNextPointsRequest):
 
     lie_method = colander.SchemaNode(
             colander.String(),
-            missing=CONSTANT_LIAR_MIN,
+            missing=CONSTANT_LIAR_MAX,
             validator=colander.OneOf(CONSTANT_LIAR_METHODS),
             )
     lie_value = colander.SchemaNode(
             colander.Float(),
             missing=None,
             )
+    # TODO(GH-257): Find a good default for this.
     lie_noise_variance = colander.SchemaNode(
             colander.Float(),
-            missing=1e-8,
+            missing=1e-12,
             validator=colander.Range(min=0.0),
             )
 
@@ -104,7 +105,7 @@ class GpNextPointsConstantLiar(GpNextPointsPrettyView):
     request_schema = GpNextPointsConstantLiarRequest()
 
     _pretty_default_request = GpNextPointsPrettyView._pretty_default_request.copy()
-    _pretty_default_request['lie_method'] = CONSTANT_LIAR_MIN
+    _pretty_default_request['lie_method'] = CONSTANT_LIAR_MAX
 
     @view_config(route_name=_pretty_route_name, renderer=PRETTY_RENDERER)
     def pretty_view(self):

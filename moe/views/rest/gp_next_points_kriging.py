@@ -60,6 +60,7 @@ class GpNextPointsKrigingRequest(GpNextPointsRequest):
             colander.Float(),
             missing=0.0,
             )
+    # TODO(GH-257): Find a better value for missing here.
     kriging_noise_variance = colander.SchemaNode(
             colander.Float(),
             missing=1e-8,
