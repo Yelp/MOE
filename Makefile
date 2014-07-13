@@ -9,6 +9,7 @@ production:
 
 test:
 		testify -v moe.tests
+		testify -v moe_examples.tests
 
 style-test:
 		pip install flake8 flake8-import-order pep8-naming flake8-docstrings
@@ -19,4 +20,5 @@ docs:
 		python docs/cpp_rst_maker.py
 		doxygen docs/doxygen_config
 		sphinx-apidoc -f -o docs moe
+		sphinx-apidoc -f -o docs moe_examples
 		sphinx-build -b html docs docs/_build/html

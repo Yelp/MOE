@@ -1,6 +1,8 @@
 /*!
   \file gpp_hyper_and_EI_demo.cpp
   \rst
+  ``moe/optimal_learning/cpp/gpp_hyper_and_EI_demo.cpp``
+
   This demo combines gpp_hyperparameter_optimization_demo.cpp and gpp_expected_improvement_demo.cpp.  If you have read
   and understood those, then this demo should be very straightforward insofar as it is currently almost a direct copy-paste.
 
