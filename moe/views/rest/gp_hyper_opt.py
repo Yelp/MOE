@@ -5,143 +5,15 @@ Includes:
     1. request and response schemas
     2. pretty and backend views
 """
-import colander
-
 from pyramid.view import view_config
 
-from moe.optimal_learning.python.constant import DEFAULT_MAX_NUM_THREADS
-from moe.optimal_learning.python.constant import LOG_MARGINAL_LIKELIHOOD
 from moe.optimal_learning.python.cpp_wrappers.log_likelihood import multistart_hyperparameter_optimization
 from moe.optimal_learning.python.linkers import LOG_LIKELIHOOD_TYPES_TO_LOG_LIKELIHOOD_METHODS
 from moe.views.constant import GP_HYPER_OPT_ROUTE_NAME, GP_HYPER_OPT_PRETTY_ROUTE_NAME
 from moe.views.gp_pretty_view import GpPrettyView, PRETTY_RENDERER
 from moe.views.optimizable_gp_pretty_view import OptimizableGpPrettyView
-from moe.views.schemas import GpHistoricalInfo, CovarianceInfo, BoundedDomainInfo, OptimizationInfo, DomainInfo, ListOfFloats
+from moe.views.schemas import GpHyperOptRequest, GpHyperOptResponse
 from moe.views.utils import _make_domain_from_params, _make_gp_from_params, _make_optimization_parameters_from_params
-
-
-class GpHyperOptRequest(colander.MappingSchema):
-
-    """A gp_hyper_opt request colander schema.
-
-    **Required fields**
-
-        :gp_historical_info: a :class:`moe.views.schemas.GpHistoricalInfo` object of historical data
-        :domain_info: a :class:`moe.views.schemas.DomainInfo` dict of domain information for the GP
-        :hyperparameter_domain_info: a :class:`moe.views.schemas.BoundedDomainInfo` dict of domain information for the hyperparameter optimization
-
-    **Optional fields**
-
-        :max_num_threads: maximum number of threads to use in computation (default: 1)
-        :covariance_info: a :class:`moe.views.schemas.CovarianceInfo` dict of covariance information, used as a starting point for optimization
-        :optimization_info: a :class:`moe.views.schemas.OptimizationInfo` dict of optimization information
-
-    **Example Request**
-
-    .. sourcecode:: http
-
-        Content-Type: text/javascript
-
-        {
-            "max_num_threads": 1,
-            "gp_historical_info": {
-                "points_sampled": [
-                        {"value_var": 0.01, "value": 0.1, "point": [0.0]},
-                        {"value_var": 0.01, "value": 0.2, "point": [1.0]}
-                    ],
-                },
-            "domain_info": {
-                "dim": 1,
-                },
-            "covariance_info": {
-                "covariance_type": "square_exponential",
-                "hyperparameters": [1.0, 1.0],
-                },
-            "hyperparameter_domain_info": {
-                "dim": 2,
-                "domain_bounds": [
-                    {"min": 0.1, "max": 2.0},
-                    {"min": 0.1, "max": 2.0},
-                    ],
-                },
-            "optimization_info": {
-                "optimization_type": "gradient_descent_optimizer",
-                "num_multistarts": 200,
-                "num_random_samples": 4000,
-                "optimization_parameters": {
-                    "gamma": 0.5,
-                    ...
-                    },
-                },
-            "log_likelihood_info": "log_marginal_likelihood"
-        }
-
-    """
-
-    max_num_threads = colander.SchemaNode(
-            colander.Int(),
-            validator=colander.Range(min=1),
-            missing=DEFAULT_MAX_NUM_THREADS,
-            )
-    gp_historical_info = GpHistoricalInfo()
-    domain_info = DomainInfo()
-    covariance_info = CovarianceInfo(
-            missing=CovarianceInfo().deserialize({}),
-            )
-    hyperparameter_domain_info = BoundedDomainInfo()
-    optimization_info = OptimizationInfo(
-            missing=OptimizationInfo().deserialize({}),
-            )
-    log_likelihood_info = colander.SchemaNode(
-            colander.String(),
-            validator=colander.OneOf(LOG_LIKELIHOOD_TYPES_TO_LOG_LIKELIHOOD_METHODS),
-            missing=LOG_MARGINAL_LIKELIHOOD,
-            )
-
-
-class GpHyperOptStatus(colander.MappingSchema):
-
-    """A gp_hyper_opt status schema.
-
-    **Output fields**
-
-       :log_likelihood: The log likelihood at the new hyperparameters
-       :grad_log_likelihood: The gradient of the log likelihood at the new hyperparameters
-       :optimization_success: Whether or not the optimizer converged to an optimal set of hyperparameters
-
-    """
-
-    log_likelihood = colander.SchemaNode(colander.Float())
-    grad_log_likelihood = ListOfFloats()
-    optimization_success = colander.SchemaNode(colander.String())
-
-
-class GpHyperOptResponse(colander.MappingSchema):
-
-    """A gp_hyper_opt response colander schema.
-
-    **Output fields**
-
-        :endpoint: the endpoint that was called
-        :covariance_info: a :class:`moe.views.schemas.CovarianceInfo` dict of covariance information
-
-    **Example Response**
-
-    .. sourcecode:: http
-
-        {
-            "endpoint":"gp_hyper_opt",
-            "covariance_info": {
-                "covariance_type": "square_exponential",
-                "hyperparameters": [0.88, 1.24],
-                },
-        }
-
-    """
-
-    endpoint = colander.SchemaNode(colander.String())
-    covariance_info = CovarianceInfo()
-    status = GpHyperOptStatus()
 
 
 class GpHyperOptView(OptimizableGpPrettyView):
