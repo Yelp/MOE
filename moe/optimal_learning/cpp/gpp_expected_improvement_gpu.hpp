@@ -1,7 +1,7 @@
 /*!
   \file gpp_expected_improvement_gpu.hpp
   \rst
-  All gpu related functions are declared here, and any other cpp functions who wish to use gpu implementation should only call functions here.
+  All GPU related functions are declared here, and any other C++ functions who wish to call GPU functions should only call functions here.
 \endrst*/
 
 #ifndef MOE_OPTIMAL_LEARNING_CPP_GPP_EXPECTED_IMPROVEMENT_GPU_HPP_
@@ -15,14 +15,20 @@
 #include "gpp_random.hpp"
 #include "gpp_math.hpp"
 
+#ifdef OL_GPU_ENABLED
+#define OL_CUDA_THROW_EXCEPTION(_ERR) ThrowException(OptimalLearningException((_ERR).line_info, (_ERR).func_info, cudaGetErrorString((_ERR).err)));
+#define OL_CUDA_ERROR_THROW(_ERR) {if((_ERR).err != cudaSuccess) {OL_CUDA_THROW_EXCEPTION(_ERR)}}
+#endif
 
 namespace optimal_learning {
-/*!\rst
-  This struct contains pointer to memory location on GPU, its constructor and destructor also take care of memory allocation/deallocation on GPU. When GPU is not enabled, it becomes some dummy struct.
-\endrst*/
 #ifdef OL_GPU_ENABLED
+/*!\rst
+  This struct does the same job as C++ smart pointer. It contains pointer to memory location on
+  GPU, its constructor and destructor also take care of memory allocation/deallocation on GPU. 
+\endrst*/
 struct CudaDevicePointer final {
   explicit CudaDevicePointer(int num_doubles_in);
+
   ~CudaDevicePointer();
 
   //! pointer to the memory location on gpu
@@ -32,35 +38,21 @@ struct CudaDevicePointer final {
 
   OL_DISALLOW_DEFAULT_AND_COPY_AND_ASSIGN(CudaDevicePointer);
 };
-#endif
 
 struct CudaExpectedImprovementState;
 
 /*!\rst
-  This class has the same functionality as ExpectedImprovementEvaluator, except that computations are performed on GPU.
+  This class has the same functionality as ExpectedImprovementEvaluator (see gpp_math.hpp),
+  except that computations are performed on GPU.
 \endrst*/
 class CudaExpectedImprovementEvaluator final {
  public:
   using StateType = CudaExpectedImprovementState;
   /*!\rst
-    Constructs a CudaExpectedImprovementEvaluator object.  All inputs are required; no default constructor nor copy/assignment are allowed.
-
-    \param
-      :gaussian_process: GaussianProcess object (holds ``points_sampled``, ``values``, ``noise_variance``, derived quantities)
-        that describes the underlying GP
-      :num_mc_iterations: number of monte carlo iterations
-      :best_so_far: best (minimum) objective function value (in ``points_sampled_value``)
-  \endrst*/
-  CudaExpectedImprovementEvaluator(const GaussianProcess& gaussian_process_in, int num_mc_in, double best_so_far) : dim_(gaussian_process_in.dim()),  num_mc(num_mc_in), best_so_far_(best_so_far), gaussian_process_(&gaussian_process_in) {
-    setupGPU(0);
-  }
-
-  /*!\rst
     Constructor that also specify which gpu you want to use (for multi-gpu system)
   \endrst*/
-  CudaExpectedImprovementEvaluator(const GaussianProcess& gaussian_process_in, int num_mc_in, double best_so_far, int devID_in) : dim_(gaussian_process_in.dim()), num_mc(num_mc_in), best_so_far_(best_so_far), gaussian_process_(&gaussian_process_in) {
-    setupGPU(devID_in);
-  }
+  CudaExpectedImprovementEvaluator(const GaussianProcess& gaussian_process_in,
+                                   int num_mc_in, double best_so_far, int devID_in);
 
   ~CudaExpectedImprovementEvaluator();
 
@@ -91,7 +83,8 @@ class CudaExpectedImprovementEvaluator final {
   }
 
   /*!\rst
-    This function has the same functionality as ComputeExpectedImprovement in class ExpectedImprovementEvaluator.
+    This function has the same functionality as ComputeExpectedImprovement (see gpp_math.hpp)
+    in class ExpectedImprovementEvaluator.
     \param
       :ei_state[1]: properly configured state object
     \output
@@ -102,7 +95,8 @@ class CudaExpectedImprovementEvaluator final {
   double ComputeExpectedImprovement(StateType * ei_state) const OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT;
 
   /*!\rst
-    This function has the same functionality as ComputeGradExpectedImprovement in class ExpectedImprovementEvaluator.
+    This function has the same functionality as ComputeGradExpectedImprovement (see gpp_math.hpp)
+    in class ExpectedImprovementEvaluator.
     \param
       :ei_state[1]: properly configured state object
     \output
@@ -127,21 +121,23 @@ class CudaExpectedImprovementEvaluator final {
 };
 
 /*!\rst
-  This has the same functionality as ExpectedImprovementState except that it is for GPU computing
+  This has the same functionality as ExpectedImprovementState (see gpp_math.hpp) except that it is for GPU computing
 \endrst*/
 struct CudaExpectedImprovementState final {
   using EvaluatorType = CudaExpectedImprovementEvaluator;
 
   /*!\rst
-    Constructs an CudaExpectedImprovementState object with a specified source of randomness for the purpose of computing EI
-    (and its gradient) over the specified set of points to sample.
-    This establishes properly sized/initialized temporaries for EI computation, including dependent state from the
-    associated Gaussian Process (which arrives as part of the ei_evaluator).
+    Constructs an CudaExpectedImprovementState object with a specified source of randomness for
+    the purpose of computing EI(and its gradient) over the specified set of points to sample.
+    This establishes properly sized/initialized temporaries for EI computation, including dependent
+    state from the associated Gaussian Process (which arrives as part of the ei_evaluator).
 
-    .. WARNING:: This object is invalidated if the associated ei_evaluator is mutated.  SetupState() should be called to reset.
+    .. WARNING:: This object is invalidated if the associated ei_evaluator is mutated.  SetupState()
+    should be called to reset.
 
     .. WARNING::
-         Using this object to compute gradients when ``configure_for_gradients`` := false results in UNDEFINED BEHAVIOR.
+         Using this object to compute gradients when ``configure_for_gradients`` := false results in
+         UNDEFINED BEHAVIOR.
 
     \param
       :ei_evaluator: expected improvement evaluator object that specifies the parameters & GP for EI evaluation
@@ -156,12 +152,16 @@ struct CudaExpectedImprovementState final {
          * The UniformRandomGenerator object must already be seeded.  If multithreaded computation is used for EI, then every state object
          must have a different UniformRandomGenerator (different seeds, not just different objects).
   \endrst*/
-  CudaExpectedImprovementState(const EvaluatorType& ei_evaluator, double const * restrict points_to_sample, double const * restrict points_being_sampled, int num_to_sample_in, int num_being_sampled_in, bool configure_for_gradients, UniformRandomGenerator* uniform_rng_in);
+  CudaExpectedImprovementState(const EvaluatorType& ei_evaluator, double const * restrict points_to_sample,
+                               double const * restrict points_being_sampled, int num_to_sample_in,
+                               int num_being_sampled_in, bool configure_for_gradients,
+                               UniformRandomGenerator* uniform_rng_in);
 
-#ifdef OL_GPU_ENABLED
   // constructor for setting up unit test
-  CudaExpectedImprovementState(const EvaluatorType& ei_evaluator, double const * restrict points_to_sample, double const * restrict points_being_sampled, int num_to_sample_in, int num_being_sampled_in, bool configure_for_gradients, UniformRandomGenerator * uniform_rng_in, bool configure_for_test);
-#endif
+  CudaExpectedImprovementState(const EvaluatorType& ei_evaluator, double const * restrict points_to_sample,
+                               double const * restrict points_being_sampled, int num_to_sample_in,
+                               int num_being_sampled_in, bool configure_for_gradients,
+                               UniformRandomGenerator * uniform_rng_in, bool configure_for_test);
 
   CudaExpectedImprovementState(CudaExpectedImprovementState&& OL_UNUSED(other)) = default;
 
@@ -180,7 +180,8 @@ struct CudaExpectedImprovementState final {
     \return
       std::vector<double> with the union of the input arrays: points_being_sampled is *appended* to points_to_sample
   \endrst*/
-  static std::vector<double> BuildUnionOfPoints(double const * restrict points_to_sample, double const * restrict points_being_sampled, int num_to_sample, int num_being_sampled, int dim) noexcept OL_WARN_UNUSED_RESULT {
+  static std::vector<double> BuildUnionOfPoints(double const * restrict points_to_sample, double const * restrict points_being_sampled,
+                                                int num_to_sample, int num_being_sampled, int dim) noexcept OL_WARN_UNUSED_RESULT {
     std::vector<double> union_of_points(dim*(num_to_sample + num_being_sampled));
     std::copy(points_to_sample, points_to_sample + dim*num_to_sample, union_of_points.data());
     std::copy(points_being_sampled, points_being_sampled + dim*num_being_sampled, union_of_points.data() + dim*num_to_sample);
@@ -267,25 +268,60 @@ struct CudaExpectedImprovementState final {
   //! the gradient of the cholesky (``LL^T``) factorization of the GP variance evaluated at union_of_points wrt union_of_points[0:num_to_sample]
   std::vector<double> grad_chol_decomp;
 
-#ifdef OL_GPU_ENABLED
   bool configure_for_test;
   //! structs containing pointers to store the memory locations of variables on GPU
+  //! input data for GPU computations and GPU should not modify them
   CudaDevicePointer gpu_mu;
-  CudaDevicePointer gpu_L;
+  CudaDevicePointer gpu_chol_var;
   CudaDevicePointer gpu_grad_mu;
-  CudaDevicePointer gpu_grad_L;
+  CudaDevicePointer gpu_grad_chol_var;
+  //! data containing results returned by GPU computations
   CudaDevicePointer gpu_EI_storage;
   CudaDevicePointer gpu_grad_EI_storage;
+  //! data containing random numbers used in GPU computations, which are only
+  //used for testing
   CudaDevicePointer gpu_random_number_EI;
   CudaDevicePointer gpu_random_number_gradEI;
 
   //! storage for random numbers used in computing EI & grad_EI, this is only used to setup unit test
   std::vector<double> random_number_EI;
   std::vector<double> random_number_gradEI;
-#endif
 
   OL_DISALLOW_DEFAULT_AND_COPY_AND_ASSIGN(CudaExpectedImprovementState);
 };
+
+#else
+struct CudaExpectedImprovementState;
+
+class CudaExpectedImprovementEvaluator {
+ public:
+  using StateType = CudaExpectedImprovementState;
+  CudaExpectedImprovementEvaluator(const GaussianProcess& gaussian_process_in, int num_mc_in, double best_so_far, int devID_in);
+
+  double ComputeObjectiveFunction(StateType * ei_state) const {
+    return ComputeExpectedImprovement(ei_state);
+  }
+
+  void ComputeGradObjectiveFunction(StateType * ei_state, double * restrict grad_EI) const {
+    ComputeGradExpectedImprovement(ei_state, grad_EI);
+  }
+
+  double ComputeExpectedImprovement(StateType * ei_state) const;
+
+  void ComputeGradExpectedImprovement(StateType * ei_state, double * restrict grad_EI) const;
+
+  OL_DISALLOW_DEFAULT_AND_COPY_AND_ASSIGN(CudaExpectedImprovementEvaluator);
+};
+
+struct CudaExpectedImprovementState {
+  using EvaluatorType = CudaExpectedImprovementEvaluator;
+  CudaExpectedImprovementState(const EvaluatorType& ei_evaluator, double const * restrict points_to_sample,
+                               double const * restrict points_being_sampled, int num_to_sample_in,
+                               int num_being_sampled_in, bool configure_for_gradients,
+                               UniformRandomGenerator * uniform_rng_in);
+};
+
+#endif
 
 }   // end namespace optimal_learning
 #endif  // MOE_OPTIMAL_LEARNING_CPP_GPP_EXPECTED_IMPROVEMENT_GPU_HPP_

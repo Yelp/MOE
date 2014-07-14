@@ -84,7 +84,7 @@ int RunCppTestsWrapper() {
   }
   total_errors += error;
 
-  error = RunCudaEIvsCpuEI();
+  error = RunCudaEIvsCpuEITests();
   if (error != 0) {
     OL_FAILURE_PRINTF("cudaEI vs cpuEI consistency check failed\n");
   } else {

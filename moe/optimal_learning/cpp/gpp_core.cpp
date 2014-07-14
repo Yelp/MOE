@@ -2119,6 +2119,7 @@ int main() {
 
 int main() {
     try {
+      int which_gpu = 0;
       const int num_mc_iter = 20000000;
       const int dim = 3;
       const int num_being_sampled = 4;
@@ -2146,7 +2147,7 @@ int main() {
 
         SquareExponential sqexp_cov(dim, alpha, lengths);
         GaussianProcess gaussian_process(sqexp_cov, EI_environment.points_sampled(), EI_environment.points_sampled_value(), noise_var.data(), dim, num_sampled); 
-        CudaExpectedImprovementEvaluator gpu_EI_evaluator(gaussian_process, num_mc_iter, best_so_far);
+        CudaExpectedImprovementEvaluator gpu_EI_evaluator(gaussian_process, num_mc_iter, best_so_far, which_gpu);
         CudaExpectedImprovementEvaluator::StateType ei_state(gpu_EI_evaluator, EI_environment.points_to_sample(), EI_environment.points_being_sampled(), num_to_sample, num_being_sampled, configure_for_gradients, &uniform_generator);
 
         EI_gpu = gpu_EI_evaluator.ComputeExpectedImprovement(&ei_state);

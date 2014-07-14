@@ -27,66 +27,9 @@
 #include "gpp_test_utils.hpp"
 
 namespace optimal_learning {
-// PingCudaExpectedImprovement function def begins
-PingCudaExpectedImprovement::PingCudaExpectedImprovement(double const * restrict lengths, double const * restrict points_being_sampled, double const * restrict points_sampled, double const * restrict points_sampled_value, double alpha, double best_so_far, int dim, int num_to_sample, int num_being_sampled, int num_sampled, int num_mc_iter)
-  : dim_(dim),
-    num_to_sample_(num_to_sample),
-    num_being_sampled_(num_being_sampled),
-    num_sampled_(num_sampled),
-    gradients_already_computed_(false),
-    noise_variance_(num_sampled_, 0.0),
-    points_sampled_(points_sampled, points_sampled + dim_*num_sampled_),
-    points_sampled_value_(points_sampled_value, points_sampled_value + num_sampled_),
-    points_being_sampled_(points_being_sampled, points_being_sampled + num_being_sampled_*dim_),
-    grad_EI_(num_to_sample_*dim_),
-    sqexp_covariance_(dim_, alpha, lengths),
-    gaussian_process_(sqexp_covariance_, points_sampled_.data(), points_sampled_value_.data(), noise_variance_.data(), dim_, num_sampled_), ei_evaluator_(gaussian_process_, num_mc_iter, best_so_far) {
-}
 
-void PingCudaExpectedImprovement::GetInputSizes(int * num_rows, int * num_cols) const noexcept {
-  *num_rows = dim_;
-  *num_cols = num_to_sample_;
-}
-
-int PingCudaExpectedImprovement::GetGradientsSize() const noexcept {
-  return dim_*GetOutputSize();
-}
-
-int PingCudaExpectedImprovement::GetOutputSize() const noexcept {
-  return num_to_sample_;
-}
-
-void PingCudaExpectedImprovement::EvaluateAndStoreAnalyticGradient(double const * restrict points_to_sample, double * restrict gradients) noexcept {
-  if (gradients_already_computed_ == true) {
-    OL_WARNING_PRINTF("WARNING: grad_EI data already set.  Overwriting...\n");
-  }
-  gradients_already_computed_ = true;
-
-  UniformRandomGenerator uniform_rng(3141);
-  bool configure_for_gradients = true;
-  CudaExpectedImprovementEvaluator::StateType ei_state(ei_evaluator_, points_to_sample, points_being_sampled_.data(), num_to_sample_, num_being_sampled_, configure_for_gradients, &uniform_rng);
-  ei_evaluator_.ComputeGradExpectedImprovement(&ei_state, grad_EI_.data());
-
-  if (gradients != nullptr) {
-    std::copy(grad_EI_.begin(), grad_EI_.end(), gradients);
-  }
-}
-
-double PingCudaExpectedImprovement::GetAnalyticGradient(int row_index, int column_index, int OL_UNUSED(output_index)) const {
-  if (gradients_already_computed_ == false) {
-    OL_THROW_EXCEPTION(OptimalLearningException, "PingExpectedImprovement::GetAnalyticGradient() called BEFORE EvaluateAndStoreAnalyticGradient. NO DATA!");
-  }
-
-  return grad_EI_[column_index*dim_ + row_index];
-}
-
-void PingCudaExpectedImprovement::EvaluateFunction(double const * restrict points_to_sample, double * restrict function_values) const noexcept {
-  UniformRandomGenerator uniform_rng(3141);
-  bool configure_for_gradients = false;
-  CudaExpectedImprovementEvaluator::StateType ei_state(ei_evaluator_, points_to_sample, points_being_sampled_.data(), num_to_sample_, num_being_sampled_, configure_for_gradients, &uniform_rng);
-  *function_values = ei_evaluator_.ComputeExpectedImprovement(&ei_state);
-}
 #ifdef OL_GPU_ENABLED
+
 /*!\rst
   Generates a set of 40 random test cases for expected improvement with only one potential sample.
   The general EI (which uses MC integration) is evaluated to reasonably high accuracy (while not taking too long to run)
@@ -98,6 +41,7 @@ void PingCudaExpectedImprovement::EvaluateFunction(double const * restrict point
 int RunCudaEIConsistencyTests() {
   int total_errors = 0;
 
+  int which_gpu = 1;
   const int num_mc_iter = 20000000;
   const int dim = 3;
   const int num_being_sampled = 0;
@@ -132,7 +76,7 @@ int RunCudaEIConsistencyTests() {
     OnePotentialSampleExpectedImprovementEvaluator one_potential_sample_ei_evaluator(gaussian_process, best_so_far);
     OnePotentialSampleExpectedImprovementEvaluator::StateType one_potential_sample_ei_state(one_potential_sample_ei_evaluator, EI_environment.points_to_sample(), configure_for_gradients);
 
-    CudaExpectedImprovementEvaluator cuda_ei_evaluator(gaussian_process, num_mc_iter, best_so_far);
+    CudaExpectedImprovementEvaluator cuda_ei_evaluator(gaussian_process, num_mc_iter, best_so_far, which_gpu);
     CudaExpectedImprovementEvaluator::StateType cuda_ei_state(cuda_ei_evaluator, EI_environment.points_to_sample(), EI_environment.points_being_sampled(), num_to_sample, num_being_sampled, configure_for_gradients, &uniform_generator);
 
     EI_cuda = cuda_ei_evaluator.ComputeObjectiveFunction(&cuda_ei_state);
@@ -179,9 +123,10 @@ int RunCudaEIConsistencyTests() {
   \return
     number of cases where outputs from cpu and gpu do not match.
 \endrst*/
-int RunCudaEIvsCpuEI() {
+int RunCudaEIvsCpuEITests() {
   int total_errors = 0;
 
+  int which_gpu = 1;
   const int num_mc_iter = 40000;
   const int dim = 3;
   const int num_being_sampled = 4;
@@ -216,7 +161,7 @@ int RunCudaEIvsCpuEI() {
     SquareExponential sqexp_covariance(dim, alpha, lengths);
     GaussianProcess gaussian_process(sqexp_covariance, EI_environment.points_sampled(), EI_environment.points_sampled_value(), noise_variance.data(), dim, num_sampled);
 
-    CudaExpectedImprovementEvaluator cuda_ei_evaluator(gaussian_process, num_mc_iter, best_so_far);
+    CudaExpectedImprovementEvaluator cuda_ei_evaluator(gaussian_process, num_mc_iter, best_so_far, which_gpu);
     CudaExpectedImprovementEvaluator::StateType cuda_ei_state(cuda_ei_evaluator, EI_environment.points_to_sample(), EI_environment.points_being_sampled(), num_to_sample, num_being_sampled, configure_for_gradients, &uniform_generator, configure_for_test);
 
     EI_gpu = cuda_ei_evaluator.ComputeObjectiveFunction(&cuda_ei_state);
@@ -269,7 +214,6 @@ int RunCudaEIvsCpuEI() {
   return total_errors;
 }
 
-
 #else
 
 int RunCudaEIConsistencyTests() {
@@ -277,10 +221,11 @@ int RunCudaEIConsistencyTests() {
   return 0;
 }
 
-int RunCudaEIvsCpuEI() {
+int RunCudaEIvsCpuEITests() {
   OL_WARNING_PRINTF("no gpu component is enabled, this test did not run.\n");
   return 0;
 }
+
 #endif
 
 }  // end namespace optimal_learning
