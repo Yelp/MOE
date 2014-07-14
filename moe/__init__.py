@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """Base pyramid app for MOE."""
 from pyramid.config import Configurator
-from pyramid.events import NewRequest
 
 from moe.resources import Root
 from moe.views.constant import ALL_MOE_ROUTES

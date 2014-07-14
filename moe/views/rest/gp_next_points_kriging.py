@@ -4,68 +4,12 @@
 Includes:
     1. pretty and backend views
 """
-import colander
-
 from pyramid.view import view_config
 
 from moe.views.constant import GP_NEXT_POINTS_KRIGING_ROUTE_NAME, GP_NEXT_POINTS_KRIGING_PRETTY_ROUTE_NAME, GP_NEXT_POINTS_KRIGING_OPTIMIZATION_METHOD_NAME
-from moe.views.gp_next_points_pretty_view import GpNextPointsPrettyView, GpNextPointsRequest
+from moe.views.gp_next_points_pretty_view import GpNextPointsPrettyView
 from moe.views.gp_pretty_view import PRETTY_RENDERER
-
-
-class GpNextPointsKrigingRequest(GpNextPointsRequest):
-
-    """Extends the standard request :class:`moe.views.gp_next_points_pretty_view.GpNextPointsRequest` with kriging parameters.
-
-    **Required fields**
-
-        :gp_historical_info: a :class:`moe.views.schemas.GpHistoricalInfo` dict of historical data
-        :domain_info: a :class:`moe.views.schemas.BoundedDomainInfo` dict of domain information
-
-    **Optional fields**
-
-        :num_to_sample: number of next points to generate (default: 1)
-        :std_deviation_coef: a float used in Kriging, see Kriging implementation docs (default: 0.0)
-        :kriging_noise_variance: a positive (>= 0) float used in Kriging, see Kriging implementation docs (default: 0.0)
-        :covariance_info: a :class:`moe.views.schemas.CovarianceInfo` dict of covariance information
-        :optimiaztion_info: a :class:`moe.views.schemas.OptimizationInfo` dict of optimization information
-
-    **Example Request**
-
-    .. sourcecode:: http
-
-        Content-Type: text/javascript
-
-        {
-            "num_to_sample": 1,
-            "std_deviation_coef": 0.0,
-            "kriging_noise_variance": 0.0,
-            "gp_historical_info": {
-                "points_sampled": [
-                        {"value_var": 0.01, "value": 0.1, "point": [0.0]},
-                        {"value_var": 0.01, "value": 0.2, "point": [1.0]}
-                    ],
-                },
-            "domain_info": {
-                "dim": 1,
-                "domain_bounds": [
-                    {"min": 0.0, "max": 1.0},
-                    ],
-                },
-        }
-
-    """
-
-    std_deviation_coef = colander.SchemaNode(
-            colander.Float(),
-            missing=0.0,
-            )
-    # TODO(GH-257): Find a better value for missing here.
-    kriging_noise_variance = colander.SchemaNode(
-            colander.Float(),
-            missing=1e-8,
-            validator=colander.Range(min=0.0),
-            )
+from moe.views.schemas import GpNextPointsKrigingRequest
 
 
 class GpNextPointsKriging(GpNextPointsPrettyView):

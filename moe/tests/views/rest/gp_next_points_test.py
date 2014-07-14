@@ -6,11 +6,10 @@ import simplejson as json
 
 import testify as T
 
-from moe.optimal_learning.python.constant import TEST_OPTIMIZATION_MULTISTARTS, TEST_GRADIENT_DESCENT_PARAMETERS, TEST_OPTIMIZATION_NUM_RANDOM_SAMPLES, TEST_EXPECTED_IMPROVEMENT_MC_ITERATIONS
+from moe.optimal_learning.python.constant import TEST_OPTIMIZATION_MULTISTARTS, TEST_GRADIENT_DESCENT_PARAMETERS, TEST_OPTIMIZATION_NUM_RANDOM_SAMPLES, TEST_EXPECTED_IMPROVEMENT_MC_ITERATIONS, CONSTANT_LIAR_METHODS
 from moe.tests.views.rest_gaussian_process_test_case import RestGaussianProcessTestCase
 from moe.views.constant import ALL_NEXT_POINTS_MOE_ROUTES, GP_NEXT_POINTS_CONSTANT_LIAR_ROUTE_NAME, GP_NEXT_POINTS_CONSTANT_LIAR_ENDPOINT
 from moe.views.gp_next_points_pretty_view import GpNextPointsResponse, GpNextPointsPrettyView
-from moe.views.rest.gp_next_points_constant_liar import CONSTANT_LIAR_METHODS
 from moe.views.utils import _make_optimization_parameters_from_params
 
 
@@ -93,15 +92,16 @@ class TestGpNextPointsViews(RestGaussianProcessTestCase):
     def test_all_constant_liar_methods_function(self):
         """Test that each contant liar ``lie_method`` runs to completion. This is an integration test."""
         for test_case in self.gp_test_environments:
+            python_domain, python_gp = test_case
+            python_cov, historical_data = python_gp.get_core_data_copy()
+
             for constant_liar_method in CONSTANT_LIAR_METHODS:
-                python_domain, python_gp = test_case
-                python_cov, historical_data = python_gp.get_core_data_copy()
 
                 json_payload = self._build_json_payload(
                         python_domain,
                         python_cov,
                         historical_data,
-                        1,  # num_to_sample
+                        2,  # num_to_sample
                         lie_method=constant_liar_method,
                         )
 
@@ -110,6 +110,7 @@ class TestGpNextPointsViews(RestGaussianProcessTestCase):
                 resp_dict = resp_schema.deserialize(json.loads(resp.body))
 
                 T.assert_in('points_to_sample', resp_dict)
+                T.assert_equal(len(resp_dict['points_to_sample']), 2)  # num_to_sample
                 T.assert_equal(len(resp_dict['points_to_sample'][0]), python_gp.dim)
 
                 T.assert_in('expected_improvement', resp_dict)
