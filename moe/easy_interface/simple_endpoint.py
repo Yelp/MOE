@@ -15,7 +15,6 @@ DEFAULT_PORT = 6543
 
 def call_endpoint_with_payload(rest_host, rest_port, endpoint, json_payload, testapp=None):
     """Send a POST request to a ``url`` with a given ``json_payload``, return the response as a dict."""
-
     if testapp is None:
         url = "http://{0}:{1:d}{2}".format(rest_host, rest_port, endpoint)
         request = urllib2.Request(url, json_payload, {'Content-Type': 'application/json'})
@@ -49,8 +48,6 @@ def gp_next_points(
         raw_payload['domain_info'] = experiment_payload.get('domain_info')
 
     json_payload = json.dumps(raw_payload)
-
-    url = "http://{0}:{1:d}{2}".format(rest_host, rest_port, endpoint)
 
     json_response = call_endpoint_with_payload(rest_host, rest_port, endpoint, json_payload, testapp)
 
