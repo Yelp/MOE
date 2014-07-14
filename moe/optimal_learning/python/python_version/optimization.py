@@ -564,7 +564,8 @@ class LBFGSBOptimizer():
     .. Note:: See optimize() docstring for more details.
 
     """
-
+    DOMAIN_ERROR = 1e-08
+    
     def __init__(self, domain, optimizable, optimization_parameters):
         """Construct a LBFGSBOptimizer.
 
@@ -595,18 +596,28 @@ class LBFGSBOptimizer():
         :rtype: tuple: (array of float64 with shape (self.optimizer.dim), array of float64 with shape (self.num_multistarts))
 
         """
+        
+        num_points = 1
+        if hasattr(self.domain, 'num_repeats'):
+            num_points = self.domain.num_repeats
 
         def objective_func(point):
-            self.objective_function.current_point = point
+            """Wrapper function for expected improvement calculation to feed into BFGS."""
+            shaped_point = point.reshape(num_points, self.domain.dim)
+            self.objective_function.current_point = shaped_point
             # Notice the negative sign. Build-in L-BFGS-B is a minimization while we want a maximization.
             return -self.objective_function.compute_objective_function(**kwargs)
 
         def grad(point):
-            self.objective_function.current_point = point
+            """Wrapper function for expected improvement gradient if needed."""
+            shaped_point = point.reshape(num_points, self.domain.dim)
+            self.objective_function.current_point = shaped_point
             # Negative sign necessary, as mentioned above.
-            return -self.objective_function.compute_grad_objective_function(**kwargs)
+            return self.objective_function.compute_grad_objective_function(**kwargs).reshape(1, num_points * self.domain.dim)
+        
+        domain_with_error = numpy.array(self.domain.domain_bounds_as_list() * num_points) - self.DOMAIN_ERROR
 
-        return optimize.fmin_l_bfgs_b(func=objective_func, x0=self.objective_function.current_point, fprime=grad, bounds=self.domain.domain_bounds_as_list(), \
+        return optimize.fmin_l_bfgs_b(func=objective_func, x0=self.domain.generate_random_point_in_domain().reshape(1, num_points * self.domain.dim), bounds=domain_with_error, fprime=grad, \
                                         approx_grad=self.optimization_parameters.approx_grad, \
                                         factr=self.optimization_parameters.factr, \
                                         maxfun=self.optimization_parameters.max_func_evals, \
