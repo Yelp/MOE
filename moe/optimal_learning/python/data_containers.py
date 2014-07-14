@@ -84,7 +84,7 @@ class HistoricalData(object):
 
     But the internals of optimal_learning will generally do computations on all coordinates at once, all values at once,
     and/or all noise measurements at once. So this object reads the input data and "transposes" the ordering so that
-    we have a matrix of coordinates and vectors of values and noises. Compared to storing a list of SampledPoint,
+    we have a matrix of coordinates and vectors of values and noises. Compared to storing a list of SamplePoint,
     these internals save on redundant data transformations and improve locality.
 
     Note that the points in HistoricalData are *not* associated to any particular domain. HistoricalData could be (and is)
