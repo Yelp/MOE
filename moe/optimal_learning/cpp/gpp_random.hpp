@@ -134,10 +134,7 @@ struct UniformRandomGenerator final {
     \param
       :seed: new seed to set
   \endrst*/
-  void SetExplicitSeed(EngineType::result_type seed) noexcept {
-    engine.seed(seed);
-    last_seed_ = seed;
-  }
+  void SetExplicitSeed(EngineType::result_type seed) noexcept;
 
   /*!\rst
     Set a new seed for the random number generator.  A "random" seed is selected based on
@@ -170,9 +167,7 @@ struct UniformRandomGenerator final {
     Reseeds the generator with its most recently specified seed value.
     Useful for testing--e.g., can conduct multiple runs with the same initial conditions
   \endrst*/
-  void ResetToMostRecentSeed() noexcept {
-    SetExplicitSeed(last_seed_);
-  }
+  void ResetToMostRecentSeed() noexcept;
 
   /*!\rst
     Prints the state of the generator to specified ostream.  For testing.
@@ -259,9 +254,7 @@ class NormalRNG final : public NormalRNGInterface {
     This is important: the underlying normal distribution likely generates numbers \emph{two} at a time.
     So re-seeding the engine WITHOUT resetting can lead to surprising behavior.
   \endrst*/
-  void ResetGenerator() noexcept {
-    normal_random_variable_.distribution().reset();
-  }
+  void ResetGenerator() noexcept;
 
   /*!\rst
     Seed the random number generator with the input value.
@@ -270,12 +263,7 @@ class NormalRNG final : public NormalRNGInterface {
     \param
       :seed: new seed to set
   \endrst*/
-  void SetExplicitSeed(EngineType::result_type seed) noexcept {
-    uniform_generator.SetExplicitSeed(seed);
-    // this is important: the underlying normal distribution likely generates numbers \emph{two} at a time.
-    // so re-seeding will not clear this pre-existing state without reseting.
-    ResetGenerator();
-  }
+  void SetExplicitSeed(EngineType::result_type seed) noexcept;
 
   /*!\rst
     Set a new seed for the random number generator.  A "random" seed is selected based on
@@ -286,12 +274,7 @@ class NormalRNG final : public NormalRNGInterface {
       :seed: base value for the new seed
       :thread_id: id of the thread using this object
   \endrst*/
-  void SetRandomizedSeed(EngineType::result_type seed, int thread_id) noexcept {
-    uniform_generator.SetRandomizedSeed(seed, thread_id);
-    // this is important: the underlying normal distribution likely generates numbers \emph{two} at a time.
-    // so re-seeding will not clear this pre-existing state without reseting.
-    ResetGenerator();
-  }
+  void SetRandomizedSeed(EngineType::result_type seed, int thread_id) noexcept;
 
   /*!\rst
     Reseeds the generator with its most recently specified seed value.

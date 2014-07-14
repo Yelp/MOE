@@ -130,8 +130,8 @@ void ComputeHeuristicPointsToSample(const GaussianProcess& gaussian_process,
 
     FunctionValue function_estimate = estimation_policy.ComputeEstimate(*gaussian_process_local,
                                                                         best_points_to_sample, i);
-    gaussian_process_local->AddPointToGP(best_points_to_sample, function_estimate.function_value,
-                                         function_estimate.noise_variance);
+    gaussian_process_local->AddPointsToGP(best_points_to_sample, &function_estimate.function_value,
+                                         &function_estimate.noise_variance, 1);
 
     found_flag_overall &= found_flag_local;
     best_points_to_sample += dim;

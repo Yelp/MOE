@@ -39,6 +39,11 @@ UniformRandomGenerator::UniformRandomGenerator(EngineType::result_type seed, int
   SetRandomizedSeed(seed, thread_id);
 }
 
+void UniformRandomGenerator::SetExplicitSeed(EngineType::result_type seed) noexcept {
+  engine.seed(seed);
+  last_seed_ = seed;
+}
+
 void UniformRandomGenerator::SetRandomizedSeed(EngineType::result_type base_seed, int thread_id) noexcept {
   struct timeval time;
   gettimeofday(&time, nullptr);  // nominally time since epoch with microsecond resolution
@@ -65,6 +70,10 @@ void UniformRandomGenerator::SetRandomizedSeed(EngineType::result_type base_seed
   // This behavior is reasonable: the seed value passed to SetExplicitSeed()
   // is the same as long as sizeof(std::size_t) >= sizeof(EngineType::result_type)
   SetExplicitSeed(seed);
+}
+
+void UniformRandomGenerator::ResetToMostRecentSeed() noexcept {
+  SetExplicitSeed(last_seed_);
 }
 
 void UniformRandomGenerator::PrintState(std::ostream * out_stream) const {
@@ -98,6 +107,24 @@ NormalRNG::NormalRNG(EngineType::result_type seed, int thread_id) noexcept
 
 double NormalRNG::operator()() {
   return normal_random_variable_();
+}
+
+void NormalRNG::ResetGenerator() noexcept {
+  normal_random_variable_.distribution().reset();
+}
+
+void NormalRNG::SetExplicitSeed(EngineType::result_type seed) noexcept {
+  uniform_generator.SetExplicitSeed(seed);
+  // this is important: the underlying normal distribution likely generates numbers \emph{two} at a time.
+  // so re-seeding will not clear this pre-existing state without reseting.
+  ResetGenerator();
+}
+
+void NormalRNG::SetRandomizedSeed(EngineType::result_type seed, int thread_id) noexcept {
+  uniform_generator.SetRandomizedSeed(seed, thread_id);
+  // this is important: the underlying normal distribution likely generates numbers \emph{two} at a time.
+  // so re-seeding will not clear this pre-existing state without reseting.
+  ResetGenerator();
 }
 
 void NormalRNG::ResetToMostRecentSeed() noexcept {
