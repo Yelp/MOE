@@ -4,8 +4,9 @@ import urllib2
 
 import simplejson as json
 
-from moe.optimal_learning.python.data_containers import HistoricalData
+from moe.optimal_learning.python.data_containers import SamplePoint, HistoricalData
 from moe.views.constant import ALL_REST_ROUTES_ROUTE_NAME_TO_ENDPOINT, GP_NEXT_POINTS_EPI_ROUTE_NAME, GP_MEAN_VAR_ROUTE_NAME, GP_HYPER_OPT_ROUTE_NAME
+from moe.views.schemas import GpNextPointsResponse, GpHyperOptResponse, GpMeanVarResponse
 
 
 DEFAULT_HOST = '127.0.0.1'
@@ -34,8 +35,10 @@ def gp_next_points(
     raw_payload = kwargs.copy()  # Any options can be set via the kwargs ('covariance_info' etc.)
 
     experiment_payload = moe_experiment.build_json_payload()
+
     if 'gp_historical_info' not in raw_payload:
         raw_payload['gp_historical_info'] = experiment_payload.get('gp_historical_info')
+
     if 'domain_info' not in raw_payload:
         raw_payload['domain_info'] = experiment_payload.get('domain_info')
 
@@ -43,28 +46,11 @@ def gp_next_points(
 
     url = "http://{0}:{1:d}{2}".format(rest_host, rest_port, endpoint)
 
-    output = call_endpoint_with_payload(url, json_payload)
+    json_response = call_endpoint_with_payload(url, json_payload)
 
-    # TODO(GH-248) Clean this up, deserialize in a cleaner way
-    # Convert to floats
-    points_to_sample = [list(point) for point in output['points_to_sample']]
-    for i, point in enumerate(points_to_sample):
-        points_to_sample[i] = [float(coordinate) for coordinate in point]
+    output = GpNextPointsResponse().deserialize(json_response)
 
-    return points_to_sample
-
-
-def _build_gp_historical_info_from_points_sampled(points_sampled):
-    json_ready_points_sampled = []
-    for point in points_sampled:
-        json_ready_points_sampled.append({
-            'point': point[0].tolist(),
-            'value': point[1],
-            'value_var': point[2] if len(point) == 3 else 0.0,
-            })
-    return {
-        'points_sampled': json_ready_points_sampled,
-        }
+    return output["points_to_sample"]
 
 
 def gp_hyper_opt(
@@ -75,31 +61,39 @@ def gp_hyper_opt(
         ):
     """Hit the rest endpoint for optimizing the hyperparameters of a gaussian process, given points already sampled."""
     endpoint = ALL_REST_ROUTES_ROUTE_NAME_TO_ENDPOINT[GP_HYPER_OPT_ROUTE_NAME]
+    # This will fail if len(points_sampled) == 0; but then again this endpoint doesn't make sense with 0 historical data
     gp_dim = len(points_sampled[0][0])
-    hyper_dim = gp_dim + 1
     raw_payload = kwargs.copy()
-    raw_payload['domain_info'] = {'dim': gp_dim}
-    raw_payload['gp_historical_info'] = _build_gp_historical_info_from_points_sampled(points_sampled)
-    raw_payload['hyperparameter_domain_info'] = {
+
+    # Sanitize input points
+    points_sampled_clean = [SamplePoint._make(point) for point in points_sampled]
+    historical_data = HistoricalData(
+            gp_dim,
+            sample_points=points_sampled_clean,
+            )
+
+    if 'domain_info' not in raw_payload:
+        raw_payload['domain_info'] = {'dim': gp_dim}
+
+    if 'gp_historical_info' not in raw_payload:
+        raw_payload['gp_historical_info'] = historical_data.json_payload()
+
+    if 'hyperparameter_domain_info' not in raw_payload:
+        hyper_dim = gp_dim + 1  # default covariance has this many parameters
+        raw_payload['hyperparameter_domain_info'] = {
             'dim': hyper_dim,
-            'domain_bounds': [],
-            }
-    for _ in range(hyper_dim):
-        raw_payload['hyperparameter_domain_info']['domain_bounds'].append({
-            'min': 0.1,
-            'max': 2.0,
-            })
+            'domain_bounds': [{'min': 0.1, 'max': 2.0}] * hyper_dim,
+        }
+
     json_payload = json.dumps(raw_payload)
 
     url = "http://{0}:{1:d}{2}".format(rest_host, rest_port, endpoint)
 
-    output = call_endpoint_with_payload(url, json_payload)
+    json_response = call_endpoint_with_payload(url, json_payload)
 
-    # TODO(GH-248) Clean this up, deserialize in a cleaner way
-    covariance_info = output.get('covariance_info')
-    covariance_info['hyperparameters'] = [float(hyperparameter) for hyperparameter in covariance_info['hyperparameters']]
+    output = GpHyperOptResponse().deserialize(json_response)
 
-    return covariance_info
+    return output['covariance_info']
 
 
 def gp_mean_var(
@@ -115,12 +109,16 @@ def gp_mean_var(
 
     raw_payload['points_to_sample'] = points_to_sample
 
+    # Sanitize input points
+    points_sampled_clean = [SamplePoint._make(point) for point in points_sampled]
     historical_data = HistoricalData(
             len(points_to_sample[0]),  # The dim of the space
-            sample_points=points_sampled,
+            sample_points=points_sampled_clean,
             )
+
     if 'gp_historical_info' not in raw_payload:
         raw_payload['gp_historical_info'] = historical_data.json_payload()
+
     if 'domain_info' not in raw_payload:
         raw_payload['domain_info'] = {'dim': len(points_to_sample[0])}
 
@@ -128,13 +126,8 @@ def gp_mean_var(
 
     url = "http://{0}:{1:d}{2}".format(rest_host, rest_port, endpoint)
 
-    output = call_endpoint_with_payload(url, json_payload)
+    json_response = call_endpoint_with_payload(url, json_payload)
 
-    # TODO(GH-248) Clean this up, deserialize in a cleaner way
-    mean = output.get('mean')
-    var = output.get('var')
-    mean = [float(point_mean) for point_mean in mean]
-    for col, col_var in enumerate(var):
-        var[col] = [float(col_var_el) for col_var_el in col_var]
+    output = GpMeanVarResponse().deserialize(json_response)
 
-    return mean, var
+    return output.get('mean'), output.get('var')

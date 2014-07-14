@@ -114,6 +114,7 @@ int main() {
   // 20 more samples
   double best_so_far = *std::min_element(points_sampled_value.begin(), points_sampled_value.begin() + 0 + 1);
   int max_num_threads = 1;
+  ThreadSchedule thread_schedule(max_num_threads, omp_sched_static);
   bool lhc_search_only = false;
   int num_lhc_samples = 0;
   int num_to_sample = 1;
@@ -129,12 +130,18 @@ int main() {
     // ei_evaluator.ComputeGradExpectedImprovement(&ei_state, grad_ei.data());
     // PrintMatrix(grad_ei.data(), 1, dim);
 
-    ComputeOptimalPointsToSample(gaussian_process, gd_params, domain, points_being_sampled.data(), num_to_sample, num_being_sampled, best_so_far, num_mc_iterations, max_num_threads, lhc_search_only, num_lhc_samples, &found_flag, &uniform_generator, nullptr, best_points_to_sample.data());
+    ComputeOptimalPointsToSample(gaussian_process, gd_params, domain, thread_schedule,
+                                 points_being_sampled.data(), num_to_sample,
+                                 num_being_sampled, best_so_far,
+                                 num_mc_iterations, lhc_search_only,
+                                 num_lhc_samples, &found_flag,
+                                 &uniform_generator, nullptr,
+                                 best_points_to_sample.data());
     printf("%d: found_flag = %d\n", i, found_flag);
 
     points_sampled_value[i] = function_to_minimize(best_points_to_sample.data(), &uniform_generator);
     // add function value back into the GP
-    gaussian_process.AddPointToGP(best_points_to_sample.data(), points_sampled_value[i], noise_variance[i]);
+    gaussian_process.AddPointsToGP(best_points_to_sample.data(), &points_sampled_value[i], &noise_variance[i], 1);
 
     best_so_far = *std::min_element(points_sampled_value.begin(), points_sampled_value.begin() + i + 1);
   }
@@ -219,7 +226,7 @@ int main() {
     // draw function value from the GP
     points_sampled_value.data()[j] = gp_generator.SamplePointFromGP(points_sampled.data() + dim*j, noise_variance.data()[j]);
     // add function value back into the GP
-    gp_generator.AddPointToGP(points_sampled.data() + dim*j, points_sampled_value.data()[j], noise_variance.data()[j]);
+    gp_generator.AddPointsToGP(points_sampled.data() + dim*j, &points_sampled_value[j], &noise_variance[j], 1);
   }
 
   // set up unbounded hyperparameter domain
@@ -258,9 +265,13 @@ int main() {
   {
     std::vector<double> new_newton_hyperparameters(num_hyperparameters);
     int max_num_threads = 4;
+    ThreadSchedule(max_num_threads, omp_sched_dynamic);
     bool found_flag = false;
     uniform_generator.SetExplicitSeed(314);
-    MultistartNewtonHyperparameterOptimization(log_marginal_eval, covariance_original, newton_parameters, hyperparameter_log_domain_bounds.data(), max_num_threads, &found_flag, &uniform_generator, new_newton_hyperparameters.data());
+    MultistartNewtonHyperparameterOptimization(log_marginal_eval, covariance_original, newton_parameters,
+                                               hyperparameter_log_domain_bounds.data(),
+                                               thread_schedule, &found_flag,
+                                               &uniform_generator, new_newton_hyperparameters.data());
     printf("newton found = %d\n", found_flag);
 
     PrintDomainBounds(hyperparameter_log_domain_bounds.data(), num_hyperparameters);
@@ -302,7 +313,7 @@ int main() {
     int num_grid_search_points = 10000;
     found_flag = false;
     uniform_generator.SetExplicitSeed(31415);
-    ComputeConstantLiarSetOfPointsToSample(gaussian_process, gd_params, domain, constant_liar_policy, best_so_far, max_num_threads, grid_search_only, num_grid_search_points, num_to_sample, &found_flag, &uniform_generator, best_points_to_sample.data());
+    ComputeConstantLiarSetOfPointsToSample(gaussian_process, gd_params, domain, constant_liar_policy, thread_schedule, best_so_far, grid_search_only, num_grid_search_points, num_to_sample, &found_flag, &uniform_generator, best_points_to_sample.data());
     PrintMatrixTrans(best_points_to_sample.data(), num_to_sample, dim);
 
     printf("hi\n");
@@ -390,9 +401,13 @@ int main() {
     printf("TENSOR PRODUCT:\n");
     std::vector<double> new_newton_hyperparameters(num_hyperparameters);
     int max_num_threads = 4;
+    ThreadSchedule(max_num_threads, omp_sched_dynamic);
     bool found_flag = false;
     uniform_generator.SetExplicitSeed(314);
-    MultistartNewtonHyperparameterOptimization(log_marginal_eval, covariance_original, newton_parameters, hyperparameter_log_domain_bounds.data(), max_num_threads, &found_flag, &uniform_generator, new_newton_hyperparameters.data());
+    MultistartNewtonHyperparameterOptimization(log_marginal_eval, covariance_original, newton_parameters,
+                                               hyperparameter_log_domain_bounds.data(),
+                                               thread_schedule, &found_flag,
+                                               &uniform_generator, new_newton_hyperparameters.data());
     printf("newton found = %d\n", found_flag);
 
     PrintDomainBounds(hyperparameter_log_domain_bounds.data(), num_hyperparameters);
@@ -432,7 +447,12 @@ int main() {
       {0.2, 0.35},
       {0.05951614568196238, 0.4}};
     TensorProductDomain ei_domain(derp2, dim);
-    ComputeOptimalPointsToSampleWithRandomStarts(gaussian_process, gd_params, ei_domain, points_being_sampled.data(), num_to_sample, num_being_sampled, best_so_far, max_int_steps, max_num_threads, &found_flag, &uniform_generator, nullptr, next_point.data());
+    ComputeOptimalPointsToSampleWithRandomStarts(gaussian_process, gd_params, ei_domain,
+                                                 thread_schedule, points_being_sampled.data(),
+                                                 num_to_sample, num_being_sampled,
+                                                 best_so_far, max_int_steps,
+                                                 &found_flag, &uniform_generator,
+                                                 nullptr, next_point.data());
     printf("EI found: %d\n", found_flag);
     printf("next best point  : "); PrintMatrix(next_point.data(), 1, dim);
 
@@ -463,9 +483,13 @@ int main() {
     printf("SIMPLEX:\n");
     std::vector<double> new_newton_hyperparameters(num_hyperparameters);
     int max_num_threads = 4;
+    ThreadSchedule thread_schedule(max_num_threads, omp_sched_dynamic);
     bool found_flag = false;
     uniform_generator.SetExplicitSeed(3141);
-    MultistartNewtonHyperparameterOptimization(log_marginal_eval, covariance_original, newton_parameters, hyperparameter_log_domain_bounds.data(), max_num_threads, &found_flag, &uniform_generator, new_newton_hyperparameters.data());
+    MultistartNewtonHyperparameterOptimization(log_marginal_eval, covariance_original, newton_parameters,
+                                               hyperparameter_log_domain_bounds.data(),
+                                               thread_schedule, &found_flag,
+                                               &uniform_generator, new_newton_hyperparameters.data());
     printf("newton found = %d\n", found_flag);
 
     PrintDomainBounds(hyperparameter_log_domain_bounds.data(), num_hyperparameters);
@@ -505,7 +529,11 @@ int main() {
       {0.2, 0.35},
       {0.05951614568196238, 0.4}};
     SimplexIntersectTensorProductDomain ei_domain(derp2, dim);
-    ComputeOptimalPointsToSampleWithRandomStarts(gaussian_process, gd_params, ei_domain, points_being_sampled.data(), num_to_sample, num_being_sampled, best_so_far, max_int_steps, max_num_threads, &found_flag, &uniform_generator, nullptr, next_point.data());
+    ComputeOptimalPointsToSampleWithRandomStarts(gaussian_process, gd_params, ei_domain,
+                                                 thread_schedule, points_being_sampled.data(),
+                                                 num_to_sample, num_being_sampled,
+                                                 best_so_far, max_int_steps, &found_flag,
+                                                 &uniform_generator, nullptr, next_point.data());
     printf("EI found: %d\n", found_flag);
     printf("next best point  : "); PrintMatrix(next_point.data(), 1, dim);
 
@@ -652,12 +680,12 @@ void run_core_test(int *processor_count_list, int num_processor_count_list, int 
 #if OL_FUNC_MODE == 0
   for (int j = 0; j < stencil_rows*stencil_columns; ++j) {
     points_sampled_value[j] = branin_func(points_sampled.data() + (j)*dim);
-    gp.AddPointToGP(points_sampled.data() + dim*(j), points_sampled_value.data()[j], noise_variance.data()[j]);
+    gp.AddPointsToGP(points_sampled.data() + dim*(j), &points_sampled_value[j], &noise_variance[j], 1);
   }
 #elif OL_FUNC_MODE == 1
   for (int j = 0; j < stencil_rows*stencil_columns; ++j) {
     points_sampled_value.data()[j] = gp.SamplePointFromGP(points_sampled.data() + dim*(j), noise_variance.data()[j]);
-    gp.AddPointToGP(points_sampled.data() + dim*(j), points_sampled_value.data()[j], noise_variance.data()[j]);
+    gp.AddPointsToGP(points_sampled.data() + dim*(j), &points_sampled_value[j], &noise_variance[j], 1);
   }
 #else
   exit(-1);
@@ -779,6 +807,7 @@ void run_core_test(int *processor_count_list, int num_processor_count_list, int 
 
   int64_t pi_array[] = {314, 3141, 31415, 314159, 3141592, 31415926, 314159265, 3141592653, 31415926535, 314159265359};
   int max_num_threads = 1;
+  ThreadSchedule thread_schedule(max_num_threads, omp_sched_static);
   std::vector<NormalRNG> normal_rng_vec(max_num_threads);
   for (int i = 0; i < max_num_threads; ++i) {
     normal_rng_vec[i].SetExplicitSeed(pi_array[i]);
@@ -790,7 +819,12 @@ void run_core_test(int *processor_count_list, int num_processor_count_list, int 
 
     // fill up queue
     for (int j = 0; j < procs; j++) {
-      ComputeOptimalPointsToSampleWithRandomStarts(gp, gd_params_ei, domain, points_to_sample.data(), num_to_sample, j, best_so_far, max_int_steps, max_num_threads, &found_flag, &uniform_generator, normal_rng_vec.data(), points_to_sample.data() + j*dim);
+      ComputeOptimalPointsToSampleWithRandomStarts(gp, gd_params_ei, domain, thread_schedule,
+                                                   points_to_sample.data(), num_to_sample,
+                                                   j, best_so_far, max_int_steps,
+                                                   &found_flag, &uniform_generator,
+                                                   normal_rng_vec.data(),
+                                                   points_to_sample.data() + j*dim);
       printf("points_to_sample so far\n");
       PrintMatrixTrans(points_to_sample.data(), j+1, dim);
     }
@@ -808,7 +842,7 @@ void run_core_test(int *processor_count_list, int num_processor_count_list, int 
       points_sampled_value[stencil_rows*stencil_columns+j] = branin_func(points_sampled.data() + (stencil_rows*stencil_columns+j)*dim);
 #elif OL_FUNC_MODE == 1
       points_sampled_value[stencil_rows*stencil_columns + j] = gp.SamplePointFromGP(points_sampled.data() + dim*(stencil_rows*stencil_columns + j), noise_variance[stencil_rows*stencil_columns + j]);
-      gp.AddPointToGP(points_sampled.data() + dim*(stencil_rows*stencil_columns + j), points_sampled_value[stencil_rows*stencil_columns + j], noise_variance[stencil_rows*stencil_columns + j]);
+      gp.AddPointsToGP(points_sampled.data() + dim*(stencil_rows*stencil_columns + j), &points_sampled_value[stencil_rows*stencil_columns + j], &noise_variance[stencil_rows*stencil_columns + j], 1);
 #endif
 
       printf("checking against best_so_far\n");
@@ -825,7 +859,12 @@ void run_core_test(int *processor_count_list, int num_processor_count_list, int 
 
       if (num_sampled - stencil_rows*stencil_columns + procs - 1 < num_samples) {
         printf("picking a new point\n");
-        ComputeOptimalPointsToSampleWithRandomStarts(gp, gd_params_ei, domain, points_to_sample.data(), num_to_sample, procs-1, best_so_far, max_int_steps, max_num_threads, &found_flag, &uniform_generator, normal_rng_vec.data(), points_to_sample.data() + (procs-1)*dim);
+        ComputeOptimalPointsToSampleWithRandomStarts(gp, gd_params_ei, domain, thread_schedule,
+                                                     points_to_sample.data(), num_to_sample,
+                                                     procs-1, best_so_far, max_int_steps,
+                                                     &found_flag, &uniform_generator,
+                                                     normal_rng_vec.data(),
+                                                     points_to_sample.data() + (procs-1)*dim);
       }
 
       printf("points_to_sample so far\n");
@@ -918,6 +957,7 @@ int main() {
 
   // multithreading
   int max_num_threads = 4;  // feel free to experiment with different numbers
+  ThreadSchedule thread_schedule(max_num_threads, omp_sched_dynamic);
 
   // set up RNG containers
   std::vector<NormalRNG> normal_rng_vec(max_num_threads);
@@ -945,7 +985,10 @@ int main() {
     bool hyperparameters_found = false;
     bool found_flag = false;
     while (hyperparameters_found == false) {
-      MultistartNewtonHyperparameterOptimization(log_marginal_eval, covariance_original, newton_parameters, hyperparameter_domain.data(), max_num_threads, &found_flag, &uniform_generator, new_newton_hyperparameters.data());
+      MultistartNewtonHyperparameterOptimization(log_marginal_eval, covariance_original, newton_parameters,
+                                                 hyperparameter_domain.data(), thread_schedule,
+                                                 &found_flag, &uniform_generator,
+                                                 new_newton_hyperparameters.data());
       hyperparameters_found = true;
       for (const auto& entry : new_newton_hyperparameters) {
         if (entry > 5.0) {
@@ -980,7 +1023,12 @@ int main() {
     {
       std::vector<double> next_point_winner(dim);
       bool found_flag = false;
-      ComputeOptimalPointsToSampleWithRandomStarts(gp_model, gd_params, domain, points_being_sampled.data(), num_to_sample, num_being_sampled, best_so_far, max_int_steps, max_num_threads, &found_flag, &uniform_generator, normal_rng_vec.data(), next_point_winner.data());
+      ComputeOptimalPointsToSampleWithRandomStarts(gp_model, gd_params, domain, thread_schedule,
+                                                   points_being_sampled.data(), num_to_sample,
+                                                   num_being_sampled, best_so_far, max_int_steps,
+                                                   &found_flag, &uniform_generator,
+                                                   normal_rng_vec.data(),
+                                                   next_point_winner.data());
       // printf(OL_ANSI_COLOR_CYAN "EI OPTIMIZATION FINISHED (optimized hyperparameters).\n" OL_ANSI_COLOR_RESET);
       printf("Next best sample point according to EI (opt hyper):\n");
       PrintMatrix(next_point_winner.data(), 1, dim);
@@ -1020,6 +1068,7 @@ int main() {
 
   const int64_t pi_array[] = {314, 3141, 31415, 314159, 3141592, 31415926, 314159265, 3141592653, 31415926535, 314159265359};
   static const int kMaxNumThreads = 4;
+  ThreadSchedule thread_schedule(kMaxNumThreads, omp_sched_static);
   std::vector<NormalRNG> normal_rng_vec(kMaxNumThreads);
   for (int j = 0; j < kMaxNumThreads; ++j) {
     normal_rng_vec[j].SetExplicitSeed(pi_array[j]);
@@ -1060,7 +1109,7 @@ int main() {
   // generate the "world"
   for (int j = 0; j < num_sampled; ++j) {
     points_sampled_value.data()[j] = gaussian_process.SamplePointFromGP(points_sampled.data() + dim*j, noise_variance[j]);
-    gaussian_process.AddPointToGP(points_sampled.data() + dim*j, points_sampled_value[j], noise_variance[j]);
+    gaussian_process.AddPointsToGP(points_sampled.data() + dim*j, &points_sampled_value[j], &noise_variance[j], 1);
   }
 
   // get best point
@@ -1106,7 +1155,12 @@ int main() {
     // likely be masked (making for a bad test)
     bool found_flag = false;
     for (int j = 0; j < num_being_sampled; j++) {
-      ComputeOptimalPointsToSampleWithRandomStarts(gaussian_process, gd_params, domain, points_being_sampled.data(), num_to_sample, j, best_so_far, max_int_steps, kMaxNumThreads, &found_flag, &uniform_generator, normal_rng_vec.data(), points_being_sampled.data() + j*dim);
+      ComputeOptimalPointsToSampleWithRandomStarts(gaussian_process, gd_params, domain,
+                                                   thread_schedule, points_being_sampled.data(),
+                                                   num_to_sample, j, best_so_far, max_int_steps,
+                                                   &found_flag, &uniform_generator,
+                                                   normal_rng_vec.data(),
+                                                   points_being_sampled.data() + j*dim);
     }
     printf("setup complete, points_being_sampled:\n");
     PrintMatrixTrans(points_being_sampled.data(), num_being_sampled, dim);
@@ -1121,13 +1175,17 @@ int main() {
 
   bool found_flag = false;
   std::vector<double> grid_search_best_point(dim*num_to_sample);
-  // ComputeOptimalPointsToSampleViaLatinHypercubeSearch(gaussian_process, domain, points_being_sampled.data(), num_grid_search_points, num_to_sample, num_being_sampled, best_so_far, max_int_steps, kMaxNumThreads, &found_flag, &uniform_generator, normal_rng_vec.data(), grid_search_best_point.data());
+  // ComputeOptimalPointsToSampleViaLatinHypercubeSearch(gaussian_process, domain, thread_schedule, points_being_sampled.data(), num_grid_search_points, num_to_sample, num_being_sampled, best_so_far, max_int_steps, &found_flag, &uniform_generator, normal_rng_vec.data(), grid_search_best_point.data());
 
   std::vector<double> function_values(num_grid_search_points);
   std::vector<double> initial_guesses(dim*num_to_sample*num_grid_search_points);
   num_grid_search_points = domain.GenerateUniformPointsInDomain(num_grid_search_points, &uniform_generator, initial_guesses.data());
 
-  EvaluateEIAtPointList(gaussian_process, initial_guesses.data(), points_being_sampled.data(), num_grid_search_points, num_to_sample, num_being_sampled, best_so_far, max_int_steps, kMaxNumThreads, &found_flag, normal_rng_vec.data(), function_values.data(), grid_search_best_point.data());
+  EvaluateEIAtPointList(gaussian_process, thread_schedule, initial_guesses.data(),
+                        points_being_sampled.data(), num_grid_search_points,
+                        num_to_sample, num_being_sampled, best_so_far,
+                        max_int_steps, &found_flag, normal_rng_vec.data(),
+                        function_values.data(), grid_search_best_point.data());
 
   gettimeofday(&tv1, nullptr);
   c1 = clock();
@@ -1546,7 +1604,7 @@ int main() {
   GaussianProcess gp(covariance, points_sampled.data(), points_sampled_value.data(), noise_variance.data(), dim, 0);
   for (int j = 0; j < stencil_rows*stencil_columns; ++j) {
     points_sampled_value.data()[j] = gp.SamplePointFromGP(points_sampled.data() + dim*(j), noise_variance.data()[j]);
-    gp.AddPointToGP(points_sampled.data() + dim*(j), points_sampled_value.data()[j], noise_variance.data()[j]);
+    gp.AddPointsToGP(points_sampled.data() + dim*(j), &points_sampled_value[j], &noise_variance[j], 1);
   }
 #else
   exit(-1);
@@ -1591,10 +1649,14 @@ int main() {
     HyperparameterDomainType hyperparameter_domain(hyperparameter_domain_bounds.data(), covariance.GetNumberOfHyperparameters());
     int num_multistarts = 16;
     int max_num_threads = 4;
+    ThreadSchedule thread_schedule(max_num_threads, omp_sched_dynamic);
 
     NewtonParameters newton_parameters(num_multistarts, newton_max_num_steps, gamma_newton, pre_mult_newton, max_relative_change_newton, tolerance_newton);
     bool found_flag = false;
-    MultistartNewtonHyperparameterOptimization(log_marginal_eval, covariance_perturbed_newton, newton_parameters, hyperparameter_domain_bounds.data(), max_num_threads, &found_flag, &uniform_generator, new_newton_hyperparameters.data());
+    MultistartNewtonHyperparameterOptimization(log_marginal_eval, covariance_perturbed_newton, newton_parameters,
+                                               hyperparameter_domain_bounds.data(), thread_schedule,
+                                               &found_flag, &uniform_generator,
+                                               new_newton_hyperparameters.data());
     printf("result of newton:\n");
     PrintMatrix(new_newton_hyperparameters.data(), 1, covariance.GetNumberOfHyperparameters());
 
@@ -1703,7 +1765,7 @@ int main() {
   GaussianProcess gp(covariance, points_sampled.data(), points_sampled_value.data(), noise_variance.data(), dim, 0);
   for (int j = 0; j < stencil_rows*stencil_columns; ++j) {
     points_sampled_value.data()[j] = gp.SamplePointFromGP(points_sampled.data() + dim*(j), noise_variance.data()[j]);
-    gp.AddPointToGP(points_sampled.data() + dim*(j), points_sampled_value.data()[j], noise_variance.data()[j]);
+    gp.AddPointsToGP(points_sampled.data() + dim*(j), &points_sampled_value[j], &noise_variance[j], 1);
   }
 #else
   exit(-1);
@@ -1896,7 +1958,7 @@ int main() {
   GaussianProcess gp(covariance, points_sampled.data(), points_sampled_value.data(), noise_variance.data(), dim, 0);
   for (int j = 0; j < stencil_rows*stencil_columns; ++j) {
     points_sampled_value.data()[j] = gp.SamplePointFromGP(points_sampled.data() + dim*(j), noise_variance.data()[j]);
-    gp.AddPointToGP(points_sampled.data() + dim*(j), points_sampled_value.data()[j], noise_variance.data()[j]);
+    gp.AddPointsToGP(points_sampled.data() + dim*(j), &points_sampled_value[j], &noise_variance[j], 1);
   }
 
   std::vector<double> new_hyperparameters(covariance.GetNumberOfHyperparameters());
@@ -1931,9 +1993,13 @@ int main() {
     HyperparameterDomainType hyperparameter_domain(hyperparameter_domain_bounds.data(), covariance.GetNumberOfHyperparameters());
 
     int max_num_threads = 4;
+    ThreadSchedule thread_schedule(max_num_threads, omp_sched_dynamic);
 
     bool found_flag = false;
-    MultistartGradientDescentHyperparameterOptimization(log_marginal_eval, covariance_perturbed_gd, gd_parameters, hyperparameter_domain_bounds.data(), max_num_threads, &found_flag, &uniform_generator, new_gd_hyperparameters.data());
+    MultistartGradientDescentHyperparameterOptimization(log_marginal_eval, covariance_perturbed_gd, gd_parameters,
+                                                        hyperparameter_domain_bounds.data(), thread_schedule,
+                                                        &found_flag, &uniform_generator,
+                                                        new_gd_hyperparameters.data());
     printf("result of gd:\n");
     PrintMatrix(new_gd_hyperparameters.data(), 1, covariance.GetNumberOfHyperparameters());
 
@@ -1955,9 +2021,6 @@ int main() {
   using HyperparameterDomainType = TensorProductDomain;
   const int dim = 3;
 
-  int total_errors = 0;
-  int current_errors = 0;
-
   // grid search parameters
   int num_grid_search_points = 100000;
 
@@ -1968,6 +2031,7 @@ int main() {
   boost::uniform_real<double> uniform_double_upper_bound(2.0, 3.5);
 
   static const int kMaxNumThreads = 4;
+  ThreadSchedule thread_schedule(kMaxNumThreads, omp_sched_guided);
 
   SquareExponential covariance(dim, 1.0, 1.0);
   std::vector<double> hyperparameters(covariance.GetNumberOfHyperparameters());
@@ -2003,11 +2067,8 @@ int main() {
   // generate the "world"
   for (int j = 0; j < num_sampled; ++j) {
     points_sampled_value.data()[j] = gaussian_process.SamplePointFromGP(points_sampled.data() + dim*j, noise_variance[j]);
-    gaussian_process.AddPointToGP(points_sampled.data() + dim*j, points_sampled_value[j], noise_variance[j]);
+    gaussian_process.AddPointsToGP(points_sampled.data() + dim*j, &points_sampled_value[j], &noise_variance[j], 1);
   }
-
-  // get best point
-  double best_so_far = *std::min_element(points_sampled_value.begin(), points_sampled_value.end());
 
   using LogLikelihoodEvaluator = LogMarginalLikelihoodEvaluator;
   // log likelihood evaluator object
@@ -2027,7 +2088,7 @@ int main() {
   bool found_flag = false;
   std::vector<double> grid_search_best_point(num_hyperparameters);
 
-  // LatinHypercubeSearchHyperparameterOptimization(log_marginal_eval, covariance, hyperparameter_log_domain_bounds.data(), num_grid_search_points, kMaxNumThreads, &uniform_generator, grid_search_best_point.data());
+  // LatinHypercubeSearchHyperparameterOptimization(log_marginal_eval, covariance, hyperparameter_log_domain_bounds.data(), thread_schedule, num_grid_search_points, &uniform_generator, grid_search_best_point.data());
 
   std::vector<double> function_values(num_grid_search_points);
   std::vector<double> initial_guesses(num_hyperparameters*num_grid_search_points);
@@ -2044,7 +2105,9 @@ int main() {
   }
   HyperparameterDomainType hyperparameter_domain_linearspace(hyperparameter_domain_linearspace_bounds.data(), num_hyperparameters);
 
-  EvaluateLogLikelihoodAtPointList(log_marginal_eval, covariance, hyperparameter_domain_linearspace, initial_guesses.data(), num_grid_search_points, kMaxNumThreads, function_values.data(), grid_search_best_point.data());
+  EvaluateLogLikelihoodAtPointList(log_marginal_eval, covariance, hyperparameter_domain_linearspace,
+                                   thread_schedule, initial_guesses.data(), num_grid_search_points,
+                                   function_values.data(), grid_search_best_point.data());
 
   gettimeofday(&tv1, nullptr);
   c1 = clock();

@@ -166,7 +166,7 @@ class SquareExponentialTest(OptimalLearningTestCase):
     def test_hyperparameter_gradient_pings(self):
         """Ping test (compare analytic result to finite difference) the gradient wrt hyperparameters."""
         h = 2.0e-3
-        tolerance = 1.0e-5
+        tolerance = 4.0e-5
         num_tests = 10
 
         dim = 3

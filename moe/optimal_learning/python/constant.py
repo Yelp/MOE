@@ -10,6 +10,10 @@ DEFAULT_MAX_NUM_THREADS = 1
 # Covariance constants
 SQUARE_EXPONENTIAL_COVARIANCE_TYPE = 'square_exponential'
 
+COVARIANCE_TYPES = [
+        SQUARE_EXPONENTIAL_COVARIANCE_TYPE,
+        ]
+
 # GP Defaults
 GaussianProcessParameters = namedtuple(
         'GaussianProcessParameters',
@@ -28,9 +32,30 @@ DEFAULT_GAUSSIAN_PROCESS_PARAMETERS = GaussianProcessParameters(
 TENSOR_PRODUCT_DOMAIN_TYPE = 'tensor_product'
 SIMPLEX_INTERSECT_TENSOR_PRODUCT_DOMAIN_TYPE = 'simplex_intersect_tensor_product'
 
+DOMAIN_TYPES = [
+        TENSOR_PRODUCT_DOMAIN_TYPE,
+        SIMPLEX_INTERSECT_TENSOR_PRODUCT_DOMAIN_TYPE,
+        ]
+
+# Optimizer constants
 NULL_OPTIMIZER = 'null_optimizer'
 NEWTON_OPTIMIZER = 'newton_optimizer'
 GRADIENT_DESCENT_OPTIMIZER = 'gradient_descent_optimizer'
+
+OPTIMIZATION_TYPES = [
+        NULL_OPTIMIZER,
+        NEWTON_OPTIMIZER,
+        GRADIENT_DESCENT_OPTIMIZER,
+        ]
+
+# Likelihood constants
+LEAVE_ONE_OUT_LOG_LIKELIHOOD = 'leave_one_out_log_likelihood'
+LOG_MARGINAL_LIKELIHOOD = 'log_marginal_likelihood'
+
+LIKELIHOOD_TYPES = [
+        LEAVE_ONE_OUT_LOG_LIKELIHOOD,
+        LOG_MARGINAL_LIKELIHOOD,
+        ]
 
 # EI Defaults
 DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS = 10000
@@ -87,3 +112,14 @@ OPTIMIZATION_TYPE_TO_DEFAULT_PARAMETERS = {
         NEWTON_OPTIMIZER: DEFAULT_NEWTON_PARAMETERS,
         GRADIENT_DESCENT_OPTIMIZER: DEFAULT_GRADIENT_DESCENT_PARAMETERS,
         }
+
+# Constant Liar constants
+CONSTANT_LIAR_MIN = 'constant_liar_min'
+CONSTANT_LIAR_MAX = 'constant_liar_max'
+CONSTANT_LIAR_MEAN = 'constant_liar_mean'
+
+CONSTANT_LIAR_METHODS = [
+        CONSTANT_LIAR_MIN,
+        CONSTANT_LIAR_MAX,
+        CONSTANT_LIAR_MEAN,
+        ]

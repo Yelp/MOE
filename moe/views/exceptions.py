@@ -52,7 +52,7 @@ def general_error(exception, request):
 
     """
     status_int = 500
-    body = '{0:d}: {1:s}\n{2:s}'.format(status_int, request.referrer, exception.message)
+    body = '{0:d}: {1:s}\n{2:s}'.format(status_int, request.referrer, exception)
     response = Response(body=body, status_int=status_int)
     return response
 

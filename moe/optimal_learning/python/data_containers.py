@@ -46,7 +46,7 @@ class SamplePoint(_BaseSamplePoint):
     def json_payload(self):
         """Convert the sample_point into a dict to be consumed by json for a REST request."""
         return {
-                'point': self.point,
+                'point': list(self.point),  # json needs a list (e.g., this may be a ndarray)
                 'value': self.value,
                 'value_var': self.noise_variance,
                 }
@@ -152,13 +152,7 @@ class HistoricalData(object):
 
     def json_payload(self):
         """Construct a json serializeable and MOE REST recognizeable dictionary of the historical data."""
-        json_points_sampled = []
-        for point in self.to_list_of_sample_points():
-            json_points_sampled.append({
-                    'point': point.point.tolist(),  # json needs the numpy array to be a list
-                    'value': point.value,
-                    'value_var': point.noise_variance,
-                    })
+        json_points_sampled = [point.json_payload() for point in self.to_list_of_sample_points()]
         return {'points_sampled': json_points_sampled}
 
     @staticmethod

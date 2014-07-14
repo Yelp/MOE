@@ -8,8 +8,6 @@ and a set of points to calculate the posterior mean and variance at.
 
 The posterior mean and variance is then printed for every point.
 """
-import random
-
 import numpy
 
 from moe.easy_interface.simple_endpoint import gp_mean_var
@@ -17,7 +15,7 @@ from moe.easy_interface.simple_endpoint import gp_mean_var
 # Randomly generate some historical data
 # points_sampled is an iterable of iterables of the form [point_as_a_list, objective_function_value, value_variance]
 points_sampled = [
-        [[x], random.uniform(-1, 1), 0.01] for x in numpy.arange(0, 1, 0.1)
+        [[x], numpy.random.uniform(-1, 1), 0.01] for x in numpy.arange(0, 1, 0.1)
         ]
 
 if __name__ == '__main__':

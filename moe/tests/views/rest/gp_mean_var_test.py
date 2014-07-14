@@ -21,11 +21,11 @@ class TestGpMeanVarView(RestGaussianProcessTestCase):
     num_sampled_list = (1, 2, 3, 11, 20)
     endpoint = GP_MEAN_VAR_ENDPOINT
 
-    def _build_json_payload(self, domain, gaussian_process, covariance, points_to_sample):
+    def _build_json_payload(self, domain, covariance, historical_data, points_to_sample):
         """Create a json_payload to POST to the /gp/mean_var endpoint with all needed info."""
         json_payload = json.dumps({
             'points_to_sample': points_to_sample,
-            'gp_historical_info': self._build_gp_historical_info(gaussian_process),
+            'gp_historical_info': historical_data.json_payload(),
             'covariance_info': covariance.get_json_serializable_info(),
             'domain_info': domain.get_json_serializable_info(),
             })
@@ -36,9 +36,10 @@ class TestGpMeanVarView(RestGaussianProcessTestCase):
         tolerance = 1.0e-11
         for test_case in self.gp_test_environments:
             python_domain, python_gp = test_case
+            python_cov, historical_data = python_gp.get_core_data_copy()
 
-            cpp_cov = SquareExponential(python_gp._covariance.hyperparameters)
-            cpp_gp = GaussianProcess(cpp_cov, python_gp._historical_data)
+            cpp_cov = SquareExponential(python_cov.hyperparameters)
+            cpp_gp = GaussianProcess(cpp_cov, historical_data)
 
             points_to_sample = python_domain.generate_uniform_random_points_in_domain(10)
 
@@ -47,7 +48,7 @@ class TestGpMeanVarView(RestGaussianProcessTestCase):
             cpp_var = cpp_gp.compute_variance_of_points(points_to_sample)
 
             # mean and var from REST
-            json_payload = self._build_json_payload(python_domain, python_gp, python_gp._covariance, points_to_sample.tolist())
+            json_payload = self._build_json_payload(python_domain, python_cov, historical_data, points_to_sample.tolist())
             resp = self.testapp.post(self.endpoint, json_payload)
             resp_schema = GpMeanVarResponse()
             resp_dict = resp_schema.deserialize(json.loads(resp.body))
@@ -97,11 +98,12 @@ class TestGpMeanVarView(RestGaussianProcessTestCase):
         tolerance = numpy.finfo(numpy.float64).eps
         for test_case in self.gp_test_environments:
             python_domain, python_gp = test_case
+            python_cov, historical_data = python_gp.get_core_data_copy()
 
             points_to_sample = python_domain.generate_uniform_random_points_in_domain(10)
 
             # mean and var from REST
-            json_payload = self._build_json_payload(python_domain, python_gp, python_gp._covariance, points_to_sample.tolist())
+            json_payload = self._build_json_payload(python_domain, python_cov, historical_data, points_to_sample.tolist())
             resp = self.testapp.post(self.endpoint, json_payload)
             resp_schema = GpMeanVarResponse()
             resp_dict = resp_schema.deserialize(json.loads(resp.body))

@@ -85,8 +85,10 @@ of one or more hyperparameters).
 """
 from abc import ABCMeta, abstractmethod, abstractproperty
 
+from moe.optimal_learning.python.interfaces.gaussian_process_interface import GaussianProcessDataInterface
 
-class GaussianProcessLogLikelihoodInterface(object):
+
+class GaussianProcessLogLikelihoodInterface(GaussianProcessDataInterface):
 
     r"""Interface for computation of log likelihood (and log likelihood-like) measures of model fit along with its gradient and hessian.
 

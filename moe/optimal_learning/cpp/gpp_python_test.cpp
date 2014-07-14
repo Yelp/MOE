@@ -229,23 +229,21 @@ int RunCppTestsWrapper() {
   }
   total_errors += error;
 
-  // TODO(GH-226): re-enable this test once it is switched to static thread scheduling
-  // error = ExpectedImprovementOptimizationTest(DomainTypes::kTensorProduct, ExpectedImprovementEvaluationMode::kMonteCarlo);
-  // if (error != 0) {
-  //   OL_FAILURE_PRINTF("monte-carlo EI optimization\n");
-  // } else {
-  //   OL_SUCCESS_PRINTF("monte-carlo EI optimization\n");
-  // }
-  // total_errors += error;
+  error = ExpectedImprovementOptimizationTest(DomainTypes::kTensorProduct, ExpectedImprovementEvaluationMode::kMonteCarlo);
+  if (error != 0) {
+    OL_FAILURE_PRINTF("monte-carlo EI optimization\n");
+  } else {
+    OL_SUCCESS_PRINTF("monte-carlo EI optimization\n");
+  }
+  total_errors += error;
 
-  // TODO(GH-226): re-enable this test once it is switched to static thread scheduling
-  // error = ExpectedImprovementOptimizationMultipleSamplesTest();
-  // if (error != 0) {
-  //   OL_FAILURE_PRINTF("monte-carlo EI optimization for multiple simultaneous experiments\n");
-  // } else {
-  //   OL_SUCCESS_PRINTF("monte-carlo EI optimization for multiple simultaneous experiments\n");
-  // }
-  // total_errors += error;
+  error = ExpectedImprovementOptimizationMultipleSamplesTest();
+  if (error != 0) {
+    OL_FAILURE_PRINTF("monte-carlo EI optimization for multiple simultaneous experiments\n");
+  } else {
+    OL_SUCCESS_PRINTF("monte-carlo EI optimization for multiple simultaneous experiments\n");
+  }
+  total_errors += error;
 
   error = ExpectedImprovementOptimizationTest(DomainTypes::kSimplex, ExpectedImprovementEvaluationMode::kAnalytic);
   if (error != 0) {
@@ -255,14 +253,13 @@ int RunCppTestsWrapper() {
   }
   total_errors += error;
 
-  // TODO(GH-226): re-enable this test once it is switched to static thread scheduling
-  // error = ExpectedImprovementOptimizationTest(DomainTypes::kSimplex, ExpectedImprovementEvaluationMode::kMonteCarlo);
-  // if (error != 0) {
-  //   OL_FAILURE_PRINTF("monte-carlo simplex EI optimization\n");
-  // } else {
-  //   OL_SUCCESS_PRINTF("monte-carlo simplex EI optimization\n");
-  // }
-  // total_errors += error;
+  error = ExpectedImprovementOptimizationTest(DomainTypes::kSimplex, ExpectedImprovementEvaluationMode::kMonteCarlo);
+  if (error != 0) {
+    OL_FAILURE_PRINTF("monte-carlo simplex EI optimization\n");
+  } else {
+    OL_SUCCESS_PRINTF("monte-carlo simplex EI optimization\n");
+  }
+  total_errors += error;
 
   return total_errors;
 }

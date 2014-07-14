@@ -65,7 +65,15 @@ FunctionValue KrigingBelieverEstimationPolicy::ComputeEstimate(const GaussianPro
   best_points_to_sample output.
 \endrst*/
 template <typename DomainType>
-void ComputeHeuristicPointsToSample(const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters, const DomainType& domain, const ObjectiveEstimationPolicyInterface& estimation_policy, double best_so_far, int max_num_threads, bool lhc_search_only, int num_lhc_samples, int num_to_sample, bool * restrict found_flag, UniformRandomGenerator * uniform_generator, double * restrict best_points_to_sample) {
+void ComputeHeuristicPointsToSample(const GaussianProcess& gaussian_process,
+                                    const GradientDescentParameters& optimization_parameters,
+                                    const DomainType& domain,
+                                    const ObjectiveEstimationPolicyInterface& estimation_policy,
+                                    const ThreadSchedule& thread_schedule,
+                                    double best_so_far, bool lhc_search_only, int num_lhc_samples,
+                                    int num_to_sample, bool * restrict found_flag,
+                                    UniformRandomGenerator * uniform_generator,
+                                    double * restrict best_points_to_sample) {
   if (unlikely(num_to_sample <= 0)) {
     return;
   }
@@ -87,7 +95,11 @@ void ComputeHeuristicPointsToSample(const GaussianProcess& gaussian_process, con
   for (int i = 0; i < num_to_sample; ++i) {
     bool found_flag_local = false;
     if (likely(lhc_search_only == false)) {
-      ComputeOptimalPointsToSampleWithRandomStarts(*gaussian_process_local, optimization_parameters, domain, points_being_sampled, num_to_sample_per_iteration, num_being_sampled, best_so_far, max_int_steps, max_num_threads, &found_flag_local, uniform_generator, normal_rng, best_points_to_sample);
+      ComputeOptimalPointsToSampleWithRandomStarts(*gaussian_process_local, optimization_parameters,
+                                                   domain, thread_schedule, points_being_sampled,
+                                                   num_to_sample_per_iteration, num_being_sampled,
+                                                   best_so_far, max_int_steps, &found_flag_local,
+                                                   uniform_generator, normal_rng, best_points_to_sample);
     }
     // if gradient descent EI optimization failed OR we're only doing latin hypercube searches
     if (unlikely(found_flag_local == false || lhc_search_only == true)) {
@@ -96,7 +108,17 @@ void ComputeHeuristicPointsToSample(const GaussianProcess& gaussian_process, con
         OL_WARNING_PRINTF("Attempting latin hypercube search\n");
       }
 
-      ComputeOptimalPointsToSampleViaLatinHypercubeSearch(*gaussian_process_local, domain, points_being_sampled, num_lhc_samples, num_to_sample_per_iteration, num_being_sampled, best_so_far, max_int_steps, max_num_threads, &found_flag_local, uniform_generator, normal_rng, best_points_to_sample);
+      // This is the fastest setting.
+      ThreadSchedule thread_schedule_naive_search(thread_schedule);
+      thread_schedule_naive_search.schedule = omp_sched_static;
+      ComputeOptimalPointsToSampleViaLatinHypercubeSearch(*gaussian_process_local, domain,
+                                                          thread_schedule_naive_search,
+                                                          points_being_sampled, num_lhc_samples,
+                                                          num_to_sample_per_iteration,
+                                                          num_being_sampled, best_so_far,
+                                                          max_int_steps,
+                                                          &found_flag_local, uniform_generator,
+                                                          normal_rng, best_points_to_sample);
 
       // if latin hypercube 'dumb' search failed
       if (unlikely(found_flag_local == false)) {
@@ -106,8 +128,10 @@ void ComputeHeuristicPointsToSample(const GaussianProcess& gaussian_process, con
       }
     }
 
-    FunctionValue function_estimate = estimation_policy.ComputeEstimate(*gaussian_process_local, best_points_to_sample, i);
-    gaussian_process_local->AddPointToGP(best_points_to_sample, function_estimate.function_value, function_estimate.noise_variance);
+    FunctionValue function_estimate = estimation_policy.ComputeEstimate(*gaussian_process_local,
+                                                                        best_points_to_sample, i);
+    gaussian_process_local->AddPointsToGP(best_points_to_sample, &function_estimate.function_value,
+                                         &function_estimate.noise_variance, 1);
 
     found_flag_overall &= found_flag_local;
     best_points_to_sample += dim;
@@ -117,7 +141,17 @@ void ComputeHeuristicPointsToSample(const GaussianProcess& gaussian_process, con
 }
 
 // template explicit instantiation definitions, see gpp_common.hpp header comments, item 6
-template void ComputeHeuristicPointsToSample(const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters, const TensorProductDomain& domain, const ObjectiveEstimationPolicyInterface& estimation_policy, double best_so_far, int max_num_threads, bool lhc_search_only, int num_lhc_samples, int num_to_sample, bool * restrict found_flag, UniformRandomGenerator * uniform_generator, double * restrict best_points_to_sample);
-template void ComputeHeuristicPointsToSample(const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters, const SimplexIntersectTensorProductDomain& domain, const ObjectiveEstimationPolicyInterface& estimation_policy, double best_so_far, int max_num_threads, bool lhc_search_only, int num_lhc_samples, int num_to_sample, bool * restrict found_flag, UniformRandomGenerator * uniform_generator, double * restrict best_points_to_sample);
+template void ComputeHeuristicPointsToSample(
+    const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters,
+    const TensorProductDomain& domain, const ObjectiveEstimationPolicyInterface& estimation_policy,
+    const ThreadSchedule& thread_schedule, double best_so_far, bool lhc_search_only,
+    int num_lhc_samples, int num_to_sample, bool * restrict found_flag,
+    UniformRandomGenerator * uniform_generator, double * restrict best_points_to_sample);
+template void ComputeHeuristicPointsToSample(
+    const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters,
+    const SimplexIntersectTensorProductDomain& domain, const ObjectiveEstimationPolicyInterface& estimation_policy,
+    const ThreadSchedule& thread_schedule, double best_so_far, bool lhc_search_only,
+    int num_lhc_samples, int num_to_sample, bool * restrict found_flag,
+    UniformRandomGenerator * uniform_generator, double * restrict best_points_to_sample);
 
 }  // end namespace optimal_learning
