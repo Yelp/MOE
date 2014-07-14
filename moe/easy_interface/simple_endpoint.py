@@ -23,7 +23,7 @@ def call_endpoint_with_payload(rest_host, rest_port, endpoint, json_payload, tes
         response = f.read()
         f.close()
     else:
-        response = testapp.post(endpoint, json_payload)
+        response = testapp.post(endpoint, json_payload).body
 
     return json.loads(response)
 

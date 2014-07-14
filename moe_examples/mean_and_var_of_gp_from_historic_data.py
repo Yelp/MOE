@@ -18,12 +18,19 @@ points_sampled = [
         [[x], numpy.random.uniform(-1, 1), 0.01] for x in numpy.arange(0, 1, 0.1)
         ]
 
-if __name__ == '__main__':
+def run_example(testapp=None):
+    """Run the example, finding the posterior mean and variance for various poinst from a random GP."""
     points_to_evaluate = [[x] for x in numpy.arange(0, 1, 0.05)]  # uniform grid of points
     mean, var = gp_mean_var(
             points_sampled,  # Historical data to inform Gaussian Process
             points_to_evaluate,  # We will calculate the mean and variance of the GP at these points
+            testapp=testapp,
             )
+    return points_to_evaluate
+
+if __name__ == '__main__':
+    points_to_evaluate = run_example()
+
     # Print out the mean and variance of the GP at each point_to_evaluate
     for i, point in enumerate(points_to_evaluate):
         print "GP({0:s}) ~ N({1:.18E}, {2:.18E})".format(str(point), mean[i], var[i][i])

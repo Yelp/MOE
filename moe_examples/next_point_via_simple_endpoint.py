@@ -24,7 +24,8 @@ def function_to_minimize(x):
     """Calculate an aribitrary 2-d function with some noise with minimum near [1, 2.6]."""
     return math.sin(x[0]) * math.cos(x[1]) + math.cos(x[0] + x[1]) + random.uniform(-0.02, 0.02)
 
-def run_example(num_points_to_sample=20, testapp=None):
+def run_example(num_points_to_sample=20, **kwargs):
+    """Run the example, aksing MOE for ``num_points_to_sample`` optimal points to sample."""
     exp = Experiment([[0, 2], [0, 4]])  # 2D experiment, we build a tensor product domain
     # Bootstrap with some known or already sampled point(s)
     exp.historical_data.append_sample_points([
@@ -34,7 +35,7 @@ def run_example(num_points_to_sample=20, testapp=None):
     # Sample 20 points
     for _ in range(num_points_to_sample):
         # Use MOE to determine what is the point with highest Expected Improvement to use next
-        next_point_to_sample = gp_next_points(exp, testapp=testapp)[0]  # By default we only ask for one point
+        next_point_to_sample = gp_next_points(exp, **kwargs)[0]  # By default we only ask for one point
         # Sample the point from our objective function, we can replace this with any function
         value_of_next_point = function_to_minimize(next_point_to_sample)
 
