@@ -299,12 +299,12 @@ class GradientDescentParameters(_BaseGradientDescentParameters):
 # See LBFGSBParameters (below) for docstring.
 _BaseLBFGSBParameters = collections.namedtuple('_BaseLBFGSBParameters', [
     'approx_grad',  # If true, BFGS will approximate the gradient.
-    'max_func_evals',  # Maximum number of objcetive function calls to make.
-    'max_iters',  # Maximum number of iterations for optimization.
-    'max_metric_correc',  # Maximum number of variable metric corrections used to define the limited memory matrix.
-    'factr',  # 1e12 for low accuracy, 1e7 for moderate accuracy, and 10 for extremely high accuracy.
-    'pgtol',  # Cutoff for highest component of gradient to be considered a critical point.
-    'epsilon',  # Step size for approximating the gradient.
+    'max_func_evals',  # Maximum number of objcetive function calls to make. Default recommended value: 15000
+    'max_iters',  # Maximum number of iterations for optimization. Default recommended value: 15000
+    'max_metric_correc',  # Maximum number of variable metric corrections used to define the limited memory matrix. Default recommended value: 10
+    'factr',  # 1e12 for low accuracy, 1e7 for moderate accuracy, and 10 for extremely high accuracy. Default recommended value: 1000.0
+    'pgtol',  # Cutoff for highest component of gradient to be considered a critical point. Default recommended value: 1e-05
+    'epsilon',  # Step size for approximating the gradient. Default recommended value: 1e-08
 ])
 
 
@@ -584,17 +584,9 @@ class LBFGSBOptimizer():
     def optimize(self, **kwargs):
         """Perform an L-BFGS-B optimization given the parameters in optimization_parameters.
 
-        OptimizableInterface (objective function) over the specified DomainInterface. Optimizer behavior is controlled
-        by the specified ParameterStruct. See class docs and header docs of this file, section 2c and 3b, iii),
-        for more information.
-
-        The method allows you to specify what the current best is, so that if optimization cannot beat it, no improvement will be
-        reported.  It will otherwise report the overall best improvement (through io_container) as well as the result of every
-        individual multistart run if desired (through function_values).
-
-        :return: (best point found, objective function values at the end of each optimization run)
-        :rtype: tuple: (array of float64 with shape (self.optimizer.dim), array of float64 with shape (self.num_multistarts))
-
+        :return: (best point found, None)
+        :rtype: tuple: (array of float64 with shape (self.optimizer.dim), None)
+        
         """
         
         num_points = 1
@@ -612,11 +604,11 @@ class LBFGSBOptimizer():
             """Wrapper function for expected improvement gradient if needed."""
             shaped_point = point.reshape(num_points, self.domain.dim)
             self.objective_function.current_point = shaped_point
-            # Negative sign necessary, as mentioned above.
             return self.objective_function.compute_grad_objective_function(**kwargs).reshape(1, num_points * self.domain.dim)
         
         domain_with_error = numpy.array(self.domain.domain_bounds_as_list() * num_points) - self.DOMAIN_ERROR
 
+        # Parameters defined above in LBFGSBParameters class.
         return optimize.fmin_l_bfgs_b(func=objective_func, x0=self.domain.generate_random_point_in_domain().reshape(1, num_points * self.domain.dim), bounds=domain_with_error, fprime=grad, \
                                         approx_grad=self.optimization_parameters.approx_grad, \
                                         factr=self.optimization_parameters.factr, \
