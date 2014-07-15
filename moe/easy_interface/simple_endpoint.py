@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """Simple functions for hitting the REST endpoints of a MOE service."""
+import contextlib
 import urllib2
 
 import simplejson as json
@@ -13,12 +14,15 @@ DEFAULT_HOST = '127.0.0.1'
 DEFAULT_PORT = 6543
 
 
-def call_endpoint_with_payload(url, json_payload):
+def call_endpoint_with_payload(rest_host, rest_port, endpoint, json_payload, testapp=None):
     """Send a POST request to a ``url`` with a given ``json_payload``, return the response as a dict."""
-    request = urllib2.Request(url, json_payload, {'Content-Type': 'application/json'})
-    f = urllib2.urlopen(request)
-    response = f.read()
-    f.close()
+    if testapp is None:
+        url = "http://{0}:{1:d}{2}".format(rest_host, rest_port, endpoint)
+        request = urllib2.Request(url, json_payload, {'Content-Type': 'application/json'})
+        with contextlib.closing(urllib2.urlopen(request)) as f:
+            response = f.read()
+    else:
+        response = testapp.post(endpoint, json_payload).body
 
     return json.loads(response)
 
@@ -28,6 +32,7 @@ def gp_next_points(
         method_route_name=GP_NEXT_POINTS_EPI_ROUTE_NAME,
         rest_host=DEFAULT_HOST,
         rest_port=DEFAULT_PORT,
+        testapp=None,
         **kwargs
 ):
     """Hit the rest endpoint for finding next point of highest EI at rest_host:rest_port corresponding to the method with the given experiment."""
@@ -44,9 +49,7 @@ def gp_next_points(
 
     json_payload = json.dumps(raw_payload)
 
-    url = "http://{0}:{1:d}{2}".format(rest_host, rest_port, endpoint)
-
-    json_response = call_endpoint_with_payload(url, json_payload)
+    json_response = call_endpoint_with_payload(rest_host, rest_port, endpoint, json_payload, testapp)
 
     output = GpNextPointsResponse().deserialize(json_response)
 
@@ -57,6 +60,7 @@ def gp_hyper_opt(
         points_sampled,
         rest_host=DEFAULT_HOST,
         rest_port=DEFAULT_PORT,
+        testapp=None,
         **kwargs
         ):
     """Hit the rest endpoint for optimizing the hyperparameters of a gaussian process, given points already sampled."""
@@ -87,9 +91,7 @@ def gp_hyper_opt(
 
     json_payload = json.dumps(raw_payload)
 
-    url = "http://{0}:{1:d}{2}".format(rest_host, rest_port, endpoint)
-
-    json_response = call_endpoint_with_payload(url, json_payload)
+    json_response = call_endpoint_with_payload(rest_host, rest_port, endpoint, json_payload, testapp)
 
     output = GpHyperOptResponse().deserialize(json_response)
 
@@ -101,6 +103,7 @@ def gp_mean_var(
         points_to_sample,
         rest_host=DEFAULT_HOST,
         rest_port=DEFAULT_PORT,
+        testapp=None,
         **kwargs
 ):
     """Hit the rest endpoint for calculating the posterior mean and variance of a gaussian process, given points already sampled."""
@@ -124,9 +127,7 @@ def gp_mean_var(
 
     json_payload = json.dumps(raw_payload)
 
-    url = "http://{0}:{1:d}{2}".format(rest_host, rest_port, endpoint)
-
-    json_response = call_endpoint_with_payload(url, json_payload)
+    json_response = call_endpoint_with_payload(rest_host, rest_port, endpoint, json_payload, testapp)
 
     output = GpMeanVarResponse().deserialize(json_response)
 
