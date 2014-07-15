@@ -251,7 +251,7 @@ class GaussianProcessInterface(GaussianProcessDataInterface):
         Also forces recomputation of all derived quantities for GP to remain consistent.
 
         :param sampled_points: SamplePoint objects to load into the GP (containing point, function value, and noise variance)
-        :type sampled_points: single SamplePoint or list of SamplePoint objects
+        :type sampled_points: single :class:`moe.optimal_learning.python.SamplePoint` or list of SamplePoint objects
 
         """
         pass
