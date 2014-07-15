@@ -16,6 +16,9 @@ style-test:
 		flake8 --ignore=E501,E126,E123,I101,I100,N806 moe
 		pep257 moe
 		pyflakes moe
+		flake8 --ignore=E501,E126,E123,I101,I100,N806 moe_examples
+		pep257 moe_examples
+		pyflakes moe_examples
 
 docs:
 		python docs/cpp_rst_maker.py
