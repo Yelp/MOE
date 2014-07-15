@@ -28,28 +28,35 @@ def function_to_minimize(x):
     """
     return numpy.sin(x[0]) * numpy.cos(x[1]) + numpy.cos(x[0] + x[1]) + numpy.random.uniform(-0.02, 0.02)
 
-if __name__ == '__main__':
+
+def run_example(num_to_sample=20, verbose=True, testapp=None, **kwargs):
+    """Run the combined example."""
     exp = Experiment([[0, 2], [0, 4]])
     # Bootstrap with some known or already sampled point(s)
     exp.historical_data.append_sample_points([
         [[0, 0], function_to_minimize([0, 0]), 0.01],  # sampled points have the form [point_as_a_list, objective_function_value, value_variance]
         ])
 
-    # Sample 20 points
-    for i in range(20):
+    # Sample points
+    for i in range(num_to_sample):
         covariance_info = {}
         if i > 0 and i % 5 == 0:
-            covariance_info = gp_hyper_opt(exp.historical_data.to_list_of_sample_points())
-            print "Updated covariance_info with {0:s}".format(str(covariance_info))
+            covariance_info = gp_hyper_opt(exp.historical_data.to_list_of_sample_points(), testapp=testapp, **kwargs)
+
+            if verbose:
+                print "Updated covariance_info with {0:s}".format(str(covariance_info))
         # Use MOE to determine what is the point with highest Expected Improvement to use next
         next_point_to_sample = gp_next_points(
                 exp,
                 covariance_info=covariance_info,
+                testapp=testapp,
+                **kwargs
                 )[0]  # By default we only ask for one point
         # Sample the point from our objective function, we can replace this with any function
         value_of_next_point = function_to_minimize(next_point_to_sample)
 
-        print "Sampled f({0:s}) = {1:.18E}".format(str(next_point_to_sample), value_of_next_point)
+        if verbose:
+            print "Sampled f({0:s}) = {1:.18E}".format(str(next_point_to_sample), value_of_next_point)
 
         # Add the information about the point to the experiment historical data to inform the GP
         exp.historical_data.append_sample_points([[next_point_to_sample, value_of_next_point, 0.01]])  # We can add some noise
@@ -58,5 +65,12 @@ if __name__ == '__main__':
     mean, var = gp_mean_var(
             exp.historical_data.to_list_of_sample_points(),  # Historical data to inform Gaussian Process
             points_to_evaluate,  # We will calculate the mean and variance of the GP at these points
+            testapp=testapp,
             )
-    print "GP mean at (0, 0), (0.1, 0.1), ...: {0:s}".format(str(mean))
+
+    if verbose:
+        print "GP mean at (0, 0), (0.1, 0.1), ...: {0:s}".format(str(mean))
+
+
+if __name__ == '__main__':
+    run_example()

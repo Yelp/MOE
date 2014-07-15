@@ -2,7 +2,7 @@
 """Base level schemas for the response/request schemas of each MOE REST endpoint."""
 import colander
 
-from moe.optimal_learning.python.constant import DEFAULT_NEWTON_PARAMETERS, DEFAULT_GRADIENT_DESCENT_PARAMETERS, GRADIENT_DESCENT_OPTIMIZER, DEFAULT_OPTIMIZATION_MULTISTARTS, DEFAULT_OPTIMIZATION_NUM_RANDOM_SAMPLES, TENSOR_PRODUCT_DOMAIN_TYPE, SQUARE_EXPONENTIAL_COVARIANCE_TYPE, NULL_OPTIMIZER, NEWTON_OPTIMIZER, DOMAIN_TYPES, OPTIMIZATION_TYPES, COVARIANCE_TYPES, CONSTANT_LIAR_METHODS, DEFAULT_MAX_NUM_THREADS, DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS, CONSTANT_LIAR_MIN, LIKELIHOOD_TYPES, LOG_MARGINAL_LIKELIHOOD
+from moe.optimal_learning.python.constant import DEFAULT_NEWTON_PARAMETERS, DEFAULT_GRADIENT_DESCENT_PARAMETERS, GRADIENT_DESCENT_OPTIMIZER, DEFAULT_OPTIMIZATION_MULTISTARTS, DEFAULT_OPTIMIZATION_NUM_RANDOM_SAMPLES, TENSOR_PRODUCT_DOMAIN_TYPE, SQUARE_EXPONENTIAL_COVARIANCE_TYPE, NULL_OPTIMIZER, NEWTON_OPTIMIZER, DOMAIN_TYPES, OPTIMIZATION_TYPES, COVARIANCE_TYPES, CONSTANT_LIAR_METHODS, DEFAULT_MAX_NUM_THREADS, DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS, LIKELIHOOD_TYPES, LOG_MARGINAL_LIKELIHOOD, DEFAULT_CONSTANT_LIAR_METHOD, DEFAULT_CONSTANT_LIAR_LIE_NOISE_VARIANCE, DEFAULT_KRIGING_NOISE_VARIANCE, DEFAULT_KRIGING_STD_DEVIATION_COEF
 
 
 class PositiveFloat(colander.SchemaNode):
@@ -446,7 +446,7 @@ class GpNextPointsConstantLiarRequest(GpNextPointsRequest):
         {
             "num_to_sample": 1,
             "lie_value": 0.0,
-            "lie_noise_variance": 0.0,
+            "lie_noise_variance": 1e-12,
             "gp_historical_info": {
                 "points_sampled": [
                         {"value_var": 0.01, "value": 0.1, "point": [0.0]},
@@ -465,7 +465,7 @@ class GpNextPointsConstantLiarRequest(GpNextPointsRequest):
 
     lie_method = colander.SchemaNode(
             colander.String(),
-            missing=CONSTANT_LIAR_MIN,
+            missing=DEFAULT_CONSTANT_LIAR_METHOD,
             validator=colander.OneOf(CONSTANT_LIAR_METHODS),
             )
     lie_value = colander.SchemaNode(
@@ -474,7 +474,7 @@ class GpNextPointsConstantLiarRequest(GpNextPointsRequest):
             )
     lie_noise_variance = colander.SchemaNode(
             colander.Float(),
-            missing=0.0,
+            missing=DEFAULT_CONSTANT_LIAR_LIE_NOISE_VARIANCE,
             validator=colander.Range(min=0.0),
             )
 
@@ -524,11 +524,11 @@ class GpNextPointsKrigingRequest(GpNextPointsRequest):
 
     std_deviation_coef = colander.SchemaNode(
             colander.Float(),
-            missing=0.0,
+            missing=DEFAULT_KRIGING_STD_DEVIATION_COEF,
             )
     kriging_noise_variance = colander.SchemaNode(
             colander.Float(),
-            missing=0.0,
+            missing=DEFAULT_KRIGING_NOISE_VARIANCE,
             validator=colander.Range(min=0.0),
             )
 

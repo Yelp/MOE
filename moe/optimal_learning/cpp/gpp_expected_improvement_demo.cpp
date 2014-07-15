@@ -1,6 +1,8 @@
 /*!
   \file gpp_expected_improvement_demo.cpp
   \rst
+  ``moe/optimal_learning/cpp/gpp_expected_improvement_demo.cpp``
+
   This is a demo for the Gaussian Process and (optimization of) Expected Improvement
   capabilities present in this project.  These capabilities live in gpp_math.
 
