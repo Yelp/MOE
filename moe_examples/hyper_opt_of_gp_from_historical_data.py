@@ -18,8 +18,17 @@ points_sampled = [
         SamplePoint(numpy.array([x]), numpy.random.uniform(-1, 1), 0.01) for x in numpy.arange(0, 1, 0.1)
         ]
 
-if __name__ == '__main__':
+
+def run_example(verbose=True, **kwargs):
+    """Run the example, aksing MOE for optimal hyperparameters given historical data."""
     covariance_info = gp_hyper_opt(
             points_sampled,
+            **kwargs
             )
-    print covariance_info
+
+    if verbose:
+        print covariance_info
+
+
+if __name__ == '__main__':
+    run_example()

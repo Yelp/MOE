@@ -15,7 +15,7 @@ import numpy
 
 from pyramid.view import view_config
 
-from moe.optimal_learning.python.constant import CONSTANT_LIAR_MIN, CONSTANT_LIAR_MAX, CONSTANT_LIAR_MEAN
+from moe.optimal_learning.python.constant import CONSTANT_LIAR_MIN, CONSTANT_LIAR_MAX, CONSTANT_LIAR_MEAN, DEFAULT_CONSTANT_LIAR_METHOD
 from moe.views.constant import GP_NEXT_POINTS_CONSTANT_LIAR_ROUTE_NAME, GP_NEXT_POINTS_CONSTANT_LIAR_PRETTY_ROUTE_NAME, GP_NEXT_POINTS_CONSTANT_LIAR_OPTIMIZATION_METHOD_NAME
 from moe.views.gp_next_points_pretty_view import GpNextPointsPrettyView
 from moe.views.gp_pretty_view import PRETTY_RENDERER
@@ -33,9 +33,7 @@ class GpNextPointsConstantLiar(GpNextPointsPrettyView):
     request_schema = GpNextPointsConstantLiarRequest()
 
     _pretty_default_request = GpNextPointsPrettyView._pretty_default_request.copy()
-    _pretty_default_request['lie_method'] = CONSTANT_LIAR_MIN
-    _pretty_default_request['lie_value'] = None
-    _pretty_default_request['lie_noise_variance'] = 0.0
+    _pretty_default_request['lie_method'] = DEFAULT_CONSTANT_LIAR_METHOD
 
     @view_config(route_name=_pretty_route_name, renderer=PRETTY_RENDERER)
     def pretty_view(self):
@@ -52,7 +50,7 @@ class GpNextPointsConstantLiar(GpNextPointsPrettyView):
             return params.get('lie_value')
 
         gaussian_process = _make_gp_from_params(params)
-        points_sampled_values = gaussian_process._historical_data._points_sampled_value.to_list()
+        points_sampled_values = gaussian_process._historical_data._points_sampled_value.tolist()
 
         if params.get('lie_method') == CONSTANT_LIAR_MIN:
             return numpy.amin(points_sampled_values)

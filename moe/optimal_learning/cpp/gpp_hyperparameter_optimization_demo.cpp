@@ -1,6 +1,8 @@
 /*!
   \file gpp_hyperparameter_optimization_demo.cpp
   \rst
+  ``moe/optimal_learning/cpp/gpp_hyperparameter_optimization_demo.cpp``
+
   This is a demo for the model selection (via hyperparameter optimization) capability
   present in this project.  These capabilities live in
   gpp_model_selection.
