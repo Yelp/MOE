@@ -21,5 +21,6 @@
         <li><a href="${request.route_url( 'gp_next_points_kriging_pretty' )}">GP next points kriging</a></li>
         <li><a href="${request.route_url( 'gp_next_points_constant_liar_pretty' )}">GP next points constant liar</a></li>
         <li><a href="${request.route_url( 'gp_hyper_opt_pretty' )}">GP hyperparameter optimization</a></li>
+        <li><a href="${request.route_url( 'bandit_epsilon_pretty' )}">Bandit epsilon</a></li>
     </ul>
 </div>
