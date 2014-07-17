@@ -5,7 +5,7 @@ As a preface, you should read gpp_math.hpp's comments first (if not also gpp_mat
 of Gaussian Processes (GPs) and how we are using them (Expected Improvement, EI). Python readers can get the basic
 overview in interfaces/gaussian_process_interface.py.
 
-.. Note:: these comments are copied from the file comments of gpp_model_selection_and_hyperparameter_optimization.hpp.
+.. Note:: these comments are copied from the file comments of gpp_model_selection.hpp.
 
 This file deals with model selection via hyperparameter optimization, as the name implies.  In our discussion of GPs,
 we did not pay much attention to the underlying covariance function.  We noted that the covariance is extremely
@@ -57,7 +57,7 @@ C. bound the generalization error
 where "generalization error" is defined as "the average error on unseen test examples (from the same distribution
 as the training cases)."  So it's a measure of how well or poorly the model predicts reality.
 
-For further details and examples of log likelihood measures, see gpp_model_selection_and_hyperparameter_optimization.hpp.
+For further details and examples of log likelihood measures, see gpp_model_selection.hpp.
 Overview of some log likelihood measures can be found in GaussianProcessLogMarginalLikelihood and
 GaussianProcessLeaveOneOutLogLikelihood in cpp_wrappers/log_likelihood.py.
 
@@ -85,8 +85,10 @@ of one or more hyperparameters).
 """
 from abc import ABCMeta, abstractmethod, abstractproperty
 
+from moe.optimal_learning.python.interfaces.gaussian_process_interface import GaussianProcessDataInterface
 
-class GaussianProcessLogLikelihoodInterface(object):
+
+class GaussianProcessLogLikelihoodInterface(GaussianProcessDataInterface):
 
     r"""Interface for computation of log likelihood (and log likelihood-like) measures of model fit along with its gradient and hessian.
 
@@ -96,7 +98,7 @@ class GaussianProcessLogLikelihoodInterface(object):
     hyperparameters (``\theta``). ``\theta`` is the vector that is varied. ``(X, y)`` (and associated noise) should be stored
     as data members by the implementation's constructor.
 
-    See gpp_model_selection_and_hyperparameter_optimization.hpp/cpp for further overview and in-depth discussion, respectively.
+    See gpp_model_selection.hpp/cpp for further overview and in-depth discussion, respectively.
 
     """
 

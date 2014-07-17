@@ -212,7 +212,7 @@ def constant_liar_expected_improvement_optimization(
         lie_value,
         lie_noise_variance=0.0,
         randomness=None,
-        max_num_threads=1,
+        max_num_threads=DEFAULT_MAX_NUM_THREADS,
         status=None,
 ):
     """Heuristically solves q,0-EI using the Constant Liar policy; this wraps heuristic_expected_improvement_optimization().
@@ -273,7 +273,7 @@ def kriging_believer_expected_improvement_optimization(
         std_deviation_coef=0.0,
         kriging_noise_variance=0.0,
         randomness=None,
-        max_num_threads=1,
+        max_num_threads=DEFAULT_MAX_NUM_THREADS,
         status=None,
 ):
     """Heuristically solves q,0-EI using the Kriging Believer policy; this wraps heuristic_expected_improvement_optimization().
@@ -337,11 +337,21 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
     associated GaussianProcess. The general EI computation requires monte-carlo integration; it can support q,p-EI optimization.
     It is designed to work with any GaussianProcess.
 
+    .. Note:: Equivalent methods of ExpectedImprovementInterface and OptimizableInterface are aliased below (e.g.,
+      compute_expected_improvement and compute_objective_function, etc).
+
     See interfaces/expected_improvement_interface.py docs for further details.
 
     """
 
-    def __init__(self, gaussian_process, points_to_sample=None, points_being_sampled=None, num_mc_iterations=DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS, randomness=None):
+    def __init__(
+            self,
+            gaussian_process,
+            points_to_sample=None,
+            points_being_sampled=None,
+            num_mc_iterations=DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS,
+            randomness=None
+    ):
         """Construct an ExpectedImprovement object that knows how to call C++ for evaluation of member functions.
 
         :param gaussian_process: GaussianProcess describing
@@ -402,7 +412,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
     @property
     def problem_size(self):
         """Return the number of independent parameters to optimize."""
-        return self.dim
+        return self.num_to_sample * self.dim
 
     def get_current_point(self):
         """Get the current_point (array of float64 with shape (problem_size)) at which this object is evaluating the objective function, ``f(x)``."""
@@ -448,7 +458,13 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         """
         # Create enough randomness sources if none are specified.
         if randomness is None:
-            randomness = self._randomness
+            if max_num_threads == 1:
+                randomness = self._randomness
+            else:
+                randomness = C_GP.RandomnessSourceContainer(max_num_threads)
+                # Set seeds based on less repeatable factors (e.g,. time)
+                randomness.SetRandomizedUniformGeneratorSeed(0)
+                randomness.SetRandomizedNormalRNGSeed(0)
 
         # status must be an initialized dict for the call to C++.
         if status is None:
@@ -521,9 +537,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
             self._randomness,
         )
 
-    def compute_objective_function(self, **kwargs):
-        """Wrapper for compute_expected_improvement; see that function's docstring."""
-        return self.compute_expected_improvement(**kwargs)
+    compute_objective_function = compute_expected_improvement
 
     def compute_grad_expected_improvement(self, force_monte_carlo=False):
         r"""Compute the gradient of expected improvement at ``points_to_sample`` wrt ``points_to_sample``, with ``points_being_sampled`` concurrent samples.
@@ -564,9 +578,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         )
         return cpp_utils.uncppify(grad_ei, (self.num_to_sample, self.dim))
 
-    def compute_grad_objective_function(self, **kwargs):
-        """Wrapper for compute_grad_expected_improvement; see that function's docstring."""
-        return self.compute_grad_expected_improvement(**kwargs)
+    compute_grad_objective_function = compute_grad_expected_improvement
 
     def compute_hessian_objective_function(self, **kwargs):
         """We do not currently support computation of the (spatial) hessian of Expected Improvement."""

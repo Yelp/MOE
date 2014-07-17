@@ -5,7 +5,7 @@ See the file comments in interfaces/log_likelihood_interface.py for an overview 
 in model selection. This file provides hooks to implementations of two such metrics in C++: Log Marginal Likelihood and
 Leave One Out Cross Validation Log Pseudo-Likelihood.
 
-.. Note:: This is a copy of the file comments in gpp_model_selection_and_hyperparameter_optimization.hpp.
+.. Note:: This is a copy of the file comments in gpp_model_selection.hpp.
   These comments are copied in python_version/log_likelihood.py.
   See this file's comments and interfaces.log_likelihood_interface for more details as well as the hpp and corresponding .cpp file.
 
@@ -127,12 +127,12 @@ def multistart_hyperparameter_optimization(
     hyperparameters_opt = C_GP.multistart_hyperparameter_optimization(
         log_likelihood_optimizer.optimization_parameters,
         cpp_utils.cppify(domain_bounds_log10),
-        cpp_utils.cppify(log_likelihood_optimizer.objective_function._historical_data.points_sampled),
-        cpp_utils.cppify(log_likelihood_optimizer.objective_function._historical_data.points_sampled_value),
-        log_likelihood_optimizer.objective_function._historical_data.dim,
-        log_likelihood_optimizer.objective_function._historical_data.num_sampled,
-        cpp_utils.cppify_hyperparameters(log_likelihood_optimizer.objective_function._covariance.hyperparameters),
-        cpp_utils.cppify(log_likelihood_optimizer.objective_function._historical_data.points_sampled_noise_variance),
+        cpp_utils.cppify(log_likelihood_optimizer.objective_function._points_sampled),
+        cpp_utils.cppify(log_likelihood_optimizer.objective_function._points_sampled_value),
+        log_likelihood_optimizer.objective_function.dim,
+        log_likelihood_optimizer.objective_function._num_sampled,
+        cpp_utils.cppify_hyperparameters(log_likelihood_optimizer.objective_function.hyperparameters),
+        cpp_utils.cppify(log_likelihood_optimizer.objective_function._points_sampled_noise_variance),
         max_num_threads,
         randomness,
         status,
@@ -166,13 +166,13 @@ def evaluate_log_likelihood_at_hyperparameter_list(
     # the looping in C++ where it can be multithreaded.
     log_likelihood_list = C_GP.evaluate_log_likelihood_at_hyperparameter_list(
         cpp_utils.cppify(hyperparameters_to_evaluate),
-        cpp_utils.cppify(log_likelihood_evaluator._historical_data.points_sampled),
-        cpp_utils.cppify(log_likelihood_evaluator._historical_data.points_sampled_value),
-        log_likelihood_evaluator._historical_data.dim,
-        log_likelihood_evaluator._historical_data.num_sampled,
+        cpp_utils.cppify(log_likelihood_evaluator._points_sampled),
+        cpp_utils.cppify(log_likelihood_evaluator._points_sampled_value),
+        log_likelihood_evaluator.dim,
+        log_likelihood_evaluator._num_sampled,
         log_likelihood_evaluator.objective_type,
-        cpp_utils.cppify_hyperparameters(log_likelihood_evaluator._covariance.hyperparameters),
-        cpp_utils.cppify(log_likelihood_evaluator._historical_data.points_sampled_noise_variance),
+        cpp_utils.cppify_hyperparameters(log_likelihood_evaluator.hyperparameters),
+        cpp_utils.cppify(log_likelihood_evaluator._points_sampled_noise_variance),
         hyperparameters_to_evaluate.shape[0],
         max_num_threads,
     )
@@ -188,7 +188,10 @@ class GaussianProcessLogLikelihood(GaussianProcessLogLikelihoodInterface, Optimi
     object directly. Since these various metrics are fairly different, the member function docs in this class will
     remain generic.
 
-    See gpp_model_selection_and_hyperparameter_optimization.hpp/cpp for further overview and in-depth discussion, respectively.
+    .. Note:: Equivalent methods of LogLikelihoodInterface and OptimizableInterface are aliased below (e.g.,
+      problem_size and num_hyperparameters, compute_log_likelihood and compute_objective_function, etc).
+
+    See gpp_model_selection.hpp/cpp for further overview and in-depth discussion, respectively.
 
     """
 
@@ -215,38 +218,68 @@ class GaussianProcessLogLikelihood(GaussianProcessLogLikelihoodInterface, Optimi
 
     @property
     def num_hyperparameters(self):
-        """Return the number of hyperparameters."""
+        """Return the number of hyperparameters aka the number of independent parameters to optimize."""
         return self._covariance.num_hyperparameters
 
-    @property
-    def problem_size(self):
-        """Return the number of independent parameters to optimize."""
-        return self.num_hyperparameters
+    problem_size = num_hyperparameters
 
     def get_hyperparameters(self):
-        """Get the hyperparameters (array of float64 with shape (num_hyperparameters)) of this covariance."""
+        """Get the hyperparameters (array of float64 with shape (num_hyperparameters)) of this covariance.
+
+        Equivalently, get the current_point at which this object is evaluating the objective function, ``f(x)``
+
+        """
         return self._covariance.hyperparameters
 
     def set_hyperparameters(self, hyperparameters):
-        """Set hyperparameters to the specified hyperparameters; ordering must match."""
+        """Set hyperparameters to the specified hyperparameters; ordering must match.
+
+        :param hyperparameters: hyperparameters at which to evaluate the log likelihood (objective function), ``f(x)``
+        :type hyperparameters: array of float64 with shape (num_hyperparameters)
+
+        """
         self._covariance.hyperparameters = hyperparameters
 
     hyperparameters = property(get_hyperparameters, set_hyperparameters)
+    current_point = hyperparameters
 
-    def get_current_point(self):
-        """Get the current_point (array of float64 with shape (problem_size)) at which this object is evaluating the objective function, ``f(x)``."""
-        return self.hyperparameters
+    @property
+    def _num_sampled(self):
+        """Return the number of sampled points."""
+        return self._historical_data.num_sampled
 
-    def set_current_point(self, current_point):
-        """Set current_point to the specified point; ordering must match.
+    @property
+    def _points_sampled(self):
+        """Return the coordinates of the already-sampled points; see data_containers.HistoricalData."""
+        return self._historical_data.points_sampled
 
-        :param current_point: current_point at which to evaluate the objective function, ``f(x)``
-        :type current_point: array of float64 with shape (problem_size)
+    @property
+    def _points_sampled_value(self):
+        """Return the function values measured at each of points_sampled; see data_containers.HistoricalData."""
+        return self._historical_data.points_sampled_value
+
+    @property
+    def _points_sampled_noise_variance(self):
+        """Return the noise variance associated with points_sampled_value; see data_containers.HistoricalData."""
+        return self._historical_data.points_sampled_noise_variance
+
+    def get_covariance_copy(self):
+        """Return a copy of the covariance object specifying the Gaussian Process.
+
+        :return: covariance object encoding assumptions about the GP's behavior on our data
+        :rtype: interfaces.covariance_interface.CovarianceInterface subclass
 
         """
-        self.hyperparameters = current_point
+        return copy.deepcopy(self._covariance)
 
-    current_point = property(get_current_point, set_current_point)
+    def get_historical_data_copy(self):
+        """Return the data (points, function values, noise) specifying the prior of the Gaussian Process.
+
+        :return: object specifying the already-sampled points, the objective value at those points, and the noise variance associated with each observation
+        :rtype: data_containers.HistoricalData
+
+        """
+        return copy.deepcopy(self._historical_data)
 
     def compute_log_likelihood(self):
         r"""Compute the objective_type measure at the specified hyperparameters.
@@ -256,18 +289,16 @@ class GaussianProcessLogLikelihood(GaussianProcessLogLikelihoodInterface, Optimi
 
         """
         return C_GP.compute_log_likelihood(
-            cpp_utils.cppify(self._historical_data.points_sampled),
-            cpp_utils.cppify(self._historical_data.points_sampled_value),
+            cpp_utils.cppify(self._points_sampled),
+            cpp_utils.cppify(self._points_sampled_value),
             self.dim,
-            self._historical_data.num_sampled,
+            self._num_sampled,
             self.objective_type,
-            cpp_utils.cppify_hyperparameters(self._covariance._hyperparameters),
-            cpp_utils.cppify(self._historical_data.points_sampled_noise_variance),
+            cpp_utils.cppify_hyperparameters(self.hyperparameters),
+            cpp_utils.cppify(self._points_sampled_noise_variance),
         )
 
-    def compute_objective_function(self):
-        """Wrapper for compute_log_likelihood; see that function's docstring."""
-        return self.compute_log_likelihood()
+    compute_objective_function = compute_log_likelihood
 
     def compute_grad_log_likelihood(self):
         r"""Compute the gradient (wrt hyperparameters) of the objective_type measure at the specified hyperparameters.
@@ -277,27 +308,23 @@ class GaussianProcessLogLikelihood(GaussianProcessLogLikelihoodInterface, Optimi
 
         """
         grad_log_marginal = C_GP.compute_hyperparameter_grad_log_likelihood(
-            cpp_utils.cppify(self._historical_data.points_sampled),
-            cpp_utils.cppify(self._historical_data.points_sampled_value),
+            cpp_utils.cppify(self._points_sampled),
+            cpp_utils.cppify(self._points_sampled_value),
             self.dim,
-            self._historical_data.num_sampled,
+            self._num_sampled,
             self.objective_type,
-            cpp_utils.cppify_hyperparameters(self._covariance._hyperparameters),
-            cpp_utils.cppify(self._historical_data.points_sampled_noise_variance),
+            cpp_utils.cppify_hyperparameters(self.hyperparameters),
+            cpp_utils.cppify(self._points_sampled_noise_variance),
         )
         return numpy.array(grad_log_marginal)
 
-    def compute_grad_objective_function(self):
-        """Wrapper for compute_grad_log_likelihood; see that function's docstring."""
-        return self.compute_grad_log_likelihood()
+    compute_grad_objective_function = compute_grad_log_likelihood
 
     def compute_hessian_log_likelihood(self):
         """We do not currently support computation of the (hyperparameter) hessian of log likelihood-like metrics."""
         raise NotImplementedError('Currently C++ does not expose Hessian computation of log likelihood-like metrics.')
 
-    def compute_hessian_objective_function(self):
-        """Wrapper for compute_hessian_log_likelihood; see that function's docstring."""
-        return self.compute_hessian_log_likelihood()
+    compute_hessian_objective_function = compute_hessian_log_likelihood
 
 
 class GaussianProcessLogMarginalLikelihood(GaussianProcessLogLikelihood):
@@ -309,7 +336,7 @@ class GaussianProcessLogMarginalLikelihood(GaussianProcessLogLikelihood):
 
     This is a measure of how likely it is that the observed values came from our Gaussian Process Prior.
 
-    .. Note:: This is a copy of LogMarginalLikelihoodEvaluator's class comments in gpp_model_selection_and_hyperparameter_optimization.hpp.
+    .. Note:: This is a copy of LogMarginalLikelihoodEvaluator's class comments in gpp_model_selection.hpp.
       See this file's comments and interfaces.log_likelihood_interface for more details as well as the hpp and corresponding .cpp file.
 
     Given a particular covariance function (including hyperparameters) and
@@ -344,7 +371,7 @@ class GaussianProcessLeaveOneOutLogLikelihood(GaussianProcessLogLikelihood):
     Given a particular covariance function (including hyperparameters) and training data ((point, function value, measurement noise)
     tuples), the log LOO-CV pseudo-likelihood expresses how well the model explains itself.
 
-    .. Note:: This is a copy of LeaveOneOutLogLikelihoodEvaluator's class comments in gpp_model_selection_and_hyperparameter_optimization.hpp.
+    .. Note:: This is a copy of LeaveOneOutLogLikelihoodEvaluator's class comments in gpp_model_selection.hpp.
       See this file's comments and interfaces.log_likelihood_interface for more details as well as the hpp and corresponding .cpp file.
 
     That is, cross validation involves splitting the training set into a sub-training set and a validation set.  Then we measure

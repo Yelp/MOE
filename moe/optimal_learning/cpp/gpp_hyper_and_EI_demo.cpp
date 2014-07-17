@@ -1,6 +1,8 @@
 /*!
   \file gpp_hyper_and_EI_demo.cpp
   \rst
+  ``moe/optimal_learning/cpp/gpp_hyper_and_EI_demo.cpp``
+
   This demo combines gpp_hyperparameter_optimization_demo.cpp and gpp_expected_improvement_demo.cpp.  If you have read
   and understood those, then this demo should be very straightforward insofar as it is currently almost a direct copy-paste.
 
@@ -44,7 +46,8 @@
 #include "gpp_domain.hpp"
 #include "gpp_logging.hpp"
 #include "gpp_math.hpp"
-#include "gpp_model_selection_and_hyperparameter_optimization.hpp"
+#include "gpp_model_selection.hpp"
+#include "gpp_optimization.hpp"
 #include "gpp_optimization_parameters.hpp"
 #include "gpp_random.hpp"
 #include "gpp_test_utils.hpp"
@@ -95,7 +98,8 @@ int main() {
   // generate randomly
   boost::uniform_real<double> uniform_double_for_hyperparameter(0.5, 1.5);
   CovarianceClass covariance_original(dim, 1.0, 1.0);
-  FillRandomCovarianceHyperparameters(uniform_double_for_hyperparameter, &uniform_generator, &hyperparameters_original, &covariance_original);
+  FillRandomCovarianceHyperparameters(uniform_double_for_hyperparameter, &uniform_generator,
+                                      &hyperparameters_original, &covariance_original);
 
   // Generate data that will be used to build the GP
   // set noise
@@ -105,24 +109,29 @@ int main() {
   domain.GenerateUniformPointsInDomain(num_sampled, &uniform_generator, points_sampled.data());
 
   // build an empty GP: since num_sampled (last arg) is 0, none of the data arrays will be used here
-  GaussianProcess gp_generator(covariance_original, points_sampled.data(), points_sampled_value.data(), noise_variance.data(), dim, 0);
+  GaussianProcess gp_generator(covariance_original, points_sampled.data(), points_sampled_value.data(),
+                               noise_variance.data(), dim, 0);
   // fill the GP with randomly generated data
-  FillRandomGaussianProcess(points_sampled.data(), noise_variance.data(), dim, num_sampled, points_sampled_value.data(), &gp_generator);
+  FillRandomGaussianProcess(points_sampled.data(), noise_variance.data(), dim, num_sampled,
+                            points_sampled_value.data(), &gp_generator);
 
   // simulate not knowing the hyperparameters by choosing a new set randomly (start hyperparameter opt from here)
   std::vector<double> hyperparameters_perturbed(covariance_original.GetNumberOfHyperparameters());
   // choose from a small-ish range; for the demo we want hyperparameter opt to converge fairly quickly/robustly
   boost::uniform_real<double> uniform_double_for_perturbed_hyperparameter(4.0, 8.0);
   CovarianceClass covariance_perturbed(dim, 1.0, 1.0);
-  FillRandomCovarianceHyperparameters(uniform_double_for_perturbed_hyperparameter, &uniform_generator, &hyperparameters_perturbed, &covariance_perturbed);
+  FillRandomCovarianceHyperparameters(uniform_double_for_perturbed_hyperparameter, &uniform_generator,
+                                      &hyperparameters_perturbed, &covariance_perturbed);
 
   std::vector<ClosedInterval> hyperparameter_domain_bounds(covariance_original.GetNumberOfHyperparameters(), {1.0e-10, 1.0e10});
-  HyperparameterDomainType hyperparameter_domain(hyperparameter_domain_bounds.data(), covariance_original.GetNumberOfHyperparameters());
+  HyperparameterDomainType hyperparameter_domain(hyperparameter_domain_bounds.data(),
+                                                 covariance_original.GetNumberOfHyperparameters());
 
   // Log Likelihood eval
   using LogLikelihoodEvaluator = LogMarginalLikelihoodEvaluator;
   // log likelihood evaluator object
-  LogLikelihoodEvaluator log_marginal_eval(points_sampled.data(), points_sampled_value.data(), noise_variance.data(), dim, num_sampled);
+  LogLikelihoodEvaluator log_marginal_eval(points_sampled.data(), points_sampled_value.data(),
+                                           noise_variance.data(), dim, num_sampled);
 
   // Newton setup
   int total_newton_errors = 0;  // number of newton runs that failed due to singular hessians
@@ -131,7 +140,8 @@ int main() {
   double pre_mult_newton = 1.0e-1;  // newton diagonal dominance scaling factor (see newton docs for details)
   double max_relative_change_newton = 1.0;
   double tolerance_newton = 1.0e-11;
-  NewtonParameters newton_parameters(1, newton_max_num_steps, gamma_newton, pre_mult_newton, max_relative_change_newton, tolerance_newton);
+  NewtonParameters newton_parameters(1, newton_max_num_steps, gamma_newton, pre_mult_newton,
+                                     max_relative_change_newton, tolerance_newton);
 
   std::vector<double> new_newton_hyperparameters(covariance_original.GetNumberOfHyperparameters());
 
@@ -141,7 +151,9 @@ int main() {
 
   printf(OL_ANSI_COLOR_CYAN "NEWTON OPTIMIZED HYPERPARAMETERS:\n" OL_ANSI_COLOR_RESET);
   // run newton optimization
-  total_newton_errors += NewtonHyperparameterOptimization(log_marginal_eval, covariance_perturbed, newton_parameters, hyperparameter_domain, new_newton_hyperparameters.data());
+  total_newton_errors += NewtonHyperparameterOptimization(log_marginal_eval, covariance_perturbed,
+                                                          newton_parameters, hyperparameter_domain,
+                                                          new_newton_hyperparameters.data());
 
   printf("Result of newton:\n");
   PrintMatrix(new_newton_hyperparameters.data(), 1, covariance_original.GetNumberOfHyperparameters());
@@ -153,7 +165,8 @@ int main() {
   // Now optimize EI using the 'best' hyperparameters
   // set gaussian process's hyperparameters to the result of newton optimization
   CovarianceClass covariance_opt(dim, new_newton_hyperparameters[0], new_newton_hyperparameters.data() + 1);
-  GaussianProcess gp_model(covariance_opt, points_sampled.data(), points_sampled_value.data(), noise_variance.data(), dim, num_sampled);
+  GaussianProcess gp_model(covariance_opt, points_sampled.data(), points_sampled_value.data(),
+                           noise_variance.data(), dim, num_sampled);
 
   // remaining inputs to EI optimization
   // just an arbitrary point set for when num_being_sampled = 2, as in the default setting for this demo
@@ -165,6 +178,7 @@ int main() {
 
   // multithreading
   int max_num_threads = 2;  // feel free to experiment with different numbers
+  ThreadSchedule thread_schedule(max_num_threads, omp_sched_dynamic);
 
   // set up RNG containers
   int64_t pi_array[] = {314, 3141, 31415, 314159, 3141592, 31415926, 314159265, 3141592653, 31415926535, 314159265359};  // arbitrarily used digits of pi as seeds
@@ -184,7 +198,8 @@ int main() {
   int num_multistarts = 10;  // max number of multistarted locations
   int max_num_steps = 500;  // maximum number of GD iterations per restart
   int max_num_restarts = 20;  // number of restarts to run with GD
-  GradientDescentParameters gd_params(num_multistarts, max_num_steps, max_num_restarts, gamma, pre_mult, max_relative_change_ei, tolerance_ei);
+  GradientDescentParameters gd_params(num_multistarts, max_num_steps, max_num_restarts, gamma,
+                                      pre_mult, max_relative_change_ei, tolerance_ei);
 
   // EI evaluation parameters
   int max_int_steps = 1000;  // number of monte carlo iterations
@@ -193,7 +208,11 @@ int main() {
   {  // optimize EI using a model with the optimized hyperparameters
     printf(OL_ANSI_COLOR_CYAN "OPTIMIZING EXPECTED IMPROVEMENT... (optimized hyperparameters)\n" OL_ANSI_COLOR_RESET);
     bool found_flag = false;
-    ComputeOptimalPointsToSampleWithRandomStarts(gp_model, gd_params, domain, points_being_sampled.data(), num_to_sample, num_being_sampled, best_so_far, max_int_steps, max_num_threads, &found_flag, &uniform_generator, normal_rng_vec.data(), next_point_winner.data());
+    ComputeOptimalPointsToSampleWithRandomStarts(gp_model, gd_params, domain, thread_schedule,
+                                                 points_being_sampled.data(), num_to_sample,
+                                                 num_being_sampled, best_so_far, max_int_steps,
+                                                 &found_flag, &uniform_generator, normal_rng_vec.data(),
+                                                 next_point_winner.data());
     printf(OL_ANSI_COLOR_CYAN "EI OPTIMIZATION FINISHED (optimized hyperparameters). Success status: %s\n" OL_ANSI_COLOR_RESET, found_flag ? "True" : "False");
     printf("Next best sample point according to EI (opt hyper):\n");
     PrintMatrix(next_point_winner.data(), 1, dim);
@@ -215,11 +234,17 @@ int main() {
     std::vector<double> hyperparameters_wrong(covariance_original.GetNumberOfHyperparameters());
     boost::uniform_real<double> uniform_double_for_wrong_hyperparameter(0.1, 0.5);
     CovarianceClass covariance_wrong(dim, 1.0, 1.0);
-    FillRandomCovarianceHyperparameters(uniform_double_for_wrong_hyperparameter, &uniform_generator, &hyperparameters_wrong, &covariance_wrong);
-    GaussianProcess gp_wrong_hyper(covariance_wrong, points_sampled.data(), points_sampled_value.data(), noise_variance.data(), dim, num_sampled);
+    FillRandomCovarianceHyperparameters(uniform_double_for_wrong_hyperparameter, &uniform_generator,
+                                        &hyperparameters_wrong, &covariance_wrong);
+    GaussianProcess gp_wrong_hyper(covariance_wrong, points_sampled.data(), points_sampled_value.data(),
+                                   noise_variance.data(), dim, num_sampled);
 
     bool found_flag = false;
-    ComputeOptimalPointsToSampleWithRandomStarts(gp_wrong_hyper, gd_params, domain, points_being_sampled.data(), num_to_sample, num_being_sampled, best_so_far, max_int_steps, max_num_threads, &found_flag, &uniform_generator, normal_rng_vec.data(), next_point_winner.data());
+    ComputeOptimalPointsToSampleWithRandomStarts(gp_wrong_hyper, gd_params, domain, thread_schedule,
+                                                 points_being_sampled.data(), num_to_sample,
+                                                 num_being_sampled, best_so_far, max_int_steps,
+                                                 &found_flag, &uniform_generator, normal_rng_vec.data(),
+                                                 next_point_winner.data());
     printf(OL_ANSI_COLOR_CYAN "EI OPTIMIZATION FINISHED (wrong hyperparameters). Success status: %s\n" OL_ANSI_COLOR_RESET, found_flag ? "True" : "False");
     printf("Next best sample point according to EI (wrong hyper):\n");
     PrintMatrix(next_point_winner.data(), 1, dim);

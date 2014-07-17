@@ -27,7 +27,7 @@
 #include "gpp_common.hpp"
 #include "gpp_domain.hpp"
 #include "gpp_logging.hpp"
-#include "gpp_model_selection_and_hyperparameter_optimization.hpp"
+#include "gpp_model_selection.hpp"
 #include "gpp_optimization_parameters.hpp"
 #include "gpp_random.hpp"
 
@@ -91,6 +91,37 @@ PythonInterfaceInputContainer::PythonInterfaceInputContainer(const boost::python
   CopyPylistToVector(points_to_sample_in, dim*num_to_sample, points_to_sample);
 }
 
+RandomnessSourceContainer::RandomnessSourceContainer(int num_threads)
+    : uniform_generator(kUniformDefaultSeed),
+      normal_rng_vec(num_threads),
+      num_normal_rng_(num_threads) {
+  SetExplicitNormalRNGSeed(kNormalDefaultSeed);
+}
+
+void RandomnessSourceContainer::SetExplicitUniformGeneratorSeed(NormalRNG::EngineType::result_type seed) {
+  uniform_generator.SetExplicitSeed(seed);
+}
+
+void RandomnessSourceContainer::SetRandomizedUniformGeneratorSeed(NormalRNG::EngineType::result_type seed) {
+  uniform_generator.SetRandomizedSeed(seed, 0);  // single instance, so thread_id = 0
+}
+
+void RandomnessSourceContainer::ResetUniformGeneratorState() {
+  uniform_generator.ResetToMostRecentSeed();
+}
+
+void RandomnessSourceContainer::SetExplicitNormalRNGSeed(NormalRNG::EngineType::result_type seed) {
+  for (IdentifyType<decltype(normal_rng_vec)>::type::size_type i = 0, size = normal_rng_vec.size(); i < size; ++i) {
+    normal_rng_vec[i].SetExplicitSeed(seed + i);
+  }
+}
+
+void RandomnessSourceContainer::SetRandomizedNormalRNGSeed(NormalRNG::EngineType::result_type seed) {
+  for (IdentifyType<decltype(normal_rng_vec)>::type::size_type i = 0, size = normal_rng_vec.size(); i < size; ++i) {
+    normal_rng_vec[i].SetRandomizedSeed(seed, i);
+  }
+}
+
 bool RandomnessSourceContainer::SetNormalRNGSeedPythonList(const boost::python::list& seed_list, const boost::python::list& seed_flag_list) {
   auto seed_list_len = boost::python::len(seed_list);
   auto seed_flag_list_len = boost::python::len(seed_flag_list);
@@ -112,6 +143,12 @@ bool RandomnessSourceContainer::SetNormalRNGSeedPythonList(const boost::python::
     }
   }
   return true;
+}
+
+void RandomnessSourceContainer::ResetNormalRNGState() {
+  for (auto& entry : normal_rng_vec) {
+    entry.ResetToMostRecentSeed();
+  }
 }
 
 void RandomnessSourceContainer::PrintState() {
@@ -217,6 +254,11 @@ void ExportRandomnessContainer() {
     :param num_threads: the max number of threads this object will be used with (sets the number of randomness sources)
     :type num_threads: int
     )%%"))
+      .add_property("num_normal_rng", &RandomnessSourceContainer::num_normal_rng, R"%%(
+    Return the number of NormalRNG objects being tracked.
+
+    This is the maximum number of EI evaluations (threads) this object can support.
+      )%%")
       .def("SetExplicitUniformGeneratorSeed", &RandomnessSourceContainer::SetExplicitUniformGeneratorSeed, R"%%(
     Seeds uniform generator with the specified seed value.
 

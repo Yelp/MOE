@@ -32,7 +32,7 @@ class OptimalLearningTestCase(T.TestCase):
 
         """
         denom = numpy.fabs(truth)
-        if denom < numpy.finfo('float64').tiny:
+        if denom < numpy.finfo(numpy.float64).tiny:
             denom = 1.0  # do not divide by 0
         diff = numpy.fabs((value - truth) / denom)
         T.assert_lte(

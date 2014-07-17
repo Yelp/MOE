@@ -19,12 +19,12 @@ class TestGpHyperOptViews(RestGaussianProcessTestCase):
 
     precompute_gaussian_process_data = True
 
-    def _build_json_payload(self, domain, gaussian_process, covariance):
+    def _build_json_payload(self, domain, covariance, historical_data):
         """Create a json_payload to POST to the /gp/hyper_opt endpoint with all needed info."""
         hyper_dim = domain.dim + 1
         dict_to_dump = {
             'mc_iterations': TEST_EXPECTED_IMPROVEMENT_MC_ITERATIONS,
-            'gp_historical_info': self._build_gp_historical_info(gaussian_process),
+            'gp_historical_info': historical_data.json_payload(),
             'covariance_info': covariance.get_json_serializable_info(),
             'domain_info': domain.get_json_serializable_info(),
             'optimization_info': {
@@ -51,9 +51,10 @@ class TestGpHyperOptViews(RestGaussianProcessTestCase):
         test_case = self.gp_test_environments[0]
 
         python_domain, python_gp = test_case
+        python_cov, historical_data = python_gp.get_core_data_copy()
 
         # Test default test parameters get passed through
-        json_payload = json.loads(self._build_json_payload(python_domain, python_gp, python_gp._covariance))
+        json_payload = json.loads(self._build_json_payload(python_domain, python_cov, historical_data))
 
         request = pyramid.testing.DummyRequest(post=json_payload)
         request.json_body = json_payload
@@ -82,9 +83,10 @@ class TestGpHyperOptViews(RestGaussianProcessTestCase):
         test_case = self.gp_test_environments[0]
 
         python_domain, python_gp = test_case
+        python_cov, historical_data = python_gp.get_core_data_copy()
 
         # Test default test parameters get passed through
-        json_payload = json.loads(self._build_json_payload(python_domain, python_gp, python_gp._covariance))
+        json_payload = json.loads(self._build_json_payload(python_domain, python_cov, historical_data))
 
         request = pyramid.testing.DummyRequest(post=json_payload)
         request.json_body = json_payload
@@ -127,14 +129,15 @@ class TestGpHyperOptViews(RestGaussianProcessTestCase):
         moe_route = GP_HYPER_OPT_MOE_ROUTE
         for test_case in self.gp_test_environments:
             python_domain, python_gp = test_case
+            python_cov, historical_data = python_gp.get_core_data_copy()
 
-            json_payload = self._build_json_payload(python_domain, python_gp, python_gp._covariance)
+            json_payload = self._build_json_payload(python_domain, python_cov, historical_data)
             resp = self.testapp.post(moe_route.endpoint, json_payload)
             resp_schema = GpHyperOptResponse()
             resp_dict = resp_schema.deserialize(json.loads(resp.body))
 
             T.assert_in('covariance_info', resp_dict)
-            T.assert_equal(resp_dict['covariance_info']['covariance_type'], python_gp._covariance.covariance_type)
+            T.assert_equal(resp_dict['covariance_info']['covariance_type'], python_cov.covariance_type)
             # The optimal hyperparameters should be greater than zero
             for hyperparameter in resp_dict['covariance_info']['hyperparameters']:
                 T.assert_gt(hyperparameter, 0.0)

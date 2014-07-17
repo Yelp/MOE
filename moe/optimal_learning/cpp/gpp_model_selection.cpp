@@ -1,5 +1,5 @@
 /*!
-  \file gpp_model_selection_and_hyperparameter_optimization.cpp
+  \file gpp_model_selection.cpp
   \rst
   Table of Contents:
 
@@ -24,7 +24,7 @@
 
   As a preface, if you are not already familiar with GPs and their implementation, you should read the file comments for
   gpp_math.hpp/cpp first.  If you are unfamiliar with the concept of model selection or optimization methods, please read
-  the file comments for gpp_model_selection_and_hyperparameter_optimization.hpp first.
+  the file comments for gpp_model_selection.hpp first.
 
   This file provides implementations for various log likelihood measures of model quality (marginal likelihood,
   leave one out cross validation).  The functions to optimize these measures all live in the header file (they are
@@ -258,7 +258,7 @@
       may be heavily affected by numerical error (if K is poorly conditioned).
 \endrst*/
 
-#include "gpp_model_selection_and_hyperparameter_optimization.hpp"
+#include "gpp_model_selection.hpp"
 
 #include <cmath>
 
@@ -970,7 +970,7 @@ void LeaveOneOutLogLikelihoodEvaluator::ComputeGradLogLikelihood(LeaveOneOutLogL
 void LeaveOneOutLogLikelihoodEvaluator::ComputeHessianLogLikelihood(
     LeaveOneOutLogLikelihoodState * OL_UNUSED(log_likelihood_state),
     double * restrict OL_UNUSED(hessian_loo)) const {
-  OL_THROW_EXCEPTION(OptimalLearningException, "LeaveOneOutLogLikelihoodEvaluator::ComputeHessianLogLikelihood is NOT IMPLEMENTED.");
+  OL_THROW_EXCEPTION(OptimalLearningException, "LeaveOneOutLogLikelihoodEvaluator::ComputeHessianLogLikelihood is NOT IMPLEMENTED. Try using Gradient Descent instead of Newton.");
 }
 
 void LeaveOneOutLogLikelihoodState::UpdateHyperparameters(const EvaluatorType& log_likelihood_eval,

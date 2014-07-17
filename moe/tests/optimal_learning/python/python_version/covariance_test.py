@@ -30,7 +30,7 @@ class SquareExponentialTest(OptimalLearningTestCase):
     @T.class_setup
     def base_setup(self):
         """Set up parameters for test cases."""
-        self.epsilon = 2.0 * numpy.finfo('float64').eps
+        self.epsilon = 2.0 * numpy.finfo(numpy.float64).eps
         self.CovarianceClass = SquareExponential
 
         self.one_dim_test_sets = numpy.array([
@@ -166,7 +166,7 @@ class SquareExponentialTest(OptimalLearningTestCase):
     def test_hyperparameter_gradient_pings(self):
         """Ping test (compare analytic result to finite difference) the gradient wrt hyperparameters."""
         h = 2.0e-3
-        tolerance = 1.0e-5
+        tolerance = 4.0e-5
         num_tests = 10
 
         dim = 3
