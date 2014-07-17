@@ -51,7 +51,6 @@ class EpsilonGreedy(Epsilon):
         arm1: 0.48, arm2: 0.48, arm3: 0.04. The calculation is as follows:
         arm1 and arm2 both get the same allocation: (1-epsilon)/2 + epsilon/3 = (1-0.12)/2 + 0.12/3 = 0.44 + 0.04.
         arm3 gets the allocation epsilon/3 = 0.12/3 = 0.04.
-        
 
         :return: the dictionary of (arm, allocation) key-value pairs
         :rtype: a dictionary of (String(), float64) pairs
@@ -65,7 +64,7 @@ class EpsilonGreedy(Epsilon):
             avg_payoff = numpy.float64(sampled_arm.win - sampled_arm.loss) / sampled_arm.total if sampled_arm.total > 0 else 0
             avg_payoff_arm_name_list.append((avg_payoff, arm_name))
         avg_payoff_arm_name_list.sort(reverse=True)
-        
+
         winning_arm_name_list = []
         winning_avg_payoff, _ = avg_payoff_arm_name_list[0]
         for avg_payoff, arm_name in avg_payoff_arm_name_list:
