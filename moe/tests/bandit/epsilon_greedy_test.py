@@ -33,6 +33,19 @@ class EpsilonGreedyTest(EpsilonTestCase):
         for epsilon in self.epsilons_to_test:
             bandit = self.bandit_class(self.two_new_arms, epsilon)
             T.assert_dicts_equal(bandit.allocate_arms(), {"arm1": 0.5, "arm2": 0.5})
+
+    def test_two_arms_epsilon_zero(self):
+        """Check that the two-arms case with zero epsilon always allocate arm1:1.0 and arm2:0.0 when average payoffs are arm1:1.0 and arm2:0.0."""
+        epsilon = 0.0
+        bandit = self.bandit_class(self.two_arms, epsilon)
+        T.assert_dicts_equal(bandit.allocate_arms(), {"arm1": 1.0, "arm2": 0.0})
+        T.assert_equal(bandit.choose_arm(), "arm1")
  
+    def test_two_arms_epsilon_one(self):
+        """Check that the two-arms case with one epsilon always allocate arm1:0.5 and arm2:0.5 when average payoffs are arm1:1.0 and arm2:0.0."""
+        epsilon = 1.0
+        bandit = self.bandit_class(self.two_arms, epsilon)
+        T.assert_dicts_equal(bandit.allocate_arms(), {"arm1": 0.5, "arm2": 0.5})
+
 if __name__ == "__main__":
     T.run()
