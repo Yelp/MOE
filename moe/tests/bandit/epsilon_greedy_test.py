@@ -47,5 +47,13 @@ class EpsilonGreedyTest(EpsilonTestCase):
         bandit = self.bandit_class(self.two_arms, epsilon)
         T.assert_dicts_equal(bandit.allocate_arms(), {"arm1": 0.5, "arm2": 0.5})
 
+    def test_three_arms(self):
+        """Check that the three-arms cases with integer and float payoffs return the expected arm allocations."""
+        epsilon = 0.03
+        for historical_info in [self.three_arms, self.three_arms_float_payoffs]:
+            bandit = self.bandit_class(historical_info, epsilon)
+            T.assert_dicts_equal(bandit.allocate_arms(), {"arm1": 0.98, "arm2": 0.01, "arm3": 0.01})
+
+
 if __name__ == "__main__":
     T.run()

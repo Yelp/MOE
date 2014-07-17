@@ -20,8 +20,10 @@ class BanditTestCase(T.TestCase):
     one_arm = HistoricalData(sample_arms={"arm1": SampleArm(win=0, loss=0, total=0)})
     two_new_arms = HistoricalData(sample_arms={"arm1": SampleArm(win=0, loss=0, total=0), "arm2": SampleArm(win=0, loss=0, total=0)})
     two_arms = HistoricalData(sample_arms={"arm1": SampleArm(win=1, loss=0, total=1), "arm2": SampleArm(win=0, loss=0, total=0)})
+    three_arms = HistoricalData(sample_arms={"arm1": SampleArm(win=2, loss=1, total=3), "arm2": SampleArm(win=1, loss=1, total=2), "arm3": SampleArm(win=0, loss=0, total=0)})
+    three_arms_float_payoffs = HistoricalData(sample_arms={"arm1": SampleArm(win=2.2, loss=1.1, total=3), "arm2": SampleArm(win=2.1, loss=1.1, total=3), "arm3": SampleArm(win=0, loss=0, total=0)})
 
-    historical_infos_to_test = [one_arm, two_new_arms, two_arms]
+    historical_infos_to_test = [one_arm, two_new_arms, two_arms, three_arms, three_arms_float_payoffs]
 
     """Verify that default values do not throw and error.
 
