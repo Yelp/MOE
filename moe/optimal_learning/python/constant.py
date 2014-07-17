@@ -5,7 +5,7 @@ from collections import namedtuple
 import moe.optimal_learning.python.python_version.optimization as python_optimization
 
 # Multithreading constants
-DEFAULT_MAX_NUM_THREADS = 1
+DEFAULT_MAX_NUM_THREADS = 4
 
 # Covariance constants
 SQUARE_EXPONENTIAL_COVARIANCE_TYPE = 'square_exponential'
