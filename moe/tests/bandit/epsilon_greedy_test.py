@@ -28,6 +28,11 @@ class EpsilonGreedyTest(EpsilonTestCase):
             T.assert_dicts_equal(bandit.allocate_arms(), {"arm1": 1.0})
             T.assert_equal(bandit.choose_arm(), "arm1")
 
-
+    def test_two_new_arms(self):
+        """Check that the two-new-arms case always allocate each arm equally (the allocation is 0.5 for both arms)."""
+        for epsilon in self.epsilons_to_test:
+            bandit = self.bandit_class(self.two_new_arms, epsilon)
+            T.assert_dicts_equal(bandit.allocate_arms(), {"arm1": 0.5, "arm2": 0.5})
+ 
 if __name__ == "__main__":
     T.run()

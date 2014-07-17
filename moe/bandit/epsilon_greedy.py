@@ -44,6 +44,15 @@ class EpsilonGreedy(Epsilon):
         This method will pull the optimal arm (best expected return) with probability 1-epsilon
         with probability epsilon a random arm will be pulled.
 
+        In case of a tie, the method will split the probability 1-epsilon among the optimal arms
+        and with probability epsilon, a random arm will be pulled.
+        For example, if we have three arms, two arms (arm1 and arm2) with an average payoff of 0.5 and a new arm
+        (arm3, average payoff is 0). Let the epsilon be 0.12. The allocation will be as follows:
+        arm1: 0.48, arm2: 0.48, arm3: 0.04. The calculation is as follows:
+        arm1 and arm2 both get the same allocation: (1-epsilon)/2 + epsilon/3 = (1-0.12)/2 + 0.12/3 = 0.44 + 0.04.
+        arm3 gets the allocation epsilon/3 = 0.12/3 = 0.04.
+        
+
         :return: the dictionary of (arm, allocation) key-value pairs
         :rtype: a dictionary of (String(), float64) pairs
         """
@@ -56,10 +65,25 @@ class EpsilonGreedy(Epsilon):
             avg_payoff = numpy.float64(sampled_arm.win - sampled_arm.loss) / sampled_arm.total if sampled_arm.total > 0 else 0
             avg_payoff_arm_name_list.append((avg_payoff, arm_name))
         avg_payoff_arm_name_list.sort(reverse=True)
-        _, winning_arm = avg_payoff_arm_name_list[0]
+        
+        winning_arm_name_list = []
+        winning_avg_payoff, _ = avg_payoff_arm_name_list[0]
+        for avg_payoff, arm_name in avg_payoff_arm_name_list:
+            if avg_payoff < winning_avg_payoff:
+                break
+            winning_arm_name_list.append(arm_name)
+
+        num_winning_arms = len(winning_arm_name_list)
         epsilon_allocation = self._epsilon / num_arms
         arms_to_allocations = {}
+
+        # With probability epsilon, choose a winning arm at random. Therefore, we split the allocation epsilon among all arms.
         for arm_name in arms_sampled.iterkeys():
             arms_to_allocations[arm_name] = epsilon_allocation
-        arms_to_allocations[winning_arm] += 1.0 - self._epsilon
+
+        # With probability 1-epsilon, split allocation among winning arms.
+        winning_arm_allocation = (1.0 - self._epsilon) / num_winning_arms
+        for winning_arm_name in winning_arm_name_list:
+            arms_to_allocations[winning_arm_name] += winning_arm_allocation
+
         return arms_to_allocations
