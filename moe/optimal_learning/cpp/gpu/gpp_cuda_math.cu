@@ -98,6 +98,9 @@ __global__ void CudaComputeEIGpu(double const * __restrict__ chol_var, double co
     CudaCopyElement(k*blockDim.x+idx, num_union, mu, mu_local);
   }
   __syncthreads();
+  double * ei_random_normal_container = &mu_local[num_union];
+  // double *normals = reinterpret_cast<double *>(malloc(sizeof(double)*num_union));
+  // normals[0] = 1;
 
   // MC start
   // RNG setup
@@ -106,7 +109,6 @@ __global__ void CudaComputeEIGpu(double const * __restrict__ chol_var, double co
   // seed a random number generator
   curand_init(local_seed, 0, 0, &random_state);
 
-  double *normals = reinterpret_cast<double *>(malloc(sizeof(double)*num_union));
   double agg = 0.0;
   double improvement_this_step;
   double EI;
@@ -114,23 +116,25 @@ __global__ void CudaComputeEIGpu(double const * __restrict__ chol_var, double co
   for (int mc = 0; mc < num_iteration; ++mc) {
     improvement_this_step = 0.0;
     for (int i = 0; i < num_union; ++i) {
-        normals[i] = curand_normal_double(&random_state);
+        ei_random_normal_container[idx * num_union + i] = curand_normal_double(&random_state);
         // If configure_for_test is ture, random numbers used in MC computations will be saved as output.
         // In fact we will let EI compuation on CPU use the same sequence of random numbers saved here,
         // so that EI compuation on CPU & GPU can be compared directly for unit test purpose.
         if (configure_for_test) {
-            gpu_random_number_EI[IDX * num_iteration * num_union + mc * num_union + i] = normals[i];
+            gpu_random_number_EI[IDX * num_iteration * num_union + mc * num_union + i] = ei_random_normal_container[idx * num_union + i];
         }
     }
-    CudaTriangularMatrixVectorMultiply(chol_var_local, num_union, normals);
+
+    CudaTriangularMatrixVectorMultiply(chol_var_local, num_union, ei_random_normal_container + idx * num_union);
+
     for (int i = 0; i < num_union; ++i) {
-        EI = best - (mu_local[i] + normals[i]);
+        EI = best - (mu_local[i] + ei_random_normal_container[idx * num_union + i]);
         improvement_this_step = fmax(EI, improvement_this_step);
     }
     agg += improvement_this_step;
   }
   EI_storage[IDX] = agg / static_cast<double>(num_iteration);
-  free(normals);
+  // free(normals);
 }
 
 // grad_EI_storage[dim][num_to_sample][num_threads]: A vector storing result of grad_EI from each thread
@@ -151,6 +155,11 @@ __global__ void CudaComputeGradEIGpu(double const * __restrict__ mu, double cons
       CudaCopyElement(k*blockDim.x+idx, num_union, mu, mu_local);
   }
   __syncthreads();
+  double * grad_ei_random_normal_container = &grad_chol_var_local[num_union * num_union * num_to_sample * dim];
+  // double* normals = reinterpret_cast<double*>(malloc(sizeof(double) * num_union));
+  // double* normals_copy = reinterpret_cast<double*>(malloc(sizeof(double) * num_union));
+  // normals[0] = 1;
+  // normals_copy[0] = 1;
 
   int i, k, mc, winner;
   double EI, improvement_this_step;
@@ -158,8 +167,6 @@ __global__ void CudaComputeGradEIGpu(double const * __restrict__ mu, double cons
   unsigned int local_seed = seed + IDX;
   curandState random_state;
   curand_init(local_seed, 0, 0, &random_state);
-  double* normals = reinterpret_cast<double*>(malloc(sizeof(double) * num_union));
-  double* normals_copy = reinterpret_cast<double*>(malloc(sizeof(double) * num_union));
   // initialize grad_EI_storage
   for (int i = 0; i < (num_to_sample * dim); ++i) {
       grad_EI_storage[IDX*num_to_sample*dim + i] = 0.0;
@@ -169,18 +176,18 @@ __global__ void CudaComputeGradEIGpu(double const * __restrict__ mu, double cons
       improvement_this_step = 0.0;
       winner = -1;
       for (i = 0; i < num_union; ++i) {
-          normals[i] = curand_normal_double(&random_state);
-          normals_copy[i] = normals[i];
+          grad_ei_random_normal_container[idx * num_union * 2 + i] = curand_normal_double(&random_state);
+          grad_ei_random_normal_container[idx * num_union * 2 + num_union + i] = grad_ei_random_normal_container[idx * num_union * 2 + i];
             // If configure_for_test is ture, random numbers used in MC computations will be saved as output.
             // In fact we will let gradEI compuation on CPU use the same sequence of random numbers saved here,
             // so that gradEI compuation on CPU & GPU can be compared directly for unit test purpose.
           if (configure_for_test) {
-              gpu_random_number_gradEI[IDX * num_iteration * num_union + mc * num_union + i] = normals[i];
+              gpu_random_number_gradEI[IDX * num_iteration * num_union + mc * num_union + i] = grad_ei_random_normal_container[idx * num_union * 2 + i];
           }
       }
-      CudaTriangularMatrixVectorMultiply(chol_var_local, num_union, normals);
+      CudaTriangularMatrixVectorMultiply(chol_var_local, num_union, grad_ei_random_normal_container + idx * num_union * 2);
       for (i = 0; i < num_union; ++i) {
-          EI = best - (mu_local[i] + normals[i]);
+          EI = best - (mu_local[i] + grad_ei_random_normal_container[idx * num_union * 2 + i]);
           if (EI > improvement_this_step) {
               improvement_this_step = EI;
               winner = i;
@@ -193,7 +200,7 @@ __global__ void CudaComputeGradEIGpu(double const * __restrict__ mu, double cons
               }
           }
           for (i = 0; i < num_to_sample; ++i) {   // derivative w.r.t ith point
-              CudaGeneralMatrixVectorMultiply(grad_chol_var_local + i*num_union*num_union*dim + winner*num_union*dim, normals_copy, dim, num_union, dim, grad_EI_storage + IDX*num_to_sample*dim + i*dim);
+              CudaGeneralMatrixVectorMultiply(grad_chol_var_local + i*num_union*num_union*dim + winner*num_union*dim, grad_ei_random_normal_container + idx * num_union * 2 + num_union, dim, num_union, dim, grad_EI_storage + IDX*num_to_sample*dim + i*dim);
           }
       }
   }
@@ -201,10 +208,9 @@ __global__ void CudaComputeGradEIGpu(double const * __restrict__ mu, double cons
   for (int i = 0; i < num_to_sample*dim; ++i) {
       grad_EI_storage[IDX*num_to_sample*dim + i] /= static_cast<double>(num_iteration);
   }
-  free(normals);
-  free(normals_copy);
+  // free(normals);
+  // free(normals_copy);
 }
-
 }  // end unnamed namespace
 
 CudaError CudaAllocateMemForDoubleVector(int num_doubles, double** __restrict__ address_of_ptr_to_gpu_memory) {
@@ -235,7 +241,7 @@ CudaError CudaGetEI(double * __restrict__ mu, double * __restrict__ chol_var, do
   OL_CUDA_ERROR_RETURN(cudaMemcpy(gpu_mu, mu, mem_size_mu, cudaMemcpyHostToDevice))
   OL_CUDA_ERROR_RETURN(cudaMemcpy(gpu_chol_var, chol_var, mem_size_chol_var, cudaMemcpyHostToDevice))
   // execute kernel
-  CudaComputeEIGpu <<< grid, threads, num_union*sizeof(double)+num_union*num_union*sizeof(double) >>> (gpu_chol_var, gpu_mu, num_union, num_iteration, best, seed, gpu_EI_storage, gpu_random_number_EI, configure_for_test);
+  CudaComputeEIGpu <<< grid, threads, num_union*sizeof(double)+num_union*num_union*sizeof(double)+num_union*ei_thread_no*sizeof(double) >>> (gpu_chol_var, gpu_mu, num_union, num_iteration, best, seed, gpu_EI_storage, gpu_random_number_EI, configure_for_test);
   OL_CUDA_ERROR_RETURN(cudaPeekAtLastError())
   // copy gpu_EI_storage back to CPU
   OL_CUDA_ERROR_RETURN(cudaMemcpy(EI_storage, gpu_EI_storage, mem_size_EI_storage, cudaMemcpyDeviceToHost))
@@ -280,7 +286,7 @@ CudaError CudaGetGradEI(double * __restrict__ mu, double * __restrict__ grad_mu,
   // execute kernel
   // inputs: gpu_mu, gpu_chol_var, gpu_grad_mu, gpu_grad_chol_var, best, num_union, num_to_sample, dim, num_iteration, seed
   // output: gpu_grad_EI_storage
-  CudaComputeGradEIGpu <<< grid, threads, mem_size_mu+mem_size_chol_var+mem_size_grad_mu+mem_size_grad_chol_var >>> (gpu_mu, gpu_chol_var, gpu_grad_mu, gpu_grad_chol_var, best, num_union, num_to_sample, dim, num_iteration, seed, gpu_grad_EI_storage, gpu_random_number_gradEI, configure_for_test);
+  CudaComputeGradEIGpu <<< grid, threads, mem_size_mu+mem_size_chol_var+mem_size_grad_mu+mem_size_grad_chol_var+num_union*grad_ei_thread_no*2*sizeof(double) >>> (gpu_mu, gpu_chol_var, gpu_grad_mu, gpu_grad_chol_var, best, num_union, num_to_sample, dim, num_iteration, seed, gpu_grad_EI_storage, gpu_random_number_gradEI, configure_for_test);
   OL_CUDA_ERROR_RETURN(cudaPeekAtLastError())
 
   OL_CUDA_ERROR_RETURN(cudaMemcpy(grad_EI_storage, gpu_grad_EI_storage, mem_size_grad_EI_storage, cudaMemcpyDeviceToHost))
