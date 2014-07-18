@@ -52,10 +52,9 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
 
     num_mc_iterations = 747
     rng_seed = 314
-    
+
     approx_grad = True
     max_func_evals = 150000
-    max_iters = 150000
     max_metric_correc = 10
     factr = 1000.0
     pgtol = 1e-10
@@ -63,7 +62,6 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
     BFGS_parameters = LBFGSBParameters(
         approx_grad,
         max_func_evals,
-        max_iters,
         max_metric_correc,
         factr,
         pgtol,
@@ -273,7 +271,7 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
         ei_eval.current_point = best_point
         gradient = ei_eval.compute_grad_expected_improvement()
         self.assert_vector_within_relative(gradient, numpy.zeros(gradient.shape), tolerance)
-        
+
         # Check that output is in the domain
         T.assert_equal(repeated_domain.check_point_inside(best_point), True)
 
@@ -334,12 +332,12 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
         for index in numpy.ndindex(grad_ei_final.shape):
             T.assert_lt(numpy.fabs(grad_ei_final[index]), numpy.fabs(grad_ei_initial[index]))
 
-    def test_multistart_qEI_expected_improvement_dfo(self):
+    def test_multistart_qei_expected_improvement_dfo(self):
         """Check that multistart optimization (BFGS) can find the optimum point to sample (using 2-EI)."""
         numpy.random.seed(7858)
         index = numpy.argmax(numpy.greater_equal(self.num_sampled_list, 20))
         domain, gaussian_process = self.gp_test_environments[index]
-        
+
         tolerance = 6.0e-2
         num_multistarts = 3
 
@@ -376,7 +374,7 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
         # grad EI should have improved
         for index in numpy.ndindex(grad_ei_final.shape):
             T.assert_lt(numpy.fabs(grad_ei_final[index]), numpy.fabs(grad_ei_initial[index]))
- 
+
     def test_qd_ei_with_self(self):
         """Compare the 1D analytic EI results to the qD analytic EI results, checking several random points per test case.
 

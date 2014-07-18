@@ -186,7 +186,6 @@ class GradientDescentOptimizerTest(OptimalLearningTestCase):
 
         approx_grad = False
         max_func_evals = 150000
-        max_iters = 150000
         max_metric_correc = 10
         factr = 1000.0
         pgtol = 1e-10
@@ -194,13 +193,11 @@ class GradientDescentOptimizerTest(OptimalLearningTestCase):
         self.BFGS_parameters = LBFGSBParameters(
             approx_grad,
             max_func_evals,
-            max_iters,
             max_metric_correc,
             factr,
             pgtol,
             epsilon,
         )
-
 
     def test_gradient_descent_optimizer(self):
         """Check that gradient descent can find the optimum of the quadratic test objective."""
@@ -376,7 +373,7 @@ class GradientDescentOptimizerTest(OptimalLearningTestCase):
         # Verify derivative
         gradient = self.polynomial.compute_grad_objective_function()
         self.assert_vector_within_relative(gradient, numpy.zeros(self.polynomial.dim), tolerance)
-    
+
     def test_bfgs_optimizer(self):
         """Check that BFGS can find the optimum of the quadratic test objective."""
         # Check the claimed optima is an optima
@@ -407,7 +404,7 @@ class GradientDescentOptimizerTest(OptimalLearningTestCase):
         # Verify derivative
         gradient = self.polynomial.compute_grad_objective_function()
         self.assert_vector_within_relative(gradient, numpy.zeros(self.polynomial.dim), tolerance)
-    
+
     def test_multistarted_bfgs_optimizer(self):
         """Check that multistarted GD can find the optimum in a 'very' large domain."""
         # Set a large domain: a single GD run is unlikely to reach the optimum
@@ -430,4 +427,3 @@ class GradientDescentOptimizerTest(OptimalLearningTestCase):
         # Verify derivative
         gradient = self.polynomial.compute_grad_objective_function()
         self.assert_vector_within_relative(gradient, numpy.zeros(self.polynomial.dim), tolerance)
-    

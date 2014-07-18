@@ -71,7 +71,7 @@ class TensorProductDomain(DomainInterface):
         return all([interval.is_inside(point[i]) for i, interval in enumerate(self._domain_bounds)])
 
     def domain_bounds_as_list(self):
-        """Return a list of (min, max) pairs, one for each dimension of the domain"""
+        """Return a list of (min, max) pairs, one for each dimension of the domain."""
         return [(interval.min, interval.max) for interval in self._domain_bounds]
 
     def generate_random_point_in_domain(self, random_source=None):
