@@ -58,8 +58,8 @@ def _make_covariance_of_process_from_params(params):
 def _make_optimization_parameters_from_params(params):
     """Figure out which cpp_wrappers.* objects to construct from params, validate and return them.
 
-    :param params: the deserialized REST request, containing ei_optimization_parameters
-    :type params: a dictionary with a key ei_optimization_parameters containing a :class:`moe.views.schemas.EiOptimizationParameters()` object with optimization parameters
+    :param params: the deserialized REST request, containing optimization_info
+    :type params: a dictionary with a key optimization_info containing a :class:`moe.views.schemas.OptimizationInfo()` object with optimization parameters
 
     """
     optimization_info = params.get('optimization_info')

@@ -2,7 +2,7 @@
 """Base level schemas for the response/request schemas of each MOE REST endpoint."""
 import colander
 
-from moe.optimal_learning.python.constant import DEFAULT_NEWTON_PARAMETERS, DEFAULT_GRADIENT_DESCENT_PARAMETERS, GRADIENT_DESCENT_OPTIMIZER, DEFAULT_OPTIMIZATION_MULTISTARTS, DEFAULT_OPTIMIZATION_NUM_RANDOM_SAMPLES, TENSOR_PRODUCT_DOMAIN_TYPE, SQUARE_EXPONENTIAL_COVARIANCE_TYPE, NULL_OPTIMIZER, NEWTON_OPTIMIZER, DOMAIN_TYPES, OPTIMIZATION_TYPES, COVARIANCE_TYPES, CONSTANT_LIAR_METHODS, DEFAULT_MAX_NUM_THREADS, MAX_ALLOWED_NUM_THREADS, DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS, LIKELIHOOD_TYPES, LOG_MARGINAL_LIKELIHOOD, DEFAULT_CONSTANT_LIAR_METHOD, DEFAULT_CONSTANT_LIAR_LIE_NOISE_VARIANCE, DEFAULT_KRIGING_NOISE_VARIANCE, DEFAULT_KRIGING_STD_DEVIATION_COEF
+from moe.optimal_learning.python.constant import GRADIENT_DESCENT_OPTIMIZER, DEFAULT_OPTIMIZATION_MULTISTARTS, DEFAULT_OPTIMIZATION_NUM_RANDOM_SAMPLES, TENSOR_PRODUCT_DOMAIN_TYPE, SQUARE_EXPONENTIAL_COVARIANCE_TYPE, NULL_OPTIMIZER, NEWTON_OPTIMIZER, DOMAIN_TYPES, OPTIMIZATION_TYPES, COVARIANCE_TYPES, CONSTANT_LIAR_METHODS, DEFAULT_MAX_NUM_THREADS, MAX_ALLOWED_NUM_THREADS, DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS, LIKELIHOOD_TYPES, LOG_MARGINAL_LIKELIHOOD, DEFAULT_CONSTANT_LIAR_METHOD, DEFAULT_CONSTANT_LIAR_LIE_NOISE_VARIANCE, DEFAULT_KRIGING_NOISE_VARIANCE, DEFAULT_KRIGING_STD_DEVIATION_COEF
 
 
 class PositiveFloat(colander.SchemaNode):
@@ -132,40 +132,30 @@ class GradientDescentParametersSchema(colander.MappingSchema):
 
     max_num_steps = colander.SchemaNode(
             colander.Int(),
-            missing=DEFAULT_GRADIENT_DESCENT_PARAMETERS.max_num_steps,
             validator=colander.Range(min=1),
             )
     max_num_restarts = colander.SchemaNode(
             colander.Int(),
-            missing=DEFAULT_GRADIENT_DESCENT_PARAMETERS.max_num_restarts,
             validator=colander.Range(min=1),
             )
     num_steps_averaged = colander.SchemaNode(
             colander.Int(),
-            missing=DEFAULT_GRADIENT_DESCENT_PARAMETERS.num_steps_averaged,
-            validator=colander.Range(min=1),
+            validator=colander.Range(min=0),
             )
     gamma = colander.SchemaNode(
             colander.Float(),
-            missing=DEFAULT_GRADIENT_DESCENT_PARAMETERS.gamma,
             validator=colander.Range(min=0.0),
             )
     pre_mult = colander.SchemaNode(
             colander.Float(),
-            missing=DEFAULT_GRADIENT_DESCENT_PARAMETERS.pre_mult,
             validator=colander.Range(min=0.0),
             )
     max_relative_change = colander.SchemaNode(
             colander.Float(),
-            missing=DEFAULT_GRADIENT_DESCENT_PARAMETERS.max_relative_change,
-            validator=colander.Range(
-                min=0.0,
-                max=1.0,
-                ),
+            validator=colander.Range(min=0.0, max=1.0),
             )
     tolerance = colander.SchemaNode(
             colander.Float(),
-            missing=DEFAULT_NEWTON_PARAMETERS.tolerance,
             validator=colander.Range(min=0.0),
             )
 
@@ -180,30 +170,22 @@ class NewtonParametersSchema(colander.MappingSchema):
 
     max_num_steps = colander.SchemaNode(
             colander.Int(),
-            missing=DEFAULT_NEWTON_PARAMETERS.max_num_steps,
             validator=colander.Range(min=1),
             )
     gamma = colander.SchemaNode(
             colander.Float(),
-            missing=DEFAULT_NEWTON_PARAMETERS.gamma,
-            validator=colander.Range(min=0.0),
+            validator=colander.Range(min=1.0),
             )
     time_factor = colander.SchemaNode(
             colander.Float(),
-            missing=DEFAULT_NEWTON_PARAMETERS.time_factor,
-            validator=colander.Range(min=0.0),
+            validator=colander.Range(min=1.0e-16),
             )
     max_relative_change = colander.SchemaNode(
             colander.Float(),
-            missing=DEFAULT_NEWTON_PARAMETERS.max_relative_change,
-            validator=colander.Range(
-                min=0.0,
-                max=1.0,
-                ),
+            validator=colander.Range(min=0.0, max=1.0),
             )
     tolerance = colander.SchemaNode(
             colander.Float(),
-            missing=DEFAULT_NEWTON_PARAMETERS.tolerance,
             validator=colander.Range(min=0.0),
             )
 
@@ -608,11 +590,11 @@ class GpHyperOptRequest(colander.MappingSchema):
                     ],
                 },
             "optimization_info": {
-                "optimization_type": "gradient_descent_optimizer",
+                "optimization_type": "newton_optimizer",
                 "num_multistarts": 200,
                 "num_random_samples": 4000,
                 "optimization_parameters": {
-                    "gamma": 0.5,
+                    "gamma": 1.2,
                     ...
                     },
                 },
@@ -633,7 +615,7 @@ class GpHyperOptRequest(colander.MappingSchema):
             )
     hyperparameter_domain_info = BoundedDomainInfo()
     optimization_info = OptimizationInfo(
-            missing=OptimizationInfo().deserialize({}),
+            missing=OptimizationInfo().deserialize({"optimization_type": NEWTON_OPTIMIZER}),
             )
     log_likelihood_info = colander.SchemaNode(
             colander.String(),
@@ -656,6 +638,7 @@ class GpHyperOptStatus(colander.MappingSchema):
 
     log_likelihood = colander.SchemaNode(colander.Float())
     grad_log_likelihood = ListOfFloats()
+    # TODO(eliu): can I set a default on this string to print something like "{'found_update': False}"? like if we didn't receive a status, prob no update was found
     optimization_success = colander.SchemaNode(colander.String())
 
 

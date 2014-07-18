@@ -24,7 +24,7 @@ def timing_context(name):
     if "log" not in timing_context.__dict__:
         timing_context.log = logging.getLogger(__name__)
 
-    start_time = time.clock()
+    start_time = time.time()
     yield
-    elapsed_time = time.clock() - start_time
+    elapsed_time = time.time() - start_time
     timing_context.log.info("{0:s}: {1:f} secs".format(name, elapsed_time))

@@ -56,6 +56,8 @@ class TestGpNextPointsViews(RestGaussianProcessTestCase):
         request = pyramid.testing.DummyRequest(post=json_payload)
         request.json_body = json_payload
         view = GpNextPointsPrettyView(request)
+        # TODO(eliu): can I get around setting this value explicitly??
+        view._route_name = GP_NEXT_POINTS_CONSTANT_LIAR_ROUTE_NAME
         params = view.get_params_from_request()
         _, optimization_parameters, num_random_samples = _make_optimization_parameters_from_params(params)
 
@@ -76,6 +78,8 @@ class TestGpNextPointsViews(RestGaussianProcessTestCase):
         request = pyramid.testing.DummyRequest(post=json_payload)
         request.json_body = json_payload
         view = GpNextPointsPrettyView(request)
+        # TODO(eliu): can I get around setting this value explicitly??
+        view._route_name = GP_NEXT_POINTS_CONSTANT_LIAR_ROUTE_NAME
         params = view.get_params_from_request()
         _, optimization_parameters, num_random_samples = _make_optimization_parameters_from_params(params)
 

@@ -110,6 +110,6 @@ class GpHyperOptView(OptimizableGpPrettyView):
                 'status': {
                     'log_likelihood': log_likelihood_eval.compute_log_likelihood(),
                     'grad_log_likelihood': log_likelihood_eval.compute_grad_log_likelihood().tolist(),
-                    'optimization_success': hyperopt_status['gradient_descent_found_update'],
+                    'optimization_success': hyperopt_status,
                     },
                 })

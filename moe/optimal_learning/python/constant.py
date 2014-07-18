@@ -3,6 +3,7 @@
 from collections import namedtuple
 
 import moe.optimal_learning.python.python_version.optimization as python_optimization
+import moe.views.constant as views_constant
 
 # Multithreading constants
 # Default number of threads to use in computation
@@ -72,11 +73,21 @@ PRETTY_OPTIMIZATION_MULTISTARTS = 40
 DEFAULT_OPTIMIZATION_NUM_RANDOM_SAMPLES = 4000
 TEST_OPTIMIZATION_NUM_RANDOM_SAMPLES = 3
 
-DEFAULT_NEWTON_MULTISTARTS = 200
-DEFAULT_NEWTON_PARAMETERS = python_optimization.NewtonParameters(
-        max_num_steps=100,
-        gamma=1.05,
-        time_factor=1.0e-2,
+# DEFAULT_NEWTON_MULTISTARTS = 200
+# DEFAULT_NEWTON_PARAMETERS = python_optimization.NewtonParameters(
+#         max_num_steps=100,
+#         gamma=1.05,
+#         time_factor=1.0e-2,
+#         max_relative_change=1.0,
+#         tolerance=1.0e-9,
+#         )
+
+DEFAULT_NEWTON_MULTISTARTS_MODEL_SELECTION = 200
+DEFAULT_NEWTON_NUM_RANDOM_SAMPLES_MODEL_SELECTION = 0
+DEFAULT_NEWTON_PARAMETERS_MODEL_SELECTION = python_optimization.NewtonParameters(
+        max_num_steps=150,
+        gamma=1.2,
+        time_factor=5.0e-4,
         max_relative_change=1.0,
         tolerance=1.0e-9,
         )
@@ -101,21 +112,85 @@ DEMO_GRADIENT_DESCENT_PARAMETERS = python_optimization.GradientDescentParameters
         tolerance=1.0e-6,
         )
 
-DEFAULT_GRADIENT_DESCENT_MULTISTARTS = 400
-DEFAULT_GRADIENT_DESCENT_PARAMETERS = python_optimization.GradientDescentParameters(
-        max_num_steps=400,
+# DEFAULT_GRADIENT_DESCENT_MULTISTARTS = 400
+# DEFAULT_GRADIENT_DESCENT_PARAMETERS = python_optimization.GradientDescentParameters(
+#         max_num_steps=400,
+#         max_num_restarts=10,
+#         num_steps_averaged=10,
+#         gamma=0.7,
+#         pre_mult=0.4,
+#         max_relative_change=1.0,
+#         tolerance=1.0e-6,
+#         )
+
+DEFAULT_GRADIENT_DESCENT_MULTISTARTS_MODEL_SELECTION = 400
+DEFAULT_GRADIENT_DESCENT_NUM_RANDOM_SAMPLES_MODEL_SELECTION = 0
+DEFAULT_GRADIENT_DESCENT_PARAMETERS_MODEL_SELECTION = python_optimization.GradientDescentParameters(
+        max_num_steps=600,
         max_num_restarts=10,
-        num_steps_averaged=10,
-        gamma=0.7,
-        pre_mult=0.4,
-        max_relative_change=1.0,
-        tolerance=1.0e-6,
+        num_steps_averaged=0,
+        gamma=0.9,
+        pre_mult=0.25,
+        max_relative_change=0.2,
+        tolerance=1.0e-5,
         )
 
-OPTIMIZATION_TYPE_TO_DEFAULT_PARAMETERS = {
-        NEWTON_OPTIMIZER: DEFAULT_NEWTON_PARAMETERS,
-        GRADIENT_DESCENT_OPTIMIZER: DEFAULT_GRADIENT_DESCENT_PARAMETERS,
-        }
+DEFAULT_GRADIENT_DESCENT_MULTISTARTS_EI_ANALYTIC = 600
+DEFAULT_GRADIENT_DESCENT_NUM_RANDOM_SAMPLES_EI_ANALYTIC = 10000
+DEFAULT_GRADIENT_DESCENT_PARAMETERS_EI_ANALYTIC = python_optimization.GradientDescentParameters(
+        max_num_steps=500,
+        max_num_restarts=4,
+        num_steps_averaged=0,
+        gamma=0.6,
+        pre_mult=1.0,
+        max_relative_change=1.0,
+        tolerance=1.0e-7,
+        )
+
+DEFAULT_GRADIENT_DESCENT_MULTISTARTS_EI_MC = 200
+DEFAULT_GRADIENT_DESCENT_NUM_RANDOM_SAMPLES_EI_MC = 4000
+DEFAULT_GRADIENT_DESCENT_PARAMETERS_EI_MC = python_optimization.GradientDescentParameters(
+        max_num_steps=500,
+        max_num_restarts=4,
+        num_steps_averaged=100,
+        gamma=0.6,
+        pre_mult=1.0,
+        max_relative_change=1.0,
+        tolerance=1.0e-5,
+        )
+
+_OptimizationParameters = namedtuple('OptimizationParameters', [
+    'num_multistarts',
+    'num_random_samples',
+    'optimization_parameters',
+])
+
+_EI_ANALYTIC_OPTIMIZER = _OptimizationParameters(
+    DEFAULT_GRADIENT_DESCENT_MULTISTARTS_EI_ANALYTIC,
+    DEFAULT_GRADIENT_DESCENT_NUM_RANDOM_SAMPLES_EI_ANALYTIC,
+    DEFAULT_GRADIENT_DESCENT_PARAMETERS_EI_ANALYTIC,
+)
+
+OPTIMIZATION_TYPE_AND_OBJECTIVE_TO_DEFAULT_PARAMETERS = {
+    (GRADIENT_DESCENT_OPTIMIZER, views_constant.GP_NEXT_POINTS_KRIGING_ROUTE_NAME): _EI_ANALYTIC_OPTIMIZER,
+    (GRADIENT_DESCENT_OPTIMIZER, views_constant.GP_NEXT_POINTS_CONSTANT_LIAR_ROUTE_NAME): _EI_ANALYTIC_OPTIMIZER,
+    (GRADIENT_DESCENT_OPTIMIZER, views_constant.GP_NEXT_POINTS_EPI_ROUTE_NAME, 'analytic'): _EI_ANALYTIC_OPTIMIZER,
+    (GRADIENT_DESCENT_OPTIMIZER, views_constant.GP_NEXT_POINTS_EPI_ROUTE_NAME, 'monte_carlo'): _OptimizationParameters(
+        DEFAULT_GRADIENT_DESCENT_MULTISTARTS_EI_MC,
+        DEFAULT_GRADIENT_DESCENT_NUM_RANDOM_SAMPLES_EI_MC,
+        DEFAULT_GRADIENT_DESCENT_PARAMETERS_EI_MC,
+    ),
+    (GRADIENT_DESCENT_OPTIMIZER, views_constant.GP_HYPER_OPT_ROUTE_NAME): _OptimizationParameters(
+        DEFAULT_GRADIENT_DESCENT_MULTISTARTS_MODEL_SELECTION,
+        DEFAULT_GRADIENT_DESCENT_NUM_RANDOM_SAMPLES_MODEL_SELECTION,
+        DEFAULT_GRADIENT_DESCENT_PARAMETERS_MODEL_SELECTION,
+    ),
+    (NEWTON_OPTIMIZER, views_constant.GP_HYPER_OPT_ROUTE_NAME): _OptimizationParameters(
+        DEFAULT_NEWTON_MULTISTARTS_MODEL_SELECTION,
+        DEFAULT_NEWTON_NUM_RANDOM_SAMPLES_MODEL_SELECTION,
+        DEFAULT_NEWTON_PARAMETERS_MODEL_SELECTION,
+    ),
+}
 
 # Constant Liar constants
 CONSTANT_LIAR_MIN = 'constant_liar_min'
