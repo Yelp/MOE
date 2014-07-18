@@ -377,41 +377,6 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
         for index in numpy.ndindex(grad_ei_final.shape):
             T.assert_lt(numpy.fabs(grad_ei_final[index]), numpy.fabs(grad_ei_initial[index]))
  
-    def test_multistart_qEI_expected_improvement_dfo_specific_case(self):
-        """Check that multistart optimization (BFGS) can find the optimum point to sample in a specific case 
-        where the Gaussian Process has been sampled at 0, 0.5, and 1.0 with sampled values each 0.0.
-        
-        Defining our interval from 0.0 to 1.0, we expect that the next two sampled points be 0.25 and 0.75."""
-        numpy.random.seed(785)
-        index = numpy.argmax(numpy.greater_equal(self.num_sampled_list, 20))
-        covariance_func = SquareExponential([1.0, 0.2])
-        gaussian_process = GaussianProcess(covariance_func, HistoricalData(1))
-        gaussian_process.add_sampled_points(
-            [
-                SamplePoint([0.0], 0.0, 1e-11),
-                SamplePoint([0.5], 0.0, 1e-11),
-                SamplePoint([1.0], 0.0, 1e-11),
-            ]
-        )
-
-        tolerance = 6.0e-4
-        num_multistarts = 9
-
-        # Expand the domain so that we are definitely not doing constrained optimization
-        expanded_domain = TensorProductDomain([ClosedInterval(0.0, 1.0)])
-        num_to_sample = 2
-        repeated_domain = RepeatedDomain(num_to_sample, expanded_domain)
-
-        # Just any random point that won't be optimal
-        points_to_sample = repeated_domain.generate_random_point_in_domain()
-        ei_eval = ExpectedImprovement(gaussian_process, points_to_sample)
-        
-        ei_optimizer = LBFGSBOptimizer(repeated_domain, ei_eval, self.BFGS_parameters)
-        best_point = multistart_expected_improvement_optimization(ei_optimizer, num_multistarts, num_to_sample)
-
-        expected_answer = numpy.array([[0.25], [0.75]])
-        self.assert_vector_within_relative(best_point, expected_answer, tolerance)
-
     def test_qd_ei_with_self(self):
         """Compare the 1D analytic EI results to the qD analytic EI results, checking several random points per test case.
 
