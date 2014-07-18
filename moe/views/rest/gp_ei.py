@@ -11,7 +11,7 @@ import numpy
 
 from pyramid.view import view_config
 
-from moe.optimal_learning.python.constant import DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS, DEFAULT_MAX_NUM_THREADS
+from moe.optimal_learning.python.constant import DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS, DEFAULT_MAX_NUM_THREADS, MAX_ALLOWED_NUM_THREADS
 from moe.optimal_learning.python.cpp_wrappers.expected_improvement import ExpectedImprovement
 from moe.views.constant import GP_EI_ROUTE_NAME, GP_EI_PRETTY_ROUTE_NAME
 from moe.views.gp_pretty_view import GpPrettyView, PRETTY_RENDERER
@@ -32,7 +32,7 @@ class GpEiRequest(colander.MappingSchema):
 
         :points_being_sampled: list of points in domain being sampled in concurrent experiments (default: []) (:class:`moe.views.schemas.ListOfPointsInDomain`)
         :mc_iterations: number of Monte Carlo (MC) iterations to perform in numerical integration to calculate EI
-        :max_num_threads: maximum number of threads to use in computation (default: 1)
+        :max_num_threads: maximum number of threads to use in computation
         :covariance_info: a :class:`moe.views.schemas.CovarianceInfo` dict of covariance information
 
     **Example Minimal Request**
@@ -94,7 +94,7 @@ class GpEiRequest(colander.MappingSchema):
             )
     max_num_threads = colander.SchemaNode(
             colander.Int(),
-            validator=colander.Range(min=1),
+            validator=colander.Range(min=1, max=MAX_ALLOWED_NUM_THREADS),
             missing=DEFAULT_MAX_NUM_THREADS,
             )
     gp_historical_info = GpHistoricalInfo()

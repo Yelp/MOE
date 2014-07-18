@@ -2,7 +2,7 @@
 """Base level schemas for the response/request schemas of each MOE REST endpoint."""
 import colander
 
-from moe.optimal_learning.python.constant import DEFAULT_NEWTON_PARAMETERS, DEFAULT_GRADIENT_DESCENT_PARAMETERS, GRADIENT_DESCENT_OPTIMIZER, DEFAULT_OPTIMIZATION_MULTISTARTS, DEFAULT_OPTIMIZATION_NUM_RANDOM_SAMPLES, TENSOR_PRODUCT_DOMAIN_TYPE, SQUARE_EXPONENTIAL_COVARIANCE_TYPE, NULL_OPTIMIZER, NEWTON_OPTIMIZER, DOMAIN_TYPES, OPTIMIZATION_TYPES, COVARIANCE_TYPES, CONSTANT_LIAR_METHODS, DEFAULT_MAX_NUM_THREADS, DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS, LIKELIHOOD_TYPES, LOG_MARGINAL_LIKELIHOOD, DEFAULT_CONSTANT_LIAR_METHOD, DEFAULT_CONSTANT_LIAR_LIE_NOISE_VARIANCE, DEFAULT_KRIGING_NOISE_VARIANCE, DEFAULT_KRIGING_STD_DEVIATION_COEF
+from moe.optimal_learning.python.constant import DEFAULT_NEWTON_PARAMETERS, DEFAULT_GRADIENT_DESCENT_PARAMETERS, GRADIENT_DESCENT_OPTIMIZER, DEFAULT_OPTIMIZATION_MULTISTARTS, DEFAULT_OPTIMIZATION_NUM_RANDOM_SAMPLES, TENSOR_PRODUCT_DOMAIN_TYPE, SQUARE_EXPONENTIAL_COVARIANCE_TYPE, NULL_OPTIMIZER, NEWTON_OPTIMIZER, DOMAIN_TYPES, OPTIMIZATION_TYPES, COVARIANCE_TYPES, CONSTANT_LIAR_METHODS, DEFAULT_MAX_NUM_THREADS, MAX_ALLOWED_NUM_THREADS, DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS, LIKELIHOOD_TYPES, LOG_MARGINAL_LIKELIHOOD, DEFAULT_CONSTANT_LIAR_METHOD, DEFAULT_CONSTANT_LIAR_LIE_NOISE_VARIANCE, DEFAULT_KRIGING_NOISE_VARIANCE, DEFAULT_KRIGING_STD_DEVIATION_COEF
 
 
 class PositiveFloat(colander.SchemaNode):
@@ -323,7 +323,7 @@ class GpNextPointsRequest(colander.MappingSchema):
 
         :num_to_sample: number of next points to generate (default: 1)
         :mc_iterations: number of Monte Carlo (MC) iterations to perform in numerical integration to calculate EI
-        :max_num_threads: maximum number of threads to use in computation (default: 1)
+        :max_num_threads: maximum number of threads to use in computation
         :covariance_info: a :class:`moe.views.schemas.CovarianceInfo` dict of covariance information
         :optimization_info: a :class:`moe.views.schemas.OptimizationInfo` dict of optimization information
         :points_being_sampled: list of points in domain being sampled in concurrent experiments (default: [])
@@ -403,7 +403,7 @@ class GpNextPointsRequest(colander.MappingSchema):
             )
     max_num_threads = colander.SchemaNode(
             colander.Int(),
-            validator=colander.Range(min=1),
+            validator=colander.Range(min=1, max=MAX_ALLOWED_NUM_THREADS),
             missing=DEFAULT_MAX_NUM_THREADS,
             )
     gp_historical_info = GpHistoricalInfo()
@@ -575,7 +575,7 @@ class GpHyperOptRequest(colander.MappingSchema):
 
     **Optional fields**
 
-        :max_num_threads: maximum number of threads to use in computation (default: 1)
+        :max_num_threads: maximum number of threads to use in computation
         :covariance_info: a :class:`moe.views.schemas.CovarianceInfo` dict of covariance information, used as a starting point for optimization
         :optimization_info: a :class:`moe.views.schemas.OptimizationInfo` dict of optimization information
 
@@ -623,7 +623,7 @@ class GpHyperOptRequest(colander.MappingSchema):
 
     max_num_threads = colander.SchemaNode(
             colander.Int(),
-            validator=colander.Range(min=1),
+            validator=colander.Range(min=1, max=MAX_ALLOWED_NUM_THREADS),
             missing=DEFAULT_MAX_NUM_THREADS,
             )
     gp_historical_info = GpHistoricalInfo()

@@ -5,7 +5,11 @@ from collections import namedtuple
 import moe.optimal_learning.python.python_version.optimization as python_optimization
 
 # Multithreading constants
+# Default number of threads to use in computation
 DEFAULT_MAX_NUM_THREADS = 4
+# Maximum number of threads that a user can specify
+# TODO(GH-301): make this a server configurable value or set appropriate openmp env var
+MAX_ALLOWED_NUM_THREADS = 10000
 
 # Covariance constants
 SQUARE_EXPONENTIAL_COVARIANCE_TYPE = 'square_exponential'
