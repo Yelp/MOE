@@ -13,6 +13,7 @@ from pyramid.view import view_config
 
 from moe.optimal_learning.python.constant import DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS, DEFAULT_MAX_NUM_THREADS, MAX_ALLOWED_NUM_THREADS
 from moe.optimal_learning.python.cpp_wrappers.expected_improvement import ExpectedImprovement
+from moe.optimal_learning.python.timing import timing_context
 from moe.views.constant import GP_EI_ROUTE_NAME, GP_EI_PRETTY_ROUTE_NAME
 from moe.views.gp_pretty_view import GpPrettyView, PRETTY_RENDERER
 from moe.views.schemas import ListOfPointsInDomain, GpHistoricalInfo, ListOfExpectedImprovements, CovarianceInfo, DomainInfo
@@ -188,10 +189,11 @@ class GpEiView(GpPrettyView):
                 num_mc_iterations=num_mc_iterations,
                 )
 
-        expected_improvement = expected_improvement_evaluator.evaluate_at_point_list(
+        with timing_context("EI computation time"):
+            expected_improvement = expected_improvement_evaluator.evaluate_at_point_list(
                 points_to_evaluate,
                 max_num_threads=max_num_threads,
-                )
+            )
 
         return self.form_response({
                 'endpoint': self._route_name,

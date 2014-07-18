@@ -9,6 +9,7 @@ import numpy
 
 import moe.optimal_learning.python.cpp_wrappers.expected_improvement
 from moe.optimal_learning.python.cpp_wrappers.expected_improvement import ExpectedImprovement
+from moe.optimal_learning.python.timing import timing_context
 from moe.views.gp_pretty_view import GpPrettyView
 from moe.views.optimizable_gp_pretty_view import OptimizableGpPrettyView
 from moe.views.schemas import GpNextPointsRequest, GpNextPointsResponse
@@ -93,14 +94,15 @@ class GpNextPointsPrettyView(OptimizableGpPrettyView):
 
             opt_method = getattr(moe.optimal_learning.python.cpp_wrappers.expected_improvement, optimization_method_name)
 
-            next_points = opt_method(
+            with timing_context("EPI optimization time"):
+                next_points = opt_method(
                     expected_improvement_optimizer,
                     optimization_parameters.num_multistarts,
                     num_to_sample,
                     max_num_threads=max_num_threads,
                     *args,
                     **kwargs
-                    )
+                )
 
         # TODO(GH-285): Use analytic q-EI here
         expected_improvement_evaluator.current_point = next_points

@@ -9,6 +9,7 @@ import numpy
 
 from pyramid.view import view_config
 
+from moe.optimal_learning.python.timing import timing_context
 from moe.views.constant import GP_MEAN_ROUTE_NAME, GP_MEAN_PRETTY_ROUTE_NAME, GP_VAR_ROUTE_NAME, GP_VAR_PRETTY_ROUTE_NAME, GP_VAR_DIAG_ROUTE_NAME, GP_VAR_DIAG_PRETTY_ROUTE_NAME, GP_MEAN_VAR_ROUTE_NAME, GP_MEAN_VAR_PRETTY_ROUTE_NAME, GP_MEAN_VAR_DIAG_ROUTE_NAME, GP_MEAN_VAR_DIAG_PRETTY_ROUTE_NAME
 from moe.views.gp_pretty_view import GpPrettyView, PRETTY_RENDERER
 from moe.views.schemas import GpMeanVarRequest, GpMeanVarResponse, GpMeanVarDiagResponse, GpMeanResponse, GpVarResponse, GpVarDiagResponse
@@ -50,16 +51,18 @@ class GpMeanVarBaseView(GpPrettyView):
 
         response_dict = {}
         response_dict['endpoint'] = self._route_name
-        if compute_mean:
-            response_dict['mean'] = gaussian_process.compute_mean_of_points(points_to_sample).tolist()
 
-        if compute_var:
-            if var_diag:
-                response_dict['var'] = numpy.diag(
-                    gaussian_process.compute_variance_of_points(points_to_sample)
-                ).tolist()
-            else:
-                response_dict['var'] = gaussian_process.compute_variance_of_points(points_to_sample).tolist()
+        with timing_context("mean/var computation time"):
+            if compute_mean:
+                response_dict['mean'] = gaussian_process.compute_mean_of_points(points_to_sample).tolist()
+
+            if compute_var:
+                if var_diag:
+                    response_dict['var'] = numpy.diag(
+                        gaussian_process.compute_variance_of_points(points_to_sample)
+                    ).tolist()
+                else:
+                    response_dict['var'] = gaussian_process.compute_variance_of_points(points_to_sample).tolist()
 
         return response_dict
 

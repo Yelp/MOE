@@ -9,6 +9,7 @@ from pyramid.view import view_config
 
 from moe.optimal_learning.python.cpp_wrappers.log_likelihood import multistart_hyperparameter_optimization
 from moe.optimal_learning.python.linkers import LOG_LIKELIHOOD_TYPES_TO_LOG_LIKELIHOOD_METHODS
+from moe.optimal_learning.python.timing import timing_context
 from moe.views.constant import GP_HYPER_OPT_ROUTE_NAME, GP_HYPER_OPT_PRETTY_ROUTE_NAME
 from moe.views.gp_pretty_view import GpPrettyView, PRETTY_RENDERER
 from moe.views.optimizable_gp_pretty_view import OptimizableGpPrettyView
@@ -91,12 +92,13 @@ class GpHyperOptView(OptimizableGpPrettyView):
         )
 
         hyperopt_status = {}
-        optimized_hyperparameters = multistart_hyperparameter_optimization(
-            log_likelihood_optimizer,
-            optimization_parameters.num_multistarts,
-            max_num_threads=max_num_threads,
-            status=hyperopt_status,
-        )
+        with timing_context("model selection time"):
+            optimized_hyperparameters = multistart_hyperparameter_optimization(
+                log_likelihood_optimizer,
+                optimization_parameters.num_multistarts,
+                max_num_threads=max_num_threads,
+                status=hyperopt_status,
+            )
 
         covariance_of_process.hyperparameters = optimized_hyperparameters
 
