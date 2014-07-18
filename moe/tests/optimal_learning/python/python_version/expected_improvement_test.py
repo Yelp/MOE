@@ -52,6 +52,23 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
 
     num_mc_iterations = 747
     rng_seed = 314
+    
+    approx_grad = True
+    max_func_evals = 150000
+    max_iters = 150000
+    max_metric_correc = 10
+    factr = 1000.0
+    pgtol = 1e-10
+    epsilon = 1e-8
+    BFGS_parameters = LBFGSBParameters(
+        approx_grad,
+        max_func_evals,
+        max_iters,
+        max_metric_correc,
+        factr,
+        pgtol,
+        epsilon,
+    )
 
     @T.class_setup
     def base_setup(self):
@@ -260,50 +277,6 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
         # Check that output is in the domain
         T.assert_equal(repeated_domain.check_point_inside(best_point), True)
 
-    def test_multistart_analytic_expected_improvement_optimization_bfgs(self):
-        """Check that multistart optimization (gradient descent) can find the optimum point to sample (using 1D analytic EI)."""
-        numpy.random.seed(3148)
-        index = numpy.argmax(numpy.greater_equal(self.num_sampled_list, 20))
-        domain, gaussian_process = self.gp_test_environments[index]
-
-        approx_grad = True
-        max_func_evals = 150000
-        max_iters = 150000
-        max_metric_correc = 10
-        factr = 1000.0
-        pgtol = 1e-10
-        epsilon = 1e-8
-        tolerance = 6.0e-6
-        BFGS_parameters = LBFGSBParameters(
-            approx_grad,
-            max_func_evals,
-            max_iters,
-            max_metric_correc,
-            factr,
-            pgtol,
-            epsilon,
-        )
-        num_multistarts = 3
-
-        points_to_sample = domain.generate_random_point_in_domain()
-        ei_eval = ExpectedImprovement(gaussian_process, points_to_sample)
-
-        # expand the domain so that we are definitely not doing constrained optimization
-        expanded_domain = TensorProductDomain([ClosedInterval(-4.0, 2.0)] * self.dim)
-
-        num_to_sample = 1
-        repeated_domain = RepeatedDomain(ei_eval.num_to_sample, expanded_domain)
-        ei_optimizer = LBFGSBOptimizer(repeated_domain, ei_eval, BFGS_parameters)
-        best_point = multistart_expected_improvement_optimization(ei_optimizer, num_multistarts, num_to_sample)
-
-        # Check that gradients are small
-        ei_eval.current_point = best_point
-        gradient = ei_eval.compute_grad_expected_improvement()
-        self.assert_vector_within_relative(gradient, numpy.zeros(gradient.shape), tolerance)
-
-        # Check that output is in the domain
-        T.assert_equal(repeated_domain.check_point_inside(best_point), True)
-
     def test_multistart_monte_carlo_expected_improvement_optimization(self):
         """Check that multistart optimization (gradient descent) can find the optimum point to sample (using 2-EI)."""
         numpy.random.seed(7858)  # TODO(271): Monte Carlo only works for this seed
@@ -362,28 +335,12 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
             T.assert_lt(numpy.fabs(grad_ei_final[index]), numpy.fabs(grad_ei_initial[index]))
 
     def test_multistart_qEI_expected_improvement_dfo(self):
-        """Check that multistart optimization (gradient descent) can find the optimum point to sample (using 2-EI)."""
+        """Check that multistart optimization (BFGS) can find the optimum point to sample (using 2-EI)."""
         numpy.random.seed(7858)
         index = numpy.argmax(numpy.greater_equal(self.num_sampled_list, 20))
         domain, gaussian_process = self.gp_test_environments[index]
-
-        approx_grad = True
-        max_func_evals = 150000
-        max_iters = 150000
-        max_metric_correc = 10
-        factr = 10.0
-        pgtol = 1e-10
-        epsilon = 1e-8
+        
         tolerance = 6.0e-2
-        BFGS_parameters = LBFGSBParameters(
-            approx_grad,
-            max_func_evals,
-            max_iters,
-            max_metric_correc,
-            factr,
-            pgtol,
-            epsilon,
-        )
         num_multistarts = 3
 
         # Expand the domain so that we are definitely not doing constrained optimization
@@ -399,22 +356,18 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
         ei_initial = ei_eval.compute_expected_improvement()
         grad_ei_initial = ei_eval.compute_grad_expected_improvement()
 
-        ei_optimizer = LBFGSBOptimizer(repeated_domain, ei_eval, BFGS_parameters)
+        ei_optimizer = LBFGSBOptimizer(repeated_domain, ei_eval, self.BFGS_parameters)
         best_point = multistart_expected_improvement_optimization(ei_optimizer, num_multistarts, num_to_sample)
-        print best_point
 
         # Check that gradients are "small"
         ei_eval.current_point = best_point
         ei_final = ei_eval.compute_expected_improvement()
         grad_ei_final = ei_eval.compute_grad_expected_improvement()
-        ei_eval.current_point = [[ 0.77426037, -3.13904539, -0.51993343],
-                 [ 1.06409072, -3.46337228,  2.0]] 
-        print "best found point: {0}, best test point: {1}".format(ei_final, ei_eval.compute_expected_improvement())
 
         self.assert_vector_within_relative(grad_ei_final, numpy.zeros(grad_ei_final.shape), tolerance)
 
         # Check that output is in the domain
-        T.assert_equal(repeated_domain.check_point_inside(best_point), True)
+        T.assert_true(repeated_domain.check_point_inside(best_point))
 
         # Since we didn't really converge to the optimal EI (too costly), do some other sanity checks
         # EI should have improved
@@ -425,7 +378,7 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
             T.assert_lt(numpy.fabs(grad_ei_final[index]), numpy.fabs(grad_ei_initial[index]))
  
     def test_multistart_qEI_expected_improvement_dfo_specific_case(self):
-        """Check that multistart optimization (gradient descent) can find the optimum point to sample in a specific case 
+        """Check that multistart optimization (BFGS) can find the optimum point to sample in a specific case 
         where the Gaussian Process has been sampled at 0, 0.5, and 1.0 with sampled values each 0.0.
         
         Defining our interval from 0.0 to 1.0, we expect that the next two sampled points be 0.25 and 0.75."""
@@ -441,23 +394,7 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
             ]
         )
 
-        approx_grad = True
-        max_func_evals = 150000
-        max_iters = 150000
-        max_metric_correc = 10
-        factr = 10.0
-        pgtol = 1e-10
-        epsilon = 1e-8
         tolerance = 6.0e-4
-        BFGS_parameters = LBFGSBParameters(
-            approx_grad,
-            max_func_evals,
-            max_iters,
-            max_metric_correc,
-            factr,
-            pgtol,
-            epsilon,
-        )
         num_multistarts = 9
 
         # Expand the domain so that we are definitely not doing constrained optimization
@@ -465,12 +402,11 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
         num_to_sample = 2
         repeated_domain = RepeatedDomain(num_to_sample, expanded_domain)
 
-        num_mc_iterations = 10000
         # Just any random point that won't be optimal
         points_to_sample = repeated_domain.generate_random_point_in_domain()
-        ei_eval = ExpectedImprovement(gaussian_process, points_to_sample, num_mc_iterations=num_mc_iterations)
+        ei_eval = ExpectedImprovement(gaussian_process, points_to_sample)
         
-        ei_optimizer = LBFGSBOptimizer(repeated_domain, ei_eval, BFGS_parameters)
+        ei_optimizer = LBFGSBOptimizer(repeated_domain, ei_eval, self.BFGS_parameters)
         best_point = multistart_expected_improvement_optimization(ei_optimizer, num_multistarts, num_to_sample)
 
         expected_answer = numpy.array([[0.25], [0.75]])

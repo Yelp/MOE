@@ -28,7 +28,7 @@ class DomainInterface(object):
 
     @abstractmethod
     def domain_bounds_as_list(self):
-        """Return a list of (min, max) pairs, one for each dimension of the domain"""
+        """Return a list of (min, max) tuples, one for each dimension of the domain"""
         pass
 
     @abstractmethod

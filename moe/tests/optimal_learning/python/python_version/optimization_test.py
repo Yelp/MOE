@@ -7,7 +7,7 @@ import testify as T
 from moe.optimal_learning.python.geometry_utils import ClosedInterval
 from moe.optimal_learning.python.interfaces.optimization_interface import OptimizableInterface
 from moe.optimal_learning.python.python_version.domain import TensorProductDomain
-from moe.optimal_learning.python.python_version.optimization import multistart_optimize, GradientDescentParameters, NullOptimizer, GradientDescentOptimizer, MultistartOptimizer
+from moe.optimal_learning.python.python_version.optimization import multistart_optimize, LBFGSBParameters, GradientDescentParameters, NullOptimizer, GradientDescentOptimizer, MultistartOptimizer, LBFGSBOptimizer
 from moe.tests.optimal_learning.python.optimal_learning_test_case import OptimalLearningTestCase
 
 
@@ -184,6 +184,24 @@ class GradientDescentOptimizerTest(OptimalLearningTestCase):
             tolerance,
         )
 
+        approx_grad = False
+        max_func_evals = 150000
+        max_iters = 150000
+        max_metric_correc = 10
+        factr = 1000.0
+        pgtol = 1e-10
+        epsilon = 1e-8
+        self.BFGS_parameters = LBFGSBParameters(
+            approx_grad,
+            max_func_evals,
+            max_iters,
+            max_metric_correc,
+            factr,
+            pgtol,
+            epsilon,
+        )
+
+
     def test_gradient_descent_optimizer(self):
         """Check that gradient descent can find the optimum of the quadratic test objective."""
         # Check the claimed optima is an optima
@@ -358,3 +376,58 @@ class GradientDescentOptimizerTest(OptimalLearningTestCase):
         # Verify derivative
         gradient = self.polynomial.compute_grad_objective_function()
         self.assert_vector_within_relative(gradient, numpy.zeros(self.polynomial.dim), tolerance)
+    
+    def test_bfgs_optimizer(self):
+        """Check that BFGS can find the optimum of the quadratic test objective."""
+        # Check the claimed optima is an optima
+        optimum_point = self.polynomial.optimum_point
+        self.polynomial.current_point = optimum_point
+        gradient = self.polynomial.compute_grad_objective_function()
+        self.assert_vector_within_relative(gradient, numpy.zeros(self.polynomial.dim), 0.0)
+
+        # Verify that gradient descent does not move from the optima if we start it there.
+        bfgs_optimizer = LBFGSBOptimizer(self.domain, self.polynomial, self.BFGS_parameters)
+        bfgs_optimizer.optimize()
+        output = bfgs_optimizer.objective_function.current_point
+        self.assert_vector_within_relative(output, optimum_point, 0.0)
+
+        # Start at a wrong point and check optimization
+        tolerance = 2.0e-13
+        initial_guess = numpy.full(self.polynomial.dim, 0.2)
+        bfgs_optimizer.objective_function.current_point = initial_guess
+        bfgs_optimizer.optimize()
+        output = bfgs_optimizer.objective_function.current_point
+        # Verify coordinates
+        self.assert_vector_within_relative(output, optimum_point, tolerance)
+
+        # Verify function value
+        value = self.polynomial.compute_objective_function()
+        self.assert_scalar_within_relative(value, self.polynomial.optimum_value, tolerance)
+
+        # Verify derivative
+        gradient = self.polynomial.compute_grad_objective_function()
+        self.assert_vector_within_relative(gradient, numpy.zeros(self.polynomial.dim), tolerance)
+    
+    def test_multistarted_bfgs_optimizer(self):
+        """Check that multistarted GD can find the optimum in a 'very' large domain."""
+        # Set a large domain: a single GD run is unlikely to reach the optimum
+        domain_bounds = [ClosedInterval(-10.0, 10.0)] * self.dim
+        domain = TensorProductDomain(domain_bounds)
+
+        tolerance = 2.0e-10
+        num_points = 10
+        bfgs_optimizer = LBFGSBOptimizer(domain, self.polynomial, self.BFGS_parameters)
+        multistart_optimizer = MultistartOptimizer(bfgs_optimizer, num_points)
+
+        output, _ = multistart_optimizer.optimize()
+        # Verify coordinates
+        self.assert_vector_within_relative(output, self.polynomial.optimum_point, tolerance)
+
+        # Verify function value
+        value = self.polynomial.compute_objective_function()
+        self.assert_scalar_within_relative(value, self.polynomial.optimum_value, tolerance)
+
+        # Verify derivative
+        gradient = self.polynomial.compute_grad_objective_function()
+        self.assert_vector_within_relative(gradient, numpy.zeros(self.polynomial.dim), tolerance)
+    

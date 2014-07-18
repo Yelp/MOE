@@ -309,9 +309,20 @@ _BaseLBFGSBParameters = collections.namedtuple('_BaseLBFGSBParameters', [
 
 
 class LBFGSBParameters(_BaseLBFGSBParameters):
-    """Parameters for the L-BFGS-B optimization.
+    r"""Container to hold parameters that specify the behavior of L-BFGS-B.
+
+    Suggested values come from scipy documentation for scipy.optimize.fmin_l_bfgs_b.
+
+    :ivar approx_grad: (*bool*) if true, BFGS will approximate the gradient
+    :ivar max_func_evals: (*int > 0*) maximum number of objective function calls to make (suggest: 15000)
+    :ivar max_iters: (*int > 0*) maximum number of iterations for optimization (suggest: 15000)
+    :ivar max_metric_correc: (*int > 0*) maximum number of variable metric corrections used to define the limited memorty matrix (suggest: 10)
+    :ivar factr: (*float64 > 1.0*) 1e12 for low accuracy, 1e7 for moderate accuracy, and 10 for extremely high accuracy (suggest: 1000.0)
+    :ivar pgtol: (*float64 > 0.0*) cutoff for highest component of gradient to be considered a critical point (suggest: 1.0e-5)
+    :ivar epsilon: (*float64 > 0.0*) step size for approximating the gradient (suggest: 1.0e-8)
 
     """
+
     __slots__ = ()
 
 
@@ -549,7 +560,7 @@ class MultistartOptimizer(OptimizerInterface):
         return best_point, function_value_list
 
 
-class LBFGSBOptimizer():
+class LBFGSBOptimizer(OptimizerInterface):
 
     """Optimizes an objective function over the specified domain with the L-BFGS-B method.
 
@@ -560,6 +571,10 @@ class LBFGSBOptimizer():
     L-BFGS is a memory efficient version of BFGS, and BFGS-B is a variant that handles simple box constraints. 
     We use L-BFGS-B, which is a combination of the two, and is often the optimization algorithm of choice for 
     these types of problems.
+
+    For more information:
+    http://en.wikipedia.org/wiki/Limited-memory_BFGS
+    http://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.fmin_l_bfgs_b.html
     
     .. Note:: See optimize() docstring for more details.
 
@@ -580,6 +595,22 @@ class LBFGSBOptimizer():
         self.domain = domain
         self.objective_function = optimizable
         self.optimization_parameters = optimization_parameters
+        self._num_points = 1
+        if hasattr(self.domain, 'num_repeats'):
+            self._num_points = self.domain.num_repeats
+       
+    def _scipy_decorator(self, func, **kwargs):
+        """Wrapper function for expected improvement calculation to feed into BFGS."""
+        def decorated(point):
+            shaped_point = point.reshape(self._num_points, self.domain.dim)
+            self.objective_function.current_point = shaped_point
+            value = -func(**kwargs)
+            if isinstance(value, (numpy.ndarray)):
+                return value.flatten()
+            else:
+                return value
+
+        return decorated
 
     def optimize(self, **kwargs):
         """Perform an L-BFGS-B optimization given the parameters in optimization_parameters.
@@ -589,31 +620,28 @@ class LBFGSBOptimizer():
         
         """
         
-        num_points = 1
-        if hasattr(self.domain, 'num_repeats'):
-            num_points = self.domain.num_repeats
-
-        def objective_func(point):
-            """Wrapper function for expected improvement calculation to feed into BFGS."""
-            shaped_point = point.reshape(num_points, self.domain.dim)
-            self.objective_function.current_point = shaped_point
-            # Notice the negative sign. Build-in L-BFGS-B is a minimization while we want a maximization.
-            return -self.objective_function.compute_objective_function(**kwargs)
-
-        def grad(point):
-            """Wrapper function for expected improvement gradient if needed."""
-            shaped_point = point.reshape(num_points, self.domain.dim)
-            self.objective_function.current_point = shaped_point
-            return self.objective_function.compute_grad_objective_function(**kwargs).reshape(1, num_points * self.domain.dim)
-        
-        domain_with_error = numpy.array(self.domain.domain_bounds_as_list() * num_points) - self.DOMAIN_ERROR
+        # The wrappers lead to some lost precision, which may cause the function to return a value just outside the bound. 
+        # Shriking the bounds is a solution.
+        domain_with_error = numpy.array(self.domain.domain_bounds_as_list() * self._num_points) - self.DOMAIN_ERROR
 
         # Parameters defined above in LBFGSBParameters class.
-        return optimize.fmin_l_bfgs_b(func=objective_func, x0=self.domain.generate_random_point_in_domain().reshape(1, num_points * self.domain.dim), bounds=domain_with_error, fprime=grad, \
-                                        approx_grad=self.optimization_parameters.approx_grad, \
-                                        factr=self.optimization_parameters.factr, \
-                                        maxfun=self.optimization_parameters.max_func_evals, \
-                                        maxiter=self.optimization_parameters.max_iters, \
-                                        m=self.optimization_parameters.max_metric_correc, \
-                                        pgtol=self.optimization_parameters.pgtol, \
-                                        epsilon=self.optimization_parameters.epsilon)[0], None
+        unshaped_point = optimize.fmin_l_bfgs_b(
+            func=self._scipy_decorator(self.objective_function.compute_objective_function, **kwargs),
+            x0=self.objective_function.current_point.flatten(),
+            bounds=domain_with_error,
+            fprime=self._scipy_decorator(self.objective_function.compute_grad_objective_function, **kwargs),
+            approx_grad=self.optimization_parameters.approx_grad,
+            factr=self.optimization_parameters.factr,
+            maxfun=self.optimization_parameters.max_func_evals,
+            maxiter=self.optimization_parameters.max_iters,
+            m=self.optimization_parameters.max_metric_correc,
+            pgtol=self.optimization_parameters.pgtol,
+            epsilon=self.optimization_parameters.epsilon,
+        )[0]
+        if self._num_points == 1:
+            shaped_point = unshaped_point
+        else:
+            shaped_point = unshaped_point.reshape(self._num_points, self.domain.dim)
+ 
+        self.objective_function.current_point = shaped_point
+        return shaped_point, None
