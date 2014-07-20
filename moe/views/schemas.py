@@ -2,7 +2,7 @@
 """Base level schemas for the response/request schemas of each MOE REST endpoint."""
 import colander
 
-from moe.optimal_learning.python.constant import DEFAULT_NEWTON_PARAMETERS, DEFAULT_GRADIENT_DESCENT_PARAMETERS, GRADIENT_DESCENT_OPTIMIZER, DEFAULT_OPTIMIZATION_MULTISTARTS, DEFAULT_OPTIMIZATION_NUM_RANDOM_SAMPLES, TENSOR_PRODUCT_DOMAIN_TYPE, SQUARE_EXPONENTIAL_COVARIANCE_TYPE, NULL_OPTIMIZER, NEWTON_OPTIMIZER, DOMAIN_TYPES, OPTIMIZATION_TYPES, COVARIANCE_TYPES, CONSTANT_LIAR_METHODS, DEFAULT_MAX_NUM_THREADS, DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS, LIKELIHOOD_TYPES, LOG_MARGINAL_LIKELIHOOD, DEFAULT_CONSTANT_LIAR_METHOD, DEFAULT_CONSTANT_LIAR_LIE_NOISE_VARIANCE, DEFAULT_KRIGING_NOISE_VARIANCE, DEFAULT_KRIGING_STD_DEVIATION_COEF
+from moe.optimal_learning.python.constant import DEFAULT_NEWTON_PARAMETERS, DEFAULT_GRADIENT_DESCENT_PARAMETERS, GRADIENT_DESCENT_OPTIMIZER, DEFAULT_OPTIMIZER_MULTISTARTS, DEFAULT_OPTIMIZER_NUM_RANDOM_SAMPLES, TENSOR_PRODUCT_DOMAIN_TYPE, SQUARE_EXPONENTIAL_COVARIANCE_TYPE, NULL_OPTIMIZER, NEWTON_OPTIMIZER, DOMAIN_TYPES, OPTIMIZER_TYPES, COVARIANCE_TYPES, CONSTANT_LIAR_METHODS, DEFAULT_MAX_NUM_THREADS, DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS, LIKELIHOOD_TYPES, LOG_MARGINAL_LIKELIHOOD, DEFAULT_CONSTANT_LIAR_METHOD, DEFAULT_CONSTANT_LIAR_LIE_NOISE_VARIANCE, DEFAULT_KRIGING_NOISE_VARIANCE, DEFAULT_KRIGING_STD_DEVIATION_COEF
 
 
 class PositiveFloat(colander.SchemaNode):
@@ -275,7 +275,7 @@ class MatrixOfFloats(colander.SequenceSchema):
     row_of_matrix = ListOfFloats()
 
 
-OPTIMIZATION_TYPES_TO_SCHEMA_CLASSES = {
+OPTIMIZER_TYPES_TO_SCHEMA_CLASSES = {
         NULL_OPTIMIZER: NullParametersSchema,
         NEWTON_OPTIMIZER: NewtonParametersSchema,
         GRADIENT_DESCENT_OPTIMIZER: GradientDescentParametersSchema,
@@ -288,24 +288,24 @@ class OptimizationInfo(colander.MappingSchema):
 
     **Optimization fields**
 
-        :optimization_type: a string defining the optimization type from `moe.optimal_learning.python.constant.OPTIMIZATION_TYPES` (default: GRADIENT_DESCENT_OPTIMIZER)
-        :optimization_parameters: a dict corresponding the the parameters of the optimization method
+        :optimizer_type: a string defining the optimizer type from `moe.optimal_learning.python.constant.OPTIMIZER_TYPES` (default: GRADIENT_DESCENT_OPTIMIZER)
+        :optimizer_parameters: a dict corresponding the the parameters of the optimization method
 
     """
 
-    optimization_type = colander.SchemaNode(
+    optimizer_type = colander.SchemaNode(
             colander.String(),
-            validator=colander.OneOf(OPTIMIZATION_TYPES),
+            validator=colander.OneOf(OPTIMIZER_TYPES),
             missing=GRADIENT_DESCENT_OPTIMIZER,
             )
     num_multistarts = colander.SchemaNode(
             colander.Int(),
-            missing=DEFAULT_OPTIMIZATION_MULTISTARTS,
+            missing=DEFAULT_OPTIMIZER_MULTISTARTS,
             validator=colander.Range(min=1),
             )
     num_random_samples = colander.SchemaNode(
             colander.Int(),
-            missing=DEFAULT_OPTIMIZATION_NUM_RANDOM_SAMPLES,
+            missing=DEFAULT_OPTIMIZER_NUM_RANDOM_SAMPLES,
             validator=colander.Range(min=1),
             )
 
@@ -325,7 +325,7 @@ class GpNextPointsRequest(colander.MappingSchema):
         :mc_iterations: number of Monte Carlo (MC) iterations to perform in numerical integration to calculate EI
         :max_num_threads: maximum number of threads to use in computation (default: 1)
         :covariance_info: a :class:`moe.views.schemas.CovarianceInfo` dict of covariance information
-        :optimization_info: a :class:`moe.views.schemas.OptimizationInfo` dict of optimization information
+        :optimizer_info: a :class:`moe.views.schemas.OptimizationInfo` dict of optimization information
         :points_being_sampled: list of points in domain being sampled in concurrent experiments (default: [])
 
     **Example Minimal Request**
@@ -378,11 +378,11 @@ class GpNextPointsRequest(colander.MappingSchema):
                 "covariance_type": "square_exponential",
                 "hyperparameters": [1.0, 1.0],
                 },
-            "optimization_info": {
-                "optimization_type": "gradient_descent_optimizer",
+            "optimizer_info": {
+                "optimizer_type": "gradient_descent_optimizer",
                 "num_multistarts": 200,
                 "num_random_samples": 4000,
-                "optimization_parameters": {
+                "optimizer_parameters": {
                     "gamma": 0.5,
                     ...
                     },
@@ -411,7 +411,7 @@ class GpNextPointsRequest(colander.MappingSchema):
     covariance_info = CovarianceInfo(
             missing=CovarianceInfo().deserialize({}),
             )
-    optimization_info = OptimizationInfo(
+    optimizer_info = OptimizationInfo(
             missing=OptimizationInfo().deserialize({}),
             )
     points_being_sampled = ListOfPointsInDomain(
@@ -577,7 +577,7 @@ class GpHyperOptRequest(colander.MappingSchema):
 
         :max_num_threads: maximum number of threads to use in computation (default: 1)
         :covariance_info: a :class:`moe.views.schemas.CovarianceInfo` dict of covariance information, used as a starting point for optimization
-        :optimization_info: a :class:`moe.views.schemas.OptimizationInfo` dict of optimization information
+        :optimizer_info: a :class:`moe.views.schemas.OptimizationInfo` dict of optimization information
 
     **Example Request**
 
@@ -607,11 +607,11 @@ class GpHyperOptRequest(colander.MappingSchema):
                     {"min": 0.1, "max": 2.0},
                     ],
                 },
-            "optimization_info": {
-                "optimization_type": "gradient_descent_optimizer",
+            "optimizer_info": {
+                "optimizer_type": "gradient_descent_optimizer",
                 "num_multistarts": 200,
                 "num_random_samples": 4000,
-                "optimization_parameters": {
+                "optimizer_parameters": {
                     "gamma": 0.5,
                     ...
                     },
@@ -632,7 +632,7 @@ class GpHyperOptRequest(colander.MappingSchema):
             missing=CovarianceInfo().deserialize({}),
             )
     hyperparameter_domain_info = BoundedDomainInfo()
-    optimization_info = OptimizationInfo(
+    optimizer_info = OptimizationInfo(
             missing=OptimizationInfo().deserialize({}),
             )
     log_likelihood_info = colander.SchemaNode(
@@ -650,13 +650,13 @@ class GpHyperOptStatus(colander.MappingSchema):
 
        :log_likelihood: The log likelihood at the new hyperparameters
        :grad_log_likelihood: The gradient of the log likelihood at the new hyperparameters
-       :optimization_success: Whether or not the optimizer converged to an optimal set of hyperparameters
+       :optimizer_success: Whether or not the optimizer converged to an optimal set of hyperparameters
 
     """
 
     log_likelihood = colander.SchemaNode(colander.Float())
     grad_log_likelihood = ListOfFloats()
-    optimization_success = colander.SchemaNode(colander.String())
+    optimizer_success = colander.SchemaNode(colander.String())
 
 
 class GpHyperOptResponse(colander.MappingSchema):

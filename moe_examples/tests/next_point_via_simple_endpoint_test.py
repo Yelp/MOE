@@ -18,8 +18,8 @@ class NextPointsViaSimpleEndpointTest(MoeExampleTestCase):
                 num_points_to_sample=1,
                 verbose=False,
                 testapp=self.testapp,
-                optimization_info={
-                    'optimization_parameters': TEST_GRADIENT_DESCENT_PARAMETERS._asdict(),
+                optimizer_info={
+                    'optimizer_parameters': TEST_GRADIENT_DESCENT_PARAMETERS._asdict(),
                     })
 
 

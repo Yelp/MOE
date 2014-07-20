@@ -13,7 +13,7 @@ from moe.views.constant import GP_HYPER_OPT_ROUTE_NAME, GP_HYPER_OPT_PRETTY_ROUT
 from moe.views.gp_pretty_view import GpPrettyView, PRETTY_RENDERER
 from moe.views.optimizable_gp_pretty_view import OptimizableGpPrettyView
 from moe.views.schemas import GpHyperOptRequest, GpHyperOptResponse
-from moe.views.utils import _make_domain_from_params, _make_gp_from_params, _make_optimization_parameters_from_params
+from moe.views.utils import _make_domain_from_params, _make_gp_from_params, _make_optimizer_parameters_from_params
 
 
 class GpHyperOptView(OptimizableGpPrettyView):
@@ -75,7 +75,7 @@ class GpHyperOptView(OptimizableGpPrettyView):
         hyperparameter_domain = _make_domain_from_params(params, domain_info_key='hyperparameter_domain_info')
         gaussian_process = _make_gp_from_params(params)
         covariance_of_process, historical_data = gaussian_process.get_core_data_copy()
-        optimizer_class, optimization_parameters, num_random_samples = _make_optimization_parameters_from_params(params)
+        optimizer_class, optimizer_parameters, num_random_samples = _make_optimizer_parameters_from_params(params)
         log_likelihood_type = params.get('log_likelihood_info')
 
         log_likelihood_eval = LOG_LIKELIHOOD_TYPES_TO_LOG_LIKELIHOOD_METHODS[log_likelihood_type].log_likelihood_class(
@@ -86,14 +86,14 @@ class GpHyperOptView(OptimizableGpPrettyView):
         log_likelihood_optimizer = optimizer_class(
             hyperparameter_domain,
             log_likelihood_eval,
-            optimization_parameters,
+            optimizer_parameters,
             num_random_samples=0,  # hyperopt doesn't use dumb search if optimization fails
         )
 
         hyperopt_status = {}
         optimized_hyperparameters = multistart_hyperparameter_optimization(
             log_likelihood_optimizer,
-            optimization_parameters.num_multistarts,
+            optimizer_parameters.num_multistarts,
             max_num_threads=max_num_threads,
             status=hyperopt_status,
         )
@@ -108,6 +108,6 @@ class GpHyperOptView(OptimizableGpPrettyView):
                 'status': {
                     'log_likelihood': log_likelihood_eval.compute_log_likelihood(),
                     'grad_log_likelihood': log_likelihood_eval.compute_grad_log_likelihood().tolist(),
-                    'optimization_success': hyperopt_status['gradient_descent_found_update'],
+                    'optimizer_success': hyperopt_status['gradient_descent_found_update'],
                     },
                 })

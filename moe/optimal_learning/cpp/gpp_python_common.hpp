@@ -14,7 +14,7 @@
   3. Export*() functions for giving Python access to various C++ calls via boost::python.
 
      a. enum classes
-     b. optimization parameter structs
+     b. optimizer parameter structs
      c. RandomnessSourceContainer from item 2)
 
   Functions callable from Python generally have the following form:
@@ -269,7 +269,7 @@ boost::python::list VectorToPylist(const std::vector<double>& input);
 void ExportEnumTypes();
 
 /*!\rst
-  Export the parameter structs from gpp_optimization_parameters.hpp to Python. Includes docstrings.
+  Export the parameter structs from gpp_optimizer_parameters.hpp to Python. Includes docstrings.
 \endrst*/
 void ExportOptimizationParameterStructs();
 
