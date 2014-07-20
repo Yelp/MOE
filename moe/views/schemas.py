@@ -2,7 +2,7 @@
 """Base level schemas for the response/request schemas of each MOE REST endpoint."""
 import colander
 
-from moe.optimal_learning.python.constant import DEFAULT_NEWTON_PARAMETERS, DEFAULT_GRADIENT_DESCENT_PARAMETERS, GRADIENT_DESCENT_OPTIMIZER, DEFAULT_OPTIMIZATION_MULTISTARTS, DEFAULT_OPTIMIZATION_NUM_RANDOM_SAMPLES, TENSOR_PRODUCT_DOMAIN_TYPE, SQUARE_EXPONENTIAL_COVARIANCE_TYPE, NULL_OPTIMIZER, NEWTON_OPTIMIZER, DOMAIN_TYPES, OPTIMIZATION_TYPES, COVARIANCE_TYPES, CONSTANT_LIAR_METHODS, DEFAULT_MAX_NUM_THREADS, DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS, LIKELIHOOD_TYPES, LOG_MARGINAL_LIKELIHOOD, DEFAULT_CONSTANT_LIAR_METHOD, DEFAULT_CONSTANT_LIAR_LIE_NOISE_VARIANCE, DEFAULT_KRIGING_NOISE_VARIANCE, DEFAULT_KRIGING_STD_DEVIATION_COEF
+from moe.optimal_learning.python.constant import DEFAULT_NEWTON_PARAMETERS, DEFAULT_GRADIENT_DESCENT_PARAMETERS, GRADIENT_DESCENT_OPTIMIZER, DEFAULT_OPTIMIZER_MULTISTARTS, DEFAULT_OPTIMIZER_NUM_RANDOM_SAMPLES, TENSOR_PRODUCT_DOMAIN_TYPE, SQUARE_EXPONENTIAL_COVARIANCE_TYPE, NULL_OPTIMIZER, NEWTON_OPTIMIZER, DOMAIN_TYPES, OPTIMIZER_TYPES, COVARIANCE_TYPES, CONSTANT_LIAR_METHODS, DEFAULT_MAX_NUM_THREADS, DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS, LIKELIHOOD_TYPES, LOG_MARGINAL_LIKELIHOOD, DEFAULT_CONSTANT_LIAR_METHOD, DEFAULT_CONSTANT_LIAR_LIE_NOISE_VARIANCE, DEFAULT_KRIGING_NOISE_VARIANCE, DEFAULT_KRIGING_STD_DEVIATION_COEF
 
 
 class PositiveFloat(colander.SchemaNode):
@@ -275,7 +275,7 @@ class MatrixOfFloats(colander.SequenceSchema):
     row_of_matrix = ListOfFloats()
 
 
-OPTIMIZATION_TYPES_TO_SCHEMA_CLASSES = {
+OPTIMIZER_TYPES_TO_SCHEMA_CLASSES = {
         NULL_OPTIMIZER: NullParametersSchema,
         NEWTON_OPTIMIZER: NewtonParametersSchema,
         GRADIENT_DESCENT_OPTIMIZER: GradientDescentParametersSchema,
@@ -288,24 +288,24 @@ class OptimizationInfo(colander.MappingSchema):
 
     **Optimization fields**
 
-        :optimizer_type: a string defining the optimizer type from `moe.optimal_learning.python.constant.OPTIMIZATION_TYPES` (default: GRADIENT_DESCENT_OPTIMIZER)
+        :optimizer_type: a string defining the optimizer type from `moe.optimal_learning.python.constant.OPTIMIZER_TYPES` (default: GRADIENT_DESCENT_OPTIMIZER)
         :optimizer_parameters: a dict corresponding the the parameters of the optimization method
 
     """
 
     optimizer_type = colander.SchemaNode(
             colander.String(),
-            validator=colander.OneOf(OPTIMIZATION_TYPES),
+            validator=colander.OneOf(OPTIMIZER_TYPES),
             missing=GRADIENT_DESCENT_OPTIMIZER,
             )
     num_multistarts = colander.SchemaNode(
             colander.Int(),
-            missing=DEFAULT_OPTIMIZATION_MULTISTARTS,
+            missing=DEFAULT_OPTIMIZER_MULTISTARTS,
             validator=colander.Range(min=1),
             )
     num_random_samples = colander.SchemaNode(
             colander.Int(),
-            missing=DEFAULT_OPTIMIZATION_NUM_RANDOM_SAMPLES,
+            missing=DEFAULT_OPTIMIZER_NUM_RANDOM_SAMPLES,
             validator=colander.Range(min=1),
             )
 

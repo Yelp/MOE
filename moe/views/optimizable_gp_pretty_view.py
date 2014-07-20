@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """A superclass to encapsulate getting optimizer parameters for views."""
-from moe.optimal_learning.python.constant import OPTIMIZATION_TYPE_TO_DEFAULT_PARAMETERS
+from moe.optimal_learning.python.constant import OPTIMIZER_TYPE_TO_DEFAULT_PARAMETERS
 from moe.views.gp_pretty_view import GpPrettyView
-from moe.views.schemas import OPTIMIZATION_TYPES_TO_SCHEMA_CLASSES
+from moe.views.schemas import OPTIMIZER_TYPES_TO_SCHEMA_CLASSES
 
 
 class OptimizableGpPrettyView(GpPrettyView):
@@ -22,9 +22,9 @@ class OptimizableGpPrettyView(GpPrettyView):
         params = super(OptimizableGpPrettyView, self).get_params_from_request()
         optimizer_type = params['optimizer_info']['optimizer_type']
         # Find the schma class that corresponds to the ``optimizer_type`` of the request
-        schema_class = OPTIMIZATION_TYPES_TO_SCHEMA_CLASSES[optimizer_type]()
+        schema_class = OPTIMIZER_TYPES_TO_SCHEMA_CLASSES[optimizer_type]()
         # Create a default dictionary for the optimizer parameters
-        optimizer_parameters_dict = dict(OPTIMIZATION_TYPE_TO_DEFAULT_PARAMETERS[optimizer_type]._asdict())
+        optimizer_parameters_dict = dict(OPTIMIZER_TYPE_TO_DEFAULT_PARAMETERS[optimizer_type]._asdict())
         # Override the defaults with information that may be in the optimizer parameters
         for param, val in self.request.json_body.get('optimizer_info', {}).get('optimizer_parameters', {}).iteritems():
             optimizer_parameters_dict[param] = val

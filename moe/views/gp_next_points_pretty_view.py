@@ -49,7 +49,7 @@ class GpNextPointsPrettyView(OptimizableGpPrettyView):
         :param request_params: the deserialized REST request, containing ei_optimizer_parameters and gp_historical_info
         :type request_params: a deserialized self.request_schema object as a dict
         :param optimizer_method_name: the optimization method to use
-        :type optimizer_method_name: string in ``moe.views.constant.OPTIMIZATION_METHOD_NAMES``
+        :type optimizer_method_name: string in ``moe.views.constant.OPTIMIZER_METHOD_NAMES``
         :param route_name: name of the route being called
         :type route_name: string in ``moe.views.constant.ALL_REST_ROUTES_ROUTE_NAME_TO_ENDPOINT.keys()``
         :param ``*args``: extra args to be passed to optimization method

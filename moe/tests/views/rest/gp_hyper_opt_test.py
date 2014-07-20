@@ -6,7 +6,7 @@ import simplejson as json
 
 import testify as T
 
-from moe.optimal_learning.python.constant import TEST_OPTIMIZATION_MULTISTARTS, TEST_GRADIENT_DESCENT_PARAMETERS, TEST_OPTIMIZATION_NUM_RANDOM_SAMPLES, TEST_EXPECTED_IMPROVEMENT_MC_ITERATIONS
+from moe.optimal_learning.python.constant import TEST_OPTIMIZER_MULTISTARTS, TEST_GRADIENT_DESCENT_PARAMETERS, TEST_OPTIMIZER_NUM_RANDOM_SAMPLES, TEST_EXPECTED_IMPROVEMENT_MC_ITERATIONS
 from moe.tests.views.rest_gaussian_process_test_case import RestGaussianProcessTestCase
 from moe.views.constant import GP_HYPER_OPT_MOE_ROUTE
 from moe.views.rest.gp_hyper_opt import GpHyperOptResponse, GpHyperOptView
@@ -28,8 +28,8 @@ class TestGpHyperOptViews(RestGaussianProcessTestCase):
             'covariance_info': covariance.get_json_serializable_info(),
             'domain_info': domain.get_json_serializable_info(),
             'optimizer_info': {
-                'num_multistarts': TEST_OPTIMIZATION_MULTISTARTS,
-                'num_random_samples': TEST_OPTIMIZATION_NUM_RANDOM_SAMPLES,
+                'num_multistarts': TEST_OPTIMIZER_MULTISTARTS,
+                'num_random_samples': TEST_OPTIMIZER_NUM_RANDOM_SAMPLES,
                 'optimizer_parameters': dict(TEST_GRADIENT_DESCENT_PARAMETERS._asdict()),
                 },
             'hyperparameter_domain_info': {
@@ -96,7 +96,7 @@ class TestGpHyperOptViews(RestGaussianProcessTestCase):
 
         T.assert_equal(
                 optimizer_parameters.num_multistarts,
-                TEST_OPTIMIZATION_MULTISTARTS
+                TEST_OPTIMIZER_MULTISTARTS
                 )
 
         T.assert_equal(
@@ -105,7 +105,7 @@ class TestGpHyperOptViews(RestGaussianProcessTestCase):
                 )
 
         # Test arbitrary parameters get passed through
-        json_payload['optimizer_info']['num_multistarts'] = TEST_OPTIMIZATION_MULTISTARTS + 5
+        json_payload['optimizer_info']['num_multistarts'] = TEST_OPTIMIZER_MULTISTARTS + 5
         json_payload['optimizer_info']['optimizer_parameters']['max_num_steps'] = TEST_GRADIENT_DESCENT_PARAMETERS.max_num_steps + 10
 
         request = pyramid.testing.DummyRequest(post=json_payload)
@@ -116,7 +116,7 @@ class TestGpHyperOptViews(RestGaussianProcessTestCase):
 
         T.assert_equal(
                 optimizer_parameters.num_multistarts,
-                TEST_OPTIMIZATION_MULTISTARTS + 5
+                TEST_OPTIMIZER_MULTISTARTS + 5
                 )
 
         T.assert_equal(

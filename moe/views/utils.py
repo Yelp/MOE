@@ -3,7 +3,7 @@
 from moe.optimal_learning.python.cpp_wrappers.gaussian_process import GaussianProcess
 from moe.optimal_learning.python.data_containers import SamplePoint, HistoricalData
 from moe.optimal_learning.python.geometry_utils import ClosedInterval
-from moe.optimal_learning.python.linkers import DOMAIN_TYPES_TO_DOMAIN_LINKS, COVARIANCE_TYPES_TO_CLASSES, OPTIMIZATION_TYPES_TO_OPTIMIZATION_METHODS
+from moe.optimal_learning.python.linkers import DOMAIN_TYPES_TO_DOMAIN_LINKS, COVARIANCE_TYPES_TO_CLASSES, OPTIMIZER_TYPES_TO_OPTIMIZER_METHODS
 
 
 def _make_domain_from_params(params, domain_info_key="domain_info", python_version=False):
@@ -66,7 +66,7 @@ def _make_optimizer_parameters_from_params(params):
     num_random_samples = optimizer_info.get('num_random_samples')
     validated_optimizer_parameters = params.get('optimizer_info').get('optimizer_parameters')
 
-    optimizer_method = OPTIMIZATION_TYPES_TO_OPTIMIZATION_METHODS[optimizer_info.get('optimizer_type')]
+    optimizer_method = OPTIMIZER_TYPES_TO_OPTIMIZER_METHODS[optimizer_info.get('optimizer_type')]
 
     # TODO(GH-167): Kill this when you reoganize num_multistarts for C++.
     validated_optimizer_parameters['num_multistarts'] = optimizer_info['num_multistarts']

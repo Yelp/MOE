@@ -60,7 +60,7 @@ OptimizationMethod = namedtuple(
             ],
         )
 
-OPTIMIZATION_TYPES_TO_OPTIMIZATION_METHODS = {
+OPTIMIZER_TYPES_TO_OPTIMIZER_METHODS = {
         NULL_OPTIMIZER: OptimizationMethod(
             optimizer_type=NULL_OPTIMIZER,
             python_parameters_class=python_optimization.NullParameters,
