@@ -11,23 +11,23 @@ Or, build the documentation locally with `make docs`.
 
 ## What is MOE?
 
-MOE (Metric Optimization Engine) is a *fast and efficient*, *derivative-free*,  *black box*, *global* optimization framework for optimizing parameters of time *consuming* or *expensive* experiments and systems.
+MOE (Metric Optimization Engine) is an *efficient* way to optimize a system's parameters, when evaluating parameters is *time-consuming* or *expensive*.
 
-An experiment or system can be time consuming or expensive if it takes a long time to recieve statistically significant results (traffic for an A/B test, complex system with long training time, etc) or the opportunity cost of trying new values is high (engineering expense, A/B testing tradeoffs, etc).
+Here are some examples of when you could use MOE:
 
-MOE solves this problem through optimal experimental design and *optimal learning*.
+* **Optimizing a system's click-through rate (CTR).**  MOE is useful when evaluating CTR requires running an A/B test on real user traffic, and getting statistically significant results requires running this test for a substantial amount of time (hours, days, or even weeks).
 
-> "Optimal learning addresses the challenge of how to collect information as efficiently as possible, primarily for settings where collecting information is time consuming and expensive"
-> -- Prof. Warren Powell, http://optimallearning.princeton.edu
+* **Optimizing tunable parameters of a machine-learning prediction method.**  MOE is useful if calculating the prediction error for one choice of the parameters takes a long time, which might happen because the prediction method is complex and takes a long time to train, or because the data used to evaluate the error is huge.
 
-It boils down to:
+* **Optimizing the design of an engineering system** (an airplane, the traffic network in a city, a combustion engine, a hospital).  MOE is useful if evaluating a design requires running a complex physics-based numerical simulation on a supercomputer. 
 
-> "What is the most efficient way to collect information?"
-> -- Prof. Peter Frazier, http://people.orie.cornell.edu/pfrazier
+MOE is ideal for problems in which the optimization problem's objective function is a black box, not necessarily convex or concave, derivatives are unavailable, and we seek a global optimum, rather than just a local one. This ability to handle black-box objective functions allows us to use MOE to optimize nearly any system, without requiring any internal knowledge or access. To use MOE, we simply need to specify some [objective function][14], some set of [parameters][15], and any historical data we may have from previous evaluations of the objective function. MOE then finds the set of parameters that maximize (or minimize) the objective function, while evaluating the objective function as little as possible. 
 
-The *black box* nature of MOE allows us to optimize any number of systems, requiring no internal knowledge or access. It uses some [objective function][14] and some set of [parameters][15] and finds the best set of parameters to maximize (or minimize) the given function in as few attempts as possible. It does not require knowledge of the specific objective, or how it is obtained, just the previous parameters and their associated objective values (historical data).
+Inside, MOE uses *Bayesian global optimization*, which performs optimization using Bayesian statistics and *optimal learning*. 
 
-[Why do we need MOE?][16]
+Optimal learning is the study of efficient methods for collecting information, particularly when doing so is time-consuming or expensive, and was developed and popularized from its roots in decision theory by [Prof. Peter Frazier][16] ([Cornell, Operations Research and Information Engineering][17]) and [Prof. Warren Powell][18] ([Princeton, Operations Research and Financial Engineering][19]). For more information about the mathematics of optimal learning, and more real-world applications like heart surgery, drug discovery, and materials science, see these [intro slides][20] to optimal learning.
+
+[Why do we need MOE?][21]
 
 Video and slidedeck introduction to MOE:
 
@@ -149,7 +149,7 @@ The webserver and REST interface is now running on port 6543 from within the con
 
 ## Install from source:
 
-See [Intall Documentation][7]
+See [Install Documentation][7]
 
 ## Contributing
 
@@ -171,4 +171,9 @@ See [Contributing Documentation][8]
 [13]: http://sc932.github.io/MOE/examples.html
 [14]: http://sc932.github.io/MOE/objective_functions.html
 [15]: http://sc932.github.io/MOE/objective_functions.html#parameters
-[16]: http://sc932.github.io/MOE/why_moe.html
+[16]: http://people.orie.cornell.edu/pfrazier/
+[17]: http://www.orie.cornell.edu/
+[18]: http://optimallearning.princeton.edu/
+[19]: http://orfe.princeton.edu/
+[20]: http://people.orie.cornell.edu/pfrazier/Presentations/2014.01.Lancaster.BGO.pdf
+[21]: http://sc932.github.io/MOE/why_moe.html
