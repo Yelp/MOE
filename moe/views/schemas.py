@@ -5,6 +5,33 @@ import colander
 from moe.optimal_learning.python.constant import DEFAULT_NEWTON_PARAMETERS, DEFAULT_GRADIENT_DESCENT_PARAMETERS, GRADIENT_DESCENT_OPTIMIZER, DEFAULT_OPTIMIZATION_MULTISTARTS, DEFAULT_OPTIMIZATION_NUM_RANDOM_SAMPLES, TENSOR_PRODUCT_DOMAIN_TYPE, SQUARE_EXPONENTIAL_COVARIANCE_TYPE, NULL_OPTIMIZER, NEWTON_OPTIMIZER, DOMAIN_TYPES, OPTIMIZATION_TYPES, COVARIANCE_TYPES, CONSTANT_LIAR_METHODS, DEFAULT_MAX_NUM_THREADS, DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS, LIKELIHOOD_TYPES, LOG_MARGINAL_LIKELIHOOD, DEFAULT_CONSTANT_LIAR_METHOD, DEFAULT_CONSTANT_LIAR_LIE_NOISE_VARIANCE, DEFAULT_KRIGING_NOISE_VARIANCE, DEFAULT_KRIGING_STD_DEVIATION_COEF
 
 
+class StrictMappingSchema(colander.MappingSchema):
+
+    """A ``colander.MappingSchema`` that raises exceptions when asked to serialize/deserialize unknown keys.
+
+    .. Note:: by default, colander.MappingSchema ignores/throws out unknown keys.
+
+    """
+
+    def schema_type(self, **kw):
+        """Set MappingSchema to raise ``colander.Invalid`` when serializing/deserializing unknown keys.
+
+        This overrides the staticmethod of the same name in ``colander._SchemaNode``.
+        ``schema_type`` encodes the same information as the ``typ`` ctor argument to
+        ``colander.SchemaNode``
+        See: http://colander.readthedocs.org/en/latest/api.html#colander.SchemaNode
+
+        .. Note:: Passing ``typ`` or setting ``schema_type`` in subclasses will ***override*** this!
+
+        This solution follows: https://github.com/Pylons/colander/issues/116
+
+        .. Note:: colander's default behavior is ``unknown='ignore'``; the other option
+          is ``'preserve'. See: http://colander.readthedocs.org/en/latest/api.html#colander.Mapping
+
+        """
+        return colander.Mapping(unknown='raise')
+
+
 class PositiveFloat(colander.SchemaNode):
 
     """Colander positive (finite) float."""
@@ -40,7 +67,7 @@ class ListOfFloats(colander.SequenceSchema):
     float_in_list = colander.SchemaNode(colander.Float())
 
 
-class SinglePoint(colander.MappingSchema):
+class SinglePoint(StrictMappingSchema):
 
     """A point object.
 
@@ -68,7 +95,7 @@ class PointsSampled(colander.SequenceSchema):
     point_sampled = SinglePoint()
 
 
-class DomainCoordinate(colander.MappingSchema):
+class DomainCoordinate(StrictMappingSchema):
 
     """A single domain interval."""
 
@@ -83,7 +110,7 @@ class Domain(colander.SequenceSchema):
     domain_coordinates = DomainCoordinate()
 
 
-class DomainInfo(colander.MappingSchema):
+class DomainInfo(StrictMappingSchema):
 
     """The domain info needed for every request.
 
@@ -122,7 +149,7 @@ class BoundedDomainInfo(DomainInfo):
     domain_bounds = Domain()
 
 
-class GradientDescentParametersSchema(colander.MappingSchema):
+class GradientDescentParametersSchema(StrictMappingSchema):
 
     """Parameters for the gradient descent optimizer.
 
@@ -170,7 +197,7 @@ class GradientDescentParametersSchema(colander.MappingSchema):
             )
 
 
-class NewtonParametersSchema(colander.MappingSchema):
+class NewtonParametersSchema(StrictMappingSchema):
 
     """Parameters for the newton optimizer.
 
@@ -208,14 +235,14 @@ class NewtonParametersSchema(colander.MappingSchema):
             )
 
 
-class NullParametersSchema(colander.MappingSchema):
+class NullParametersSchema(StrictMappingSchema):
 
     """Parameters for the null optimizer."""
 
     pass
 
 
-class CovarianceInfo(colander.MappingSchema):
+class CovarianceInfo(StrictMappingSchema):
 
     """The covariance info needed for every request.
 
@@ -238,7 +265,7 @@ class CovarianceInfo(colander.MappingSchema):
             )
 
 
-class GpHistoricalInfo(colander.MappingSchema):
+class GpHistoricalInfo(StrictMappingSchema):
 
     """The Gaussian Process info needed for every request.
 
@@ -282,7 +309,7 @@ OPTIMIZATION_TYPES_TO_SCHEMA_CLASSES = {
         }
 
 
-class OptimizationInfo(colander.MappingSchema):
+class OptimizationInfo(StrictMappingSchema):
 
     """Optimization information needed for each next point endpoint.
 
@@ -308,9 +335,14 @@ class OptimizationInfo(colander.MappingSchema):
             missing=DEFAULT_OPTIMIZATION_NUM_RANDOM_SAMPLES,
             validator=colander.Range(min=1),
             )
+    # TODO(GH-303): Use schema binding to set up missing/default and validation dynamically
+    optimization_parameters = colander.SchemaNode(
+            colander.Mapping(unknown='preserve'),
+            missing=None,
+            )
 
 
-class GpNextPointsRequest(colander.MappingSchema):
+class GpNextPointsRequest(StrictMappingSchema):
 
     """A ``gp_next_points_*`` request colander schema.
 
@@ -533,7 +565,7 @@ class GpNextPointsKrigingRequest(GpNextPointsRequest):
             )
 
 
-class GpNextPointsResponse(colander.MappingSchema):
+class GpNextPointsResponse(StrictMappingSchema):
 
     """A ``gp_next_points_*`` response colander schema.
 
@@ -563,7 +595,7 @@ class GpNextPointsResponse(colander.MappingSchema):
             )
 
 
-class GpHyperOptRequest(colander.MappingSchema):
+class GpHyperOptRequest(StrictMappingSchema):
 
     """A gp_hyper_opt request colander schema.
 
@@ -642,7 +674,7 @@ class GpHyperOptRequest(colander.MappingSchema):
             )
 
 
-class GpHyperOptStatus(colander.MappingSchema):
+class GpHyperOptStatus(StrictMappingSchema):
 
     """A gp_hyper_opt status schema.
 
@@ -659,7 +691,7 @@ class GpHyperOptStatus(colander.MappingSchema):
     optimization_success = colander.SchemaNode(colander.String())
 
 
-class GpHyperOptResponse(colander.MappingSchema):
+class GpHyperOptResponse(StrictMappingSchema):
 
     """A gp_hyper_opt response colander schema.
 
@@ -687,7 +719,7 @@ class GpHyperOptResponse(colander.MappingSchema):
     status = GpHyperOptStatus()
 
 
-class GpMeanVarRequest(colander.MappingSchema):
+class GpMeanVarRequest(StrictMappingSchema):
 
     """A gp_mean_var request colander schema.
 
@@ -753,7 +785,7 @@ class GpMeanVarRequest(colander.MappingSchema):
             )
 
 
-class GpEndpointResponse(colander.MappingSchema):
+class GpEndpointResponse(StrictMappingSchema):
 
     """A base schema for the endpoint name.
 
@@ -774,7 +806,7 @@ class GpEndpointResponse(colander.MappingSchema):
     endpoint = colander.SchemaNode(colander.String())
 
 
-class GpMeanMixinResponse(colander.MappingSchema):
+class GpMeanMixinResponse(StrictMappingSchema):
 
     """A mixin response colander schema for the mean of a gaussian process.
 
@@ -795,7 +827,7 @@ class GpMeanMixinResponse(colander.MappingSchema):
     mean = ListOfFloats()
 
 
-class GpVarMixinResponse(colander.MappingSchema):
+class GpVarMixinResponse(StrictMappingSchema):
 
     """A mixin response colander schema for the [co]variance of a gaussian process.
 
@@ -820,7 +852,7 @@ class GpVarMixinResponse(colander.MappingSchema):
     var = MatrixOfFloats()
 
 
-class GpVarDiagMixinResponse(colander.MappingSchema):
+class GpVarDiagMixinResponse(StrictMappingSchema):
 
     """A mixin response colander schema for the variance of a gaussian process.
 
@@ -935,7 +967,7 @@ class GpMeanVarDiagResponse(GpMeanResponse, GpVarDiagMixinResponse):
     pass
 
 
-class GpEiRequest(colander.MappingSchema):
+class GpEiRequest(StrictMappingSchema):
 
     """A gp_ei request colander schema.
 
@@ -1020,7 +1052,7 @@ class GpEiRequest(colander.MappingSchema):
             )
 
 
-class GpEiResponse(colander.MappingSchema):
+class GpEiResponse(StrictMappingSchema):
 
     """A gp_ei response colander schema.
 
