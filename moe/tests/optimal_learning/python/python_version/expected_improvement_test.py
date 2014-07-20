@@ -358,7 +358,7 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
     def test_qd_and_1d_return_same_analytic_ei(self):
         """Compare the 1D analytic EI results to the qD analytic EI results, checking several random points per test case."""
         num_tests_per_case = 10
-        ei_tolerance = 6.0e-10
+        ei_tolerance = 1.0e-9
 
         for test_case in self.gp_test_environments:
             domain, python_gp = test_case

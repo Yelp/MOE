@@ -203,7 +203,7 @@ void ExportEnumTypes() {
       ;  // NOLINT, this is boost style
 }
 
-void ExportOptimizationParameterStructs() {
+void ExportOptimizerParameterStructs() {
   boost::python::class_<GradientDescentParameters, boost::noncopyable>("GradientDescentParameters", boost::python::init<int, int, int, double, double, double, double>(R"%%(
     Constructor for a GradientDescentParameters object.
 

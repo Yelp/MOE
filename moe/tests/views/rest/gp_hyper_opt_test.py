@@ -6,7 +6,7 @@ import simplejson as json
 
 import testify as T
 
-from moe.optimal_learning.python.constant import TEST_OPTIMIZER_MULTISTARTS, TEST_GRADIENT_DESCENT_PARAMETERS, TEST_OPTIMIZER_NUM_RANDOM_SAMPLES, TEST_EXPECTED_IMPROVEMENT_MC_ITERATIONS
+from moe.optimal_learning.python.constant import TEST_OPTIMIZER_MULTISTARTS, TEST_GRADIENT_DESCENT_PARAMETERS, TEST_OPTIMIZER_NUM_RANDOM_SAMPLES
 from moe.tests.views.rest_gaussian_process_test_case import RestGaussianProcessTestCase
 from moe.views.constant import GP_HYPER_OPT_MOE_ROUTE
 from moe.views.rest.gp_hyper_opt import GpHyperOptResponse, GpHyperOptView
@@ -23,10 +23,9 @@ class TestGpHyperOptViews(RestGaussianProcessTestCase):
         """Create a json_payload to POST to the /gp/hyper_opt endpoint with all needed info."""
         hyper_dim = domain.dim + 1
         dict_to_dump = {
-            'mc_iterations': TEST_EXPECTED_IMPROVEMENT_MC_ITERATIONS,
             'gp_historical_info': historical_data.json_payload(),
             'covariance_info': covariance.get_json_serializable_info(),
-            'domain_info': domain.get_json_serializable_info(),
+            'domain_info': domain.get_json_serializable_info(minimal=True),
             'optimizer_info': {
                 'num_multistarts': TEST_OPTIMIZER_MULTISTARTS,
                 'num_random_samples': TEST_OPTIMIZER_NUM_RANDOM_SAMPLES,
