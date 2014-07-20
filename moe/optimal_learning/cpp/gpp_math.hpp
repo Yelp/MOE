@@ -215,7 +215,7 @@
 #include "gpp_covariance.hpp"
 #include "gpp_logging.hpp"
 #include "gpp_optimization.hpp"
-#include "gpp_optimization_parameters.hpp"
+#include "gpp_optimizer_parameters.hpp"
 #include "gpp_random.hpp"
 
 namespace optimal_learning {
@@ -1242,7 +1242,7 @@ inline OL_NONNULL_POINTERS void SetupExpectedImprovementState(
 /*!\rst
   Solve the q,p-EI problem (see ComputeOptimalPointsToSample and/or header docs) by optimizing the Expected Improvement.
   Optimization is done using restarted Gradient Descent, via GradientDescentOptimizer<...>::Optimize() from
-  ``gpp_optimization.hpp``.  Please see that file for details on gradient descent and see gpp_optimization_parameters.hpp
+  ``gpp_optimization.hpp``.  Please see that file for details on gradient descent and see gpp_optimizer_parameters.hpp
   for the meanings of the GradientDescentParameters.
 
   This function is just a simple wrapper that sets up the Evaluator's State and calls a general template for restarted GD.
@@ -1258,7 +1258,7 @@ inline OL_NONNULL_POINTERS void SetupExpectedImprovementState(
 
   \param
     :ei_evaluator: reference to object that can compute ExpectedImprovement and its spatial gradient
-    :optimization_parameters: GradientDescentParameters object that describes the parameters controlling EI optimization
+    :optimizer_parameters: GradientDescentParameters object that describes the parameters controlling EI optimization
       (e.g., number of iterations, tolerances, learning rate)
     :domain: object specifying the domain to optimize over (see ``gpp_domain.hpp``)
     :initial_guess[dim][num_to_sample]: initial guess for gradient descent
@@ -1272,12 +1272,12 @@ inline OL_NONNULL_POINTERS void SetupExpectedImprovementState(
 \endrst*/
 template <typename ExpectedImprovementEvaluator, typename DomainType>
 void RestartedGradientDescentEIOptimization(const ExpectedImprovementEvaluator& ei_evaluator,
-                                            const GradientDescentParameters& optimization_parameters,
+                                            const GradientDescentParameters& optimizer_parameters,
                                             const DomainType& domain, double const * restrict initial_guess,
                                             double const * restrict points_being_sampled, int num_to_sample,
                                             int num_being_sampled, NormalRNG * normal_rng,
                                             double * restrict next_point) {
-  if (unlikely(optimization_parameters.max_num_restarts <= 0)) {
+  if (unlikely(optimizer_parameters.max_num_restarts <= 0)) {
     return;
   }
   int dim = ei_evaluator.dim();
@@ -1293,7 +1293,7 @@ void RestartedGradientDescentEIOptimization(const ExpectedImprovementEvaluator& 
   using RepeatedDomain = RepeatedDomain<DomainType>;
   RepeatedDomain repeated_domain(domain, num_to_sample);
   GradientDescentOptimizer<ExpectedImprovementEvaluator, RepeatedDomain> gd_opt;
-  gd_opt.Optimize(ei_evaluator, optimization_parameters, repeated_domain, &ei_state);
+  gd_opt.Optimize(ei_evaluator, optimizer_parameters, repeated_domain, &ei_state);
   ei_state.GetCurrentPoint(next_point);
 }
 
@@ -1306,7 +1306,7 @@ void RestartedGradientDescentEIOptimization(const ExpectedImprovementEvaluator& 
 
   This function wraps MultistartOptimizer<>::MultistartOptimize() (see ``gpp_optimization.hpp``), which provides the multistarting
   component. Optimization is done using restarted Gradient Descent, via GradientDescentOptimizer<...>::Optimize() from
-  ``gpp_optimization.hpp``. Please see that file for details on gradient descent and see ``gpp_optimization_parameters.hpp``
+  ``gpp_optimization.hpp``. Please see that file for details on gradient descent and see ``gpp_optimizer_parameters.hpp``
   for the meanings of the GradientDescentParameters.
 
   This function (or its wrappers, e.g., ComputeOptimalPointsToSampleWithRandomStarts) are the primary entry-points for
@@ -1329,7 +1329,7 @@ void RestartedGradientDescentEIOptimization(const ExpectedImprovementEvaluator& 
   \param
     :gaussian_process: GaussianProcess object (holds ``points_sampled``, ``values``, ``noise_variance``, derived quantities)
       that describes the underlying GP
-    :optimization_parameters: GradientDescentParameters object that describes the parameters controlling EI optimization
+    :optimizer_parameters: GradientDescentParameters object that describes the parameters controlling EI optimization
       (e.g., number of iterations, tolerances, learning rate)
     :domain: object specifying the domain to optimize over (see ``gpp_domain.hpp``)
     :thread_schedule: struct instructing OpenMP on how to schedule threads; i.e., (suggestions in parens)
@@ -1351,7 +1351,7 @@ void RestartedGradientDescentEIOptimization(const ExpectedImprovementEvaluator& 
 template <typename DomainType>
 OL_NONNULL_POINTERS void ComputeOptimalPointsToSampleViaMultistartGradientDescent(
     const GaussianProcess& gaussian_process,
-    const GradientDescentParameters& optimization_parameters,
+    const GradientDescentParameters& optimizer_parameters,
     const DomainType& domain,
     const ThreadSchedule thread_schedule,
     double const * restrict start_point_set,
@@ -1378,7 +1378,7 @@ OL_NONNULL_POINTERS void ComputeOptimalPointsToSampleViaMultistartGradientDescen
 
     GradientDescentOptimizer<OnePotentialSampleExpectedImprovementEvaluator, DomainType> gd_opt;
     MultistartOptimizer<GradientDescentOptimizer<OnePotentialSampleExpectedImprovementEvaluator, DomainType> > multistart_optimizer;
-    multistart_optimizer.MultistartOptimize(gd_opt, ei_evaluator, optimization_parameters,
+    multistart_optimizer.MultistartOptimize(gd_opt, ei_evaluator, optimizer_parameters,
                                             domain, thread_schedule, start_point_set,
                                             num_multistarts,
                                             ei_state_vector.data(), nullptr, &io_container);
@@ -1399,7 +1399,7 @@ OL_NONNULL_POINTERS void ComputeOptimalPointsToSampleViaMultistartGradientDescen
     RepeatedDomain repeated_domain(domain, num_to_sample);
     GradientDescentOptimizer<ExpectedImprovementEvaluator, RepeatedDomain> gd_opt;
     MultistartOptimizer<GradientDescentOptimizer<ExpectedImprovementEvaluator, RepeatedDomain> > multistart_optimizer;
-    multistart_optimizer.MultistartOptimize(gd_opt, ei_evaluator, optimization_parameters,
+    multistart_optimizer.MultistartOptimize(gd_opt, ei_evaluator, optimizer_parameters,
                                             repeated_domain, thread_schedule, start_point_set,
                                             num_multistarts,
                                             ei_state_vector.data(), nullptr, &io_container);
@@ -1421,7 +1421,7 @@ OL_NONNULL_POINTERS void ComputeOptimalPointsToSampleViaMultistartGradientDescen
   \param
     :gaussian_process: GaussianProcess object (holds ``points_sampled``, ``values``, ``noise_variance``, derived quantities)
       that describes the underlying GP
-    :optimization_parameters: GradientDescentParameters object that describes the parameters controlling EI optimization
+    :optimizer_parameters: GradientDescentParameters object that describes the parameters controlling EI optimization
       (e.g., number of iterations, tolerances, learning rate)
     :domain: object specifying the domain to optimize over (see ``gpp_domain.hpp``)
     :thread_schedule: struct instructing OpenMP on how to schedule threads; i.e., (suggestions in parens)
@@ -1442,21 +1442,21 @@ OL_NONNULL_POINTERS void ComputeOptimalPointsToSampleViaMultistartGradientDescen
 \endrst*/
 template <typename DomainType>
 void ComputeOptimalPointsToSampleWithRandomStarts(const GaussianProcess& gaussian_process,
-                                                  const GradientDescentParameters& optimization_parameters,
+                                                  const GradientDescentParameters& optimizer_parameters,
                                                   const DomainType& domain, const ThreadSchedule& thread_schedule,
                                                   double const * restrict points_being_sampled,
                                                   int num_to_sample, int num_being_sampled, double best_so_far,
                                                   int max_int_steps, bool * restrict found_flag,
                                                   UniformRandomGenerator * uniform_generator, NormalRNG * normal_rng,
                                                   double * restrict best_next_point) {
-  std::vector<double> starting_points(gaussian_process.dim()*optimization_parameters.num_multistarts*num_to_sample);
+  std::vector<double> starting_points(gaussian_process.dim()*optimizer_parameters.num_multistarts*num_to_sample);
 
   // GenerateUniformPointsInDomain() is allowed to return fewer than the requested number of multistarts
   RepeatedDomain<DomainType> repeated_domain(domain, num_to_sample);
-  int num_multistarts = repeated_domain.GenerateUniformPointsInDomain(optimization_parameters.num_multistarts,
+  int num_multistarts = repeated_domain.GenerateUniformPointsInDomain(optimizer_parameters.num_multistarts,
                                                                       uniform_generator, starting_points.data());
 
-  ComputeOptimalPointsToSampleViaMultistartGradientDescent(gaussian_process, optimization_parameters, domain,
+  ComputeOptimalPointsToSampleViaMultistartGradientDescent(gaussian_process, optimizer_parameters, domain,
                                                            thread_schedule, starting_points.data(),
                                                            points_being_sampled, num_multistarts, num_to_sample,
                                                            num_being_sampled, best_so_far, max_int_steps,
@@ -1592,7 +1592,7 @@ void ComputeOptimalPointsToSampleViaLatinHypercubeSearch(const GaussianProcess& 
   \param
     :gaussian_process: GaussianProcess object (holds ``points_sampled``, ``values``, ``noise_variance``, derived quantities)
       that describes the underlying GP
-    :optimization_parameters: GradientDescentParameters object that describes the parameters controlling EI optimization
+    :optimizer_parameters: GradientDescentParameters object that describes the parameters controlling EI optimization
       (e.g., number of iterations, tolerances, learning rate)
     :domain: object specifying the domain to optimize over (see ``gpp_domain.hpp``)
     :thread_schedule: struct instructing OpenMP on how to schedule threads; i.e., (suggestions in parens)
@@ -1615,7 +1615,7 @@ void ComputeOptimalPointsToSampleViaLatinHypercubeSearch(const GaussianProcess& 
 \endrst*/
 template <typename DomainType>
 void ComputeOptimalPointsToSample(const GaussianProcess& gaussian_process,
-                                  const GradientDescentParameters& optimization_parameters,
+                                  const GradientDescentParameters& optimizer_parameters,
                                   const DomainType& domain, const ThreadSchedule& thread_schedule,
                                   double const * restrict points_being_sampled,
                                   int num_to_sample, int num_being_sampled, double best_so_far,
@@ -1626,14 +1626,14 @@ void ComputeOptimalPointsToSample(const GaussianProcess& gaussian_process,
 
 // template explicit instantiation declarations, see gpp_common.hpp header comments, item 6
 extern template void ComputeOptimalPointsToSample(
-    const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters,
+    const GaussianProcess& gaussian_process, const GradientDescentParameters& optimizer_parameters,
     const TensorProductDomain& domain, const ThreadSchedule& thread_schedule,
     double const * restrict points_being_sampled, int num_to_sample,
     int num_being_sampled, double best_so_far, int max_int_steps, bool lhc_search_only,
     int num_lhc_samples, bool * restrict found_flag, UniformRandomGenerator * uniform_generator,
     NormalRNG * normal_rng, double * restrict best_points_to_sample);
 extern template void ComputeOptimalPointsToSample(
-    const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters,
+    const GaussianProcess& gaussian_process, const GradientDescentParameters& optimizer_parameters,
     const SimplexIntersectTensorProductDomain& domain, const ThreadSchedule& thread_schedule,
     double const * restrict points_being_sampled,
     int num_to_sample, int num_being_sampled, double best_so_far, int max_int_steps,

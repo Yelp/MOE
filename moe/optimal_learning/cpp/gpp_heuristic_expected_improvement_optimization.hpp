@@ -304,7 +304,7 @@ class KrigingBelieverEstimationPolicy final : public ObjectiveEstimationPolicyIn
   \param
     :gaussian_process: GaussianProcess object (holds points_sampled, values, noise_variance, derived quantities) that describes the
       underlying GP
-    :optimization_parameters: GradientDescentParameters object that describes the parameters controlling 1-EI optimization (e.g., number
+    :optimizer_parameters: GradientDescentParameters object that describes the parameters controlling 1-EI optimization (e.g., number
       of iterations, tolerances, learning rate) in each "outer" iteration
     :domain: object specifying the domain to optimize over (see gpp_domain.hpp)
     :estimation_policy: the policy to use to produce (heuristic) objective function estimates during q,0-EI optimization
@@ -322,7 +322,7 @@ class KrigingBelieverEstimationPolicy final : public ObjectiveEstimationPolicyIn
 \endrst*/
 template <typename DomainType>
 void ComputeHeuristicPointsToSample(const GaussianProcess& gaussian_process,
-                                    const GradientDescentParameters& optimization_parameters,
+                                    const GradientDescentParameters& optimizer_parameters,
                                     const DomainType& domain,
                                     const ObjectiveEstimationPolicyInterface& estimation_policy,
                                     const ThreadSchedule& thread_schedule,
@@ -333,13 +333,13 @@ void ComputeHeuristicPointsToSample(const GaussianProcess& gaussian_process,
 
 // template explicit instantiation declarations, see gpp_common.hpp header comments, item 6
 extern template void ComputeHeuristicPointsToSample(
-    const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters,
+    const GaussianProcess& gaussian_process, const GradientDescentParameters& optimizer_parameters,
     const TensorProductDomain& domain, const ObjectiveEstimationPolicyInterface& estimation_policy,
     const ThreadSchedule& thread_schedule, double best_so_far, bool lhc_search_only,
     int num_lhc_samples, int num_to_sample, bool * restrict found_flag,
     UniformRandomGenerator * uniform_generator, double * restrict best_points_to_sample);
 extern template void ComputeHeuristicPointsToSample(
-    const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters,
+    const GaussianProcess& gaussian_process, const GradientDescentParameters& optimizer_parameters,
     const SimplexIntersectTensorProductDomain& domain, const ObjectiveEstimationPolicyInterface& estimation_policy,
     const ThreadSchedule& thread_schedule, double best_so_far, bool lhc_search_only,
     int num_lhc_samples, int num_to_sample, bool * restrict found_flag,

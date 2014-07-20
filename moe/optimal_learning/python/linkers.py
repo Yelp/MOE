@@ -52,7 +52,7 @@ DOMAIN_TYPES_TO_DOMAIN_LINKS = {
 OptimizationMethod = namedtuple(
         'OptimizationMethod',
         [
-            'optimization_type',
+            'optimizer_type',
             'python_parameters_class',
             'cpp_parameters_class',
             'python_optimizer_class',
@@ -62,21 +62,21 @@ OptimizationMethod = namedtuple(
 
 OPTIMIZATION_TYPES_TO_OPTIMIZATION_METHODS = {
         NULL_OPTIMIZER: OptimizationMethod(
-            optimization_type=NULL_OPTIMIZER,
+            optimizer_type=NULL_OPTIMIZER,
             python_parameters_class=python_optimization.NullParameters,
             cpp_parameters_class=cpp_optimization.NullParameters,
             python_optimizer_class=python_optimization.NullOptimizer,
             cpp_optimizer_class=cpp_optimization.NullOptimizer,
             ),
         NEWTON_OPTIMIZER: OptimizationMethod(
-            optimization_type=NEWTON_OPTIMIZER,
+            optimizer_type=NEWTON_OPTIMIZER,
             python_parameters_class=python_optimization.NewtonParameters,
             cpp_parameters_class=cpp_optimization.NewtonParameters,
             python_optimizer_class=None,
             cpp_optimizer_class=cpp_optimization.NewtonOptimizer,
             ),
         GRADIENT_DESCENT_OPTIMIZER: OptimizationMethod(
-            optimization_type=GRADIENT_DESCENT_OPTIMIZER,
+            optimizer_type=GRADIENT_DESCENT_OPTIMIZER,
             python_parameters_class=python_optimization.GradientDescentParameters,
             cpp_parameters_class=cpp_optimization.GradientDescentParameters,
             python_optimizer_class=python_optimization.GradientDescentOptimizer,

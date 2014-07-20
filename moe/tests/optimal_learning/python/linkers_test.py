@@ -24,8 +24,8 @@ class LinkersTest(T.TestCase):
                 set(DOMAIN_TYPES_TO_DOMAIN_LINKS.keys())
                 )
 
-    def test_optimization_links_have_all_optimization_types(self):
-        """Test each optimization type is in a linker, and every linker key is a optimization type."""
+    def test_optimization_links_have_all_optimizer_types(self):
+        """Test each optimizer type is in a linker, and every linker key is a optimizer type."""
         T.assert_equal(
                 set(OPTIMIZATION_TYPES),
                 set(OPTIMIZATION_TYPES_TO_OPTIMIZATION_METHODS.keys())

@@ -213,7 +213,7 @@
 #include "gpp_logging.hpp"
 #include "gpp_mock_optimization_objective_functions.hpp"
 #include "gpp_optimization.hpp"
-#include "gpp_optimization_parameters.hpp"
+#include "gpp_optimizer_parameters.hpp"
 #include "gpp_random.hpp"
 
 namespace optimal_learning {
@@ -892,7 +892,7 @@ OL_NONNULL_POINTERS void InitializeBestKnownPoint(const LogLikelihoodEvaluator& 
   Optimize a log likelihood measure of model fit (as a function of the hyperparameters
   of a covariance function) using the prior (i.e., sampled points, values).  Optimization is done
   using restarted Gradient Descent, via GradientDescentOptimizer<...>::Optimize() from gpp_optimization.hpp.
-  Please see that file for details on gradient descent and see gpp_optimization_parameters.hpp for the meanings of
+  Please see that file for details on gradient descent and see gpp_optimizer_parameters.hpp for the meanings of
   the GradientDescentParameters.
 
   This function is just a simple wrapper that sets up the Evaluator's State and calls a general template for restarted GD.
@@ -1032,7 +1032,7 @@ OL_NONNULL_POINTERS void MultistartGradientDescentHyperparameterOptimization(
   Optimize a log likelihood measure of model fit (as a function of the hyperparameters
   of a covariance function) using the prior (i.e., sampled points, values).  Optimization is done
   using Newton's method for optimization, via NewtonOptimization() from gpp_optimization.hpp.
-  Please see that file for details on Newton and see gpp_optimization_parameters.hpp for the meanings of the NewtonParameters.
+  Please see that file for details on Newton and see gpp_optimizer_parameters.hpp for the meanings of the NewtonParameters.
 
   This function is just a simple wrapper that sets up the Evaluator's State and calls a general template for Newton,
   NewtonOptimization<...>(...) (in gpp_optimization.hpp).
