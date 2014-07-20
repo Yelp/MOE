@@ -3,7 +3,7 @@
 from moe.optimal_learning.python.cpp_wrappers.gaussian_process import GaussianProcess
 from moe.optimal_learning.python.data_containers import SamplePoint, HistoricalData
 from moe.optimal_learning.python.geometry_utils import ClosedInterval
-from moe.optimal_learning.python.linkers import DOMAIN_TYPES_TO_DOMAIN_LINKS, COVARIANCE_TYPES_TO_CLASSES, OPTIMIZATION_TYPES_TO_OPTIMIZATION_METHODS
+from moe.optimal_learning.python.linkers import DOMAIN_TYPES_TO_DOMAIN_LINKS, COVARIANCE_TYPES_TO_CLASSES, OPTIMIZER_TYPES_TO_OPTIMIZER_METHODS
 
 
 def _make_domain_from_params(params, domain_info_key="domain_info", python_version=False):
@@ -55,24 +55,24 @@ def _make_covariance_of_process_from_params(params):
     return covariance_of_process
 
 
-def _make_optimization_parameters_from_params(params):
+def _make_optimizer_parameters_from_params(params):
     """Figure out which cpp_wrappers.* objects to construct from params, validate and return them.
 
-    :param params: the deserialized REST request, containing optimization_info
-    :type params: a dictionary with a key optimization_info containing a :class:`moe.views.schemas.OptimizationInfo()` object with optimization parameters
+    :param params: the deserialized REST request, containing optimizer_info
+    :type params: a dictionary with a key optimizer_info containing a :class:`moe.views.schemas.OptimizerInfo()` object with optimization parameters
 
     """
-    optimization_info = params.get('optimization_info')
-    num_random_samples = optimization_info.get('num_random_samples')
-    validated_optimization_parameters = params.get('optimization_info').get('optimization_parameters')
+    optimizer_info = params.get('optimizer_info')
+    num_random_samples = optimizer_info.get('num_random_samples')
+    validated_optimizer_parameters = params.get('optimizer_info').get('optimizer_parameters')
 
-    optimization_method = OPTIMIZATION_TYPES_TO_OPTIMIZATION_METHODS[optimization_info.get('optimization_type')]
+    optimizer_method = OPTIMIZER_TYPES_TO_OPTIMIZER_METHODS[optimizer_info.get('optimizer_type')]
 
     # TODO(GH-167): Kill this when you reoganize num_multistarts for C++.
-    validated_optimization_parameters['num_multistarts'] = optimization_info['num_multistarts']
-    optimization_parameters = optimization_method.cpp_parameters_class(**validated_optimization_parameters)
+    validated_optimizer_parameters['num_multistarts'] = optimizer_info['num_multistarts']
+    optimizer_parameters = optimizer_method.cpp_parameters_class(**validated_optimizer_parameters)
 
-    return optimization_method.cpp_optimizer_class, optimization_parameters, num_random_samples
+    return optimizer_method.cpp_optimizer_class, optimizer_parameters, num_random_samples
 
 
 def _make_gp_from_params(params):

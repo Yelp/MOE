@@ -32,7 +32,7 @@
 #include "gpp_exception.hpp"
 #include "gpp_geometry.hpp"
 #include "gpp_model_selection.hpp"
-#include "gpp_optimization_parameters.hpp"
+#include "gpp_optimizer_parameters.hpp"
 #include "gpp_python_common.hpp"
 
 namespace optimal_learning {
@@ -139,7 +139,7 @@ boost::python::list ComputeHyperparameterGradLogLikelihoodWrapper(const boost::p
   Let n_hyper = covariance.GetNumberOfHyperparameters();
 
   \param
-    :optimization_parameters: python/cpp_wrappers/optimization._CppOptimizationParameters
+    :optimizer_parameters: python/cpp_wrappers/optimization._CppOptimizerParameters
       Python object containing the LogLikelihoodTypes objective_type and OptimizerTypes optimzer_typ
       to use as well as appropriate parameter structs e.g., NewtonParameters for type kNewton).
       See comments on the python interface for multistart_hyperparameter_optimization_wrapper
@@ -158,7 +158,7 @@ boost::python::list ComputeHyperparameterGradLogLikelihoodWrapper(const boost::p
     :new_hyperparameters[n_hyper]: new hyperparameters found by optimizer to maximize the specified log likelihood measure
 \endrst*/
 template <typename LogLikelihoodEvaluator>
-void DispatchHyperparameterOptimization(const boost::python::object& optimization_parameters,
+void DispatchHyperparameterOptimization(const boost::python::object& optimizer_parameters,
                                         const LogLikelihoodEvaluator& log_likelihood_eval,
                                         const CovarianceInterface& covariance,
                                         ClosedInterval const * restrict hyperparameter_domain,
@@ -175,8 +175,8 @@ void DispatchHyperparameterOptimization(const boost::python::object& optimizatio
       found_flag = true;
 
       ThreadSchedule thread_schedule(max_num_threads, omp_sched_guided);
-      // optimization_parameters must contain an int num_random_samples field, extract it
-      int num_random_samples = boost::python::extract<int>(optimization_parameters.attr("num_random_samples"));
+      // optimizer_parameters must contain an int num_random_samples field, extract it
+      int num_random_samples = boost::python::extract<int>(optimizer_parameters.attr("num_random_samples"));
       LatinHypercubeSearchHyperparameterOptimization(log_likelihood_eval, covariance, hyperparameter_domain,
                                                      thread_schedule, num_random_samples,
                                                      &randomness_source.uniform_generator, new_hyperparameters);
@@ -184,9 +184,9 @@ void DispatchHyperparameterOptimization(const boost::python::object& optimizatio
       break;
     }  // end case kNull for optimizer_type
     case OptimizerTypes::kGradientDescent: {
-      // optimization_parameters must contain a optimizer_parameters field
+      // optimizer_parameters must contain a optimizer_parameters field
       // of type GradientDescentParameters. extract it
-      const GradientDescentParameters& gradient_descent_parameters = boost::python::extract<GradientDescentParameters&>(optimization_parameters.attr("optimizer_parameters"));
+      const GradientDescentParameters& gradient_descent_parameters = boost::python::extract<GradientDescentParameters&>(optimizer_parameters.attr("optimizer_parameters"));
       ThreadSchedule thread_schedule(max_num_threads, omp_sched_dynamic);
       MultistartGradientDescentHyperparameterOptimization(log_likelihood_eval, covariance,
                                                           gradient_descent_parameters,
@@ -198,9 +198,9 @@ void DispatchHyperparameterOptimization(const boost::python::object& optimizatio
       break;
     }  // end case kGradientDescent for optimizer_type
     case OptimizerTypes::kNewton: {
-      // optimization_parameters must contain a optimizer_parameters field
+      // optimizer_parameters must contain a optimizer_parameters field
       // of type NewtonParameters. extract it
-      const NewtonParameters& newton_parameters = boost::python::extract<NewtonParameters&>(optimization_parameters.attr("optimizer_parameters"));
+      const NewtonParameters& newton_parameters = boost::python::extract<NewtonParameters&>(optimizer_parameters.attr("optimizer_parameters"));
       ThreadSchedule thread_schedule(max_num_threads, omp_sched_dynamic);
       MultistartNewtonHyperparameterOptimization(log_likelihood_eval, covariance,
                                                  newton_parameters, hyperparameter_domain,
@@ -218,7 +218,7 @@ void DispatchHyperparameterOptimization(const boost::python::object& optimizatio
   }  // end switch over optimzer_type for LogLikelihoodTypes::kLogMarginalLikelihood
 }
 
-boost::python::list MultistartHyperparameterOptimizationWrapper(const boost::python::object& optimization_parameters,
+boost::python::list MultistartHyperparameterOptimizationWrapper(const boost::python::object& optimizer_parameters,
                                                                 const boost::python::list& hyperparameter_domain,
                                                                 const boost::python::list& points_sampled,
                                                                 const boost::python::list& points_sampled_value,
@@ -229,7 +229,7 @@ boost::python::list MultistartHyperparameterOptimizationWrapper(const boost::pyt
                                                                 RandomnessSourceContainer& randomness_source,
                                                                 boost::python::dict& status) {
   // TODO(GH-131): make domain objects constructible from python; and pass them in through
-  // the optimization_parameters python object
+  // the optimizer_parameters python object
   const int num_to_sample = 0;
   const boost::python::list points_to_sample_dummy;
   PythonInterfaceInputContainer input_container(hyperparameters, points_sampled,
@@ -244,8 +244,8 @@ boost::python::list MultistartHyperparameterOptimizationWrapper(const boost::pyt
   std::vector<ClosedInterval> hyperparameter_domain_C(num_hyperparameters);
   CopyPylistToClosedIntervalVector(hyperparameter_domain, num_hyperparameters, hyperparameter_domain_C);
 
-  OptimizerTypes optimizer_type = boost::python::extract<OptimizerTypes>(optimization_parameters.attr("optimizer_type"));
-  LogLikelihoodTypes objective_type = boost::python::extract<LogLikelihoodTypes>(optimization_parameters.attr("objective_type"));
+  OptimizerTypes optimizer_type = boost::python::extract<OptimizerTypes>(optimizer_parameters.attr("optimizer_type"));
+  LogLikelihoodTypes objective_type = boost::python::extract<LogLikelihoodTypes>(optimizer_parameters.attr("objective_type"));
   switch (objective_type) {
     case LogLikelihoodTypes::kLogMarginalLikelihood: {
       LogMarginalLikelihoodEvaluator log_likelihood_eval(input_container.points_sampled.data(),
@@ -253,7 +253,7 @@ boost::python::list MultistartHyperparameterOptimizationWrapper(const boost::pyt
                                                          input_container.noise_variance.data(),
                                                          input_container.dim, input_container.num_sampled);
 
-      DispatchHyperparameterOptimization(optimization_parameters, log_likelihood_eval, square_exponential,
+      DispatchHyperparameterOptimization(optimizer_parameters, log_likelihood_eval, square_exponential,
                                          hyperparameter_domain_C.data(), optimizer_type, max_num_threads,
                                          randomness_source, status, new_hyperparameters.data());
       break;
@@ -264,7 +264,7 @@ boost::python::list MultistartHyperparameterOptimizationWrapper(const boost::pyt
                                                             input_container.noise_variance.data(),
                                                             input_container.dim, input_container.num_sampled);
 
-      DispatchHyperparameterOptimization(optimization_parameters, log_likelihood_eval, square_exponential,
+      DispatchHyperparameterOptimization(optimizer_parameters, log_likelihood_eval, square_exponential,
                                          hyperparameter_domain_C.data(), optimizer_type, max_num_threads,
                                          randomness_source, status, new_hyperparameters.data());
       break;
@@ -387,8 +387,8 @@ void ExportModelSelectionFunctions() {
   boost::python::def("multistart_hyperparameter_optimization", MultistartHyperparameterOptimizationWrapper, R"%%(
     Optimize the specified log likelihood measure over the specified domain using the specified optimization method.
 
-    The _CppOptimizationParameters object is a python class defined in:
-    ``python/cpp_wrappers/optimization._CppOptimizationParameters``
+    The _CppOptimizerParameters object is a python class defined in:
+    ``python/cpp_wrappers/optimization._CppOptimizerParameters``
     See that class definition for more details.
 
     This function expects it to have the fields:
@@ -396,16 +396,16 @@ void ExportModelSelectionFunctions() {
     * objective_type (LogLikelihoodTypes enum from this file)
     * optimizer_type (OptimizerTypes enum from this file)
     * num_random_samples (int, number of samples to 'dumb' search over, only used if optimizer_type == kNull)
-    * optimizer_parameters (*Parameters struct (gpp_optimization_parameters.hpp) where * matches optimizer_type
+    * optimizer_parameters (*Parameters struct (gpp_optimizer_parameters.hpp) where * matches optimizer_type
       unused if optimizer_type == kNull)
 
     ``n_hyper`` denotes the number of hyperparameters.
 
 
-    :param optimization_parameters: python object containing the LogLikelihoodTypes
+    :param optimizer_parameters: python object containing the LogLikelihoodTypes
       objective to use, OptimizerTypes optimzer_type to use as well as appropriate
       parameter structs e.g., NewtonParameters for type kNewton
-    :type optimization_parameters:  _CppOptimizationParameters
+    :type optimizer_parameters:  _CppOptimizerParameters
     :param hyperparameter_domain: [lower, upper] bound pairs for each hyperparameter dimension in LOG-10 SPACE
     :type hyperparameter_domain: list of float64 with shape (num_hyperparameters, 2)
     :param points_sampled: points that have already been sampled

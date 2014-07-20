@@ -13,7 +13,7 @@ from moe.optimal_learning.python.timing import timing_context
 from moe.views.gp_pretty_view import GpPrettyView
 from moe.views.optimizable_gp_pretty_view import OptimizableGpPrettyView
 from moe.views.schemas import GpNextPointsRequest, GpNextPointsResponse
-from moe.views.utils import _make_gp_from_params, _make_domain_from_params, _make_optimization_parameters_from_params
+from moe.views.utils import _make_gp_from_params, _make_domain_from_params, _make_optimizer_parameters_from_params
 
 
 class GpNextPointsPrettyView(OptimizableGpPrettyView):
@@ -22,7 +22,7 @@ class GpNextPointsPrettyView(OptimizableGpPrettyView):
 
     Extends GpPrettyView with:
         1. gaussian_process generation from params
-        2. Converting params into a C++ consumable set of optimization parameters
+        2. Converting params into a C++ consumable set of optimizer parameters
         3. A method (compute_next_points_to_sample_response) for computing the next best points to sample from a gaussian_process
 
     """
@@ -44,13 +44,13 @@ class GpNextPointsPrettyView(OptimizableGpPrettyView):
                 },
             }
 
-    def compute_next_points_to_sample_response(self, params, optimization_method_name, route_name, *args, **kwargs):
-        """Compute the next points to sample (and their expected improvement) using optimization_method_name from params in the request.
+    def compute_next_points_to_sample_response(self, params, optimizer_method_name, route_name, *args, **kwargs):
+        """Compute the next points to sample (and their expected improvement) using optimizer_method_name from params in the request.
 
-        :param request_params: the deserialized REST request, containing ei_optimization_parameters and gp_historical_info
+        :param request_params: the deserialized REST request, containing ei_optimizer_parameters and gp_historical_info
         :type request_params: a deserialized self.request_schema object as a dict
-        :param optimization_method_name: the optimization method to use
-        :type optimization_method_name: string in ``moe.views.constant.OPTIMIZATION_METHOD_NAMES``
+        :param optimizer_method_name: the optimization method to use
+        :type optimizer_method_name: string in ``moe.views.constant.OPTIMIZER_METHOD_NAMES``
         :param route_name: name of the route being called
         :type route_name: string in ``moe.views.constant.ALL_REST_ROUTES_ROUTE_NAME_TO_ENDPOINT.keys()``
         :param ``*args``: extra args to be passed to optimization method
@@ -83,21 +83,21 @@ class GpNextPointsPrettyView(OptimizableGpPrettyView):
             # Calculate the next best points to sample given the historical data
             domain = _make_domain_from_params(params)
 
-            optimizer_class, optimization_parameters, num_random_samples = _make_optimization_parameters_from_params(params)
+            optimizer_class, optimizer_parameters, num_random_samples = _make_optimizer_parameters_from_params(params)
 
             expected_improvement_optimizer = optimizer_class(
                     domain,
                     expected_improvement_evaluator,
-                    optimization_parameters,
+                    optimizer_parameters,
                     num_random_samples=num_random_samples,
                     )
 
-            opt_method = getattr(moe.optimal_learning.python.cpp_wrappers.expected_improvement, optimization_method_name)
+            opt_method = getattr(moe.optimal_learning.python.cpp_wrappers.expected_improvement, optimizer_method_name)
 
             with timing_context("EPI optimization time"):
                 next_points = opt_method(
                     expected_improvement_optimizer,
-                    optimization_parameters.num_multistarts,
+                    optimizer_parameters.num_multistarts,
                     num_to_sample,
                     max_num_threads=max_num_threads,
                     *args,
