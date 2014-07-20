@@ -309,7 +309,7 @@ OPTIMIZER_TYPES_TO_SCHEMA_CLASSES = {
         }
 
 
-class OptimizationInfo(StrictMappingSchema):
+class OptimizerInfo(StrictMappingSchema):
 
     """Optimization information needed for each next point endpoint.
 
@@ -336,7 +336,7 @@ class OptimizationInfo(StrictMappingSchema):
             validator=colander.Range(min=1),
             )
     # TODO(GH-303): Use schema binding to set up missing/default and validation dynamically
-    optimization_parameters = colander.SchemaNode(
+    optimizer_parameters = colander.SchemaNode(
             colander.Mapping(unknown='preserve'),
             missing=None,
             )
@@ -357,7 +357,7 @@ class GpNextPointsRequest(StrictMappingSchema):
         :mc_iterations: number of Monte Carlo (MC) iterations to perform in numerical integration to calculate EI
         :max_num_threads: maximum number of threads to use in computation (default: 1)
         :covariance_info: a :class:`moe.views.schemas.CovarianceInfo` dict of covariance information
-        :optimizer_info: a :class:`moe.views.schemas.OptimizationInfo` dict of optimization information
+        :optimizer_info: a :class:`moe.views.schemas.OptimizerInfo` dict of optimization information
         :points_being_sampled: list of points in domain being sampled in concurrent experiments (default: [])
 
     **Example Minimal Request**
@@ -443,8 +443,8 @@ class GpNextPointsRequest(StrictMappingSchema):
     covariance_info = CovarianceInfo(
             missing=CovarianceInfo().deserialize({}),
             )
-    optimizer_info = OptimizationInfo(
-            missing=OptimizationInfo().deserialize({}),
+    optimizer_info = OptimizerInfo(
+            missing=OptimizerInfo().deserialize({}),
             )
     points_being_sampled = ListOfPointsInDomain(
             missing=[],
@@ -467,7 +467,7 @@ class GpNextPointsConstantLiarRequest(GpNextPointsRequest):
         :lie_value: a float representing the 'lie' the Constant Liar heuristic will use (default: None). If `lie_value` is not None the algorithm will use this value instead of one calculated using `lie_method`.
         :lie_noise_variance: a positive (>= 0) float representing the noise variance of the 'lie' value (default: 0.0)
         :covariance_info: a :class:`moe.views.schemas.CovarianceInfo` dict of covariance information
-        :optimiaztion_info: a :class:`moe.views.schemas.OptimizationInfo` dict of optimization information
+        :optimiaztion_info: a :class:`moe.views.schemas.OptimizerInfo` dict of optimization information
 
     **Example Request**
 
@@ -526,7 +526,7 @@ class GpNextPointsKrigingRequest(GpNextPointsRequest):
         :std_deviation_coef: a float used in Kriging, see Kriging implementation docs (default: 0.0)
         :kriging_noise_variance: a positive (>= 0) float used in Kriging, see Kriging implementation docs (default: 0.0)
         :covariance_info: a :class:`moe.views.schemas.CovarianceInfo` dict of covariance information
-        :optimiaztion_info: a :class:`moe.views.schemas.OptimizationInfo` dict of optimization information
+        :optimiaztion_info: a :class:`moe.views.schemas.OptimizerInfo` dict of optimization information
 
     **Example Request**
 
@@ -609,7 +609,7 @@ class GpHyperOptRequest(StrictMappingSchema):
 
         :max_num_threads: maximum number of threads to use in computation (default: 1)
         :covariance_info: a :class:`moe.views.schemas.CovarianceInfo` dict of covariance information, used as a starting point for optimization
-        :optimizer_info: a :class:`moe.views.schemas.OptimizationInfo` dict of optimization information
+        :optimizer_info: a :class:`moe.views.schemas.OptimizerInfo` dict of optimization information
 
     **Example Request**
 
@@ -664,8 +664,8 @@ class GpHyperOptRequest(StrictMappingSchema):
             missing=CovarianceInfo().deserialize({}),
             )
     hyperparameter_domain_info = BoundedDomainInfo()
-    optimizer_info = OptimizationInfo(
-            missing=OptimizationInfo().deserialize({}),
+    optimizer_info = OptimizerInfo(
+            missing=OptimizerInfo().deserialize({}),
             )
     log_likelihood_info = colander.SchemaNode(
             colander.String(),

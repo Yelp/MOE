@@ -477,7 +477,7 @@ class MultistartOptimizer(OptimizerInterface):
     """
 
     def __init__(self, optimizer, num_multistarts):
-        """Construct a MultistartOptimizer for multistarting any implementation of OptimizationInterface.
+        """Construct a MultistartOptimizer for multistarting any implementation of OptimizerInterface.
 
         :param optimizer: object representing the optimization method to be multistarted
         :type optimizer: interfaces.optimization_interface.OptimizableInterface subclass (except itself)

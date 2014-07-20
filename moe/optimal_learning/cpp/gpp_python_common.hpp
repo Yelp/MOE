@@ -271,7 +271,7 @@ void ExportEnumTypes();
 /*!\rst
   Export the parameter structs from gpp_optimizer_parameters.hpp to Python. Includes docstrings.
 \endrst*/
-void ExportOptimizationParameterStructs();
+void ExportOptimizerParameterStructs();
 
 /*!\rst
   Export the class RandomnessSourceContainer and its member functions to Python. Includes docstrings.
