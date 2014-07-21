@@ -76,22 +76,8 @@ int RunCppTestsWrapper() {
   }
   total_errors += error;
 
-  error = RunCudaEIConsistencyTests();
-  if (error != 0) {
-    OL_FAILURE_PRINTF("analytic, Cuda EI do not match for 1 potential sample case\n");
-  } else {
-    OL_SUCCESS_PRINTF("analytic, Cuda EI match for 1 potential sample case\n");
-  }
+  error = RunGPUTests();
   total_errors += error;
-
-  error = RunCudaEIvsCpuEITests();
-  if (error != 0) {
-    OL_FAILURE_PRINTF("cudaEI vs cpuEI consistency check failed\n");
-  } else {
-    OL_SUCCESS_PRINTF("cudaEI vs cpuEI consistency check successed\n");
-  }
-  total_errors += error;
-
 
   error = RunLogLikelihoodPingTests();
   if (error != 0) {

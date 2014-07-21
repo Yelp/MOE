@@ -5,12 +5,10 @@
 
   The tests verify ExpectedImprovementGPUEvaluator from gpp_expected_improvement_gpu.cpp.
 
-  1. Ping testing (verifying analytic gradient computation against finite difference approximations)
-
-  2. Monte-Carlo EI vs analytic EI validation: the monte-carlo versions are run to "high" accuracy and checked against
+  1. Monte-Carlo EI vs analytic EI validation: the monte-carlo versions are run to "high" accuracy and checked against
      analytic formulae when applicable
 
-  3. GPU EI vs CPU EI: both use monte-carlo version and run consistency check on various random sample points
+  2. GPU EI vs CPU EI: both use monte-carlo version and run consistency check on various random sample points
 \endrst*/
 
 #include "gpp_expected_improvement_gpu_test.hpp"
@@ -30,7 +28,12 @@ namespace optimal_learning {
 
 #ifdef OL_GPU_ENABLED
 
+namespace {
 /*!\rst
+  Test that the EI + grad EI computation (using MC integration) is consistent
+  with the special analytic case of EI when there is only *ONE* potential point
+  to sample.
+
   Generates a set of 40 random test cases for expected improvement with only one potential sample.
   The general EI (which uses MC integration) is evaluated to reasonably high accuracy (while not taking too long to run)
   and compared against the analytic formula version for consistency.  The gradients (spatial) of EI are also checked.
@@ -56,36 +59,36 @@ int RunCudaEIConsistencyTests() {
   UniformRandomGenerator uniform_generator(31278);
   boost::uniform_real<double> uniform_double(0.5, 2.5);
 
-  MockExpectedImprovementEnvironment EI_environment;
+  MockExpectedImprovementEnvironment ei_environment;
 
   std::vector<double> lengths(dim);
   std::vector<double> noise_variance(num_sampled, 0.0);
-  std::vector<double> grad_EI_cuda(dim);
-  std::vector<double> grad_EI_one_potential_sample(dim);
-  double EI_cuda;
-  double EI_one_potential_sample;
+  std::vector<double> grad_ei_cuda(dim);
+  std::vector<double> grad_ei_one_potential_sample(dim);
+  double ei_cuda;
+  double ei_one_potential_sample;
 
   for (int i = 0; i < 40; ++i) {
-    EI_environment.Initialize(dim, num_to_sample, num_being_sampled, num_sampled, &uniform_generator);
+    ei_environment.Initialize(dim, num_to_sample, num_being_sampled, num_sampled, &uniform_generator);
     for (int j = 0; j < dim; ++j) {
       lengths[j] = uniform_double(uniform_generator.engine);
     }
     SquareExponential sqexp_covariance(dim, alpha, lengths);
-    GaussianProcess gaussian_process(sqexp_covariance, EI_environment.points_sampled(), EI_environment.points_sampled_value(), noise_variance.data(), dim, num_sampled);
+    GaussianProcess gaussian_process(sqexp_covariance, ei_environment.points_sampled(), ei_environment.points_sampled_value(), noise_variance.data(), dim, num_sampled);
 
     OnePotentialSampleExpectedImprovementEvaluator one_potential_sample_ei_evaluator(gaussian_process, best_so_far);
-    OnePotentialSampleExpectedImprovementEvaluator::StateType one_potential_sample_ei_state(one_potential_sample_ei_evaluator, EI_environment.points_to_sample(), configure_for_gradients);
+    OnePotentialSampleExpectedImprovementEvaluator::StateType one_potential_sample_ei_state(one_potential_sample_ei_evaluator, ei_environment.points_to_sample(), configure_for_gradients);
 
     CudaExpectedImprovementEvaluator cuda_ei_evaluator(gaussian_process, num_mc_iter, best_so_far, which_gpu);
-    CudaExpectedImprovementEvaluator::StateType cuda_ei_state(cuda_ei_evaluator, EI_environment.points_to_sample(), EI_environment.points_being_sampled(), num_to_sample, num_being_sampled, configure_for_gradients, &uniform_generator);
+    CudaExpectedImprovementEvaluator::StateType cuda_ei_state(cuda_ei_evaluator, ei_environment.points_to_sample(), ei_environment.points_being_sampled(), num_to_sample, num_being_sampled, configure_for_gradients, &uniform_generator);
 
-    EI_cuda = cuda_ei_evaluator.ComputeObjectiveFunction(&cuda_ei_state);
-    cuda_ei_evaluator.ComputeGradObjectiveFunction(&cuda_ei_state, grad_EI_cuda.data());
-    EI_one_potential_sample = one_potential_sample_ei_evaluator.ComputeObjectiveFunction(&one_potential_sample_ei_state);
-    one_potential_sample_ei_evaluator.ComputeGradObjectiveFunction(&one_potential_sample_ei_state, grad_EI_one_potential_sample.data());
+    ei_cuda = cuda_ei_evaluator.ComputeObjectiveFunction(&cuda_ei_state);
+    cuda_ei_evaluator.ComputeGradObjectiveFunction(&cuda_ei_state, grad_ei_cuda.data());
+    ei_one_potential_sample = one_potential_sample_ei_evaluator.ComputeObjectiveFunction(&one_potential_sample_ei_state);
+    one_potential_sample_ei_evaluator.ComputeGradObjectiveFunction(&one_potential_sample_ei_state, grad_ei_one_potential_sample.data());
 
     int ei_errors_this_iteration = 0;
-    if (!CheckDoubleWithinRelative(EI_cuda, EI_one_potential_sample, 5.0e-3)) {
+    if (!CheckDoubleWithinRelative(ei_cuda, ei_one_potential_sample, 5.0e-3)) {
       ++ei_errors_this_iteration;
     }
     if (ei_errors_this_iteration != 0) {
@@ -95,7 +98,7 @@ int RunCudaEIConsistencyTests() {
 
     int grad_ei_errors_this_iteration = 0;
     for (int j = 0; j < dim; ++j) {
-      if (!CheckDoubleWithinRelative(grad_EI_cuda[j], grad_EI_one_potential_sample[j], 4.5e-3)) {
+      if (!CheckDoubleWithinRelative(grad_ei_cuda[j], grad_ei_one_potential_sample[j], 4.5e-3)) {
         ++grad_ei_errors_this_iteration;
       }
     }
@@ -115,6 +118,11 @@ int RunCudaEIConsistencyTests() {
 }
 
 /*!\rst
+  Tests that the general EI + grad EI computation on CPU (using MC integration) is consistent
+  with the computation on GPU. We use exactly the same sequences of normal random numbers on
+  CPU and GPU so that they are supposed to output the same result even if the number of MC
+  iterations is small.
+
   Generates a set of 10 random test cases for genral q,p-EI computed on cpu vs gpu.
   The computations on cpu and gpu use the same set of normal random numbers for MC
   simulation, so that we can make sure the outputs should be consistent, even with
@@ -142,50 +150,50 @@ int RunCudaEIvsCpuEITests() {
   UniformRandomGenerator uniform_generator(31278);
   boost::uniform_real<double> uniform_double(0.5, 2.5);
 
-  MockExpectedImprovementEnvironment EI_environment;
+  MockExpectedImprovementEnvironment ei_environment;
 
   std::vector<double> lengths(dim);
   std::vector<double> noise_variance(num_sampled, 0.0);
-  std::vector<double> grad_EI_cpu(dim*num_to_sample);
-  std::vector<double> grad_EI_gpu(dim*num_to_sample);
+  std::vector<double> grad_ei_cpu(dim*num_to_sample);
+  std::vector<double> grad_ei_gpu(dim*num_to_sample);
   std::vector<double> normal_random_table;
-  double EI_cpu;
-  double EI_gpu;
+  double ei_cpu;
+  double ei_gpu;
   int cpu_num_iter;
 
   for (int i = 0; i < 10; ++i) {
-    EI_environment.Initialize(dim, num_to_sample, num_being_sampled, num_sampled, &uniform_generator);
+    ei_environment.Initialize(dim, num_to_sample, num_being_sampled, num_sampled, &uniform_generator);
     for (int j = 0; j < dim; ++j) {
       lengths[j] = uniform_double(uniform_generator.engine);
     }
     SquareExponential sqexp_covariance(dim, alpha, lengths);
-    GaussianProcess gaussian_process(sqexp_covariance, EI_environment.points_sampled(), EI_environment.points_sampled_value(), noise_variance.data(), dim, num_sampled);
+    GaussianProcess gaussian_process(sqexp_covariance, ei_environment.points_sampled(), ei_environment.points_sampled_value(), noise_variance.data(), dim, num_sampled);
 
     CudaExpectedImprovementEvaluator cuda_ei_evaluator(gaussian_process, num_mc_iter, best_so_far, which_gpu);
-    CudaExpectedImprovementEvaluator::StateType cuda_ei_state(cuda_ei_evaluator, EI_environment.points_to_sample(), EI_environment.points_being_sampled(), num_to_sample, num_being_sampled, configure_for_gradients, &uniform_generator, configure_for_test);
+    CudaExpectedImprovementEvaluator::StateType cuda_ei_state(cuda_ei_evaluator, ei_environment.points_to_sample(), ei_environment.points_being_sampled(), num_to_sample, num_being_sampled, configure_for_gradients, &uniform_generator, configure_for_test);
 
-    EI_gpu = cuda_ei_evaluator.ComputeObjectiveFunction(&cuda_ei_state);
+    ei_gpu = cuda_ei_evaluator.ComputeObjectiveFunction(&cuda_ei_state);
 
     // setup cpu EI computation
-    normal_random_table = cuda_ei_state.random_number_EI;
+    normal_random_table = cuda_ei_state.random_number_ei;
     cpu_num_iter = normal_random_table.size()/ (num_being_sampled + num_to_sample);
-    NormalRNGSimulator normal_rng_forEI(normal_random_table);
-    ExpectedImprovementEvaluator ei_evaluator_forEI(gaussian_process, cpu_num_iter, best_so_far);
-    ExpectedImprovementEvaluator::StateType ei_state_forEI(ei_evaluator_forEI, EI_environment.points_to_sample(), EI_environment.points_being_sampled(), num_to_sample, num_being_sampled, false, &normal_rng_forEI);
-    EI_cpu = ei_evaluator_forEI.ComputeObjectiveFunction(&ei_state_forEI);
+    NormalRNGSimulator normal_rng_for_ei(normal_random_table);
+    ExpectedImprovementEvaluator ei_evaluator_for_ei(gaussian_process, cpu_num_iter, best_so_far);
+    ExpectedImprovementEvaluator::StateType ei_state_for_ei(ei_evaluator_for_ei, ei_environment.points_to_sample(), ei_environment.points_being_sampled(), num_to_sample, num_being_sampled, false, &normal_rng_for_ei);
+    ei_cpu = ei_evaluator_for_ei.ComputeObjectiveFunction(&ei_state_for_ei);
 
     // setup cpu gradEI computation
-    cuda_ei_evaluator.ComputeGradObjectiveFunction(&cuda_ei_state, grad_EI_gpu.data());
+    cuda_ei_evaluator.ComputeGradObjectiveFunction(&cuda_ei_state, grad_ei_gpu.data());
 
-    normal_random_table = cuda_ei_state.random_number_gradEI;
+    normal_random_table = cuda_ei_state.random_number_grad_ei;
     cpu_num_iter = normal_random_table.size()/ (num_being_sampled + num_to_sample);
-    NormalRNGSimulator normal_rng_forGradEI(normal_random_table);
-    ExpectedImprovementEvaluator ei_evaluator_forGradEI(gaussian_process, cpu_num_iter, best_so_far);
-    ExpectedImprovementEvaluator::StateType ei_state_forGradEI(ei_evaluator_forGradEI, EI_environment.points_to_sample(), EI_environment.points_being_sampled(), num_to_sample, num_being_sampled, true, &normal_rng_forGradEI);
-    ei_evaluator_forGradEI.ComputeGradObjectiveFunction(&ei_state_forGradEI, grad_EI_cpu.data());
+    NormalRNGSimulator normal_rng_for_grad_ei(normal_random_table);
+    ExpectedImprovementEvaluator ei_evaluator_for_grad_ei(gaussian_process, cpu_num_iter, best_so_far);
+    ExpectedImprovementEvaluator::StateType ei_state_for_grad_ei(ei_evaluator_for_grad_ei, ei_environment.points_to_sample(), ei_environment.points_being_sampled(), num_to_sample, num_being_sampled, true, &normal_rng_for_grad_ei);
+    ei_evaluator_for_grad_ei.ComputeGradObjectiveFunction(&ei_state_for_grad_ei, grad_ei_cpu.data());
 
     int ei_errors_this_iteration = 0;
-    if (!CheckDoubleWithinRelative(EI_cpu, EI_gpu, 1.0e-12)) {
+    if (!CheckDoubleWithinRelative(ei_cpu, ei_gpu, 1.0e-12)) {
       ++ei_errors_this_iteration;
     }
     if (ei_errors_this_iteration != 0) {
@@ -195,7 +203,7 @@ int RunCudaEIvsCpuEITests() {
 
     int grad_ei_errors_this_iteration = 0;
     for (int j = 0; j < dim*num_to_sample; ++j) {
-      if (!CheckDoubleWithinRelative(grad_EI_cpu[j], grad_EI_gpu[j], 1.0e-12)) {
+      if (!CheckDoubleWithinRelative(grad_ei_cpu[j], grad_ei_gpu[j], 1.0e-12)) {
         ++grad_ei_errors_this_iteration;
       }
     }
@@ -213,15 +221,36 @@ int RunCudaEIvsCpuEITests() {
   }
   return total_errors;
 }
+}
+
+/*!\rst
+  Invoke all tests for GPU functions.
+  \return
+    number of test failures: 0 if all is working well.
+\endrst*/
+int RunGPUTests() {
+  int total_errors = 0;
+  int error = RunCudaEIConsistencyTests();
+  if (error != 0) {
+    OL_FAILURE_PRINTF("analytic, Cuda EI do not match for 1 potential sample case\n");
+  } else {
+    OL_SUCCESS_PRINTF("analytic, Cuda EI match for 1 potential sample case\n");
+  }
+  total_errors += error;
+
+  error = RunCudaEIvsCpuEITests();
+  if (error != 0) {
+    OL_FAILURE_PRINTF("cudaEI vs cpuEI consistency check failed\n");
+  } else {
+    OL_SUCCESS_PRINTF("cudaEI vs cpuEI consistency check successed\n");
+  }
+  total_errors += error;
+  return total_errors;
+}
 
 #else
 
-int RunCudaEIConsistencyTests() {
-  OL_WARNING_PRINTF("no gpu component is enabled, this test did not run.\n");
-  return 0;
-}
-
-int RunCudaEIvsCpuEITests() {
+int RunGPUTests() {
   OL_WARNING_PRINTF("no gpu component is enabled, this test did not run.\n");
   return 0;
 }
