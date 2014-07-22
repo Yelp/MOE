@@ -174,7 +174,6 @@ fail, we commonly fall back to 'dumb' search.
 
 """
 
-
 import collections
 
 import numpy
@@ -182,6 +181,11 @@ import numpy
 import scipy.optimize as optimize
 
 from moe.optimal_learning.python.interfaces.optimization_interface import OptimizerInterface
+
+
+# In the LBFGSBOptimizer, there is some precision loss while carrying through from the wrappers.
+# We shrink the bounds by (1 - DOMAIN_ERROR).
+DOMAIN_ERROR = 1.0e-16
 
 
 def multistart_optimize(optimizer, starting_points=None, num_multistarts=None):
@@ -564,7 +568,7 @@ class MultistartOptimizer(OptimizerInterface):
 
 class LBFGSBOptimizer(OptimizerInterface):
 
-    """Optimizes an objective function over the specified domain with the L-BFGS-B method.
+    r"""Optimizes an objective function over the specified domain with the L-BFGS-B method.
 
     The BFGS (Broyden-Fletcher-Goldfarb-Shanno) algorithm is a quasi-Newton algorithm for optimization. It can
     be used for DFO (Derivative-Free Optimization) when the gradient is not available, such as is the case for
@@ -581,8 +585,6 @@ class LBFGSBOptimizer(OptimizerInterface):
     .. Note:: See optimize() docstring for more details.
 
     """
-
-    DOMAIN_ERROR = 1e-08
 
     def __init__(self, domain, optimizable, optimization_parameters):
         """Construct a LBFGSBOptimizer.
@@ -603,8 +605,18 @@ class LBFGSBOptimizer(OptimizerInterface):
             self._num_points = self.domain.num_repeats
 
     def _scipy_decorator(self, func, **kwargs):
-        """Wrapper function for expected improvement calculation to feed into BFGS."""
+        """Wrapper function for expected improvement calculation to feed into BFGS.
+
+        func should be of the form compute_* in interfaces.optimization_interface.OptimizableInterface.
+        """
         def decorated(point):
+            """Decorator for compute_* functions in interfaces.optimization_interface.OptimizableInterface.
+
+            Converts the point to proper format and sets the current point before calling the compute function.
+
+            :param point: the point on which to do the calculation
+            :type point: array of float64 with shape (self._num_points * self.domain.dim)
+            """
             shaped_point = point.reshape(self._num_points, self.domain.dim)
             self.objective_function.current_point = shaped_point
             value = -func(**kwargs)
@@ -624,7 +636,9 @@ class LBFGSBOptimizer(OptimizerInterface):
         """
         # The wrappers lead to some lost precision, which may cause the function to return a value just outside the bound.
         # Shriking the bounds is a solution.
-        domain_with_error = numpy.array(self.domain.domain_bounds_as_list() * self._num_points) - self.DOMAIN_ERROR
+        domain_bounding_box = self.domain.get_bounding_box()
+        domain_list = [(interval.min, interval.max) for interval in domain_bounding_box]
+        domain_with_error = numpy.array(domain_list * self._num_points) * (1 - DOMAIN_ERROR)
 
         # Parameters defined above in LBFGSBParameters class.
         unshaped_point = optimize.fmin_l_bfgs_b(

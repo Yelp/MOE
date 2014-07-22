@@ -346,7 +346,7 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
         num_to_sample = 2
         repeated_domain = RepeatedDomain(num_to_sample, expanded_domain)
 
-        num_mc_iterations = 10000
+        num_mc_iterations = 100000
         # Just any random point that won't be optimal
         points_to_sample = repeated_domain.generate_random_point_in_domain()
         ei_eval = ExpectedImprovement(gaussian_process, points_to_sample, num_mc_iterations=num_mc_iterations)
@@ -357,7 +357,7 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
         ei_optimizer = LBFGSBOptimizer(repeated_domain, ei_eval, self.BFGS_parameters)
         best_point = multistart_expected_improvement_optimization(ei_optimizer, num_multistarts, num_to_sample)
 
-        # Check that gradients are "small"
+        # Check that gradients are "small" or on border
         ei_eval.current_point = best_point
         ei_final = ei_eval.compute_expected_improvement()
         grad_ei_final = ei_eval.compute_grad_expected_improvement()

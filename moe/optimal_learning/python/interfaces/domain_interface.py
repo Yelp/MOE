@@ -27,8 +27,8 @@ class DomainInterface(object):
         pass
 
     @abstractmethod
-    def domain_bounds_as_list(self):
-        """Return a list of (min, max) tuples, one for each dimension of the domain."""
+    def get_bounding_box(self):
+        """Return a list of ClosedIntervals representing a bounding box for this domain."""
         pass
 
     @abstractmethod
