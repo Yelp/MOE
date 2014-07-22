@@ -48,7 +48,7 @@ def multistart_expected_improvement_optimization(
 
     :param ei_optimizer: object that optimizes (e.g., gradient descent, newton) EI over a domain
     :type ei_optimizer: cpp_wrappers.optimization.*Optimizer object
-    :param num_multistarts: number of times to multistart ``ei_optimizer`` (UNUSED, data is in ei_optimizer.optimization_parameters)
+    :param num_multistarts: number of times to multistart ``ei_optimizer`` (UNUSED, data is in ei_optimizer.optimizer_parameters)
     :type num_multistarts: int > 0
     :param num_to_sample: how many simultaneous experiments you would like to run (i.e., the q in q,p-EI)
     :type num_to_sample: int >= 1
@@ -74,7 +74,7 @@ def multistart_expected_improvement_optimization(
         status = {}
 
     best_points_to_sample = C_GP.multistart_expected_improvement_optimization(
-        ei_optimizer.optimization_parameters,
+        ei_optimizer.optimizer_parameters,
         ei_optimizer.objective_function._gaussian_process._gaussian_process,
         cpp_utils.cppify(ei_optimizer.domain.domain_bounds),
         cpp_utils.cppify(ei_optimizer.objective_function._points_being_sampled),
@@ -160,7 +160,7 @@ def _heuristic_expected_improvement_optimization(
 
     :param ei_optimizer: object that optimizes (e.g., gradient descent, newton) EI over a domain
     :type ei_optimizer: cpp_wrappers.optimization.*Optimizer object
-    :param num_multistarts: number of times to multistart ``ei_optimizer`` (UNUSED, data is in ei_optimizer.optimization_parameters)
+    :param num_multistarts: number of times to multistart ``ei_optimizer`` (UNUSED, data is in ei_optimizer.optimizer_parameters)
     :type num_multistarts: int > 0
     :param num_to_sample: how many simultaneous experiments you would like to run (i.e., the q in q,0-EI)
     :type num_to_sample: int >= 1
@@ -190,7 +190,7 @@ def _heuristic_expected_improvement_optimization(
         status = {}
 
     best_points_to_sample = C_GP.heuristic_expected_improvement_optimization(
-        ei_optimizer.optimization_parameters,
+        ei_optimizer.optimizer_parameters,
         ei_optimizer.objective_function._gaussian_process._gaussian_process,
         cpp_utils.cppify(ei_optimizer.domain._domain_bounds),
         estimation_policy,
@@ -236,7 +236,7 @@ def constant_liar_expected_improvement_optimization(
 
     :param ei_optimizer: object that optimizes (e.g., gradient descent, newton) EI over a domain
     :type ei_optimizer: cpp_wrappers.optimization.*Optimizer object
-    :param num_multistarts: number of times to multistart ``ei_optimizer`` (UNUSED, data is in ei_optimizer.optimization_parameters)
+    :param num_multistarts: number of times to multistart ``ei_optimizer`` (UNUSED, data is in ei_optimizer.optimizer_parameters)
     :type num_multistarts: int > 0
     :param num_to_sample: how many simultaneous experiments you would like to run (i.e., the q in q,0-EI)
     :type num_to_sample: int >= 1
@@ -299,7 +299,7 @@ def kriging_believer_expected_improvement_optimization(
 
     :param ei_optimizer: object that optimizes (e.g., gradient descent, newton) EI over a domain
     :type ei_optimizer: cpp_wrappers.optimization.*Optimizer object
-    :param num_multistarts: number of times to multistart ``ei_optimizer`` (UNUSED, data is in ei_optimizer.optimization_parameters)
+    :param num_multistarts: number of times to multistart ``ei_optimizer`` (UNUSED, data is in ei_optimizer.optimizer_parameters)
     :type num_multistarts: int > 0
     :param num_to_sample: how many simultaneous experiments you would like to run (i.e., the q in q,0-EI)
     :type num_to_sample: int >= 1

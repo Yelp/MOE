@@ -5,127 +5,15 @@ Includes:
     1. request and response schemas
     2. pretty and backend views
 """
-import colander
-
 import numpy
 
 from pyramid.view import view_config
 
-from moe.optimal_learning.python.constant import DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS, DEFAULT_MAX_NUM_THREADS
 from moe.optimal_learning.python.cpp_wrappers.expected_improvement import ExpectedImprovement
 from moe.views.constant import GP_EI_ROUTE_NAME, GP_EI_PRETTY_ROUTE_NAME
 from moe.views.gp_pretty_view import GpPrettyView, PRETTY_RENDERER
-from moe.views.schemas import ListOfPointsInDomain, GpHistoricalInfo, ListOfExpectedImprovements, CovarianceInfo, DomainInfo
+from moe.views.schemas import GpEiRequest, GpEiResponse
 from moe.views.utils import _make_gp_from_params
-
-
-class GpEiRequest(colander.MappingSchema):
-
-    """A gp_ei request colander schema.
-
-    **Required fields**
-
-        :points_to_evaluate: list of points in domain to calculate Expected Improvement (EI) at (:class:`moe.views.schemas.ListOfPointsInDomain`)
-        :gp_historical_info: a :class:`moe.views.schemas.GpHistoricalInfo` object of historical data
-
-    **Optional fields**
-
-        :points_being_sampled: list of points in domain being sampled in concurrent experiments (default: []) (:class:`moe.views.schemas.ListOfPointsInDomain`)
-        :mc_iterations: number of Monte Carlo (MC) iterations to perform in numerical integration to calculate EI
-        :max_num_threads: maximum number of threads to use in computation (default: 1)
-        :covariance_info: a :class:`moe.views.schemas.CovarianceInfo` dict of covariance information
-
-    **Example Minimal Request**
-
-    .. sourcecode:: http
-
-        Content-Type: text/javascript
-
-        {
-            "points_to_evaluate": [[0.1], [0.5], [0.9]],
-            "gp_historical_info": {
-                "points_sampled": [
-                        {"value_var": 0.01, "value": 0.1, "point": [0.0]},
-                        {"value_var": 0.01, "value": 0.2, "point": [1.0]}
-                    ],
-                },
-            "domain_info": {
-                "dim": 1,
-                },
-        }
-
-    **Example Full Request**
-
-    .. sourcecode:: http
-
-        Content-Type: text/javascript
-
-        {
-            "points_to_evaluate": [[0.1], [0.5], [0.9]],
-            "points_being_sampled": [[0.2], [0.7]],
-            "mc_iterations": 10000,
-            "max_num_threads": 1,
-            "gp_historical_info": {
-                "points_sampled": [
-                        {"value_var": 0.01, "value": 0.1, "point": [0.0]},
-                        {"value_var": 0.01, "value": 0.2, "point": [1.0]}
-                    ],
-                },
-            "domain_info": {
-                "domain_type": "tensor_product"
-                "dim": 1,
-                },
-            "covariance_info": {
-                "covariance_type": "square_exponential",
-                "hyperparameters": [1.0, 1.0],
-                },
-        }
-
-    """
-
-    points_to_evaluate = ListOfPointsInDomain()
-    points_being_sampled = ListOfPointsInDomain(
-            missing=[],
-            )
-    mc_iterations = colander.SchemaNode(
-            colander.Int(),
-            validator=colander.Range(min=1),
-            missing=DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS,
-            )
-    max_num_threads = colander.SchemaNode(
-            colander.Int(),
-            validator=colander.Range(min=1),
-            missing=DEFAULT_MAX_NUM_THREADS,
-            )
-    gp_historical_info = GpHistoricalInfo()
-    domain_info = DomainInfo()
-    covariance_info = CovarianceInfo(
-            missing=CovarianceInfo().deserialize({}),
-            )
-
-
-class GpEiResponse(colander.MappingSchema):
-
-    """A gp_ei response colander schema.
-
-    **Output fields**
-
-        :endpoint: the endpoint that was called
-        :expected_improvement: list of calculated expected improvements (:class:`moe.views.schemas.ListOfExpectedImprovements`)
-
-    **Example Response**
-
-    .. sourcecode:: http
-
-        {
-            "endpoint":"gp_ei",
-            "expected_improvement":["0.197246898375","0.443163755117","0.155819546878"]
-        }
-
-    """
-
-    endpoint = colander.SchemaNode(colander.String())
-    expected_improvement = ListOfExpectedImprovements()
 
 
 class GpEiView(GpPrettyView):

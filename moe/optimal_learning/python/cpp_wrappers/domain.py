@@ -39,13 +39,23 @@ class TensorProductDomain(DomainInterface):
         """Return the number of spatial dimensions."""
         return len(self._domain_bounds)
 
-    def get_json_serializable_info(self):
-        """Create and return a domain_info dictionary of this domain object."""
-        return {
-                'domain_type': self.domain_type,
-                'dim': self.dim,
-                'domain_bounds': self._domain_bounds,
-                }
+    def get_json_serializable_info(self, minimal=False):
+        """Create and return a domain_info dictionary of this domain object.
+
+        :param minimal: True for all domain contents; False for ``domain_type`` and ``dim`` only
+        :type minimal: bool
+        :return: dict representation of this domain
+        :rtype: dict
+
+        """
+        response = {
+            'domain_type': self.domain_type,
+            'dim': self.dim,
+        }
+        if not minimal:
+            response['domain_bounds'] = self._domain_bounds
+
+        return response
 
     # HACK: Until we can build C++ domain objects from Python, we need to be able to hand C++ enough data to reconstruct domains.
     @property

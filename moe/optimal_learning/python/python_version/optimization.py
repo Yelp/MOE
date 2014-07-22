@@ -361,20 +361,20 @@ class GradientDescentOptimizer(OptimizerInterface):
 
     """
 
-    def __init__(self, domain, optimizable, optimization_parameters):
+    def __init__(self, domain, optimizable, optimizer_parameters):
         """Construct a GradientDescentOptimizer.
 
         :param domain: the domain that this optimizer operates over
         :type domain: interfaces.domain_interface.DomainInterface subclass
         :param optimizable: object representing the objective function being optimized
         :type optimizable: interfaces.optimization_interface.OptimizableInterface subclass
-        :param optimization_parameters: parameters describing how to perform optimization (tolerances, iterations, etc.)
-        :type optimization_parameters: python_version.optimization.GradientDescentParameters object
+        :param optimizer_parameters: parameters describing how to perform optimization (tolerances, iterations, etc.)
+        :type optimizer_parameters: python_version.optimization.GradientDescentParameters object
 
         """
         self.domain = domain
         self.objective_function = optimizable
-        self.optimization_parameters = optimization_parameters
+        self.optimizer_parameters = optimizer_parameters
 
     @staticmethod
     def _get_averaging_range(num_steps_averaged, num_steps_total):
@@ -461,19 +461,19 @@ class GradientDescentOptimizer(OptimizerInterface):
         # TODO(GH-59): Implement restarts like in the C++ code.
         initial_guess = self.objective_function.current_point
         x_hat = initial_guess
-        x_path = numpy.empty((self.optimization_parameters.max_num_steps + 1, ) + initial_guess.shape)
+        x_path = numpy.empty((self.optimizer_parameters.max_num_steps + 1, ) + initial_guess.shape)
         x_path[0, ...] = initial_guess
 
         step_counter = 1
-        while step_counter <= self.optimization_parameters.max_num_steps:
-            alpha_n = self.optimization_parameters.pre_mult * numpy.power(float(step_counter), -self.optimization_parameters.gamma)
+        while step_counter <= self.optimizer_parameters.max_num_steps:
+            alpha_n = self.optimizer_parameters.pre_mult * numpy.power(float(step_counter), -self.optimizer_parameters.gamma)
 
             self.objective_function.current_point = x_path[step_counter - 1, ...]
             orig_step = self.objective_function.compute_grad_objective_function(**kwargs)
 
             orig_step *= alpha_n
             fixed_step = self.domain.compute_update_restricted_to_domain(
-                self.optimization_parameters.max_relative_change,
+                self.optimizer_parameters.max_relative_change,
                 x_path[step_counter - 1, ...],
                 orig_step,
             )
@@ -486,7 +486,7 @@ class GradientDescentOptimizer(OptimizerInterface):
         # Polyak-Ruppert averaging: postprocessing step where we replace x_n with:
         # \overbar{x} = \frac{1}{n - n_0} \sum_{t=n_0 + 1}^n x_t
         # n_0 = 0 averages all steps; n_0 = n - 1 is equivalent to returning x_n directly.
-        start, end = self._get_averaging_range(self.optimization_parameters.num_steps_averaged, step_counter - 1)
+        start, end = self._get_averaging_range(self.optimizer_parameters.num_steps_averaged, step_counter - 1)
         x_hat = numpy.mean(x_path[start:end, ...], axis=0)
         self.objective_function.current_point = x_hat
 
@@ -514,12 +514,12 @@ class MultistartOptimizer(OptimizerInterface):
     """
 
     def __init__(self, optimizer, num_multistarts):
-        """Construct a MultistartOptimizer for multistarting any implementation of OptimizationInterface.
+        """Construct a MultistartOptimizer for multistarting any implementation of OptimizerInterface.
 
         :param optimizer: object representing the optimization method to be multistarted
         :type optimizer: interfaces.optimization_interface.OptimizableInterface subclass (except itself)
-        :param optimization_parameters:
-        :type optimization_parameters:
+        :param optimizer_parameters:
+        :type optimizer_parameters:
 
         """
         self.optimizer = optimizer

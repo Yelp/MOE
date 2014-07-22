@@ -43,7 +43,7 @@
 #include "gpp_model_selection.hpp"
 #include "gpp_random.hpp"
 #include "gpp_optimization.hpp"
-#include "gpp_optimization_parameters.hpp"
+#include "gpp_optimizer_parameters.hpp"
 #include "gpp_test_utils.hpp"
 
 namespace optimal_learning {

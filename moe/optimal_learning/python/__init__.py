@@ -31,7 +31,7 @@ where high performance is a concern.
 An implementation of the ABCs in interfaces using Python (with numpy/scipy). These routines are more for educational and
 experimental purposes. Python is generally simpler than C++ so the hope is that this package is more accessible to new
 users hoping to learn about optimal_learning. Additionally, development time in Python is shorter, so it could be convenient
-to test new ideas here before fully implementing them in C++. For example, developers could test a new OptimizationInterface
+to test new ideas here before fully implementing them in C++. For example, developers could test a new OptimizerInterface
 implementation in Python while connecting it to C++ evaluation of objective functions.
 
 """
