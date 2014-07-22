@@ -18,16 +18,17 @@ Other Methods
 
 Many optimization methods exist for different types of problems:
 
-* If derivative information is available and only a local optima is desired then a hill climbing algorithm like `Gradient Descent`_  can be used, or depending on the properties of the system one can use `Conjugate Gradient`_.
+* If derivative information is available and the system is noise-free and only a local optima is desired then a hill climbing algorithm like `Gradient Descent`_  can be used, or depending on the properties of the system one can use `Conjugate Gradient`_. If the system is noisy a method like `Stochastic Gradient Descent`_ can be used.
 .. _Gradient Descent: http://en.wikipedia.org/wiki/Gradient_descent
 .. _Conjugate Gradient: http://en.wikipedia.org/wiki/Conjugate_gradient_method
+.. _Stochastic Gradient Descent: http://en.wikipedia.org/wiki/Stochastic_gradient_descent
 
 * If function evaluation is inexpensive and not time-consuming and a local optima is desired without derivative information then a method that approximates derivates can be used like `BFGS`_, or a method that requires no derivatives like `Powell's method`_ or the `Nelder-Mead method`_.
 .. _BFGS: http://en.wikipedia.org/wiki/Broyden%E2%80%93Fletcher%E2%80%93Goldfarb%E2%80%93Shanno_algorithm
 .. _Powell's method: http://en.wikipedia.org/wiki/Powell's_method
 .. _Nelder-Mead method: http://en.wikipedia.org/wiki/Nelder%E2%80%93Mead_method
 
-* If function evaluation is inexpensive and not time-consuming and a global optima is desired without derivative information then a method like `simulated annealing`_, `particle swarm optimization`_, or a `genetic algorithm`_ can be used.
+* If function evaluation is inexpensive and not time-consuming and a global optima is desired without derivative information then a method like `simulated annealing`_, `particle swarm optimization`_, or a `genetic algorithm`_ can be used. Note that these methods can take many more function evaluations than other listed methods to find an optima.
 .. _simulated annealing: http://en.wikipedia.org/wiki/Simulated_annealing
 .. _particle swarm optimization: http://en.wikipedia.org/wiki/Particle_swarm_optimization
 .. _genetic algorithm: http://en.wikipedia.org/wiki/Genetic_algorithm
@@ -39,6 +40,9 @@ There are many optimization software packages that help solve these different pr
 
 * `DiceOptim`_ implements many similar methods to MOE, including Expected Improvement optimization using Gaussian Processes in R.
 .. _DiceOptim: http://cran.r-project.org/web/packages/DiceOptim/index.html
+
+* `space`_ implements the Efficient Global Optimization (EGO) method in C++.
+.. _space: http://www.schonlau.net/space.html
 
 * `spearmint`_ and `bayesopt`_ are both implementations of Bayesian Global Optimization and similar methods.
 .. _spearmint: https://github.com/JasperSnoek/spearmint
