@@ -158,7 +158,7 @@ See [Contributing Documentation][8]
 
 ## License
 
-This is licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
+MOE is licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
 
 [0]: https://www.youtube.com/watch?v=qAN6iyYPbEE
 [1]: http://sc932.github.io/MOE/
