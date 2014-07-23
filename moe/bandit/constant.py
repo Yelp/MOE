@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """Some default configuration parameters for bandit components."""
-DEFAULT_HISTORICAL_INFO = {
+DEFAULT_BANDIT_HISTORICAL_INFO = {
                            "arms_sampled": {
                                             "arm1": {"win": 20, "loss": 5, "total": 25},
                                             "arm2": {"win": 20, "loss": 10, "total": 30},
@@ -11,4 +11,5 @@ DEFAULT_HISTORICAL_INFO = {
 DEFAULT_EPSILON = 0.05
 
 # Epsilon subtypes
-GREEDY = 'greedy'
+EPSILON_SUBTYPE_GREEDY = 'greedy'
+EPSILON_SUBTYPES = [EPSILON_SUBTYPE_GREEDY]

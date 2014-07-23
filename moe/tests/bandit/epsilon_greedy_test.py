@@ -18,39 +18,39 @@ class EpsilonGreedyTest(EpsilonTestCase):
     bandit_class = EpsilonGreedy
 
     def test_init_default(self):
-        """Verify that default values do not throw and error."""
+        """Verify that default values do not throw and error. This is purely an integration test."""
         self._test_init_default()
 
     def test_one_arm(self):
         """Check that the one-arm case always returns the given arm as the winning arm and the allocation is 1.0."""
         for epsilon in self.epsilons_to_test:
-            bandit = self.bandit_class(self.one_arm, epsilon)
+            bandit = self.bandit_class(self.one_arm_test_case, epsilon)
             T.assert_dicts_equal(bandit.allocate_arms(), {"arm1": 1.0})
             T.assert_equal(bandit.choose_arm(), "arm1")
 
     def test_two_new_arms(self):
         """Check that the two-new-arms case always allocate each arm equally (the allocation is 0.5 for both arms)."""
         for epsilon in self.epsilons_to_test:
-            bandit = self.bandit_class(self.two_new_arms, epsilon)
+            bandit = self.bandit_class(self.two_new_arms_test_case, epsilon)
             T.assert_dicts_equal(bandit.allocate_arms(), {"arm1": 0.5, "arm2": 0.5})
 
     def test_two_arms_epsilon_zero(self):
         """Check that the two-arms case with zero epsilon always allocate arm1:1.0 and arm2:0.0 when average payoffs are arm1:1.0 and arm2:0.0."""
         epsilon = 0.0
-        bandit = self.bandit_class(self.two_arms, epsilon)
+        bandit = self.bandit_class(self.two_arms_test_case, epsilon)
         T.assert_dicts_equal(bandit.allocate_arms(), {"arm1": 1.0, "arm2": 0.0})
         T.assert_equal(bandit.choose_arm(), "arm1")
 
     def test_two_arms_epsilon_one(self):
         """Check that the two-arms case with one epsilon always allocate arm1:0.5 and arm2:0.5 when average payoffs are arm1:1.0 and arm2:0.0."""
         epsilon = 1.0
-        bandit = self.bandit_class(self.two_arms, epsilon)
+        bandit = self.bandit_class(self.two_arms_test_case, epsilon)
         T.assert_dicts_equal(bandit.allocate_arms(), {"arm1": 0.5, "arm2": 0.5})
 
     def test_three_arms(self):
         """Check that the three-arms cases with integer and float payoffs return the expected arm allocations."""
         epsilon = 0.03
-        for historical_info in [self.three_arms, self.three_arms_float_payoffs]:
+        for historical_info in [self.three_arms_test_case, self.three_arms_float_payoffs_test_case]:
             bandit = self.bandit_class(historical_info, epsilon)
             T.assert_dicts_equal(bandit.allocate_arms(), {"arm1": 0.98, "arm2": 0.01, "arm3": 0.01})
 

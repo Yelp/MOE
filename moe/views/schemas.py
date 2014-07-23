@@ -298,9 +298,9 @@ class CovarianceInfo(colander.MappingSchema):
             )
 
 
-class HyperparameterInfo(colander.MappingSchema):
+class BanditEpsilonHyperparameterInfo(colander.MappingSchema):
 
-    """The hyperparameter info needed for every request.
+    """The hyperparameter info needed for every  Bandit Epsilon request.
 
     **Required fields**
 

@@ -10,7 +10,8 @@ import numpy
 from pyramid.view import view_config
 
 from moe.views.constant import GP_MEAN_ROUTE_NAME, GP_MEAN_PRETTY_ROUTE_NAME, GP_VAR_ROUTE_NAME, GP_VAR_PRETTY_ROUTE_NAME, GP_VAR_DIAG_ROUTE_NAME, GP_VAR_DIAG_PRETTY_ROUTE_NAME, GP_MEAN_VAR_ROUTE_NAME, GP_MEAN_VAR_PRETTY_ROUTE_NAME, GP_MEAN_VAR_DIAG_ROUTE_NAME, GP_MEAN_VAR_DIAG_PRETTY_ROUTE_NAME
-from moe.views.gp_pretty_view import GpPrettyView, PRETTY_RENDERER
+from moe.views.gp_pretty_view import GpPrettyView
+from moe.views.pretty_view import PRETTY_RENDERER
 from moe.views.schemas import GpMeanVarRequest, GpMeanVarResponse, GpMeanVarDiagResponse, GpMeanResponse, GpVarResponse, GpVarDiagResponse
 from moe.views.utils import _make_gp_from_params
 

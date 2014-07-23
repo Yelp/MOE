@@ -1,13 +1,11 @@
 # -*- coding: utf-8 -*-
-"""Base class for testing the REST interface against the interface."""
+"""Base class for testing the REST interface against the C++ interface."""
 import testify as T
 
-from moe.tests.bandit.bandit_test_case import BanditTestCase
 
+class RestTestCase(T.TestCase):
 
-class RestBanditTestCase(BanditTestCase):
-
-    """Base class for testing the REST interface against the interface."""
+    """Base class for testing the REST interface against the C++ interface."""
 
     endpoint = None
 

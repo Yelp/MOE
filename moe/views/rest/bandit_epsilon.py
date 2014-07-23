@@ -9,11 +9,12 @@ import colander
 
 from pyramid.view import view_config
 
-from moe.bandit.constant import DEFAULT_EPSILON, GREEDY
+from moe.bandit.constant import DEFAULT_EPSILON, EPSILON_SUBTYPE_GREEDY, EPSILON_SUBTYPES
 from moe.bandit.linkers import EPSILON_SUBTYPES_TO_EPSILON_METHODS
-from moe.views.bandit_pretty_view import BanditPrettyView, PRETTY_RENDERER
+from moe.views.bandit_pretty_view import BanditPrettyView
 from moe.views.constant import BANDIT_EPSILON_ROUTE_NAME, BANDIT_EPSILON_PRETTY_ROUTE_NAME
-from moe.views.schemas import ArmAllocations, BanditHistoricalInfo, HyperparameterInfo
+from moe.views.pretty_view import PRETTY_RENDERER
+from moe.views.schemas import ArmAllocations, BanditEpsilonHyperparameterInfo, BanditHistoricalInfo
 from moe.views.utils import _make_bandit_historical_info_from_params
 
 
@@ -28,7 +29,7 @@ class BanditEpsilonRequest(colander.MappingSchema):
     **Optional fields**
 
         :subtype: subtype of the epsilon bandit algorithm (default: greedy)
-        :hyperparameter_info: a :class:`moe.views.schemas.HyperparameterInfo` dict of hyperparameter information
+        :hyperparameter_info: a :class:`moe.views.schemas.BanditEpsilonHyperparameterInfo` dict of hyperparameter information
 
     **Example Minimal Request**
 
@@ -70,11 +71,11 @@ class BanditEpsilonRequest(colander.MappingSchema):
 
     subtype = colander.SchemaNode(
             colander.String(),
-            validator=colander.OneOf(EPSILON_SUBTYPES_TO_EPSILON_METHODS),
-            missing=GREEDY,
+            validator=colander.OneOf(EPSILON_SUBTYPES),
+            missing=EPSILON_SUBTYPE_GREEDY,
             )
     historical_info = BanditHistoricalInfo()
-    hyperparameter_info = HyperparameterInfo()
+    hyperparameter_info = BanditEpsilonHyperparameterInfo()
 
 
 class BanditEpsilonResponse(colander.MappingSchema):
@@ -119,7 +120,7 @@ class BanditEpsilonView(BanditPrettyView):
     response_schema = BanditEpsilonResponse()
 
     _pretty_default_request = {
-            "subtype": GREEDY,
+            "subtype": EPSILON_SUBTYPE_GREEDY,
             "historical_info": BanditPrettyView._pretty_default_historical_info,
             "hyperparameter_info": {"epsilon": DEFAULT_EPSILON},
             }
@@ -144,15 +145,12 @@ class BanditEpsilonView(BanditPrettyView):
            :input: :class:`moe.views.bandit_epsilon.BanditEpsilonRequest`
            :output: :class:`moe.views.bandit_epsilon.BanditEpsilonResponse`
 
-           :status 201: returns a response
+           :status 200: returns a response
            :status 500: server error
 
         """
         params = self.get_params_from_request()
 
-        # TODO(GH-99): Change REST interface to give points_to_evaluate with shape
-        # (num_to_evaluate, num_to_sample, dim)
-        # Here we assume the shape is (num_to_evaluate, dim) so we insert an axis, making num_to_sample = 1.
         subtype = params.get('subtype')
         historical_info = _make_bandit_historical_info_from_params(params)
         epsilon = params.get('hyperparameter_info').get('epsilon')

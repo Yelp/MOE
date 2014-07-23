@@ -14,7 +14,8 @@ from pyramid.view import view_config
 from moe.optimal_learning.python.constant import DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS, DEFAULT_MAX_NUM_THREADS
 from moe.optimal_learning.python.cpp_wrappers.expected_improvement import ExpectedImprovement
 from moe.views.constant import GP_EI_ROUTE_NAME, GP_EI_PRETTY_ROUTE_NAME
-from moe.views.gp_pretty_view import GpPrettyView, PRETTY_RENDERER
+from moe.views.gp_pretty_view import GpPrettyView
+from moe.views.pretty_view import PRETTY_RENDERER
 from moe.views.schemas import ListOfPointsInDomain, GpHistoricalInfo, ListOfExpectedImprovements, CovarianceInfo, DomainInfo
 from moe.views.utils import _make_gp_from_params
 
@@ -167,7 +168,7 @@ class GpEiView(GpPrettyView):
            :input: :class:`moe.views.gp_ei.GpEiRequest`
            :output: :class:`moe.views.gp_ei.GpEiResponse`
 
-           :status 201: returns a response
+           :status 200: returns a response
            :status 500: server error
 
         """

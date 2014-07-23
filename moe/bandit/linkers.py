@@ -2,7 +2,7 @@
 """Links between the implementations of bandit algorithms."""
 from collections import namedtuple
 
-from moe.bandit.constant import GREEDY
+from moe.bandit.constant import EPSILON_SUBTYPE_GREEDY
 from moe.bandit.epsilon_greedy import EpsilonGreedy
 
 # Epsilon
@@ -16,8 +16,8 @@ EpsilonMethod = namedtuple(
 
 
 EPSILON_SUBTYPES_TO_EPSILON_METHODS = {
-        GREEDY: EpsilonMethod(
-            subtype=GREEDY,
+        EPSILON_SUBTYPE_GREEDY: EpsilonMethod(
+            subtype=EPSILON_SUBTYPE_GREEDY,
             bandit_class=EpsilonGreedy,
             ),
         }

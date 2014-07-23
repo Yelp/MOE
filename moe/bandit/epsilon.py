@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Classes (Python) to compute the Bandit Epsilon arm allocation and choosing the arm to pull next.
 
-See interfaces/bandit_interface.py for further details on bandit.
+See :class:`moe.bandit.interfaces.bandit_interface` for further details on bandit.
 
 """
 
@@ -15,8 +15,7 @@ class Epsilon(BanditInterface):
 
     A class to encapsulate the computation of bandit epsilon.
 
-
-    See interfaces/bandit_interface.py docs for further details.
+    See :class:`moe.bandit.interfaces.bandit_interface` docs for further details.
 
     """
 

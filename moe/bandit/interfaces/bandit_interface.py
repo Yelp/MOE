@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-r"""Interface for computation of Bandit."""
-import random
+r"""Interface for Bandit functions, supports allocate arms and choose arm."""
+import numpy
 
 from abc import ABCMeta, abstractmethod
 
@@ -9,7 +9,7 @@ class BanditInterface(object):
 
     r"""Interface for a bandit algorithm.
 
-    Abstract class to enable bandit functions--supports allocate arms and choose arm.
+    Abstract class to enable bandit functions, supports allocate arms and choose arm.
 
     Implementers of this ABC are required to manage their own hyperparameters.
 
@@ -38,14 +38,9 @@ class BanditInterface(object):
 
         """
         arms_to_allocations = self.allocate_arms()
-        rand = random.random()
-        cumulative_probability = 0.0
-        arm_chosen = None
-        for arm, allocation in arms_to_allocations.iteritems():
-            cumulative_probability += allocation
-            if rand <= cumulative_probability:
-                arm_chosen = arm
-                break
-        if arm_chosen is None:
-            arm_chosen = arm
-        return arm_chosen
+        # Generate a numpy array of type (string, float) pairs of arm name and its allocation
+        # allocations['arms'] is an array of arm names, allocations['allocation'] is an array of allocations
+        allocations = numpy.array([(arm, allocation) for arm, allocation in arms_to_allocations.iteritems()], dtype=([('arm', '|S256'), ('allocation', float)]))
+        # The winning arm is chosen based on the distribution of arm allocations.
+        winner = numpy.argmax(numpy.random.dirichlet(allocations['allocation']))
+        return allocations['arm'][winner]

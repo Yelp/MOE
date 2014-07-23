@@ -13,9 +13,4 @@ This package includes:
 
 * bandit_test_case.py: test case with different sampled arm historical info inputs
 
-**Files in this package**
-
-* optimal_learning_test_case.py: base test case for bandit tests with some extra asserts; meant to provide
-  a well-behaved source of random arm to unit tests.
-
 """

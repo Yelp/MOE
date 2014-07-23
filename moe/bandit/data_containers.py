@@ -13,7 +13,7 @@ class SampleArm(object):
     SampleArm is a convenient way of communicating data to the rest of the bandit library (via the
     HistoricalData container); it also provides a convenient grouping for interactive introspection.
 
-    Users are not required to use SampleArm--iterables with the same data layout will suffice.
+    Users are not required to use SampleArm, iterables with the same data layout will suffice.
 
     :ivar win: (*float64 >= 0.0*) The amount won from playing this arm
     :ivar loss: (*float64 >= 0.0*) The amount loss from playing this arm
@@ -25,17 +25,10 @@ class SampleArm(object):
 
     def __init__(self, win=0.0, loss=0.0, total=0):
         """Allocate and construct a new instance with the specified data fields; see class docstring for input descriptions."""
-        if win < 0.0 or not numpy.isfinite(win):
-            raise ValueError('win = {0} must be positive and finite!'.format(win))
-        if loss < 0.0 or not numpy.isfinite(loss):
-            raise ValueError('loss = {0} must be positive and finite!'.format(loss))
-        if total < 0 or not numpy.isfinite(total):
-            raise ValueError('total = {0} must be positive and finite!'.format(total))
-        if total == 0 and not (win == 0.0 and loss == 0.0):
-            raise ValueError('win and loss must 0 when total is 0!')
         self._win = win
         self._loss = loss
         self._total = total
+        self.validate()
 
     def __str__(self):
         """Pretty print this object as a dict."""
@@ -106,7 +99,7 @@ class HistoricalData(object):
 
     __slots__ = ('_arms_sampled')
 
-    def __init__(self, sample_arms=None, validate=False):
+    def __init__(self, sample_arms=None, validate=True):
         """Create a HistoricalData object tracking the state of an experiment (already-sampled arms).
 
         :param sample_arms: the already-sampled arms: names, wins, losses, and totals
@@ -159,7 +152,7 @@ class HistoricalData(object):
 
         """
         if sample_arms:
-            for name, arm in sample_arms.iteritems():
+            for arm in sample_arms.itervalues():
                 arm.validate()
 
     @staticmethod
@@ -174,8 +167,11 @@ class HistoricalData(object):
         """
         HistoricalData.validate_sample_arms(arms_sampled)
 
-    def append_sample_arms(self, sample_arms, validate=False):
+    def append_sample_arms(self, sample_arms, validate=True):
         """Append the contents of ``sample_arms`` to the data members of this class.
+
+        This method first validates the arms and then updates the historical data.
+        The result of combining two valid arms is always a valid arm.
 
         :param sample_arms: the already-sampled arms: wins, losses, and totals
         :type sample_arms: a dictionary of  (arm name, SampleArm) key-value pairs
