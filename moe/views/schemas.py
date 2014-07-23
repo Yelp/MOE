@@ -1,8 +1,16 @@
 # -*- coding: utf-8 -*-
-"""Base level schemas for the response/request schemas of each MOE REST endpoint."""
+"""Base level schemas for the response/request schemas of each MOE REST endpoint.
+
+.. Warning:: Outputs of colander schema serialization/deserialization should be treated as
+  READ-ONLY. It appears that "missing=" and "default=" value are weak-copied (by reference).
+  Thus changing missing/default fields in the output dict can modify the schema!
+
+TODO(GH-291): make sure previous warning is moved to the schemas/__init__.py file
+
+"""
 import colander
 
-from moe.optimal_learning.python.constant import GRADIENT_DESCENT_OPTIMIZER, DEFAULT_OPTIMIZER_MULTISTARTS, DEFAULT_OPTIMIZER_NUM_RANDOM_SAMPLES, TENSOR_PRODUCT_DOMAIN_TYPE, SQUARE_EXPONENTIAL_COVARIANCE_TYPE, NULL_OPTIMIZER, NEWTON_OPTIMIZER, DOMAIN_TYPES, OPTIMIZER_TYPES, COVARIANCE_TYPES, CONSTANT_LIAR_METHODS, DEFAULT_MAX_NUM_THREADS, MAX_ALLOWED_NUM_THREADS, DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS, LIKELIHOOD_TYPES, LOG_MARGINAL_LIKELIHOOD, DEFAULT_CONSTANT_LIAR_METHOD, DEFAULT_CONSTANT_LIAR_LIE_NOISE_VARIANCE, DEFAULT_KRIGING_NOISE_VARIANCE, DEFAULT_KRIGING_STD_DEVIATION_COEF
+from moe.optimal_learning.python.constant import GRADIENT_DESCENT_OPTIMIZER, TENSOR_PRODUCT_DOMAIN_TYPE, SQUARE_EXPONENTIAL_COVARIANCE_TYPE, NULL_OPTIMIZER, NEWTON_OPTIMIZER, DOMAIN_TYPES, OPTIMIZER_TYPES, COVARIANCE_TYPES, CONSTANT_LIAR_METHODS, DEFAULT_MAX_NUM_THREADS, MAX_ALLOWED_NUM_THREADS, DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS, LIKELIHOOD_TYPES, LOG_MARGINAL_LIKELIHOOD, DEFAULT_CONSTANT_LIAR_METHOD, DEFAULT_CONSTANT_LIAR_LIE_NOISE_VARIANCE, DEFAULT_KRIGING_NOISE_VARIANCE, DEFAULT_KRIGING_STD_DEVIATION_COEF
 
 
 class StrictMappingSchema(colander.MappingSchema):
@@ -293,11 +301,27 @@ OPTIMIZER_TYPES_TO_SCHEMA_CLASSES = {
 
 class OptimizerInfo(StrictMappingSchema):
 
-    """Optimization information needed for each next point endpoint.
+    """Schema specifying the behavior of the multistarted optimizers in the optimal_learning library.
 
-    **Optimization fields**
+    .. Warning:: this schema does not provide default values for its fields. These defaults
+      ***DO EXIST***; see ``moe.optimal_learning.python.constants``. However the defaults are
+      dependent on external factors (like whether we're computing EI, log marginal, etc.) and
+      are not known statically.
 
-        :optimizer_type: a string defining the optimizer type from `moe.optimal_learning.python.constant.OPTIMIZER_TYPES` (default: GRADIENT_DESCENT_OPTIMIZER)
+      See ``moe.views.optimizable_gp_pretty_view.OptimizableGpPrettyView.get_params_from_request``
+      for an example of how this schema is used.
+
+    .. Warning:: the field ``optimizer_parameters`` is ***NOT VALIDATED***. Users of this
+      schema are responsible for passing its contents through the appropriate schema using
+      the ``OPTIMIZER_TYPES_TO_SCHEMA_CLASSES`` dict provided above.
+
+    TODO(GH-303): Try schema bindings as a way to automate setting validators and missing values.
+
+    **Optional fields**
+
+        :optimizer_type: a string defining the optimization type from `moe.optimal_learning.python.constant.OPTIMIZER_TYPES` (default: GRADIENT_DESCENT_OPTIMIZER)
+        :num_multistarts: number of locations from which to start optimization runs
+        :num_random_samples: number of random search points to use if multistart optimization fails
         :optimizer_parameters: a dict corresponding the the parameters of the optimization method
 
     """
@@ -305,17 +329,17 @@ class OptimizerInfo(StrictMappingSchema):
     optimizer_type = colander.SchemaNode(
             colander.String(),
             validator=colander.OneOf(OPTIMIZER_TYPES),
-            missing=GRADIENT_DESCENT_OPTIMIZER,
+            missing=None,
             )
     num_multistarts = colander.SchemaNode(
             colander.Int(),
-            missing=DEFAULT_OPTIMIZER_MULTISTARTS,
             validator=colander.Range(min=1),
+            missing=None,
             )
     num_random_samples = colander.SchemaNode(
             colander.Int(),
-            missing=DEFAULT_OPTIMIZER_NUM_RANDOM_SAMPLES,
-            validator=colander.Range(min=1),
+            validator=colander.Range(min=0),
+            missing=None,
             )
     # TODO(GH-303): Use schema binding to set up missing/default and validation dynamically
     optimizer_parameters = colander.SchemaNode(
@@ -339,7 +363,7 @@ class GpNextPointsRequest(StrictMappingSchema):
         :mc_iterations: number of Monte Carlo (MC) iterations to perform in numerical integration to calculate EI
         :max_num_threads: maximum number of threads to use in computation
         :covariance_info: a :class:`moe.views.schemas.CovarianceInfo` dict of covariance information
-        :optimizer_info: a :class:`moe.views.schemas.OptimizerInfo` dict of optimization information
+        :optimizer_info: a :class:`moe.views.schemas.OptimizerInfo` dict of optimizer information
         :points_being_sampled: list of points in domain being sampled in concurrent experiments (default: [])
 
     **Example Minimal Request**
@@ -547,6 +571,27 @@ class GpNextPointsKrigingRequest(GpNextPointsRequest):
             )
 
 
+class GpNextPointsStatus(StrictMappingSchema):
+
+    """A gp_next_points_* status schema.
+
+    **Output fields**
+
+        :expected_improvement: EI evaluated at ``points_to_sample`` (:class:`moe.views.schemas.ListOfExpectedImprovements`)
+        :optimizer_success: Whether or not the optimizer converged to an optimal set of ``points_to_sample``
+
+    """
+
+    expected_improvement = colander.SchemaNode(
+            colander.Float(),
+            validator=colander.Range(min=0.0),
+            )
+    optimizer_success = colander.SchemaNode(
+        colander.Mapping(unknown='preserve'),
+        default={'found_update': False},
+    )
+
+
 class GpNextPointsResponse(StrictMappingSchema):
 
     """A ``gp_next_points_*`` response colander schema.
@@ -555,26 +600,29 @@ class GpNextPointsResponse(StrictMappingSchema):
 
         :endpoint: the endpoint that was called
         :points_to_sample: list of points in the domain to sample next (:class:`moe.views.schemas.ListOfPointsInDomain`)
-        :expected_improvement: list of EI of points in points_to_sample (:class:`moe.views.schemas.ListOfExpectedImprovements`)
+        :status: a :class:`moe.views.schemas.GpNextPointsStatus` dict indicating final EI value and
+          optimization status messages (e.g., success)
 
     **Example Response**
 
     .. sourcecode:: http
 
         {
-            "endpoint":"gp_ei",
+            "endpoint": "gp_ei",
             "points_to_sample": [["0.478332304526"]],
-            "expected_improvement": "0.443478498868",
+            "status": {
+                "expected_improvement": "0.443478498868",
+                "optimizer_success": {
+                    'gradient_descent_tensor_product_domain_found_update': True,
+                    },
+                },
         }
 
     """
 
     endpoint = colander.SchemaNode(colander.String())
     points_to_sample = ListOfPointsInDomain()
-    expected_improvement = colander.SchemaNode(
-            colander.Float(),
-            validator=colander.Range(min=0.0),
-            )
+    status = GpNextPointsStatus()
 
 
 class GpHyperOptRequest(StrictMappingSchema):
@@ -591,7 +639,7 @@ class GpHyperOptRequest(StrictMappingSchema):
 
         :max_num_threads: maximum number of threads to use in computation
         :covariance_info: a :class:`moe.views.schemas.CovarianceInfo` dict of covariance information, used as a starting point for optimization
-        :optimizer_info: a :class:`moe.views.schemas.OptimizerInfo` dict of optimization information
+        :optimizer_info: a :class:`moe.views.schemas.OptimizerInfo` dict of optimizer information
 
     **Example Request**
 
@@ -647,7 +695,7 @@ class GpHyperOptRequest(StrictMappingSchema):
             )
     hyperparameter_domain_info = BoundedDomainInfo()
     optimizer_info = OptimizerInfo(
-            missing=OptimizerInfo().deserialize({"optimizer_type": NEWTON_OPTIMIZER}),
+            missing=OptimizerInfo().deserialize({}),
             )
     log_likelihood_info = colander.SchemaNode(
             colander.String(),
@@ -662,16 +710,18 @@ class GpHyperOptStatus(StrictMappingSchema):
 
     **Output fields**
 
-       :log_likelihood: The log likelihood at the new hyperparameters
-       :grad_log_likelihood: The gradient of the log likelihood at the new hyperparameters
-       :optimizer_success: Whether or not the optimizer converged to an optimal set of hyperparameters
+        :log_likelihood: The log likelihood at the new hyperparameters
+        :grad_log_likelihood: The gradient of the log likelihood at the new hyperparameters
+        :optimizer_success: Whether or not the optimizer converged to an optimal set of hyperparameters
 
     """
 
     log_likelihood = colander.SchemaNode(colander.Float())
     grad_log_likelihood = ListOfFloats()
-    # TODO(eliu): can I set a default on this string to print something like "{'found_update': False}"? like if we didn't receive a status, prob no update was found
-    optimizer_success = colander.SchemaNode(colander.String())
+    optimizer_success = colander.SchemaNode(
+        colander.Mapping(unknown='preserve'),
+        default={'found_update': False},
+    )
 
 
 class GpHyperOptResponse(StrictMappingSchema):
@@ -682,6 +732,8 @@ class GpHyperOptResponse(StrictMappingSchema):
 
         :endpoint: the endpoint that was called
         :covariance_info: a :class:`moe.views.schemas.CovarianceInfo` dict of covariance information
+        :status: a :class:`moe.views.schemas.GpHyperOptStatus` dict indicating final log likelihood value/gradient and
+          optimization status messages (e.g., success)
 
     **Example Response**
 
@@ -691,7 +743,14 @@ class GpHyperOptResponse(StrictMappingSchema):
             "endpoint":"gp_hyper_opt",
             "covariance_info": {
                 "covariance_type": "square_exponential",
-                "hyperparameters": [0.88, 1.24],
+                "hyperparameters": ["0.88", "1.24"],
+                },
+            "status": {
+                "log_likelihood": "-37.3279872",
+                "grad_log_likelihood: ["-3.8897e-12", "1.32789789e-11"],
+                "optimizer_success": {
+                        'newton_found_update': True,
+                    },
                 },
         }
 

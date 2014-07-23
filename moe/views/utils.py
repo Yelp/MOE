@@ -59,12 +59,12 @@ def _make_optimizer_parameters_from_params(params):
     """Figure out which cpp_wrappers.* objects to construct from params, validate and return them.
 
     :param params: the deserialized REST request, containing optimizer_info
-    :type params: a dictionary with a key optimizer_info containing a :class:`moe.views.schemas.OptimizerInfo()` object with optimization parameters
+    :type params: a dictionary with a key optimizer_info containing a :class:`moe.views.schemas.OptimizerInfo()` object with optimizer parameters
 
     """
     optimizer_info = params.get('optimizer_info')
     num_random_samples = optimizer_info.get('num_random_samples')
-    validated_optimizer_parameters = params.get('optimizer_info').get('optimizer_parameters')
+    validated_optimizer_parameters = optimizer_info.get('optimizer_parameters')
 
     optimizer_method = OPTIMIZER_TYPES_TO_OPTIMIZER_METHODS[optimizer_info.get('optimizer_type')]
 

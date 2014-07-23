@@ -7,6 +7,7 @@ Includes:
 """
 from pyramid.view import view_config
 
+from moe.optimal_learning.python.constant import OPTIMIZER_TYPE_AND_OBJECTIVE_TO_DEFAULT_PARAMETERS, ENDPOINT_TO_DEFAULT_OPTIMIZER_TYPE
 from moe.optimal_learning.python.cpp_wrappers.log_likelihood import multistart_hyperparameter_optimization
 from moe.optimal_learning.python.linkers import LOG_LIKELIHOOD_TYPES_TO_LOG_LIKELIHOOD_METHODS
 from moe.optimal_learning.python.timing import timing_context
@@ -45,6 +46,34 @@ class GpHyperOptView(OptimizableGpPrettyView):
                     ],
                 },
             }
+
+    def _get_default_optimizer_type(self, params):
+        """Get the optimizer type associated with this REST endpoint and requested ``log_likelihood_type``.
+
+        :param params: a (partially) deserialized REST request with everything except possibly
+          ``params['optimizer_info']``
+        :type params: dict
+        :return: optimizer type to use, one of ``moe.optimal_learning.constant.OPTIMIZER_TYPES``
+        :rtype: str
+
+        """
+        log_likelihood_type = params.get('log_likelihood_info')
+        return ENDPOINT_TO_DEFAULT_OPTIMIZER_TYPE[(self._route_name, log_likelihood_type)]
+
+    def _get_default_optimizer_params(self, params):
+        """Get the default optimizer parameters associated with the desired ``optimizer_type``, REST endpoint, and ``log_likelihood_type``.
+
+        :param params: a (partially) deserialized REST request with everything except possibly
+          ``params['optimizer_info']``
+        :type params: dict
+        :return: default multistart and optimizer parameters to use with this REST request
+        :rtype: ``moe.optimal_learning.constant._DefaultOptimizerInfoTuple``
+
+        """
+        optimizer_type = params['optimizer_info']['optimizer_type']
+        log_likelihood_type = params.get('log_likelihood_info')
+        optimizer_parameters_lookup = (optimizer_type, self._route_name, log_likelihood_type)
+        return OPTIMIZER_TYPE_AND_OBJECTIVE_TO_DEFAULT_PARAMETERS[optimizer_parameters_lookup]
 
     @view_config(route_name=_pretty_route_name, renderer=PRETTY_RENDERER)
     def pretty_view(self):
