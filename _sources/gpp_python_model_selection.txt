@@ -1,5 +1,5 @@
 gpp_python_model_selection
-=====
+==========================
 
 **Contents:**
 
@@ -8,13 +8,13 @@ gpp_python_model_selection
 
 
 gpp_python_model_selection.hpp
-------
+------------------------------
 
 .. doxygenfile:: gpp_python_model_selection.hpp
 
 
 gpp_python_model_selection.cpp
-------
+------------------------------
 
 .. doxygenfile:: gpp_python_model_selection.cpp
 

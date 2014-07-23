@@ -64,18 +64,30 @@
         
             <ul>
 <li class="toctree-l1"><a class="reference internal" href="why_moe.html">Why Do We Need MOE?</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="why_moe.html#what-is-moe">What is MOE?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="why_moe.html#why-is-this-hard">Why is this hard?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="why_moe.html#other-methods">Other Methods</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Install</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="install.html#install-in-docker">Install in docker:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#install-from-source">Install from source:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below):</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#install-in-docker">Install in docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#install-from-source">Install from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#osx-tips">OSX Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#building-boost">Building Boost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="moe_math.html">How does MOE work?</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#build-a-gaussian-process-gp-with-the-historical-data">Build a Gaussian Process (GP) with the historical data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#optimize-the-hyperparameters-of-the-gaussian-process">Optimize the hyperparameters of the Gaussian Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#find-the-point-s-of-highest-expected-improvement-ei">Find the point(s) of highest Expected Improvement (EI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#return-the-point-s-to-sample-then-repeat">Return the point(s) to sample, then repeat</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="demo_tutorial.html">Demo Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="demo_tutorial.html#the-interactive-demo">The Interactive Demo</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pretty_endpoints.html">Pretty Endpoints</a></li>
 <li class="toctree-l1"><a class="reference internal" href="objective_functions.html">Objective Functions</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="objective_functions.html#what-is-an-objective-function">What is an objective function?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="objective_functions.html#properties-of-an-objective-function">Properties of an objective function</a></li>
@@ -108,6 +120,16 @@
 <li class="toctree-l2"><a class="reference internal" href="moe.html#module-moe">Module contents</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="moe_examples.html">moe_examples package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.next_point_via_simple_endpoint">moe_examples.next_point_via_simple_endpoint module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples">Module contents</a></li>
+</ul>
+</li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="cpp_tree.html">C++ Files</a><ul>
@@ -130,23 +152,22 @@
 <li class="toctree-l2"><a class="reference internal" href="gpp_python_model_selection.html">gpp_python_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_math.html">gpp_math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_random_test.html">gpp_random_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimizer_parameters.html">gpp_optimizer_parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_random.html">gpp_random</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra.html">gpp_linear_algebra</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_core.html">gpp_core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection.html">gpp_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_covariance_test.html">gpp_covariance_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_python.html">gpp_python</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_and_hyperparameter_optimization.html">gpp_model_selection_and_hyperparameter_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_test.html">gpp_model_selection_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_optimization_parameters.html">gpp_optimization_parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_common.html">gpp_common</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_and_hyperparameter_optimization_test.html">gpp_model_selection_and_hyperparameter_optimization_test</a></li>
 </ul>
 </li>
 </ul>
@@ -371,6 +392,12 @@ f is twice continuously differentiable).</p>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="moe.optimal_learning.python.interfaces.covariance_interface.CovarianceInterface.hyperparameters">
+<tt class="descname">hyperparameters</tt><a class="headerlink" href="#moe.optimal_learning.python.interfaces.covariance_interface.CovarianceInterface.hyperparameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the hyperparameters (array of float64 with shape (num_hyperparameters)) of this covariance.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -674,9 +701,63 @@ implementation must satisfy in order to be used in computation/optimization of E
 Python currently does not natively support interfaces, so we are commandeering ABCs for that purpose.</p>
 <p>See package docs in interfaces/__init__.py for an introduction to Gaussian Processes.</p>
 <dl class="class">
+<dt id="moe.optimal_learning.python.interfaces.gaussian_process_interface.GaussianProcessDataInterface">
+<em class="property">class </em><tt class="descclassname">moe.optimal_learning.python.interfaces.gaussian_process_interface.</tt><tt class="descname">GaussianProcessDataInterface</tt><a class="reference internal" href="_modules/moe/optimal_learning/python/interfaces/gaussian_process_interface.html#GaussianProcessDataInterface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.interfaces.gaussian_process_interface.GaussianProcessDataInterface" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Core data interface for constructing or manipulating a Gaussian Process Prior (GPP).</p>
+<p>This interface exists as a convenience to safely access the fundamental components of a GPP.</p>
+<p>Assumes the underlying GP has mean zero.</p>
+<p>Includes functions to return <em>copies</em> of the covariance function (see CovarianceInterface)
+and observed, historical data (coordinates, function values, noise variance; see
+HistoricalData) of a GP object or an object supporting computations on GPs.</p>
+<p>With the zero mean assumption, a &#8220;Gaussian Process&#8221; is fully determined by its covariance
+function (Rasmussen &amp; Williams, Chp 2.2). Then the &#8220;Prior&#8221; is fully determined by our
+past observations. Together, the covariance and historical data produce the heart
+of a Gaussian Process Prior.</p>
+<dl class="method">
+<dt id="moe.optimal_learning.python.interfaces.gaussian_process_interface.GaussianProcessDataInterface.get_core_data_copy">
+<tt class="descname">get_core_data_copy</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/interfaces/gaussian_process_interface.html#GaussianProcessDataInterface.get_core_data_copy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.interfaces.gaussian_process_interface.GaussianProcessDataInterface.get_core_data_copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tuple of covariance, historical_data copies for convenience; see specific getters.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.optimal_learning.python.interfaces.gaussian_process_interface.GaussianProcessDataInterface.get_covariance_copy">
+<tt class="descname">get_covariance_copy</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/interfaces/gaussian_process_interface.html#GaussianProcessDataInterface.get_covariance_copy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.interfaces.gaussian_process_interface.GaussianProcessDataInterface.get_covariance_copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a copy of the covariance object specifying the Gaussian Process.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">covariance object encoding assumptions about the GP&#8217;s behavior on our data</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">interfaces.covariance_interface.CovarianceInterface subclass</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.optimal_learning.python.interfaces.gaussian_process_interface.GaussianProcessDataInterface.get_historical_data_copy">
+<tt class="descname">get_historical_data_copy</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/interfaces/gaussian_process_interface.html#GaussianProcessDataInterface.get_historical_data_copy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.interfaces.gaussian_process_interface.GaussianProcessDataInterface.get_historical_data_copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the data (points, function values, noise) specifying the prior of the Gaussian Process.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">object specifying the already-sampled points, the objective value at those points, and the noise variance associated with each observation</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">data_containers.HistoricalData</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="moe.optimal_learning.python.interfaces.gaussian_process_interface.GaussianProcessInterface">
 <em class="property">class </em><tt class="descclassname">moe.optimal_learning.python.interfaces.gaussian_process_interface.</tt><tt class="descname">GaussianProcessInterface</tt><a class="reference internal" href="_modules/moe/optimal_learning/python/interfaces/gaussian_process_interface.html#GaussianProcessInterface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.interfaces.gaussian_process_interface.GaussianProcessInterface" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<dd><p>Bases: <a class="reference internal" href="#moe.optimal_learning.python.interfaces.gaussian_process_interface.GaussianProcessDataInterface" title="moe.optimal_learning.python.interfaces.gaussian_process_interface.GaussianProcessDataInterface"><tt class="xref py py-class docutils literal"><span class="pre">moe.optimal_learning.python.interfaces.gaussian_process_interface.GaussianProcessDataInterface</span></tt></a></p>
 <p>Interface for a GaussianProcess: mean, variance, gradients thereof, and data I/O.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -716,7 +797,7 @@ both point sets with the GP, so we simply call the union of point sets <tt class
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>sampled_points</strong> (<em>single SampledPoint or list of SampledPoint objects</em>) &#8211; SampledPoint objects to load into the GP (containing point, function value, and noise variance)</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>sampled_points</strong> (single <tt class="xref py py-class docutils literal"><span class="pre">moe.optimal_learning.python.SamplePoint</span></tt> or list of SamplePoint objects) &#8211; SamplePoint objects to load into the GP (containing point, function value, and noise variance)</td>
 </tr>
 </tbody>
 </table>
@@ -951,7 +1032,7 @@ of Gaussian Processes (GPs) and how we are using them (Expected Improvement, EI)
 overview in interfaces/gaussian_process_interface.py.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">these comments are copied from the file comments of gpp_model_selection_and_hyperparameter_optimization.hpp.</p>
+<p class="last">these comments are copied from the file comments of gpp_model_selection.hpp.</p>
 </div>
 <p>This file deals with model selection via hyperparameter optimization, as the name implies.  In our discussion of GPs,
 we did not pay much attention to the underlying covariance function.  We noted that the covariance is extremely
@@ -993,7 +1074,7 @@ too many to cite, but R&amp;W groups them into three common approaches (5.1, p10
 </ol>
 <p>where &#8220;generalization error&#8221; is defined as &#8220;the average error on unseen test examples (from the same distribution
 as the training cases).&#8221;  So it&#8217;s a measure of how well or poorly the model predicts reality.</p>
-<p>For further details and examples of log likelihood measures, see gpp_model_selection_and_hyperparameter_optimization.hpp.
+<p>For further details and examples of log likelihood measures, see gpp_model_selection.hpp.
 Overview of some log likelihood measures can be found in GaussianProcessLogMarginalLikelihood and
 GaussianProcessLeaveOneOutLogLikelihood in cpp_wrappers/log_likelihood.py.</p>
 <p><strong>OPTIMIZATION</strong></p>
@@ -1015,13 +1096,13 @@ of one or more hyperparameters).</p>
 <dl class="class">
 <dt id="moe.optimal_learning.python.interfaces.log_likelihood_interface.GaussianProcessLogLikelihoodInterface">
 <em class="property">class </em><tt class="descclassname">moe.optimal_learning.python.interfaces.log_likelihood_interface.</tt><tt class="descname">GaussianProcessLogLikelihoodInterface</tt><a class="reference internal" href="_modules/moe/optimal_learning/python/interfaces/log_likelihood_interface.html#GaussianProcessLogLikelihoodInterface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.interfaces.log_likelihood_interface.GaussianProcessLogLikelihoodInterface" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<dd><p>Bases: <a class="reference internal" href="#moe.optimal_learning.python.interfaces.gaussian_process_interface.GaussianProcessDataInterface" title="moe.optimal_learning.python.interfaces.gaussian_process_interface.GaussianProcessDataInterface"><tt class="xref py py-class docutils literal"><span class="pre">moe.optimal_learning.python.interfaces.gaussian_process_interface.GaussianProcessDataInterface</span></tt></a></p>
 <p>Interface for computation of log likelihood (and log likelihood-like) measures of model fit along with its gradient and hessian.</p>
 <p>See module comments for an overview of log likelihood-like measures of model fit and their role in model selection.</p>
 <p>Below, let <tt class="docutils literal"><span class="pre">LL(y</span> <span class="pre">|</span> <span class="pre">X,</span> <span class="pre">\theta)</span></tt> denote the log likelihood of the data (<tt class="docutils literal"><span class="pre">y</span></tt>) given the <tt class="docutils literal"><span class="pre">points_sampled</span></tt> (<tt class="docutils literal"><span class="pre">X</span></tt>) and the
 hyperparameters (<tt class="docutils literal"><span class="pre">\theta</span></tt>). <tt class="docutils literal"><span class="pre">\theta</span></tt> is the vector that is varied. <tt class="docutils literal"><span class="pre">(X,</span> <span class="pre">y)</span></tt> (and associated noise) should be stored
 as data members by the implementation&#8217;s constructor.</p>
-<p>See gpp_model_selection_and_hyperparameter_optimization.hpp/cpp for further overview and in-depth discussion, respectively.</p>
+<p>See gpp_model_selection.hpp/cpp for further overview and in-depth discussion, respectively.</p>
 <dl class="method">
 <dt id="moe.optimal_learning.python.interfaces.log_likelihood_interface.GaussianProcessLogLikelihoodInterface.compute_grad_log_likelihood">
 <tt class="descname">compute_grad_log_likelihood</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/interfaces/log_likelihood_interface.html#GaussianProcessLogLikelihoodInterface.compute_grad_log_likelihood"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.interfaces.log_likelihood_interface.GaussianProcessLogLikelihoodInterface.compute_grad_log_likelihood" title="Permalink to this definition">¶</a></dt>
@@ -1084,6 +1165,12 @@ as data members by the implementation&#8217;s constructor.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="moe.optimal_learning.python.interfaces.log_likelihood_interface.GaussianProcessLogLikelihoodInterface.hyperparameters">
+<tt class="descname">hyperparameters</tt><a class="headerlink" href="#moe.optimal_learning.python.interfaces.log_likelihood_interface.GaussianProcessLogLikelihoodInterface.hyperparameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the hyperparameters (array of float64 with shape (num_hyperparameters)) of this covariance.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="moe.optimal_learning.python.interfaces.log_likelihood_interface.GaussianProcessLogLikelihoodInterface.num_hyperparameters">
 <tt class="descname">num_hyperparameters</tt><a class="reference internal" href="_modules/moe/optimal_learning/python/interfaces/log_likelihood_interface.html#GaussianProcessLogLikelihoodInterface.num_hyperparameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.interfaces.log_likelihood_interface.GaussianProcessLogLikelihoodInterface.num_hyperparameters" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the number of hyperparameters.</p>
@@ -1118,10 +1205,10 @@ through the C++ interface.</p>
 <dt id="moe.optimal_learning.python.interfaces.optimization_interface.OptimizableInterface">
 <em class="property">class </em><tt class="descclassname">moe.optimal_learning.python.interfaces.optimization_interface.</tt><tt class="descname">OptimizableInterface</tt><a class="reference internal" href="_modules/moe/optimal_learning/python/interfaces/optimization_interface.html#OptimizableInterface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.interfaces.optimization_interface.OptimizableInterface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
-<p>Interface that an object must fulfill to be optimized by an implementation of OptimizationInterface.</p>
+<p>Interface that an object must fulfill to be optimized by an implementation of OptimizerInterface.</p>
 <p>Below, <tt class="docutils literal"><span class="pre">f(x)</span></tt> is the scalar objective function represented by this object. <tt class="docutils literal"><span class="pre">x</span></tt> is a vector-valued input
 with <tt class="docutils literal"><span class="pre">problem_size</span></tt> dimensions. With <tt class="docutils literal"><span class="pre">f(x)</span></tt> (and/or its derivatives), a OptimizableInterface implementation
-can be hooked up to a OptimizationInterface implementation to find the maximum value of <tt class="docutils literal"><span class="pre">f(x)</span></tt> and the input
+can be hooked up to a OptimizerInterface implementation to find the maximum value of <tt class="docutils literal"><span class="pre">f(x)</span></tt> and the input
 <tt class="docutils literal"><span class="pre">x</span></tt> at which this maximum occurs.</p>
 <p>This interface is straightforward&#8211;we need the ability to compute the problem size (how many independent parameters to
 optimize) as well as the ability to compute <tt class="docutils literal"><span class="pre">f(x)</span></tt> and/or its various derivatives. An implementation of <tt class="docutils literal"><span class="pre">f(x)</span></tt> is
@@ -1182,6 +1269,12 @@ For Expected Improvement (e.g., python_version.expected_improvement.ExpectedImpr
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="moe.optimal_learning.python.interfaces.optimization_interface.OptimizableInterface.current_point">
+<tt class="descname">current_point</tt><a class="headerlink" href="#moe.optimal_learning.python.interfaces.optimization_interface.OptimizableInterface.current_point" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the current_point (array of float64 with shape (problem_size)) at which this object is evaluating the objective function, <tt class="docutils literal"><span class="pre">f(x)</span></tt>.</p>
 </dd></dl>
 
 <dl class="method">

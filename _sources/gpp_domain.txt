@@ -1,13 +1,20 @@
 gpp_domain
-=====
+==========
 
 **Contents:**
 
     1. `gpp_domain.hpp`_
+    2. `gpp_domain.cpp`_
 
 
 gpp_domain.hpp
-------
+--------------
 
 .. doxygenfile:: gpp_domain.hpp
+
+
+gpp_domain.cpp
+--------------
+
+.. doxygenfile:: gpp_domain.cpp
 

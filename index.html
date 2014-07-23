@@ -62,18 +62,30 @@
         
             <ul>
 <li class="toctree-l1"><a class="reference internal" href="why_moe.html">Why Do We Need MOE?</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="why_moe.html#what-is-moe">What is MOE?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="why_moe.html#why-is-this-hard">Why is this hard?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="why_moe.html#other-methods">Other Methods</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Install</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="install.html#install-in-docker">Install in docker:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#install-from-source">Install from source:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below):</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#install-in-docker">Install in docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#install-from-source">Install from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#osx-tips">OSX Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#building-boost">Building Boost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="moe_math.html">How does MOE work?</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#build-a-gaussian-process-gp-with-the-historical-data">Build a Gaussian Process (GP) with the historical data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#optimize-the-hyperparameters-of-the-gaussian-process">Optimize the hyperparameters of the Gaussian Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#find-the-point-s-of-highest-expected-improvement-ei">Find the point(s) of highest Expected Improvement (EI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#return-the-point-s-to-sample-then-repeat">Return the point(s) to sample, then repeat</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="demo_tutorial.html">Demo Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="demo_tutorial.html#the-interactive-demo">The Interactive Demo</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pretty_endpoints.html">Pretty Endpoints</a></li>
 <li class="toctree-l1"><a class="reference internal" href="objective_functions.html">Objective Functions</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="objective_functions.html#what-is-an-objective-function">What is an objective function?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="objective_functions.html#properties-of-an-objective-function">Properties of an objective function</a></li>
@@ -106,6 +118,16 @@
 <li class="toctree-l2"><a class="reference internal" href="moe.html#module-moe">Module contents</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="moe_examples.html">moe_examples package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.next_point_via_simple_endpoint">moe_examples.next_point_via_simple_endpoint module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples">Module contents</a></li>
+</ul>
+</li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="cpp_tree.html">C++ Files</a><ul>
@@ -128,23 +150,22 @@
 <li class="toctree-l2"><a class="reference internal" href="gpp_python_model_selection.html">gpp_python_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_math.html">gpp_math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_random_test.html">gpp_random_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimizer_parameters.html">gpp_optimizer_parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_random.html">gpp_random</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra.html">gpp_linear_algebra</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_core.html">gpp_core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection.html">gpp_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_covariance_test.html">gpp_covariance_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_python.html">gpp_python</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_and_hyperparameter_optimization.html">gpp_model_selection_and_hyperparameter_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_test.html">gpp_model_selection_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_optimization_parameters.html">gpp_optimization_parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_common.html">gpp_common</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_and_hyperparameter_optimization_test.html">gpp_model_selection_and_hyperparameter_optimization_test</a></li>
 </ul>
 </li>
 </ul>
@@ -196,25 +217,25 @@
 </div></blockquote>
 <div class="section" id="what-is-moe">
 <h2>What is MOE?<a class="headerlink" href="#what-is-moe" title="Permalink to this headline">¶</a></h2>
-<p>MOE (Metric Optimization Engine) is a <em>fast and efficient</em>, <em>derivative-free</em>,  <em>black box</em>, <em>global</em> optimization framework for optimizing parameters of time <em>consuming</em> or <em>expensive</em> experiments and systems.</p>
-<p>An experiment or system can be time consuming or expensive if it takes a long time to recieve statistically significant results (traffic for an A/B test, complex system with long training time, etc) or the opportunity cost of trying new values is high (engineering expense, A/B testing tradeoffs, etc).</p>
-<p>MOE solves this problem through optimal experimental design and <em>optimal learning</em>.</p>
-<blockquote>
-<div><p>&#8220;Optimal learning addresses the challenge of how to collect information as efficiently as possible, primarily for settings where collecting information is time consuming and expensive&#8221;</p>
-<p class="attribution">&mdash;Prof. Warren Powell, <a class="reference external" href="http://optimallearning.princeton.edu">http://optimallearning.princeton.edu</a></p>
-</div></blockquote>
-<p>It boils down to:</p>
-<blockquote>
-<div><p>&#8220;What is the most efficient way to collect information?&#8221;</p>
-<p class="attribution">&mdash;Prof. Peter Frazier, <a class="reference external" href="http://people.orie.cornell.edu/pfrazier">http://people.orie.cornell.edu/pfrazier</a></p>
-</div></blockquote>
-<p>The <em>black box</em> nature of MOE allows us to optimize any number of systems, requiring no internal knowledge or access. It uses some <a class="reference internal" href="objective_functions.html"><em>objective function</em></a> and some set of <a class="reference internal" href="objective_functions.html"><em>parameters</em></a> and finds the best set of parameters to maximize (or minimize) the given function in as few attempts as possible. It does not require knowledge of the specific objective, or how it is obtained, just the previous parameters and their associated objective values (historical data).</p>
-<p>Example:</p>
+<p>MOE (Metric Optimization Engine) is an <em>efficient</em> way to optimize a system&#8217;s parameters, when evaluating parameters is <em>time-consuming</em> or <em>expensive</em>.</p>
+<p>Here are some examples of when you could use MOE:</p>
+<ul class="simple">
+<li><strong>Optimizing a system&#8217;s click-through rate (CTR).</strong>  MOE is useful when evaluating CTR requires running an A/B test on real user traffic, and getting statistically significant results requires running this test for a substantial amount of time (hours, days, or even weeks).</li>
+<li><strong>Optimizing tunable parameters of a machine-learning prediction method.</strong>  MOE is useful if calculating the prediction error for one choice of the parameters takes a long time, which might happen because the prediction method is complex and takes a long time to train, or because the data used to evaluate the error is huge.</li>
+<li><strong>Optimizing the design of an engineering system</strong> (an airplane, the traffic network in a city, a combustion engine, a hospital).  MOE is useful if evaluating a design requires running a complex physics-based numerical simulation on a supercomputer.</li>
+<li><strong>Optimizing the parameters of a real-world experiment</strong> (a chemistry, biology, or physics experiment, a drug trial).  MOE is useful when every experiment needs to be physically created in a lab, or very few experiments can be run in parallel.</li>
+</ul>
+<p>MOE is ideal for problems in which the optimization problem&#8217;s objective function is a black box, not necessarily convex or concave, derivatives are unavailable, and we seek a global optimum, rather than just a local one. This ability to handle black-box objective functions allows us to use MOE to optimize nearly any system, without requiring any internal knowledge or access. To use MOE, we simply need to specify some <a class="reference internal" href="objective_functions.html"><em>objective function</em></a>, some set of <a class="reference internal" href="objective_functions.html"><em>parameters</em></a>, and any historical data we may have from previous evaluations of the objective function. MOE then finds the set of parameters that maximize (or minimize) the objective function, while evaluating the objective function as little as possible.</p>
+<p>Inside, MOE uses <em>Bayesian global optimization</em>, which performs optimization using Bayesian statistics and <em>optimal learning</em>.</p>
+<p>Optimal learning is the study of efficient methods for collecting information, particularly when doing so is time-consuming or expensive, and was developed and popularized from its roots in decision theory by <a class="reference external" href="http://people.orie.cornell.edu/pfrazier/">Prof. Peter Frazier</a> (<a class="reference external" href="http://www.orie.cornell.edu/">Cornell, Operations Research and Information Engineering</a>) and <a class="reference external" href="http://optimallearning.princeton.edu/">Prof. Warren Powell</a> (<a class="reference external" href="http://orfe.princeton.edu/">Princeton, Operations Research and Financial Engineering</a>). For more information about the mathematics of optimal learning, and more real-world applications like heart surgery, drug discovery, and materials science, see these <a class="reference external" href="http://people.orie.cornell.edu/pfrazier/Presentations/2014.01.Lancaster.BGO.pdf">intro slides</a> to optimal learning.</p>
+<p><strong>Example</strong>:</p>
+<p>To illustrate how MOE works, suppose we wish to maximize the click-through-rate (CTR) on a website we manage, by varying some real-valued parameter vector <span class="math">\(\vec{x}\)</span> that govern how site content is presented to the user.  Evaluating the CTR for a new set of parameters requires running an A/B test over a period of several days.  We write this problem mathematically as,</p>
 <div class="math">
-\[\underset{\vec{x}}{\mathrm{argmax}} \ \text{CTR} (\vec{x})\]</div>
-<p>Where <span class="math">\(\vec{x}\)</span> is any real valued input in some finite number of dimensions and CTR is some black box function that is difficult, expensive or time consuming to evaluate and is potentially non-convex, non-differentiable or non-continuous.</p>
+\[\underset{\vec{x}}{\mathrm{argmax}} \ \text{CTR} (\vec{x}).\]</div>
 <p>We want to find the best set of parameters <span class="math">\(\vec{x}\)</span> while evaluating the underlying function (CTR) as few times as possible. See <a class="reference internal" href="objective_functions.html"><em>Objective Functions</em></a> for more examples of objective functions and the best ways to combine metrics.</p>
-<p>It allows you to build the following loop, contantly optimizing and surfing the wave of highest returns for any set of parameters.</p>
+<p>MOE builds the following loop, in which it takes the results from those A/B tests that have been run so far, processes them through its internal engine, and then determines at which parameter vector <span class="math">\(\vec{x}\)</span> it would be most valuable to next observe the CTR.  MOE runs an A/B test at this new parameter vector, and then repeats the loop.</p>
+<p>This choice of the most valuable point trades a desire to evaluate points where we have a lot of uncertainty about the CTR (this is called <em>exploration</em>), and to evaluate points where we think the CTR is large (this is called <em>exploitation</em>).</p>
+<p>By continuing to optimize over many iterations, MOE quickly finds approximate optima, or points with large CTR.  As the world changes over time, MOE can surf these shifting optima as they move, staying at the peak of the potentially changing objective function in parameter space as time advances.</p>
 <a class="reference internal image-reference" href="_images/moe_loop.png"><img alt="moe loop" class="align-center" src="_images/moe_loop.png" /></a>
 <p>For more examples on how MOE can be used see <a class="reference internal" href="examples.html"><em>Examples</em></a></p>
 <p>Video and slidedeck introduction to MOE:</p>
@@ -239,14 +260,14 @@
 <blockquote>
 <div><ul class="simple">
 <li><a class="reference internal" href="gpp_covariance.html"><em>gpp_covariance</em></a></li>
-<li><a class="reference internal" href="gpp_model_selection_and_hyperparameter_optimization.html"><em>gpp_model_selection_and_hyperparameter_optimization</em></a></li>
+<li><a class="reference internal" href="gpp_model_selection.html"><em>gpp_model_selection</em></a></li>
 <li><a class="reference internal" href="moe.views.rest.html#module-moe.views.rest.gp_hyper_opt" title="moe.views.rest.gp_hyper_opt"><tt class="xref py py-mod docutils literal"><span class="pre">moe.views.rest.gp_hyper_opt</span></tt></a></li>
 <li><a class="reference external" href="http://www.gaussianprocess.org/gpml/chapters/RW4.pdf">RW Chapter 4</a></li>
 <li><a class="reference external" href="http://www.gaussianprocess.org/gpml/chapters/RW5.pdf">RW Chapter 5</a></li>
 </ul>
 </div></blockquote>
 </li>
-<li><p class="first">Finding the points of highest Expected Improvement (EI)</p>
+<li><p class="first">Finding the point(s) of highest Expected Improvement (EI)</p>
 <blockquote>
 <div><ul class="simple">
 <li><a class="reference internal" href="gpp_expected_improvement_demo.html"><em>gpp_expected_improvement_demo</em></a></li>
@@ -309,7 +330,7 @@ $ docker run -p 6543:6543 moe_container
 &gt; from moe.easy_interface.experiment import Experiment
 &gt; from moe.easy_interface.simple_endpoint import gp_next_points
 &gt; exp = Experiment([[0, 2], [0, 4]])
-&gt; exp.add_point([0, 0], 1.0, 0.01)
+&gt; exp.historical_data.append_sample_points([[0, 0], 1.0, 0.01])
 &gt; next_point_to_sample = gp_next_points(exp)
 &gt; print next_point_to_sample
 </pre></div>
@@ -318,26 +339,51 @@ $ docker run -p 6543:6543 moe_container
 </div>
 <div class="section" id="within-python">
 <h3>Within python<a class="headerlink" href="#within-python" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">moe.easy_interface.experiment</span> <span class="kn">import</span> <span class="n">Experiment</span>
-<span class="kn">from</span> <span class="nn">moe.easy_interface.simple_endpoint</span> <span class="kn">import</span> <span class="n">gp_next_points</span>
+<p>See <a class="reference internal" href="moe_examples.html#module-moe_examples.next_point_via_simple_endpoint" title="moe_examples.next_point_via_simple_endpoint"><tt class="xref py py-mod docutils literal"><span class="pre">moe_examples.next_point_via_simple_endpoint</span></tt></a> or <a class="reference internal" href="examples.html"><em>Examples</em></a> for more examples.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">random</span>
 
-<span class="kn">import</span> <span class="nn">math</span><span class="o">,</span> <span class="nn">random</span>
+<span class="kn">from</span> <span class="nn">moe.easy_interface.experiment</span> <span class="kn">import</span> <span class="n">Experiment</span>
+<span class="kn">from</span> <span class="nn">moe.easy_interface.simple_endpoint</span> <span class="kn">import</span> <span class="n">gp_next_points</span>
+<span class="kn">from</span> <span class="nn">moe.optimal_learning.python.data_containers</span> <span class="kn">import</span> <span class="n">SamplePoint</span>
+
+
+<span class="c"># Note: this function can be anything, the output of a batch, results of an A/B experiment, the value of a physical experiment etc.</span>
 <span class="k">def</span> <span class="nf">function_to_minimize</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;This function has a minimum near [1, 2.6].&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Calculate an aribitrary 2-d function with some noise with minimum near [1, 2.6].&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">)</span>
 
-<span class="n">exp</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>
-<span class="n">exp</span><span class="o">.</span><span class="n">add_point</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">)</span> <span class="c"># Bootstrap with some known or already sampled point</span>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">exp</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>  <span class="c"># 2D experiment, we build a tensor product domain</span>
+    <span class="c"># Bootstrap with some known or already sampled point(s)</span>
+    <span class="n">exp</span><span class="o">.</span><span class="n">historical_data</span><span class="o">.</span><span class="n">append_sample_points</span><span class="p">([</span>
+        <span class="n">SamplePoint</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">function_to_minimize</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]),</span> <span class="mf">0.05</span><span class="p">),</span>  <span class="c"># Iterables of the form [point, f_val, f_var] are also allowed</span>
+        <span class="p">])</span>
 
-<span class="c"># Sample 20 points</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">):</span>
-    <span class="n">next_point_to_sample</span> <span class="o">=</span> <span class="n">gp_next_points</span><span class="p">(</span><span class="n">exp</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="c"># By default we only ask for one point</span>
-    <span class="n">value_of_next_point</span> <span class="o">=</span> <span class="n">function_to_minimize</span><span class="p">(</span><span class="n">next_point_to_sample</span><span class="p">)</span>
-    <span class="n">exp</span><span class="o">.</span><span class="n">add_point</span><span class="p">(</span><span class="n">next_point_to_sample</span><span class="p">,</span> <span class="n">value_of_next_point</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">)</span> <span class="c"># We can add some noise</span>
+    <span class="c"># Sample 20 points</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">):</span>
+        <span class="c"># Use MOE to determine what is the point with highest Expected Improvement to use next</span>
+        <span class="n">next_point_to_sample</span> <span class="o">=</span> <span class="n">gp_next_points</span><span class="p">(</span><span class="n">exp</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>  <span class="c"># By default we only ask for one point</span>
+        <span class="c"># Sample the point from our objective function, we can replace this with any function</span>
+        <span class="n">value_of_next_point</span> <span class="o">=</span> <span class="n">function_to_minimize</span><span class="p">(</span><span class="n">next_point_to_sample</span><span class="p">)</span>
 
-<span class="k">print</span> <span class="n">exp</span><span class="o">.</span><span class="n">best_point</span>
+        <span class="k">print</span> <span class="s">&quot;Sampled f({0:s}) = {1:.18E}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">next_point_to_sample</span><span class="p">),</span> <span class="n">value_of_next_point</span><span class="p">)</span>
+
+        <span class="c"># Add the information about the point to the experiment historical data to inform the GP</span>
+        <span class="n">exp</span><span class="o">.</span><span class="n">historical_data</span><span class="o">.</span><span class="n">append_sample_points</span><span class="p">([</span><span class="n">SamplePoint</span><span class="p">(</span><span class="n">next_point_to_sample</span><span class="p">,</span> <span class="n">value_of_next_point</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">)])</span>  <span class="c"># We can add some noise</span>
 </pre></div>
 </div>
+</div>
+<div class="section" id="within-c">
+<h3>Within C++<a class="headerlink" href="#within-c" title="Permalink to this headline">¶</a></h3>
+<p>Examples:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><a class="reference internal" href="gpp_expected_improvement_demo.html"><em>gpp_expected_improvement_demo</em></a></li>
+<li><a class="reference internal" href="gpp_hyperparameter_optimization_demo.html"><em>gpp_hyperparameter_optimization_demo</em></a></li>
+<li><a class="reference internal" href="gpp_hyper_and_EI_demo.html"><em>gpp_hyper_and_EI_demo</em></a></li>
+</ol>
+</div></blockquote>
 </div>
 </div>
 </div>
@@ -348,18 +394,30 @@ $ docker run -p 6543:6543 moe_container
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="why_moe.html">Why Do We Need MOE?</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="why_moe.html#what-is-moe">What is MOE?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="why_moe.html#why-is-this-hard">Why is this hard?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="why_moe.html#other-methods">Other Methods</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Install</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="install.html#install-in-docker">Install in docker:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#install-from-source">Install from source:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below):</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#install-in-docker">Install in docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#install-from-source">Install from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#osx-tips">OSX Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#building-boost">Building Boost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="moe_math.html">How does MOE work?</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#build-a-gaussian-process-gp-with-the-historical-data">Build a Gaussian Process (GP) with the historical data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#optimize-the-hyperparameters-of-the-gaussian-process">Optimize the hyperparameters of the Gaussian Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#find-the-point-s-of-highest-expected-improvement-ei">Find the point(s) of highest Expected Improvement (EI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#return-the-point-s-to-sample-then-repeat">Return the point(s) to sample, then repeat</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="demo_tutorial.html">Demo Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="demo_tutorial.html#the-interactive-demo">The Interactive Demo</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pretty_endpoints.html">Pretty Endpoints</a></li>
 <li class="toctree-l1"><a class="reference internal" href="objective_functions.html">Objective Functions</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="objective_functions.html#what-is-an-objective-function">What is an objective function?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="objective_functions.html#properties-of-an-objective-function">Properties of an objective function</a></li>
@@ -435,6 +493,28 @@ $ docker run -p 6543:6543 moe_container
 <li class="toctree-l2"><a class="reference internal" href="moe.html#module-moe">Module contents</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="moe_examples.html">moe_examples package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="moe_examples.tests.html">moe_examples.tests package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="moe_examples.tests.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe_examples.tests.html#module-moe_examples.tests.combined_example_test">moe_examples.tests.combined_example_test module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe_examples.tests.html#module-moe_examples.tests.hyper_opt_of_gp_from_historical_data_test">moe_examples.tests.hyper_opt_of_gp_from_historical_data_test module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe_examples.tests.html#module-moe_examples.tests.mean_and_var_of_gp_from_historic_data_test">moe_examples.tests.mean_and_var_of_gp_from_historic_data_test module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe_examples.tests.html#module-moe_examples.tests.moe_example_test_case">moe_examples.tests.moe_example_test_case module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe_examples.tests.html#module-moe_examples.tests.next_point_via_simple_endpoint_test">moe_examples.tests.next_point_via_simple_endpoint_test module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe_examples.tests.html#module-moe_examples.tests">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.next_point_via_simple_endpoint">moe_examples.next_point_via_simple_endpoint module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples">Module contents</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -493,6 +573,7 @@ $ docker run -p 6543:6543 moe_container
 </li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_domain.html">gpp_domain</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="gpp_domain.html#gpp-domain-hpp">gpp_domain.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gpp_domain.html#gpp-domain-cpp">gpp_domain.cpp</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_python_common.html">gpp_python_common</a><ul>
@@ -534,6 +615,10 @@ $ docker run -p 6543:6543 moe_container
 <li class="toctree-l3"><a class="reference internal" href="gpp_random_test.html#gpp-random-test-cpp">gpp_random_test.cpp</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimizer_parameters.html">gpp_optimizer_parameters</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gpp_optimizer_parameters.html#gpp-optimizer-parameters-hpp">gpp_optimizer_parameters.hpp</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="gpp_expected_improvement_demo.html#gpp-expected-improvement-demo-cpp">gpp_expected_improvement_demo.cpp</a></li>
 </ul>
@@ -563,8 +648,9 @@ $ docker run -p 6543:6543 moe_container
 <li class="toctree-l3"><a class="reference internal" href="gpp_linear_algebra_test.html#gpp-linear-algebra-test-cpp">gpp_linear_algebra_test.cpp</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_core.html">gpp_core</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="gpp_core.html#gpp-core-cpp">gpp_core.cpp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection.html">gpp_model_selection</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gpp_model_selection.html#gpp-model-selection-hpp">gpp_model_selection.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gpp_model_selection.html#gpp-model-selection-cpp">gpp_model_selection.cpp</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a><ul>
@@ -576,11 +662,6 @@ $ docker run -p 6543:6543 moe_container
 <li class="toctree-l3"><a class="reference internal" href="gpp_covariance_test.html#gpp-covariance-test-cpp">gpp_covariance_test.cpp</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="gpp_python_gaussian_process.html#gpp-python-gaussian-process-hpp">gpp_python_gaussian_process.hpp</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gpp_python_gaussian_process.html#gpp-python-gaussian-process-cpp">gpp_python_gaussian_process.cpp</a></li>
-</ul>
-</li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="gpp_mock_optimization_objective_functions.html#gpp-mock-optimization-objective-functions-hpp">gpp_mock_optimization_objective_functions.hpp</a></li>
 </ul>
@@ -589,26 +670,22 @@ $ docker run -p 6543:6543 moe_container
 <li class="toctree-l3"><a class="reference internal" href="gpp_python.html#gpp-python-cpp">gpp_python.cpp</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_and_hyperparameter_optimization.html">gpp_model_selection_and_hyperparameter_optimization</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="gpp_model_selection_and_hyperparameter_optimization.html#gpp-model-selection-and-hyperparameter-optimization-hpp">gpp_model_selection_and_hyperparameter_optimization.hpp</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gpp_model_selection_and_hyperparameter_optimization.html#gpp-model-selection-and-hyperparameter-optimization-cpp">gpp_model_selection_and_hyperparameter_optimization.cpp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_test.html">gpp_model_selection_test</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gpp_model_selection_test.html#gpp-model-selection-test-hpp">gpp_model_selection_test.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gpp_model_selection_test.html#gpp-model-selection-test-cpp">gpp_model_selection_test.cpp</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="gpp_hyper_and_EI_demo.html#gpp-hyper-and-ei-demo-cpp">gpp_hyper_and_EI_demo.cpp</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_optimization_parameters.html">gpp_optimization_parameters</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="gpp_optimization_parameters.html#gpp-optimization-parameters-hpp">gpp_optimization_parameters.hpp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gpp_python_gaussian_process.html#gpp-python-gaussian-process-hpp">gpp_python_gaussian_process.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gpp_python_gaussian_process.html#gpp-python-gaussian-process-cpp">gpp_python_gaussian_process.cpp</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_common.html">gpp_common</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="gpp_common.html#gpp-common-hpp">gpp_common.hpp</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_and_hyperparameter_optimization_test.html">gpp_model_selection_and_hyperparameter_optimization_test</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="gpp_model_selection_and_hyperparameter_optimization_test.html#gpp-model-selection-and-hyperparameter-optimization-test-hpp">gpp_model_selection_and_hyperparameter_optimization_test.hpp</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gpp_model_selection_and_hyperparameter_optimization_test.html#gpp-model-selection-and-hyperparameter-optimization-test-cpp">gpp_model_selection_and_hyperparameter_optimization_test.cpp</a></li>
 </ul>
 </li>
 </ul>

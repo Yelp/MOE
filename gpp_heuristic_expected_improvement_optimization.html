@@ -64,18 +64,30 @@
         
             <ul>
 <li class="toctree-l1"><a class="reference internal" href="why_moe.html">Why Do We Need MOE?</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="why_moe.html#what-is-moe">What is MOE?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="why_moe.html#why-is-this-hard">Why is this hard?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="why_moe.html#other-methods">Other Methods</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Install</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="install.html#install-in-docker">Install in docker:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#install-from-source">Install from source:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below):</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#install-in-docker">Install in docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#install-from-source">Install from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#osx-tips">OSX Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#building-boost">Building Boost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="moe_math.html">How does MOE work?</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#build-a-gaussian-process-gp-with-the-historical-data">Build a Gaussian Process (GP) with the historical data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#optimize-the-hyperparameters-of-the-gaussian-process">Optimize the hyperparameters of the Gaussian Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#find-the-point-s-of-highest-expected-improvement-ei">Find the point(s) of highest Expected Improvement (EI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#return-the-point-s-to-sample-then-repeat">Return the point(s) to sample, then repeat</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="demo_tutorial.html">Demo Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="demo_tutorial.html#the-interactive-demo">The Interactive Demo</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pretty_endpoints.html">Pretty Endpoints</a></li>
 <li class="toctree-l1"><a class="reference internal" href="objective_functions.html">Objective Functions</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="objective_functions.html#what-is-an-objective-function">What is an objective function?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="objective_functions.html#properties-of-an-objective-function">Properties of an objective function</a></li>
@@ -108,6 +120,16 @@
 <li class="toctree-l2"><a class="reference internal" href="moe.html#module-moe">Module contents</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="moe_examples.html">moe_examples package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.next_point_via_simple_endpoint">moe_examples.next_point_via_simple_endpoint module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples">Module contents</a></li>
+</ul>
+</li>
 </ul>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="cpp_tree.html">C++ Files</a><ul class="current">
@@ -130,23 +152,22 @@
 <li class="toctree-l2"><a class="reference internal" href="gpp_python_model_selection.html">gpp_python_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_math.html">gpp_math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_random_test.html">gpp_random_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimizer_parameters.html">gpp_optimizer_parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_random.html">gpp_random</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra.html">gpp_linear_algebra</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_core.html">gpp_core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection.html">gpp_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_covariance_test.html">gpp_covariance_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_python.html">gpp_python</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_and_hyperparameter_optimization.html">gpp_model_selection_and_hyperparameter_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_test.html">gpp_model_selection_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_optimization_parameters.html">gpp_optimization_parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_common.html">gpp_common</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_and_hyperparameter_optimization_test.html">gpp_model_selection_and_hyperparameter_optimization_test</a></li>
 </ul>
 </li>
 </ul>
@@ -608,9 +629,9 @@ Improvement.</p>
 <div><p></p>
 <p></p>
 <em>Functions</em><blockquote>
-<div><p><span class="target" id="project0namespaceoptimal__learning_1accd40b922cedec9d2f8a5882b5c1d7ff"></span><div class="line-block">
+<div><p><span class="target" id="project0namespaceoptimal__learning_1a5b78b9f616fb772c58459846a42df99c"></span><div class="line-block">
 <div class="line">template &lt; typename DomainType &gt;</div>
-<div class="line">void <strong>ComputeHeuristicPointsToSample</strong>(const  <a class="reference internal" href="gpp_math.html#project0classoptimal__learning_1_1_gaussian_process"><em>GaussianProcess</em></a>  &amp; gaussian_process, const  <a class="reference internal" href="gpp_optimization_parameters.html#project0structoptimal__learning_1_1_gradient_descent_parameters"><em>GradientDescentParameters</em></a>  &amp; optimization_parameters, const DomainType &amp; domain, const  <a class="reference internal" href="#project0classoptimal__learning_1_1_objective_estimation_policy_interface"><em>ObjectiveEstimationPolicyInterface</em></a>  &amp; estimation_policy, double best_so_far, int max_num_threads, bool lhc_search_only, int num_lhc_samples, int num_to_sample, bool *restrict found_flag, <a class="reference internal" href="gpp_random.html#project0structoptimal__learning_1_1_uniform_random_generator"><em>UniformRandomGenerator</em></a>  * uniform_generator, double *restrict best_points_to_sample)</div>
+<div class="line">void <strong>ComputeHeuristicPointsToSample</strong>(const  <a class="reference internal" href="gpp_math.html#project0classoptimal__learning_1_1_gaussian_process"><em>GaussianProcess</em></a>  &amp; gaussian_process, const  <a class="reference internal" href="gpp_optimizer_parameters.html#project0structoptimal__learning_1_1_gradient_descent_parameters"><em>GradientDescentParameters</em></a>  &amp; optimizer_parameters, const DomainType &amp; domain, const  <a class="reference internal" href="#project0classoptimal__learning_1_1_objective_estimation_policy_interface"><em>ObjectiveEstimationPolicyInterface</em></a>  &amp; estimation_policy, const  <a class="reference internal" href="gpp_optimization.html#project0structoptimal__learning_1_1_thread_schedule"><em>ThreadSchedule</em></a>  &amp; thread_schedule, double best_so_far, bool lhc_search_only, int num_lhc_samples, int num_to_sample, bool *restrict found_flag, <a class="reference internal" href="gpp_random.html#project0structoptimal__learning_1_1_uniform_random_generator"><em>UniformRandomGenerator</em></a>  * uniform_generator, double *restrict best_points_to_sample)</div>
 </div>
 </p>
 <blockquote>
@@ -683,7 +704,7 @@ local optima (i.e., the gradient may be substantially nonzero).</p>
 <tr class="field-odd field"><td>&nbsp;</td><td class="field-body">GaussianProcess object (holds points_sampled, values, noise_variance, derived quantities) that describes the
 underlying GP</td>
 </tr>
-<tr class="field-even field"><th class="field-name" colspan="2">optimization_parameters:</th></tr>
+<tr class="field-even field"><th class="field-name" colspan="2">optimizer_parameters:</th></tr>
 <tr class="field-even field"><td>&nbsp;</td><td class="field-body">GradientDescentParameters object that describes the parameters controlling 1-EI optimization (e.g., number
 of iterations, tolerances, learning rate) in each &#8220;outer&#8221; iteration</td>
 </tr>
@@ -692,10 +713,11 @@ of iterations, tolerances, learning rate) in each &#8220;outer&#8221; iteration<
 <tr class="field-even field"><th class="field-name" colspan="2">estimation_policy:</th></tr>
 <tr class="field-even field"><td>&nbsp;</td><td class="field-body">the policy to use to produce (heuristic) objective function estimates during q,0-EI optimization</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">best_so_far:</th><td class="field-body">value of the best sample so far (must be min(points_sampled_value))</td>
+<tr class="field-odd field"><th class="field-name" colspan="2">thread_schedule:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">struct instructing OpenMP on how to schedule threads; i.e., (suggestions in parens)
+max_num_threads (num cpu cores), schedule type (omp_sched_dynamic), chunk_size (0).</td>
 </tr>
-<tr class="field-even field"><th class="field-name" colspan="2">max_num_threads:</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">maximum number of threads for use by OpenMP (generally should be &lt;= # cores)</td>
+<tr class="field-even field"><th class="field-name">best_so_far:</th><td class="field-body">value of the best sample so far (must be min(points_sampled_value))</td>
 </tr>
 <tr class="field-odd field"><th class="field-name" colspan="2">lhc_search_only:</th></tr>
 <tr class="field-odd field"><td>&nbsp;</td><td class="field-body">whether to ONLY use latin hypercube search (and skip gradient descent EI opt)</td>
@@ -727,16 +749,16 @@ of iterations, tolerances, learning rate) in each &#8220;outer&#8221; iteration<
  </p>
 </p>
 </div></blockquote>
-<p><span class="target" id="project0namespaceoptimal__learning_1a1c9f21837c9affb80abdf0e3b2e3de45"></span><div class="line-block">
-<div class="line">template void <strong>ComputeHeuristicPointsToSample</strong>(const  <a class="reference internal" href="gpp_math.html#project0classoptimal__learning_1_1_gaussian_process"><em>GaussianProcess</em></a>  &amp; gaussian_process, const  <a class="reference internal" href="gpp_optimization_parameters.html#project0structoptimal__learning_1_1_gradient_descent_parameters"><em>GradientDescentParameters</em></a>  &amp; optimization_parameters, const  <a class="reference internal" href="gpp_domain.html#project0classoptimal__learning_1_1_tensor_product_domain"><em>TensorProductDomain</em></a>  &amp; domain, const  <a class="reference internal" href="#project0classoptimal__learning_1_1_objective_estimation_policy_interface"><em>ObjectiveEstimationPolicyInterface</em></a>  &amp; estimation_policy, double best_so_far, int max_num_threads, bool lhc_search_only, int num_lhc_samples, int num_to_sample, bool *restrict found_flag, <a class="reference internal" href="gpp_random.html#project0structoptimal__learning_1_1_uniform_random_generator"><em>UniformRandomGenerator</em></a>  * uniform_generator, double *restrict best_points_to_sample)</div>
+<p><span class="target" id="project0namespaceoptimal__learning_1aa9ddb4d673f544003f6abf2c2e017f3c"></span><div class="line-block">
+<div class="line">template void <strong>ComputeHeuristicPointsToSample</strong>(const  <a class="reference internal" href="gpp_math.html#project0classoptimal__learning_1_1_gaussian_process"><em>GaussianProcess</em></a>  &amp; gaussian_process, const  <a class="reference internal" href="gpp_optimizer_parameters.html#project0structoptimal__learning_1_1_gradient_descent_parameters"><em>GradientDescentParameters</em></a>  &amp; optimizer_parameters, const  <a class="reference internal" href="gpp_domain.html#project0classoptimal__learning_1_1_tensor_product_domain"><em>TensorProductDomain</em></a>  &amp; domain, const  <a class="reference internal" href="#project0classoptimal__learning_1_1_objective_estimation_policy_interface"><em>ObjectiveEstimationPolicyInterface</em></a>  &amp; estimation_policy, const  <a class="reference internal" href="gpp_optimization.html#project0structoptimal__learning_1_1_thread_schedule"><em>ThreadSchedule</em></a>  &amp; thread_schedule, double best_so_far, bool lhc_search_only, int num_lhc_samples, int num_to_sample, bool *restrict found_flag, <a class="reference internal" href="gpp_random.html#project0structoptimal__learning_1_1_uniform_random_generator"><em>UniformRandomGenerator</em></a>  * uniform_generator, double *restrict best_points_to_sample)</div>
 </div>
 </p>
 <blockquote>
 <div><p></p>
 <p></p>
 </div></blockquote>
-<p><span class="target" id="project0namespaceoptimal__learning_1a0d0a90c03c706da5fe140d0f9d12691e"></span><div class="line-block">
-<div class="line">template void <strong>ComputeHeuristicPointsToSample</strong>(const  <a class="reference internal" href="gpp_math.html#project0classoptimal__learning_1_1_gaussian_process"><em>GaussianProcess</em></a>  &amp; gaussian_process, const  <a class="reference internal" href="gpp_optimization_parameters.html#project0structoptimal__learning_1_1_gradient_descent_parameters"><em>GradientDescentParameters</em></a>  &amp; optimization_parameters, const  <a class="reference internal" href="gpp_domain.html#project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain"><em>SimplexIntersectTensorProductDomain</em></a>  &amp; domain, const  <a class="reference internal" href="#project0classoptimal__learning_1_1_objective_estimation_policy_interface"><em>ObjectiveEstimationPolicyInterface</em></a>  &amp; estimation_policy, double best_so_far, int max_num_threads, bool lhc_search_only, int num_lhc_samples, int num_to_sample, bool *restrict found_flag, <a class="reference internal" href="gpp_random.html#project0structoptimal__learning_1_1_uniform_random_generator"><em>UniformRandomGenerator</em></a>  * uniform_generator, double *restrict best_points_to_sample)</div>
+<p><span class="target" id="project0namespaceoptimal__learning_1ae96c67f292a427aa1e4e2e27cec0f94b"></span><div class="line-block">
+<div class="line">template void <strong>ComputeHeuristicPointsToSample</strong>(const  <a class="reference internal" href="gpp_math.html#project0classoptimal__learning_1_1_gaussian_process"><em>GaussianProcess</em></a>  &amp; gaussian_process, const  <a class="reference internal" href="gpp_optimizer_parameters.html#project0structoptimal__learning_1_1_gradient_descent_parameters"><em>GradientDescentParameters</em></a>  &amp; optimizer_parameters, const  <a class="reference internal" href="gpp_domain.html#project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain"><em>SimplexIntersectTensorProductDomain</em></a>  &amp; domain, const  <a class="reference internal" href="#project0classoptimal__learning_1_1_objective_estimation_policy_interface"><em>ObjectiveEstimationPolicyInterface</em></a>  &amp; estimation_policy, const  <a class="reference internal" href="gpp_optimization.html#project0structoptimal__learning_1_1_thread_schedule"><em>ThreadSchedule</em></a>  &amp; thread_schedule, double best_so_far, bool lhc_search_only, int num_lhc_samples, int num_to_sample, bool *restrict found_flag, <a class="reference internal" href="gpp_random.html#project0structoptimal__learning_1_1_uniform_random_generator"><em>UniformRandomGenerator</em></a>  * uniform_generator, double *restrict best_points_to_sample)</div>
 </div>
 </p>
 <blockquote>

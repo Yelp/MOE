@@ -1,0 +1,381 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>moe_examples package &mdash; MOE 0.1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="_static/breathe.css" type="text/css" />
+  
+    <link rel="top" title="MOE 0.1.0 documentation" href="index.html"/>
+        <link rel="next" title="moe_examples.tests package" href="moe_examples.tests.html"/>
+        <link rel="prev" title="moe.views.rest package" href="moe.views.rest.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="index.html" class="fa fa-home"> MOE</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul>
+<li class="toctree-l1"><a class="reference internal" href="why_moe.html">Why Do We Need MOE?</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="why_moe.html#other-methods">Other Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Install</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="install.html#install-in-docker">Install in docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#install-from-source">Install from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#osx-tips">OSX Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#building-boost">Building Boost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="moe_math.html">How does MOE work?</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#build-a-gaussian-process-gp-with-the-historical-data">Build a Gaussian Process (GP) with the historical data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#optimize-the-hyperparameters-of-the-gaussian-process">Optimize the hyperparameters of the Gaussian Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#find-the-point-s-of-highest-expected-improvement-ei">Find the point(s) of highest Expected Improvement (EI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#return-the-point-s-to-sample-then-repeat">Return the point(s) to sample, then repeat</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="demo_tutorial.html">Demo Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="demo_tutorial.html#the-interactive-demo">The Interactive Demo</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pretty_endpoints.html">Pretty Endpoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="objective_functions.html">Objective Functions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="objective_functions.html#what-is-an-objective-function">What is an objective function?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="objective_functions.html#properties-of-an-objective-function">Properties of an objective function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="objective_functions.html#parameters">Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="objective_functions.html#id1"><span class="math">\(\Phi\)</span> Objective Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="objective_functions.html#example-of-objective-functions">Example of Objective Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#minimizing-an-arbitrary-function">Minimizing an arbitrary function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#gaussian-process-regression-given-historical-data">Gaussian Process regression given historical data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#hyperparameter-optimization-of-a-gaussian-process">Hyperparameter optimization of a Gaussian Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#all-above-examples-combined">All above examples combined</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#setting-thresholds-for-advertising-units">Setting thresholds for advertising units</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#making-a-pull-request">Making a pull request</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#documentation">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#testing">Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#style">Style</a></li>
+</ul>
+</li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="moe.html">moe package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#module-moe.resources">moe.resources module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#module-moe">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">moe_examples package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-moe_examples.next_point_via_simple_endpoint">moe_examples.next_point_via_simple_endpoint module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-moe_examples">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="cpp_tree.html">C++ Files</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimization_test.html">gpp_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_domain_test.html">gpp_domain_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_exception.html">gpp_exception</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_geometry.html">gpp_geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_test_utils.html">gpp_test_utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_logging.html">gpp_logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_covariance.html">gpp_covariance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_test.html">gpp_python_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_domain.html">gpp_domain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_common.html">gpp_python_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_hyperparameter_optimization_demo.html">gpp_hyperparameter_optimization_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_test_utils_test.html">gpp_test_utils_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_math_test.html">gpp_math_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_model_selection.html">gpp_python_model_selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_math.html">gpp_math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_random_test.html">gpp_random_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimizer_parameters.html">gpp_optimizer_parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_random.html">gpp_random</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra.html">gpp_linear_algebra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection.html">gpp_model_selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_covariance_test.html">gpp_covariance_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python.html">gpp_python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_test.html">gpp_model_selection_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_common.html">gpp_common</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">MOE</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>moe_examples package</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="_sources/moe_examples.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <div class="section" id="moe-examples-package">
+<h1>moe_examples package<a class="headerlink" href="#moe-examples-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="moe_examples.tests.html">moe_examples.tests package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.tests.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.tests.html#module-moe_examples.tests.combined_example_test">moe_examples.tests.combined_example_test module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.tests.html#module-moe_examples.tests.hyper_opt_of_gp_from_historical_data_test">moe_examples.tests.hyper_opt_of_gp_from_historical_data_test module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.tests.html#module-moe_examples.tests.mean_and_var_of_gp_from_historic_data_test">moe_examples.tests.mean_and_var_of_gp_from_historic_data_test module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.tests.html#module-moe_examples.tests.moe_example_test_case">moe_examples.tests.moe_example_test_case module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.tests.html#module-moe_examples.tests.next_point_via_simple_endpoint_test">moe_examples.tests.next_point_via_simple_endpoint_test module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.tests.html#module-moe_examples.tests">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-moe_examples.combined_example">
+<span id="moe-examples-combined-example-module"></span><h2>moe_examples.combined_example module<a class="headerlink" href="#module-moe_examples.combined_example" title="Permalink to this headline">¶</a></h2>
+<p>An example for accessing the all the functions in moe/easy_interface/simple_endpoint.</p>
+<p>The following functions are used:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><a class="reference internal" href="moe.easy_interface.html#moe.easy_interface.simple_endpoint.gp_next_points" title="moe.easy_interface.simple_endpoint.gp_next_points"><tt class="xref py py-func docutils literal"><span class="pre">moe.easy_interface.simple_endpoint.gp_next_points()</span></tt></a></li>
+<li><a class="reference internal" href="moe.easy_interface.html#moe.easy_interface.simple_endpoint.gp_hyper_opt" title="moe.easy_interface.simple_endpoint.gp_hyper_opt"><tt class="xref py py-func docutils literal"><span class="pre">moe.easy_interface.simple_endpoint.gp_hyper_opt()</span></tt></a></li>
+<li><a class="reference internal" href="moe.easy_interface.html#moe.easy_interface.simple_endpoint.gp_mean_var" title="moe.easy_interface.simple_endpoint.gp_mean_var"><tt class="xref py py-func docutils literal"><span class="pre">moe.easy_interface.simple_endpoint.gp_mean_var()</span></tt></a></li>
+</ol>
+</div></blockquote>
+<p>The function requires some historical information to inform the Gaussian Process
+we use an arbitrary function (with noise) function_to_minimize</p>
+<p>We first sample [0,0] from the function and then generate and sample 5 optimal points from moe sequentially
+We then update the hyperparameters of the GP (model selection)
+This process is repeated until we have sampled 20 points in total
+We then calculate the posterior mean and variance of the GP at several points</p>
+<dl class="function">
+<dt id="moe_examples.combined_example.function_to_minimize">
+<tt class="descclassname">moe_examples.combined_example.</tt><tt class="descname">function_to_minimize</tt><big>(</big><em>x</em><big>)</big><a class="reference internal" href="_modules/moe_examples/combined_example.html#function_to_minimize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe_examples.combined_example.function_to_minimize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate an aribitrary 2-d function with some noise.</p>
+<p>This function has a minimum near [1, 2.6].</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="moe_examples.combined_example.run_example">
+<tt class="descclassname">moe_examples.combined_example.</tt><tt class="descname">run_example</tt><big>(</big><em>num_to_sample=20</em>, <em>verbose=True</em>, <em>testapp=None</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe_examples/combined_example.html#run_example"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe_examples.combined_example.run_example" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the combined example.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-moe_examples.hyper_opt_of_gp_from_historical_data">
+<span id="moe-examples-hyper-opt-of-gp-from-historical-data-module"></span><h2>moe_examples.hyper_opt_of_gp_from_historical_data module<a class="headerlink" href="#module-moe_examples.hyper_opt_of_gp_from_historical_data" title="Permalink to this headline">¶</a></h2>
+<p>An example for accessing the gp_mean_var simple endpoint.</p>
+<p><a class="reference internal" href="moe.easy_interface.html#moe.easy_interface.simple_endpoint.gp_mean_var" title="moe.easy_interface.simple_endpoint.gp_mean_var"><tt class="xref py py-func docutils literal"><span class="pre">moe.easy_interface.simple_endpoint.gp_mean_var()</span></tt></a></p>
+<p>The function requires some historical information to inform the Gaussian Process</p>
+<p>The optimal hyperparameters are returned.</p>
+<dl class="function">
+<dt id="moe_examples.hyper_opt_of_gp_from_historical_data.run_example">
+<tt class="descclassname">moe_examples.hyper_opt_of_gp_from_historical_data.</tt><tt class="descname">run_example</tt><big>(</big><em>verbose=True</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe_examples/hyper_opt_of_gp_from_historical_data.html#run_example"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe_examples.hyper_opt_of_gp_from_historical_data.run_example" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the example, aksing MOE for optimal hyperparameters given historical data.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-moe_examples.mean_and_var_of_gp_from_historic_data">
+<span id="moe-examples-mean-and-var-of-gp-from-historic-data-module"></span><h2>moe_examples.mean_and_var_of_gp_from_historic_data module<a class="headerlink" href="#module-moe_examples.mean_and_var_of_gp_from_historic_data" title="Permalink to this headline">¶</a></h2>
+<p>An example for accessing the gp_mean_var simple endpoint.</p>
+<p><a class="reference internal" href="moe.easy_interface.html#moe.easy_interface.simple_endpoint.gp_mean_var" title="moe.easy_interface.simple_endpoint.gp_mean_var"><tt class="xref py py-func docutils literal"><span class="pre">moe.easy_interface.simple_endpoint.gp_mean_var()</span></tt></a></p>
+<p>The function requires some historical information to inform the Gaussian Process
+and a set of points to calculate the posterior mean and variance at.</p>
+<p>The posterior mean and variance is then printed for every point.</p>
+<dl class="function">
+<dt id="moe_examples.mean_and_var_of_gp_from_historic_data.run_example">
+<tt class="descclassname">moe_examples.mean_and_var_of_gp_from_historic_data.</tt><tt class="descname">run_example</tt><big>(</big><em>verbose=True</em>, <em>testapp=None</em><big>)</big><a class="reference internal" href="_modules/moe_examples/mean_and_var_of_gp_from_historic_data.html#run_example"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe_examples.mean_and_var_of_gp_from_historic_data.run_example" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the example, finding the posterior mean and variance for various poinst from a random GP.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-moe_examples.next_point_via_simple_endpoint">
+<span id="moe-examples-next-point-via-simple-endpoint-module"></span><h2>moe_examples.next_point_via_simple_endpoint module<a class="headerlink" href="#module-moe_examples.next_point_via_simple_endpoint" title="Permalink to this headline">¶</a></h2>
+<p>An example for accessing the gp_next_points_* endpoints.</p>
+<p><a class="reference internal" href="moe.easy_interface.html#moe.easy_interface.simple_endpoint.gp_next_points" title="moe.easy_interface.simple_endpoint.gp_next_points"><tt class="xref py py-func docutils literal"><span class="pre">moe.easy_interface.simple_endpoint.gp_next_points()</span></tt></a></p>
+<p>The function requires some historical information to inform the Gaussian Process</p>
+<p>The result is the next best set of point(s) to sample</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This file is copied in <tt class="docutils literal"><span class="pre">README.md</span></tt> and <tt class="docutils literal"><span class="pre">docs/index.rst</span></tt>. Any changes here should be made there as well.</p>
+</div>
+<dl class="function">
+<dt id="moe_examples.next_point_via_simple_endpoint.function_to_minimize">
+<tt class="descclassname">moe_examples.next_point_via_simple_endpoint.</tt><tt class="descname">function_to_minimize</tt><big>(</big><em>x</em><big>)</big><a class="reference internal" href="_modules/moe_examples/next_point_via_simple_endpoint.html#function_to_minimize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe_examples.next_point_via_simple_endpoint.function_to_minimize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate an aribitrary 2-d function with some noise with minimum near [1, 2.6].</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="moe_examples.next_point_via_simple_endpoint.run_example">
+<tt class="descclassname">moe_examples.next_point_via_simple_endpoint.</tt><tt class="descname">run_example</tt><big>(</big><em>num_points_to_sample=20</em>, <em>verbose=True</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe_examples/next_point_via_simple_endpoint.html#run_example"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe_examples.next_point_via_simple_endpoint.run_example" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the example, aksing MOE for <tt class="docutils literal"><span class="pre">num_points_to_sample</span></tt> optimal points to sample.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-moe_examples">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-moe_examples" title="Permalink to this headline">¶</a></h2>
+<p>Examples for using the moe package.</p>
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="moe_examples.tests.html" class="btn btn-neutral float-right" title="moe_examples.tests package"/>Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="moe.views.rest.html" class="btn btn-neutral" title="moe.views.rest package"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

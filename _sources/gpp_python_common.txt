@@ -1,5 +1,5 @@
 gpp_python_common
-=====
+=================
 
 **Contents:**
 
@@ -8,13 +8,13 @@ gpp_python_common
 
 
 gpp_python_common.hpp
-------
+---------------------
 
 .. doxygenfile:: gpp_python_common.hpp
 
 
 gpp_python_common.cpp
-------
+---------------------
 
 .. doxygenfile:: gpp_python_common.cpp
 

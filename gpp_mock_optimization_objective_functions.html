@@ -35,7 +35,7 @@
     <link rel="top" title="MOE 0.1.0 documentation" href="index.html"/>
         <link rel="up" title="C++ Files" href="cpp_tree.html"/>
         <link rel="next" title="gpp_python" href="gpp_python.html"/>
-        <link rel="prev" title="gpp_python_gaussian_process" href="gpp_python_gaussian_process.html"/> 
+        <link rel="prev" title="gpp_covariance_test" href="gpp_covariance_test.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -64,18 +64,30 @@
         
             <ul>
 <li class="toctree-l1"><a class="reference internal" href="why_moe.html">Why Do We Need MOE?</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="why_moe.html#what-is-moe">What is MOE?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="why_moe.html#why-is-this-hard">Why is this hard?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="why_moe.html#other-methods">Other Methods</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Install</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="install.html#install-in-docker">Install in docker:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#install-from-source">Install from source:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below):</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#install-in-docker">Install in docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#install-from-source">Install from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#osx-tips">OSX Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#building-boost">Building Boost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="moe_math.html">How does MOE work?</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#build-a-gaussian-process-gp-with-the-historical-data">Build a Gaussian Process (GP) with the historical data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#optimize-the-hyperparameters-of-the-gaussian-process">Optimize the hyperparameters of the Gaussian Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#find-the-point-s-of-highest-expected-improvement-ei">Find the point(s) of highest Expected Improvement (EI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#return-the-point-s-to-sample-then-repeat">Return the point(s) to sample, then repeat</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="demo_tutorial.html">Demo Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="demo_tutorial.html#the-interactive-demo">The Interactive Demo</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pretty_endpoints.html">Pretty Endpoints</a></li>
 <li class="toctree-l1"><a class="reference internal" href="objective_functions.html">Objective Functions</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="objective_functions.html#what-is-an-objective-function">What is an objective function?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="objective_functions.html#properties-of-an-objective-function">Properties of an objective function</a></li>
@@ -108,6 +120,16 @@
 <li class="toctree-l2"><a class="reference internal" href="moe.html#module-moe">Module contents</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="moe_examples.html">moe_examples package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.next_point_via_simple_endpoint">moe_examples.next_point_via_simple_endpoint module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples">Module contents</a></li>
+</ul>
+</li>
 </ul>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="cpp_tree.html">C++ Files</a><ul class="current">
@@ -130,23 +152,22 @@
 <li class="toctree-l2"><a class="reference internal" href="gpp_python_model_selection.html">gpp_python_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_math.html">gpp_math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_random_test.html">gpp_random_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimizer_parameters.html">gpp_optimizer_parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_random.html">gpp_random</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra.html">gpp_linear_algebra</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_core.html">gpp_core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection.html">gpp_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_covariance_test.html">gpp_covariance_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="">gpp_mock_optimization_objective_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_python.html">gpp_python</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_and_hyperparameter_optimization.html">gpp_model_selection_and_hyperparameter_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_test.html">gpp_model_selection_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_optimization_parameters.html">gpp_optimization_parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_common.html">gpp_common</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_and_hyperparameter_optimization_test.html">gpp_model_selection_and_hyperparameter_optimization_test</a></li>
 </ul>
 </li>
 </ul>
@@ -204,45 +225,45 @@ e.g., <tt class="docutils literal"><span class="pre">z</span> <span class="pre">
 <p>See the header comments in gpp_optimization.hpp, Section 3a), for further details on what it means for an
 Evaluator class to be &#8220;optimizable.&#8221;</p>
 <p>Since perfomance is irrelevant for these test functions, we will define pure abstract Evaluator classes that can
-be used to test optimizers in gpp_optimization.hpp.  Generally the usage should be to subclass say PolynomialEvaluator
+be used to test optimizers in gpp_optimization.hpp.  Generally the usage should be to subclass say SimpleObjectiveFunctionEvaluator
 and override the pure virtuals.  Then we only end up compiling one version of the [templated] optimization code
 for running tests.  See gpp_optimization_test.cpp for examples.</p>
 <p>Following the style laid out in gpp_common.hpp (file comments, item 5), we currently define:</p>
 <ul class="simple">
-<li><tt class="docutils literal"><span class="pre">class</span> <span class="pre">PolynomialEvaluator;</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">struct</span> <span class="pre">PolynomialState;</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">class</span> <span class="pre">SimpleObjectiveFunctionEvaluator;</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">struct</span> <span class="pre">SimpleObjectiveFunctionState;</span></tt></li>
 </ul>
-<p>PolynomialEvaluator defines a pure abstract base class with interface consistent with the interface that all
+<p>SimpleObjectiveFunctionEvaluator defines a pure abstract base class with interface consistent with the interface that all
 .*Evaluator classes must provide (e.g., ExpectedImprovementEvaluator, LogMarginalLikelihoodEvaluator).</p>
-<p>PolynomialState is simple: it&#8217;s just a container class that holds a point at which to evaluate the polynomial.</p>
+<p>SimpleObjectiveFunctionState is simple: it&#8217;s just a container class that holds a point at which to evaluate the polynomial.</p>
  </p>
 <p><p id="project0namespaceoptimal__learning"><em>namespace</em> <strong>optimal_learning</strong></p>
 <blockquote>
 <div><p></p>
 <p></p>
-<p><p id="project0classoptimal__learning_1_1_polynomial_evaluator"><em>class</em> <strong>PolynomialEvaluator</strong></p>
+<p><p id="project0classoptimal__learning_1_1_simple_objective_function_evaluator"><em>class</em> <strong>SimpleObjectiveFunctionEvaluator</strong></p>
 <blockquote>
 <div><p></p>
 <p><p>Class to evaluate the function <tt class="docutils literal"><span class="pre">f(x_1,...,x_{dim})</span> <span class="pre">=</span> <span class="pre">-\sum_i</span> <span class="pre">(x_i</span> <span class="pre">-</span> <span class="pre">s_i)^2,</span> <span class="pre">i</span> <span class="pre">=</span> <span class="pre">1..dim</span></tt>.
 This is a simple quadratic form with maxima at <tt class="docutils literal"><span class="pre">(s_1,</span> <span class="pre">...,</span> <span class="pre">s_{dim})</span></tt>.</p>
  </p>
 <em>Public Type</em><blockquote>
-<div><p><span class="target" id="project0classoptimal__learning_1_1_polynomial_evaluator_1ad754b5e20d6ed2f0f02f5ea91daba5a6"></span>typedef <a class="reference internal" href="#project0structoptimal__learning_1_1_polynomial_state"><em>PolynomialState</em></a> <strong>StateType</strong></p>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_simple_objective_function_evaluator_1a935bc0db9423becfd74a32783583b45f"></span>typedef <a class="reference internal" href="#project0structoptimal__learning_1_1_simple_objective_function_state"><em>SimpleObjectiveFunctionState</em></a> <strong>StateType</strong></p>
 <blockquote>
 <div><p></p>
 <p></p>
 </div></blockquote>
 </div></blockquote>
 <em>Public Functions</em><blockquote>
-<div><p><span class="target" id="project0classoptimal__learning_1_1_polynomial_evaluator_1a2bb72fb2b681f83f53d52de563963d07"></span><div class="line-block">
-<div class="line"> <strong>~PolynomialEvaluator</strong>()</div>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_simple_objective_function_evaluator_1a728358e79c347fef7b8dfc95459b4456"></span><div class="line-block">
+<div class="line"> <strong>~SimpleObjectiveFunctionEvaluator</strong>()</div>
 </div>
 </p>
 <blockquote>
 <div><p></p>
 <p></p>
 </div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_polynomial_evaluator_1a1a276ea41645f0d5e9e5450c83895869"></span><div class="line-block">
+<p><span class="target" id="project0classoptimal__learning_1_1_simple_objective_function_evaluator_1ae7ba5c789057ad5fd1a30330ffbaefbf"></span><div class="line-block">
 <div class="line">int <strong>dim</strong>()</div>
 </div>
 </p>
@@ -250,7 +271,7 @@ This is a simple quadratic form with maxima at <tt class="docutils literal"><spa
 <div><p></p>
 <p></p>
 </div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_polynomial_evaluator_1a912dbf811def566933ee2e63085cef75"></span><div class="line-block">
+<p><span class="target" id="project0classoptimal__learning_1_1_simple_objective_function_evaluator_1abfebb38321e12587a44e243d0a1d1f30"></span><div class="line-block">
 <div class="line">double <strong>GetOptimumValue</strong>()</div>
 </div>
 </p>
@@ -269,7 +290,7 @@ This is a simple quadratic form with maxima at <tt class="docutils literal"><spa
 </dl>
  </p>
 </div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_polynomial_evaluator_1a1f72ec5269eb4b753bdffd423137c7c7"></span><div class="line-block">
+<p><span class="target" id="project0classoptimal__learning_1_1_simple_objective_function_evaluator_1a18024769cbbeb52d1d7e75913e812cc6"></span><div class="line-block">
 <div class="line">void <strong>GetOptimumPoint</strong>(double *restrict point)</div>
 </div>
 </p>
@@ -304,8 +325,8 @@ This is a simple quadratic form with maxima at <tt class="docutils literal"><spa
 </dl>
  </p>
 </div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_polynomial_evaluator_1ae816fabf4b133a47dc24dffb035962f1"></span><div class="line-block">
-<div class="line">double <strong>ComputeObjectiveFunction</strong>(<a class="reference internal" href="#project0structoptimal__learning_1_1_polynomial_state"><em>StateType</em></a>  * quadratic_dummy_state)</div>
+<p><span class="target" id="project0classoptimal__learning_1_1_simple_objective_function_evaluator_1a2efebf6d95c7b7243420e931e9b5ebf0"></span><div class="line-block">
+<div class="line">double <strong>ComputeObjectiveFunction</strong>(<a class="reference internal" href="#project0structoptimal__learning_1_1_simple_objective_function_state"><em>StateType</em></a>  * quadratic_dummy_state)</div>
 </div>
 </p>
 <blockquote>
@@ -313,7 +334,7 @@ This is a simple quadratic form with maxima at <tt class="docutils literal"><spa
 <p><p>Compute the quadratic objective function: <tt class="docutils literal"><span class="pre">f(x_1,...,x_{dim})</span> <span class="pre">=</span> <span class="pre">-\sum_i</span> <span class="pre">(x_i</span> <span class="pre">-</span> <span class="pre">s_i)^2</span></tt>.</p>
 <dl class="docutils">
 <dt><strong>Parameters</strong>:</dt>
-<dd>quadratic_dummy_state[1]: ptr to a FULLY CONFIGURED StateType (e.g., PolynomialState)</dd>
+<dd>quadratic_dummy_state[1]: ptr to a FULLY CONFIGURED StateType (e.g., SimpleObjectiveFunctionState)</dd>
 <dt><strong>Outputs</strong>:</dt>
 <dd>quadratic_dummy_state[1]: ptr to a FULLY CONFIGURED StateType; only temporary state may be mutated</dd>
 <dt><strong>Returns</strong>:</dt>
@@ -321,8 +342,8 @@ This is a simple quadratic form with maxima at <tt class="docutils literal"><spa
 </dl>
  </p>
 </div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_polynomial_evaluator_1a31e208c50613703f6318228395e9594b"></span><div class="line-block">
-<div class="line">void <strong>ComputeGradObjectiveFunction</strong>(<a class="reference internal" href="#project0structoptimal__learning_1_1_polynomial_state"><em>StateType</em></a>  * quadratic_dummy_state, double *restrict grad_polynomial)</div>
+<p><span class="target" id="project0classoptimal__learning_1_1_simple_objective_function_evaluator_1a321980fe48bfdde9b3f11e559c3c078b"></span><div class="line-block">
+<div class="line">void <strong>ComputeGradObjectiveFunction</strong>(<a class="reference internal" href="#project0structoptimal__learning_1_1_simple_objective_function_state"><em>StateType</em></a>  * quadratic_dummy_state, double *restrict grad_polynomial)</div>
 </div>
 </p>
 <blockquote>
@@ -330,15 +351,15 @@ This is a simple quadratic form with maxima at <tt class="docutils literal"><spa
 <p><p>Compute the gradient of the objective function: <tt class="docutils literal"><span class="pre">f'(x_1,...,x_{dim})_i</span> <span class="pre">=</span> <span class="pre">-2</span> <span class="pre">*</span> <span class="pre">(x_i</span> <span class="pre">-</span> <span class="pre">s_i)</span></tt>.</p>
 <dl class="docutils">
 <dt><strong>Parameters</strong>:</dt>
-<dd>quadratic_dummy_state[1]: ptr to a FULLY CONFIGURED StateType (e.g., PolynomialState)</dd>
+<dd>quadratic_dummy_state[1]: ptr to a FULLY CONFIGURED StateType (e.g., SimpleObjectiveFunctionState)</dd>
 <dt><strong>Outputs</strong>:</dt>
 <dd>quadratic_dummy_state[1]: ptr to a FULLY CONFIGURED StateType; only temporary state may be mutated
 grad_polynomial[dim]: gradient of the objective</dd>
 </dl>
  </p>
 </div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_polynomial_evaluator_1a96f74ff7fb4d09030069f4f87f4d5efb"></span><div class="line-block">
-<div class="line">void <strong>ComputeHessianObjectiveFunction</strong>(<a class="reference internal" href="#project0structoptimal__learning_1_1_polynomial_state"><em>StateType</em></a>  * quadratic_dummy_state, double *restrict hessian_polynomial)</div>
+<p><span class="target" id="project0classoptimal__learning_1_1_simple_objective_function_evaluator_1a3b5566ee331ea85dbf90582943c5e80c"></span><div class="line-block">
+<div class="line">void <strong>ComputeHessianObjectiveFunction</strong>(<a class="reference internal" href="#project0structoptimal__learning_1_1_simple_objective_function_state"><em>StateType</em></a>  * quadratic_dummy_state, double *restrict hessian_polynomial)</div>
 </div>
 </p>
 <blockquote>
@@ -346,15 +367,15 @@ grad_polynomial[dim]: gradient of the objective</dd>
 <p><p>Compute the gradient of the objective function: <tt class="docutils literal"><span class="pre">f''(x_1,...,x_{dim})_{i,j}</span> <span class="pre">=</span> <span class="pre">-2</span> <span class="pre">*</span> <span class="pre">\delta_{i,j}</span></tt>.</p>
 <dl class="docutils">
 <dt><strong>Parameters</strong>:</dt>
-<dd>quadratic_dummy_state[1]: ptr to a FULLY CONFIGURED StateType (e.g., PolynomialState)</dd>
+<dd>quadratic_dummy_state[1]: ptr to a FULLY CONFIGURED StateType (e.g., SimpleObjectiveFunctionState)</dd>
 <dt><strong>Outputs</strong>:</dt>
 <dd>quadratic_dummy_state[1]: ptr to a FULLY CONFIGURED StateType; only temporary state may be mutated
 hessian_polynomial[dim][dim]: hessian of the objective</dd>
 </dl>
  </p>
 </div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_polynomial_evaluator_1a0b18c1020ecadd82c60dd282094bebb1"></span><div class="line-block">
-<div class="line"> <strong>OL_DISALLOW_COPY_AND_ASSIGN</strong>(<a class="reference internal" href="#project0classoptimal__learning_1_1_polynomial_evaluator"><em>PolynomialEvaluator</em></a>)</div>
+<p><span class="target" id="project0classoptimal__learning_1_1_simple_objective_function_evaluator_1a4379dae047f7459c4499aac512e8cecc"></span><div class="line-block">
+<div class="line"> <strong>OL_DISALLOW_COPY_AND_ASSIGN</strong>(<a class="reference internal" href="#project0classoptimal__learning_1_1_simple_objective_function_evaluator"><em>SimpleObjectiveFunctionEvaluator</em></a>)</div>
 </div>
 </p>
 <blockquote>
@@ -363,8 +384,8 @@ hessian_polynomial[dim][dim]: hessian of the objective</dd>
 </div></blockquote>
 </div></blockquote>
 <em>Protected Functions</em><blockquote>
-<div><p><span class="target" id="project0classoptimal__learning_1_1_polynomial_evaluator_1a3d61ec04c3a8f2f6bfc5b3e8fc936e3a"></span><div class="line-block">
-<div class="line"> <strong>PolynomialEvaluator</strong>()</div>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_simple_objective_function_evaluator_1ac02a3ee959a5e703671ede6aecc327a2"></span><div class="line-block">
+<div class="line"> <strong>SimpleObjectiveFunctionEvaluator</strong>()</div>
 </div>
 </p>
 <blockquote>
@@ -374,27 +395,35 @@ hessian_polynomial[dim][dim]: hessian of the objective</dd>
 </div></blockquote>
 </div></blockquote>
 </p>
-<p><p id="project0structoptimal__learning_1_1_polynomial_state"><em>class</em> <strong>PolynomialState</strong></p>
+<p><p id="project0structoptimal__learning_1_1_simple_objective_function_state"><em>class</em> <strong>SimpleObjectiveFunctionState</strong></p>
 <blockquote>
 <div><p></p>
 <p></p>
 <em>Public Type</em><blockquote>
-<div><p><span class="target" id="project0structoptimal__learning_1_1_polynomial_state_1a4ab03597f1f286a33702b016d98c6151"></span>typedef <a class="reference internal" href="#project0classoptimal__learning_1_1_polynomial_evaluator"><em>PolynomialEvaluator</em></a> <strong>EvaluatorType</strong></p>
+<div><p><span class="target" id="project0structoptimal__learning_1_1_simple_objective_function_state_1ae6a7bf464bb9fe01070b82be1d7d6544"></span>typedef <a class="reference internal" href="#project0classoptimal__learning_1_1_simple_objective_function_evaluator"><em>SimpleObjectiveFunctionEvaluator</em></a> <strong>EvaluatorType</strong></p>
 <blockquote>
 <div><p></p>
 <p></p>
 </div></blockquote>
 </div></blockquote>
 <em>Public Functions</em><blockquote>
-<div><p><span class="target" id="project0structoptimal__learning_1_1_polynomial_state_1aeb14126b768f2d59deb42e2aa7af4c93"></span><div class="line-block">
-<div class="line"> <strong>PolynomialState</strong>(const  <a class="reference internal" href="#project0classoptimal__learning_1_1_polynomial_evaluator"><em>EvaluatorType</em></a>  &amp; quadratic_eval, double const *restrict current_point_in)</div>
+<div><p><span class="target" id="project0structoptimal__learning_1_1_simple_objective_function_state_1a6cb36318e40167d03dbb873e47ddb559"></span><div class="line-block">
+<div class="line"> <strong>SimpleObjectiveFunctionState</strong>(const  <a class="reference internal" href="#project0classoptimal__learning_1_1_simple_objective_function_evaluator"><em>EvaluatorType</em></a>  &amp; quadratic_eval, double const *restrict current_point_in)</div>
 </div>
 </p>
 <blockquote>
 <div><p></p>
 <p></p>
 </div></blockquote>
-<p><span class="target" id="project0structoptimal__learning_1_1_polynomial_state_1a5ea47908cae670fda59555896116ccaa"></span><div class="line-block">
+<p><span class="target" id="project0structoptimal__learning_1_1_simple_objective_function_state_1aa2cea96056df0f274faa7acc805e9ab8"></span><div class="line-block">
+<div class="line"> <strong>SimpleObjectiveFunctionState</strong>(<a class="reference internal" href="#project0structoptimal__learning_1_1_simple_objective_function_state"><em>SimpleObjectiveFunctionState</em></a>  &amp;&amp; OL_UNUSED)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_simple_objective_function_state_1a97a62831eed38a6bd2203a469059a2fc"></span><div class="line-block">
 <div class="line">int <strong>GetProblemSize</strong>()</div>
 </div>
 </p>
@@ -402,7 +431,7 @@ hessian_polynomial[dim][dim]: hessian of the objective</dd>
 <div><p></p>
 <p></p>
 </div></blockquote>
-<p><span class="target" id="project0structoptimal__learning_1_1_polynomial_state_1ab5f9f2c1bed6e2c100f52b893098fcb0"></span><div class="line-block">
+<p><span class="target" id="project0structoptimal__learning_1_1_simple_objective_function_state_1a532855b09a66cceda32b53f38909d8aa"></span><div class="line-block">
 <div class="line">void <strong>GetCurrentPoint</strong>(double *restrict current_point_in)</div>
 </div>
 </p>
@@ -410,16 +439,16 @@ hessian_polynomial[dim][dim]: hessian of the objective</dd>
 <div><p></p>
 <p></p>
 </div></blockquote>
-<p><span class="target" id="project0structoptimal__learning_1_1_polynomial_state_1a981931fc023e8207aae716714b075f17"></span><div class="line-block">
-<div class="line">void <strong>UpdateCurrentPoint</strong>(const  <a class="reference internal" href="#project0classoptimal__learning_1_1_polynomial_evaluator"><em>EvaluatorType</em></a>  &amp; OL_UNUSED, double const *restrict current_point_in)</div>
+<p><span class="target" id="project0structoptimal__learning_1_1_simple_objective_function_state_1a47c2fb36b64bfa60b8f411285b704d31"></span><div class="line-block">
+<div class="line">void <strong>UpdateCurrentPoint</strong>(const  <a class="reference internal" href="#project0classoptimal__learning_1_1_simple_objective_function_evaluator"><em>EvaluatorType</em></a>  &amp; OL_UNUSED, double const *restrict current_point_in)</div>
 </div>
 </p>
 <blockquote>
 <div><p></p>
 <p></p>
 </div></blockquote>
-<p><span class="target" id="project0structoptimal__learning_1_1_polynomial_state_1aac0380fab1a65594cab17d3d09d5ae9b"></span><div class="line-block">
-<div class="line"> <strong>OL_DISALLOW_DEFAULT_AND_COPY_AND_ASSIGN</strong>(<a class="reference internal" href="#project0structoptimal__learning_1_1_polynomial_state"><em>PolynomialState</em></a>)</div>
+<p><span class="target" id="project0structoptimal__learning_1_1_simple_objective_function_state_1a4bfb85a8782db3e96fa5fbbb364cfa6d"></span><div class="line-block">
+<div class="line"> <strong>OL_DISALLOW_DEFAULT_AND_COPY_AND_ASSIGN</strong>(<a class="reference internal" href="#project0structoptimal__learning_1_1_simple_objective_function_state"><em>SimpleObjectiveFunctionState</em></a>)</div>
 </div>
 </p>
 <blockquote>
@@ -428,12 +457,12 @@ hessian_polynomial[dim][dim]: hessian of the objective</dd>
 </div></blockquote>
 </div></blockquote>
 <em>Public Members</em><blockquote>
-<div><p><span class="target" id="project0structoptimal__learning_1_1_polynomial_state_1adb868262a3703f96208875a62dcaf984"></span>const int <strong>dim</strong></p>
+<div><p><span class="target" id="project0structoptimal__learning_1_1_simple_objective_function_state_1a59547afc827e994f649be0f138415de9"></span>const int <strong>dim</strong></p>
 <blockquote>
 <div><p>spatial dimension (e.g., entries per point of points_sampled) </p>
 <p></p>
 </div></blockquote>
-<p><span class="target" id="project0structoptimal__learning_1_1_polynomial_state_1a1c6d4f8b2811b3cbfe497353278a5a7e"></span>std::vector&lt; double &gt; <strong>current_point</strong></p>
+<p><span class="target" id="project0structoptimal__learning_1_1_simple_objective_function_state_1ab03d7cddb378c272e4487af543e8afce"></span>std::vector&lt; double &gt; <strong>current_point</strong></p>
 <blockquote>
 <div><p>the point at which to evaluate the associated objective </p>
 <p></p>
@@ -455,7 +484,7 @@ hessian_polynomial[dim][dim]: hessian of the objective</dd>
         <a href="gpp_python.html" class="btn btn-neutral float-right" title="gpp_python"/>Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="gpp_python_gaussian_process.html" class="btn btn-neutral" title="gpp_python_gaussian_process"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="gpp_covariance_test.html" class="btn btn-neutral" title="gpp_covariance_test"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

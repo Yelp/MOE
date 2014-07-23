@@ -12,6 +12,14 @@ moe.tests.views.rest.gp_ei_test module
     :undoc-members:
     :show-inheritance:
 
+moe.tests.views.rest.gp_hyper_opt_test module
+---------------------------------------------
+
+.. automodule:: moe.tests.views.rest.gp_hyper_opt_test
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 moe.tests.views.rest.gp_mean_var_test module
 --------------------------------------------
 

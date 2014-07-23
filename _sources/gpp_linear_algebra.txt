@@ -1,5 +1,5 @@
 gpp_linear_algebra
-=====
+==================
 
 **Contents:**
 
@@ -8,13 +8,13 @@ gpp_linear_algebra
 
 
 gpp_linear_algebra.hpp
-------
+----------------------
 
 .. doxygenfile:: gpp_linear_algebra.hpp
 
 
 gpp_linear_algebra.cpp
-------
+----------------------
 
 .. doxygenfile:: gpp_linear_algebra.cpp
 

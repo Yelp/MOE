@@ -62,18 +62,30 @@
         
             <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../why_moe.html">Why Do We Need MOE?</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../why_moe.html#what-is-moe">What is MOE?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../why_moe.html#why-is-this-hard">Why is this hard?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../why_moe.html#other-methods">Other Methods</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../install.html">Install</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#install-in-docker">Install in docker:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#install-from-source">Install from source:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below):</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#linux-tips">Linux Tips:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#cmake-tips">CMake Tips:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#install-in-docker">Install in docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#install-from-source">Install from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#osx-tips">OSX Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#building-boost">Building Boost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#linux-tips">Linux Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#cmake-tips">CMake Tips</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../moe_math.html">How does MOE work?</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe_math.html#build-a-gaussian-process-gp-with-the-historical-data">Build a Gaussian Process (GP) with the historical data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe_math.html#optimize-the-hyperparameters-of-the-gaussian-process">Optimize the hyperparameters of the Gaussian Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe_math.html#find-the-point-s-of-highest-expected-improvement-ei">Find the point(s) of highest Expected Improvement (EI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe_math.html#return-the-point-s-to-sample-then-repeat">Return the point(s) to sample, then repeat</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../demo_tutorial.html">Demo Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../demo_tutorial.html#the-interactive-demo">The Interactive Demo</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pretty_endpoints.html">Pretty Endpoints</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../objective_functions.html">Objective Functions</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../objective_functions.html#what-is-an-objective-function">What is an objective function?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../objective_functions.html#properties-of-an-objective-function">Properties of an objective function</a></li>
@@ -106,6 +118,16 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../../moe.html#module-moe">Module contents</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../moe_examples.html">moe_examples package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples.next_point_via_simple_endpoint">moe_examples.next_point_via_simple_endpoint module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples">Module contents</a></li>
+</ul>
+</li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../cpp_tree.html">C++ Files</a><ul>
@@ -128,23 +150,22 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python_model_selection.html">gpp_python_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_math.html">gpp_math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_random_test.html">gpp_random_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_optimizer_parameters.html">gpp_optimizer_parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_random.html">gpp_random</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_geometry_test.html">gpp_geometry_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_linear_algebra.html">gpp_linear_algebra</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_core.html">gpp_core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_model_selection.html">gpp_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_optimization.html">gpp_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_covariance_test.html">gpp_covariance_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python.html">gpp_python</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_model_selection_and_hyperparameter_optimization.html">gpp_model_selection_and_hyperparameter_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_model_selection_test.html">gpp_model_selection_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_optimization_parameters.html">gpp_optimization_parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_common.html">gpp_common</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_model_selection_and_hyperparameter_optimization_test.html">gpp_model_selection_and_hyperparameter_optimization_test</a></li>
 </ul>
 </li>
 </ul>
@@ -288,7 +309,7 @@
 <span class="sd">\*, \*\* See &quot;IMPLEMENTATION DETAILS&quot; comments section for details.</span>
 
 <span class="sd">Recall that Newton indiscriminately finds solutions where ``f&#39;(x) = 0``; the eigenvalues of the Hessian classify these</span>
-<span class="sd">``x`` as optima, saddle points, or indeterminate. We multistart Newton (e.g., gpp_model_selection_and_hyperparameter_optimization)</span>
+<span class="sd">``x`` as optima, saddle points, or indeterminate. We multistart Newton (e.g., gpp_model_selection)</span>
 <span class="sd">but just take the best objective value without classifying solutions.</span>
 <span class="sd">The MultistartOptimizer template class in this file provides generic multistart functionality.</span>
 
@@ -510,20 +531,20 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">domain</span><span class="p">,</span> <span class="n">optimizable</span><span class="p">,</span> <span class="n">optimization_parameters</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">domain</span><span class="p">,</span> <span class="n">optimizable</span><span class="p">,</span> <span class="n">optimizer_parameters</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct a GradientDescentOptimizer.</span>
 
 <span class="sd">        :param domain: the domain that this optimizer operates over</span>
 <span class="sd">        :type domain: interfaces.domain_interface.DomainInterface subclass</span>
 <span class="sd">        :param optimizable: object representing the objective function being optimized</span>
 <span class="sd">        :type optimizable: interfaces.optimization_interface.OptimizableInterface subclass</span>
-<span class="sd">        :param optimization_parameters: parameters describing how to perform optimization (tolerances, iterations, etc.)</span>
-<span class="sd">        :type optimization_parameters: python_version.optimization.GradientDescentParameters object</span>
+<span class="sd">        :param optimizer_parameters: parameters describing how to perform optimization (tolerances, iterations, etc.)</span>
+<span class="sd">        :type optimizer_parameters: python_version.optimization.GradientDescentParameters object</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">domain</span> <span class="o">=</span> <span class="n">domain</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">objective_function</span> <span class="o">=</span> <span class="n">optimizable</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">optimization_parameters</span> <span class="o">=</span> <span class="n">optimization_parameters</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">optimizer_parameters</span> <span class="o">=</span> <span class="n">optimizer_parameters</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_get_averaging_range</span><span class="p">(</span><span class="n">num_steps_averaged</span><span class="p">,</span> <span class="n">num_steps_total</span><span class="p">):</span>
@@ -608,21 +629,21 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c"># TODO(GH-59): Implement restarts like in the C++ code.</span>
-        <span class="n">initial_guess</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">objective_function</span><span class="o">.</span><span class="n">get_current_point</span><span class="p">()</span>
+        <span class="n">initial_guess</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">objective_function</span><span class="o">.</span><span class="n">current_point</span>
         <span class="n">x_hat</span> <span class="o">=</span> <span class="n">initial_guess</span>
-        <span class="n">x_path</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">optimization_parameters</span><span class="o">.</span><span class="n">max_num_steps</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="p">)</span> <span class="o">+</span> <span class="n">initial_guess</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="n">x_path</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">optimizer_parameters</span><span class="o">.</span><span class="n">max_num_steps</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="p">)</span> <span class="o">+</span> <span class="n">initial_guess</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
         <span class="n">x_path</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="n">initial_guess</span>
 
         <span class="n">step_counter</span> <span class="o">=</span> <span class="mi">1</span>
-        <span class="k">while</span> <span class="n">step_counter</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimization_parameters</span><span class="o">.</span><span class="n">max_num_steps</span><span class="p">:</span>
-            <span class="n">alpha_n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimization_parameters</span><span class="o">.</span><span class="n">pre_mult</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">step_counter</span><span class="p">),</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">optimization_parameters</span><span class="o">.</span><span class="n">gamma</span><span class="p">)</span>
+        <span class="k">while</span> <span class="n">step_counter</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimizer_parameters</span><span class="o">.</span><span class="n">max_num_steps</span><span class="p">:</span>
+            <span class="n">alpha_n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimizer_parameters</span><span class="o">.</span><span class="n">pre_mult</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">step_counter</span><span class="p">),</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">optimizer_parameters</span><span class="o">.</span><span class="n">gamma</span><span class="p">)</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">objective_function</span><span class="o">.</span><span class="n">set_current_point</span><span class="p">(</span><span class="n">x_path</span><span class="p">[</span><span class="n">step_counter</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="o">...</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">objective_function</span><span class="o">.</span><span class="n">current_point</span> <span class="o">=</span> <span class="n">x_path</span><span class="p">[</span><span class="n">step_counter</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
             <span class="n">orig_step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">objective_function</span><span class="o">.</span><span class="n">compute_grad_objective_function</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
             <span class="n">orig_step</span> <span class="o">*=</span> <span class="n">alpha_n</span>
             <span class="n">fixed_step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">compute_update_restricted_to_domain</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">optimization_parameters</span><span class="o">.</span><span class="n">max_relative_change</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">optimizer_parameters</span><span class="o">.</span><span class="n">max_relative_change</span><span class="p">,</span>
                 <span class="n">x_path</span><span class="p">[</span><span class="n">step_counter</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>
                 <span class="n">orig_step</span><span class="p">,</span>
             <span class="p">)</span>
@@ -635,9 +656,9 @@
         <span class="c"># Polyak-Ruppert averaging: postprocessing step where we replace x_n with:</span>
         <span class="c"># \overbar{x} = \frac{1}{n - n_0} \sum_{t=n_0 + 1}^n x_t</span>
         <span class="c"># n_0 = 0 averages all steps; n_0 = n - 1 is equivalent to returning x_n directly.</span>
-        <span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_averaging_range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">optimization_parameters</span><span class="o">.</span><span class="n">num_steps_averaged</span><span class="p">,</span> <span class="n">step_counter</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_averaging_range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">optimizer_parameters</span><span class="o">.</span><span class="n">num_steps_averaged</span><span class="p">,</span> <span class="n">step_counter</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
         <span class="n">x_hat</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">x_path</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">objective_function</span><span class="o">.</span><span class="n">set_current_point</span><span class="p">(</span><span class="n">x_hat</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">objective_function</span><span class="o">.</span><span class="n">current_point</span> <span class="o">=</span> <span class="n">x_hat</span>
 
 </div></div>
 <div class="viewcode-block" id="MultistartOptimizer"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.optimization.MultistartOptimizer">[docs]</a><span class="k">class</span> <span class="nc">MultistartOptimizer</span><span class="p">(</span><span class="n">OptimizerInterface</span><span class="p">):</span>
@@ -663,12 +684,12 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">num_multistarts</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Construct a MultistartOptimizer for multistarting any implementation of OptimizationInterface.</span>
+        <span class="sd">&quot;&quot;&quot;Construct a MultistartOptimizer for multistarting any implementation of OptimizerInterface.</span>
 
 <span class="sd">        :param optimizer: object representing the optimization method to be multistarted</span>
 <span class="sd">        :type optimizer: interfaces.optimization_interface.OptimizableInterface subclass (except itself)</span>
-<span class="sd">        :param optimization_parameters:</span>
-<span class="sd">        :type optimization_parameters:</span>
+<span class="sd">        :param optimizer_parameters:</span>
+<span class="sd">        :type optimizer_parameters:</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span> <span class="o">=</span> <span class="n">optimizer</span>
@@ -703,14 +724,14 @@
         <span class="n">function_value_list</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">random_starts</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">point</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">random_starts</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">objective_function</span><span class="o">.</span><span class="n">set_current_point</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">objective_function</span><span class="o">.</span><span class="n">current_point</span> <span class="o">=</span> <span class="n">point</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">optimize</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
             <span class="n">function_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">objective_function</span><span class="o">.</span><span class="n">compute_objective_function</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
             <span class="n">function_value_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">function_value</span>
 
             <span class="k">if</span> <span class="n">function_value</span> <span class="o">&gt;</span> <span class="n">best_function_value</span><span class="p">:</span>
                 <span class="n">best_function_value</span> <span class="o">=</span> <span class="n">function_value</span>
-                <span class="n">best_point</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">objective_function</span><span class="o">.</span><span class="n">get_current_point</span><span class="p">()</span>
+                <span class="n">best_point</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">objective_function</span><span class="o">.</span><span class="n">current_point</span>
 
         <span class="k">return</span> <span class="n">best_point</span><span class="p">,</span> <span class="n">function_value_list</span></div></div>
 </pre></div>

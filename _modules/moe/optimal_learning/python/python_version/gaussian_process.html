@@ -62,18 +62,30 @@
         
             <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../why_moe.html">Why Do We Need MOE?</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../why_moe.html#what-is-moe">What is MOE?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../why_moe.html#why-is-this-hard">Why is this hard?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../why_moe.html#other-methods">Other Methods</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../install.html">Install</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#install-in-docker">Install in docker:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#install-from-source">Install from source:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below):</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#linux-tips">Linux Tips:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#cmake-tips">CMake Tips:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#install-in-docker">Install in docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#install-from-source">Install from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#osx-tips">OSX Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#building-boost">Building Boost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#linux-tips">Linux Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#cmake-tips">CMake Tips</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../moe_math.html">How does MOE work?</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe_math.html#build-a-gaussian-process-gp-with-the-historical-data">Build a Gaussian Process (GP) with the historical data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe_math.html#optimize-the-hyperparameters-of-the-gaussian-process">Optimize the hyperparameters of the Gaussian Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe_math.html#find-the-point-s-of-highest-expected-improvement-ei">Find the point(s) of highest Expected Improvement (EI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe_math.html#return-the-point-s-to-sample-then-repeat">Return the point(s) to sample, then repeat</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../demo_tutorial.html">Demo Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../demo_tutorial.html#the-interactive-demo">The Interactive Demo</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pretty_endpoints.html">Pretty Endpoints</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../objective_functions.html">Objective Functions</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../objective_functions.html#what-is-an-objective-function">What is an objective function?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../objective_functions.html#properties-of-an-objective-function">Properties of an objective function</a></li>
@@ -106,6 +118,16 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../../moe.html#module-moe">Module contents</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../moe_examples.html">moe_examples package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples.next_point_via_simple_endpoint">moe_examples.next_point_via_simple_endpoint module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples">Module contents</a></li>
+</ul>
+</li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../cpp_tree.html">C++ Files</a><ul>
@@ -128,23 +150,22 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python_model_selection.html">gpp_python_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_math.html">gpp_math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_random_test.html">gpp_random_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_optimizer_parameters.html">gpp_optimizer_parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_random.html">gpp_random</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_geometry_test.html">gpp_geometry_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_linear_algebra.html">gpp_linear_algebra</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_core.html">gpp_core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_model_selection.html">gpp_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_optimization.html">gpp_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_covariance_test.html">gpp_covariance_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python.html">gpp_python</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_model_selection_and_hyperparameter_optimization.html">gpp_model_selection_and_hyperparameter_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_model_selection_test.html">gpp_model_selection_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_optimization_parameters.html">gpp_optimization_parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_common.html">gpp_common</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_model_selection_and_hyperparameter_optimization_test.html">gpp_model_selection_and_hyperparameter_optimization_test</a></li>
 </ul>
 </li>
 </ul>
@@ -200,6 +221,16 @@
 
 <span class="kn">from</span> <span class="nn">moe.optimal_learning.python.interfaces.gaussian_process_interface</span> <span class="kn">import</span> <span class="n">GaussianProcessInterface</span>
 <span class="kn">from</span> <span class="nn">moe.optimal_learning.python.python_version</span> <span class="kn">import</span> <span class="n">python_utils</span>
+
+
+<span class="c"># Minimum allowed standard deviation value in ComputeGradCholeskyVarianceOfPointsPerPoint (= machine precision).</span>
+<span class="c"># Values that are too small result in problems b/c we may compute ``std_dev/var`` (which is enormous</span>
+<span class="c"># if ``std_dev = 1.0e-150`` and ``var = 1.0e-300``) since this only arises when we fail to compute ``std_dev = var = 0.0``.</span>
+<span class="c"># Note: this is only relevant if noise = 0.0; this minimum will not affect GPs with noise since this value</span>
+<span class="c"># is below the smallest amount of noise users can meaningfully add.</span>
+<span class="c"># This value was chosen to be consistent with the singularity condition in scipy.linalg.cho_factor</span>
+<span class="c"># and tested for robustness with the setup in test_1d_analytic_ei_edge_cases().</span>
+<span class="n">MINIMUM_STD_DEV_GRAD_CHOLESKY</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span><span class="o">.</span><span class="n">eps</span>
 
 
 <div class="viewcode-block" id="GaussianProcess"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.gaussian_process.GaussianProcess">[docs]</a><span class="k">class</span> <span class="nc">GaussianProcess</span><span class="p">(</span><span class="n">GaussianProcessInterface</span><span class="p">):</span>
@@ -264,6 +295,39 @@
         <span class="sd">&quot;&quot;&quot;Return the number of sampled points.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_historical_data</span><span class="o">.</span><span class="n">num_sampled</span>
 </div>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">_points_sampled</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the coordinates of the already-sampled points; see data_containers.HistoricalData.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_historical_data</span><span class="o">.</span><span class="n">points_sampled</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">_points_sampled_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the function values measured at each of points_sampled; see data_containers.HistoricalData.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_historical_data</span><span class="o">.</span><span class="n">points_sampled_value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">_points_sampled_noise_variance</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the noise variance associated with points_sampled_value; see data_containers.HistoricalData.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_historical_data</span><span class="o">.</span><span class="n">points_sampled_noise_variance</span>
+
+<div class="viewcode-block" id="GaussianProcess.get_covariance_copy"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.gaussian_process.GaussianProcess.get_covariance_copy">[docs]</a>    <span class="k">def</span> <span class="nf">get_covariance_copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a copy of the covariance object specifying the Gaussian Process.</span>
+
+<span class="sd">        :return: covariance object encoding assumptions about the GP&#39;s behavior on our data</span>
+<span class="sd">        :rtype: interfaces.covariance_interface.CovarianceInterface subclass</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_covariance</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="GaussianProcess.get_historical_data_copy"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.gaussian_process.GaussianProcess.get_historical_data_copy">[docs]</a>    <span class="k">def</span> <span class="nf">get_historical_data_copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the data (points, function values, noise) specifying the prior of the Gaussian Process.</span>
+
+<span class="sd">        :return: object specifying the already-sampled points, the objective value at those points, and the noise variance associated with each observation</span>
+<span class="sd">        :rtype: data_containers.HistoricalData</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_historical_data</span><span class="p">)</span>
+</div>
     <span class="k">def</span> <span class="nf">_build_precomputed_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set up precomputed data (cholesky factorization of K and K^-1 * y).&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_sampled</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -272,11 +336,11 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">covariance_matrix</span> <span class="o">=</span> <span class="n">python_utils</span><span class="o">.</span><span class="n">build_covariance_matrix</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_covariance</span><span class="p">,</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_historical_data</span><span class="o">.</span><span class="n">points_sampled</span><span class="p">,</span>
-                <span class="n">noise_variance</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_historical_data</span><span class="o">.</span><span class="n">points_sampled_noise_variance</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_points_sampled</span><span class="p">,</span>
+                <span class="n">noise_variance</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_points_sampled_noise_variance</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_K_chol</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">cho_factor</span><span class="p">(</span><span class="n">covariance_matrix</span><span class="p">,</span> <span class="n">lower</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">overwrite_a</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_K_inv_y</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">cho_solve</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_K_chol</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_historical_data</span><span class="o">.</span><span class="n">points_sampled_value</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_K_inv_y</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">cho_solve</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_K_chol</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_points_sampled_value</span><span class="p">)</span>
 
 <div class="viewcode-block" id="GaussianProcess.compute_mean_of_points"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.gaussian_process.GaussianProcess.compute_mean_of_points">[docs]</a>    <span class="k">def</span> <span class="nf">compute_mean_of_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points_to_sample</span><span class="p">):</span>
         <span class="sd">r&quot;&quot;&quot;Compute the mean of this GP at each of point of ``Xs`` (``points_to_sample``).</span>
@@ -296,7 +360,7 @@
 
         <span class="n">K_star</span> <span class="o">=</span> <span class="n">python_utils</span><span class="o">.</span><span class="n">build_mix_covariance_matrix</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_covariance</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_historical_data</span><span class="o">.</span><span class="n">points_sampled</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_points_sampled</span><span class="p">,</span>
             <span class="n">points_to_sample</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">mu_star</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">K_star</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_K_inv_y</span><span class="p">)</span>
@@ -325,9 +389,9 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">num_derivatives</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_clamp_num_derivatives</span><span class="p">(</span><span class="n">points_to_sample</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">num_derivatives</span><span class="p">)</span>
-        <span class="n">grad_K_star</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">num_derivatives</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_historical_data</span><span class="o">.</span><span class="n">points_sampled</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">))</span>
+        <span class="n">grad_K_star</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">num_derivatives</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_points_sampled</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">))</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">point_one</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">[:</span><span class="n">num_derivatives</span><span class="p">,</span> <span class="o">...</span><span class="p">]):</span>
-            <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">point_two</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_historical_data</span><span class="o">.</span><span class="n">points_sampled</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">point_two</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_points_sampled</span><span class="p">):</span>
                 <span class="n">grad_K_star</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_covariance</span><span class="o">.</span><span class="n">grad_covariance</span><span class="p">(</span><span class="n">point_one</span><span class="p">,</span> <span class="n">point_two</span><span class="p">)</span>
 
         <span class="c"># y_{k,i} = A_{k,j,i} * x_j</span>
@@ -355,7 +419,7 @@
 
         <span class="n">K_star</span> <span class="o">=</span> <span class="n">python_utils</span><span class="o">.</span><span class="n">build_mix_covariance_matrix</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_covariance</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_historical_data</span><span class="o">.</span><span class="n">points_sampled</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_points_sampled</span><span class="p">,</span>
             <span class="n">points_to_sample</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">V</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve_triangular</span><span class="p">(</span>
@@ -407,7 +471,7 @@
 
         <span class="n">K_star</span> <span class="o">=</span> <span class="n">python_utils</span><span class="o">.</span><span class="n">build_mix_covariance_matrix</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_covariance</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_historical_data</span><span class="o">.</span><span class="n">points_sampled</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_points_sampled</span><span class="p">,</span>
             <span class="n">points_to_sample</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">K_inv_times_K_star</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">cho_solve</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_K_chol</span><span class="p">,</span> <span class="n">K_star</span><span class="p">,</span> <span class="n">overwrite_b</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
@@ -415,15 +479,15 @@
             <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">point_two</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">):</span>
                 <span class="k">if</span> <span class="n">var_of_grad</span> <span class="o">==</span> <span class="n">i</span> <span class="ow">and</span> <span class="n">var_of_grad</span> <span class="o">==</span> <span class="n">j</span><span class="p">:</span>
                     <span class="n">grad_var</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_covariance</span><span class="o">.</span><span class="n">grad_covariance</span><span class="p">(</span><span class="n">point_one</span><span class="p">,</span> <span class="n">point_two</span><span class="p">)</span>
-                    <span class="k">for</span> <span class="n">idx_two</span><span class="p">,</span> <span class="n">sampled_two</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_historical_data</span><span class="o">.</span><span class="n">points_sampled</span><span class="p">):</span>
+                    <span class="k">for</span> <span class="n">idx_two</span><span class="p">,</span> <span class="n">sampled_two</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_points_sampled</span><span class="p">):</span>
                         <span class="n">grad_var</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">-=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">K_inv_times_K_star</span><span class="p">[</span><span class="n">idx_two</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_covariance</span><span class="o">.</span><span class="n">grad_covariance</span><span class="p">(</span><span class="n">point_one</span><span class="p">,</span> <span class="n">sampled_two</span><span class="p">)</span>
                 <span class="k">elif</span> <span class="n">var_of_grad</span> <span class="o">==</span> <span class="n">i</span><span class="p">:</span>
                     <span class="n">grad_var</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_covariance</span><span class="o">.</span><span class="n">grad_covariance</span><span class="p">(</span><span class="n">point_one</span><span class="p">,</span> <span class="n">point_two</span><span class="p">)</span>
-                    <span class="k">for</span> <span class="n">idx_two</span><span class="p">,</span> <span class="n">sampled_two</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_historical_data</span><span class="o">.</span><span class="n">points_sampled</span><span class="p">):</span>
+                    <span class="k">for</span> <span class="n">idx_two</span><span class="p">,</span> <span class="n">sampled_two</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_points_sampled</span><span class="p">):</span>
                         <span class="n">grad_var</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">-=</span> <span class="n">K_inv_times_K_star</span><span class="p">[</span><span class="n">idx_two</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_covariance</span><span class="o">.</span><span class="n">grad_covariance</span><span class="p">(</span><span class="n">point_one</span><span class="p">,</span> <span class="n">sampled_two</span><span class="p">)</span>
                 <span class="k">elif</span> <span class="n">var_of_grad</span> <span class="o">==</span> <span class="n">j</span><span class="p">:</span>
                     <span class="n">grad_var</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_covariance</span><span class="o">.</span><span class="n">grad_covariance</span><span class="p">(</span><span class="n">point_two</span><span class="p">,</span> <span class="n">point_one</span><span class="p">)</span>
-                    <span class="k">for</span> <span class="n">idx_one</span><span class="p">,</span> <span class="n">sampled_one</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_historical_data</span><span class="o">.</span><span class="n">points_sampled</span><span class="p">):</span>
+                    <span class="k">for</span> <span class="n">idx_one</span><span class="p">,</span> <span class="n">sampled_one</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_points_sampled</span><span class="p">):</span>
                         <span class="n">grad_var</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">-=</span> <span class="n">K_inv_times_K_star</span><span class="p">[</span><span class="n">idx_one</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_covariance</span><span class="o">.</span><span class="n">grad_covariance</span><span class="p">(</span><span class="n">point_two</span><span class="p">,</span> <span class="n">sampled_one</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">grad_var</span>
 
@@ -483,7 +547,7 @@
         <span class="c"># Step 2 of Appendix 2</span>
         <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">num_to_sample</span><span class="p">):</span>
             <span class="n">L_kk</span> <span class="o">=</span> <span class="n">chol_var</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">L_kk</span> <span class="o">&gt;</span> <span class="mf">1.0e-16</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">L_kk</span> <span class="o">&gt;</span> <span class="n">MINIMUM_STD_DEV_GRAD_CHOLESKY</span><span class="p">:</span>
                 <span class="n">grad_chol</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">*=</span> <span class="mf">0.5</span> <span class="o">/</span> <span class="n">L_kk</span>
                 <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">num_to_sample</span><span class="p">):</span>
                     <span class="n">grad_chol</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">grad_chol</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">-</span> <span class="n">chol_var</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span> <span class="o">*</span> <span class="n">grad_chol</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="o">...</span><span class="p">])</span> <span class="o">/</span> <span class="n">L_kk</span>
@@ -493,7 +557,7 @@
 
         <span class="k">return</span> <span class="n">grad_chol</span>
 
-<div class="viewcode-block" id="GaussianProcess.compute_grad_cholesky_variance_of_points"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.gaussian_process.GaussianProcess.compute_grad_cholesky_variance_of_points">[docs]</a>    <span class="k">def</span> <span class="nf">compute_grad_cholesky_variance_of_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points_to_sample</span><span class="p">,</span> <span class="n">num_derivatives</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
+<div class="viewcode-block" id="GaussianProcess.compute_grad_cholesky_variance_of_points"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.gaussian_process.GaussianProcess.compute_grad_cholesky_variance_of_points">[docs]</a>    <span class="k">def</span> <span class="nf">compute_grad_cholesky_variance_of_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points_to_sample</span><span class="p">,</span> <span class="n">chol_var</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">num_derivatives</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
         <span class="sd">r&quot;&quot;&quot;Compute the gradient of the cholesky factorization of the variance (matrix) of this GP at each point of ``Xs`` (``points_to_sample``) wrt ``Xs``.</span>
 
 <span class="sd">        .. Warning:: ``points_to_sample`` should not contain duplicate points.</span>
@@ -510,6 +574,8 @@
 
 <span class="sd">        :param points_to_sample: num_to_sample points (in dim dimensions) being sampled from the GP</span>
 <span class="sd">        :type points_to_sample: array of float64 with shape (num_to_sample, dim)</span>
+<span class="sd">        :param chol_var: the cholesky factorization (L) of the variance matrix; only the lower triangle is accessed</span>
+<span class="sd">        :type chol_var: array of float64 with shape (num_to_sample, num_to_sample)</span>
 <span class="sd">        :param num_derivatives: return derivatives wrt points_to_sample[0:num_derivatives]; large or negative values are clamped</span>
 <span class="sd">        :type num_derivatives: int</span>
 <span class="sd">        :return: grad_chol: gradient of the cholesky factorization of the variance matrix of this GP.</span>
@@ -520,9 +586,13 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">num_derivatives</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_clamp_num_derivatives</span><span class="p">(</span><span class="n">points_to_sample</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">num_derivatives</span><span class="p">)</span>
-        <span class="n">var_star</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_variance_of_points</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">)</span>
-        <span class="c"># Note: only access the lower triangle of chol_var; upper triangle is garbage</span>
-        <span class="n">chol_var</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">cho_factor</span><span class="p">(</span><span class="n">var_star</span><span class="p">,</span> <span class="n">lower</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">overwrite_a</span><span class="o">=</span><span class="bp">True</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="c"># Users can pass this in directly b/c it has often been computed already.</span>
+        <span class="k">if</span> <span class="n">chol_var</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">var_star</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_variance_of_points</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">)</span>
+            <span class="c"># Note: only access the lower triangle of chol_var; upper triangle is garbage</span>
+            <span class="c"># cho_factor returns a tuple, (factorized_matrix, lower_tri_flag); grab the matrix</span>
+            <span class="n">chol_var</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">cho_factor</span><span class="p">(</span><span class="n">var_star</span><span class="p">,</span> <span class="n">lower</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">overwrite_a</span><span class="o">=</span><span class="bp">True</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 
         <span class="n">grad_chol_decomp</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">num_derivatives</span><span class="p">,</span> <span class="n">points_to_sample</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">points_to_sample</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">))</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">num_derivatives</span><span class="p">):</span>
@@ -534,8 +604,8 @@
 
 <span class="sd">        Also forces recomputation of all derived quantities for GP to remain consistent.</span>
 
-<span class="sd">        :param sampled_points: SampledPoint objects to load into the GP (containing point, function value, and noise variance)</span>
-<span class="sd">        :type sampled_points: list of SampledPoint objects</span>
+<span class="sd">        :param sampled_points: SamplePoint objects to load into the GP (containing point, function value, and noise variance)</span>
+<span class="sd">        :type sampled_points: list of :class:`moe.optimal_learning.python.SamplePoint` objects</span>
 <span class="sd">        :param validate: whether to sanity-check the input sample_points</span>
 <span class="sd">        :type validate: boolean</span>
 

@@ -35,7 +35,7 @@
     <link rel="top" title="MOE 0.1.0 documentation" href="index.html"/>
         <link rel="up" title="C++ Files" href="cpp_tree.html"/>
         <link rel="next" title="gpp_covariance_test" href="gpp_covariance_test.html"/>
-        <link rel="prev" title="gpp_core" href="gpp_core.html"/> 
+        <link rel="prev" title="gpp_model_selection" href="gpp_model_selection.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -64,18 +64,30 @@
         
             <ul>
 <li class="toctree-l1"><a class="reference internal" href="why_moe.html">Why Do We Need MOE?</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="why_moe.html#what-is-moe">What is MOE?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="why_moe.html#why-is-this-hard">Why is this hard?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="why_moe.html#other-methods">Other Methods</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Install</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="install.html#install-in-docker">Install in docker:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#install-from-source">Install from source:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below):</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#install-in-docker">Install in docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#install-from-source">Install from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#osx-tips">OSX Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#building-boost">Building Boost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="moe_math.html">How does MOE work?</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#build-a-gaussian-process-gp-with-the-historical-data">Build a Gaussian Process (GP) with the historical data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#optimize-the-hyperparameters-of-the-gaussian-process">Optimize the hyperparameters of the Gaussian Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#find-the-point-s-of-highest-expected-improvement-ei">Find the point(s) of highest Expected Improvement (EI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#return-the-point-s-to-sample-then-repeat">Return the point(s) to sample, then repeat</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="demo_tutorial.html">Demo Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="demo_tutorial.html#the-interactive-demo">The Interactive Demo</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pretty_endpoints.html">Pretty Endpoints</a></li>
 <li class="toctree-l1"><a class="reference internal" href="objective_functions.html">Objective Functions</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="objective_functions.html#what-is-an-objective-function">What is an objective function?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="objective_functions.html#properties-of-an-objective-function">Properties of an objective function</a></li>
@@ -108,6 +120,16 @@
 <li class="toctree-l2"><a class="reference internal" href="moe.html#module-moe">Module contents</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="moe_examples.html">moe_examples package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.next_point_via_simple_endpoint">moe_examples.next_point_via_simple_endpoint module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples">Module contents</a></li>
+</ul>
+</li>
 </ul>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="cpp_tree.html">C++ Files</a><ul class="current">
@@ -130,23 +152,22 @@
 <li class="toctree-l2"><a class="reference internal" href="gpp_python_model_selection.html">gpp_python_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_math.html">gpp_math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_random_test.html">gpp_random_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimizer_parameters.html">gpp_optimizer_parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_random.html">gpp_random</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra.html">gpp_linear_algebra</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_core.html">gpp_core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection.html">gpp_model_selection</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="">gpp_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_covariance_test.html">gpp_covariance_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_python.html">gpp_python</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_and_hyperparameter_optimization.html">gpp_model_selection_and_hyperparameter_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_test.html">gpp_model_selection_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_optimization_parameters.html">gpp_optimization_parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_common.html">gpp_common</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_and_hyperparameter_optimization_test.html">gpp_model_selection_and_hyperparameter_optimization_test</a></li>
 </ul>
 </li>
 </ul>
@@ -290,7 +311,7 @@ dimensions), which is interpretable as information about local curvature, Newton
 step size and direction to ensure rapid** convergence.</p>
 <p>*, ** See &#8220;IMPLEMENTATION DETAILS&#8221; comments section for details.</p>
 <p>Recall that Newton indiscriminately finds solutions where <tt class="docutils literal"><span class="pre">f'(x)</span> <span class="pre">=</span> <span class="pre">0</span></tt>; the eigenvalues of the Hessian classify these
-<tt class="docutils literal"><span class="pre">x</span></tt> as optima, saddle points, or indeterminate. We multistart Newton (e.g., gpp_model_selection_and_hyperparameter_optimization)
+<tt class="docutils literal"><span class="pre">x</span></tt> as optima, saddle points, or indeterminate. We multistart Newton (e.g., gpp_model_selection)
 but just take the best objective value without classifying solutions.
 The MultistartOptimizer template class in this file provides generic multistart functionality.</p>
 <p>Newton is implemented here: NewtonOptimizer::Optimize() (which calls NewtonOptimization())</p>
@@ -372,7 +393,7 @@ void GetCurrentPoint(double * point);  // get current point at which Evalutor is
 void UpdateCurrentPoint(double const * point);  // set current point at which Evalutor is computing results
 </pre></div>
 </div>
-<p>gpp_math.hpp and gpp_model_selection_and_hyperparameter_optimization.hpp have (Evaluator, State) examples that implement
+<p>gpp_math.hpp and gpp_model_selection.hpp have (Evaluator, State) examples that implement
 the above interface:</p>
 <ul class="simple">
 <li>gpp_math.hpp:<ul>
@@ -380,7 +401,7 @@ the above interface:</p>
 <li>(OnePotentialSampleExpectedImprovement, OnePotentialSampleExpectedImprovementState)</li>
 </ul>
 </li>
-<li>gpp_model_selection_and_hyperparameter_optimization.hpp:<ul>
+<li>gpp_model_selection.hpp:<ul>
 <li>(LogMarginalLikelihoodEvaluator, LogMarginalLikelihoodState)</li>
 <li>(LeaveOneOutLogLikelihoodEvaluator, LeaveOneOutLogLikelihoodState)</li>
 </ul>
@@ -495,7 +516,7 @@ information about currently best-known objective values/points and the optimizat
 <em>Functions</em><blockquote>
 <div><p><span class="target" id="project0namespaceoptimal__learning_1acffe49185559b8bbcdbee2853fbbbece"></span><div class="line-block">
 <div class="line">template &lt; typename ObjectiveFunctionEvaluator, typename DomainType &gt;</div>
-<div class="line"><a class="reference internal" href="gpp_common.html#project0gpp__common_8hpp_1a43aad231fa6009d48201a76fd7dfb6dc"><em>OL_NONNULL_POINTERS</em></a>  void <strong>GradientDescentOptimization</strong>(const ObjectiveFunctionEvaluator &amp; objective_evaluator, const  <a class="reference internal" href="gpp_optimization_parameters.html#project0structoptimal__learning_1_1_gradient_descent_parameters"><em>GradientDescentParameters</em></a>  &amp; gd_parameters, const DomainType &amp; domain, typename ObjectiveFunctionEvaluator::StateType * objective_state, double *restrict next_point)</div>
+<div class="line"><a class="reference internal" href="gpp_common.html#project0gpp__common_8hpp_1a43aad231fa6009d48201a76fd7dfb6dc"><em>OL_NONNULL_POINTERS</em></a>  void <strong>GradientDescentOptimization</strong>(const ObjectiveFunctionEvaluator &amp; objective_evaluator, const  <a class="reference internal" href="gpp_optimizer_parameters.html#project0structoptimal__learning_1_1_gradient_descent_parameters"><em>GradientDescentParameters</em></a>  &amp; gd_parameters, const DomainType &amp; domain, typename ObjectiveFunctionEvaluator::StateType * objective_state, double *restrict next_point)</div>
 </div>
 </p>
 <blockquote>
@@ -591,7 +612,7 @@ objective_state.GetCurrentPoint() (see previous item)</td>
 </div></blockquote>
 <p><span class="target" id="project0namespaceoptimal__learning_1a4c118ee2a894733f0aacd04a68e34da7"></span><div class="line-block">
 <div class="line">template &lt; typename ObjectiveFunctionEvaluator, typename DomainType &gt;</div>
-<div class="line"><a class="reference internal" href="gpp_common.html#project0gpp__common_8hpp_1a43aad231fa6009d48201a76fd7dfb6dc"><em>OL_NONNULL_POINTERS</em></a>   <a class="reference internal" href="gpp_common.html#project0gpp__common_8hpp_1abda439d29ae03a473c1167e47159ae90"><em>OL_WARN_UNUSED_RESULT</em></a>  int <strong>NewtonOptimization</strong>(const ObjectiveFunctionEvaluator &amp; objective_evaluator, const  <a class="reference internal" href="gpp_optimization_parameters.html#project0structoptimal__learning_1_1_newton_parameters"><em>NewtonParameters</em></a>  &amp; newton_parameters, const DomainType &amp; domain, typename ObjectiveFunctionEvaluator::StateType * objective_state)</div>
+<div class="line"><a class="reference internal" href="gpp_common.html#project0gpp__common_8hpp_1a43aad231fa6009d48201a76fd7dfb6dc"><em>OL_NONNULL_POINTERS</em></a>   <a class="reference internal" href="gpp_common.html#project0gpp__common_8hpp_1abda439d29ae03a473c1167e47159ae90"><em>OL_WARN_UNUSED_RESULT</em></a>  int <strong>NewtonOptimization</strong>(const ObjectiveFunctionEvaluator &amp; objective_evaluator, const  <a class="reference internal" href="gpp_optimizer_parameters.html#project0structoptimal__learning_1_1_newton_parameters"><em>NewtonParameters</em></a>  &amp; newton_parameters, const DomainType &amp; domain, typename ObjectiveFunctionEvaluator::StateType * objective_state)</div>
 </div>
 </p>
 <blockquote>
@@ -721,6 +742,164 @@ according to newton</td>
  </p>
 </div></blockquote>
 </div></blockquote>
+<p><p id="project0structoptimal__learning_1_1_thread_schedule"><em>class</em> <strong>ThreadSchedule</strong></p>
+<blockquote>
+<div><p></p>
+<p><p><strong>Overview</strong></p>
+<p>When we ask openmp to parallelize a for loop, we can give it additional information on how to
+distribute the work. In particular, the overall work (N iterations) needs to be divided up amongst
+the threads. We have two major ways to affect how openmp structures the loop:
+<tt class="docutils literal"><span class="pre">schedule</span></tt> and <tt class="docutils literal"><span class="pre">chunk_size</span></tt>.</p>
+<p><tt class="docutils literal"><span class="pre">chunk_size</span></tt> changes meaning depending on <tt class="docutils literal"><span class="pre">schedule</span></tt>. Here we list out the options for
+<tt class="docutils literal"><span class="pre">schedule</span></tt> as <tt class="docutils literal"><span class="pre">name</span> <span class="pre">(ENV_NAME,</span> <span class="pre">enum_name)</span></tt> where <tt class="docutils literal"><span class="pre">ENV_NAME</span></tt> is the corresponding value
+of <tt class="docutils literal"><span class="pre">OMP_SCHEDULE</span></tt> (not used by <tt class="docutils literal"><span class="pre">optimal_learning</span></tt>) and <tt class="docutils literal"><span class="pre">enum_name</span></tt> is the corresponding
+type from <tt class="docutils literal"><span class="pre">opm_sched_t</span></tt> in <tt class="docutils literal"><span class="pre">omp.h</span></tt>. Below, &#8220;work&#8221; refers to loop iterations (<tt class="docutils literal"><span class="pre">N</span></tt> total).</p>
+<p><strong>Schedule Types</strong></p>
+<ol class="loweralpha">
+<li><p class="first">static (&#8220;static&#8221;, omp_sched_static):</p>
+<p>Work is divided into <tt class="docutils literal"><span class="pre">N/chunk_size</span></tt> <em>contiguous</em> chunks (of <tt class="docutils literal"><span class="pre">chunk_size</span></tt> iterations) and
+distributed amongst the threads statically in a round-robin fashion. Use when you are
+confident all chunks will take the same amount of time.</p>
+<p>Low control overhead but high waste if one iteration is very slow (since the other
+threads will sit idle).</p>
+<p>Default <tt class="docutils literal"><span class="pre">chunk_size</span></tt>: <tt class="docutils literal"><span class="pre">N</span> <span class="pre">/</span> <span class="pre">number_of_threads</span></tt>.</p>
+<p>This schedule type is <em>repeatable</em>: repeated runs/calls (with the same work) will produce the
+same mapping of loop iterations to threads every time.</p>
+</li>
+<li><p class="first">dynamic (&#8220;dynamic&#8221;, omp_sched_dynamic):</p>
+<p>Work is divided into <tt class="docutils literal"><span class="pre">N/chunk_size</span></tt> <em>contiguous</em> chunks (of <tt class="docutils literal"><span class="pre">chunk_size</span></tt> iterations) and
+distributed to threads as they complete their work, first-come first-serve. If there is
+a chunk that is very slow, the other threads can finish all remaining work instead of
+sitting idle.</p>
+<p>High control overhead, use when you have no idea how long each chunk will take.</p>
+<p>Default <tt class="docutils literal"><span class="pre">chunk_size</span></tt>: 1.</p>
+<p>This schedule type does not produce repeatable mappings of iterations to threads.</p>
+</li>
+<li><p class="first">guided (&#8220;guided&#8221;, omp_sched_guided):</p>
+<p>Work is divided into progressively smaller chunks; <tt class="docutils literal"><span class="pre">chunk_size</span></tt> sets the minimum value.
+As with dynamic, chunks are assigned on a first-come, first-serve basis.  Less overhead than
+dynamic (b/c <tt class="docutils literal"><span class="pre">chunk_size</span></tt> scale down).</p>
+<p>Useful when iteration times are similar but not identical.  Less overhead than dynamic while
+guaranteeing the waste case of static doesn&#8217;t arise.</p>
+<p>Default <tt class="docutils literal"><span class="pre">chunk_size</span></tt>: approximately <tt class="docutils literal"><span class="pre">N</span> <span class="pre">/</span> <span class="pre">number_of_threads</span></tt>.</p>
+<p>This schedule type does not produce repeatable mappings of iterations to threads.</p>
+</li>
+<li><p class="first">auto (&#8220;auto&#8221;, omp_sched_auto):</p>
+<p>The compiler decides how to map iterations to threads; this mapping is not required
+to be one of the previous choices.</p>
+<p>chunk_size has <em>no meaning</em> when the schedule is auto.
+See: <a class="reference external" href="https://gcc.gnu.org/onlinedocs/libgomp/omp_005fset_005fschedule.html">https://gcc.gnu.org/onlinedocs/libgomp/omp_005fset_005fschedule.html</a></p>
+<p>This schedule type is not guaranteed to be repeatable.</p>
+</li>
+</ol>
+<p>Further documentation:
+<a class="reference external" href="http://openmp.org/mp-documents/OpenMP3.1-CCard.pdf">http://openmp.org/mp-documents/OpenMP3.1-CCard.pdf</a>
+<a class="reference external" href="https://software.intel.com/en-us/articles/openmp-loop-scheduling">https://software.intel.com/en-us/articles/openmp-loop-scheduling</a>
+<a class="reference external" href="http://publib.boulder.ibm.com/infocenter/comphelp/v8v101/index.jsp?topic=%2Fcom.ibm.xlcpp8a.doc%2Fcompiler%2Fref%2Fruompfor.htm">http://publib.boulder.ibm.com/infocenter/comphelp/v8v101/index.jsp?topic=%2Fcom.ibm.xlcpp8a.doc%2Fcompiler%2Fref%2Fruompfor.htm</a></p>
+ </p>
+<em>Public Functions</em><blockquote>
+<div><p><span class="target" id="project0structoptimal__learning_1_1_thread_schedule_1a0aeea0ad795d932aba926f12c2989bfa"></span><div class="line-block">
+<div class="line"> <strong>ThreadSchedule</strong>(int max_num_threads_in, omp_sched_t schedule_in, int chunk_size_in)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Construct a ThreadSchedule using the specified number of threads, schedule type, and chunk_size.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">max_num_threads:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">maximum number of threads for use by OpenMP (generally should be &lt;= # cores)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">schedule:</th><td class="field-body">static, dynamic, guided, or auto. See class comments for more details.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">chunk_size:</th><td class="field-body">how to distribute work to threads; the precise meaning depends on schedule.
+Zero or negative chunk_size ask OpenMP to use its default behavior. See class comments for details.</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_thread_schedule_1a6450cef33167dc7b7f77258fb8e445fb"></span><div class="line-block">
+<div class="line"> <strong>ThreadSchedule</strong>(int max_num_threads_in, omp_sched_t schedule_in)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Construct a ThreadSchedule using the specified number of threads and schedule type with default chunk_size.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">max_num_threads:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">maximum number of threads for use by OpenMP (generally should be &lt;= # cores)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">schedule:</th><td class="field-body">static, dynamic, guided, or auto. See class comments for more details.</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_thread_schedule_1a90912f84eec44446fe820ebc0fa22f59"></span><div class="line-block">
+<div class="line"> <strong>ThreadSchedule</strong>(int max_num_threads_in)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Construct a ThreadSchedule using the specified number of threads with default schedule type and chunk_size.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">max_num_threads:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">maximum number of threads for use by OpenMP (generally should be &lt;= # cores)</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_thread_schedule_1a32553952f2150771798519eff45e4f14"></span><div class="line-block">
+<div class="line"> <strong>ThreadSchedule</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Construct a ThreadSchedule using the default number of threads, schedule type, and chunk_size.</p>
+ </p>
+</div></blockquote>
+</div></blockquote>
+<em>Public Members</em><blockquote>
+<div><p><span class="target" id="project0structoptimal__learning_1_1_thread_schedule_1aba3c49772aa6d0252360553a88acfef1"></span>int <strong>max_num_threads</strong></p>
+<blockquote>
+<div><p></p>
+<p>The maximum number of threads for use by OpenMP (generally should be &lt;= # cores). The (default) value of 0 results in omp_get_num_procs() threads; note that this is limited by omp_get_thread_limit() (set in OMP_THREAD_LIMIT). </p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_thread_schedule_1a53bfd9b201c57bcbd8cefada4eae6396"></span>omp_sched_t <strong>schedule</strong></p>
+<blockquote>
+<div><p>The thread schedule to use: static, dynamic, guided, or auto. See class comments for more details. </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_thread_schedule_1a2b8d29065d058d0bf09f3160dc477d15"></span>int <strong>chunk_size</strong></p>
+<blockquote>
+<div><p></p>
+<p>Chunk size to use when distributing work to threads; the precise meaning depends on schedule. Zero or negative chunk_size ask OpenMP to use its default behavior. See class comments for details. </p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</p>
 <p><p id="project0structoptimal__learning_1_1_optimization_i_o_container"><em>class</em> <strong>OptimizationIOContainer</strong></p>
 <blockquote>
 <div><p></p>
@@ -835,8 +1014,8 @@ BE AN INVALID STATE.  See class docs for details.</p>
 </div></blockquote>
 <p><span class="target" id="project0structoptimal__learning_1_1_optimization_i_o_container_1a4d97c311ea60e84e1c578569f8fa3a0b"></span>std::vector&lt; double &gt; <strong>best_point</strong></p>
 <blockquote>
-<div><p>the point producing <tt class="docutils literal"><span class="pre">best_objective_value_so_far</span></tt> after successful optimizzation (<tt class="docutils literal"><span class="pre">found_flag</span> <span class="pre">=</span> <span class="pre">true</span></tt>); otherwise it contains the original, unmodified values from when the function was called </p>
-<p></p>
+<div><p></p>
+<p>the point producing <tt class="docutils literal"><span class="pre">best_objective_value_so_far</span></tt> after successful optimizzation (<tt class="docutils literal"><span class="pre">found_flag</span> <span class="pre">=</span> <span class="pre">true</span></tt>); otherwise it contains the original, unmodified values from when the function was called </p>
 </div></blockquote>
 <p><span class="target" id="project0structoptimal__learning_1_1_optimization_i_o_container_1ae9cd7a94c530c34d4a9faf9d5fb9eb51"></span>bool <strong>found_flag</strong></p>
 <blockquote>
@@ -866,7 +1045,7 @@ we kick off an optimization run (e.g., gradient descent, newton) at each initial
 <div><p></p>
 <p></p>
 </div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_null_optimizer_1ae28c9502f94afd88e2087bb544ff0ac2"></span>typedef <a class="reference internal" href="gpp_optimization_parameters.html#project0structoptimal__learning_1_1_null_parameters"><em>NullParameters</em></a> <strong>ParameterStruct</strong></p>
+<p><span class="target" id="project0classoptimal__learning_1_1_null_optimizer_1ae28c9502f94afd88e2087bb544ff0ac2"></span>typedef <a class="reference internal" href="gpp_optimizer_parameters.html#project0structoptimal__learning_1_1_null_parameters"><em>NullParameters</em></a> <strong>ParameterStruct</strong></p>
 <blockquote>
 <div><p></p>
 <p></p>
@@ -882,7 +1061,7 @@ we kick off an optimization run (e.g., gradient descent, newton) at each initial
 <p></p>
 </div></blockquote>
 <p><span class="target" id="project0classoptimal__learning_1_1_null_optimizer_1ab7a27ee7863466bcb954d6ee34d448d0"></span><div class="line-block">
-<div class="line">int <strong>Optimize</strong>(const ObjectiveFunctionEvaluator &amp; OL_UNUSED, const  <a class="reference internal" href="gpp_optimization_parameters.html#project0structoptimal__learning_1_1_null_parameters"><em>ParameterStruct</em></a>  &amp; OL_UNUSED, const DomainType &amp; OL_UNUSED, typename ObjectiveFunctionEvaluator::StateType * OL_UNUSED)</div>
+<div class="line">int <strong>Optimize</strong>(const ObjectiveFunctionEvaluator &amp; OL_UNUSED, const  <a class="reference internal" href="gpp_optimizer_parameters.html#project0structoptimal__learning_1_1_null_parameters"><em>ParameterStruct</em></a>  &amp; OL_UNUSED, const DomainType &amp; OL_UNUSED, typename ObjectiveFunctionEvaluator::StateType * OL_UNUSED)</div>
 </div>
 </p>
 <blockquote>
@@ -945,7 +1124,7 @@ objective_state.GetCurrentPoint() will return the point as the intial guess</td>
 <div><p></p>
 <p></p>
 </div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_gradient_descent_optimizer_1a19d35e11ee0400f716659f58e5c28106"></span>typedef <a class="reference internal" href="gpp_optimization_parameters.html#project0structoptimal__learning_1_1_gradient_descent_parameters"><em>GradientDescentParameters</em></a> <strong>ParameterStruct</strong></p>
+<p><span class="target" id="project0classoptimal__learning_1_1_gradient_descent_optimizer_1a19d35e11ee0400f716659f58e5c28106"></span>typedef <a class="reference internal" href="gpp_optimizer_parameters.html#project0structoptimal__learning_1_1_gradient_descent_parameters"><em>GradientDescentParameters</em></a> <strong>ParameterStruct</strong></p>
 <blockquote>
 <div><p></p>
 <p></p>
@@ -961,7 +1140,7 @@ objective_state.GetCurrentPoint() will return the point as the intial guess</td>
 <p></p>
 </div></blockquote>
 <p><span class="target" id="project0classoptimal__learning_1_1_gradient_descent_optimizer_1a765cd72296fd7e08755fe9c2bde1b083"></span><div class="line-block">
-<div class="line">int <strong>Optimize</strong>(const ObjectiveFunctionEvaluator &amp; objective_evaluator, const  <a class="reference internal" href="gpp_optimization_parameters.html#project0structoptimal__learning_1_1_gradient_descent_parameters"><em>ParameterStruct</em></a>  &amp; gd_parameters, const DomainType &amp; domain, typename ObjectiveFunctionEvaluator::StateType * objective_state)</div>
+<div class="line">int <strong>Optimize</strong>(const ObjectiveFunctionEvaluator &amp; objective_evaluator, const  <a class="reference internal" href="gpp_optimizer_parameters.html#project0structoptimal__learning_1_1_gradient_descent_parameters"><em>ParameterStruct</em></a>  &amp; gd_parameters, const DomainType &amp; domain, typename ObjectiveFunctionEvaluator::StateType * objective_state)</div>
 </div>
 </p>
 <blockquote>
@@ -1050,7 +1229,7 @@ according to gradient descent</td>
 <div><p></p>
 <p></p>
 </div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_newton_optimizer_1aa6d382182350c4331c7c8d7afb42359e"></span>typedef <a class="reference internal" href="gpp_optimization_parameters.html#project0structoptimal__learning_1_1_newton_parameters"><em>NewtonParameters</em></a> <strong>ParameterStruct</strong></p>
+<p><span class="target" id="project0classoptimal__learning_1_1_newton_optimizer_1aa6d382182350c4331c7c8d7afb42359e"></span>typedef <a class="reference internal" href="gpp_optimizer_parameters.html#project0structoptimal__learning_1_1_newton_parameters"><em>NewtonParameters</em></a> <strong>ParameterStruct</strong></p>
 <blockquote>
 <div><p></p>
 <p></p>
@@ -1066,7 +1245,7 @@ according to gradient descent</td>
 <p></p>
 </div></blockquote>
 <p><span class="target" id="project0classoptimal__learning_1_1_newton_optimizer_1a04edf0db5fdc61589ae0e73ef2de01df"></span><div class="line-block">
-<div class="line">int <strong>Optimize</strong>(const ObjectiveFunctionEvaluator &amp; objective_evaluator, const  <a class="reference internal" href="gpp_optimization_parameters.html#project0structoptimal__learning_1_1_newton_parameters"><em>ParameterStruct</em></a>  &amp; newton_parameters, const DomainType &amp; domain, typename ObjectiveFunctionEvaluator::StateType * objective_state)</div>
+<div class="line">int <strong>Optimize</strong>(const ObjectiveFunctionEvaluator &amp; objective_evaluator, const  <a class="reference internal" href="gpp_optimizer_parameters.html#project0structoptimal__learning_1_1_newton_parameters"><em>ParameterStruct</em></a>  &amp; newton_parameters, const DomainType &amp; domain, typename ObjectiveFunctionEvaluator::StateType * objective_state)</div>
 </div>
 </p>
 <blockquote>
@@ -1190,24 +1369,27 @@ fall-back when more advanced (e.g., gradient descent) techniques fail.</p>
 <div><p></p>
 <p></p>
 </div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_multistart_optimizer_1af3dc4e8faefa9bdb0159707bc48d889d"></span><div class="line-block">
-<div class="line">void <strong>MultistartOptimize</strong>(const Optimizer &amp; optimizer, const ObjectiveFunctionEvaluator &amp; objective_evaluator, const ParameterStruct &amp; optimizer_parameters, const DomainType &amp; domain, double const *restrict initial_guesses, int num_multistarts, int max_num_threads, int chunk_size, typename ObjectiveFunctionEvaluator::StateType * objective_state_vector, double *restrict function_values, <a class="reference internal" href="#project0structoptimal__learning_1_1_optimization_i_o_container"><em>OptimizationIOContainer</em></a>  *restrict io_container)</div>
+<p><span class="target" id="project0classoptimal__learning_1_1_multistart_optimizer_1a809ec8208726bac5e8a794655eb2e876"></span><div class="line-block">
+<div class="line">void <strong>MultistartOptimize</strong>(const Optimizer &amp; optimizer, const ObjectiveFunctionEvaluator &amp; objective_evaluator, const ParameterStruct &amp; optimizer_parameters, const DomainType &amp; domain, const  <a class="reference internal" href="#project0structoptimal__learning_1_1_thread_schedule"><em>ThreadSchedule</em></a>  &amp; thread_schedule, double const *restrict initial_guesses, int num_multistarts, typename ObjectiveFunctionEvaluator::StateType * objective_state_vector, double *restrict function_values, <a class="reference internal" href="#project0structoptimal__learning_1_1_optimization_i_o_container"><em>OptimizationIOContainer</em></a>  *restrict io_container)</div>
 </div>
 </p>
 <blockquote>
 <div><p></p>
-<p><p>Performs multistart optimization with the specified Optimizer (class template parameter) to optimize the specified
-ObjectiveFunctionEvaluator over the specified DomainType. Optimizer behavior is controlled by the specified ParameterStruct.
-See class docs and header docs of this file, section 2c and 3b, iii), for more information.</p>
-<p>The method allows you to specify what the current best is, so that if optimization cannot beat it, no improvement will be
-reported.  It will otherwise report the overall best improvement (through io_container) as well as the result of every
-individual multistart run if desired (through function_values).</p>
+<p><p>Performs multistart optimization with the specified Optimizer (class template parameter)
+to optimize the specified ObjectiveFunctionEvaluator over the specified DomainType.
+Optimizer behavior is controlled by the specified ParameterStruct. See class docs and header
+docs of this file, section 2c and 3b, iii), for more information.</p>
+<p>The method allows you to specify what the current best is, so that if optimization cannot
+beat it, no improvement will be reported.  It will otherwise report the overall best
+improvement (through io_container) as well as the result of every individual multistart run
+if desired (through function_values).</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">comments copied to MultistartOptimizer.optimize() in python_version/optimization.py.</p>
 </div>
-<p>Generally, you will not call this function directly.  Instead, it is intended to be used in wrappers that set up state,
-chunk_size, etc. for the specific optimization problem at hand.  For examples with Expected Improvement (EI), see gpp_math:</p>
+<p>Generally, you will not call this function directly.  Instead, it is intended to be used in
+wrappers that set up state, thread_schedule, etc. for the specific optimization problem at hand.
+For examples with Expected Improvement (EI), see gpp_math:</p>
 <ul class="simple">
 <li><tt class="docutils literal"><span class="pre">EvaluateEIAtPointList()</span></tt></li>
 <li><tt class="docutils literal"><span class="pre">ComputeOptimalPointsToSampleViaMultistartGradientDescent()</span></tt></li>
@@ -1218,45 +1400,45 @@ chunk_size, etc. for the specific optimization problem at hand.  For examples wi
 <li><tt class="docutils literal"><span class="pre">MultistartGradientDescentHyperparameterOptimization()</span></tt></li>
 <li><tt class="docutils literal"><span class="pre">MultistartNewtonHyperparameterOptimization()</span></tt></li>
 </ul>
-<p>problem_size refers to objective_state-&gt;GetProblemSize(), the number of dimensions in a &#8220;point&#8221; aka the number of
-variables being optimized.  (This might be the spatial dimension for EI or the number of hyperparameters for log likelihood.)</p>
+<p>problem_size refers to objective_state-&gt;GetProblemSize(), the number of dimensions in a &#8220;point&#8221;
+aka the number of variables being optimized.  (This might be the spatial dimension for EI or the
+number of hyperparameters for log likelihood.)</p>
 <dl class="docutils">
 <dt><strong>Parameters</strong>:</dt>
 <dd><table class="first last docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">optimizer:</th><td class="field-body">object with the desired Optimize() functionality (e.g., do nothing for &#8216;dumb&#8217; search, gradient descent, etc.)</td>
+<tr class="field-odd field"><th class="field-name">optimizer:</th><td class="field-body">object with the desired Optimize() functionality (e.g., do nothing for
+&#8216;dumb&#8217; search, gradient descent, etc.)</td>
 </tr>
 <tr class="field-even field"><th class="field-name" colspan="2">objective_evaluator:</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">reference to object that can compute the objective function, its gradient, and/or its hessian,
-depending on the needs of optimizer</td>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">reference to object that can compute the objective function,
+its gradient, and/or its hessian, depending on the needs of optimizer</td>
 </tr>
 <tr class="field-odd field"><th class="field-name" colspan="2">optimizer_parameters:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Optimizer::ParameterStruct object that describes the parameters for optimization
-(e.g., number of iterations, tolerances, scale factors, etc.)</td>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Optimizer::ParameterStruct object that describes the parameters
+for optimization (e.g., number of iterations, tolerances, scale factors, etc.)</td>
 </tr>
 <tr class="field-even field"><th class="field-name">domain:</th><td class="field-body">object specifying the domain to optimize over (see gpp_domain.hpp)</td>
 </tr>
-<tr class="field-odd field"><th class="field-name" colspan="2">initial_guesses[problem_size][num_multistarts]:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">list of points at which to start optimization runs; all points must lie
-INSIDE the specified domain</td>
+<tr class="field-odd field"><th class="field-name" colspan="2">thread_schedule:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">struct instructing OpenMP on how to schedule threads; i.e.,
+max_num_threads, schedule type, chunk_size</td>
 </tr>
-<tr class="field-even field"><th class="field-name" colspan="2">num_multistarts:</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">number of random points to use from initial guesses</td>
+<tr class="field-even field"><th class="field-name" colspan="2">initial_guesses[problem_size][num_multistarts]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">list of points at which to start
+optimization runs; all points must lie INSIDE the specified domain</td>
 </tr>
-<tr class="field-odd field"><th class="field-name" colspan="2">max_num_threads:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">maximum number of threads for use by OpenMP (generally should be &lt;= # cores)</td>
+<tr class="field-odd field"><th class="field-name" colspan="2">num_multistarts:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">number of random points to use from initial guesses</td>
 </tr>
-<tr class="field-even field"><th class="field-name">chunk_size:</th><td class="field-body">(a guide to) how much work to give each thread at a time, see gpp_common.hpp header comments, item 7</td>
+<tr class="field-even field"><th class="field-name" colspan="2">objective_state_vector[thread_schedule.max_num_threads]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">properly constructed/configured ObjectiveFunctionEvaluator::State objects,
+at least one per thread objective_state.GetCurrentPoint() will be used to obtain the initial guess</td>
 </tr>
-<tr class="field-odd field"><th class="field-name" colspan="2">objective_state_vector[max_num_threads]:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">properly constructed/configured ObjectiveFunctionEvaluator::State objects,
-at least one per thread
-objective_state.GetCurrentPoint() will be used to obtain the initial guess</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">io_container[1]:</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">object with best_objective_value_so_far and corresponding best_point properly initialized.
+<tr class="field-odd field"><th class="field-name" colspan="2">io_container[1]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">object with best_objective_value_so_far and corresponding best_point properly initialized.
 See struct docs in gpp_optimization.hpp for details.</td>
 </tr>
 </tbody>
@@ -1267,26 +1449,30 @@ See struct docs in gpp_optimization.hpp for details.</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">objective_state_vector[max_num_threads]:</th></tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">objective_state_vector[thread_schedule.max_num_threads]:</th></tr>
 <tr class="field-odd field"><td>&nbsp;</td><td class="field-body">internal states of state objects may be modified</td>
 </tr>
 <tr class="field-even field"><th class="field-name" colspan="2">function_values[num_multistarts]:</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">objective fcn value at the end of each optimization run, in the same order as
-initial_guesses. Can be used to check what each optimization run converged to.
-More commonly used only with NullOptimizer to get a list of objective values
-at each point of initial_guesses.  Never dereferenced if nullptr</td>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">objective fcn value at the end of each
+optimization run, in the same order as initial_guesses. Can be used to check
+what each optimization run converged to.
+More commonly used only with NullOptimizer to get a list of objective values  at each point of initial_guesses.
+Never dereferenced if nullptr.</td>
 </tr>
 <tr class="field-odd field"><th class="field-name" colspan="2">io_container[1]:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">object container new best_objective_value_so_far and corresponding best_point IF found_flag is true.
-unchanged from input otherwise. See struct docs in gpp_optimization.hpp for details.</td>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">object container new best_objective_value_so_far and corresponding
+best_point IF found_flag is true.
+Unchanged from input otherwise. See struct docs in gpp_optimization.hpp for details.</td>
 </tr>
 </tbody>
 </table>
 </dd>
+<dt>raise</dt>
+<dd>if any of objective_state_vector-&gt;UpdateCurrentPoint(), optimizer.Optimize(), or
+objective_evaluator.ComputeObjectiveFunction() throws, the exception (or one of the exceptions in the
+event of multiple throws due to threading, usually the first temporally) will be saved and rethrown by
+this function. <tt class="docutils literal"><span class="pre">io_container</span></tt> will be in a valid state; <tt class="docutils literal"><span class="pre">function_values</span></tt> may not.</dd>
 </dl>
-<p>TODO(GH-150): consider having multiple versions of this for static/guided/dynamic scheduling.
-Unforutnately openmp doesn&#8217;t let you choose that parameter programmatically. This would be nice for testing.
-enough</p>
  </p>
 </div></blockquote>
 <p><span class="target" id="project0classoptimal__learning_1_1_multistart_optimizer_1aea5884c0885f955dc290d2b0a73aeac5"></span><div class="line-block">
@@ -1314,7 +1500,7 @@ enough</p>
         <a href="gpp_covariance_test.html" class="btn btn-neutral float-right" title="gpp_covariance_test"/>Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="gpp_core.html" class="btn btn-neutral" title="gpp_core"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="gpp_model_selection.html" class="btn btn-neutral" title="gpp_model_selection"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

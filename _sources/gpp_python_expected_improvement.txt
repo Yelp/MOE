@@ -1,5 +1,5 @@
 gpp_python_expected_improvement
-=====
+===============================
 
 **Contents:**
 
@@ -8,13 +8,13 @@ gpp_python_expected_improvement
 
 
 gpp_python_expected_improvement.hpp
-------
+-----------------------------------
 
 .. doxygenfile:: gpp_python_expected_improvement.hpp
 
 
 gpp_python_expected_improvement.cpp
-------
+-----------------------------------
 
 .. doxygenfile:: gpp_python_expected_improvement.cpp
 

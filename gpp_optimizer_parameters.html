@@ -1,0 +1,505 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>gpp_optimizer_parameters &mdash; MOE 0.1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="_static/breathe.css" type="text/css" />
+  
+    <link rel="top" title="MOE 0.1.0 documentation" href="index.html"/>
+        <link rel="up" title="C++ Files" href="cpp_tree.html"/>
+        <link rel="next" title="gpp_expected_improvement_demo" href="gpp_expected_improvement_demo.html"/>
+        <link rel="prev" title="gpp_random_test" href="gpp_random_test.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="index.html" class="fa fa-home"> MOE</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul>
+<li class="toctree-l1"><a class="reference internal" href="why_moe.html">Why Do We Need MOE?</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="why_moe.html#other-methods">Other Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Install</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="install.html#install-in-docker">Install in docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#install-from-source">Install from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#osx-tips">OSX Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#building-boost">Building Boost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="moe_math.html">How does MOE work?</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#build-a-gaussian-process-gp-with-the-historical-data">Build a Gaussian Process (GP) with the historical data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#optimize-the-hyperparameters-of-the-gaussian-process">Optimize the hyperparameters of the Gaussian Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#find-the-point-s-of-highest-expected-improvement-ei">Find the point(s) of highest Expected Improvement (EI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#return-the-point-s-to-sample-then-repeat">Return the point(s) to sample, then repeat</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="demo_tutorial.html">Demo Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="demo_tutorial.html#the-interactive-demo">The Interactive Demo</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pretty_endpoints.html">Pretty Endpoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="objective_functions.html">Objective Functions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="objective_functions.html#what-is-an-objective-function">What is an objective function?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="objective_functions.html#properties-of-an-objective-function">Properties of an objective function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="objective_functions.html#parameters">Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="objective_functions.html#id1"><span class="math">\(\Phi\)</span> Objective Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="objective_functions.html#example-of-objective-functions">Example of Objective Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#minimizing-an-arbitrary-function">Minimizing an arbitrary function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#gaussian-process-regression-given-historical-data">Gaussian Process regression given historical data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#hyperparameter-optimization-of-a-gaussian-process">Hyperparameter optimization of a Gaussian Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#all-above-examples-combined">All above examples combined</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#setting-thresholds-for-advertising-units">Setting thresholds for advertising units</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#making-a-pull-request">Making a pull request</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#documentation">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#testing">Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#style">Style</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="moe.html">moe package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#module-moe.resources">moe.resources module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#module-moe">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="moe_examples.html">moe_examples package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.next_point_via_simple_endpoint">moe_examples.next_point_via_simple_endpoint module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="cpp_tree.html">C++ Files</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimization_test.html">gpp_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_domain_test.html">gpp_domain_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_exception.html">gpp_exception</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_geometry.html">gpp_geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_test_utils.html">gpp_test_utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_logging.html">gpp_logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_covariance.html">gpp_covariance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_test.html">gpp_python_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_domain.html">gpp_domain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_common.html">gpp_python_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_hyperparameter_optimization_demo.html">gpp_hyperparameter_optimization_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_test_utils_test.html">gpp_test_utils_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_math_test.html">gpp_math_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_model_selection.html">gpp_python_model_selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_math.html">gpp_math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_random_test.html">gpp_random_test</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">gpp_optimizer_parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_random.html">gpp_random</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra.html">gpp_linear_algebra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection.html">gpp_model_selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_covariance_test.html">gpp_covariance_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python.html">gpp_python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_test.html">gpp_model_selection_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_common.html">gpp_common</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">MOE</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="cpp_tree.html">C++ Files</a> &raquo;</li>
+      
+    <li>gpp_optimizer_parameters</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="_sources/gpp_optimizer_parameters.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <div class="section" id="gpp-optimizer-parameters">
+<h1>gpp_optimizer_parameters<a class="headerlink" href="#gpp-optimizer-parameters" title="Permalink to this headline">¶</a></h1>
+<p><strong>Contents:</strong></p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><a class="reference internal" href="#gpp-optimizer-parameters-hpp">gpp_optimizer_parameters.hpp</a></li>
+</ol>
+</div></blockquote>
+<div class="section" id="gpp-optimizer-parameters-hpp">
+<h2>gpp_optimizer_parameters.hpp<a class="headerlink" href="#gpp-optimizer-parameters-hpp" title="Permalink to this headline">¶</a></h2>
+<p></p>
+<p><p>This file specifies OptimizerParameters structs (e.g., GradientDescent, Newton) for holding values that control the behavior
+of the optimizers in gpp_optimization.hpp.  For example, max step sizes, number of iterations, step size control, etc. are all
+specified through these structs.</p>
+<p>These structs also specify multistart behavior pertaining to the multistart optimization code in gpp_math and
+gpp_model_selection.</p>
+ </p>
+<p><p id="project0namespaceoptimal__learning"><em>namespace</em> <strong>optimal_learning</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+<em>Enums</em><blockquote>
+<div><p><span class="target" id="project0namespaceoptimal__learning_1a17e004bd762695ba16c140e612c3e0b4"></span><strong>OptimizerTypes enum</strong></p>
+<blockquote>
+<div><p></p>
+<p><p>Enum for the various optimizer types. Convenient for specifying which optimizer to use
+in testing and also used by the Python interface to specify the optimizer (e.g., for EI
+and hyperparameter optimization).</p>
+ </p>
+<p><em>Values:</em></p>
+<ul class="breatheenumvalues">
+<li><tt class="first docutils literal"><span class="pre">kNull</span></tt><tt class="docutils literal"> <span class="pre">=</span> <span class="pre">=</span> <span class="pre">0</span></tt> - <p>NullOptimizer&lt;&gt;, used for evaluating objective at points. </p>
+</li>
+<li><tt class="first docutils literal"><span class="pre">kGradientDescent</span></tt><tt class="docutils literal"> <span class="pre">=</span> <span class="pre">=</span> <span class="pre">1</span></tt> - <p>GradientDescentOptimizer&lt;&gt; </p>
+</li>
+<li><tt class="first docutils literal"><span class="pre">kNewton</span></tt><tt class="docutils literal"> <span class="pre">=</span> <span class="pre">=</span> <span class="pre">2</span></tt> - <p>NewtonOptimizer&lt;&gt; </p>
+</li>
+</ul>
+</div></blockquote>
+</div></blockquote>
+<p><p id="project0structoptimal__learning_1_1_null_parameters"><em>class</em> <strong>NullParameters</strong></p>
+<blockquote>
+<div><p></p>
+<p><p>Empty container for optimizers that do not require any parameters (e.g., the null optimizer).</p>
+ </p>
+</div></blockquote>
+</p>
+<p><p id="project0structoptimal__learning_1_1_gradient_descent_parameters"><em>class</em> <strong>GradientDescentParameters</strong></p>
+<blockquote>
+<div><p></p>
+<p><p>Container to hold parameters that specify the behavior of Gradient Descent.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">these comments are copied in build_gradient_descent_parameters() in cpp_wrappers/optimizer_parameters.py.
+That function wraps this struct&#8217;s ctor.</p>
+</div>
+<p><strong>Iterations</strong></p>
+<p>The total number of gradient descent steps is at most <tt class="docutils literal"><span class="pre">num_multistarts</span> <span class="pre">*</span> <span class="pre">max_num_steps</span> <span class="pre">*</span> <span class="pre">max_num_restarts</span></tt>
+Generally, allowing more iterations leads to a better solution but costs more time.</p>
+<p><strong>Learning Rate</strong></p>
+<p>GD may be implemented using a learning rate: <tt class="docutils literal"><span class="pre">pre_mult</span> <span class="pre">*</span> <span class="pre">(i+1)^{-\gamma}</span></tt>, where i is the current iteration
+Larger gamma causes the GD step size to (artificially) scale down faster.
+Smaller pre_mult (artificially) shrinks the GD step size.
+Generally, taking a very large number of small steps leads to the most robustness; but it is very slow.</p>
+<p><strong>Tolerances</strong></p>
+<p>Larger relative changes are potentially less robust but lead to faster convergence.
+Large tolerances run faster but may lead to high errors or false convergence (e.g., if the tolerance is 1.0e-3 and the learning
+rate control forces steps to fall below 1.0e-3 quickly, then GD will quit &#8220;successfully&#8221; without genuinely converging.)</p>
+ </p>
+<em>Public Functions</em><blockquote>
+<div><p><span class="target" id="project0structoptimal__learning_1_1_gradient_descent_parameters_1a4b1993a3818c89bc418b433dbab6e7c2"></span><div class="line-block">
+<div class="line"> <strong>GradientDescentParameters</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_gradient_descent_parameters_1ad10c125a5c7ff4050527dd397f455868"></span><div class="line-block">
+<div class="line"> <strong>GradientDescentParameters</strong>(int num_multistarts_in, int max_num_steps_in, int max_num_restarts_in, double gamma_in, double pre_mult_in, double max_relative_change_in, double tolerance_in)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Construct a GradientDescentParameters object.  Default, copy, and assignment constructor are disallowed.</p>
+<p>INPUTS:
+See member declarations below for a description of each parameter.</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_gradient_descent_parameters_1a8c2cf665b62e402a936379b58c7fa8c4"></span><div class="line-block">
+<div class="line"> <strong>GradientDescentParameters</strong>(<a class="reference internal" href="#project0structoptimal__learning_1_1_gradient_descent_parameters"><em>GradientDescentParameters</em></a>  &amp;&amp; OL_UNUSED)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Public Members</em><blockquote>
+<div><p><span class="target" id="project0structoptimal__learning_1_1_gradient_descent_parameters_1a2c755100e3e2128ef7f8031485ff688f"></span>int <strong>num_multistarts</strong></p>
+<blockquote>
+<div><p>number of initial guesses to try in multistarted gradient descent (suggest: a few hundred) </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_gradient_descent_parameters_1a97bf8dbb2ef425a9d063e90f985917d7"></span>int <strong>max_num_steps</strong></p>
+<blockquote>
+<div><p>maximum number of gradient descent iterations per restart (suggest: 200-1000) </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_gradient_descent_parameters_1a389fe8bdd1535069b36ee1f8f2977dcb"></span>int <strong>max_num_restarts</strong></p>
+<blockquote>
+<div><p>maximum number of gradient descent restarts, the we are allowed to call gradient descent. Should be &gt;= 2 as a minimum (suggest: 4-20) </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_gradient_descent_parameters_1acc228c20cbca5d6f8fa17a605a36ffe1"></span>double <strong>gamma</strong></p>
+<blockquote>
+<div><p>exponent controlling rate of step size decrease (see struct docs or <a class="reference internal" href="gpp_optimization.html#project0classoptimal__learning_1_1_gradient_descent_optimizer"><em>GradientDescentOptimizer</em></a>) (suggest: 0.5-0.9) </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_gradient_descent_parameters_1a75640d619b0adc08600a6d6bb3ba009d"></span>double <strong>pre_mult</strong></p>
+<blockquote>
+<div><p>scaling factor for step size (see struct docs or <a class="reference internal" href="gpp_optimization.html#project0classoptimal__learning_1_1_gradient_descent_optimizer"><em>GradientDescentOptimizer</em></a>) (suggest: 0.1-1.0) </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_gradient_descent_parameters_1a41018e0e7eb48c6c81e6a76dde54209b"></span>double <strong>max_relative_change</strong></p>
+<blockquote>
+<div><p></p>
+<p>max change allowed per GD iteration (as a relative fraction of current distance to wall) (suggest: 0.5-1.0 for less sensitive problems like EI; 0.02 for more sensitive problems like hyperparameter opt) </p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_gradient_descent_parameters_1a1883cc86947b3436fb6d52ec03b86d5f"></span>double <strong>tolerance</strong></p>
+<blockquote>
+<div><p></p>
+<p>when the magnitude of the gradient falls below this value OR we will not move farther than tolerance (e.g., at a boundary), stop. (suggest: 1.0e-7) </p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</p>
+<p><p id="project0structoptimal__learning_1_1_newton_parameters"><em>class</em> <strong>NewtonParameters</strong></p>
+<blockquote>
+<div><p></p>
+<p><p>Container to hold parameters that specify the behavior of Newton.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">these comments are copied in build_newton_parameters() in cpp_wrappers/optimizer_parameters.py.
+That function wraps this struct&#8217;s ctor.</p>
+</div>
+<p><strong>Diagonal dominance control: ``gamma`` and ``time_factor``</strong>
+On i-th newton iteration, we add <tt class="docutils literal"><span class="pre">1/(time_factor*gamma^{i+1})</span> <span class="pre">*</span> <span class="pre">I</span></tt> to the Hessian to improve robustness</p>
+<p>Choosing a small gamma (e.g., <tt class="docutils literal"><span class="pre">1.0</span> <span class="pre">&lt;</span> <span class="pre">gamma</span> <span class="pre">&lt;=</span> <span class="pre">1.01</span></tt>) and time_factor (e.g., <tt class="docutils literal"><span class="pre">0</span> <span class="pre">&lt;</span> <span class="pre">time_factor</span> <span class="pre">&lt;=</span> <span class="pre">1.0e-3</span></tt>)
+leads to more consistent/stable convergence at the cost of slower performance (and in fact
+for gamma or time_factor too small, gradient descent is preferred).  Conversely, choosing more
+aggressive values may lead to very fast convergence at the cost of more cases failing to
+converge.</p>
+<p><tt class="docutils literal"><span class="pre">gamma</span> <span class="pre">=</span> <span class="pre">1.01</span></tt>, <tt class="docutils literal"><span class="pre">time_factor</span> <span class="pre">=</span> <span class="pre">1.0e-3</span></tt> should lead to good robustness at reasonable speed.  This should be a fairly safe default.
+<tt class="docutils literal"><span class="pre">gamma</span> <span class="pre">=</span> <span class="pre">1.05,</span> <span class="pre">time_factor</span> <span class="pre">=</span> <span class="pre">1.0e-1</span></tt> will be several times faster but not as robust.
+for &#8220;easy&#8221; problems, these can be much more aggressive, e.g., <tt class="docutils literal"><span class="pre">gamma</span> <span class="pre">=</span> <span class="pre">2.0</span></tt>, <tt class="docutils literal"><span class="pre">time_factor</span> <span class="pre">=</span> <span class="pre">1.0e1</span></tt> or more.</p>
+ </p>
+<em>Public Functions</em><blockquote>
+<div><p><span class="target" id="project0structoptimal__learning_1_1_newton_parameters_1ae0da1fcfb23b18793fbbaa156b458d5a"></span><div class="line-block">
+<div class="line"> <strong>NewtonParameters</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_newton_parameters_1abeb3902e75652fa70e41eaa149fe5aa4"></span><div class="line-block">
+<div class="line"> <strong>NewtonParameters</strong>(int num_multistarts_in, int max_num_steps_in, double gamma_in, double time_factor_in, double max_relative_change_in, double tolerance_in)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Construct a NewtonParameters object.  Default, copy, and assignment constructor are disallowed.</p>
+<p>INPUTS:
+See member declarations below for a description of each parameter.</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_newton_parameters_1ad3213b25164513a485a885ca3e985787"></span><div class="line-block">
+<div class="line"> <strong>NewtonParameters</strong>(<a class="reference internal" href="#project0structoptimal__learning_1_1_newton_parameters"><em>NewtonParameters</em></a>  &amp;&amp; OL_UNUSED)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Public Members</em><blockquote>
+<div><p><span class="target" id="project0structoptimal__learning_1_1_newton_parameters_1afe27afb161a5f08ec9b2dc11d32da4f7"></span>int <strong>num_multistarts</strong></p>
+<blockquote>
+<div><p>number of initial guesses for multistarting (suggest: a few hundred) </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_newton_parameters_1a5f12d36ded458df486f50e1fbc1525ec"></span>int <strong>max_num_steps</strong></p>
+<blockquote>
+<div><p>maximum number of newton iterations (per initial guess) (suggest: 100) </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_newton_parameters_1a2636ea7d0a1ec7eb88091162ca113b1a"></span>const int <strong>max_num_restarts</strong></p>
+<blockquote>
+<div><p>maximum number of newton restarts (fixed; not used by newton) </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_newton_parameters_1a4969015c416c489a268c65e541ab035e"></span>double <strong>gamma</strong></p>
+<blockquote>
+<div><p>exponent controlling rate of time_factor growth (see class docs and <a class="reference internal" href="gpp_optimization.html#project0classoptimal__learning_1_1_newton_optimizer"><em>NewtonOptimizer</em></a>) (suggest: 1.01-1.1) </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_newton_parameters_1ad234bfb3a3ed5e9f14bb24c9a9e44dfb"></span>double <strong>time_factor</strong></p>
+<blockquote>
+<div><p>initial amount of additive diagonal dominance (see class docs and <a class="reference internal" href="gpp_optimization.html#project0classoptimal__learning_1_1_newton_optimizer"><em>NewtonOptimizer</em></a>) (suggest: 1.0e-3-1.0e-1) </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_newton_parameters_1aa910880d6ed04828da6433bd95e6b167"></span>double <strong>max_relative_change</strong></p>
+<blockquote>
+<div><p>max change allowed per update (as a relative fraction of current distance to wall) (Newton may ignore this) (suggest: 1.0) </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_newton_parameters_1aaab27eb1bc71e1dbd4a0ccc3edf381d5"></span>double <strong>tolerance</strong></p>
+<blockquote>
+<div><p>when the magnitude of the gradient falls below this value, stop (suggest: 1.0e-10) </p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</p>
+</div></blockquote>
+</p>
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="gpp_expected_improvement_demo.html" class="btn btn-neutral float-right" title="gpp_expected_improvement_demo"/>Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="gpp_random_test.html" class="btn btn-neutral" title="gpp_random_test"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,5 +1,5 @@
 gpp_random
-=====
+==========
 
 **Contents:**
 
@@ -8,13 +8,13 @@ gpp_random
 
 
 gpp_random.hpp
-------
+--------------
 
 .. doxygenfile:: gpp_random.hpp
 
 
 gpp_random.cpp
-------
+--------------
 
 .. doxygenfile:: gpp_random.cpp
 

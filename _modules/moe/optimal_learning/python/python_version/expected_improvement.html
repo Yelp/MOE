@@ -62,18 +62,30 @@
         
             <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../why_moe.html">Why Do We Need MOE?</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../why_moe.html#what-is-moe">What is MOE?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../why_moe.html#why-is-this-hard">Why is this hard?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../why_moe.html#other-methods">Other Methods</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../install.html">Install</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#install-in-docker">Install in docker:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#install-from-source">Install from source:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below):</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#linux-tips">Linux Tips:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#cmake-tips">CMake Tips:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#install-in-docker">Install in docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#install-from-source">Install from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#osx-tips">OSX Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#building-boost">Building Boost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#linux-tips">Linux Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#cmake-tips">CMake Tips</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../moe_math.html">How does MOE work?</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe_math.html#build-a-gaussian-process-gp-with-the-historical-data">Build a Gaussian Process (GP) with the historical data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe_math.html#optimize-the-hyperparameters-of-the-gaussian-process">Optimize the hyperparameters of the Gaussian Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe_math.html#find-the-point-s-of-highest-expected-improvement-ei">Find the point(s) of highest Expected Improvement (EI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe_math.html#return-the-point-s-to-sample-then-repeat">Return the point(s) to sample, then repeat</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../demo_tutorial.html">Demo Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../demo_tutorial.html#the-interactive-demo">The Interactive Demo</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pretty_endpoints.html">Pretty Endpoints</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../objective_functions.html">Objective Functions</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../objective_functions.html#what-is-an-objective-function">What is an objective function?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../objective_functions.html#properties-of-an-objective-function">Properties of an objective function</a></li>
@@ -106,6 +118,16 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../../moe.html#module-moe">Module contents</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../moe_examples.html">moe_examples package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples.next_point_via_simple_endpoint">moe_examples.next_point_via_simple_endpoint module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples">Module contents</a></li>
+</ul>
+</li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../cpp_tree.html">C++ Files</a><ul>
@@ -128,23 +150,22 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python_model_selection.html">gpp_python_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_math.html">gpp_math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_random_test.html">gpp_random_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_optimizer_parameters.html">gpp_optimizer_parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_random.html">gpp_random</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_geometry_test.html">gpp_geometry_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_linear_algebra.html">gpp_linear_algebra</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_core.html">gpp_core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_model_selection.html">gpp_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_optimization.html">gpp_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_covariance_test.html">gpp_covariance_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python.html">gpp_python</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_model_selection_and_hyperparameter_optimization.html">gpp_model_selection_and_hyperparameter_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_model_selection_test.html">gpp_model_selection_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_optimization_parameters.html">gpp_optimization_parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_common.html">gpp_common</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_model_selection_and_hyperparameter_optimization_test.html">gpp_model_selection_and_hyperparameter_optimization_test</a></li>
 </ul>
 </li>
 </ul>
@@ -195,10 +216,28 @@
 <span class="kn">import</span> <span class="nn">scipy.linalg</span>
 <span class="kn">import</span> <span class="nn">scipy.stats</span>
 
-<span class="kn">from</span> <span class="nn">moe.optimal_learning.python.constant</span> <span class="kn">import</span> <span class="n">DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS</span><span class="p">,</span> <span class="n">DEFAULT_EXPECTED_IMPROVEMENT_MAX_NUM_THREADS</span>
+<span class="kn">from</span> <span class="nn">moe.optimal_learning.python.constant</span> <span class="kn">import</span> <span class="n">DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS</span><span class="p">,</span> <span class="n">DEFAULT_MAX_NUM_THREADS</span>
 <span class="kn">from</span> <span class="nn">moe.optimal_learning.python.interfaces.expected_improvement_interface</span> <span class="kn">import</span> <span class="n">ExpectedImprovementInterface</span>
 <span class="kn">from</span> <span class="nn">moe.optimal_learning.python.interfaces.optimization_interface</span> <span class="kn">import</span> <span class="n">OptimizableInterface</span>
+<span class="kn">from</span> <span class="nn">moe.optimal_learning.python.python_version.gaussian_process</span> <span class="kn">import</span> <span class="n">MINIMUM_STD_DEV_GRAD_CHOLESKY</span>
 <span class="kn">from</span> <span class="nn">moe.optimal_learning.python.python_version.optimization</span> <span class="kn">import</span> <span class="n">multistart_optimize</span><span class="p">,</span> <span class="n">NullOptimizer</span>
+
+
+<span class="c"># Minimum allowed variance value in the &quot;1D&quot; analytic EI computation.</span>
+<span class="c"># Values that are too small result in problems b/c we may compute ``std_dev/var`` (which is enormous</span>
+<span class="c"># if ``std_dev = 1.0e-150`` and ``var = 1.0e-300``) since this only arises when we fail to compute ``std_dev = var = 0.0``.</span>
+<span class="c"># Note: this is only relevant if noise = 0.0; this minimum will not affect EI computation with noise since this value</span>
+<span class="c"># is below the smallest amount of noise users can meaningfully add.</span>
+<span class="c"># This is the smallest possible value that prevents the denominator (best_so_far - mean) / sqrt(variance)</span>
+<span class="c"># from being 0. 1D analytic EI is simple and no other robustness considerations are needed.</span>
+<span class="n">MINIMUM_VARIANCE_EI</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span><span class="o">.</span><span class="n">tiny</span>
+
+<span class="c"># Minimum allowed variance value in the &quot;1D&quot; analytic grad EI computation.</span>
+<span class="c"># See MINIMUM_VARIANCE_EI for more details.</span>
+<span class="c"># This value was chosen so its sqrt would be a little larger than GaussianProcess::kMinimumStdDev (by ~12x).</span>
+<span class="c"># The 150.0 was determined by numerical experiment with the setup in test_1d_analytic_ei_edge_cases()</span>
+<span class="c"># in order to find a setting that would be robust (no 0/0) while introducing minimal error.</span>
+<span class="n">MINIMUM_VARIANCE_GRAD_EI</span> <span class="o">=</span> <span class="mi">150</span> <span class="o">*</span> <span class="n">MINIMUM_STD_DEV_GRAD_CHOLESKY</span> <span class="o">**</span> <span class="mi">2</span>
 
 
 <div class="viewcode-block" id="multistart_expected_improvement_optimization"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.expected_improvement.multistart_expected_improvement_optimization">[docs]</a><span class="k">def</span> <span class="nf">multistart_expected_improvement_optimization</span><span class="p">(</span>
@@ -206,7 +245,7 @@
         <span class="n">num_multistarts</span><span class="p">,</span>
         <span class="n">num_to_sample</span><span class="p">,</span>
         <span class="n">randomness</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-        <span class="n">max_num_threads</span><span class="o">=</span><span class="n">DEFAULT_EXPECTED_IMPROVEMENT_MAX_NUM_THREADS</span><span class="p">,</span>
+        <span class="n">max_num_threads</span><span class="o">=</span><span class="n">DEFAULT_MAX_NUM_THREADS</span><span class="p">,</span>
         <span class="n">status</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
 <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Solve the q,p-EI problem, returning the optimal set of q points to sample CONCURRENTLY in future experiments.</span>
@@ -268,6 +307,9 @@
 
 <span class="sd">    When available, fast, analytic formulas replace monte-carlo loops.</span>
 
+<span class="sd">    .. Note:: Equivalent methods of ExpectedImprovementInterface and OptimizableInterface are aliased below (e.g.,</span>
+<span class="sd">      compute_expected_improvement and compute_objective_function, etc).</span>
+
 <span class="sd">    See interfaces/expected_improvement_interface.py docs for further details.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -298,8 +340,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_num_mc_iterations</span> <span class="o">=</span> <span class="n">num_mc_iterations</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_gaussian_process</span> <span class="o">=</span> <span class="n">gaussian_process</span>
-        <span class="k">if</span> <span class="n">gaussian_process</span><span class="o">.</span><span class="n">_historical_data</span><span class="o">.</span><span class="n">points_sampled_value</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_best_so_far</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">amin</span><span class="p">(</span><span class="n">gaussian_process</span><span class="o">.</span><span class="n">_historical_data</span><span class="o">.</span><span class="n">points_sampled_value</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">gaussian_process</span><span class="o">.</span><span class="n">_points_sampled_value</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_best_so_far</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">amin</span><span class="p">(</span><span class="n">gaussian_process</span><span class="o">.</span><span class="n">_points_sampled_value</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_best_so_far</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span><span class="o">.</span><span class="n">max</span>
 
@@ -309,9 +351,9 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_points_being_sampled</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">points_being_sampled</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">points_to_sample</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">set_current_point</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="n">gaussian_process</span><span class="o">.</span><span class="n">dim</span><span class="p">)))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_point</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="n">gaussian_process</span><span class="o">.</span><span class="n">dim</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">set_current_point</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_point</span> <span class="o">=</span> <span class="n">points_to_sample</span>
 
     <span class="nd">@property</span>
 <div class="viewcode-block" id="ExpectedImprovement.dim"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.dim">[docs]</a>    <span class="k">def</span> <span class="nf">dim</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -346,11 +388,13 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_points_to_sample</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">))</span>
 </div>
+    <span class="n">current_point</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">get_current_point</span><span class="p">,</span> <span class="n">set_current_point</span><span class="p">)</span>
+
 <div class="viewcode-block" id="ExpectedImprovement.evaluate_at_point_list"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.evaluate_at_point_list">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate_at_point_list</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
             <span class="n">points_to_evaluate</span><span class="p">,</span>
             <span class="n">randomness</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-            <span class="n">max_num_threads</span><span class="o">=</span><span class="n">DEFAULT_EXPECTED_IMPROVEMENT_MAX_NUM_THREADS</span><span class="p">,</span>
+            <span class="n">max_num_threads</span><span class="o">=</span><span class="n">DEFAULT_MAX_NUM_THREADS</span><span class="p">,</span>
             <span class="n">status</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Evaluate Expected Improvement (q,p-EI) over a specified list of ``points_to_evaluate``.</span>
@@ -387,6 +431,113 @@
 
         <span class="k">return</span> <span class="n">values</span>
 </div>
+    <span class="k">def</span> <span class="nf">_compute_expected_improvement_qd_analytic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mu_star</span><span class="p">,</span> <span class="n">var_star</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute EI when the number of potential samples is any number q.</span>
+
+<span class="sd">        This function is deterministic; it does not perform explicit numerical integration or require access</span>
+<span class="sd">        to a random number generator.</span>
+
+<span class="sd">        If we denote PHI_q by the q-dimensional multivariate gaussian, this method requires q calls to PHI_q,</span>
+<span class="sd">        where q is also the number of points being sampled, and q^2 calls to PHI_(q-1). This approach is therefore</span>
+<span class="sd">        more tractable with moderate q (lower than 10). Higher values of q may require the Monte-Carlo approach.</span>
+
+<span class="sd">        See Chevalier, and Ginsbourger (2012)</span>
+
+<span class="sd">        :param mu_star: a vector of the means of the GP evaluated at points_to_sample</span>
+<span class="sd">        :type mu_star: array of float64 with shape (num_points)</span>
+<span class="sd">        :param var_star: the covariance matrix of the GP evaluated at points_to_sample</span>
+<span class="sd">        :type var_star: array of float64 with shape (num_points, num_points)</span>
+<span class="sd">        :return: the expected improvement from sampling ``point_to_sample``</span>
+<span class="sd">        :rtype: float64</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">num_points</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_to_sample</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_being_sampled</span>
+        <span class="n">best_so_far</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_best_so_far</span>
+
+        <span class="k">def</span> <span class="nf">singlevar_norm_pdf</span><span class="p">(</span><span class="n">mean</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">param</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;PDF of univariate Gaussian centered at m with variance var.&quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">param</span><span class="p">,</span> <span class="n">mean</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">var</span><span class="p">))</span>
+
+        <span class="k">def</span> <span class="nf">multivar_norm_cdf</span><span class="p">(</span><span class="n">upper</span><span class="p">,</span> <span class="n">cov_matrix</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;CDF of multivariate Gaussian centered at 0 with covariance matrix cov_matrix. CDF is taken from -inf to u.&quot;&quot;&quot;</span>
+            <span class="k">if</span> <span class="n">upper</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">upper</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">cov_matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]))</span>
+
+            <span class="c"># Standardize the upper bound u using the standard deviation</span>
+            <span class="n">std</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">cov_matrix</span><span class="p">))</span>
+            <span class="n">std_upper</span> <span class="o">=</span> <span class="n">upper</span> <span class="o">/</span> <span class="n">std</span>
+
+            <span class="c"># Convert covariance matrix into correlation matrix: http://en.wikipedia.org/wiki/Correlation_and_dependence#Correlation_matrices</span>
+            <span class="n">corr_matrix</span> <span class="o">=</span> <span class="n">cov_matrix</span> <span class="o">/</span> <span class="n">std</span> <span class="o">/</span> <span class="n">std</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">upper</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c"># standardize -&gt; correlation matrix</span>
+
+            <span class="c"># Indices for traversing the strict lower triangular elements of corr_matrix in column major, as required by the fortran mvndst function.</span>
+            <span class="n">strict_lower_diag_indices</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">tril_indices</span><span class="p">(</span><span class="n">upper</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+            <span class="c"># Call into the scipy wrapper for the fortran method &quot;mvndst&quot;</span>
+            <span class="c"># Link: http://www.math.wsu.edu/faculty/genz/software/fort77/mvtdstpack.f</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">kde</span><span class="o">.</span><span class="n">mvn</span><span class="o">.</span><span class="n">mvndst</span><span class="p">(</span>
+                 <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">upper</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">),</span>  <span class="c"># The lower bound of integration. We initialize with 0 because it is ignored (because of the third argument).</span>
+                 <span class="n">std_upper</span><span class="p">,</span>  <span class="c"># The upper bound of integration</span>
+                 <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">upper</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">),</span>  <span class="c"># For each dim, 0 means -inf for lower bound</span>
+                 <span class="n">corr_matrix</span><span class="p">[</span><span class="n">strict_lower_diag_indices</span><span class="p">],</span>  <span class="c"># The vector of strict lower triangular correlation coefficients</span>
+                 <span class="n">maxpts</span><span class="o">=</span><span class="mi">20000</span> <span class="o">*</span> <span class="n">upper</span><span class="o">.</span><span class="n">size</span><span class="p">,</span>  <span class="c"># Maximum number of iterations for the mvndst function</span>
+                 <span class="n">releps</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">,</span>  <span class="c"># The error allowed relative to actual value</span>
+                 <span class="p">)</span>
+            <span class="k">return</span> <span class="n">out</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>  <span class="c"># Index 1 corresponds to the actual value. 0 has the error, and 2 is a flag denoting whether releps was reached</span>
+
+        <span class="c"># Calculation of outer sum (from Proposition 2, equation 3)</span>
+        <span class="c"># Although the paper describes a minimization, we can achieve a maximization by inverting m_k and b_k, and then the probability term, as labeled below with &#39;min&#39;.</span>
+        <span class="n">expected_improvement</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">num_points</span><span class="p">):</span>
+            <span class="c"># Calculation of m_k, which is the mean of Z_k introduced in Proposition 2</span>
+            <span class="n">m_k</span> <span class="o">=</span> <span class="n">mu_star</span> <span class="o">-</span> <span class="n">mu_star</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+            <span class="n">m_k</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">mu_star</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+            <span class="n">m_k</span> <span class="o">=</span> <span class="o">-</span><span class="n">m_k</span>  <span class="c"># min</span>
+
+            <span class="n">b_k</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">num_points</span><span class="p">)</span>
+            <span class="n">b_k</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">best_so_far</span>
+            <span class="n">b_k</span> <span class="o">=</span> <span class="o">-</span><span class="n">b_k</span>  <span class="c"># min</span>
+
+            <span class="c"># Calculation of cov_k, which is the covariance matrix of Z_k introduced in Proposition 2</span>
+            <span class="c"># Matrix of cov(Y_j - Y_k, Y_i - Y_k) for i, j != k and cov(Y_j - Y_k, Y_i) for i = k.</span>
+            <span class="c"># Calculated using linearity of covariance:</span>
+            <span class="c"># cov(Y_j - Y_k, Y_i - Y_k) = cov(Y_i, Y_j) - cov(Y_i, Y_k) - cov(Y_j, Y_k) + cov(Y_k, Y_k)</span>
+            <span class="n">cov_k</span> <span class="o">=</span> <span class="n">var_star</span> <span class="o">+</span> <span class="n">var_star</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span>
+            <span class="n">cov_k</span> <span class="o">=</span> <span class="n">cov_k</span> <span class="o">-</span> <span class="n">var_star</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span>
+            <span class="n">cov_k</span> <span class="o">=</span> <span class="n">cov_k</span> <span class="o">-</span> <span class="n">var_star</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">num_points</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+            <span class="c"># When i or j = k, then</span>
+            <span class="c"># cov(Y_j - Y_k, -Y_k) = cov(Y_k, Y_k) - cov(Y_j, Y_k)</span>
+            <span class="n">cov_k</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">var_star</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span> <span class="o">+</span> <span class="n">var_star</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span>
+            <span class="n">cov_k</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">var_star</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span> <span class="o">+</span> <span class="n">var_star</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span>
+
+            <span class="c"># Finally, when i and j = k, we have cov(Y_k, Y_k)</span>
+            <span class="n">cov_k</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">var_star</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span>
+
+            <span class="n">prob_term</span> <span class="o">=</span> <span class="p">(</span><span class="n">mu_star</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">-</span> <span class="n">best_so_far</span><span class="p">)</span> <span class="o">*</span> <span class="n">multivar_norm_cdf</span><span class="p">(</span><span class="n">b_k</span> <span class="o">-</span> <span class="n">m_k</span><span class="p">,</span> <span class="n">cov_k</span><span class="p">)</span>
+            <span class="n">prob_term</span> <span class="o">=</span> <span class="o">-</span><span class="n">prob_term</span>  <span class="c"># min</span>
+
+            <span class="c"># Calculation of inner sum</span>
+            <span class="n">sum_term</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">if</span> <span class="n">num_points</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">sum_term</span> <span class="o">+=</span> <span class="n">cov_k</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span> <span class="o">*</span> <span class="n">singlevar_norm_pdf</span><span class="p">(</span><span class="n">m_k</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">cov_k</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">b_k</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">num_points</span><span class="p">):</span>
+                    <span class="n">index_no_i</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">num_points</span><span class="p">)</span>
+
+                    <span class="c"># c_k introduced on top of page 4</span>
+                    <span class="n">c_k</span> <span class="o">=</span> <span class="p">(</span><span class="n">b_k</span> <span class="o">-</span> <span class="n">m_k</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">b_k</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">m_k</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">*</span> <span class="n">cov_k</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">/</span> <span class="n">cov_k</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span>
+                    <span class="n">c_k</span> <span class="o">=</span> <span class="n">c_k</span><span class="p">[</span><span class="n">index_no_i</span><span class="p">]</span>
+
+                    <span class="c"># cov_k_no_i introduced on top of page 4</span>
+                    <span class="n">cov_k_no_i</span> <span class="o">=</span> <span class="n">cov_k</span> <span class="o">-</span> <span class="n">numpy</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">cov_k</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:],</span> <span class="n">cov_k</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:])</span> <span class="o">/</span> <span class="n">cov_k</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span>
+                    <span class="n">cov_k_no_i</span> <span class="o">=</span> <span class="n">cov_k_no_i</span><span class="p">[</span><span class="n">index_no_i</span><span class="p">,</span> <span class="o">...</span><span class="p">][</span><span class="o">...</span><span class="p">,</span> <span class="n">index_no_i</span><span class="p">]</span>
+
+                    <span class="n">sum_term</span> <span class="o">+=</span> <span class="n">cov_k</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span> <span class="o">*</span> <span class="n">singlevar_norm_pdf</span><span class="p">(</span><span class="n">m_k</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">cov_k</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">],</span> <span class="n">b_k</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">*</span> <span class="n">multivar_norm_cdf</span><span class="p">(</span><span class="n">c_k</span><span class="p">,</span> <span class="n">cov_k_no_i</span><span class="p">)</span>
+
+            <span class="n">expected_improvement</span> <span class="o">+=</span> <span class="p">(</span><span class="n">prob_term</span> <span class="o">+</span> <span class="n">sum_term</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">fmax</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">expected_improvement</span><span class="p">)</span>
+
     <span class="k">def</span> <span class="nf">_compute_expected_improvement_1d_analytic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mu_star</span><span class="p">,</span> <span class="n">var_star</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Compute EI when the number of potential samples is 1 (i.e., points_being_sampled.size = 0) using *fast* analytic methods.</span>
 
@@ -727,7 +878,7 @@
         <span class="n">aggregate_dx</span> <span class="o">/=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_num_mc_iterations</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">aggregate_dx</span>
 
-<div class="viewcode-block" id="ExpectedImprovement.compute_expected_improvement"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.compute_expected_improvement">[docs]</a>    <span class="k">def</span> <span class="nf">compute_expected_improvement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">force_monte_carlo</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<div class="viewcode-block" id="ExpectedImprovement.compute_expected_improvement"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.compute_expected_improvement">[docs]</a>    <span class="k">def</span> <span class="nf">compute_expected_improvement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">force_monte_carlo</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">force_1d_ei</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="sd">r&quot;&quot;&quot;Compute the expected improvement at ``points_to_sample``, with ``points_being_sampled`` concurrent points being sampled.</span>
 
 <span class="sd">        .. Note:: These comments were copied from this&#39;s superclass in expected_improvement_interface.py.</span>
@@ -758,7 +909,9 @@
 <span class="sd">        We compute the improvement over many random draws and average.</span>
 
 <span class="sd">        :param force_monte_carlo: whether to force monte carlo evaluation (vs using fast/accurate analytic eval when possible)</span>
-<span class="sd">        :type force_monte_carlo: boolean</span>
+<span class="sd">        :type force_monte_carlo: bool</span>
+<span class="sd">        :param force_1d_ei: whether to force using the 1EI method. Used for testing purposes only. Takes precedence when force_monte_carlo is also True</span>
+<span class="sd">        :type force_1d_ei: bool</span>
 <span class="sd">        :return: the expected improvement from sampling ``points_to_sample`` with ``points_being_sampled`` concurrent experiments</span>
 <span class="sd">        :rtype: float64</span>
 
@@ -769,15 +922,17 @@
         <span class="n">mu_star</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gaussian_process</span><span class="o">.</span><span class="n">compute_mean_of_points</span><span class="p">(</span><span class="n">union_of_points</span><span class="p">)</span>
         <span class="n">var_star</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gaussian_process</span><span class="o">.</span><span class="n">compute_variance_of_points</span><span class="p">(</span><span class="n">union_of_points</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">num_points</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">force_monte_carlo</span> <span class="ow">is</span> <span class="bp">False</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">force_monte_carlo</span> <span class="ow">is</span> <span class="bp">False</span> <span class="ow">and</span> <span class="n">force_1d_ei</span> <span class="ow">is</span> <span class="bp">False</span><span class="p">:</span>
+            <span class="n">var_star</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">fmax</span><span class="p">(</span><span class="n">MINIMUM_VARIANCE_EI</span><span class="p">,</span> <span class="n">var_star</span><span class="p">)</span>  <span class="c"># TODO(272): Check if this is needed.</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute_expected_improvement_qd_analytic</span><span class="p">(</span><span class="n">mu_star</span><span class="p">,</span> <span class="n">var_star</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">force_1d_ei</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="n">var_star</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">fmax</span><span class="p">(</span><span class="n">MINIMUM_VARIANCE_EI</span><span class="p">,</span> <span class="n">var_star</span><span class="p">)</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute_expected_improvement_1d_analytic</span><span class="p">(</span><span class="n">mu_star</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">var_star</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute_expected_improvement_monte_carlo</span><span class="p">(</span><span class="n">mu_star</span><span class="p">,</span> <span class="n">var_star</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="ExpectedImprovement.compute_objective_function"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.compute_objective_function">[docs]</a>    <span class="k">def</span> <span class="nf">compute_objective_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Wrapper for compute_expected_improvement; see that function&#39;s docstring.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_expected_improvement</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-</div>
+    <span class="n">compute_objective_function</span> <span class="o">=</span> <span class="n">compute_expected_improvement</span>
+
 <div class="viewcode-block" id="ExpectedImprovement.compute_grad_expected_improvement"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.compute_grad_expected_improvement">[docs]</a>    <span class="k">def</span> <span class="nf">compute_grad_expected_improvement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">force_monte_carlo</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="sd">r&quot;&quot;&quot;Compute the gradient of expected improvement at ``points_to_sample`` wrt ``points_to_sample``, with ``points_being_sampled`` concurrent samples.</span>
 
@@ -810,9 +965,16 @@
         <span class="n">mu_star</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gaussian_process</span><span class="o">.</span><span class="n">compute_mean_of_points</span><span class="p">(</span><span class="n">union_of_points</span><span class="p">)</span>
         <span class="n">var_star</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gaussian_process</span><span class="o">.</span><span class="n">compute_variance_of_points</span><span class="p">(</span><span class="n">union_of_points</span><span class="p">)</span>
         <span class="n">grad_mu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gaussian_process</span><span class="o">.</span><span class="n">compute_grad_mean_of_points</span><span class="p">(</span><span class="n">union_of_points</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_to_sample</span><span class="p">)</span>
-        <span class="n">grad_chol_decomp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gaussian_process</span><span class="o">.</span><span class="n">compute_grad_cholesky_variance_of_points</span><span class="p">(</span><span class="n">union_of_points</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_to_sample</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">num_points</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">force_monte_carlo</span> <span class="ow">is</span> <span class="bp">False</span><span class="p">:</span>
+            <span class="n">var_star</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">fmax</span><span class="p">(</span><span class="n">MINIMUM_VARIANCE_GRAD_EI</span><span class="p">,</span> <span class="n">var_star</span><span class="p">)</span>
+            <span class="n">sigma</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">var_star</span><span class="p">)</span>
+            <span class="n">grad_chol_decomp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gaussian_process</span><span class="o">.</span><span class="n">compute_grad_cholesky_variance_of_points</span><span class="p">(</span>
+                <span class="n">union_of_points</span><span class="p">,</span>
+                <span class="n">chol_var</span><span class="o">=</span><span class="n">sigma</span><span class="p">,</span>
+                <span class="n">num_derivatives</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">num_to_sample</span><span class="p">,</span>
+            <span class="p">)</span>
+
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute_grad_expected_improvement_1d_analytic</span><span class="p">(</span>
                 <span class="n">mu_star</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
                 <span class="n">var_star</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
@@ -820,6 +982,14 @@
                 <span class="n">grad_chol_decomp</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
+            <span class="c"># Note: only access the lower triangle of chol_var; upper triangle is garbage</span>
+            <span class="c"># cho_factor returns a tuple, (factorized_matrix, lower_tri_flag); grab the matrix</span>
+            <span class="n">chol_var</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">cho_factor</span><span class="p">(</span><span class="n">var_star</span><span class="p">,</span> <span class="n">lower</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">overwrite_a</span><span class="o">=</span><span class="bp">True</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">grad_chol_decomp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gaussian_process</span><span class="o">.</span><span class="n">compute_grad_cholesky_variance_of_points</span><span class="p">(</span>
+                <span class="n">union_of_points</span><span class="p">,</span>
+                <span class="n">chol_var</span><span class="o">=</span><span class="n">chol_var</span><span class="p">,</span>
+                <span class="n">num_derivatives</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">num_to_sample</span><span class="p">,</span>
+            <span class="p">)</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute_grad_expected_improvement_monte_carlo</span><span class="p">(</span>
                 <span class="n">mu_star</span><span class="p">,</span>
                 <span class="n">var_star</span><span class="p">,</span>
@@ -827,10 +997,8 @@
                 <span class="n">grad_chol_decomp</span><span class="p">,</span>
             <span class="p">)</span>
 </div>
-<div class="viewcode-block" id="ExpectedImprovement.compute_grad_objective_function"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.compute_grad_objective_function">[docs]</a>    <span class="k">def</span> <span class="nf">compute_grad_objective_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Wrapper for compute_grad_expected_improvement; see that function&#39;s docstring.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_grad_expected_improvement</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-</div>
+    <span class="n">compute_grad_objective_function</span> <span class="o">=</span> <span class="n">compute_grad_expected_improvement</span>
+
 <div class="viewcode-block" id="ExpectedImprovement.compute_hessian_objective_function"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.compute_hessian_objective_function">[docs]</a>    <span class="k">def</span> <span class="nf">compute_hessian_objective_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;We do not currently support computation of the (spatial) hessian of Expected Improvement.&quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s">&#39;Currently we cannot compute the hessian of expected improvement.&#39;</span><span class="p">)</span></div></div>

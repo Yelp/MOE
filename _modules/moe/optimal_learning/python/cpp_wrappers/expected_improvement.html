@@ -62,18 +62,30 @@
         
             <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../why_moe.html">Why Do We Need MOE?</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../why_moe.html#what-is-moe">What is MOE?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../why_moe.html#why-is-this-hard">Why is this hard?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../why_moe.html#other-methods">Other Methods</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../install.html">Install</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#install-in-docker">Install in docker:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#install-from-source">Install from source:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below):</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#linux-tips">Linux Tips:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#cmake-tips">CMake Tips:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#install-in-docker">Install in docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#install-from-source">Install from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#osx-tips">OSX Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#building-boost">Building Boost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#linux-tips">Linux Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#cmake-tips">CMake Tips</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../moe_math.html">How does MOE work?</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe_math.html#build-a-gaussian-process-gp-with-the-historical-data">Build a Gaussian Process (GP) with the historical data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe_math.html#optimize-the-hyperparameters-of-the-gaussian-process">Optimize the hyperparameters of the Gaussian Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe_math.html#find-the-point-s-of-highest-expected-improvement-ei">Find the point(s) of highest Expected Improvement (EI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe_math.html#return-the-point-s-to-sample-then-repeat">Return the point(s) to sample, then repeat</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../demo_tutorial.html">Demo Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../demo_tutorial.html#the-interactive-demo">The Interactive Demo</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pretty_endpoints.html">Pretty Endpoints</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../objective_functions.html">Objective Functions</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../objective_functions.html#what-is-an-objective-function">What is an objective function?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../objective_functions.html#properties-of-an-objective-function">Properties of an objective function</a></li>
@@ -106,6 +118,16 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../../moe.html#module-moe">Module contents</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../moe_examples.html">moe_examples package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples.next_point_via_simple_endpoint">moe_examples.next_point_via_simple_endpoint module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples">Module contents</a></li>
+</ul>
+</li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../cpp_tree.html">C++ Files</a><ul>
@@ -128,23 +150,22 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python_model_selection.html">gpp_python_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_math.html">gpp_math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_random_test.html">gpp_random_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_optimizer_parameters.html">gpp_optimizer_parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_random.html">gpp_random</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_geometry_test.html">gpp_geometry_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_linear_algebra.html">gpp_linear_algebra</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_core.html">gpp_core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_model_selection.html">gpp_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_optimization.html">gpp_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_covariance_test.html">gpp_covariance_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python.html">gpp_python</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_model_selection_and_hyperparameter_optimization.html">gpp_model_selection_and_hyperparameter_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_model_selection_test.html">gpp_model_selection_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_optimization_parameters.html">gpp_optimization_parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_common.html">gpp_common</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_model_selection_and_hyperparameter_optimization_test.html">gpp_model_selection_and_hyperparameter_optimization_test</a></li>
 </ul>
 </li>
 </ul>
@@ -197,7 +218,7 @@
 <span class="kn">import</span> <span class="nn">numpy</span>
 
 <span class="kn">import</span> <span class="nn">moe.build.GPP</span> <span class="kn">as</span> <span class="nn">C_GP</span>
-<span class="kn">from</span> <span class="nn">moe.optimal_learning.python.constant</span> <span class="kn">import</span> <span class="n">DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS</span><span class="p">,</span> <span class="n">DEFAULT_EXPECTED_IMPROVEMENT_MAX_NUM_THREADS</span>
+<span class="kn">from</span> <span class="nn">moe.optimal_learning.python.constant</span> <span class="kn">import</span> <span class="n">DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS</span><span class="p">,</span> <span class="n">DEFAULT_MAX_NUM_THREADS</span>
 <span class="kn">import</span> <span class="nn">moe.optimal_learning.python.cpp_wrappers.cpp_utils</span> <span class="kn">as</span> <span class="nn">cpp_utils</span>
 <span class="kn">from</span> <span class="nn">moe.optimal_learning.python.interfaces.expected_improvement_interface</span> <span class="kn">import</span> <span class="n">ExpectedImprovementInterface</span>
 <span class="kn">from</span> <span class="nn">moe.optimal_learning.python.interfaces.optimization_interface</span> <span class="kn">import</span> <span class="n">OptimizableInterface</span>
@@ -208,7 +229,7 @@
         <span class="n">num_multistarts</span><span class="p">,</span>
         <span class="n">num_to_sample</span><span class="p">,</span>
         <span class="n">randomness</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-        <span class="n">max_num_threads</span><span class="o">=</span><span class="n">DEFAULT_EXPECTED_IMPROVEMENT_MAX_NUM_THREADS</span><span class="p">,</span>
+        <span class="n">max_num_threads</span><span class="o">=</span><span class="n">DEFAULT_MAX_NUM_THREADS</span><span class="p">,</span>
         <span class="n">status</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
 <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Solve the q,p-EI problem, returning the optimal set of q points to sample CONCURRENTLY in future experiments.</span>
@@ -234,7 +255,7 @@
 
 <span class="sd">    :param ei_optimizer: object that optimizes (e.g., gradient descent, newton) EI over a domain</span>
 <span class="sd">    :type ei_optimizer: cpp_wrappers.optimization.*Optimizer object</span>
-<span class="sd">    :param num_multistarts: number of times to multistart ``ei_optimizer`` (UNUSED, data is in ei_optimizer.optimization_parameters)</span>
+<span class="sd">    :param num_multistarts: number of times to multistart ``ei_optimizer`` (UNUSED, data is in ei_optimizer.optimizer_parameters)</span>
 <span class="sd">    :type num_multistarts: int &gt; 0</span>
 <span class="sd">    :param num_to_sample: how many simultaneous experiments you would like to run (i.e., the q in q,p-EI)</span>
 <span class="sd">    :type num_to_sample: int &gt;= 1</span>
@@ -260,7 +281,7 @@
         <span class="n">status</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="n">best_points_to_sample</span> <span class="o">=</span> <span class="n">C_GP</span><span class="o">.</span><span class="n">multistart_expected_improvement_optimization</span><span class="p">(</span>
-        <span class="n">ei_optimizer</span><span class="o">.</span><span class="n">optimization_parameters</span><span class="p">,</span>
+        <span class="n">ei_optimizer</span><span class="o">.</span><span class="n">optimizer_parameters</span><span class="p">,</span>
         <span class="n">ei_optimizer</span><span class="o">.</span><span class="n">objective_function</span><span class="o">.</span><span class="n">_gaussian_process</span><span class="o">.</span><span class="n">_gaussian_process</span><span class="p">,</span>
         <span class="n">cpp_utils</span><span class="o">.</span><span class="n">cppify</span><span class="p">(</span><span class="n">ei_optimizer</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">domain_bounds</span><span class="p">),</span>
         <span class="n">cpp_utils</span><span class="o">.</span><span class="n">cppify</span><span class="p">(</span><span class="n">ei_optimizer</span><span class="o">.</span><span class="n">objective_function</span><span class="o">.</span><span class="n">_points_being_sampled</span><span class="p">),</span>
@@ -283,7 +304,7 @@
         <span class="n">num_to_sample</span><span class="p">,</span>
         <span class="n">estimation_policy</span><span class="p">,</span>
         <span class="n">randomness</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-        <span class="n">max_num_threads</span><span class="o">=</span><span class="n">DEFAULT_EXPECTED_IMPROVEMENT_MAX_NUM_THREADS</span><span class="p">,</span>
+        <span class="n">max_num_threads</span><span class="o">=</span><span class="n">DEFAULT_MAX_NUM_THREADS</span><span class="p">,</span>
         <span class="n">status</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
 <span class="p">):</span>
     <span class="sd">r&quot;&quot;&quot;Heuristically solve the q,0-EI problem (estimating multistart_expected_improvement_optimization()) using 1,0-EI solves.</span>
@@ -346,7 +367,7 @@
 
 <span class="sd">    :param ei_optimizer: object that optimizes (e.g., gradient descent, newton) EI over a domain</span>
 <span class="sd">    :type ei_optimizer: cpp_wrappers.optimization.*Optimizer object</span>
-<span class="sd">    :param num_multistarts: number of times to multistart ``ei_optimizer`` (UNUSED, data is in ei_optimizer.optimization_parameters)</span>
+<span class="sd">    :param num_multistarts: number of times to multistart ``ei_optimizer`` (UNUSED, data is in ei_optimizer.optimizer_parameters)</span>
 <span class="sd">    :type num_multistarts: int &gt; 0</span>
 <span class="sd">    :param num_to_sample: how many simultaneous experiments you would like to run (i.e., the q in q,0-EI)</span>
 <span class="sd">    :type num_to_sample: int &gt;= 1</span>
@@ -376,7 +397,7 @@
         <span class="n">status</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="n">best_points_to_sample</span> <span class="o">=</span> <span class="n">C_GP</span><span class="o">.</span><span class="n">heuristic_expected_improvement_optimization</span><span class="p">(</span>
-        <span class="n">ei_optimizer</span><span class="o">.</span><span class="n">optimization_parameters</span><span class="p">,</span>
+        <span class="n">ei_optimizer</span><span class="o">.</span><span class="n">optimizer_parameters</span><span class="p">,</span>
         <span class="n">ei_optimizer</span><span class="o">.</span><span class="n">objective_function</span><span class="o">.</span><span class="n">_gaussian_process</span><span class="o">.</span><span class="n">_gaussian_process</span><span class="p">,</span>
         <span class="n">cpp_utils</span><span class="o">.</span><span class="n">cppify</span><span class="p">(</span><span class="n">ei_optimizer</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">_domain_bounds</span><span class="p">),</span>
         <span class="n">estimation_policy</span><span class="p">,</span>
@@ -398,7 +419,7 @@
         <span class="n">lie_value</span><span class="p">,</span>
         <span class="n">lie_noise_variance</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
         <span class="n">randomness</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-        <span class="n">max_num_threads</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">max_num_threads</span><span class="o">=</span><span class="n">DEFAULT_MAX_NUM_THREADS</span><span class="p">,</span>
         <span class="n">status</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
 <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Heuristically solves q,0-EI using the Constant Liar policy; this wraps heuristic_expected_improvement_optimization().</span>
@@ -422,7 +443,7 @@
 
 <span class="sd">    :param ei_optimizer: object that optimizes (e.g., gradient descent, newton) EI over a domain</span>
 <span class="sd">    :type ei_optimizer: cpp_wrappers.optimization.*Optimizer object</span>
-<span class="sd">    :param num_multistarts: number of times to multistart ``ei_optimizer`` (UNUSED, data is in ei_optimizer.optimization_parameters)</span>
+<span class="sd">    :param num_multistarts: number of times to multistart ``ei_optimizer`` (UNUSED, data is in ei_optimizer.optimizer_parameters)</span>
 <span class="sd">    :type num_multistarts: int &gt; 0</span>
 <span class="sd">    :param num_to_sample: how many simultaneous experiments you would like to run (i.e., the q in q,0-EI)</span>
 <span class="sd">    :type num_to_sample: int &gt;= 1</span>
@@ -459,7 +480,7 @@
         <span class="n">std_deviation_coef</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
         <span class="n">kriging_noise_variance</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
         <span class="n">randomness</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-        <span class="n">max_num_threads</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">max_num_threads</span><span class="o">=</span><span class="n">DEFAULT_MAX_NUM_THREADS</span><span class="p">,</span>
         <span class="n">status</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
 <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Heuristically solves q,0-EI using the Kriging Believer policy; this wraps heuristic_expected_improvement_optimization().</span>
@@ -485,7 +506,7 @@
 
 <span class="sd">    :param ei_optimizer: object that optimizes (e.g., gradient descent, newton) EI over a domain</span>
 <span class="sd">    :type ei_optimizer: cpp_wrappers.optimization.*Optimizer object</span>
-<span class="sd">    :param num_multistarts: number of times to multistart ``ei_optimizer`` (UNUSED, data is in ei_optimizer.optimization_parameters)</span>
+<span class="sd">    :param num_multistarts: number of times to multistart ``ei_optimizer`` (UNUSED, data is in ei_optimizer.optimizer_parameters)</span>
 <span class="sd">    :type num_multistarts: int &gt; 0</span>
 <span class="sd">    :param num_to_sample: how many simultaneous experiments you would like to run (i.e., the q in q,0-EI)</span>
 <span class="sd">    :type num_to_sample: int &gt;= 1</span>
@@ -523,11 +544,21 @@
 <span class="sd">    associated GaussianProcess. The general EI computation requires monte-carlo integration; it can support q,p-EI optimization.</span>
 <span class="sd">    It is designed to work with any GaussianProcess.</span>
 
+<span class="sd">    .. Note:: Equivalent methods of ExpectedImprovementInterface and OptimizableInterface are aliased below (e.g.,</span>
+<span class="sd">      compute_expected_improvement and compute_objective_function, etc).</span>
+
 <span class="sd">    See interfaces/expected_improvement_interface.py docs for further details.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gaussian_process</span><span class="p">,</span> <span class="n">points_to_sample</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">points_being_sampled</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">num_mc_iterations</span><span class="o">=</span><span class="n">DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS</span><span class="p">,</span> <span class="n">randomness</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">gaussian_process</span><span class="p">,</span>
+            <span class="n">points_to_sample</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+            <span class="n">points_being_sampled</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+            <span class="n">num_mc_iterations</span><span class="o">=</span><span class="n">DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS</span><span class="p">,</span>
+            <span class="n">randomness</span><span class="o">=</span><span class="bp">None</span>
+    <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct an ExpectedImprovement object that knows how to call C++ for evaluation of member functions.</span>
 
 <span class="sd">        :param gaussian_process: GaussianProcess describing</span>
@@ -556,9 +587,9 @@
 
         <span class="k">if</span> <span class="n">points_to_sample</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="c"># set an arbitrary point</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">set_current_point</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="n">gaussian_process</span><span class="o">.</span><span class="n">dim</span><span class="p">)))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_point</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="n">gaussian_process</span><span class="o">.</span><span class="n">dim</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">set_current_point</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_point</span> <span class="o">=</span> <span class="n">points_to_sample</span>
 
         <span class="k">if</span> <span class="n">randomness</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_randomness</span> <span class="o">=</span> <span class="n">C_GP</span><span class="o">.</span><span class="n">RandomnessSourceContainer</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>  <span class="c"># create randomness for only 1 thread</span>
@@ -588,7 +619,7 @@
     <span class="nd">@property</span>
 <div class="viewcode-block" id="ExpectedImprovement.problem_size"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.expected_improvement.ExpectedImprovement.problem_size">[docs]</a>    <span class="k">def</span> <span class="nf">problem_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the number of independent parameters to optimize.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_to_sample</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span>
 </div>
 <div class="viewcode-block" id="ExpectedImprovement.get_current_point"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.expected_improvement.ExpectedImprovement.get_current_point">[docs]</a>    <span class="k">def</span> <span class="nf">get_current_point</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get the current_point (array of float64 with shape (problem_size)) at which this object is evaluating the objective function, ``f(x)``.&quot;&quot;&quot;</span>
@@ -603,11 +634,13 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_points_to_sample</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">))</span>
 </div>
+    <span class="n">current_point</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">get_current_point</span><span class="p">,</span> <span class="n">set_current_point</span><span class="p">)</span>
+
 <div class="viewcode-block" id="ExpectedImprovement.evaluate_at_point_list"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.expected_improvement.ExpectedImprovement.evaluate_at_point_list">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate_at_point_list</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
             <span class="n">points_to_evaluate</span><span class="p">,</span>
             <span class="n">randomness</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-            <span class="n">max_num_threads</span><span class="o">=</span><span class="n">DEFAULT_EXPECTED_IMPROVEMENT_MAX_NUM_THREADS</span><span class="p">,</span>
+            <span class="n">max_num_threads</span><span class="o">=</span><span class="n">DEFAULT_MAX_NUM_THREADS</span><span class="p">,</span>
             <span class="n">status</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Evaluate Expected Improvement (1,p-EI) over a specified list of ``points_to_evaluate``.</span>
@@ -632,7 +665,13 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c"># Create enough randomness sources if none are specified.</span>
         <span class="k">if</span> <span class="n">randomness</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">randomness</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_randomness</span>
+            <span class="k">if</span> <span class="n">max_num_threads</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">randomness</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_randomness</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">randomness</span> <span class="o">=</span> <span class="n">C_GP</span><span class="o">.</span><span class="n">RandomnessSourceContainer</span><span class="p">(</span><span class="n">max_num_threads</span><span class="p">)</span>
+                <span class="c"># Set seeds based on less repeatable factors (e.g,. time)</span>
+                <span class="n">randomness</span><span class="o">.</span><span class="n">SetRandomizedUniformGeneratorSeed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                <span class="n">randomness</span><span class="o">.</span><span class="n">SetRandomizedNormalRNGSeed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 
         <span class="c"># status must be an initialized dict for the call to C++.</span>
         <span class="k">if</span> <span class="n">status</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
@@ -705,10 +744,8 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_randomness</span><span class="p">,</span>
         <span class="p">)</span>
 </div>
-<div class="viewcode-block" id="ExpectedImprovement.compute_objective_function"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.expected_improvement.ExpectedImprovement.compute_objective_function">[docs]</a>    <span class="k">def</span> <span class="nf">compute_objective_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Wrapper for compute_expected_improvement; see that function&#39;s docstring.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_expected_improvement</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-</div>
+    <span class="n">compute_objective_function</span> <span class="o">=</span> <span class="n">compute_expected_improvement</span>
+
 <div class="viewcode-block" id="ExpectedImprovement.compute_grad_expected_improvement"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.expected_improvement.ExpectedImprovement.compute_grad_expected_improvement">[docs]</a>    <span class="k">def</span> <span class="nf">compute_grad_expected_improvement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">force_monte_carlo</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="sd">r&quot;&quot;&quot;Compute the gradient of expected improvement at ``points_to_sample`` wrt ``points_to_sample``, with ``points_being_sampled`` concurrent samples.</span>
 
@@ -748,10 +785,8 @@
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">cpp_utils</span><span class="o">.</span><span class="n">uncppify</span><span class="p">(</span><span class="n">grad_ei</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_to_sample</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">))</span>
 </div>
-<div class="viewcode-block" id="ExpectedImprovement.compute_grad_objective_function"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.expected_improvement.ExpectedImprovement.compute_grad_objective_function">[docs]</a>    <span class="k">def</span> <span class="nf">compute_grad_objective_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Wrapper for compute_grad_expected_improvement; see that function&#39;s docstring.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_grad_expected_improvement</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-</div>
+    <span class="n">compute_grad_objective_function</span> <span class="o">=</span> <span class="n">compute_grad_expected_improvement</span>
+
 <div class="viewcode-block" id="ExpectedImprovement.compute_hessian_objective_function"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.expected_improvement.ExpectedImprovement.compute_hessian_objective_function">[docs]</a>    <span class="k">def</span> <span class="nf">compute_hessian_objective_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;We do not currently support computation of the (spatial) hessian of Expected Improvement.&quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s">&#39;Currently we cannot compute the hessian of expected improvement.&#39;</span><span class="p">)</span></div></div>

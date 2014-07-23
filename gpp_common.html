@@ -34,8 +34,7 @@
   
     <link rel="top" title="MOE 0.1.0 documentation" href="index.html"/>
         <link rel="up" title="C++ Files" href="cpp_tree.html"/>
-        <link rel="next" title="gpp_model_selection_and_hyperparameter_optimization_test" href="gpp_model_selection_and_hyperparameter_optimization_test.html"/>
-        <link rel="prev" title="gpp_optimization_parameters" href="gpp_optimization_parameters.html"/> 
+        <link rel="prev" title="gpp_python_gaussian_process" href="gpp_python_gaussian_process.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -64,18 +63,30 @@
         
             <ul>
 <li class="toctree-l1"><a class="reference internal" href="why_moe.html">Why Do We Need MOE?</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="why_moe.html#what-is-moe">What is MOE?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="why_moe.html#why-is-this-hard">Why is this hard?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="why_moe.html#other-methods">Other Methods</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Install</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="install.html#install-in-docker">Install in docker:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#install-from-source">Install from source:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below):</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#install-in-docker">Install in docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#install-from-source">Install from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#osx-tips">OSX Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#building-boost">Building Boost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="moe_math.html">How does MOE work?</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#build-a-gaussian-process-gp-with-the-historical-data">Build a Gaussian Process (GP) with the historical data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#optimize-the-hyperparameters-of-the-gaussian-process">Optimize the hyperparameters of the Gaussian Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#find-the-point-s-of-highest-expected-improvement-ei">Find the point(s) of highest Expected Improvement (EI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#return-the-point-s-to-sample-then-repeat">Return the point(s) to sample, then repeat</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="demo_tutorial.html">Demo Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="demo_tutorial.html#the-interactive-demo">The Interactive Demo</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pretty_endpoints.html">Pretty Endpoints</a></li>
 <li class="toctree-l1"><a class="reference internal" href="objective_functions.html">Objective Functions</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="objective_functions.html#what-is-an-objective-function">What is an objective function?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="objective_functions.html#properties-of-an-objective-function">Properties of an objective function</a></li>
@@ -108,6 +119,16 @@
 <li class="toctree-l2"><a class="reference internal" href="moe.html#module-moe">Module contents</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="moe_examples.html">moe_examples package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.next_point_via_simple_endpoint">moe_examples.next_point_via_simple_endpoint module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples">Module contents</a></li>
+</ul>
+</li>
 </ul>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="cpp_tree.html">C++ Files</a><ul class="current">
@@ -130,23 +151,22 @@
 <li class="toctree-l2"><a class="reference internal" href="gpp_python_model_selection.html">gpp_python_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_math.html">gpp_math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_random_test.html">gpp_random_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimizer_parameters.html">gpp_optimizer_parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_random.html">gpp_random</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra.html">gpp_linear_algebra</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_core.html">gpp_core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection.html">gpp_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_covariance_test.html">gpp_covariance_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_python.html">gpp_python</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_and_hyperparameter_optimization.html">gpp_model_selection_and_hyperparameter_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_test.html">gpp_model_selection_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_optimization_parameters.html">gpp_optimization_parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="">gpp_common</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_and_hyperparameter_optimization_test.html">gpp_model_selection_and_hyperparameter_optimization_test</a></li>
 </ul>
 </li>
 </ul>
@@ -447,48 +467,6 @@ polymorphism.  Generally we explicitly instantiate large/complex templates and l
 <a class="reference external" href="http://msdn.microsoft.com/en-us/library/7k8twfx7.aspx">http://msdn.microsoft.com/en-us/library/7k8twfx7.aspx</a>
 <a class="reference external" href="http://stackoverflow.com/questions/2351148/explicit-instantiation-when-is-it-used">http://stackoverflow.com/questions/2351148/explicit-instantiation-when-is-it-used</a></p>
 </li>
-<li><p class="first">chunk_size in #pragma omp for
-When we ask openmp to parallelize a for loop, we can give it additional information on how to do so.  In particular,
-the overall work (N iterations) needs to be divided up amongst the threads.  We have two major ways to affect how
-openmp structures the loop: schedule and chunk_size.  chunk_size changes meaning depending on schedule:</p>
-<ol class="loweralpha simple">
-<li>static: work is divided into N/chunk_size chunks and distributed amongst the threads statically.  Use when you are
-confident all chunks will take the same amount of time.  Low control overhead but high waste if one thread is very slow
-(since the others will sit idle).</li>
-<li>dynamic: work is divided into N/chunk_size chunks and distributed to threads as they complete their work,
-first-come first-serve. Now if there is a chunk that is very slow, the other threads can finish all remaining work
-instead of sitting idle.  High control overhead, use when you have no idea how long each chunk will take.</li>
-<li>guided: Work is divided into progressively smaller chunks; chunk_size sets the minimum value.  As with dynamic,
-chunks are assigned on a first-come, first-serve basis.  Less overhead than dynamic (b/c of chunk_size scale down).
-Useful when iteration times are similar but not identical.  Less overhead than dynamic while guaranteeing the waste
-case of static doesn&#8217;t arise.</li>
-</ol>
-<p><strong>Setting chunk_size</strong></p>
-<p>If we have more threads than things to do, we want to use as many threads as possible (size = 1);
-in particular, multi-threaded unit tests become single threaded tests (b/c the work count is low to keep runtime low).
-In the other extreme (much more work than threads), we do not want to assign too much work to a thread at a time or
-too little. Too much = if any thread finishes early, it sits idle; too little = lots of extra overhead.</p>
-<p>The values used in the implementation are from a little testing; better than doing nothing but definitely not optimal.
-Usually the chunk_size settings look like:
-int chunk_size = std::max(std::min(15, std::max(1, num_iterations/max_num_threads)), gd_parameters.num_iterations/(max_num_threads*20));</p>
-<ul>
-<li><dl class="first docutils">
-<dt>A = std::max(1, num_iterations/max_num_threads): divide the work evenly (as evenly as possible), triggers when there</dt>
-<dd><p class="first last">are tiny numbers of iterations.  (mostly for testing so that parallel tests don&#8217;t serialize through chunk_size)</p>
-</dd>
-</dl>
-</li>
-<li><p class="first">B = std::min(15, A): for &#8220;middle&#8221; sized problems, pick a &#8220;reasonable&#8221; chunk_size</p>
-</li>
-</ul>
-<dl class="docutils">
-<dt>chunk = std::max(B, num_iterations/(max_num_threads*20)): for very large numbers of iterations, scale chunk_size up so</dt>
-<dd><p class="first last">we don&#8217;t end up with too much loop overhead</p>
-</dd>
-</dl>
-<p>Further documentation:
-<a class="reference external" href="http://publib.boulder.ibm.com/infocenter/comphelp/v8v101/index.jsp?topic=%2Fcom.ibm.xlcpp8a.doc%2Fcompiler%2Fref%2Fruompfor.htm">http://publib.boulder.ibm.com/infocenter/comphelp/v8v101/index.jsp?topic=%2Fcom.ibm.xlcpp8a.doc%2Fcompiler%2Fref%2Fruompfor.htm</a></p>
-</li>
 <li><p class="first">Matrix-loop Idiom
 The matrix looping idioms used in this file deserve some explanation; we&#8217;ll use matrix-vector-multiply
 as an example.  One common implementation of <tt class="docutils literal"><span class="pre">y</span> <span class="pre">=</span> <span class="pre">A</span> <span class="pre">*</span> <span class="pre">x</span></tt>, with a <tt class="docutils literal"><span class="pre">m</span> <span class="pre">x</span> <span class="pre">n</span></tt>, row-major matrix is:</p>
@@ -542,11 +520,8 @@ implement &#8216;bare&#8217; locks in ints, etc. Use the proper object or contai
 <a class="reference external" href="http://en.wikipedia.org/wiki/Resource_Acquisition_Is_Initialization">http://en.wikipedia.org/wiki/Resource_Acquisition_Is_Initialization</a>
 <a class="reference external" href="http://www.stroustrup.com/except.pdf">http://www.stroustrup.com/except.pdf</a></p>
 </li>
-<li><p class="first">Exception Safety</p>
-</li>
-</ol>
-<blockquote>
-<div><p>All library components provide &#8220;basic&#8221; exception safety. &#8220;Basic&#8221; safety means that all invariants of the component
+<li><p class="first">Exception Safety
+All library components provide &#8220;basic&#8221; exception safety. &#8220;Basic&#8221; safety means that all invariants of the component
 are preserved and no resources are leaked. See references below for more details/definitions. RAII (see item 9)
 makes providing the basic guarantee all but trivial.</p>
 <p>Some components provide stronger guarantees (e.g., functions marked noexcept).
@@ -583,7 +558,8 @@ the precise state of the RNG is. (Still if you do care, the RNG wrappers in gpp_
 <p>See here for further information on the different types of exception safety:
 <a class="reference external" href="http://en.wikipedia.org/wiki/Exception_safety">http://en.wikipedia.org/wiki/Exception_safety</a>
 <a class="reference external" href="http://www.boost.org/community/exception_safety.html">http://www.boost.org/community/exception_safety.html</a></p>
-</div></blockquote>
+</li>
+</ol>
 </div></blockquote>
 <p>Lastly, some general mathematical notation:
 A vector &#8220;x&#8221; of length size may be represented: (LOWER CASE letters)
@@ -957,10 +933,8 @@ SomeType y = decltype(f)::i;
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="gpp_model_selection_and_hyperparameter_optimization_test.html" class="btn btn-neutral float-right" title="gpp_model_selection_and_hyperparameter_optimization_test"/>Next <span class="fa fa-arrow-circle-right"></span></a>
       
-      
-        <a href="gpp_optimization_parameters.html" class="btn btn-neutral" title="gpp_optimization_parameters"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="gpp_python_gaussian_process.html" class="btn btn-neutral" title="gpp_python_gaussian_process"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

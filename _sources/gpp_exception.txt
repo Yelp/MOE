@@ -1,5 +1,5 @@
 gpp_exception
-=====
+=============
 
 **Contents:**
 
@@ -8,13 +8,13 @@ gpp_exception
 
 
 gpp_exception.hpp
-------
+-----------------
 
 .. doxygenfile:: gpp_exception.hpp
 
 
 gpp_exception.cpp
-------
+-----------------
 
 .. doxygenfile:: gpp_exception.cpp
 

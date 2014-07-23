@@ -1,5 +1,5 @@
 gpp_math
-=====
+========
 
 **Contents:**
 
@@ -8,13 +8,13 @@ gpp_math
 
 
 gpp_math.hpp
-------
+------------
 
 .. doxygenfile:: gpp_math.hpp
 
 
 gpp_math.cpp
-------
+------------
 
 .. doxygenfile:: gpp_math.cpp
 

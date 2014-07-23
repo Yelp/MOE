@@ -64,18 +64,30 @@
         
             <ul>
 <li class="toctree-l1"><a class="reference internal" href="why_moe.html">Why Do We Need MOE?</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="why_moe.html#what-is-moe">What is MOE?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="why_moe.html#why-is-this-hard">Why is this hard?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="why_moe.html#other-methods">Other Methods</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Install</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="install.html#install-in-docker">Install in docker:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#install-from-source">Install from source:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below):</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#install-in-docker">Install in docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#install-from-source">Install from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#osx-tips">OSX Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#building-boost">Building Boost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="moe_math.html">How does MOE work?</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#build-a-gaussian-process-gp-with-the-historical-data">Build a Gaussian Process (GP) with the historical data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#optimize-the-hyperparameters-of-the-gaussian-process">Optimize the hyperparameters of the Gaussian Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#find-the-point-s-of-highest-expected-improvement-ei">Find the point(s) of highest Expected Improvement (EI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#return-the-point-s-to-sample-then-repeat">Return the point(s) to sample, then repeat</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="demo_tutorial.html">Demo Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="demo_tutorial.html#the-interactive-demo">The Interactive Demo</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pretty_endpoints.html">Pretty Endpoints</a></li>
 <li class="toctree-l1"><a class="reference internal" href="objective_functions.html">Objective Functions</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="objective_functions.html#what-is-an-objective-function">What is an objective function?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="objective_functions.html#properties-of-an-objective-function">Properties of an objective function</a></li>
@@ -108,6 +120,16 @@
 <li class="toctree-l2"><a class="reference internal" href="moe.html#module-moe">Module contents</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="moe_examples.html">moe_examples package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.next_point_via_simple_endpoint">moe_examples.next_point_via_simple_endpoint module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples">Module contents</a></li>
+</ul>
+</li>
 </ul>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="cpp_tree.html">C++ Files</a><ul class="current">
@@ -130,23 +152,22 @@
 <li class="toctree-l2"><a class="reference internal" href="gpp_python_model_selection.html">gpp_python_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_math.html">gpp_math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_random_test.html">gpp_random_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimizer_parameters.html">gpp_optimizer_parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="">gpp_random</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra.html">gpp_linear_algebra</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_core.html">gpp_core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection.html">gpp_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_covariance_test.html">gpp_covariance_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_python.html">gpp_python</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_and_hyperparameter_optimization.html">gpp_model_selection_and_hyperparameter_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_test.html">gpp_model_selection_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_optimization_parameters.html">gpp_optimization_parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_common.html">gpp_common</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_and_hyperparameter_optimization_test.html">gpp_model_selection_and_hyperparameter_optimization_test</a></li>
 </ul>
 </li>
 </ul>
@@ -270,6 +291,49 @@ the we have no guarantees on the actual distribution of the resulting point set 
  </p>
 </div></blockquote>
 </div></blockquote>
+<p><p id="project0classoptimal__learning_1_1_normal_r_n_g_interface"><em>class</em> <strong>NormalRNGInterface</strong></p>
+<blockquote>
+<div><p></p>
+<p><p>Abstract class for a functor for generating random numbers distributed ~ N(0, 1) (i.e., standard normal).
+This interface currently does not specify many facilities for seeding the underlying RNG as these 
+(particularly variable width) can vary by implementation.</p>
+<p>This class <em>only</em> has pure virtual functions.</p>
+ </p>
+<em>Public Functions</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_normal_r_n_g_interface_1a191b7c6e6fa2e64e40b3779be321e833"></span><div class="line-block">
+<div class="line">double <strong>operator()</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Generate a random number from standard normal distribution.</p>
+<dl class="docutils">
+<dt><strong>Returns</strong>:</dt>
+<dd>a random number from a standard (<tt class="docutils literal"><span class="pre">N(0,</span> <span class="pre">1)</span></tt>) normal distribution</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_normal_r_n_g_interface_1a5909bc043aaa59635de2df92b379effb"></span><div class="line-block">
+<div class="line">void <strong>ResetToMostRecentSeed</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Reseeds the generator with its most recently specified seed value.
+Useful for testing&#8211;e.g., can conduct multiple runs with the same initial conditions</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_normal_r_n_g_interface_1ae41e02133da7a6facca1de556e1593f2"></span><div class="line-block">
+<div class="line"> <strong>~NormalRNGInterface</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</p>
 <p><p id="project0structoptimal__learning_1_1_uniform_random_generator"><em>class</em> <strong>UniformRandomGenerator</strong></p>
 <blockquote>
 <div><p></p>
@@ -515,30 +579,36 @@ Useful for testing&#8211;e.g., can conduct multiple runs with the same initial c
 </div></blockquote>
 </div></blockquote>
 </p>
-<p><p id="project0structoptimal__learning_1_1_normal_r_n_g"><em>class</em> <strong>NormalRNG</strong></p>
+<p><p id="project0classoptimal__learning_1_1_normal_r_n_g"><em>class</em> <strong>NormalRNG</strong></p>
 <blockquote>
 <div><p></p>
 <p><p>Functor for computing normally distributed (N(0, 1)) random numbers.
 Uses/maintains an uniform RNG (currently UniformRandomGenerator) and transforms the output to be
 distributed ~ N(0, 1).</p>
-<p>Note: seed values take type <tt class="docutils literal"><span class="pre">EngineType::result_type</span></tt>. Do not pass in a wider integer type!</p>
-<p>WARNING: this class is NOT THREAD-SAFE. You must construct one object per thread (and
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">seed values take type <tt class="docutils literal"><span class="pre">EngineType::result_type</span></tt>. Do not pass in a wider integer type!</p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">this class is NOT THREAD-SAFE. You must construct one object per thread (and
 ensure that the seeds are different for practical computations).</p>
+</div>
  </p>
 <em>Public Type</em><blockquote>
-<div><p><span class="target" id="project0structoptimal__learning_1_1_normal_r_n_g_1ab6bd62096ef253d62bedf636fc16d9e3"></span>typedef <a class="reference internal" href="#project0structoptimal__learning_1_1_uniform_random_generator"><em>UniformRandomGenerator</em></a> <strong>UniformGeneratorType</strong></p>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_normal_r_n_g_1ab6bd62096ef253d62bedf636fc16d9e3"></span>typedef <a class="reference internal" href="#project0structoptimal__learning_1_1_uniform_random_generator"><em>UniformRandomGenerator</em></a> <strong>UniformGeneratorType</strong></p>
 <blockquote>
 <div><p></p>
 <p></p>
 </div></blockquote>
-<p><span class="target" id="project0structoptimal__learning_1_1_normal_r_n_g_1a679f82ba2270fae17519e773c25b8e78"></span>typedef UniformRandomGenerator::EngineType <strong>EngineType</strong></p>
+<p><span class="target" id="project0classoptimal__learning_1_1_normal_r_n_g_1a679f82ba2270fae17519e773c25b8e78"></span>typedef UniformRandomGenerator::EngineType <strong>EngineType</strong></p>
 <blockquote>
 <div><p></p>
 <p></p>
 </div></blockquote>
 </div></blockquote>
 <em>Public Functions</em><blockquote>
-<div><p><span class="target" id="project0structoptimal__learning_1_1_normal_r_n_g_1a0a4b159165162fb057e759dd6edb97bd"></span><div class="line-block">
+<div><p><span class="target" id="project0classoptimal__learning_1_1_normal_r_n_g_1a0a4b159165162fb057e759dd6edb97bd"></span><div class="line-block">
 <div class="line"> <strong>NormalRNG</strong>()</div>
 </div>
 </p>
@@ -547,7 +617,7 @@ ensure that the seeds are different for practical computations).</p>
 <p><p>Default-constructs a NormalRNG, seeding with kDefaultSeed.</p>
  </p>
 </div></blockquote>
-<p><span class="target" id="project0structoptimal__learning_1_1_normal_r_n_g_1ac431f0bb54cc53782d1ed6d0a66c664f"></span><div class="line-block">
+<p><span class="target" id="project0classoptimal__learning_1_1_normal_r_n_g_1ac431f0bb54cc53782d1ed6d0a66c664f"></span><div class="line-block">
 <div class="line"> <strong>NormalRNG</strong>(EngineType::result_type seed)</div>
 </div>
 </p>
@@ -569,7 +639,7 @@ See NormalRNG::SetExplicitSeed for details.</p>
 </dl>
  </p>
 </div></blockquote>
-<p><span class="target" id="project0structoptimal__learning_1_1_normal_r_n_g_1a00e6cd455c665adf3b6da8c946fdd785"></span><div class="line-block">
+<p><span class="target" id="project0classoptimal__learning_1_1_normal_r_n_g_1a00e6cd455c665adf3b6da8c946fdd785"></span><div class="line-block">
 <div class="line"> <strong>NormalRNG</strong>(EngineType::result_type seed, int thread_id)</div>
 </div>
 </p>
@@ -593,7 +663,7 @@ See NormalRNG::SetRandomizedSeed for details.</p>
 </dl>
  </p>
 </div></blockquote>
-<p><span class="target" id="project0structoptimal__learning_1_1_normal_r_n_g_1a554ff066c63004596ac4e1e0f4a1d21f"></span><div class="line-block">
+<p><span class="target" id="project0classoptimal__learning_1_1_normal_r_n_g_1a554ff066c63004596ac4e1e0f4a1d21f"></span><div class="line-block">
 <div class="line">EngineType &amp; <strong>GetEngine</strong>()</div>
 </div>
 </p>
@@ -606,15 +676,20 @@ See NormalRNG::SetRandomizedSeed for details.</p>
 </dl>
  </p>
 </div></blockquote>
-<p><span class="target" id="project0structoptimal__learning_1_1_normal_r_n_g_1a2c4eef5427f763c292270a1dfbf072d1"></span><div class="line-block">
+<p><span class="target" id="project0classoptimal__learning_1_1_normal_r_n_g_1a55984d7af5e71623c9ee629a6d4098d9"></span><div class="line-block">
 <div class="line">double <strong>operator()</strong>()</div>
 </div>
 </p>
 <blockquote>
 <div><p></p>
-<p></p>
+<p><p>Generate a random number from standard normal distribution.</p>
+<dl class="docutils">
+<dt><strong>Returns</strong>:</dt>
+<dd>a random number from a standard (<tt class="docutils literal"><span class="pre">N(0,</span> <span class="pre">1)</span></tt>) normal distribution</dd>
+</dl>
+ </p>
 </div></blockquote>
-<p><span class="target" id="project0structoptimal__learning_1_1_normal_r_n_g_1acfa48fa62894c92f12137ea6b2135bac"></span><div class="line-block">
+<p><span class="target" id="project0classoptimal__learning_1_1_normal_r_n_g_1acfa48fa62894c92f12137ea6b2135bac"></span><div class="line-block">
 <div class="line">EngineType::result_type <strong>last_seed</strong>()</div>
 </div>
 </p>
@@ -622,7 +697,7 @@ See NormalRNG::SetRandomizedSeed for details.</p>
 <div><p></p>
 <p></p>
 </div></blockquote>
-<p><span class="target" id="project0structoptimal__learning_1_1_normal_r_n_g_1adaac7e7211f6ffd5ba48c6245b5a7eab"></span><div class="line-block">
+<p><span class="target" id="project0classoptimal__learning_1_1_normal_r_n_g_1adaac7e7211f6ffd5ba48c6245b5a7eab"></span><div class="line-block">
 <div class="line">void <strong>ResetGenerator</strong>()</div>
 </div>
 </p>
@@ -633,7 +708,7 @@ This is important: the underlying normal distribution likely generates numbers e
 So re-seeding the engine WITHOUT resetting can lead to surprising behavior.</p>
  </p>
 </div></blockquote>
-<p><span class="target" id="project0structoptimal__learning_1_1_normal_r_n_g_1a1ff1dcd7ca635bd82e7ea03b861cefde"></span><div class="line-block">
+<p><span class="target" id="project0classoptimal__learning_1_1_normal_r_n_g_1a1ff1dcd7ca635bd82e7ea03b861cefde"></span><div class="line-block">
 <div class="line">void <strong>SetExplicitSeed</strong>(EngineType::result_type seed)</div>
 </div>
 </p>
@@ -655,7 +730,7 @@ See UniformRandomGenerator::SetExplicitSeed() for more information.</p>
 </dl>
  </p>
 </div></blockquote>
-<p><span class="target" id="project0structoptimal__learning_1_1_normal_r_n_g_1a15a3ebb908cadf75b210a4716484cfa6"></span><div class="line-block">
+<p><span class="target" id="project0classoptimal__learning_1_1_normal_r_n_g_1a15a3ebb908cadf75b210a4716484cfa6"></span><div class="line-block">
 <div class="line">void <strong>SetRandomizedSeed</strong>(EngineType::result_type seed, int thread_id)</div>
 </div>
 </p>
@@ -680,7 +755,7 @@ See UniformRandomGenerator::SetExplicitSeed() for more information.</p>
 </dl>
  </p>
 </div></blockquote>
-<p><span class="target" id="project0structoptimal__learning_1_1_normal_r_n_g_1a5cb7846fd6aa6cbaaa088595fc425dcc"></span><div class="line-block">
+<p><span class="target" id="project0classoptimal__learning_1_1_normal_r_n_g_1a5cb7846fd6aa6cbaaa088595fc425dcc"></span><div class="line-block">
 <div class="line">void <strong>ResetToMostRecentSeed</strong>()</div>
 </div>
 </p>
@@ -690,7 +765,7 @@ See UniformRandomGenerator::SetExplicitSeed() for more information.</p>
 Useful for testing&#8211;e.g., can conduct multiple runs with the same initial conditions</p>
  </p>
 </div></blockquote>
-<p><span class="target" id="project0structoptimal__learning_1_1_normal_r_n_g_1ac8f586de69574335ccd58bb647032db4"></span><div class="line-block">
+<p><span class="target" id="project0classoptimal__learning_1_1_normal_r_n_g_1ac8f586de69574335ccd58bb647032db4"></span><div class="line-block">
 <div class="line">void <strong>PrintState</strong>(std::ostream * out_stream)</div>
 </div>
 </p>
@@ -723,28 +798,123 @@ Useful for testing&#8211;e.g., can conduct multiple runs with the same initial c
 </div></blockquote>
 </div></blockquote>
 <em>Public Members</em><blockquote>
-<div><p><span class="target" id="project0structoptimal__learning_1_1_normal_r_n_g_1a7fb6420e82ad2db1b18972d6acfebb51"></span><a class="reference internal" href="#project0structoptimal__learning_1_1_uniform_random_generator"><em>UniformGeneratorType</em></a> <strong>uniform_generator</strong></p>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_normal_r_n_g_1a7fb6420e82ad2db1b18972d6acfebb51"></span><a class="reference internal" href="#project0structoptimal__learning_1_1_uniform_random_generator"><em>UniformGeneratorType</em></a> <strong>uniform_generator</strong></p>
 <blockquote>
 <div><p>The underlying generator providing uniform PRNGs for this object to transform to N(0, 1). </p>
 <p></p>
 </div></blockquote>
 </div></blockquote>
 <em>Public Static Attributes</em><blockquote>
-<div><p><span class="target" id="project0structoptimal__learning_1_1_normal_r_n_g_1a74dc48c75112eec4f1bc9b3609129afe"></span>constexpr EngineType::result_type <strong>kDefaultSeed</strong></p>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_normal_r_n_g_1a74dc48c75112eec4f1bc9b3609129afe"></span>constexpr EngineType::result_type <strong>kDefaultSeed</strong></p>
 <blockquote>
 <div><p>Default seed value to make reproducing test results simple. </p>
 <p></p>
 </div></blockquote>
 </div></blockquote>
 <em>Private Members</em><blockquote>
-<div><p><span class="target" id="project0structoptimal__learning_1_1_normal_r_n_g_1a68c4811bedde7f50aada1eb1d05475c1"></span>boost::normal_distribution&lt; double &gt; <strong>normal_distribution_</strong></p>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_normal_r_n_g_1a68c4811bedde7f50aada1eb1d05475c1"></span>boost::normal_distribution&lt; double &gt; <strong>normal_distribution_</strong></p>
 <blockquote>
 <div><p>Object for ransforming from uniform to N(0, 1); may carry internal state (e.g., normal random numbers generated 2 at a time). </p>
 <p></p>
 </div></blockquote>
-<p><span class="target" id="project0structoptimal__learning_1_1_normal_r_n_g_1af538cf8c1c439478e366ea46081435ef"></span>boost::variate_generator&lt; EngineType &amp;, boost::normal_distribution&lt; double &gt; &gt; <strong>normal_random_variable_</strong></p>
+<p><span class="target" id="project0classoptimal__learning_1_1_normal_r_n_g_1af538cf8c1c439478e366ea46081435ef"></span>boost::variate_generator&lt; EngineType &amp;, boost::normal_distribution&lt; double &gt; &gt; <strong>normal_random_variable_</strong></p>
 <blockquote>
 <div><p>Object (for convenience) providing operator() that returns a value distributed ~ N(0, 1). </p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</p>
+<p><p id="project0classoptimal__learning_1_1_normal_r_n_g_simulator"><em>class</em> <strong>NormalRNGSimulator</strong></p>
+<blockquote>
+<div><p></p>
+<p><p>RNG that generates normally distributed (N(0,1)) random numbers simply by reading random numbers stored in
+its &#8220;random_number_table&#8221;, a data member in this class.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">this class is used in unit test only, and you have to be careful to ensure the total number of random numbers
+generated from last reset must be smaller than size of &#8220;random_number_table&#8221;, otherwise exception will be thrown.</p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">this class is NOT THREAD-SAFE. You must construct one object per thread.</p>
+</div>
+ </p>
+<em>Public Functions</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_normal_r_n_g_simulator_1af26d73ef4cd32a0819c24ad2673d64a0"></span><div class="line-block">
+<div class="line"> <strong>NormalRNGSimulator</strong>(const std::vector&lt; double &gt; &amp; random_number_table_in)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Construct a NormalRNGSimulator by providing table storing random numbers, and size of this random table.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">random_number_table_in:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">pointer to the table storing random numbers</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">size_of_table_in:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">size of the random table</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_normal_r_n_g_simulator_1a8c9b95b7342043f7999fd3c84f03dd9e"></span><div class="line-block">
+<div class="line">double <strong>operator()</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Generate a random number from standard normal distribution.</p>
+<dl class="docutils">
+<dt><strong>Returns</strong>:</dt>
+<dd>a random number from a standard (<tt class="docutils literal"><span class="pre">N(0,</span> <span class="pre">1)</span></tt>) normal distribution</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_normal_r_n_g_simulator_1ab2da01445b8c7c22e9f24a7ca7fb4653"></span><div class="line-block">
+<div class="line">void <strong>ResetToMostRecentSeed</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Reseeds the generator with its most recently specified seed value.
+Useful for testing&#8211;e.g., can conduct multiple runs with the same initial conditions</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_normal_r_n_g_simulator_1afbbde114d99c4b4b35e98497a9eeb014"></span><div class="line-block">
+<div class="line">int <strong>index</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_normal_r_n_g_simulator_1a54c857161b09cfafdae43d70dc15bde3"></span><div class="line-block">
+<div class="line"> <strong>OL_DISALLOW_DEFAULT_AND_COPY_AND_ASSIGN</strong>(<a class="reference internal" href="#project0classoptimal__learning_1_1_normal_r_n_g_simulator"><em>NormalRNGSimulator</em></a>)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Private Members</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_normal_r_n_g_simulator_1a3a306c48018c44de5bde9baa1e5bd079"></span>std::vector&lt; double &gt; <strong>random_number_table_</strong></p>
+<blockquote>
+<div><p>Table that stores all random numbers. </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_normal_r_n_g_simulator_1acf037f621d4f52e80cce957cb44d3503"></span>int <strong>index_</strong></p>
+<blockquote>
+<div><p>Index of the random number in the table to return when the generator is called. </p>
 <p></p>
 </div></blockquote>
 </div></blockquote>

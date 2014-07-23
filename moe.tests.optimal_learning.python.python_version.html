@@ -64,18 +64,30 @@
         
             <ul>
 <li class="toctree-l1"><a class="reference internal" href="why_moe.html">Why Do We Need MOE?</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="why_moe.html#what-is-moe">What is MOE?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="why_moe.html#why-is-this-hard">Why is this hard?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="why_moe.html#other-methods">Other Methods</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Install</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="install.html#install-in-docker">Install in docker:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#install-from-source">Install from source:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below):</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#install-in-docker">Install in docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#install-from-source">Install from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#osx-tips">OSX Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#building-boost">Building Boost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="moe_math.html">How does MOE work?</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#build-a-gaussian-process-gp-with-the-historical-data">Build a Gaussian Process (GP) with the historical data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#optimize-the-hyperparameters-of-the-gaussian-process">Optimize the hyperparameters of the Gaussian Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#find-the-point-s-of-highest-expected-improvement-ei">Find the point(s) of highest Expected Improvement (EI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#return-the-point-s-to-sample-then-repeat">Return the point(s) to sample, then repeat</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="demo_tutorial.html">Demo Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="demo_tutorial.html#the-interactive-demo">The Interactive Demo</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pretty_endpoints.html">Pretty Endpoints</a></li>
 <li class="toctree-l1"><a class="reference internal" href="objective_functions.html">Objective Functions</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="objective_functions.html#what-is-an-objective-function">What is an objective function?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="objective_functions.html#properties-of-an-objective-function">Properties of an objective function</a></li>
@@ -108,6 +120,16 @@
 <li class="toctree-l2"><a class="reference internal" href="moe.html#module-moe">Module contents</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="moe_examples.html">moe_examples package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.next_point_via_simple_endpoint">moe_examples.next_point_via_simple_endpoint module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples">Module contents</a></li>
+</ul>
+</li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="cpp_tree.html">C++ Files</a><ul>
@@ -130,23 +152,22 @@
 <li class="toctree-l2"><a class="reference internal" href="gpp_python_model_selection.html">gpp_python_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_math.html">gpp_math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_random_test.html">gpp_random_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimizer_parameters.html">gpp_optimizer_parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_random.html">gpp_random</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra.html">gpp_linear_algebra</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_core.html">gpp_core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection.html">gpp_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_covariance_test.html">gpp_covariance_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_python.html">gpp_python</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_and_hyperparameter_optimization.html">gpp_model_selection_and_hyperparameter_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_test.html">gpp_model_selection_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_optimization_parameters.html">gpp_optimization_parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_common.html">gpp_common</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_and_hyperparameter_optimization_test.html">gpp_model_selection_and_hyperparameter_optimization_test</a></li>
 </ul>
 </li>
 </ul>
@@ -269,7 +290,7 @@ which makes it difficult to set meaningful tolerances for the checks.</p>
 
 <dl class="attribute">
 <dt id="moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.gp_test_environment_input">
-<tt class="descname">gp_test_environment_input</tt><em class="property"> = &lt;moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestEnvironmentInput object at 0x117136450&gt;</em><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.gp_test_environment_input" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">gp_test_environment_input</tt><em class="property"> = &lt;moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestEnvironmentInput object at 0x10ace9a50&gt;</em><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.gp_test_environment_input" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -289,7 +310,7 @@ which makes it difficult to set meaningful tolerances for the checks.</p>
 
 <dl class="attribute">
 <dt id="moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.num_sampled_list">
-<tt class="descname">num_sampled_list</tt><em class="property"> = [1, 2, 5, 10, 16, 20, 50]</em><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.num_sampled_list" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">num_sampled_list</tt><em class="property"> = (1, 2, 5, 10, 16, 20, 50)</em><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.num_sampled_list" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -301,6 +322,12 @@ which makes it difficult to set meaningful tolerances for the checks.</p>
 <dt id="moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.rng_seed">
 <tt class="descname">rng_seed</tt><em class="property"> = 314</em><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.rng_seed" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.test_1d_analytic_ei_edge_cases">
+<tt class="descname">test_1d_analytic_ei_edge_cases</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/python_version/expected_improvement_test.html#ExpectedImprovementTest.test_1d_analytic_ei_edge_cases"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.test_1d_analytic_ei_edge_cases" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test cases where analytic EI would attempt to compute 0/0 without variance lower bounds.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.test_evaluate_ei_at_points">
@@ -330,9 +357,27 @@ between the naive and vectorized versions.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.test_multistart_mmonte_carlo_expected_improvement_optimization">
-<tt class="descname">test_multistart_mmonte_carlo_expected_improvement_optimization</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/python_version/expected_improvement_test.html#ExpectedImprovementTest.test_multistart_mmonte_carlo_expected_improvement_optimization"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.test_multistart_mmonte_carlo_expected_improvement_optimization" title="Permalink to this definition">¶</a></dt>
+<dt id="moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.test_multistart_monte_carlo_expected_improvement_optimization">
+<tt class="descname">test_multistart_monte_carlo_expected_improvement_optimization</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/python_version/expected_improvement_test.html#ExpectedImprovementTest.test_multistart_monte_carlo_expected_improvement_optimization"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.test_multistart_monte_carlo_expected_improvement_optimization" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check that multistart optimization (gradient descent) can find the optimum point to sample (using 2-EI).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.test_qd_and_1d_return_same_analytic_ei">
+<tt class="descname">test_qd_and_1d_return_same_analytic_ei</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/python_version/expected_improvement_test.html#ExpectedImprovementTest.test_qd_and_1d_return_same_analytic_ei"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.test_qd_and_1d_return_same_analytic_ei" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compare the 1D analytic EI results to the qD analytic EI results, checking several random points per test case.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.test_qd_ei_with_self">
+<tt class="descname">test_qd_ei_with_self</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/python_version/expected_improvement_test.html#ExpectedImprovementTest.test_qd_ei_with_self"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.test_qd_ei_with_self" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compare the 1D analytic EI results to the qD analytic EI results, checking several random points per test case.</p>
+<p>This test case (unfortunately) suffers from a lot of random variation in the qEI parameters. The tolerance is high because
+changing the number of iterations or the maximum relative error allowed in the mvndst function leads to different answers.</p>
+<p>These precomputed answers were calculated from:
+maxpts = 20,000 * q
+releps = 1e-5</p>
+<p>These values are a tradeoff between accuracy / speed.</p>
 </dd></dl>
 
 </dd></dl>
@@ -356,7 +401,7 @@ we rely more on cpp_wrappers/covariance_test.py&#8217;s comparison with C++ for 
 
 <dl class="attribute">
 <dt id="moe.tests.optimal_learning.python.python_version.log_likelihood_test.GaussianProcessLogMarginalLikelihoodTest.gp_test_environment_input">
-<tt class="descname">gp_test_environment_input</tt><em class="property"> = &lt;moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestEnvironmentInput object at 0x117194550&gt;</em><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.log_likelihood_test.GaussianProcessLogMarginalLikelihoodTest.gp_test_environment_input" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">gp_test_environment_input</tt><em class="property"> = &lt;moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestEnvironmentInput object at 0x10ae91510&gt;</em><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.log_likelihood_test.GaussianProcessLogMarginalLikelihoodTest.gp_test_environment_input" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -371,7 +416,7 @@ we rely more on cpp_wrappers/covariance_test.py&#8217;s comparison with C++ for 
 
 <dl class="attribute">
 <dt id="moe.tests.optimal_learning.python.python_version.log_likelihood_test.GaussianProcessLogMarginalLikelihoodTest.num_sampled_list">
-<tt class="descname">num_sampled_list</tt><em class="property"> = [1, 2, 5, 10, 16, 20, 42]</em><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.log_likelihood_test.GaussianProcessLogMarginalLikelihoodTest.num_sampled_list" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">num_sampled_list</tt><em class="property"> = (1, 2, 5, 10, 16, 20, 42)</em><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.log_likelihood_test.GaussianProcessLogMarginalLikelihoodTest.num_sampled_list" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -542,6 +587,12 @@ Multistarting it should be the same as a &#8216;dumb&#8217; search over points.<
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="moe.tests.optimal_learning.python.python_version.optimization_test.QuadraticFunction.current_point">
+<tt class="descname">current_point</tt><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.optimization_test.QuadraticFunction.current_point" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the current_point (array of float64 with shape (problem_size)) at which this object is evaluating the objective function, <tt class="docutils literal"><span class="pre">f(x)</span></tt>.</p>
 </dd></dl>
 
 <dl class="attribute">

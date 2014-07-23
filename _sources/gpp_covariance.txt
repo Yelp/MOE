@@ -1,5 +1,5 @@
 gpp_covariance
-=====
+==============
 
 **Contents:**
 
@@ -8,13 +8,13 @@ gpp_covariance
 
 
 gpp_covariance.hpp
-------
+------------------
 
 .. doxygenfile:: gpp_covariance.hpp
 
 
 gpp_covariance.cpp
-------
+------------------
 
 .. doxygenfile:: gpp_covariance.cpp
 

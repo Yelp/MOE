@@ -1,5 +1,5 @@
 gpp_python
-=====
+==========
 
 **Contents:**
 
@@ -7,7 +7,7 @@ gpp_python
 
 
 gpp_python.cpp
-------
+--------------
 
 .. doxygenfile:: gpp_python.cpp
 

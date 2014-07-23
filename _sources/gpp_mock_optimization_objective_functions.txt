@@ -1,5 +1,5 @@
 gpp_mock_optimization_objective_functions
-=====
+=========================================
 
 **Contents:**
 
@@ -7,7 +7,7 @@ gpp_mock_optimization_objective_functions
 
 
 gpp_mock_optimization_objective_functions.hpp
-------
+---------------------------------------------
 
 .. doxygenfile:: gpp_mock_optimization_objective_functions.hpp
 

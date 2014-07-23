@@ -1,5 +1,5 @@
 gpp_optimization_parameters
-=====
+===========================
 
 **Contents:**
 
@@ -7,7 +7,7 @@ gpp_optimization_parameters
 
 
 gpp_optimization_parameters.hpp
-------
+-------------------------------
 
 .. doxygenfile:: gpp_optimization_parameters.hpp
 

@@ -1,5 +1,5 @@
 gpp_python_gaussian_process
-=====
+===========================
 
 **Contents:**
 
@@ -8,13 +8,13 @@ gpp_python_gaussian_process
 
 
 gpp_python_gaussian_process.hpp
-------
+-------------------------------
 
 .. doxygenfile:: gpp_python_gaussian_process.hpp
 
 
 gpp_python_gaussian_process.cpp
-------
+-------------------------------
 
 .. doxygenfile:: gpp_python_gaussian_process.cpp
 

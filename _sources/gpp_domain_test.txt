@@ -1,5 +1,5 @@
 gpp_domain_test
-=====
+===============
 
 **Contents:**
 
@@ -8,13 +8,13 @@ gpp_domain_test
 
 
 gpp_domain_test.hpp
-------
+-------------------
 
 .. doxygenfile:: gpp_domain_test.hpp
 
 
 gpp_domain_test.cpp
-------
+-------------------
 
 .. doxygenfile:: gpp_domain_test.cpp
 

@@ -1,5 +1,5 @@
 gpp_hyper_and_EI_demo
-=====
+=====================
 
 **Contents:**
 
@@ -7,7 +7,7 @@ gpp_hyper_and_EI_demo
 
 
 gpp_hyper_and_EI_demo.cpp
-------
+-------------------------
 
 .. doxygenfile:: gpp_hyper_and_EI_demo.cpp
 

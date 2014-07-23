@@ -1,5 +1,5 @@
 gpp_random_test
-=====
+===============
 
 **Contents:**
 
@@ -8,13 +8,13 @@ gpp_random_test
 
 
 gpp_random_test.hpp
-------
+-------------------
 
 .. doxygenfile:: gpp_random_test.hpp
 
 
 gpp_random_test.cpp
-------
+-------------------
 
 .. doxygenfile:: gpp_random_test.cpp
 

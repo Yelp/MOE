@@ -24,20 +24,19 @@ C++ Files
     gpp_python_model_selection.rst
     gpp_math.rst
     gpp_random_test.rst
+    gpp_optimizer_parameters.rst
     gpp_expected_improvement_demo.rst
     gpp_random.rst
     gpp_geometry_test.rst
     gpp_linear_algebra.rst
     gpp_heuristic_expected_improvement_optimization_test.rst
     gpp_linear_algebra_test.rst
-    gpp_core.rst
+    gpp_model_selection.rst
     gpp_optimization.rst
     gpp_covariance_test.rst
-    gpp_python_gaussian_process.rst
     gpp_mock_optimization_objective_functions.rst
     gpp_python.rst
-    gpp_model_selection_and_hyperparameter_optimization.rst
+    gpp_model_selection_test.rst
     gpp_hyper_and_EI_demo.rst
-    gpp_optimization_parameters.rst
+    gpp_python_gaussian_process.rst
     gpp_common.rst
-    gpp_model_selection_and_hyperparameter_optimization_test.rst

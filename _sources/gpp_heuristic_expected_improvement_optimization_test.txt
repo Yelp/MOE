@@ -1,5 +1,5 @@
 gpp_heuristic_expected_improvement_optimization_test
-=====
+====================================================
 
 **Contents:**
 
@@ -8,13 +8,13 @@ gpp_heuristic_expected_improvement_optimization_test
 
 
 gpp_heuristic_expected_improvement_optimization_test.hpp
-------
+--------------------------------------------------------
 
 .. doxygenfile:: gpp_heuristic_expected_improvement_optimization_test.hpp
 
 
 gpp_heuristic_expected_improvement_optimization_test.cpp
-------
+--------------------------------------------------------
 
 .. doxygenfile:: gpp_heuristic_expected_improvement_optimization_test.cpp
 

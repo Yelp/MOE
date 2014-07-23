@@ -1,5 +1,5 @@
 Objective Functions
-=======
+===================
 
 **Contents:**
 
@@ -9,7 +9,7 @@ Objective Functions
     #. `Phi Objective Functions`_
 
 What is an objective function?
------
+------------------------------
 
 The objective function is the function *f* that we are trying to minimize/maximize over some set of `Parameters`_.
 
@@ -26,7 +26,7 @@ The input to MOE is some set of historical parameters sampled :math:`\{\vec{x}_{
 Using this information MOE builds a model the function space *f* is drawn from (using a Gaussian Process (GP) :doc:`gpp_covariance`) over values of :math:`\vec{x} \in \mathbb{R}^{d}` and maximizes the Expected Improvement (EI, :doc:`gpp_expected_improvement_demo`) of sampling different potential values :math:`\vec{x}` in this space, without actually evaluating *f*. MOE then outputs the *q* value(s) in :math:`\mathbb{R}^{d \times q}` that have the highest EI to be sampled next by the user.
 
 Properties of an objective function
-----
+-----------------------------------
 
 * An objective function is any real valued function *f* defined over the input parameters.
 * MOE works best if the objective function has 0 mean, although this in not required depending on the covariance kernel (:doc:`gpp_covariance`)
@@ -37,7 +37,7 @@ Properties of an objective function
 See :doc:`examples`
 
 Parameters
-----
+----------
 
 Parameters are any real valued constants, config values, thresholds, hyperparameters or *magic numbers* in your codebase or inputs to your system/model/experiment.
 
@@ -54,12 +54,12 @@ See :doc:`examples`
 
 .. _Phi Objective Functions:
 :math:`\Phi` Objective Functions
------
+--------------------------------
 
 In this writeup we define a class of objective functions, :math:`\Phi` objective functions, that MOE can use, their components and some examples.
 
-Properties of the proposed objective function :math:`\Phi`:
-....
+Properties of the proposed objective function :math:`\Phi`
+..........................................................
 
 #. The objective function, :math:`\Phi`, is the quantity that MOE seeks to maximize by manipulating the values of parameters in some space.
 #. The objective function :math:`\Phi` is well defined for every set of parameters :math:`C_{i} \in \vec{C}` for which the experiment is run.
@@ -71,7 +71,7 @@ Properties of the proposed objective function :math:`\Phi`:
 It is worth noting that MOE will attempt to increase the objective function blindly. MOE is a **black box**, global optimization experimental design framework. If there are easy ways for it to exploit the code by manipulating parameters it will probably find it. Defining the objective function well is the most important part of running a MOE experiment.
 
 Classes of :math:`\Phi` objective functions
-....
+...........................................
 
 The general class of objective functions :math:`\Phi` are products of weighted, thresholded relative compositions of metrics :math:`M` defined for each set of parameters :math:`C_{i}` of an experiment as follows:
 
@@ -113,7 +113,7 @@ The second component of the objective function is the threshold,
 If the relative gain (or loss if :math:`\omega_{M} < 0`) of the metric :math:`M` for the set of parameters :math:`C_{i}` is below the threshold :math:`\tau_{M}` this component will have value 0. Note that this will cancel all gains in all other metrics and give the objective function its lowest possible value. One can also replace the Heavyside function with a logistic function, or a probability of violating the constraints.
 
 The Metrics
-....
+...........
 
 The metric is any quantity defined over sets of parameters.
 
@@ -122,7 +122,7 @@ Possible examples include:
 #. Click Through Rate (CTR)
 #. Sell Through Rate (STR, the number of ads shown per page)
 #. Revenue Per Opportunity (RPO)
-#. Average/median/95:math:`^\text{th}` delivery timings
+#. Average/median/95th delivery timings
 #. Any happiness metric defined on the reals
 #. Number of reviews written
 #. Photo contributions/views in a session
@@ -132,7 +132,7 @@ Possible examples include:
 #. :math:`M : C_{i} \rightarrow \Re \ \ \ \forall C_{i} \in \vec{C}`
 
 The Weight
-....
+..........
 
 The weight :math:`\omega_{M}` of a function represents how much we want the ratio of that metric to effect the overall objective function.
 
@@ -146,7 +146,7 @@ A weight :math:`\omega_{M} = 0` corresponds to no effect. The objective function
 Small weights :math:`0 < \omega_{M} < 1` will pull ratios lower and higher than 1 closer to 1. Large weights :math:`1 < \omega_{M}` will have the opposite effect.
 
 The Threshold
-....
+.............
 
 The threshold represents how far we are willing to allow the specific metric to drop before we consider there to be no utility. For example if we wish to keep Sell Through Rate (STR) at at least 85\% of its current value we would set :math:`\tau_{M} = 0.85` for that metric. Parameters with a ratio of STR lower than this threshold will have an objective function equal to 0.
 
@@ -160,7 +160,7 @@ The threshold represents how far we are willing to allow the specific metric to 
     It is also possible to use other thresholding functions like the logistic function (smoother) or some probability of violating the constraints.
 
 Log Space
-....
+.........
 
 We note that the objective functions decompose into log space readily, which is helpful because maximizing the original objective function is equivalent to maximizing it in log space (because it is a monotonic transform),
 
@@ -182,12 +182,12 @@ The log of the Heaviside function now returns a value of 0 or :math:`-\infty` an
         \end{equation}
 
 Example of Objective Functions
-----
+------------------------------
 
 Below are examples of different intuitive ideals and the resulting objective functions.
 
 Click Through Rate (CTR) Only
-....
+.............................
 
 Let's say we only care about CTR, and we want to make sure no parameters allow it to fall more than 95\%. We define :math:`\mathbb{P}` as;
 
@@ -206,7 +206,7 @@ which results in
     \end{equation}
 
 Clicks Per Opportunity (CPO)
-....
+............................
 
 Let's say we only care about Clicks Per Opportunity (CPO) which is the product of CTR and STR. We define :math:`\mathbb{P}` as;
 
@@ -227,7 +227,7 @@ which results in
 Note that :math:`\tau = 0` for a metric effectively removes the Heavyside function from the objective function for that metric.
 
 Mixture Example
-....
+...............
 
 Let's say we mostly care about CTR, but wouldn't mind if STR also went up. We don't want to make the site any more than 10\% slower though so we introduce a metric MDT, which will be the Mean Delivery Time (MDT) in milliseconds for the given set of parameters. We define :math:`\mathbb{P}` as;
 

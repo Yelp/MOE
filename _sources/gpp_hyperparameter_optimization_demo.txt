@@ -1,5 +1,5 @@
 gpp_hyperparameter_optimization_demo
-=====
+====================================
 
 **Contents:**
 
@@ -7,7 +7,7 @@ gpp_hyperparameter_optimization_demo
 
 
 gpp_hyperparameter_optimization_demo.cpp
-------
+----------------------------------------
 
 .. doxygenfile:: gpp_hyperparameter_optimization_demo.cpp
 

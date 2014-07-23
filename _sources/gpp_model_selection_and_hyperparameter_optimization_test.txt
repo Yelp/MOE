@@ -1,20 +1,17 @@
 gpp_model_selection_and_hyperparameter_optimization_test
-=====
+========================================================
 
 **Contents:**
 
     1. `gpp_model_selection_and_hyperparameter_optimization_test.hpp`_
     2. `gpp_model_selection_and_hyperparameter_optimization_test.cpp`_
 
-
 gpp_model_selection_and_hyperparameter_optimization_test.hpp
-------
+------------------------------------------------------------
 
 .. doxygenfile:: gpp_model_selection_and_hyperparameter_optimization_test.hpp
 
-
 gpp_model_selection_and_hyperparameter_optimization_test.cpp
-------
+------------------------------------------------------------
 
 .. doxygenfile:: gpp_model_selection_and_hyperparameter_optimization_test.cpp
-

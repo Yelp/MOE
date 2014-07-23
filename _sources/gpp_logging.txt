@@ -1,5 +1,5 @@
 gpp_logging
-=====
+===========
 
 **Contents:**
 
@@ -8,13 +8,13 @@ gpp_logging
 
 
 gpp_logging.hpp
-------
+---------------
 
 .. doxygenfile:: gpp_logging.hpp
 
 
 gpp_logging.cpp
-------
+---------------
 
 .. doxygenfile:: gpp_logging.cpp
 

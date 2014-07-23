@@ -37,6 +37,14 @@ moe.tests.optimal_learning.python.geometry_utils_test module
     :undoc-members:
     :show-inheritance:
 
+moe.tests.optimal_learning.python.linkers_test module
+-----------------------------------------------------
+
+.. automodule:: moe.tests.optimal_learning.python.linkers_test
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 moe.tests.optimal_learning.python.optimal_learning_test_case module
 -------------------------------------------------------------------
 

@@ -1,5 +1,5 @@
 gpp_core
-=====
+========
 
 **Contents:**
 
@@ -7,7 +7,7 @@ gpp_core
 
 
 gpp_core.cpp
-------
+------------
 
 .. doxygenfile:: gpp_core.cpp
 

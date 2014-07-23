@@ -1,5 +1,5 @@
 gpp_test_utils_test
-=====
+===================
 
 **Contents:**
 
@@ -8,13 +8,13 @@ gpp_test_utils_test
 
 
 gpp_test_utils_test.hpp
-------
+-----------------------
 
 .. doxygenfile:: gpp_test_utils_test.hpp
 
 
 gpp_test_utils_test.cpp
-------
+-----------------------
 
 .. doxygenfile:: gpp_test_utils_test.cpp
 

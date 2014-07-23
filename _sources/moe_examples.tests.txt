@@ -1,0 +1,54 @@
+moe_examples.tests package
+==========================
+
+Submodules
+----------
+
+moe_examples.tests.combined_example_test module
+-----------------------------------------------
+
+.. automodule:: moe_examples.tests.combined_example_test
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+moe_examples.tests.hyper_opt_of_gp_from_historical_data_test module
+-------------------------------------------------------------------
+
+.. automodule:: moe_examples.tests.hyper_opt_of_gp_from_historical_data_test
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+moe_examples.tests.mean_and_var_of_gp_from_historic_data_test module
+--------------------------------------------------------------------
+
+.. automodule:: moe_examples.tests.mean_and_var_of_gp_from_historic_data_test
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+moe_examples.tests.moe_example_test_case module
+-----------------------------------------------
+
+.. automodule:: moe_examples.tests.moe_example_test_case
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+moe_examples.tests.next_point_via_simple_endpoint_test module
+-------------------------------------------------------------
+
+.. automodule:: moe_examples.tests.next_point_via_simple_endpoint_test
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: moe_examples.tests
+    :members:
+    :undoc-members:
+    :show-inheritance:

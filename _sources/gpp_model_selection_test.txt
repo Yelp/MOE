@@ -1,0 +1,20 @@
+gpp_model_selection_test
+========================
+
+**Contents:**
+
+    1. `gpp_model_selection_test.hpp`_
+    2. `gpp_model_selection_test.cpp`_
+
+
+gpp_model_selection_test.hpp
+----------------------------
+
+.. doxygenfile:: gpp_model_selection_test.hpp
+
+
+gpp_model_selection_test.cpp
+----------------------------
+
+.. doxygenfile:: gpp_model_selection_test.cpp
+

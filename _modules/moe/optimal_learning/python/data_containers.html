@@ -62,18 +62,30 @@
         
             <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../why_moe.html">Why Do We Need MOE?</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../../why_moe.html#what-is-moe">What is MOE?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../why_moe.html#why-is-this-hard">Why is this hard?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../why_moe.html#other-methods">Other Methods</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../install.html">Install</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../../install.html#install-in-docker">Install in docker:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../install.html#install-from-source">Install from source:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../install.html#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below):</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../install.html#linux-tips">Linux Tips:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../install.html#cmake-tips">CMake Tips:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../install.html#install-in-docker">Install in docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../install.html#install-from-source">Install from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../install.html#osx-tips">OSX Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../install.html#building-boost">Building Boost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../install.html#linux-tips">Linux Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../install.html#cmake-tips">CMake Tips</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../moe_math.html">How does MOE work?</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe_math.html#build-a-gaussian-process-gp-with-the-historical-data">Build a Gaussian Process (GP) with the historical data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe_math.html#optimize-the-hyperparameters-of-the-gaussian-process">Optimize the hyperparameters of the Gaussian Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe_math.html#find-the-point-s-of-highest-expected-improvement-ei">Find the point(s) of highest Expected Improvement (EI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe_math.html#return-the-point-s-to-sample-then-repeat">Return the point(s) to sample, then repeat</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../demo_tutorial.html">Demo Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../demo_tutorial.html#the-interactive-demo">The Interactive Demo</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pretty_endpoints.html">Pretty Endpoints</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../objective_functions.html">Objective Functions</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../../objective_functions.html#what-is-an-objective-function">What is an objective function?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../objective_functions.html#properties-of-an-objective-function">Properties of an objective function</a></li>
@@ -106,6 +118,16 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../moe.html#module-moe">Module contents</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../moe_examples.html">moe_examples package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#module-moe_examples.next_point_via_simple_endpoint">moe_examples.next_point_via_simple_endpoint module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#module-moe_examples">Module contents</a></li>
+</ul>
+</li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../cpp_tree.html">C++ Files</a><ul>
@@ -128,23 +150,22 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../gpp_python_model_selection.html">gpp_python_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../gpp_math.html">gpp_math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../gpp_random_test.html">gpp_random_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_optimizer_parameters.html">gpp_optimizer_parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../gpp_random.html">gpp_random</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../gpp_geometry_test.html">gpp_geometry_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../gpp_linear_algebra.html">gpp_linear_algebra</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_core.html">gpp_core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_model_selection.html">gpp_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../gpp_optimization.html">gpp_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../gpp_covariance_test.html">gpp_covariance_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../gpp_python.html">gpp_python</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_model_selection_and_hyperparameter_optimization.html">gpp_model_selection_and_hyperparameter_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_model_selection_test.html">gpp_model_selection_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_optimization_parameters.html">gpp_optimization_parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../gpp_common.html">gpp_common</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_model_selection_and_hyperparameter_optimization_test.html">gpp_model_selection_and_hyperparameter_optimization_test</a></li>
 </ul>
 </li>
 </ul>
@@ -232,7 +253,7 @@
 <div class="viewcode-block" id="SamplePoint.json_payload"><a class="viewcode-back" href="../../../../moe.optimal_learning.python.html#moe.optimal_learning.python.data_containers.SamplePoint.json_payload">[docs]</a>    <span class="k">def</span> <span class="nf">json_payload</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Convert the sample_point into a dict to be consumed by json for a REST request.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">{</span>
-                <span class="s">&#39;point&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">point</span><span class="p">,</span>
+                <span class="s">&#39;point&#39;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">point</span><span class="p">),</span>  <span class="c"># json needs a list (e.g., this may be a ndarray)</span>
                 <span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
                 <span class="s">&#39;value_var&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">noise_variance</span><span class="p">,</span>
                 <span class="p">}</span>
@@ -265,12 +286,12 @@
 
 <span class="sd">    Users will likely find it most convenient to store experiment historical data in &quot;tuples&quot; of</span>
 <span class="sd">    (coordinates, value, noise); for example, these could be the columns of a database row, part of an ORM, etc.</span>
-<span class="sd">    The SamplePoint class (above) provides a convenient representation of this input format, but users are *not* required</span>
+<span class="sd">    The :class:`moe.optimal_learning.python.SamplePoint` class (above) provides a convenient representation of this input format, but users are *not* required</span>
 <span class="sd">    to use it.</span>
 
 <span class="sd">    But the internals of optimal_learning will generally do computations on all coordinates at once, all values at once,</span>
 <span class="sd">    and/or all noise measurements at once. So this object reads the input data and &quot;transposes&quot; the ordering so that</span>
-<span class="sd">    we have a matrix of coordinates and vectors of values and noises. Compared to storing a list of SampledPoint,</span>
+<span class="sd">    we have a matrix of coordinates and vectors of values and noises. Compared to storing a list of :class:`moe.optimal_learning.python.SamplePoint`,</span>
 <span class="sd">    these internals save on redundant data transformations and improve locality.</span>
 
 <span class="sd">    Note that the points in HistoricalData are *not* associated to any particular domain. HistoricalData could be (and is)</span>
@@ -295,7 +316,7 @@
 <span class="sd">        :param dim: number of spatial dimensions; must line up with len(sample_points[0]) if sample_points is empty</span>
 <span class="sd">        :type dim: int &gt; 0</span>
 <span class="sd">        :param sample_points: the already-sampled points: coordinates, objective function values, and noise variance</span>
-<span class="sd">        :type sample_points: iterable of iterables with the same structure as a list of SamplePoint</span>
+<span class="sd">        :type sample_points: iterable of iterables with the same structure as a list of :class:`moe.optimal_learning.python.SamplePoint`</span>
 <span class="sd">        :param validate: whether to sanity-check the input sample_points</span>
 <span class="sd">        :type validate: boolean</span>
 
@@ -338,13 +359,7 @@
 
 <div class="viewcode-block" id="HistoricalData.json_payload"><a class="viewcode-back" href="../../../../moe.optimal_learning.python.html#moe.optimal_learning.python.data_containers.HistoricalData.json_payload">[docs]</a>    <span class="k">def</span> <span class="nf">json_payload</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct a json serializeable and MOE REST recognizeable dictionary of the historical data.&quot;&quot;&quot;</span>
-        <span class="n">json_points_sampled</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_list_of_sample_points</span><span class="p">():</span>
-            <span class="n">json_points_sampled</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
-                    <span class="s">&#39;point&#39;</span><span class="p">:</span> <span class="n">point</span><span class="o">.</span><span class="n">point</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>  <span class="c"># json needs the numpy array to be a list</span>
-                    <span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="n">point</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
-                    <span class="s">&#39;value_var&#39;</span><span class="p">:</span> <span class="n">point</span><span class="o">.</span><span class="n">noise_variance</span><span class="p">,</span>
-                    <span class="p">})</span>
+        <span class="n">json_points_sampled</span> <span class="o">=</span> <span class="p">[</span><span class="n">point</span><span class="o">.</span><span class="n">json_payload</span><span class="p">()</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_list_of_sample_points</span><span class="p">()]</span>
         <span class="k">return</span> <span class="p">{</span><span class="s">&#39;points_sampled&#39;</span><span class="p">:</span> <span class="n">json_points_sampled</span><span class="p">}</span>
 </div>
     <span class="nd">@staticmethod</span>
@@ -354,7 +369,7 @@
 <span class="sd">        :param dim: number of (expected) spatial dimensions</span>
 <span class="sd">        :type dim: int &gt; 0</span>
 <span class="sd">        :param sample_points: the already-sampled points: coordinates, objective function values, and noise variance</span>
-<span class="sd">        :type sample_points: iterable of iterables with the same structure as a list of SamplePoint</span>
+<span class="sd">        :type sample_points: iterable of iterables with the same structure as a list of :class:`moe.optimal_learning.python.SamplePoint`</span>
 <span class="sd">        :return: True if inputs are valid</span>
 <span class="sd">        :rtype: boolean</span>
 
@@ -399,7 +414,7 @@
         <span class="sd">&quot;&quot;&quot;Append the contents of ``sample_points`` to the data members of this class.</span>
 
 <span class="sd">        :param sample_points: the already-sampled points: coordinates, objective function values, and noise variance</span>
-<span class="sd">        :type sample_points: iterable of iterables with the same structure as a list of SamplePoint</span>
+<span class="sd">        :type sample_points: iterable of iterables with the same structure as a list of :class:`moe.optimal_learning.python.SamplePoint`</span>
 <span class="sd">        :param validate: whether to sanity-check the input sample_points</span>
 <span class="sd">        :type validate: boolean</span>
 
@@ -422,7 +437,7 @@
         <span class="sd">&quot;&quot;&quot;Append lists of points_sampled, their values, and their noise variances to the data members of this class.</span>
 
 <span class="sd">        This class (see class docstring) stores its data members as numpy arrays; this method provides a way for users</span>
-<span class="sd">        who already have data in this format to append directly instead of creating an intermediate SamplePoint list.</span>
+<span class="sd">        who already have data in this format to append directly instead of creating an intermediate :class:`moe.optimal_learning.python.SamplePoint` list.</span>
 
 <span class="sd">        :param points_sampled: already-sampled points</span>
 <span class="sd">        :type points_sampled: array of float64 with shape (num_sampled, dim)</span>
@@ -450,7 +465,7 @@
 <span class="sd">        The list of SamplePoint format is more convenient for human consumption/introspection.</span>
 
 <span class="sd">        :return: list where i-th SamplePoint has data from the i-th entry of each self.points_sampled* member.</span>
-<span class="sd">        :rtype: list of SamplePoint</span>
+<span class="sd">        :rtype: list of :class:`moe.optimal_learning.python.SamplePoint`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">SamplePoint</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_points_sampled</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_points_sampled_value</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">noise_variance</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_points_sampled_noise_variance</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
@@ -462,7 +477,7 @@
 <span class="sd">        :param offset: the index offset to the internal arrays at which to copy in sample_points</span>
 <span class="sd">        :type offset: int &gt;= 0</span>
 <span class="sd">        :param sample_points: the already-sampled points: coordinates, objective function values, and noise variance</span>
-<span class="sd">        :type sample_points: iterable of iterables with the same structure as a list of SamplePoint</span>
+<span class="sd">        :type sample_points: iterable of iterables with the same structure as a list of :class:`moe.optimal_learning.python.SamplePoint`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">sample_point</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sample_points</span><span class="p">):</span>

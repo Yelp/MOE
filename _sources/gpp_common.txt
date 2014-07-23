@@ -1,5 +1,5 @@
 gpp_common
-=====
+==========
 
 **Contents:**
 
@@ -7,7 +7,7 @@ gpp_common
 
 
 gpp_common.hpp
-------
+--------------
 
 .. doxygenfile:: gpp_common.hpp
 

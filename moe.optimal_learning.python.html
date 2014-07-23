@@ -64,18 +64,30 @@
         
             <ul>
 <li class="toctree-l1"><a class="reference internal" href="why_moe.html">Why Do We Need MOE?</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="why_moe.html#what-is-moe">What is MOE?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="why_moe.html#why-is-this-hard">Why is this hard?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="why_moe.html#other-methods">Other Methods</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Install</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="install.html#install-in-docker">Install in docker:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#install-from-source">Install from source:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below):</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#install-in-docker">Install in docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#install-from-source">Install from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#osx-tips">OSX Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#building-boost">Building Boost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="moe_math.html">How does MOE work?</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#build-a-gaussian-process-gp-with-the-historical-data">Build a Gaussian Process (GP) with the historical data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#optimize-the-hyperparameters-of-the-gaussian-process">Optimize the hyperparameters of the Gaussian Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#find-the-point-s-of-highest-expected-improvement-ei">Find the point(s) of highest Expected Improvement (EI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#return-the-point-s-to-sample-then-repeat">Return the point(s) to sample, then repeat</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="demo_tutorial.html">Demo Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="demo_tutorial.html#the-interactive-demo">The Interactive Demo</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pretty_endpoints.html">Pretty Endpoints</a></li>
 <li class="toctree-l1"><a class="reference internal" href="objective_functions.html">Objective Functions</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="objective_functions.html#what-is-an-objective-function">What is an objective function?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="objective_functions.html#properties-of-an-objective-function">Properties of an objective function</a></li>
@@ -108,6 +120,16 @@
 <li class="toctree-l2"><a class="reference internal" href="moe.html#module-moe">Module contents</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="moe_examples.html">moe_examples package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.next_point_via_simple_endpoint">moe_examples.next_point_via_simple_endpoint module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples">Module contents</a></li>
+</ul>
+</li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="cpp_tree.html">C++ Files</a><ul>
@@ -130,23 +152,22 @@
 <li class="toctree-l2"><a class="reference internal" href="gpp_python_model_selection.html">gpp_python_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_math.html">gpp_math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_random_test.html">gpp_random_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimizer_parameters.html">gpp_optimizer_parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_random.html">gpp_random</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra.html">gpp_linear_algebra</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_core.html">gpp_core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection.html">gpp_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_covariance_test.html">gpp_covariance_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_python.html">gpp_python</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_and_hyperparameter_optimization.html">gpp_model_selection_and_hyperparameter_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_test.html">gpp_model_selection_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_optimization_parameters.html">gpp_optimization_parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_common.html">gpp_common</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_and_hyperparameter_optimization_test.html">gpp_model_selection_and_hyperparameter_optimization_test</a></li>
 </ul>
 </li>
 </ul>
@@ -267,11 +288,11 @@
 <p>A data container for storing the historical data from an entire experiment in a layout convenient for this library.</p>
 <p>Users will likely find it most convenient to store experiment historical data in &#8220;tuples&#8221; of
 (coordinates, value, noise); for example, these could be the columns of a database row, part of an ORM, etc.
-The SamplePoint class (above) provides a convenient representation of this input format, but users are <em>not</em> required
+The <tt class="xref py py-class docutils literal"><span class="pre">moe.optimal_learning.python.SamplePoint</span></tt> class (above) provides a convenient representation of this input format, but users are <em>not</em> required
 to use it.</p>
 <p>But the internals of optimal_learning will generally do computations on all coordinates at once, all values at once,
 and/or all noise measurements at once. So this object reads the input data and &#8220;transposes&#8221; the ordering so that
-we have a matrix of coordinates and vectors of values and noises. Compared to storing a list of SampledPoint,
+we have a matrix of coordinates and vectors of values and noises. Compared to storing a list of <tt class="xref py py-class docutils literal"><span class="pre">moe.optimal_learning.python.SamplePoint</span></tt>,
 these internals save on redundant data transformations and improve locality.</p>
 <p>Note that the points in HistoricalData are <em>not</em> associated to any particular domain. HistoricalData could be (and is)
 used for model selection as well as Gaussian Process manipulation, Expected Improvement optimization, etc. In the former,
@@ -298,7 +319,7 @@ experiments.</p>
 <tt class="descname">append_historical_data</tt><big>(</big><em>points_sampled</em>, <em>points_sampled_value</em>, <em>points_sampled_noise_variance</em>, <em>validate=False</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/data_containers.html#HistoricalData.append_historical_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.data_containers.HistoricalData.append_historical_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Append lists of points_sampled, their values, and their noise variances to the data members of this class.</p>
 <p>This class (see class docstring) stores its data members as numpy arrays; this method provides a way for users
-who already have data in this format to append directly instead of creating an intermediate SamplePoint list.</p>
+who already have data in this format to append directly instead of creating an intermediate <tt class="xref py py-class docutils literal"><span class="pre">moe.optimal_learning.python.SamplePoint</span></tt> list.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -324,7 +345,7 @@ who already have data in this format to append directly instead of creating an i
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>sample_points</strong> (<em>iterable of iterables with the same structure as a list of SamplePoint</em>) &#8211; the already-sampled points: coordinates, objective function values, and noise variance</li>
+<li><strong>sample_points</strong> (iterable of iterables with the same structure as a list of <tt class="xref py py-class docutils literal"><span class="pre">moe.optimal_learning.python.SamplePoint</span></tt>) &#8211; the already-sampled points: coordinates, objective function values, and noise variance</li>
 <li><strong>validate</strong> (<em>boolean</em>) &#8211; whether to sanity-check the input sample_points</li>
 </ul>
 </td>
@@ -380,7 +401,7 @@ who already have data in this format to append directly instead of creating an i
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">list where i-th SamplePoint has data from the i-th entry of each self.points_sampled* member.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list of SamplePoint</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list of <tt class="xref py py-class docutils literal"><span class="pre">moe.optimal_learning.python.SamplePoint</span></tt></td>
 </tr>
 </tbody>
 </table>
@@ -422,7 +443,7 @@ who already have data in this format to append directly instead of creating an i
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>dim</strong> (<em>int &gt; 0</em>) &#8211; number of (expected) spatial dimensions</li>
-<li><strong>sample_points</strong> (<em>iterable of iterables with the same structure as a list of SamplePoint</em>) &#8211; the already-sampled points: coordinates, objective function values, and noise variance</li>
+<li><strong>sample_points</strong> (iterable of iterables with the same structure as a list of <tt class="xref py py-class docutils literal"><span class="pre">moe.optimal_learning.python.SamplePoint</span></tt>) &#8211; the already-sampled points: coordinates, objective function values, and noise variance</li>
 </ul>
 </td>
 </tr>
@@ -659,37 +680,56 @@ for more details on the latin hypercube sampling process.</p>
 </dd></dl>
 
 <dl class="class">
-<dt id="moe.optimal_learning.python.linkers.OptimizationMethod">
-<em class="property">class </em><tt class="descclassname">moe.optimal_learning.python.linkers.</tt><tt class="descname">OptimizationMethod</tt><a class="headerlink" href="#moe.optimal_learning.python.linkers.OptimizationMethod" title="Permalink to this definition">¶</a></dt>
+<dt id="moe.optimal_learning.python.linkers.LogLikelihoodMethod">
+<em class="property">class </em><tt class="descclassname">moe.optimal_learning.python.linkers.</tt><tt class="descname">LogLikelihoodMethod</tt><a class="headerlink" href="#moe.optimal_learning.python.linkers.LogLikelihoodMethod" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">tuple</span></tt></p>
-<p>OptimizationMethod(optimization_type, python_parameters_class, cpp_parameters_class, python_optimizer_class, cpp_optimizer_class)</p>
+<p>LogLikelihoodMethod(log_likelihood_type, log_likelihood_class)</p>
 <dl class="attribute">
-<dt id="moe.optimal_learning.python.linkers.OptimizationMethod.cpp_optimizer_class">
-<tt class="descname">cpp_optimizer_class</tt><a class="headerlink" href="#moe.optimal_learning.python.linkers.OptimizationMethod.cpp_optimizer_class" title="Permalink to this definition">¶</a></dt>
+<dt id="moe.optimal_learning.python.linkers.LogLikelihoodMethod.log_likelihood_class">
+<tt class="descname">log_likelihood_class</tt><a class="headerlink" href="#moe.optimal_learning.python.linkers.LogLikelihoodMethod.log_likelihood_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 1</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="moe.optimal_learning.python.linkers.LogLikelihoodMethod.log_likelihood_type">
+<tt class="descname">log_likelihood_type</tt><a class="headerlink" href="#moe.optimal_learning.python.linkers.LogLikelihoodMethod.log_likelihood_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 0</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="moe.optimal_learning.python.linkers.OptimizerMethod">
+<em class="property">class </em><tt class="descclassname">moe.optimal_learning.python.linkers.</tt><tt class="descname">OptimizerMethod</tt><a class="headerlink" href="#moe.optimal_learning.python.linkers.OptimizerMethod" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">tuple</span></tt></p>
+<p>OptimizerMethod(optimizer_type, python_parameters_class, cpp_parameters_class, python_optimizer_class, cpp_optimizer_class)</p>
+<dl class="attribute">
+<dt id="moe.optimal_learning.python.linkers.OptimizerMethod.cpp_optimizer_class">
+<tt class="descname">cpp_optimizer_class</tt><a class="headerlink" href="#moe.optimal_learning.python.linkers.OptimizerMethod.cpp_optimizer_class" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 4</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="moe.optimal_learning.python.linkers.OptimizationMethod.cpp_parameters_class">
-<tt class="descname">cpp_parameters_class</tt><a class="headerlink" href="#moe.optimal_learning.python.linkers.OptimizationMethod.cpp_parameters_class" title="Permalink to this definition">¶</a></dt>
+<dt id="moe.optimal_learning.python.linkers.OptimizerMethod.cpp_parameters_class">
+<tt class="descname">cpp_parameters_class</tt><a class="headerlink" href="#moe.optimal_learning.python.linkers.OptimizerMethod.cpp_parameters_class" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 2</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="moe.optimal_learning.python.linkers.OptimizationMethod.optimization_type">
-<tt class="descname">optimization_type</tt><a class="headerlink" href="#moe.optimal_learning.python.linkers.OptimizationMethod.optimization_type" title="Permalink to this definition">¶</a></dt>
+<dt id="moe.optimal_learning.python.linkers.OptimizerMethod.optimizer_type">
+<tt class="descname">optimizer_type</tt><a class="headerlink" href="#moe.optimal_learning.python.linkers.OptimizerMethod.optimizer_type" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 0</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="moe.optimal_learning.python.linkers.OptimizationMethod.python_optimizer_class">
-<tt class="descname">python_optimizer_class</tt><a class="headerlink" href="#moe.optimal_learning.python.linkers.OptimizationMethod.python_optimizer_class" title="Permalink to this definition">¶</a></dt>
+<dt id="moe.optimal_learning.python.linkers.OptimizerMethod.python_optimizer_class">
+<tt class="descname">python_optimizer_class</tt><a class="headerlink" href="#moe.optimal_learning.python.linkers.OptimizerMethod.python_optimizer_class" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 3</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="moe.optimal_learning.python.linkers.OptimizationMethod.python_parameters_class">
-<tt class="descname">python_parameters_class</tt><a class="headerlink" href="#moe.optimal_learning.python.linkers.OptimizationMethod.python_parameters_class" title="Permalink to this definition">¶</a></dt>
+<dt id="moe.optimal_learning.python.linkers.OptimizerMethod.python_parameters_class">
+<tt class="descname">python_parameters_class</tt><a class="headerlink" href="#moe.optimal_learning.python.linkers.OptimizerMethod.python_parameters_class" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 1</p>
 </dd></dl>
 
@@ -893,7 +933,7 @@ cpp_wrappers.expected_improvement.ExpectedImprovement to python_version.gaussian
 <p>An implementation of the ABCs in interfaces using Python (with numpy/scipy). These routines are more for educational and
 experimental purposes. Python is generally simpler than C++ so the hope is that this package is more accessible to new
 users hoping to learn about optimal_learning. Additionally, development time in Python is shorter, so it could be convenient
-to test new ideas here before fully implementing them in C++. For example, developers could test a new OptimizationInterface
+to test new ideas here before fully implementing them in C++. For example, developers could test a new OptimizerInterface
 implementation in Python while connecting it to C++ evaluation of objective functions.</p>
 </div>
 </div>

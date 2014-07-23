@@ -1,5 +1,5 @@
 gpp_expected_improvement_demo
-=====
+=============================
 
 **Contents:**
 
@@ -7,7 +7,7 @@ gpp_expected_improvement_demo
 
 
 gpp_expected_improvement_demo.cpp
-------
+---------------------------------
 
 .. doxygenfile:: gpp_expected_improvement_demo.cpp
 

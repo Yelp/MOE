@@ -1,5 +1,5 @@
 gpp_geometry
-=====
+============
 
 **Contents:**
 
@@ -7,7 +7,7 @@ gpp_geometry
 
 
 gpp_geometry.hpp
-------
+----------------
 
 .. doxygenfile:: gpp_geometry.hpp
 

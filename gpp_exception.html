@@ -64,18 +64,30 @@
         
             <ul>
 <li class="toctree-l1"><a class="reference internal" href="why_moe.html">Why Do We Need MOE?</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="why_moe.html#what-is-moe">What is MOE?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="why_moe.html#why-is-this-hard">Why is this hard?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="why_moe.html#other-methods">Other Methods</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Install</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="install.html#install-in-docker">Install in docker:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#install-from-source">Install from source:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below):</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#install-in-docker">Install in docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#install-from-source">Install from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#osx-tips">OSX Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#building-boost">Building Boost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="moe_math.html">How does MOE work?</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#build-a-gaussian-process-gp-with-the-historical-data">Build a Gaussian Process (GP) with the historical data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#optimize-the-hyperparameters-of-the-gaussian-process">Optimize the hyperparameters of the Gaussian Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#find-the-point-s-of-highest-expected-improvement-ei">Find the point(s) of highest Expected Improvement (EI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#return-the-point-s-to-sample-then-repeat">Return the point(s) to sample, then repeat</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="demo_tutorial.html">Demo Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="demo_tutorial.html#the-interactive-demo">The Interactive Demo</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pretty_endpoints.html">Pretty Endpoints</a></li>
 <li class="toctree-l1"><a class="reference internal" href="objective_functions.html">Objective Functions</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="objective_functions.html#what-is-an-objective-function">What is an objective function?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="objective_functions.html#properties-of-an-objective-function">Properties of an objective function</a></li>
@@ -108,6 +120,16 @@
 <li class="toctree-l2"><a class="reference internal" href="moe.html#module-moe">Module contents</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="moe_examples.html">moe_examples package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.next_point_via_simple_endpoint">moe_examples.next_point_via_simple_endpoint module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples">Module contents</a></li>
+</ul>
+</li>
 </ul>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="cpp_tree.html">C++ Files</a><ul class="current">
@@ -130,23 +152,22 @@
 <li class="toctree-l2"><a class="reference internal" href="gpp_python_model_selection.html">gpp_python_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_math.html">gpp_math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_random_test.html">gpp_random_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimizer_parameters.html">gpp_optimizer_parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_random.html">gpp_random</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra.html">gpp_linear_algebra</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_core.html">gpp_core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection.html">gpp_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_covariance_test.html">gpp_covariance_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_python.html">gpp_python</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_and_hyperparameter_optimization.html">gpp_model_selection_and_hyperparameter_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_test.html">gpp_model_selection_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_optimization_parameters.html">gpp_optimization_parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_common.html">gpp_common</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_and_hyperparameter_optimization_test.html">gpp_model_selection_and_hyperparameter_optimization_test</a></li>
 </ul>
 </li>
 </ul>
@@ -209,7 +230,10 @@ OL_THROW_EXCEPTION(MyException, ...);  // preferred
 </pre></div>
 </div>
 <p>These are analogous to boost::throw_exception() and BOOST_THROW_EXCEPTION.</p>
-<p>ALL exception objects MUST inherit publicly from std::exception.</p>
+<p>ALL exception objects MUST inherit publicly from std::exception. No exceptions (ha ha).</p>
+<p>This file defines the base OptimalLearningException (derived from std::exception) and
+derives several exceptions from it. Each exception type has docs describing the
+output of what() in the class comments.</p>
 <p>Additionally, to use the OL_THROW_EXCEPTION macro (see its #define for details), the
 first two arguments in MyException&#8217;s ctor must be char <a href="#id1"><span class="problematic" id="id2">*</span></a>.</p>
 <p>Users may define the macro OL_NO_EXCEPTIONS to <em>disable</em> exception
@@ -316,24 +340,33 @@ Checks that the argument inherits from std::exception and invokes throw.</p>
 </p>
 </div></blockquote>
 </div></blockquote>
-<p><p id="project0classoptimal__learning_1_1_runtime_exception"><em>class</em> <strong>RuntimeException</strong></p>
+<p><p id="project0classoptimal__learning_1_1_optimal_learning_exception"><em>class</em> <strong>OptimalLearningException</strong></p>
 <blockquote>
 <div><p></p>
-<p><p>Exception to handle general runtime errors (e.g., not fitting into other exception types).
-Subclasses std::exception.</p>
+<p><p><strong>Overview</strong></p>
+<p>Exception to handle general runtime errors (e.g., not fitting into other exception types).
+Subclasses std::exception.
+Serves as the superclass for all other custom exceptions in the <tt class="docutils literal"><span class="pre">optimal_learning</span></tt> library.</p>
 <p>This class is essentially the same as std::runtime_error but it includes a ctor with
 some extra logic for formatting the error message.</p>
-<p>Holds only a std::string containing the message produced by what(). Note that
-any exceptions from std::string operations (e.g., std::bad_alloc) will cause std::terminate().</p>
+<p>Holds only a std::string containing the message produced by what().</p>
+<p><strong>Message Format</strong></p>
+<p>The <tt class="docutils literal"><span class="pre">what()</span></tt> message is formatted in the class ctor (capitals indicate variable information):</p>
+<div class="highlight-python"><div class="highlight"><pre>R&quot;%%(
+OptimalLearningException: CUSTOM_MESSAGE FUNCTION_NAME FILE_LINE_INFO
+)%%&quot;
+</pre></div>
+</div>
+<p>This format should be overriden by subclasses (at the minimum showing a different exception name).</p>
  </p>
 <em>Public Functions</em><blockquote>
-<div><p><span class="target" id="project0classoptimal__learning_1_1_runtime_exception_1adad351177e0b4588cdd57002a8adbe38"></span><div class="line-block">
-<div class="line"> <strong>RuntimeException</strong>(char const * line_info, char const * func_info, char const * custom_message)</div>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_optimal_learning_exception_1a4386fbcaeeaaf92e35091cfb68c3c399"></span><div class="line-block">
+<div class="line"> <strong>OptimalLearningException</strong>(char const * line_info, char const * func_info, char const * custom_message)</div>
 </div>
 </p>
 <blockquote>
 <div><p></p>
-<p><p>Constructs a RuntimeException with the specified message.</p>
+<p><p>Constructs a OptimalLearningException with the specified message.</p>
 <dl class="docutils">
 <dt><strong>Parameters</strong>:</dt>
 <dd><table class="first last docutils field-list" frame="void" rules="none">
@@ -353,7 +386,7 @@ any exceptions from std::string operations (e.g., std::bad_alloc) will cause std
 </dl>
  </p>
 </div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_runtime_exception_1a698794d233a3418bda82ee8fbb82ce21"></span><div class="line-block">
+<p><span class="target" id="project0classoptimal__learning_1_1_optimal_learning_exception_1a1c7e0b16cda3457e4b5f247c0d58c689"></span><div class="line-block">
 <div class="line">const char * <strong>what</strong>()</div>
 </div>
 </p>
@@ -361,20 +394,14 @@ any exceptions from std::string operations (e.g., std::bad_alloc) will cause std
 <div><p></p>
 <p><p>Provides a C-string containing information about the conditions of the exception.
 See: <a class="reference external" href="http://en.cppreference.com/w/cpp/error/exception">http://en.cppreference.com/w/cpp/error/exception</a></p>
-<p>The message is formatted in the class ctor (capitals indicate variable information):</p>
-<div class="highlight-python"><div class="highlight"><pre>R&quot;%%(
-RuntimeException: CUSTOM_MESSAGE FUNCTION_NAME FILE_LINE_INFO
-)%%&quot;
-</pre></div>
-</div>
 <dl class="docutils">
 <dt><strong>Returns</strong>:</dt>
 <dd>C-style char string describing the exception.</dd>
 </dl>
  </p>
 </div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_runtime_exception_1a9bc26f38cddbfd6c5f2e2fae2799423a"></span><div class="line-block">
-<div class="line"> <strong>RuntimeException</strong>()</div>
+<p><span class="target" id="project0classoptimal__learning_1_1_optimal_learning_exception_1ab43f8cc58c01d7b4aa83dc4f10389f70"></span><div class="line-block">
+<div class="line"> <strong>OptimalLearningException</strong>()</div>
 </div>
 </p>
 <blockquote>
@@ -383,16 +410,69 @@ RuntimeException: CUSTOM_MESSAGE FUNCTION_NAME FILE_LINE_INFO
 </div></blockquote>
 </div></blockquote>
 <em>Public Static Attributes</em><blockquote>
-<div><p><span class="target" id="project0classoptimal__learning_1_1_runtime_exception_1ac248946d78e4235508c9f58fc3526588"></span>constexpr char const * <strong>kName</strong></p>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_optimal_learning_exception_1aa2ffd19f0c5002c97e529a8f3cffbf7d"></span>constexpr char const * <strong>kName</strong></p>
 <blockquote>
 <div><p>String name of this exception for logging. </p>
 <p></p>
 </div></blockquote>
 </div></blockquote>
-<em>Private Members</em><blockquote>
-<div><p><span class="target" id="project0classoptimal__learning_1_1_runtime_exception_1a89397a76a5c041eb6755729c3f0b7ac5"></span>std::string <strong>message_</strong></p>
+<em>Protected Functions</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_optimal_learning_exception_1a40f6c5ff7be6d47ea683105b1e64d492"></span><div class="line-block">
+<div class="line"> <strong>OptimalLearningException</strong>(char const * name)</div>
+</div>
+</p>
 <blockquote>
-<div><p>a custom message describing this exception, produced by <tt class="docutils literal"><a class="reference internal" href="#project0classoptimal__learning_1_1_runtime_exception_1a698794d233a3418bda82ee8fbb82ce21"><em><span class="pre">what()</span></em></a></tt>. </p>
+<div><p></p>
+<p><p>Constructs a OptimalLearningException with the specified name.
+This is used by subclasses to override the class name in the message text.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">name[]:</th><td class="field-body">the exception name to write into the message</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_optimal_learning_exception_1a996480bcb87db69404eeea85cb0930f9"></span><div class="line-block">
+<div class="line">void <strong>AppendCustomMessageAndDebugInfo</strong>(char const * line_info, char const * func_info, char const * custom_message)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Utility function to append some additional info (file/line number, function name,
+and/or a custom message) to a specified string.
+This is meant to be used for constructing what() messages for the exception classes
+in gpp_exception.hpp.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">line_info[]:</th><td class="field-body">ptr to char array containing __FILE__ and __LINE__ info; e.g., from OL_STRINGIFY_FILE_AND_LINE</td>
+</tr>
+<tr class="field-even field"><th class="field-name">func_info[]:</th><td class="field-body">optional ptr to char array from OL_CURRENT_FUNCTION_NAME or similar</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">custom_message[]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">optional ptr to char array with any additional text/info to print/log</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+</div></blockquote>
+<em>Protected Attributes</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_optimal_learning_exception_1a9fefafb7cff7bcd78f9444f75cbb9547"></span>std::string <strong>message_</strong></p>
+<blockquote>
+<div><p>a custom message describing this exception, produced by <tt class="docutils literal"><a class="reference internal" href="#project0classoptimal__learning_1_1_optimal_learning_exception_1a1c7e0b16cda3457e4b5f247c0d58c689"><em><span class="pre">what()</span></em></a></tt>. </p>
 <p></p>
 </div></blockquote>
 </div></blockquote>
@@ -401,11 +481,17 @@ RuntimeException: CUSTOM_MESSAGE FUNCTION_NAME FILE_LINE_INFO
 <p><p id="project0classoptimal__learning_1_1_bounds_exception"><em>class</em> <strong>BoundsException</strong></p>
 <blockquote>
 <div><p></p>
-<p><p>Exception to capture value &lt; min_value OR value &gt; max_value.
-Subclasses std::exception.</p>
+<p><p><strong>Overview</strong></p>
+<p>Exception to capture value &lt; min_value OR value &gt; max_value.</p>
 <p>Stores value, min, and max for debugging/logging/reacting purposes.</p>
-<p>Also holds a std::string containing the message produced by what(). Note that
-any exceptions from std::string operations (e.g., std::bad_alloc) will cause std::terminate().</p>
+<p><strong>Message Format</strong></p>
+<p>The <tt class="docutils literal"><span class="pre">what()</span></tt> message is formatted in the class ctor (capitals indicate variable information):</p>
+<div class="highlight-python"><div class="highlight"><pre>R&quot;%%(
+BoundsException: VALUE is not in range [MIN, MAX].
+CUSTOM_MESSAGE FUNCTION_NAME FILE_LINE_INFO
+)%%&quot;
+</pre></div>
+</div>
  </p>
 <em>Public Functions</em><blockquote>
 <div><p><span class="target" id="project0classoptimal__learning_1_1_bounds_exception_1aae0c786274e1b2c805f59f63a14ff4a4"></span><div class="line-block">
@@ -437,27 +523,6 @@ any exceptions from std::string operations (e.g., std::bad_alloc) will cause std
 </tbody>
 </table>
 </dd>
-</dl>
- </p>
-</div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_bounds_exception_1a719026792eb425942e176551892120cf"></span><div class="line-block">
-<div class="line">const char * <strong>what</strong>()</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p><p>Provides a C-string containing information about the conditions of the exception.
-See: <a class="reference external" href="http://en.cppreference.com/w/cpp/error/exception">http://en.cppreference.com/w/cpp/error/exception</a></p>
-<p>The message is formatted in the class ctor (capitals indicate variable information):</p>
-<div class="highlight-python"><div class="highlight"><pre>R&quot;%%(
-BoundsException: VALUE is not in range [MIN, MAX].
-CUSTOM_MESSAGE FUNCTION_NAME FILE_LINE_INFO
-)%%&quot;
-</pre></div>
-</div>
-<dl class="docutils">
-<dt><strong>Returns</strong>:</dt>
-<dd>C-style char string describing the exception.</dd>
 </dl>
  </p>
 </div></blockquote>
@@ -527,11 +592,6 @@ CUSTOM_MESSAGE FUNCTION_NAME FILE_LINE_INFO
 <div><p></p>
 <p></p>
 </div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_bounds_exception_1a7f0e74d9acb6a901c4994548595e76df"></span>std::string <strong>message_</strong></p>
-<blockquote>
-<div><p>a custom message describing this exception, produced by <tt class="docutils literal"><a class="reference internal" href="#project0classoptimal__learning_1_1_bounds_exception_1a719026792eb425942e176551892120cf"><em><span class="pre">what()</span></em></a></tt>. </p>
-<p></p>
-</div></blockquote>
 </div></blockquote>
 </div></blockquote>
 </p>
@@ -540,6 +600,7 @@ CUSTOM_MESSAGE FUNCTION_NAME FILE_LINE_INFO
 <div><p></p>
 <p><p>Exception to capture value &lt; min_value.
 Simple subclass of BoundsException that sets the max argument to std::numeric_limits&lt;ValueType&gt;::max()</p>
+<p>See BoundsException for <tt class="docutils literal"><span class="pre">what()</span></tt> message format.</p>
  </p>
 <em>Public Functions</em><blockquote>
 <div><p><span class="target" id="project0classoptimal__learning_1_1_lower_bound_exception_1ab12184cc6490aadec3e919fc901290a2"></span><div class="line-block">
@@ -595,6 +656,7 @@ Simple subclass of BoundsException that sets the max argument to std::numeric_li
 <div><p></p>
 <p><p>Exception to capture value &gt; max_value.
 Simple subclass of BoundsException that sets the min argument to std::numeric_limits&lt;ValueType&gt;::lowest()</p>
+<p>See BoundsException for <tt class="docutils literal"><span class="pre">what()</span></tt> message format.</p>
  </p>
 <em>Public Functions</em><blockquote>
 <div><p><span class="target" id="project0classoptimal__learning_1_1_upper_bound_exception_1a406be466e2c455e165b6529c4d15e97f"></span><div class="line-block">
@@ -648,12 +710,26 @@ Simple subclass of BoundsException that sets the min argument to std::numeric_li
 <p><p id="project0classoptimal__learning_1_1_invalid_value_exception"><em>class</em> <strong>InvalidValueException</strong></p>
 <blockquote>
 <div><p></p>
-<p><p>Exception to capture value != truth (+/- tolerance).
-The tolerance parameter is optional and only usable with floating point data types.
-Subclasses std::exception.</p>
+<p><p><strong>Overview</strong></p>
+<p>Exception to capture value != truth (+/- tolerance).
+The tolerance parameter is optional and only usable with floating point data types.</p>
 <p>Stores value and truth (and tolerance as applicable) for debugging/logging/reacting purposes.</p>
-<p>Also holds a std::string containing the message produced by what(). Note that
-any exceptions from std::string operations (e.g., std::bad_alloc) will cause std::terminate().</p>
+<p><strong>Message Format</strong></p>
+<p>The <tt class="docutils literal"><span class="pre">what()</span></tt> message is formatted in the class ctor (capitals indicate variable information):</p>
+<div class="highlight-python"><div class="highlight"><pre>R&quot;%%(
+InvalidValueException: VALUE != TRUTH (value != truth).
+CUSTOM_MESSAGE FUNCTION_NAME FILE_LINE_INFO
+)%%&quot;
+</pre></div>
+</div>
+<p>OR</p>
+<div class="highlight-python"><div class="highlight"><pre>R&quot;%%(
+InvalidValueException: VALUE != TRUTH ± TOLERANCE (value != truth ± tolerance).
+CUSTOM_MESSAGE FUNCTION_NAME FILE_LINE_INFO
+)%%&quot;
+</pre></div>
+</div>
+<p>Depending on which ctor was used.</p>
  </p>
 <em>Public Functions</em><blockquote>
 <div><p><span class="target" id="project0classoptimal__learning_1_1_invalid_value_exception_1a89cac78e544315e3335c47a562b5351f"></span><div class="line-block">
@@ -720,35 +796,6 @@ This ctor additionally has an input for tolerance, and is only enabled for float
 </dl>
  </p>
 </div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_invalid_value_exception_1ac39adf1280ca8552fe048397a10f1679"></span><div class="line-block">
-<div class="line">const char * <strong>what</strong>()</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p><p>Provides a C-string containing information about the conditions of the exception.
-See: <a class="reference external" href="http://en.cppreference.com/w/cpp/error/exception">http://en.cppreference.com/w/cpp/error/exception</a></p>
-<p>The message is formatted in the class ctor (capitals indicate variable information):</p>
-<div class="highlight-python"><div class="highlight"><pre>R&quot;%%(
-InvalidValueException: VALUE != TRUTH (value != truth).
-CUSTOM_MESSAGE FUNCTION_NAME FILE_LINE_INFO
-)%%&quot;
-</pre></div>
-</div>
-<p>OR</p>
-<div class="highlight-python"><div class="highlight"><pre>R&quot;%%(
-InvalidValueException: VALUE != TRUTH ± TOLERANCE (value != truth ± tolerance).
-CUSTOM_MESSAGE FUNCTION_NAME FILE_LINE_INFO
-)%%&quot;
-</pre></div>
-</div>
-<p>Depending on which ctor was used.</p>
-<dl class="docutils">
-<dt><strong>Returns</strong>:</dt>
-<dd>C-style char string describing the exception.</dd>
-</dl>
- </p>
-</div></blockquote>
 <p><span class="target" id="project0classoptimal__learning_1_1_invalid_value_exception_1a1ff902e1e49e7182c0398c6a1d594e3c"></span><div class="line-block">
 <div class="line">ValueType <strong>value</strong>()</div>
 </div>
@@ -805,27 +852,37 @@ CUSTOM_MESSAGE FUNCTION_NAME FILE_LINE_INFO
 <div><p></p>
 <p></p>
 </div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_invalid_value_exception_1ab7c12a23eee0ddf6329e2df4e2285684"></span>std::string <strong>message_</strong></p>
-<blockquote>
-<div><p>a custom message describing this exception, produced by <tt class="docutils literal"><a class="reference internal" href="#project0classoptimal__learning_1_1_invalid_value_exception_1ac39adf1280ca8552fe048397a10f1679"><em><span class="pre">what()</span></em></a></tt>. </p>
-<p></p>
-</div></blockquote>
 </div></blockquote>
 </div></blockquote>
 </p>
 <p><p id="project0classoptimal__learning_1_1_singular_matrix_exception"><em>class</em> <strong>SingularMatrixException</strong></p>
 <blockquote>
 <div><p></p>
-<p><p>Exception to capture when a matrix A (in R^{m x n}) is singular.
-Subclasses std::exception.</p>
-<p>Stores the matrix (in a std::vector) and its dimensions.</p>
-<p>Also holds a std::string containing the message produced by what(). Note that
-any exceptions from std::string operations (e.g., std::bad_alloc) will cause std::terminate().
-Similarly the std::vector&lt;double&gt; ctor can throw and cause std::terminate().</p>
+<p><p><strong>Overview</strong></p>
+<p>Exception to capture when a <em>square</em> matrix <tt class="docutils literal"><span class="pre">A</span></tt> (<tt class="docutils literal"><span class="pre">\in</span> <span class="pre">R^{m</span> <span class="pre">x</span> <span class="pre">m}</span></tt>) is singular.</p>
+<p>Stores the matrix (in a std::vector) and its dimensions along with the index of the leading minor that is non-SPD.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">std::vector&lt;double&gt; ctor can throw and cause std::terminate().</p>
+</div>
+<p><strong>Message Format</strong></p>
+<p>The <tt class="docutils literal"><span class="pre">what()</span></tt> message is formatted in the class ctor (capitals indicate variable information):</p>
+<div class="highlight-python"><div class="highlight"><pre>R&quot;%%(
+SingularMatrixException: M x M matrix is singular; i-th leading minor is not SPD.
+CUSTOM_MESSAGE FUNCTION_NAME FILE_LINE_INFO
+)%%&quot;
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">this exception currently does not print the full matrix. Use a debugger
+and call PrintMatrix() (gpp_logging.hpp) or catch the exception and
+proecss the matrix.</p>
+</div>
  </p>
 <em>Public Functions</em><blockquote>
-<div><p><span class="target" id="project0classoptimal__learning_1_1_singular_matrix_exception_1a0bce7c398429c689f39a5e896eabf00f"></span><div class="line-block">
-<div class="line"> <strong>SingularMatrixException</strong>(char const * line_info, char const * func_info, char const * custom_message, double const * matrix_in, int num_rows_in, int num_cols_in)</div>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_singular_matrix_exception_1a58c5c4a6b01ed92ea1d583e87bec893e"></span><div class="line-block">
+<div class="line"> <strong>SingularMatrixException</strong>(char const * line_info, char const * func_info, char const * custom_message, double const * matrix_in, int num_rows_in, int leading_minor_index_in)</div>
 </div>
 </p>
 <blockquote>
@@ -847,40 +904,14 @@ Similarly the std::vector&lt;double&gt; ctor can throw and cause std::terminate(
 <tr class="field-even field"><th class="field-name" colspan="2">matrix[num_rows][num_cols]:</th></tr>
 <tr class="field-even field"><td>&nbsp;</td><td class="field-body">the singular matrix</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">num_rows:</th><td class="field-body">number of rows in the matrix</td>
+<tr class="field-odd field"><th class="field-name">num_rows:</th><td class="field-body">number of rows (= number of columns) in the matrix</td>
 </tr>
-<tr class="field-even field"><th class="field-name">num_cols:</th><td class="field-body">number of columns in the matrix</td>
+<tr class="field-even field"><th class="field-name" colspan="2">leading_minor_index:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">index of the first non-positive definite (principal) leading minor</td>
 </tr>
 </tbody>
 </table>
 </dd>
-</dl>
- </p>
-</div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_singular_matrix_exception_1aa195d5a2069532272d06451bcc940817"></span><div class="line-block">
-<div class="line">const char * <strong>what</strong>()</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p><p>Provides a C-string containing information about the conditions of the exception.
-See: <a class="reference external" href="http://en.cppreference.com/w/cpp/error/exception">http://en.cppreference.com/w/cpp/error/exception</a></p>
-<p>The message is formatted in the class ctor (capitals indicate variable information):</p>
-<div class="highlight-python"><div class="highlight"><pre>R&quot;%%(
-SingularMatrixException: M x N matrix is singular.
-CUSTOM_MESSAGE FUNCTION_NAME FILE_LINE_INFO
-)%%&quot;
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">this exception currently does not print the full matrix. Use a debugger
-and call PrintMatrix() (gpp_logging.hpp) or catch the exception and
-proecss the matrix.</p>
-</div>
-<dl class="docutils">
-<dt><strong>Returns</strong>:</dt>
-<dd>C-style char string describing the exception.</dd>
 </dl>
  </p>
 </div></blockquote>
@@ -892,8 +923,8 @@ proecss the matrix.</p>
 <div><p></p>
 <p></p>
 </div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_singular_matrix_exception_1a219b5e9986203a0cd1852ca074fa40c1"></span><div class="line-block">
-<div class="line">int <strong>num_cols</strong>()</div>
+<p><span class="target" id="project0classoptimal__learning_1_1_singular_matrix_exception_1a2fbcfb796443d0ad9235b241c8f103a3"></span><div class="line-block">
+<div class="line">int <strong>leading_minor_index</strong>()</div>
 </div>
 </p>
 <blockquote>
@@ -927,22 +958,17 @@ proecss the matrix.</p>
 <em>Private Members</em><blockquote>
 <div><p><span class="target" id="project0classoptimal__learning_1_1_singular_matrix_exception_1a56da0d8400ae1591bee71922a437482b"></span>int <strong>num_rows_</strong></p>
 <blockquote>
-<div><p>the number of rows and columns in the singular matrix </p>
+<div><p>the number of rows (= number of columns) in the singular matrix </p>
 <p></p>
 </div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_singular_matrix_exception_1a8d39d9a05eb9adf84cc9264dd912c93b"></span>int <strong>num_cols_</strong></p>
+<p><span class="target" id="project0classoptimal__learning_1_1_singular_matrix_exception_1a6301eb6d76f741d80178f42e50e19cda"></span>int <strong>leading_minor_index_</strong></p>
 <blockquote>
-<div><p></p>
+<div><p>index of the first non-positive definite (principal) leading minor </p>
 <p></p>
 </div></blockquote>
 <p><span class="target" id="project0classoptimal__learning_1_1_singular_matrix_exception_1ab1c5465882896d2369ce383b8baae197"></span>std::vector&lt; double &gt; <strong>matrix_</strong></p>
 <blockquote>
 <div><p>the data of the singular matrix, ordered column-major </p>
-<p></p>
-</div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_singular_matrix_exception_1a14ebea738b91026d5b5e86368863eff5"></span>std::string <strong>message_</strong></p>
-<blockquote>
-<div><p>a custom message describing this exception, produced by <tt class="docutils literal"><a class="reference internal" href="#project0classoptimal__learning_1_1_singular_matrix_exception_1aa195d5a2069532272d06451bcc940817"><em><span class="pre">what()</span></em></a></tt>. </p>
 <p></p>
 </div></blockquote>
 </div></blockquote>

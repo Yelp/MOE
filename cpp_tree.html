@@ -34,7 +34,7 @@
   
     <link rel="top" title="MOE 0.1.0 documentation" href="index.html"/>
         <link rel="next" title="gpp_optimization_test" href="gpp_optimization_test.html"/>
-        <link rel="prev" title="moe.views.rest package" href="moe.views.rest.html"/> 
+        <link rel="prev" title="moe_examples.tests package" href="moe_examples.tests.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -63,18 +63,30 @@
         
             <ul>
 <li class="toctree-l1"><a class="reference internal" href="why_moe.html">Why Do We Need MOE?</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="why_moe.html#what-is-moe">What is MOE?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="why_moe.html#why-is-this-hard">Why is this hard?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="why_moe.html#other-methods">Other Methods</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Install</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="install.html#install-in-docker">Install in docker:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#install-from-source">Install from source:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below):</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#install-in-docker">Install in docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#install-from-source">Install from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#osx-tips">OSX Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#building-boost">Building Boost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="moe_math.html">How does MOE work?</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#build-a-gaussian-process-gp-with-the-historical-data">Build a Gaussian Process (GP) with the historical data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#optimize-the-hyperparameters-of-the-gaussian-process">Optimize the hyperparameters of the Gaussian Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#find-the-point-s-of-highest-expected-improvement-ei">Find the point(s) of highest Expected Improvement (EI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#return-the-point-s-to-sample-then-repeat">Return the point(s) to sample, then repeat</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="demo_tutorial.html">Demo Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="demo_tutorial.html#the-interactive-demo">The Interactive Demo</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pretty_endpoints.html">Pretty Endpoints</a></li>
 <li class="toctree-l1"><a class="reference internal" href="objective_functions.html">Objective Functions</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="objective_functions.html#what-is-an-objective-function">What is an objective function?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="objective_functions.html#properties-of-an-objective-function">Properties of an objective function</a></li>
@@ -107,6 +119,16 @@
 <li class="toctree-l2"><a class="reference internal" href="moe.html#module-moe">Module contents</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="moe_examples.html">moe_examples package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.next_point_via_simple_endpoint">moe_examples.next_point_via_simple_endpoint module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples">Module contents</a></li>
+</ul>
+</li>
 </ul>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="">C++ Files</a><ul>
@@ -129,23 +151,22 @@
 <li class="toctree-l2"><a class="reference internal" href="gpp_python_model_selection.html">gpp_python_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_math.html">gpp_math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_random_test.html">gpp_random_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimizer_parameters.html">gpp_optimizer_parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_random.html">gpp_random</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra.html">gpp_linear_algebra</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_core.html">gpp_core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection.html">gpp_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_covariance_test.html">gpp_covariance_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_python.html">gpp_python</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_and_hyperparameter_optimization.html">gpp_model_selection_and_hyperparameter_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_test.html">gpp_model_selection_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_optimization_parameters.html">gpp_optimization_parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_common.html">gpp_common</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_and_hyperparameter_optimization_test.html">gpp_model_selection_and_hyperparameter_optimization_test</a></li>
 </ul>
 </li>
 </ul>
@@ -236,6 +257,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="gpp_domain.html">gpp_domain</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="gpp_domain.html#gpp-domain-hpp">gpp_domain.hpp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_domain.html#gpp-domain-cpp">gpp_domain.cpp</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="gpp_python_common.html">gpp_python_common</a><ul>
@@ -277,6 +299,10 @@
 <li class="toctree-l2"><a class="reference internal" href="gpp_random_test.html#gpp-random-test-cpp">gpp_random_test.cpp</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="gpp_optimizer_parameters.html">gpp_optimizer_parameters</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimizer_parameters.html#gpp-optimizer-parameters-hpp">gpp_optimizer_parameters.hpp</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_demo.html#gpp-expected-improvement-demo-cpp">gpp_expected_improvement_demo.cpp</a></li>
 </ul>
@@ -306,8 +332,9 @@
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html#gpp-linear-algebra-test-cpp">gpp_linear_algebra_test.cpp</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="gpp_core.html">gpp_core</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="gpp_core.html#gpp-core-cpp">gpp_core.cpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpp_model_selection.html">gpp_model_selection</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection.html#gpp-model-selection-hpp">gpp_model_selection.hpp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection.html#gpp-model-selection-cpp">gpp_model_selection.cpp</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a><ul>
@@ -319,11 +346,6 @@
 <li class="toctree-l2"><a class="reference internal" href="gpp_covariance_test.html#gpp-covariance-test-cpp">gpp_covariance_test.cpp</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html#gpp-python-gaussian-process-hpp">gpp_python_gaussian_process.hpp</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html#gpp-python-gaussian-process-cpp">gpp_python_gaussian_process.cpp</a></li>
-</ul>
-</li>
 <li class="toctree-l1"><a class="reference internal" href="gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="gpp_mock_optimization_objective_functions.html#gpp-mock-optimization-objective-functions-hpp">gpp_mock_optimization_objective_functions.hpp</a></li>
 </ul>
@@ -332,26 +354,22 @@
 <li class="toctree-l2"><a class="reference internal" href="gpp_python.html#gpp-python-cpp">gpp_python.cpp</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="gpp_model_selection_and_hyperparameter_optimization.html">gpp_model_selection_and_hyperparameter_optimization</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_and_hyperparameter_optimization.html#gpp-model-selection-and-hyperparameter-optimization-hpp">gpp_model_selection_and_hyperparameter_optimization.hpp</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_and_hyperparameter_optimization.html#gpp-model-selection-and-hyperparameter-optimization-cpp">gpp_model_selection_and_hyperparameter_optimization.cpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpp_model_selection_test.html">gpp_model_selection_test</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_test.html#gpp-model-selection-test-hpp">gpp_model_selection_test.hpp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_test.html#gpp-model-selection-test-cpp">gpp_model_selection_test.cpp</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="gpp_hyper_and_EI_demo.html#gpp-hyper-and-ei-demo-cpp">gpp_hyper_and_EI_demo.cpp</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="gpp_optimization_parameters.html">gpp_optimization_parameters</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="gpp_optimization_parameters.html#gpp-optimization-parameters-hpp">gpp_optimization_parameters.hpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html#gpp-python-gaussian-process-hpp">gpp_python_gaussian_process.hpp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html#gpp-python-gaussian-process-cpp">gpp_python_gaussian_process.cpp</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="gpp_common.html">gpp_common</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="gpp_common.html#gpp-common-hpp">gpp_common.hpp</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="gpp_model_selection_and_hyperparameter_optimization_test.html">gpp_model_selection_and_hyperparameter_optimization_test</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_and_hyperparameter_optimization_test.html#gpp-model-selection-and-hyperparameter-optimization-test-hpp">gpp_model_selection_and_hyperparameter_optimization_test.hpp</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_and_hyperparameter_optimization_test.html#gpp-model-selection-and-hyperparameter-optimization-test-cpp">gpp_model_selection_and_hyperparameter_optimization_test.cpp</a></li>
 </ul>
 </li>
 </ul>
@@ -367,7 +385,7 @@
         <a href="gpp_optimization_test.html" class="btn btn-neutral float-right" title="gpp_optimization_test"/>Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="moe.views.rest.html" class="btn btn-neutral" title="moe.views.rest package"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="moe_examples.tests.html" class="btn btn-neutral" title="moe_examples.tests package"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

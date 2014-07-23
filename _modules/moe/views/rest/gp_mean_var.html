@@ -62,18 +62,30 @@
         
             <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../why_moe.html">Why Do We Need MOE?</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../../why_moe.html#what-is-moe">What is MOE?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../why_moe.html#why-is-this-hard">Why is this hard?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../why_moe.html#other-methods">Other Methods</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../install.html">Install</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../../install.html#install-in-docker">Install in docker:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../install.html#install-from-source">Install from source:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../install.html#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below):</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../install.html#linux-tips">Linux Tips:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../install.html#cmake-tips">CMake Tips:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../install.html#install-in-docker">Install in docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../install.html#install-from-source">Install from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../install.html#osx-tips">OSX Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../install.html#building-boost">Building Boost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../install.html#linux-tips">Linux Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../install.html#cmake-tips">CMake Tips</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../moe_math.html">How does MOE work?</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe_math.html#build-a-gaussian-process-gp-with-the-historical-data">Build a Gaussian Process (GP) with the historical data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe_math.html#optimize-the-hyperparameters-of-the-gaussian-process">Optimize the hyperparameters of the Gaussian Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe_math.html#find-the-point-s-of-highest-expected-improvement-ei">Find the point(s) of highest Expected Improvement (EI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe_math.html#return-the-point-s-to-sample-then-repeat">Return the point(s) to sample, then repeat</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../demo_tutorial.html">Demo Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../demo_tutorial.html#the-interactive-demo">The Interactive Demo</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pretty_endpoints.html">Pretty Endpoints</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../objective_functions.html">Objective Functions</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../../objective_functions.html#what-is-an-objective-function">What is an objective function?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../objective_functions.html#properties-of-an-objective-function">Properties of an objective function</a></li>
@@ -106,6 +118,16 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../moe.html#module-moe">Module contents</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../moe_examples.html">moe_examples package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#module-moe_examples.next_point_via_simple_endpoint">moe_examples.next_point_via_simple_endpoint module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#module-moe_examples">Module contents</a></li>
+</ul>
+</li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../cpp_tree.html">C++ Files</a><ul>
@@ -128,23 +150,22 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../gpp_python_model_selection.html">gpp_python_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../gpp_math.html">gpp_math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../gpp_random_test.html">gpp_random_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_optimizer_parameters.html">gpp_optimizer_parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../gpp_random.html">gpp_random</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../gpp_geometry_test.html">gpp_geometry_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../gpp_linear_algebra.html">gpp_linear_algebra</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_core.html">gpp_core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_model_selection.html">gpp_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../gpp_optimization.html">gpp_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../gpp_covariance_test.html">gpp_covariance_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../gpp_python.html">gpp_python</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_model_selection_and_hyperparameter_optimization.html">gpp_model_selection_and_hyperparameter_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_model_selection_test.html">gpp_model_selection_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_optimization_parameters.html">gpp_optimization_parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../gpp_common.html">gpp_common</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_model_selection_and_hyperparameter_optimization_test.html">gpp_model_selection_and_hyperparameter_optimization_test</a></li>
 </ul>
 </li>
 </ul>
@@ -185,139 +206,79 @@
             
   <h1>Source code for moe.views.rest.gp_mean_var</h1><div class="highlight"><pre>
 <span class="c"># -*- coding: utf-8 -*-</span>
-<span class="sd">&quot;&quot;&quot;Classes for gp_mean_var endpoints.</span>
+<span class="sd">&quot;&quot;&quot;Classes for gp_mean, gp_var, and gp_mean_var (and _diag) endpoints.</span>
 
 <span class="sd">Includes:</span>
 <span class="sd">    1. request and response schemas</span>
 <span class="sd">    2. pretty and backend views</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">colander</span>
-
 <span class="kn">import</span> <span class="nn">numpy</span>
 
 <span class="kn">from</span> <span class="nn">pyramid.view</span> <span class="kn">import</span> <span class="n">view_config</span>
 
-<span class="kn">from</span> <span class="nn">moe.views.constant</span> <span class="kn">import</span> <span class="n">GP_MEAN_VAR_ROUTE_NAME</span><span class="p">,</span> <span class="n">GP_MEAN_VAR_PRETTY_ROUTE_NAME</span>
+<span class="kn">from</span> <span class="nn">moe.views.constant</span> <span class="kn">import</span> <span class="n">GP_MEAN_ROUTE_NAME</span><span class="p">,</span> <span class="n">GP_MEAN_PRETTY_ROUTE_NAME</span><span class="p">,</span> <span class="n">GP_VAR_ROUTE_NAME</span><span class="p">,</span> <span class="n">GP_VAR_PRETTY_ROUTE_NAME</span><span class="p">,</span> <span class="n">GP_VAR_DIAG_ROUTE_NAME</span><span class="p">,</span> <span class="n">GP_VAR_DIAG_PRETTY_ROUTE_NAME</span><span class="p">,</span> <span class="n">GP_MEAN_VAR_ROUTE_NAME</span><span class="p">,</span> <span class="n">GP_MEAN_VAR_PRETTY_ROUTE_NAME</span><span class="p">,</span> <span class="n">GP_MEAN_VAR_DIAG_ROUTE_NAME</span><span class="p">,</span> <span class="n">GP_MEAN_VAR_DIAG_PRETTY_ROUTE_NAME</span>
 <span class="kn">from</span> <span class="nn">moe.views.gp_pretty_view</span> <span class="kn">import</span> <span class="n">GpPrettyView</span><span class="p">,</span> <span class="n">PRETTY_RENDERER</span>
-<span class="kn">from</span> <span class="nn">moe.views.schemas</span> <span class="kn">import</span> <span class="n">ListOfFloats</span><span class="p">,</span> <span class="n">MatrixOfFloats</span><span class="p">,</span> <span class="n">GpHistoricalInfo</span><span class="p">,</span> <span class="n">ListOfPointsInDomain</span><span class="p">,</span> <span class="n">CovarianceInfo</span><span class="p">,</span> <span class="n">DomainInfo</span>
+<span class="kn">from</span> <span class="nn">moe.views.schemas</span> <span class="kn">import</span> <span class="n">GpMeanVarRequest</span><span class="p">,</span> <span class="n">GpMeanVarResponse</span><span class="p">,</span> <span class="n">GpMeanVarDiagResponse</span><span class="p">,</span> <span class="n">GpMeanResponse</span><span class="p">,</span> <span class="n">GpVarResponse</span><span class="p">,</span> <span class="n">GpVarDiagResponse</span>
 <span class="kn">from</span> <span class="nn">moe.views.utils</span> <span class="kn">import</span> <span class="n">_make_gp_from_params</span>
 
 
-<div class="viewcode-block" id="GpMeanVarRequest"><a class="viewcode-back" href="../../../../moe.views.rest.html#moe.views.rest.gp_mean_var.GpMeanVarRequest">[docs]</a><span class="k">class</span> <span class="nc">GpMeanVarRequest</span><span class="p">(</span><span class="n">colander</span><span class="o">.</span><span class="n">MappingSchema</span><span class="p">):</span>
+<div class="viewcode-block" id="GpMeanVarBaseView"><a class="viewcode-back" href="../../../../moe.views.rest.html#moe.views.rest.gp_mean_var.GpMeanVarBaseView">[docs]</a><span class="k">class</span> <span class="nc">GpMeanVarBaseView</span><span class="p">(</span><span class="n">GpPrettyView</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot;A gp_mean_var request colander schema.</span>
-
-<span class="sd">    **Required fields**</span>
-
-<span class="sd">        :points_to_sample: list of points in domain to calculate the Gaussian Process (GP) mean and covariance at (:class:`moe.views.schemas.ListOfPointsInDomain`)</span>
-<span class="sd">        :gp_historical_info: a :class:`moe.views.schemas.GpHistoricalInfo` object of historical data</span>
-
-<span class="sd">    **Optional fields**</span>
-
-<span class="sd">        :covariance_info: a :class:`moe.views.schemas.CovarianceInfo` dict of covariance information</span>
-
-<span class="sd">    **Example Minimal Request**</span>
-
-<span class="sd">    .. sourcecode:: http</span>
-
-<span class="sd">        Content-Type: text/javascript</span>
-
-<span class="sd">        {</span>
-<span class="sd">            &#39;points_to_sample&#39;: [[0.1], [0.5], [0.9]],</span>
-<span class="sd">            &#39;gp_historical_info&#39;: {</span>
-<span class="sd">                &#39;points_sampled&#39;: [</span>
-<span class="sd">                        {&#39;value_var&#39;: 0.01, &#39;value&#39;: 0.1, &#39;point&#39;: [0.0]},</span>
-<span class="sd">                        {&#39;value_var&#39;: 0.01, &#39;value&#39;: 0.2, &#39;point&#39;: [1.0]}</span>
-<span class="sd">                    ],</span>
-<span class="sd">                },</span>
-<span class="sd">            &#39;domain_info&#39;: {</span>
-<span class="sd">                &#39;dim&#39;: 1,</span>
-<span class="sd">                },</span>
-<span class="sd">        }</span>
-
-<span class="sd">    **Example Full Request**</span>
-
-<span class="sd">    .. sourcecode:: http</span>
-
-<span class="sd">        Content-Type: text/javascript</span>
-
-<span class="sd">        {</span>
-<span class="sd">            &#39;points_to_sample&#39;: [[0.1], [0.5], [0.9]],</span>
-<span class="sd">            &#39;gp_historical_info&#39;: {</span>
-<span class="sd">                &#39;points_sampled&#39;: [</span>
-<span class="sd">                        {&#39;value_var&#39;: 0.01, &#39;value&#39;: 0.1, &#39;point&#39;: [0.0]},</span>
-<span class="sd">                        {&#39;value_var&#39;: 0.01, &#39;value&#39;: 0.2, &#39;point&#39;: [1.0]}</span>
-<span class="sd">                    ],</span>
-<span class="sd">                },</span>
-<span class="sd">            &#39;domain_info&#39;: {</span>
-<span class="sd">                &#39;domain_type&#39;: &#39;tensor_product&#39;</span>
-<span class="sd">                &#39;dim&#39;: 1,</span>
-<span class="sd">                },</span>
-<span class="sd">            &#39;covariance_info&#39;: {</span>
-<span class="sd">                &#39;covariance_type&#39;: &#39;square_exponential&#39;,</span>
-<span class="sd">                &#39;hyperparameters&#39;: [1.0, 1.0],</span>
-<span class="sd">                },</span>
-<span class="sd">        }</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">points_to_sample</span> <span class="o">=</span> <span class="n">ListOfPointsInDomain</span><span class="p">()</span>
-    <span class="n">gp_historical_info</span> <span class="o">=</span> <span class="n">GpHistoricalInfo</span><span class="p">()</span>
-    <span class="n">domain_info</span> <span class="o">=</span> <span class="n">DomainInfo</span><span class="p">()</span>
-    <span class="n">covariance_info</span> <span class="o">=</span> <span class="n">CovarianceInfo</span><span class="p">(</span>
-            <span class="n">missing</span><span class="o">=</span><span class="n">CovarianceInfo</span><span class="p">()</span><span class="o">.</span><span class="n">deserialize</span><span class="p">({}),</span>
-            <span class="p">)</span>
-
-</div>
-<div class="viewcode-block" id="GpMeanVarResponse"><a class="viewcode-back" href="../../../../moe.views.rest.html#moe.views.rest.gp_mean_var.GpMeanVarResponse">[docs]</a><span class="k">class</span> <span class="nc">GpMeanVarResponse</span><span class="p">(</span><span class="n">colander</span><span class="o">.</span><span class="n">MappingSchema</span><span class="p">):</span>
-
-    <span class="sd">&quot;&quot;&quot;A gp_mean_var response colander schema.</span>
-
-<span class="sd">    **Output fields**</span>
-
-<span class="sd">        :endpoint: the endpoint that was called</span>
-<span class="sd">        :mean: list of the means of the GP at the points sampled (:class:`moe.views.schemas.ListOfFloats`)</span>
-<span class="sd">        :variance: matrix of covariance of the GP at the points sampled (:class:`moe.views.schemas.MatrixOfFloats`)</span>
-
-<span class="sd">    **Example Response**</span>
-
-<span class="sd">    .. sourcecode:: http</span>
-
-<span class="sd">        {</span>
-<span class="sd">            &quot;endpoint&quot;:&quot;gp_mean_var&quot;,</span>
-<span class="sd">            &quot;mean&quot;: [&quot;0.0873832198661&quot;,&quot;0.0130505261903&quot;,&quot;0.174755506336&quot;],</span>
-<span class="sd">            &quot;var&quot;: [</span>
-<span class="sd">                    [&quot;0.228910114429&quot;,&quot;0.0969433771923&quot;,&quot;0.000268292907969&quot;],</span>
-<span class="sd">                    [&quot;0.0969433771923&quot;,&quot;0.996177332647&quot;,&quot;0.0969433771923&quot;],</span>
-<span class="sd">                    [&quot;0.000268292907969&quot;,&quot;0.0969433771923&quot;,&quot;0.228910114429&quot;]</span>
-<span class="sd">                ],</span>
-<span class="sd">        }</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">endpoint</span> <span class="o">=</span> <span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="p">(</span><span class="n">colander</span><span class="o">.</span><span class="n">String</span><span class="p">())</span>
-    <span class="n">mean</span> <span class="o">=</span> <span class="n">ListOfFloats</span><span class="p">()</span>
-    <span class="n">var</span> <span class="o">=</span> <span class="n">MatrixOfFloats</span><span class="p">()</span>
-
-</div>
-<div class="viewcode-block" id="GpMeanVarView"><a class="viewcode-back" href="../../../../moe.views.rest.html#moe.views.rest.gp_mean_var.GpMeanVarView">[docs]</a><span class="k">class</span> <span class="nc">GpMeanVarView</span><span class="p">(</span><span class="n">GpPrettyView</span><span class="p">):</span>
-
-    <span class="sd">&quot;&quot;&quot;Views for gp_mean_var endpoints.&quot;&quot;&quot;</span>
-
-    <span class="n">_route_name</span> <span class="o">=</span> <span class="n">GP_MEAN_VAR_ROUTE_NAME</span>
-    <span class="n">_pretty_route_name</span> <span class="o">=</span> <span class="n">GP_MEAN_VAR_PRETTY_ROUTE_NAME</span>
+    <span class="sd">&quot;&quot;&quot;Base View class for gp_mean, gp_var, gp_mean_var, and _diag endpoints.&quot;&quot;&quot;</span>
 
     <span class="n">request_schema</span> <span class="o">=</span> <span class="n">GpMeanVarRequest</span><span class="p">()</span>
-    <span class="n">response_schema</span> <span class="o">=</span> <span class="n">GpMeanVarResponse</span><span class="p">()</span>
 
     <span class="n">_pretty_default_request</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s">&quot;points_to_sample&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s">&quot;points_to_evaluate&quot;</span><span class="p">:</span> <span class="p">[</span>
                 <span class="p">[</span><span class="mf">0.1</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.9</span><span class="p">],</span>
                 <span class="p">],</span>
             <span class="s">&quot;gp_historical_info&quot;</span><span class="p">:</span> <span class="n">GpPrettyView</span><span class="o">.</span><span class="n">_pretty_default_gp_historical_info</span><span class="p">,</span>
             <span class="s">&quot;covariance_info&quot;</span><span class="p">:</span> <span class="n">GpPrettyView</span><span class="o">.</span><span class="n">_pretty_default_covariance_info</span><span class="p">,</span>
             <span class="s">&quot;domain_info&quot;</span><span class="p">:</span> <span class="n">GpPrettyView</span><span class="o">.</span><span class="n">_pretty_default_domain_info</span><span class="p">,</span>
             <span class="p">}</span>
+
+<div class="viewcode-block" id="GpMeanVarBaseView.gp_mean_var_response_dict"><a class="viewcode-back" href="../../../../moe.views.rest.html#moe.views.rest.gp_mean_var.GpMeanVarBaseView.gp_mean_var_response_dict">[docs]</a>    <span class="k">def</span> <span class="nf">gp_mean_var_response_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">compute_mean</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">compute_var</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">var_diag</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Produce a response dict (to be serialized) for gp_mean, gp_var, gp_mean_var, and _diag POST requests.</span>
+
+<span class="sd">        :param compute_mean: whether to compute the GP mean</span>
+<span class="sd">        :type compute_mean: bool</span>
+<span class="sd">        :param compute_var: whether to compute the GP variance or covariance</span>
+<span class="sd">        :type compute_var: bool</span>
+<span class="sd">        :param var_diag: whether to compute the full GP covariance or just the variance terms</span>
+<span class="sd">        :type var_diag: bool</span>
+<span class="sd">        :return: dict with &#39;endpoint&#39; and optionally &#39;mean&#39; and &#39;var&#39; keys depending on inputs</span>
+<span class="sd">        :rtype: dict</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_params_from_request</span><span class="p">()</span>
+
+        <span class="n">points_to_evaluate</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;points_to_evaluate&#39;</span><span class="p">))</span>
+        <span class="n">gaussian_process</span> <span class="o">=</span> <span class="n">_make_gp_from_params</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+
+        <span class="n">response_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">response_dict</span><span class="p">[</span><span class="s">&#39;endpoint&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_route_name</span>
+        <span class="k">if</span> <span class="n">compute_mean</span><span class="p">:</span>
+            <span class="n">response_dict</span><span class="p">[</span><span class="s">&#39;mean&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gaussian_process</span><span class="o">.</span><span class="n">compute_mean_of_points</span><span class="p">(</span><span class="n">points_to_evaluate</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">compute_var</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">var_diag</span><span class="p">:</span>
+                <span class="n">response_dict</span><span class="p">[</span><span class="s">&#39;var&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span>
+                    <span class="n">gaussian_process</span><span class="o">.</span><span class="n">compute_variance_of_points</span><span class="p">(</span><span class="n">points_to_evaluate</span><span class="p">)</span>
+                <span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">response_dict</span><span class="p">[</span><span class="s">&#39;var&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gaussian_process</span><span class="o">.</span><span class="n">compute_variance_of_points</span><span class="p">(</span><span class="n">points_to_evaluate</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">response_dict</span>
+
+</div></div>
+<div class="viewcode-block" id="GpMeanVarView"><a class="viewcode-back" href="../../../../moe.views.rest.html#moe.views.rest.gp_mean_var.GpMeanVarView">[docs]</a><span class="k">class</span> <span class="nc">GpMeanVarView</span><span class="p">(</span><span class="n">GpMeanVarBaseView</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;Views for gp_mean_var endpoints.&quot;&quot;&quot;</span>
+
+    <span class="n">_route_name</span> <span class="o">=</span> <span class="n">GP_MEAN_VAR_ROUTE_NAME</span>
+    <span class="n">_pretty_route_name</span> <span class="o">=</span> <span class="n">GP_MEAN_VAR_PRETTY_ROUTE_NAME</span>
+
+    <span class="n">response_schema</span> <span class="o">=</span> <span class="n">GpMeanVarResponse</span><span class="p">()</span>
 
     <span class="nd">@view_config</span><span class="p">(</span><span class="n">route_name</span><span class="o">=</span><span class="n">_pretty_route_name</span><span class="p">,</span> <span class="n">renderer</span><span class="o">=</span><span class="n">PRETTY_RENDERER</span><span class="p">)</span>
 <div class="viewcode-block" id="GpMeanVarView.pretty_view"><a class="viewcode-back" href="../../../../moe.views.rest.html#moe.views.rest.gp_mean_var.GpMeanVarView.pretty_view">[docs]</a>    <span class="k">def</span> <span class="nf">pretty_view</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -343,19 +304,161 @@
 <span class="sd">           :status 500: server error</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_params_from_request</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">form_response</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gp_mean_var_response_dict</span><span class="p">(</span><span class="n">compute_mean</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">compute_var</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">var_diag</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+        <span class="p">)</span>
 
-        <span class="n">points_to_sample</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;points_to_sample&#39;</span><span class="p">))</span>
-        <span class="n">gaussian_process</span> <span class="o">=</span> <span class="n">_make_gp_from_params</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+</div></div>
+<div class="viewcode-block" id="GpMeanVarDiagView"><a class="viewcode-back" href="../../../../moe.views.rest.html#moe.views.rest.gp_mean_var.GpMeanVarDiagView">[docs]</a><span class="k">class</span> <span class="nc">GpMeanVarDiagView</span><span class="p">(</span><span class="n">GpMeanVarBaseView</span><span class="p">):</span>
 
-        <span class="n">mean</span> <span class="o">=</span> <span class="n">gaussian_process</span><span class="o">.</span><span class="n">compute_mean_of_points</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">)</span>
-        <span class="n">var</span> <span class="o">=</span> <span class="n">gaussian_process</span><span class="o">.</span><span class="n">compute_variance_of_points</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;Views for gp_mean_var_diag endpoints.&quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">form_response</span><span class="p">({</span>
-                <span class="s">&#39;endpoint&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_route_name</span><span class="p">,</span>
-                <span class="s">&#39;mean&#39;</span><span class="p">:</span> <span class="n">mean</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
-                <span class="s">&#39;var&#39;</span><span class="p">:</span> <span class="n">var</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
-                <span class="p">})</span></div></div>
+    <span class="n">_route_name</span> <span class="o">=</span> <span class="n">GP_MEAN_VAR_DIAG_ROUTE_NAME</span>
+    <span class="n">_pretty_route_name</span> <span class="o">=</span> <span class="n">GP_MEAN_VAR_DIAG_PRETTY_ROUTE_NAME</span>
+
+    <span class="n">response_schema</span> <span class="o">=</span> <span class="n">GpMeanVarDiagResponse</span><span class="p">()</span>
+
+    <span class="nd">@view_config</span><span class="p">(</span><span class="n">route_name</span><span class="o">=</span><span class="n">_pretty_route_name</span><span class="p">,</span> <span class="n">renderer</span><span class="o">=</span><span class="n">PRETTY_RENDERER</span><span class="p">)</span>
+<div class="viewcode-block" id="GpMeanVarDiagView.pretty_view"><a class="viewcode-back" href="../../../../moe.views.rest.html#moe.views.rest.gp_mean_var.GpMeanVarDiagView.pretty_view">[docs]</a>    <span class="k">def</span> <span class="nf">pretty_view</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;A pretty, browser interactive view for the interface. Includes form request and response.</span>
+
+<span class="sd">        .. http:get:: /gp/mean_var/diag/pretty</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pretty_response</span><span class="p">()</span>
+</div>
+    <span class="nd">@view_config</span><span class="p">(</span><span class="n">route_name</span><span class="o">=</span><span class="n">_route_name</span><span class="p">,</span> <span class="n">renderer</span><span class="o">=</span><span class="s">&#39;json&#39;</span><span class="p">,</span> <span class="n">request_method</span><span class="o">=</span><span class="s">&#39;POST&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="GpMeanVarDiagView.gp_mean_var_diag_view"><a class="viewcode-back" href="../../../../moe.views.rest.html#moe.views.rest.gp_mean_var.GpMeanVarDiagView.gp_mean_var_diag_view">[docs]</a>    <span class="k">def</span> <span class="nf">gp_mean_var_diag_view</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Endpoint for gp_mean_var_diag POST requests.</span>
+
+<span class="sd">        .. http:post:: /gp/mean_var/diag</span>
+
+<span class="sd">           Calculates the GP mean and variance of a set of points, given historical data.</span>
+
+<span class="sd">           :input: :class:`moe.views.gp_ei.GpMeanVarRequest`</span>
+<span class="sd">           :output: :class:`moe.views.gp_ei.GpMeanVarDiagResponse`</span>
+
+<span class="sd">           :status 200: returns a response</span>
+<span class="sd">           :status 500: server error</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">form_response</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gp_mean_var_response_dict</span><span class="p">(</span><span class="n">compute_mean</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">compute_var</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">var_diag</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="GpMeanView"><a class="viewcode-back" href="../../../../moe.views.rest.html#moe.views.rest.gp_mean_var.GpMeanView">[docs]</a><span class="k">class</span> <span class="nc">GpMeanView</span><span class="p">(</span><span class="n">GpMeanVarBaseView</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;Views for gp_mean_var endpoints.&quot;&quot;&quot;</span>
+
+    <span class="n">_route_name</span> <span class="o">=</span> <span class="n">GP_MEAN_ROUTE_NAME</span>
+    <span class="n">_pretty_route_name</span> <span class="o">=</span> <span class="n">GP_MEAN_PRETTY_ROUTE_NAME</span>
+
+    <span class="n">response_schema</span> <span class="o">=</span> <span class="n">GpMeanResponse</span><span class="p">()</span>
+
+    <span class="nd">@view_config</span><span class="p">(</span><span class="n">route_name</span><span class="o">=</span><span class="n">_pretty_route_name</span><span class="p">,</span> <span class="n">renderer</span><span class="o">=</span><span class="n">PRETTY_RENDERER</span><span class="p">)</span>
+<div class="viewcode-block" id="GpMeanView.pretty_view"><a class="viewcode-back" href="../../../../moe.views.rest.html#moe.views.rest.gp_mean_var.GpMeanView.pretty_view">[docs]</a>    <span class="k">def</span> <span class="nf">pretty_view</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;A pretty, browser interactive view for the interface. Includes form request and response.</span>
+
+<span class="sd">        .. http:get:: /gp/mean/pretty</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pretty_response</span><span class="p">()</span>
+</div>
+    <span class="nd">@view_config</span><span class="p">(</span><span class="n">route_name</span><span class="o">=</span><span class="n">_route_name</span><span class="p">,</span> <span class="n">renderer</span><span class="o">=</span><span class="s">&#39;json&#39;</span><span class="p">,</span> <span class="n">request_method</span><span class="o">=</span><span class="s">&#39;POST&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="GpMeanView.gp_mean_view"><a class="viewcode-back" href="../../../../moe.views.rest.html#moe.views.rest.gp_mean_var.GpMeanView.gp_mean_view">[docs]</a>    <span class="k">def</span> <span class="nf">gp_mean_view</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Endpoint for gp_mean POST requests.</span>
+
+<span class="sd">        .. http:post:: /gp/mean</span>
+
+<span class="sd">           Calculates the GP mean of a set of points, given historical data.</span>
+
+<span class="sd">           :input: :class:`moe.views.gp_ei.GpMeanVarRequest`</span>
+<span class="sd">           :output: :class:`moe.views.gp_ei.GpMeanResponse`</span>
+
+<span class="sd">           :status 200: returns a response</span>
+<span class="sd">           :status 500: server error</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">form_response</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gp_mean_var_response_dict</span><span class="p">(</span><span class="n">compute_mean</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">compute_var</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+        <span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="GpVarView"><a class="viewcode-back" href="../../../../moe.views.rest.html#moe.views.rest.gp_mean_var.GpVarView">[docs]</a><span class="k">class</span> <span class="nc">GpVarView</span><span class="p">(</span><span class="n">GpMeanVarBaseView</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;Views for gp_var endpoints.&quot;&quot;&quot;</span>
+
+    <span class="n">_route_name</span> <span class="o">=</span> <span class="n">GP_VAR_ROUTE_NAME</span>
+    <span class="n">_pretty_route_name</span> <span class="o">=</span> <span class="n">GP_VAR_PRETTY_ROUTE_NAME</span>
+
+    <span class="n">response_schema</span> <span class="o">=</span> <span class="n">GpVarResponse</span><span class="p">()</span>
+
+    <span class="nd">@view_config</span><span class="p">(</span><span class="n">route_name</span><span class="o">=</span><span class="n">_pretty_route_name</span><span class="p">,</span> <span class="n">renderer</span><span class="o">=</span><span class="n">PRETTY_RENDERER</span><span class="p">)</span>
+<div class="viewcode-block" id="GpVarView.pretty_view"><a class="viewcode-back" href="../../../../moe.views.rest.html#moe.views.rest.gp_mean_var.GpVarView.pretty_view">[docs]</a>    <span class="k">def</span> <span class="nf">pretty_view</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;A pretty, browser interactive view for the interface. Includes form request and response.</span>
+
+<span class="sd">        .. http:get:: /gp/var/pretty</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pretty_response</span><span class="p">()</span>
+</div>
+    <span class="nd">@view_config</span><span class="p">(</span><span class="n">route_name</span><span class="o">=</span><span class="n">_route_name</span><span class="p">,</span> <span class="n">renderer</span><span class="o">=</span><span class="s">&#39;json&#39;</span><span class="p">,</span> <span class="n">request_method</span><span class="o">=</span><span class="s">&#39;POST&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="GpVarView.gp_var_view"><a class="viewcode-back" href="../../../../moe.views.rest.html#moe.views.rest.gp_mean_var.GpVarView.gp_var_view">[docs]</a>    <span class="k">def</span> <span class="nf">gp_var_view</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Endpoint for gp_var POST requests.</span>
+
+<span class="sd">        .. http:post:: /gp/var</span>
+
+<span class="sd">           Calculates the GP covariance of a set of points, given historical data.</span>
+
+<span class="sd">           :input: :class:`moe.views.gp_ei.GpMeanVarRequest`</span>
+<span class="sd">           :output: :class:`moe.views.gp_ei.GpVarResponse`</span>
+
+<span class="sd">           :status 200: returns a response</span>
+<span class="sd">           :status 500: server error</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">form_response</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gp_mean_var_response_dict</span><span class="p">(</span><span class="n">compute_mean</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">compute_var</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">var_diag</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+        <span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="GpVarDiagView"><a class="viewcode-back" href="../../../../moe.views.rest.html#moe.views.rest.gp_mean_var.GpVarDiagView">[docs]</a><span class="k">class</span> <span class="nc">GpVarDiagView</span><span class="p">(</span><span class="n">GpMeanVarBaseView</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;Views for gp_var_diag endpoints.&quot;&quot;&quot;</span>
+
+    <span class="n">_route_name</span> <span class="o">=</span> <span class="n">GP_VAR_DIAG_ROUTE_NAME</span>
+    <span class="n">_pretty_route_name</span> <span class="o">=</span> <span class="n">GP_VAR_DIAG_PRETTY_ROUTE_NAME</span>
+
+    <span class="n">response_schema</span> <span class="o">=</span> <span class="n">GpVarDiagResponse</span><span class="p">()</span>
+
+    <span class="nd">@view_config</span><span class="p">(</span><span class="n">route_name</span><span class="o">=</span><span class="n">_pretty_route_name</span><span class="p">,</span> <span class="n">renderer</span><span class="o">=</span><span class="n">PRETTY_RENDERER</span><span class="p">)</span>
+<div class="viewcode-block" id="GpVarDiagView.pretty_view"><a class="viewcode-back" href="../../../../moe.views.rest.html#moe.views.rest.gp_mean_var.GpVarDiagView.pretty_view">[docs]</a>    <span class="k">def</span> <span class="nf">pretty_view</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;A pretty, browser interactive view for the interface. Includes form request and response.</span>
+
+<span class="sd">        .. http:get:: /gp/var/diag/pretty</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pretty_response</span><span class="p">()</span>
+</div>
+    <span class="nd">@view_config</span><span class="p">(</span><span class="n">route_name</span><span class="o">=</span><span class="n">_route_name</span><span class="p">,</span> <span class="n">renderer</span><span class="o">=</span><span class="s">&#39;json&#39;</span><span class="p">,</span> <span class="n">request_method</span><span class="o">=</span><span class="s">&#39;POST&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="GpVarDiagView.gp_var_diag_view"><a class="viewcode-back" href="../../../../moe.views.rest.html#moe.views.rest.gp_mean_var.GpVarDiagView.gp_var_diag_view">[docs]</a>    <span class="k">def</span> <span class="nf">gp_var_diag_view</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Endpoint for gp_var_diag POST requests.</span>
+
+<span class="sd">        .. http:post:: /gp/var/diag</span>
+
+<span class="sd">           Calculates the GP variance of a set of points, given historical data.</span>
+
+<span class="sd">           :input: :class:`moe.views.gp_ei.GpMeanVarRequest`</span>
+<span class="sd">           :output: :class:`moe.views.gp_ei.GpVarDiagResponse`</span>
+
+<span class="sd">           :status 200: returns a response</span>
+<span class="sd">           :status 500: server error</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">form_response</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gp_mean_var_response_dict</span><span class="p">(</span><span class="n">compute_mean</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">compute_var</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">var_diag</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="p">)</span></div></div>
 </pre></div>
 
           </div>

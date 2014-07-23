@@ -64,18 +64,30 @@
         
             <ul>
 <li class="toctree-l1"><a class="reference internal" href="why_moe.html">Why Do We Need MOE?</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="why_moe.html#what-is-moe">What is MOE?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="why_moe.html#why-is-this-hard">Why is this hard?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="why_moe.html#other-methods">Other Methods</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Install</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="install.html#install-in-docker">Install in docker:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#install-from-source">Install from source:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below):</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#install-in-docker">Install in docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#install-from-source">Install from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#osx-tips">OSX Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#building-boost">Building Boost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="moe_math.html">How does MOE work?</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#build-a-gaussian-process-gp-with-the-historical-data">Build a Gaussian Process (GP) with the historical data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#optimize-the-hyperparameters-of-the-gaussian-process">Optimize the hyperparameters of the Gaussian Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#find-the-point-s-of-highest-expected-improvement-ei">Find the point(s) of highest Expected Improvement (EI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#return-the-point-s-to-sample-then-repeat">Return the point(s) to sample, then repeat</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="demo_tutorial.html">Demo Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="demo_tutorial.html#the-interactive-demo">The Interactive Demo</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pretty_endpoints.html">Pretty Endpoints</a></li>
 <li class="toctree-l1"><a class="reference internal" href="objective_functions.html">Objective Functions</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="objective_functions.html#what-is-an-objective-function">What is an objective function?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="objective_functions.html#properties-of-an-objective-function">Properties of an objective function</a></li>
@@ -108,6 +120,16 @@
 <li class="toctree-l2"><a class="reference internal" href="moe.html#module-moe">Module contents</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="moe_examples.html">moe_examples package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.next_point_via_simple_endpoint">moe_examples.next_point_via_simple_endpoint module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples">Module contents</a></li>
+</ul>
+</li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="cpp_tree.html">C++ Files</a><ul>
@@ -130,23 +152,22 @@
 <li class="toctree-l2"><a class="reference internal" href="gpp_python_model_selection.html">gpp_python_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_math.html">gpp_math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_random_test.html">gpp_random_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimizer_parameters.html">gpp_optimizer_parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_random.html">gpp_random</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra.html">gpp_linear_algebra</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_core.html">gpp_core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection.html">gpp_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_covariance_test.html">gpp_covariance_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_python.html">gpp_python</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_and_hyperparameter_optimization.html">gpp_model_selection_and_hyperparameter_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_test.html">gpp_model_selection_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_optimization_parameters.html">gpp_optimization_parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_common.html">gpp_common</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_and_hyperparameter_optimization_test.html">gpp_model_selection_and_hyperparameter_optimization_test</a></li>
 </ul>
 </li>
 </ul>
@@ -268,6 +289,12 @@ This function is also positive definite by definition.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="moe.optimal_learning.python.python_version.covariance.SquareExponential.get_json_serializable_info">
+<tt class="descname">get_json_serializable_info</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/covariance.html#SquareExponential.get_json_serializable_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.covariance.SquareExponential.get_json_serializable_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create and return a covariance_info dictionary of this covariance object.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="moe.optimal_learning.python.python_version.covariance.SquareExponential.grad_covariance">
 <tt class="descname">grad_covariance</tt><big>(</big><em>point_one</em>, <em>point_two</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/covariance.html#SquareExponential.grad_covariance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.covariance.SquareExponential.grad_covariance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the gradient of self.covariance(point_one, point_two) with respect to the FIRST argument, point_one.</p>
@@ -341,6 +368,12 @@ either of them).  Thus the matrix of grad covariances (wrt hyperparameters) is s
 <tt class="descname">hyperparameter_hessian_covariance</tt><big>(</big><em>point_one</em>, <em>point_two</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/covariance.html#SquareExponential.hyperparameter_hessian_covariance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.covariance.SquareExponential.hyperparameter_hessian_covariance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the hessian of self.covariance(point_one, point_two) with respect to its hyperparameters.</p>
 <p>TODO(GH-57): Implement Hessians in Python.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="moe.optimal_learning.python.python_version.covariance.SquareExponential.hyperparameters">
+<tt class="descname">hyperparameters</tt><a class="headerlink" href="#moe.optimal_learning.python.python_version.covariance.SquareExponential.hyperparameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the hyperparameters (array of float64 with shape (num_hyperparameters)) of this covariance.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -514,6 +547,24 @@ independently.</p>
 </table>
 </dd></dl>
 
+<dl class="method">
+<dt id="moe.optimal_learning.python.python_version.domain.TensorProductDomain.get_json_serializable_info">
+<tt class="descname">get_json_serializable_info</tt><big>(</big><em>minimal=False</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/domain.html#TensorProductDomain.get_json_serializable_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.domain.TensorProductDomain.get_json_serializable_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create and return a domain_info dictionary of this domain object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>minimal</strong> (<em>bool</em>) &#8211; True for all domain contents; False for <tt class="docutils literal"><span class="pre">domain_type</span></tt> and <tt class="docutils literal"><span class="pre">dim</span></tt> only</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">dict representation of this domain</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </dd></dl>
 
 </div>
@@ -530,10 +581,15 @@ independently.</p>
 associated GaussianProcess. The general EI computation requires monte-carlo integration; it can support q,p-EI optimization.
 It is designed to work with any GaussianProcess.</p>
 <p>When available, fast, analytic formulas replace monte-carlo loops.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Equivalent methods of ExpectedImprovementInterface and OptimizableInterface are aliased below (e.g.,
+compute_expected_improvement and compute_objective_function, etc).</p>
+</div>
 <p>See interfaces/expected_improvement_interface.py docs for further details.</p>
 <dl class="method">
 <dt id="moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.compute_expected_improvement">
-<tt class="descname">compute_expected_improvement</tt><big>(</big><em>force_monte_carlo=False</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/expected_improvement.html#ExpectedImprovement.compute_expected_improvement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.compute_expected_improvement" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">compute_expected_improvement</tt><big>(</big><em>force_monte_carlo=False</em>, <em>force_1d_ei=False</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/expected_improvement.html#ExpectedImprovement.compute_expected_improvement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.compute_expected_improvement" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the expected improvement at <tt class="docutils literal"><span class="pre">points_to_sample</span></tt>, with <tt class="docutils literal"><span class="pre">points_being_sampled</span></tt> concurrent points being sampled.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -563,11 +619,17 @@ We compute the improvement over many random draws and average.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>force_monte_carlo</strong> (<em>boolean</em>) &#8211; whether to force monte carlo evaluation (vs using fast/accurate analytic eval when possible)</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>force_monte_carlo</strong> (<em>bool</em>) &#8211; whether to force monte carlo evaluation (vs using fast/accurate analytic eval when possible)</li>
+<li><strong>force_1d_ei</strong> (<em>bool</em>) &#8211; whether to force using the 1EI method. Used for testing purposes only. Takes precedence when force_monte_carlo is also True</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the expected improvement from sampling <tt class="docutils literal"><span class="pre">points_to_sample</span></tt> with <tt class="docutils literal"><span class="pre">points_being_sampled</span></tt> concurrent experiments</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the expected improvement from sampling <tt class="docutils literal"><span class="pre">points_to_sample</span></tt> with <tt class="docutils literal"><span class="pre">points_being_sampled</span></tt> concurrent experiments</p>
+</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">float64</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float64</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -609,8 +671,36 @@ and <tt class="docutils literal"><span class="pre">Xp</span></tt> is <tt class="
 
 <dl class="method">
 <dt id="moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.compute_grad_objective_function">
-<tt class="descname">compute_grad_objective_function</tt><big>(</big><em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/expected_improvement.html#ExpectedImprovement.compute_grad_objective_function"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.compute_grad_objective_function" title="Permalink to this definition">¶</a></dt>
-<dd><p>Wrapper for compute_grad_expected_improvement; see that function&#8217;s docstring.</p>
+<tt class="descname">compute_grad_objective_function</tt><big>(</big><em>force_monte_carlo=False</em><big>)</big><a class="headerlink" href="#moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.compute_grad_objective_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the gradient of expected improvement at <tt class="docutils literal"><span class="pre">points_to_sample</span></tt> wrt <tt class="docutils literal"><span class="pre">points_to_sample</span></tt>, with <tt class="docutils literal"><span class="pre">points_being_sampled</span></tt> concurrent samples.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">These comments were copied from this&#8217;s superclass in expected_improvement_interface.py.</p>
+</div>
+<p><tt class="docutils literal"><span class="pre">points_to_sample</span></tt> is the &#8220;q&#8221; and <tt class="docutils literal"><span class="pre">points_being_sampled</span></tt> is the &#8220;p&#8221; in q,p-EI.</p>
+<p>In general, the expressions for gradients of EI are complex and difficult to evaluate; hence we use
+Monte-Carlo simulation to approximate it. When faster (e.g., analytic) techniques are available, we will prefer them.</p>
+<p>The MC computation of grad EI is similar to the computation of EI (decsribed in
+compute_expected_improvement). We differentiate <tt class="docutils literal"><span class="pre">y</span> <span class="pre">=</span> <span class="pre">\mu</span> <span class="pre">+</span> <span class="pre">Lw</span></tt> wrt <tt class="docutils literal"><span class="pre">points_to_sample</span></tt>;
+only terms from the gradient of <tt class="docutils literal"><span class="pre">\mu</span></tt> and <tt class="docutils literal"><span class="pre">L</span></tt> contribute. In EI, we computed:
+<tt class="docutils literal"><span class="pre">improvement_per_step</span> <span class="pre">=</span> <span class="pre">max(max(best_so_far</span> <span class="pre">-</span> <span class="pre">y),</span> <span class="pre">0.0)</span></tt>
+and noted that only the smallest component of <tt class="docutils literal"><span class="pre">y</span></tt> may contribute (if it is &gt; 0.0).
+Call this index <tt class="docutils literal"><span class="pre">winner</span></tt>. Thus in computing grad EI, we only add gradient terms
+that are attributable to the <tt class="docutils literal"><span class="pre">winner</span></tt>-th component of <tt class="docutils literal"><span class="pre">y</span></tt>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>force_monte_carlo</strong> (<em>boolean</em>) &#8211; whether to force monte carlo evaluation (vs using fast/accurate analytic eval when possible)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">gradient of EI, <tt class="docutils literal"><span class="pre">\pderiv{EI(Xq</span> <span class="pre">\cup</span> <span class="pre">Xp)}{Xq_{i,d}}</span></tt> where <tt class="docutils literal"><span class="pre">Xq</span></tt> is <tt class="docutils literal"><span class="pre">points_to_sample</span></tt>
+and <tt class="docutils literal"><span class="pre">Xp</span></tt> is <tt class="docutils literal"><span class="pre">points_being_sampled</span></tt> (grad EI from sampling <tt class="docutils literal"><span class="pre">points_to_sample</span></tt> with
+<tt class="docutils literal"><span class="pre">points_being_sampled</span></tt> concurrent experiments wrt each dimension of the points in <tt class="docutils literal"><span class="pre">points_to_sample</span></tt>)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">array of float64 with shape (num_to_sample, dim)</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -621,8 +711,56 @@ and <tt class="docutils literal"><span class="pre">Xp</span></tt> is <tt class="
 
 <dl class="method">
 <dt id="moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.compute_objective_function">
-<tt class="descname">compute_objective_function</tt><big>(</big><em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/expected_improvement.html#ExpectedImprovement.compute_objective_function"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.compute_objective_function" title="Permalink to this definition">¶</a></dt>
-<dd><p>Wrapper for compute_expected_improvement; see that function&#8217;s docstring.</p>
+<tt class="descname">compute_objective_function</tt><big>(</big><em>force_monte_carlo=False</em>, <em>force_1d_ei=False</em><big>)</big><a class="headerlink" href="#moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.compute_objective_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the expected improvement at <tt class="docutils literal"><span class="pre">points_to_sample</span></tt>, with <tt class="docutils literal"><span class="pre">points_being_sampled</span></tt> concurrent points being sampled.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">These comments were copied from this&#8217;s superclass in expected_improvement_interface.py.</p>
+</div>
+<p><tt class="docutils literal"><span class="pre">points_to_sample</span></tt> is the &#8220;q&#8221; and <tt class="docutils literal"><span class="pre">points_being_sampled</span></tt> is the &#8220;p&#8221; in q,p-EI.</p>
+<p>Computes the expected improvement <tt class="docutils literal"><span class="pre">EI(Xs)</span> <span class="pre">=</span> <span class="pre">E_n[[f^*_n(X)</span> <span class="pre">-</span> <span class="pre">min(f(Xs_1),...,f(Xs_m))]^+]</span></tt>, where <tt class="docutils literal"><span class="pre">Xs</span></tt>
+are potential points to sample (union of <tt class="docutils literal"><span class="pre">points_to_sample</span></tt> and <tt class="docutils literal"><span class="pre">points_being_sampled</span></tt>) and <tt class="docutils literal"><span class="pre">X</span></tt> are
+already sampled points.  The <tt class="docutils literal"><span class="pre">^+</span></tt> indicates that the expression in the expectation evaluates to 0 if it
+is negative.  <tt class="docutils literal"><span class="pre">f^*(X)</span></tt> is the MINIMUM over all known function evaluations (<tt class="docutils literal"><span class="pre">points_sampled_value</span></tt>),
+whereas <tt class="docutils literal"><span class="pre">f(Xs)</span></tt> are <em>GP-predicted</em> function evaluations.</p>
+<p>In words, we are computing the expected improvement (over the current <tt class="docutils literal"><span class="pre">best_so_far</span></tt>, best known
+objective function value) that would result from sampling (aka running new experiments) at
+<tt class="docutils literal"><span class="pre">points_to_sample</span></tt> with <tt class="docutils literal"><span class="pre">points_being_sampled</span></tt> concurrent/ongoing experiments.</p>
+<p>In general, the EI expression is complex and difficult to evaluate; hence we use Monte-Carlo simulation to approximate it.
+When faster (e.g., analytic) techniques are available, we will prefer them.</p>
+<p>The idea of the MC approach is to repeatedly sample at the union of <tt class="docutils literal"><span class="pre">points_to_sample</span></tt> and
+<tt class="docutils literal"><span class="pre">points_being_sampled</span></tt>. This is analogous to gaussian_process_interface.sample_point_from_gp,
+but we sample <tt class="docutils literal"><span class="pre">num_union</span></tt> points at once:
+<tt class="docutils literal"><span class="pre">y</span> <span class="pre">=</span> <span class="pre">\mu</span> <span class="pre">+</span> <span class="pre">Lw</span></tt>
+where <tt class="docutils literal"><span class="pre">\mu</span></tt> is the GP-mean, <tt class="docutils literal"><span class="pre">L</span></tt> is the <tt class="docutils literal"><span class="pre">chol_factor(GP-variance)</span></tt> and <tt class="docutils literal"><span class="pre">w</span></tt> is a vector
+of <tt class="docutils literal"><span class="pre">num_union</span></tt> draws from N(0, 1). Then:
+<tt class="docutils literal"><span class="pre">improvement_per_step</span> <span class="pre">=</span> <span class="pre">max(max(best_so_far</span> <span class="pre">-</span> <span class="pre">y),</span> <span class="pre">0.0)</span></tt>
+Observe that the inner <tt class="docutils literal"><span class="pre">max</span></tt> means only the smallest component of <tt class="docutils literal"><span class="pre">y</span></tt> contributes in each iteration.
+We compute the improvement over many random draws and average.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>force_monte_carlo</strong> (<em>bool</em>) &#8211; whether to force monte carlo evaluation (vs using fast/accurate analytic eval when possible)</li>
+<li><strong>force_1d_ei</strong> (<em>bool</em>) &#8211; whether to force using the 1EI method. Used for testing purposes only. Takes precedence when force_monte_carlo is also True</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the expected improvement from sampling <tt class="docutils literal"><span class="pre">points_to_sample</span></tt> with <tt class="docutils literal"><span class="pre">points_being_sampled</span></tt> concurrent experiments</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float64</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.current_point">
+<tt class="descname">current_point</tt><a class="headerlink" href="#moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.current_point" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the current_point (array of float64 with shape (problem_size)) at which this object is evaluating the objective function, <tt class="docutils literal"><span class="pre">f(x)</span></tt>.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -799,7 +937,7 @@ both point sets with the GP, so we simply call the union of point sets <tt class
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>sampled_points</strong> (<em>list of SampledPoint objects</em>) &#8211; SampledPoint objects to load into the GP (containing point, function value, and noise variance)</li>
+<li><strong>sampled_points</strong> (list of <tt class="xref py py-class docutils literal"><span class="pre">moe.optimal_learning.python.SamplePoint</span></tt> objects) &#8211; SamplePoint objects to load into the GP (containing point, function value, and noise variance)</li>
 <li><strong>validate</strong> (<em>boolean</em>) &#8211; whether to sanity-check the input sample_points</li>
 </ul>
 </td>
@@ -832,7 +970,7 @@ both point sets with the GP, so we simply call the union of point sets <tt class
 
 <dl class="method">
 <dt id="moe.optimal_learning.python.python_version.gaussian_process.GaussianProcess.compute_grad_cholesky_variance_of_points">
-<tt class="descname">compute_grad_cholesky_variance_of_points</tt><big>(</big><em>points_to_sample</em>, <em>num_derivatives=-1</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/gaussian_process.html#GaussianProcess.compute_grad_cholesky_variance_of_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.gaussian_process.GaussianProcess.compute_grad_cholesky_variance_of_points" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">compute_grad_cholesky_variance_of_points</tt><big>(</big><em>points_to_sample</em>, <em>chol_var=None</em>, <em>num_derivatives=-1</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/gaussian_process.html#GaussianProcess.compute_grad_cholesky_variance_of_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.gaussian_process.GaussianProcess.compute_grad_cholesky_variance_of_points" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the gradient of the cholesky factorization of the variance (matrix) of this GP at each point of <tt class="docutils literal"><span class="pre">Xs</span></tt> (<tt class="docutils literal"><span class="pre">points_to_sample</span></tt>) wrt <tt class="docutils literal"><span class="pre">Xs</span></tt>.</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
@@ -854,6 +992,7 @@ with respect to <tt class="docutils literal"><span class="pre">x_{k,d}</span></t
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>points_to_sample</strong> (<em>array of float64 with shape (num_to_sample, dim)</em>) &#8211; num_to_sample points (in dim dimensions) being sampled from the GP</li>
+<li><strong>chol_var</strong> (<em>array of float64 with shape (num_to_sample, num_to_sample)</em>) &#8211; the cholesky factorization (L) of the variance matrix; only the lower triangle is accessed</li>
 <li><strong>num_derivatives</strong> (<em>int</em>) &#8211; return derivatives wrt points_to_sample[0:num_derivatives]; large or negative values are clamped</li>
 </ul>
 </td>
@@ -1002,6 +1141,38 @@ gradient terms from the cholesky factorization. Description will not be duplicat
 <dd><p>Return the number of spatial dimensions.</p>
 </dd></dl>
 
+<dl class="method">
+<dt id="moe.optimal_learning.python.python_version.gaussian_process.GaussianProcess.get_covariance_copy">
+<tt class="descname">get_covariance_copy</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/gaussian_process.html#GaussianProcess.get_covariance_copy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.gaussian_process.GaussianProcess.get_covariance_copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a copy of the covariance object specifying the Gaussian Process.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">covariance object encoding assumptions about the GP&#8217;s behavior on our data</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">interfaces.covariance_interface.CovarianceInterface subclass</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.optimal_learning.python.python_version.gaussian_process.GaussianProcess.get_historical_data_copy">
+<tt class="descname">get_historical_data_copy</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/gaussian_process.html#GaussianProcess.get_historical_data_copy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.gaussian_process.GaussianProcess.get_historical_data_copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the data (points, function values, noise) specifying the prior of the Gaussian Process.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">object specifying the already-sampled points, the objective value at those points, and the noise variance associated with each observation</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">data_containers.HistoricalData</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="moe.optimal_learning.python.python_version.gaussian_process.GaussianProcess.num_sampled">
 <tt class="descname">num_sampled</tt><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/gaussian_process.html#GaussianProcess.num_sampled"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.gaussian_process.GaussianProcess.num_sampled" title="Permalink to this definition">¶</a></dt>
@@ -1101,13 +1272,18 @@ in the log marginal likelihood calculation.  See Rasmussen &amp; Williams 5.2 an
 <p>We can use the log marginal likelihood to determine how good our model is.  Additionally, we can maximize it by varying
 hyperparameters (or even changing covariance functions) to improve our model quality.  Hence this class provides access
 to functions for computing log marginal likelihood and its hyperparameter gradients.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Equivalent methods of LogLikelihoodInterface and OptimizableInterface are aliased below (e.g.,
+problem_size and num_hyperparameters, compute_log_likelihood and compute_objective_function, etc).</p>
+</div>
 <dl class="method">
 <dt id="moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.compute_grad_log_likelihood">
 <tt class="descname">compute_grad_log_likelihood</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/log_likelihood.html#GaussianProcessLogMarginalLikelihood.compute_grad_log_likelihood"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.compute_grad_log_likelihood" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the gradient (wrt hyperparameters) of the _log_likelihood_type measure at the specified hyperparameters.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">These comments are copied from LogMarginalLikelihoodEvaluator::ComputeGradLogLikelihood in gpp_model_selection_and_hyperparameter_optimization.cpp.</p>
+<p class="last">These comments are copied from LogMarginalLikelihoodEvaluator::ComputeGradLogLikelihood in gpp_model_selection.cpp.</p>
 </div>
 <p>Computes <tt class="docutils literal"><span class="pre">\pderiv{log(p(y</span> <span class="pre">|</span> <span class="pre">X,</span> <span class="pre">\theta))}{\theta_k}</span> <span class="pre">=</span> <span class="pre">\frac{1}{2}</span> <span class="pre">*</span> <span class="pre">y_i</span> <span class="pre">*</span> <span class="pre">\pderiv{K_{ij}}{\theta_k}</span> <span class="pre">*</span> <span class="pre">y_j</span> <span class="pre">-</span> <span class="pre">\frac{1}{2}</span></tt>
 <tt class="docutils literal"><span class="pre">*</span> <span class="pre">trace(K^{-1}_{ij}\pderiv{K_{ij}}{\theta_k})</span></tt>
@@ -1127,8 +1303,26 @@ where <tt class="docutils literal"><span class="pre">\alpha_i</span> <span class
 
 <dl class="method">
 <dt id="moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.compute_grad_objective_function">
-<tt class="descname">compute_grad_objective_function</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/log_likelihood.html#GaussianProcessLogMarginalLikelihood.compute_grad_objective_function"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.compute_grad_objective_function" title="Permalink to this definition">¶</a></dt>
-<dd><p>Wrapper for compute_grad_log_likelihood; see that function&#8217;s docstring.</p>
+<tt class="descname">compute_grad_objective_function</tt><big>(</big><big>)</big><a class="headerlink" href="#moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.compute_grad_objective_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the gradient (wrt hyperparameters) of the _log_likelihood_type measure at the specified hyperparameters.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">These comments are copied from LogMarginalLikelihoodEvaluator::ComputeGradLogLikelihood in gpp_model_selection.cpp.</p>
+</div>
+<p>Computes <tt class="docutils literal"><span class="pre">\pderiv{log(p(y</span> <span class="pre">|</span> <span class="pre">X,</span> <span class="pre">\theta))}{\theta_k}</span> <span class="pre">=</span> <span class="pre">\frac{1}{2}</span> <span class="pre">*</span> <span class="pre">y_i</span> <span class="pre">*</span> <span class="pre">\pderiv{K_{ij}}{\theta_k}</span> <span class="pre">*</span> <span class="pre">y_j</span> <span class="pre">-</span> <span class="pre">\frac{1}{2}</span></tt>
+<tt class="docutils literal"><span class="pre">*</span> <span class="pre">trace(K^{-1}_{ij}\pderiv{K_{ij}}{\theta_k})</span></tt>
+Or equivalently, <tt class="docutils literal"><span class="pre">=</span> <span class="pre">\frac{1}{2}</span> <span class="pre">*</span> <span class="pre">trace([\alpha_i</span> <span class="pre">\alpha_j</span> <span class="pre">-</span> <span class="pre">K^{-1}_{ij}]*\pderiv{K_{ij}}{\theta_k})</span></tt>,
+where <tt class="docutils literal"><span class="pre">\alpha_i</span> <span class="pre">=</span> <span class="pre">K^{-1}_{ij}</span> <span class="pre">*</span> <span class="pre">y_j</span></tt></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">grad_log_likelihood: i-th entry is <tt class="docutils literal"><span class="pre">\pderiv{LL(y</span> <span class="pre">|</span> <span class="pre">X,</span> <span class="pre">\theta)}{\theta_i}</span></tt></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">array of float64 with shape (num_hyperparameters)</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -1139,8 +1333,8 @@ where <tt class="docutils literal"><span class="pre">\alpha_i</span> <span class
 
 <dl class="method">
 <dt id="moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.compute_hessian_objective_function">
-<tt class="descname">compute_hessian_objective_function</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/log_likelihood.html#GaussianProcessLogMarginalLikelihood.compute_hessian_objective_function"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.compute_hessian_objective_function" title="Permalink to this definition">¶</a></dt>
-<dd><p>Wrapper for compute_hessian_log_likelihood; see that function&#8217;s docstring.</p>
+<tt class="descname">compute_hessian_objective_function</tt><big>(</big><big>)</big><a class="headerlink" href="#moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.compute_hessian_objective_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>We do not currently support computation of the (hyperparameter) hessian of log likelihood-like metrics.</p>
 </dd></dl>
 
 <dl class="method">
@@ -1149,7 +1343,7 @@ where <tt class="docutils literal"><span class="pre">\alpha_i</span> <span class
 <dd><p>Compute the _log_likelihood_type measure at the specified hyperparameters.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">These comments are copied from LogMarginalLikelihoodEvaluator::ComputeLogLikelihood in gpp_model_selection_and_hyperparameter_optimization.cpp.</p>
+<p class="last">These comments are copied from LogMarginalLikelihoodEvaluator::ComputeLogLikelihood in gpp_model_selection.cpp.</p>
 </div>
 <p><tt class="docutils literal"><span class="pre">log</span> <span class="pre">p(y</span> <span class="pre">|</span> <span class="pre">X,</span> <span class="pre">\theta)</span> <span class="pre">=</span> <span class="pre">-\frac{1}{2}</span> <span class="pre">*</span> <span class="pre">y^T</span> <span class="pre">*</span> <span class="pre">K^-1</span> <span class="pre">*</span> <span class="pre">y</span> <span class="pre">-</span> <span class="pre">\frac{1}{2}</span> <span class="pre">*</span> <span class="pre">\log(det(K))</span> <span class="pre">-</span> <span class="pre">\frac{n}{2}</span> <span class="pre">*</span> <span class="pre">\log(2*pi)</span></tt>
 where n is <tt class="docutils literal"><span class="pre">num_sampled</span></tt>, <tt class="docutils literal"><span class="pre">\theta</span></tt> are the hyperparameters, and <tt class="docutils literal"><span class="pre">\log</span></tt> is the natural logarithm.  In the following,
@@ -1176,8 +1370,40 @@ and (possibly) better numerical conditioning.</p>
 
 <dl class="method">
 <dt id="moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.compute_objective_function">
-<tt class="descname">compute_objective_function</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/log_likelihood.html#GaussianProcessLogMarginalLikelihood.compute_objective_function"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.compute_objective_function" title="Permalink to this definition">¶</a></dt>
-<dd><p>Wrapper for compute_log_likelihood; see that function&#8217;s docstring.</p>
+<tt class="descname">compute_objective_function</tt><big>(</big><big>)</big><a class="headerlink" href="#moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.compute_objective_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the _log_likelihood_type measure at the specified hyperparameters.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">These comments are copied from LogMarginalLikelihoodEvaluator::ComputeLogLikelihood in gpp_model_selection.cpp.</p>
+</div>
+<p><tt class="docutils literal"><span class="pre">log</span> <span class="pre">p(y</span> <span class="pre">|</span> <span class="pre">X,</span> <span class="pre">\theta)</span> <span class="pre">=</span> <span class="pre">-\frac{1}{2}</span> <span class="pre">*</span> <span class="pre">y^T</span> <span class="pre">*</span> <span class="pre">K^-1</span> <span class="pre">*</span> <span class="pre">y</span> <span class="pre">-</span> <span class="pre">\frac{1}{2}</span> <span class="pre">*</span> <span class="pre">\log(det(K))</span> <span class="pre">-</span> <span class="pre">\frac{n}{2}</span> <span class="pre">*</span> <span class="pre">\log(2*pi)</span></tt>
+where n is <tt class="docutils literal"><span class="pre">num_sampled</span></tt>, <tt class="docutils literal"><span class="pre">\theta</span></tt> are the hyperparameters, and <tt class="docutils literal"><span class="pre">\log</span></tt> is the natural logarithm.  In the following,
+<tt class="docutils literal"><span class="pre">term1</span> <span class="pre">=</span> <span class="pre">-\frac{1}{2}</span> <span class="pre">*</span> <span class="pre">y^T</span> <span class="pre">*</span> <span class="pre">K^-1</span> <span class="pre">*</span> <span class="pre">y</span></tt>
+<tt class="docutils literal"><span class="pre">term2</span> <span class="pre">=</span> <span class="pre">-\frac{1}{2}</span> <span class="pre">*</span> <span class="pre">\log(det(K))</span></tt>
+<tt class="docutils literal"><span class="pre">term3</span> <span class="pre">=</span> <span class="pre">-\frac{n}{2}</span> <span class="pre">*</span> <span class="pre">\log(2*pi)</span></tt></p>
+<p>For an SPD matrix <tt class="docutils literal"><span class="pre">K</span> <span class="pre">=</span> <span class="pre">L</span> <span class="pre">*</span> <span class="pre">L^T</span></tt>,
+<tt class="docutils literal"><span class="pre">det(K)</span> <span class="pre">=</span> <span class="pre">\Pi_i</span> <span class="pre">L_ii^2</span></tt>
+We could compute this directly and then take a logarithm.  But we also know:
+<tt class="docutils literal"><span class="pre">\log(det(K))</span> <span class="pre">=</span> <span class="pre">2</span> <span class="pre">*</span> <span class="pre">\sum_i</span> <span class="pre">\log(L_ii)</span></tt>
+The latter method is (currently) preferred for computing <tt class="docutils literal"><span class="pre">\log(det(K))</span></tt> due to reduced chance for overflow
+and (possibly) better numerical conditioning.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">value of log_likelihood evaluated at hyperparameters (<tt class="docutils literal"><span class="pre">LL(y</span> <span class="pre">|</span> <span class="pre">X,</span> <span class="pre">\theta)</span></tt>)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float64</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.current_point">
+<tt class="descname">current_point</tt><a class="headerlink" href="#moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.current_point" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the hyperparameters (array of float64 with shape (num_hyperparameters)) of this covariance.</p>
+<p>Equivalently, get the current_point at which this object is evaluating the objective function, <tt class="docutils literal"><span class="pre">f(x)</span></tt></p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1187,47 +1413,75 @@ and (possibly) better numerical conditioning.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.get_current_point">
-<tt class="descname">get_current_point</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/log_likelihood.html#GaussianProcessLogMarginalLikelihood.get_current_point"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.get_current_point" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the current_point (array of float64 with shape (problem_size)) at which this object is evaluating the objective function, <tt class="docutils literal"><span class="pre">f(x)</span></tt>.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.get_hyperparameters">
-<tt class="descname">get_hyperparameters</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/log_likelihood.html#GaussianProcessLogMarginalLikelihood.get_hyperparameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.get_hyperparameters" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the hyperparameters (array of float64 with shape (num_hyperparameters)) of this covariance.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.num_hyperparameters">
-<tt class="descname">num_hyperparameters</tt><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/log_likelihood.html#GaussianProcessLogMarginalLikelihood.num_hyperparameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.num_hyperparameters" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the number of hyperparameters.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.problem_size">
-<tt class="descname">problem_size</tt><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/log_likelihood.html#GaussianProcessLogMarginalLikelihood.problem_size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.problem_size" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the number of independent parameters to optimize.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.set_current_point">
-<tt class="descname">set_current_point</tt><big>(</big><em>current_point</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/log_likelihood.html#GaussianProcessLogMarginalLikelihood.set_current_point"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.set_current_point" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set current_point to the specified point; ordering must match.</p>
+<dt id="moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.get_covariance_copy">
+<tt class="descname">get_covariance_copy</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/log_likelihood.html#GaussianProcessLogMarginalLikelihood.get_covariance_copy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.get_covariance_copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a copy of the covariance object specifying the Gaussian Process.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>current_point</strong> (<em>array of float64 with shape (problem_size)</em>) &#8211; current_point at which to evaluate the objective function, <tt class="docutils literal"><span class="pre">f(x)</span></tt></td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">covariance object encoding assumptions about the GP&#8217;s behavior on our data</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">interfaces.covariance_interface.CovarianceInterface subclass</td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
 <dl class="method">
+<dt id="moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.get_historical_data_copy">
+<tt class="descname">get_historical_data_copy</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/log_likelihood.html#GaussianProcessLogMarginalLikelihood.get_historical_data_copy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.get_historical_data_copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the data (points, function values, noise) specifying the prior of the Gaussian Process.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">object specifying the already-sampled points, the objective value at those points, and the noise variance associated with each observation</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">data_containers.HistoricalData</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.get_hyperparameters">
+<tt class="descname">get_hyperparameters</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/log_likelihood.html#GaussianProcessLogMarginalLikelihood.get_hyperparameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.get_hyperparameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the hyperparameters (array of float64 with shape (num_hyperparameters)) of this covariance.</p>
+<p>Equivalently, get the current_point at which this object is evaluating the objective function, <tt class="docutils literal"><span class="pre">f(x)</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.hyperparameters">
+<tt class="descname">hyperparameters</tt><a class="headerlink" href="#moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.hyperparameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the hyperparameters (array of float64 with shape (num_hyperparameters)) of this covariance.</p>
+<p>Equivalently, get the current_point at which this object is evaluating the objective function, <tt class="docutils literal"><span class="pre">f(x)</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.num_hyperparameters">
+<tt class="descname">num_hyperparameters</tt><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/log_likelihood.html#GaussianProcessLogMarginalLikelihood.num_hyperparameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.num_hyperparameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the number of hyperparameters aka the number of independent parameters to optimize.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.problem_size">
+<tt class="descname">problem_size</tt><a class="headerlink" href="#moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.problem_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the number of hyperparameters aka the number of independent parameters to optimize.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.set_hyperparameters">
 <tt class="descname">set_hyperparameters</tt><big>(</big><em>hyperparameters</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/log_likelihood.html#GaussianProcessLogMarginalLikelihood.set_hyperparameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood.set_hyperparameters" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set hyperparameters to the specified hyperparameters; ordering must match.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>hyperparameters</strong> (<em>array of float64 with shape (num_hyperparameters)</em>) &#8211; hyperparameters at which to evaluate the log likelihood (objective function), <tt class="docutils literal"><span class="pre">f(x)</span></tt></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>
@@ -1401,7 +1655,7 @@ dimensions), which is interpretable as information about local curvature, Newton
 step size and direction to ensure rapid** convergence.</p>
 <p>*, ** See &#8220;IMPLEMENTATION DETAILS&#8221; comments section for details.</p>
 <p>Recall that Newton indiscriminately finds solutions where <tt class="docutils literal"><span class="pre">f'(x)</span> <span class="pre">=</span> <span class="pre">0</span></tt>; the eigenvalues of the Hessian classify these
-<tt class="docutils literal"><span class="pre">x</span></tt> as optima, saddle points, or indeterminate. We multistart Newton (e.g., gpp_model_selection_and_hyperparameter_optimization)
+<tt class="docutils literal"><span class="pre">x</span></tt> as optima, saddle points, or indeterminate. We multistart Newton (e.g., gpp_model_selection)
 but just take the best objective value without classifying solutions.
 The MultistartOptimizer template class in this file provides generic multistart functionality.</p>
 <p>Newton is implemented here: NewtonOptimizer::Optimize() (which calls NewtonOptimization())</p>
@@ -1456,7 +1710,7 @@ can have exceptionally poor convergence characteristics or run too slowly.  In c
 fail, we commonly fall back to &#8216;dumb&#8217; search.</p>
 <dl class="class">
 <dt id="moe.optimal_learning.python.python_version.optimization.GradientDescentOptimizer">
-<em class="property">class </em><tt class="descclassname">moe.optimal_learning.python.python_version.optimization.</tt><tt class="descname">GradientDescentOptimizer</tt><big>(</big><em>domain</em>, <em>optimizable</em>, <em>optimization_parameters</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/optimization.html#GradientDescentOptimizer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.optimization.GradientDescentOptimizer" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">moe.optimal_learning.python.python_version.optimization.</tt><tt class="descname">GradientDescentOptimizer</tt><big>(</big><em>domain</em>, <em>optimizable</em>, <em>optimizer_parameters</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/optimization.html#GradientDescentOptimizer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.optimization.GradientDescentOptimizer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="moe.optimal_learning.python.interfaces.html#moe.optimal_learning.python.interfaces.optimization_interface.OptimizerInterface" title="moe.optimal_learning.python.interfaces.optimization_interface.OptimizerInterface"><tt class="xref py py-class docutils literal"><span class="pre">moe.optimal_learning.python.interfaces.optimization_interface.OptimizerInterface</span></tt></a></p>
 <p>Optimizes an objective function over the specified domain with the gradient descent method.</p>
 <div class="admonition note">
@@ -1740,7 +1994,7 @@ overwriting. This output is commonly overwritten.</p>
 <dd><p>Build <tt class="docutils literal"><span class="pre">A_{jik}</span> <span class="pre">=</span> <span class="pre">\pderiv{K_{ij}}{\theta_k}</span></tt>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">These comments are copied from BuildHyperparameterGradCovarianceMatrix() in gpp_model_selection_and_hyperparameter_optimization.cpp.</p>
+<p class="last">These comments are copied from BuildHyperparameterGradCovarianceMatrix() in gpp_model_selection.cpp.</p>
 </div>
 <p>Build <tt class="docutils literal"><span class="pre">A_{jik}</span> <span class="pre">=</span> <span class="pre">\pderiv{K_{ij}}{\theta_k}</span></tt>
 Hence the outer loop structure is identical to BuildCovarianceMatrix().</p>

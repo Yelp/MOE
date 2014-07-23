@@ -1,5 +1,5 @@
 gpp_geometry_test
-=====
+=================
 
 **Contents:**
 
@@ -8,13 +8,13 @@ gpp_geometry_test
 
 
 gpp_geometry_test.hpp
-------
+---------------------
 
 .. doxygenfile:: gpp_geometry_test.hpp
 
 
 gpp_geometry_test.cpp
-------
+---------------------
 
 .. doxygenfile:: gpp_geometry_test.cpp
 

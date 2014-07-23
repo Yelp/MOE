@@ -1,5 +1,5 @@
 gpp_linear_algebra_test
-=====
+=======================
 
 **Contents:**
 
@@ -8,13 +8,13 @@ gpp_linear_algebra_test
 
 
 gpp_linear_algebra_test.hpp
-------
+---------------------------
 
 .. doxygenfile:: gpp_linear_algebra_test.hpp
 
 
 gpp_linear_algebra_test.cpp
-------
+---------------------------
 
 .. doxygenfile:: gpp_linear_algebra_test.cpp
 

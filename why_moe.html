@@ -63,18 +63,30 @@
         
             <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="">Why Do We Need MOE?</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#what-is-moe">What is MOE?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#why-is-this-hard">Why is this hard?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#other-methods">Other Methods</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Install</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="install.html#install-in-docker">Install in docker:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#install-from-source">Install from source:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below):</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#install-in-docker">Install in docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#install-from-source">Install from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#osx-tips">OSX Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#building-boost">Building Boost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="moe_math.html">How does MOE work?</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#build-a-gaussian-process-gp-with-the-historical-data">Build a Gaussian Process (GP) with the historical data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#optimize-the-hyperparameters-of-the-gaussian-process">Optimize the hyperparameters of the Gaussian Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#find-the-point-s-of-highest-expected-improvement-ei">Find the point(s) of highest Expected Improvement (EI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#return-the-point-s-to-sample-then-repeat">Return the point(s) to sample, then repeat</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="demo_tutorial.html">Demo Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="demo_tutorial.html#the-interactive-demo">The Interactive Demo</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pretty_endpoints.html">Pretty Endpoints</a></li>
 <li class="toctree-l1"><a class="reference internal" href="objective_functions.html">Objective Functions</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="objective_functions.html#what-is-an-objective-function">What is an objective function?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="objective_functions.html#properties-of-an-objective-function">Properties of an objective function</a></li>
@@ -107,6 +119,16 @@
 <li class="toctree-l2"><a class="reference internal" href="moe.html#module-moe">Module contents</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="moe_examples.html">moe_examples package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.next_point_via_simple_endpoint">moe_examples.next_point_via_simple_endpoint module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples">Module contents</a></li>
+</ul>
+</li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="cpp_tree.html">C++ Files</a><ul>
@@ -129,23 +151,22 @@
 <li class="toctree-l2"><a class="reference internal" href="gpp_python_model_selection.html">gpp_python_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_math.html">gpp_math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_random_test.html">gpp_random_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimizer_parameters.html">gpp_optimizer_parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_random.html">gpp_random</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra.html">gpp_linear_algebra</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_core.html">gpp_core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection.html">gpp_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_covariance_test.html">gpp_covariance_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_python.html">gpp_python</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_and_hyperparameter_optimization.html">gpp_model_selection_and_hyperparameter_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_test.html">gpp_model_selection_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_optimization_parameters.html">gpp_optimization_parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_common.html">gpp_common</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_and_hyperparameter_optimization_test.html">gpp_model_selection_and_hyperparameter_optimization_test</a></li>
 </ul>
 </li>
 </ul>
@@ -184,61 +205,43 @@
             
   <div class="section" id="why-do-we-need-moe">
 <h1>Why Do We Need MOE?<a class="headerlink" href="#why-do-we-need-moe" title="Permalink to this headline">¶</a></h1>
-<p><strong>Contents:</strong></p>
-<blockquote>
-<div><ol class="arabic simple">
-<li><a class="reference internal" href="#what-is-moe">What is MOE?</a></li>
-<li><a class="reference internal" href="#why-is-this-hard">Why is this hard?</a></li>
-</ol>
-</div></blockquote>
-<div class="section" id="what-is-moe">
-<h2>What is MOE?<a class="headerlink" href="#what-is-moe" title="Permalink to this headline">¶</a></h2>
-<p>MOE (Metric Optimization Engine) is a <em>fast and efficient</em>, <em>derivative-free</em>,  <em>black box</em>, <em>global</em> optimization framework for optimizing parameters of time <em>consuming</em> or <em>expensive</em> experiments and systems.</p>
-<p>An experiment or system can be time consuming or expensive if it takes a long time to recieve statistically significant results (traffic for an A/B test, complex system with long training time, etc) or the opportunity cost of trying new values is high (engineering expense, A/B testing tradeoffs, etc).</p>
-<p>MOE solves this problem through optimal experimental design and <em>optimal learning</em>.</p>
-<blockquote>
-<div><p>&#8220;Optimal learning addresses the challenge of how to collect information as efficiently as possible, primarily for settings where collecting information is time consuming and expensive&#8221;</p>
-<p class="attribution">&mdash;Prof. Warren Powell, <a class="reference external" href="http://optimallearning.princeton.edu">http://optimallearning.princeton.edu</a></p>
-</div></blockquote>
-<p>It boils down to:</p>
-<blockquote>
-<div><p>&#8220;What is the most efficient way to collect information?&#8221;</p>
-<p class="attribution">&mdash;Prof. Peter Frazier, <a class="reference external" href="http://people.orie.cornell.edu/pfrazier">http://people.orie.cornell.edu/pfrazier</a></p>
-</div></blockquote>
-<p>The <em>black box</em> nature of MOE allows us to optimize any number of systems, requiring no internal knowledge or access. It uses some <cite>objective function &lt;/objective_functions&gt;</cite> and some set of <cite>parameters &lt;/objective_functions&gt;</cite> and finds the best set of parameters to maximize (or minimize) the given function in as few attempts as possible. It does not require knowledge of the specific objective, or how it is obtained, just the previous parameters and their associated objective values (historical data).</p>
-</div>
-<div class="section" id="why-is-this-hard">
-<h2>Why is this hard?<a class="headerlink" href="#why-is-this-hard" title="Permalink to this headline">¶</a></h2>
-<ol class="arabic">
-<li><p class="first">Parameter optimization is hard</p>
-<blockquote>
-<div><ol class="loweralpha simple">
-<li>Finding the perfect set of parameters takes a long time (exponential with number of dimensions)</li>
-<li>We can hope it is well behaved and try to move in the right direction (assume convex)</li>
-<li>Not possible as number of parameters increases (takes a lot of engineering and wall-clock time)</li>
-</ol>
-</div></blockquote>
-</li>
-<li><p class="first">Intractable to find best set of parameters in all situations</p>
-<blockquote>
-<div><ol class="loweralpha simple">
-<li>Thousands of combinations of device/user/location/time tuples to optimize over</li>
-<li>Finding the best parameters manually is impossible</li>
-</ol>
-</div></blockquote>
-</li>
-<li><p class="first">Heuristics quickly break down in the real world</p>
-<blockquote>
-<div><ol class="loweralpha simple">
-<li>Dependent parameters (changes to one change all others)</li>
-<li>Many parameters at once (high dimensional)</li>
-<li>Non-linear (complexity and chaos break assumptions)</li>
-</ol>
-</div></blockquote>
-</li>
-</ol>
-<p>All of these problems just get worse the more expensive or time consuming the function we are optimizing is to evaluate.</p>
+<p>MOE is designed for optimizing a system&#8217;s parameters, when evaluating parameters is <em>time-consuming</em> or <em>expensive</em>, the objective function is a <em>black box</em> and not necessarily concave or convex, derivatives are unavailable, and we wish to find a global optimum, rather than a local one.</p>
+<p>Finding an optimum in these situations manually is very difficult, because the number of possible sets of parameters to try can be so large, and the time required for each parameter evaluation makes it difficult to maintain focus over the required period of time.  Difficulties are compounded when the number of parameters being optimized over grows larger than two or three, making it difficult to visualize how the objective function varies with the parameters.</p>
+<p>Using a simple hill-climbing method is also difficult because the lack of convexity means that there can be many local hills and valleys, causing such methods to get stuck in a local optimum.  Moreover, the lack of availability of derivatives means that just finding a direction of improvement to implement a hill-climbing approach can require many function evaluations.</p>
+<p>One can use a heuristic optimization method like a <a class="reference external" href="http://en.wikipedia.org/wiki/Genetic_algorithm">genetic algorithm</a> or <a class="reference external" href="http://en.wikipedia.org/wiki/Simulated_annealing">simulated annealing</a>, but these require parameters of their own to be set for them to work well, and many heuristics need to evaluate the objective function thousands or tens of thousands of times before finding an approximate optimum, which is infeasible when objective function evaluations are expensive.</p>
+<p>All of these problems just get worse the more expensive or time-consuming our objective function becomes.</p>
 <p>MOE solves all of these problems in an optimal way. See <a class="reference internal" href="examples.html"><em>Examples</em></a> and <a class="reference internal" href="objective_functions.html"><em>Objective Functions</em></a>.</p>
+<div class="section" id="other-methods">
+<h2>Other Methods<a class="headerlink" href="#other-methods" title="Permalink to this headline">¶</a></h2>
+<p>Many optimization methods exist for different types of problems:</p>
+<ul class="simple">
+<li>If derivative information is available and the system is noise-free and only a local optima is desired then a hill climbing algorithm like <a class="reference external" href="http://en.wikipedia.org/wiki/Gradient_descent">Gradient Descent</a>  can be used, or depending on the properties of the system one can use <a class="reference external" href="http://en.wikipedia.org/wiki/Conjugate_gradient_method">Conjugate Gradient</a>. If the system is noisy a method like <a class="reference external" href="http://en.wikipedia.org/wiki/Stochastic_gradient_descent">Stochastic Gradient Descent</a> can be used.</li>
+</ul>
+<ul class="simple">
+<li>If function evaluation is inexpensive and not time-consuming and a local optima is desired without derivative information then a method that approximates derivates can be used like <a class="reference external" href="http://en.wikipedia.org/wiki/Broyden%E2%80%93Fletcher%E2%80%93Goldfarb%E2%80%93Shanno_algorithm">BFGS</a>, or a method that requires no derivatives like <a class="reference external" href="http://en.wikipedia.org/wiki/Powell's_method">Powell&#8217;s method</a> or the <a class="reference external" href="http://en.wikipedia.org/wiki/Nelder%E2%80%93Mead_method">Nelder-Mead method</a>.</li>
+</ul>
+<ul class="simple">
+<li>If function evaluation is inexpensive and not time-consuming and a global optima is desired without derivative information then a method like <a class="reference external" href="http://en.wikipedia.org/wiki/Simulated_annealing">simulated annealing</a>, <a class="reference external" href="http://en.wikipedia.org/wiki/Particle_swarm_optimization">particle swarm optimization</a>, or a <a class="reference external" href="http://en.wikipedia.org/wiki/Genetic_algorithm">genetic algorithm</a> can be used. Note that these methods can take many more function evaluations than other listed methods to find an optima.</li>
+</ul>
+<p>There are many optimization software packages that help solve these different problems:</p>
+<ul class="simple">
+<li>Many of the optimization methods listed above are implemented in numerical packages like <a class="reference external" href="http://docs.scipy.org/doc/scipy/reference/optimize.html">scipy.optimize</a>.</li>
+</ul>
+<ul class="simple">
+<li><a class="reference external" href="http://cran.r-project.org/web/packages/DiceOptim/index.html">DiceOptim</a> implements many similar methods to MOE, including Expected Improvement optimization using Gaussian Processes in R.</li>
+</ul>
+<ul class="simple">
+<li><a class="reference external" href="http://www.schonlau.net/space.html">space</a> implements the Efficient Global Optimization (EGO) method in C++.</li>
+</ul>
+<ul class="simple">
+<li><a class="reference external" href="https://github.com/JasperSnoek/spearmint">spearmint</a> and <a class="reference external" href="http://rmcantin.bitbucket.org/html/index.html">bayesopt</a> are both implementations of Bayesian Global Optimization and similar methods.</li>
+</ul>
+<ul class="simple">
+<li><a class="reference external" href="http://opentuner.org/">OpenTuner</a> is a package that combines many different methods and finds global optima when evaluation is inexpensive and not time-consuming.</li>
+</ul>
+<ul class="simple">
+<li><a class="reference external" href="https://github.com/hyperopt/hyperopt">hyperopt</a> is a package for optimizing hyperparameters that uses grid search and the Tree of Parzen Estimators method.</li>
+</ul>
 </div>
 </div>
 

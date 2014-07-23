@@ -62,18 +62,30 @@
         
             <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../why_moe.html">Why Do We Need MOE?</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../why_moe.html#what-is-moe">What is MOE?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../why_moe.html#why-is-this-hard">Why is this hard?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../why_moe.html#other-methods">Other Methods</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../install.html">Install</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#install-in-docker">Install in docker:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#install-from-source">Install from source:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#osx-tips-10-8-for-10-9-see-separate-instructions-below">OSX Tips (&lt;=10.8. For 10.9, see separate instructions below):</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#linux-tips">Linux Tips:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#cmake-tips">CMake Tips:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#install-in-docker">Install in docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#install-from-source">Install from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#osx-tips">OSX Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#building-boost">Building Boost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#linux-tips">Linux Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#cmake-tips">CMake Tips</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../moe_math.html">How does MOE work?</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe_math.html#build-a-gaussian-process-gp-with-the-historical-data">Build a Gaussian Process (GP) with the historical data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe_math.html#optimize-the-hyperparameters-of-the-gaussian-process">Optimize the hyperparameters of the Gaussian Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe_math.html#find-the-point-s-of-highest-expected-improvement-ei">Find the point(s) of highest Expected Improvement (EI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe_math.html#return-the-point-s-to-sample-then-repeat">Return the point(s) to sample, then repeat</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../demo_tutorial.html">Demo Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../demo_tutorial.html#the-interactive-demo">The Interactive Demo</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pretty_endpoints.html">Pretty Endpoints</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../objective_functions.html">Objective Functions</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../objective_functions.html#what-is-an-objective-function">What is an objective function?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../objective_functions.html#properties-of-an-objective-function">Properties of an objective function</a></li>
@@ -106,6 +118,16 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../../moe.html#module-moe">Module contents</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../moe_examples.html">moe_examples package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples.next_point_via_simple_endpoint">moe_examples.next_point_via_simple_endpoint module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples">Module contents</a></li>
+</ul>
+</li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../cpp_tree.html">C++ Files</a><ul>
@@ -128,23 +150,22 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python_model_selection.html">gpp_python_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_math.html">gpp_math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_random_test.html">gpp_random_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_optimizer_parameters.html">gpp_optimizer_parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_random.html">gpp_random</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_geometry_test.html">gpp_geometry_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_linear_algebra.html">gpp_linear_algebra</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_core.html">gpp_core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_model_selection.html">gpp_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_optimization.html">gpp_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_covariance_test.html">gpp_covariance_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python.html">gpp_python</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_model_selection_and_hyperparameter_optimization.html">gpp_model_selection_and_hyperparameter_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_model_selection_test.html">gpp_model_selection_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_optimization_parameters.html">gpp_optimization_parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_common.html">gpp_common</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_model_selection_and_hyperparameter_optimization_test.html">gpp_model_selection_and_hyperparameter_optimization_test</a></li>
 </ul>
 </li>
 </ul>
@@ -253,23 +274,41 @@
 
         <span class="c"># C++ will maintain its own copy of the contents of hyperparameters and historical_data</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_gaussian_process</span> <span class="o">=</span> <span class="n">C_GP</span><span class="o">.</span><span class="n">GaussianProcess</span><span class="p">(</span>
-            <span class="n">cpp_utils</span><span class="o">.</span><span class="n">cppify_hyperparameters</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_covariance</span><span class="o">.</span><span class="n">get_hyperparameters</span><span class="p">()),</span>
+            <span class="n">cpp_utils</span><span class="o">.</span><span class="n">cppify_hyperparameters</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_covariance</span><span class="o">.</span><span class="n">hyperparameters</span><span class="p">),</span>
             <span class="n">cpp_utils</span><span class="o">.</span><span class="n">cppify</span><span class="p">(</span><span class="n">historical_data</span><span class="o">.</span><span class="n">points_sampled</span><span class="p">),</span>
             <span class="n">cpp_utils</span><span class="o">.</span><span class="n">cppify</span><span class="p">(</span><span class="n">historical_data</span><span class="o">.</span><span class="n">points_sampled_value</span><span class="p">),</span>
             <span class="n">cpp_utils</span><span class="o">.</span><span class="n">cppify</span><span class="p">(</span><span class="n">historical_data</span><span class="o">.</span><span class="n">points_sampled_noise_variance</span><span class="p">),</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">num_sampled</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_historical_data</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_historical_data</span><span class="o">.</span><span class="n">num_sampled</span><span class="p">,</span>
         <span class="p">)</span>
 
     <span class="nd">@property</span>
 <div class="viewcode-block" id="GaussianProcess.dim"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.gaussian_process.GaussianProcess.dim">[docs]</a>    <span class="k">def</span> <span class="nf">dim</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the number of spatial dimensions.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_historical_data</span><span class="o">.</span><span class="n">dim</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gaussian_process</span><span class="o">.</span><span class="n">dim</span>
 </div>
     <span class="nd">@property</span>
 <div class="viewcode-block" id="GaussianProcess.num_sampled"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.gaussian_process.GaussianProcess.num_sampled">[docs]</a>    <span class="k">def</span> <span class="nf">num_sampled</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the number of sampled points.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_historical_data</span><span class="o">.</span><span class="n">num_sampled</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gaussian_process</span><span class="o">.</span><span class="n">num_sampled</span>
+</div>
+<div class="viewcode-block" id="GaussianProcess.get_covariance_copy"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.gaussian_process.GaussianProcess.get_covariance_copy">[docs]</a>    <span class="k">def</span> <span class="nf">get_covariance_copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a copy of the covariance object specifying the Gaussian Process.</span>
+
+<span class="sd">        :return: covariance object encoding assumptions about the GP&#39;s behavior on our data</span>
+<span class="sd">        :rtype: interfaces.covariance_interface.CovarianceInterface subclass</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_covariance</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="GaussianProcess.get_historical_data_copy"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.gaussian_process.GaussianProcess.get_historical_data_copy">[docs]</a>    <span class="k">def</span> <span class="nf">get_historical_data_copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the data (points, function values, noise) specifying the prior of the Gaussian Process.</span>
+
+<span class="sd">        :return: object specifying the already-sampled points, the objective value at those points, and the noise variance associated with each observation</span>
+<span class="sd">        :rtype: data_containers.HistoricalData</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_historical_data</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="GaussianProcess.compute_mean_of_points"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.gaussian_process.GaussianProcess.compute_mean_of_points">[docs]</a>    <span class="k">def</span> <span class="nf">compute_mean_of_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points_to_sample</span><span class="p">):</span>
         <span class="sd">r&quot;&quot;&quot;Compute the mean of this GP at each of point of ``Xs`` (``points_to_sample``).</span>
@@ -284,8 +323,7 @@
 <span class="sd">        :rtype: array of float64 with shape (num_to_sample)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">mu</span> <span class="o">=</span> <span class="n">C_GP</span><span class="o">.</span><span class="n">get_mean</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_gaussian_process</span><span class="p">,</span>
+        <span class="n">mu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gaussian_process</span><span class="o">.</span><span class="n">compute_mean_of_points</span><span class="p">(</span>
             <span class="n">cpp_utils</span><span class="o">.</span><span class="n">cppify</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">),</span>
             <span class="n">points_to_sample</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
         <span class="p">)</span>
@@ -314,8 +352,7 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">num_derivatives</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_clamp_num_derivatives</span><span class="p">(</span><span class="n">points_to_sample</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">num_derivatives</span><span class="p">)</span>
-        <span class="n">grad_mu</span> <span class="o">=</span> <span class="n">C_GP</span><span class="o">.</span><span class="n">get_grad_mean</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_gaussian_process</span><span class="p">,</span>
+        <span class="n">grad_mu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gaussian_process</span><span class="o">.</span><span class="n">compute_grad_mean_of_points</span><span class="p">(</span>
             <span class="n">cpp_utils</span><span class="o">.</span><span class="n">cppify</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">[:</span><span class="n">num_derivatives</span><span class="p">,</span> <span class="o">...</span><span class="p">]),</span>
             <span class="n">num_derivatives</span><span class="p">,</span>
         <span class="p">)</span>
@@ -337,8 +374,7 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">num_to_sample</span> <span class="o">=</span> <span class="n">points_to_sample</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">variance</span> <span class="o">=</span> <span class="n">C_GP</span><span class="o">.</span><span class="n">get_var</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_gaussian_process</span><span class="p">,</span>
+        <span class="n">variance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gaussian_process</span><span class="o">.</span><span class="n">compute_variance_of_points</span><span class="p">(</span>
             <span class="n">cpp_utils</span><span class="o">.</span><span class="n">cppify</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">),</span>
             <span class="n">num_to_sample</span><span class="p">,</span>
         <span class="p">)</span>
@@ -356,8 +392,7 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">num_to_sample</span> <span class="o">=</span> <span class="n">points_to_sample</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">cholesky_variance</span> <span class="o">=</span> <span class="n">C_GP</span><span class="o">.</span><span class="n">get_chol_var</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_gaussian_process</span><span class="p">,</span>
+        <span class="n">cholesky_variance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gaussian_process</span><span class="o">.</span><span class="n">compute_cholesky_variance_of_points</span><span class="p">(</span>
             <span class="n">cpp_utils</span><span class="o">.</span><span class="n">cppify</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">),</span>
             <span class="n">num_to_sample</span><span class="p">,</span>
         <span class="p">)</span>
@@ -384,8 +419,7 @@
         <span class="n">num_derivatives</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_clamp_num_derivatives</span><span class="p">(</span><span class="n">points_to_sample</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">num_derivatives</span><span class="p">)</span>
         <span class="n">num_to_sample</span> <span class="o">=</span> <span class="n">points_to_sample</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
-        <span class="n">grad_variance</span> <span class="o">=</span> <span class="n">C_GP</span><span class="o">.</span><span class="n">get_grad_var</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_gaussian_process</span><span class="p">,</span>
+        <span class="n">grad_variance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gaussian_process</span><span class="o">.</span><span class="n">compute_grad_variance_of_points</span><span class="p">(</span>
             <span class="n">cpp_utils</span><span class="o">.</span><span class="n">cppify</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">),</span>
             <span class="n">num_to_sample</span><span class="p">,</span>
             <span class="n">num_derivatives</span><span class="p">,</span>
@@ -420,8 +454,7 @@
         <span class="n">num_derivatives</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_clamp_num_derivatives</span><span class="p">(</span><span class="n">points_to_sample</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">num_derivatives</span><span class="p">)</span>
         <span class="n">num_to_sample</span> <span class="o">=</span> <span class="n">points_to_sample</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
-        <span class="n">grad_chol_decomp</span> <span class="o">=</span> <span class="n">C_GP</span><span class="o">.</span><span class="n">get_grad_chol_var</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_gaussian_process</span><span class="p">,</span>
+        <span class="n">grad_chol_decomp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gaussian_process</span><span class="o">.</span><span class="n">compute_grad_cholesky_variance_of_points</span><span class="p">(</span>
             <span class="n">cpp_utils</span><span class="o">.</span><span class="n">cppify</span><span class="p">(</span><span class="n">points_to_sample</span><span class="p">),</span>
             <span class="n">num_to_sample</span><span class="p">,</span>
             <span class="n">num_derivatives</span><span class="p">,</span>
@@ -433,20 +466,21 @@
 
 <span class="sd">        Also forces recomputation of all derived quantities for GP to remain consistent.</span>
 
-<span class="sd">        :param sampled_points: SampledPoint objects to load into the GP (containing point, function value, and noise variance)</span>
-<span class="sd">        :type sampled_points: list of SampledPoint objects (or SamplePoint-like iterables)</span>
+<span class="sd">        :param sampled_points: SamplePoint objects to load into the GP (containing point, function value, and noise variance)</span>
+<span class="sd">        :type sampled_points: list of :class:`moe.optimal_learning.python.SamplePoint&#39; objects (or SamplePoint-like iterables)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c"># TODO(GH-187): Add hook to actual C++ function to make this more efficient than rebuilding the whole GP object.</span>
+        <span class="c"># TODO(GH-159): When C++ can pass back numpy arrays, we can stop keeping a duplicate in self._historical_data.</span>
+        <span class="n">num_sampled_prev</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_sampled</span>
+        <span class="n">num_to_add</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">sampled_points</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_historical_data</span><span class="o">.</span><span class="n">append_sample_points</span><span class="p">(</span><span class="n">sampled_points</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_gaussian_process</span> <span class="o">=</span> <span class="n">C_GP</span><span class="o">.</span><span class="n">GaussianProcess</span><span class="p">(</span>
-            <span class="n">cpp_utils</span><span class="o">.</span><span class="n">cppify_hyperparameters</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_covariance</span><span class="o">.</span><span class="n">get_hyperparameters</span><span class="p">()),</span>
-            <span class="n">cpp_utils</span><span class="o">.</span><span class="n">cppify</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_historical_data</span><span class="o">.</span><span class="n">points_sampled</span><span class="p">),</span>
-            <span class="n">cpp_utils</span><span class="o">.</span><span class="n">cppify</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_historical_data</span><span class="o">.</span><span class="n">points_sampled_value</span><span class="p">),</span>
-            <span class="n">cpp_utils</span><span class="o">.</span><span class="n">cppify</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_historical_data</span><span class="o">.</span><span class="n">points_sampled_noise_variance</span><span class="p">),</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">num_sampled</span><span class="p">,</span>
+        <span class="c"># new_historical_data = HistoricalData(self.dim, sampled_points)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_gaussian_process</span><span class="o">.</span><span class="n">add_sampled_points</span><span class="p">(</span>
+            <span class="n">cpp_utils</span><span class="o">.</span><span class="n">cppify</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_historical_data</span><span class="o">.</span><span class="n">points_sampled</span><span class="p">[</span><span class="n">num_sampled_prev</span><span class="p">:,</span> <span class="o">...</span><span class="p">]),</span>
+            <span class="n">cpp_utils</span><span class="o">.</span><span class="n">cppify</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_historical_data</span><span class="o">.</span><span class="n">points_sampled_value</span><span class="p">[</span><span class="n">num_sampled_prev</span><span class="p">:]),</span>
+            <span class="n">cpp_utils</span><span class="o">.</span><span class="n">cppify</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_historical_data</span><span class="o">.</span><span class="n">points_sampled_noise_variance</span><span class="p">[</span><span class="n">num_sampled_prev</span><span class="p">:]),</span>
+            <span class="n">num_to_add</span><span class="p">,</span>
         <span class="p">)</span>
 </div>
 <div class="viewcode-block" id="GaussianProcess.sample_point_from_gp"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.gaussian_process.GaussianProcess.sample_point_from_gp">[docs]</a>    <span class="k">def</span> <span class="nf">sample_point_from_gp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point_to_sample</span><span class="p">,</span> <span class="n">noise_variance</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
@@ -455,7 +489,7 @@
 <span class="sd">        Uses the formula ``function_value = gpp_mean + sqrt(gpp_variance) * w1 + sqrt(noise_variance) * w2``, where ``w1, w2``</span>
 <span class="sd">        are draws from N(0,1).</span>
 
-<span class="sd">        Implementers are responsible for providing a N(0,1) source.</span>
+<span class="sd">        Normal RNG source is held within the C++ GaussianProcess object.</span>
 
 <span class="sd">        .. NOTE::</span>
 <span class="sd">             Set noise_variance to 0 if you want &quot;accurate&quot; draws from the GP.</span>
@@ -472,12 +506,10 @@
 <span class="sd">        :rtype: float64</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c"># TODO(GH-187): C++ has a native implementation of this function; make a wrapper and call that directly.</span>
-        <span class="n">point</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">point_to_sample</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">ndmin</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-        <span class="n">mean</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_mean_of_points</span><span class="p">(</span><span class="n">point</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">variance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_variance_of_points</span><span class="p">(</span><span class="n">point</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-
-        <span class="k">return</span> <span class="n">mean</span> <span class="o">+</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">variance</span><span class="p">)</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">()</span> <span class="o">+</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">noise_variance</span><span class="p">)</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">()</span></div></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gaussian_process</span><span class="o">.</span><span class="n">sample_point_from_gp</span><span class="p">(</span>
+            <span class="n">cpp_utils</span><span class="o">.</span><span class="n">cppify</span><span class="p">(</span><span class="n">point_to_sample</span><span class="p">),</span>
+            <span class="n">noise_variance</span><span class="p">,</span>
+        <span class="p">)</span></div></div>
 </pre></div>
 
           </div>
