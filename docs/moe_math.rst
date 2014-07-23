@@ -18,11 +18,31 @@ This section will use examples generated from the :doc:`demo_tutorial` included 
 Build a Gaussian Process (GP) with the historical data
 ------------------------------------------------------
 
+See:
+
+    - :doc:`gpp_math`
+    - :mod:`moe.views.rest.gp_mean_var`
+    - `RW Chapter 2`_
+
 Optimize the hyperparameters of the Gaussian Process
 ----------------------------------------------------
 
+See:
+
+    - :doc:`gpp_covariance`
+    - :doc:`gpp_model_selection`
+    - :mod:`moe.views.rest.gp_hyper_opt`
+    - `RW Chapter 4`_
+    - `RW Chapter 5`_
+
 Find the point(s) of highest Expected Improvement (EI)
 ------------------------------------------------------
+
+See:
+
+    - :doc:`gpp_expected_improvement_demo`
+    - :mod:`moe.views.rest.gp_ei`
+    - `EGO Paper`_
 
 Return the point(s) to sample, then repeat
 ------------------------------------------

@@ -69,7 +69,6 @@ Video and slidedeck introduction to MOE:
     * `MOE intro slides`_
 
 .. _15 min MOE intro video: http://www.youtube.com/watch?v=qAN6iyYPbEE
-
 .. _MOE intro slides: http://www.slideshare.net/YelpEngineering/yelp-engineering-open-house-112013-optimally-learning-for-fun-and-profit
 
 
@@ -98,11 +97,8 @@ MOE does this internally by:
 4. Returning the points to sample, then repeat
 
 .. _RW Chapter 2: http://www.gaussianprocess.org/gpml/chapters/RW2.pdf
-
 .. _RW Chapter 4: http://www.gaussianprocess.org/gpml/chapters/RW4.pdf
-
 .. _RW Chapter 5: http://www.gaussianprocess.org/gpml/chapters/RW5.pdf
-
 .. _EGO Paper: http://www.ressources-actuarielles.net/EXT/ISFA/1226.nsf/0/f84f7ac703bf5862c12576d8002f5259/$FILE/Jones98.pdf
 
 Externally you can use MOE through:
