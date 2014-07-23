@@ -89,7 +89,7 @@ MOE does this internally by:
     - `RW Chapter 4`_
     - `RW Chapter 5`_
 
-3. Finding the points of highest Expected Improvement (EI)
+3. Finding the point(s) of highest Expected Improvement (EI)
 
     - :doc:`gpp_expected_improvement_demo`
     - :mod:`moe.views.rest.gp_ei`
@@ -236,6 +236,9 @@ Documentation
 
    why_moe.rst
    install.rst
+   moe_math.rst
+   demo_tutorial.rst
+   pretty_endpoints.rst
    objective_functions.rst
    examples.rst
    contributing.rst

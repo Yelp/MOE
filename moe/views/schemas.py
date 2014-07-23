@@ -725,7 +725,7 @@ class GpMeanVarRequest(StrictMappingSchema):
 
     **Required fields**
 
-        :points_to_sample: list of points in domain to calculate the Gaussian Process (GP) mean and covariance at (:class:`moe.views.schemas.ListOfPointsInDomain`)
+        :points_to_evaluate: list of points in domain to calculate the Gaussian Process (GP) mean and covariance at (:class:`moe.views.schemas.ListOfPointsInDomain`)
         :gp_historical_info: a :class:`moe.views.schemas.GpHistoricalInfo` object of historical data
 
     **Optional fields**
@@ -739,7 +739,7 @@ class GpMeanVarRequest(StrictMappingSchema):
         Content-Type: text/javascript
 
         {
-            "points_to_sample": [[0.1], [0.5], [0.9]],
+            "points_to_evaluate": [[0.1], [0.5], [0.9]],
             "gp_historical_info": {
                 "points_sampled": [
                         {"value_var": 0.01, "value": 0.1, "point": [0.0]},
@@ -758,7 +758,7 @@ class GpMeanVarRequest(StrictMappingSchema):
         Content-Type: text/javascript
 
         {
-            "points_to_sample": [[0.1], [0.5], [0.9]],
+            "points_to_evaluate": [[0.1], [0.5], [0.9]],
             "gp_historical_info": {
                 "points_sampled": [
                         {"value_var": 0.01, "value": 0.1, "point": [0.0]},
@@ -777,7 +777,7 @@ class GpMeanVarRequest(StrictMappingSchema):
 
     """
 
-    points_to_sample = ListOfPointsInDomain()
+    points_to_evaluate = ListOfPointsInDomain()
     gp_historical_info = GpHistoricalInfo()
     domain_info = DomainInfo()
     covariance_info = CovarianceInfo(
@@ -812,7 +812,7 @@ class GpMeanMixinResponse(StrictMappingSchema):
 
     **Output fields**
 
-        :mean: list of the means of the GP at ``points_to_sample`` (:class:`moe.views.schemas.ListOfFloats`)
+        :mean: list of the means of the GP at ``points_to_evaluate`` (:class:`moe.views.schemas.ListOfFloats`)
 
     **Example Response**
 
@@ -833,7 +833,7 @@ class GpVarMixinResponse(StrictMappingSchema):
 
     **Output fields**
 
-        :variance: matrix of covariance of the GP at ``points_to_sample`` (:class:`moe.views.schemas.MatrixOfFloats`)
+        :variance: matrix of covariance of the GP at ``points_to_evaluate`` (:class:`moe.views.schemas.MatrixOfFloats`)
 
     **Example Response**
 
@@ -858,7 +858,7 @@ class GpVarDiagMixinResponse(StrictMappingSchema):
 
     **Output fields**
 
-        :variance: list of variances of the GP at ``points_to_sample``; i.e., diagonal of the ``variance`` response from gp_mean_var (:class:`moe.views.schemas.ListOfFloats`)
+        :variance: list of variances of the GP at ``points_to_evaluate``; i.e., diagonal of the ``variance`` response from gp_mean_var (:class:`moe.views.schemas.ListOfFloats`)
 
     **Example Response**
 
@@ -880,7 +880,7 @@ class GpMeanResponse(GpEndpointResponse, GpMeanMixinResponse):
     **Output fields**
 
         :endpoint: the endpoint that was called
-        :mean: list of the means of the GP at ``points_to_sample`` (:class:`moe.views.schemas.ListOfFloats`)
+        :mean: list of the means of the GP at ``points_to_evaluate`` (:class:`moe.views.schemas.ListOfFloats`)
 
     **Example Response**
 
@@ -898,7 +898,7 @@ class GpVarResponse(GpEndpointResponse, GpVarMixinResponse):
     **Output fields**
 
         :endpoint: the endpoint that was called
-        :variance: matrix of covariance of the GP at ``points_to_sample`` (:class:`moe.views.schemas.MatrixOfFloats`)
+        :variance: matrix of covariance of the GP at ``points_to_evaluate`` (:class:`moe.views.schemas.MatrixOfFloats`)
 
     **Example Response**
 
@@ -916,7 +916,7 @@ class GpVarDiagResponse(GpEndpointResponse, GpVarDiagMixinResponse):
     **Output fields**
 
         :endpoint: the endpoint that was called
-        :variance: list of variances of the GP at ``points_to_sample``; i.e., diagonal of the ``variance`` response from gp_mean_var (:class:`moe.views.schemas.ListOfFloats`)
+        :variance: list of variances of the GP at ``points_to_evaluate``; i.e., diagonal of the ``variance`` response from gp_mean_var (:class:`moe.views.schemas.ListOfFloats`)
 
     **Example Response**
 
@@ -934,8 +934,8 @@ class GpMeanVarResponse(GpMeanResponse, GpVarMixinResponse):
     **Output fields**
 
         :endpoint: the endpoint that was called
-        :mean: list of the means of the GP at ``points_to_sample`` (:class:`moe.views.schemas.ListOfFloats`)
-        :variance: matrix of covariance of the GP at ``points_to_sample`` (:class:`moe.views.schemas.MatrixOfFloats`)
+        :mean: list of the means of the GP at ``points_to_evaluate`` (:class:`moe.views.schemas.ListOfFloats`)
+        :variance: matrix of covariance of the GP at ``points_to_evaluate`` (:class:`moe.views.schemas.MatrixOfFloats`)
 
     **Example Response**
 
@@ -953,8 +953,8 @@ class GpMeanVarDiagResponse(GpMeanResponse, GpVarDiagMixinResponse):
     **Output fields**
 
         :endpoint: the endpoint that was called
-        :mean: list of the means of the GP at ``points_to_sample`` (:class:`moe.views.schemas.ListOfFloats`)
-        :variance: list of variances of the GP at ``points_to_sample``; i.e., diagonal of the ``variance`` response from gp_mean_var (:class:`moe.views.schemas.ListOfFloats`)
+        :mean: list of the means of the GP at ``points_to_evaluate`` (:class:`moe.views.schemas.ListOfFloats`)
+        :variance: list of variances of the GP at ``points_to_evaluate``; i.e., diagonal of the ``variance`` response from gp_mean_var (:class:`moe.views.schemas.ListOfFloats`)
 
     **Example Response**
 
