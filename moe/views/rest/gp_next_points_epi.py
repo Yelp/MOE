@@ -6,7 +6,7 @@ Includes:
 """
 from pyramid.view import view_config
 
-from moe.views.constant import GP_NEXT_POINTS_EPI_ROUTE_NAME, GP_NEXT_POINTS_EPI_PRETTY_ROUTE_NAME, GP_NEXT_POINTS_EPI_OPTIMIZATION_METHOD_NAME
+from moe.views.constant import GP_NEXT_POINTS_EPI_ROUTE_NAME, GP_NEXT_POINTS_EPI_PRETTY_ROUTE_NAME, GP_NEXT_POINTS_EPI_OPTIMIZER_METHOD_NAME
 from moe.views.gp_next_points_pretty_view import GpNextPointsPrettyView
 from moe.views.pretty_view import PRETTY_RENDERER
 
@@ -45,6 +45,6 @@ class GpNextPointsEpi(GpNextPointsPrettyView):
         params = self.get_params_from_request()
         return self.compute_next_points_to_sample_response(
                 params,
-                GP_NEXT_POINTS_EPI_OPTIMIZATION_METHOD_NAME,
+                GP_NEXT_POINTS_EPI_OPTIMIZER_METHOD_NAME,
                 self._route_name,
                 )

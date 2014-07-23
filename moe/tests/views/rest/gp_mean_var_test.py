@@ -28,7 +28,7 @@ class TestGpMeanVarView(GaussianProcessTestCase, RestTestCase):
             'points_to_sample': points_to_sample,
             'gp_historical_info': historical_data.json_payload(),
             'covariance_info': covariance.get_json_serializable_info(),
-            'domain_info': domain.get_json_serializable_info(),
+            'domain_info': domain.get_json_serializable_info(minimal=True),
             })
         return json_payload
 

@@ -16,7 +16,7 @@ import numpy
 from pyramid.view import view_config
 
 from moe.optimal_learning.python.constant import CONSTANT_LIAR_MIN, CONSTANT_LIAR_MAX, CONSTANT_LIAR_MEAN, DEFAULT_CONSTANT_LIAR_METHOD
-from moe.views.constant import GP_NEXT_POINTS_CONSTANT_LIAR_ROUTE_NAME, GP_NEXT_POINTS_CONSTANT_LIAR_PRETTY_ROUTE_NAME, GP_NEXT_POINTS_CONSTANT_LIAR_OPTIMIZATION_METHOD_NAME
+from moe.views.constant import GP_NEXT_POINTS_CONSTANT_LIAR_ROUTE_NAME, GP_NEXT_POINTS_CONSTANT_LIAR_PRETTY_ROUTE_NAME, GP_NEXT_POINTS_CONSTANT_LIAR_OPTIMIZER_METHOD_NAME
 from moe.views.gp_next_points_pretty_view import GpNextPointsPrettyView
 from moe.views.pretty_view import PRETTY_RENDERER
 from moe.views.schemas import GpNextPointsConstantLiarRequest
@@ -79,7 +79,7 @@ class GpNextPointsConstantLiar(GpNextPointsPrettyView):
         params = self.get_params_from_request()
         return self.compute_next_points_to_sample_response(
                 params,
-                GP_NEXT_POINTS_CONSTANT_LIAR_OPTIMIZATION_METHOD_NAME,
+                GP_NEXT_POINTS_CONSTANT_LIAR_OPTIMIZER_METHOD_NAME,
                 self._route_name,
                 self.get_lie_value(params),
                 lie_noise_variance=params.get('lie_noise_variance'),

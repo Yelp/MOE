@@ -28,7 +28,7 @@
 
 #include "gpp_common.hpp"
 #include "gpp_model_selection.hpp"
-#include "gpp_optimization_parameters.hpp"
+#include "gpp_optimizer_parameters.hpp"
 
 namespace optimal_learning {
 

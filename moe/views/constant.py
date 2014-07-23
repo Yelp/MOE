@@ -29,7 +29,7 @@ New next_points routes have the form:
     GP_NEXT_POINTS_<NAME>_PRETTY_ROUTE_NAME = 'gp_next_points_<name>_pretty'
     GP_NEXT_POINTS_<NAME>_PRETTY_ENDPOINT = '/gp/next_points/<name>/pretty'
     GP_NEXT_POINTS_<NAME>_PRETTY_MOE_ROUTE = MoeRoute(GP_NEXT_POINTS_<NAME>_PRETTY_ROUTE_NAME, GP_NEXT_POINTS_<NAME>_PRETTY_ENDPOINT)
-    GP_NEXT_POINTS_<NAME>_OPTIMIZATION_METHOD_NAME = <method name from moe.optimal_learning.python.models.optimal_gaussian_process_linked_cpp.py>
+    GP_NEXT_POINTS_<NAME>_OPTIMIZER_METHOD_NAME = <method name from moe.optimal_learning.python.models.optimal_gaussian_process_linked_cpp.py>
 
 """
 from collections import namedtuple
@@ -119,7 +119,7 @@ GP_NEXT_POINTS_EPI_MOE_ROUTE = MoeRoute(GP_NEXT_POINTS_EPI_ROUTE_NAME, GP_NEXT_P
 GP_NEXT_POINTS_EPI_PRETTY_ROUTE_NAME = 'gp_next_points_epi_pretty'
 GP_NEXT_POINTS_EPI_PRETTY_ENDPOINT = '/gp/next_points/epi/pretty'
 GP_NEXT_POINTS_EPI_PRETTY_MOE_ROUTE = MoeRoute(GP_NEXT_POINTS_EPI_PRETTY_ROUTE_NAME, GP_NEXT_POINTS_EPI_PRETTY_ENDPOINT)
-GP_NEXT_POINTS_EPI_OPTIMIZATION_METHOD_NAME = 'multistart_expected_improvement_optimization'
+GP_NEXT_POINTS_EPI_OPTIMIZER_METHOD_NAME = 'multistart_expected_improvement_optimization'
 
 GP_NEXT_POINTS_KRIGING_ROUTE_NAME = 'gp_next_points_kriging'
 GP_NEXT_POINTS_KRIGING_ENDPOINT = '/gp/next_points/kriging'
@@ -127,7 +127,7 @@ GP_NEXT_POINTS_KRIGING_MOE_ROUTE = MoeRoute(GP_NEXT_POINTS_KRIGING_ROUTE_NAME, G
 GP_NEXT_POINTS_KRIGING_PRETTY_ROUTE_NAME = 'gp_next_points_kriging_pretty'
 GP_NEXT_POINTS_KRIGING_PRETTY_ENDPOINT = '/gp/next_points/kriging/pretty'
 GP_NEXT_POINTS_KRIGING_PRETTY_MOE_ROUTE = MoeRoute(GP_NEXT_POINTS_KRIGING_PRETTY_ROUTE_NAME, GP_NEXT_POINTS_KRIGING_PRETTY_ENDPOINT)
-GP_NEXT_POINTS_KRIGING_OPTIMIZATION_METHOD_NAME = 'kriging_believer_expected_improvement_optimization'
+GP_NEXT_POINTS_KRIGING_OPTIMIZER_METHOD_NAME = 'kriging_believer_expected_improvement_optimization'
 
 GP_NEXT_POINTS_CONSTANT_LIAR_ROUTE_NAME = 'gp_next_points_constant_liar'
 GP_NEXT_POINTS_CONSTANT_LIAR_ENDPOINT = '/gp/next_points/constant_liar'
@@ -135,7 +135,7 @@ GP_NEXT_POINTS_CONSTANT_LIAR_MOE_ROUTE = MoeRoute(GP_NEXT_POINTS_CONSTANT_LIAR_R
 GP_NEXT_POINTS_CONSTANT_LIAR_PRETTY_ROUTE_NAME = 'gp_next_points_constant_liar_pretty'
 GP_NEXT_POINTS_CONSTANT_LIAR_PRETTY_ENDPOINT = '/gp/next_points/constant_liar/pretty'
 GP_NEXT_POINTS_CONSTANT_LIAR_PRETTY_MOE_ROUTE = MoeRoute(GP_NEXT_POINTS_CONSTANT_LIAR_PRETTY_ROUTE_NAME, GP_NEXT_POINTS_CONSTANT_LIAR_PRETTY_ENDPOINT)
-GP_NEXT_POINTS_CONSTANT_LIAR_OPTIMIZATION_METHOD_NAME = 'constant_liar_expected_improvement_optimization'
+GP_NEXT_POINTS_CONSTANT_LIAR_OPTIMIZER_METHOD_NAME = 'constant_liar_expected_improvement_optimization'
 
 GP_HYPER_OPT_ROUTE_NAME = 'gp_hyper_opt'
 GP_HYPER_OPT_ENDPOINT = '/gp/hyper_opt'
@@ -145,10 +145,10 @@ GP_HYPER_OPT_PRETTY_ENDPOINT = '/gp/hyper_opt/pretty'
 GP_HYPER_OPT_PRETTY_MOE_ROUTE = MoeRoute(GP_HYPER_OPT_PRETTY_ROUTE_NAME, GP_HYPER_OPT_PRETTY_ENDPOINT)
 
 # These need to match method names in moe/optimal_learning/python/cpp_wrappers/expected_improvement.py
-OPTIMIZATION_METHOD_NAMES = [
-        GP_NEXT_POINTS_EPI_OPTIMIZATION_METHOD_NAME,
-        GP_NEXT_POINTS_KRIGING_OPTIMIZATION_METHOD_NAME,
-        GP_NEXT_POINTS_CONSTANT_LIAR_OPTIMIZATION_METHOD_NAME,
+OPTIMIZER_METHOD_NAMES = [
+        GP_NEXT_POINTS_EPI_OPTIMIZER_METHOD_NAME,
+        GP_NEXT_POINTS_KRIGING_OPTIMIZER_METHOD_NAME,
+        GP_NEXT_POINTS_CONSTANT_LIAR_OPTIMIZER_METHOD_NAME,
         ]
 
 ALL_REST_MOE_ROUTES = [

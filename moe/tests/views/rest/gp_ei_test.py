@@ -29,7 +29,7 @@ class TestGpEiView(GaussianProcessTestCase, RestTestCase):
             'points_being_sampled': [],
             'gp_historical_info': historical_data.json_payload(),
             'covariance_info': covariance.get_json_serializable_info(),
-            'domain_info': domain.get_json_serializable_info(),
+            'domain_info': domain.get_json_serializable_info(minimal=True),
             })
 
         return json_payload
