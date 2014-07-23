@@ -1,7 +1,7 @@
 /*!
-  \file gpp_model_selection_and_hyperparameter_optimization_test.hpp
+  \file gpp_model_selection_test.hpp
   \rst
-  Functions for testing gpp_model_selection_and_hyperparameter_optimization's functionality--the evaluation of
+  Functions for testing gpp_model_selection's functionality--the evaluation of
   LogMarginalLikelihood and LeaveOneOutLogLikelihood (plus gradient, hessian) and the optimization of these
   metrics wrt hyperparameters of the covariance function.
 
@@ -23,12 +23,12 @@
   same code paths used for hyperparameter optimization in production.
 \endrst*/
 
-#ifndef MOE_OPTIMAL_LEARNING_CPP_GPP_MODEL_SELECTION_AND_HYPERPARAMETER_OPTIMIZATION_TEST_HPP_
-#define MOE_OPTIMAL_LEARNING_CPP_GPP_MODEL_SELECTION_AND_HYPERPARAMETER_OPTIMIZATION_TEST_HPP_
+#ifndef MOE_OPTIMAL_LEARNING_CPP_GPP_MODEL_SELECTION_TEST_HPP_
+#define MOE_OPTIMAL_LEARNING_CPP_GPP_MODEL_SELECTION_TEST_HPP_
 
 #include "gpp_common.hpp"
-#include "gpp_model_selection_and_hyperparameter_optimization.hpp"
-#include "gpp_optimization_parameters.hpp"
+#include "gpp_model_selection.hpp"
+#include "gpp_optimizer_parameters.hpp"
 
 namespace optimal_learning {
 
@@ -70,4 +70,4 @@ OL_WARN_UNUSED_RESULT int EvaluateLogLikelihoodAtPointListTest();
 
 }  // end namespace optimal_learning
 
-#endif  // MOE_OPTIMAL_LEARNING_CPP_GPP_MODEL_SELECTION_AND_HYPERPARAMETER_OPTIMIZATION_TEST_HPP_
+#endif  // MOE_OPTIMAL_LEARNING_CPP_GPP_MODEL_SELECTION_TEST_HPP_

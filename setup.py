@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """Setup for the MOE webapp."""
 import os
+import shlex
 import shutil
 import subprocess
 from collections import namedtuple
@@ -117,8 +118,6 @@ class InstallCppComponents(install):
         if 'CXX' in env:
             print "Passing CXX={0:s} to cmake.".format(env['CXX'])
 
-        # Set cmake if not already set
-
         # rm the build directory if it exists
         if os.path.exists(build_dir):
             shutil.rmtree(build_dir)
@@ -130,13 +129,18 @@ class InstallCppComponents(install):
 
         cpp_location = os.path.join(here, 'moe', 'optimal_learning', 'cpp')
 
+        # Reformat options string: options & args that are separated by whitespace on the command line
+        # must be passed to subprocess.Popen in separate list elements.
+        cmake_options_split = shlex.split(cmake_options)
+
+        # Build the full cmake command using properly tokenized options
+        cmake_full_command = [cmake_path]
+        cmake_full_command.extend(cmake_options_split)
+        cmake_full_command.append(cpp_location)
+
         # Run cmake
         proc = subprocess.Popen(
-                [
-                    cmake_path,
-                    cmake_options,
-                    cpp_location,
-                    ],
+                cmake_full_command,
                 cwd=local_build_dir,
                 env=env,
                 )

@@ -49,7 +49,7 @@ class SquareExponential(CovarianceInterface):
         :type hyperparameters: array-like of size dim+1
 
         """
-        self.set_hyperparameters(hyperparameters)
+        self.hyperparameters = hyperparameters
 
     @property
     def num_hyperparameters(self):
@@ -65,6 +65,15 @@ class SquareExponential(CovarianceInterface):
         self._hyperparameters = numpy.copy(hyperparameters)
         self._lengths_sq = numpy.copy(self._hyperparameters[1:])
         self._lengths_sq *= self._lengths_sq
+
+    hyperparameters = property(get_hyperparameters, set_hyperparameters)
+
+    def get_json_serializable_info(self):
+        """Create and return a covariance_info dictionary of this covariance object."""
+        return {
+                'covariance_type': self.covariance_type,
+                'hyperparameters': self.hyperparameters.tolist(),
+                }
 
     def covariance(self, point_one, point_two):
         r"""Compute the square exponential covariance function of two points, cov(``point_one``, ``point_two``).

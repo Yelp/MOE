@@ -11,7 +11,53 @@ See package docs in interfaces/__init__.py for an introduction to Gaussian Proce
 from abc import ABCMeta, abstractmethod, abstractproperty
 
 
-class GaussianProcessInterface(object):
+class GaussianProcessDataInterface(object):
+
+    """Core data interface for constructing or manipulating a Gaussian Process Prior (GPP).
+
+    This interface exists as a convenience to safely access the fundamental components of a GPP.
+
+    Assumes the underlying GP has mean zero.
+
+    Includes functions to return *copies* of the covariance function (see CovarianceInterface)
+    and observed, historical data (coordinates, function values, noise variance; see
+    HistoricalData) of a GP object or an object supporting computations on GPs.
+
+    With the zero mean assumption, a "Gaussian Process" is fully determined by its covariance
+    function (Rasmussen & Williams, Chp 2.2). Then the "Prior" is fully determined by our
+    past observations. Together, the covariance and historical data produce the heart
+    of a Gaussian Process Prior.
+
+    """
+
+    __metaclass__ = ABCMeta
+
+    @abstractmethod
+    def get_covariance_copy(self):
+        """Return a copy of the covariance object specifying the Gaussian Process.
+
+        :return: covariance object encoding assumptions about the GP's behavior on our data
+        :rtype: interfaces.covariance_interface.CovarianceInterface subclass
+
+        """
+        pass
+
+    @abstractmethod
+    def get_historical_data_copy(self):
+        """Return the data (points, function values, noise) specifying the prior of the Gaussian Process.
+
+        :return: object specifying the already-sampled points, the objective value at those points, and the noise variance associated with each observation
+        :rtype: data_containers.HistoricalData
+
+        """
+        pass
+
+    def get_core_data_copy(self):
+        """Tuple of covariance, historical_data copies for convenience; see specific getters."""
+        return self.get_covariance_copy(), self.get_historical_data_copy()
+
+
+class GaussianProcessInterface(GaussianProcessDataInterface):
 
     r"""Interface for a GaussianProcess: mean, variance, gradients thereof, and data I/O.
 
@@ -204,8 +250,8 @@ class GaussianProcessInterface(object):
 
         Also forces recomputation of all derived quantities for GP to remain consistent.
 
-        :param sampled_points: SampledPoint objects to load into the GP (containing point, function value, and noise variance)
-        :type sampled_points: single SampledPoint or list of SampledPoint objects
+        :param sampled_points: SamplePoint objects to load into the GP (containing point, function value, and noise variance)
+        :type sampled_points: single :class:`moe.optimal_learning.python.SamplePoint` or list of SamplePoint objects
 
         """
         pass

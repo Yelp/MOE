@@ -1,5 +1,5 @@
 Contributing
-*******
+************
 
 Anyone and everyone is encouraged to help work on and develop for MOE. Below are some tips and tricks to help you along.
 
@@ -10,20 +10,21 @@ Anyone and everyone is encouraged to help work on and develop for MOE. Below are
     #. `Testing`_
 
 Making a pull request
------
+---------------------
+
 1. Fork it.
 2. Create a branch (``git checkout -b my_moe_branch``)
 3. Develop your feature/fix (don't forget to add tests and docs!)
-4. Run tests (``tox`` or ``make test-no-tox``)
-5. Build docs (``make docs-no-tox``)
-6. Test against styleguide (``tox -e pep8`` or ``make style-test-no-tox``)
+4. Run tests (``make test``)
+5. Build docs (``make docs``)
+6. Test against styleguide (``make style-test``)
 7. Commit your changes (``git commit -am "Added Some Mathemagics"``)
 8. Push to the branch (``git push origin my_moe_branch``)
 9. Open a Pull Request - http://github.com/sc932/MOE/pulls
 10. Optimize locally while you wait
 
 Pull request review templates
-....
+.............................
 
 ::
 
@@ -39,7 +40,7 @@ Pull request review templates
     ********* TESTING DONE *************
 
 ``PEOPLE`` section
-^^^^^
+^^^^^^^^^^^^^^^^^^
 
 ``Primary reviewer``: the primary code reviewer. This person is *EQUALLY RESPONSIBLE* for your branch. They should read and familiarize themselves with all aspects of the code, checking for style, correctness, maintainability, testing, etc.
 Ask the primary reviewer first if your branch is particularly large (and try to avoid large branches, anything over 300+ lines).
@@ -47,7 +48,8 @@ Ask the primary reviewer first if your branch is particularly large (and try to 
 ``Reviewers``: the people (including primary) that you would like to read your branch. Please use full email addresses or @<GITHUB NAME>. Right now, only people shown here: https://github.com/sc932/MOE/watchers can see the review.
 
 ``DESCRIPTION`` section
-^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^
+
 ``Branch Name``: name of your branch on git. we use the style::
 
   username_ticket#_some_brief_description_of_stuff
@@ -70,11 +72,13 @@ Tell us about your work!
     Don't feel the need to copy/paste the ticket
 
 ``TESTING DONE`` section
-^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^
+
 What testing have you done? You should AT LEAST have compiled your code (if appplicable, e.g., C++ changes) and run::
 
-  make test-no-tox
-  make style-test-no-tox
+  make test
+  make style-test
+  make docs
 
 If your changes are uncovered by tests:
 
@@ -82,30 +86,30 @@ If your changes are uncovered by tests:
 2. if not, at least test the changes ad-hoc. e.g., see that the new text/button shows up on the UI, force your code to execute and see that things “look right”, etc. *EXPLAIN AND JUSTIFY* yourself if you go this route. Your reviewers will hopefully have suggestions for how to turn scenario 2) into 1).
 
 Documentation
------
+-------------
 
 Documentation is a very important component for MOE. The complex math and multiple languages neccesitate clearly documented APIs and explainations. All new code needs to meet the documentations standards.
 
 Building the documentation
-......
+..........................
 
-First check it locally (``make docs-no-tox``), the built docs will be in <MOE_DIR>/docs/_build/html/index.html.
+First check it locally (``make docs``), the built docs will be in <MOE_DIR>/docs/_build/html/index.html.
 
 To update the online documentation::
 
     git checkout gh-pages
     git pull origin master
     rm -r docs/_build/html
-    make docs-no-tox
+    make docs
     cp -r docs/_build/html/* .
     git add -A
     git commit -m "updated online docs" --no-verify
     git push origin HEAD
 
 Python Documentation
-....
+....................
 
-MOE follows the pep257 (http://legacy.python.org/dev/peps/pep-0257) conventions for docstrings and (most of) ``pep8`` for style (http://legacy.python.org/dev/peps/pep-0008). These conventions are inforced using the ``flake8`` docstrings module (run using ``make style-test-no-tox``).
+MOE follows the pep257 (http://legacy.python.org/dev/peps/pep-0257) conventions for docstrings and (most of) ``pep8`` for style (http://legacy.python.org/dev/peps/pep-0008). These conventions are inforced using the ``flake8`` docstrings module (run using ``make style-test``).
 
 .. Note::
 
@@ -114,14 +118,16 @@ MOE follows the pep257 (http://legacy.python.org/dev/peps/pep-0257) conventions 
 All documentation is built using the ``sphinx-apidoc`` command. For more information see http://sphinx-doc.org/man/sphinx-apidoc.html. Support for :math:`\LaTeX` is also included.
 
 C++ Documentation
-.....
+.................
 
 MOE uses ``doxygen`` (http://www.stack.nl/~dimitri/doxygen) to extract the C++ documentation from the source. An API is then generated in ``sphinx`` through ``breathe`` (http://breathe.readthedocs.org/en/latest). All sphinx ReStructured Text markup is available and should be used when writing new C++ code.
 
 Testing
------
+-------
 
 MOE currently uses ``testify`` (https://github.com/Yelp/Testify) to run all unit and integration tests.
+
+Tests can be run using ``make test``. Continuous integration testing is provided by http://travis-ci.org. All builds are tested in a fresh ubuntu VM and need to be passing before being pulled into master.
 
 .. Note::
 
@@ -130,7 +136,7 @@ MOE currently uses ``testify`` (https://github.com/Yelp/Testify) to run all unit
 Documentation for and examples of tests can be found at :doc:`moe.tests`
 
 Style
-----
+-----
 
 MOE uses the google style guides found here:
 

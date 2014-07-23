@@ -12,7 +12,6 @@ from moe.optimal_learning.python.cpp_wrappers.gaussian_process import GaussianPr
 from moe.tests.views.rest_gaussian_process_test_case import RestGaussianProcessTestCase
 from moe.views.constant import GP_EI_ENDPOINT
 from moe.views.rest.gp_ei import GpEiResponse
-from moe.views.utils import _build_domain_info, _build_covariance_info
 
 
 class TestGpEiView(RestGaussianProcessTestCase):
@@ -22,14 +21,14 @@ class TestGpEiView(RestGaussianProcessTestCase):
     precompute_gaussian_process_data = True
     endpoint = GP_EI_ENDPOINT
 
-    def _build_json_payload(self, domain, gaussian_process, covariance, points_to_evaluate):
+    def _build_json_payload(self, domain, covariance, historical_data, points_to_evaluate):
         """Create a json_payload to POST to the /gp/ei endpoint with all needed info."""
         json_payload = json.dumps({
             'points_to_evaluate': points_to_evaluate,
             'points_being_sampled': [],
-            'gp_historical_info': self._build_gp_historical_info(gaussian_process),
-            'covariance_info': _build_covariance_info(covariance),
-            'domain_info': _build_domain_info(domain),
+            'gp_historical_info': historical_data.json_payload(),
+            'covariance_info': covariance.get_json_serializable_info(),
+            'domain_info': domain.get_json_serializable_info(minimal=True),
             })
 
         return json_payload
@@ -38,10 +37,11 @@ class TestGpEiView(RestGaussianProcessTestCase):
         """Test that the /gp/ei endpoint does the same thing as the C++ interface."""
         tolerance = 1.0e-11
         for test_case in self.gp_test_environments:
-            python_domain, python_cov, python_gp = test_case
+            python_domain, python_gp = test_case
+            python_cov, historical_data = python_gp.get_core_data_copy()
 
-            cpp_cov = SquareExponential(python_cov.get_hyperparameters())
-            cpp_gp = GaussianProcess(cpp_cov, python_gp._historical_data)
+            cpp_cov = SquareExponential(python_cov.hyperparameters)
+            cpp_gp = GaussianProcess(cpp_cov, historical_data)
 
             points_to_evaluate = python_domain.generate_uniform_random_points_in_domain(10)
 
@@ -59,7 +59,7 @@ class TestGpEiView(RestGaussianProcessTestCase):
                     )
 
             # EI from REST
-            json_payload = self._build_json_payload(python_domain, python_gp, python_cov, points_to_evaluate.tolist())
+            json_payload = self._build_json_payload(python_domain, python_cov, historical_data, points_to_evaluate.tolist())
             resp = self.testapp.post(self.endpoint, json_payload)
             resp_schema = GpEiResponse()
             resp_dict = resp_schema.deserialize(json.loads(resp.body))

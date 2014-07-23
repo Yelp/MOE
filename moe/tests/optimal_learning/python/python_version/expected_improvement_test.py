@@ -4,6 +4,8 @@ import numpy
 
 import testify as T
 
+import moe
+from moe.optimal_learning.python.data_containers import HistoricalData, SamplePoint
 from moe.optimal_learning.python.geometry_utils import ClosedInterval
 from moe.optimal_learning.python.python_version.covariance import SquareExponential
 from moe.optimal_learning.python.python_version.domain import TensorProductDomain
@@ -46,7 +48,7 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
         gaussian_process_class=GaussianProcess,
     )
 
-    num_sampled_list = [1, 2, 5, 10, 16, 20, 50]
+    num_sampled_list = (1, 2, 5, 10, 16, 20, 50)
 
     num_mc_iterations = 747
     rng_seed = 314
@@ -74,13 +76,13 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
           between the naive and vectorized versions.
 
         """
-        num_points_p_q_list = [(1, 0), (1, 1), (2, 1), (1, 4), (5, 3)]
-        ei_tolerance = numpy.finfo('float64').eps
+        num_points_p_q_list = ((1, 0), (1, 1), (2, 1), (1, 4), (5, 3))
+        ei_tolerance = numpy.finfo(numpy.float64).eps
         grad_ei_tolerance = 1.0e-13
         numpy.random.seed(78532)
 
         for test_case in self.gp_test_environments:
-            domain, _, gaussian_process = test_case
+            domain, gaussian_process = test_case
 
             for num_to_sample, num_being_sampled in num_points_p_q_list:
                 points_to_sample = domain.generate_uniform_random_points_in_domain(num_to_sample)
@@ -137,10 +139,69 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
                 # Restore state
                 numpy.random.set_state(rng_state)
 
+    def _check_ei_symmetry(self, ei_eval, point_to_sample, shifts):
+        """Compute ei at each ``[point_to_sample +/- shift for shift in shifts]`` and check for equality.
+
+        :param ei_eval: properly configured ExpectedImprovementEvaluator object
+        :type ei_eval: ExpectedImprovementInterface subclass
+        :param point_to_sample: point at which to center the shifts
+        :type point_to_sample: array of float64 with shape (1, )
+        :param shifts: shifts to use in the symmetry check
+        :type shifts: tuple of float64
+        :return: None; assertions fail if test conditions are not met
+
+        """
+        for shift in shifts:
+            ei_eval.current_point = point_to_sample - shift
+            left_ei = ei_eval.compute_expected_improvement()
+            left_grad_ei = ei_eval.compute_grad_expected_improvement()
+
+            ei_eval.current_point = point_to_sample + shift
+            right_ei = ei_eval.compute_expected_improvement()
+            right_grad_ei = ei_eval.compute_grad_expected_improvement()
+
+            self.assert_scalar_within_relative(left_ei, right_ei, 0.0)
+            self.assert_vector_within_relative(left_grad_ei, -right_grad_ei, 0.0)
+
+    def test_1d_analytic_ei_edge_cases(self):
+        """Test cases where analytic EI would attempt to compute 0/0 without variance lower bounds."""
+        base_coord = numpy.array([0.5])
+        point1 = SamplePoint(base_coord, -1.809342, 0)
+        point2 = SamplePoint(base_coord * 2.0, -1.09342, 0)
+
+        # First a symmetric case: only one historical point
+        data = HistoricalData(base_coord.size, [point1])
+
+        hyperparameters = numpy.array([0.2, 0.3])
+        covariance = SquareExponential(hyperparameters)
+        gaussian_process = GaussianProcess(covariance, data)
+
+        point_to_sample = base_coord
+        ei_eval = ExpectedImprovement(gaussian_process, point_to_sample)
+
+        ei = ei_eval.compute_expected_improvement()
+        grad_ei = ei_eval.compute_grad_expected_improvement()
+        self.assert_scalar_within_relative(ei, 0.0, 1.0e-15)
+        self.assert_vector_within_relative(grad_ei, numpy.zeros(grad_ei.shape), 1.0e-15)
+
+        shifts = (1.0e-15, 4.0e-11, 3.14e-6, 8.89e-1, 2.71)
+        self._check_ei_symmetry(ei_eval, point_to_sample, shifts)
+
+        # Now introduce some asymmetry with a second point
+        # Right side has a larger objetive value, so the EI minimum
+        # is shifted *slightly* to the left of best_so_far.
+        gaussian_process.add_sampled_points([point2])
+        shift = 3.0e-12
+        ei_eval = ExpectedImprovement(gaussian_process, point_to_sample - shift)
+        ei = ei_eval.compute_expected_improvement()
+        grad_ei = ei_eval.compute_grad_expected_improvement()
+        self.assert_scalar_within_relative(ei, 0.0, 1.0e-15)
+        self.assert_vector_within_relative(grad_ei, numpy.zeros(grad_ei.shape), 1.0e-15)
+
     def test_evaluate_ei_at_points(self):
         """Check that ``evaluate_expected_improvement_at_point_list`` computes and orders results correctly (using 1D analytic EI)."""
         index = numpy.argmax(numpy.greater_equal(self.num_sampled_list, 5))
-        domain, _, gaussian_process = self.gp_test_environments[index]
+        domain, gaussian_process = self.gp_test_environments[index]
 
         points_to_sample = domain.generate_random_point_in_domain()
         ei_eval = ExpectedImprovement(gaussian_process, points_to_sample)
@@ -152,7 +213,7 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
         test_values = ei_eval.evaluate_at_point_list(points_to_evaluate)
 
         for i, value in enumerate(test_values):
-            ei_eval.set_current_point(points_to_evaluate[i, ...])
+            ei_eval.current_point = points_to_evaluate[i, ...]
             truth = ei_eval.compute_expected_improvement()
             T.assert_equal(value, truth)
 
@@ -160,7 +221,7 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
         """Check that multistart optimization (gradient descent) can find the optimum point to sample (using 1D analytic EI)."""
         numpy.random.seed(3148)
         index = numpy.argmax(numpy.greater_equal(self.num_sampled_list, 20))
-        domain, _, gaussian_process = self.gp_test_environments[index]
+        domain, gaussian_process = self.gp_test_environments[index]
 
         max_num_steps = 200  # this is generally *too few* steps; we configure it this way so the test will run quickly
         max_num_restarts = 5
@@ -192,18 +253,18 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
         best_point = multistart_expected_improvement_optimization(ei_optimizer, num_multistarts, num_to_sample)
 
         # Check that gradients are small
-        ei_eval.set_current_point(best_point)
+        ei_eval.current_point = best_point
         gradient = ei_eval.compute_grad_expected_improvement()
         self.assert_vector_within_relative(gradient, numpy.zeros(gradient.shape), tolerance)
 
         # Check that output is in the domain
         T.assert_equal(repeated_domain.check_point_inside(best_point), True)
 
-    def test_multistart_mmonte_carlo_expected_improvement_optimization(self):
+    def test_multistart_monte_carlo_expected_improvement_optimization(self):
         """Check that multistart optimization (gradient descent) can find the optimum point to sample (using 2-EI)."""
-        numpy.random.seed(7858)
+        numpy.random.seed(7858)  # TODO(271): Monte Carlo only works for this seed
         index = numpy.argmax(numpy.greater_equal(self.num_sampled_list, 20))
-        domain, _, gaussian_process = self.gp_test_environments[index]
+        domain, gaussian_process = self.gp_test_environments[index]
 
         max_num_steps = 75  # this is *too few* steps; we configure it this way so the test will run quickly
         max_num_restarts = 5
@@ -211,7 +272,7 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
         gamma = 0.2
         pre_mult = 1.5
         max_relative_change = 1.0
-        tolerance = 1.0e-2  # really large tolerance b/c converging with monte-carlo (esp in Python) is expensive
+        tolerance = 3.0e-2  # really large tolerance b/c converging with monte-carlo (esp in Python) is expensive
         gd_parameters = GradientDescentParameters(
             max_num_steps,
             max_num_restarts,
@@ -233,15 +294,15 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
         points_to_sample = repeated_domain.generate_random_point_in_domain()
         ei_eval = ExpectedImprovement(gaussian_process, points_to_sample, num_mc_iterations=num_mc_iterations)
         # Compute EI and its gradient for the sake of comparison
-        ei_initial = ei_eval.compute_expected_improvement()
+        ei_initial = ei_eval.compute_expected_improvement(force_monte_carlo=True)  # TODO(271) Monte Carlo only works for this seed
         grad_ei_initial = ei_eval.compute_grad_expected_improvement()
 
         ei_optimizer = GradientDescentOptimizer(repeated_domain, ei_eval, gd_parameters)
         best_point = multistart_expected_improvement_optimization(ei_optimizer, num_multistarts, num_to_sample)
 
         # Check that gradients are "small"
-        ei_eval.set_current_point(best_point)
-        ei_final = ei_eval.compute_expected_improvement()
+        ei_eval.current_point = best_point
+        ei_final = ei_eval.compute_expected_improvement(force_monte_carlo=True)  # TODO(271) Monte Carlo only works for this seed
         grad_ei_final = ei_eval.compute_grad_expected_improvement()
         self.assert_vector_within_relative(grad_ei_final, numpy.zeros(grad_ei_final.shape), tolerance)
 
@@ -255,6 +316,62 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
         # grad EI should have improved
         for index in numpy.ndindex(grad_ei_final.shape):
             T.assert_lt(numpy.fabs(grad_ei_final[index]), numpy.fabs(grad_ei_initial[index]))
+
+    def test_qd_ei_with_self(self):
+        """Compare the 1D analytic EI results to the qD analytic EI results, checking several random points per test case.
+
+        This test case (unfortunately) suffers from a lot of random variation in the qEI parameters. The tolerance is high because
+        changing the number of iterations or the maximum relative error allowed in the mvndst function leads to different answers.
+
+        These precomputed answers were calculated from:
+        maxpts = 20,000 * q
+        releps = 1e-5
+
+        These values are a tradeoff between accuracy / speed.
+        """
+        ei_tolerance = 6.0e-10
+        numpy.random.seed(8790)
+
+        precomputed_answers = [
+            5.83583593191e-08,
+            5.83583593328e-08,
+            2.40176803674e-07,
+            0.349595041008,
+            0.350524308404,
+            0.350524856612,
+            0.350524821708,
+            0.409582656814,
+        ]
+
+        for test_case in self.gp_test_environments[2:3]:
+            domain, python_gp = test_case
+            all_points = domain.generate_uniform_random_points_in_domain(9)
+
+            for i in range(2, 10):
+                points_to_sample = all_points[0:i]
+                python_ei_eval = moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement(python_gp, points_to_sample)
+
+                python_ei_eval.current_point = points_to_sample
+                python_qd_ei = python_ei_eval.compute_expected_improvement()
+                self.assert_scalar_within_relative(python_qd_ei, precomputed_answers[i - 2], ei_tolerance)
+
+    def test_qd_and_1d_return_same_analytic_ei(self):
+        """Compare the 1D analytic EI results to the qD analytic EI results, checking several random points per test case."""
+        num_tests_per_case = 10
+        ei_tolerance = 1.0e-9
+
+        for test_case in self.gp_test_environments:
+            domain, python_gp = test_case
+            points_to_sample = domain.generate_random_point_in_domain()
+            python_ei_eval = moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement(python_gp, points_to_sample)
+
+            for _ in xrange(num_tests_per_case):
+                points_to_sample = domain.generate_random_point_in_domain()
+                python_ei_eval.current_point = points_to_sample
+
+                python_1d_ei = python_ei_eval.compute_expected_improvement(force_1d_ei=True)
+                python_qd_ei = python_ei_eval.compute_expected_improvement()
+                self.assert_scalar_within_relative(python_1d_ei, python_qd_ei, ei_tolerance)
 
 
 if __name__ == "__main__":

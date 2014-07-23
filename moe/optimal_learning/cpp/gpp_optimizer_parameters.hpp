@@ -1,16 +1,16 @@
 /*!
-  \file gpp_optimization_parameters.hpp
+  \file gpp_optimizer_parameters.hpp
   \rst
   This file specifies OptimizerParameters structs (e.g., GradientDescent, Newton) for holding values that control the behavior
   of the optimizers in gpp_optimization.hpp.  For example, max step sizes, number of iterations, step size control, etc. are all
   specified through these structs.
 
   These structs also specify multistart behavior pertaining to the multistart optimization code in gpp_math and
-  gpp_model_selection_and_hyperparameter_optimization.
+  gpp_model_selection.
 \endrst*/
 
-#ifndef MOE_OPTIMAL_LEARNING_CPP_GPP_OPTIMIZATION_PARAMETERS_HPP_
-#define MOE_OPTIMAL_LEARNING_CPP_GPP_OPTIMIZATION_PARAMETERS_HPP_
+#ifndef MOE_OPTIMAL_LEARNING_CPP_GPP_OPTIMIZER_PARAMETERS_HPP_
+#define MOE_OPTIMAL_LEARNING_CPP_GPP_OPTIMIZER_PARAMETERS_HPP_
 
 #include "gpp_common.hpp"
 
@@ -43,7 +43,7 @@ struct NullParameters {
 /*!\rst
   Container to hold parameters that specify the behavior of Gradient Descent.
 
-  .. Note:: these comments are copied in build_gradient_descent_parameters() in cpp_wrappers/optimization_parameters.py.
+  .. Note:: these comments are copied in build_gradient_descent_parameters() in cpp_wrappers/optimizer_parameters.py.
      That function wraps this struct's ctor.
 
   **Iterations**
@@ -112,7 +112,7 @@ struct GradientDescentParameters {
 /*!\rst
   Container to hold parameters that specify the behavior of Newton.
 
-  .. Note:: these comments are copied in build_newton_parameters() in cpp_wrappers/optimization_parameters.py.
+  .. Note:: these comments are copied in build_newton_parameters() in cpp_wrappers/optimizer_parameters.py.
      That function wraps this struct's ctor.
 
   **Diagonal dominance control: ``gamma`` and ``time_factor``**
@@ -172,4 +172,4 @@ struct NewtonParameters {
 
 }  // end namespace optimal_learning
 
-#endif  // MOE_OPTIMAL_LEARNING_CPP_GPP_OPTIMIZATION_PARAMETERS_HPP_
+#endif  // MOE_OPTIMAL_LEARNING_CPP_GPP_OPTIMIZER_PARAMETERS_HPP_

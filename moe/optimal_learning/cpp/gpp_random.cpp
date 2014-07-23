@@ -26,6 +26,24 @@
 
 namespace optimal_learning {
 
+UniformRandomGenerator::UniformRandomGenerator(EngineType::result_type seed) noexcept
+    : engine(seed), last_seed_(seed) {
+  SetExplicitSeed(seed);
+}
+
+UniformRandomGenerator::UniformRandomGenerator() noexcept : UniformRandomGenerator(kDefaultSeed) {
+}
+
+UniformRandomGenerator::UniformRandomGenerator(EngineType::result_type seed, int thread_id) noexcept
+    : engine(seed), last_seed_(seed) {
+  SetRandomizedSeed(seed, thread_id);
+}
+
+void UniformRandomGenerator::SetExplicitSeed(EngineType::result_type seed) noexcept {
+  engine.seed(seed);
+  last_seed_ = seed;
+}
+
 void UniformRandomGenerator::SetRandomizedSeed(EngineType::result_type base_seed, int thread_id) noexcept {
   struct timeval time;
   gettimeofday(&time, nullptr);  // nominally time since epoch with microsecond resolution
@@ -54,12 +72,89 @@ void UniformRandomGenerator::SetRandomizedSeed(EngineType::result_type base_seed
   SetExplicitSeed(seed);
 }
 
+void UniformRandomGenerator::ResetToMostRecentSeed() noexcept {
+  SetExplicitSeed(last_seed_);
+}
+
 void UniformRandomGenerator::PrintState(std::ostream * out_stream) const {
   (*out_stream) << engine << "\n";  // NOLINT(readability/streams): this is the only way pull state data out of boost's PRNG engines
 }
 
+bool UniformRandomGenerator::operator==(const UniformRandomGenerator& other) const {
+  return (engine == other.engine) && (last_seed_ == other.last_seed_);
+}
+
+bool UniformRandomGenerator::operator!=(const UniformRandomGenerator& other) const {
+  return !(*this == other);
+}
+
+NormalRNG::NormalRNG(EngineType::result_type seed) noexcept
+    : uniform_generator(seed),
+      normal_distribution_(0.0, 1.0),
+      normal_random_variable_(uniform_generator.engine, normal_distribution_) {
+  SetExplicitSeed(seed);
+}
+
+NormalRNG::NormalRNG() noexcept : NormalRNG(kDefaultSeed) {
+}
+
+NormalRNG::NormalRNG(EngineType::result_type seed, int thread_id) noexcept
+    : uniform_generator(seed),
+      normal_distribution_(0.0, 1.0),
+      normal_random_variable_(uniform_generator.engine, normal_distribution_) {
+  SetRandomizedSeed(seed, thread_id);
+}
+
+double NormalRNG::operator()() {
+  return normal_random_variable_();
+}
+
+void NormalRNG::ResetGenerator() noexcept {
+  normal_random_variable_.distribution().reset();
+}
+
+void NormalRNG::SetExplicitSeed(EngineType::result_type seed) noexcept {
+  uniform_generator.SetExplicitSeed(seed);
+  // this is important: the underlying normal distribution likely generates numbers \emph{two} at a time.
+  // so re-seeding will not clear this pre-existing state without reseting.
+  ResetGenerator();
+}
+
+void NormalRNG::SetRandomizedSeed(EngineType::result_type seed, int thread_id) noexcept {
+  uniform_generator.SetRandomizedSeed(seed, thread_id);
+  // this is important: the underlying normal distribution likely generates numbers \emph{two} at a time.
+  // so re-seeding will not clear this pre-existing state without reseting.
+  ResetGenerator();
+}
+
+void NormalRNG::ResetToMostRecentSeed() noexcept {
+  uniform_generator.ResetToMostRecentSeed();
+  // this is important: the underlying normal distribution likely generates numbers \emph{two} at a time.
+  // so re-seeding will not clear this pre-existing state without reseting.
+  ResetGenerator();
+}
+
 void NormalRNG::PrintState(std::ostream * out_stream) const {
   uniform_generator.PrintState(out_stream);
+}
+
+NormalRNGSimulator::NormalRNGSimulator(const std::vector<double>& random_number_table_in)
+    : random_number_table_(random_number_table_in),
+      index_(0) {
+}
+
+double NormalRNGSimulator::operator()() {
+  int size_of_table = random_number_table_.size();
+  if (index_ < size_of_table) {
+    ++index_;
+    return random_number_table_[index_];
+  } else {
+    OL_THROW_EXCEPTION(InvalidValueException<int>, "All random numbers stored in the RNG have been used up!", index_, size_of_table);
+  }
+}
+
+void NormalRNGSimulator::ResetToMostRecentSeed() noexcept {
+  index_ = 0;
 }
 
 /*!\rst

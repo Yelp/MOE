@@ -34,9 +34,26 @@ if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE RelWithDebInfo)
 endif()
 
+#### User configured external dependencies
+# Sometimes cmake has difficulty finding Python (e.g., multiple installations, especially on OS X with
+# system vs macport/homebrew versions); explicitly specify the location of Python when that happens.
+# See documentation in FindPythonLibs.cmake for more information.
+if (EXISTS ${MOE_PYTHON_INCLUDE_DIR})
+  set(PYTHON_INCLUDE_DIR
+    ${MOE_PYTHON_INCLUDE_DIR}
+    CACHE PATH "Path to where Python.h is found."
+    )
+endif()
+if (EXISTS ${MOE_PYTHON_LIBRARY})
+  set(PYTHON_LIBRARY
+    ${MOE_PYTHON_LIBRARY}
+    CACHE FILEPATH "Path to Python shared object (e.g., libpython2.7.so or .dylib)."
+    )
+endif()
+
 #### External dependencies
 find_package(PythonLibs REQUIRED)
-find_package(Boost COMPONENTS python REQUIRED)
+find_package(Boost 1.51 COMPONENTS python REQUIRED)
 
 include_directories(${PYTHON_INCLUDE_DIRS})
 include_directories(${Boost_INCLUDE_DIRS})
@@ -48,12 +65,13 @@ include_directories(${Boost_INCLUDE_DIRS})
 # readonly
 set(OPTIMAL_LEARNING_CORE_SOURCES
   gpp_covariance.cpp
+  gpp_domain.cpp
   gpp_exception.cpp
   gpp_heuristic_expected_improvement_optimization.cpp
   gpp_linear_algebra.cpp
   gpp_logging.cpp
   gpp_math.cpp
-  gpp_model_selection_and_hyperparameter_optimization.cpp
+  gpp_model_selection.cpp
   gpp_random.cpp
   )
 
@@ -65,7 +83,7 @@ set(OPTIMAL_LEARNING_TEST_SOURCES
   gpp_heuristic_expected_improvement_optimization_test.cpp
   gpp_linear_algebra_test.cpp
   gpp_math_test.cpp
-  gpp_model_selection_and_hyperparameter_optimization_test.cpp
+  gpp_model_selection_test.cpp
   gpp_optimization_test.cpp
   gpp_random_test.cpp
   gpp_test_utils.cpp
@@ -292,20 +310,6 @@ set_target_properties(
   COMPILE_FLAGS "${EXTRA_COMPILE_FLAGS}"
   COMPILE_DEFINITIONS "${EXTRA_COMPILE_DEFINITIONS}"
   LINK_FLAGS "${EXTRA_LINK_FLAGS}"
-  )
-
-#### "EPI" executable: for testing purposes
-set(
-  dependencies
-  $<TARGET_OBJECTS:OPTIMAL_LEARNING_CORE_BUNDLE>
-  $<TARGET_OBJECTS:OPTIMAL_LEARNING_TEST_BUNDLE>
-  )
-configure_exec_targets(
-  EPI
-  gpp_core.cpp
-  "${dependencies}"
-  "${EXTRA_COMPILE_FLAGS}"
-  "${EXTRA_COMPILE_DEFINITIONS}"
   )
 
 #### Demo executables

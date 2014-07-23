@@ -31,6 +31,7 @@
 #define MOE_OPTIMAL_LEARNING_CPP_GPP_RANDOM_HPP_
 
 #include <iosfwd>
+#include <vector>
 
 #include <boost/random/mersenne_twister.hpp>  // NOLINT(build/include_order)
 #include <boost/random/normal_distribution.hpp>  // NOLINT(build/include_order)
@@ -38,9 +39,36 @@
 #include <boost/random/variate_generator.hpp>  // NOLINT(build/include_order)
 
 #include "gpp_common.hpp"
+#include "gpp_exception.hpp"
 #include "gpp_geometry.hpp"
 
 namespace optimal_learning {
+
+/*!\rst
+  Abstract class for a functor for generating random numbers distributed ~ N(0, 1) (i.e., standard normal).
+  This interface currently does not specify many facilities for seeding the underlying RNG as these 
+  (particularly variable width) can vary by implementation.
+
+  This class *only* has pure virtual functions.
+\endrst*/
+class NormalRNGInterface {
+ public:
+  /*!\rst
+    Generate a random number from standard normal distribution.
+
+    \return
+      a random number from a standard (``N(0, 1)``) normal distribution
+  \endrst*/
+  virtual double operator()() = 0;
+
+  /*!\rst
+    Reseeds the generator with its most recently specified seed value.
+    Useful for testing--e.g., can conduct multiple runs with the same initial conditions
+  \endrst*/
+  virtual void ResetToMostRecentSeed() noexcept = 0;
+
+  virtual ~NormalRNGInterface() = default;
+};
 
 /*!\rst
   Container for an uniform random generator (e.g., mersenne twister).  Member functions are for easy manipulation
@@ -60,8 +88,7 @@ struct UniformRandomGenerator final {
   /*!\rst
     Default-constructs a UniformRandomGenerator, seeding with kDefaultSeed.
   \endrst*/
-  UniformRandomGenerator() noexcept : engine(kDefaultSeed), last_seed_(kDefaultSeed) {
-  }
+  UniformRandomGenerator() noexcept;
 
   /*!\rst
     Construct a UniformRandomGenerator, seeding with the specified seed.
@@ -70,9 +97,7 @@ struct UniformRandomGenerator final {
     \param
       :seed: new seed to set
   \endrst*/
-  explicit UniformRandomGenerator(EngineType::result_type seed) noexcept : engine(seed), last_seed_(seed) {
-    SetExplicitSeed(seed);
-  }
+  explicit UniformRandomGenerator(EngineType::result_type seed) noexcept;
 
   /*!\rst
     Construct a UniformRandomGenerator, seeding with an automatically selected seed based on time, thread_id, etc.
@@ -82,9 +107,7 @@ struct UniformRandomGenerator final {
       :base_seed: base value for the new seed
       :thread_id: id of the thread using this object
   \endrst*/
-  UniformRandomGenerator(EngineType::result_type seed, int thread_id) noexcept : engine(seed), last_seed_(seed) {
-    SetRandomizedSeed(seed, thread_id);
-  }
+  UniformRandomGenerator(EngineType::result_type seed, int thread_id) noexcept;
 
   /*!\rst
     Get a reference to the RNG engine used by this class.
@@ -111,10 +134,7 @@ struct UniformRandomGenerator final {
     \param
       :seed: new seed to set
   \endrst*/
-  void SetExplicitSeed(EngineType::result_type seed) noexcept {
-    engine.seed(seed);
-    last_seed_ = seed;
-  }
+  void SetExplicitSeed(EngineType::result_type seed) noexcept;
 
   /*!\rst
     Set a new seed for the random number generator.  A "random" seed is selected based on
@@ -147,9 +167,7 @@ struct UniformRandomGenerator final {
     Reseeds the generator with its most recently specified seed value.
     Useful for testing--e.g., can conduct multiple runs with the same initial conditions
   \endrst*/
-  void ResetToMostRecentSeed() noexcept {
-    SetExplicitSeed(last_seed_);
-  }
+  void ResetToMostRecentSeed() noexcept;
 
   /*!\rst
     Prints the state of the generator to specified ostream.  For testing.
@@ -161,12 +179,9 @@ struct UniformRandomGenerator final {
   \endrst*/
   void PrintState(std::ostream * out_stream) const OL_NONNULL_POINTERS;
 
-  bool operator==(const UniformRandomGenerator& other) const {
-    return (engine == other.engine) && (last_seed_ == other.last_seed_);
-  }
-  bool operator!=(const UniformRandomGenerator& other) const {
-    return !(*this == other);
-  }
+  bool operator==(const UniformRandomGenerator& other) const;
+
+  bool operator!=(const UniformRandomGenerator& other) const;
 
   //! An (boost) PRNG engine that can be passed to a ``<boost/random>`` distribution, e.g., ``uniform_real<>``.
   EngineType engine;
@@ -181,12 +196,13 @@ struct UniformRandomGenerator final {
   Uses/maintains an uniform RNG (currently UniformRandomGenerator) and transforms the output to be
   distributed ~ N(0, 1).
 
-  Note: seed values take type ``EngineType::result_type``. Do not pass in a wider integer type!
+  .. Note:: seed values take type ``EngineType::result_type``. Do not pass in a wider integer type!
 
-  WARNING: this class is NOT THREAD-SAFE. You must construct one object per thread (and
-  ensure that the seeds are different for practical computations).
+  .. WARNING:: this class is NOT THREAD-SAFE. You must construct one object per thread (and
+    ensure that the seeds are different for practical computations).
 \endrst*/
-struct NormalRNG final {
+class NormalRNG final : public NormalRNGInterface {
+ public:
   using UniformGeneratorType = UniformRandomGenerator;
   using EngineType = UniformRandomGenerator::EngineType;
 
@@ -196,8 +212,7 @@ struct NormalRNG final {
   /*!\rst
     Default-constructs a NormalRNG, seeding with kDefaultSeed.
   \endrst*/
-  NormalRNG() noexcept : uniform_generator(kDefaultSeed), normal_distribution_(0.0, 1.0), normal_random_variable_(uniform_generator.engine, normal_distribution_) {
-  }
+  NormalRNG() noexcept;
 
   /*!\rst
     Construct a NormalRNG, seeding with the specified seed.
@@ -206,9 +221,7 @@ struct NormalRNG final {
     \param
       :seed: new seed to set
   \endrst*/
-  explicit NormalRNG(EngineType::result_type seed) noexcept : uniform_generator(seed), normal_distribution_(0.0, 1.0), normal_random_variable_(uniform_generator.engine, normal_distribution_) {
-    SetExplicitSeed(seed);
-  }
+  explicit NormalRNG(EngineType::result_type seed) noexcept;
 
   /*!\rst
     Construct a NormalRNG, seeding with an automatically selected seed based on time, thread_id, etc.
@@ -218,9 +231,7 @@ struct NormalRNG final {
       :base_seed: base value for the new seed
       :thread_id: id of the thread using this object
   \endrst*/
-  NormalRNG(EngineType::result_type seed, int thread_id) noexcept : uniform_generator(seed), normal_distribution_(0.0, 1.0), normal_random_variable_(uniform_generator.engine, normal_distribution_) {
-    SetRandomizedSeed(seed, thread_id);
-  }
+  NormalRNG(EngineType::result_type seed, int thread_id) noexcept;
 
   /*!\rst
     Get a reference to the RNG engine used by this class.
@@ -232,9 +243,7 @@ struct NormalRNG final {
     return uniform_generator.engine;
   }
 
-  double operator()() noexcept {
-    return normal_random_variable_();
-  }
+  virtual double operator()();
 
   EngineType::result_type last_seed() const noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
     return uniform_generator.last_seed();
@@ -245,9 +254,7 @@ struct NormalRNG final {
     This is important: the underlying normal distribution likely generates numbers \emph{two} at a time.
     So re-seeding the engine WITHOUT resetting can lead to surprising behavior.
   \endrst*/
-  void ResetGenerator() noexcept {
-    normal_random_variable_.distribution().reset();
-  }
+  void ResetGenerator() noexcept;
 
   /*!\rst
     Seed the random number generator with the input value.
@@ -256,12 +263,7 @@ struct NormalRNG final {
     \param
       :seed: new seed to set
   \endrst*/
-  void SetExplicitSeed(EngineType::result_type seed) noexcept {
-    uniform_generator.SetExplicitSeed(seed);
-    // this is important: the underlying normal distribution likely generates numbers \emph{two} at a time.
-    // so re-seeding will not clear this pre-existing state without reseting.
-    ResetGenerator();
-  }
+  void SetExplicitSeed(EngineType::result_type seed) noexcept;
 
   /*!\rst
     Set a new seed for the random number generator.  A "random" seed is selected based on
@@ -272,23 +274,13 @@ struct NormalRNG final {
       :seed: base value for the new seed
       :thread_id: id of the thread using this object
   \endrst*/
-  void SetRandomizedSeed(EngineType::result_type seed, int thread_id) noexcept {
-    uniform_generator.SetRandomizedSeed(seed, thread_id);
-    // this is important: the underlying normal distribution likely generates numbers \emph{two} at a time.
-    // so re-seeding will not clear this pre-existing state without reseting.
-    ResetGenerator();
-  }
+  void SetRandomizedSeed(EngineType::result_type seed, int thread_id) noexcept;
 
   /*!\rst
     Reseeds the generator with its most recently specified seed value.
     Useful for testing--e.g., can conduct multiple runs with the same initial conditions
   \endrst*/
-  void ResetToMostRecentSeed() noexcept {
-    uniform_generator.ResetToMostRecentSeed();
-    // this is important: the underlying normal distribution likely generates numbers \emph{two} at a time.
-    // so re-seeding will not clear this pre-existing state without reseting.
-    ResetGenerator();
-  }
+  virtual void ResetToMostRecentSeed() noexcept;
 
   /*!\rst
     Prints the state of the generator to specified ostream.  For testing.
@@ -308,6 +300,43 @@ struct NormalRNG final {
   boost::normal_distribution<double> normal_distribution_;
   //! Object (for convenience) providing operator() that returns a value distributed ~ N(0, 1).
   boost::variate_generator<EngineType&, boost::normal_distribution<double> > normal_random_variable_;
+};
+
+/*!\rst
+  RNG that generates normally distributed (N(0,1)) random numbers simply by reading random numbers stored in
+  its "random_number_table", a data member in this class.
+
+  .. Note:: this class is used in unit test only, and you have to be careful to ensure the total number of random numbers
+    generated from last reset must be smaller than size of "random_number_table", otherwise exception will be thrown.
+
+  .. Warning:: this class is NOT THREAD-SAFE. You must construct one object per thread.
+\endrst*/
+class NormalRNGSimulator final : public NormalRNGInterface {
+ public:
+  /*!\rst
+    Construct a NormalRNGSimulator by providing table storing random numbers, and size of this random table.
+
+    \param
+      :random_number_table_in: pointer to the table storing random numbers
+      :size_of_table_in: size of the random table
+  \endrst*/
+  explicit NormalRNGSimulator(const std::vector<double>& random_number_table_in);
+
+  virtual double operator()();
+
+  virtual void ResetToMostRecentSeed() noexcept;
+
+  int index() const {
+    return index_;
+  }
+
+  OL_DISALLOW_DEFAULT_AND_COPY_AND_ASSIGN(NormalRNGSimulator);
+
+ private:
+  //! Table that stores all random numbers.
+  std::vector<double> random_number_table_;
+  //! Index of the random number in the table to return when the generator is called.
+  int index_;
 };
 
 /*!\rst

@@ -14,11 +14,11 @@ from abc import ABCMeta, abstractmethod, abstractproperty
 
 class OptimizableInterface(object):
 
-    r"""Interface that an object must fulfill to be optimized by an implementation of OptimizationInterface.
+    r"""Interface that an object must fulfill to be optimized by an implementation of OptimizerInterface.
 
     Below, ``f(x)`` is the scalar objective function represented by this object. ``x`` is a vector-valued input
     with ``problem_size`` dimensions. With ``f(x)`` (and/or its derivatives), a OptimizableInterface implementation
-    can be hooked up to a OptimizationInterface implementation to find the maximum value of ``f(x)`` and the input
+    can be hooked up to a OptimizerInterface implementation to find the maximum value of ``f(x)`` and the input
     ``x`` at which this maximum occurs.
 
     This interface is straightforward--we need the ability to compute the problem size (how many independent parameters to
@@ -44,12 +44,10 @@ class OptimizableInterface(object):
         """Return the number of independent parameters to optimize."""
         pass
 
-    @abstractmethod
     def get_current_point(self):
         """Get the current_point (array of float64 with shape (problem_size)) at which this object is evaluating the objective function, ``f(x)``."""
         pass
 
-    @abstractmethod
     def set_current_point(self, current_point):
         """Set current_point to the specified point; ordering must match.
 
@@ -58,6 +56,8 @@ class OptimizableInterface(object):
 
         """
         pass
+
+    current_point = abstractproperty(get_current_point, set_current_point)
 
     @abstractmethod
     def compute_objective_function(self, **kwargs):

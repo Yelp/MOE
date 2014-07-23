@@ -9,10 +9,28 @@ import numpy
 import scipy.linalg
 import scipy.stats
 
-from moe.optimal_learning.python.constant import DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS, DEFAULT_EXPECTED_IMPROVEMENT_MAX_NUM_THREADS
+from moe.optimal_learning.python.constant import DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS, DEFAULT_MAX_NUM_THREADS
 from moe.optimal_learning.python.interfaces.expected_improvement_interface import ExpectedImprovementInterface
 from moe.optimal_learning.python.interfaces.optimization_interface import OptimizableInterface
+from moe.optimal_learning.python.python_version.gaussian_process import MINIMUM_STD_DEV_GRAD_CHOLESKY
 from moe.optimal_learning.python.python_version.optimization import multistart_optimize, NullOptimizer
+
+
+# Minimum allowed variance value in the "1D" analytic EI computation.
+# Values that are too small result in problems b/c we may compute ``std_dev/var`` (which is enormous
+# if ``std_dev = 1.0e-150`` and ``var = 1.0e-300``) since this only arises when we fail to compute ``std_dev = var = 0.0``.
+# Note: this is only relevant if noise = 0.0; this minimum will not affect EI computation with noise since this value
+# is below the smallest amount of noise users can meaningfully add.
+# This is the smallest possible value that prevents the denominator (best_so_far - mean) / sqrt(variance)
+# from being 0. 1D analytic EI is simple and no other robustness considerations are needed.
+MINIMUM_VARIANCE_EI = numpy.finfo(numpy.float64).tiny
+
+# Minimum allowed variance value in the "1D" analytic grad EI computation.
+# See MINIMUM_VARIANCE_EI for more details.
+# This value was chosen so its sqrt would be a little larger than GaussianProcess::kMinimumStdDev (by ~12x).
+# The 150.0 was determined by numerical experiment with the setup in test_1d_analytic_ei_edge_cases()
+# in order to find a setting that would be robust (no 0/0) while introducing minimal error.
+MINIMUM_VARIANCE_GRAD_EI = 150 * MINIMUM_STD_DEV_GRAD_CHOLESKY ** 2
 
 
 def multistart_expected_improvement_optimization(
@@ -20,7 +38,7 @@ def multistart_expected_improvement_optimization(
         num_multistarts,
         num_to_sample,
         randomness=None,
-        max_num_threads=DEFAULT_EXPECTED_IMPROVEMENT_MAX_NUM_THREADS,
+        max_num_threads=DEFAULT_MAX_NUM_THREADS,
         status=None,
 ):
     """Solve the q,p-EI problem, returning the optimal set of q points to sample CONCURRENTLY in future experiments.
@@ -82,6 +100,9 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
 
     When available, fast, analytic formulas replace monte-carlo loops.
 
+    .. Note:: Equivalent methods of ExpectedImprovementInterface and OptimizableInterface are aliased below (e.g.,
+      compute_expected_improvement and compute_objective_function, etc).
+
     See interfaces/expected_improvement_interface.py docs for further details.
 
     """
@@ -112,8 +133,8 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         """
         self._num_mc_iterations = num_mc_iterations
         self._gaussian_process = gaussian_process
-        if gaussian_process._historical_data.points_sampled_value.size > 0:
-            self._best_so_far = numpy.amin(gaussian_process._historical_data.points_sampled_value)
+        if gaussian_process._points_sampled_value.size > 0:
+            self._best_so_far = numpy.amin(gaussian_process._points_sampled_value)
         else:
             self._best_so_far = numpy.finfo(numpy.float64).max
 
@@ -123,9 +144,9 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
             self._points_being_sampled = numpy.copy(points_being_sampled)
 
         if points_to_sample is None:
-            self.set_current_point(numpy.zeros((1, gaussian_process.dim)))
+            self.current_point = numpy.zeros((1, gaussian_process.dim))
         else:
-            self.set_current_point(points_to_sample)
+            self.current_point = points_to_sample
 
     @property
     def dim(self):
@@ -160,11 +181,13 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         """
         self._points_to_sample = numpy.copy(numpy.atleast_2d(points_to_sample))
 
+    current_point = property(get_current_point, set_current_point)
+
     def evaluate_at_point_list(
             self,
             points_to_evaluate,
             randomness=None,
-            max_num_threads=DEFAULT_EXPECTED_IMPROVEMENT_MAX_NUM_THREADS,
+            max_num_threads=DEFAULT_MAX_NUM_THREADS,
             status=None,
     ):
         """Evaluate Expected Improvement (q,p-EI) over a specified list of ``points_to_evaluate``.
@@ -200,6 +223,113 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
             status["evaluate_EI_at_point_list"] = found_flag
 
         return values
+
+    def _compute_expected_improvement_qd_analytic(self, mu_star, var_star):
+        """Compute EI when the number of potential samples is any number q.
+
+        This function is deterministic; it does not perform explicit numerical integration or require access
+        to a random number generator.
+
+        If we denote PHI_q by the q-dimensional multivariate gaussian, this method requires q calls to PHI_q,
+        where q is also the number of points being sampled, and q^2 calls to PHI_(q-1). This approach is therefore
+        more tractable with moderate q (lower than 10). Higher values of q may require the Monte-Carlo approach.
+
+        See Chevalier, and Ginsbourger (2012)
+
+        :param mu_star: a vector of the means of the GP evaluated at points_to_sample
+        :type mu_star: array of float64 with shape (num_points)
+        :param var_star: the covariance matrix of the GP evaluated at points_to_sample
+        :type var_star: array of float64 with shape (num_points, num_points)
+        :return: the expected improvement from sampling ``point_to_sample``
+        :rtype: float64
+
+        """
+        num_points = self.num_to_sample + self.num_being_sampled
+        best_so_far = self._best_so_far
+
+        def singlevar_norm_pdf(mean, var, param):
+            """PDF of univariate Gaussian centered at m with variance var."""
+            return scipy.stats.norm.pdf(param, mean, numpy.sqrt(var))
+
+        def multivar_norm_cdf(upper, cov_matrix):
+            """CDF of multivariate Gaussian centered at 0 with covariance matrix cov_matrix. CDF is taken from -inf to u."""
+            if upper.size == 1:
+                return scipy.stats.norm.cdf(upper[0], 0, numpy.sqrt(cov_matrix[0, 0]))
+
+            # Standardize the upper bound u using the standard deviation
+            std = numpy.sqrt(numpy.diag(cov_matrix))
+            std_upper = upper / std
+
+            # Convert covariance matrix into correlation matrix: http://en.wikipedia.org/wiki/Correlation_and_dependence#Correlation_matrices
+            corr_matrix = cov_matrix / std / std.reshape(upper.size, 1)  # standardize -> correlation matrix
+
+            # Indices for traversing the strict lower triangular elements of corr_matrix in column major, as required by the fortran mvndst function.
+            strict_lower_diag_indices = numpy.tril_indices(upper.size, -1)
+
+            # Call into the scipy wrapper for the fortran method "mvndst"
+            # Link: http://www.math.wsu.edu/faculty/genz/software/fort77/mvtdstpack.f
+            out = scipy.stats.kde.mvn.mvndst(
+                 numpy.zeros(upper.size, dtype=int),  # The lower bound of integration. We initialize with 0 because it is ignored (because of the third argument).
+                 std_upper,  # The upper bound of integration
+                 numpy.zeros(upper.size, dtype=int),  # For each dim, 0 means -inf for lower bound
+                 corr_matrix[strict_lower_diag_indices],  # The vector of strict lower triangular correlation coefficients
+                 maxpts=20000 * upper.size,  # Maximum number of iterations for the mvndst function
+                 releps=1e-5,  # The error allowed relative to actual value
+                 )
+            return out[1]  # Index 1 corresponds to the actual value. 0 has the error, and 2 is a flag denoting whether releps was reached
+
+        # Calculation of outer sum (from Proposition 2, equation 3)
+        # Although the paper describes a minimization, we can achieve a maximization by inverting m_k and b_k, and then the probability term, as labeled below with 'min'.
+        expected_improvement = 0
+        for k in range(0, num_points):
+            # Calculation of m_k, which is the mean of Z_k introduced in Proposition 2
+            m_k = mu_star - mu_star[k]
+            m_k[k] = -mu_star[k]
+            m_k = -m_k  # min
+
+            b_k = numpy.zeros(num_points)
+            b_k[k] = -best_so_far
+            b_k = -b_k  # min
+
+            # Calculation of cov_k, which is the covariance matrix of Z_k introduced in Proposition 2
+            # Matrix of cov(Y_j - Y_k, Y_i - Y_k) for i, j != k and cov(Y_j - Y_k, Y_i) for i = k.
+            # Calculated using linearity of covariance:
+            # cov(Y_j - Y_k, Y_i - Y_k) = cov(Y_i, Y_j) - cov(Y_i, Y_k) - cov(Y_j, Y_k) + cov(Y_k, Y_k)
+            cov_k = var_star + var_star[k, k]
+            cov_k = cov_k - var_star[..., k]
+            cov_k = cov_k - var_star[..., k].reshape(num_points, 1)
+
+            # When i or j = k, then
+            # cov(Y_j - Y_k, -Y_k) = cov(Y_k, Y_k) - cov(Y_j, Y_k)
+            cov_k[k, ...] = -var_star[..., k] + var_star[k, k]
+            cov_k[..., k] = -var_star[..., k] + var_star[k, k]
+
+            # Finally, when i and j = k, we have cov(Y_k, Y_k)
+            cov_k[k, k] = var_star[k, k]
+
+            prob_term = (mu_star[k] - best_so_far) * multivar_norm_cdf(b_k - m_k, cov_k)
+            prob_term = -prob_term  # min
+
+            # Calculation of inner sum
+            sum_term = 0
+            if num_points == 1:
+                sum_term += cov_k[0, k] * singlevar_norm_pdf(m_k[0], cov_k[0, 0], b_k[0])
+            else:
+                for i in range(0, num_points):
+                    index_no_i = range(0, i) + range(i + 1, num_points)
+
+                    # c_k introduced on top of page 4
+                    c_k = (b_k - m_k) - (b_k[i] - m_k[i]) * cov_k[i, :] / cov_k[i, i]
+                    c_k = c_k[index_no_i]
+
+                    # cov_k_no_i introduced on top of page 4
+                    cov_k_no_i = cov_k - numpy.outer(cov_k[i, :], cov_k[i, :]) / cov_k[i, i]
+                    cov_k_no_i = cov_k_no_i[index_no_i, ...][..., index_no_i]
+
+                    sum_term += cov_k[i, k] * singlevar_norm_pdf(m_k[i], cov_k[i, i], b_k[i]) * multivar_norm_cdf(c_k, cov_k_no_i)
+
+            expected_improvement += (prob_term + sum_term)
+        return numpy.fmax(0.0, expected_improvement)
 
     def _compute_expected_improvement_1d_analytic(self, mu_star, var_star):
         """Compute EI when the number of potential samples is 1 (i.e., points_being_sampled.size = 0) using *fast* analytic methods.
@@ -541,7 +671,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         aggregate_dx /= float(self._num_mc_iterations)
         return aggregate_dx
 
-    def compute_expected_improvement(self, force_monte_carlo=False):
+    def compute_expected_improvement(self, force_monte_carlo=False, force_1d_ei=False):
         r"""Compute the expected improvement at ``points_to_sample``, with ``points_being_sampled`` concurrent points being sampled.
 
         .. Note:: These comments were copied from this's superclass in expected_improvement_interface.py.
@@ -572,7 +702,9 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         We compute the improvement over many random draws and average.
 
         :param force_monte_carlo: whether to force monte carlo evaluation (vs using fast/accurate analytic eval when possible)
-        :type force_monte_carlo: boolean
+        :type force_monte_carlo: bool
+        :param force_1d_ei: whether to force using the 1EI method. Used for testing purposes only. Takes precedence when force_monte_carlo is also True
+        :type force_1d_ei: bool
         :return: the expected improvement from sampling ``points_to_sample`` with ``points_being_sampled`` concurrent experiments
         :rtype: float64
 
@@ -583,14 +715,16 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         mu_star = self._gaussian_process.compute_mean_of_points(union_of_points)
         var_star = self._gaussian_process.compute_variance_of_points(union_of_points)
 
-        if num_points == 1 and force_monte_carlo is False:
+        if force_monte_carlo is False and force_1d_ei is False:
+            var_star = numpy.fmax(MINIMUM_VARIANCE_EI, var_star)  # TODO(272): Check if this is needed.
+            return self._compute_expected_improvement_qd_analytic(mu_star, var_star)
+        elif force_1d_ei is True:
+            var_star = numpy.fmax(MINIMUM_VARIANCE_EI, var_star)
             return self._compute_expected_improvement_1d_analytic(mu_star[0], var_star[0, 0])
         else:
             return self._compute_expected_improvement_monte_carlo(mu_star, var_star)
 
-    def compute_objective_function(self, **kwargs):
-        """Wrapper for compute_expected_improvement; see that function's docstring."""
-        return self.compute_expected_improvement(**kwargs)
+    compute_objective_function = compute_expected_improvement
 
     def compute_grad_expected_improvement(self, force_monte_carlo=False):
         r"""Compute the gradient of expected improvement at ``points_to_sample`` wrt ``points_to_sample``, with ``points_being_sampled`` concurrent samples.
@@ -624,9 +758,16 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         mu_star = self._gaussian_process.compute_mean_of_points(union_of_points)
         var_star = self._gaussian_process.compute_variance_of_points(union_of_points)
         grad_mu = self._gaussian_process.compute_grad_mean_of_points(union_of_points, self.num_to_sample)
-        grad_chol_decomp = self._gaussian_process.compute_grad_cholesky_variance_of_points(union_of_points, self.num_to_sample)
 
         if num_points == 1 and force_monte_carlo is False:
+            var_star = numpy.fmax(MINIMUM_VARIANCE_GRAD_EI, var_star)
+            sigma = numpy.sqrt(var_star)
+            grad_chol_decomp = self._gaussian_process.compute_grad_cholesky_variance_of_points(
+                union_of_points,
+                chol_var=sigma,
+                num_derivatives=self.num_to_sample,
+            )
+
             return self._compute_grad_expected_improvement_1d_analytic(
                 mu_star[0],
                 var_star[0, 0],
@@ -634,6 +775,14 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
                 grad_chol_decomp[0, 0, 0, ...],
             )
         else:
+            # Note: only access the lower triangle of chol_var; upper triangle is garbage
+            # cho_factor returns a tuple, (factorized_matrix, lower_tri_flag); grab the matrix
+            chol_var = scipy.linalg.cho_factor(var_star, lower=True, overwrite_a=True)[0]
+            grad_chol_decomp = self._gaussian_process.compute_grad_cholesky_variance_of_points(
+                union_of_points,
+                chol_var=chol_var,
+                num_derivatives=self.num_to_sample,
+            )
             return self._compute_grad_expected_improvement_monte_carlo(
                 mu_star,
                 var_star,
@@ -641,9 +790,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
                 grad_chol_decomp,
             )
 
-    def compute_grad_objective_function(self, **kwargs):
-        """Wrapper for compute_grad_expected_improvement; see that function's docstring."""
-        return self.compute_grad_expected_improvement(**kwargs)
+    compute_grad_objective_function = compute_grad_expected_improvement
 
     def compute_hessian_objective_function(self, **kwargs):
         """We do not currently support computation of the (spatial) hessian of Expected Improvement."""

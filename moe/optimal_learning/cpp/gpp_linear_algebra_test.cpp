@@ -193,15 +193,6 @@ bool CheckMatrixIsSymmetric(double const * restrict matrix, int size, double tol
   return symmetric_flag;
 }
 
-void ZeroUpperTriangle(int size, double * restrict matrix) noexcept {
-  for (int i = 0; i < size; ++i) {
-    for (int j = 0; j < i; ++j) {
-      matrix[j] = 0.0;
-    }
-    matrix += size;
-  }
-}
-
 namespace {
 
 /*!\rst
@@ -271,11 +262,15 @@ OL_WARN_UNUSED_RESULT int TestCholesky() {
     double cholesky_B_computed[kSize2*kSize2];
 
     std::copy(matrix_A, matrix_A + kSize1*kSize1, cholesky_A_computed);
-    ComputeCholeskyFactorL(kSize1, cholesky_A_computed);
+    if (ComputeCholeskyFactorL(kSize1, cholesky_A_computed) != 0) {
+      ++total_errors;
+    }
     ZeroUpperTriangle(kSize1, cholesky_A_computed);
 
     std::copy(matrix_B, matrix_B + kSize2*kSize2, cholesky_B_computed);
-    ComputeCholeskyFactorL(kSize2, cholesky_B_computed);
+    if (ComputeCholeskyFactorL(kSize2, cholesky_B_computed) != 0) {
+      ++total_errors;
+    }
     ZeroUpperTriangle(kSize2, cholesky_B_computed);
 
     for (int i = 0; i < kSize1*kSize1; ++i) {
@@ -308,7 +303,9 @@ OL_WARN_UNUSED_RESULT int TestCholesky() {
     BuildRandomSPDMatrix(sizes[i], &uniform_generator, spd_matrix.data());
 
     std::copy(spd_matrix.begin(), spd_matrix.end(), cholesky_factor.begin());
-    ComputeCholeskyFactorL(sizes[i], cholesky_factor.data());
+    if (ComputeCholeskyFactorL(sizes[i], cholesky_factor.data()) != 0) {
+      ++total_errors;
+    }
     ZeroUpperTriangle(sizes[i], cholesky_factor.data());
     MatrixTranspose(cholesky_factor.data(), sizes[i], sizes[i], cholesky_factor_T.data());
 
@@ -372,7 +369,9 @@ OL_WARN_UNUSED_RESULT int TestSPDLinearSolvers() {
 
     int local_errors = 0;
     // check factorization is correct; only check lower-triangle
-    ComputeCholeskyFactorL(size, matrix.data());
+    if (ComputeCholeskyFactorL(size, matrix.data()) != 0) {
+      ++total_errors;
+    }
     for (int i = 0; i < size; ++i) {
       for (int j = 0; j < size; ++j) {
         if (j >= i) {
@@ -407,8 +406,8 @@ OL_WARN_UNUSED_RESULT int TestSPDLinearSolvers() {
       };
   const double tolerance_inverse_max_list[3][num_test_sizes] =
       { {1.0e-13, 1.0e-9, 1.0e-2},  // prolate
-        {5.0e-13, 1.0e-8, 1.0e1},   // moler
-        {5.0e-10, 5.0e-6, 1.0e2}    // random
+        {5.0e-13, 2.0e-8, 1.0e1},   // moler
+        {7.0e-10, 7.0e-6, 1.0e2}    // random
       };
 
   UniformRandomGenerator uniform_generator(34187);
@@ -456,7 +455,9 @@ OL_WARN_UNUSED_RESULT int TestSPDLinearSolvers() {
       }
       // cholesky-factor A, form A^-1
       std::copy(matrix.begin(), matrix.end(), cholesky_factor.begin());
-      ComputeCholeskyFactorL(sizes[i], cholesky_factor.data());
+      if (ComputeCholeskyFactorL(sizes[i], cholesky_factor.data()) != 0) {
+        ++total_errors;
+      }
       SPDMatrixInverse(cholesky_factor.data(), sizes[i], inverse_matrix.data());
 
       // set b = A*random_vector.  This way we know the solution explicitly.
@@ -682,7 +683,7 @@ OL_WARN_UNUSED_RESULT int TestGeneralMatrixMatrixMultiply() noexcept {
     GeneralMatrixMatrixMultiply(matrix_A, 'N', matrix_B, 1.0, 0.0, kSize_m, kSize_k, kSize_n, matrix_AB_computed);
 
     for (int i = 0; i < kSize_m*kSize_n; ++i) {
-      if (!CheckDoubleWithinRelative(matrix_AB_computed[i], matrix_AB_exact[i], std::numeric_limits<double>::epsilon())) {
+      if (!CheckDoubleWithinRelative(matrix_AB_computed[i], matrix_AB_exact[i], 3.0 * std::numeric_limits<double>::epsilon())) {
         ++total_errors;
       }
     }
@@ -739,7 +740,9 @@ OL_WARN_UNUSED_RESULT int TestGeneralMatrixMatrixMultiply() noexcept {
     ModifyMatrixDiagonal(sizes[i], static_cast<double>(sizes[i]), spd_matrix.data());
 
     std::copy(spd_matrix.begin(), spd_matrix.end(), cholesky_factor.begin());
-    ComputeCholeskyFactorL(sizes[i], cholesky_factor.data());
+    if (ComputeCholeskyFactorL(sizes[i], cholesky_factor.data()) != 0) {
+      ++total_errors;
+    }
     SPDMatrixInverse(cholesky_factor.data(), sizes[i], inverse_spd_matrix.data());
     GeneralMatrixMatrixMultiply(spd_matrix.data(), 'N', inverse_spd_matrix.data(), 1.0, 0.0, sizes[i], sizes[i], sizes[i], product_matrix.data());
     VectorAXPY(sizes[i]*sizes[i], -1.0, identity_matrix.data(), product_matrix.data());

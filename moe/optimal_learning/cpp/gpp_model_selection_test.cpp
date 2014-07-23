@@ -1,7 +1,7 @@
 /*!
-  \file gpp_model_selection_and_hyperparameter_optimization_test.cpp
+  \file gpp_model_selection_test.cpp
   \rst
-  Routines to test the functions in gpp_model_selection_and_hyperparameter_optimization.cpp.
+  Routines to test the functions in gpp_model_selection.cpp.
 
   These tests verify LogMarginalLikelihoodEvaluator and LeaveOneOutLogLikelihoodEvaluator and their optimizers:
 
@@ -21,7 +21,7 @@
 
 // #define OL_VERBOSE_PRINT
 
-#include "gpp_model_selection_and_hyperparameter_optimization_test.hpp"
+#include "gpp_model_selection_test.hpp"
 
 #include <cmath>
 
@@ -40,10 +40,10 @@
 #include "gpp_logging.hpp"
 #include "gpp_math.hpp"
 #include "gpp_mock_optimization_objective_functions.hpp"
-#include "gpp_model_selection_and_hyperparameter_optimization.hpp"
+#include "gpp_model_selection.hpp"
 #include "gpp_random.hpp"
 #include "gpp_optimization.hpp"
-#include "gpp_optimization_parameters.hpp"
+#include "gpp_optimizer_parameters.hpp"
 #include "gpp_test_utils.hpp"
 
 namespace optimal_learning {
@@ -98,7 +98,7 @@ class PingLogLikelihood final : public PingableMatrixInputVectorOutputInterface 
 
   virtual double GetAnalyticGradient(int row_index, int OL_UNUSED(column_index), int OL_UNUSED(output_index)) const override OL_WARN_UNUSED_RESULT {
     if (gradients_already_computed_ == false) {
-      OL_THROW_EXCEPTION(RuntimeException, "PingLogLikelihood::GetAnalyticGradient() called BEFORE EvaluateAndStoreAnalyticGradient. NO DATA!");
+      OL_THROW_EXCEPTION(OptimalLearningException, "PingLogLikelihood::GetAnalyticGradient() called BEFORE EvaluateAndStoreAnalyticGradient. NO DATA!");
     }
 
     return grad_log_marginal_likelihood_[row_index];
@@ -176,7 +176,7 @@ class PingHessianLogLikelihood final : public PingableMatrixInputVectorOutputInt
 
   virtual double GetAnalyticGradient(int row_index, int OL_UNUSED(column_index), int output_index) const override OL_WARN_UNUSED_RESULT {
     if (gradients_already_computed_ == false) {
-      OL_THROW_EXCEPTION(RuntimeException, "PingHessianLogLikelihood::GetAnalyticGradient() called BEFORE EvaluateAndStoreAnalyticGradient. NO DATA!");
+      OL_THROW_EXCEPTION(OptimalLearningException, "PingHessianLogLikelihood::GetAnalyticGradient() called BEFORE EvaluateAndStoreAnalyticGradient. NO DATA!");
     }
 
     return hessian_log_marginal_likelihood_[row_index*num_hyperparameters_ + output_index];
@@ -398,9 +398,14 @@ OL_WARN_UNUSED_RESULT int HyperparameterLikelihoodOptimizationTestCore(LogLikeli
   HyperparameterDomainType hyperparameter_domain(hyperparameter_domain_bounds.data(), num_hyperparameters);
 
   std::vector<double> noise_variance(num_sampled, 0.1);
-  MockGaussianProcessPriorData<DomainType> mock_gp_data(covariance_wrong, noise_variance, dim, num_sampled, uniform_double_lower_bound, uniform_double_upper_bound, uniform_double_hyperparameter, &uniform_generator);
+  MockGaussianProcessPriorData<DomainType> mock_gp_data(covariance_wrong, noise_variance, dim, num_sampled,
+                                                        uniform_double_lower_bound, uniform_double_upper_bound,
+                                                        uniform_double_hyperparameter, &uniform_generator);
 
-  LogLikelihoodEvaluator log_likelihood_eval(mock_gp_data.gaussian_process_ptr->points_sampled().data(), mock_gp_data.gaussian_process_ptr->points_sampled_value().data(), mock_gp_data.gaussian_process_ptr->noise_variance().data(), dim, num_sampled);
+  LogLikelihoodEvaluator log_likelihood_eval(mock_gp_data.gaussian_process_ptr->points_sampled().data(),
+                                             mock_gp_data.gaussian_process_ptr->points_sampled_value().data(),
+                                             mock_gp_data.gaussian_process_ptr->noise_variance().data(),
+                                             dim, num_sampled);
   typename LogLikelihoodEvaluator::StateType log_likelihood_state(log_likelihood_eval, covariance_wrong);
 
   initial_likelihood = log_likelihood_eval.ComputeLogLikelihood(log_likelihood_state);
@@ -445,8 +450,10 @@ OL_WARN_UNUSED_RESULT int HyperparameterLikelihoodOptimizationTestCore(LogLikeli
   std::vector<double> grad_log_marginal(num_hyperparameters);
   log_likelihood_eval.ComputeGradLogLikelihood(&log_likelihood_state, grad_log_marginal.data());
 
-  printf("grad log marginal: ");
+#ifdef OL_VERBOSE_PRINT
+  OL_VERBOSE_PRINTF("grad log marginal: ");
   PrintMatrix(grad_log_marginal.data(), 1, grad_log_marginal.size());
+#endif
 
   current_errors = 0;
   for (const auto& entry : grad_log_marginal) {
@@ -540,9 +547,14 @@ OL_WARN_UNUSED_RESULT int HyperparameterLikelihoodNewtonOptimizationTestCore(Log
   HyperparameterDomainType hyperparameter_domain(hyperparameter_domain_bounds.data(), num_hyperparameters);
 
   std::vector<double> noise_variance(num_sampled, 0.1);
-  MockGaussianProcessPriorData<DomainType> mock_gp_data(covariance_wrong, noise_variance, dim, num_sampled, uniform_double_lower_bound, uniform_double_upper_bound, uniform_double_hyperparameter, &uniform_generator);
+  MockGaussianProcessPriorData<DomainType> mock_gp_data(covariance_wrong, noise_variance, dim, num_sampled,
+                                                        uniform_double_lower_bound, uniform_double_upper_bound,
+                                                        uniform_double_hyperparameter, &uniform_generator);
 
-  LogLikelihoodEvaluator log_likelihood_eval(mock_gp_data.gaussian_process_ptr->points_sampled().data(), mock_gp_data.gaussian_process_ptr->points_sampled_value().data(), mock_gp_data.gaussian_process_ptr->noise_variance().data(), dim, num_sampled);
+  LogLikelihoodEvaluator log_likelihood_eval(mock_gp_data.gaussian_process_ptr->points_sampled().data(),
+                                             mock_gp_data.gaussian_process_ptr->points_sampled_value().data(),
+                                             mock_gp_data.gaussian_process_ptr->noise_variance().data(),
+                                             dim, num_sampled);
   typename LogLikelihoodEvaluator::StateType log_likelihood_state(log_likelihood_eval, covariance_wrong);
 
   initial_likelihood = log_likelihood_eval.ComputeLogLikelihood(log_likelihood_state);
@@ -561,8 +573,10 @@ OL_WARN_UNUSED_RESULT int HyperparameterLikelihoodNewtonOptimizationTestCore(Log
   std::vector<double> grad_log_marginal(num_hyperparameters);
   log_likelihood_eval.ComputeGradLogLikelihood(&log_likelihood_state, grad_log_marginal.data());
 
-  printf("grad log marginal: ");
+#ifdef OL_VERBOSE_PRINT
+  OL_VERBOSE_PRINTF("grad log marginal: ");
   PrintMatrix(grad_log_marginal.data(), 1, grad_log_marginal.size());
+#endif
 
   current_errors = 0;
   for (const auto& entry : grad_log_marginal) {
@@ -651,8 +665,10 @@ OL_WARN_UNUSED_RESULT int MultistartHyperparameterLikelihoodNewtonOptimizationTe
   const double tolerance = 1.0e-14;
   const int max_newton_steps = 100;
   const int num_multistarts = 16;
-  const int max_num_threads = 4;
   NewtonParameters newton_parameters(num_multistarts, max_newton_steps, gamma, pre_mult, max_relative_change, tolerance);
+
+  const int max_num_threads = 4;
+  ThreadSchedule thread_schedule(max_num_threads, omp_sched_dynamic);
 
   int total_errors = 0;
   int current_errors = 0;
@@ -664,7 +680,10 @@ OL_WARN_UNUSED_RESULT int MultistartHyperparameterLikelihoodNewtonOptimizationTe
   boost::uniform_real<double> uniform_double_upper_bound(2.0, 3.5);
 
   std::vector<double> noise_variance(num_sampled, 0.1);
-  MockGaussianProcessPriorData<DomainType> mock_gp_data(CovarianceClass(dim, 1.0, 1.0), noise_variance, dim, num_sampled, uniform_double_lower_bound, uniform_double_upper_bound, uniform_double_hyperparameter, &uniform_generator);
+  MockGaussianProcessPriorData<DomainType> mock_gp_data(CovarianceClass(dim, 1.0, 1.0), noise_variance, dim,
+                                                        num_sampled, uniform_double_lower_bound,
+                                                        uniform_double_upper_bound,
+                                                        uniform_double_hyperparameter, &uniform_generator);
   int num_hyperparameters = mock_gp_data.covariance_ptr->GetNumberOfHyperparameters();
 
   std::vector<double> hyperparameters_truth(num_hyperparameters);  // truth hyperparameters
@@ -679,14 +698,20 @@ OL_WARN_UNUSED_RESULT int MultistartHyperparameterLikelihoodNewtonOptimizationTe
   }
   HyperparameterDomainType hyperparameter_domain(hyperparameter_domain_bounds.data(), num_hyperparameters);
 
-  LogLikelihoodEvaluator log_likelihood_eval(mock_gp_data.gaussian_process_ptr->points_sampled().data(), mock_gp_data.gaussian_process_ptr->points_sampled_value().data(), mock_gp_data.gaussian_process_ptr->noise_variance().data(), dim, num_sampled);
+  LogLikelihoodEvaluator log_likelihood_eval(mock_gp_data.gaussian_process_ptr->points_sampled().data(),
+                                             mock_gp_data.gaussian_process_ptr->points_sampled_value().data(),
+                                             mock_gp_data.gaussian_process_ptr->noise_variance().data(),
+                                             dim, num_sampled);
   typename LogLikelihoodEvaluator::StateType log_likelihood_state(log_likelihood_eval, *mock_gp_data.covariance_ptr);
 
   initial_likelihood = log_likelihood_eval.ComputeLogLikelihood(log_likelihood_state);
   OL_VERBOSE_PRINTF("initial likelihood: %.18E\n", initial_likelihood);
 
   bool found_flag = false;
-  MultistartNewtonHyperparameterOptimization(log_likelihood_eval, *mock_gp_data.covariance_ptr, newton_parameters, hyperparameter_log_domain_bounds.data(), max_num_threads, &found_flag, &uniform_generator, hyperparameters_optimized.data());
+  MultistartNewtonHyperparameterOptimization(log_likelihood_eval, *mock_gp_data.covariance_ptr,
+                                             newton_parameters, hyperparameter_log_domain_bounds.data(),
+                                             thread_schedule, &found_flag, &uniform_generator,
+                                             hyperparameters_optimized.data());
   if (!found_flag) {
     ++total_errors;
   }
@@ -702,8 +727,10 @@ OL_WARN_UNUSED_RESULT int MultistartHyperparameterLikelihoodNewtonOptimizationTe
   std::vector<double> grad_log_marginal(num_hyperparameters);
   log_likelihood_eval.ComputeGradLogLikelihood(&log_likelihood_state, grad_log_marginal.data());
 
-  printf("grad log marginal: ");
+#ifdef OL_VERBOSE_PRINT
+  OL_VERBOSE_PRINTF("grad log marginal: ");
   PrintMatrix(grad_log_marginal.data(), 1, grad_log_marginal.size());
+#endif
 
   current_errors = 0;
   for (const auto& entry : grad_log_marginal) {
@@ -750,25 +777,31 @@ OL_WARN_UNUSED_RESULT int MultistartHyperparameterLikelihoodNewtonOptimizationTe
   {
     newton_parameters.num_multistarts = 8;
     std::vector<double> initial_guesses(num_hyperparameters*newton_parameters.num_multistarts);
-    hyperparameter_domain.GenerateUniformPointsInDomain(newton_parameters.num_multistarts, &uniform_generator, initial_guesses.data());
+    hyperparameter_domain.GenerateUniformPointsInDomain(newton_parameters.num_multistarts,
+                                                        &uniform_generator, initial_guesses.data());
 
     // insert optimal solution into initial_guesses
     std::copy(hyperparameters_optimized.begin(), hyperparameters_optimized.end(), initial_guesses.begin());
 
     // build state vector
     std::vector<typename LogLikelihoodEvaluator::StateType> log_likelihood_state_vector;
-    SetupLogLikelihoodState(log_likelihood_eval, *mock_gp_data.covariance_ptr, max_num_threads, &log_likelihood_state_vector);
-
-    int chunk_size = 2;
+    SetupLogLikelihoodState(log_likelihood_eval, *mock_gp_data.covariance_ptr,
+                            thread_schedule.max_num_threads, &log_likelihood_state_vector);
 
     OptimizationIOContainer io_container(log_likelihood_state_vector[0].GetProblemSize());
-    InitializeBestKnownPoint(log_likelihood_eval, initial_guesses.data(), num_hyperparameters, newton_parameters.num_multistarts, true, log_likelihood_state_vector.data(), &io_container);
+    InitializeBestKnownPoint(log_likelihood_eval, initial_guesses.data(), num_hyperparameters,
+                             newton_parameters.num_multistarts, true,
+                             log_likelihood_state_vector.data(), &io_container);
 
     io_container.found_flag = true;  // want to see that this flag is flipped to false
 
     NewtonOptimizer<LogLikelihoodEvaluator, TensorProductDomain> newton_opt;
     MultistartOptimizer<NewtonOptimizer<LogLikelihoodEvaluator, TensorProductDomain> > multistart_optimizer;
-    multistart_optimizer.MultistartOptimize(newton_opt, log_likelihood_eval, newton_parameters, hyperparameter_domain, initial_guesses.data(), newton_parameters.num_multistarts, max_num_threads, chunk_size, log_likelihood_state_vector.data(), nullptr, &io_container);
+    multistart_optimizer.MultistartOptimize(newton_opt, log_likelihood_eval, newton_parameters,
+                                            hyperparameter_domain, thread_schedule,
+                                            initial_guesses.data(), newton_parameters.num_multistarts,
+                                            log_likelihood_state_vector.data(),
+                                            nullptr, &io_container);
 
     found_flag = io_container.found_flag;
     std::copy(io_container.best_point.begin(), io_container.best_point.end(), hyperparameters_temp.begin());
@@ -851,13 +884,20 @@ int EvaluateLogLikelihoodAtPointListTest() {
   boost::uniform_real<double> uniform_double_upper_bound(2.0, 3.5);
 
   static const int kMaxNumThreads = 4;
+  ThreadSchedule thread_schedule(kMaxNumThreads, omp_sched_guided);
 
   int num_sampled = 11;  // arbitrary
   std::vector<double> noise_variance(num_sampled, 0.002);
-  MockGaussianProcessPriorData<DomainType> mock_gp_data(SquareExponential(dim, 1.0, 1.0), noise_variance, dim, num_sampled, uniform_double_lower_bound, uniform_double_upper_bound, uniform_double_hyperparameter, &uniform_generator);
+  MockGaussianProcessPriorData<DomainType> mock_gp_data(SquareExponential(dim, 1.0, 1.0), noise_variance,
+                                                        dim, num_sampled, uniform_double_lower_bound,
+                                                        uniform_double_upper_bound, uniform_double_hyperparameter,
+                                                        &uniform_generator);
 
   using LogLikelihoodEvaluator = LogMarginalLikelihoodEvaluator;
-  LogLikelihoodEvaluator log_marginal_eval(mock_gp_data.gaussian_process_ptr->points_sampled().data(), mock_gp_data.gaussian_process_ptr->points_sampled_value().data(), mock_gp_data.gaussian_process_ptr->noise_variance().data(), dim, num_sampled);
+  LogLikelihoodEvaluator log_marginal_eval(mock_gp_data.gaussian_process_ptr->points_sampled().data(),
+                                           mock_gp_data.gaussian_process_ptr->points_sampled_value().data(),
+                                           mock_gp_data.gaussian_process_ptr->noise_variance().data(),
+                                           dim, num_sampled);
   int num_hyperparameters = mock_gp_data.covariance_ptr->GetNumberOfHyperparameters();
   std::vector<ClosedInterval> hyperparameter_log_domain_bounds(num_hyperparameters, {-2.0, 1.0});
   HyperparameterDomainType hyperparameter_log_domain(hyperparameter_log_domain_bounds.data(), num_hyperparameters);
@@ -865,7 +905,9 @@ int EvaluateLogLikelihoodAtPointListTest() {
   std::vector<double> grid_search_best_point(num_hyperparameters);
   std::vector<double> function_values(num_grid_search_points);
   std::vector<double> initial_guesses(num_hyperparameters*num_grid_search_points);
-  num_grid_search_points = hyperparameter_log_domain.GenerateUniformPointsInDomain(num_grid_search_points, &uniform_generator, initial_guesses.data());
+  num_grid_search_points = hyperparameter_log_domain.GenerateUniformPointsInDomain(num_grid_search_points,
+                                                                                   &uniform_generator,
+                                                                                   initial_guesses.data());
   for (auto& point : initial_guesses) {
     point = std::pow(10.0, point);
   }
@@ -877,9 +919,10 @@ int EvaluateLogLikelihoodAtPointListTest() {
   }
   HyperparameterDomainType hyperparameter_domain_linearspace(hyperparameter_domain_linearspace_bounds.data(), num_hyperparameters);
 
-  EvaluateLogLikelihoodAtPointList(log_marginal_eval, *mock_gp_data.covariance_ptr, hyperparameter_domain_linearspace, initial_guesses.data(), num_grid_search_points, kMaxNumThreads, function_values.data(), grid_search_best_point.data());
-
-  PrintMatrix(grid_search_best_point.data(), 1, num_hyperparameters);
+  EvaluateLogLikelihoodAtPointList(log_marginal_eval, *mock_gp_data.covariance_ptr,
+                                   hyperparameter_domain_linearspace, thread_schedule,
+                                   initial_guesses.data(), num_grid_search_points,
+                                   function_values.data(), grid_search_best_point.data());
 
   // find the max function_value and the index at which it occurs
   auto max_value_ptr = std::max_element(function_values.begin(), function_values.end());
@@ -896,8 +939,12 @@ int EvaluateLogLikelihoodAtPointListTest() {
   {
     std::vector<double> grid_search_best_point_single_thread(num_hyperparameters);
     std::vector<double> function_values_single_thread(num_grid_search_points);
-    int single_thread = 1;
-    EvaluateLogLikelihoodAtPointList(log_marginal_eval, *mock_gp_data.covariance_ptr, hyperparameter_domain_linearspace, initial_guesses.data(), num_grid_search_points, single_thread, function_values_single_thread.data(), grid_search_best_point_single_thread.data());
+    ThreadSchedule single_thread_schedule(1, omp_sched_static);
+    EvaluateLogLikelihoodAtPointList(log_marginal_eval, *mock_gp_data.covariance_ptr,
+                                     hyperparameter_domain_linearspace, single_thread_schedule,
+                                     initial_guesses.data(), num_grid_search_points,
+                                     function_values_single_thread.data(),
+                                     grid_search_best_point_single_thread.data());
 
     // check against multi-threaded result matches single
     for (int i = 0; i < num_hyperparameters; ++i) {
