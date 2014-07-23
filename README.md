@@ -156,6 +156,10 @@ See [Install Documentation][7]
 
 See [Contributing Documentation][8]
 
+## License
+
+This is licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
+
 [0]: https://www.youtube.com/watch?v=qAN6iyYPbEE
 [1]: http://sc932.github.io/MOE/
 [2]: http://sc932.github.io/MOE/moe.views.rest.html
