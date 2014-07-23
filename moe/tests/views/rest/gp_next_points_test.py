@@ -6,11 +6,11 @@ import simplejson as json
 
 import testify as T
 
-from moe.optimal_learning.python.constant import TEST_OPTIMIZATION_MULTISTARTS, TEST_GRADIENT_DESCENT_PARAMETERS, TEST_OPTIMIZATION_NUM_RANDOM_SAMPLES, TEST_EXPECTED_IMPROVEMENT_MC_ITERATIONS, CONSTANT_LIAR_METHODS
+from moe.optimal_learning.python.constant import TEST_OPTIMIZER_MULTISTARTS, TEST_GRADIENT_DESCENT_PARAMETERS, TEST_OPTIMIZER_NUM_RANDOM_SAMPLES, TEST_EXPECTED_IMPROVEMENT_MC_ITERATIONS, CONSTANT_LIAR_METHODS
 from moe.tests.views.rest_gaussian_process_test_case import RestGaussianProcessTestCase
 from moe.views.constant import ALL_NEXT_POINTS_MOE_ROUTES, GP_NEXT_POINTS_CONSTANT_LIAR_ROUTE_NAME, GP_NEXT_POINTS_CONSTANT_LIAR_ENDPOINT
 from moe.views.gp_next_points_pretty_view import GpNextPointsResponse, GpNextPointsPrettyView
-from moe.views.utils import _make_optimization_parameters_from_params
+from moe.views.utils import _make_optimizer_parameters_from_params
 
 
 class TestGpNextPointsViews(RestGaussianProcessTestCase):
@@ -28,10 +28,10 @@ class TestGpNextPointsViews(RestGaussianProcessTestCase):
             'gp_historical_info': historical_data.json_payload(),
             'covariance_info': covariance.get_json_serializable_info(),
             'domain_info': domain.get_json_serializable_info(),
-            'optimization_info': {
-                'num_multistarts': TEST_OPTIMIZATION_MULTISTARTS,
-                'num_random_samples': TEST_OPTIMIZATION_NUM_RANDOM_SAMPLES,
-                'optimization_parameters': dict(TEST_GRADIENT_DESCENT_PARAMETERS._asdict()),
+            'optimizer_info': {
+                'num_multistarts': TEST_OPTIMIZER_MULTISTARTS,
+                'num_random_samples': TEST_OPTIMIZER_NUM_RANDOM_SAMPLES,
+                'optimizer_parameters': dict(TEST_GRADIENT_DESCENT_PARAMETERS._asdict()),
                 },
             }
 
@@ -42,8 +42,8 @@ class TestGpNextPointsViews(RestGaussianProcessTestCase):
 
         return json.dumps(dict_to_dump)
 
-    def test_optimization_params_passed_through(self):
-        """Test that the optimization parameters get passed through to the endpoint."""
+    def test_optimizer_params_passed_through(self):
+        """Test that the optimizer parameters get passed through to the endpoint."""
         test_case = self.gp_test_environments[0]
         num_to_sample = 1
 
@@ -57,35 +57,35 @@ class TestGpNextPointsViews(RestGaussianProcessTestCase):
         request.json_body = json_payload
         view = GpNextPointsPrettyView(request)
         params = view.get_params_from_request()
-        _, optimization_parameters, num_random_samples = _make_optimization_parameters_from_params(params)
+        _, optimizer_parameters, num_random_samples = _make_optimizer_parameters_from_params(params)
 
         T.assert_equal(
-                optimization_parameters.num_multistarts,
-                TEST_OPTIMIZATION_MULTISTARTS
+                optimizer_parameters.num_multistarts,
+                TEST_OPTIMIZER_MULTISTARTS
                 )
 
         T.assert_equal(
-                optimization_parameters._python_max_num_steps,
+                optimizer_parameters._python_max_num_steps,
                 TEST_GRADIENT_DESCENT_PARAMETERS.max_num_steps
                 )
 
         # Test arbitrary parameters get passed through
-        json_payload['optimization_info']['num_multistarts'] = TEST_OPTIMIZATION_MULTISTARTS + 5
-        json_payload['optimization_info']['optimization_parameters']['max_num_steps'] = TEST_GRADIENT_DESCENT_PARAMETERS.max_num_steps + 10
+        json_payload['optimizer_info']['num_multistarts'] = TEST_OPTIMIZER_MULTISTARTS + 5
+        json_payload['optimizer_info']['optimizer_parameters']['max_num_steps'] = TEST_GRADIENT_DESCENT_PARAMETERS.max_num_steps + 10
 
         request = pyramid.testing.DummyRequest(post=json_payload)
         request.json_body = json_payload
         view = GpNextPointsPrettyView(request)
         params = view.get_params_from_request()
-        _, optimization_parameters, num_random_samples = _make_optimization_parameters_from_params(params)
+        _, optimizer_parameters, num_random_samples = _make_optimizer_parameters_from_params(params)
 
         T.assert_equal(
-                optimization_parameters.num_multistarts,
-                TEST_OPTIMIZATION_MULTISTARTS + 5
+                optimizer_parameters.num_multistarts,
+                TEST_OPTIMIZER_MULTISTARTS + 5
                 )
 
         T.assert_equal(
-                optimization_parameters._python_max_num_steps,
+                optimizer_parameters._python_max_num_steps,
                 TEST_GRADIENT_DESCENT_PARAMETERS.max_num_steps + 10
                 )
 

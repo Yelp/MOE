@@ -263,7 +263,7 @@
 #include "gpp_linear_algebra-inl.hpp"
 #include "gpp_logging.hpp"
 #include "gpp_optimization.hpp"
-#include "gpp_optimization_parameters.hpp"
+#include "gpp_optimizer_parameters.hpp"
 #include "gpp_random.hpp"
 
 namespace optimal_learning {
@@ -1296,7 +1296,7 @@ void EvaluateEIAtPointList(const GaussianProcess& gaussian_process, const Thread
 \endrst*/
 template <typename DomainType>
 void ComputeOptimalPointsToSample(const GaussianProcess& gaussian_process,
-                                  const GradientDescentParameters& optimization_parameters,
+                                  const GradientDescentParameters& optimizer_parameters,
                                   const DomainType& domain, const ThreadSchedule& thread_schedule,
                                   double const * restrict points_being_sampled,
                                   int num_to_sample, int num_being_sampled, double best_so_far,
@@ -1312,7 +1312,7 @@ void ComputeOptimalPointsToSample(const GaussianProcess& gaussian_process,
 
   bool found_flag_local = false;
   if (lhc_search_only == false) {
-    ComputeOptimalPointsToSampleWithRandomStarts(gaussian_process, optimization_parameters,
+    ComputeOptimalPointsToSampleWithRandomStarts(gaussian_process, optimizer_parameters,
                                                  domain, thread_schedule, points_being_sampled,
                                                  num_to_sample, num_being_sampled,
                                                  best_so_far, max_int_steps,
@@ -1353,14 +1353,14 @@ void ComputeOptimalPointsToSample(const GaussianProcess& gaussian_process,
 
 // template explicit instantiation definitions, see gpp_common.hpp header comments, item 6
 template void ComputeOptimalPointsToSample(
-    const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters,
+    const GaussianProcess& gaussian_process, const GradientDescentParameters& optimizer_parameters,
     const TensorProductDomain& domain, const ThreadSchedule& thread_schedule,
     double const * restrict points_being_sampled, int num_to_sample,
     int num_being_sampled, double best_so_far, int max_int_steps, bool lhc_search_only,
     int num_lhc_samples, bool * restrict found_flag, UniformRandomGenerator * uniform_generator,
     NormalRNG * normal_rng, double * restrict best_points_to_sample);
 template void ComputeOptimalPointsToSample(
-    const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters,
+    const GaussianProcess& gaussian_process, const GradientDescentParameters& optimizer_parameters,
     const SimplexIntersectTensorProductDomain& domain, const ThreadSchedule& thread_schedule,
     double const * restrict points_being_sampled,
     int num_to_sample, int num_being_sampled, double best_so_far, int max_int_steps,

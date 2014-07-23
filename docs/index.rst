@@ -15,35 +15,44 @@ Welcome to MOE's documentation!
 What is MOE?
 ------------
 
-MOE (Metric Optimization Engine) is a *fast and efficient*, *derivative-free*,  *black box*, *global* optimization framework for optimizing parameters of time *consuming* or *expensive* experiments and systems.
+MOE (Metric Optimization Engine) is an *efficient* way to optimize a system's parameters, when evaluating parameters is *time-consuming* or *expensive*.
 
-An experiment or system can be time consuming or expensive if it takes a long time to recieve statistically significant results (traffic for an A/B test, complex system with long training time, etc) or the opportunity cost of trying new values is high (engineering expense, A/B testing tradeoffs, etc).
+Here are some examples of when you could use MOE:
 
-MOE solves this problem through optimal experimental design and *optimal learning*.
+* **Optimizing a system's click-through rate (CTR).**  MOE is useful when evaluating CTR requires running an A/B test on real user traffic, and getting statistically significant results requires running this test for a substantial amount of time (hours, days, or even weeks).
 
-    "Optimal learning addresses the challenge of how to collect information as efficiently as possible, primarily for settings where collecting information is time consuming and expensive"
+* **Optimizing tunable parameters of a machine-learning prediction method.**  MOE is useful if calculating the prediction error for one choice of the parameters takes a long time, which might happen because the prediction method is complex and takes a long time to train, or because the data used to evaluate the error is huge.
 
-    -- Prof. Warren Powell, http://optimallearning.princeton.edu
+* **Optimizing the design of an engineering system** (an airplane, the traffic network in a city, a combustion engine, a hospital).  MOE is useful if evaluating a design requires running a complex physics-based numerical simulation on a supercomputer. 
 
-It boils down to:
+MOE is ideal for problems in which the optimization problem's objective function is a black box, not necessarily convex or concave, derivatives are unavailable, and we seek a global optimum, rather than just a local one. This ability to handle black-box objective functions allows us to use MOE to optimize nearly any system, without requiring any internal knowledge or access. To use MOE, we simply need to specify some :doc:`objective function </objective_functions>`, some set of :doc:`parameters </objective_functions>`, and any historical data we may have from previous evaluations of the objective function. MOE then finds the set of parameters that maximize (or minimize) the objective function, while evaluating the objective function as little as possible. 
 
-    "What is the most efficient way to collect information?"
+Inside, MOE uses *Bayesian global optimization*, which performs optimization using Bayesian statistics and *optimal learning*. 
 
-    -- Prof. Peter Frazier, http://people.orie.cornell.edu/pfrazier
+Optimal learning is the study of efficient methods for collecting information, particularly when doing so is time-consuming or expensive, and was developed and popularized from its roots in decision theory by `Prof. Peter Frazier`_ (`Cornell, Operations Research and Information Engineering`_) and `Prof. Warren Powell`_ (`Princeton, Operations Research and Financial Engineering`_). For more information about the mathematics of optimal learning, and more real-world applications like heart surgery, drug discovery, and materials science, see these `intro slides`_ to optimal learning.
 
-The *black box* nature of MOE allows us to optimize any number of systems, requiring no internal knowledge or access. It uses some :doc:`objective function </objective_functions>` and some set of :doc:`parameters </objective_functions>` and finds the best set of parameters to maximize (or minimize) the given function in as few attempts as possible. It does not require knowledge of the specific objective, or how it is obtained, just the previous parameters and their associated objective values (historical data).
+.. _Prof. Peter Frazier: http://people.orie.cornell.edu/pfrazier/
+.. _Cornell, Operations Research and Information Engineering: http://www.orie.cornell.edu/
+.. _Prof. Warren Powell: http://optimallearning.princeton.edu/
+.. _Princeton, Operations Research and Financial Engineering: http://orfe.princeton.edu/
+.. _intro slides: http://people.orie.cornell.edu/pfrazier/Presentations/2014.01.Lancaster.BGO.pdf
 
-Example:
+
+**Example**:
+
+To illustrate how MOE works, suppose we wish to maximize the click-through-rate (CTR) on a website we manage, by varying some real-valued parameter vector :math:`\vec{x}` that govern how site content is presented to the user.  Evaluating the CTR for a new set of parameters requires running an A/B test over a period of several days.  We write this problem mathematically as,
 
 .. math::
 
-    \underset{\vec{x}}{\mathrm{argmax}} \ \text{CTR} (\vec{x})
-
-Where :math:`\vec{x}` is any real valued input in some finite number of dimensions and CTR is some black box function that is difficult, expensive or time consuming to evaluate and is potentially non-convex, non-differentiable or non-continuous.
+    \underset{\vec{x}}{\mathrm{argmax}} \ \text{CTR} (\vec{x}).
 
 We want to find the best set of parameters :math:`\vec{x}` while evaluating the underlying function (CTR) as few times as possible. See :doc:`Objective Functions </objective_functions>` for more examples of objective functions and the best ways to combine metrics.
 
-It allows you to build the following loop, contantly optimizing and trading off the exploration and exploitation of the underlying parameter space. By continuing to optimize over many iterations MOE readily finds maxima in the objective function optimally (climbing the mountains of traditional optimization). By sampling and optimizing over many iterations of the MOE loop in time, we can also allow to surf these shifting optima as features and the world change in time. MOE surfs these waves of optima, attempting to stay at the peak of the potentially changing objective function in parameter space as time advances.
+MOE builds the following loop, in which it takes the results from those A/B tests that have been run so far, processes them through its internal engine, and then determines at which parameter vector :math:`vec{x}` it would be most valuable to next observe the CTR.  MOE runs an A/B test at this new parameter vector, and then repeats the loop.
+
+This choice of the most valuable point trades a desire to evaluate points where we have a lot of uncertainty about the CTR (this is called *exploration*), and to evaluate points where we think the CTR is large (this is called *exploitation*).
+
+By continuing to optimize over many iterations, MOE quickly finds approximate optima, or points with large CTR.  As the world changes over time, MOE can surf these shifting optima as they move, staying at the peak of the potentially changing objective function in parameter space as time advances.
 
 .. image:: ../moe/static/img/moe_loop.png
     :align: center

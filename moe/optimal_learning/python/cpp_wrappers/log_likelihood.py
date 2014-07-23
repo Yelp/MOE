@@ -79,7 +79,7 @@ def multistart_hyperparameter_optimization(
 
     'dumb' search means this will just evaluate the objective log likelihood measure at num_multistarts 'points'
     (hyperparameters) in the domain, uniformly sampled using latin hypercube sampling.
-    The hyperparameter_optimization_parameters input specifies the desired optimization technique as well as parameters controlling
+    The hyperparameter_optimizer_parameters input specifies the desired optimization technique as well as parameters controlling
     its behavior (see cpp_wrappers.optimization.py).
 
     See gpp_python_common.cpp for C++ enum declarations laying out the options for objective and optimizer types.
@@ -98,7 +98,7 @@ def multistart_hyperparameter_optimization(
 
     :param ei_optimizer: object that optimizes (e.g., gradient descent, newton) log likelihood over a domain
     :type ei_optimizer: cpp_wrappers.optimization.*Optimizer object
-    :param num_multistarts: number of times to multistart ``ei_optimizer`` (UNUSED, data is in log_likelihood_optimizer.optimization_parameters)
+    :param num_multistarts: number of times to multistart ``ei_optimizer`` (UNUSED, data is in log_likelihood_optimizer.optimizer_parameters)
     :type num_multistarts: int > 0
     :param randomness: RNGs used by C++ to generate initial guesses
     :type randomness: RandomnessSourceContainer (C++ object; e.g., from C_GP.RandomnessSourceContainer())
@@ -125,7 +125,7 @@ def multistart_hyperparameter_optimization(
     domain_bounds_log10 = numpy.log10(log_likelihood_optimizer.domain._domain_bounds)
 
     hyperparameters_opt = C_GP.multistart_hyperparameter_optimization(
-        log_likelihood_optimizer.optimization_parameters,
+        log_likelihood_optimizer.optimizer_parameters,
         cpp_utils.cppify(domain_bounds_log10),
         cpp_utils.cppify(log_likelihood_optimizer.objective_function._points_sampled),
         cpp_utils.cppify(log_likelihood_optimizer.objective_function._points_sampled_value),

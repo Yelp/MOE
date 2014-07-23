@@ -83,7 +83,7 @@
                     <span class="glyphicon glyphicon-question-sign tooltip-rdy small" data-original-title="Controls how many Gradient Descent (GD) steps the SGD algorithm will take for each multistart. Higher values will resolve individual local optima more." data-placement="bottom"><span>
                 </label>
                 <div class="col-sm-6">
-                  <input class="form-control" id="opt-gd-iterations" value="${ default_ei_optimization_parameters.max_num_steps }">
+                  <input class="form-control" id="opt-gd-iterations" value="${ default_ei_optimizer_parameters.max_num_steps }">
                 </div>
               </div>
             </form>
@@ -178,11 +178,11 @@ optimalLearning.updateGraphs = function() {
                 $.parseJSON($('#hyperparameters-length').val())
                 ],
             },
-        'optimization_info':{
-            'optimization_type': 'gradient_descent_optimizer',
+        'optimizer_info':{
+            'optimizer_type': 'gradient_descent_optimizer',
             'num_multistarts': $.parseJSON($('#opt-num-multistarts').val()),
             'num_random_samples': 400,
-            'optimization_parameters': {
+            'optimizer_parameters': {
                 'max_num_steps': $.parseJSON($('#opt-gd-iterations').val()),
                 },
             },

@@ -368,20 +368,6 @@ set_target_properties(
   LINK_FLAGS "${EXTRA_LINK_FLAGS}"
   )
 
-##### "EPI" executable: for testing purposes
-set(
-  dependencies
-  $<TARGET_OBJECTS:OPTIMAL_LEARNING_CORE_BUNDLE>
-  $<TARGET_OBJECTS:OPTIMAL_LEARNING_TEST_BUNDLE>
-  )
-configure_exec_targets(
-  EPI
-  gpp_core.cpp
-  "${dependencies}"
-  "${EXTRA_COMPILE_FLAGS}"
-  "${EXTRA_COMPILE_DEFINITIONS}"
-  )
-
 #### Demo executables
 set(dependencies $<TARGET_OBJECTS:OPTIMAL_LEARNING_CORE_BUNDLE> gpp_test_utils.cpp)
 configure_exec_targets(
