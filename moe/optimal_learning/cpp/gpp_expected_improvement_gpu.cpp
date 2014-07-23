@@ -169,14 +169,14 @@ CudaExpectedImprovementState::CudaExpectedImprovementState(const EvaluatorType& 
       gpu_grad_chol_var(dim * Square(num_union) * num_derivatives),
       gpu_ei_storage(ei_thread_no * ei_block_no),
       gpu_grad_ei_storage(grad_ei_thread_no * grad_ei_block_no * dim * num_derivatives),
-      gpu_random_number_ei(configure_for_test ? (static_cast<int>(ei_evaluator.num_mc_itr() / (ei_thread_no * ei_block_no)) + 1)
-                           * (ei_thread_no * ei_block_no) * num_union : 0),
-      gpu_random_number_grad_ei(configure_for_test ? (static_cast<int>(ei_evaluator.num_mc_itr() / (grad_ei_thread_no * grad_ei_block_no)) + 1)
-                               * (grad_ei_thread_no * grad_ei_block_no) * num_union : 0),
-      random_number_ei(configure_for_test ? (static_cast<int>(ei_evaluator.num_mc_itr() / (ei_thread_no * ei_block_no)) + 1)
-                       * (ei_thread_no * ei_block_no) * num_union : 0),
-      random_number_grad_ei(configure_for_test ? (static_cast<int>(ei_evaluator.num_mc_itr() / (grad_ei_thread_no * grad_ei_block_no)) + 1)
-                           * (grad_ei_thread_no * grad_ei_block_no) * num_union : 0) {
+      gpu_random_number_ei(configure_for_test ? (static_cast<int>(ei_evaluator.num_mc_itr() / (ei_thread_no * ei_block_no)) + 1) *
+                           (ei_thread_no * ei_block_no) * num_union : 0),
+      gpu_random_number_grad_ei(configure_for_test ? (static_cast<int>(ei_evaluator.num_mc_itr() / (grad_ei_thread_no * grad_ei_block_no)) + 1) *
+                                (grad_ei_thread_no * grad_ei_block_no) * num_union : 0),
+      random_number_ei(configure_for_test ? (static_cast<int>(ei_evaluator.num_mc_itr() / (ei_thread_no * ei_block_no)) + 1) *
+                       (ei_thread_no * ei_block_no) * num_union : 0),
+      random_number_grad_ei(configure_for_test ? (static_cast<int>(ei_evaluator.num_mc_itr() / (grad_ei_thread_no * grad_ei_block_no)) + 1) *
+                            (grad_ei_thread_no * grad_ei_block_no) * num_union : 0) {
 }
 
 std::vector<double> CudaExpectedImprovementState::BuildUnionOfPoints(double const * restrict points_to_sample, double const * restrict points_being_sampled,

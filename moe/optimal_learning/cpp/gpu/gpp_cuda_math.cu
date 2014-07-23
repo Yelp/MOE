@@ -1,3 +1,5 @@
+#include <algorithm>
+
 #include <curand_kernel.h>
 #include <cuda_runtime.h>
 #include <helper_cuda.h>
@@ -12,18 +14,16 @@
 namespace optimal_learning {
 
 namespace {  // functions run on gpu device
-/*
-Special case of GeneralMatrixVectorMultiply.  As long as A has zeros in the strict upper-triangle,
-GeneralMatrixVectorMultiply will work too (but take >= 2x as long).
+/*!\rst
+  Special case of GeneralMatrixVectorMultiply.  As long as A has zeros in the strict upper-triangle,
+  GeneralMatrixVectorMultiply will work too (but take ``>= 2x`` as long).
 
-Computes results IN-PLACE.
-Avoids accessing the strict upper triangle of A.
+  Computes results IN-PLACE.
+  Avoids accessing the strict upper triangle of A.
 
-Should be equivalent to BLAS call:
-dtrmv('chol_var', trans, 'N', size_m, A, size_m, x, 1);
-
-comment: This function is copied from gpp_linear_algebra.cpp
-*/
+  Should be equivalent to BLAS call:
+  ``dtrmv('L', trans, 'N', size_m, A, size_m, x, 1);``
+\endrst*/
 __device__ void CudaTriangularMatrixVectorMultiply(double const * __restrict__ A, int size_m, double * __restrict__ x) {
   double temp;
   A += size_m * (size_m-1);
@@ -38,31 +38,10 @@ __device__ void CudaTriangularMatrixVectorMultiply(double const * __restrict__ A
   }
 }
 
-/*
-y = y - A * x (aka alpha = -1.0, beta = 1.0)
-
-Computes matrix-vector product y = alpha * A * x + beta * y or y = alpha * A^T * x + beta * y
-Since A is stored column-major, we need to treat the matrix-vector product as a weighted sum
-of the columns of A, where x provides the weights.
-
-That is, a matrix-vector product can be thought of as: (trans = 'T')
-[  a_row1  ][   ]
-[  a_row2  ][ x ]
-[    ...   ][   ]
-[  a_rowm  ][   ]
-That is, y_i is the dot product of the i-th row of A with x.
-
-OR the "dual" view: (trans = 'N')
-[        |        |     |        ][ x_1 ]
-[ a_col1 | a_col2 | ... | a_coln ][ ... ] = x_1*a_col1 + ... + x_n*a_coln
-[        |        |     |        ][ x_n ]
-That is, y is the weighted sum of columns of A.
-
-Should be equivalent to BLAS call:
-dgemv(trans='N', size_m, size_n, alpha, A, size_m, x, 1, beta, y, 1);
-
-comment: This function is copied from gpp_linear_algebra.cpp
-*/
+/*!\rst
+  This is reduced version of GeneralMatrixVectorMultiply(...) in gpp_linear_algebra.cpp, and this function computes
+  y = y - A * x (aka alpha = -1.0, beta = 1.0)
+\endrst*/
 __device__ void CudaGeneralMatrixVectorMultiply(double const * __restrict__ A, double const * __restrict__ x, int size_m, int size_n, int lda, double * __restrict__ y) {
   double temp;
   for (int i = 0; i < size_n; ++i) {
@@ -75,7 +54,7 @@ __device__ void CudaGeneralMatrixVectorMultiply(double const * __restrict__ A, d
 }
 
 // This inline function copies element from one array to the other, it also checks if index is out of bound before initiating the copy operation.
-inline __device__ void CudaCopyElement(int index, int bound, double const * __restrict__ origin, double * __restrict__ destination) {
+__forceinline__ __device__ void CudaCopyElement(int index, int bound, double const * __restrict__ origin, double * __restrict__ destination) {
     if (index < bound) {
         destination[index] = origin[index];
     }
@@ -89,7 +68,7 @@ __global__ void CudaComputeEIGpu(double const * __restrict__ chol_var, double co
   // refer to http://devblogs.nvidia.com/parallelforall/using-shared-memory-cuda-cc/
   extern __shared__ double storage[];
   double * chol_var_local = storage;
-  double * mu_local = &chol_var_local[num_union * num_union];
+  double * mu_local = chol_var_local + num_union * num_union;
   const int idx = threadIdx.x;
   const int IDX = threadIdx.x + blockDim.x * blockIdx.x;
   const int loop_no = num_union * num_union / blockDim.x;
@@ -138,9 +117,9 @@ __global__ void CudaComputeGradEIGpu(double const * __restrict__ mu, double cons
   // copy mu, chol_var, grad_mu, grad_chol_var to shared memory
   extern __shared__ double storage[];
   double * mu_local = storage;
-  double * chol_var_local = &mu_local[num_union];
-  double * grad_mu_local = &chol_var_local[num_union * num_union];
-  double * grad_chol_var_local = &grad_mu_local[num_to_sample * dim];
+  double * chol_var_local = mu_local + num_union;
+  double * grad_mu_local = chol_var_local + num_union * num_union;
+  double * grad_chol_var_local = grad_mu_local + num_to_sample * dim;
   const int idx = threadIdx.x;
   const int IDX = threadIdx.x + blockDim.x * blockIdx.x;
   const int loop_no = num_to_sample * num_union * num_union * dim / blockDim.x;
@@ -258,9 +237,8 @@ CudaError CudaGetGradEI(double * __restrict__ mu, double * __restrict__ grad_mu,
   CudaError _success = {cudaSuccess, OL_CUDA_STRINGIFY_FILE_AND_LINE, __func__};
 
   double grad_ei_storage[num_to_sample * dim * grad_ei_thread_no * grad_ei_block_no];
-  for (int i = 0; i < num_to_sample*dim; ++i) {
-      grad_ei[i] = 0.0;
-  }
+  std::fill(grad_ei, grad_ei + num_to_sample * dim, 0.0);
+
   // We assign grad_ei_block_no blocks and grad_ei_thread_no threads/block for grad_ei computation, so there are (grad_ei_block_no * grad_ei_thread_no) threads in total to execute kernel function in parallel
   dim3 threads(grad_ei_thread_no);
   dim3 grid(grad_ei_block_no);
