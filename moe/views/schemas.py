@@ -366,6 +366,55 @@ class GpNextPointsRequest(StrictMappingSchema):
         :optimizer_info: a :class:`moe.views.schemas.OptimizerInfo` dict of optimizer information
         :points_being_sampled: list of points in domain being sampled in concurrent experiments (default: [])
 
+    **General Timing Results**
+
+    Here are some "broad-strokes" timing results for EI optimization.
+    These tests are not complete nor comprehensive; they're just a starting point.
+    The tests were run on a Sandy Bridge 2.3 GHz quad-core CPU. Data was generated
+    from a Gaussian Process prior. The optimization parameters were the default
+    values (see ``moe.optimal_learning.python.constant``) as of sha
+    ``c19257049f16036e5e2823df87fbe0812720e291``.
+
+    Below, ``N = num_sampled``, ``MC = num_mc_iterations``, and ``q = num_to_sample``
+
+    .. Note:: constant liar, kriging, and EPI (with ``num_to_sample = 1``) all fall
+      under the ``analytic EI`` name.
+
+    .. Note:: EI optimization times can vary widely as some randomly generated test
+      cases are very "easy." Thus we give rough ranges.
+
+    =============  =======================
+     Analytic EI
+    --------------------------------------
+      dim, N           Gradient Descent
+    =============  =======================
+      3, 20               0.3 - 0.6s
+      3, 40               0.5 - 1.4s
+      3, 120              0.8 - 2.9s
+      6, 20               0.4 - 0.9s
+      6, 40              1.25 - 1.8s
+      6, 120              2.9 - 5.0s
+    =============  =======================
+
+    We expect this to scale as ``~ O(dim)`` and ``~ O(N^3)``. The ``O(N^3)`` only happens
+    once per multistart. Per iteration there's an ``O(N^2)`` dependence but as you can
+    see, the dependence on ``dim`` is stronger.
+
+    =============  =======================
+     MC EI (``N = 20``, ``dim = 3``)
+    --------------------------------------
+      q, MC           Gradient Descent
+    =============  =======================
+      2, 10k                50 - 80s
+      4, 10k              120 - 180s
+      8, 10k              400 - 580s
+      2, 40k              230 - 480s
+      4, 40k              600 - 700s
+    =============  =======================
+
+    We expect this to scale as ``~ O(q^2)`` and ``~ O(MC)``. Scaling with ``dim`` and ``N``
+    should be similar to the analytic case.
+
     **Example Minimal Request**
 
     .. sourcecode:: http
@@ -475,6 +524,11 @@ class GpNextPointsConstantLiarRequest(GpNextPointsRequest):
         :covariance_info: a :class:`moe.views.schemas.CovarianceInfo` dict of covariance information
         :optimiaztion_info: a :class:`moe.views.schemas.OptimizerInfo` dict of optimization information
 
+    **General Timing Results**
+
+    See the ``Analytic EI`` table :class:`moe.views.schemas.GpNextPointsRequest` for
+    rough timing numbers.
+
     **Example Request**
 
     .. sourcecode:: http
@@ -533,6 +587,11 @@ class GpNextPointsKrigingRequest(GpNextPointsRequest):
         :kriging_noise_variance: a positive (>= 0) float used in Kriging, see Kriging implementation docs (default: 0.0)
         :covariance_info: a :class:`moe.views.schemas.CovarianceInfo` dict of covariance information
         :optimiaztion_info: a :class:`moe.views.schemas.OptimizerInfo` dict of optimization information
+
+    **General Timing Results**
+
+    See the ``Analytic EI`` table :class:`moe.views.schemas.GpNextPointsRequest` for
+    rough timing numbers.
 
     **Example Request**
 
@@ -640,6 +699,42 @@ class GpHyperOptRequest(StrictMappingSchema):
         :max_num_threads: maximum number of threads to use in computation
         :covariance_info: a :class:`moe.views.schemas.CovarianceInfo` dict of covariance information, used as a starting point for optimization
         :optimizer_info: a :class:`moe.views.schemas.OptimizerInfo` dict of optimizer information
+
+    **General Timing Results**
+
+    Here are some "broad-strokes" timing results for hyperparameter optimization.
+    These tests are not complete nor comprehensive; they're just a starting point.
+    The tests were run on a Sandy Bridge 2.3 GHz quad-core CPU. Data was generated
+    from a Gaussian Process prior. The optimization parameters were the default
+    values (see ``moe.optimal_learning.python.constant``) as of sha
+    ``c19257049f16036e5e2823df87fbe0812720e291``.
+
+    Below, ``N = num_sampled``.
+
+    ======== ===================== ========================
+    Scaling with dim (N = 40)
+    -------------------------------------------------------
+      dim     Gradient Descent             Newton
+    ======== ===================== ========================
+      3           85s                      3.6s
+      6           80s                      7.2s
+      12         108s                     19.5s
+    ======== ===================== ========================
+
+    GD scales ``~ O(dim)`` and Newton ``~ O(dim^2)`` although these dim values
+    are not large enough to show the asymptotic behavior.
+
+    ======== ===================== ========================
+    Scaling with N (dim = 3)
+    -------------------------------------------------------
+      N       Gradient Descent             Newton
+    ======== ===================== ========================
+      20        14s                       0.72s
+      40        85s                        3.6s
+      120       2100s                       60s
+    ======== ===================== ========================
+
+    Both methods scale as ``~ O(N^3)`` which is clearly shown here.
 
     **Example Request**
 
