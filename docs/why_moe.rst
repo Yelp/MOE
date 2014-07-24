@@ -18,7 +18,7 @@ Other Methods
 
 Many optimization methods exist for different types of problems:
 
-* If derivative information is available and the system is noise-free and only a local optima is desired then a hill climbing algorithm like `Gradient Descent`_  can be used, or depending on the properties of the system one can use `Conjugate Gradient`_. If the system is noisy a method like `Stochastic Gradient Descent`_ can be used.
+* If derivative information is available and the system is noise-free and only a local optima is desired then a hill climbing algorithm like `Gradient Descent`_  can be used, or depending on the properties of the system one can use `Conjugate Gradient`_. If the system is noisy a method like `Stochastic Gradient Descent`_ can be used. MOE uses `Stochastic Gradient Descent`_ internally when finding the next point(s) of highest Expected Improvement (EI) of the Gaussian Process.
 .. _Gradient Descent: http://en.wikipedia.org/wiki/Gradient_descent
 .. _Conjugate Gradient: http://en.wikipedia.org/wiki/Conjugate_gradient_method
 .. _Stochastic Gradient Descent: http://en.wikipedia.org/wiki/Stochastic_gradient_descent

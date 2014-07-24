@@ -238,6 +238,7 @@ Documentation
    objective_functions.rst
    examples.rst
    contributing.rst
+   faq.rst
 
 Python Files
 ------------
