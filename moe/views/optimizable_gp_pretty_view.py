@@ -17,7 +17,7 @@ class OptimizableGpPrettyView(GpPrettyView):
         :param params: a (partially) deserialized REST request with everything except possibly
           ``params['optimizer_info']``
         :type params: dict
-        :return: optimizer type to use, one of ``moe.optimal_learning.constant.OPTIMIZER_TYPES``
+        :return: optimizer type to use, one of :const:`moe.optimal_learning.python.constant.OPTIMIZER_TYPES`
         :rtype: str
 
         """
@@ -30,7 +30,7 @@ class OptimizableGpPrettyView(GpPrettyView):
           ``params['optimizer_info']``
         :type params: dict
         :return: default multistart and optimizer parameters to use with this REST request
-        :rtype: ``moe.optimal_learning.constant._DefaultOptimizerInfoTuple``
+        :rtype: :class:`moe.optimal_learning.python.constant.DefaultOptimizerInfoTuple`
 
         """
         optimizer_type = params['optimizer_info']['optimizer_type']
@@ -45,7 +45,7 @@ class OptimizableGpPrettyView(GpPrettyView):
 
         This is necessary because we have different default optimizer parameters for
         different combinations of ``optimizer_type``, endpoint, and other features.
-        See moe.optimal_learning.python.constants.OPTIMIZER_TYPE_AND_OBJECTIVE_TO_DEFAULT_PARAMETERS
+        See :const:`moe.optimal_learning.python.constants.OPTIMIZER_TYPE_AND_OBJECTIVE_TO_DEFAULT_PARAMETERS`
 
         :returns: A deserialized self.request_schema object
         :rtype: dict
@@ -80,7 +80,7 @@ class OptimizableGpPrettyView(GpPrettyView):
 
         # Find the schma class that corresponds to the ``optimizer_type`` of the request
         # TODO(GH-303): Until this ticket is complete (see schemas.OptimizerInfo),
-        # optimizer_parameters has *not been validated*, so we need to validate manually.
+        # optimizer_parameters has *not been validated yet*, so we need to validate manually.
         schema_class = OPTIMIZER_TYPES_TO_SCHEMA_CLASSES[params['optimizer_info']['optimizer_type']]()
 
         # Deserialize and validate the parameters

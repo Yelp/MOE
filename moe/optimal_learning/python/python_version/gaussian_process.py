@@ -16,13 +16,13 @@ from moe.optimal_learning.python.interfaces.gaussian_process_interface import Ga
 from moe.optimal_learning.python.python_version import python_utils
 
 
-# Minimum allowed standard deviation value in ComputeGradCholeskyVarianceOfPointsPerPoint (= machine precision).
-# Values that are too small result in problems b/c we may compute ``std_dev/var`` (which is enormous
-# if ``std_dev = 1.0e-150`` and ``var = 1.0e-300``) since this only arises when we fail to compute ``std_dev = var = 0.0``.
-# Note: this is only relevant if noise = 0.0; this minimum will not affect GPs with noise since this value
-# is below the smallest amount of noise users can meaningfully add.
-# This value was chosen to be consistent with the singularity condition in scipy.linalg.cho_factor
-# and tested for robustness with the setup in test_1d_analytic_ei_edge_cases().
+#: Minimum allowed standard deviation value in ``ComputeGradCholeskyVarianceOfPointsPerPoint`` (= machine precision).
+#: Values that are too small result in problems b/c we may compute ``std_dev/var`` (which is enormous
+#: if ``std_dev = 1.0e-150`` and ``var = 1.0e-300``) since this only arises when we fail to compute ``std_dev = var = 0.0``.
+#: Note: this is only relevant if noise = 0.0; this minimum will not affect GPs with noise since this value
+#: is below the smallest amount of noise users can meaningfully add.
+#: This value was chosen to be consistent with the singularity condition in scipy.linalg.cho_factor
+#: and tested for robustness with the setup in test_1d_analytic_ei_edge_cases().
 MINIMUM_STD_DEV_GRAD_CHOLESKY = numpy.finfo(numpy.float64).eps
 
 

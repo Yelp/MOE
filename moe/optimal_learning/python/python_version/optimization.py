@@ -224,7 +224,7 @@ _BaseNewtonParameters = collections.namedtuple('_BaseNewtonParameters', [
 
 class NewtonParameters(_BaseNewtonParameters):
 
-    """See docstring at :class:`moe.optimal_learning.python.cpp_wrappers.optimization`."""
+    """See docstring at :class:`moe.optimal_learning.python.cpp_wrappers.optimization.NewtonParameters`."""
 
     __slots__ = ()
 

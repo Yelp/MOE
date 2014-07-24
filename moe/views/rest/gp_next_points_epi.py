@@ -2,7 +2,9 @@
 """Classes for gp_next_points_epi endpoints.
 
 Includes:
+
     1. pretty and backend views
+
 """
 from pyramid.view import view_config
 
@@ -26,7 +28,7 @@ class GpNextPointsEpi(GpNextPointsPrettyView):
           ``params['optimizer_info']``
         :type params: dict
         :return: default multistart and optimizer parameters to use with this REST request
-        :rtype: ``moe.optimal_learning.constant._DefaultOptimizerInfoTuple``
+        :rtype: :class:`moe.optimal_learning.python.constant.DefaultOptimizerInfoTuple`
 
         """
         optimizer_type = params['optimizer_info']['optimizer_type']

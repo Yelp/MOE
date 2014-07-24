@@ -16,6 +16,9 @@ from moe.views.schemas import GpMeanVarRequest, GpMeanVarResponse, GpMeanVarDiag
 from moe.views.utils import _make_gp_from_params
 
 
+MEAN_VAR_COMPUTATION_TIMING_LABEL = 'mean/var computation time'
+
+
 class GpMeanVarBaseView(GpPrettyView):
 
     """Base View class for gp_mean, gp_var, gp_mean_var, and _diag endpoints."""
@@ -52,7 +55,7 @@ class GpMeanVarBaseView(GpPrettyView):
         response_dict = {}
         response_dict['endpoint'] = self._route_name
 
-        with timing_context("mean/var computation time"):
+        with timing_context(MEAN_VAR_COMPUTATION_TIMING_LABEL):
             if compute_mean:
                 response_dict['mean'] = gaussian_process.compute_mean_of_points(points_to_sample).tolist()
 

@@ -2,8 +2,10 @@
 """Classes for gp_hyper_opt endpoints.
 
 Includes:
+
     1. request and response schemas
     2. pretty and backend views
+
 """
 from pyramid.view import view_config
 
@@ -16,6 +18,9 @@ from moe.views.gp_pretty_view import GpPrettyView, PRETTY_RENDERER
 from moe.views.optimizable_gp_pretty_view import OptimizableGpPrettyView
 from moe.views.schemas import GpHyperOptRequest, GpHyperOptResponse
 from moe.views.utils import _make_domain_from_params, _make_gp_from_params, _make_optimizer_parameters_from_params
+
+
+MODEL_SELECTION_TIMING_LABEL = 'model selection time'
 
 
 class GpHyperOptView(OptimizableGpPrettyView):
@@ -53,7 +58,7 @@ class GpHyperOptView(OptimizableGpPrettyView):
         :param params: a (partially) deserialized REST request with everything except possibly
           ``params['optimizer_info']``
         :type params: dict
-        :return: optimizer type to use, one of ``moe.optimal_learning.constant.OPTIMIZER_TYPES``
+        :return: optimizer type to use, one of :const:`moe.optimal_learning.python.constant.OPTIMIZER_TYPES`
         :rtype: str
 
         """
@@ -67,7 +72,7 @@ class GpHyperOptView(OptimizableGpPrettyView):
           ``params['optimizer_info']``
         :type params: dict
         :return: default multistart and optimizer parameters to use with this REST request
-        :rtype: ``moe.optimal_learning.constant._DefaultOptimizerInfoTuple``
+        :rtype: :class:`moe.optimal_learning.python.constant.DefaultOptimizerInfoTuple`
 
         """
         optimizer_type = params['optimizer_info']['optimizer_type']
@@ -121,7 +126,7 @@ class GpHyperOptView(OptimizableGpPrettyView):
         )
 
         hyperopt_status = {}
-        with timing_context("model selection time"):
+        with timing_context(MODEL_SELECTION_TIMING_LABEL):
             optimized_hyperparameters = multistart_hyperparameter_optimization(
                 log_likelihood_optimizer,
                 optimizer_parameters.num_multistarts,
