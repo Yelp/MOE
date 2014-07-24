@@ -19,8 +19,9 @@ The choice of covariance function is important because it encodes our assumption
 
 Covariance functions also generally have hyperparameters (e.g., signal/background noise, length scales) that specify the
 assumed behavior of the Gaussian Process. Specifying hyperparameters is tricky because changing them fundamentally changes
-the behavior of the GP. optimization_interface.py together with log_likelihood_interface.py provide methods optimizing
-and evaluating model fit, respectively.
+the behavior of the GP. :mod:`moe.optimal_learning.python.interfaces.optimization_interface` together
+with :mod:`moe.optimal_learning.python.interfaces.log_likelihood_interface` provide methods
+optimizing and evaluating model fit, respectively.
 
 """
 from abc import ABCMeta, abstractmethod, abstractproperty
@@ -74,7 +75,8 @@ class CovarianceInterface(object):
         r"""Compute the covariance function of two points, cov(``point_one``, ``point_two``).
 
         .. Note:: comments are copied from the matching method comments of CovarianceInterface in gpp_covariance.hpp
-          and comments are copied to the matching method comments of SquareExponential in python_version/covariance.py
+          and comments are copied to the matching method comments of
+          :mod:`moe.optimal_learning.python.python_version.covariance.SquareExponential`.
 
         The covariance function is guaranteed to be symmetric by definition: ``covariance(x, y) = covariance(y, x)``.
         This function is also positive definite by definition.
@@ -94,7 +96,8 @@ class CovarianceInterface(object):
         r"""Compute the gradient of self.covariance(point_one, point_two) with respect to the FIRST argument, point_one.
 
         .. Note:: comments are copied from the matching method comments of CovarianceInterface in gpp_covariance.hpp
-          and comments are copied to the matching method comments of SquareExponential in python_version/covariance.py
+          and comments are copied to the matching method comments of
+          :mod:`moe.optimal_learning.python.python_version.covariance.SquareExponential`.
 
         This distinction is important for maintaining the desired symmetry.  ``Cov(x, y) = Cov(y, x)``.
         Additionally, ``\pderiv{Cov(x, y)}{x} = \pderiv{Cov(y, x)}{x}``.
@@ -118,7 +121,8 @@ class CovarianceInterface(object):
         r"""Compute the gradient of self.covariance(point_one, point_two) with respect to its hyperparameters.
 
         .. Note:: comments are copied from the matching method comments of CovarianceInterface in gpp_covariance.hpp
-          and comments are copied to the matching method comments of SquareExponential in python_version/covariance.py
+          and comments are copied to the matching method comments of
+          :mod:`moe.optimal_learning.python.python_version.covariance.SquareExponential`.
 
         Unlike GradCovariance(), the order of point_one and point_two is irrelevant here (since we are not differentiating against
         either of them).  Thus the matrix of grad covariances (wrt hyperparameters) is symmetric.

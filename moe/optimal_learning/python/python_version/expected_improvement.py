@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 """Classes (Python) to compute the Expected Improvement, including monte carlo and analytic (where applicable) implementations.
 
-See interfaces/expected_improvement_interface.py or gpp_math.hpp/cpp for further details on expected improvement.
+See :mod:`moe.optimal_learning.python.interfaces.expected_improvement_interface` or
+gpp_math.hpp/cpp for further details on expected improvement.
 
 """
+import logging
+
 import numpy
 
 import scipy.linalg
@@ -45,7 +48,8 @@ def multistart_expected_improvement_optimization(
 
     When ``points_being_sampled.shape[0] == 0 && num_to_sample == 1``, this function will use (fast) analytic EI computations.
 
-    .. NOTE:: The following comments are copied from multistart_expected_improvement_optimization() in cpp_wrappers/expected_improvement.py
+    .. NOTE:: The following comments are copied from
+      :func:`moe.optimal_learning.python.cpp_wrappers.expected_improvement.multistart_expected_improvement_optimization`.
 
     This is the primary entry-point for EI optimization in the optimal_learning library. It offers our best shot at
     improving robustness by combining higher accuracy methods like gradient descent with fail-safes like random/grid search.
@@ -103,7 +107,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
     .. Note:: Equivalent methods of ExpectedImprovementInterface and OptimizableInterface are aliased below (e.g.,
       compute_expected_improvement and compute_objective_function, etc).
 
-    See interfaces/expected_improvement_interface.py docs for further details.
+    See :class:`moe.optimal_learning.python.interfaces.expected_improvement_interface.ExpectedImprovementInterface` for further details.
 
     """
 
@@ -147,6 +151,8 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
             self.current_point = numpy.zeros((1, gaussian_process.dim))
         else:
             self.current_point = points_to_sample
+
+        self.log = logging.getLogger(__name__)
 
     @property
     def dim(self):
@@ -457,7 +463,23 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
 
         """
         num_points = self.num_to_sample + self.num_being_sampled
-        chol_var = -scipy.linalg.cholesky(var_star, lower=True)
+        try:
+            chol_var = -scipy.linalg.cholesky(var_star, lower=True)
+        except scipy.linalg.LinAlgError as exception:
+            self.log.info('GP-variance matrix (size {0:d} is singular; scipy.linalg.cholesky failed. Error: {1:s}'.format(num_points, exception))
+            # var_star is singular or near-singular and cholesky failed.
+            # Instead, use the SVD: U * E * V^H = A, which can be computed extremely reliably.
+            # U, V are unitary and E is diagonal with all non-negative entries.
+            # If A is SPSD, U = V.
+            _, E, VH = scipy.linalg.svd(var_star)
+            # Then form factor Q * R = sqrt(E) * V^H.
+            # (Q * R)^T * (Q * R) = R^T * Q * Q^T * R = R^T * R
+            # and (Q * R)^T * (Q * R) = (sqrt(E) * V^T)^T * (sqrt(E) * V^T)
+            # = V * sqrt(E) * sqrt(E) * V^T = A (using U = V).
+            # Hence R^T * R = L * L^T = A is a cholesky factorization.
+            # Note: we do not always use this approach b/c it is extremely expensive.
+            R = scipy.linalg.qr(numpy.dot(numpy.diag(numpy.sqrt(E)), VH), mode='r')[0]
+            chol_var = -R.T
 
         normals = numpy.random.normal(size=(self._num_mc_iterations, num_points))
 
@@ -674,7 +696,8 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
     def compute_expected_improvement(self, force_monte_carlo=False, force_1d_ei=False):
         r"""Compute the expected improvement at ``points_to_sample``, with ``points_being_sampled`` concurrent points being sampled.
 
-        .. Note:: These comments were copied from this's superclass in expected_improvement_interface.py.
+        .. Note:: These comments were copied from
+          :meth:`moe.optimal_learning.python.interfaces.expected_improvement_interface.ExpectedImprovementInterface.compute_expected_improvement`.
 
         ``points_to_sample`` is the "q" and ``points_being_sampled`` is the "p" in q,p-EI.
 
@@ -729,7 +752,8 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
     def compute_grad_expected_improvement(self, force_monte_carlo=False):
         r"""Compute the gradient of expected improvement at ``points_to_sample`` wrt ``points_to_sample``, with ``points_being_sampled`` concurrent samples.
 
-        .. Note:: These comments were copied from this's superclass in expected_improvement_interface.py.
+        .. Note:: These comments were copied from
+          :meth:`moe.optimal_learning.python.interfaces.expected_improvement_interface.ExpectedImprovementInterface.compute_grad_expected_improvement`.
 
         ``points_to_sample`` is the "q" and ``points_being_sampled`` is the "p" in q,p-EI.
 
