@@ -11,9 +11,9 @@
           <div class="panel panel-info">
             <div class="panel-heading"><b>Documentation</b></div>
               <ul class="list-group">
-                <a href="http://sc932.github.io/MOE/" class="list-group-item">Full Online Documentation</a>
-                <a href="http://sc932.github.io/MOE/moe.views.rest.html" class="list-group-item">REST Endpoint Documentation</a>
-                <a href="http://github.com/sc932/MOE/" class="list-group-item">Github repo</a>
+                <a href="http://yelp.github.io/MOE/" class="list-group-item">Full Online Documentation</a>
+                <a href="http://yelp.github.io/MOE/moe.views.rest.html" class="list-group-item">REST Endpoint Documentation</a>
+                <a href="http://github.com/Yelp/MOE/" class="list-group-item">Github repo</a>
                 <a href="${request.route_url( 'gp_plot' )}" class="list-group-item">Interactive Demo</a>
               </ul>
           </div>
