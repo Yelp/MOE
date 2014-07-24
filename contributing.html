@@ -33,7 +33,7 @@
     <link rel="stylesheet" href="_static/breathe.css" type="text/css" />
   
     <link rel="top" title="MOE 0.1.0 documentation" href="index.html"/>
-        <link rel="next" title="moe package" href="moe.html"/>
+        <link rel="next" title="Frequently Asked Questions" href="faq.html"/>
         <link rel="prev" title="Examples" href="examples.html"/> 
 
   
@@ -110,6 +110,18 @@
 <li class="toctree-l2"><a class="reference internal" href="#style">Style</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#what-license-is-moe-released-under">What license is MOE released under?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#when-should-i-use-moe">When should I use MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#what-is-the-time-complexity-of-moe">What is the time complexity of MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-do-i-cite-moe">How do I cite MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#why-does-moe-take-so-long-to-return-the-next-points-to-sample-for-some-inputs">Why does MOE take so long to return the next points to sample for some inputs?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-do-i-bootstrap-moe-what-initial-data-does-it-need">How do I bootstrap MOE? What initial data does it need?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-many-function-evaluations-do-i-need-before-moe-is-done">How many function evaluations do I need before MOE is &#8220;done&#8221;?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-many-function-evaluations-do-i-perform-before-i-update-the-hyperparameters-of-the-gp">How many function evaluations do I perform before I update the hyperparameters of the GP?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#will-you-accept-my-pull-request">Will you accept my pull request?</a></li>
+</ul>
+</li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="moe.html">moe package</a><ul>
@@ -134,9 +146,9 @@
 <li class="toctree-l1"><a class="reference internal" href="cpp_tree.html">C++ Files</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimization_test.html">gpp_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_domain_test.html">gpp_domain_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_exception.html">gpp_exception</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_geometry.html">gpp_geometry</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_test_utils.html">gpp_test_utils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_logging.html">gpp_logging</a></li>
@@ -157,7 +169,7 @@
 <li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra.html">gpp_linear_algebra</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_exception.html">gpp_exception</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_model_selection.html">gpp_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_covariance_test.html">gpp_covariance_test</a></li>
@@ -165,7 +177,7 @@
 <li class="toctree-l2"><a class="reference internal" href="gpp_python.html">gpp_python</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_test.html">gpp_model_selection_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_common.html">gpp_common</a></li>
 </ul>
 </li>
@@ -225,7 +237,7 @@
 <li>Test against styleguide (<tt class="docutils literal"><span class="pre">make</span> <span class="pre">style-test</span></tt>)</li>
 <li>Commit your changes (<tt class="docutils literal"><span class="pre">git</span> <span class="pre">commit</span> <span class="pre">-am</span> <span class="pre">&quot;Added</span> <span class="pre">Some</span> <span class="pre">Mathemagics&quot;</span></tt>)</li>
 <li>Push to the branch (<tt class="docutils literal"><span class="pre">git</span> <span class="pre">push</span> <span class="pre">origin</span> <span class="pre">my_moe_branch</span></tt>)</li>
-<li>Open a Pull Request - <a class="reference external" href="http://github.com/sc932/MOE/pulls">http://github.com/sc932/MOE/pulls</a></li>
+<li>Open a Pull Request - <a class="reference external" href="http://github.com/Yelp/MOE/pulls">http://github.com/Yelp/MOE/pulls</a></li>
 <li>Optimize locally while you wait</li>
 </ol>
 <div class="section" id="pull-request-review-templates">
@@ -244,9 +256,8 @@ Ticket(s)/Issue(s): Closes #XX
 </div>
 <div class="section" id="people-section">
 <h4><tt class="docutils literal"><span class="pre">PEOPLE</span></tt> section<a class="headerlink" href="#people-section" title="Permalink to this headline">¶</a></h4>
-<p><tt class="docutils literal"><span class="pre">Primary</span> <span class="pre">reviewer</span></tt>: the primary code reviewer. This person is <em>EQUALLY RESPONSIBLE</em> for your branch. They should read and familiarize themselves with all aspects of the code, checking for style, correctness, maintainability, testing, etc.
-Ask the primary reviewer first if your branch is particularly large (and try to avoid large branches, anything over 300+ lines).</p>
-<p><tt class="docutils literal"><span class="pre">Reviewers</span></tt>: the people (including primary) that you would like to read your branch. Please use full email addresses or &#64;&lt;GITHUB NAME&gt;. Right now, only people shown here: <a class="reference external" href="https://github.com/sc932/MOE/watchers">https://github.com/sc932/MOE/watchers</a> can see the review.</p>
+<p><tt class="docutils literal"><span class="pre">Primary</span> <span class="pre">reviewer</span></tt>: the primary code reviewer. This person is <em>EQUALLY RESPONSIBLE</em> for your branch. They should read and familiarize themselves with all aspects of the code, checking for style, correctness, maintainability, testing, etc. If you do not know who to put then use &#64;sc932 and/or &#64;suntzu86.</p>
+<p><tt class="docutils literal"><span class="pre">Reviewers</span></tt>: the people (including primary) that you would like to read your branch. Please use full email addresses or &#64;&lt;GITHUB NAME&gt;.</p>
 </div>
 <div class="section" id="description-section">
 <h4><tt class="docutils literal"><span class="pre">DESCRIPTION</span></tt> section<a class="headerlink" href="#description-section" title="Permalink to this headline">¶</a></h4>
@@ -255,9 +266,9 @@ Ask the primary reviewer first if your branch is particularly large (and try to 
 </pre></div>
 </div>
 <p>Examples:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">eliu_ads_3094_python_implementation_of_ABCs</span>
-<span class="n">eliu_gh_74_fix_todos_ticket_numbers_comments</span>
-<span class="n">sclark_21_fix_tooltips</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">suntzu86_ads_3094_python_implementation_of_ABCs</span>
+<span class="n">suntzu86_gh_74_fix_todos_ticket_numbers_comments</span>
+<span class="n">sc932_21_fix_tooltips</span>
 </pre></div>
 </div>
 <p><tt class="docutils literal"><span class="pre">Ticket(s)/Issue(s)</span></tt>: usually GH-##. Github will autolink “GH-##” ticket numbers. If your tickets live elsewhere (e.g., JIRA), provide a link. You can also do #XX</p>
@@ -347,7 +358,7 @@ git push origin HEAD
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="moe.html" class="btn btn-neutral float-right" title="moe package"/>Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="faq.html" class="btn btn-neutral float-right" title="Frequently Asked Questions"/>Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="examples.html" class="btn btn-neutral" title="Examples"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -359,7 +370,7 @@ git push origin HEAD
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+        &copy; Copyright 2012-2014 Yelp. MOE is licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0.
     </p>
   </div>
 

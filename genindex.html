@@ -109,6 +109,18 @@
 <li class="toctree-l2"><a class="reference internal" href="contributing.html#style">Style</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#what-license-is-moe-released-under">What license is MOE released under?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#when-should-i-use-moe">When should I use MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#what-is-the-time-complexity-of-moe">What is the time complexity of MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-do-i-cite-moe">How do I cite MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#why-does-moe-take-so-long-to-return-the-next-points-to-sample-for-some-inputs">Why does MOE take so long to return the next points to sample for some inputs?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-do-i-bootstrap-moe-what-initial-data-does-it-need">How do I bootstrap MOE? What initial data does it need?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-many-function-evaluations-do-i-need-before-moe-is-done">How many function evaluations do I need before MOE is &#8220;done&#8221;?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-many-function-evaluations-do-i-perform-before-i-update-the-hyperparameters-of-the-gp">How many function evaluations do I perform before I update the hyperparameters of the GP?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#will-you-accept-my-pull-request">Will you accept my pull request?</a></li>
+</ul>
+</li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="moe.html">moe package</a><ul>
@@ -133,9 +145,9 @@
 <li class="toctree-l1"><a class="reference internal" href="cpp_tree.html">C++ Files</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimization_test.html">gpp_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_domain_test.html">gpp_domain_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_exception.html">gpp_exception</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_geometry.html">gpp_geometry</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_test_utils.html">gpp_test_utils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_logging.html">gpp_logging</a></li>
@@ -156,7 +168,7 @@
 <li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra.html">gpp_linear_algebra</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_exception.html">gpp_exception</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_model_selection.html">gpp_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_covariance_test.html">gpp_covariance_test</a></li>
@@ -164,7 +176,7 @@
 <li class="toctree-l2"><a class="reference internal" href="gpp_python.html">gpp_python</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_test.html">gpp_model_selection_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_common.html">gpp_common</a></li>
 </ul>
 </li>
@@ -245,6 +257,10 @@
   </dt>
 
       </dl></dd>
+      
+  <dt><a href="moe.views.html#moe.views.constant.ALL_REST_ROUTES_ROUTE_NAME_TO_ENDPOINT">ALL_REST_ROUTES_ROUTE_NAME_TO_ENDPOINT (in module moe.views.constant)</a>
+  </dt>
+
       
   <dt><a href="moe.optimal_learning.python.html#moe.optimal_learning.python.data_containers.HistoricalData.append_historical_data">append_historical_data() (moe.optimal_learning.python.data_containers.HistoricalData method)</a>
   </dt>
@@ -585,8 +601,6 @@
   <dt><a href="moe.views.html#moe.views.gp_next_points_pretty_view.GpNextPointsPrettyView.compute_next_points_to_sample_response">compute_next_points_to_sample_response() (moe.views.gp_next_points_pretty_view.GpNextPointsPrettyView method)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.expected_improvement.ExpectedImprovement.compute_objective_function">compute_objective_function() (moe.optimal_learning.python.cpp_wrappers.expected_improvement.ExpectedImprovement method)</a>
   </dt>
@@ -613,6 +627,8 @@
   </dt>
 
       </dl></dd>
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.domain.SimplexIntersectTensorProductDomain.compute_update_restricted_to_domain">compute_update_restricted_to_domain() (moe.optimal_learning.python.cpp_wrappers.domain.SimplexIntersectTensorProductDomain method)</a>
   </dt>
@@ -654,6 +670,10 @@
   </dt>
 
       
+  <dt><a href="moe.optimal_learning.python.html#moe.optimal_learning.python.constant.CONSTANT_LIAR_METHODS">CONSTANT_LIAR_METHODS (in module moe.optimal_learning.python.constant)</a>
+  </dt>
+
+      
   <dt><a href="moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.covariance.SquareExponential.covariance">covariance() (moe.optimal_learning.python.cpp_wrappers.covariance.SquareExponential method)</a>
   </dt>
 
@@ -677,6 +697,10 @@
   </dt>
 
       </dl></dd>
+      
+  <dt><a href="moe.optimal_learning.python.html#moe.optimal_learning.python.constant.COVARIANCE_TYPES">COVARIANCE_TYPES (in module moe.optimal_learning.python.constant)</a>
+  </dt>
+
       
   <dt><a href="moe.views.html#moe.views.schemas.CovarianceInfo">CovarianceInfo (class in moe.views.schemas)</a>
   </dt>
@@ -759,6 +783,14 @@
 <h2 id="D">D</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="moe.optimal_learning.python.html#moe.optimal_learning.python.constant.DEFAULT_MAX_NUM_THREADS">DEFAULT_MAX_NUM_THREADS (in module moe.optimal_learning.python.constant)</a>
+  </dt>
+
+      
+  <dt><a href="moe.optimal_learning.python.html#moe.optimal_learning.python.constant.DefaultOptimizerInfoTuple">DefaultOptimizerInfoTuple (class in moe.optimal_learning.python.constant)</a>
+  </dt>
+
       
   <dt><a href="moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.domain.SimplexIntersectTensorProductDomain.dim">dim (moe.optimal_learning.python.cpp_wrappers.domain.SimplexIntersectTensorProductDomain attribute)</a>
   </dt>
@@ -863,6 +895,8 @@
   </dt>
 
       </dl></dd>
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.domain.SimplexIntersectTensorProductDomain.domain_type">domain_type (moe.optimal_learning.python.cpp_wrappers.domain.SimplexIntersectTensorProductDomain attribute)</a>
   </dt>
@@ -877,8 +911,10 @@
   </dt>
 
       </dl></dd>
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="moe.optimal_learning.python.html#moe.optimal_learning.python.constant.DOMAIN_TYPES">DOMAIN_TYPES (in module moe.optimal_learning.python.constant)</a>
+  </dt>
+
       
   <dt><a href="moe.views.html#moe.views.schemas.DomainCoordinate">DomainCoordinate (class in moe.views.schemas)</a>
   </dt>
@@ -920,6 +956,10 @@
 
       </dl></dd>
       
+  <dt><a href="moe.optimal_learning.python.html#moe.optimal_learning.python.constant.ENDPOINT_TO_DEFAULT_OPTIMIZER_TYPE">ENDPOINT_TO_DEFAULT_OPTIMIZER_TYPE (in module moe.optimal_learning.python.constant)</a>
+  </dt>
+
+      
   <dt><a href="moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.expected_improvement.ExpectedImprovement.evaluate_at_point_list">evaluate_at_point_list() (moe.optimal_learning.python.cpp_wrappers.expected_improvement.ExpectedImprovement method)</a>
   </dt>
 
@@ -939,12 +979,12 @@
   </dt>
 
       </dl></dd>
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.exception_test.ExceptionStructureTest">ExceptionStructureTest (class in moe.tests.optimal_learning.python.cpp_wrappers.exception_test)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.expected_improvement.ExpectedImprovement">ExpectedImprovement (class in moe.optimal_learning.python.cpp_wrappers.expected_improvement)</a>
   </dt>
@@ -1331,12 +1371,12 @@
   </dt>
 
       </dl></dd>
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="moe.views.rest.html#moe.views.rest.gp_mean_var.GpVarDiagView.gp_var_diag_view">gp_var_diag_view() (moe.views.rest.gp_mean_var.GpVarDiagView method)</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="moe.views.rest.html#moe.views.rest.gp_mean_var.GpVarView.gp_var_view">gp_var_view() (moe.views.rest.gp_mean_var.GpVarView method)</a>
   </dt>
@@ -1449,6 +1489,10 @@
 
       
   <dt><a href="moe.views.html#moe.views.schemas.GpNextPointsResponse">GpNextPointsResponse (class in moe.views.schemas)</a>
+  </dt>
+
+      
+  <dt><a href="moe.views.html#moe.views.schemas.GpNextPointsStatus">GpNextPointsStatus (class in moe.views.schemas)</a>
   </dt>
 
       
@@ -1660,6 +1704,10 @@
   </dt>
 
       
+  <dt><a href="moe.optimal_learning.python.html#moe.optimal_learning.python.constant.LIKELIHOOD_TYPES">LIKELIHOOD_TYPES (in module moe.optimal_learning.python.constant)</a>
+  </dt>
+
+      
   <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.linkers_test.LinkersTest">LinkersTest (class in moe.tests.optimal_learning.python.linkers_test)</a>
   </dt>
 
@@ -1716,7 +1764,23 @@
   </dt>
 
       
+  <dt><a href="moe.optimal_learning.python.html#moe.optimal_learning.python.constant.MAX_ALLOWED_NUM_THREADS">MAX_ALLOWED_NUM_THREADS (in module moe.optimal_learning.python.constant)</a>
+  </dt>
+
+      
   <dt><a href="moe_examples.tests.html#moe_examples.tests.mean_and_var_of_gp_from_historic_data_test.MeanAndVarOfGpFromHistoricDataTest">MeanAndVarOfGpFromHistoricDataTest (class in moe_examples.tests.mean_and_var_of_gp_from_historic_data_test)</a>
+  </dt>
+
+      
+  <dt><a href="moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.gaussian_process.MINIMUM_STD_DEV_GRAD_CHOLESKY">MINIMUM_STD_DEV_GRAD_CHOLESKY (in module moe.optimal_learning.python.python_version.gaussian_process)</a>
+  </dt>
+
+      
+  <dt><a href="moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.expected_improvement.MINIMUM_VARIANCE_EI">MINIMUM_VARIANCE_EI (in module moe.optimal_learning.python.python_version.expected_improvement)</a>
+  </dt>
+
+      
+  <dt><a href="moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.expected_improvement.MINIMUM_VARIANCE_GRAD_EI">MINIMUM_VARIANCE_GRAD_EI (in module moe.optimal_learning.python.python_version.expected_improvement)</a>
   </dt>
 
       
@@ -1864,6 +1928,10 @@
   </dt>
 
       
+  <dt><a href="moe.optimal_learning.python.html#module-moe.optimal_learning.python.timing">moe.optimal_learning.python.timing (module)</a>
+  </dt>
+
+      
   <dt><a href="moe.html#module-moe.resources">moe.resources (module)</a>
   </dt>
 
@@ -1903,6 +1971,8 @@
   <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#module-moe.tests.optimal_learning.python.cpp_wrappers.gaussian_process_test">moe.tests.optimal_learning.python.cpp_wrappers.gaussian_process_test (module)</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#module-moe.tests.optimal_learning.python.cpp_wrappers.log_likelihood_test">moe.tests.optimal_learning.python.cpp_wrappers.log_likelihood_test (module)</a>
   </dt>
@@ -1911,8 +1981,6 @@
   <dt><a href="moe.tests.optimal_learning.python.html#module-moe.tests.optimal_learning.python.gaussian_process_test_case">moe.tests.optimal_learning.python.gaussian_process_test_case (module)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="moe.tests.optimal_learning.python.html#module-moe.tests.optimal_learning.python.gaussian_process_test_utils">moe.tests.optimal_learning.python.gaussian_process_test_utils (module)</a>
   </dt>
@@ -2158,6 +2226,10 @@
   </dt>
 
       
+  <dt><a href="moe.views.html#moe.views.constant.NEXT_POINTS_OPTIMIZER_METHOD_NAMES">NEXT_POINTS_OPTIMIZER_METHOD_NAMES (in module moe.views.constant)</a>
+  </dt>
+
+      
   <dt><a href="moe_examples.tests.html#moe_examples.tests.next_point_via_simple_endpoint_test.NextPointsViaSimpleEndpointTest">NextPointsViaSimpleEndpointTest (class in moe_examples.tests.next_point_via_simple_endpoint_test)</a>
   </dt>
 
@@ -2399,8 +2471,20 @@
   <dt><a href="moe.optimal_learning.python.html#moe.optimal_learning.python.linkers.OptimizerMethod.optimizer_type">optimizer_type (moe.optimal_learning.python.linkers.OptimizerMethod attribute)</a>
   </dt>
 
+      
+  <dt><a href="moe.optimal_learning.python.html#moe.optimal_learning.python.constant.OPTIMIZER_TYPE_AND_OBJECTIVE_TO_DEFAULT_PARAMETERS">OPTIMIZER_TYPE_AND_OBJECTIVE_TO_DEFAULT_PARAMETERS (in module moe.optimal_learning.python.constant)</a>
+  </dt>
+
+      
+  <dt><a href="moe.optimal_learning.python.html#moe.optimal_learning.python.constant.OPTIMIZER_TYPES">OPTIMIZER_TYPES (in module moe.optimal_learning.python.constant)</a>
+  </dt>
+
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="moe.views.html#moe.views.schemas.OPTIMIZER_TYPES_TO_SCHEMA_CLASSES">OPTIMIZER_TYPES_TO_SCHEMA_CLASSES (in module moe.views.schemas)</a>
+  </dt>
+
       
   <dt><a href="moe.views.html#moe.views.schemas.OptimizerInfo">OptimizerInfo (class in moe.views.schemas)</a>
   </dt>
@@ -2975,12 +3059,12 @@
   <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.geometry_utils_test.LatinHypercubeRandomPointGenerationTest.test_latin_hypercube_within_domain">test_latin_hypercube_within_domain() (moe.tests.optimal_learning.python.geometry_utils_test.LatinHypercubeRandomPointGenerationTest method)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.geometry_utils_test.ClosedIntervalTest.test_length">test_length() (moe.tests.optimal_learning.python.geometry_utils_test.ClosedIntervalTest method)</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.linkers_test.LinkersTest.test_likelihood_links_have_all_likelihood_types">test_likelihood_links_have_all_likelihood_types() (moe.tests.optimal_learning.python.linkers_test.LinkersTest method)</a>
   </dt>
@@ -3100,6 +3184,10 @@
   </dt>
 
       
+  <dt><a href="moe.optimal_learning.python.html#moe.optimal_learning.python.timing.timing_context">timing_context() (in module moe.optimal_learning.python.timing)</a>
+  </dt>
+
+      
   <dt><a href="moe.views.html#moe.views.schemas.PositiveFloat.title">title (moe.views.schemas.PositiveFloat attribute)</a>
   </dt>
 
@@ -3154,7 +3242,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+        &copy; Copyright 2012-2014 Yelp. MOE is licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0.
     </p>
   </div>
 

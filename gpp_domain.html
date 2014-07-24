@@ -111,6 +111,18 @@
 <li class="toctree-l2"><a class="reference internal" href="contributing.html#style">Style</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#what-license-is-moe-released-under">What license is MOE released under?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#when-should-i-use-moe">When should I use MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#what-is-the-time-complexity-of-moe">What is the time complexity of MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-do-i-cite-moe">How do I cite MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#why-does-moe-take-so-long-to-return-the-next-points-to-sample-for-some-inputs">Why does MOE take so long to return the next points to sample for some inputs?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-do-i-bootstrap-moe-what-initial-data-does-it-need">How do I bootstrap MOE? What initial data does it need?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-many-function-evaluations-do-i-need-before-moe-is-done">How many function evaluations do I need before MOE is &#8220;done&#8221;?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-many-function-evaluations-do-i-perform-before-i-update-the-hyperparameters-of-the-gp">How many function evaluations do I perform before I update the hyperparameters of the GP?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#will-you-accept-my-pull-request">Will you accept my pull request?</a></li>
+</ul>
+</li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="moe.html">moe package</a><ul>
@@ -135,9 +147,9 @@
 <li class="toctree-l1 current"><a class="reference internal" href="cpp_tree.html">C++ Files</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimization_test.html">gpp_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_domain_test.html">gpp_domain_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_exception.html">gpp_exception</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_geometry.html">gpp_geometry</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_test_utils.html">gpp_test_utils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_logging.html">gpp_logging</a></li>
@@ -158,7 +170,7 @@
 <li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra.html">gpp_linear_algebra</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_exception.html">gpp_exception</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_model_selection.html">gpp_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_covariance_test.html">gpp_covariance_test</a></li>
@@ -166,7 +178,7 @@
 <li class="toctree-l2"><a class="reference internal" href="gpp_python.html">gpp_python</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_test.html">gpp_model_selection_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_common.html">gpp_common</a></li>
 </ul>
 </li>
@@ -265,7 +277,7 @@ used by the Python interface to communicate domain type to C++.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">point[<a href="#id1"><span class="problematic" id="id2">dim_</span></a>]:</th><td class="field-body">point to check</td>
+<tr class="field-odd field"><th class="field-name">point[dim]:</th><td class="field-body">point to check</td>
 </tr>
 </tbody>
 </table>
@@ -417,7 +429,7 @@ Used for testing.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">point[<a href="#id3"><span class="problematic" id="id4">dim_</span></a>]:</th><td class="field-body">point to check</td>
+<tr class="field-odd field"><th class="field-name">point[dim]:</th><td class="field-body">point to check</td>
 </tr>
 </tbody>
 </table>
@@ -443,7 +455,7 @@ Used for testing.</p>
 <tr class="field-odd field"><th class="field-name" colspan="2">uniform_generator[1]:</th></tr>
 <tr class="field-odd field"><td>&nbsp;</td><td class="field-body">a UniformRandomGenerator object providing the random engine for uniform random numbers</td>
 </tr>
-<tr class="field-even field"><th class="field-name" colspan="2">random_point[<a href="#id5"><span class="problematic" id="id6">dim_</span></a>]:</th></tr>
+<tr class="field-even field"><th class="field-name" colspan="2">random_point[dim]:</th></tr>
 <tr class="field-even field"><td>&nbsp;</td><td class="field-body">properly sized array</td>
 </tr>
 </tbody>
@@ -457,7 +469,7 @@ Used for testing.</p>
 <tr class="field-odd field"><th class="field-name" colspan="2">uniform_generator[1]:</th></tr>
 <tr class="field-odd field"><td>&nbsp;</td><td class="field-body">UniformRandomGenerator object will have its state changed due to random draws</td>
 </tr>
-<tr class="field-even field"><th class="field-name" colspan="2">random_point[<a href="#id7"><span class="problematic" id="id8">dim_</span></a>]:</th></tr>
+<tr class="field-even field"><th class="field-name" colspan="2">random_point[dim]:</th></tr>
 <tr class="field-even field"><td>&nbsp;</td><td class="field-body">point with coordinates inside the domain (left in invalid state if fcn returns false)</td>
 </tr>
 </tbody>
@@ -487,7 +499,7 @@ will be uniformly distributed.</p>
 <tr class="field-even field"><th class="field-name" colspan="2">uniform_generator[1]:</th></tr>
 <tr class="field-even field"><td>&nbsp;</td><td class="field-body">a UniformRandomGenerator object providing the random engine for uniform random numbers</td>
 </tr>
-<tr class="field-odd field"><th class="field-name" colspan="2">random_points[<a href="#id9"><span class="problematic" id="id10">dim_</span></a>][num_points]:</th></tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">random_points[dim][num_points]:</th></tr>
 <tr class="field-odd field"><td>&nbsp;</td><td class="field-body">properly sized array</td>
 </tr>
 </tbody>
@@ -501,7 +513,7 @@ will be uniformly distributed.</p>
 <tr class="field-odd field"><th class="field-name" colspan="2">uniform_generator[1]:</th></tr>
 <tr class="field-odd field"><td>&nbsp;</td><td class="field-body">UniformRandomGenerator object will have its state changed due to random draws</td>
 </tr>
-<tr class="field-even field"><th class="field-name" colspan="2">random_points[<a href="#id11"><span class="problematic" id="id12">dim_</span></a>][num_points]:</th></tr>
+<tr class="field-even field"><th class="field-name" colspan="2">random_points[dim][num_points]:</th></tr>
 <tr class="field-even field"><td>&nbsp;</td><td class="field-body">point with coordinates inside the domain</td>
 </tr>
 </tbody>
@@ -535,10 +547,10 @@ limiting/testing may be performed.</p>
 <tr class="field-odd field"><th class="field-name" colspan="2">max_relative_change:</th></tr>
 <tr class="field-odd field"><td>&nbsp;</td><td class="field-body">max change allowed per update (as a relative fraction of current distance to boundary)</td>
 </tr>
-<tr class="field-even field"><th class="field-name" colspan="2">current_point[<a href="#id13"><span class="problematic" id="id14">dim_</span></a>]:</th></tr>
+<tr class="field-even field"><th class="field-name" colspan="2">current_point[dim]:</th></tr>
 <tr class="field-even field"><td>&nbsp;</td><td class="field-body">starting point</td>
 </tr>
-<tr class="field-odd field"><th class="field-name" colspan="2">update_vector[<a href="#id15"><span class="problematic" id="id16">dim_</span></a>]:</th></tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">update_vector[dim]:</th></tr>
 <tr class="field-odd field"><td>&nbsp;</td><td class="field-body">proposed update</td>
 </tr>
 </tbody>
@@ -549,7 +561,7 @@ limiting/testing may be performed.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">update_vector[<a href="#id17"><span class="problematic" id="id18">dim_</span></a>]:</th></tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">update_vector[dim]:</th></tr>
 <tr class="field-odd field"><td>&nbsp;</td><td class="field-body">modified update so that the final point remains inside the domain</td>
 </tr>
 </tbody>
@@ -707,7 +719,7 @@ Used for testing.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">point[<a href="#id19"><span class="problematic" id="id20">dim_</span></a>]:</th><td class="field-body">point to check</td>
+<tr class="field-odd field"><th class="field-name">point[dim]:</th><td class="field-body">point to check</td>
 </tr>
 </tbody>
 </table>
@@ -734,7 +746,7 @@ Used for testing.</p>
 <tr class="field-odd field"><th class="field-name" colspan="2">uniform_generator[1]:</th></tr>
 <tr class="field-odd field"><td>&nbsp;</td><td class="field-body">a UniformRandomGenerator object providing the random engine for uniform random numbers</td>
 </tr>
-<tr class="field-even field"><th class="field-name" colspan="2">random_point[<a href="#id21"><span class="problematic" id="id22">dim_</span></a>]:</th></tr>
+<tr class="field-even field"><th class="field-name" colspan="2">random_point[dim]:</th></tr>
 <tr class="field-even field"><td>&nbsp;</td><td class="field-body">properly sized array</td>
 </tr>
 </tbody>
@@ -748,7 +760,7 @@ Used for testing.</p>
 <tr class="field-odd field"><th class="field-name" colspan="2">uniform_generator[1]:</th></tr>
 <tr class="field-odd field"><td>&nbsp;</td><td class="field-body">UniformRandomGenerator object will have its state changed due to random draws</td>
 </tr>
-<tr class="field-even field"><th class="field-name" colspan="2">random_point[<a href="#id23"><span class="problematic" id="id24">dim_</span></a>]:</th></tr>
+<tr class="field-even field"><th class="field-name" colspan="2">random_point[dim]:</th></tr>
 <tr class="field-even field"><td>&nbsp;</td><td class="field-body">point with coordinates inside the domain (left in invalid state if fcn returns false)</td>
 </tr>
 </tbody>
@@ -779,7 +791,7 @@ will be uniformly distributed.</p>
 <tr class="field-even field"><th class="field-name" colspan="2">uniform_generator[1]:</th></tr>
 <tr class="field-even field"><td>&nbsp;</td><td class="field-body">a UniformRandomGenerator object providing the random engine for uniform random numbers</td>
 </tr>
-<tr class="field-odd field"><th class="field-name" colspan="2">random_points[<a href="#id25"><span class="problematic" id="id26">dim_</span></a>][num_points]:</th></tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">random_points[dim][num_points]:</th></tr>
 <tr class="field-odd field"><td>&nbsp;</td><td class="field-body">properly sized array</td>
 </tr>
 </tbody>
@@ -793,7 +805,7 @@ will be uniformly distributed.</p>
 <tr class="field-odd field"><th class="field-name" colspan="2">uniform_generator[1]:</th></tr>
 <tr class="field-odd field"><td>&nbsp;</td><td class="field-body">UniformRandomGenerator object will have its state changed due to random draws</td>
 </tr>
-<tr class="field-even field"><th class="field-name" colspan="2">random_points[<a href="#id27"><span class="problematic" id="id28">dim_</span></a>][num_points]:</th></tr>
+<tr class="field-even field"><th class="field-name" colspan="2">random_points[dim][num_points]:</th></tr>
 <tr class="field-even field"><td>&nbsp;</td><td class="field-body">point with coordinates inside the domain</td>
 </tr>
 </tbody>
@@ -827,10 +839,10 @@ limiting/testing may be performed.</p>
 <tr class="field-odd field"><th class="field-name" colspan="2">max_relative_change:</th></tr>
 <tr class="field-odd field"><td>&nbsp;</td><td class="field-body">max change allowed per update (as a relative fraction of current distance to boundary)</td>
 </tr>
-<tr class="field-even field"><th class="field-name" colspan="2">current_point[<a href="#id29"><span class="problematic" id="id30">dim_</span></a>]:</th></tr>
+<tr class="field-even field"><th class="field-name" colspan="2">current_point[dim]:</th></tr>
 <tr class="field-even field"><td>&nbsp;</td><td class="field-body">starting point</td>
 </tr>
-<tr class="field-odd field"><th class="field-name" colspan="2">update_vector[<a href="#id31"><span class="problematic" id="id32">dim_</span></a>]:</th></tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">update_vector[dim]:</th></tr>
 <tr class="field-odd field"><td>&nbsp;</td><td class="field-body">proposed update</td>
 </tr>
 </tbody>
@@ -841,7 +853,7 @@ limiting/testing may be performed.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">update_vector[<a href="#id33"><span class="problematic" id="id34">dim_</span></a>]:</th></tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">update_vector[dim]:</th></tr>
 <tr class="field-odd field"><td>&nbsp;</td><td class="field-body">modified update so that the final point remains inside the domain</td>
 </tr>
 </tbody>
@@ -1019,7 +1031,7 @@ out of scope before this object goes out of scope.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">point[<a href="#id35"><span class="problematic" id="id36">dim_</span></a>][<a href="#id37"><span class="problematic" id="id38">num_repeats_</span></a>]:</th></tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">point[dim][num_repeats]:</th></tr>
 <tr class="field-odd field"><td>&nbsp;</td><td class="field-body">point to check</td>
 </tr>
 </tbody>
@@ -1047,7 +1059,7 @@ out of scope before this object goes out of scope.</p>
 <tr class="field-odd field"><th class="field-name" colspan="2">uniform_generator[1]:</th></tr>
 <tr class="field-odd field"><td>&nbsp;</td><td class="field-body">a UniformRandomGenerator object providing the random engine for uniform random numbers</td>
 </tr>
-<tr class="field-even field"><th class="field-name" colspan="2">random_point[<a href="#id39"><span class="problematic" id="id40">dim_</span></a>][<a href="#id41"><span class="problematic" id="id42">num_repeats_</span></a>]:</th></tr>
+<tr class="field-even field"><th class="field-name" colspan="2">random_point[dim][num_repeats]:</th></tr>
 <tr class="field-even field"><td>&nbsp;</td><td class="field-body">properly sized array</td>
 </tr>
 </tbody>
@@ -1061,7 +1073,7 @@ out of scope before this object goes out of scope.</p>
 <tr class="field-odd field"><th class="field-name" colspan="2">uniform_generator[1]:</th></tr>
 <tr class="field-odd field"><td>&nbsp;</td><td class="field-body">UniformRandomGenerator object will have its state changed due to random draws</td>
 </tr>
-<tr class="field-even field"><th class="field-name" colspan="2">random_point[<a href="#id43"><span class="problematic" id="id44">dim_</span></a>][<a href="#id45"><span class="problematic" id="id46">num_repeats_</span></a>]:</th></tr>
+<tr class="field-even field"><th class="field-name" colspan="2">random_point[dim][num_repeats]:</th></tr>
 <tr class="field-even field"><td>&nbsp;</td><td class="field-body">point with coordinates inside the domain (left in invalid state if fcn returns false)</td>
 </tr>
 </tbody>
@@ -1092,7 +1104,7 @@ will be uniformly distributed.</p>
 <tr class="field-even field"><th class="field-name" colspan="2">uniform_generator[1]:</th></tr>
 <tr class="field-even field"><td>&nbsp;</td><td class="field-body">a UniformRandomGenerator object providing the random engine for uniform random numbers</td>
 </tr>
-<tr class="field-odd field"><th class="field-name" colspan="2">random_points[<a href="#id47"><span class="problematic" id="id48">dim_</span></a>][<a href="#id49"><span class="problematic" id="id50">num_repeats_</span></a>][num_points]:</th></tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">random_points[dim][num_repeats][num_points]:</th></tr>
 <tr class="field-odd field"><td>&nbsp;</td><td class="field-body">properly sized array</td>
 </tr>
 </tbody>
@@ -1106,7 +1118,7 @@ will be uniformly distributed.</p>
 <tr class="field-odd field"><th class="field-name" colspan="2">uniform_generator[1]:</th></tr>
 <tr class="field-odd field"><td>&nbsp;</td><td class="field-body">UniformRandomGenerator object will have its state changed due to random draws</td>
 </tr>
-<tr class="field-even field"><th class="field-name" colspan="2">random_points[<a href="#id51"><span class="problematic" id="id52">dim_</span></a>][<a href="#id53"><span class="problematic" id="id54">num_repeats_</span></a>][num_points]:</th></tr>
+<tr class="field-even field"><th class="field-name" colspan="2">random_points[dim][num_repeats][num_points]:</th></tr>
 <tr class="field-even field"><td>&nbsp;</td><td class="field-body">point with coordinates inside the domain</td>
 </tr>
 </tbody>
@@ -1140,10 +1152,10 @@ limiting/testing may be performed.</p>
 <tr class="field-odd field"><th class="field-name" colspan="2">max_relative_change:</th></tr>
 <tr class="field-odd field"><td>&nbsp;</td><td class="field-body">max change allowed per update (as a relative fraction of current distance to boundary)</td>
 </tr>
-<tr class="field-even field"><th class="field-name" colspan="2">current_point[<a href="#id55"><span class="problematic" id="id56">dim_</span></a>][<a href="#id57"><span class="problematic" id="id58">num_repeats_</span></a>]:</th></tr>
+<tr class="field-even field"><th class="field-name" colspan="2">current_point[dim][num_repeats]:</th></tr>
 <tr class="field-even field"><td>&nbsp;</td><td class="field-body">starting point</td>
 </tr>
-<tr class="field-odd field"><th class="field-name" colspan="2">update_vector[<a href="#id59"><span class="problematic" id="id60">dim_</span></a>][<a href="#id61"><span class="problematic" id="id62">num_repeats_</span></a>]:</th></tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">update_vector[dim][num_repeats]:</th></tr>
 <tr class="field-odd field"><td>&nbsp;</td><td class="field-body">proposed update</td>
 </tr>
 </tbody>
@@ -1154,7 +1166,7 @@ limiting/testing may be performed.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">update_vector[<a href="#id63"><span class="problematic" id="id64">dim_</span></a>][<a href="#id65"><span class="problematic" id="id66">num_repeats_</span></a>]:</th></tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">update_vector[dim][num_repeats]:</th></tr>
 <tr class="field-odd field"><td>&nbsp;</td><td class="field-body">modified update so that the final point remains inside the domain</td>
 </tr>
 </tbody>
@@ -1213,7 +1225,7 @@ limiting/testing may be performed.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+        &copy; Copyright 2012-2014 Yelp. MOE is licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0.
     </p>
   </div>
 

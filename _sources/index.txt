@@ -1,3 +1,7 @@
+.. image:: ../moe/static/img/moe_logo_48.png
+
+|
+
 Welcome to MOE's documentation!
 ===============================
 
@@ -10,7 +14,7 @@ Welcome to MOE's documentation!
     #. `Source Documentation`_
     #. :doc:`Contributing </contributing>`
 
-.. _Github repo: https://github.com/sc932/MOE
+.. _Github repo: https://github.com/Yelp/MOE
 
 What is MOE?
 ------------
@@ -39,10 +43,9 @@ Optimal learning is the study of efficient methods for collecting information, p
 .. _Princeton, Operations Research and Financial Engineering: http://orfe.princeton.edu/
 .. _intro slides: http://people.orie.cornell.edu/pfrazier/Presentations/2014.01.Lancaster.BGO.pdf
 
-
 **Example**:
 
-To illustrate how MOE works, suppose we wish to maximize the click-through-rate (CTR) on a website we manage, by varying some real-valued parameter vector :math:`\vec{x}` that govern how site content is presented to the user.  Evaluating the CTR for a new set of parameters requires running an A/B test over a period of several days.  We write this problem mathematically as,
+To illustrate how MOE works, suppose we wish to maximize the click-through-rate (CTR) on a website we manage, by varying some real-valued parameter vector :math:`\vec{x}` that governs how site content is presented to the user.  Evaluating the CTR for a new set of parameters requires running an A/B test over a period of several days.  We write this problem mathematically as,
 
 .. math::
 
@@ -123,7 +126,7 @@ Docker (http://docs.docker.io/) is a container based virtualization framework. U
 
 ::
 
-    $ git clone https://github.com/sc932/MOE.git
+    $ git clone https://github.com/Yelp/MOE.git
     $ cd MOE
     $ docker build -t moe_container .
     $ docker run -p 6543:6543 moe_container
@@ -145,15 +148,13 @@ To get the REST server running locally, from the directory MOE is installed:
 
 ::
 
-    $ pserve --reload development.ini
+    $ pserve --reload development.ini # MOE server is now running at http://localhost:6543
 
-In your favorite browser go to: http://127.0.0.1:6543/
-
-Or, from the command line,
+You can access the server from a browser or from the command line,
 
 ::
 
-    $ curl -X POST -H "Content-Type: application/json" -d '{"domain_info": {"dim": 1}, "points_to_evaluate": [[0.1], [0.5], [0.9]], "gp_info": {"points_sampled": [{"value_var": 0.01, "value": 0.1, "point": [0.0]}, {"value_var": 0.01, "value": 0.2, "point": [1.0]}]}}' http://127.0.0.1:6543/gp/ei
+    $ curl -X POST -H "Content-Type: application/json" -d '{"domain_info": {"dim": 1}, "points_to_evaluate": [[0.1], [0.5], [0.9]], "gp_historical_info": {"points_sampled": [{"value_var": 0.01, "value": 0.1, "point": [0.0]}, {"value_var": 0.01, "value": 0.2, "point": [1.0]}]}}' http://127.0.0.1:6543/gp/ei
 
 ``gp_ei`` endpoint documentation: :mod:`moe.views.rest.gp_ei`
 
@@ -166,7 +167,7 @@ From ipython
     > from moe.easy_interface.experiment import Experiment
     > from moe.easy_interface.simple_endpoint import gp_next_points
     > exp = Experiment([[0, 2], [0, 4]])
-    > exp.historical_data.append_sample_points([[0, 0], 1.0, 0.01])
+    > exp.historical_data.append_sample_points([[[0, 0], 1.0, 0.01]])
     > next_point_to_sample = gp_next_points(exp)
     > print next_point_to_sample
 
@@ -221,6 +222,13 @@ Examples:
     3. :doc:`gpp_hyper_and_EI_demo`
 
 
+Licence
+-------
+
+MOE is licensed under the `Apache License, Version 2.0`_
+
+.. _Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
+
 Source Documentation
 ====================
 
@@ -238,6 +246,7 @@ Documentation
    objective_functions.rst
    examples.rst
    contributing.rst
+   faq.rst
 
 Python Files
 ------------

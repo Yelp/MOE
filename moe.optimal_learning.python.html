@@ -111,6 +111,18 @@
 <li class="toctree-l2"><a class="reference internal" href="contributing.html#style">Style</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#what-license-is-moe-released-under">What license is MOE released under?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#when-should-i-use-moe">When should I use MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#what-is-the-time-complexity-of-moe">What is the time complexity of MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-do-i-cite-moe">How do I cite MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#why-does-moe-take-so-long-to-return-the-next-points-to-sample-for-some-inputs">Why does MOE take so long to return the next points to sample for some inputs?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-do-i-bootstrap-moe-what-initial-data-does-it-need">How do I bootstrap MOE? What initial data does it need?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-many-function-evaluations-do-i-need-before-moe-is-done">How many function evaluations do I need before MOE is &#8220;done&#8221;?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-many-function-evaluations-do-i-perform-before-i-update-the-hyperparameters-of-the-gp">How many function evaluations do I perform before I update the hyperparameters of the GP?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#will-you-accept-my-pull-request">Will you accept my pull request?</a></li>
+</ul>
+</li>
 </ul>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="moe.html">moe package</a><ul class="current">
@@ -135,9 +147,9 @@
 <li class="toctree-l1"><a class="reference internal" href="cpp_tree.html">C++ Files</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimization_test.html">gpp_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_domain_test.html">gpp_domain_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_exception.html">gpp_exception</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_geometry.html">gpp_geometry</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_test_utils.html">gpp_test_utils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_logging.html">gpp_logging</a></li>
@@ -158,7 +170,7 @@
 <li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra.html">gpp_linear_algebra</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_exception.html">gpp_exception</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_model_selection.html">gpp_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_covariance_test.html">gpp_covariance_test</a></li>
@@ -166,7 +178,7 @@
 <li class="toctree-l2"><a class="reference internal" href="gpp_python.html">gpp_python</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_test.html">gpp_model_selection_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_common.html">gpp_common</a></li>
 </ul>
 </li>
@@ -258,6 +270,59 @@
 <div class="section" id="module-moe.optimal_learning.python.constant">
 <span id="moe-optimal-learning-python-constant-module"></span><h2>moe.optimal_learning.python.constant module<a class="headerlink" href="#module-moe.optimal_learning.python.constant" title="Permalink to this headline">¶</a></h2>
 <p>Some default configuration parameters for optimal_learning components.</p>
+<dl class="data">
+<dt id="moe.optimal_learning.python.constant.CONSTANT_LIAR_METHODS">
+<tt class="descclassname">moe.optimal_learning.python.constant.</tt><tt class="descname">CONSTANT_LIAR_METHODS</tt><em class="property"> = ['constant_liar_min', 'constant_liar_max', 'constant_liar_mean']</em><a class="headerlink" href="#moe.optimal_learning.python.constant.CONSTANT_LIAR_METHODS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pre-defined constant liar &#8220;lie&#8221; methods supported by <a class="reference internal" href="moe.html#module-moe" title="moe"><tt class="xref py py-mod docutils literal"><span class="pre">moe</span></tt></a></p>
+</dd></dl>
+
+<dl class="data">
+<dt id="moe.optimal_learning.python.constant.COVARIANCE_TYPES">
+<tt class="descclassname">moe.optimal_learning.python.constant.</tt><tt class="descname">COVARIANCE_TYPES</tt><em class="property"> = ['square_exponential']</em><a class="headerlink" href="#moe.optimal_learning.python.constant.COVARIANCE_TYPES" title="Permalink to this definition">¶</a></dt>
+<dd><p>Covariance types supported by <a class="reference internal" href="moe.html#module-moe" title="moe"><tt class="xref py py-mod docutils literal"><span class="pre">moe</span></tt></a></p>
+</dd></dl>
+
+<dl class="data">
+<dt id="moe.optimal_learning.python.constant.DEFAULT_MAX_NUM_THREADS">
+<tt class="descclassname">moe.optimal_learning.python.constant.</tt><tt class="descname">DEFAULT_MAX_NUM_THREADS</tt><em class="property"> = 4</em><a class="headerlink" href="#moe.optimal_learning.python.constant.DEFAULT_MAX_NUM_THREADS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default number of threads to use in computation</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="moe.optimal_learning.python.constant.DOMAIN_TYPES">
+<tt class="descclassname">moe.optimal_learning.python.constant.</tt><tt class="descname">DOMAIN_TYPES</tt><em class="property"> = ['tensor_product', 'simplex_intersect_tensor_product']</em><a class="headerlink" href="#moe.optimal_learning.python.constant.DOMAIN_TYPES" title="Permalink to this definition">¶</a></dt>
+<dd><p>Domain types supported by <a class="reference internal" href="moe.html#module-moe" title="moe"><tt class="xref py py-mod docutils literal"><span class="pre">moe</span></tt></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="moe.optimal_learning.python.constant.DefaultOptimizerInfoTuple">
+<em class="property">class </em><tt class="descclassname">moe.optimal_learning.python.constant.</tt><tt class="descname">DefaultOptimizerInfoTuple</tt><a class="reference internal" href="_modules/moe/optimal_learning/python/constant.html#DefaultOptimizerInfoTuple"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.constant.DefaultOptimizerInfoTuple" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">moe.optimal_learning.python.constant._BaseDefaultOptimizerInfoTuple</span></tt></p>
+<p>Container holding default values to use with a <a class="reference internal" href="moe.views.html#moe.views.schemas.OptimizerInfo" title="moe.views.schemas.OptimizerInfo"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.OptimizerInfo</span></tt></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>num_multistarts</strong> &#8211; (<em>int &gt; 0</em>) number of locations from which to start optimization runs</li>
+<li><strong>num_random_samples</strong> &#8211; (<em>int &gt;= 0</em>) number of random search points to use if multistart optimization fails</li>
+<li><strong>optimizer_parameters</strong> &#8211; (<em>namedtuple</em>) parameters to use with the core optimizer,
+i.e., one of <a class="reference internal" href="moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.optimization.GradientDescentParameters" title="moe.optimal_learning.python.python_version.optimization.GradientDescentParameters"><tt class="xref py py-class docutils literal"><span class="pre">moe.optimal_learning.python.python_version.optimization.GradientDescentParameters</span></tt></a>,
+<a class="reference internal" href="moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.optimization.NewtonParameters" title="moe.optimal_learning.python.python_version.optimization.NewtonParameters"><tt class="xref py py-class docutils literal"><span class="pre">moe.optimal_learning.python.python_version.optimization.NewtonParameters</span></tt></a>, etc.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="data">
+<dt id="moe.optimal_learning.python.constant.ENDPOINT_TO_DEFAULT_OPTIMIZER_TYPE">
+<tt class="descclassname">moe.optimal_learning.python.constant.</tt><tt class="descname">ENDPOINT_TO_DEFAULT_OPTIMIZER_TYPE</tt><em class="property"> = {'gp_next_points_epi': 'gradient_descent_optimizer', 'gp_next_points_constant_liar': 'gradient_descent_optimizer', ('gp_hyper_opt', 'leave_one_out_log_likelihood'): 'gradient_descent_optimizer', 'gp_next_points_kriging': 'gradient_descent_optimizer', ('gp_hyper_opt', 'log_marginal_likelihood'): 'newton_optimizer'}</em><a class="headerlink" href="#moe.optimal_learning.python.constant.ENDPOINT_TO_DEFAULT_OPTIMIZER_TYPE" title="Permalink to this definition">¶</a></dt>
+<dd><p>dict mapping from tuples describing endpoints and objective functions to optimizer type strings;
+i.e., one of <a class="reference internal" href="#moe.optimal_learning.python.constant.OPTIMIZER_TYPES" title="moe.optimal_learning.python.constant.OPTIMIZER_TYPES"><tt class="xref py py-const docutils literal"><span class="pre">moe.optimal_learning.python.constant.OPTIMIZER_TYPES</span></tt></a>.</p>
+</dd></dl>
+
 <dl class="class">
 <dt id="moe.optimal_learning.python.constant.GaussianProcessParameters">
 <em class="property">class </em><tt class="descclassname">moe.optimal_learning.python.constant.</tt><tt class="descname">GaussianProcessParameters</tt><a class="headerlink" href="#moe.optimal_learning.python.constant.GaussianProcessParameters" title="Permalink to this definition">¶</a></dt>
@@ -275,6 +340,36 @@
 <dd><p>Alias for field number 1</p>
 </dd></dl>
 
+</dd></dl>
+
+<dl class="data">
+<dt id="moe.optimal_learning.python.constant.LIKELIHOOD_TYPES">
+<tt class="descclassname">moe.optimal_learning.python.constant.</tt><tt class="descname">LIKELIHOOD_TYPES</tt><em class="property"> = ['leave_one_out_log_likelihood', 'log_marginal_likelihood']</em><a class="headerlink" href="#moe.optimal_learning.python.constant.LIKELIHOOD_TYPES" title="Permalink to this definition">¶</a></dt>
+<dd><p>Log Likelihood types supported by <a class="reference internal" href="moe.html#module-moe" title="moe"><tt class="xref py py-mod docutils literal"><span class="pre">moe</span></tt></a></p>
+</dd></dl>
+
+<dl class="data">
+<dt id="moe.optimal_learning.python.constant.MAX_ALLOWED_NUM_THREADS">
+<tt class="descclassname">moe.optimal_learning.python.constant.</tt><tt class="descname">MAX_ALLOWED_NUM_THREADS</tt><em class="property"> = 10000</em><a class="headerlink" href="#moe.optimal_learning.python.constant.MAX_ALLOWED_NUM_THREADS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maximum number of threads that a user can specify
+TODO(GH-301): make this a server configurable value or set appropriate openmp env var</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="moe.optimal_learning.python.constant.OPTIMIZER_TYPES">
+<tt class="descclassname">moe.optimal_learning.python.constant.</tt><tt class="descname">OPTIMIZER_TYPES</tt><em class="property"> = ['null_optimizer', 'newton_optimizer', 'gradient_descent_optimizer']</em><a class="headerlink" href="#moe.optimal_learning.python.constant.OPTIMIZER_TYPES" title="Permalink to this definition">¶</a></dt>
+<dd><p>Optimizer types supported by <a class="reference internal" href="moe.html#module-moe" title="moe"><tt class="xref py py-mod docutils literal"><span class="pre">moe</span></tt></a></p>
+</dd></dl>
+
+<dl class="data">
+<dt id="moe.optimal_learning.python.constant.OPTIMIZER_TYPE_AND_OBJECTIVE_TO_DEFAULT_PARAMETERS">
+<tt class="descclassname">moe.optimal_learning.python.constant.</tt><tt class="descname">OPTIMIZER_TYPE_AND_OBJECTIVE_TO_DEFAULT_PARAMETERS</tt><em class="property"> = {('gradient_descent_optimizer', 'gp_next_points_epi', 'ei_analytic'): _BaseDefaultOptimizerInfoTuple(num_multistarts=600, num_random_samples=10000, optimizer_parameters=_BaseGradientDescentParameters(max_num_steps=500, max_num_restarts=4, num_steps_averaged=0, gamma=0.6, pre_mult=1.0, max_relative_change=1.0, tolerance=1e-07)), ('gradient_descent_optimizer', 'gp_hyper_opt', 'leave_one_out_log_likelihood'): _BaseDefaultOptimizerInfoTuple(num_multistarts=400, num_random_samples=0, optimizer_parameters=_BaseGradientDescentParameters(max_num_steps=600, max_num_restarts=10, num_steps_averaged=0, gamma=0.9, pre_mult=0.25, max_relative_change=0.2, tolerance=1e-05)), ('newton_optimizer', 'gp_hyper_opt', 'log_marginal_likelihood'): _BaseDefaultOptimizerInfoTuple(num_multistarts=200, num_random_samples=0, optimizer_parameters=_BaseNewtonParameters(max_num_steps=150, gamma=1.2, time_factor=0.0005, max_relative_change=1.0, tolerance=1e-09)), ('gradient_descent_optimizer', 'gp_hyper_opt', 'log_marginal_likelihood'): _BaseDefaultOptimizerInfoTuple(num_multistarts=400, num_random_samples=0, optimizer_parameters=_BaseGradientDescentParameters(max_num_steps=600, max_num_restarts=10, num_steps_averaged=0, gamma=0.9, pre_mult=0.25, max_relative_change=0.2, tolerance=1e-05)), ('gradient_descent_optimizer', 'gp_next_points_constant_liar'): _BaseDefaultOptimizerInfoTuple(num_multistarts=600, num_random_samples=10000, optimizer_parameters=_BaseGradientDescentParameters(max_num_steps=500, max_num_restarts=4, num_steps_averaged=0, gamma=0.6, pre_mult=1.0, max_relative_change=1.0, tolerance=1e-07)), ('gradient_descent_optimizer', 'gp_next_points_kriging'): _BaseDefaultOptimizerInfoTuple(num_multistarts=600, num_random_samples=10000, optimizer_parameters=_BaseGradientDescentParameters(max_num_steps=500, max_num_restarts=4, num_steps_averaged=0, gamma=0.6, pre_mult=1.0, max_relative_change=1.0, tolerance=1e-07)), ('gradient_descent_optimizer', 'gp_next_points_epi', 'ei_monte_carlo'): _BaseDefaultOptimizerInfoTuple(num_multistarts=200, num_random_samples=4000, optimizer_parameters=_BaseGradientDescentParameters(max_num_steps=500, max_num_restarts=4, num_steps_averaged=100, gamma=0.6, pre_mult=1.0, max_relative_change=1.0, tolerance=1e-05))}</em><a class="headerlink" href="#moe.optimal_learning.python.constant.OPTIMIZER_TYPE_AND_OBJECTIVE_TO_DEFAULT_PARAMETERS" title="Permalink to this definition">¶</a></dt>
+<dd><p>dict mapping from tuples of optimizer type, endpoint, etc. to default optimizer parameters. The default parameter
+structs are of type <a class="reference internal" href="#moe.optimal_learning.python.constant.DefaultOptimizerInfoTuple" title="moe.optimal_learning.python.constant.DefaultOptimizerInfoTuple"><tt class="xref py py-class docutils literal"><span class="pre">moe.optimal_learning.python.constant.DefaultOptimizerInfoTuple</span></tt></a> and the actual default
+parameters are defined in <a class="reference internal" href="#module-moe.optimal_learning.python.constant" title="moe.optimal_learning.python.constant"><tt class="xref py py-mod docutils literal"><span class="pre">moe.optimal_learning.python.constant</span></tt></a>.
+Note: (NEWTON_OPTIMIZER, views_constant.GP_HYPER_OPT_ROUTE_NAME, LEAVE_ONE_OUT_LOG_LIKELIHOOD)
+does not have an entry because this combination is not yet implemented.
+Newton is also not implemented for any of the GP_NEXT_POINTS_* endpoints.</p>
 </dd></dl>
 
 </div>
@@ -475,7 +570,7 @@ HistoricalData container); it also provides a convenient grouping for interactiv
 <tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
 <li><strong>point</strong> &#8211; (<em>iterable of dim float64</em>) The point sampled (in the domain of the function)</li>
 <li><strong>value</strong> &#8211; (<em>float64</em>) The value returned by the function</li>
-<li><strong>noise_variance</strong> &#8211; (<em>float64 &gt;= 0.0</em>) The noise/measurement variance (if any) associated with <tt class="docutils literal"><span class="pre">value</span></tt></li>
+<li><strong>noise_variance</strong> &#8211; (<em>float64 &gt;= 0.0</em>) The noise/measurement variance (if any) associated with :attr`value`</li>
 </ul>
 </td>
 </tr>
@@ -760,7 +855,8 @@ the <tt class="docutils literal"><span class="pre">RepeatedDomain</span></tt>, a
 that kernalizes that object&#8217;s functionality.</p>
 <p>In general, kernel domain operations need be performed <tt class="docutils literal"><span class="pre">num_repeats</span></tt> times, once
 for each point. This class hides the looping logic so that use cases like various
-OptimizerInterface subclasses (optimization.py) do not need to be explicitly aware
+<a class="reference internal" href="moe.optimal_learning.python.interfaces.html#moe.optimal_learning.python.interfaces.optimization_interface.OptimizerInterface" title="moe.optimal_learning.python.interfaces.optimization_interface.OptimizerInterface"><tt class="xref py py-class docutils literal"><span class="pre">moe.optimal_learning.python.interfaces.optimization_interface.OptimizerInterface</span></tt></a>
+subclasses do not need to be explicitly aware
 of whether they are optimizing 1 point or 50 points. Instead, the OptimizableInterface
 implementation provides problem_size() and appropriately sized gradient information.
 Coupled with RepeatedDomain, Optimizers can remain oblivious.</p>
@@ -904,36 +1000,69 @@ fewer than <tt class="docutils literal"><span class="pre">num_points</span></tt>
 </dd></dl>
 
 </div>
+<div class="section" id="module-moe.optimal_learning.python.timing">
+<span id="moe-optimal-learning-python-timing-module"></span><h2>moe.optimal_learning.python.timing module<a class="headerlink" href="#module-moe.optimal_learning.python.timing" title="Permalink to this headline">¶</a></h2>
+<p>Simple context manager for logging timing information.</p>
+<p>TODO(GH-299): Make this part of a more complete monitoring setup, flesh out timing tools.
+TODO(GH-299): Add a decorator for timing functions.</p>
+<dl class="function">
+<dt id="moe.optimal_learning.python.timing.timing_context">
+<tt class="descclassname">moe.optimal_learning.python.timing.</tt><tt class="descname">timing_context</tt><big>(</big><em>*args</em>, <em>**kwds</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/timing.html#timing_context"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.timing.timing_context" title="Permalink to this definition">¶</a></dt>
+<dd><p>Context manager that logs the runtime of the body of the with-statement.</p>
+<p>Uses time.clock() for measurement; not appropriate for fast-running code.
+Consider the <tt class="docutils literal"><span class="pre">timeit</span></tt> library for such situations.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> (<em>str</em>) &#8211; name to log with this timing information</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
 <div class="section" id="module-moe.optimal_learning.python">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-moe.optimal_learning.python" title="Permalink to this headline">¶</a></h2>
 <p>The python component of the optimal_learning package, containing wrappers around C++ implementations of features and Python implementations of some of those features.</p>
 <p><strong>Files in this package</strong></p>
 <ul class="simple">
-<li>constant.py: some default configuration values for <tt class="docutils literal"><span class="pre">optimal_learning</span></tt> components</li>
-<li>data_containers.py: SamplePoint and HistoricalData containers for passing data to the <tt class="docutils literal"><span class="pre">optimal_learning</span></tt> library</li>
-<li>geometry_utils.py: geometry utilities; e.g., ClosedInterval, random point generation</li>
-<li>linkers.py: linkers connecting equivalent <tt class="docutils literal"><span class="pre">cpp_wrappers</span></tt> and <tt class="docutils literal"><span class="pre">python_version</span></tt> versions of <tt class="docutils literal"><span class="pre">optimal_learning</span></tt> components.</li>
-<li>repeated_domain.py: RepeatedDomain object for manipulating sets of points simultaneously within the same domain</li>
+<li><a class="reference internal" href="#module-moe.optimal_learning.python.constant" title="moe.optimal_learning.python.constant"><tt class="xref py py-mod docutils literal"><span class="pre">moe.optimal_learning.python.constant</span></tt></a>: some default configuration values for <tt class="docutils literal"><span class="pre">optimal_learning</span></tt> components</li>
+<li><a class="reference internal" href="#module-moe.optimal_learning.python.data_containers" title="moe.optimal_learning.python.data_containers"><tt class="xref py py-mod docutils literal"><span class="pre">moe.optimal_learning.python.data_containers</span></tt></a>: <a class="reference internal" href="#moe.optimal_learning.python.data_containers.SamplePoint" title="moe.optimal_learning.python.data_containers.SamplePoint"><tt class="xref py py-class docutils literal"><span class="pre">SamplePoint</span></tt></a>
+and <a class="reference internal" href="#moe.optimal_learning.python.data_containers.HistoricalData" title="moe.optimal_learning.python.data_containers.HistoricalData"><tt class="xref py py-class docutils literal"><span class="pre">HistoricalData</span></tt></a> containers for passing data to the <tt class="docutils literal"><span class="pre">optimal_learning</span></tt> library</li>
+<li><a class="reference internal" href="#module-moe.optimal_learning.python.geometry_utils" title="moe.optimal_learning.python.geometry_utils"><tt class="xref py py-mod docutils literal"><span class="pre">moe.optimal_learning.python.geometry_utils</span></tt></a>: geometry utilities;
+e.g., <a class="reference internal" href="#moe.optimal_learning.python.geometry_utils.ClosedInterval" title="moe.optimal_learning.python.geometry_utils.ClosedInterval"><tt class="xref py py-class docutils literal"><span class="pre">ClosedInterval</span></tt></a>, random point generation</li>
+<li><a class="reference internal" href="#module-moe.optimal_learning.python.linkers" title="moe.optimal_learning.python.linkers"><tt class="xref py py-mod docutils literal"><span class="pre">moe.optimal_learning.python.linkers</span></tt></a>: linkers connecting equivalent <tt class="docutils literal"><span class="pre">cpp_wrappers</span></tt> and <tt class="docutils literal"><span class="pre">python_version</span></tt> versions of <tt class="docutils literal"><span class="pre">optimal_learning</span></tt> components.</li>
+<li><a class="reference internal" href="#module-moe.optimal_learning.python.repeated_domain" title="moe.optimal_learning.python.repeated_domain"><tt class="xref py py-mod docutils literal"><span class="pre">moe.optimal_learning.python.repeated_domain</span></tt></a>: <a class="reference internal" href="#moe.optimal_learning.python.repeated_domain.RepeatedDomain" title="moe.optimal_learning.python.repeated_domain.RepeatedDomain"><tt class="xref py py-class docutils literal"><span class="pre">RepeatedDomain</span></tt></a>
+object for manipulating sets of points simultaneously within the same domain</li>
 </ul>
 <p><strong>Major sub-packages</strong></p>
-<p><strong>interfaces</strong></p>
-<p>A set of abstract base classes (ABCs) defining an interface for interacting with optimal_learning. These consist of composable
+<p><strong>interfaces</strong>
+<a class="reference internal" href="moe.optimal_learning.python.interfaces.html#module-moe.optimal_learning.python.interfaces" title="moe.optimal_learning.python.interfaces"><tt class="xref py py-mod docutils literal"><span class="pre">moe.optimal_learning.python.interfaces</span></tt></a></p>
+<p>A set of abstract base classes (ABCs) defining an interface for interacting with <tt class="docutils literal"><span class="pre">optimal_learning</span></tt>. These consist of composable
 functions and classes to build models, perform model selection, and design new experiments.</p>
-<p><strong>cpp_wrappers</strong></p>
+<p><strong>cpp_wrappers</strong>
+<a class="reference internal" href="moe.optimal_learning.python.cpp_wrappers.html#module-moe.optimal_learning.python.cpp_wrappers" title="moe.optimal_learning.python.cpp_wrappers"><tt class="xref py py-mod docutils literal"><span class="pre">moe.optimal_learning.python.cpp_wrappers</span></tt></a></p>
 <p>An implementation of the ABCs in interfaces using wrappers around (fast) C++ calls. These routines are meant for &#8220;production&#8221; runs
 where high performance is a concern.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">the higher level C++ interfaces are generally <em>not</em> composable with objects not in the cpp_wrappers package. So it
-would be possible to implement ExpectedImprovementInterface in Python and connect it to
-cpp_wrappers.gaussian_process.GaussianProcess, BUT it is not currently possible to connect
-cpp_wrappers.expected_improvement.ExpectedImprovement to python_version.gaussian_process.GaussianProcess.</p>
+would be possible to implement
+<a class="reference internal" href="moe.optimal_learning.python.interfaces.html#moe.optimal_learning.python.interfaces.expected_improvement_interface.ExpectedImprovementInterface" title="moe.optimal_learning.python.interfaces.expected_improvement_interface.ExpectedImprovementInterface"><tt class="xref py py-class docutils literal"><span class="pre">moe.optimal_learning.python.interfaces.expected_improvement_interface.ExpectedImprovementInterface</span></tt></a>
+in Python and connect it to
+<a class="reference internal" href="moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.gaussian_process.GaussianProcess" title="moe.optimal_learning.python.cpp_wrappers.gaussian_process.GaussianProcess"><tt class="xref py py-class docutils literal"><span class="pre">moe.optimal_learning.python.cpp_wrappers.gaussian_process.GaussianProcess</span></tt></a>,
+BUT it is not currently possible to connect
+<a class="reference internal" href="moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.expected_improvement.ExpectedImprovement" title="moe.optimal_learning.python.cpp_wrappers.expected_improvement.ExpectedImprovement"><tt class="xref py py-class docutils literal"><span class="pre">moe.optimal_learning.python.cpp_wrappers.expected_improvement.ExpectedImprovement</span></tt></a> to
+<a class="reference internal" href="moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.gaussian_process.GaussianProcess" title="moe.optimal_learning.python.python_version.gaussian_process.GaussianProcess"><tt class="xref py py-class docutils literal"><span class="pre">moe.optimal_learning.python.python_version.gaussian_process.GaussianProcess</span></tt></a>.</p>
 </div>
-<p><strong>python_version</strong></p>
+<p><strong>python_version</strong>
+<a class="reference internal" href="moe.optimal_learning.python.python_version.html#module-moe.optimal_learning.python.python_version" title="moe.optimal_learning.python.python_version"><tt class="xref py py-mod docutils literal"><span class="pre">moe.optimal_learning.python.python_version</span></tt></a></p>
 <p>An implementation of the ABCs in interfaces using Python (with numpy/scipy). These routines are more for educational and
 experimental purposes. Python is generally simpler than C++ so the hope is that this package is more accessible to new
 users hoping to learn about optimal_learning. Additionally, development time in Python is shorter, so it could be convenient
-to test new ideas here before fully implementing them in C++. For example, developers could test a new OptimizerInterface
+to test new ideas here before fully implementing them in C++. For example, developers could test a new
+<a class="reference internal" href="moe.optimal_learning.python.interfaces.html#moe.optimal_learning.python.interfaces.optimization_interface.OptimizerInterface" title="moe.optimal_learning.python.interfaces.optimization_interface.OptimizerInterface"><tt class="xref py py-class docutils literal"><span class="pre">moe.optimal_learning.python.interfaces.optimization_interface.OptimizerInterface</span></tt></a>
 implementation in Python while connecting it to C++ evaluation of objective functions.</p>
 </div>
 </div>
@@ -956,7 +1085,7 @@ implementation in Python while connecting it to C++ evaluation of objective func
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+        &copy; Copyright 2012-2014 Yelp. MOE is licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0.
     </p>
   </div>
 

@@ -7,9 +7,9 @@ C++ Files
 
     gpp_optimization_test.rst
     gpp_domain_test.rst
-    gpp_exception.rst
+    gpp_linear_algebra_test.rst
     gpp_geometry.rst
-    gpp_heuristic_expected_improvement_optimization.rst
+    gpp_python_gaussian_process.rst
     gpp_linear_algebra-inl.rst
     gpp_test_utils.rst
     gpp_logging.rst
@@ -30,7 +30,7 @@ C++ Files
     gpp_geometry_test.rst
     gpp_linear_algebra.rst
     gpp_heuristic_expected_improvement_optimization_test.rst
-    gpp_linear_algebra_test.rst
+    gpp_exception.rst
     gpp_model_selection.rst
     gpp_optimization.rst
     gpp_covariance_test.rst
@@ -38,5 +38,5 @@ C++ Files
     gpp_python.rst
     gpp_model_selection_test.rst
     gpp_hyper_and_EI_demo.rst
-    gpp_python_gaussian_process.rst
+    gpp_heuristic_expected_improvement_optimization.rst
     gpp_common.rst

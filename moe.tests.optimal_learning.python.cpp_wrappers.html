@@ -111,6 +111,18 @@
 <li class="toctree-l2"><a class="reference internal" href="contributing.html#style">Style</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#what-license-is-moe-released-under">What license is MOE released under?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#when-should-i-use-moe">When should I use MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#what-is-the-time-complexity-of-moe">What is the time complexity of MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-do-i-cite-moe">How do I cite MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#why-does-moe-take-so-long-to-return-the-next-points-to-sample-for-some-inputs">Why does MOE take so long to return the next points to sample for some inputs?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-do-i-bootstrap-moe-what-initial-data-does-it-need">How do I bootstrap MOE? What initial data does it need?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-many-function-evaluations-do-i-need-before-moe-is-done">How many function evaluations do I need before MOE is &#8220;done&#8221;?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-many-function-evaluations-do-i-perform-before-i-update-the-hyperparameters-of-the-gp">How many function evaluations do I perform before I update the hyperparameters of the GP?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#will-you-accept-my-pull-request">Will you accept my pull request?</a></li>
+</ul>
+</li>
 </ul>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="moe.html">moe package</a><ul class="current">
@@ -135,9 +147,9 @@
 <li class="toctree-l1"><a class="reference internal" href="cpp_tree.html">C++ Files</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimization_test.html">gpp_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_domain_test.html">gpp_domain_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_exception.html">gpp_exception</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_geometry.html">gpp_geometry</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_test_utils.html">gpp_test_utils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_logging.html">gpp_logging</a></li>
@@ -158,7 +170,7 @@
 <li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra.html">gpp_linear_algebra</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_exception.html">gpp_exception</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_model_selection.html">gpp_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_covariance_test.html">gpp_covariance_test</a></li>
@@ -166,7 +178,7 @@
 <li class="toctree-l2"><a class="reference internal" href="gpp_python.html">gpp_python</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_test.html">gpp_model_selection_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_common.html">gpp_common</a></li>
 </ul>
 </li>
@@ -266,7 +278,7 @@ which makes it difficult to set meaningful tolerances for the checks.</p>
 
 <dl class="attribute">
 <dt id="moe.tests.optimal_learning.python.cpp_wrappers.expected_improvement_test.ExpectedImprovementTest.gp_test_environment_input">
-<tt class="descname">gp_test_environment_input</tt><em class="property"> = &lt;moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestEnvironmentInput object at 0x10ab58250&gt;</em><a class="headerlink" href="#moe.tests.optimal_learning.python.cpp_wrappers.expected_improvement_test.ExpectedImprovementTest.gp_test_environment_input" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">gp_test_environment_input</tt><em class="property"> = &lt;moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestEnvironmentInput object at 0x2b7b1273a590&gt;</em><a class="headerlink" href="#moe.tests.optimal_learning.python.cpp_wrappers.expected_improvement_test.ExpectedImprovementTest.gp_test_environment_input" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -360,7 +372,7 @@ which makes it difficult to set meaningful tolerances for the checks.</p>
 </div>
 <div class="section" id="module-moe.tests.optimal_learning.python.cpp_wrappers.log_likelihood_test">
 <span id="moe-tests-optimal-learning-python-cpp-wrappers-log-likelihood-test-module"></span><h2>moe.tests.optimal_learning.python.cpp_wrappers.log_likelihood_test module<a class="headerlink" href="#module-moe.tests.optimal_learning.python.cpp_wrappers.log_likelihood_test" title="Permalink to this headline">¶</a></h2>
-<p>Test cases to check that C++ and Python implementations of interfaces/log_likelihood.py match.</p>
+<p>Test cases to check that C++ and Python implementations of <a class="reference internal" href="moe.optimal_learning.python.interfaces.html#module-moe.optimal_learning.python.interfaces.log_likelihood_interface" title="moe.optimal_learning.python.interfaces.log_likelihood_interface"><tt class="xref py py-mod docutils literal"><span class="pre">moe.optimal_learning.python.interfaces.log_likelihood_interface</span></tt></a> match.</p>
 <dl class="class">
 <dt id="moe.tests.optimal_learning.python.cpp_wrappers.log_likelihood_test.LogLikelihoodTest">
 <em class="property">class </em><tt class="descclassname">moe.tests.optimal_learning.python.cpp_wrappers.log_likelihood_test.</tt><tt class="descname">LogLikelihoodTest</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/cpp_wrappers/log_likelihood_test.html#LogLikelihoodTest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.cpp_wrappers.log_likelihood_test.LogLikelihoodTest" title="Permalink to this definition">¶</a></dt>
@@ -373,7 +385,7 @@ which makes it difficult to set meaningful tolerances for the checks.</p>
 
 <dl class="attribute">
 <dt id="moe.tests.optimal_learning.python.cpp_wrappers.log_likelihood_test.LogLikelihoodTest.gp_test_environment_input">
-<tt class="descname">gp_test_environment_input</tt><em class="property"> = &lt;moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestEnvironmentInput object at 0x10acce8d0&gt;</em><a class="headerlink" href="#moe.tests.optimal_learning.python.cpp_wrappers.log_likelihood_test.LogLikelihoodTest.gp_test_environment_input" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">gp_test_environment_input</tt><em class="property"> = &lt;moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestEnvironmentInput object at 0x2b7b1282af90&gt;</em><a class="headerlink" href="#moe.tests.optimal_learning.python.cpp_wrappers.log_likelihood_test.LogLikelihoodTest.gp_test_environment_input" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -433,7 +445,7 @@ The C++ is independently tested (see <tt class="docutils literal"><span class="p
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+        &copy; Copyright 2012-2014 Yelp. MOE is licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0.
     </p>
   </div>
 

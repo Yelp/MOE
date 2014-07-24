@@ -109,6 +109,18 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../../contributing.html#style">Style</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../faq.html">Frequently Asked Questions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#what-license-is-moe-released-under">What license is MOE released under?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#when-should-i-use-moe">When should I use MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#what-is-the-time-complexity-of-moe">What is the time complexity of MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#how-do-i-cite-moe">How do I cite MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#why-does-moe-take-so-long-to-return-the-next-points-to-sample-for-some-inputs">Why does MOE take so long to return the next points to sample for some inputs?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#how-do-i-bootstrap-moe-what-initial-data-does-it-need">How do I bootstrap MOE? What initial data does it need?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#how-many-function-evaluations-do-i-need-before-moe-is-done">How many function evaluations do I need before MOE is &#8220;done&#8221;?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#how-many-function-evaluations-do-i-perform-before-i-update-the-hyperparameters-of-the-gp">How many function evaluations do I perform before I update the hyperparameters of the GP?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#will-you-accept-my-pull-request">Will you accept my pull request?</a></li>
+</ul>
+</li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../moe.html">moe package</a><ul>
@@ -133,9 +145,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../../cpp_tree.html">C++ Files</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_optimization_test.html">gpp_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_domain_test.html">gpp_domain_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_exception.html">gpp_exception</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_geometry.html">gpp_geometry</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_test_utils.html">gpp_test_utils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_logging.html">gpp_logging</a></li>
@@ -156,7 +168,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_geometry_test.html">gpp_geometry_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_linear_algebra.html">gpp_linear_algebra</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_exception.html">gpp_exception</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_model_selection.html">gpp_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_optimization.html">gpp_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_covariance_test.html">gpp_covariance_test</a></li>
@@ -164,7 +176,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python.html">gpp_python</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_model_selection_test.html">gpp_model_selection_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_common.html">gpp_common</a></li>
 </ul>
 </li>
@@ -209,10 +221,12 @@
 <span class="sd">&quot;&quot;&quot;Tools to compute ExpectedImprovement and optimize the next best point(s) to sample using EI through C++ calls.</span>
 
 <span class="sd">This file contains a class to compute Expected Improvement + derivatives and a functions to solve the q,p-EI optimization problem.</span>
-<span class="sd">The ExpectedImprovement class implements interfaces.ExpectedImproventInterface. The optimization functions are convenient</span>
-<span class="sd">wrappers around the matching C++ calls.</span>
+<span class="sd">The :class:`moe.optimal_learning.python.cpp_wrappers.expected_improvement.ExpectedImprovement`</span>
+<span class="sd">class implements :class:`moe.optimal_learning.python.interfaces.expected_improvement_interface.ExpectedImproventInterface`.</span>
+<span class="sd">The optimization functions are convenient wrappers around the matching C++ calls.</span>
 
-<span class="sd">See interfaces/expected_improvement_interface.py or gpp_math.hpp/cpp for further details on expected improvement.</span>
+<span class="sd">See :class:`moe.optimal_learning.python.interfaces.expected_improvement_interface` or</span>
+<span class="sd">gpp_math.hpp/cpp for further details on expected improvement.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">numpy</span>
@@ -237,7 +251,8 @@
 <span class="sd">    When ``points_being_sampled.size == 0 &amp;&amp; num_to_sample == 1``, this function will use (fast) analytic EI computations.</span>
 
 <span class="sd">    .. NOTE:: The following comments are copied from gpp_math.hpp, ComputeOptimalPointsToSample().</span>
-<span class="sd">        These comments are copied into multistart_expected_improvement_optimization() in python_version/expected_improvement.py</span>
+<span class="sd">      These comments are copied into</span>
+<span class="sd">      :func:`moe.optimal_learning.python.python_version.expected_improvement.multistart_expected_improvement_optimization`</span>
 
 <span class="sd">    This is the primary entry-point for EI optimization in the optimal_learning library. It offers our best shot at</span>
 <span class="sd">    improving robustness by combining higher accuracy methods like gradient descent with fail-safes like random/grid search.</span>
@@ -547,7 +562,7 @@
 <span class="sd">    .. Note:: Equivalent methods of ExpectedImprovementInterface and OptimizableInterface are aliased below (e.g.,</span>
 <span class="sd">      compute_expected_improvement and compute_objective_function, etc).</span>
 
-<span class="sd">    See interfaces/expected_improvement_interface.py docs for further details.</span>
+<span class="sd">    See :mod:`moe.optimal_learning.python.interfaces.expected_improvement_interface` docs for further details.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -699,7 +714,8 @@
 <div class="viewcode-block" id="ExpectedImprovement.compute_expected_improvement"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.expected_improvement.ExpectedImprovement.compute_expected_improvement">[docs]</a>    <span class="k">def</span> <span class="nf">compute_expected_improvement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">force_monte_carlo</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="sd">r&quot;&quot;&quot;Compute the expected improvement at ``points_to_sample``, with ``points_being_sampled`` concurrent points being sampled.</span>
 
-<span class="sd">        .. Note:: These comments were copied from this object&#39;s superclass in expected_improvement_interface.py.</span>
+<span class="sd">        .. Note:: These comments were copied from</span>
+<span class="sd">          :meth:`moe.optimal_learning.python.interfaces.expected_improvement_interface.ExpectedImprovementInterface.compute_expected_improvement`</span>
 
 <span class="sd">        ``points_to_sample`` is the &quot;q&quot; and ``points_being_sampled`` is the &quot;p&quot; in q,p-EI.</span>
 
@@ -749,7 +765,8 @@
 <div class="viewcode-block" id="ExpectedImprovement.compute_grad_expected_improvement"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.expected_improvement.ExpectedImprovement.compute_grad_expected_improvement">[docs]</a>    <span class="k">def</span> <span class="nf">compute_grad_expected_improvement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">force_monte_carlo</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="sd">r&quot;&quot;&quot;Compute the gradient of expected improvement at ``points_to_sample`` wrt ``points_to_sample``, with ``points_being_sampled`` concurrent samples.</span>
 
-<span class="sd">        .. Note:: These comments were copied from this&#39;s superclass in expected_improvement_interface.py.</span>
+<span class="sd">        .. Note:: These comments were copied from</span>
+<span class="sd">          :meth:`moe.optimal_learning.python.interfaces.expected_improvement_interface.ExpectedImprovementInterface.compute_grad_expected_improvement`</span>
 
 <span class="sd">        ``points_to_sample`` is the &quot;q&quot; and ``points_being_sampled`` is the &quot;p&quot; in q,p-EI.</span>
 
@@ -800,7 +817,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+        &copy; Copyright 2012-2014 Yelp. MOE is licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0.
     </p>
   </div>
 

@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>moe.views.rest.gp_next_points_constant_liar &mdash; MOE 0.1.0 documentation</title>
+  <title>moe.optimal_learning.python.timing &mdash; MOE 0.1.0 documentation</title>
   
 
   
@@ -207,7 +207,7 @@
       
           <li><a href="../../../moe.html">moe</a> &raquo;</li>
       
-    <li>moe.views.rest.gp_next_points_constant_liar</li>
+    <li>moe.optimal_learning.python.timing</li>
       <li class="wy-breadcrumbs-aside">
         
       </li>
@@ -216,93 +216,37 @@
 </div>
           <div role="main">
             
-  <h1>Source code for moe.views.rest.gp_next_points_constant_liar</h1><div class="highlight"><pre>
+  <h1>Source code for moe.optimal_learning.python.timing</h1><div class="highlight"><pre>
 <span class="c"># -*- coding: utf-8 -*-</span>
-<span class="sd">&quot;&quot;&quot;Classes for gp_next_points_constant_liar endpoints.</span>
+<span class="sd">&quot;&quot;&quot;Simple context manager for logging timing information.</span>
 
-<span class="sd">Includes:</span>
+<span class="sd">TODO(GH-299): Make this part of a more complete monitoring setup, flesh out timing tools.</span>
+<span class="sd">TODO(GH-299): Add a decorator for timing functions.</span>
 
-<span class="sd">    1. pretty and backend views</span>
-
-<span class="sd">Support for:</span>
-
-<span class="sd">    * `&#39;constant_liar_min&#39;` - `lie_value` is equal to the *min* of all points sampled so far</span>
-<span class="sd">    * `&#39;constant_liar_max&#39;` - `lie_value` is equal to the *max* of all points sampled so far</span>
-<span class="sd">    * `&#39;constant_liar_mean&#39;` - `lie_value` is equal to the *mean* of all points sampled so far</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">numpy</span>
-
-<span class="kn">from</span> <span class="nn">pyramid.view</span> <span class="kn">import</span> <span class="n">view_config</span>
-
-<span class="kn">from</span> <span class="nn">moe.optimal_learning.python.constant</span> <span class="kn">import</span> <span class="n">CONSTANT_LIAR_MIN</span><span class="p">,</span> <span class="n">CONSTANT_LIAR_MAX</span><span class="p">,</span> <span class="n">CONSTANT_LIAR_MEAN</span><span class="p">,</span> <span class="n">DEFAULT_CONSTANT_LIAR_METHOD</span>
-<span class="kn">from</span> <span class="nn">moe.views.constant</span> <span class="kn">import</span> <span class="n">GP_NEXT_POINTS_CONSTANT_LIAR_ROUTE_NAME</span><span class="p">,</span> <span class="n">GP_NEXT_POINTS_CONSTANT_LIAR_PRETTY_ROUTE_NAME</span><span class="p">,</span> <span class="n">GP_NEXT_POINTS_CONSTANT_LIAR_OPTIMIZER_METHOD_NAME</span>
-<span class="kn">from</span> <span class="nn">moe.views.gp_next_points_pretty_view</span> <span class="kn">import</span> <span class="n">GpNextPointsPrettyView</span>
-<span class="kn">from</span> <span class="nn">moe.views.gp_pretty_view</span> <span class="kn">import</span> <span class="n">PRETTY_RENDERER</span>
-<span class="kn">from</span> <span class="nn">moe.views.schemas</span> <span class="kn">import</span> <span class="n">GpNextPointsConstantLiarRequest</span>
-<span class="kn">from</span> <span class="nn">moe.views.utils</span> <span class="kn">import</span> <span class="n">_make_gp_from_params</span>
+<span class="kn">import</span> <span class="nn">contextlib</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">time</span>
 
 
-<div class="viewcode-block" id="GpNextPointsConstantLiar"><a class="viewcode-back" href="../../../../moe.views.rest.html#moe.views.rest.gp_next_points_constant_liar.GpNextPointsConstantLiar">[docs]</a><span class="k">class</span> <span class="nc">GpNextPointsConstantLiar</span><span class="p">(</span><span class="n">GpNextPointsPrettyView</span><span class="p">):</span>
+<span class="nd">@contextlib.contextmanager</span>
+<div class="viewcode-block" id="timing_context"><a class="viewcode-back" href="../../../../moe.optimal_learning.python.html#moe.optimal_learning.python.timing.timing_context">[docs]</a><span class="k">def</span> <span class="nf">timing_context</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Context manager that logs the runtime of the body of the with-statement.</span>
 
-    <span class="sd">&quot;&quot;&quot;Views for gp_next_points_constant_liar endpoints.&quot;&quot;&quot;</span>
+<span class="sd">    Uses time.clock() for measurement; not appropriate for fast-running code.</span>
+<span class="sd">    Consider the ``timeit`` library for such situations.</span>
 
-    <span class="n">_route_name</span> <span class="o">=</span> <span class="n">GP_NEXT_POINTS_CONSTANT_LIAR_ROUTE_NAME</span>
-    <span class="n">_pretty_route_name</span> <span class="o">=</span> <span class="n">GP_NEXT_POINTS_CONSTANT_LIAR_PRETTY_ROUTE_NAME</span>
+<span class="sd">    :param name: name to log with this timing information</span>
+<span class="sd">    :type name: str</span>
 
-    <span class="n">request_schema</span> <span class="o">=</span> <span class="n">GpNextPointsConstantLiarRequest</span><span class="p">()</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="s">&quot;log&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">timing_context</span><span class="o">.</span><span class="n">__dict__</span><span class="p">:</span>
+        <span class="n">timing_context</span><span class="o">.</span><span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
 
-    <span class="n">_pretty_default_request</span> <span class="o">=</span> <span class="n">GpNextPointsPrettyView</span><span class="o">.</span><span class="n">_pretty_default_request</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-    <span class="n">_pretty_default_request</span><span class="p">[</span><span class="s">&#39;lie_method&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">DEFAULT_CONSTANT_LIAR_METHOD</span>
-
-    <span class="nd">@view_config</span><span class="p">(</span><span class="n">route_name</span><span class="o">=</span><span class="n">_pretty_route_name</span><span class="p">,</span> <span class="n">renderer</span><span class="o">=</span><span class="n">PRETTY_RENDERER</span><span class="p">)</span>
-<div class="viewcode-block" id="GpNextPointsConstantLiar.pretty_view"><a class="viewcode-back" href="../../../../moe.views.rest.html#moe.views.rest.gp_next_points_constant_liar.GpNextPointsConstantLiar.pretty_view">[docs]</a>    <span class="k">def</span> <span class="nf">pretty_view</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;A pretty, browser interactive view for the interface. Includes form request and response.</span>
-
-<span class="sd">        .. http:get:: /gp/next_points/constant_liar/pretty</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pretty_response</span><span class="p">()</span>
-</div>
-<div class="viewcode-block" id="GpNextPointsConstantLiar.get_lie_value"><a class="viewcode-back" href="../../../../moe.views.rest.html#moe.views.rest.gp_next_points_constant_liar.GpNextPointsConstantLiar.get_lie_value">[docs]</a>    <span class="k">def</span> <span class="nf">get_lie_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return the lie value associated with the lie_method, unless lie_value is explicitly given.&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;lie_value&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;lie_value&#39;</span><span class="p">)</span>
-
-        <span class="n">gaussian_process</span> <span class="o">=</span> <span class="n">_make_gp_from_params</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
-        <span class="n">points_sampled_values</span> <span class="o">=</span> <span class="n">gaussian_process</span><span class="o">.</span><span class="n">_historical_data</span><span class="o">.</span><span class="n">_points_sampled_value</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-
-        <span class="k">if</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;lie_method&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="n">CONSTANT_LIAR_MIN</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">amin</span><span class="p">(</span><span class="n">points_sampled_values</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;lie_method&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="n">CONSTANT_LIAR_MAX</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">points_sampled_values</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;lie_method&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="n">CONSTANT_LIAR_MEAN</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">points_sampled_values</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span><span class="p">(</span><span class="ne">NotImplementedError</span><span class="p">,</span> <span class="s">&#39;{0} is not implemented&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;lie_method&#39;</span><span class="p">)))</span>
-</div>
-    <span class="nd">@view_config</span><span class="p">(</span><span class="n">route_name</span><span class="o">=</span><span class="n">_route_name</span><span class="p">,</span> <span class="n">renderer</span><span class="o">=</span><span class="s">&#39;json&#39;</span><span class="p">,</span> <span class="n">request_method</span><span class="o">=</span><span class="s">&#39;POST&#39;</span><span class="p">)</span>
-<div class="viewcode-block" id="GpNextPointsConstantLiar.gp_next_points_constant_liar_view"><a class="viewcode-back" href="../../../../moe.views.rest.html#moe.views.rest.gp_next_points_constant_liar.GpNextPointsConstantLiar.gp_next_points_constant_liar_view">[docs]</a>    <span class="k">def</span> <span class="nf">gp_next_points_constant_liar_view</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Endpoint for gp_next_points_constant_liar POST requests.</span>
-
-<span class="sd">        .. http:post:: /gp/next_points/constant_liar</span>
-
-<span class="sd">           Calculates the next best points to sample, given historical data, using Constant Liar (CL).</span>
-
-<span class="sd">           :input: :class:`moe.views.schemas.GpNextPointsConstantLiarRequest`</span>
-<span class="sd">           :output: :class:`moe.views.schemas.GpNextPointsResponse`</span>
-
-<span class="sd">           :status 200: returns a response</span>
-<span class="sd">           :status 500: server error</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_params_from_request</span><span class="p">()</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_next_points_to_sample_response</span><span class="p">(</span>
-                <span class="n">params</span><span class="p">,</span>
-                <span class="n">GP_NEXT_POINTS_CONSTANT_LIAR_OPTIMIZER_METHOD_NAME</span><span class="p">,</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_route_name</span><span class="p">,</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">get_lie_value</span><span class="p">(</span><span class="n">params</span><span class="p">),</span>
-                <span class="n">lie_noise_variance</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;lie_noise_variance&#39;</span><span class="p">),</span>
-                <span class="p">)</span></div></div>
+    <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="k">yield</span>
+    <span class="n">elapsed_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
+    <span class="n">timing_context</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;{0:s}: {1:f} secs&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">elapsed_time</span><span class="p">))</span></div>
 </pre></div>
 
           </div>

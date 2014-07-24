@@ -111,6 +111,18 @@
 <li class="toctree-l2"><a class="reference internal" href="contributing.html#style">Style</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#what-license-is-moe-released-under">What license is MOE released under?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#when-should-i-use-moe">When should I use MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#what-is-the-time-complexity-of-moe">What is the time complexity of MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-do-i-cite-moe">How do I cite MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#why-does-moe-take-so-long-to-return-the-next-points-to-sample-for-some-inputs">Why does MOE take so long to return the next points to sample for some inputs?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-do-i-bootstrap-moe-what-initial-data-does-it-need">How do I bootstrap MOE? What initial data does it need?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-many-function-evaluations-do-i-need-before-moe-is-done">How many function evaluations do I need before MOE is &#8220;done&#8221;?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-many-function-evaluations-do-i-perform-before-i-update-the-hyperparameters-of-the-gp">How many function evaluations do I perform before I update the hyperparameters of the GP?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#will-you-accept-my-pull-request">Will you accept my pull request?</a></li>
+</ul>
+</li>
 </ul>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="moe.html">moe package</a><ul class="current">
@@ -135,9 +147,9 @@
 <li class="toctree-l1"><a class="reference internal" href="cpp_tree.html">C++ Files</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimization_test.html">gpp_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_domain_test.html">gpp_domain_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_exception.html">gpp_exception</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_geometry.html">gpp_geometry</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_test_utils.html">gpp_test_utils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_logging.html">gpp_logging</a></li>
@@ -158,7 +170,7 @@
 <li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra.html">gpp_linear_algebra</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_exception.html">gpp_exception</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_model_selection.html">gpp_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_covariance_test.html">gpp_covariance_test</a></li>
@@ -166,7 +178,7 @@
 <li class="toctree-l2"><a class="reference internal" href="gpp_python.html">gpp_python</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_test.html">gpp_model_selection_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_common.html">gpp_common</a></li>
 </ul>
 </li>
@@ -283,7 +295,7 @@ specified problem sizes (<tt class="docutils literal"><span class="pre">self.num
 
 <dl class="attribute">
 <dt id="moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestCase.gp_test_environment_input">
-<tt class="descname">gp_test_environment_input</tt><em class="property"> = &lt;moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestEnvironmentInput object at 0x10ab373d0&gt;</em><a class="headerlink" href="#moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestCase.gp_test_environment_input" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">gp_test_environment_input</tt><em class="property"> = &lt;moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestEnvironmentInput object at 0x2b7b07d6f1d0&gt;</em><a class="headerlink" href="#moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestCase.gp_test_environment_input" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -660,32 +672,25 @@ a routine to check that points are distinct.</p>
 <p>This package includes:</p>
 <ul class="simple">
 <li>Test cases/test setup files</li>
-<li>Tests for optimal_learning/python/*py utils</li>
-<li>Tests for optimal_learning/python_version</li>
-<li>Tests for optimal_learning/cpp_wrappers</li>
+<li>Tests for classes and utils in <a class="reference internal" href="moe.optimal_learning.python.html#module-moe.optimal_learning.python" title="moe.optimal_learning.python"><tt class="xref py py-mod docutils literal"><span class="pre">moe.optimal_learning.python</span></tt></a></li>
+<li>Tests for classes and functions in <a class="reference internal" href="moe.optimal_learning.python.python_version.html#module-moe.optimal_learning.python.python_version" title="moe.optimal_learning.python.python_version"><tt class="xref py py-mod docutils literal"><span class="pre">moe.optimal_learning.python.python_version</span></tt></a></li>
+<li>Tests for classes and functions in <a class="reference internal" href="moe.optimal_learning.python.cpp_wrappers.html#module-moe.optimal_learning.python.cpp_wrappers" title="moe.optimal_learning.python.cpp_wrappers"><tt class="xref py py-mod docutils literal"><span class="pre">moe.optimal_learning.python.cpp_wrappers</span></tt></a></li>
 </ul>
 <p><strong>Files in this package</strong></p>
 <ul class="simple">
-<li>optimal_learning_test_case.py: test case with extra asserts for checking relative differences of floats (scalar, vector)</li>
-<li>gaussian_process_test_case.py: test case with extra logic to construct random gaussian process priors; meant to provide
-a well-behaved source of random data to unit tests.</li>
-<li>geometry_utils_test.py: tests for geometry_utils</li>
-</ul>
-<p><strong>Files in this package</strong></p>
-<ul class="simple">
-<li>optimal_learning_test_case.py: base test case for optimal_learning tests with some extra asserts for checking relative differences of floats (scalar, vector)</li>
-<li>gaussian_process_test_case.py: test case for tests that manipulate GPs, includes extra
+<li><a class="reference internal" href="#module-moe.tests.optimal_learning.python.optimal_learning_test_case" title="moe.tests.optimal_learning.python.optimal_learning_test_case"><tt class="xref py py-mod docutils literal"><span class="pre">moe.tests.optimal_learning.python.optimal_learning_test_case</span></tt></a>: base test case for optimal_learning tests with some extra asserts for checking relative differences of floats (scalar, vector)</li>
+<li><a class="reference internal" href="#module-moe.tests.optimal_learning.python.gaussian_process_test_case" title="moe.tests.optimal_learning.python.gaussian_process_test_case"><tt class="xref py py-mod docutils literal"><span class="pre">moe.tests.optimal_learning.python.gaussian_process_test_case</span></tt></a>: test case for tests that manipulate GPs, includes extra
 logic to construct random gaussian process priors; meant to provide
 a well-behaved source of random data to unit tests.</li>
-<li>gaussian_process_test_utils.py: utilities for constructing a random domain, covariance, and GaussianProcess</li>
-<li>geometry_utils_test.py: tests for optimal_learning.python.geometry_utils</li>
+<li><a class="reference internal" href="#module-moe.tests.optimal_learning.python.gaussian_process_test_utils" title="moe.tests.optimal_learning.python.gaussian_process_test_utils"><tt class="xref py py-mod docutils literal"><span class="pre">moe.tests.optimal_learning.python.gaussian_process_test_utils</span></tt></a>: utilities for constructing a random domain, covariance, and GaussianProcess</li>
+<li><a class="reference internal" href="#module-moe.tests.optimal_learning.python.geometry_utils_test" title="moe.tests.optimal_learning.python.geometry_utils_test"><tt class="xref py py-mod docutils literal"><span class="pre">moe.tests.optimal_learning.python.geometry_utils_test</span></tt></a>: tests for <a class="reference internal" href="moe.optimal_learning.python.html#module-moe.optimal_learning.python.geometry_utils" title="moe.optimal_learning.python.geometry_utils"><tt class="xref py py-mod docutils literal"><span class="pre">moe.optimal_learning.python.geometry_utils</span></tt></a></li>
 </ul>
 <p><strong>Subpackages</strong></p>
 <ul class="simple">
-<li>python_version: tests for the Python implementation of optimal_learning. These include some manual checks, ping tests,
+<li><a class="reference internal" href="moe.tests.optimal_learning.python.python_version.html#module-moe.tests.optimal_learning.python.python_version" title="moe.tests.optimal_learning.python.python_version"><tt class="xref py py-mod docutils literal"><span class="pre">moe.tests.optimal_learning.python.python_version</span></tt></a>: tests for the Python implementation of optimal_learning. These include some manual checks, ping tests,
 and some high level integration tests. Python testing is currently relatively sparse; we rely heavily on
 the C++ comparison.</li>
-<li>cpp_wrappers: tests that check the equivalence of the C++ implementation and the Python implementation of
+<li><a class="reference internal" href="moe.tests.optimal_learning.python.cpp_wrappers.html#module-moe.tests.optimal_learning.python.cpp_wrappers" title="moe.tests.optimal_learning.python.cpp_wrappers"><tt class="xref py py-mod docutils literal"><span class="pre">moe.tests.optimal_learning.python.cpp_wrappers</span></tt></a>: tests that check the equivalence of the C++ implementation and the Python implementation of
 optimal_learning (where applicable). Also runs the C++ unit tests.</li>
 </ul>
 </div>
@@ -709,7 +714,7 @@ optimal_learning (where applicable). Also runs the C++ unit tests.</li>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+        &copy; Copyright 2012-2014 Yelp. MOE is licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0.
     </p>
   </div>
 

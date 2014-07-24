@@ -111,6 +111,18 @@
 <li class="toctree-l2"><a class="reference internal" href="contributing.html#style">Style</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#what-license-is-moe-released-under">What license is MOE released under?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#when-should-i-use-moe">When should I use MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#what-is-the-time-complexity-of-moe">What is the time complexity of MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-do-i-cite-moe">How do I cite MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#why-does-moe-take-so-long-to-return-the-next-points-to-sample-for-some-inputs">Why does MOE take so long to return the next points to sample for some inputs?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-do-i-bootstrap-moe-what-initial-data-does-it-need">How do I bootstrap MOE? What initial data does it need?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-many-function-evaluations-do-i-need-before-moe-is-done">How many function evaluations do I need before MOE is &#8220;done&#8221;?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-many-function-evaluations-do-i-perform-before-i-update-the-hyperparameters-of-the-gp">How many function evaluations do I perform before I update the hyperparameters of the GP?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#will-you-accept-my-pull-request">Will you accept my pull request?</a></li>
+</ul>
+</li>
 </ul>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="moe.html">moe package</a><ul class="current">
@@ -135,9 +147,9 @@
 <li class="toctree-l1"><a class="reference internal" href="cpp_tree.html">C++ Files</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimization_test.html">gpp_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_domain_test.html">gpp_domain_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_exception.html">gpp_exception</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_geometry.html">gpp_geometry</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_test_utils.html">gpp_test_utils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_logging.html">gpp_logging</a></li>
@@ -158,7 +170,7 @@
 <li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra.html">gpp_linear_algebra</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_exception.html">gpp_exception</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_model_selection.html">gpp_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_covariance_test.html">gpp_covariance_test</a></li>
@@ -166,7 +178,7 @@
 <li class="toctree-l2"><a class="reference internal" href="gpp_python.html">gpp_python</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_test.html">gpp_model_selection_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_common.html">gpp_common</a></li>
 </ul>
 </li>
@@ -228,7 +240,7 @@ covariance functions in a format that can be interpreted in C++ calls.</p>
 <p>Implement the square exponential covariance function.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">comments are copied in SquareExponential in python_version/covariance.py</p>
+<p class="last">comments are copied in <a class="reference internal" href="moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.covariance.SquareExponential" title="moe.optimal_learning.python.python_version.covariance.SquareExponential"><tt class="xref py py-class docutils literal"><span class="pre">moe.optimal_learning.python.python_version.covariance.SquareExponential</span></tt></a>.</p>
 </div>
 <p>The function:
 <tt class="docutils literal"><span class="pre">cov(x_1,</span> <span class="pre">x_2)</span> <span class="pre">=</span> <span class="pre">\alpha</span> <span class="pre">*</span> <span class="pre">\exp(-1/2</span> <span class="pre">*</span> <span class="pre">((x_1</span> <span class="pre">-</span> <span class="pre">x_2)^T</span> <span class="pre">*</span> <span class="pre">L</span> <span class="pre">*</span> <span class="pre">(x_1</span> <span class="pre">-</span> <span class="pre">x_2))</span> <span class="pre">)</span></tt>
@@ -238,7 +250,7 @@ where L is the diagonal matrix with i-th diagonal entry <tt class="docutils lite
 <dt id="moe.optimal_learning.python.cpp_wrappers.covariance.SquareExponential.covariance">
 <tt class="descname">covariance</tt><big>(</big><em>point_one</em>, <em>point_two</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/cpp_wrappers/covariance.html#SquareExponential.covariance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.cpp_wrappers.covariance.SquareExponential.covariance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the covariance function of two points, cov(<tt class="docutils literal"><span class="pre">point_one</span></tt>, <tt class="docutils literal"><span class="pre">point_two</span></tt>).</p>
-<p>We do not currently expose a C++ endpoint for this call; see covariance_interface.py for interface specification.</p>
+<p>We do not currently expose a C++ endpoint for this call; see <a class="reference internal" href="moe.optimal_learning.python.interfaces.html#module-moe.optimal_learning.python.interfaces.covariance_interface" title="moe.optimal_learning.python.interfaces.covariance_interface"><tt class="xref py py-mod docutils literal"><span class="pre">moe.optimal_learning.python.interfaces.covariance_interface</span></tt></a> for interface specification.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -262,21 +274,21 @@ where L is the diagonal matrix with i-th diagonal entry <tt class="docutils lite
 <dt id="moe.optimal_learning.python.cpp_wrappers.covariance.SquareExponential.grad_covariance">
 <tt class="descname">grad_covariance</tt><big>(</big><em>point_one</em>, <em>point_two</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/cpp_wrappers/covariance.html#SquareExponential.grad_covariance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.cpp_wrappers.covariance.SquareExponential.grad_covariance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the gradient of self.covariance(point_one, point_two) with respect to the FIRST argument, point_one.</p>
-<p>We do not currently expose a C++ endpoint for this call; see covariance_interface.py for interface specification.</p>
+<p>We do not currently expose a C++ endpoint for this call; see <a class="reference internal" href="moe.optimal_learning.python.interfaces.html#module-moe.optimal_learning.python.interfaces.covariance_interface" title="moe.optimal_learning.python.interfaces.covariance_interface"><tt class="xref py py-mod docutils literal"><span class="pre">moe.optimal_learning.python.interfaces.covariance_interface</span></tt></a> for interface specification.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="moe.optimal_learning.python.cpp_wrappers.covariance.SquareExponential.hyperparameter_grad_covariance">
 <tt class="descname">hyperparameter_grad_covariance</tt><big>(</big><em>point_one</em>, <em>point_two</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/cpp_wrappers/covariance.html#SquareExponential.hyperparameter_grad_covariance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.cpp_wrappers.covariance.SquareExponential.hyperparameter_grad_covariance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the gradient of self.covariance(point_one, point_two) with respect to its hyperparameters.</p>
-<p>We do not currently expose a C++ endpoint for this call; see covariance_interface.py for interface specification.</p>
+<p>We do not currently expose a C++ endpoint for this call; see <a class="reference internal" href="moe.optimal_learning.python.interfaces.html#module-moe.optimal_learning.python.interfaces.covariance_interface" title="moe.optimal_learning.python.interfaces.covariance_interface"><tt class="xref py py-mod docutils literal"><span class="pre">moe.optimal_learning.python.interfaces.covariance_interface</span></tt></a> for interface specification.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="moe.optimal_learning.python.cpp_wrappers.covariance.SquareExponential.hyperparameter_hessian_covariance">
 <tt class="descname">hyperparameter_hessian_covariance</tt><big>(</big><em>point_one</em>, <em>point_two</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/cpp_wrappers/covariance.html#SquareExponential.hyperparameter_hessian_covariance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.cpp_wrappers.covariance.SquareExponential.hyperparameter_hessian_covariance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the hessian of self.covariance(point_one, point_two) with respect to its hyperparameters.</p>
-<p>We do not currently expose a C++ endpoint for this call; see covariance_interface.py for interface specification.</p>
+<p>We do not currently expose a C++ endpoint for this call; see <a class="reference internal" href="moe.optimal_learning.python.interfaces.html#module-moe.optimal_learning.python.interfaces.covariance_interface" title="moe.optimal_learning.python.interfaces.covariance_interface"><tt class="xref py py-mod docutils literal"><span class="pre">moe.optimal_learning.python.interfaces.covariance_interface</span></tt></a> for interface specification.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -400,14 +412,14 @@ See TensorProductDomain for what that means.</p>
 <dt id="moe.optimal_learning.python.cpp_wrappers.domain.SimplexIntersectTensorProductDomain.check_point_inside">
 <tt class="descname">check_point_inside</tt><big>(</big><em>point</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/cpp_wrappers/domain.html#SimplexIntersectTensorProductDomain.check_point_inside"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.cpp_wrappers.domain.SimplexIntersectTensorProductDomain.check_point_inside" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check if a point is inside the domain/on its boundary or outside.</p>
-<p>We do not currently expose a C++ endpoint for this call; see domain_interface.py for interface specification.</p>
+<p>We do not currently expose a C++ endpoint for this call; see <a class="reference internal" href="moe.optimal_learning.python.interfaces.html#module-moe.optimal_learning.python.interfaces.domain_interface" title="moe.optimal_learning.python.interfaces.domain_interface"><tt class="xref py py-mod docutils literal"><span class="pre">moe.optimal_learning.python.interfaces.domain_interface</span></tt></a> for interface specification.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="moe.optimal_learning.python.cpp_wrappers.domain.SimplexIntersectTensorProductDomain.compute_update_restricted_to_domain">
 <tt class="descname">compute_update_restricted_to_domain</tt><big>(</big><em>max_relative_change</em>, <em>current_point</em>, <em>update_vector</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/cpp_wrappers/domain.html#SimplexIntersectTensorProductDomain.compute_update_restricted_to_domain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.cpp_wrappers.domain.SimplexIntersectTensorProductDomain.compute_update_restricted_to_domain" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute a new update so that CheckPointInside(<tt class="docutils literal"><span class="pre">current_point</span></tt> + <tt class="docutils literal"><span class="pre">new_update</span></tt>) is true.</p>
-<p>We do not currently expose a C++ endpoint for this call; see domain_interface.py for interface specification.</p>
+<p>We do not currently expose a C++ endpoint for this call; see <a class="reference internal" href="moe.optimal_learning.python.interfaces.html#module-moe.optimal_learning.python.interfaces.domain_interface" title="moe.optimal_learning.python.interfaces.domain_interface"><tt class="xref py py-mod docutils literal"><span class="pre">moe.optimal_learning.python.interfaces.domain_interface</span></tt></a> for interface specification.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -431,7 +443,7 @@ See TensorProductDomain for what that means.</p>
 <dt id="moe.optimal_learning.python.cpp_wrappers.domain.SimplexIntersectTensorProductDomain.generate_uniform_random_points_in_domain">
 <tt class="descname">generate_uniform_random_points_in_domain</tt><big>(</big><em>num_points</em>, <em>random_source</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/cpp_wrappers/domain.html#SimplexIntersectTensorProductDomain.generate_uniform_random_points_in_domain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.cpp_wrappers.domain.SimplexIntersectTensorProductDomain.generate_uniform_random_points_in_domain" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate AT MOST <tt class="docutils literal"><span class="pre">num_points</span></tt> uniformly distributed points from the domain.</p>
-<p>We do not currently expose a C++ endpoint for this call; see domain_interface.py for interface specification.</p>
+<p>We do not currently expose a C++ endpoint for this call; see <a class="reference internal" href="moe.optimal_learning.python.interfaces.html#module-moe.optimal_learning.python.interfaces.domain_interface" title="moe.optimal_learning.python.interfaces.domain_interface"><tt class="xref py py-mod docutils literal"><span class="pre">moe.optimal_learning.python.interfaces.domain_interface</span></tt></a> for interface specification.</p>
 </dd></dl>
 
 </dd></dl>
@@ -448,14 +460,14 @@ internals to Python.</p>
 <dt id="moe.optimal_learning.python.cpp_wrappers.domain.TensorProductDomain.check_point_inside">
 <tt class="descname">check_point_inside</tt><big>(</big><em>point</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/cpp_wrappers/domain.html#TensorProductDomain.check_point_inside"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.cpp_wrappers.domain.TensorProductDomain.check_point_inside" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check if a point is inside the domain/on its boundary or outside.</p>
-<p>We do not currently expose a C++ endpoint for this call; see domain_interface.py for interface specification.</p>
+<p>We do not currently expose a C++ endpoint for this call; see <a class="reference internal" href="moe.optimal_learning.python.interfaces.html#module-moe.optimal_learning.python.interfaces.domain_interface" title="moe.optimal_learning.python.interfaces.domain_interface"><tt class="xref py py-mod docutils literal"><span class="pre">moe.optimal_learning.python.interfaces.domain_interface</span></tt></a> for interface specification.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="moe.optimal_learning.python.cpp_wrappers.domain.TensorProductDomain.compute_update_restricted_to_domain">
 <tt class="descname">compute_update_restricted_to_domain</tt><big>(</big><em>max_relative_change</em>, <em>current_point</em>, <em>update_vector</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/cpp_wrappers/domain.html#TensorProductDomain.compute_update_restricted_to_domain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.cpp_wrappers.domain.TensorProductDomain.compute_update_restricted_to_domain" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute a new update so that CheckPointInside(<tt class="docutils literal"><span class="pre">current_point</span></tt> + <tt class="docutils literal"><span class="pre">new_update</span></tt>) is true.</p>
-<p>We do not currently expose a C++ endpoint for this call; see domain_interface.py for interface specification.</p>
+<p>We do not currently expose a C++ endpoint for this call; see <a class="reference internal" href="moe.optimal_learning.python.interfaces.html#module-moe.optimal_learning.python.interfaces.domain_interface" title="moe.optimal_learning.python.interfaces.domain_interface"><tt class="xref py py-mod docutils literal"><span class="pre">moe.optimal_learning.python.interfaces.domain_interface</span></tt></a> for interface specification.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -479,14 +491,14 @@ internals to Python.</p>
 <dt id="moe.optimal_learning.python.cpp_wrappers.domain.TensorProductDomain.generate_random_point_in_domain">
 <tt class="descname">generate_random_point_in_domain</tt><big>(</big><em>random_source=None</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/cpp_wrappers/domain.html#TensorProductDomain.generate_random_point_in_domain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.cpp_wrappers.domain.TensorProductDomain.generate_random_point_in_domain" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate <tt class="docutils literal"><span class="pre">point</span></tt> uniformly at random such that <tt class="docutils literal"><span class="pre">self.check_point_inside(point)</span></tt> is True.</p>
-<p>We do not currently expose a C++ endpoint for this call; see domain_interface.py for interface specification.</p>
+<p>We do not currently expose a C++ endpoint for this call; see <a class="reference internal" href="moe.optimal_learning.python.interfaces.html#module-moe.optimal_learning.python.interfaces.domain_interface" title="moe.optimal_learning.python.interfaces.domain_interface"><tt class="xref py py-mod docutils literal"><span class="pre">moe.optimal_learning.python.interfaces.domain_interface</span></tt></a> for interface specification.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="moe.optimal_learning.python.cpp_wrappers.domain.TensorProductDomain.generate_uniform_random_points_in_domain">
 <tt class="descname">generate_uniform_random_points_in_domain</tt><big>(</big><em>num_points</em>, <em>random_source=None</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/cpp_wrappers/domain.html#TensorProductDomain.generate_uniform_random_points_in_domain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.cpp_wrappers.domain.TensorProductDomain.generate_uniform_random_points_in_domain" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate <tt class="docutils literal"><span class="pre">num_points</span></tt> uniformly distributed points from the domain.</p>
-<p>We do not currently expose a C++ endpoint for this call; see domain_interface.py for interface specification.</p>
+<p>We do not currently expose a C++ endpoint for this call; see <a class="reference internal" href="moe.optimal_learning.python.interfaces.html#module-moe.optimal_learning.python.interfaces.domain_interface" title="moe.optimal_learning.python.interfaces.domain_interface"><tt class="xref py py-mod docutils literal"><span class="pre">moe.optimal_learning.python.interfaces.domain_interface</span></tt></a> for interface specification.</p>
 </dd></dl>
 
 <dl class="method">
@@ -514,9 +526,11 @@ internals to Python.</p>
 <span id="moe-optimal-learning-python-cpp-wrappers-expected-improvement-module"></span><h2>moe.optimal_learning.python.cpp_wrappers.expected_improvement module<a class="headerlink" href="#module-moe.optimal_learning.python.cpp_wrappers.expected_improvement" title="Permalink to this headline">¶</a></h2>
 <p>Tools to compute ExpectedImprovement and optimize the next best point(s) to sample using EI through C++ calls.</p>
 <p>This file contains a class to compute Expected Improvement + derivatives and a functions to solve the q,p-EI optimization problem.
-The ExpectedImprovement class implements interfaces.ExpectedImproventInterface. The optimization functions are convenient
-wrappers around the matching C++ calls.</p>
-<p>See interfaces/expected_improvement_interface.py or gpp_math.hpp/cpp for further details on expected improvement.</p>
+The <a class="reference internal" href="#moe.optimal_learning.python.cpp_wrappers.expected_improvement.ExpectedImprovement" title="moe.optimal_learning.python.cpp_wrappers.expected_improvement.ExpectedImprovement"><tt class="xref py py-class docutils literal"><span class="pre">moe.optimal_learning.python.cpp_wrappers.expected_improvement.ExpectedImprovement</span></tt></a>
+class implements <tt class="xref py py-class docutils literal"><span class="pre">moe.optimal_learning.python.interfaces.expected_improvement_interface.ExpectedImproventInterface</span></tt>.
+The optimization functions are convenient wrappers around the matching C++ calls.</p>
+<p>See <a class="reference internal" href="moe.optimal_learning.python.interfaces.html#module-moe.optimal_learning.python.interfaces.expected_improvement_interface" title="moe.optimal_learning.python.interfaces.expected_improvement_interface"><tt class="xref py py-class docutils literal"><span class="pre">moe.optimal_learning.python.interfaces.expected_improvement_interface</span></tt></a> or
+gpp_math.hpp/cpp for further details on expected improvement.</p>
 <dl class="class">
 <dt id="moe.optimal_learning.python.cpp_wrappers.expected_improvement.ExpectedImprovement">
 <em class="property">class </em><tt class="descclassname">moe.optimal_learning.python.cpp_wrappers.expected_improvement.</tt><tt class="descname">ExpectedImprovement</tt><big>(</big><em>gaussian_process</em>, <em>points_to_sample=None</em>, <em>points_being_sampled=None</em>, <em>num_mc_iterations=10000</em>, <em>randomness=None</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/cpp_wrappers/expected_improvement.html#ExpectedImprovement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.cpp_wrappers.expected_improvement.ExpectedImprovement" title="Permalink to this definition">¶</a></dt>
@@ -530,14 +544,15 @@ It is designed to work with any GaussianProcess.</p>
 <p class="last">Equivalent methods of ExpectedImprovementInterface and OptimizableInterface are aliased below (e.g.,
 compute_expected_improvement and compute_objective_function, etc).</p>
 </div>
-<p>See interfaces/expected_improvement_interface.py docs for further details.</p>
+<p>See <a class="reference internal" href="moe.optimal_learning.python.interfaces.html#module-moe.optimal_learning.python.interfaces.expected_improvement_interface" title="moe.optimal_learning.python.interfaces.expected_improvement_interface"><tt class="xref py py-mod docutils literal"><span class="pre">moe.optimal_learning.python.interfaces.expected_improvement_interface</span></tt></a> docs for further details.</p>
 <dl class="method">
 <dt id="moe.optimal_learning.python.cpp_wrappers.expected_improvement.ExpectedImprovement.compute_expected_improvement">
 <tt class="descname">compute_expected_improvement</tt><big>(</big><em>force_monte_carlo=False</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/cpp_wrappers/expected_improvement.html#ExpectedImprovement.compute_expected_improvement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.cpp_wrappers.expected_improvement.ExpectedImprovement.compute_expected_improvement" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the expected improvement at <tt class="docutils literal"><span class="pre">points_to_sample</span></tt>, with <tt class="docutils literal"><span class="pre">points_being_sampled</span></tt> concurrent points being sampled.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">These comments were copied from this object&#8217;s superclass in expected_improvement_interface.py.</p>
+<p class="last">These comments were copied from
+<a class="reference internal" href="moe.optimal_learning.python.interfaces.html#moe.optimal_learning.python.interfaces.expected_improvement_interface.ExpectedImprovementInterface.compute_expected_improvement" title="moe.optimal_learning.python.interfaces.expected_improvement_interface.ExpectedImprovementInterface.compute_expected_improvement"><tt class="xref py py-meth docutils literal"><span class="pre">moe.optimal_learning.python.interfaces.expected_improvement_interface.ExpectedImprovementInterface.compute_expected_improvement()</span></tt></a></p>
 </div>
 <p><tt class="docutils literal"><span class="pre">points_to_sample</span></tt> is the &#8220;q&#8221; and <tt class="docutils literal"><span class="pre">points_being_sampled</span></tt> is the &#8220;p&#8221; in q,p-EI.</p>
 <p>Computes the expected improvement <tt class="docutils literal"><span class="pre">EI(Xs)</span> <span class="pre">=</span> <span class="pre">E_n[[f^*_n(X)</span> <span class="pre">-</span> <span class="pre">min(f(Xs_1),...,f(Xs_m))]^+]</span></tt>, where <tt class="docutils literal"><span class="pre">Xs</span></tt>
@@ -579,7 +594,8 @@ We compute the improvement over many random draws and average.</p>
 <dd><p>Compute the gradient of expected improvement at <tt class="docutils literal"><span class="pre">points_to_sample</span></tt> wrt <tt class="docutils literal"><span class="pre">points_to_sample</span></tt>, with <tt class="docutils literal"><span class="pre">points_being_sampled</span></tt> concurrent samples.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">These comments were copied from this&#8217;s superclass in expected_improvement_interface.py.</p>
+<p class="last">These comments were copied from
+<a class="reference internal" href="moe.optimal_learning.python.interfaces.html#moe.optimal_learning.python.interfaces.expected_improvement_interface.ExpectedImprovementInterface.compute_grad_expected_improvement" title="moe.optimal_learning.python.interfaces.expected_improvement_interface.ExpectedImprovementInterface.compute_grad_expected_improvement"><tt class="xref py py-meth docutils literal"><span class="pre">moe.optimal_learning.python.interfaces.expected_improvement_interface.ExpectedImprovementInterface.compute_grad_expected_improvement()</span></tt></a></p>
 </div>
 <p><tt class="docutils literal"><span class="pre">points_to_sample</span></tt> is the &#8220;q&#8221; and <tt class="docutils literal"><span class="pre">points_being_sampled</span></tt> is the &#8220;p&#8221; in q,p-EI.</p>
 <p>In general, the expressions for gradients of EI are complex and difficult to evaluate; hence we use
@@ -613,7 +629,8 @@ and <tt class="docutils literal"><span class="pre">Xp</span></tt> is <tt class="
 <dd><p>Compute the gradient of expected improvement at <tt class="docutils literal"><span class="pre">points_to_sample</span></tt> wrt <tt class="docutils literal"><span class="pre">points_to_sample</span></tt>, with <tt class="docutils literal"><span class="pre">points_being_sampled</span></tt> concurrent samples.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">These comments were copied from this&#8217;s superclass in expected_improvement_interface.py.</p>
+<p class="last">These comments were copied from
+<a class="reference internal" href="moe.optimal_learning.python.interfaces.html#moe.optimal_learning.python.interfaces.expected_improvement_interface.ExpectedImprovementInterface.compute_grad_expected_improvement" title="moe.optimal_learning.python.interfaces.expected_improvement_interface.ExpectedImprovementInterface.compute_grad_expected_improvement"><tt class="xref py py-meth docutils literal"><span class="pre">moe.optimal_learning.python.interfaces.expected_improvement_interface.ExpectedImprovementInterface.compute_grad_expected_improvement()</span></tt></a></p>
 </div>
 <p><tt class="docutils literal"><span class="pre">points_to_sample</span></tt> is the &#8220;q&#8221; and <tt class="docutils literal"><span class="pre">points_being_sampled</span></tt> is the &#8220;p&#8221; in q,p-EI.</p>
 <p>In general, the expressions for gradients of EI are complex and difficult to evaluate; hence we use
@@ -653,7 +670,8 @@ and <tt class="docutils literal"><span class="pre">Xp</span></tt> is <tt class="
 <dd><p>Compute the expected improvement at <tt class="docutils literal"><span class="pre">points_to_sample</span></tt>, with <tt class="docutils literal"><span class="pre">points_being_sampled</span></tt> concurrent points being sampled.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">These comments were copied from this object&#8217;s superclass in expected_improvement_interface.py.</p>
+<p class="last">These comments were copied from
+<a class="reference internal" href="moe.optimal_learning.python.interfaces.html#moe.optimal_learning.python.interfaces.expected_improvement_interface.ExpectedImprovementInterface.compute_expected_improvement" title="moe.optimal_learning.python.interfaces.expected_improvement_interface.ExpectedImprovementInterface.compute_expected_improvement"><tt class="xref py py-meth docutils literal"><span class="pre">moe.optimal_learning.python.interfaces.expected_improvement_interface.ExpectedImprovementInterface.compute_expected_improvement()</span></tt></a></p>
 </div>
 <p><tt class="docutils literal"><span class="pre">points_to_sample</span></tt> is the &#8220;q&#8221; and <tt class="docutils literal"><span class="pre">points_being_sampled</span></tt> is the &#8220;p&#8221; in q,p-EI.</p>
 <p>Computes the expected improvement <tt class="docutils literal"><span class="pre">EI(Xs)</span> <span class="pre">=</span> <span class="pre">E_n[[f^*_n(X)</span> <span class="pre">-</span> <span class="pre">min(f(Xs_1),...,f(Xs_m))]^+]</span></tt>, where <tt class="docutils literal"><span class="pre">Xs</span></tt>
@@ -703,7 +721,7 @@ We compute the improvement over many random draws and average.</p>
 
 <dl class="method">
 <dt id="moe.optimal_learning.python.cpp_wrappers.expected_improvement.ExpectedImprovement.evaluate_at_point_list">
-<tt class="descname">evaluate_at_point_list</tt><big>(</big><em>points_to_evaluate</em>, <em>randomness=None</em>, <em>max_num_threads=1</em>, <em>status=None</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/cpp_wrappers/expected_improvement.html#ExpectedImprovement.evaluate_at_point_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.cpp_wrappers.expected_improvement.ExpectedImprovement.evaluate_at_point_list" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">evaluate_at_point_list</tt><big>(</big><em>points_to_evaluate</em>, <em>randomness=None</em>, <em>max_num_threads=4</em>, <em>status=None</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/cpp_wrappers/expected_improvement.html#ExpectedImprovement.evaluate_at_point_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.cpp_wrappers.expected_improvement.ExpectedImprovement.evaluate_at_point_list" title="Permalink to this definition">¶</a></dt>
 <dd><p>Evaluate Expected Improvement (1,p-EI) over a specified list of <tt class="docutils literal"><span class="pre">points_to_evaluate</span></tt>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -776,7 +794,7 @@ This function is also useful for plotting or debugging purposes (just to get a b
 
 <dl class="function">
 <dt id="moe.optimal_learning.python.cpp_wrappers.expected_improvement.constant_liar_expected_improvement_optimization">
-<tt class="descclassname">moe.optimal_learning.python.cpp_wrappers.expected_improvement.</tt><tt class="descname">constant_liar_expected_improvement_optimization</tt><big>(</big><em>ei_optimizer</em>, <em>num_multistarts</em>, <em>num_to_sample</em>, <em>lie_value</em>, <em>lie_noise_variance=0.0</em>, <em>randomness=None</em>, <em>max_num_threads=1</em>, <em>status=None</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/cpp_wrappers/expected_improvement.html#constant_liar_expected_improvement_optimization"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.cpp_wrappers.expected_improvement.constant_liar_expected_improvement_optimization" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">moe.optimal_learning.python.cpp_wrappers.expected_improvement.</tt><tt class="descname">constant_liar_expected_improvement_optimization</tt><big>(</big><em>ei_optimizer</em>, <em>num_multistarts</em>, <em>num_to_sample</em>, <em>lie_value</em>, <em>lie_noise_variance=0.0</em>, <em>randomness=None</em>, <em>max_num_threads=4</em>, <em>status=None</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/cpp_wrappers/expected_improvement.html#constant_liar_expected_improvement_optimization"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.cpp_wrappers.expected_improvement.constant_liar_expected_improvement_optimization" title="Permalink to this definition">¶</a></dt>
 <dd><p>Heuristically solves q,0-EI using the Constant Liar policy; this wraps heuristic_expected_improvement_optimization().</p>
 <p>Note that this optimizer only uses the analytic 1,0-EI, so it is fast.</p>
 <p>See heuristic_expected_improvement_optimization() docs for general notes on how the heuristic optimization works.
@@ -820,7 +838,7 @@ ComputeEstimatedSetOfPointsToSample() to be more explorative and vice versa.</p>
 
 <dl class="function">
 <dt id="moe.optimal_learning.python.cpp_wrappers.expected_improvement.kriging_believer_expected_improvement_optimization">
-<tt class="descclassname">moe.optimal_learning.python.cpp_wrappers.expected_improvement.</tt><tt class="descname">kriging_believer_expected_improvement_optimization</tt><big>(</big><em>ei_optimizer</em>, <em>num_multistarts</em>, <em>num_to_sample</em>, <em>std_deviation_coef=0.0</em>, <em>kriging_noise_variance=0.0</em>, <em>randomness=None</em>, <em>max_num_threads=1</em>, <em>status=None</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/cpp_wrappers/expected_improvement.html#kriging_believer_expected_improvement_optimization"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.cpp_wrappers.expected_improvement.kriging_believer_expected_improvement_optimization" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">moe.optimal_learning.python.cpp_wrappers.expected_improvement.</tt><tt class="descname">kriging_believer_expected_improvement_optimization</tt><big>(</big><em>ei_optimizer</em>, <em>num_multistarts</em>, <em>num_to_sample</em>, <em>std_deviation_coef=0.0</em>, <em>kriging_noise_variance=0.0</em>, <em>randomness=None</em>, <em>max_num_threads=4</em>, <em>status=None</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/cpp_wrappers/expected_improvement.html#kriging_believer_expected_improvement_optimization"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.cpp_wrappers.expected_improvement.kriging_believer_expected_improvement_optimization" title="Permalink to this definition">¶</a></dt>
 <dd><p>Heuristically solves q,0-EI using the Kriging Believer policy; this wraps heuristic_expected_improvement_optimization().</p>
 <p>Note that this optimizer only uses the analytic 1,0-EI, so it is fast.</p>
 <p>See heuristic_expected_improvement_optimization() docs for general notes on how the heuristic optimization works.
@@ -867,13 +885,14 @@ explorative and larger negative values are more exploitive.</p>
 
 <dl class="function">
 <dt id="moe.optimal_learning.python.cpp_wrappers.expected_improvement.multistart_expected_improvement_optimization">
-<tt class="descclassname">moe.optimal_learning.python.cpp_wrappers.expected_improvement.</tt><tt class="descname">multistart_expected_improvement_optimization</tt><big>(</big><em>ei_optimizer</em>, <em>num_multistarts</em>, <em>num_to_sample</em>, <em>randomness=None</em>, <em>max_num_threads=1</em>, <em>status=None</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/cpp_wrappers/expected_improvement.html#multistart_expected_improvement_optimization"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.cpp_wrappers.expected_improvement.multistart_expected_improvement_optimization" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">moe.optimal_learning.python.cpp_wrappers.expected_improvement.</tt><tt class="descname">multistart_expected_improvement_optimization</tt><big>(</big><em>ei_optimizer</em>, <em>num_multistarts</em>, <em>num_to_sample</em>, <em>randomness=None</em>, <em>max_num_threads=4</em>, <em>status=None</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/cpp_wrappers/expected_improvement.html#multistart_expected_improvement_optimization"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.cpp_wrappers.expected_improvement.multistart_expected_improvement_optimization" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solve the q,p-EI problem, returning the optimal set of q points to sample CONCURRENTLY in future experiments.</p>
 <p>When <tt class="docutils literal"><span class="pre">points_being_sampled.size</span> <span class="pre">==</span> <span class="pre">0</span> <span class="pre">&amp;&amp;</span> <span class="pre">num_to_sample</span> <span class="pre">==</span> <span class="pre">1</span></tt>, this function will use (fast) analytic EI computations.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">The following comments are copied from gpp_math.hpp, ComputeOptimalPointsToSample().
-These comments are copied into multistart_expected_improvement_optimization() in python_version/expected_improvement.py</p>
+These comments are copied into
+<a class="reference internal" href="moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.expected_improvement.multistart_expected_improvement_optimization" title="moe.optimal_learning.python.python_version.expected_improvement.multistart_expected_improvement_optimization"><tt class="xref py py-func docutils literal"><span class="pre">moe.optimal_learning.python.python_version.expected_improvement.multistart_expected_improvement_optimization()</span></tt></a></p>
 </div>
 <p>This is the primary entry-point for EI optimization in the optimal_learning library. It offers our best shot at
 improving robustness by combining higher accuracy methods like gradient descent with fail-safes like random/grid search.</p>
@@ -914,7 +933,7 @@ GaussianProcess that allows the GP to account for ongoing/incomplete experiments
 <span id="moe-optimal-learning-python-cpp-wrappers-gaussian-process-module"></span><h2>moe.optimal_learning.python.cpp_wrappers.gaussian_process module<a class="headerlink" href="#module-moe.optimal_learning.python.cpp_wrappers.gaussian_process" title="Permalink to this headline">¶</a></h2>
 <p>Implementation of GaussianProcessInterface using C++ calls.</p>
 <p>This file contains a class to manipulate a Gaussian Process through the C++ implementation (gpp_math.hpp/cpp).</p>
-<p>See interfaces.gaussian_process_interface.py for more details.</p>
+<p>See <a class="reference internal" href="moe.optimal_learning.python.interfaces.html#module-moe.optimal_learning.python.interfaces.gaussian_process_interface" title="moe.optimal_learning.python.interfaces.gaussian_process_interface"><tt class="xref py py-mod docutils literal"><span class="pre">moe.optimal_learning.python.interfaces.gaussian_process_interface</span></tt></a> for more details.</p>
 <dl class="class">
 <dt id="moe.optimal_learning.python.cpp_wrappers.gaussian_process.GaussianProcess">
 <em class="property">class </em><tt class="descclassname">moe.optimal_learning.python.cpp_wrappers.gaussian_process.</tt><tt class="descname">GaussianProcess</tt><big>(</big><em>covariance_function</em>, <em>historical_data</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/cpp_wrappers/gaussian_process.html#GaussianProcess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.cpp_wrappers.gaussian_process.GaussianProcess" title="Permalink to this definition">¶</a></dt>
@@ -922,7 +941,8 @@ GaussianProcess that allows the GP to account for ongoing/incomplete experiments
 <p>Implementation of a GaussianProcess via C++ wrappers: mean, variance, gradients thereof, and data I/O.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Comments in this class are copied from this object&#8217;s superclass in interfaces.gaussian_process_interface.py.</p>
+<p class="last">Comments in this class are copied from
+<a class="reference internal" href="moe.optimal_learning.python.interfaces.html#moe.optimal_learning.python.interfaces.gaussian_process_interface.GaussianProcessInterface" title="moe.optimal_learning.python.interfaces.gaussian_process_interface.GaussianProcessInterface"><tt class="xref py py-mod docutils literal"><span class="pre">moe.optimal_learning.python.interfaces.gaussian_process_interface.GaussianProcessInterface</span></tt></a></p>
 </div>
 <p>Object that encapsulates Gaussian Process Priors (GPPs).  A GPP is defined by a set of
 (sample point, function value, noise variance) triples along with a covariance function that relates the points.
@@ -957,7 +977,8 @@ both point sets with the GP, so we simply call the union of point sets <tt class
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>sampled_points</strong> (list of :class:<a href="#id1"><span class="problematic" id="id2">`</span></a>moe.optimal_learning.python.SamplePoint&#8217; objects (or SamplePoint-like iterables)) &#8211; SamplePoint objects to load into the GP (containing point, function value, and noise variance)</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>sampled_points</strong> (list of <tt class="xref py py-class docutils literal"><span class="pre">SamplePoint</span></tt> objects (or SamplePoint-like iterables)) &#8211; <tt class="xref py py-class docutils literal"><span class="pre">moe.optimal_learning.python.SamplePoint</span></tt> objects to load
+into the GP (containing point, function value, and noise variance)</td>
 </tr>
 </tbody>
 </table>
@@ -995,7 +1016,8 @@ Let this be indexed <tt class="docutils literal"><span class="pre">grad_chol[k][
 with respect to <tt class="docutils literal"><span class="pre">x_{k,d}</span></tt> (x = <tt class="docutils literal"><span class="pre">points_to_sample</span></tt>)</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Comments in this class are copied from this&#8217;s superclass in interfaces.gaussian_process_interface.py.</p>
+<p class="last">Comments are copied from
+<a class="reference internal" href="moe.optimal_learning.python.interfaces.html#moe.optimal_learning.python.interfaces.gaussian_process_interface.GaussianProcessInterface.compute_grad_cholesky_variance_of_points" title="moe.optimal_learning.python.interfaces.gaussian_process_interface.GaussianProcessInterface.compute_grad_cholesky_variance_of_points"><tt class="xref py py-mod docutils literal"><span class="pre">moe.optimal_learning.python.interfaces.gaussian_process_interface.GaussianProcessInterface.compute_grad_cholesky_variance_of_points</span></tt></a></p>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1031,7 +1053,8 @@ However, for <tt class="docutils literal"><span class="pre">0</span> <span class
 Thus, <tt class="docutils literal"><span class="pre">grad_mu</span></tt> is stored in a reduced form which only tracks the nonzero entries.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Comments in this class are copied from this&#8217;s superclass in interfaces.gaussian_process_interface.py.</p>
+<p class="last">Comments are copied from
+<a class="reference internal" href="moe.optimal_learning.python.interfaces.html#moe.optimal_learning.python.interfaces.gaussian_process_interface.GaussianProcessInterface.compute_grad_mean_of_points" title="moe.optimal_learning.python.interfaces.gaussian_process_interface.GaussianProcessInterface.compute_grad_mean_of_points"><tt class="xref py py-mod docutils literal"><span class="pre">moe.optimal_learning.python.interfaces.gaussian_process_interface.GaussianProcessInterface.compute_grad_mean_of_points</span></tt></a></p>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1063,7 +1086,8 @@ of <tt class="docutils literal"><span class="pre">\mu_i</span></tt> wrt <tt clas
 gradient terms from the cholesky factorization. Description will not be duplicated here.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Comments in this class are copied from this&#8217;s superclass in interfaces.gaussian_process_interface.py.</p>
+<p class="last">Comments are copied from
+<a class="reference internal" href="moe.optimal_learning.python.interfaces.html#moe.optimal_learning.python.interfaces.gaussian_process_interface.GaussianProcessInterface.compute_grad_variance_of_points" title="moe.optimal_learning.python.interfaces.gaussian_process_interface.GaussianProcessInterface.compute_grad_variance_of_points"><tt class="xref py py-mod docutils literal"><span class="pre">moe.optimal_learning.python.interfaces.gaussian_process_interface.GaussianProcessInterface.compute_grad_variance_of_points</span></tt></a></p>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1092,7 +1116,8 @@ gradient terms from the cholesky factorization. Description will not be duplicat
 <p><tt class="docutils literal"><span class="pre">points_to_sample</span></tt> may not contain duplicate points. Violating this results in singular covariance matrices.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Comments in this class are copied from this&#8217;s superclass in interfaces.gaussian_process_interface.py.</p>
+<p class="last">Comments are copied from
+<a class="reference internal" href="moe.optimal_learning.python.interfaces.html#moe.optimal_learning.python.interfaces.gaussian_process_interface.GaussianProcessInterface.compute_mean_of_points" title="moe.optimal_learning.python.interfaces.gaussian_process_interface.GaussianProcessInterface.compute_mean_of_points"><tt class="xref py py-mod docutils literal"><span class="pre">moe.optimal_learning.python.interfaces.gaussian_process_interface.GaussianProcessInterface.compute_mean_of_points</span></tt></a></p>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1116,7 +1141,8 @@ gradient terms from the cholesky factorization. Description will not be duplicat
 <p>The variance matrix is symmetric although we currently return the full representation.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Comments in this class are copied from this&#8217;s superclass in interfaces.gaussian_process_interface.py.</p>
+<p class="last">Comments are copied from
+<a class="reference internal" href="moe.optimal_learning.python.interfaces.html#moe.optimal_learning.python.interfaces.gaussian_process_interface.GaussianProcessInterface.compute_variance_of_points" title="moe.optimal_learning.python.interfaces.gaussian_process_interface.GaussianProcessInterface.compute_variance_of_points"><tt class="xref py py-mod docutils literal"><span class="pre">moe.optimal_learning.python.interfaces.gaussian_process_interface.GaussianProcessInterface.compute_variance_of_points</span></tt></a></p>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1191,7 +1217,8 @@ MUST be drawn with noise_variance equal to the noise associated with &#8220;poin
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Comments in this class are copied from this&#8217;s superclass in interfaces.gaussian_process_interface.py.</p>
+<p class="last">Comments are copied from
+<a class="reference internal" href="moe.optimal_learning.python.interfaces.html#moe.optimal_learning.python.interfaces.gaussian_process_interface.GaussianProcessInterface.sample_point_from_gp" title="moe.optimal_learning.python.interfaces.gaussian_process_interface.GaussianProcessInterface.sample_point_from_gp"><tt class="xref py py-mod docutils literal"><span class="pre">moe.optimal_learning.python.interfaces.gaussian_process_interface.GaussianProcessInterface.sample_point_from_gp</span></tt></a></p>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1219,13 +1246,14 @@ MUST be drawn with noise_variance equal to the noise associated with &#8220;poin
 <div class="section" id="module-moe.optimal_learning.python.cpp_wrappers.log_likelihood">
 <span id="moe-optimal-learning-python-cpp-wrappers-log-likelihood-module"></span><h2>moe.optimal_learning.python.cpp_wrappers.log_likelihood module<a class="headerlink" href="#module-moe.optimal_learning.python.cpp_wrappers.log_likelihood" title="Permalink to this headline">¶</a></h2>
 <p>Tools to compute log likelihood-like measures of model fit and optimize them (wrt the hyperparameters of covariance).</p>
-<p>See the file comments in interfaces/log_likelihood_interface.py for an overview of log likelihood-like metrics and their role
+<p>See the file comments in <a class="reference internal" href="moe.optimal_learning.python.interfaces.html#module-moe.optimal_learning.python.interfaces.log_likelihood_interface" title="moe.optimal_learning.python.interfaces.log_likelihood_interface"><tt class="xref py py-mod docutils literal"><span class="pre">moe.optimal_learning.python.interfaces.log_likelihood_interface</span></tt></a>
+for an overview of log likelihood-like metrics and their role
 in model selection. This file provides hooks to implementations of two such metrics in C++: Log Marginal Likelihood and
 Leave One Out Cross Validation Log Pseudo-Likelihood.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">This is a copy of the file comments in gpp_model_selection.hpp.
-These comments are copied in python_version/log_likelihood.py.
+These comments are copied in <a class="reference internal" href="moe.optimal_learning.python.python_version.html#module-moe.optimal_learning.python.python_version.log_likelihood" title="moe.optimal_learning.python.python_version.log_likelihood"><tt class="xref py py-mod docutils literal"><span class="pre">moe.optimal_learning.python.python_version.log_likelihood</span></tt></a>.
 See this file&#8217;s comments and interfaces.log_likelihood_interface for more details as well as the hpp and corresponding .cpp file.</p>
 </div>
 <p><strong>a. LOG MARGINAL LIKELIHOOD (LML)</strong></p>
@@ -1267,7 +1295,8 @@ tuples), the log LOO-CV pseudo-likelihood expresses how well the model explains 
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">This is a copy of LeaveOneOutLogLikelihoodEvaluator&#8217;s class comments in gpp_model_selection.hpp.
-See this file&#8217;s comments and interfaces.log_likelihood_interface for more details as well as the hpp and corresponding .cpp file.</p>
+See this file&#8217;s comments and <a class="reference internal" href="moe.optimal_learning.python.interfaces.html#module-moe.optimal_learning.python.interfaces.log_likelihood_interface" title="moe.optimal_learning.python.interfaces.log_likelihood_interface"><tt class="xref py py-mod docutils literal"><span class="pre">moe.optimal_learning.python.interfaces.log_likelihood_interface</span></tt></a>
+for more details as well as the hpp and corresponding .cpp file.</p>
 </div>
 <p>That is, cross validation involves splitting the training set into a sub-training set and a validation set.  Then we measure
 the log likelihood that a model built on the sub-training set could produce the values in the validation set.</p>
@@ -1295,14 +1324,20 @@ than log marginal measures (Rasmussen &amp; Williams p118).</p>
 <em class="property">class </em><tt class="descclassname">moe.optimal_learning.python.cpp_wrappers.log_likelihood.</tt><tt class="descname">GaussianProcessLogLikelihood</tt><big>(</big><em>covariance_function</em>, <em>historical_data</em>, <em>log_likelihood_type=moe.build.GPP.LogLikelihoodTypes.log_marginal_likelihood</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/cpp_wrappers/log_likelihood.html#GaussianProcessLogLikelihood"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.cpp_wrappers.log_likelihood.GaussianProcessLogLikelihood" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="moe.optimal_learning.python.interfaces.html#moe.optimal_learning.python.interfaces.log_likelihood_interface.GaussianProcessLogLikelihoodInterface" title="moe.optimal_learning.python.interfaces.log_likelihood_interface.GaussianProcessLogLikelihoodInterface"><tt class="xref py py-class docutils literal"><span class="pre">moe.optimal_learning.python.interfaces.log_likelihood_interface.GaussianProcessLogLikelihoodInterface</span></tt></a>, <a class="reference internal" href="moe.optimal_learning.python.interfaces.html#moe.optimal_learning.python.interfaces.optimization_interface.OptimizableInterface" title="moe.optimal_learning.python.interfaces.optimization_interface.OptimizableInterface"><tt class="xref py py-class docutils literal"><span class="pre">moe.optimal_learning.python.interfaces.optimization_interface.OptimizableInterface</span></tt></a></p>
 <p>Class for computing log likelihood-like measures of model fit via C++ wrappers (currently log marginal and leave one out cross validation).</p>
-<p>See GaussianProcessLogMarginalLikelihood and GaussianProcessLeaveOneOutLogLikelihood classes below for some more
-details on these metrics. Users may find it more convenient to construct these objects instead of a LogLikelihood
-object directly. Since these various metrics are fairly different, the member function docs in this class will
-remain generic.</p>
+<p>See <a class="reference internal" href="#moe.optimal_learning.python.cpp_wrappers.log_likelihood.GaussianProcessLogMarginalLikelihood" title="moe.optimal_learning.python.cpp_wrappers.log_likelihood.GaussianProcessLogMarginalLikelihood"><tt class="xref py py-class docutils literal"><span class="pre">moe.optimal_learning.python.cpp_wrappers.log_likelihood.GaussianProcessLogMarginalLikelihood</span></tt></a> and
+<a class="reference internal" href="#moe.optimal_learning.python.cpp_wrappers.log_likelihood.GaussianProcessLeaveOneOutLogLikelihood" title="moe.optimal_learning.python.cpp_wrappers.log_likelihood.GaussianProcessLeaveOneOutLogLikelihood"><tt class="xref py py-class docutils literal"><span class="pre">moe.optimal_learning.python.cpp_wrappers.log_likelihood.GaussianProcessLeaveOneOutLogLikelihood</span></tt></a>
+classes below for some more details on these metrics. Users may find it more convenient to
+construct these objects instead of a <a class="reference internal" href="#moe.optimal_learning.python.cpp_wrappers.log_likelihood.GaussianProcessLogLikelihood" title="moe.optimal_learning.python.cpp_wrappers.log_likelihood.GaussianProcessLogLikelihood"><tt class="xref py py-class docutils literal"><span class="pre">GaussianProcessLogLikelihood</span></tt></a>
+object directly. Since these various metrics are fairly different, the member function docs
+in this class will remain generic.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Equivalent methods of LogLikelihoodInterface and OptimizableInterface are aliased below (e.g.,
-problem_size and num_hyperparameters, compute_log_likelihood and compute_objective_function, etc).</p>
+<p class="last">Equivalent methods of <a class="reference internal" href="moe.optimal_learning.python.interfaces.html#moe.optimal_learning.python.interfaces.log_likelihood_interface.GaussianProcessLogLikelihoodInterface" title="moe.optimal_learning.python.interfaces.log_likelihood_interface.GaussianProcessLogLikelihoodInterface"><tt class="xref py py-class docutils literal"><span class="pre">moe.optimal_learning.python.interfaces.log_likelihood_interface.GaussianProcessLogLikelihoodInterface</span></tt></a> and
+<a class="reference internal" href="moe.optimal_learning.python.interfaces.html#moe.optimal_learning.python.interfaces.optimization_interface.OptimizableInterface" title="moe.optimal_learning.python.interfaces.optimization_interface.OptimizableInterface"><tt class="xref py py-class docutils literal"><span class="pre">moe.optimal_learning.python.interfaces.optimization_interface.OptimizableInterface</span></tt></a>
+are aliased below (e.g., <a class="reference internal" href="#moe.optimal_learning.python.cpp_wrappers.log_likelihood.GaussianProcessLogLikelihood.problem_size" title="moe.optimal_learning.python.cpp_wrappers.log_likelihood.GaussianProcessLogLikelihood.problem_size"><tt class="xref py py-class docutils literal"><span class="pre">problem_size</span></tt></a> and
+<a class="reference internal" href="#moe.optimal_learning.python.cpp_wrappers.log_likelihood.GaussianProcessLogLikelihood.num_hyperparameters" title="moe.optimal_learning.python.cpp_wrappers.log_likelihood.GaussianProcessLogLikelihood.num_hyperparameters"><tt class="xref py py-class docutils literal"><span class="pre">num_hyperparameters</span></tt></a>,
+<a class="reference internal" href="#moe.optimal_learning.python.cpp_wrappers.log_likelihood.GaussianProcessLogLikelihood.compute_log_likelihood" title="moe.optimal_learning.python.cpp_wrappers.log_likelihood.GaussianProcessLogLikelihood.compute_log_likelihood"><tt class="xref py py-class docutils literal"><span class="pre">compute_log_likelihood</span></tt></a> and
+<a class="reference internal" href="#moe.optimal_learning.python.cpp_wrappers.log_likelihood.GaussianProcessLogLikelihood.compute_objective_function" title="moe.optimal_learning.python.cpp_wrappers.log_likelihood.GaussianProcessLogLikelihood.compute_objective_function"><tt class="xref py py-class docutils literal"><span class="pre">compute_objective_function</span></tt></a>, etc).</p>
 </div>
 <p>See gpp_model_selection.hpp/cpp for further overview and in-depth discussion, respectively.</p>
 <dl class="method">
@@ -1449,7 +1484,7 @@ problem_size and num_hyperparameters, compute_log_likelihood and compute_objecti
 <dl class="attribute">
 <dt id="moe.optimal_learning.python.cpp_wrappers.log_likelihood.GaussianProcessLogLikelihood.problem_size">
 <tt class="descname">problem_size</tt><a class="headerlink" href="#moe.optimal_learning.python.cpp_wrappers.log_likelihood.GaussianProcessLogLikelihood.problem_size" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the number of hyperparameters aka the number of independent parameters to optimize.</p>
+<dd><p>an alias for num_hyperparameters to fulfill <a class="reference internal" href="moe.optimal_learning.python.interfaces.html#moe.optimal_learning.python.interfaces.optimization_interface.OptimizableInterface" title="moe.optimal_learning.python.interfaces.optimization_interface.OptimizableInterface"><tt class="xref py py-class docutils literal"><span class="pre">moe.optimal_learning.python.interfaces.optimization_interface.OptimizableInterface</span></tt></a></p>
 </dd></dl>
 
 <dl class="method">
@@ -1479,7 +1514,8 @@ and hyperparameters (of the covariance function), <tt class="docutils literal"><
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">This is a copy of LogMarginalLikelihoodEvaluator&#8217;s class comments in gpp_model_selection.hpp.
-See this file&#8217;s comments and interfaces.log_likelihood_interface for more details as well as the hpp and corresponding .cpp file.</p>
+See this file&#8217;s comments and <a class="reference internal" href="moe.optimal_learning.python.interfaces.html#module-moe.optimal_learning.python.interfaces.log_likelihood_interface" title="moe.optimal_learning.python.interfaces.log_likelihood_interface"><tt class="xref py py-mod docutils literal"><span class="pre">moe.optimal_learning.python.interfaces.log_likelihood_interface</span></tt></a>
+for more details as well as the hpp and corresponding .cpp file.</p>
 </div>
 <p>Given a particular covariance function (including hyperparameters) and
 training data ((point, function value, measurement noise) tuples), the log marginal likelihood is the log probability that
@@ -1496,7 +1532,7 @@ to functions for computing log marginal likelihood and its hyperparameter gradie
 
 <dl class="function">
 <dt id="moe.optimal_learning.python.cpp_wrappers.log_likelihood.evaluate_log_likelihood_at_hyperparameter_list">
-<tt class="descclassname">moe.optimal_learning.python.cpp_wrappers.log_likelihood.</tt><tt class="descname">evaluate_log_likelihood_at_hyperparameter_list</tt><big>(</big><em>log_likelihood_evaluator</em>, <em>hyperparameters_to_evaluate</em>, <em>max_num_threads=1</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/cpp_wrappers/log_likelihood.html#evaluate_log_likelihood_at_hyperparameter_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.cpp_wrappers.log_likelihood.evaluate_log_likelihood_at_hyperparameter_list" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">moe.optimal_learning.python.cpp_wrappers.log_likelihood.</tt><tt class="descname">evaluate_log_likelihood_at_hyperparameter_list</tt><big>(</big><em>log_likelihood_evaluator</em>, <em>hyperparameters_to_evaluate</em>, <em>max_num_threads=4</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/cpp_wrappers/log_likelihood.html#evaluate_log_likelihood_at_hyperparameter_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.cpp_wrappers.log_likelihood.evaluate_log_likelihood_at_hyperparameter_list" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the specified log likelihood measure at each input set of hyperparameters.</p>
 <p>Generally Newton or gradient descent is preferred but when they fail to converge this may be the only &#8220;robust&#8221; option.
 This function is also useful for plotting or debugging purposes (just to get a bunch of log likelihood values).</p>
@@ -1524,20 +1560,22 @@ This function is also useful for plotting or debugging purposes (just to get a b
 
 <dl class="function">
 <dt id="moe.optimal_learning.python.cpp_wrappers.log_likelihood.multistart_hyperparameter_optimization">
-<tt class="descclassname">moe.optimal_learning.python.cpp_wrappers.log_likelihood.</tt><tt class="descname">multistart_hyperparameter_optimization</tt><big>(</big><em>log_likelihood_optimizer</em>, <em>num_multistarts</em>, <em>randomness=None</em>, <em>max_num_threads=1</em>, <em>status=None</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/cpp_wrappers/log_likelihood.html#multistart_hyperparameter_optimization"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.cpp_wrappers.log_likelihood.multistart_hyperparameter_optimization" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">moe.optimal_learning.python.cpp_wrappers.log_likelihood.</tt><tt class="descname">multistart_hyperparameter_optimization</tt><big>(</big><em>log_likelihood_optimizer</em>, <em>num_multistarts</em>, <em>randomness=None</em>, <em>max_num_threads=4</em>, <em>status=None</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/cpp_wrappers/log_likelihood.html#multistart_hyperparameter_optimization"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.cpp_wrappers.log_likelihood.multistart_hyperparameter_optimization" title="Permalink to this definition">¶</a></dt>
 <dd><p>Select the hyperparameters that maximize the specified log likelihood measure of model fit (over the historical data) within the specified domain.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">The following comments are copied to multistart_hyperparameter_optimization() in python_version/log_likelihood.py</p>
+<p class="last">The following comments are copied to
+<a class="reference internal" href="moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.log_likelihood.multistart_hyperparameter_optimization" title="moe.optimal_learning.python.python_version.log_likelihood.multistart_hyperparameter_optimization"><tt class="xref py py-mod docutils literal"><span class="pre">moe.optimal_learning.python.python_version.log_likelihood.multistart_hyperparameter_optimization</span></tt></a>.</p>
 </div>
-<p>See GaussianProcessLogMarginalLikelihood and GaussianProcessLeaveOneOutLogLikelihood for an overview of some
-example log likelihood-like measures.</p>
+<p>See <a class="reference internal" href="#moe.optimal_learning.python.cpp_wrappers.log_likelihood.GaussianProcessLogMarginalLikelihood" title="moe.optimal_learning.python.cpp_wrappers.log_likelihood.GaussianProcessLogMarginalLikelihood"><tt class="xref py py-class docutils literal"><span class="pre">moe.optimal_learning.python.cpp_wrappers.log_likelihood.GaussianProcessLogMarginalLikelihood</span></tt></a> and
+<a class="reference internal" href="#moe.optimal_learning.python.cpp_wrappers.log_likelihood.GaussianProcessLeaveOneOutLogLikelihood" title="moe.optimal_learning.python.cpp_wrappers.log_likelihood.GaussianProcessLeaveOneOutLogLikelihood"><tt class="xref py py-class docutils literal"><span class="pre">moe.optimal_learning.python.cpp_wrappers.log_likelihood.GaussianProcessLeaveOneOutLogLikelihood</span></tt></a>
+for an overview of some example log likelihood-like measures.</p>
 <p>Optimizers are: null (&#8216;dumb&#8217; search), gradient descent, newton
 Newton is the suggested optimizer.</p>
 <p>&#8216;dumb&#8217; search means this will just evaluate the objective log likelihood measure at num_multistarts &#8216;points&#8217;
 (hyperparameters) in the domain, uniformly sampled using latin hypercube sampling.
 The hyperparameter_optimizer_parameters input specifies the desired optimization technique as well as parameters controlling
-its behavior (see cpp_wrappers.optimization.py).</p>
+its behavior (see <a class="reference internal" href="#module-moe.optimal_learning.python.cpp_wrappers.optimization" title="moe.optimal_learning.python.cpp_wrappers.optimization"><tt class="xref py py-mod docutils literal"><span class="pre">moe.optimal_learning.python.cpp_wrappers.optimization</span></tt></a>).</p>
 <p>See gpp_python_common.cpp for C++ enum declarations laying out the options for objective and optimizer types.</p>
 <p>Currently, during optimization, we recommend that the coordinates of the initial guesses not differ from the
 coordinates of the optima by more than about 1 order of magnitude. This is a very (VERY!) rough guideline for
@@ -1787,10 +1825,10 @@ for full details on Newton.</p>
 </div>
 <div class="section" id="module-moe.optimal_learning.python.cpp_wrappers">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-moe.optimal_learning.python.cpp_wrappers" title="Permalink to this headline">¶</a></h2>
-<p>Implementations of the ABCs in the python/interfaces package using calls to the C++ library (GPP.so).</p>
+<p>Implementations of the ABCs in the <a class="reference internal" href="moe.optimal_learning.python.interfaces.html#module-moe.optimal_learning.python.interfaces" title="moe.optimal_learning.python.interfaces"><tt class="xref py py-mod docutils literal"><span class="pre">moe.optimal_learning.python.interfaces</span></tt></a> package using calls to the C++ library (GPP.so).</p>
 <p>The modules in this package provide hooks into the C++ implementation of optimal_learning&#8217;s features. There are functions
 and classes for model selection, gaussian process construction, expected improvement optimization, etc.</p>
-<p>See the package comments for python/interfaces (in __init__.py) for an overview of optimal_learning&#8217;s capabilities.</p>
+<p>See the package comments for <a class="reference internal" href="moe.optimal_learning.python.interfaces.html#module-moe.optimal_learning.python.interfaces" title="moe.optimal_learning.python.interfaces"><tt class="xref py py-mod docutils literal"><span class="pre">moe.optimal_learning.python.interfaces</span></tt></a> for an overview of optimal_learning&#8217;s capabilities.</p>
 </div>
 </div>
 
@@ -1812,7 +1850,7 @@ and classes for model selection, gaussian process construction, expected improve
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+        &copy; Copyright 2012-2014 Yelp. MOE is licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0.
     </p>
   </div>
 

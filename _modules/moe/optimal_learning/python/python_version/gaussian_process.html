@@ -109,6 +109,18 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../../contributing.html#style">Style</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../faq.html">Frequently Asked Questions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#what-license-is-moe-released-under">What license is MOE released under?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#when-should-i-use-moe">When should I use MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#what-is-the-time-complexity-of-moe">What is the time complexity of MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#how-do-i-cite-moe">How do I cite MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#why-does-moe-take-so-long-to-return-the-next-points-to-sample-for-some-inputs">Why does MOE take so long to return the next points to sample for some inputs?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#how-do-i-bootstrap-moe-what-initial-data-does-it-need">How do I bootstrap MOE? What initial data does it need?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#how-many-function-evaluations-do-i-need-before-moe-is-done">How many function evaluations do I need before MOE is &#8220;done&#8221;?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#how-many-function-evaluations-do-i-perform-before-i-update-the-hyperparameters-of-the-gp">How many function evaluations do I perform before I update the hyperparameters of the GP?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#will-you-accept-my-pull-request">Will you accept my pull request?</a></li>
+</ul>
+</li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../moe.html">moe package</a><ul>
@@ -133,9 +145,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../../cpp_tree.html">C++ Files</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_optimization_test.html">gpp_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_domain_test.html">gpp_domain_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_exception.html">gpp_exception</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_geometry.html">gpp_geometry</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_test_utils.html">gpp_test_utils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_logging.html">gpp_logging</a></li>
@@ -156,7 +168,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_geometry_test.html">gpp_geometry_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_linear_algebra.html">gpp_linear_algebra</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_exception.html">gpp_exception</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_model_selection.html">gpp_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_optimization.html">gpp_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_covariance_test.html">gpp_covariance_test</a></li>
@@ -164,7 +176,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python.html">gpp_python</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_model_selection_test.html">gpp_model_selection_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../gpp_common.html">gpp_common</a></li>
 </ul>
 </li>
@@ -210,7 +222,7 @@
 
 <span class="sd">This file contains a class to manipulate a Gaussian Process through numpy/scipy.</span>
 
-<span class="sd">See interfaces.gaussian_process_interface.py for more details.</span>
+<span class="sd">See :mod:`moe.optimal_learning.python.interfaces.gaussian_process_interface` for more details.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">copy</span>
@@ -223,13 +235,13 @@
 <span class="kn">from</span> <span class="nn">moe.optimal_learning.python.python_version</span> <span class="kn">import</span> <span class="n">python_utils</span>
 
 
-<span class="c"># Minimum allowed standard deviation value in ComputeGradCholeskyVarianceOfPointsPerPoint (= machine precision).</span>
-<span class="c"># Values that are too small result in problems b/c we may compute ``std_dev/var`` (which is enormous</span>
-<span class="c"># if ``std_dev = 1.0e-150`` and ``var = 1.0e-300``) since this only arises when we fail to compute ``std_dev = var = 0.0``.</span>
-<span class="c"># Note: this is only relevant if noise = 0.0; this minimum will not affect GPs with noise since this value</span>
-<span class="c"># is below the smallest amount of noise users can meaningfully add.</span>
-<span class="c"># This value was chosen to be consistent with the singularity condition in scipy.linalg.cho_factor</span>
-<span class="c"># and tested for robustness with the setup in test_1d_analytic_ei_edge_cases().</span>
+<span class="c">#: Minimum allowed standard deviation value in ``ComputeGradCholeskyVarianceOfPointsPerPoint`` (= machine precision).</span>
+<span class="c">#: Values that are too small result in problems b/c we may compute ``std_dev/var`` (which is enormous</span>
+<span class="c">#: if ``std_dev = 1.0e-150`` and ``var = 1.0e-300``) since this only arises when we fail to compute ``std_dev = var = 0.0``.</span>
+<span class="c">#: Note: this is only relevant if noise = 0.0; this minimum will not affect GPs with noise since this value</span>
+<span class="c">#: is below the smallest amount of noise users can meaningfully add.</span>
+<span class="c">#: This value was chosen to be consistent with the singularity condition in scipy.linalg.cho_factor</span>
+<span class="c">#: and tested for robustness with the setup in test_1d_analytic_ei_edge_cases().</span>
 <span class="n">MINIMUM_STD_DEV_GRAD_CHOLESKY</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span><span class="o">.</span><span class="n">eps</span>
 
 
@@ -237,7 +249,7 @@
 
     <span class="sd">r&quot;&quot;&quot;Implementation of a GaussianProcess strictly in Python.</span>
 
-<span class="sd">    .. Note:: Comments in this class are copied from this object&#39;s superclass in interfaces.gaussian_process_interface.py.</span>
+<span class="sd">    .. Note:: Comments in this class are copied from this object&#39;s superclass in :mod:`moe.optimal_learning.python.interfaces.gaussian_process_interface`.</span>
 
 <span class="sd">    Object that encapsulates Gaussian Process Priors (GPPs).  A GPP is defined by a set of</span>
 <span class="sd">    (sample point, function value, noise variance) triples along with a covariance function that relates the points.</span>
@@ -276,9 +288,9 @@
 <span class="sd">        TODO(GH-56): Have a way to set private RNG state for self.sample_point_from_gp()</span>
 
 <span class="sd">        :param covariance_function: covariance object encoding assumptions about the GP&#39;s behavior on our data</span>
-<span class="sd">        :type covariance_function: Covariance object exposing hyperparameters (e.g., from python_version.covariance)</span>
+<span class="sd">        :type covariance_function: :class:`moe.optimal_learning.python.interfaces.covariance_interface.CovarianceInterface` subclass</span>
 <span class="sd">        :param historical_data: object specifying the already-sampled points, the objective value at those points, and the noise variance associated with each observation</span>
-<span class="sd">        :type historical_data: HistoricalData object</span>
+<span class="sd">        :type historical_data: :class:`moe.optimal_learning.python.data_containers.HistoricalData` object</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_covariance</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">covariance_function</span><span class="p">)</span>
@@ -297,17 +309,17 @@
 </div>
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">_points_sampled</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return the coordinates of the already-sampled points; see data_containers.HistoricalData.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Return the coordinates of the already-sampled points; see :class:`moe.optimal_learning.python.data_containers.HistoricalData`.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_historical_data</span><span class="o">.</span><span class="n">points_sampled</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">_points_sampled_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return the function values measured at each of points_sampled; see data_containers.HistoricalData.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Return the function values measured at each of points_sampled; see :class:`moe.optimal_learning.python.data_containers.HistoricalData`.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_historical_data</span><span class="o">.</span><span class="n">points_sampled_value</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">_points_sampled_noise_variance</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return the noise variance associated with points_sampled_value; see data_containers.HistoricalData.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Return the noise variance associated with points_sampled_value; see :class:`moe.optimal_learning.python.data_containers.HistoricalData`.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_historical_data</span><span class="o">.</span><span class="n">points_sampled_noise_variance</span>
 
 <div class="viewcode-block" id="GaussianProcess.get_covariance_copy"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.gaussian_process.GaussianProcess.get_covariance_copy">[docs]</a>    <span class="k">def</span> <span class="nf">get_covariance_copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -347,7 +359,8 @@
 
 <span class="sd">        .. Warning:: ``points_to_sample`` should not contain duplicate points.</span>
 
-<span class="sd">        .. Note:: Comments in this class are copied from this&#39;s superclass in interfaces.gaussian_process_interface.py.</span>
+<span class="sd">        .. Note:: Comments are copied from</span>
+<span class="sd">          :mod:`moe.optimal_learning.python.interfaces.gaussian_process_interface.GaussianProcessInterface.compute_mean_of_points`</span>
 
 <span class="sd">        :param points_to_sample: num_to_sample points (in dim dimensions) being sampled from the GP</span>
 <span class="sd">        :type points_to_sample: array of float64 with shape (num_to_sample, dim)</span>
@@ -377,7 +390,8 @@
 <span class="sd">        (See references or implementation for further details.)</span>
 <span class="sd">        Thus, ``grad_mu`` is stored in a reduced form which only tracks the nonzero entries.</span>
 
-<span class="sd">        .. Note:: Comments in this class are copied from this&#39;s superclass in interfaces.gaussian_process_interface.py.</span>
+<span class="sd">        .. Note:: Comments are copied from</span>
+<span class="sd">          :mod:`moe.optimal_learning.python.interfaces.gaussian_process_interface.GaussianProcessInterface.compute_grad_mean_of_points`</span>
 
 <span class="sd">        :param points_to_sample: num_to_sample points (in dim dimensions) being sampled from the GP</span>
 <span class="sd">        :type points_to_sample: array of float64 with shape (num_to_sample, dim)</span>
@@ -405,7 +419,8 @@
 
 <span class="sd">        The variance matrix is symmetric although we currently return the full representation.</span>
 
-<span class="sd">        .. Note:: Comments in this class are copied from this&#39;s superclass in interfaces.gaussian_process_interface.py.</span>
+<span class="sd">        .. Note:: Comments are copied from</span>
+<span class="sd">          :mod:`moe.optimal_learning.python.interfaces.gaussian_process_interface.GaussianProcessInterface.compute_variance_of_points`</span>
 
 <span class="sd">        :param points_to_sample: num_to_sample points (in dim dimensions) being sampled from the GP</span>
 <span class="sd">        :type points_to_sample: array of float64 with shape (num_to_sample, dim)</span>
@@ -453,7 +468,7 @@
     <span class="k">def</span> <span class="nf">_compute_grad_variance_of_points_per_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points_to_sample</span><span class="p">,</span> <span class="n">var_of_grad</span><span class="p">):</span>
         <span class="sd">r&quot;&quot;&quot;Compute the gradient of the variance (matrix) of this GP at a single point of ``Xs`` (``points_to_sample``) wrt ``Xs``.</span>
 
-<span class="sd">        See compute_grad_variance_of_points() for more details.</span>
+<span class="sd">        See :meth:`~moe.optimal_learning.python.python_version.gaussian_process.GaussianProcess.compute_grad_variance_of_points` for more details.</span>
 
 <span class="sd">        :param points_to_sample: num_to_sample points (in dim dimensions) being sampled from the GP</span>
 <span class="sd">        :type points_to_sample: array of float64 with shape (num_to_sample, dim)</span>
@@ -499,7 +514,8 @@
 <span class="sd">        This function is similar to compute_grad_cholesky_variance_of_points() (below), except this does not include</span>
 <span class="sd">        gradient terms from the cholesky factorization. Description will not be duplicated here.</span>
 
-<span class="sd">        .. Note:: Comments in this class are copied from this&#39;s superclass in interfaces.gaussian_process_interface.py.</span>
+<span class="sd">        .. Note:: Comments are copied from</span>
+<span class="sd">          :mod:`moe.optimal_learning.python.interfaces.gaussian_process_interface.GaussianProcessInterface.compute_grad_variance_of_points`</span>
 
 <span class="sd">        :param points_to_sample: num_to_sample points (in dim dimensions) being sampled from the GP</span>
 <span class="sd">        :type points_to_sample: array of float64 with shape (num_to_sample, dim)</span>
@@ -518,7 +534,7 @@
     <span class="k">def</span> <span class="nf">_compute_grad_cholesky_variance_of_points_per_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points_to_sample</span><span class="p">,</span> <span class="n">chol_var</span><span class="p">,</span> <span class="n">var_of_grad</span><span class="p">):</span>
         <span class="sd">r&quot;&quot;&quot;Compute the gradient of the cholesky factorization of the variance (matrix) of this GP a single point of ``Xs`` (``points_to_sample``) wrt ``Xs``.</span>
 
-<span class="sd">        See compute_grad_cholesky_variance_of_points() for more details.</span>
+<span class="sd">        See :meth:`~moe.optimal_learning.python.python_version.gaussian_process.GaussianProcess.compute_grad_cholesky_variance_of_points` for more details.</span>
 
 <span class="sd">        :param points_to_sample: num_to_sample points (in dim dimensions) being sampled from the GP</span>
 <span class="sd">        :type points_to_sample: array of float64 with shape (num_to_sample, dim)</span>
@@ -570,7 +586,9 @@
 <span class="sd">        Let this be indexed ``grad_chol[k][j][i][d]``, which is read the derivative of ``var[j][i]``</span>
 <span class="sd">        with respect to ``x_{k,d}`` (x = ``points_to_sample``)</span>
 
-<span class="sd">        .. Note:: Comments in this class are copied from this&#39;s superclass in interfaces.gaussian_process_interface.py.</span>
+
+<span class="sd">        .. Note:: Comments are copied from</span>
+<span class="sd">          :mod:`moe.optimal_learning.python.interfaces.gaussian_process_interface.GaussianProcessInterface.compute_grad_cholesky_variance_of_points`</span>
 
 <span class="sd">        :param points_to_sample: num_to_sample points (in dim dimensions) being sampled from the GP</span>
 <span class="sd">        :type points_to_sample: array of float64 with shape (num_to_sample, dim)</span>
@@ -626,7 +644,8 @@
 <span class="sd">             BUT if the drawn (point, value) pair is meant to be added back into the GP (e.g., for testing), then this point</span>
 <span class="sd">             MUST be drawn with noise_variance equal to the noise associated with &quot;point&quot; as a member of &quot;points_sampled&quot;</span>
 
-<span class="sd">        .. Note:: Comments in this class are copied from this&#39;s superclass in interfaces.gaussian_process_interface.py.</span>
+<span class="sd">        .. Note:: Comments are copied from</span>
+<span class="sd">          :mod:`moe.optimal_learning.python.interfaces.gaussian_process_interface.GaussianProcessInterface.sample_point_from_gp`</span>
 
 <span class="sd">        :param point_to_sample: point (in dim dimensions) at which to sample from this GP</span>
 <span class="sd">        :type points_to_sample: array of float64 with shape (dim)</span>
@@ -651,7 +670,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+        &copy; Copyright 2012-2014 Yelp. MOE is licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0.
     </p>
   </div>
 

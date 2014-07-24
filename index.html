@@ -109,6 +109,18 @@
 <li class="toctree-l2"><a class="reference internal" href="contributing.html#style">Style</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#what-license-is-moe-released-under">What license is MOE released under?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#when-should-i-use-moe">When should I use MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#what-is-the-time-complexity-of-moe">What is the time complexity of MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-do-i-cite-moe">How do I cite MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#why-does-moe-take-so-long-to-return-the-next-points-to-sample-for-some-inputs">Why does MOE take so long to return the next points to sample for some inputs?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-do-i-bootstrap-moe-what-initial-data-does-it-need">How do I bootstrap MOE? What initial data does it need?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-many-function-evaluations-do-i-need-before-moe-is-done">How many function evaluations do I need before MOE is &#8220;done&#8221;?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-many-function-evaluations-do-i-perform-before-i-update-the-hyperparameters-of-the-gp">How many function evaluations do I perform before I update the hyperparameters of the GP?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#will-you-accept-my-pull-request">Will you accept my pull request?</a></li>
+</ul>
+</li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="moe.html">moe package</a><ul>
@@ -133,9 +145,9 @@
 <li class="toctree-l1"><a class="reference internal" href="cpp_tree.html">C++ Files</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimization_test.html">gpp_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_domain_test.html">gpp_domain_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_exception.html">gpp_exception</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_geometry.html">gpp_geometry</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_test_utils.html">gpp_test_utils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_logging.html">gpp_logging</a></li>
@@ -156,7 +168,7 @@
 <li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra.html">gpp_linear_algebra</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_exception.html">gpp_exception</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_model_selection.html">gpp_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_covariance_test.html">gpp_covariance_test</a></li>
@@ -164,7 +176,7 @@
 <li class="toctree-l2"><a class="reference internal" href="gpp_python.html">gpp_python</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_test.html">gpp_model_selection_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_common.html">gpp_common</a></li>
 </ul>
 </li>
@@ -202,12 +214,16 @@
 </div>
           <div role="main">
             
-  <div class="section" id="welcome-to-moe-s-documentation">
+  <img alt="_images/moe_logo_48.png" src="_images/moe_logo_48.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<div class="section" id="welcome-to-moe-s-documentation">
 <h1>Welcome to MOE&#8217;s documentation!<a class="headerlink" href="#welcome-to-moe-s-documentation" title="Permalink to this headline">¶</a></h1>
 <p><strong>Contents:</strong></p>
 <blockquote>
 <div><ol class="arabic simple">
-<li><a class="reference external" href="https://github.com/sc932/MOE">Github repo</a></li>
+<li><a class="reference external" href="https://github.com/Yelp/MOE">Github repo</a></li>
 <li><a class="reference internal" href="#what-is-moe">What is MOE?</a></li>
 <li><a class="reference internal" href="#quick-install">Quick Install</a> and <a class="reference internal" href="install.html"><em>Full Install</em></a></li>
 <li><a class="reference internal" href="#quick-start">Quick Start</a></li>
@@ -229,7 +245,7 @@
 <p>Inside, MOE uses <em>Bayesian global optimization</em>, which performs optimization using Bayesian statistics and <em>optimal learning</em>.</p>
 <p>Optimal learning is the study of efficient methods for collecting information, particularly when doing so is time-consuming or expensive, and was developed and popularized from its roots in decision theory by <a class="reference external" href="http://people.orie.cornell.edu/pfrazier/">Prof. Peter Frazier</a> (<a class="reference external" href="http://www.orie.cornell.edu/">Cornell, Operations Research and Information Engineering</a>) and <a class="reference external" href="http://optimallearning.princeton.edu/">Prof. Warren Powell</a> (<a class="reference external" href="http://orfe.princeton.edu/">Princeton, Operations Research and Financial Engineering</a>). For more information about the mathematics of optimal learning, and more real-world applications like heart surgery, drug discovery, and materials science, see these <a class="reference external" href="http://people.orie.cornell.edu/pfrazier/Presentations/2014.01.Lancaster.BGO.pdf">intro slides</a> to optimal learning.</p>
 <p><strong>Example</strong>:</p>
-<p>To illustrate how MOE works, suppose we wish to maximize the click-through-rate (CTR) on a website we manage, by varying some real-valued parameter vector <span class="math">\(\vec{x}\)</span> that govern how site content is presented to the user.  Evaluating the CTR for a new set of parameters requires running an A/B test over a period of several days.  We write this problem mathematically as,</p>
+<p>To illustrate how MOE works, suppose we wish to maximize the click-through-rate (CTR) on a website we manage, by varying some real-valued parameter vector <span class="math">\(\vec{x}\)</span> that governs how site content is presented to the user.  Evaluating the CTR for a new set of parameters requires running an A/B test over a period of several days.  We write this problem mathematically as,</p>
 <div class="math">
 \[\underset{\vec{x}}{\mathrm{argmax}} \ \text{CTR} (\vec{x}).\]</div>
 <p>We want to find the best set of parameters <span class="math">\(\vec{x}\)</span> while evaluating the underlying function (CTR) as few times as possible. See <a class="reference internal" href="objective_functions.html"><em>Objective Functions</em></a> for more examples of objective functions and the best ways to combine metrics.</p>
@@ -296,7 +312,7 @@
 <h3>Install in docker:<a class="headerlink" href="#install-in-docker" title="Permalink to this headline">¶</a></h3>
 <p>This is the recommended way to run the MOE REST server. All dependencies and building is done automatically and in an isolated container.</p>
 <p>Docker (<a class="reference external" href="http://docs.docker.io/">http://docs.docker.io/</a>) is a container based virtualization framework. Unlike traditional virtualization Docker is fast, lightweight and easy to use. Docker allows you to create containers holding all the dependencies for an application. Each container is kept isolated from any other, and nothing gets shared.</p>
-<div class="highlight-python"><div class="highlight"><pre>$ git clone https://github.com/sc932/MOE.git
+<div class="highlight-python"><div class="highlight"><pre>$ git clone https://github.com/Yelp/MOE.git
 $ cd MOE
 $ docker build -t moe_container .
 $ docker run -p 6543:6543 moe_container
@@ -314,12 +330,11 @@ $ docker run -p 6543:6543 moe_container
 <div class="section" id="rest-web-server-and-interactive-demo">
 <h3>REST/web server and interactive demo<a class="headerlink" href="#rest-web-server-and-interactive-demo" title="Permalink to this headline">¶</a></h3>
 <p>To get the REST server running locally, from the directory MOE is installed:</p>
-<div class="highlight-python"><div class="highlight"><pre>$ pserve --reload development.ini
+<div class="highlight-python"><div class="highlight"><pre>$ pserve --reload development.ini # MOE server is now running at http://localhost:6543
 </pre></div>
 </div>
-<p>In your favorite browser go to: <a class="reference external" href="http://127.0.0.1:6543/">http://127.0.0.1:6543/</a></p>
-<p>Or, from the command line,</p>
-<div class="highlight-python"><div class="highlight"><pre>$ curl -X POST -H &quot;Content-Type: application/json&quot; -d &#39;{&quot;domain_info&quot;: {&quot;dim&quot;: 1}, &quot;points_to_evaluate&quot;: [[0.1], [0.5], [0.9]], &quot;gp_info&quot;: {&quot;points_sampled&quot;: [{&quot;value_var&quot;: 0.01, &quot;value&quot;: 0.1, &quot;point&quot;: [0.0]}, {&quot;value_var&quot;: 0.01, &quot;value&quot;: 0.2, &quot;point&quot;: [1.0]}]}}&#39; http://127.0.0.1:6543/gp/ei
+<p>You can access the server from a browser or from the command line,</p>
+<div class="highlight-python"><div class="highlight"><pre>$ curl -X POST -H &quot;Content-Type: application/json&quot; -d &#39;{&quot;domain_info&quot;: {&quot;dim&quot;: 1}, &quot;points_to_evaluate&quot;: [[0.1], [0.5], [0.9]], &quot;gp_historical_info&quot;: {&quot;points_sampled&quot;: [{&quot;value_var&quot;: 0.01, &quot;value&quot;: 0.1, &quot;point&quot;: [0.0]}, {&quot;value_var&quot;: 0.01, &quot;value&quot;: 0.2, &quot;point&quot;: [1.0]}]}}&#39; http://127.0.0.1:6543/gp/ei
 </pre></div>
 </div>
 <p><tt class="docutils literal"><span class="pre">gp_ei</span></tt> endpoint documentation: <a class="reference internal" href="moe.views.rest.html#module-moe.views.rest.gp_ei" title="moe.views.rest.gp_ei"><tt class="xref py py-mod docutils literal"><span class="pre">moe.views.rest.gp_ei</span></tt></a></p>
@@ -330,7 +345,7 @@ $ docker run -p 6543:6543 moe_container
 &gt; from moe.easy_interface.experiment import Experiment
 &gt; from moe.easy_interface.simple_endpoint import gp_next_points
 &gt; exp = Experiment([[0, 2], [0, 4]])
-&gt; exp.historical_data.append_sample_points([[0, 0], 1.0, 0.01])
+&gt; exp.historical_data.append_sample_points([[[0, 0], 1.0, 0.01]])
 &gt; next_point_to_sample = gp_next_points(exp)
 &gt; print next_point_to_sample
 </pre></div>
@@ -386,6 +401,10 @@ $ docker run -p 6543:6543 moe_container
 </div></blockquote>
 </div>
 </div>
+<div class="section" id="licence">
+<h2>Licence<a class="headerlink" href="#licence" title="Permalink to this headline">¶</a></h2>
+<p>MOE is licensed under the <a class="reference external" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a></p>
+</div>
 </div>
 <div class="section" id="source-documentation">
 <h1>Source Documentation<a class="headerlink" href="#source-documentation" title="Permalink to this headline">¶</a></h1>
@@ -439,6 +458,18 @@ $ docker run -p 6543:6543 moe_container
 <li class="toctree-l2"><a class="reference internal" href="contributing.html#documentation">Documentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="contributing.html#testing">Testing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="contributing.html#style">Style</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#what-license-is-moe-released-under">What license is MOE released under?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#when-should-i-use-moe">When should I use MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#what-is-the-time-complexity-of-moe">What is the time complexity of MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-do-i-cite-moe">How do I cite MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#why-does-moe-take-so-long-to-return-the-next-points-to-sample-for-some-inputs">Why does MOE take so long to return the next points to sample for some inputs?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-do-i-bootstrap-moe-what-initial-data-does-it-need">How do I bootstrap MOE? What initial data does it need?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-many-function-evaluations-do-i-need-before-moe-is-done">How many function evaluations do I need before MOE is &#8220;done&#8221;?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-many-function-evaluations-do-i-perform-before-i-update-the-hyperparameters-of-the-gp">How many function evaluations do I perform before I update the hyperparameters of the GP?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#will-you-accept-my-pull-request">Will you accept my pull request?</a></li>
 </ul>
 </li>
 </ul>
@@ -533,18 +564,18 @@ $ docker run -p 6543:6543 moe_container
 <li class="toctree-l3"><a class="reference internal" href="gpp_domain_test.html#gpp-domain-test-cpp">gpp_domain_test.cpp</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_exception.html">gpp_exception</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="gpp_exception.html#gpp-exception-hpp">gpp_exception.hpp</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gpp_exception.html#gpp-exception-cpp">gpp_exception.cpp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gpp_linear_algebra_test.html#gpp-linear-algebra-test-hpp">gpp_linear_algebra_test.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gpp_linear_algebra_test.html#gpp-linear-algebra-test-cpp">gpp_linear_algebra_test.cpp</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_geometry.html">gpp_geometry</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="gpp_geometry.html#gpp-geometry-hpp">gpp_geometry.hpp</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html#gpp-heuristic-expected-improvement-optimization-hpp">gpp_heuristic_expected_improvement_optimization.hpp</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html#gpp-heuristic-expected-improvement-optimization-cpp">gpp_heuristic_expected_improvement_optimization.cpp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gpp_python_gaussian_process.html#gpp-python-gaussian-process-hpp">gpp_python_gaussian_process.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gpp_python_gaussian_process.html#gpp-python-gaussian-process-cpp">gpp_python_gaussian_process.cpp</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a><ul>
@@ -643,9 +674,9 @@ $ docker run -p 6543:6543 moe_container
 <li class="toctree-l3"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html#gpp-heuristic-expected-improvement-optimization-test-cpp">gpp_heuristic_expected_improvement_optimization_test.cpp</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="gpp_linear_algebra_test.html#gpp-linear-algebra-test-hpp">gpp_linear_algebra_test.hpp</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gpp_linear_algebra_test.html#gpp-linear-algebra-test-cpp">gpp_linear_algebra_test.cpp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_exception.html">gpp_exception</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gpp_exception.html#gpp-exception-hpp">gpp_exception.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gpp_exception.html#gpp-exception-cpp">gpp_exception.cpp</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_model_selection.html">gpp_model_selection</a><ul>
@@ -679,9 +710,9 @@ $ docker run -p 6543:6543 moe_container
 <li class="toctree-l3"><a class="reference internal" href="gpp_hyper_and_EI_demo.html#gpp-hyper-and-ei-demo-cpp">gpp_hyper_and_EI_demo.cpp</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="gpp_python_gaussian_process.html#gpp-python-gaussian-process-hpp">gpp_python_gaussian_process.hpp</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gpp_python_gaussian_process.html#gpp-python-gaussian-process-cpp">gpp_python_gaussian_process.cpp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html#gpp-heuristic-expected-improvement-optimization-hpp">gpp_heuristic_expected_improvement_optimization.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html#gpp-heuristic-expected-improvement-optimization-cpp">gpp_heuristic_expected_improvement_optimization.cpp</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_common.html">gpp_common</a><ul>
@@ -719,7 +750,7 @@ $ docker run -p 6543:6543 moe_container
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+        &copy; Copyright 2012-2014 Yelp. MOE is licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0.
     </p>
   </div>
 

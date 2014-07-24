@@ -111,6 +111,18 @@
 <li class="toctree-l2"><a class="reference internal" href="contributing.html#style">Style</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#what-license-is-moe-released-under">What license is MOE released under?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#when-should-i-use-moe">When should I use MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#what-is-the-time-complexity-of-moe">What is the time complexity of MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-do-i-cite-moe">How do I cite MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#why-does-moe-take-so-long-to-return-the-next-points-to-sample-for-some-inputs">Why does MOE take so long to return the next points to sample for some inputs?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-do-i-bootstrap-moe-what-initial-data-does-it-need">How do I bootstrap MOE? What initial data does it need?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-many-function-evaluations-do-i-need-before-moe-is-done">How many function evaluations do I need before MOE is &#8220;done&#8221;?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-many-function-evaluations-do-i-perform-before-i-update-the-hyperparameters-of-the-gp">How many function evaluations do I perform before I update the hyperparameters of the GP?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#will-you-accept-my-pull-request">Will you accept my pull request?</a></li>
+</ul>
+</li>
 </ul>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="moe.html">moe package</a><ul class="current">
@@ -135,9 +147,9 @@
 <li class="toctree-l1"><a class="reference internal" href="cpp_tree.html">C++ Files</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimization_test.html">gpp_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_domain_test.html">gpp_domain_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_exception.html">gpp_exception</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_geometry.html">gpp_geometry</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_test_utils.html">gpp_test_utils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_logging.html">gpp_logging</a></li>
@@ -158,7 +170,7 @@
 <li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra.html">gpp_linear_algebra</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_exception.html">gpp_exception</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_model_selection.html">gpp_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_covariance_test.html">gpp_covariance_test</a></li>
@@ -166,7 +178,7 @@
 <li class="toctree-l2"><a class="reference internal" href="gpp_python.html">gpp_python</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_test.html">gpp_model_selection_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_common.html">gpp_common</a></li>
 </ul>
 </li>
@@ -216,14 +228,13 @@
 <div class="section" id="module-moe.views.rest.gp_ei">
 <span id="moe-views-rest-gp-ei-module"></span><h2>moe.views.rest.gp_ei module<a class="headerlink" href="#module-moe.views.rest.gp_ei" title="Permalink to this headline">¶</a></h2>
 <p>Classes for gp_ei endpoints.</p>
-<dl class="docutils">
-<dt>Includes:</dt>
-<dd><ol class="first last arabic simple">
+<p>Includes:</p>
+<blockquote>
+<div><ol class="arabic simple">
 <li>request and response schemas</li>
 <li>pretty and backend views</li>
 </ol>
-</dd>
-</dl>
+</div></blockquote>
 <dl class="class">
 <dt id="moe.views.rest.gp_ei.GpEiView">
 <em class="property">class </em><tt class="descclassname">moe.views.rest.gp_ei.</tt><tt class="descname">GpEiView</tt><big>(</big><em>request</em><big>)</big><a class="reference internal" href="_modules/moe/views/rest/gp_ei.html#GpEiView"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.views.rest.gp_ei.GpEiView" title="Permalink to this definition">¶</a></dt>
@@ -241,10 +252,10 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Input:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.gp_ei.GpEiRequest</span></tt></p>
+<tr class="field-odd field"><th class="field-name">Input:</th><td class="field-body"><p class="first"><a class="reference internal" href="moe.views.html#moe.views.schemas.GpEiRequest" title="moe.views.schemas.GpEiRequest"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.GpEiRequest</span></tt></a></p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Output:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.gp_ei.GpEiResponse</span></tt></p>
+<tr class="field-even field"><th class="field-name">Output:</th><td class="field-body"><p class="first"><a class="reference internal" href="moe.views.html#moe.views.schemas.GpEiResponse" title="moe.views.schemas.GpEiResponse"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.GpEiResponse</span></tt></a></p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
@@ -272,12 +283,12 @@
 
 <dl class="attribute">
 <dt id="moe.views.rest.gp_ei.GpEiView.request_schema">
-<tt class="descname">request_schema</tt><em class="property"> = &lt;moe.views.schemas.GpEiRequest object at 4480936784 (named )&gt;</em><a class="headerlink" href="#moe.views.rest.gp_ei.GpEiView.request_schema" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">request_schema</tt><em class="property"> = &lt;moe.views.schemas.GpEiRequest object at 47807600292880 (named )&gt;</em><a class="headerlink" href="#moe.views.rest.gp_ei.GpEiView.request_schema" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="moe.views.rest.gp_ei.GpEiView.response_schema">
-<tt class="descname">response_schema</tt><em class="property"> = &lt;moe.views.schemas.GpEiResponse object at 4480936912 (named )&gt;</em><a class="headerlink" href="#moe.views.rest.gp_ei.GpEiView.response_schema" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">response_schema</tt><em class="property"> = &lt;moe.views.schemas.GpEiResponse object at 47807600293008 (named )&gt;</em><a class="headerlink" href="#moe.views.rest.gp_ei.GpEiView.response_schema" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -286,14 +297,13 @@
 <div class="section" id="module-moe.views.rest.gp_hyper_opt">
 <span id="moe-views-rest-gp-hyper-opt-module"></span><h2>moe.views.rest.gp_hyper_opt module<a class="headerlink" href="#module-moe.views.rest.gp_hyper_opt" title="Permalink to this headline">¶</a></h2>
 <p>Classes for gp_hyper_opt endpoints.</p>
-<dl class="docutils">
-<dt>Includes:</dt>
-<dd><ol class="first last arabic simple">
+<p>Includes:</p>
+<blockquote>
+<div><ol class="arabic simple">
 <li>request and response schemas</li>
 <li>pretty and backend views</li>
 </ol>
-</dd>
-</dl>
+</div></blockquote>
 <dl class="class">
 <dt id="moe.views.rest.gp_hyper_opt.GpHyperOptView">
 <em class="property">class </em><tt class="descclassname">moe.views.rest.gp_hyper_opt.</tt><tt class="descname">GpHyperOptView</tt><big>(</big><em>request</em><big>)</big><a class="reference internal" href="_modules/moe/views/rest/gp_hyper_opt.html#GpHyperOptView"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.views.rest.gp_hyper_opt.GpHyperOptView" title="Permalink to this definition">¶</a></dt>
@@ -311,10 +321,10 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Input:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.gp_hyper_opt.GpHyperOptRequest</span></tt></p>
+<tr class="field-odd field"><th class="field-name">Input:</th><td class="field-body"><p class="first"><a class="reference internal" href="moe.views.html#moe.views.schemas.GpHyperOptRequest" title="moe.views.schemas.GpHyperOptRequest"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.GpHyperOptRequest</span></tt></a></p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Output:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.gp_hyper_opt.GpHyperOptResponse</span></tt></p>
+<tr class="field-even field"><th class="field-name">Output:</th><td class="field-body"><p class="first"><a class="reference internal" href="moe.views.html#moe.views.schemas.GpHyperOptResponse" title="moe.views.schemas.GpHyperOptResponse"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.GpHyperOptResponse</span></tt></a></p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
@@ -342,12 +352,12 @@
 
 <dl class="attribute">
 <dt id="moe.views.rest.gp_hyper_opt.GpHyperOptView.request_schema">
-<tt class="descname">request_schema</tt><em class="property"> = &lt;moe.views.schemas.GpHyperOptRequest object at 4481110416 (named )&gt;</em><a class="headerlink" href="#moe.views.rest.gp_hyper_opt.GpHyperOptView.request_schema" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">request_schema</tt><em class="property"> = &lt;moe.views.schemas.GpHyperOptRequest object at 47807600682512 (named )&gt;</em><a class="headerlink" href="#moe.views.rest.gp_hyper_opt.GpHyperOptView.request_schema" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="moe.views.rest.gp_hyper_opt.GpHyperOptView.response_schema">
-<tt class="descname">response_schema</tt><em class="property"> = &lt;moe.views.schemas.GpHyperOptResponse object at 4481084176 (named )&gt;</em><a class="headerlink" href="#moe.views.rest.gp_hyper_opt.GpHyperOptView.response_schema" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">response_schema</tt><em class="property"> = &lt;moe.views.schemas.GpHyperOptResponse object at 47807600682640 (named )&gt;</em><a class="headerlink" href="#moe.views.rest.gp_hyper_opt.GpHyperOptView.response_schema" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -396,7 +406,7 @@
 
 <dl class="attribute">
 <dt id="moe.views.rest.gp_mean_var.GpMeanVarBaseView.request_schema">
-<tt class="descname">request_schema</tt><em class="property"> = &lt;moe.views.schemas.GpMeanVarRequest object at 4480706512 (named )&gt;</em><a class="headerlink" href="#moe.views.rest.gp_mean_var.GpMeanVarBaseView.request_schema" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">request_schema</tt><em class="property"> = &lt;moe.views.schemas.GpMeanVarRequest object at 47807599455248 (named )&gt;</em><a class="headerlink" href="#moe.views.rest.gp_mean_var.GpMeanVarBaseView.request_schema" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -418,10 +428,10 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Input:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.gp_ei.GpMeanVarRequest</span></tt></p>
+<tr class="field-odd field"><th class="field-name">Input:</th><td class="field-body"><p class="first"><a class="reference internal" href="moe.views.html#moe.views.schemas.GpMeanVarRequest" title="moe.views.schemas.GpMeanVarRequest"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.GpMeanVarRequest</span></tt></a></p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Output:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.gp_ei.GpMeanVarDiagResponse</span></tt></p>
+<tr class="field-even field"><th class="field-name">Output:</th><td class="field-body"><p class="first"><a class="reference internal" href="moe.views.html#moe.views.schemas.GpMeanVarDiagResponse" title="moe.views.schemas.GpMeanVarDiagResponse"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.GpMeanVarDiagResponse</span></tt></a></p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
@@ -449,7 +459,7 @@
 
 <dl class="attribute">
 <dt id="moe.views.rest.gp_mean_var.GpMeanVarDiagView.response_schema">
-<tt class="descname">response_schema</tt><em class="property"> = &lt;moe.views.schemas.GpMeanVarDiagResponse object at 4480706832 (named )&gt;</em><a class="headerlink" href="#moe.views.rest.gp_mean_var.GpMeanVarDiagView.response_schema" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">response_schema</tt><em class="property"> = &lt;moe.views.schemas.GpMeanVarDiagResponse object at 47807599455568 (named )&gt;</em><a class="headerlink" href="#moe.views.rest.gp_mean_var.GpMeanVarDiagView.response_schema" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -471,10 +481,10 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Input:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.gp_ei.GpMeanVarRequest</span></tt></p>
+<tr class="field-odd field"><th class="field-name">Input:</th><td class="field-body"><p class="first"><a class="reference internal" href="moe.views.html#moe.views.schemas.GpMeanVarRequest" title="moe.views.schemas.GpMeanVarRequest"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.GpMeanVarRequest</span></tt></a></p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Output:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.gp_ei.GpMeanVarResponse</span></tt></p>
+<tr class="field-even field"><th class="field-name">Output:</th><td class="field-body"><p class="first"><a class="reference internal" href="moe.views.html#moe.views.schemas.GpMeanVarResponse" title="moe.views.schemas.GpMeanVarResponse"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.GpMeanVarResponse</span></tt></a></p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
@@ -502,7 +512,7 @@
 
 <dl class="attribute">
 <dt id="moe.views.rest.gp_mean_var.GpMeanVarView.response_schema">
-<tt class="descname">response_schema</tt><em class="property"> = &lt;moe.views.schemas.GpMeanVarResponse object at 4480706704 (named )&gt;</em><a class="headerlink" href="#moe.views.rest.gp_mean_var.GpMeanVarView.response_schema" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">response_schema</tt><em class="property"> = &lt;moe.views.schemas.GpMeanVarResponse object at 47807599455440 (named )&gt;</em><a class="headerlink" href="#moe.views.rest.gp_mean_var.GpMeanVarView.response_schema" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -524,10 +534,10 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Input:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.gp_ei.GpMeanVarRequest</span></tt></p>
+<tr class="field-odd field"><th class="field-name">Input:</th><td class="field-body"><p class="first"><a class="reference internal" href="moe.views.html#moe.views.schemas.GpMeanVarRequest" title="moe.views.schemas.GpMeanVarRequest"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.GpMeanVarRequest</span></tt></a></p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Output:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.gp_ei.GpMeanResponse</span></tt></p>
+<tr class="field-even field"><th class="field-name">Output:</th><td class="field-body"><p class="first"><a class="reference internal" href="moe.views.html#moe.views.schemas.GpMeanResponse" title="moe.views.schemas.GpMeanResponse"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.GpMeanResponse</span></tt></a></p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
@@ -555,7 +565,7 @@
 
 <dl class="attribute">
 <dt id="moe.views.rest.gp_mean_var.GpMeanView.response_schema">
-<tt class="descname">response_schema</tt><em class="property"> = &lt;moe.views.schemas.GpMeanResponse object at 4480707984 (named )&gt;</em><a class="headerlink" href="#moe.views.rest.gp_mean_var.GpMeanView.response_schema" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">response_schema</tt><em class="property"> = &lt;moe.views.schemas.GpMeanResponse object at 47807599612368 (named )&gt;</em><a class="headerlink" href="#moe.views.rest.gp_mean_var.GpMeanView.response_schema" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -577,10 +587,10 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Input:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.gp_ei.GpMeanVarRequest</span></tt></p>
+<tr class="field-odd field"><th class="field-name">Input:</th><td class="field-body"><p class="first"><a class="reference internal" href="moe.views.html#moe.views.schemas.GpMeanVarRequest" title="moe.views.schemas.GpMeanVarRequest"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.GpMeanVarRequest</span></tt></a></p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Output:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.gp_ei.GpVarDiagResponse</span></tt></p>
+<tr class="field-even field"><th class="field-name">Output:</th><td class="field-body"><p class="first"><a class="reference internal" href="moe.views.html#moe.views.schemas.GpVarDiagResponse" title="moe.views.schemas.GpVarDiagResponse"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.GpVarDiagResponse</span></tt></a></p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
@@ -608,7 +618,7 @@
 
 <dl class="attribute">
 <dt id="moe.views.rest.gp_mean_var.GpVarDiagView.response_schema">
-<tt class="descname">response_schema</tt><em class="property"> = &lt;moe.views.schemas.GpVarDiagResponse object at 4480737360 (named )&gt;</em><a class="headerlink" href="#moe.views.rest.gp_mean_var.GpVarDiagView.response_schema" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">response_schema</tt><em class="property"> = &lt;moe.views.schemas.GpVarDiagResponse object at 47807599613008 (named )&gt;</em><a class="headerlink" href="#moe.views.rest.gp_mean_var.GpVarDiagView.response_schema" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -630,10 +640,10 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Input:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.gp_ei.GpMeanVarRequest</span></tt></p>
+<tr class="field-odd field"><th class="field-name">Input:</th><td class="field-body"><p class="first"><a class="reference internal" href="moe.views.html#moe.views.schemas.GpMeanVarRequest" title="moe.views.schemas.GpMeanVarRequest"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.GpMeanVarRequest</span></tt></a></p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Output:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.gp_ei.GpVarResponse</span></tt></p>
+<tr class="field-even field"><th class="field-name">Output:</th><td class="field-body"><p class="first"><a class="reference internal" href="moe.views.html#moe.views.schemas.GpVarResponse" title="moe.views.schemas.GpVarResponse"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.GpVarResponse</span></tt></a></p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
@@ -661,7 +671,7 @@
 
 <dl class="attribute">
 <dt id="moe.views.rest.gp_mean_var.GpVarView.response_schema">
-<tt class="descname">response_schema</tt><em class="property"> = &lt;moe.views.schemas.GpVarResponse object at 4480708304 (named )&gt;</em><a class="headerlink" href="#moe.views.rest.gp_mean_var.GpVarView.response_schema" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">response_schema</tt><em class="property"> = &lt;moe.views.schemas.GpVarResponse object at 47807599612688 (named )&gt;</em><a class="headerlink" href="#moe.views.rest.gp_mean_var.GpVarView.response_schema" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -707,10 +717,10 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Input:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.rest.gp_next_points_constant_liar.GpNextPointsConstantLiarRequest</span></tt></p>
+<tr class="field-odd field"><th class="field-name">Input:</th><td class="field-body"><p class="first"><a class="reference internal" href="moe.views.html#moe.views.schemas.GpNextPointsConstantLiarRequest" title="moe.views.schemas.GpNextPointsConstantLiarRequest"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.GpNextPointsConstantLiarRequest</span></tt></a></p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Output:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.gp_next_points_pretty_view.GpNextPointsResponse</span></tt></p>
+<tr class="field-even field"><th class="field-name">Output:</th><td class="field-body"><p class="first"><a class="reference internal" href="moe.views.html#moe.views.schemas.GpNextPointsResponse" title="moe.views.schemas.GpNextPointsResponse"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.GpNextPointsResponse</span></tt></a></p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
@@ -738,7 +748,7 @@
 
 <dl class="attribute">
 <dt id="moe.views.rest.gp_next_points_constant_liar.GpNextPointsConstantLiar.request_schema">
-<tt class="descname">request_schema</tt><em class="property"> = &lt;moe.views.schemas.GpNextPointsConstantLiarRequest object at 4479644112 (named )&gt;</em><a class="headerlink" href="#moe.views.rest.gp_next_points_constant_liar.GpNextPointsConstantLiar.request_schema" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">request_schema</tt><em class="property"> = &lt;moe.views.schemas.GpNextPointsConstantLiarRequest object at 47807381595152 (named )&gt;</em><a class="headerlink" href="#moe.views.rest.gp_next_points_constant_liar.GpNextPointsConstantLiar.request_schema" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -747,13 +757,12 @@
 <div class="section" id="module-moe.views.rest.gp_next_points_epi">
 <span id="moe-views-rest-gp-next-points-epi-module"></span><h2>moe.views.rest.gp_next_points_epi module<a class="headerlink" href="#module-moe.views.rest.gp_next_points_epi" title="Permalink to this headline">¶</a></h2>
 <p>Classes for gp_next_points_epi endpoints.</p>
-<dl class="docutils">
-<dt>Includes:</dt>
-<dd><ol class="first last arabic simple">
+<p>Includes:</p>
+<blockquote>
+<div><ol class="arabic simple">
 <li>pretty and backend views</li>
 </ol>
-</dd>
-</dl>
+</div></blockquote>
 <dl class="class">
 <dt id="moe.views.rest.gp_next_points_epi.GpNextPointsEpi">
 <em class="property">class </em><tt class="descclassname">moe.views.rest.gp_next_points_epi.</tt><tt class="descname">GpNextPointsEpi</tt><big>(</big><em>request</em><big>)</big><a class="reference internal" href="_modules/moe/views/rest/gp_next_points_epi.html#GpNextPointsEpi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.views.rest.gp_next_points_epi.GpNextPointsEpi" title="Permalink to this definition">¶</a></dt>
@@ -771,10 +780,10 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Input:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.gp_next_points_pretty_view.GpNextPointsRequest</span></tt></p>
+<tr class="field-odd field"><th class="field-name">Input:</th><td class="field-body"><p class="first"><a class="reference internal" href="moe.views.html#moe.views.schemas.GpNextPointsRequest" title="moe.views.schemas.GpNextPointsRequest"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.GpNextPointsRequest</span></tt></a></p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Output:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.gp_next_points_pretty_view.GpNextPointsResponse</span></tt></p>
+<tr class="field-even field"><th class="field-name">Output:</th><td class="field-body"><p class="first"><a class="reference internal" href="moe.views.html#moe.views.schemas.GpNextPointsResponse" title="moe.views.schemas.GpNextPointsResponse"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.GpNextPointsResponse</span></tt></a></p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
@@ -830,10 +839,10 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Input:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.rest.gp_next_points_kriging.GpNextPointsKrigingRequest</span></tt></p>
+<tr class="field-odd field"><th class="field-name">Input:</th><td class="field-body"><p class="first"><a class="reference internal" href="moe.views.html#moe.views.schemas.GpNextPointsKrigingRequest" title="moe.views.schemas.GpNextPointsKrigingRequest"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.GpNextPointsKrigingRequest</span></tt></a></p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Output:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.gp_next_points_pretty_view.GpNextPointsResponse</span></tt></p>
+<tr class="field-even field"><th class="field-name">Output:</th><td class="field-body"><p class="first"><a class="reference internal" href="moe.views.html#moe.views.schemas.GpNextPointsResponse" title="moe.views.schemas.GpNextPointsResponse"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.GpNextPointsResponse</span></tt></a></p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
@@ -856,7 +865,7 @@
 
 <dl class="attribute">
 <dt id="moe.views.rest.gp_next_points_kriging.GpNextPointsKriging.request_schema">
-<tt class="descname">request_schema</tt><em class="property"> = &lt;moe.views.schemas.GpNextPointsKrigingRequest object at 4481850448 (named )&gt;</em><a class="headerlink" href="#moe.views.rest.gp_next_points_kriging.GpNextPointsKriging.request_schema" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">request_schema</tt><em class="property"> = &lt;moe.views.schemas.GpNextPointsKrigingRequest object at 47807410759568 (named )&gt;</em><a class="headerlink" href="#moe.views.rest.gp_next_points_kriging.GpNextPointsKriging.request_schema" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -971,7 +980,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+        &copy; Copyright 2012-2014 Yelp. MOE is licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0.
     </p>
   </div>
 
