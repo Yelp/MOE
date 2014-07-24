@@ -1,5 +1,6 @@
-# MOE
-[![Build Status](https://magnum.travis-ci.com/sc932/MOE.svg?token=E3yRnCAkWnWzepuxbk6A&branch=master)](https://magnum.travis-ci.com/sc932/MOE)
+![MOE logo](https://github.com/yelp/MOE/raw/master/moe/static/img/moe_logo_48.png)
+
+[![Build Status](https://magnum.travis-ci.com/Yelp/MOE.svg?token=E3yRnCAkWnWzepuxbk6A&branch=master)](https://magnum.travis-ci.com/Yelp/MOE)
 
 Metric Optimization Engine. A global, black box optimization engine for real world metric optimization.
 
@@ -58,17 +59,15 @@ You can be up and optimizing in a matter of minutes. [Examples of using MOE][13]
 from the directory MOE is installed:
 
 ```bash
-$ pserve --reload development.ini
+$ pserve --reload development.ini # MOE server is now running at http://localhost:6543
 ```
-
-In your favorite browser go to: http://127.0.0.1:6543/
 
 [The REST interface documentation][2]
 
 Or, from the command line,
 
 ```bash
-$ curl -X POST -H "Content-Type: application/json" -d '{"domain_info": {"dim": 1}, "points_to_evaluate": [[0.1], [0.5], [0.9]], "gp_info": {"points_sampled": [{"value_var": 0.01, "value": 0.1, "point": [0.0]}, {"value_var": 0.01, "value": 0.2, "point": [1.0]}]}}' http://127.0.0.1:6543/gp/ei
+$ curl -X POST -H "Content-Type: application/json" -d '{"domain_info": {"dim": 1}, "points_to_evaluate": [[0.1], [0.5], [0.9]], "gp_historical_info": {"points_sampled": [{"value_var": 0.01, "value": 0.1, "point": [0.0]}, {"value_var": 0.01, "value": 0.2, "point": [1.0]}]}}' http://127.0.0.1:6543/gp/ei
 ```
 [`gp_ei` endpoint documentation.][4]
 
@@ -79,7 +78,7 @@ $ ipython
 > from moe.easy_interface.experiment import Experiment
 > from moe.easy_interface.simple_endpoint import gp_next_points
 > exp = Experiment([[0, 2], [0, 4]])
-> exp.historical_data.append_sample_points([[0, 0], 1.0, 0.01])
+> exp.historical_data.append_sample_points([[[0, 0], 1.0, 0.01]])
 > next_point_to_sample = gp_next_points(exp)
 > print next_point_to_sample
 ```
@@ -87,7 +86,7 @@ $ ipython
 
 ### Within python
 
-See ``examples/next_point_via_simple_endpoint.py`` for this code or http://sc932.github.io/MOE/examples.html for more examples.
+See ``examples/next_point_via_simple_endpoint.py`` for this code or http://yelp.github.io/MOE/examples.html for more examples.
 
 ```python
 import math
@@ -127,9 +126,9 @@ More examples can be found in the `<MOE_DIR>/examples` directory.
 
 ### Within C++
 
-Expected Improvement Demo - http://sc932.github.io/MOE/gpp_expected_improvement_demo.html
-Gaussian Process Hyperparameter Optimization Demo - http://sc932.github.io/MOE/gpp_hyperparameter_optimization_demo.html
-Combined Demo - http://sc932.github.io/MOE/gpp_hyper_and_EI_demo.html
+Expected Improvement Demo - http://yelp.github.io/MOE/gpp_expected_improvement_demo.html
+Gaussian Process Hyperparameter Optimization Demo - http://yelp.github.io/MOE/gpp_hyperparameter_optimization_demo.html
+Combined Demo - http://yelp.github.io/MOE/gpp_hyper_and_EI_demo.html
 
 # Install
 
@@ -140,7 +139,7 @@ This is the recommended way to run the MOE REST server. All dependencies and bui
 [Docker (http://docs.docker.io/)][6] is a container based virtualization framework. Unlike traditional virtualization Docker is fast, lightweight and easy to use. Docker allows you to create containers holding all the dependencies for an application. Each container is kept isolated from any other, and nothing gets shared.
 
 ```bash
-$ git clone https://github.com/sc932/MOE.git
+$ git clone https://github.com/Yelp/MOE.git
 $ cd MOE
 $ docker build -t moe_container .
 $ docker run -p 6543:6543 moe_container
@@ -156,25 +155,29 @@ See [Install Documentation][7]
 
 See [Contributing Documentation][8]
 
+## License
+
+MOE is licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
+
 [0]: https://www.youtube.com/watch?v=qAN6iyYPbEE
-[1]: http://sc932.github.io/MOE/
-[2]: http://sc932.github.io/MOE/moe.views.rest.html
-[3]: http://github.com/sc932/MOE/pulls
-[4]: http://sc932.github.io/MOE/moe.views.rest.html#module-moe.views.rest.gp_ei
-[5]: http://sc932.github.io/MOE/moe.easy_interface.html
+[1]: http://yelp.github.io/MOE/
+[2]: http://yelp.github.io/MOE/moe.views.rest.html
+[3]: http://github.com/Yelp/MOE/pulls
+[4]: http://yelp.github.io/MOE/moe.views.rest.html#module-moe.views.rest.gp_ei
+[5]: http://yelp.github.io/MOE/moe.easy_interface.html
 [6]: http://docs.docker.io/
-[7]: http://sc932.github.io/MOE/install.html
-[8]: http://sc932.github.io/MOE/contributing.html
-[9]: http://sc932.github.io/MOE/moe.optimal_learning.python.python_version.html
+[7]: http://yelp.github.io/MOE/install.html
+[8]: http://yelp.github.io/MOE/contributing.html
+[9]: http://yelp.github.io/MOE/moe.optimal_learning.python.python_version.html
 [10]: http://www.youtube.com/watch?v=qAN6iyYPbEE
 [11]: http://www.slideshare.net/YelpEngineering/yelp-engineering-open-house-112013-optimally-learning-for-fun-and-profit
-[12]: http://sc932.github.io/MOE/cpp_tree.html
-[13]: http://sc932.github.io/MOE/examples.html
-[14]: http://sc932.github.io/MOE/objective_functions.html
-[15]: http://sc932.github.io/MOE/objective_functions.html#parameters
+[12]: http://yelp.github.io/MOE/cpp_tree.html
+[13]: http://yelp.github.io/MOE/examples.html
+[14]: http://yelp.github.io/MOE/objective_functions.html
+[15]: http://yelp.github.io/MOE/objective_functions.html#parameters
 [16]: http://people.orie.cornell.edu/pfrazier/
 [17]: http://www.orie.cornell.edu/
 [18]: http://optimallearning.princeton.edu/
 [19]: http://orfe.princeton.edu/
 [20]: http://people.orie.cornell.edu/pfrazier/Presentations/2014.01.Lancaster.BGO.pdf
-[21]: http://sc932.github.io/MOE/why_moe.html
+[21]: http://yelp.github.io/MOE/why_moe.html

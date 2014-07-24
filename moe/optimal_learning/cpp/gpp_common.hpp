@@ -197,6 +197,7 @@
 
         template void SomeFunction(int, SPECIFIC_TYPE arg2, ...);  // explicit instantiation DEFINITION
         // this is identical to explicit instantiation line in the HPP file, except no "extern" keyword
+
       END CPP FILE
 
 
@@ -211,6 +212,7 @@
 
         extern template class SomeClass<SPECIFIC_TYPE>;  // extern declaration telling compiler NOT to instantiate the
                                                          // current translation unit
+
       END HPP FILE
 
 
@@ -353,8 +355,8 @@
         };
 
       .. Note:: if State has a random number generator, then its internal state may need to be saved as well. Generally this
-      is NOT necessary! The RNG is guaranteed to be in a valid state, and users should have no reason to care what
-      the precise state of the RNG is. (Still if you do care, the RNG wrappers in gpp_random.hpp can save state.)
+        is NOT necessary! The RNG is guaranteed to be in a valid state, and users should have no reason to care what
+        the precise state of the RNG is. (Still if you do care, the RNG wrappers in gpp_random.hpp can save state.)
 
       See here for further information on the different types of exception safety:
       http://en.wikipedia.org/wiki/Exception_safety
@@ -375,6 +377,9 @@
   a. comments go above the function declaration or definition they describe
   b. declaration comments should individually describe all inputs/ouputs/returns using RST markdown; e.g., ::
 
+       BEGIN_COMMENT!\rst
+       Compute all the stuff.
+
        \param
          :size: number of variables
          :x[size]: vector of input variables
@@ -383,15 +388,18 @@
          :y[size]: vector of computed results
        \return
          returns the confidence score of the results, y
-     double ComputeStuff(int size, double const * restrict x, double const * restrict A, double * restrict y);
+       \endrstEND_COMMENT
+       double ComputeStuff(int size, double const * restrict x, double const * restrict A, double * restrict y);
 
      Here, ``A[size][size]`` indicates the size and data-ordering of ``A``: it has size rows and size columns, and is stored
      column-major (see implementation note 2).
 
      .. NOTE:: if we have a ``char*`` argument, ``my_str``, we will generally not specify the
        array size, instead writing:
-     ``my_str[]: a pointer to a char array``
-     since std::strlen() can be used to find the length.
+
+       ``my_str[]: a pointer to a char array``
+
+       since std::strlen() can be used to find the length.
 \endrst*/
 
 #ifndef MOE_OPTIMAL_LEARNING_CPP_GPP_COMMON_HPP_

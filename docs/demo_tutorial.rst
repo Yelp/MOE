@@ -14,8 +14,8 @@ This includes link to:
     #. :doc:`pretty_endpoints`
     #. The demo, which will be covered here.
 
-.. _docs: http://sc932.github.io/MOE
-.. _the repo: http://www.github.com/sc932/MOE
+.. _docs: http://yelp.github.io/MOE
+.. _the repo: http://www.github.com/Yelp/MOE
 
 The Interactive Demo
 --------------------
@@ -77,6 +77,8 @@ For more information on how this is done check out:
     :scale: 100%
 
 We see the Gaussian Process evolve as more points are sampled from it. Note how the Expected Improvement graph also changes as more historical information is given to MOE. By sampling the point with highest EI at every step MOE is able to quickly zoom in to the global optima of this function (near 0.529).
+
+.. _changing-hypers:
 
 Changing Hyperparameters
 ........................
