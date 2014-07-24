@@ -14,8 +14,8 @@ This includes link to:
     #. :doc:`pretty_endpoints`
     #. The demo, which will be covered here.
 
-.. _docs: http://sc932.github.io/MOE
-.. _the repo: http://www.github.com/sc932/MOE
+.. _docs: http://yelp.github.io/MOE
+.. _the repo: http://www.github.com/Yelp/MOE
 
 The Interactive Demo
 --------------------

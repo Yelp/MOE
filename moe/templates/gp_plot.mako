@@ -13,7 +13,7 @@
                     </div>
                     <div class="col-md-6 middle-text">
                         Endpoint(s):
-                        <a href="http://sc932.github.io/MOE/moe.views.rest.html#module-moe.views.rest.gp_mean_var_diag"><strong><code>gp_mean_var_diag</code></strong></a>
+                        <a href="http://yelp.github.io/MOE/moe.views.rest.html#module-moe.views.rest.gp_mean_var_diag"><strong><code>gp_mean_var_diag</code></strong></a>
                         <span class="glyphicon glyphicon-question-sign tooltip-rdy small" data-original-title="The endpoint(s) (and docs) used to generate the below graph." data-placement="top"><span>
                     </div>
                 </div>
@@ -27,7 +27,7 @@
                     </div>
                     <div class="col-md-6 middle-text">
                         Endpoint(s):
-                        <a href="http://sc932.github.io/MOE/moe.views.rest.html#module-moe.views.rest.gp_ei"><strong><code>gp_ei</code></strong></a> and <a href="http://sc932.github.io/MOE/moe.views.rest.html#module-moe.views.rest.gp_next_points_epi"><strong><code>gp_next_points_epi</code></strong></a>
+                        <a href="http://yelp.github.io/MOE/moe.views.rest.html#module-moe.views.rest.gp_ei"><strong><code>gp_ei</code></strong></a> and <a href="http://yelp.github.io/MOE/moe.views.rest.html#module-moe.views.rest.gp_next_points_epi"><strong><code>gp_next_points_epi</code></strong></a>
                         <span class="glyphicon glyphicon-question-sign tooltip-rdy small" data-original-title="The endpoint(s) (and docs) used to generate the below graph." data-placement="top"><span>
                     </div>
                 </div>
