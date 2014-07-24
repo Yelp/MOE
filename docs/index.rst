@@ -221,6 +221,13 @@ Examples:
     3. :doc:`gpp_hyper_and_EI_demo`
 
 
+Licence
+-------
+
+MOE is licensed under the `Apache License, Version 2.0`_
+
+.. _Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
+
 Source Documentation
 ====================
 
