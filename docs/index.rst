@@ -1,3 +1,7 @@
+.. image:: ../moe/static/img/moe_logo_48.png
+
+|
+
 Welcome to MOE's documentation!
 ===============================
 
@@ -38,7 +42,6 @@ Optimal learning is the study of efficient methods for collecting information, p
 .. _Prof. Warren Powell: http://optimallearning.princeton.edu/
 .. _Princeton, Operations Research and Financial Engineering: http://orfe.princeton.edu/
 .. _intro slides: http://people.orie.cornell.edu/pfrazier/Presentations/2014.01.Lancaster.BGO.pdf
-
 
 **Example**:
 
@@ -145,11 +148,9 @@ To get the REST server running locally, from the directory MOE is installed:
 
 ::
 
-    $ pserve --reload development.ini
+    $ pserve --reload development.ini # MOE server is now running at http://localhost:6543
 
-In your favorite browser go to: http://127.0.0.1:6543/
-
-Or, from the command line,
+You can access the server from a browser or from the command line,
 
 ::
 
@@ -245,6 +246,7 @@ Documentation
    objective_functions.rst
    examples.rst
    contributing.rst
+   faq.rst
 
 Python Files
 ------------

@@ -1,4 +1,4 @@
-# MOE
+[![MOE logo](https://github.com/yelp/MOE/raw/master/moe/static/img/moe_logo_48.png)
 [![Build Status](https://magnum.travis-ci.com/Yelp/MOE.svg?token=E3yRnCAkWnWzepuxbk6A&branch=master)](https://magnum.travis-ci.com/Yelp/MOE)
 
 Metric Optimization Engine. A global, black box optimization engine for real world metric optimization.
@@ -58,10 +58,8 @@ You can be up and optimizing in a matter of minutes. [Examples of using MOE][13]
 from the directory MOE is installed:
 
 ```bash
-$ pserve --reload development.ini
+$ pserve --reload development.ini # MOE server is now running at http://localhost:6543
 ```
-
-In your favorite browser go to: http://127.0.0.1:6543/
 
 [The REST interface documentation][2]
 

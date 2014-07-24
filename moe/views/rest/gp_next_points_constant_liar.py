@@ -69,8 +69,8 @@ class GpNextPointsConstantLiar(GpNextPointsPrettyView):
 
            Calculates the next best points to sample, given historical data, using Constant Liar (CL).
 
-           :input: :class:`moe.views.rest.gp_next_points_constant_liar.GpNextPointsConstantLiarRequest`
-           :output: :class:`moe.views.gp_next_points_pretty_view.GpNextPointsResponse`
+           :input: :class:`moe.views.schemas.GpNextPointsConstantLiarRequest`
+           :output: :class:`moe.views.schemas.GpNextPointsResponse`
 
            :status 200: returns a response
            :status 500: server error

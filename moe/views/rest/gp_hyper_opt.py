@@ -97,8 +97,8 @@ class GpHyperOptView(OptimizableGpPrettyView):
 
            Calculates the optimal hyperparameters for a gaussian process, given historical data.
 
-           :input: :class:`moe.views.gp_hyper_opt.GpHyperOptRequest`
-           :output: :class:`moe.views.gp_hyper_opt.GpHyperOptResponse`
+           :input: :class:`moe.views.schemas.GpHyperOptRequest`
+           :output: :class:`moe.views.schemas.GpHyperOptResponse`
 
            :status 201: returns a response
            :status 500: server error
