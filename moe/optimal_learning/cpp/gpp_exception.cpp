@@ -2,7 +2,7 @@
   \file gpp_exception.cpp
   \rst
   This file contains definitions for the constructors of the various exception classes in gpp_exception.hpp. These ctors
-  generally set the message_ member with some debugging information about what the error is and where it occurred.
+  generally set the ``message_`` member with some debugging information about what the error is and where it occurred.
 
   In most cases, we use boost::lexical_cast<std::string> to convert from numbers to strings. std::to_string's formatting
   for floating point types is absolutely terrible (but it works fine for integral types, which is where we use it).
