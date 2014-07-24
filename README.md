@@ -78,7 +78,7 @@ $ ipython
 > from moe.easy_interface.experiment import Experiment
 > from moe.easy_interface.simple_endpoint import gp_next_points
 > exp = Experiment([[0, 2], [0, 4]])
-> exp.historical_data.append_sample_points([[0, 0], 1.0, 0.01])
+> exp.historical_data.append_sample_points([[[0, 0], 1.0, 0.01]])
 > next_point_to_sample = gp_next_points(exp)
 > print next_point_to_sample
 ```
