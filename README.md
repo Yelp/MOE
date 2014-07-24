@@ -1,4 +1,5 @@
-# MOE
+![MOE logo](https://github.com/yelp/MOE/raw/master/moe/static/img/moe_logo_48.png)
+
 [![Build Status](https://magnum.travis-ci.com/Yelp/MOE.svg?token=E3yRnCAkWnWzepuxbk6A&branch=master)](https://magnum.travis-ci.com/Yelp/MOE)
 
 Metric Optimization Engine. A global, black box optimization engine for real world metric optimization.
@@ -46,7 +47,7 @@ MOE does this internally by:
 Externally you can use MOE through:
 
 1. [The REST interface][2]
-2. [The python interface][9]
+2. [The Python interface][9]
 3. [The C++ interface][12]
 
 You can be up and optimizing in a matter of minutes. [Examples of using MOE][13]
@@ -58,17 +59,15 @@ You can be up and optimizing in a matter of minutes. [Examples of using MOE][13]
 from the directory MOE is installed:
 
 ```bash
-$ pserve --reload development.ini
+$ pserve --reload development.ini # MOE server is now running at http://localhost:6543
 ```
-
-In your favorite browser go to: http://127.0.0.1:6543/
 
 [The REST interface documentation][2]
 
 Or, from the command line,
 
 ```bash
-$ curl -X POST -H "Content-Type: application/json" -d '{"domain_info": {"dim": 1}, "points_to_evaluate": [[0.1], [0.5], [0.9]], "gp_info": {"points_sampled": [{"value_var": 0.01, "value": 0.1, "point": [0.0]}, {"value_var": 0.01, "value": 0.2, "point": [1.0]}]}}' http://127.0.0.1:6543/gp/ei
+$ curl -X POST -H "Content-Type: application/json" -d '{"domain_info": {"dim": 1}, "points_to_evaluate": [[0.1], [0.5], [0.9]], "gp_historical_info": {"points_sampled": [{"value_var": 0.01, "value": 0.1, "point": [0.0]}, {"value_var": 0.01, "value": 0.2, "point": [1.0]}]}}' http://127.0.0.1:6543/gp/ei
 ```
 [`gp_ei` endpoint documentation.][4]
 
@@ -79,13 +78,13 @@ $ ipython
 > from moe.easy_interface.experiment import Experiment
 > from moe.easy_interface.simple_endpoint import gp_next_points
 > exp = Experiment([[0, 2], [0, 4]])
-> exp.historical_data.append_sample_points([[0, 0], 1.0, 0.01])
+> exp.historical_data.append_sample_points([[[0, 0], 1.0, 0.01]])
 > next_point_to_sample = gp_next_points(exp)
 > print next_point_to_sample
 ```
 [`easy_interface` documentation.][5]
 
-### Within python
+### Within Python
 
 See ``examples/next_point_via_simple_endpoint.py`` for this code or http://yelp.github.io/MOE/examples.html for more examples.
 

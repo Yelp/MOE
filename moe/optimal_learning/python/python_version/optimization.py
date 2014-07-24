@@ -47,7 +47,7 @@ In this way, we can make the local and global optimizers completely agonistic to
 **2a. GRADIENT DESCENT (GD)**
 
 .. Note:: Below there is some discussion of "restarted" Gradient Descent; this is not yet implemented in Python.
-    See cpp_wrappers/optimization.py if you want to use this feature.
+    See :mod:`moe.optimal_learning.python.cpp_wrappers.optimization` if you want to use this feature.
 
 **2a, i. OVERVIEW**
 
@@ -87,7 +87,7 @@ loop, where we fire off another GD run from the current location unless converge
 
 **2b. NEWTON'S METHOD:**
 
-.. Note:: Newton's method is not yet implemented in Python. See cpp_wrappers/optimization.py if you want to use this feature.
+.. Note:: Newton's method is not yet implemented in Python. See :mod:`moe.optimal_learning.python.cpp_wrappers.optimization` if you want to use this feature.
 
 **2b, i. OVERVIEW**
 

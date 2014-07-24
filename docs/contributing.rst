@@ -42,10 +42,9 @@ Pull request review templates
 ``PEOPLE`` section
 ^^^^^^^^^^^^^^^^^^
 
-``Primary reviewer``: the primary code reviewer. This person is *EQUALLY RESPONSIBLE* for your branch. They should read and familiarize themselves with all aspects of the code, checking for style, correctness, maintainability, testing, etc.
-Ask the primary reviewer first if your branch is particularly large (and try to avoid large branches, anything over 300+ lines).
+``Primary reviewer``: the primary code reviewer. This person is *EQUALLY RESPONSIBLE* for your branch. They should read and familiarize themselves with all aspects of the code, checking for style, correctness, maintainability, testing, etc. If you do not know who to put then use @sc932 and/or @suntzu86.
 
-``Reviewers``: the people (including primary) that you would like to read your branch. Please use full email addresses or @<GITHUB NAME>. Right now, only people shown here: https://github.com/Yelp/MOE/watchers can see the review.
+``Reviewers``: the people (including primary) that you would like to read your branch. Please use full email addresses or @<GITHUB NAME>.
 
 ``DESCRIPTION`` section
 ^^^^^^^^^^^^^^^^^^^^^^^
@@ -56,9 +55,9 @@ Ask the primary reviewer first if your branch is particularly large (and try to 
 
 Examples::
 
-  eliu_ads_3094_python_implementation_of_ABCs
-  eliu_gh_74_fix_todos_ticket_numbers_comments
-  sclark_21_fix_tooltips
+  suntzu86_ads_3094_python_implementation_of_ABCs
+  suntzu86_gh_74_fix_todos_ticket_numbers_comments
+  sc932_21_fix_tooltips
 
 ``Ticket(s)/Issue(s)``: usually GH-##. Github will autolink “GH-##” ticket numbers. If your tickets live elsewhere (e.g., JIRA), provide a link. You can also do #XX
 

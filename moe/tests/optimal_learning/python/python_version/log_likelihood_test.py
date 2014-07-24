@@ -2,7 +2,8 @@
 """Test cases for the Log Marginal Likelihood metric for model fit.
 
 Testing is sparse at the moment. The C++ implementations are tested thoroughly (gpp_covariance_test.hpp/cpp) and
-we rely more on cpp_wrappers/covariance_test.py's comparison with C++ for verification of the Python code.
+we rely more on :mod:`moe.tests.optimal_learning.python.cpp_wrappers.covariance_test`'s
+comparison with C++ for verification of the Python code.
 
 """
 import numpy

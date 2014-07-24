@@ -2,10 +2,12 @@
 """Tools to compute ExpectedImprovement and optimize the next best point(s) to sample using EI through C++ calls.
 
 This file contains a class to compute Expected Improvement + derivatives and a functions to solve the q,p-EI optimization problem.
-The ExpectedImprovement class implements interfaces.ExpectedImproventInterface. The optimization functions are convenient
-wrappers around the matching C++ calls.
+The :class:`moe.optimal_learning.python.cpp_wrappers.expected_improvement.ExpectedImprovement`
+class implements :class:`moe.optimal_learning.python.interfaces.expected_improvement_interface.ExpectedImproventInterface`.
+The optimization functions are convenient wrappers around the matching C++ calls.
 
-See interfaces/expected_improvement_interface.py or gpp_math.hpp/cpp for further details on expected improvement.
+See :class:`moe.optimal_learning.python.interfaces.expected_improvement_interface` or
+gpp_math.hpp/cpp for further details on expected improvement.
 
 """
 import numpy
@@ -30,7 +32,8 @@ def multistart_expected_improvement_optimization(
     When ``points_being_sampled.size == 0 && num_to_sample == 1``, this function will use (fast) analytic EI computations.
 
     .. NOTE:: The following comments are copied from gpp_math.hpp, ComputeOptimalPointsToSample().
-        These comments are copied into multistart_expected_improvement_optimization() in python_version/expected_improvement.py
+      These comments are copied into
+      :func:`moe.optimal_learning.python.python_version.expected_improvement.multistart_expected_improvement_optimization`
 
     This is the primary entry-point for EI optimization in the optimal_learning library. It offers our best shot at
     improving robustness by combining higher accuracy methods like gradient descent with fail-safes like random/grid search.
@@ -340,7 +343,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
     .. Note:: Equivalent methods of ExpectedImprovementInterface and OptimizableInterface are aliased below (e.g.,
       compute_expected_improvement and compute_objective_function, etc).
 
-    See interfaces/expected_improvement_interface.py docs for further details.
+    See :mod:`moe.optimal_learning.python.interfaces.expected_improvement_interface` docs for further details.
 
     """
 
@@ -492,7 +495,8 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
     def compute_expected_improvement(self, force_monte_carlo=False):
         r"""Compute the expected improvement at ``points_to_sample``, with ``points_being_sampled`` concurrent points being sampled.
 
-        .. Note:: These comments were copied from this object's superclass in expected_improvement_interface.py.
+        .. Note:: These comments were copied from
+          :meth:`moe.optimal_learning.python.interfaces.expected_improvement_interface.ExpectedImprovementInterface.compute_expected_improvement`
 
         ``points_to_sample`` is the "q" and ``points_being_sampled`` is the "p" in q,p-EI.
 
@@ -542,7 +546,8 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
     def compute_grad_expected_improvement(self, force_monte_carlo=False):
         r"""Compute the gradient of expected improvement at ``points_to_sample`` wrt ``points_to_sample``, with ``points_being_sampled`` concurrent samples.
 
-        .. Note:: These comments were copied from this's superclass in expected_improvement_interface.py.
+        .. Note:: These comments were copied from
+          :meth:`moe.optimal_learning.python.interfaces.expected_improvement_interface.ExpectedImprovementInterface.compute_grad_expected_improvement`
 
         ``points_to_sample`` is the "q" and ``points_being_sampled`` is the "p" in q,p-EI.
 

@@ -97,8 +97,8 @@ class GpMeanVarView(GpMeanVarBaseView):
 
            Calculates the GP mean and covariance of a set of points, given historical data.
 
-           :input: :class:`moe.views.gp_ei.GpMeanVarRequest`
-           :output: :class:`moe.views.gp_ei.GpMeanVarResponse`
+           :input: :class:`moe.views.schemas.GpMeanVarRequest`
+           :output: :class:`moe.views.schemas.GpMeanVarResponse`
 
            :status 200: returns a response
            :status 500: server error
@@ -135,8 +135,8 @@ class GpMeanVarDiagView(GpMeanVarBaseView):
 
            Calculates the GP mean and variance of a set of points, given historical data.
 
-           :input: :class:`moe.views.gp_ei.GpMeanVarRequest`
-           :output: :class:`moe.views.gp_ei.GpMeanVarDiagResponse`
+           :input: :class:`moe.views.schemas.GpMeanVarRequest`
+           :output: :class:`moe.views.schemas.GpMeanVarDiagResponse`
 
            :status 200: returns a response
            :status 500: server error
@@ -173,8 +173,8 @@ class GpMeanView(GpMeanVarBaseView):
 
            Calculates the GP mean of a set of points, given historical data.
 
-           :input: :class:`moe.views.gp_ei.GpMeanVarRequest`
-           :output: :class:`moe.views.gp_ei.GpMeanResponse`
+           :input: :class:`moe.views.schemas.GpMeanVarRequest`
+           :output: :class:`moe.views.schemas.GpMeanResponse`
 
            :status 200: returns a response
            :status 500: server error
@@ -211,8 +211,8 @@ class GpVarView(GpMeanVarBaseView):
 
            Calculates the GP covariance of a set of points, given historical data.
 
-           :input: :class:`moe.views.gp_ei.GpMeanVarRequest`
-           :output: :class:`moe.views.gp_ei.GpVarResponse`
+           :input: :class:`moe.views.schemas.GpMeanVarRequest`
+           :output: :class:`moe.views.schemas.GpVarResponse`
 
            :status 200: returns a response
            :status 500: server error
@@ -249,8 +249,8 @@ class GpVarDiagView(GpMeanVarBaseView):
 
            Calculates the GP variance of a set of points, given historical data.
 
-           :input: :class:`moe.views.gp_ei.GpMeanVarRequest`
-           :output: :class:`moe.views.gp_ei.GpVarDiagResponse`
+           :input: :class:`moe.views.schemas.GpMeanVarRequest`
+           :output: :class:`moe.views.schemas.GpVarDiagResponse`
 
            :status 200: returns a response
            :status 500: server error
