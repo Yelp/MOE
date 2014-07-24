@@ -58,8 +58,8 @@ class GpEiView(GpPrettyView):
 
            Calculates the Expected Improvement (EI) of a set of points, given historical data.
 
-           :input: :class:`moe.views.gp_ei.GpEiRequest`
-           :output: :class:`moe.views.gp_ei.GpEiResponse`
+           :input: :class:`moe.views.schemas.GpEiRequest`
+           :output: :class:`moe.views.schemas.GpEiResponse`
 
            :status 201: returns a response
            :status 500: server error

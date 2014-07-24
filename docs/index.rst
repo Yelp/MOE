@@ -39,10 +39,9 @@ Optimal learning is the study of efficient methods for collecting information, p
 .. _Princeton, Operations Research and Financial Engineering: http://orfe.princeton.edu/
 .. _intro slides: http://people.orie.cornell.edu/pfrazier/Presentations/2014.01.Lancaster.BGO.pdf
 
-
 **Example**:
 
-To illustrate how MOE works, suppose we wish to maximize the click-through-rate (CTR) on a website we manage, by varying some real-valued parameter vector :math:`\vec{x}` that govern how site content is presented to the user.  Evaluating the CTR for a new set of parameters requires running an A/B test over a period of several days.  We write this problem mathematically as,
+To illustrate how MOE works, suppose we wish to maximize the click-through rate (CTR) on a website we manage, by varying some real-valued parameter vector :math:`\vec{x}` that govern how site content is presented to the user.  Evaluating the CTR for a new set of parameters requires running an A/B test over a period of several days.  We write this problem mathematically as,
 
 .. math::
 
@@ -145,11 +144,9 @@ To get the REST server running locally, from the directory MOE is installed:
 
 ::
 
-    $ pserve --reload development.ini
+    $ pserve --reload development.ini # MOE server is now running at http://localhost:6543
 
-In your favorite browser go to: http://127.0.0.1:6543/
-
-Or, from the command line,
+You can access the server from a browser or from the command line,
 
 ::
 

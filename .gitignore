@@ -8,9 +8,6 @@
 # Data files
 *.mat
 
-# Tox files
-.tox
-
 # OSX crap
 *.DS_Store
 
