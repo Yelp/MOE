@@ -6,6 +6,7 @@ Subpackages
 
 .. toctree::
 
+    moe.bandit
     moe.build
     moe.easy_interface
     moe.optimal_learning

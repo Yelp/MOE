@@ -235,6 +235,7 @@ Documentation
    why_moe.rst
    install.rst
    objective_functions.rst
+   bandit.rst
    examples.rst
    contributing.rst
 
