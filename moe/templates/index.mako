@@ -7,7 +7,7 @@
 
     <div class="span12">
       <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-5">
           <div class="panel panel-info">
             <div class="panel-heading"><b>Documentation</b></div>
               <ul class="list-group">
@@ -17,7 +17,9 @@
                 <a href="${request.route_url( 'gp_plot' )}" class="list-group-item">Interactive Demo</a>
               </ul>
           </div>
+        </div>
 
+        <div class="col-md-6">
           <div class="panel panel-success">
             <div class="panel-heading"><b>Gaussian Process (GP) Pretty Endpoints</b></div>
             <div class="panel-body">
