@@ -1,3 +1,7 @@
+.. image:: ../moe/static/img/moe_logo_48.png
+
+|
+
 Welcome to MOE's documentation!
 ===============================
 

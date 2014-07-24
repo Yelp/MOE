@@ -78,6 +78,8 @@ For more information on how this is done check out:
 
 We see the Gaussian Process evolve as more points are sampled from it. Note how the Expected Improvement graph also changes as more historical information is given to MOE. By sampling the point with highest EI at every step MOE is able to quickly zoom in to the global optima of this function (near 0.529).
 
+.. _changing-hypers:
+
 Changing Hyperparameters
 ........................
 
