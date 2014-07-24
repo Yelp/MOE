@@ -56,7 +56,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'MOE'
-copyright = u'2014, Yelp and Cornell Collaboration'
+copyright = u'2012-2014 Yelp. MOE is licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the

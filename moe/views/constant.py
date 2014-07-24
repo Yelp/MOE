@@ -137,8 +137,9 @@ GP_HYPER_OPT_PRETTY_ROUTE_NAME = 'gp_hyper_opt_pretty'
 GP_HYPER_OPT_PRETTY_ENDPOINT = '/gp/hyper_opt/pretty'
 GP_HYPER_OPT_PRETTY_MOE_ROUTE = MoeRoute(GP_HYPER_OPT_PRETTY_ROUTE_NAME, GP_HYPER_OPT_PRETTY_ENDPOINT)
 
-# These need to match method names in moe/optimal_learning/python/cpp_wrappers/expected_improvement.py
-OPTIMIZER_METHOD_NAMES = [
+#: Names of optimizer methods for finding the next points to sample (e.g., EPI, Kriging, etc.)
+#: These need to match method names in moe/optimal_learning/python/cpp_wrappers/expected_improvement.py
+NEXT_POINTS_OPTIMIZER_METHOD_NAMES = [
         GP_NEXT_POINTS_EPI_OPTIMIZER_METHOD_NAME,
         GP_NEXT_POINTS_KRIGING_OPTIMIZER_METHOD_NAME,
         GP_NEXT_POINTS_CONSTANT_LIAR_OPTIMIZER_METHOD_NAME,
@@ -180,6 +181,7 @@ ALL_MOE_ROUTES = []
 ALL_MOE_ROUTES.extend(ALL_REST_MOE_ROUTES)
 ALL_MOE_ROUTES.extend(ALL_PRETTY_MOE_ROUTES)
 
+#: dict mapping from MOE route names to MOE endpoint names
 ALL_REST_ROUTES_ROUTE_NAME_TO_ENDPOINT = {}
 for moe_route in ALL_REST_MOE_ROUTES:
     ALL_REST_ROUTES_ROUTE_NAME_TO_ENDPOINT[moe_route.route_name] = moe_route.endpoint

@@ -20,7 +20,7 @@ Making a pull request
 6. Test against styleguide (``make style-test``)
 7. Commit your changes (``git commit -am "Added Some Mathemagics"``)
 8. Push to the branch (``git push origin my_moe_branch``)
-9. Open a Pull Request - http://github.com/sc932/MOE/pulls
+9. Open a Pull Request - http://github.com/Yelp/MOE/pulls
 10. Optimize locally while you wait
 
 Pull request review templates
@@ -45,7 +45,7 @@ Pull request review templates
 ``Primary reviewer``: the primary code reviewer. This person is *EQUALLY RESPONSIBLE* for your branch. They should read and familiarize themselves with all aspects of the code, checking for style, correctness, maintainability, testing, etc.
 Ask the primary reviewer first if your branch is particularly large (and try to avoid large branches, anything over 300+ lines).
 
-``Reviewers``: the people (including primary) that you would like to read your branch. Please use full email addresses or @<GITHUB NAME>. Right now, only people shown here: https://github.com/sc932/MOE/watchers can see the review.
+``Reviewers``: the people (including primary) that you would like to read your branch. Please use full email addresses or @<GITHUB NAME>. Right now, only people shown here: https://github.com/Yelp/MOE/watchers can see the review.
 
 ``DESCRIPTION`` section
 ^^^^^^^^^^^^^^^^^^^^^^^

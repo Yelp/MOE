@@ -10,7 +10,7 @@ Welcome to MOE's documentation!
     #. `Source Documentation`_
     #. :doc:`Contributing </contributing>`
 
-.. _Github repo: https://github.com/sc932/MOE
+.. _Github repo: https://github.com/Yelp/MOE
 
 What is MOE?
 ------------
@@ -123,7 +123,7 @@ Docker (http://docs.docker.io/) is a container based virtualization framework. U
 
 ::
 
-    $ git clone https://github.com/sc932/MOE.git
+    $ git clone https://github.com/Yelp/MOE.git
     $ cd MOE
     $ docker build -t moe_container .
     $ docker run -p 6543:6543 moe_container
@@ -220,6 +220,13 @@ Examples:
     2. :doc:`gpp_hyperparameter_optimization_demo`
     3. :doc:`gpp_hyper_and_EI_demo`
 
+
+Licence
+-------
+
+MOE is licensed under the `Apache License, Version 2.0`_
+
+.. _Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
 
 Source Documentation
 ====================

@@ -26,7 +26,7 @@ class SamplePoint(_BaseSamplePoint):
 
     :ivar point: (*iterable of dim float64*) The point sampled (in the domain of the function)
     :ivar value: (*float64*) The value returned by the function
-    :ivar noise_variance: (*float64 >= 0.0*) The noise/measurement variance (if any) associated with ``value``
+    :ivar noise_variance: (*float64 >= 0.0*) The noise/measurement variance (if any) associated with :attr`value`
 
     """
 

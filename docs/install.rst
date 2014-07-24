@@ -12,7 +12,7 @@ This is the recommended way to run the MOE REST server. All dependencies and bui
 
 ::
 
-    $ git clone https://github.com/sc932/MOE.git
+    $ git clone https://github.com/Yelp/MOE.git
     $ cd MOE
     $ docker build -t moe_container .
     $ docker run -p 6543:6543 moe_container
@@ -52,7 +52,7 @@ Requires:
 
    ::
 
-      $ git clone https://github.com/sc932/MOE.git
+      $ git clone https://github.com/Yelp/MOE.git
       $ cd MOE
       $ pip install -e .
       $ python setup.py install
