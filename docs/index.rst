@@ -154,7 +154,7 @@ You can access the server from a browser or from the command line,
 
 ::
 
-    $ curl -X POST -H "Content-Type: application/json" -d '{"domain_info": {"dim": 1}, "points_to_evaluate": [[0.1], [0.5], [0.9]], "gp_info": {"points_sampled": [{"value_var": 0.01, "value": 0.1, "point": [0.0]}, {"value_var": 0.01, "value": 0.2, "point": [1.0]}]}}' http://127.0.0.1:6543/gp/ei
+    $ curl -X POST -H "Content-Type: application/json" -d '{"domain_info": {"dim": 1}, "points_to_evaluate": [[0.1], [0.5], [0.9]], "gp_historical_info": {"points_sampled": [{"value_var": 0.01, "value": 0.1, "point": [0.0]}, {"value_var": 0.01, "value": 0.2, "point": [1.0]}]}}' http://127.0.0.1:6543/gp/ei
 
 ``gp_ei`` endpoint documentation: :mod:`moe.views.rest.gp_ei`
 
@@ -167,7 +167,7 @@ From ipython
     > from moe.easy_interface.experiment import Experiment
     > from moe.easy_interface.simple_endpoint import gp_next_points
     > exp = Experiment([[0, 2], [0, 4]])
-    > exp.historical_data.append_sample_points([[0, 0], 1.0, 0.01])
+    > exp.historical_data.append_sample_points([[[0, 0], 1.0, 0.01]])
     > next_point_to_sample = gp_next_points(exp)
     > print next_point_to_sample
 
