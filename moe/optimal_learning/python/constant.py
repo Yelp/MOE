@@ -72,7 +72,6 @@ DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS = 10000
 # Minimal parameters for testing and demos (where speed is more important than accuracy)
 TEST_EXPECTED_IMPROVEMENT_MC_ITERATIONS = 50
 TEST_OPTIMIZER_MULTISTARTS = 3
-PRETTY_OPTIMIZER_MULTISTARTS = 40
 TEST_OPTIMIZER_NUM_RANDOM_SAMPLES = 3
 
 TEST_GRADIENT_DESCENT_PARAMETERS = python_optimization.GradientDescentParameters(
@@ -85,12 +84,13 @@ TEST_GRADIENT_DESCENT_PARAMETERS = python_optimization.GradientDescentParameters
         tolerance=1.0e-3,
         )
 
+DEMO_OPTIMIZER_MULTISTARTS = 50
 DEMO_GRADIENT_DESCENT_PARAMETERS = python_optimization.GradientDescentParameters(
-        max_num_steps=50,
+        max_num_steps=300,
         max_num_restarts=4,
         num_steps_averaged=0,
-        gamma=0.4,
-        pre_mult=1.4,
+        gamma=0.6,
+        pre_mult=1.0,
         max_relative_change=1.0,
         tolerance=1.0e-6,
         )
