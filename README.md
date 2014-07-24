@@ -47,7 +47,7 @@ MOE does this internally by:
 Externally you can use MOE through:
 
 1. [The REST interface][2]
-2. [The python interface][9]
+2. [The Python interface][9]
 3. [The C++ interface][12]
 
 You can be up and optimizing in a matter of minutes. [Examples of using MOE][13]
@@ -84,7 +84,7 @@ $ ipython
 ```
 [`easy_interface` documentation.][5]
 
-### Within python
+### Within Python
 
 See ``examples/next_point_via_simple_endpoint.py`` for this code or http://yelp.github.io/MOE/examples.html for more examples.
 
