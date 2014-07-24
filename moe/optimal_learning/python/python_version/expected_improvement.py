@@ -454,6 +454,15 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         For performance, this function vectorizes the monte-carlo integration loop, using numpy's mask feature to skip
         iterations where the improvement is not positive.
 
+        Lastly, under some situations (e.g., ``points_to_sample`` and ``points_begin_sampled`` are too close
+        together or too close to ``points_sampled``), the GP-Variance matrix, ``Vars`` is
+        [numerically] singular so that the cholesky factorization ``Ls * Ls^T = Vars`` cannot
+        be computed reliably.
+
+        When this happens (as detected by a numpy/scipy ``LinAlgError``), we instead resort to
+        a combination of the SVD and the QR factorization to compute the cholesky factorization
+        more reliably. SVD and QR (see code) have extremely numerically stable algorithms.
+
         :param mu_star: self._gaussian_process.compute_mean_of_points(union_of_points)
         :type mu_star: array of float64 with shape (num_points)
         :param var_star: self._gaussian_process.compute_variance_of_points(union_of_points)
@@ -467,12 +476,15 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
             chol_var = -scipy.linalg.cholesky(var_star, lower=True)
         except scipy.linalg.LinAlgError as exception:
             self.log.info('GP-variance matrix (size {0:d} is singular; scipy.linalg.cholesky failed. Error: {1:s}'.format(num_points, exception))
+            # TOOD(GH-325): Investigate whether the SVD is the best option here
             # var_star is singular or near-singular and cholesky failed.
             # Instead, use the SVD: U * E * V^H = A, which can be computed extremely reliably.
+            # See: http://en.wikipedia.org/wiki/Singular_value_decomposition
             # U, V are unitary and E is diagonal with all non-negative entries.
             # If A is SPSD, U = V.
             _, E, VH = scipy.linalg.svd(var_star)
             # Then form factor Q * R = sqrt(E) * V^H.
+            # See: http://en.wikipedia.org/wiki/QR_decomposition
             # (Q * R)^T * (Q * R) = R^T * Q * Q^T * R = R^T * R
             # and (Q * R)^T * (Q * R) = (sqrt(E) * V^T)^T * (sqrt(E) * V^T)
             # = V * sqrt(E) * sqrt(E) * V^T = A (using U = V).

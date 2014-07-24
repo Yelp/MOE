@@ -121,12 +121,17 @@ class GpNextPointsPrettyView(OptimizableGpPrettyView):
         # It may be sufficient to check found_update == False in ei_opt_status
         # and then use q-EI, else set EI = 0.
         expected_improvement_evaluator.current_point = next_points
+        # The C++ may fail to compute EI with some ``next_points`` inputs (e.g.,
+        # ``points_to_sample`` and ``points_begin_sampled`` are too close
+        # together or too close to ``points_sampled``). We catch the exception when this happens
+        # and attempt a more numerically robust option.
         try:
             expected_improvement = expected_improvement_evaluator.compute_expected_improvement()
         except Exception as exception:
             self.log.info('EI computation failed, probably b/c GP-variance matrix is singular. Error: {0:s}'.format(exception))
 
-            # python_version.expected_improvement.ExpectedImprovement's EI computation
+            # ``_compute_expected_improvement_monte_carlo`` in
+            # :class:`moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement`
             # has a more reliable (but very expensive) way to deal with singular variance matrices.
             python_ei_eval = PythonExpectedImprovement(
                 expected_improvement_evaluator._gaussian_process,

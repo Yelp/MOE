@@ -11,8 +11,8 @@ Then the improvement for this single sample is:
 where y is a particular prediction from the underlying Gaussian Process and best_known is the best observed value (min) so far.
 
 And the expected improvement, EI, can be computed by averaging repeated computations of I; i.e., monte-carlo integration.
-This is done in ExpectedImprovementInterface.compute_expected_improvement(); we can also compute the gradient. This
-computation is needed in the optimization of q,p-EI.
+This is done in :mod:`moe.optimal_learning.python.interfaces.expected_improvement_interface.ExpectedImprovementInterface.compute_expected_improvement`;
+we can also compute the gradient. This computation is needed in the optimization of q,p-EI.
 
 There is also a special, analytic case of EI computation that does not require monte-carlo integration. This special
 case can only be used to compute 1,0-EI (and its gradient). Still this can be very useful (e.g., the heuristic
@@ -72,7 +72,7 @@ class ExpectedImprovementInterface(object):
         r"""Compute the expected improvement at ``points_to_sample``, with ``points_being_sampled`` concurrent points being sampled.
 
         .. NOTE:: These comments were copied from ExpectedImprovementEvaluator::ComputeExpectedImprovement in gpp_math.hpp.
-           and duplicated in
+          and duplicated in
           :meth:`moe.optimal_learning.python.cpp_wrappers.expected_improvement.ExpectedImprovement.compute_expected_improvement` and
           :meth:`moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.compute_expected_improvement`
 
@@ -112,7 +112,7 @@ class ExpectedImprovementInterface(object):
         r"""Compute the gradient of expected improvement at ``points_to_sample`` wrt ``points_to_sample``, with ``points_being_sampled`` concurrent samples.
 
         .. NOTE:: These comments were copied from ExpectedImprovementEvaluator::ComputeGradExpectedImprovement in gpp_math.hpp
-           and duplicated
+          and duplicated
           :meth:`moe.optimal_learning.python.cpp_wrappers.expected_improvement.ExpectedImprovement.compute_grad_expected_improvement` and
           :meth:`moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.compute_grad_expected_improvement`
 
