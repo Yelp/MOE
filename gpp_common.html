@@ -110,6 +110,18 @@
 <li class="toctree-l2"><a class="reference internal" href="contributing.html#style">Style</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#what-license-is-moe-released-under">What license is MOE released under?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#when-should-i-use-moe">When should I use MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#what-is-the-time-complexity-of-moe">What is the time complexity of MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-do-i-cite-moe">How do I cite MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#why-does-moe-take-so-long-to-return-the-next-points-to-sample-for-some-inputs">Why does MOE take so long to return the next points to sample for some inputs?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-do-i-bootstrap-moe-what-initial-data-does-it-need">How do I bootstrap MOE? What initial data does it need?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-many-function-evaluations-do-i-need-before-moe-is-done">How many function evaluations do I need before MOE is &#8220;done&#8221;?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-many-function-evaluations-do-i-perform-before-i-update-the-hyperparameters-of-the-gp">How many function evaluations do I perform before I update the hyperparameters of the GP?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#will-you-accept-my-pull-request">Will you accept my pull request?</a></li>
+</ul>
+</li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="moe.html">moe package</a><ul>
@@ -551,10 +563,10 @@ struct StateWrapper : public State {
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">if State has a random number generator, then its internal state may need to be saved as well. Generally this</p>
-</div>
-<p>is NOT necessary! The RNG is guaranteed to be in a valid state, and users should have no reason to care what
+<p class="last">if State has a random number generator, then its internal state may need to be saved as well. Generally this
+is NOT necessary! The RNG is guaranteed to be in a valid state, and users should have no reason to care what
 the precise state of the RNG is. (Still if you do care, the RNG wrappers in gpp_random.hpp can save state.)</p>
+</div>
 <p>See here for further information on the different types of exception safety:
 <a class="reference external" href="http://en.wikipedia.org/wiki/Exception_safety">http://en.wikipedia.org/wiki/Exception_safety</a>
 <a class="reference external" href="http://www.boost.org/community/exception_safety.html">http://www.boost.org/community/exception_safety.html</a></p>
@@ -574,7 +586,10 @@ Matrices are stored flat in column-major (implementation note 2).  So the concep
 <li><p class="first">comments go above the function declaration or definition they describe</p>
 </li>
 <li><p class="first">declaration comments should individually describe all inputs/ouputs/returns using RST markdown; e.g.,</p>
-<div class="highlight-python"><div class="highlight"><pre>**Parameters**:
+<div class="highlight-python"><div class="highlight"><pre>BEGIN_COMMENT!\verbatim embed:rst
+Compute all the stuff.
+
+**Parameters**:
   :size: number of variables
   :x[size]: vector of input variables
   :A[size][size]: matrix describing relation of i-th, j-th input variables
@@ -582,18 +597,19 @@ Matrices are stored flat in column-major (implementation note 2).  So the concep
   :y[size]: vector of computed results
 **Returns**:
   returns the confidence score of the results, y
+\endrstEND_COMMENT
+double ComputeStuff(int size, double const * restrict x, double const * restrict A, double * restrict y);
 </pre></div>
 </div>
-<p>double ComputeStuff(int size, double const * restrict x, double const * restrict A, double * restrict y);</p>
 <p>Here, <tt class="docutils literal"><span class="pre">A[size][size]</span></tt> indicates the size and data-ordering of <tt class="docutils literal"><span class="pre">A</span></tt>: it has size rows and size columns, and is stored
 column-major (see implementation note 2).</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">if we have a <tt class="docutils literal"><span class="pre">char*</span></tt> argument, <tt class="docutils literal"><span class="pre">my_str</span></tt>, we will generally not specify the
+<p>if we have a <tt class="docutils literal"><span class="pre">char*</span></tt> argument, <tt class="docutils literal"><span class="pre">my_str</span></tt>, we will generally not specify the
 array size, instead writing:</p>
+<p><tt class="docutils literal"><span class="pre">my_str[]:</span> <span class="pre">a</span> <span class="pre">pointer</span> <span class="pre">to</span> <span class="pre">a</span> <span class="pre">char</span> <span class="pre">array</span></tt></p>
+<p class="last">since std::strlen() can be used to find the length.</p>
 </div>
-<p><tt class="docutils literal"><span class="pre">my_str[]:</span> <span class="pre">a</span> <span class="pre">pointer</span> <span class="pre">to</span> <span class="pre">a</span> <span class="pre">char</span> <span class="pre">array</span></tt>
-since std::strlen() can be used to find the length.</p>
 </li>
 </ol>
  </p>
@@ -943,7 +959,7 @@ SomeType y = decltype(f)::i;
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+        &copy; Copyright 2012-2014 Yelp. MOE is licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0.
     </p>
   </div>
 

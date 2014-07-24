@@ -111,6 +111,18 @@
 <li class="toctree-l2"><a class="reference internal" href="contributing.html#style">Style</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#what-license-is-moe-released-under">What license is MOE released under?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#when-should-i-use-moe">When should I use MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#what-is-the-time-complexity-of-moe">What is the time complexity of MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-do-i-cite-moe">How do I cite MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#why-does-moe-take-so-long-to-return-the-next-points-to-sample-for-some-inputs">Why does MOE take so long to return the next points to sample for some inputs?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-do-i-bootstrap-moe-what-initial-data-does-it-need">How do I bootstrap MOE? What initial data does it need?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-many-function-evaluations-do-i-need-before-moe-is-done">How many function evaluations do I need before MOE is &#8220;done&#8221;?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-many-function-evaluations-do-i-perform-before-i-update-the-hyperparameters-of-the-gp">How many function evaluations do I perform before I update the hyperparameters of the GP?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#will-you-accept-my-pull-request">Will you accept my pull request?</a></li>
+</ul>
+</li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="moe.html">moe package</a><ul>
@@ -225,6 +237,25 @@ and invoking its member functions (see gpp_math.hpp) from Python.</p>
 <blockquote>
 <div><p></p>
 <p></p>
+</div></blockquote>
+</p>
+</div>
+<div class="section" id="gpp-python-gaussian-process-cpp">
+<h2>gpp_python_gaussian_process.cpp<a class="headerlink" href="#gpp-python-gaussian-process-cpp" title="Permalink to this headline">¶</a></h2>
+<p></p>
+<p><p>This file has the logic to construct a GaussianProcess (C++ object) from Python and invoke its member functions.
+The data flow follows the basic 4 step from gpp_python_common.hpp.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">several internal functions of this source file are only called from <tt class="docutils literal"><span class="pre">Export*()</span></tt> functions,
+so their description, inputs, outputs, etc. comments have been moved. These comments exist in
+<tt class="docutils literal"><span class="pre">Export*()</span></tt> as Python docstrings, so we saw no need to repeat ourselves.</p>
+</div>
+ </p>
+<p><p id="project0namespaceoptimal__learning"><em>namespace</em> <strong>optimal_learning</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
 <em>Functions</em><blockquote>
 <div><p><span class="target" id="project0namespaceoptimal__learning_1adf9a1d07ba6885186318abf34cd9e47f"></span><div class="line-block">
 <div class="line">void <strong>ExportGaussianProcessFunctions</strong>()</div>
@@ -242,138 +273,6 @@ and invoking its member functions (see gpp_math.hpp) from Python.</p>
 </div></blockquote>
 </div></blockquote>
 </p>
-</div>
-<div class="section" id="gpp-python-gaussian-process-cpp">
-<h2>gpp_python_gaussian_process.cpp<a class="headerlink" href="#gpp-python-gaussian-process-cpp" title="Permalink to this headline">¶</a></h2>
-<p></p>
-<p><blockquote>
-<div><p>This file has the logic to construct a GaussianProcess (C++ object) from Python and invoke its member functions.
-The data flow follows the basic 4 step from gpp_python_common.hpp.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">several internal functions of this source file are only called from <tt class="docutils literal"><span class="pre">Export*()</span></tt> functions,
-so their description, inputs, outputs, etc. comments have been moved. These comments exist in
-<tt class="docutils literal"><span class="pre">Export*()</span></tt> as Python docstrings, so we saw no need to repeat ourselves.</p>
-</div>
-</div></blockquote>
-<p><a href="#id1"><span class="problematic" id="id2">*</span></a>/
-// This include violates the Google Style Guide by placing an &#8220;other&#8221; system header ahead of C and C++ system headers.  However,
-// it needs to be at the top, otherwise compilation fails on some systems with some versions of python: OS X, python 2.7.3.
-// Putting this include first prevents pyport from doing something illegal in C++; reference: <a class="reference external" href="http://bugs.python.org/issue10910">http://bugs.python.org/issue10910</a></p>
-<blockquote>
-<div>// NOLINT(build/include)</div></blockquote>
-<dl class="docutils">
-<dt>// NOLINT-ing the C, C++ header includes as well; otherwise cpplint gets confused</dt>
-<dd><p class="first">// NOLINT(build/include_order)</p>
-<p class="last">// NOLINT(build/include_order)
-// NOLINT(build/include_order)
-// NOLINT(build/include_order)
-// NOLINT(build/include_order)</p>
-</dd>
-</dl>
-<p>namespace optimal_learning {</p>
-<p>namespace {</p>
-<dl class="docutils">
-<dt>/<a href="#id3"><span class="problematic" id="id4">*</span></a>!verbatim embed:rst</dt>
-<dd>Surrogate &#8220;constructor&#8221; for GaussianProcess intended only for use by boost::python.  This aliases the normal C++ constructor,
-replacing <tt class="docutils literal"><span class="pre">double</span> <span class="pre">const</span> <span class="pre">*</span> <span class="pre">restrict</span></tt> arguments with <tt class="docutils literal"><span class="pre">const</span> <span class="pre">boost::python::list&amp;</span></tt> arguments.</dd>
-</dl>
- </p>
-<em>Functions</em><blockquote>
-<div><p><span class="target" id="project0gpp__python__gaussian__process_8cpp_1ace9a18f7356239966e2f972315dbaca6"></span><div class="line-block">
-<div class="line">GaussianProcess * <strong>make_gaussian_process</strong>(const boost::python::list &amp; hyperparameters, const boost::python::list &amp; points_sampled, const boost::python::list &amp; points_sampled_value, const boost::python::list &amp; noise_variance, int dim, int num_sampled)</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p></p>
-</div></blockquote>
-<p><span class="target" id="project0gpp__python__gaussian__process_8cpp_1a7657325b93739de0c255c738803ac01d"></span><div class="line-block">
-<div class="line">boost::python::list <strong>GetMeanWrapper</strong>(const GaussianProcess &amp; gaussian_process, const boost::python::list &amp; points_to_sample, int num_to_sample)</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p></p>
-</div></blockquote>
-<p><span class="target" id="project0gpp__python__gaussian__process_8cpp_1a357cbe3131f873cac51c764cc6ce5583"></span><div class="line-block">
-<div class="line">boost::python::list <strong>GetGradMeanWrapper</strong>(const GaussianProcess &amp; gaussian_process, const boost::python::list &amp; points_to_sample, int num_to_sample)</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p></p>
-</div></blockquote>
-<p><span class="target" id="project0gpp__python__gaussian__process_8cpp_1aa5aa0f47fbff8399a2441c545bed2d09"></span><div class="line-block">
-<div class="line">boost::python::list <strong>GetVarWrapper</strong>(const GaussianProcess &amp; gaussian_process, const boost::python::list &amp; points_to_sample, int num_to_sample)</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p></p>
-</div></blockquote>
-<p><span class="target" id="project0gpp__python__gaussian__process_8cpp_1a03bdb14694e47a462c7ac789a612131e"></span><div class="line-block">
-<div class="line">boost::python::list <strong>GetCholVarWrapper</strong>(const GaussianProcess &amp; gaussian_process, const boost::python::list &amp; points_to_sample, int num_to_sample)</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p></p>
-</div></blockquote>
-<p><span class="target" id="project0gpp__python__gaussian__process_8cpp_1a74fafb907866c31c2aab0bfd60985f61"></span><div class="line-block">
-<div class="line">boost::python::list <strong>GetGradVarWrapper</strong>(const GaussianProcess &amp; gaussian_process, const boost::python::list &amp; points_to_sample, int num_to_sample, int num_derivatives)</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p></p>
-</div></blockquote>
-<p><span class="target" id="project0gpp__python__gaussian__process_8cpp_1a9afa2fe24cdb92656f7bea79b6235256"></span><div class="line-block">
-<div class="line">boost::python::list <strong>GetGradCholVarWrapper</strong>(const GaussianProcess &amp; gaussian_process, const boost::python::list &amp; points_to_sample, int num_to_sample, int num_derivatives)</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p></p>
-</div></blockquote>
-<p><span class="target" id="project0gpp__python__gaussian__process_8cpp_1ad20f61f8e056c7b35a2fad875c253ccc"></span><div class="line-block">
-<div class="line">void <strong>AddPointsToGPWrapper</strong>(GaussianProcess * gaussian_process, const boost::python::list &amp; new_points, const boost::python::list &amp; new_points_value, const boost::python::list &amp; new_points_noise_variance, int num_new_points)</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p></p>
-</div></blockquote>
-<p><span class="target" id="project0gpp__python__gaussian__process_8cpp_1a0d9ec2cb5d3dbe35137229eea8ca4bff"></span><div class="line-block">
-<div class="line">double <strong>SamplePointFromGPWrapper</strong>(GaussianProcess * gaussian_process, const boost::python::list &amp; point_to_sample, double noise_variance)</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p></p>
-</div></blockquote>
-<p><span class="target" id="project0gpp__python__gaussian__process_8cpp_1a5d114280de947a50d0e91ed310ff3422"></span><div class="line-block">
-<div class="line">void <strong>PrintHistoricalData</strong>(const GaussianProcess &amp; gaussian_process)</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p></p>
-</div></blockquote>
-<p><span class="target" id="project0gpp__python__gaussian__process_8cpp_1ab906c7f2d5cc3af41f191f08468d36e5"></span><div class="line-block">
-<div class="line">void <strong>ExportGaussianProcessFunctions</strong>()</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p><p>Exports constructor and member functions (with docstrings) from GaussianProcess:</p>
-<ol class="arabic simple">
-<li>Constructor accepting Python structures</li>
-<li>Evaluation of mean, variance, cholesky of variance (and their gradients)</li>
-</ol>
- </p>
-</div></blockquote>
-</div></blockquote>
 </div>
 </div>
 
@@ -395,7 +294,7 @@ replacing <tt class="docutils literal"><span class="pre">double</span> <span cla
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+        &copy; Copyright 2012-2014 Yelp. MOE is licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0.
     </p>
   </div>
 

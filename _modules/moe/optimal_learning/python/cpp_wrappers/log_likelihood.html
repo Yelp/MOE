@@ -109,6 +109,18 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../../contributing.html#style">Style</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../faq.html">Frequently Asked Questions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#what-license-is-moe-released-under">What license is MOE released under?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#when-should-i-use-moe">When should I use MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#what-is-the-time-complexity-of-moe">What is the time complexity of MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#how-do-i-cite-moe">How do I cite MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#why-does-moe-take-so-long-to-return-the-next-points-to-sample-for-some-inputs">Why does MOE take so long to return the next points to sample for some inputs?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#how-do-i-bootstrap-moe-what-initial-data-does-it-need">How do I bootstrap MOE? What initial data does it need?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#how-many-function-evaluations-do-i-need-before-moe-is-done">How many function evaluations do I need before MOE is &#8220;done&#8221;?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#how-many-function-evaluations-do-i-perform-before-i-update-the-hyperparameters-of-the-gp">How many function evaluations do I perform before I update the hyperparameters of the GP?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#will-you-accept-my-pull-request">Will you accept my pull request?</a></li>
+</ul>
+</li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../moe.html">moe package</a><ul>
@@ -208,12 +220,13 @@
 <span class="c"># -*- coding: utf-8 -*-</span>
 <span class="sd">r&quot;&quot;&quot;Tools to compute log likelihood-like measures of model fit and optimize them (wrt the hyperparameters of covariance).</span>
 
-<span class="sd">See the file comments in interfaces/log_likelihood_interface.py for an overview of log likelihood-like metrics and their role</span>
+<span class="sd">See the file comments in :mod:`moe.optimal_learning.python.interfaces.log_likelihood_interface`</span>
+<span class="sd">for an overview of log likelihood-like metrics and their role</span>
 <span class="sd">in model selection. This file provides hooks to implementations of two such metrics in C++: Log Marginal Likelihood and</span>
 <span class="sd">Leave One Out Cross Validation Log Pseudo-Likelihood.</span>
 
 <span class="sd">.. Note:: This is a copy of the file comments in gpp_model_selection.hpp.</span>
-<span class="sd">  These comments are copied in python_version/log_likelihood.py.</span>
+<span class="sd">  These comments are copied in :mod:`moe.optimal_learning.python.python_version.log_likelihood`.</span>
 <span class="sd">  See this file&#39;s comments and interfaces.log_likelihood_interface for more details as well as the hpp and corresponding .cpp file.</span>
 
 <span class="sd">**a. LOG MARGINAL LIKELIHOOD (LML)**</span>
@@ -276,10 +289,12 @@
 <span class="p">):</span>
     <span class="sd">r&quot;&quot;&quot;Select the hyperparameters that maximize the specified log likelihood measure of model fit (over the historical data) within the specified domain.</span>
 
-<span class="sd">    .. Note:: The following comments are copied to multistart_hyperparameter_optimization() in python_version/log_likelihood.py</span>
+<span class="sd">    .. Note:: The following comments are copied to</span>
+<span class="sd">      :mod:`moe.optimal_learning.python.python_version.log_likelihood.multistart_hyperparameter_optimization`.</span>
 
-<span class="sd">    See GaussianProcessLogMarginalLikelihood and GaussianProcessLeaveOneOutLogLikelihood for an overview of some</span>
-<span class="sd">    example log likelihood-like measures.</span>
+<span class="sd">    See :class:`moe.optimal_learning.python.cpp_wrappers.log_likelihood.GaussianProcessLogMarginalLikelihood` and</span>
+<span class="sd">    :class:`moe.optimal_learning.python.cpp_wrappers.log_likelihood.GaussianProcessLeaveOneOutLogLikelihood`</span>
+<span class="sd">    for an overview of some example log likelihood-like measures.</span>
 
 <span class="sd">    Optimizers are: null (&#39;dumb&#39; search), gradient descent, newton</span>
 <span class="sd">    Newton is the suggested optimizer.</span>
@@ -287,7 +302,7 @@
 <span class="sd">    &#39;dumb&#39; search means this will just evaluate the objective log likelihood measure at num_multistarts &#39;points&#39;</span>
 <span class="sd">    (hyperparameters) in the domain, uniformly sampled using latin hypercube sampling.</span>
 <span class="sd">    The hyperparameter_optimizer_parameters input specifies the desired optimization technique as well as parameters controlling</span>
-<span class="sd">    its behavior (see cpp_wrappers.optimization.py).</span>
+<span class="sd">    its behavior (see :mod:`moe.optimal_learning.python.cpp_wrappers.optimization`).</span>
 
 <span class="sd">    See gpp_python_common.cpp for C++ enum declarations laying out the options for objective and optimizer types.</span>
 
@@ -390,13 +405,19 @@
 
     <span class="sd">r&quot;&quot;&quot;Class for computing log likelihood-like measures of model fit via C++ wrappers (currently log marginal and leave one out cross validation).</span>
 
-<span class="sd">    See GaussianProcessLogMarginalLikelihood and GaussianProcessLeaveOneOutLogLikelihood classes below for some more</span>
-<span class="sd">    details on these metrics. Users may find it more convenient to construct these objects instead of a LogLikelihood</span>
-<span class="sd">    object directly. Since these various metrics are fairly different, the member function docs in this class will</span>
-<span class="sd">    remain generic.</span>
+<span class="sd">    See :class:`moe.optimal_learning.python.cpp_wrappers.log_likelihood.GaussianProcessLogMarginalLikelihood` and</span>
+<span class="sd">    :class:`moe.optimal_learning.python.cpp_wrappers.log_likelihood.GaussianProcessLeaveOneOutLogLikelihood`</span>
+<span class="sd">    classes below for some more details on these metrics. Users may find it more convenient to</span>
+<span class="sd">    construct these objects instead of a :class:`~moe.optimal_learning.python.cpp_wrappers.log_likelihood.GaussianProcessLogLikelihood`</span>
+<span class="sd">    object directly. Since these various metrics are fairly different, the member function docs</span>
+<span class="sd">    in this class will remain generic.</span>
 
-<span class="sd">    .. Note:: Equivalent methods of LogLikelihoodInterface and OptimizableInterface are aliased below (e.g.,</span>
-<span class="sd">      problem_size and num_hyperparameters, compute_log_likelihood and compute_objective_function, etc).</span>
+<span class="sd">    .. Note:: Equivalent methods of :class:`moe.optimal_learning.python.interfaces.log_likelihood_interface.GaussianProcessLogLikelihoodInterface` and</span>
+<span class="sd">      :class:`moe.optimal_learning.python.interfaces.optimization_interface.OptimizableInterface`</span>
+<span class="sd">      are aliased below (e.g., :class:`~moe.optimal_learning.python.cpp_wrappers.log_likelihood.GaussianProcessLogLikelihood.problem_size` and</span>
+<span class="sd">      :class:`~moe.optimal_learning.python.cpp_wrappers.log_likelihood.GaussianProcessLogLikelihood.num_hyperparameters`,</span>
+<span class="sd">      :class:`~moe.optimal_learning.python.cpp_wrappers.log_likelihood.GaussianProcessLogLikelihood.compute_log_likelihood` and</span>
+<span class="sd">      :class:`~moe.optimal_learning.python.cpp_wrappers.log_likelihood.GaussianProcessLogLikelihood.compute_objective_function`, etc).</span>
 
 <span class="sd">    See gpp_model_selection.hpp/cpp for further overview and in-depth discussion, respectively.</span>
 
@@ -406,9 +427,10 @@
         <span class="sd">&quot;&quot;&quot;Construct a LogLikelihood object that knows how to call C++ for evaluation of member functions.</span>
 
 <span class="sd">        :param covariance_function: covariance object encoding assumptions about the GP&#39;s behavior on our data</span>
-<span class="sd">        :type covariance_function: Covariance object exposing hyperparameters (e.g., from cpp_wrappers.covariance)</span>
+<span class="sd">        :type covariance_function: :class:`moe.optimal_learning.python.interfaces.covariance_interface.CovarianceInterface` subclass</span>
+<span class="sd">          (e.g., from :mod:`moe.optimal_learning.python.cpp_wrappers.covariance`).</span>
 <span class="sd">        :param historical_data: object specifying the already-sampled points, the objective value at those points, and the noise variance associated with each observation</span>
-<span class="sd">        :type historical_data: HistoricalData object</span>
+<span class="sd">        :type historical_data: :class:`moe.optimal_learning.python.data_containers.HistoricalData` object</span>
 <span class="sd">        :param log_likelihood_type: enum specifying which log likelihood measure to compute</span>
 <span class="sd">        :type log_likelihood_type: GPP.LogLikelihoodTypes</span>
 
@@ -427,7 +449,8 @@
 <div class="viewcode-block" id="GaussianProcessLogLikelihood.num_hyperparameters"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.log_likelihood.GaussianProcessLogLikelihood.num_hyperparameters">[docs]</a>    <span class="k">def</span> <span class="nf">num_hyperparameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the number of hyperparameters aka the number of independent parameters to optimize.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_covariance</span><span class="o">.</span><span class="n">num_hyperparameters</span>
-</div>
+
+    <span class="c">#: an alias for num_hyperparameters to fulfill :class:`moe.optimal_learning.python.interfaces.optimization_interface.OptimizableInterface`</span></div>
     <span class="n">problem_size</span> <span class="o">=</span> <span class="n">num_hyperparameters</span>
 
 <div class="viewcode-block" id="GaussianProcessLogLikelihood.get_hyperparameters"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.log_likelihood.GaussianProcessLogLikelihood.get_hyperparameters">[docs]</a>    <span class="k">def</span> <span class="nf">get_hyperparameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -457,17 +480,17 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">_points_sampled</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return the coordinates of the already-sampled points; see data_containers.HistoricalData.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Return the coordinates of the already-sampled points; see :class:`moe.optimal_learning.python.data_containers.HistoricalData`.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_historical_data</span><span class="o">.</span><span class="n">points_sampled</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">_points_sampled_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return the function values measured at each of points_sampled; see data_containers.HistoricalData.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Return the function values measured at each of points_sampled; see :class:`moe.optimal_learning.python.data_containers.HistoricalData`.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_historical_data</span><span class="o">.</span><span class="n">points_sampled_value</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">_points_sampled_noise_variance</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return the noise variance associated with points_sampled_value; see data_containers.HistoricalData.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Return the noise variance associated with points_sampled_value; see :class:`moe.optimal_learning.python.data_containers.HistoricalData`.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_historical_data</span><span class="o">.</span><span class="n">points_sampled_noise_variance</span>
 
 <div class="viewcode-block" id="GaussianProcessLogLikelihood.get_covariance_copy"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.log_likelihood.GaussianProcessLogLikelihood.get_covariance_copy">[docs]</a>    <span class="k">def</span> <span class="nf">get_covariance_copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -544,7 +567,8 @@
 <span class="sd">    This is a measure of how likely it is that the observed values came from our Gaussian Process Prior.</span>
 
 <span class="sd">    .. Note:: This is a copy of LogMarginalLikelihoodEvaluator&#39;s class comments in gpp_model_selection.hpp.</span>
-<span class="sd">      See this file&#39;s comments and interfaces.log_likelihood_interface for more details as well as the hpp and corresponding .cpp file.</span>
+<span class="sd">      See this file&#39;s comments and :mod:`moe.optimal_learning.python.interfaces.log_likelihood_interface`</span>
+<span class="sd">      for more details as well as the hpp and corresponding .cpp file.</span>
 
 <span class="sd">    Given a particular covariance function (including hyperparameters) and</span>
 <span class="sd">    training data ((point, function value, measurement noise) tuples), the log marginal likelihood is the log probability that</span>
@@ -579,7 +603,8 @@
 <span class="sd">    tuples), the log LOO-CV pseudo-likelihood expresses how well the model explains itself.</span>
 
 <span class="sd">    .. Note:: This is a copy of LeaveOneOutLogLikelihoodEvaluator&#39;s class comments in gpp_model_selection.hpp.</span>
-<span class="sd">      See this file&#39;s comments and interfaces.log_likelihood_interface for more details as well as the hpp and corresponding .cpp file.</span>
+<span class="sd">      See this file&#39;s comments and :mod:`moe.optimal_learning.python.interfaces.log_likelihood_interface`</span>
+<span class="sd">      for more details as well as the hpp and corresponding .cpp file.</span>
 
 <span class="sd">    That is, cross validation involves splitting the training set into a sub-training set and a validation set.  Then we measure</span>
 <span class="sd">    the log likelihood that a model built on the sub-training set could produce the values in the validation set.</span>
@@ -621,7 +646,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+        &copy; Copyright 2012-2014 Yelp. MOE is licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0.
     </p>
   </div>
 

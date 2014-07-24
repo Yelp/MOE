@@ -109,6 +109,18 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../../contributing.html#style">Style</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../faq.html">Frequently Asked Questions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#what-license-is-moe-released-under">What license is MOE released under?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#when-should-i-use-moe">When should I use MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#what-is-the-time-complexity-of-moe">What is the time complexity of MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#how-do-i-cite-moe">How do I cite MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#why-does-moe-take-so-long-to-return-the-next-points-to-sample-for-some-inputs">Why does MOE take so long to return the next points to sample for some inputs?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#how-do-i-bootstrap-moe-what-initial-data-does-it-need">How do I bootstrap MOE? What initial data does it need?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#how-many-function-evaluations-do-i-need-before-moe-is-done">How many function evaluations do I need before MOE is &#8220;done&#8221;?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#how-many-function-evaluations-do-i-perform-before-i-update-the-hyperparameters-of-the-gp">How many function evaluations do I perform before I update the hyperparameters of the GP?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#will-you-accept-my-pull-request">Will you accept my pull request?</a></li>
+</ul>
+</li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../moe.html">moe package</a><ul>
@@ -210,7 +222,7 @@
 
 <span class="sd">As a preface, you should read gpp_math.hpp&#39;s comments first (if not also gpp_math.cpp) to get an overview</span>
 <span class="sd">of Gaussian Processes (GPs) and how we are using them (Expected Improvement, EI). Python readers can get the basic</span>
-<span class="sd">overview in interfaces/gaussian_process_interface.py.</span>
+<span class="sd">overview in :mod:`moe.optimal_learning.python.interfaces.gaussian_process_interface`.</span>
 
 <span class="sd">.. Note:: these comments are copied from the file comments of gpp_model_selection.hpp.</span>
 
@@ -265,8 +277,9 @@
 <span class="sd">as the training cases).&quot;  So it&#39;s a measure of how well or poorly the model predicts reality.</span>
 
 <span class="sd">For further details and examples of log likelihood measures, see gpp_model_selection.hpp.</span>
-<span class="sd">Overview of some log likelihood measures can be found in GaussianProcessLogMarginalLikelihood and</span>
-<span class="sd">GaussianProcessLeaveOneOutLogLikelihood in cpp_wrappers/log_likelihood.py.</span>
+<span class="sd">Overview of some log likelihood measures can be found in</span>
+<span class="sd">:class:`moe.optimal_learning.python.cpp_wrappers.log_likelihood.GaussianProcessLogMarginalLikelihood` and</span>
+<span class="sd">:class:`moe.optimal_learning.python.cpp_wrappers.log_likelihood.GaussianProcessLeaveOneOutLogLikelihood`.</span>
 
 <span class="sd">**OPTIMIZATION**</span>
 
@@ -360,7 +373,8 @@
 <div class="viewcode-block" id="GaussianProcessLogLikelihoodInterface.compute_hessian_log_likelihood"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.interfaces.html#moe.optimal_learning.python.interfaces.log_likelihood_interface.GaussianProcessLogLikelihoodInterface.compute_hessian_log_likelihood">[docs]</a>    <span class="k">def</span> <span class="nf">compute_hessian_log_likelihood</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">r&quot;&quot;&quot;Compute the hessian (wrt hyperparameters) of this log likelihood measure of model fit.</span>
 
-<span class="sd">        See CovarianceInterface.hyperparameter_hessian_covariance() in interfaces/covariance_interface.py for data ordering.</span>
+<span class="sd">        See :meth:`moe.optimal_learning.python.interfaces.covariance_interfaceCovarianceInterface.hyperparameter_hessian_covariance`</span>
+<span class="sd">        for data ordering.</span>
 
 <span class="sd">        :return: hessian_log_likelihood: ``(i,j)``-th entry is ``\mixpderiv{LL(y | X, \theta)}{\theta_i}{\theta_j}``</span>
 <span class="sd">        :rtype: array of float64 with shape (num_hyperparameters, num_hyperparameters)</span>
@@ -377,7 +391,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+        &copy; Copyright 2012-2014 Yelp. MOE is licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0.
     </p>
   </div>
 

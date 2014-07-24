@@ -14,8 +14,8 @@ This includes link to:
     #. :doc:`pretty_endpoints`
     #. The demo, which will be covered here.
 
-.. _docs: http://sc932.github.io/MOE
-.. _the repo: http://www.github.com/sc932/MOE
+.. _docs: http://yelp.github.io/MOE
+.. _the repo: http://www.github.com/Yelp/MOE
 
 The Interactive Demo
 --------------------
@@ -33,6 +33,8 @@ This view has several components (check out the tooltips for specific components
  * The graph labeled **Expected Improvement (EI)** is a plot of EI for each potential next point to sample in [0,1]. The red line corresponds to the point of highest EI within the domain. This is the point that MOE suggest we sample next to optimize the EI.
  * On the right are various hyperparameters of the GP covariance and the parameters of the Stochastic Gradient Descent algorithm that we use to optimize EI.
  * On the bottom right we can specify new historical points to update the GP. By default the GUI suggests the point of highest EI and generates a value for the point drawn from the GP prior.
+
+.. _sampling-points:
 
 Sampling Points
 ...............
@@ -77,6 +79,8 @@ For more information on how this is done check out:
     :scale: 100%
 
 We see the Gaussian Process evolve as more points are sampled from it. Note how the Expected Improvement graph also changes as more historical information is given to MOE. By sampling the point with highest EI at every step MOE is able to quickly zoom in to the global optima of this function (near 0.529).
+
+.. _changing-hypers:
 
 Changing Hyperparameters
 ........................

@@ -56,14 +56,14 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'MOE'
-copyright = u'2014, Yelp and Cornell Collaboration'
+copyright = u'2012-2014 Yelp. MOE is licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
 # built documents.
 #
-# The short X.Y version.
-version = '0.1'
+# The short X.Y.Z version.
+version = '0.1.0'
 # The full version, including alpha/beta/rc tags.
 release = '0.1.0'
 
@@ -136,7 +136,10 @@ html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 # docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32
 # pixels large.
 html_favicon = os.path.join(
-    '_static',
+    '..',
+    'moe',
+    'static',
+    'ico',
     'favicon.ico',
     )
 

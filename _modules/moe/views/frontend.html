@@ -109,6 +109,18 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#style">Style</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq.html">Frequently Asked Questions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../faq.html#what-license-is-moe-released-under">What license is MOE released under?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../faq.html#when-should-i-use-moe">When should I use MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../faq.html#what-is-the-time-complexity-of-moe">What is the time complexity of MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../faq.html#how-do-i-cite-moe">How do I cite MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../faq.html#why-does-moe-take-so-long-to-return-the-next-points-to-sample-for-some-inputs">Why does MOE take so long to return the next points to sample for some inputs?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../faq.html#how-do-i-bootstrap-moe-what-initial-data-does-it-need">How do I bootstrap MOE? What initial data does it need?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../faq.html#how-many-function-evaluations-do-i-need-before-moe-is-done">How many function evaluations do I need before MOE is &#8220;done&#8221;?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../faq.html#how-many-function-evaluations-do-i-perform-before-i-update-the-hyperparameters-of-the-gp">How many function evaluations do I perform before I update the hyperparameters of the GP?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../faq.html#will-you-accept-my-pull-request">Will you accept my pull request?</a></li>
+</ul>
+</li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../moe.html">moe package</a><ul>
@@ -209,7 +221,7 @@
 <span class="sd">&quot;&quot;&quot;Frontend views for the MOE app.&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">pyramid.view</span> <span class="kn">import</span> <span class="n">view_config</span>
 
-<span class="kn">from</span> <span class="nn">moe.optimal_learning.python.constant</span> <span class="kn">import</span> <span class="n">DEFAULT_GAUSSIAN_PROCESS_PARAMETERS</span><span class="p">,</span> <span class="n">DEMO_GRADIENT_DESCENT_PARAMETERS</span><span class="p">,</span> <span class="n">PRETTY_OPTIMIZER_MULTISTARTS</span>
+<span class="kn">from</span> <span class="nn">moe.optimal_learning.python.constant</span> <span class="kn">import</span> <span class="n">DEFAULT_GAUSSIAN_PROCESS_PARAMETERS</span><span class="p">,</span> <span class="n">DEMO_GRADIENT_DESCENT_PARAMETERS</span><span class="p">,</span> <span class="n">DEMO_OPTIMIZER_MULTISTARTS</span>
 
 
 <span class="nd">@view_config</span><span class="p">(</span><span class="n">route_name</span><span class="o">=</span><span class="s">&#39;home&#39;</span><span class="p">,</span> <span class="n">renderer</span><span class="o">=</span><span class="s">&#39;moe:templates/index.mako&#39;</span><span class="p">)</span>
@@ -235,7 +247,7 @@
             <span class="s">&#39;nav_active&#39;</span><span class="p">:</span> <span class="s">&#39;demo&#39;</span><span class="p">,</span>
             <span class="s">&#39;default_gaussian_process_parameters&#39;</span><span class="p">:</span> <span class="n">DEFAULT_GAUSSIAN_PROCESS_PARAMETERS</span><span class="p">,</span>
             <span class="s">&#39;default_ei_optimizer_parameters&#39;</span><span class="p">:</span> <span class="n">DEMO_GRADIENT_DESCENT_PARAMETERS</span><span class="p">,</span>
-            <span class="s">&#39;default_num_multistarts&#39;</span><span class="p">:</span> <span class="n">PRETTY_OPTIMIZER_MULTISTARTS</span><span class="p">,</span>
+            <span class="s">&#39;default_num_multistarts&#39;</span><span class="p">:</span> <span class="n">DEMO_OPTIMIZER_MULTISTARTS</span><span class="p">,</span>
             <span class="p">}</span></div>
 </pre></div>
 
@@ -247,7 +259,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+        &copy; Copyright 2012-2014 Yelp. MOE is licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0.
     </p>
   </div>
 

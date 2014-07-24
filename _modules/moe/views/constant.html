@@ -109,6 +109,18 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#style">Style</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq.html">Frequently Asked Questions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../faq.html#what-license-is-moe-released-under">What license is MOE released under?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../faq.html#when-should-i-use-moe">When should I use MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../faq.html#what-is-the-time-complexity-of-moe">What is the time complexity of MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../faq.html#how-do-i-cite-moe">How do I cite MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../faq.html#why-does-moe-take-so-long-to-return-the-next-points-to-sample-for-some-inputs">Why does MOE take so long to return the next points to sample for some inputs?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../faq.html#how-do-i-bootstrap-moe-what-initial-data-does-it-need">How do I bootstrap MOE? What initial data does it need?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../faq.html#how-many-function-evaluations-do-i-need-before-moe-is-done">How many function evaluations do I need before MOE is &#8220;done&#8221;?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../faq.html#how-many-function-evaluations-do-i-perform-before-i-update-the-hyperparameters-of-the-gp">How many function evaluations do I perform before I update the hyperparameters of the GP?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../faq.html#will-you-accept-my-pull-request">Will you accept my pull request?</a></li>
+</ul>
+</li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../moe.html">moe package</a><ul>
@@ -236,7 +248,7 @@
 <span class="sd">    GP_NEXT_POINTS_&lt;NAME&gt;_PRETTY_ROUTE_NAME = &#39;gp_next_points_&lt;name&gt;_pretty&#39;</span>
 <span class="sd">    GP_NEXT_POINTS_&lt;NAME&gt;_PRETTY_ENDPOINT = &#39;/gp/next_points/&lt;name&gt;/pretty&#39;</span>
 <span class="sd">    GP_NEXT_POINTS_&lt;NAME&gt;_PRETTY_MOE_ROUTE = MoeRoute(GP_NEXT_POINTS_&lt;NAME&gt;_PRETTY_ROUTE_NAME, GP_NEXT_POINTS_&lt;NAME&gt;_PRETTY_ENDPOINT)</span>
-<span class="sd">    GP_NEXT_POINTS_&lt;NAME&gt;_OPTIMIZER_METHOD_NAME = &lt;method name from moe.optimal_learning.python.models.optimal_gaussian_process_linked_cpp.py&gt;</span>
+<span class="sd">    GP_NEXT_POINTS_&lt;NAME&gt;_OPTIMIZER_METHOD_NAME = &lt;method name from :mod:`moe.optimal_learning.python.cpp_wrappers.expected_improvement`&gt;</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
@@ -344,8 +356,9 @@
 <span class="n">GP_HYPER_OPT_PRETTY_ENDPOINT</span> <span class="o">=</span> <span class="s">&#39;/gp/hyper_opt/pretty&#39;</span>
 <span class="n">GP_HYPER_OPT_PRETTY_MOE_ROUTE</span> <span class="o">=</span> <span class="n">MoeRoute</span><span class="p">(</span><span class="n">GP_HYPER_OPT_PRETTY_ROUTE_NAME</span><span class="p">,</span> <span class="n">GP_HYPER_OPT_PRETTY_ENDPOINT</span><span class="p">)</span>
 
-<span class="c"># These need to match method names in moe/optimal_learning/python/cpp_wrappers/expected_improvement.py</span>
-<span class="n">OPTIMIZER_METHOD_NAMES</span> <span class="o">=</span> <span class="p">[</span>
+<span class="c">#: Names of optimizer methods for finding the next points to sample (e.g., EPI, Kriging, etc.)</span>
+<span class="c">#: These need to match method names in moe/optimal_learning/python/cpp_wrappers/expected_improvement.py</span>
+<span class="n">NEXT_POINTS_OPTIMIZER_METHOD_NAMES</span> <span class="o">=</span> <span class="p">[</span>
         <span class="n">GP_NEXT_POINTS_EPI_OPTIMIZER_METHOD_NAME</span><span class="p">,</span>
         <span class="n">GP_NEXT_POINTS_KRIGING_OPTIMIZER_METHOD_NAME</span><span class="p">,</span>
         <span class="n">GP_NEXT_POINTS_CONSTANT_LIAR_OPTIMIZER_METHOD_NAME</span><span class="p">,</span>
@@ -387,6 +400,7 @@
 <span class="n">ALL_MOE_ROUTES</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">ALL_REST_MOE_ROUTES</span><span class="p">)</span>
 <span class="n">ALL_MOE_ROUTES</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">ALL_PRETTY_MOE_ROUTES</span><span class="p">)</span>
 
+<span class="c">#: dict mapping from MOE route names to MOE endpoint names</span>
 <span class="n">ALL_REST_ROUTES_ROUTE_NAME_TO_ENDPOINT</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="k">for</span> <span class="n">moe_route</span> <span class="ow">in</span> <span class="n">ALL_REST_MOE_ROUTES</span><span class="p">:</span>
     <span class="n">ALL_REST_ROUTES_ROUTE_NAME_TO_ENDPOINT</span><span class="p">[</span><span class="n">moe_route</span><span class="o">.</span><span class="n">route_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">moe_route</span><span class="o">.</span><span class="n">endpoint</span>
@@ -400,7 +414,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+        &copy; Copyright 2012-2014 Yelp. MOE is licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0.
     </p>
   </div>
 

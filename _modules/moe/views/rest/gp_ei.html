@@ -109,6 +109,18 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#style">Style</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../faq.html">Frequently Asked Questions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../faq.html#what-license-is-moe-released-under">What license is MOE released under?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../faq.html#when-should-i-use-moe">When should I use MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../faq.html#what-is-the-time-complexity-of-moe">What is the time complexity of MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../faq.html#how-do-i-cite-moe">How do I cite MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../faq.html#why-does-moe-take-so-long-to-return-the-next-points-to-sample-for-some-inputs">Why does MOE take so long to return the next points to sample for some inputs?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../faq.html#how-do-i-bootstrap-moe-what-initial-data-does-it-need">How do I bootstrap MOE? What initial data does it need?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../faq.html#how-many-function-evaluations-do-i-need-before-moe-is-done">How many function evaluations do I need before MOE is &#8220;done&#8221;?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../faq.html#how-many-function-evaluations-do-i-perform-before-i-update-the-hyperparameters-of-the-gp">How many function evaluations do I perform before I update the hyperparameters of the GP?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../faq.html#will-you-accept-my-pull-request">Will you accept my pull request?</a></li>
+</ul>
+</li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../moe.html">moe package</a><ul>
@@ -209,18 +221,24 @@
 <span class="sd">&quot;&quot;&quot;Classes for gp_ei endpoints.</span>
 
 <span class="sd">Includes:</span>
+
 <span class="sd">    1. request and response schemas</span>
 <span class="sd">    2. pretty and backend views</span>
+
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">numpy</span>
 
 <span class="kn">from</span> <span class="nn">pyramid.view</span> <span class="kn">import</span> <span class="n">view_config</span>
 
 <span class="kn">from</span> <span class="nn">moe.optimal_learning.python.cpp_wrappers.expected_improvement</span> <span class="kn">import</span> <span class="n">ExpectedImprovement</span>
+<span class="kn">from</span> <span class="nn">moe.optimal_learning.python.timing</span> <span class="kn">import</span> <span class="n">timing_context</span>
 <span class="kn">from</span> <span class="nn">moe.views.constant</span> <span class="kn">import</span> <span class="n">GP_EI_ROUTE_NAME</span><span class="p">,</span> <span class="n">GP_EI_PRETTY_ROUTE_NAME</span>
 <span class="kn">from</span> <span class="nn">moe.views.gp_pretty_view</span> <span class="kn">import</span> <span class="n">GpPrettyView</span><span class="p">,</span> <span class="n">PRETTY_RENDERER</span>
 <span class="kn">from</span> <span class="nn">moe.views.schemas</span> <span class="kn">import</span> <span class="n">GpEiRequest</span><span class="p">,</span> <span class="n">GpEiResponse</span>
 <span class="kn">from</span> <span class="nn">moe.views.utils</span> <span class="kn">import</span> <span class="n">_make_gp_from_params</span>
+
+
+<span class="n">EI_COMPUTATION_TIMING_LABEL</span> <span class="o">=</span> <span class="s">&#39;EI computation time&#39;</span>
 
 
 <div class="viewcode-block" id="GpEiView"><a class="viewcode-back" href="../../../../moe.views.rest.html#moe.views.rest.gp_ei.GpEiView">[docs]</a><span class="k">class</span> <span class="nc">GpEiView</span><span class="p">(</span><span class="n">GpPrettyView</span><span class="p">):</span>
@@ -259,8 +277,8 @@
 
 <span class="sd">           Calculates the Expected Improvement (EI) of a set of points, given historical data.</span>
 
-<span class="sd">           :input: :class:`moe.views.gp_ei.GpEiRequest`</span>
-<span class="sd">           :output: :class:`moe.views.gp_ei.GpEiResponse`</span>
+<span class="sd">           :input: :class:`moe.views.schemas.GpEiRequest`</span>
+<span class="sd">           :output: :class:`moe.views.schemas.GpEiResponse`</span>
 
 <span class="sd">           :status 201: returns a response</span>
 <span class="sd">           :status 500: server error</span>
@@ -283,10 +301,11 @@
                 <span class="n">num_mc_iterations</span><span class="o">=</span><span class="n">num_mc_iterations</span><span class="p">,</span>
                 <span class="p">)</span>
 
-        <span class="n">expected_improvement</span> <span class="o">=</span> <span class="n">expected_improvement_evaluator</span><span class="o">.</span><span class="n">evaluate_at_point_list</span><span class="p">(</span>
+        <span class="k">with</span> <span class="n">timing_context</span><span class="p">(</span><span class="n">EI_COMPUTATION_TIMING_LABEL</span><span class="p">):</span>
+            <span class="n">expected_improvement</span> <span class="o">=</span> <span class="n">expected_improvement_evaluator</span><span class="o">.</span><span class="n">evaluate_at_point_list</span><span class="p">(</span>
                 <span class="n">points_to_evaluate</span><span class="p">,</span>
                 <span class="n">max_num_threads</span><span class="o">=</span><span class="n">max_num_threads</span><span class="p">,</span>
-                <span class="p">)</span>
+            <span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">form_response</span><span class="p">({</span>
                 <span class="s">&#39;endpoint&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_route_name</span><span class="p">,</span>
@@ -302,7 +321,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+        &copy; Copyright 2012-2014 Yelp. MOE is licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0.
     </p>
   </div>
 

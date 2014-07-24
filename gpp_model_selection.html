@@ -111,6 +111,18 @@
 <li class="toctree-l2"><a class="reference internal" href="contributing.html#style">Style</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#what-license-is-moe-released-under">What license is MOE released under?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#when-should-i-use-moe">When should I use MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#what-is-the-time-complexity-of-moe">What is the time complexity of MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-do-i-cite-moe">How do I cite MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#why-does-moe-take-so-long-to-return-the-next-points-to-sample-for-some-inputs">Why does MOE take so long to return the next points to sample for some inputs?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-do-i-bootstrap-moe-what-initial-data-does-it-need">How do I bootstrap MOE? What initial data does it need?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-many-function-evaluations-do-i-need-before-moe-is-done">How many function evaluations do I need before MOE is &#8220;done&#8221;?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-many-function-evaluations-do-i-perform-before-i-update-the-hyperparameters-of-the-gp">How many function evaluations do I perform before I update the hyperparameters of the GP?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#will-you-accept-my-pull-request">Will you accept my pull request?</a></li>
+</ul>
+</li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="moe.html">moe package</a><ul>
@@ -1338,7 +1350,7 @@ The result is <tt class="docutils literal"><span class="pre">\mixpderiv{cov(X_i,
 <tr class="field-odd field"><th class="field-name" colspan="2">log_likelihood_state[1]:</th></tr>
 <tr class="field-odd field"><td>&nbsp;</td><td class="field-body">state object with temporary storage modified</td>
 </tr>
-<tr class="field-even field"><th class="field-name" colspan="2">hessian_hyperparameter_cov_matrix[<a href="#id1"><span class="problematic" id="id2">num_sampled_</span></a>][<a href="#id3"><span class="problematic" id="id4">num_sampled_</span></a>][n_hyper][n_hyper]:</th></tr>
+<tr class="field-even field"><th class="field-name" colspan="2">hessian_hyperparameter_cov_matrix[num_sampled][num_sampled][n_hyper][n_hyper]:</th></tr>
 <tr class="field-even field"><td>&nbsp;</td><td class="field-body"><tt class="docutils literal"><span class="pre">(i,j,k,l)</span></tt>-th entry is <tt class="docutils literal"><span class="pre">\mixpderiv{cov(X_i,</span> <span class="pre">X_j)}{\theta_k}{\theta_l}</span></tt></td>
 </tr>
 </tbody>
@@ -2436,7 +2448,7 @@ where <tt class="docutils literal"><span class="pre">\alpha_i</span> <span class
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+        &copy; Copyright 2012-2014 Yelp. MOE is licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0.
     </p>
   </div>
 

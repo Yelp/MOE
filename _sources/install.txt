@@ -12,7 +12,7 @@ This is the recommended way to run the MOE REST server. All dependencies and bui
 
 ::
 
-    $ git clone https://github.com/sc932/MOE.git
+    $ git clone https://github.com/Yelp/MOE.git
     $ cd MOE
     $ docker build -t moe_container .
     $ docker run -p 6543:6543 moe_container
@@ -52,9 +52,9 @@ Requires:
 
    ::
 
-      $ git clone https://github.com/sc932/MOE.git
+      $ git clone https://github.com/Yelp/MOE.git
       $ cd MOE
-      $ pip install -e .
+      $ pip install -r requirements.txt
       $ python setup.py install
 
    .. Note:: MOE's ``setup.py`` invokes cmake. Users can pass command line arguments to cmake via the ``MOE_CMAKE_OPTS`` environment variable. Other sections (e.g., `Python Tips`_, `CMake Tips`_) detail additional environment variables that may be needed to customize cmake's behavior.
@@ -234,6 +234,7 @@ Linux Tips
       $ apt-get install python python-dev gcc cmake libboost-all-dev python-pip doxygen libblas-dev liblapack-dev gfortran git python-numpy python-scipy
       $ pip install -r requirements.txt
       $ python setup.py install
+      $ pserve --reload development.ini # MOE server is now running at http://localhost:6543
 
 2. If you are having strange errors (no current thread, segfault, etc.) or need to specify different versions of software (Boost, Python, etc.), check `Python Tips`_ and/or `Connecting Boost to MOE`_.
 

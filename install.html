@@ -110,6 +110,18 @@
 <li class="toctree-l2"><a class="reference internal" href="contributing.html#style">Style</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#what-license-is-moe-released-under">What license is MOE released under?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#when-should-i-use-moe">When should I use MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#what-is-the-time-complexity-of-moe">What is the time complexity of MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-do-i-cite-moe">How do I cite MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#why-does-moe-take-so-long-to-return-the-next-points-to-sample-for-some-inputs">Why does MOE take so long to return the next points to sample for some inputs?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-do-i-bootstrap-moe-what-initial-data-does-it-need">How do I bootstrap MOE? What initial data does it need?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-many-function-evaluations-do-i-need-before-moe-is-done">How many function evaluations do I need before MOE is &#8220;done&#8221;?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-many-function-evaluations-do-i-perform-before-i-update-the-hyperparameters-of-the-gp">How many function evaluations do I perform before I update the hyperparameters of the GP?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#will-you-accept-my-pull-request">Will you accept my pull request?</a></li>
+</ul>
+</li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="moe.html">moe package</a><ul>
@@ -209,7 +221,7 @@
 <h2>Install in docker<a class="headerlink" href="#install-in-docker" title="Permalink to this headline">¶</a></h2>
 <p>This is the recommended way to run the MOE REST server. All dependencies and building is done automatically and in an isolated container.</p>
 <p><a class="reference external" href="http://docs.docker.io/">Docker</a> is a container based virtualization framework. Unlike traditional virtualization Docker is fast, lightweight and easy to use. Docker allows you to create containers holding all the dependencies for an application. Each container is kept isolated from any other, and nothing gets shared.</p>
-<div class="highlight-python"><div class="highlight"><pre>$ git clone https://github.com/sc932/MOE.git
+<div class="highlight-python"><div class="highlight"><pre>$ git clone https://github.com/Yelp/MOE.git
 $ cd MOE
 $ docker build -t moe_container .
 $ docker run -p 6543:6543 moe_container
@@ -245,9 +257,9 @@ $ mkvirtualenv --no-site-packages --python=path/to/python ENV_NAME
 <p>The option <tt class="docutils literal"><span class="pre">--python</span></tt> is only necessary if you want to specify a version of Python different from the active Python (i.e., the result of <tt class="docutils literal"><span class="pre">which</span> <span class="pre">python</span></tt>). OS X users in particular want to do this (see <a class="reference internal" href="#osx-tips">OSX Tips</a>).</p>
 </li>
 <li><p class="first">After all the core requirements are installed, pip and MOE will handle the rest. Run these commands to clone MOE, build its python dependencies, and build MOE. These commands should preferably be run from the virtualenv you built in the <a class="reference internal" href="#virtualenv-quickstart">virtualenv quickstart</a>:</p>
-<div class="highlight-python"><div class="highlight"><pre>$ git clone https://github.com/sc932/MOE.git
+<div class="highlight-python"><div class="highlight"><pre>$ git clone https://github.com/Yelp/MOE.git
 $ cd MOE
-$ pip install -e .
+$ pip install -r requirements.txt
 $ python setup.py install
 </pre></div>
 </div>
@@ -434,6 +446,7 @@ $ sudo ./b2 install
 $ apt-get install python python-dev gcc cmake libboost-all-dev python-pip doxygen libblas-dev liblapack-dev gfortran git python-numpy python-scipy
 $ pip install -r requirements.txt
 $ python setup.py install
+$ pserve --reload development.ini # MOE server is now running at http://localhost:6543
 </pre></div>
 </div>
 </li>
@@ -493,7 +506,7 @@ $ python setup.py install
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+        &copy; Copyright 2012-2014 Yelp. MOE is licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0.
     </p>
   </div>
 

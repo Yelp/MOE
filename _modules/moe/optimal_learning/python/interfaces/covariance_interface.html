@@ -109,6 +109,18 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../../contributing.html#style">Style</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../faq.html">Frequently Asked Questions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#what-license-is-moe-released-under">What license is MOE released under?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#when-should-i-use-moe">When should I use MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#what-is-the-time-complexity-of-moe">What is the time complexity of MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#how-do-i-cite-moe">How do I cite MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#why-does-moe-take-so-long-to-return-the-next-points-to-sample-for-some-inputs">Why does MOE take so long to return the next points to sample for some inputs?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#how-do-i-bootstrap-moe-what-initial-data-does-it-need">How do I bootstrap MOE? What initial data does it need?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#how-many-function-evaluations-do-i-need-before-moe-is-done">How many function evaluations do I need before MOE is &#8220;done&#8221;?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#how-many-function-evaluations-do-i-perform-before-i-update-the-hyperparameters-of-the-gp">How many function evaluations do I perform before I update the hyperparameters of the GP?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#will-you-accept-my-pull-request">Will you accept my pull request?</a></li>
+</ul>
+</li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../moe.html">moe package</a><ul>
@@ -226,8 +238,9 @@
 
 <span class="sd">Covariance functions also generally have hyperparameters (e.g., signal/background noise, length scales) that specify the</span>
 <span class="sd">assumed behavior of the Gaussian Process. Specifying hyperparameters is tricky because changing them fundamentally changes</span>
-<span class="sd">the behavior of the GP. optimization_interface.py together with log_likelihood_interface.py provide methods optimizing</span>
-<span class="sd">and evaluating model fit, respectively.</span>
+<span class="sd">the behavior of the GP. :mod:`moe.optimal_learning.python.interfaces.optimization_interface` together</span>
+<span class="sd">with :mod:`moe.optimal_learning.python.interfaces.log_likelihood_interface` provide methods</span>
+<span class="sd">optimizing and evaluating model fit, respectively.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABCMeta</span><span class="p">,</span> <span class="n">abstractmethod</span><span class="p">,</span> <span class="n">abstractproperty</span>
@@ -281,7 +294,8 @@
         <span class="sd">r&quot;&quot;&quot;Compute the covariance function of two points, cov(``point_one``, ``point_two``).</span>
 
 <span class="sd">        .. Note:: comments are copied from the matching method comments of CovarianceInterface in gpp_covariance.hpp</span>
-<span class="sd">          and comments are copied to the matching method comments of SquareExponential in python_version/covariance.py</span>
+<span class="sd">          and comments are copied to the matching method comments of</span>
+<span class="sd">          :mod:`moe.optimal_learning.python.python_version.covariance.SquareExponential`.</span>
 
 <span class="sd">        The covariance function is guaranteed to be symmetric by definition: ``covariance(x, y) = covariance(y, x)``.</span>
 <span class="sd">        This function is also positive definite by definition.</span>
@@ -301,7 +315,8 @@
         <span class="sd">r&quot;&quot;&quot;Compute the gradient of self.covariance(point_one, point_two) with respect to the FIRST argument, point_one.</span>
 
 <span class="sd">        .. Note:: comments are copied from the matching method comments of CovarianceInterface in gpp_covariance.hpp</span>
-<span class="sd">          and comments are copied to the matching method comments of SquareExponential in python_version/covariance.py</span>
+<span class="sd">          and comments are copied to the matching method comments of</span>
+<span class="sd">          :mod:`moe.optimal_learning.python.python_version.covariance.SquareExponential`.</span>
 
 <span class="sd">        This distinction is important for maintaining the desired symmetry.  ``Cov(x, y) = Cov(y, x)``.</span>
 <span class="sd">        Additionally, ``\pderiv{Cov(x, y)}{x} = \pderiv{Cov(y, x)}{x}``.</span>
@@ -325,7 +340,8 @@
         <span class="sd">r&quot;&quot;&quot;Compute the gradient of self.covariance(point_one, point_two) with respect to its hyperparameters.</span>
 
 <span class="sd">        .. Note:: comments are copied from the matching method comments of CovarianceInterface in gpp_covariance.hpp</span>
-<span class="sd">          and comments are copied to the matching method comments of SquareExponential in python_version/covariance.py</span>
+<span class="sd">          and comments are copied to the matching method comments of</span>
+<span class="sd">          :mod:`moe.optimal_learning.python.python_version.covariance.SquareExponential`.</span>
 
 <span class="sd">        Unlike GradCovariance(), the order of point_one and point_two is irrelevant here (since we are not differentiating against</span>
 <span class="sd">        either of them).  Thus the matrix of grad covariances (wrt hyperparameters) is symmetric.</span>
@@ -379,7 +395,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+        &copy; Copyright 2012-2014 Yelp. MOE is licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0.
     </p>
   </div>
 

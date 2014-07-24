@@ -53,6 +53,14 @@ moe.optimal_learning.python.repeated_domain module
     :undoc-members:
     :show-inheritance:
 
+moe.optimal_learning.python.timing module
+-----------------------------------------
+
+.. automodule:: moe.optimal_learning.python.timing
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 
 Module contents
 ---------------

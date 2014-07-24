@@ -110,6 +110,18 @@
 <li class="toctree-l2"><a class="reference internal" href="contributing.html#style">Style</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#what-license-is-moe-released-under">What license is MOE released under?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#when-should-i-use-moe">When should I use MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#what-is-the-time-complexity-of-moe">What is the time complexity of MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-do-i-cite-moe">How do I cite MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#why-does-moe-take-so-long-to-return-the-next-points-to-sample-for-some-inputs">Why does MOE take so long to return the next points to sample for some inputs?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-do-i-bootstrap-moe-what-initial-data-does-it-need">How do I bootstrap MOE? What initial data does it need?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-many-function-evaluations-do-i-need-before-moe-is-done">How many function evaluations do I need before MOE is &#8220;done&#8221;?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-many-function-evaluations-do-i-perform-before-i-update-the-hyperparameters-of-the-gp">How many function evaluations do I perform before I update the hyperparameters of the GP?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#will-you-accept-my-pull-request">Will you accept my pull request?</a></li>
+</ul>
+</li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="moe.html">moe package</a><ul>
@@ -218,36 +230,43 @@
 <p>This section will use examples generated from the <a class="reference internal" href="demo_tutorial.html"><em>Demo Tutorial</em></a> included with MOE.</p>
 <div class="section" id="build-a-gaussian-process-gp-with-the-historical-data">
 <h2>Build a Gaussian Process (GP) with the historical data<a class="headerlink" href="#build-a-gaussian-process-gp-with-the-historical-data" title="Permalink to this headline">¶</a></h2>
+<a class="reference internal image-reference" href="_images/moe_demo_hyper_default.png"><img alt="moe demo three points sampled" class="align-center" src="_images/moe_demo_hyper_default.png" /></a>
+<p>The GP evolves as it is given more historical data, making a better and better model of the underlying function.</p>
 <p>See:</p>
 <blockquote>
 <div><ul class="simple">
+<li><a class="reference internal" href="demo_tutorial.html#sampling-points"><em>Sampling Points</em></a></li>
 <li><a class="reference internal" href="gpp_math.html"><em>gpp_math</em></a></li>
 <li><a class="reference internal" href="moe.views.rest.html#module-moe.views.rest.gp_mean_var" title="moe.views.rest.gp_mean_var"><tt class="xref py py-mod docutils literal"><span class="pre">moe.views.rest.gp_mean_var</span></tt></a></li>
-<li><a href="#id1"><span class="problematic" id="id2">`RW Chapter 2`_</span></a></li>
+<li><a class="reference external" href="http://www.gaussianprocess.org/gpml/chapters/RW2.pdf">RW Chapter 2</a></li>
 </ul>
 </div></blockquote>
 </div>
 <div class="section" id="optimize-the-hyperparameters-of-the-gaussian-process">
 <h2>Optimize the hyperparameters of the Gaussian Process<a class="headerlink" href="#optimize-the-hyperparameters-of-the-gaussian-process" title="Permalink to this headline">¶</a></h2>
+<a class="reference internal image-reference" href="_images/moe_demo_hyper_big_sig_var.png"><img alt="moe demo four points sampled" class="align-center" src="_images/moe_demo_hyper_big_sig_var.png" /></a>
+<p>This plot has the same historical data as the plot above. By optimizing the hyperparameters of the GP we select the best model of our underlying function (with respect to a choice of likelihood functions).</p>
 <p>See:</p>
 <blockquote>
 <div><ul class="simple">
+<li><a class="reference internal" href="demo_tutorial.html#changing-hypers"><em>Changing Hyperparameters</em></a></li>
 <li><a class="reference internal" href="gpp_covariance.html"><em>gpp_covariance</em></a></li>
 <li><a class="reference internal" href="gpp_model_selection.html"><em>gpp_model_selection</em></a></li>
 <li><a class="reference internal" href="moe.views.rest.html#module-moe.views.rest.gp_hyper_opt" title="moe.views.rest.gp_hyper_opt"><tt class="xref py py-mod docutils literal"><span class="pre">moe.views.rest.gp_hyper_opt</span></tt></a></li>
-<li><a href="#id3"><span class="problematic" id="id4">`RW Chapter 4`_</span></a></li>
-<li><a href="#id5"><span class="problematic" id="id6">`RW Chapter 5`_</span></a></li>
+<li><a class="reference external" href="http://www.gaussianprocess.org/gpml/chapters/RW4.pdf">RW Chapter 4</a></li>
+<li><a class="reference external" href="http://www.gaussianprocess.org/gpml/chapters/RW5.pdf">RW Chapter 5</a></li>
 </ul>
 </div></blockquote>
 </div>
 <div class="section" id="find-the-point-s-of-highest-expected-improvement-ei">
 <h2>Find the point(s) of highest Expected Improvement (EI)<a class="headerlink" href="#find-the-point-s-of-highest-expected-improvement-ei" title="Permalink to this headline">¶</a></h2>
+<p>MOE suggests the points of highest Expected Improvement be sampled next. These are the points that are expected to beat the current best sampled point by the most.</p>
 <p>See:</p>
 <blockquote>
 <div><ul class="simple">
 <li><a class="reference internal" href="gpp_expected_improvement_demo.html"><em>gpp_expected_improvement_demo</em></a></li>
 <li><a class="reference internal" href="moe.views.rest.html#module-moe.views.rest.gp_ei" title="moe.views.rest.gp_ei"><tt class="xref py py-mod docutils literal"><span class="pre">moe.views.rest.gp_ei</span></tt></a></li>
-<li><a href="#id7"><span class="problematic" id="id8">`EGO Paper`_</span></a></li>
+<li><a class="reference external" href="http://www.ressources-actuarielles.net/EXT/ISFA/1226.nsf/0/f84f7ac703bf5862c12576d8002f5259/$FILE/Jones98.pdf">EGO Paper</a></li>
 </ul>
 </div></blockquote>
 </div>
@@ -277,7 +296,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+        &copy; Copyright 2012-2014 Yelp. MOE is licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0.
     </p>
   </div>
 

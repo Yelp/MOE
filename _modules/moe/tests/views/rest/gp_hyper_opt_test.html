@@ -109,6 +109,18 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../../contributing.html#style">Style</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../faq.html">Frequently Asked Questions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#what-license-is-moe-released-under">What license is MOE released under?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#when-should-i-use-moe">When should I use MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#what-is-the-time-complexity-of-moe">What is the time complexity of MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#how-do-i-cite-moe">How do I cite MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#why-does-moe-take-so-long-to-return-the-next-points-to-sample-for-some-inputs">Why does MOE take so long to return the next points to sample for some inputs?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#how-do-i-bootstrap-moe-what-initial-data-does-it-need">How do I bootstrap MOE? What initial data does it need?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#how-many-function-evaluations-do-i-need-before-moe-is-done">How many function evaluations do I need before MOE is &#8220;done&#8221;?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#how-many-function-evaluations-do-i-perform-before-i-update-the-hyperparameters-of-the-gp">How many function evaluations do I perform before I update the hyperparameters of the GP?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#will-you-accept-my-pull-request">Will you accept my pull request?</a></li>
+</ul>
+</li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../moe.html">moe package</a><ul>
@@ -213,7 +225,7 @@
 
 <span class="kn">import</span> <span class="nn">testify</span> <span class="kn">as</span> <span class="nn">T</span>
 
-<span class="kn">from</span> <span class="nn">moe.optimal_learning.python.constant</span> <span class="kn">import</span> <span class="n">TEST_OPTIMIZER_MULTISTARTS</span><span class="p">,</span> <span class="n">TEST_GRADIENT_DESCENT_PARAMETERS</span><span class="p">,</span> <span class="n">TEST_OPTIMIZER_NUM_RANDOM_SAMPLES</span>
+<span class="kn">from</span> <span class="nn">moe.optimal_learning.python.constant</span> <span class="kn">import</span> <span class="n">TEST_OPTIMIZER_MULTISTARTS</span><span class="p">,</span> <span class="n">TEST_GRADIENT_DESCENT_PARAMETERS</span><span class="p">,</span> <span class="n">TEST_OPTIMIZER_NUM_RANDOM_SAMPLES</span><span class="p">,</span> <span class="n">GRADIENT_DESCENT_OPTIMIZER</span>
 <span class="kn">from</span> <span class="nn">moe.tests.views.rest_gaussian_process_test_case</span> <span class="kn">import</span> <span class="n">RestGaussianProcessTestCase</span>
 <span class="kn">from</span> <span class="nn">moe.views.constant</span> <span class="kn">import</span> <span class="n">GP_HYPER_OPT_MOE_ROUTE</span>
 <span class="kn">from</span> <span class="nn">moe.views.rest.gp_hyper_opt</span> <span class="kn">import</span> <span class="n">GpHyperOptResponse</span><span class="p">,</span> <span class="n">GpHyperOptView</span>
@@ -234,6 +246,7 @@
             <span class="s">&#39;covariance_info&#39;</span><span class="p">:</span> <span class="n">covariance</span><span class="o">.</span><span class="n">get_json_serializable_info</span><span class="p">(),</span>
             <span class="s">&#39;domain_info&#39;</span><span class="p">:</span> <span class="n">domain</span><span class="o">.</span><span class="n">get_json_serializable_info</span><span class="p">(</span><span class="n">minimal</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
             <span class="s">&#39;optimizer_info&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;optimizer_type&#39;</span><span class="p">:</span> <span class="n">GRADIENT_DESCENT_OPTIMIZER</span><span class="p">,</span>
                 <span class="s">&#39;num_multistarts&#39;</span><span class="p">:</span> <span class="n">TEST_OPTIMIZER_MULTISTARTS</span><span class="p">,</span>
                 <span class="s">&#39;num_random_samples&#39;</span><span class="p">:</span> <span class="n">TEST_OPTIMIZER_NUM_RANDOM_SAMPLES</span><span class="p">,</span>
                 <span class="s">&#39;optimizer_parameters&#39;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">TEST_GRADIENT_DESCENT_PARAMETERS</span><span class="o">.</span><span class="n">_asdict</span><span class="p">()),</span>
@@ -302,12 +315,12 @@
 
         <span class="n">T</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span>
                 <span class="n">optimizer_parameters</span><span class="o">.</span><span class="n">num_multistarts</span><span class="p">,</span>
-                <span class="n">TEST_OPTIMIZER_MULTISTARTS</span>
+                <span class="n">TEST_OPTIMIZER_MULTISTARTS</span><span class="p">,</span>
                 <span class="p">)</span>
 
         <span class="n">T</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span>
                 <span class="n">optimizer_parameters</span><span class="o">.</span><span class="n">_python_max_num_steps</span><span class="p">,</span>
-                <span class="n">TEST_GRADIENT_DESCENT_PARAMETERS</span><span class="o">.</span><span class="n">max_num_steps</span>
+                <span class="n">TEST_GRADIENT_DESCENT_PARAMETERS</span><span class="o">.</span><span class="n">max_num_steps</span><span class="p">,</span>
                 <span class="p">)</span>
 
         <span class="c"># Test arbitrary parameters get passed through</span>
@@ -322,12 +335,12 @@
 
         <span class="n">T</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span>
                 <span class="n">optimizer_parameters</span><span class="o">.</span><span class="n">num_multistarts</span><span class="p">,</span>
-                <span class="n">TEST_OPTIMIZER_MULTISTARTS</span> <span class="o">+</span> <span class="mi">5</span>
+                <span class="n">TEST_OPTIMIZER_MULTISTARTS</span> <span class="o">+</span> <span class="mi">5</span><span class="p">,</span>
                 <span class="p">)</span>
 
         <span class="n">T</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span>
                 <span class="n">optimizer_parameters</span><span class="o">.</span><span class="n">_python_max_num_steps</span><span class="p">,</span>
-                <span class="n">TEST_GRADIENT_DESCENT_PARAMETERS</span><span class="o">.</span><span class="n">max_num_steps</span> <span class="o">+</span> <span class="mi">10</span>
+                <span class="n">TEST_GRADIENT_DESCENT_PARAMETERS</span><span class="o">.</span><span class="n">max_num_steps</span> <span class="o">+</span> <span class="mi">10</span><span class="p">,</span>
                 <span class="p">)</span>
 </div>
 <div class="viewcode-block" id="TestGpHyperOptViews.test_interface_returns_same_as_cpp"><a class="viewcode-back" href="../../../../../moe.tests.views.rest.html#moe.tests.views.rest.gp_hyper_opt_test.TestGpHyperOptViews.test_interface_returns_same_as_cpp">[docs]</a>    <span class="k">def</span> <span class="nf">test_interface_returns_same_as_cpp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -361,7 +374,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+        &copy; Copyright 2012-2014 Yelp. MOE is licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0.
     </p>
   </div>
 

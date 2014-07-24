@@ -26,7 +26,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="${request.route_url('home')}">MOE</a>
+        <a class="navbar-brand" href="${request.route_url('home')}"><img src="${request.static_url('moe:static/img/moe_logo_24.png')}"></a>
       </div>
       <div class="collapse navbar-collapse">
         <ul class="nav navbar-nav">
@@ -40,5 +40,9 @@
   <div class="container">
     ${next.body()}
   </div>
+
+  <footer>
+      <center><img src="${request.static_url('moe:static/img/moe_logo_24.png')}"> © 2012-2014 Yelp</center>
+  </footer>
 </body>
 </html>

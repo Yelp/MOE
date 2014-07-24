@@ -1,0 +1,371 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Frequently Asked Questions &mdash; MOE 0.1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="_static/breathe.css" type="text/css" />
+  
+    <link rel="top" title="MOE 0.1.0 documentation" href="index.html"/>
+        <link rel="next" title="moe package" href="moe.html"/>
+        <link rel="prev" title="Contributing" href="contributing.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="index.html" class="fa fa-home"> MOE</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="why_moe.html">Why Do We Need MOE?</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="why_moe.html#other-methods">Other Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Install</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="install.html#install-in-docker">Install in docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#install-from-source">Install from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#osx-tips">OSX Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#building-boost">Building Boost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="moe_math.html">How does MOE work?</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#build-a-gaussian-process-gp-with-the-historical-data">Build a Gaussian Process (GP) with the historical data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#optimize-the-hyperparameters-of-the-gaussian-process">Optimize the hyperparameters of the Gaussian Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#find-the-point-s-of-highest-expected-improvement-ei">Find the point(s) of highest Expected Improvement (EI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#return-the-point-s-to-sample-then-repeat">Return the point(s) to sample, then repeat</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="demo_tutorial.html">Demo Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="demo_tutorial.html#the-interactive-demo">The Interactive Demo</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pretty_endpoints.html">Pretty Endpoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="objective_functions.html">Objective Functions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="objective_functions.html#what-is-an-objective-function">What is an objective function?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="objective_functions.html#properties-of-an-objective-function">Properties of an objective function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="objective_functions.html#parameters">Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="objective_functions.html#id1"><span class="math">\(\Phi\)</span> Objective Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="objective_functions.html#example-of-objective-functions">Example of Objective Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#minimizing-an-arbitrary-function">Minimizing an arbitrary function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#gaussian-process-regression-given-historical-data">Gaussian Process regression given historical data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#hyperparameter-optimization-of-a-gaussian-process">Hyperparameter optimization of a Gaussian Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#all-above-examples-combined">All above examples combined</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#setting-thresholds-for-advertising-units">Setting thresholds for advertising units</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#making-a-pull-request">Making a pull request</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#documentation">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#testing">Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#style">Style</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Frequently Asked Questions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#what-license-is-moe-released-under">What license is MOE released under?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#when-should-i-use-moe">When should I use MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#what-is-the-time-complexity-of-moe">What is the time complexity of MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#how-do-i-cite-moe">How do I cite MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#why-does-moe-take-so-long-to-return-the-next-points-to-sample-for-some-inputs">Why does MOE take so long to return the next points to sample for some inputs?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#how-do-i-bootstrap-moe-what-initial-data-does-it-need">How do I bootstrap MOE? What initial data does it need?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#how-many-function-evaluations-do-i-need-before-moe-is-done">How many function evaluations do I need before MOE is &#8220;done&#8221;?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#how-many-function-evaluations-do-i-perform-before-i-update-the-hyperparameters-of-the-gp">How many function evaluations do I perform before I update the hyperparameters of the GP?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#will-you-accept-my-pull-request">Will you accept my pull request?</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="moe.html">moe package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#module-moe.resources">moe.resources module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#module-moe">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="moe_examples.html">moe_examples package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.next_point_via_simple_endpoint">moe_examples.next_point_via_simple_endpoint module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="cpp_tree.html">C++ Files</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimization_test.html">gpp_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_domain_test.html">gpp_domain_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_exception.html">gpp_exception</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_geometry.html">gpp_geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_test_utils.html">gpp_test_utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_logging.html">gpp_logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_covariance.html">gpp_covariance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_test.html">gpp_python_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_domain.html">gpp_domain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_common.html">gpp_python_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_hyperparameter_optimization_demo.html">gpp_hyperparameter_optimization_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_test_utils_test.html">gpp_test_utils_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_math_test.html">gpp_math_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_model_selection.html">gpp_python_model_selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_math.html">gpp_math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_random_test.html">gpp_random_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimizer_parameters.html">gpp_optimizer_parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_random.html">gpp_random</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra.html">gpp_linear_algebra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection.html">gpp_model_selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_covariance_test.html">gpp_covariance_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python.html">gpp_python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_test.html">gpp_model_selection_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_common.html">gpp_common</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">MOE</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Frequently Asked Questions</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="_sources/faq.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <div class="section" id="frequently-asked-questions">
+<h1>Frequently Asked Questions<a class="headerlink" href="#frequently-asked-questions" title="Permalink to this headline">¶</a></h1>
+<p>Questions:</p>
+<ol class="arabic simple">
+<li><a class="reference internal" href="#what-license-is-moe-released-under">What license is MOE released under?</a></li>
+<li><a class="reference internal" href="#when-should-i-use-moe">When should I use MOE?</a></li>
+<li><a class="reference internal" href="#what-is-the-time-complexity-of-moe">What is the time complexity of MOE?</a></li>
+<li><a class="reference internal" href="#how-do-i-cite-moe">How do I cite MOE?</a></li>
+<li><a class="reference internal" href="#why-does-moe-take-so-long-to-return-the-next-points-to-sample-for-some-inputs">Why does MOE take so long to return the next points to sample for some inputs?</a></li>
+<li><a class="reference internal" href="#how-do-i-bootstrap-moe-what-initial-data-does-it-need">How do I bootstrap MOE? What initial data does it need?</a></li>
+<li><a class="reference internal" href="#how-many-function-evaluations-do-i-need-before-moe-is-done">How many function evaluations do I need before MOE is &#8220;done&#8221;?</a></li>
+<li><a class="reference internal" href="#how-many-function-evaluations-do-i-perform-before-i-update-the-hyperparameters-of-the-gp">How many function evaluations do I perform before I update the hyperparameters of the GP?</a></li>
+<li><a class="reference internal" href="#will-you-accept-my-pull-request">Will you accept my pull request?</a></li>
+</ol>
+<div class="section" id="what-license-is-moe-released-under">
+<h2>What license is MOE released under?<a class="headerlink" href="#what-license-is-moe-released-under" title="Permalink to this headline">¶</a></h2>
+<p>MOE is licensed under the <a class="reference external" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a></p>
+</div>
+<div class="section" id="when-should-i-use-moe">
+<h2>When should I use MOE?<a class="headerlink" href="#when-should-i-use-moe" title="Permalink to this headline">¶</a></h2>
+<p>MOE is designed for optimizing a system&#8217;s parameters, when evaluating parameters is <em>time-consuming</em> or <em>expensive</em>, the objective function is a <em>black box</em> and not necessarily concave or convex, derivatives are unavailable, and we wish to find a global optimum, rather than a local one.</p>
+<p>See <a class="reference internal" href="why_moe.html"><em>Why Do We Need MOE?</em></a> for more information and links to other methods that solve similar problems.</p>
+</div>
+<div class="section" id="what-is-the-time-complexity-of-moe">
+<h2>What is the time complexity of MOE?<a class="headerlink" href="#what-is-the-time-complexity-of-moe" title="Permalink to this headline">¶</a></h2>
+<p>The most expensive part of MOE is when we form the Cholesky Decomposition of the covariance matrix. This operation is <span class="math">\(O(N^{3})\)</span> where <em>N</em> is the number of historical points.</p>
+<p>Within MOE techniques like Stochastic Gradient Descent and Monte Carlo integration are used. These methods have tunable parameters like number of multistarts and number of iterations. MOE is linear in complexity with respect to each of these parameters. Depending on the problem, it may take many millions of MC iterations to get an accurate representation of the gradient of the Expected Improvement in high dimension.</p>
+<p>For more information about the runtime of MOE check out <a class="reference internal" href="gpp_linear_algebra.html"><em>gpp_linear_algebra</em></a>, <a class="reference internal" href="gpp_math.html"><em>gpp_math</em></a>, <a class="reference internal" href="gpp_model_selection.html"><em>gpp_model_selection</em></a> and <a class="reference internal" href="moe.views.html#moe.views.schemas.GpHyperOptRequest" title="moe.views.schemas.GpHyperOptRequest"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.GpHyperOptRequest</span></tt></a> for some more info. Timing information is placed within the relevent docstrings throughout the code.</p>
+</div>
+<div class="section" id="how-do-i-cite-moe">
+<h2>How do I cite MOE?<a class="headerlink" href="#how-do-i-cite-moe" title="Permalink to this headline">¶</a></h2>
+<p>For now just cite the repo: <a class="reference external" href="http://github.com/Yelp/MOE">http://github.com/Yelp/MOE</a>, a journal article with more technical detail should be coming out shortly as well.</p>
+</div>
+<div class="section" id="why-does-moe-take-so-long-to-return-the-next-points-to-sample-for-some-inputs">
+<h2>Why does MOE take so long to return the next points to sample for some inputs?<a class="headerlink" href="#why-does-moe-take-so-long-to-return-the-next-points-to-sample-for-some-inputs" title="Permalink to this headline">¶</a></h2>
+<p>Some optimizations are very computationally complex, or cause internal data structures like the covariance matrix between all historical points to become very large or ill formed (we need it to symmetric positive definite to machine precision).</p>
+<p>A (non exhaustive) list of queries that are &#8220;hard&#8221; for MOE is:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Asking MOE for N new points to sample given H historical points where <span class="math">\(N &gt;&gt; H\)</span>. See <a class="reference internal" href="#how-do-i-bootstrap-moe-what-initial-data-does-it-need">How do I bootstrap MOE? What initial data does it need?</a>.</li>
+<li>Asking MOE for new points to sample given H historical points where H is very large (thousands). See <a class="reference internal" href="#when-should-i-use-moe">When should I use MOE?</a>, if you have several thousand historical points your problem may not be <em>time-consuming</em> or <em>expensive</em>. MOE performs best when every function evaluation is very difficult and we want to sample as few times as possible. One can subsample or combine historical data to speed up MOE in the case when there is a lot of historical data but each new evaluation is still <em>time-consuming</em> or <em>expensive</em> and MOE use is desired.</li>
+<li>Asking MOE for many new points to sample using the <a class="reference internal" href="moe.views.rest.html#module-moe.views.rest.gp_next_points_kriging" title="moe.views.rest.gp_next_points_kriging"><tt class="xref py py-mod docutils literal"><span class="pre">moe.views.rest.gp_next_points_kriging</span></tt></a> or <a class="reference internal" href="moe.views.rest.html#module-moe.views.rest.gp_next_points_constant_liar" title="moe.views.rest.gp_next_points_constant_liar"><tt class="xref py py-mod docutils literal"><span class="pre">moe.views.rest.gp_next_points_constant_liar</span></tt></a> method with no noise. The way this method works internally causes the covariance matrix to quickly grow in condition number, which causes many problems (like with the cholesky decomposition required for Stochastic Gradient Descent). Try using the <tt class="xref py py-mod docutils literal"><span class="pre">moe.views.rests.gp_next_points_epi</span></tt> endpoint, or allowing noise.</li>
+<li>Alternatively, asking MOE for many new points to sample using the <a class="reference internal" href="moe.views.rest.html#module-moe.views.rest.gp_next_points_kriging" title="moe.views.rest.gp_next_points_kriging"><tt class="xref py py-mod docutils literal"><span class="pre">moe.views.rest.gp_next_points_kriging</span></tt></a> or <a class="reference internal" href="moe.views.rest.html#module-moe.views.rest.gp_next_points_constant_liar" title="moe.views.rest.gp_next_points_constant_liar"><tt class="xref py py-mod docutils literal"><span class="pre">moe.views.rest.gp_next_points_constant_liar</span></tt></a> method with very high noise (larger than signal variance) may cause MOE to resample that point many times instead of exploring. Using the same level of noise you expect to have in your historical samples is usually the best way to solve these problems.</li>
+<li>Having no noise in the historical data. This can cause the covariance matrix to become singular, or have very high condition number, which causes errors throughout the system. Almost all measurements have some noise associated with them (even if it is very, very small). By informing MOE about the noise, or even adding artificial noise near machine precision these issues will go away. This problem is exacerbated when points are very close together in parameter space.</li>
+<li>Having very large or very small GP covariance hyperparameters. Many of the default optimization parameters assume that the GP covariance hyperparameters lie in the range of about (0.01 to 100). If you have very large or very small GP covariance hyperparameters then also tuning the optimization parameters will help MOE give better results (faster). Large length scales cause underfitting (and poor conditioning), small length scales case overfitting, see <a class="reference internal" href="demo_tutorial.html#changing-hypers"><em>Changing Hyperparameters</em></a> for an example.</li>
+<li>Having a very large or very small domain. Many of the default optimization parameters assume that the domain is around (0.1 to 10) in each dimension (to start). Changing the optimization parameters and updating the GP covariance hyperparameters, or normalizing domain to fit in the unit hypercube are potential solutions.</li>
+<li>Setting the constant liar &#8220;lie&#8221; to be a value lower than the current best value seen so far. This tells MOE to assume that every point in the space is the best point that it has ever seen. Try using some of the standard constant liar methods like taking the min, max or mean of the values sampled so far. See <a class="reference internal" href="moe.views.rest.html#module-moe.views.rest.gp_next_points_constant_liar" title="moe.views.rest.gp_next_points_constant_liar"><tt class="xref py py-mod docutils literal"><span class="pre">moe.views.rest.gp_next_points_constant_liar</span></tt></a> for examples.</li>
+<li>The objective function does not have a mean of 0. MOE assumes that the GP prior has a mean of 0, if the objective function is translated away from this value it may take a long time for MOE to fully explore the space. See <a class="reference internal" href="objective_functions.html"><em>Objective Functions</em></a> for information on constructing a good objective function for MOE.</li>
+</ul>
+</div></blockquote>
+<p>Check out <a class="reference internal" href="#what-is-the-time-complexity-of-moe">What is the time complexity of MOE?</a> and the docs in <a class="reference internal" href="moe.views.html#module-moe.views.schemas" title="moe.views.schemas"><tt class="xref py py-mod docutils literal"><span class="pre">moe.views.schemas</span></tt></a> for more information on timings.</p>
+</div>
+<div class="section" id="how-do-i-bootstrap-moe-what-initial-data-does-it-need">
+<h2>How do I bootstrap MOE? What initial data does it need?<a class="headerlink" href="#how-do-i-bootstrap-moe-what-initial-data-does-it-need" title="Permalink to this headline">¶</a></h2>
+<p>MOE performs best when it has some initial, historical information to work with. Without any information it treats every point as equal Expected Improvement and will effectively choose points to sample at random (which is the best you can do with no information).</p>
+<p>To help &#8220;bootstrap&#8221; MOE try:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Giving MOE historical information, if possible, even if it has high noise. This can include previous experiments or the current status quo in an A/B test. Dumping many thousands of points into historical data can slow MOE down though, see <a class="reference internal" href="#why-does-moe-take-so-long-to-return-the-next-points-to-sample-for-some-inputs">Why does MOE take so long to return the next points to sample for some inputs?</a></li>
+<li>Try sampling a small <a class="reference external" href="http://en.wikipedia.org/wiki/Stencil_(numerical_analysis)">stencil</a> of points in the space you want MOE to search over. This is usually better than a random set of initial points.</li>
+<li>A loose heuristic is to provide MOE with <span class="math">\(2*D\)</span> historical points, where <em>D</em> is the dimension of the space MOE is searching over. MOE will still function with less points, but it will be primarily exploring (vs exploiting) as it bootstraps itself and learns information about the space.</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="how-many-function-evaluations-do-i-need-before-moe-is-done">
+<h2>How many function evaluations do I need before MOE is &#8220;done&#8221;?<a class="headerlink" href="#how-many-function-evaluations-do-i-need-before-moe-is-done" title="Permalink to this headline">¶</a></h2>
+<p>This is highly dependent on the dimension of the space that is being searched over, the size of the domain relative to the length scale in each dimension, and how &#8220;well behaved&#8221; the underlying objective function is.</p>
+<p>One can:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Run MOE until the difference between consecutive suggested points falls below some threshold.</li>
+<li>Run MOE for a fixed number of iterations. MOE will optimize the Expected Improvement at every evaluation, so whenever you stop you can know that you have sampled the points of highest Expected Improvement given your sample constraints.</li>
+<li>A (very) loose heuristic is to sample <cite>10*D</cite> historical points, where <em>D</em> is the dimension of the space MOE is searching over.</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="how-many-function-evaluations-do-i-perform-before-i-update-the-hyperparameters-of-the-gp">
+<h2>How many function evaluations do I perform before I update the hyperparameters of the GP?<a class="headerlink" href="#how-many-function-evaluations-do-i-perform-before-i-update-the-hyperparameters-of-the-gp" title="Permalink to this headline">¶</a></h2>
+<p>This is also highly dependent on the problem, but a good loose heuristic is at least every 5-10 historical points sampled. If asking MOE for the next points to sample is blocked on current experiments it does not hurt to optimize hyperparameters after every new historical point is sampled.</p>
+<p>When there is a low ammount of information hyperparameter optimization can sometimes fail to converge to a &#8220;good&#8221; optima. Using common sense can help set intial hyperparameters until enough data is generated (see <a class="reference internal" href="#how-do-i-bootstrap-moe-what-initial-data-does-it-need">How do I bootstrap MOE? What initial data does it need?</a>). In the <a class="reference internal" href="examples.html#ads-example"><em>Setting thresholds for advertising units</em></a> example if we are setting a threshold that has units of miles, it may make sense to have length scales on the order of (0.1-10), vs 0.0001 or 10,000.</p>
+</div>
+<div class="section" id="will-you-accept-my-pull-request">
+<h2>Will you accept my pull request?<a class="headerlink" href="#will-you-accept-my-pull-request" title="Permalink to this headline">¶</a></h2>
+<p>Yes! Please follow the guidelines at <a class="reference internal" href="contributing.html"><em>Contributing</em></a>. Bonus points if you are addressing an <a class="reference external" href="https://github.com/Yelp/MOE/issues">open issue</a>.</p>
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="moe.html" class="btn btn-neutral float-right" title="moe package"/>Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="contributing.html" class="btn btn-neutral" title="Contributing"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2012-2014 Yelp. MOE is licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

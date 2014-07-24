@@ -111,6 +111,18 @@
 <li class="toctree-l2"><a class="reference internal" href="contributing.html#style">Style</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#what-license-is-moe-released-under">What license is MOE released under?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#when-should-i-use-moe">When should I use MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#what-is-the-time-complexity-of-moe">What is the time complexity of MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-do-i-cite-moe">How do I cite MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#why-does-moe-take-so-long-to-return-the-next-points-to-sample-for-some-inputs">Why does MOE take so long to return the next points to sample for some inputs?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-do-i-bootstrap-moe-what-initial-data-does-it-need">How do I bootstrap MOE? What initial data does it need?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-many-function-evaluations-do-i-need-before-moe-is-done">How many function evaluations do I need before MOE is &#8220;done&#8221;?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-many-function-evaluations-do-i-perform-before-i-update-the-hyperparameters-of-the-gp">How many function evaluations do I perform before I update the hyperparameters of the GP?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#will-you-accept-my-pull-request">Will you accept my pull request?</a></li>
+</ul>
+</li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="moe.html">moe package</a><ul>
@@ -233,8 +245,8 @@ modulo linear shifts: <tt class="docutils literal"><span class="pre">k(x+a,</spa
 gaussian processes are defined by a mean function and a covariance function.  Covariance functions describe how
 two random variables change in relation to each other&#8211;more explicitly, in a GP they specify how similar two points are.
 The choice of covariance function is important because it encodes our assumptions about how the &#8220;world&#8221; behaves.</p>
-<p>Currently, all covariance functions in this file require dim+1 hyperparameters: alpha, L_1, ... L_d.  alpha
-is sigma_f^2, the signal variance.  L_1, ... , L_d are the length scales, one per spatial dimension.  We do not
+<p>Currently, all covariance functions in this file require <tt class="docutils literal"><span class="pre">dim+1</span></tt> hyperparameters: <tt class="docutils literal"><span class="pre">\alpha,</span> <span class="pre">L_1,</span> <span class="pre">...</span> <span class="pre">L_d</span></tt>. <tt class="docutils literal"><span class="pre">\alpha</span></tt>
+is <tt class="docutils literal"><span class="pre">\sigma_f^2</span></tt>, the signal variance. <tt class="docutils literal"><span class="pre">L_1,</span> <span class="pre">...</span> <span class="pre">,</span> <span class="pre">L_d</span></tt> are the length scales, one per spatial dimension.  We do not
 currently support non-axis-aligned anisotropy.</p>
 <p>Specifying hyperparameters is tricky because changing them fundamentally changes the behavior of the GP.
 gpp_model_selection.hpp provides some functions for optimizing
@@ -1869,7 +1881,7 @@ Current math was done by hand and maybe I missed something.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+        &copy; Copyright 2012-2014 Yelp. MOE is licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0.
     </p>
   </div>
 

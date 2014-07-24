@@ -250,7 +250,7 @@ class NormalRNG final : public NormalRNGInterface {
   }
 
   /*!\rst
-    Clears state of normal_distribution_ so that future uses do not depend on any previous actions.
+    Clears state of ``normal_distribution_`` so that future uses do not depend on any previous actions.
     This is important: the underlying normal distribution likely generates numbers \emph{two} at a time.
     So re-seeding the engine WITHOUT resetting can lead to surprising behavior.
   \endrst*/

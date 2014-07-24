@@ -109,6 +109,18 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../../contributing.html#style">Style</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../faq.html">Frequently Asked Questions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#what-license-is-moe-released-under">What license is MOE released under?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#when-should-i-use-moe">When should I use MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#what-is-the-time-complexity-of-moe">What is the time complexity of MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#how-do-i-cite-moe">How do I cite MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#why-does-moe-take-so-long-to-return-the-next-points-to-sample-for-some-inputs">Why does MOE take so long to return the next points to sample for some inputs?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#how-do-i-bootstrap-moe-what-initial-data-does-it-need">How do I bootstrap MOE? What initial data does it need?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#how-many-function-evaluations-do-i-need-before-moe-is-done">How many function evaluations do I need before MOE is &#8220;done&#8221;?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#how-many-function-evaluations-do-i-perform-before-i-update-the-hyperparameters-of-the-gp">How many function evaluations do I perform before I update the hyperparameters of the GP?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#will-you-accept-my-pull-request">Will you accept my pull request?</a></li>
+</ul>
+</li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../moe.html">moe package</a><ul>
@@ -254,7 +266,7 @@
 <span class="sd">**2a. GRADIENT DESCENT (GD)**</span>
 
 <span class="sd">.. Note:: Below there is some discussion of &quot;restarted&quot; Gradient Descent; this is not yet implemented in Python.</span>
-<span class="sd">    See cpp_wrappers/optimization.py if you want to use this feature.</span>
+<span class="sd">    See :mod:`moe.optimal_learning.python.cpp_wrappers.optimization` if you want to use this feature.</span>
 
 <span class="sd">**2a, i. OVERVIEW**</span>
 
@@ -294,7 +306,7 @@
 
 <span class="sd">**2b. NEWTON&#39;S METHOD:**</span>
 
-<span class="sd">.. Note:: Newton&#39;s method is not yet implemented in Python. See cpp_wrappers/optimization.py if you want to use this feature.</span>
+<span class="sd">.. Note:: Newton&#39;s method is not yet implemented in Python. See :mod:`moe.optimal_learning.python.cpp_wrappers.optimization` if you want to use this feature.</span>
 
 <span class="sd">**2b, i. OVERVIEW**</span>
 
@@ -398,12 +410,10 @@
 
 <span class="sd">    :param optimizer: object that will perform the optimization</span>
 <span class="sd">    :type optimizer: interfaces.optimization_interface.OptimizerInterface subclass</span>
-<span class="sd">    :param points_to_evaluate: points at which to compute the objective</span>
-<span class="sd">    :type points_to_evaluate: array of float64 with shape (num_points, evaluator.problem_size)</span>
+<span class="sd">    :param starting_points: points at which to initialize optimization runs</span>
+<span class="sd">    :type starting_points: array of float64 with shape (num_points, evaluator.problem_size)</span>
 <span class="sd">    :return: (best point found, objective function values at the end of each optimization run)</span>
 <span class="sd">    :rtype: tuple: (array of float64 with shape (optimizer.dim), array of float64 with shape (starting_points.shape[0]) or (num_multistarts))</span>
-<span class="sd">    :return: objective function value at each specified point</span>
-<span class="sd">    :rtype: array of float64 with shape (points_to_evaluate.shape[0])</span>
 <span class="sd">    :raises: ValueError: if both ``starting_points`` and ``num_multistarts`` are None</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -433,7 +443,7 @@
 
 <div class="viewcode-block" id="NewtonParameters"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.optimization.NewtonParameters">[docs]</a><span class="k">class</span> <span class="nc">NewtonParameters</span><span class="p">(</span><span class="n">_BaseNewtonParameters</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot;See docstring at :class:`moe.optimal_learning.python.cpp_wrappers.optimization`.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;See docstring at :class:`moe.optimal_learning.python.cpp_wrappers.optimization.NewtonParameters`.&quot;&quot;&quot;</span>
 
     <span class="n">__slots__</span> <span class="o">=</span> <span class="p">()</span>
 
@@ -744,7 +754,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+        &copy; Copyright 2012-2014 Yelp. MOE is licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0.
     </p>
   </div>
 

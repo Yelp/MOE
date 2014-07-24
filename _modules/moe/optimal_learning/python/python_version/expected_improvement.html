@@ -109,6 +109,18 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../../contributing.html#style">Style</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../faq.html">Frequently Asked Questions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#what-license-is-moe-released-under">What license is MOE released under?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#when-should-i-use-moe">When should I use MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#what-is-the-time-complexity-of-moe">What is the time complexity of MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#how-do-i-cite-moe">How do I cite MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#why-does-moe-take-so-long-to-return-the-next-points-to-sample-for-some-inputs">Why does MOE take so long to return the next points to sample for some inputs?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#how-do-i-bootstrap-moe-what-initial-data-does-it-need">How do I bootstrap MOE? What initial data does it need?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#how-many-function-evaluations-do-i-need-before-moe-is-done">How many function evaluations do I need before MOE is &#8220;done&#8221;?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#how-many-function-evaluations-do-i-perform-before-i-update-the-hyperparameters-of-the-gp">How many function evaluations do I perform before I update the hyperparameters of the GP?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../faq.html#will-you-accept-my-pull-request">Will you accept my pull request?</a></li>
+</ul>
+</li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../moe.html">moe package</a><ul>
@@ -208,9 +220,12 @@
 <span class="c"># -*- coding: utf-8 -*-</span>
 <span class="sd">&quot;&quot;&quot;Classes (Python) to compute the Expected Improvement, including monte carlo and analytic (where applicable) implementations.</span>
 
-<span class="sd">See interfaces/expected_improvement_interface.py or gpp_math.hpp/cpp for further details on expected improvement.</span>
+<span class="sd">See :mod:`moe.optimal_learning.python.interfaces.expected_improvement_interface` or</span>
+<span class="sd">gpp_math.hpp/cpp for further details on expected improvement.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
 <span class="kn">import</span> <span class="nn">numpy</span>
 
 <span class="kn">import</span> <span class="nn">scipy.linalg</span>
@@ -223,20 +238,20 @@
 <span class="kn">from</span> <span class="nn">moe.optimal_learning.python.python_version.optimization</span> <span class="kn">import</span> <span class="n">multistart_optimize</span><span class="p">,</span> <span class="n">NullOptimizer</span>
 
 
-<span class="c"># Minimum allowed variance value in the &quot;1D&quot; analytic EI computation.</span>
-<span class="c"># Values that are too small result in problems b/c we may compute ``std_dev/var`` (which is enormous</span>
-<span class="c"># if ``std_dev = 1.0e-150`` and ``var = 1.0e-300``) since this only arises when we fail to compute ``std_dev = var = 0.0``.</span>
-<span class="c"># Note: this is only relevant if noise = 0.0; this minimum will not affect EI computation with noise since this value</span>
-<span class="c"># is below the smallest amount of noise users can meaningfully add.</span>
-<span class="c"># This is the smallest possible value that prevents the denominator (best_so_far - mean) / sqrt(variance)</span>
-<span class="c"># from being 0. 1D analytic EI is simple and no other robustness considerations are needed.</span>
+<span class="c">#: Minimum allowed variance value in the &quot;1D&quot; analytic EI computation.</span>
+<span class="c">#: Values that are too small result in problems b/c we may compute ``std_dev/var`` (which is enormous</span>
+<span class="c">#: if ``std_dev = 1.0e-150`` and ``var = 1.0e-300``) since this only arises when we fail to compute ``std_dev = var = 0.0``.</span>
+<span class="c">#: Note: this is only relevant if noise = 0.0; this minimum will not affect EI computation with noise since this value</span>
+<span class="c">#: is below the smallest amount of noise users can meaningfully add.</span>
+<span class="c">#: This is the smallest possible value that prevents the denominator (best_so_far - mean) / sqrt(variance)</span>
+<span class="c">#: from being 0. 1D analytic EI is simple and no other robustness considerations are needed.</span>
 <span class="n">MINIMUM_VARIANCE_EI</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span><span class="o">.</span><span class="n">tiny</span>
 
-<span class="c"># Minimum allowed variance value in the &quot;1D&quot; analytic grad EI computation.</span>
-<span class="c"># See MINIMUM_VARIANCE_EI for more details.</span>
-<span class="c"># This value was chosen so its sqrt would be a little larger than GaussianProcess::kMinimumStdDev (by ~12x).</span>
-<span class="c"># The 150.0 was determined by numerical experiment with the setup in test_1d_analytic_ei_edge_cases()</span>
-<span class="c"># in order to find a setting that would be robust (no 0/0) while introducing minimal error.</span>
+<span class="c">#: Minimum allowed variance value in the &quot;1D&quot; analytic grad EI computation.</span>
+<span class="c">#: See :const:`moe.optimal_learning.python.python_version.expected_improvement.MINIMUM_VARIANCE_EI` for more details.</span>
+<span class="c">#: This value was chosen so its sqrt would be a little larger than GaussianProcess::kMinimumStdDev (by ~12x).</span>
+<span class="c">#: The 150.0 was determined by numerical experiment with the setup in test_1d_analytic_ei_edge_cases()</span>
+<span class="c">#: in order to find a setting that would be robust (no 0/0) while introducing minimal error.</span>
 <span class="n">MINIMUM_VARIANCE_GRAD_EI</span> <span class="o">=</span> <span class="mi">150</span> <span class="o">*</span> <span class="n">MINIMUM_STD_DEV_GRAD_CHOLESKY</span> <span class="o">**</span> <span class="mi">2</span>
 
 
@@ -252,7 +267,8 @@
 
 <span class="sd">    When ``points_being_sampled.shape[0] == 0 &amp;&amp; num_to_sample == 1``, this function will use (fast) analytic EI computations.</span>
 
-<span class="sd">    .. NOTE:: The following comments are copied from multistart_expected_improvement_optimization() in cpp_wrappers/expected_improvement.py</span>
+<span class="sd">    .. NOTE:: The following comments are copied from</span>
+<span class="sd">      :func:`moe.optimal_learning.python.cpp_wrappers.expected_improvement.multistart_expected_improvement_optimization`.</span>
 
 <span class="sd">    This is the primary entry-point for EI optimization in the optimal_learning library. It offers our best shot at</span>
 <span class="sd">    improving robustness by combining higher accuracy methods like gradient descent with fail-safes like random/grid search.</span>
@@ -310,7 +326,7 @@
 <span class="sd">    .. Note:: Equivalent methods of ExpectedImprovementInterface and OptimizableInterface are aliased below (e.g.,</span>
 <span class="sd">      compute_expected_improvement and compute_objective_function, etc).</span>
 
-<span class="sd">    See interfaces/expected_improvement_interface.py docs for further details.</span>
+<span class="sd">    See :class:`moe.optimal_learning.python.interfaces.expected_improvement_interface.ExpectedImprovementInterface` for further details.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -354,6 +370,8 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">current_point</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="n">gaussian_process</span><span class="o">.</span><span class="n">dim</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">current_point</span> <span class="o">=</span> <span class="n">points_to_sample</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
 
     <span class="nd">@property</span>
 <div class="viewcode-block" id="ExpectedImprovement.dim"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.dim">[docs]</a>    <span class="k">def</span> <span class="nf">dim</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -655,6 +673,15 @@
 <span class="sd">        For performance, this function vectorizes the monte-carlo integration loop, using numpy&#39;s mask feature to skip</span>
 <span class="sd">        iterations where the improvement is not positive.</span>
 
+<span class="sd">        Lastly, under some situations (e.g., ``points_to_sample`` and ``points_begin_sampled`` are too close</span>
+<span class="sd">        together or too close to ``points_sampled``), the GP-Variance matrix, ``Vars`` is</span>
+<span class="sd">        [numerically] singular so that the cholesky factorization ``Ls * Ls^T = Vars`` cannot</span>
+<span class="sd">        be computed reliably.</span>
+
+<span class="sd">        When this happens (as detected by a numpy/scipy ``LinAlgError``), we instead resort to</span>
+<span class="sd">        a combination of the SVD and the QR factorization to compute the cholesky factorization</span>
+<span class="sd">        more reliably. SVD and QR (see code) have extremely numerically stable algorithms.</span>
+
 <span class="sd">        :param mu_star: self._gaussian_process.compute_mean_of_points(union_of_points)</span>
 <span class="sd">        :type mu_star: array of float64 with shape (num_points)</span>
 <span class="sd">        :param var_star: self._gaussian_process.compute_variance_of_points(union_of_points)</span>
@@ -664,7 +691,26 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">num_points</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_to_sample</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_being_sampled</span>
-        <span class="n">chol_var</span> <span class="o">=</span> <span class="o">-</span><span class="n">scipy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">cholesky</span><span class="p">(</span><span class="n">var_star</span><span class="p">,</span> <span class="n">lower</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">chol_var</span> <span class="o">=</span> <span class="o">-</span><span class="n">scipy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">cholesky</span><span class="p">(</span><span class="n">var_star</span><span class="p">,</span> <span class="n">lower</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">scipy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">LinAlgError</span> <span class="k">as</span> <span class="n">exception</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;GP-variance matrix (size {0:d} is singular; scipy.linalg.cholesky failed. Error: {1:s}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">num_points</span><span class="p">,</span> <span class="n">exception</span><span class="p">))</span>
+            <span class="c"># TOOD(GH-325): Investigate whether the SVD is the best option here</span>
+            <span class="c"># var_star is singular or near-singular and cholesky failed.</span>
+            <span class="c"># Instead, use the SVD: U * E * V^H = A, which can be computed extremely reliably.</span>
+            <span class="c"># See: http://en.wikipedia.org/wiki/Singular_value_decomposition</span>
+            <span class="c"># U, V are unitary and E is diagonal with all non-negative entries.</span>
+            <span class="c"># If A is SPSD, U = V.</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">VH</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">var_star</span><span class="p">)</span>
+            <span class="c"># Then form factor Q * R = sqrt(E) * V^H.</span>
+            <span class="c"># See: http://en.wikipedia.org/wiki/QR_decomposition</span>
+            <span class="c"># (Q * R)^T * (Q * R) = R^T * Q * Q^T * R = R^T * R</span>
+            <span class="c"># and (Q * R)^T * (Q * R) = (sqrt(E) * V^T)^T * (sqrt(E) * V^T)</span>
+            <span class="c"># = V * sqrt(E) * sqrt(E) * V^T = A (using U = V).</span>
+            <span class="c"># Hence R^T * R = L * L^T = A is a cholesky factorization.</span>
+            <span class="c"># Note: we do not always use this approach b/c it is extremely expensive.</span>
+            <span class="n">R</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">qr</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">E</span><span class="p">)),</span> <span class="n">VH</span><span class="p">),</span> <span class="n">mode</span><span class="o">=</span><span class="s">&#39;r&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">chol_var</span> <span class="o">=</span> <span class="o">-</span><span class="n">R</span><span class="o">.</span><span class="n">T</span>
 
         <span class="n">normals</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_num_mc_iterations</span><span class="p">,</span> <span class="n">num_points</span><span class="p">))</span>
 
@@ -881,7 +927,8 @@
 <div class="viewcode-block" id="ExpectedImprovement.compute_expected_improvement"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.compute_expected_improvement">[docs]</a>    <span class="k">def</span> <span class="nf">compute_expected_improvement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">force_monte_carlo</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">force_1d_ei</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="sd">r&quot;&quot;&quot;Compute the expected improvement at ``points_to_sample``, with ``points_being_sampled`` concurrent points being sampled.</span>
 
-<span class="sd">        .. Note:: These comments were copied from this&#39;s superclass in expected_improvement_interface.py.</span>
+<span class="sd">        .. Note:: These comments were copied from</span>
+<span class="sd">          :meth:`moe.optimal_learning.python.interfaces.expected_improvement_interface.ExpectedImprovementInterface.compute_expected_improvement`.</span>
 
 <span class="sd">        ``points_to_sample`` is the &quot;q&quot; and ``points_being_sampled`` is the &quot;p&quot; in q,p-EI.</span>
 
@@ -936,7 +983,8 @@
 <div class="viewcode-block" id="ExpectedImprovement.compute_grad_expected_improvement"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.compute_grad_expected_improvement">[docs]</a>    <span class="k">def</span> <span class="nf">compute_grad_expected_improvement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">force_monte_carlo</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="sd">r&quot;&quot;&quot;Compute the gradient of expected improvement at ``points_to_sample`` wrt ``points_to_sample``, with ``points_being_sampled`` concurrent samples.</span>
 
-<span class="sd">        .. Note:: These comments were copied from this&#39;s superclass in expected_improvement_interface.py.</span>
+<span class="sd">        .. Note:: These comments were copied from</span>
+<span class="sd">          :meth:`moe.optimal_learning.python.interfaces.expected_improvement_interface.ExpectedImprovementInterface.compute_grad_expected_improvement`.</span>
 
 <span class="sd">        ``points_to_sample`` is the &quot;q&quot; and ``points_being_sampled`` is the &quot;p&quot; in q,p-EI.</span>
 
@@ -1012,7 +1060,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+        &copy; Copyright 2012-2014 Yelp. MOE is licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0.
     </p>
   </div>
 

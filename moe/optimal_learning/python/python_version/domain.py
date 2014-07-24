@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 """Various python implementations of interfaces.domain_interface.DomainInterface (e.g., TensorProduct).
 
-These are currently used to describe domain limits for optimizers (i.e., implementations of interfaces/optimization_interface.py)
+These are currently used to describe domain limits for optimizers (i.e., implementations of
+:mod:`moe.optimal_learning.python.interfaces.optimization_interface`).
 
 Each domain provides functions to:
 

@@ -111,6 +111,18 @@
 <li class="toctree-l2"><a class="reference internal" href="contributing.html#style">Style</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#what-license-is-moe-released-under">What license is MOE released under?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#when-should-i-use-moe">When should I use MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#what-is-the-time-complexity-of-moe">What is the time complexity of MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-do-i-cite-moe">How do I cite MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#why-does-moe-take-so-long-to-return-the-next-points-to-sample-for-some-inputs">Why does MOE take so long to return the next points to sample for some inputs?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-do-i-bootstrap-moe-what-initial-data-does-it-need">How do I bootstrap MOE? What initial data does it need?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-many-function-evaluations-do-i-need-before-moe-is-done">How many function evaluations do I need before MOE is &#8220;done&#8221;?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-many-function-evaluations-do-i-perform-before-i-update-the-hyperparameters-of-the-gp">How many function evaluations do I perform before I update the hyperparameters of the GP?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#will-you-accept-my-pull-request">Will you accept my pull request?</a></li>
+</ul>
+</li>
 </ul>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="moe.html">moe package</a><ul class="current">
@@ -263,7 +275,13 @@ GP_NEXT_POINTS_&lt;NAME&gt;_MOE_ROUTE = MoeRoute(GP_NEXT_POINTS_&lt;NAME&gt;_ROU
 GP_NEXT_POINTS_&lt;NAME&gt;_PRETTY_ROUTE_NAME = &#8216;gp_next_points_&lt;name&gt;_pretty&#8217;
 GP_NEXT_POINTS_&lt;NAME&gt;_PRETTY_ENDPOINT = &#8216;/gp/next_points/&lt;name&gt;/pretty&#8217;
 GP_NEXT_POINTS_&lt;NAME&gt;_PRETTY_MOE_ROUTE = MoeRoute(GP_NEXT_POINTS_&lt;NAME&gt;_PRETTY_ROUTE_NAME, GP_NEXT_POINTS_&lt;NAME&gt;_PRETTY_ENDPOINT)
-GP_NEXT_POINTS_&lt;NAME&gt;_OPTIMIZER_METHOD_NAME = &lt;method name from moe.optimal_learning.python.models.optimal_gaussian_process_linked_cpp.py&gt;</div></blockquote>
+GP_NEXT_POINTS_&lt;NAME&gt;_OPTIMIZER_METHOD_NAME = &lt;method name from <a class="reference internal" href="moe.optimal_learning.python.cpp_wrappers.html#module-moe.optimal_learning.python.cpp_wrappers.expected_improvement" title="moe.optimal_learning.python.cpp_wrappers.expected_improvement"><tt class="xref py py-mod docutils literal"><span class="pre">moe.optimal_learning.python.cpp_wrappers.expected_improvement</span></tt></a>&gt;</div></blockquote>
+<dl class="data">
+<dt id="moe.views.constant.ALL_REST_ROUTES_ROUTE_NAME_TO_ENDPOINT">
+<tt class="descclassname">moe.views.constant.</tt><tt class="descname">ALL_REST_ROUTES_ROUTE_NAME_TO_ENDPOINT</tt><em class="property"> = {'gp_hyper_opt': '/gp/hyper_opt', 'gp_var_diag': '/gp/var/diag', 'gp_next_points_kriging': '/gp/next_points/kriging', 'gp_mean': '/gp/mean', 'gp_var': '/gp/var', 'gp_next_points_epi': '/gp/next_points/epi', 'gp_ei': '/gp/ei', 'gp_mean_var_diag': '/gp/mean_var/diag', 'gp_mean_var': '/gp/mean_var', 'gp_next_points_constant_liar': '/gp/next_points/constant_liar'}</em><a class="headerlink" href="#moe.views.constant.ALL_REST_ROUTES_ROUTE_NAME_TO_ENDPOINT" title="Permalink to this definition">¶</a></dt>
+<dd><p>dict mapping from MOE route names to MOE endpoint names</p>
+</dd></dl>
+
 <dl class="class">
 <dt id="moe.views.constant.MoeRestLogLine">
 <em class="property">class </em><tt class="descclassname">moe.views.constant.</tt><tt class="descname">MoeRestLogLine</tt><a class="reference internal" href="_modules/moe/views/constant.html#MoeRestLogLine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.views.constant.MoeRestLogLine" title="Permalink to this definition">¶</a></dt>
@@ -301,6 +319,13 @@ GP_NEXT_POINTS_&lt;NAME&gt;_OPTIMIZER_METHOD_NAME = &lt;method name from moe.opt
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="data">
+<dt id="moe.views.constant.NEXT_POINTS_OPTIMIZER_METHOD_NAMES">
+<tt class="descclassname">moe.views.constant.</tt><tt class="descname">NEXT_POINTS_OPTIMIZER_METHOD_NAMES</tt><em class="property"> = ['multistart_expected_improvement_optimization', 'kriging_believer_expected_improvement_optimization', 'constant_liar_expected_improvement_optimization']</em><a class="headerlink" href="#moe.views.constant.NEXT_POINTS_OPTIMIZER_METHOD_NAMES" title="Permalink to this definition">¶</a></dt>
+<dd><p>Names of optimizer methods for finding the next points to sample (e.g., EPI, Kriging, etc.)
+These need to match method names in moe/optimal_learning/python/cpp_wrappers/expected_improvement.py</p>
 </dd></dl>
 
 </div>
@@ -464,41 +489,46 @@ GP_NEXT_POINTS_&lt;NAME&gt;_OPTIMIZER_METHOD_NAME = &lt;method name from moe.opt
 </div>
 <div class="section" id="module-moe.views.gp_next_points_pretty_view">
 <span id="moe-views-gp-next-points-pretty-view-module"></span><h2>moe.views.gp_next_points_pretty_view module<a class="headerlink" href="#module-moe.views.gp_next_points_pretty_view" title="Permalink to this headline">¶</a></h2>
-<p>A class to encapsulate &#8216;pretty&#8217; views for <tt class="docutils literal"><span class="pre">gp_next_points_*</span></tt> endpoints.</p>
-<dl class="docutils">
-<dt>Include:</dt>
-<dd><ol class="first last arabic simple">
+<p>A class to encapsulate &#8216;pretty&#8217; views for <tt class="docutils literal"><span class="pre">gp_next_points_*</span></tt> endpoints; e.g., <a class="reference internal" href="moe.views.rest.html#moe.views.rest.gp_next_points_epi.GpNextPointsEpi" title="moe.views.rest.gp_next_points_epi.GpNextPointsEpi"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.rest.gp_next_points_epi.GpNextPointsEpi</span></tt></a>.</p>
+<p>Include:</p>
+<blockquote>
+<div><ol class="arabic simple">
 <li>Request and response schemas</li>
-<li>Class that extends GpPrettyView for next_points optimizers</li>
+<li>Class that extends <tt class="xref py py-class docutils literal"><span class="pre">moe.views.optimizable_gp_pretty_view.GpPrettyView</span></tt> for next_points optimizers</li>
 </ol>
-</dd>
-</dl>
+</div></blockquote>
 <dl class="class">
 <dt id="moe.views.gp_next_points_pretty_view.GpNextPointsPrettyView">
 <em class="property">class </em><tt class="descclassname">moe.views.gp_next_points_pretty_view.</tt><tt class="descname">GpNextPointsPrettyView</tt><big>(</big><em>request</em><big>)</big><a class="reference internal" href="_modules/moe/views/gp_next_points_pretty_view.html#GpNextPointsPrettyView"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.views.gp_next_points_pretty_view.GpNextPointsPrettyView" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#moe.views.optimizable_gp_pretty_view.OptimizableGpPrettyView" title="moe.views.optimizable_gp_pretty_view.OptimizableGpPrettyView"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.optimizable_gp_pretty_view.OptimizableGpPrettyView</span></tt></a></p>
-<p>A class to encapsulate &#8216;pretty&#8217; <tt class="docutils literal"><span class="pre">gp_next_points_*</span></tt> views.</p>
-<dl class="docutils">
-<dt>Extends GpPrettyView with:</dt>
-<dd><ol class="first last arabic simple">
+<p>A class to encapsulate &#8216;pretty&#8217; <tt class="docutils literal"><span class="pre">gp_next_points_*</span></tt> views; e.g., <a class="reference internal" href="moe.views.rest.html#moe.views.rest.gp_next_points_epi.GpNextPointsEpi" title="moe.views.rest.gp_next_points_epi.GpNextPointsEpi"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.rest.gp_next_points_epi.GpNextPointsEpi</span></tt></a>.</p>
+<p>Extends <tt class="xref py py-class docutils literal"><span class="pre">moe.views.optimizable_gp_pretty_view.GpPrettyView</span></tt> with:</p>
+<blockquote>
+<div><ol class="arabic simple">
 <li>gaussian_process generation from params</li>
 <li>Converting params into a C++ consumable set of optimizer parameters</li>
 <li>A method (compute_next_points_to_sample_response) for computing the next best points to sample from a gaussian_process</li>
 </ol>
-</dd>
-</dl>
+</div></blockquote>
 <dl class="method">
 <dt id="moe.views.gp_next_points_pretty_view.GpNextPointsPrettyView.compute_next_points_to_sample_response">
 <tt class="descname">compute_next_points_to_sample_response</tt><big>(</big><em>params</em>, <em>optimizer_method_name</em>, <em>route_name</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/views/gp_next_points_pretty_view.html#GpNextPointsPrettyView.compute_next_points_to_sample_response"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.views.gp_next_points_pretty_view.GpNextPointsPrettyView.compute_next_points_to_sample_response" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the next points to sample (and their expected improvement) using optimizer_method_name from params in the request.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Attempting to find <tt class="docutils literal"><span class="pre">num_to_sample</span></tt> optimal points with
+<tt class="docutils literal"><span class="pre">num_sampled</span> <span class="pre">&lt;</span> <span class="pre">num_to_sample</span></tt> historical points sampled can cause matrix issues under
+some conditions. Try requesting <tt class="docutils literal"><span class="pre">num_to_sample</span> <span class="pre">&lt;</span> <span class="pre">num_sampled</span></tt> points for better
+performance. To bootstrap more points try sampling at random, or from a grid.</p>
+</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>request_params</strong> (<em>a deserialized self.request_schema object as a dict</em>) &#8211; the deserialized REST request, containing ei_optimizer_parameters and gp_historical_info</li>
-<li><strong>optimizer_method_name</strong> (string in <tt class="docutils literal"><span class="pre">moe.views.constant.OPTIMIZER_METHOD_NAMES</span></tt>) &#8211; the optimization method to use</li>
-<li><strong>route_name</strong> (string in <tt class="docutils literal"><span class="pre">moe.views.constant.ALL_REST_ROUTES_ROUTE_NAME_TO_ENDPOINT.keys()</span></tt>) &#8211; name of the route being called</li>
+<li><strong>optimizer_method_name</strong> (string in <a class="reference internal" href="#moe.views.constant.NEXT_POINTS_OPTIMIZER_METHOD_NAMES" title="moe.views.constant.NEXT_POINTS_OPTIMIZER_METHOD_NAMES"><tt class="xref py py-const docutils literal"><span class="pre">moe.views.constant.NEXT_POINTS_OPTIMIZER_METHOD_NAMES</span></tt></a>) &#8211; the optimization method to use</li>
+<li><strong>route_name</strong> (string in <a class="reference internal" href="#moe.views.constant.ALL_REST_ROUTES_ROUTE_NAME_TO_ENDPOINT" title="moe.views.constant.ALL_REST_ROUTES_ROUTE_NAME_TO_ENDPOINT"><tt class="xref py py-const docutils literal"><span class="pre">moe.views.constant.ALL_REST_ROUTES_ROUTE_NAME_TO_ENDPOINT</span></tt></a>) &#8211; name of the route being called</li>
 <li><strong>*args</strong> &#8211; extra args to be passed to optimization method</li>
 <li><strong>**kwargs</strong> &#8211; extra kwargs to be passed to optimization method</li>
 </ul>
@@ -510,12 +540,12 @@ GP_NEXT_POINTS_&lt;NAME&gt;_OPTIMIZER_METHOD_NAME = &lt;method name from moe.opt
 
 <dl class="attribute">
 <dt id="moe.views.gp_next_points_pretty_view.GpNextPointsPrettyView.request_schema">
-<tt class="descname">request_schema</tt><em class="property"> = &lt;moe.views.schemas.GpNextPointsRequest object at 4480705616 (named )&gt;</em><a class="headerlink" href="#moe.views.gp_next_points_pretty_view.GpNextPointsPrettyView.request_schema" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">request_schema</tt><em class="property"> = &lt;moe.views.schemas.GpNextPointsRequest object at 4686827856 (named )&gt;</em><a class="headerlink" href="#moe.views.gp_next_points_pretty_view.GpNextPointsPrettyView.request_schema" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="moe.views.gp_next_points_pretty_view.GpNextPointsPrettyView.response_schema">
-<tt class="descname">response_schema</tt><em class="property"> = &lt;moe.views.schemas.GpNextPointsResponse object at 4480705744 (named )&gt;</em><a class="headerlink" href="#moe.views.gp_next_points_pretty_view.GpNextPointsPrettyView.response_schema" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">response_schema</tt><em class="property"> = &lt;moe.views.schemas.GpNextPointsResponse object at 4686827984 (named )&gt;</em><a class="headerlink" href="#moe.views.gp_next_points_pretty_view.GpNextPointsPrettyView.response_schema" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -549,6 +579,8 @@ GP_NEXT_POINTS_&lt;NAME&gt;_OPTIMIZER_METHOD_NAME = &lt;method name from moe.opt
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">a serialized self.response_schema object</td>
 </tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict</td>
+</tr>
 </tbody>
 </table>
 </dd></dl>
@@ -562,6 +594,8 @@ GP_NEXT_POINTS_&lt;NAME&gt;_OPTIMIZER_METHOD_NAME = &lt;method name from moe.opt
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A deserialized self.request_schema object</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">dict</td>
 </tr>
 </tbody>
 </table>
@@ -606,13 +640,18 @@ GP_NEXT_POINTS_&lt;NAME&gt;_OPTIMIZER_METHOD_NAME = &lt;method name from moe.opt
 <dt id="moe.views.optimizable_gp_pretty_view.OptimizableGpPrettyView.get_params_from_request">
 <tt class="descname">get_params_from_request</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/views/optimizable_gp_pretty_view.html#OptimizableGpPrettyView.get_params_from_request"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.views.optimizable_gp_pretty_view.OptimizableGpPrettyView.get_params_from_request" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the deserialized parameters from the json_body of a request.</p>
-<p>We explicitly pull out the <tt class="docutils literal"><span class="pre">optimizer_type</span></tt> and use it to deserialize and validate the parameters.
-This is necessary because we cannot dynamically assign the parameters schema within colander for every <tt class="docutils literal"><span class="pre">optimizer_type</span></tt>.</p>
+<p>We explicitly pull out the <tt class="docutils literal"><span class="pre">optimizer_type</span></tt> and use it to deserialize and validate
+the other parameters (num_multistarts, num_random_samples, optimizer_parameters).</p>
+<p>This is necessary because we have different default optimizer parameters for
+different combinations of <tt class="docutils literal"><span class="pre">optimizer_type</span></tt>, endpoint, and other features.
+See <tt class="xref py py-const docutils literal"><span class="pre">moe.optimal_learning.python.constants.OPTIMIZER_TYPE_AND_OBJECTIVE_TO_DEFAULT_PARAMETERS</span></tt></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A deserialized self.request_schema object</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">dict</td>
 </tr>
 </tbody>
 </table>
@@ -624,15 +663,34 @@ This is necessary because we cannot dynamically assign the parameters schema wit
 <div class="section" id="module-moe.views.schemas">
 <span id="moe-views-schemas-module"></span><h2>moe.views.schemas module<a class="headerlink" href="#module-moe.views.schemas" title="Permalink to this headline">¶</a></h2>
 <p>Base level schemas for the response/request schemas of each MOE REST endpoint.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Outputs of colander schema serialization/deserialization should be treated as
+READ-ONLY. It appears that &#8220;missing=&#8221; and &#8220;default=&#8221; value are weak-copied (by reference).
+Thus changing missing/default fields in the output dict can modify the schema!</p>
+</div>
+<p>TODO(GH-291): make sure previous warning is moved to the schemas/__init__.py file</p>
 <dl class="class">
 <dt id="moe.views.schemas.BoundedDomainInfo">
 <em class="property">class </em><tt class="descclassname">moe.views.schemas.</tt><tt class="descname">BoundedDomainInfo</tt><big>(</big><em>*arg</em>, <em>**kw</em><big>)</big><a class="reference internal" href="_modules/moe/views/schemas.html#BoundedDomainInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.views.schemas.BoundedDomainInfo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#moe.views.schemas.DomainInfo" title="moe.views.schemas.DomainInfo"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.DomainInfo</span></tt></a></p>
 <p>The domain info needed for every request, along with bounds for optimization.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">For EI/next points, selecting a domain that is substantially larger than
+the bounding box of the historical data may lead MOE to favor exploring near the
+boundaries instead of near existing data.</p>
+</div>
 <p><strong>Required fields</strong></p>
-<blockquote>
-<div>All required fields from <a class="reference internal" href="#moe.views.schemas.DomainInfo" title="moe.views.schemas.DomainInfo"><tt class="xref py py-class docutils literal"><span class="pre">DomainInfo</span></tt></a>
-:domain_bounds: the bounds of the domain of type <a class="reference internal" href="#moe.views.schemas.Domain" title="moe.views.schemas.Domain"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.Domain</span></tt></a></div></blockquote>
+<p>All required fields from <a class="reference internal" href="#moe.views.schemas.DomainInfo" title="moe.views.schemas.DomainInfo"><tt class="xref py py-class docutils literal"><span class="pre">DomainInfo</span></tt></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><strong>domain_bounds</strong> &#8211; (<em>list of list of float64</em>) the bounds of the domain of type <a class="reference internal" href="#moe.views.schemas.Domain" title="moe.views.schemas.Domain"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.Domain</span></tt></a></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="class">
@@ -640,21 +698,26 @@ This is necessary because we cannot dynamically assign the parameters schema wit
 <em class="property">class </em><tt class="descclassname">moe.views.schemas.</tt><tt class="descname">CovarianceInfo</tt><big>(</big><em>*arg</em>, <em>**kw</em><big>)</big><a class="reference internal" href="_modules/moe/views/schemas.html#CovarianceInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.views.schemas.CovarianceInfo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#moe.views.schemas.StrictMappingSchema" title="moe.views.schemas.StrictMappingSchema"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.StrictMappingSchema</span></tt></a></p>
 <p>The covariance info needed for every request.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p>Very large length scales (adverse conditioning effects) and very small length scales (irrelevant dimensions)
+can negatively impact MOE&#8217;s performance. It may be worth checking that your length scales are &#8220;reasonable.&#8221;</p>
+<p class="last">Additionally, MOE&#8217;s default optimization parameters were tuned for hyperparameter values roughly in [0.01, 100].
+Venturing too far out of this range means the defaults may perform poorly.</p>
+</div>
 <p><strong>Required fields</strong></p>
-<blockquote>
-<div><table class="docutils field-list" frame="void" rules="none">
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">covariance_type:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">a covariance type in <tt class="docutils literal"><span class="pre">moe.optimal_learning.python.python_version.constant.COVARIANCE_TYPES</span></tt></td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">hyperparameters:</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">the hyperparameters corresponding to the given covariance_type</td>
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>covariance_type</strong> &#8211; (<em>str</em>) a covariance type in <tt class="xref py py-const docutils literal"><span class="pre">moe.optimal_learning.python.python_version.constant.COVARIANCE_TYPES</span></tt></li>
+<li><strong>hyperparameters</strong> &#8211; (<em>list of float64</em>) the hyperparameters corresponding to the given <tt class="xref py py-attr docutils literal"><span class="pre">covariance_type</span></tt></li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
-</div></blockquote>
 </dd></dl>
 
 <dl class="class">
@@ -677,69 +740,66 @@ This is necessary because we cannot dynamically assign the parameters schema wit
 <dd><p>Bases: <a class="reference internal" href="#moe.views.schemas.StrictMappingSchema" title="moe.views.schemas.StrictMappingSchema"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.StrictMappingSchema</span></tt></a></p>
 <p>The domain info needed for every request.</p>
 <p><strong>Required fields</strong></p>
-<blockquote>
-<div><table class="docutils field-list" frame="void" rules="none">
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">dim:</th><td class="field-body">the dimension of the domain (int)</td>
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><strong>dim</strong> &#8211; (<em>int &gt;= 0</em>) the dimension of the domain (int)</td>
 </tr>
 </tbody>
 </table>
-</div></blockquote>
 <p><strong>Optional fields</strong></p>
-<blockquote>
-<div><table class="docutils field-list" frame="void" rules="none">
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">domain_type:</th><td class="field-body">the type of domain to use in <tt class="docutils literal"><span class="pre">moe.optimal_learning.python.python_version.constant.DOMAIN_TYPES</span></tt> (default: TENSOR_PRODUCT_DOMAIN_TYPE)</td>
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><strong>domain_type</strong> &#8211; (<em>str</em>) the type of domain to use, one of <tt class="xref py py-const docutils literal"><span class="pre">moe.optimal_learning.python.python_version.constant.DOMAIN_TYPES</span></tt> (default: TENSOR_PRODUCT_DOMAIN_TYPE)</td>
 </tr>
 </tbody>
 </table>
-</div></blockquote>
 </dd></dl>
 
 <dl class="class">
 <dt id="moe.views.schemas.GpEiRequest">
 <em class="property">class </em><tt class="descclassname">moe.views.schemas.</tt><tt class="descname">GpEiRequest</tt><big>(</big><em>*arg</em>, <em>**kw</em><big>)</big><a class="reference internal" href="_modules/moe/views/schemas.html#GpEiRequest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.views.schemas.GpEiRequest" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#moe.views.schemas.StrictMappingSchema" title="moe.views.schemas.StrictMappingSchema"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.StrictMappingSchema</span></tt></a></p>
-<p>A gp_ei request colander schema.</p>
+<p>A <a class="reference internal" href="moe.views.rest.html#moe.views.rest.gp_ei.GpEiView" title="moe.views.rest.gp_ei.GpEiView"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.rest.gp_ei.GpEiView</span></tt></a> request colander schema.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Requesting <tt class="docutils literal"><span class="pre">points_to_evaluate</span></tt> and <tt class="docutils literal"><span class="pre">points_being_sampled</span></tt> that are close
+to each or close to existing <tt class="docutils literal"><span class="pre">points_sampled</span></tt> may result in a [numerically] singular
+GP-variance matrix (which is required by EI).</p>
+</div>
+<p>See additional notes in <a class="reference internal" href="#moe.views.schemas.CovarianceInfo" title="moe.views.schemas.CovarianceInfo"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.CovarianceInfo</span></tt></a>,
+<a class="reference internal" href="#moe.views.schemas.GpHistoricalInfo" title="moe.views.schemas.GpHistoricalInfo"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.GpHistoricalInfo</span></tt></a>.</p>
 <p><strong>Required fields</strong></p>
-<blockquote>
-<div><table class="docutils field-list" frame="void" rules="none">
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">points_to_evaluate:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">list of points in domain to calculate Expected Improvement (EI) at (<a class="reference internal" href="#moe.views.schemas.ListOfPointsInDomain" title="moe.views.schemas.ListOfPointsInDomain"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.ListOfPointsInDomain</span></tt></a>)</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">gp_historical_info:</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">a <a class="reference internal" href="#moe.views.schemas.GpHistoricalInfo" title="moe.views.schemas.GpHistoricalInfo"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.GpHistoricalInfo</span></tt></a> object of historical data</td>
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>points_to_evaluate</strong> &#8211; (<em>list of list of float64</em>) points in domain to calculate Expected Improvement (EI) at (<a class="reference internal" href="#moe.views.schemas.ListOfPointsInDomain" title="moe.views.schemas.ListOfPointsInDomain"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.ListOfPointsInDomain</span></tt></a>)</li>
+<li><strong>gp_historical_info</strong> &#8211; (<a class="reference internal" href="#moe.views.schemas.GpHistoricalInfo" title="moe.views.schemas.GpHistoricalInfo"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.GpHistoricalInfo</span></tt></a>) object of historical data</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
-</div></blockquote>
 <p><strong>Optional fields</strong></p>
-<blockquote>
-<div><table class="docutils field-list" frame="void" rules="none">
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">points_being_sampled:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">list of points in domain being sampled in concurrent experiments (default: []) (<a class="reference internal" href="#moe.views.schemas.ListOfPointsInDomain" title="moe.views.schemas.ListOfPointsInDomain"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.ListOfPointsInDomain</span></tt></a>)</td>
-</tr>
-<tr class="field-even field"><th class="field-name">mc_iterations:</th><td class="field-body">number of Monte Carlo (MC) iterations to perform in numerical integration to calculate EI</td>
-</tr>
-<tr class="field-odd field"><th class="field-name" colspan="2">max_num_threads:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">maximum number of threads to use in computation (default: 1)</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">covariance_info:</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">a <a class="reference internal" href="#moe.views.schemas.CovarianceInfo" title="moe.views.schemas.CovarianceInfo"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.CovarianceInfo</span></tt></a> dict of covariance information</td>
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>points_being_sampled</strong> &#8211; (<em>list of list of float64</em>) points in domain being sampled in concurrent experiments (default: []) (<a class="reference internal" href="#moe.views.schemas.ListOfPointsInDomain" title="moe.views.schemas.ListOfPointsInDomain"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.ListOfPointsInDomain</span></tt></a>)</li>
+<li><strong>mc_iterations</strong> &#8211; (<em>int</em>) number of Monte Carlo (MC) iterations to perform in numerical integration to calculate EI</li>
+<li><strong>max_num_threads</strong> &#8211; (<em>int</em>) maximum number of threads to use in computation (default: 1)</li>
+<li><strong>covariance_info</strong> &#8211; (<a class="reference internal" href="#moe.views.schemas.CovarianceInfo" title="moe.views.schemas.CovarianceInfo"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.CovarianceInfo</span></tt></a>) dict of covariance information</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
-</div></blockquote>
 <p><strong>Example Minimal Request</strong></p>
 <div class="highlight-http"><div class="highlight"><pre>Content-Type: text/javascript
 
@@ -788,21 +848,20 @@ This is necessary because we cannot dynamically assign the parameters schema wit
 <dt id="moe.views.schemas.GpEiResponse">
 <em class="property">class </em><tt class="descclassname">moe.views.schemas.</tt><tt class="descname">GpEiResponse</tt><big>(</big><em>*arg</em>, <em>**kw</em><big>)</big><a class="reference internal" href="_modules/moe/views/schemas.html#GpEiResponse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.views.schemas.GpEiResponse" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#moe.views.schemas.StrictMappingSchema" title="moe.views.schemas.StrictMappingSchema"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.StrictMappingSchema</span></tt></a></p>
-<p>A gp_ei response colander schema.</p>
+<p>A <a class="reference internal" href="moe.views.rest.html#moe.views.rest.gp_ei.GpEiView" title="moe.views.rest.gp_ei.GpEiView"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.rest.gp_ei.GpEiView</span></tt></a> response colander schema.</p>
 <p><strong>Output fields</strong></p>
-<blockquote>
-<div><table class="docutils field-list" frame="void" rules="none">
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">endpoint:</th><td class="field-body">the endpoint that was called</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">expected_improvement:</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">list of calculated expected improvements (<a class="reference internal" href="#moe.views.schemas.ListOfExpectedImprovements" title="moe.views.schemas.ListOfExpectedImprovements"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.ListOfExpectedImprovements</span></tt></a>)</td>
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>endpoint</strong> &#8211; (<em>str</em>) the endpoint that was called</li>
+<li><strong>expected_improvement</strong> &#8211; (<em>list of float64</em>) calculated expected improvements (<a class="reference internal" href="#moe.views.schemas.ListOfExpectedImprovements" title="moe.views.schemas.ListOfExpectedImprovements"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.ListOfExpectedImprovements</span></tt></a>)</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
-</div></blockquote>
 <p><strong>Example Response</strong></p>
 <div class="highlight-http"><div class="highlight"><pre>{
     &quot;endpoint&quot;:&quot;gp_ei&quot;,
@@ -818,16 +877,14 @@ This is necessary because we cannot dynamically assign the parameters schema wit
 <dd><p>Bases: <a class="reference internal" href="#moe.views.schemas.StrictMappingSchema" title="moe.views.schemas.StrictMappingSchema"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.StrictMappingSchema</span></tt></a></p>
 <p>A base schema for the endpoint name.</p>
 <p><strong>Output fields</strong></p>
-<blockquote>
-<div><table class="docutils field-list" frame="void" rules="none">
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">endpoint:</th><td class="field-body">the endpoint that was called</td>
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><strong>endpoint</strong> &#8211; (<em>str</em>) the endpoint that was called</td>
 </tr>
 </tbody>
 </table>
-</div></blockquote>
 <p><strong>Example Response</strong></p>
 <div class="highlight-http"><div class="highlight"><pre>{
     &quot;endpoint&quot;:&quot;gp_mean_var&quot;,
@@ -841,53 +898,152 @@ This is necessary because we cannot dynamically assign the parameters schema wit
 <em class="property">class </em><tt class="descclassname">moe.views.schemas.</tt><tt class="descname">GpHistoricalInfo</tt><big>(</big><em>*arg</em>, <em>**kw</em><big>)</big><a class="reference internal" href="_modules/moe/views/schemas.html#GpHistoricalInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.views.schemas.GpHistoricalInfo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#moe.views.schemas.StrictMappingSchema" title="moe.views.schemas.StrictMappingSchema"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.StrictMappingSchema</span></tt></a></p>
 <p>The Gaussian Process info needed for every request.</p>
-<p>Contains:</p>
-<blockquote>
-<div><ul class="simple">
-<li>points_sampled - PointsSampled</li>
-</ul>
-</div></blockquote>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p>If the points are too close together (relative to the length scales in <a class="reference internal" href="#moe.views.schemas.CovarianceInfo" title="moe.views.schemas.CovarianceInfo"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.CovarianceInfo</span></tt></a>)
+with simultaneously very low or zero noise, the condition number of the GPP&#8217;s covariance matrix can be very large. The
+matrix may even become numerically singular.</p>
+<p class="last">In such cases, check for (nearly) duplicates points and be mindful of large length scales.</p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p>0 <tt class="docutils literal"><span class="pre">noise_variance</span></tt> in the input historical data may lead to [numerically] singular covariance matrices. This
+becomes more likely as <tt class="docutils literal"><span class="pre">num_sampled</span></tt> increases. Noise caps the condition number at roughly <tt class="docutils literal"><span class="pre">1.0</span> <span class="pre">/</span> <span class="pre">min(noise)</span></tt>, so
+adding artificial noise (e.g., <tt class="docutils literal"><span class="pre">1.0e-12</span></tt>) can aid with conditioning issues.</p>
+<p class="last">MOE does not do this for you automatically since 0 noise may be extremely important for some users.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">MOE performs best if the input <tt class="docutils literal"><span class="pre">points_sampled_value</span></tt> are 0 mean.</p>
+</div>
+<p><strong>Required fields</strong></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><strong>points_sampled</strong> &#8211; (<em>list of PointsSampled</em>) The <a class="reference internal" href="#moe.views.schemas.PointsSampled" title="moe.views.schemas.PointsSampled"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.PointsSampled</span></tt></a> (point, value, noise) that make up
+the historical data.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="class">
 <dt id="moe.views.schemas.GpHyperOptRequest">
 <em class="property">class </em><tt class="descclassname">moe.views.schemas.</tt><tt class="descname">GpHyperOptRequest</tt><big>(</big><em>*arg</em>, <em>**kw</em><big>)</big><a class="reference internal" href="_modules/moe/views/schemas.html#GpHyperOptRequest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.views.schemas.GpHyperOptRequest" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#moe.views.schemas.StrictMappingSchema" title="moe.views.schemas.StrictMappingSchema"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.StrictMappingSchema</span></tt></a></p>
-<p>A gp_hyper_opt request colander schema.</p>
+<p>A <a class="reference internal" href="moe.views.rest.html#moe.views.rest.gp_hyper_opt.GpHyperOptView" title="moe.views.rest.gp_hyper_opt.GpHyperOptView"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.rest.gp_hyper_opt.GpHyperOptView</span></tt></a> request colander schema.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Particularly when the amount of historical data is low, the log likelihood
+may grow toward extreme hyperparameter values (i.e., toward 0 or infinity). Select
+reasonable domain bounds. For example, in a driving distance parameter, the scale
+of feet is irrelevant, as is the scale of 1000s of miles.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">MOE&#8217;s default optimization parameters were tuned for hyperparameter values roughly in [0.01, 100].
+Venturing too far out of this range means the defaults may perform poorly.</p>
+</div>
+<p>See additional notes in <a class="reference internal" href="#moe.views.schemas.CovarianceInfo" title="moe.views.schemas.CovarianceInfo"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.CovarianceInfo</span></tt></a>,
+<a class="reference internal" href="#moe.views.schemas.GpHistoricalInfo" title="moe.views.schemas.GpHistoricalInfo"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.GpHistoricalInfo</span></tt></a>.</p>
 <p><strong>Required fields</strong></p>
-<blockquote>
-<div><table class="docutils field-list" frame="void" rules="none">
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">gp_historical_info:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">a <a class="reference internal" href="#moe.views.schemas.GpHistoricalInfo" title="moe.views.schemas.GpHistoricalInfo"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.GpHistoricalInfo</span></tt></a> object of historical data</td>
-</tr>
-<tr class="field-even field"><th class="field-name">domain_info:</th><td class="field-body">a <a class="reference internal" href="#moe.views.schemas.DomainInfo" title="moe.views.schemas.DomainInfo"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.DomainInfo</span></tt></a> dict of domain information for the GP</td>
-</tr>
-<tr class="field-odd field"><th class="field-name" colspan="2">hyperparameter_domain_info:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">a <a class="reference internal" href="#moe.views.schemas.BoundedDomainInfo" title="moe.views.schemas.BoundedDomainInfo"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.BoundedDomainInfo</span></tt></a> dict of domain information for the hyperparameter optimization</td>
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>gp_historical_info</strong> &#8211; (<a class="reference internal" href="#moe.views.schemas.GpHistoricalInfo" title="moe.views.schemas.GpHistoricalInfo"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.GpHistoricalInfo</span></tt></a>) object of historical data</li>
+<li><strong>domain_info</strong> &#8211; (<a class="reference internal" href="#moe.views.schemas.DomainInfo" title="moe.views.schemas.DomainInfo"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.DomainInfo</span></tt></a>) dict of domain information for the GP</li>
+<li><strong>hyperparameter_domain_info</strong> &#8211; (<a class="reference internal" href="#moe.views.schemas.BoundedDomainInfo" title="moe.views.schemas.BoundedDomainInfo"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.BoundedDomainInfo</span></tt></a>) dict of domain information for the hyperparameter optimization</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
-</div></blockquote>
 <p><strong>Optional fields</strong></p>
-<blockquote>
-<div><table class="docutils field-list" frame="void" rules="none">
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">max_num_threads:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">maximum number of threads to use in computation (default: 1)</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">covariance_info:</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">a <a class="reference internal" href="#moe.views.schemas.CovarianceInfo" title="moe.views.schemas.CovarianceInfo"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.CovarianceInfo</span></tt></a> dict of covariance information, used as a starting point for optimization</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">optimizer_info:</th><td class="field-body">a <a class="reference internal" href="#moe.views.schemas.OptimizerInfo" title="moe.views.schemas.OptimizerInfo"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.OptimizerInfo</span></tt></a> dict of optimization information</td>
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>max_num_threads</strong> &#8211; (<em>int</em>) maximum number of threads to use in computation</li>
+<li><strong>covariance_info</strong> &#8211; (<a class="reference internal" href="#moe.views.schemas.CovarianceInfo" title="moe.views.schemas.CovarianceInfo"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.CovarianceInfo</span></tt></a>) dict of covariance information, used as a starting point for optimization</li>
+<li><strong>optimizer_info</strong> &#8211; (<a class="reference internal" href="#moe.views.schemas.OptimizerInfo" title="moe.views.schemas.OptimizerInfo"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.OptimizerInfo</span></tt></a>) dict of optimizer information</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
-</div></blockquote>
+<p><strong>General Timing Results</strong></p>
+<p>Here are some &#8220;broad-strokes&#8221; timing results for hyperparameter optimization.
+These tests are not complete nor comprehensive; they&#8217;re just a starting point.
+The tests were run on a Sandy Bridge 2.3 GHz quad-core CPU. Data was generated
+from a Gaussian Process prior. The optimization parameters were the default
+values (see <a class="reference internal" href="moe.optimal_learning.python.html#module-moe.optimal_learning.python.constant" title="moe.optimal_learning.python.constant"><tt class="xref py py-mod docutils literal"><span class="pre">moe.optimal_learning.python.constant</span></tt></a>) as of sha
+<tt class="docutils literal"><span class="pre">c19257049f16036e5e2823df87fbe0812720e291</span></tt>.</p>
+<p>Below, <tt class="docutils literal"><span class="pre">N</span> <span class="pre">=</span> <span class="pre">num_sampled</span></tt>.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="15%" />
+<col width="40%" />
+<col width="45%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head" colspan="3">Scaling with dim (N = 40)</th>
+</tr>
+<tr class="row-even"><th class="head">dim</th>
+<th class="head">Gradient Descent</th>
+<th class="head">Newton</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-odd"><td>3</td>
+<td>85s</td>
+<td>3.6s</td>
+</tr>
+<tr class="row-even"><td>6</td>
+<td>80s</td>
+<td>7.2s</td>
+</tr>
+<tr class="row-odd"><td>12</td>
+<td>108s</td>
+<td>19.5s</td>
+</tr>
+</tbody>
+</table>
+<p>GD scales <tt class="docutils literal"><span class="pre">~</span> <span class="pre">O(dim)</span></tt> and Newton <tt class="docutils literal"><span class="pre">~</span> <span class="pre">O(dim^2)</span></tt> although these dim values
+are not large enough to show the asymptotic behavior.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="15%" />
+<col width="40%" />
+<col width="45%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head" colspan="3">Scaling with N (dim = 3)</th>
+</tr>
+<tr class="row-even"><th class="head">N</th>
+<th class="head">Gradient Descent</th>
+<th class="head">Newton</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-odd"><td>20</td>
+<td>14s</td>
+<td>0.72s</td>
+</tr>
+<tr class="row-even"><td>40</td>
+<td>85s</td>
+<td>3.6s</td>
+</tr>
+<tr class="row-odd"><td>120</td>
+<td>2100s</td>
+<td>60s</td>
+</tr>
+</tbody>
+</table>
+<p>Both methods scale as <tt class="docutils literal"><span class="pre">~</span> <span class="pre">O(N^3)</span></tt> which is clearly shown here.</p>
 <p><strong>Example Request</strong></p>
 <div class="highlight-http"><div class="highlight"><pre>Content-Type: text/javascript
 
@@ -914,11 +1070,11 @@ This is necessary because we cannot dynamically assign the parameters schema wit
             ],
         },
     &quot;optimizer_info&quot;: {
-        &quot;optimizer_type&quot;: &quot;gradient_descent_optimizer&quot;,
+        &quot;optimizer_type&quot;: &quot;newton_optimizer&quot;,
         &quot;num_multistarts&quot;: 200,
         &quot;num_random_samples&quot;: 4000,
         &quot;optimizer_parameters&quot;: {
-            &quot;gamma&quot;: 0.5,
+            &quot;gamma&quot;: 1.2,
             ...
             },
         },
@@ -932,27 +1088,35 @@ This is necessary because we cannot dynamically assign the parameters schema wit
 <dt id="moe.views.schemas.GpHyperOptResponse">
 <em class="property">class </em><tt class="descclassname">moe.views.schemas.</tt><tt class="descname">GpHyperOptResponse</tt><big>(</big><em>*arg</em>, <em>**kw</em><big>)</big><a class="reference internal" href="_modules/moe/views/schemas.html#GpHyperOptResponse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.views.schemas.GpHyperOptResponse" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#moe.views.schemas.StrictMappingSchema" title="moe.views.schemas.StrictMappingSchema"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.StrictMappingSchema</span></tt></a></p>
-<p>A gp_hyper_opt response colander schema.</p>
+<p>A <a class="reference internal" href="moe.views.rest.html#moe.views.rest.gp_hyper_opt.GpHyperOptView" title="moe.views.rest.gp_hyper_opt.GpHyperOptView"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.rest.gp_hyper_opt.GpHyperOptView</span></tt></a> response colander schema.</p>
 <p><strong>Output fields</strong></p>
-<blockquote>
-<div><table class="docutils field-list" frame="void" rules="none">
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">endpoint:</th><td class="field-body">the endpoint that was called</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">covariance_info:</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">a <a class="reference internal" href="#moe.views.schemas.CovarianceInfo" title="moe.views.schemas.CovarianceInfo"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.CovarianceInfo</span></tt></a> dict of covariance information</td>
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>endpoint</strong> &#8211; (<em>str</em>) the endpoint that was called</li>
+<li><strong>covariance_info</strong> &#8211; (<a class="reference internal" href="#moe.views.schemas.CovarianceInfo" title="moe.views.schemas.CovarianceInfo"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.CovarianceInfo</span></tt></a>) dict of covariance information</li>
+<li><strong>status</strong> &#8211; (<a class="reference internal" href="#moe.views.schemas.GpHyperOptStatus" title="moe.views.schemas.GpHyperOptStatus"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.GpHyperOptStatus</span></tt></a>) dict indicating final log likelihood value/gradient and
+optimization status messages (e.g., success)</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
-</div></blockquote>
 <p><strong>Example Response</strong></p>
 <div class="highlight-http"><div class="highlight"><pre>{
     &quot;endpoint&quot;:&quot;gp_hyper_opt&quot;,
     &quot;covariance_info&quot;: {
         &quot;covariance_type&quot;: &quot;square_exponential&quot;,
-        &quot;hyperparameters&quot;: [0.88, 1.24],
+        &quot;hyperparameters&quot;: [&quot;0.88&quot;, &quot;1.24&quot;],
+        },
+    &quot;status&quot;: {
+        &quot;log_likelihood&quot;: &quot;-37.3279872&quot;,
+        &quot;grad_log_likelihood: [&quot;-3.8897e-12&quot;, &quot;1.32789789e-11&quot;],
+        &quot;optimizer_success&quot;: {
+                &#39;newton_found_update&#39;: True,
+            },
         },
 }
 </pre></div>
@@ -963,24 +1127,21 @@ This is necessary because we cannot dynamically assign the parameters schema wit
 <dt id="moe.views.schemas.GpHyperOptStatus">
 <em class="property">class </em><tt class="descclassname">moe.views.schemas.</tt><tt class="descname">GpHyperOptStatus</tt><big>(</big><em>*arg</em>, <em>**kw</em><big>)</big><a class="reference internal" href="_modules/moe/views/schemas.html#GpHyperOptStatus"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.views.schemas.GpHyperOptStatus" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#moe.views.schemas.StrictMappingSchema" title="moe.views.schemas.StrictMappingSchema"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.StrictMappingSchema</span></tt></a></p>
-<p>A gp_hyper_opt status schema.</p>
+<p>A <a class="reference internal" href="moe.views.rest.html#moe.views.rest.gp_hyper_opt.GpHyperOptView" title="moe.views.rest.gp_hyper_opt.GpHyperOptView"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.rest.gp_hyper_opt.GpHyperOptView</span></tt></a> status schema.</p>
 <p><strong>Output fields</strong></p>
-<blockquote>
-<div><table class="docutils field-list" frame="void" rules="none">
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">log_likelihood:</th><td class="field-body">The log likelihood at the new hyperparameters</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">grad_log_likelihood:</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">The gradient of the log likelihood at the new hyperparameters</td>
-</tr>
-<tr class="field-odd field"><th class="field-name" colspan="2">optimizer_success:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Whether or not the optimizer converged to an optimal set of hyperparameters</td>
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>log_likelihood</strong> &#8211; (<em>float64</em>) The log likelihood at the new hyperparameters</li>
+<li><strong>grad_log_likelihood</strong> &#8211; (<em>list of float64</em>) The gradient of the log likelihood at the new hyperparameters</li>
+<li><strong>optimizer_success</strong> &#8211; (<em>dict</em>) Whether or not the optimizer converged to an optimal set of hyperparameters</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
-</div></blockquote>
 </dd></dl>
 
 <dl class="class">
@@ -989,16 +1150,14 @@ This is necessary because we cannot dynamically assign the parameters schema wit
 <dd><p>Bases: <a class="reference internal" href="#moe.views.schemas.StrictMappingSchema" title="moe.views.schemas.StrictMappingSchema"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.StrictMappingSchema</span></tt></a></p>
 <p>A mixin response colander schema for the mean of a gaussian process.</p>
 <p><strong>Output fields</strong></p>
-<blockquote>
-<div><table class="docutils field-list" frame="void" rules="none">
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">mean:</th><td class="field-body">list of the means of the GP at <tt class="docutils literal"><span class="pre">points_to_evaluate</span></tt> (<a class="reference internal" href="#moe.views.schemas.ListOfFloats" title="moe.views.schemas.ListOfFloats"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.ListOfFloats</span></tt></a>)</td>
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><strong>mean</strong> &#8211; (<em>list of float64</em>) the means of the GP at <tt class="docutils literal"><span class="pre">points_to_evaluate</span></tt> (<a class="reference internal" href="#moe.views.schemas.ListOfFloats" title="moe.views.schemas.ListOfFloats"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.ListOfFloats</span></tt></a>)</td>
 </tr>
 </tbody>
 </table>
-</div></blockquote>
 <p><strong>Example Response</strong></p>
 <div class="highlight-http"><div class="highlight"><pre>{
     &quot;mean&quot;: [&quot;0.0873832198661&quot;,&quot;0.0130505261903&quot;,&quot;0.174755506336&quot;],
@@ -1011,21 +1170,7 @@ This is necessary because we cannot dynamically assign the parameters schema wit
 <dt id="moe.views.schemas.GpMeanResponse">
 <em class="property">class </em><tt class="descclassname">moe.views.schemas.</tt><tt class="descname">GpMeanResponse</tt><big>(</big><em>*arg</em>, <em>**kw</em><big>)</big><a class="reference internal" href="_modules/moe/views/schemas.html#GpMeanResponse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.views.schemas.GpMeanResponse" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#moe.views.schemas.GpEndpointResponse" title="moe.views.schemas.GpEndpointResponse"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.GpEndpointResponse</span></tt></a>, <a class="reference internal" href="#moe.views.schemas.GpMeanMixinResponse" title="moe.views.schemas.GpMeanMixinResponse"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.GpMeanMixinResponse</span></tt></a></p>
-<p>A gp_mean response colander schema.</p>
-<p><strong>Output fields</strong></p>
-<blockquote>
-<div><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">endpoint:</th><td class="field-body">the endpoint that was called</td>
-</tr>
-<tr class="field-even field"><th class="field-name">mean:</th><td class="field-body">list of the means of the GP at <tt class="docutils literal"><span class="pre">points_to_evaluate</span></tt> (<a class="reference internal" href="#moe.views.schemas.ListOfFloats" title="moe.views.schemas.ListOfFloats"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.ListOfFloats</span></tt></a>)</td>
-</tr>
-</tbody>
-</table>
-</div></blockquote>
-<p><strong>Example Response</strong></p>
+<p>A <a class="reference internal" href="moe.views.rest.html#moe.views.rest.gp_mean_var.GpMeanView" title="moe.views.rest.gp_mean_var.GpMeanView"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.rest.gp_mean_var.GpMeanView</span></tt></a> response colander schema.</p>
 <p>See composing members&#8217; docstrings.</p>
 </dd></dl>
 
@@ -1033,26 +1178,7 @@ This is necessary because we cannot dynamically assign the parameters schema wit
 <dt id="moe.views.schemas.GpMeanVarDiagResponse">
 <em class="property">class </em><tt class="descclassname">moe.views.schemas.</tt><tt class="descname">GpMeanVarDiagResponse</tt><big>(</big><em>*arg</em>, <em>**kw</em><big>)</big><a class="reference internal" href="_modules/moe/views/schemas.html#GpMeanVarDiagResponse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.views.schemas.GpMeanVarDiagResponse" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#moe.views.schemas.GpMeanResponse" title="moe.views.schemas.GpMeanResponse"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.GpMeanResponse</span></tt></a>, <a class="reference internal" href="#moe.views.schemas.GpVarDiagMixinResponse" title="moe.views.schemas.GpVarDiagMixinResponse"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.GpVarDiagMixinResponse</span></tt></a></p>
-<p>A gp_mean_var_diag response colander schema.</p>
-<p><strong>Output fields</strong></p>
-<blockquote>
-<div><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">endpoint:</th><td class="field-body">the endpoint that was called</td>
-</tr>
-<tr class="field-even field"><th class="field-name">mean:</th><td class="field-body">list of the means of the GP at <tt class="docutils literal"><span class="pre">points_to_evaluate</span></tt> (<a class="reference internal" href="#moe.views.schemas.ListOfFloats" title="moe.views.schemas.ListOfFloats"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.ListOfFloats</span></tt></a>)</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">variance:</th><td class="field-body">list of variances of the GP at <tt class="docutils literal"><span class="pre">points_to_evaluate</span></tt>; i.e., diagonal of the <tt class="docutils literal"><span class="pre">variance</span></tt> response from gp_mean_var (<a class="reference internal" href="#moe.views.schemas.ListOfFloats" title="moe.views.schemas.ListOfFloats"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.ListOfFloats</span></tt></a>)</td>
-</tr>
-</tbody>
-</table>
-</div></blockquote>
-<p><strong>Example Response</strong></p>
-<div class="highlight-http"><div class="highlight"><pre>
-</pre></div>
-</div>
+<p>A <a class="reference internal" href="moe.views.rest.html#moe.views.rest.gp_mean_var.GpMeanVarDiagView" title="moe.views.rest.gp_mean_var.GpMeanVarDiagView"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.rest.gp_mean_var.GpMeanVarDiagView</span></tt></a> response colander schema.</p>
 <p>See composing members&#8217; docstrings.</p>
 </dd></dl>
 
@@ -1060,34 +1186,36 @@ This is necessary because we cannot dynamically assign the parameters schema wit
 <dt id="moe.views.schemas.GpMeanVarRequest">
 <em class="property">class </em><tt class="descclassname">moe.views.schemas.</tt><tt class="descname">GpMeanVarRequest</tt><big>(</big><em>*arg</em>, <em>**kw</em><big>)</big><a class="reference internal" href="_modules/moe/views/schemas.html#GpMeanVarRequest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.views.schemas.GpMeanVarRequest" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#moe.views.schemas.StrictMappingSchema" title="moe.views.schemas.StrictMappingSchema"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.StrictMappingSchema</span></tt></a></p>
-<p>A gp_mean_var request colander schema.</p>
+<p>A request colander schema for the views in <a class="reference internal" href="moe.views.rest.html#module-moe.views.rest.gp_mean_var" title="moe.views.rest.gp_mean_var"><tt class="xref py py-mod docutils literal"><span class="pre">moe.views.rest.gp_mean_var</span></tt></a>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Requesting <tt class="docutils literal"><span class="pre">points_to_evaluate</span></tt> that are close to each or close to existing
+<tt class="docutils literal"><span class="pre">points_sampled</span></tt> may result in a [numerically] singular GP-variance matrix.</p>
+</div>
+<p>See additional notes in <a class="reference internal" href="#moe.views.schemas.CovarianceInfo" title="moe.views.schemas.CovarianceInfo"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.CovarianceInfo</span></tt></a>,
+<a class="reference internal" href="#moe.views.schemas.GpHistoricalInfo" title="moe.views.schemas.GpHistoricalInfo"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.GpHistoricalInfo</span></tt></a>.</p>
 <p><strong>Required fields</strong></p>
-<blockquote>
-<div><table class="docutils field-list" frame="void" rules="none">
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">points_to_evaluate:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">list of points in domain to calculate the Gaussian Process (GP) mean and covariance at (<a class="reference internal" href="#moe.views.schemas.ListOfPointsInDomain" title="moe.views.schemas.ListOfPointsInDomain"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.ListOfPointsInDomain</span></tt></a>)</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">gp_historical_info:</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">a <a class="reference internal" href="#moe.views.schemas.GpHistoricalInfo" title="moe.views.schemas.GpHistoricalInfo"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.GpHistoricalInfo</span></tt></a> object of historical data</td>
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>points_to_evaluate</strong> &#8211; (<em>list of list of float64</em>) points in domain to calculate the Gaussian Process (GP) mean and covariance at (<a class="reference internal" href="#moe.views.schemas.ListOfPointsInDomain" title="moe.views.schemas.ListOfPointsInDomain"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.ListOfPointsInDomain</span></tt></a>)</li>
+<li><strong>gp_historical_info</strong> &#8211; (<a class="reference internal" href="#moe.views.schemas.GpHistoricalInfo" title="moe.views.schemas.GpHistoricalInfo"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.GpHistoricalInfo</span></tt></a>) object of historical data</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
-</div></blockquote>
 <p><strong>Optional fields</strong></p>
-<blockquote>
-<div><table class="docutils field-list" frame="void" rules="none">
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">covariance_info:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">a <a class="reference internal" href="#moe.views.schemas.CovarianceInfo" title="moe.views.schemas.CovarianceInfo"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.CovarianceInfo</span></tt></a> dict of covariance information</td>
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><strong>covariance_info</strong> &#8211; (<a class="reference internal" href="#moe.views.schemas.CovarianceInfo" title="moe.views.schemas.CovarianceInfo"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.CovarianceInfo</span></tt></a>) dict of covariance information</td>
 </tr>
 </tbody>
 </table>
-</div></blockquote>
 <p><strong>Example Minimal Request</strong></p>
 <div class="highlight-http"><div class="highlight"><pre>Content-Type: text/javascript
 
@@ -1133,23 +1261,7 @@ This is necessary because we cannot dynamically assign the parameters schema wit
 <dt id="moe.views.schemas.GpMeanVarResponse">
 <em class="property">class </em><tt class="descclassname">moe.views.schemas.</tt><tt class="descname">GpMeanVarResponse</tt><big>(</big><em>*arg</em>, <em>**kw</em><big>)</big><a class="reference internal" href="_modules/moe/views/schemas.html#GpMeanVarResponse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.views.schemas.GpMeanVarResponse" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#moe.views.schemas.GpMeanResponse" title="moe.views.schemas.GpMeanResponse"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.GpMeanResponse</span></tt></a>, <a class="reference internal" href="#moe.views.schemas.GpVarMixinResponse" title="moe.views.schemas.GpVarMixinResponse"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.GpVarMixinResponse</span></tt></a></p>
-<p>A gp_mean_var response colander schema.</p>
-<p><strong>Output fields</strong></p>
-<blockquote>
-<div><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">endpoint:</th><td class="field-body">the endpoint that was called</td>
-</tr>
-<tr class="field-even field"><th class="field-name">mean:</th><td class="field-body">list of the means of the GP at <tt class="docutils literal"><span class="pre">points_to_evaluate</span></tt> (<a class="reference internal" href="#moe.views.schemas.ListOfFloats" title="moe.views.schemas.ListOfFloats"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.ListOfFloats</span></tt></a>)</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">variance:</th><td class="field-body">matrix of covariance of the GP at <tt class="docutils literal"><span class="pre">points_to_evaluate</span></tt> (<a class="reference internal" href="#moe.views.schemas.MatrixOfFloats" title="moe.views.schemas.MatrixOfFloats"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.MatrixOfFloats</span></tt></a>)</td>
-</tr>
-</tbody>
-</table>
-</div></blockquote>
-<p><strong>Example Response</strong></p>
+<p>A <a class="reference internal" href="moe.views.rest.html#moe.views.rest.gp_mean_var.GpMeanVarView" title="moe.views.rest.gp_mean_var.GpMeanVarView"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.rest.gp_mean_var.GpMeanVarView</span></tt></a> response colander schema.</p>
 <p>See composing members&#8217; docstrings.</p>
 </dd></dl>
 
@@ -1157,45 +1269,57 @@ This is necessary because we cannot dynamically assign the parameters schema wit
 <dt id="moe.views.schemas.GpNextPointsConstantLiarRequest">
 <em class="property">class </em><tt class="descclassname">moe.views.schemas.</tt><tt class="descname">GpNextPointsConstantLiarRequest</tt><big>(</big><em>*arg</em>, <em>**kw</em><big>)</big><a class="reference internal" href="_modules/moe/views/schemas.html#GpNextPointsConstantLiarRequest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.views.schemas.GpNextPointsConstantLiarRequest" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#moe.views.schemas.GpNextPointsRequest" title="moe.views.schemas.GpNextPointsRequest"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.GpNextPointsRequest</span></tt></a></p>
-<p>Extends the standard request <tt class="xref py py-class docutils literal"><span class="pre">moe.views.gp_next_points_pretty_view.GpNextPointsRequest</span></tt> with a lie value.</p>
+<p>Extends the standard request <a class="reference internal" href="#moe.views.schemas.GpNextPointsRequest" title="moe.views.schemas.GpNextPointsRequest"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.GpNextPointsRequest</span></tt></a> with a lie value, for use with <a class="reference internal" href="moe.views.rest.html#moe.views.rest.gp_next_points_constant_liar.GpNextPointsConstantLiar" title="moe.views.rest.gp_next_points_constant_liar.GpNextPointsConstantLiar"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.rest.gp_next_points_constant_liar.GpNextPointsConstantLiar</span></tt></a>.</p>
+<p>See <a class="reference internal" href="moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.expected_improvement.constant_liar_expected_improvement_optimization" title="moe.optimal_learning.python.cpp_wrappers.expected_improvement.constant_liar_expected_improvement_optimization"><tt class="xref py py-func docutils literal"><span class="pre">moe.optimal_learning.python.cpp_wrappers.expected_improvement.constant_liar_expected_improvement_optimization()</span></tt></a> for more info.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Setting <tt class="xref py py-attr docutils literal"><span class="pre">lie_value</span></tt> <tt class="docutils literal"><span class="pre">&lt;</span> <span class="pre">best_so_far</span></tt> (<tt class="docutils literal"><span class="pre">=</span> <span class="pre">min(points_sampled_value)</span></tt>)
+will lead to poor results. The resulting <tt class="docutils literal"><span class="pre">points_to_sample</span></tt> will be tightly clustered.
+Such results are generally of low value and may cause singular GP-variance matrices too.</p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p>Setting <tt class="xref py py-attr docutils literal"><span class="pre">lie_noise_variance</span></tt> to 0 may cause singular GP covariance
+matrices when paired with large <tt class="docutils literal"><span class="pre">num_to_sample</span></tt> (for the same reason given in
+<a class="reference internal" href="#moe.views.schemas.GpHistoricalInfo" title="moe.views.schemas.GpHistoricalInfo"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.GpHistoricalInfo</span></tt></a>).</p>
+<p class="last">Setting large <tt class="xref py py-attr docutils literal"><span class="pre">lie_noise_variance</span></tt> may cause the output <tt class="docutils literal"><span class="pre">points_to_sample</span></tt>
+to cluster&#8211;if one heuristic estimate is good and has large noise, MOE will want to
+increase resample that location to increase certainty.</p>
+</div>
+<p>See additional notes/warnings in <a class="reference internal" href="#moe.views.schemas.GpNextPointsRequest" title="moe.views.schemas.GpNextPointsRequest"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.GpNextPointsRequest</span></tt></a>.</p>
 <p><strong>Required fields</strong></p>
-<blockquote>
-<div><table class="docutils field-list" frame="void" rules="none">
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">gp_historical_info:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">a <a class="reference internal" href="#moe.views.schemas.GpHistoricalInfo" title="moe.views.schemas.GpHistoricalInfo"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.GpHistoricalInfo</span></tt></a> dict of historical data</td>
-</tr>
-<tr class="field-even field"><th class="field-name">domain_info:</th><td class="field-body">a <a class="reference internal" href="#moe.views.schemas.BoundedDomainInfo" title="moe.views.schemas.BoundedDomainInfo"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.BoundedDomainInfo</span></tt></a> dict of domain information</td>
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>gp_historical_info</strong> &#8211; (<a class="reference internal" href="#moe.views.schemas.GpHistoricalInfo" title="moe.views.schemas.GpHistoricalInfo"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.GpHistoricalInfo</span></tt></a>) dict of historical data</li>
+<li><strong>domain_info</strong> &#8211; (<a class="reference internal" href="#moe.views.schemas.BoundedDomainInfo" title="moe.views.schemas.BoundedDomainInfo"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.BoundedDomainInfo</span></tt></a>) dict of domain information</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
-</div></blockquote>
 <p><strong>Optional fields</strong></p>
-<blockquote>
-<div><table class="docutils field-list" frame="void" rules="none">
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">num_to_sample:</th><td class="field-body">number of next points to generate (default: 1)</td>
-</tr>
-<tr class="field-even field"><th class="field-name">lie_method:</th><td class="field-body">a string from <cite>CONSTANT_LIAR_METHODS</cite> representing the liar method to use (default: &#8216;constant_liar_min&#8217;)</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">lie_value:</th><td class="field-body">a float representing the &#8216;lie&#8217; the Constant Liar heuristic will use (default: None). If <cite>lie_value</cite> is not None the algorithm will use this value instead of one calculated using <cite>lie_method</cite>.</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">lie_noise_variance:</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">a positive (&gt;= 0) float representing the noise variance of the &#8216;lie&#8217; value (default: 0.0)</td>
-</tr>
-<tr class="field-odd field"><th class="field-name" colspan="2">covariance_info:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">a <a class="reference internal" href="#moe.views.schemas.CovarianceInfo" title="moe.views.schemas.CovarianceInfo"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.CovarianceInfo</span></tt></a> dict of covariance information</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">optimiaztion_info:</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">a <a class="reference internal" href="#moe.views.schemas.OptimizerInfo" title="moe.views.schemas.OptimizerInfo"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.OptimizerInfo</span></tt></a> dict of optimization information</td>
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>num_to_sample</strong> &#8211; (<em>int</em>) number of next points to generate (default: 1)</li>
+<li><strong>lie_method</strong> &#8211; (<em>str</em>) name from <cite>CONSTANT_LIAR_METHODS</cite> representing the liar method to use (default: &#8216;constant_liar_min&#8217;)</li>
+<li><strong>lie_value</strong> &#8211; (<em>float64</em>) the &#8216;lie&#8217; the Constant Liar heuristic will use (default: None). If <cite>lie_value</cite> is not None the algorithm will use this value instead of one calculated using <cite>lie_method</cite>.</li>
+<li><strong>lie_noise_variance</strong> &#8211; (<em>float64 &gt;= 0.0</em>) the noise variance of the &#8216;lie&#8217; value (default: 0.0)</li>
+<li><strong>covariance_info</strong> &#8211; (<a class="reference internal" href="#moe.views.schemas.CovarianceInfo" title="moe.views.schemas.CovarianceInfo"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.CovarianceInfo</span></tt></a>) dict of covariance information</li>
+<li><strong>optimiaztion_info</strong> &#8211; (<a class="reference internal" href="#moe.views.schemas.OptimizerInfo" title="moe.views.schemas.OptimizerInfo"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.OptimizerInfo</span></tt></a>) dict of optimization information</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
-</div></blockquote>
+<p><strong>General Timing Results</strong></p>
+<p>See the <tt class="docutils literal"><span class="pre">Analytic</span> <span class="pre">EI</span></tt> table in <a class="reference internal" href="#moe.views.schemas.GpNextPointsRequest" title="moe.views.schemas.GpNextPointsRequest"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.GpNextPointsRequest</span></tt></a> for
+rough timing numbers.</p>
 <p><strong>Example Request</strong></p>
 <div class="highlight-http"><div class="highlight"><pre>Content-Type: text/javascript
 
@@ -1224,44 +1348,52 @@ This is necessary because we cannot dynamically assign the parameters schema wit
 <dt id="moe.views.schemas.GpNextPointsKrigingRequest">
 <em class="property">class </em><tt class="descclassname">moe.views.schemas.</tt><tt class="descname">GpNextPointsKrigingRequest</tt><big>(</big><em>*arg</em>, <em>**kw</em><big>)</big><a class="reference internal" href="_modules/moe/views/schemas.html#GpNextPointsKrigingRequest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.views.schemas.GpNextPointsKrigingRequest" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#moe.views.schemas.GpNextPointsRequest" title="moe.views.schemas.GpNextPointsRequest"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.GpNextPointsRequest</span></tt></a></p>
-<p>Extends the standard request <tt class="xref py py-class docutils literal"><span class="pre">moe.views.gp_next_points_pretty_view.GpNextPointsRequest</span></tt> with kriging parameters.</p>
+<p>Extends the standard request <a class="reference internal" href="#moe.views.schemas.GpNextPointsRequest" title="moe.views.schemas.GpNextPointsRequest"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.GpNextPointsRequest</span></tt></a> with kriging parameters, for use with <a class="reference internal" href="moe.views.rest.html#moe.views.rest.gp_next_points_kriging.GpNextPointsKriging" title="moe.views.rest.gp_next_points_kriging.GpNextPointsKriging"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.rest.gp_next_points_kriging.GpNextPointsKriging</span></tt></a>.</p>
+<p>See <a class="reference internal" href="moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.expected_improvement.kriging_believer_expected_improvement_optimization" title="moe.optimal_learning.python.cpp_wrappers.expected_improvement.kriging_believer_expected_improvement_optimization"><tt class="xref py py-func docutils literal"><span class="pre">moe.optimal_learning.python.cpp_wrappers.expected_improvement.kriging_believer_expected_improvement_optimization()</span></tt></a> for more info.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p>Setting <tt class="xref py py-attr docutils literal"><span class="pre">kriging_noise_variance</span></tt> to 0 may cause singular GP covariance
+matrices when paired with large <tt class="docutils literal"><span class="pre">num_to_sample</span></tt> (for the same reason given in
+<a class="reference internal" href="#moe.views.schemas.GpHistoricalInfo" title="moe.views.schemas.GpHistoricalInfo"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.GpHistoricalInfo</span></tt></a>).</p>
+<p class="last">Setting large <tt class="xref py py-attr docutils literal"><span class="pre">kriging_noise_variance</span></tt> may cause the output <tt class="docutils literal"><span class="pre">points_to_sample</span></tt>
+to cluster&#8211;if one heuristic estimate is good and has large noise, MOE will want to
+increase resample that location to increase certainty.</p>
+</div>
+<p>See additional notes/warnings in <a class="reference internal" href="#moe.views.schemas.GpNextPointsRequest" title="moe.views.schemas.GpNextPointsRequest"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.GpNextPointsRequest</span></tt></a>.</p>
 <p><strong>Required fields</strong></p>
-<blockquote>
-<div><table class="docutils field-list" frame="void" rules="none">
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">gp_historical_info:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">a <a class="reference internal" href="#moe.views.schemas.GpHistoricalInfo" title="moe.views.schemas.GpHistoricalInfo"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.GpHistoricalInfo</span></tt></a> dict of historical data</td>
-</tr>
-<tr class="field-even field"><th class="field-name">domain_info:</th><td class="field-body">a <a class="reference internal" href="#moe.views.schemas.BoundedDomainInfo" title="moe.views.schemas.BoundedDomainInfo"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.BoundedDomainInfo</span></tt></a> dict of domain information</td>
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>gp_historical_info</strong> &#8211; (<a class="reference internal" href="#moe.views.schemas.GpHistoricalInfo" title="moe.views.schemas.GpHistoricalInfo"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.GpHistoricalInfo</span></tt></a>) dict of historical data</li>
+<li><strong>domain_info</strong> &#8211; (<a class="reference internal" href="#moe.views.schemas.BoundedDomainInfo" title="moe.views.schemas.BoundedDomainInfo"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.BoundedDomainInfo</span></tt></a>) dict of domain information</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
-</div></blockquote>
 <p><strong>Optional fields</strong></p>
-<blockquote>
-<div><table class="docutils field-list" frame="void" rules="none">
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">num_to_sample:</th><td class="field-body">number of next points to generate (default: 1)</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">std_deviation_coef:</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">a float used in Kriging, see Kriging implementation docs (default: 0.0)</td>
-</tr>
-<tr class="field-odd field"><th class="field-name" colspan="2">kriging_noise_variance:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">a positive (&gt;= 0) float used in Kriging, see Kriging implementation docs (default: 0.0)</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">covariance_info:</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">a <a class="reference internal" href="#moe.views.schemas.CovarianceInfo" title="moe.views.schemas.CovarianceInfo"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.CovarianceInfo</span></tt></a> dict of covariance information</td>
-</tr>
-<tr class="field-odd field"><th class="field-name" colspan="2">optimiaztion_info:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">a <a class="reference internal" href="#moe.views.schemas.OptimizerInfo" title="moe.views.schemas.OptimizerInfo"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.OptimizerInfo</span></tt></a> dict of optimization information</td>
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>num_to_sample</strong> &#8211; number of next points to generate (default: 1)</li>
+<li><strong>std_deviation_coef</strong> &#8211; (<em>float64</em>) amount of GP-variance to add to each Kriging estimate, see
+<a class="reference internal" href="moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.expected_improvement.kriging_believer_expected_improvement_optimization" title="moe.optimal_learning.python.cpp_wrappers.expected_improvement.kriging_believer_expected_improvement_optimization"><tt class="xref py py-func docutils literal"><span class="pre">moe.optimal_learning.python.cpp_wrappers.expected_improvement.kriging_believer_expected_improvement_optimization()</span></tt></a> (default: 0.0)</li>
+<li><strong>kriging_noise_variance</strong> &#8211; (<em>float64 &gt;= 0.0</em>) noise variance for each Kriging estimate, see
+<a class="reference internal" href="moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.expected_improvement.kriging_believer_expected_improvement_optimization" title="moe.optimal_learning.python.cpp_wrappers.expected_improvement.kriging_believer_expected_improvement_optimization"><tt class="xref py py-func docutils literal"><span class="pre">moe.optimal_learning.python.cpp_wrappers.expected_improvement.kriging_believer_expected_improvement_optimization()</span></tt></a> (default: 0.0)</li>
+<li><strong>covariance_info</strong> &#8211; (<a class="reference internal" href="#moe.views.schemas.CovarianceInfo" title="moe.views.schemas.CovarianceInfo"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.CovarianceInfo</span></tt></a>) dict of covariance information</li>
+<li><strong>optimiaztion_info</strong> &#8211; (<a class="reference internal" href="#moe.views.schemas.OptimizerInfo" title="moe.views.schemas.OptimizerInfo"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.OptimizerInfo</span></tt></a>) dict of optimization information</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
-</div></blockquote>
+<p><strong>General Timing Results</strong></p>
+<p>See the <tt class="docutils literal"><span class="pre">Analytic</span> <span class="pre">EI</span></tt> table in <a class="reference internal" href="#moe.views.schemas.GpNextPointsRequest" title="moe.views.schemas.GpNextPointsRequest"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.GpNextPointsRequest</span></tt></a> for
+rough timing numbers.</p>
 <p><strong>Example Request</strong></p>
 <div class="highlight-http"><div class="highlight"><pre>Content-Type: text/javascript
 
@@ -1290,45 +1422,131 @@ This is necessary because we cannot dynamically assign the parameters schema wit
 <dt id="moe.views.schemas.GpNextPointsRequest">
 <em class="property">class </em><tt class="descclassname">moe.views.schemas.</tt><tt class="descname">GpNextPointsRequest</tt><big>(</big><em>*arg</em>, <em>**kw</em><big>)</big><a class="reference internal" href="_modules/moe/views/schemas.html#GpNextPointsRequest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.views.schemas.GpNextPointsRequest" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#moe.views.schemas.StrictMappingSchema" title="moe.views.schemas.StrictMappingSchema"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.StrictMappingSchema</span></tt></a></p>
-<p>A <tt class="docutils literal"><span class="pre">gp_next_points_*</span></tt> request colander schema.</p>
+<p>A request colander schema for the various subclasses of <a class="reference internal" href="#moe.views.gp_next_points_pretty_view.GpNextPointsPrettyView" title="moe.views.gp_next_points_pretty_view.GpNextPointsPrettyView"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.gp_next_points_pretty_view.GpNextPointsPrettyView</span></tt></a>; e.g., <a class="reference internal" href="moe.views.rest.html#moe.views.rest.gp_next_points_epi.GpNextPointsEpi" title="moe.views.rest.gp_next_points_epi.GpNextPointsEpi"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.rest.gp_next_points_epi.GpNextPointsEpi</span></tt></a>.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Requesting <tt class="docutils literal"><span class="pre">num_to_sample</span></tt> &gt; <tt class="docutils literal"><span class="pre">num_sampled</span></tt> can lead to singular GP-variance
+matrices and other conditioning issues (e.g., the resulting points may be tightly
+clustered). We suggest bootstrapping with a few grid points, random search, etc.</p>
+</div>
+<p>See additional notes in <a class="reference internal" href="#moe.views.schemas.CovarianceInfo" title="moe.views.schemas.CovarianceInfo"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.CovarianceInfo</span></tt></a>,
+<a class="reference internal" href="#moe.views.schemas.BoundedDomainInfo" title="moe.views.schemas.BoundedDomainInfo"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.BoundedDomainInfo</span></tt></a>, <a class="reference internal" href="#moe.views.schemas.GpHistoricalInfo" title="moe.views.schemas.GpHistoricalInfo"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.GpHistoricalInfo</span></tt></a>.</p>
 <p><strong>Required fields</strong></p>
-<blockquote>
-<div><table class="docutils field-list" frame="void" rules="none">
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">gp_historical_info:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">a <a class="reference internal" href="#moe.views.schemas.GpHistoricalInfo" title="moe.views.schemas.GpHistoricalInfo"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.GpHistoricalInfo</span></tt></a> dict of historical data</td>
-</tr>
-<tr class="field-even field"><th class="field-name">domain_info:</th><td class="field-body">a <a class="reference internal" href="#moe.views.schemas.BoundedDomainInfo" title="moe.views.schemas.BoundedDomainInfo"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.BoundedDomainInfo</span></tt></a> dict of domain information</td>
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>gp_historical_info</strong> &#8211; (<a class="reference internal" href="#moe.views.schemas.GpHistoricalInfo" title="moe.views.schemas.GpHistoricalInfo"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.GpHistoricalInfo</span></tt></a>) dict of historical data</li>
+<li><strong>domain_info</strong> &#8211; (<a class="reference internal" href="#moe.views.schemas.BoundedDomainInfo" title="moe.views.schemas.BoundedDomainInfo"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.BoundedDomainInfo</span></tt></a>) dict of domain information</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
-</div></blockquote>
 <p><strong>Optional fields</strong></p>
-<blockquote>
-<div><table class="docutils field-list" frame="void" rules="none">
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">num_to_sample:</th><td class="field-body">number of next points to generate (default: 1)</td>
-</tr>
-<tr class="field-even field"><th class="field-name">mc_iterations:</th><td class="field-body">number of Monte Carlo (MC) iterations to perform in numerical integration to calculate EI</td>
-</tr>
-<tr class="field-odd field"><th class="field-name" colspan="2">max_num_threads:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">maximum number of threads to use in computation (default: 1)</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">covariance_info:</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">a <a class="reference internal" href="#moe.views.schemas.CovarianceInfo" title="moe.views.schemas.CovarianceInfo"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.CovarianceInfo</span></tt></a> dict of covariance information</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">optimizer_info:</th><td class="field-body">a <a class="reference internal" href="#moe.views.schemas.OptimizerInfo" title="moe.views.schemas.OptimizerInfo"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.OptimizerInfo</span></tt></a> dict of optimization information</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">points_being_sampled:</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">list of points in domain being sampled in concurrent experiments (default: [])</td>
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>num_to_sample</strong> &#8211; (<em>int</em>) number of next points to generate (default: 1)</li>
+<li><strong>mc_iterations</strong> &#8211; (<em>int</em>) number of Monte Carlo (MC) iterations to perform in numerical integration to calculate EI</li>
+<li><strong>max_num_threads</strong> &#8211; (<em>int</em>) maximum number of threads to use in computation</li>
+<li><strong>covariance_info</strong> &#8211; (<a class="reference internal" href="#moe.views.schemas.CovarianceInfo" title="moe.views.schemas.CovarianceInfo"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.CovarianceInfo</span></tt></a>) dict of covariance information</li>
+<li><strong>optimizer_info</strong> &#8211; (<a class="reference internal" href="#moe.views.schemas.OptimizerInfo" title="moe.views.schemas.OptimizerInfo"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.OptimizerInfo</span></tt></a>) dict of optimizer information</li>
+<li><strong>points_being_sampled</strong> &#8211; (<em>list of float64</em>) points in domain being sampled in concurrent experiments (default: [])</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
-</div></blockquote>
+<p><strong>General Timing Results</strong></p>
+<p>Here are some &#8220;broad-strokes&#8221; timing results for EI optimization.
+These tests are not complete nor comprehensive; they&#8217;re just a starting point.
+The tests were run on a Sandy Bridge 2.3 GHz quad-core CPU. Data was generated
+from a Gaussian Process prior. The optimization parameters were the default
+values (see <a class="reference internal" href="moe.optimal_learning.python.html#module-moe.optimal_learning.python.constant" title="moe.optimal_learning.python.constant"><tt class="xref py py-mod docutils literal"><span class="pre">moe.optimal_learning.python.constant</span></tt></a>) as of sha
+<tt class="docutils literal"><span class="pre">c19257049f16036e5e2823df87fbe0812720e291</span></tt>.</p>
+<p>Below, <tt class="docutils literal"><span class="pre">N</span> <span class="pre">=</span> <span class="pre">num_sampled</span></tt>, <tt class="docutils literal"><span class="pre">MC</span> <span class="pre">=</span> <span class="pre">num_mc_iterations</span></tt>, and <tt class="docutils literal"><span class="pre">q</span> <span class="pre">=</span> <span class="pre">num_to_sample</span></tt></p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">constant liar, kriging, and EPI (with <tt class="docutils literal"><span class="pre">num_to_sample</span> <span class="pre">=</span> <span class="pre">1</span></tt>) all fall
+under the <tt class="docutils literal"><span class="pre">analytic</span> <span class="pre">EI</span></tt> name.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">EI optimization times can vary widely as some randomly generated test
+cases are very &#8220;easy.&#8221; Thus we give rough ranges.</p>
+</div>
+<table border="1" class="docutils">
+<colgroup>
+<col width="36%" />
+<col width="64%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head" colspan="2">Analytic EI</th>
+</tr>
+<tr class="row-even"><th class="head">dim, N</th>
+<th class="head">Gradient Descent</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-odd"><td>3, 20</td>
+<td>0.3 - 0.6s</td>
+</tr>
+<tr class="row-even"><td>3, 40</td>
+<td>0.5 - 1.4s</td>
+</tr>
+<tr class="row-odd"><td>3, 120</td>
+<td>0.8 - 2.9s</td>
+</tr>
+<tr class="row-even"><td>6, 20</td>
+<td>0.4 - 0.9s</td>
+</tr>
+<tr class="row-odd"><td>6, 40</td>
+<td>1.25 - 1.8s</td>
+</tr>
+<tr class="row-even"><td>6, 120</td>
+<td>2.9 - 5.0s</td>
+</tr>
+</tbody>
+</table>
+<p>We expect this to scale as <tt class="docutils literal"><span class="pre">~</span> <span class="pre">O(dim)</span></tt> and <tt class="docutils literal"><span class="pre">~</span> <span class="pre">O(N^3)</span></tt>. The <tt class="docutils literal"><span class="pre">O(N^3)</span></tt> only happens
+once per multistart. Per iteration there&#8217;s an <tt class="docutils literal"><span class="pre">O(N^2)</span></tt> dependence but as you can
+see, the dependence on <tt class="docutils literal"><span class="pre">dim</span></tt> is stronger.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="36%" />
+<col width="64%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head" colspan="2">MC EI (<tt class="docutils literal"><span class="pre">N</span> <span class="pre">=</span> <span class="pre">20</span></tt>, <tt class="docutils literal"><span class="pre">dim</span> <span class="pre">=</span> <span class="pre">3</span></tt>)</th>
+</tr>
+<tr class="row-even"><th class="head">q, MC</th>
+<th class="head">Gradient Descent</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-odd"><td>2, 10k</td>
+<td>50 - 80s</td>
+</tr>
+<tr class="row-even"><td>4, 10k</td>
+<td>120 - 180s</td>
+</tr>
+<tr class="row-odd"><td>8, 10k</td>
+<td>400 - 580s</td>
+</tr>
+<tr class="row-even"><td>2, 40k</td>
+<td>230 - 480s</td>
+</tr>
+<tr class="row-odd"><td>4, 40k</td>
+<td>600 - 700s</td>
+</tr>
+</tbody>
+</table>
+<p>We expect this to scale as <tt class="docutils literal"><span class="pre">~</span> <span class="pre">O(q^2)</span></tt> and <tt class="docutils literal"><span class="pre">~</span> <span class="pre">O(MC)</span></tt>. Scaling with <tt class="docutils literal"><span class="pre">dim</span></tt> and <tt class="docutils literal"><span class="pre">N</span></tt>
+should be similar to the analytic case.</p>
 <p><strong>Example Minimal Request</strong></p>
 <div class="highlight-http"><div class="highlight"><pre>Content-Type: text/javascript
 
@@ -1392,32 +1610,55 @@ This is necessary because we cannot dynamically assign the parameters schema wit
 <dt id="moe.views.schemas.GpNextPointsResponse">
 <em class="property">class </em><tt class="descclassname">moe.views.schemas.</tt><tt class="descname">GpNextPointsResponse</tt><big>(</big><em>*arg</em>, <em>**kw</em><big>)</big><a class="reference internal" href="_modules/moe/views/schemas.html#GpNextPointsResponse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.views.schemas.GpNextPointsResponse" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#moe.views.schemas.StrictMappingSchema" title="moe.views.schemas.StrictMappingSchema"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.StrictMappingSchema</span></tt></a></p>
-<p>A <tt class="docutils literal"><span class="pre">gp_next_points_*</span></tt> response colander schema.</p>
+<p>A response colander schema for the various subclasses of <a class="reference internal" href="#moe.views.gp_next_points_pretty_view.GpNextPointsPrettyView" title="moe.views.gp_next_points_pretty_view.GpNextPointsPrettyView"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.gp_next_points_pretty_view.GpNextPointsPrettyView</span></tt></a>; e.g., <a class="reference internal" href="moe.views.rest.html#moe.views.rest.gp_next_points_epi.GpNextPointsEpi" title="moe.views.rest.gp_next_points_epi.GpNextPointsEpi"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.rest.gp_next_points_epi.GpNextPointsEpi</span></tt></a>.</p>
 <p><strong>Output fields</strong></p>
-<blockquote>
-<div><table class="docutils field-list" frame="void" rules="none">
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">endpoint:</th><td class="field-body">the endpoint that was called</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">points_to_sample:</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">list of points in the domain to sample next (<a class="reference internal" href="#moe.views.schemas.ListOfPointsInDomain" title="moe.views.schemas.ListOfPointsInDomain"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.ListOfPointsInDomain</span></tt></a>)</td>
-</tr>
-<tr class="field-odd field"><th class="field-name" colspan="2">expected_improvement:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">list of EI of points in points_to_sample (<a class="reference internal" href="#moe.views.schemas.ListOfExpectedImprovements" title="moe.views.schemas.ListOfExpectedImprovements"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.ListOfExpectedImprovements</span></tt></a>)</td>
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>endpoint</strong> &#8211; (<em>str</em>) the endpoint that was called</li>
+<li><strong>points_to_sample</strong> &#8211; (<em>list of list of float64</em>) points in the domain to sample next (<a class="reference internal" href="#moe.views.schemas.ListOfPointsInDomain" title="moe.views.schemas.ListOfPointsInDomain"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.ListOfPointsInDomain</span></tt></a>)</li>
+<li><strong>status</strong> &#8211; (<a class="reference internal" href="#moe.views.schemas.GpNextPointsStatus" title="moe.views.schemas.GpNextPointsStatus"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.GpNextPointsStatus</span></tt></a>) dict indicating final EI value and
+optimization status messages (e.g., success)</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
-</div></blockquote>
 <p><strong>Example Response</strong></p>
 <div class="highlight-http"><div class="highlight"><pre>{
-    &quot;endpoint&quot;:&quot;gp_ei&quot;,
+    &quot;endpoint&quot;: &quot;gp_ei&quot;,
     &quot;points_to_sample&quot;: [[&quot;0.478332304526&quot;]],
-    &quot;expected_improvement&quot;: &quot;0.443478498868&quot;,
+    &quot;status&quot;: {
+        &quot;expected_improvement&quot;: &quot;0.443478498868&quot;,
+        &quot;optimizer_success&quot;: {
+            &#39;gradient_descent_tensor_product_domain_found_update&#39;: True,
+            },
+        },
 }
 </pre></div>
 </div>
+</dd></dl>
+
+<dl class="class">
+<dt id="moe.views.schemas.GpNextPointsStatus">
+<em class="property">class </em><tt class="descclassname">moe.views.schemas.</tt><tt class="descname">GpNextPointsStatus</tt><big>(</big><em>*arg</em>, <em>**kw</em><big>)</big><a class="reference internal" href="_modules/moe/views/schemas.html#GpNextPointsStatus"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.views.schemas.GpNextPointsStatus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#moe.views.schemas.StrictMappingSchema" title="moe.views.schemas.StrictMappingSchema"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.StrictMappingSchema</span></tt></a></p>
+<p>A status schema for the various subclasses of <a class="reference internal" href="#moe.views.gp_next_points_pretty_view.GpNextPointsPrettyView" title="moe.views.gp_next_points_pretty_view.GpNextPointsPrettyView"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.gp_next_points_pretty_view.GpNextPointsPrettyView</span></tt></a>; e.g., <a class="reference internal" href="moe.views.rest.html#moe.views.rest.gp_next_points_epi.GpNextPointsEpi" title="moe.views.rest.gp_next_points_epi.GpNextPointsEpi"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.rest.gp_next_points_epi.GpNextPointsEpi</span></tt></a>.</p>
+<p><strong>Output fields</strong></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>expected_improvement</strong> &#8211; (<em>float64 &gt;= 0.0</em>) EI evaluated at <tt class="docutils literal"><span class="pre">points_to_sample</span></tt> (<a class="reference internal" href="#moe.views.schemas.ListOfExpectedImprovements" title="moe.views.schemas.ListOfExpectedImprovements"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.ListOfExpectedImprovements</span></tt></a>)</li>
+<li><strong>optimizer_success</strong> &#8211; (<em>dict</em>) Whether or not the optimizer converged to an optimal set of <tt class="docutils literal"><span class="pre">points_to_sample</span></tt></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="class">
@@ -1426,16 +1667,14 @@ This is necessary because we cannot dynamically assign the parameters schema wit
 <dd><p>Bases: <a class="reference internal" href="#moe.views.schemas.StrictMappingSchema" title="moe.views.schemas.StrictMappingSchema"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.StrictMappingSchema</span></tt></a></p>
 <p>A mixin response colander schema for the variance of a gaussian process.</p>
 <p><strong>Output fields</strong></p>
-<blockquote>
-<div><table class="docutils field-list" frame="void" rules="none">
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">variance:</th><td class="field-body">list of variances of the GP at <tt class="docutils literal"><span class="pre">points_to_evaluate</span></tt>; i.e., diagonal of the <tt class="docutils literal"><span class="pre">variance</span></tt> response from gp_mean_var (<a class="reference internal" href="#moe.views.schemas.ListOfFloats" title="moe.views.schemas.ListOfFloats"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.ListOfFloats</span></tt></a>)</td>
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><strong>var</strong> &#8211; (<em>list of float64</em>) variances of the GP at <tt class="docutils literal"><span class="pre">points_to_evaluate</span></tt>; i.e., diagonal of the <tt class="docutils literal"><span class="pre">var</span></tt> response from gp_mean_var (<a class="reference internal" href="#moe.views.schemas.ListOfFloats" title="moe.views.schemas.ListOfFloats"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.ListOfFloats</span></tt></a>)</td>
 </tr>
 </tbody>
 </table>
-</div></blockquote>
 <p><strong>Example Response</strong></p>
 <div class="highlight-http"><div class="highlight"><pre>{
     &quot;var&quot;: [&quot;0.228910114429&quot;,&quot;0.996177332647&quot;,&quot;0.228910114429&quot;],
@@ -1448,21 +1687,7 @@ This is necessary because we cannot dynamically assign the parameters schema wit
 <dt id="moe.views.schemas.GpVarDiagResponse">
 <em class="property">class </em><tt class="descclassname">moe.views.schemas.</tt><tt class="descname">GpVarDiagResponse</tt><big>(</big><em>*arg</em>, <em>**kw</em><big>)</big><a class="reference internal" href="_modules/moe/views/schemas.html#GpVarDiagResponse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.views.schemas.GpVarDiagResponse" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#moe.views.schemas.GpEndpointResponse" title="moe.views.schemas.GpEndpointResponse"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.GpEndpointResponse</span></tt></a>, <a class="reference internal" href="#moe.views.schemas.GpVarDiagMixinResponse" title="moe.views.schemas.GpVarDiagMixinResponse"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.GpVarDiagMixinResponse</span></tt></a></p>
-<p>A gp_var_diag response colander schema.</p>
-<p><strong>Output fields</strong></p>
-<blockquote>
-<div><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">endpoint:</th><td class="field-body">the endpoint that was called</td>
-</tr>
-<tr class="field-even field"><th class="field-name">variance:</th><td class="field-body">list of variances of the GP at <tt class="docutils literal"><span class="pre">points_to_evaluate</span></tt>; i.e., diagonal of the <tt class="docutils literal"><span class="pre">variance</span></tt> response from gp_mean_var (<a class="reference internal" href="#moe.views.schemas.ListOfFloats" title="moe.views.schemas.ListOfFloats"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.ListOfFloats</span></tt></a>)</td>
-</tr>
-</tbody>
-</table>
-</div></blockquote>
-<p><strong>Example Response</strong></p>
+<p>A <a class="reference internal" href="moe.views.rest.html#moe.views.rest.gp_mean_var.GpVarDiagView" title="moe.views.rest.gp_mean_var.GpVarDiagView"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.rest.gp_mean_var.GpVarDiagView</span></tt></a> response colander schema.</p>
 <p>See composing members&#8217; docstrings.</p>
 </dd></dl>
 
@@ -1472,16 +1697,14 @@ This is necessary because we cannot dynamically assign the parameters schema wit
 <dd><p>Bases: <a class="reference internal" href="#moe.views.schemas.StrictMappingSchema" title="moe.views.schemas.StrictMappingSchema"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.StrictMappingSchema</span></tt></a></p>
 <p>A mixin response colander schema for the [co]variance of a gaussian process.</p>
 <p><strong>Output fields</strong></p>
-<blockquote>
-<div><table class="docutils field-list" frame="void" rules="none">
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">variance:</th><td class="field-body">matrix of covariance of the GP at <tt class="docutils literal"><span class="pre">points_to_evaluate</span></tt> (<a class="reference internal" href="#moe.views.schemas.MatrixOfFloats" title="moe.views.schemas.MatrixOfFloats"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.MatrixOfFloats</span></tt></a>)</td>
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><strong>var</strong> &#8211; (<a class="reference internal" href="#moe.views.schemas.MatrixOfFloats" title="moe.views.schemas.MatrixOfFloats"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.MatrixOfFloats</span></tt></a>) matrix of covariance of the GP at <tt class="docutils literal"><span class="pre">points_to_evaluate</span></tt></td>
 </tr>
 </tbody>
 </table>
-</div></blockquote>
 <p><strong>Example Response</strong></p>
 <div class="highlight-http"><div class="highlight"><pre>{
     &quot;var&quot;: [
@@ -1498,21 +1721,7 @@ This is necessary because we cannot dynamically assign the parameters schema wit
 <dt id="moe.views.schemas.GpVarResponse">
 <em class="property">class </em><tt class="descclassname">moe.views.schemas.</tt><tt class="descname">GpVarResponse</tt><big>(</big><em>*arg</em>, <em>**kw</em><big>)</big><a class="reference internal" href="_modules/moe/views/schemas.html#GpVarResponse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.views.schemas.GpVarResponse" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#moe.views.schemas.GpEndpointResponse" title="moe.views.schemas.GpEndpointResponse"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.GpEndpointResponse</span></tt></a>, <a class="reference internal" href="#moe.views.schemas.GpVarMixinResponse" title="moe.views.schemas.GpVarMixinResponse"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.GpVarMixinResponse</span></tt></a></p>
-<p>A gp_var response colander schema.</p>
-<p><strong>Output fields</strong></p>
-<blockquote>
-<div><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">endpoint:</th><td class="field-body">the endpoint that was called</td>
-</tr>
-<tr class="field-even field"><th class="field-name">variance:</th><td class="field-body">matrix of covariance of the GP at <tt class="docutils literal"><span class="pre">points_to_evaluate</span></tt> (<a class="reference internal" href="#moe.views.schemas.MatrixOfFloats" title="moe.views.schemas.MatrixOfFloats"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.MatrixOfFloats</span></tt></a>)</td>
-</tr>
-</tbody>
-</table>
-</div></blockquote>
-<p><strong>Example Response</strong></p>
+<p>A <a class="reference internal" href="moe.views.rest.html#moe.views.rest.gp_mean_var.GpVarView" title="moe.views.rest.gp_mean_var.GpVarView"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.rest.gp_mean_var.GpVarView</span></tt></a> response colander schema.</p>
 <p>See composing members&#8217; docstrings.</p>
 </dd></dl>
 
@@ -1574,25 +1783,49 @@ This is necessary because we cannot dynamically assign the parameters schema wit
 <p>Parameters for the null optimizer.</p>
 </dd></dl>
 
+<dl class="data">
+<dt id="moe.views.schemas.OPTIMIZER_TYPES_TO_SCHEMA_CLASSES">
+<tt class="descclassname">moe.views.schemas.</tt><tt class="descname">OPTIMIZER_TYPES_TO_SCHEMA_CLASSES</tt><em class="property"> = {'null_optimizer': &lt;class 'moe.views.schemas.NullParametersSchema'&gt;, 'newton_optimizer': &lt;class 'moe.views.schemas.NewtonParametersSchema'&gt;, 'gradient_descent_optimizer': &lt;class 'moe.views.schemas.GradientDescentParametersSchema'&gt;}</em><a class="headerlink" href="#moe.views.schemas.OPTIMIZER_TYPES_TO_SCHEMA_CLASSES" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mapping from optimizer types (<a class="reference internal" href="moe.optimal_learning.python.html#moe.optimal_learning.python.constant.OPTIMIZER_TYPES" title="moe.optimal_learning.python.constant.OPTIMIZER_TYPES"><tt class="xref py py-const docutils literal"><span class="pre">moe.optimal_learning.python.constant.OPTIMIZER_TYPES</span></tt></a>) to
+optimizer schemas, e.g., <a class="reference internal" href="#moe.views.schemas.NewtonParametersSchema" title="moe.views.schemas.NewtonParametersSchema"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.NewtonParametersSchema</span></tt></a>.</p>
+</dd></dl>
+
 <dl class="class">
 <dt id="moe.views.schemas.OptimizerInfo">
 <em class="property">class </em><tt class="descclassname">moe.views.schemas.</tt><tt class="descname">OptimizerInfo</tt><big>(</big><em>*arg</em>, <em>**kw</em><big>)</big><a class="reference internal" href="_modules/moe/views/schemas.html#OptimizerInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.views.schemas.OptimizerInfo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#moe.views.schemas.StrictMappingSchema" title="moe.views.schemas.StrictMappingSchema"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.StrictMappingSchema</span></tt></a></p>
-<p>Optimization information needed for each next point endpoint.</p>
-<p><strong>Optimization fields</strong></p>
-<blockquote>
-<div><table class="docutils field-list" frame="void" rules="none">
+<p>Schema specifying the behavior of the multistarted optimizers in the optimal_learning library.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>This schema does not provide default values for its fields. These defaults
+<strong>*DO EXIST*</strong>; see <a class="reference internal" href="moe.optimal_learning.python.html#module-moe.optimal_learning.python.constant" title="moe.optimal_learning.python.constant"><tt class="xref py py-mod docutils literal"><span class="pre">moe.optimal_learning.python.constant</span></tt></a>. However the defaults are
+dependent on external factors (like whether we&#8217;re computing EI, log marginal, etc.) and
+are not known statically.</p>
+<p class="last">See <a class="reference internal" href="#moe.views.optimizable_gp_pretty_view.OptimizableGpPrettyView.get_params_from_request" title="moe.views.optimizable_gp_pretty_view.OptimizableGpPrettyView.get_params_from_request"><tt class="xref py py-meth docutils literal"><span class="pre">moe.views.optimizable_gp_pretty_view.OptimizableGpPrettyView.get_params_from_request()</span></tt></a>
+for an example of how this schema is used.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The field <tt class="xref py py-attr docutils literal"><span class="pre">optimizer_parameters</span></tt> is <strong>*NOT VALIDATED*</strong>. Users of this
+schema are responsible for passing its contents through the appropriate schema using
+the <a class="reference internal" href="#moe.views.schemas.OPTIMIZER_TYPES_TO_SCHEMA_CLASSES" title="moe.views.schemas.OPTIMIZER_TYPES_TO_SCHEMA_CLASSES"><tt class="xref py py-const docutils literal"><span class="pre">moe.views.schemas.OPTIMIZER_TYPES_TO_SCHEMA_CLASSES</span></tt></a> dict provided above.</p>
+</div>
+<p>TODO(GH-303): Try schema bindings as a way to automate setting validators and missing values.</p>
+<p><strong>Optional fields</strong></p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">optimizer_type:</th><td class="field-body">a string defining the optimizer type from <cite>moe.optimal_learning.python.constant.OPTIMIZER_TYPES</cite> (default: GRADIENT_DESCENT_OPTIMIZER)</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">optimizer_parameters:</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">a dict corresponding the the parameters of the optimization method</td>
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>optimizer_type</strong> &#8211; (<em>str</em>) the optimization type from <a class="reference internal" href="moe.optimal_learning.python.html#moe.optimal_learning.python.constant.OPTIMIZER_TYPES" title="moe.optimal_learning.python.constant.OPTIMIZER_TYPES"><tt class="xref py py-const docutils literal"><span class="pre">moe.optimal_learning.python.constant.OPTIMIZER_TYPES</span></tt></a> (default: GRADIENT_DESCENT_OPTIMIZER)</li>
+<li><strong>num_multistarts</strong> &#8211; (<em>int &gt; 0</em>) number of locations from which to start optimization runs</li>
+<li><strong>num_random_samples</strong> &#8211; (<em>int &gt;= 0</em>) number of random search points to use if multistart optimization fails</li>
+<li><strong>optimizer_parameters</strong> &#8211; (<em>dict</em>) a dict corresponding the the parameters of the optimization method</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
-</div></blockquote>
 </dd></dl>
 
 <dl class="class">
@@ -1646,14 +1879,20 @@ This is necessary because we cannot dynamically assign the parameters schema wit
 <em class="property">class </em><tt class="descclassname">moe.views.schemas.</tt><tt class="descname">SinglePoint</tt><big>(</big><em>*arg</em>, <em>**kw</em><big>)</big><a class="reference internal" href="_modules/moe/views/schemas.html#SinglePoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.views.schemas.SinglePoint" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#moe.views.schemas.StrictMappingSchema" title="moe.views.schemas.StrictMappingSchema"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.StrictMappingSchema</span></tt></a></p>
 <p>A point object.</p>
-<p>Contains:</p>
-<blockquote>
-<div><ul class="simple">
-<li>point - ListOfFloats</li>
-<li>value - float</li>
-<li>value_var - float &gt;= 0.0</li>
+<p><strong>Required fields</strong></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>point</strong> &#8211; (<a class="reference internal" href="#moe.views.schemas.ListOfFloats" title="moe.views.schemas.ListOfFloats"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.ListOfFloats</span></tt></a>) The point sampled (in the domain of the function)</li>
+<li><strong>value</strong> &#8211; (<em>float64</em>) The value returned by the function</li>
+<li><strong>value_var</strong> &#8211; (<em>float64 &gt;= 0.0</em>) The noise/measurement variance (if any) associated with <tt class="xref py py-attr docutils literal"><span class="pre">value</span></tt></li>
 </ul>
-</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="class">
@@ -1681,7 +1920,7 @@ See: <a class="reference external" href="http://colander.readthedocs.org/en/late
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">colander&#8217;s default behavior is <tt class="docutils literal"><span class="pre">unknown='ignore'</span></tt>; the other option
-is <a href="#id1"><span class="problematic" id="id2">``</span></a>&#8216;preserve&#8217;. See: <a class="reference external" href="http://colander.readthedocs.org/en/latest/api.html#colander.Mapping">http://colander.readthedocs.org/en/latest/api.html#colander.Mapping</a></p>
+is <tt class="docutils literal"><span class="pre">'preserve'</span></tt>. See: <a class="reference external" href="http://colander.readthedocs.org/en/latest/api.html#colander.Mapping">http://colander.readthedocs.org/en/latest/api.html#colander.Mapping</a></p>
 </div>
 </dd></dl>
 
@@ -1698,11 +1937,15 @@ is <a href="#id1"><span class="problematic" id="id2">``</span></a>&#8216;preserv
 <p>Contains:</p>
 <blockquote>
 <div><ul class="simple">
-<li>frontend.py - the frontend code</li>
-<li>gp_*.py - various REST endpoints for internal gaussian process information</li>
-<li>gp_next_points_*.py - various REST endpoints for different next point optimization methods</li>
-<li>constant.py - constants shared by multiple views</li>
-<li>exceptions.py - exception handling views for giving detailed 500 errors</li>
+<li><a class="reference internal" href="#module-moe.views.frontend" title="moe.views.frontend"><tt class="xref py py-mod docutils literal"><span class="pre">moe.views.frontend</span></tt></a>: the frontend code</li>
+<li><a class="reference internal" href="moe.views.rest.html#module-moe.views.rest" title="moe.views.rest"><tt class="xref py py-mod docutils literal"><span class="pre">moe.views.rest</span></tt></a>: various REST endpoints for internal gaussian process information</li>
+<li><a class="reference internal" href="#module-moe.views.gp_pretty_view" title="moe.views.gp_pretty_view"><tt class="xref py py-mod docutils literal"><span class="pre">moe.views.gp_pretty_view</span></tt></a>: base view for all REST endpoints</li>
+<li><a class="reference internal" href="#module-moe.views.optimizable_gp_pretty_view" title="moe.views.optimizable_gp_pretty_view"><tt class="xref py py-mod docutils literal"><span class="pre">moe.views.optimizable_gp_pretty_view</span></tt></a>: base view for REST endpoints that require optimization</li>
+<li><a class="reference internal" href="#module-moe.views.gp_next_points_pretty_view" title="moe.views.gp_next_points_pretty_view"><tt class="xref py py-mod docutils literal"><span class="pre">moe.views.gp_next_points_pretty_view</span></tt></a>: base view for getting the next best points to sample</li>
+<li><a class="reference internal" href="#module-moe.views.schemas" title="moe.views.schemas"><tt class="xref py py-mod docutils literal"><span class="pre">moe.views.schemas</span></tt></a>: schemas used to deserialize/serialize inputs/outputs in the REST interface</li>
+<li><a class="reference internal" href="#module-moe.views.utils" title="moe.views.utils"><tt class="xref py py-mod docutils literal"><span class="pre">moe.views.utils</span></tt></a>: utils for constructing data structures/classes from <a class="reference internal" href="moe.optimal_learning.python.html#module-moe.optimal_learning.python" title="moe.optimal_learning.python"><tt class="xref py py-mod docutils literal"><span class="pre">moe.optimal_learning.python</span></tt></a></li>
+<li><a class="reference internal" href="#module-moe.views.constant" title="moe.views.constant"><tt class="xref py py-mod docutils literal"><span class="pre">moe.views.constant</span></tt></a>: constants shared by multiple views</li>
+<li><a class="reference internal" href="#module-moe.views.exceptions" title="moe.views.exceptions"><tt class="xref py py-mod docutils literal"><span class="pre">moe.views.exceptions</span></tt></a>: exception handling views for giving detailed 500 errors</li>
 </ul>
 </div></blockquote>
 </div>
@@ -1726,7 +1969,7 @@ is <a href="#id1"><span class="problematic" id="id2">``</span></a>&#8216;preserv
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+        &copy; Copyright 2012-2014 Yelp. MOE is licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0.
     </p>
   </div>
 

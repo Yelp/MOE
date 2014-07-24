@@ -109,6 +109,18 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#style">Style</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../faq.html">Frequently Asked Questions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../faq.html#what-license-is-moe-released-under">What license is MOE released under?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../faq.html#when-should-i-use-moe">When should I use MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../faq.html#what-is-the-time-complexity-of-moe">What is the time complexity of MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../faq.html#how-do-i-cite-moe">How do I cite MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../faq.html#why-does-moe-take-so-long-to-return-the-next-points-to-sample-for-some-inputs">Why does MOE take so long to return the next points to sample for some inputs?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../faq.html#how-do-i-bootstrap-moe-what-initial-data-does-it-need">How do I bootstrap MOE? What initial data does it need?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../faq.html#how-many-function-evaluations-do-i-need-before-moe-is-done">How many function evaluations do I need before MOE is &#8220;done&#8221;?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../faq.html#how-many-function-evaluations-do-i-perform-before-i-update-the-hyperparameters-of-the-gp">How many function evaluations do I perform before I update the hyperparameters of the GP?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../faq.html#will-you-accept-my-pull-request">Will you accept my pull request?</a></li>
+</ul>
+</li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../moe.html">moe package</a><ul>
@@ -210,13 +222,19 @@
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
 
 <span class="kn">import</span> <span class="nn">moe.optimal_learning.python.python_version.optimization</span> <span class="kn">as</span> <span class="nn">python_optimization</span>
+<span class="kn">import</span> <span class="nn">moe.views.constant</span> <span class="kn">as</span> <span class="nn">views_constant</span>
 
 <span class="c"># Multithreading constants</span>
-<span class="n">DEFAULT_MAX_NUM_THREADS</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="c">#: Default number of threads to use in computation</span>
+<span class="n">DEFAULT_MAX_NUM_THREADS</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="c">#: Maximum number of threads that a user can specify</span>
+<span class="c">#: TODO(GH-301): make this a server configurable value or set appropriate openmp env var</span>
+<span class="n">MAX_ALLOWED_NUM_THREADS</span> <span class="o">=</span> <span class="mi">10000</span>
 
-<span class="c"># Covariance constants</span>
+<span class="c"># Covariance type names</span>
 <span class="n">SQUARE_EXPONENTIAL_COVARIANCE_TYPE</span> <span class="o">=</span> <span class="s">&#39;square_exponential&#39;</span>
 
+<span class="c">#: Covariance types supported by :mod:`moe`</span>
 <span class="n">COVARIANCE_TYPES</span> <span class="o">=</span> <span class="p">[</span>
         <span class="n">SQUARE_EXPONENTIAL_COVARIANCE_TYPE</span><span class="p">,</span>
         <span class="p">]</span>
@@ -239,6 +257,7 @@
 <span class="n">TENSOR_PRODUCT_DOMAIN_TYPE</span> <span class="o">=</span> <span class="s">&#39;tensor_product&#39;</span>
 <span class="n">SIMPLEX_INTERSECT_TENSOR_PRODUCT_DOMAIN_TYPE</span> <span class="o">=</span> <span class="s">&#39;simplex_intersect_tensor_product&#39;</span>
 
+<span class="c">#: Domain types supported by :mod:`moe`</span>
 <span class="n">DOMAIN_TYPES</span> <span class="o">=</span> <span class="p">[</span>
         <span class="n">TENSOR_PRODUCT_DOMAIN_TYPE</span><span class="p">,</span>
         <span class="n">SIMPLEX_INTERSECT_TENSOR_PRODUCT_DOMAIN_TYPE</span><span class="p">,</span>
@@ -249,6 +268,7 @@
 <span class="n">NEWTON_OPTIMIZER</span> <span class="o">=</span> <span class="s">&#39;newton_optimizer&#39;</span>
 <span class="n">GRADIENT_DESCENT_OPTIMIZER</span> <span class="o">=</span> <span class="s">&#39;gradient_descent_optimizer&#39;</span>
 
+<span class="c">#: Optimizer types supported by :mod:`moe`</span>
 <span class="n">OPTIMIZER_TYPES</span> <span class="o">=</span> <span class="p">[</span>
         <span class="n">NULL_OPTIMIZER</span><span class="p">,</span>
         <span class="n">NEWTON_OPTIMIZER</span><span class="p">,</span>
@@ -259,31 +279,19 @@
 <span class="n">LEAVE_ONE_OUT_LOG_LIKELIHOOD</span> <span class="o">=</span> <span class="s">&#39;leave_one_out_log_likelihood&#39;</span>
 <span class="n">LOG_MARGINAL_LIKELIHOOD</span> <span class="o">=</span> <span class="s">&#39;log_marginal_likelihood&#39;</span>
 
+<span class="c">#: Log Likelihood types supported by :mod:`moe`</span>
 <span class="n">LIKELIHOOD_TYPES</span> <span class="o">=</span> <span class="p">[</span>
         <span class="n">LEAVE_ONE_OUT_LOG_LIKELIHOOD</span><span class="p">,</span>
         <span class="n">LOG_MARGINAL_LIKELIHOOD</span><span class="p">,</span>
         <span class="p">]</span>
 
-<span class="c"># EI Defaults</span>
+<span class="c"># EI Monte-Carlo computation defaults</span>
 <span class="n">DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS</span> <span class="o">=</span> <span class="mi">10000</span>
+
+<span class="c"># Minimal parameters for testing and demos (where speed is more important than accuracy)</span>
 <span class="n">TEST_EXPECTED_IMPROVEMENT_MC_ITERATIONS</span> <span class="o">=</span> <span class="mi">50</span>
-
-<span class="n">DEFAULT_NEWTON_MULTISTARTS</span> <span class="o">=</span> <span class="mi">200</span>
-<span class="n">DEFAULT_GRADIENT_DESCENT_MULTISTARTS</span> <span class="o">=</span> <span class="mi">10000</span>
-<span class="n">DEFAULT_OPTIMIZER_MULTISTARTS</span> <span class="o">=</span> <span class="mi">10000</span>
 <span class="n">TEST_OPTIMIZER_MULTISTARTS</span> <span class="o">=</span> <span class="mi">3</span>
-<span class="n">PRETTY_OPTIMIZER_MULTISTARTS</span> <span class="o">=</span> <span class="mi">40</span>
-
-<span class="n">DEFAULT_OPTIMIZER_NUM_RANDOM_SAMPLES</span> <span class="o">=</span> <span class="mi">4000</span>
 <span class="n">TEST_OPTIMIZER_NUM_RANDOM_SAMPLES</span> <span class="o">=</span> <span class="mi">3</span>
-
-<span class="n">DEFAULT_NEWTON_PARAMETERS</span> <span class="o">=</span> <span class="n">python_optimization</span><span class="o">.</span><span class="n">NewtonParameters</span><span class="p">(</span>
-        <span class="n">max_num_steps</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
-        <span class="n">gamma</span><span class="o">=</span><span class="mf">1.05</span><span class="p">,</span>
-        <span class="n">time_factor</span><span class="o">=</span><span class="mf">1.0e-2</span><span class="p">,</span>
-        <span class="n">max_relative_change</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
-        <span class="n">tolerance</span><span class="o">=</span><span class="mf">1.0e-9</span><span class="p">,</span>
-        <span class="p">)</span>
 
 <span class="n">TEST_GRADIENT_DESCENT_PARAMETERS</span> <span class="o">=</span> <span class="n">python_optimization</span><span class="o">.</span><span class="n">GradientDescentParameters</span><span class="p">(</span>
         <span class="n">max_num_steps</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
@@ -295,36 +303,142 @@
         <span class="n">tolerance</span><span class="o">=</span><span class="mf">1.0e-3</span><span class="p">,</span>
         <span class="p">)</span>
 
+<span class="n">DEMO_OPTIMIZER_MULTISTARTS</span> <span class="o">=</span> <span class="mi">50</span>
 <span class="n">DEMO_GRADIENT_DESCENT_PARAMETERS</span> <span class="o">=</span> <span class="n">python_optimization</span><span class="o">.</span><span class="n">GradientDescentParameters</span><span class="p">(</span>
-        <span class="n">max_num_steps</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+        <span class="n">max_num_steps</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span>
         <span class="n">max_num_restarts</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
         <span class="n">num_steps_averaged</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-        <span class="n">gamma</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span>
-        <span class="n">pre_mult</span><span class="o">=</span><span class="mf">1.4</span><span class="p">,</span>
+        <span class="n">gamma</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span>
+        <span class="n">pre_mult</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
         <span class="n">max_relative_change</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
         <span class="n">tolerance</span><span class="o">=</span><span class="mf">1.0e-6</span><span class="p">,</span>
         <span class="p">)</span>
 
-<span class="n">DEFAULT_GRADIENT_DESCENT_PARAMETERS</span> <span class="o">=</span> <span class="n">python_optimization</span><span class="o">.</span><span class="n">GradientDescentParameters</span><span class="p">(</span>
-        <span class="n">max_num_steps</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span>
+<span class="c"># Default optimization parameters for various combinations of optimizer (Newton, GD) and objective functions (EI, Log Likelihood)</span>
+<span class="n">DEFAULT_NEWTON_MULTISTARTS_MODEL_SELECTION</span> <span class="o">=</span> <span class="mi">200</span>
+<span class="n">DEFAULT_NEWTON_NUM_RANDOM_SAMPLES_MODEL_SELECTION</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">DEFAULT_NEWTON_PARAMETERS_MODEL_SELECTION</span> <span class="o">=</span> <span class="n">python_optimization</span><span class="o">.</span><span class="n">NewtonParameters</span><span class="p">(</span>
+        <span class="n">max_num_steps</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span>
+        <span class="n">gamma</span><span class="o">=</span><span class="mf">1.2</span><span class="p">,</span>
+        <span class="n">time_factor</span><span class="o">=</span><span class="mf">5.0e-4</span><span class="p">,</span>
+        <span class="n">max_relative_change</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+        <span class="n">tolerance</span><span class="o">=</span><span class="mf">1.0e-9</span><span class="p">,</span>
+        <span class="p">)</span>
+
+<span class="n">DEFAULT_GRADIENT_DESCENT_MULTISTARTS_MODEL_SELECTION</span> <span class="o">=</span> <span class="mi">400</span>
+<span class="n">DEFAULT_GRADIENT_DESCENT_NUM_RANDOM_SAMPLES_MODEL_SELECTION</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">DEFAULT_GRADIENT_DESCENT_PARAMETERS_MODEL_SELECTION</span> <span class="o">=</span> <span class="n">python_optimization</span><span class="o">.</span><span class="n">GradientDescentParameters</span><span class="p">(</span>
+        <span class="n">max_num_steps</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span>
         <span class="n">max_num_restarts</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
-        <span class="n">num_steps_averaged</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
-        <span class="n">gamma</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
-        <span class="n">pre_mult</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span>
-        <span class="n">max_relative_change</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
-        <span class="n">tolerance</span><span class="o">=</span><span class="mf">1.0e-6</span><span class="p">,</span>
+        <span class="n">num_steps_averaged</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">gamma</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span>
+        <span class="n">pre_mult</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span>
+        <span class="n">max_relative_change</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
+        <span class="n">tolerance</span><span class="o">=</span><span class="mf">1.0e-5</span><span class="p">,</span>
         <span class="p">)</span>
 
-<span class="n">OPTIMIZER_TYPE_TO_DEFAULT_PARAMETERS</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="n">NEWTON_OPTIMIZER</span><span class="p">:</span> <span class="n">DEFAULT_NEWTON_PARAMETERS</span><span class="p">,</span>
-        <span class="n">GRADIENT_DESCENT_OPTIMIZER</span><span class="p">:</span> <span class="n">DEFAULT_GRADIENT_DESCENT_PARAMETERS</span><span class="p">,</span>
-        <span class="p">}</span>
+<span class="n">DEFAULT_GRADIENT_DESCENT_MULTISTARTS_EI_ANALYTIC</span> <span class="o">=</span> <span class="mi">600</span>
+<span class="n">DEFAULT_GRADIENT_DESCENT_NUM_RANDOM_SAMPLES_EI_ANALYTIC</span> <span class="o">=</span> <span class="mi">10000</span>
+<span class="n">DEFAULT_GRADIENT_DESCENT_PARAMETERS_EI_ANALYTIC</span> <span class="o">=</span> <span class="n">python_optimization</span><span class="o">.</span><span class="n">GradientDescentParameters</span><span class="p">(</span>
+        <span class="n">max_num_steps</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+        <span class="n">max_num_restarts</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+        <span class="n">num_steps_averaged</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">gamma</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span>
+        <span class="n">pre_mult</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+        <span class="n">max_relative_change</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+        <span class="n">tolerance</span><span class="o">=</span><span class="mf">1.0e-7</span><span class="p">,</span>
+        <span class="p">)</span>
+
+<span class="n">DEFAULT_GRADIENT_DESCENT_MULTISTARTS_EI_MC</span> <span class="o">=</span> <span class="mi">200</span>
+<span class="n">DEFAULT_GRADIENT_DESCENT_NUM_RANDOM_SAMPLES_EI_MC</span> <span class="o">=</span> <span class="mi">4000</span>
+<span class="n">DEFAULT_GRADIENT_DESCENT_PARAMETERS_EI_MC</span> <span class="o">=</span> <span class="n">python_optimization</span><span class="o">.</span><span class="n">GradientDescentParameters</span><span class="p">(</span>
+        <span class="n">max_num_steps</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+        <span class="n">max_num_restarts</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+        <span class="n">num_steps_averaged</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+        <span class="n">gamma</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span>
+        <span class="n">pre_mult</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+        <span class="n">max_relative_change</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+        <span class="n">tolerance</span><span class="o">=</span><span class="mf">1.0e-5</span><span class="p">,</span>
+        <span class="p">)</span>
+
+<span class="c"># See DefaultOptimizerInfoTuple below for docstring.</span>
+<span class="n">_BaseDefaultOptimizerInfoTuple</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s">&#39;_BaseDefaultOptimizerInfoTuple&#39;</span><span class="p">,</span> <span class="p">[</span>
+    <span class="s">&#39;num_multistarts&#39;</span><span class="p">,</span>
+    <span class="s">&#39;num_random_samples&#39;</span><span class="p">,</span>
+    <span class="s">&#39;optimizer_parameters&#39;</span><span class="p">,</span>
+<span class="p">])</span>
+
+
+<div class="viewcode-block" id="DefaultOptimizerInfoTuple"><a class="viewcode-back" href="../../../../moe.optimal_learning.python.html#moe.optimal_learning.python.constant.DefaultOptimizerInfoTuple">[docs]</a><span class="k">class</span> <span class="nc">DefaultOptimizerInfoTuple</span><span class="p">(</span><span class="n">_BaseDefaultOptimizerInfoTuple</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;Container holding default values to use with a :class:`moe.views.schemas.OptimizerInfo`.</span>
+
+<span class="sd">    :ivar num_multistarts: (*int &gt; 0*) number of locations from which to start optimization runs</span>
+<span class="sd">    :ivar num_random_samples: (*int &gt;= 0*) number of random search points to use if multistart optimization fails</span>
+<span class="sd">    :ivar optimizer_parameters: (*namedtuple*) parameters to use with the core optimizer,</span>
+<span class="sd">      i.e., one of :class:`moe.optimal_learning.python.python_version.optimization.GradientDescentParameters`,</span>
+<span class="sd">      :class:`moe.optimal_learning.python.python_version.optimization.NewtonParameters`, etc.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">__slots__</span> <span class="o">=</span> <span class="p">()</span>
+
+</div>
+<span class="n">_EI_ANALYTIC_DEFAULT_OPTIMIZER</span> <span class="o">=</span> <span class="n">DefaultOptimizerInfoTuple</span><span class="p">(</span>
+    <span class="n">DEFAULT_GRADIENT_DESCENT_MULTISTARTS_EI_ANALYTIC</span><span class="p">,</span>
+    <span class="n">DEFAULT_GRADIENT_DESCENT_NUM_RANDOM_SAMPLES_EI_ANALYTIC</span><span class="p">,</span>
+    <span class="n">DEFAULT_GRADIENT_DESCENT_PARAMETERS_EI_ANALYTIC</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">_GRADIENT_DESCENT_MODEL_SELECTION_DEFAULT_OPTIMIZER</span> <span class="o">=</span> <span class="n">DefaultOptimizerInfoTuple</span><span class="p">(</span>
+    <span class="n">DEFAULT_GRADIENT_DESCENT_MULTISTARTS_MODEL_SELECTION</span><span class="p">,</span>
+    <span class="n">DEFAULT_GRADIENT_DESCENT_NUM_RANDOM_SAMPLES_MODEL_SELECTION</span><span class="p">,</span>
+    <span class="n">DEFAULT_GRADIENT_DESCENT_PARAMETERS_MODEL_SELECTION</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">EI_COMPUTE_TYPE_ANALYTIC</span> <span class="o">=</span> <span class="s">&#39;ei_analytic&#39;</span>
+<span class="n">EI_COMPUTE_TYPE_MONTE_CARLO</span> <span class="o">=</span> <span class="s">&#39;ei_monte_carlo&#39;</span>
+
+<span class="c">#: dict mapping from tuples describing endpoints and objective functions to optimizer type strings;</span>
+<span class="c">#: i.e., one of :const:`moe.optimal_learning.python.constant.OPTIMIZER_TYPES`.</span>
+<span class="n">ENDPOINT_TO_DEFAULT_OPTIMIZER_TYPE</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">views_constant</span><span class="o">.</span><span class="n">GP_NEXT_POINTS_KRIGING_ROUTE_NAME</span><span class="p">:</span> <span class="n">GRADIENT_DESCENT_OPTIMIZER</span><span class="p">,</span>
+    <span class="n">views_constant</span><span class="o">.</span><span class="n">GP_NEXT_POINTS_CONSTANT_LIAR_ROUTE_NAME</span><span class="p">:</span> <span class="n">GRADIENT_DESCENT_OPTIMIZER</span><span class="p">,</span>
+    <span class="n">views_constant</span><span class="o">.</span><span class="n">GP_NEXT_POINTS_EPI_ROUTE_NAME</span><span class="p">:</span> <span class="n">GRADIENT_DESCENT_OPTIMIZER</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">views_constant</span><span class="o">.</span><span class="n">GP_HYPER_OPT_ROUTE_NAME</span><span class="p">,</span> <span class="n">LEAVE_ONE_OUT_LOG_LIKELIHOOD</span><span class="p">):</span> <span class="n">GRADIENT_DESCENT_OPTIMIZER</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">views_constant</span><span class="o">.</span><span class="n">GP_HYPER_OPT_ROUTE_NAME</span><span class="p">,</span> <span class="n">LOG_MARGINAL_LIKELIHOOD</span><span class="p">):</span> <span class="n">NEWTON_OPTIMIZER</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c">#: dict mapping from tuples of optimizer type, endpoint, etc. to default optimizer parameters. The default parameter</span>
+<span class="c">#: structs are of type :class:`moe.optimal_learning.python.constant.DefaultOptimizerInfoTuple` and the actual default</span>
+<span class="c">#: parameters are defined in :mod:`moe.optimal_learning.python.constant`.</span>
+<span class="c">#: Note: (NEWTON_OPTIMIZER, views_constant.GP_HYPER_OPT_ROUTE_NAME, LEAVE_ONE_OUT_LOG_LIKELIHOOD)</span>
+<span class="c">#: does not have an entry because this combination is not yet implemented.</span>
+<span class="c">#: Newton is also not implemented for any of the GP_NEXT_POINTS_* endpoints.</span>
+<span class="n">OPTIMIZER_TYPE_AND_OBJECTIVE_TO_DEFAULT_PARAMETERS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="p">(</span><span class="n">GRADIENT_DESCENT_OPTIMIZER</span><span class="p">,</span> <span class="n">views_constant</span><span class="o">.</span><span class="n">GP_NEXT_POINTS_KRIGING_ROUTE_NAME</span><span class="p">):</span> <span class="n">_EI_ANALYTIC_DEFAULT_OPTIMIZER</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">GRADIENT_DESCENT_OPTIMIZER</span><span class="p">,</span> <span class="n">views_constant</span><span class="o">.</span><span class="n">GP_NEXT_POINTS_CONSTANT_LIAR_ROUTE_NAME</span><span class="p">):</span> <span class="n">_EI_ANALYTIC_DEFAULT_OPTIMIZER</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">GRADIENT_DESCENT_OPTIMIZER</span><span class="p">,</span> <span class="n">views_constant</span><span class="o">.</span><span class="n">GP_NEXT_POINTS_EPI_ROUTE_NAME</span><span class="p">,</span> <span class="n">EI_COMPUTE_TYPE_ANALYTIC</span><span class="p">):</span> <span class="n">_EI_ANALYTIC_DEFAULT_OPTIMIZER</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">GRADIENT_DESCENT_OPTIMIZER</span><span class="p">,</span> <span class="n">views_constant</span><span class="o">.</span><span class="n">GP_NEXT_POINTS_EPI_ROUTE_NAME</span><span class="p">,</span> <span class="n">EI_COMPUTE_TYPE_MONTE_CARLO</span><span class="p">):</span> <span class="n">DefaultOptimizerInfoTuple</span><span class="p">(</span>
+        <span class="n">DEFAULT_GRADIENT_DESCENT_MULTISTARTS_EI_MC</span><span class="p">,</span>
+        <span class="n">DEFAULT_GRADIENT_DESCENT_NUM_RANDOM_SAMPLES_EI_MC</span><span class="p">,</span>
+        <span class="n">DEFAULT_GRADIENT_DESCENT_PARAMETERS_EI_MC</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="p">(</span><span class="n">GRADIENT_DESCENT_OPTIMIZER</span><span class="p">,</span> <span class="n">views_constant</span><span class="o">.</span><span class="n">GP_HYPER_OPT_ROUTE_NAME</span><span class="p">,</span> <span class="n">LEAVE_ONE_OUT_LOG_LIKELIHOOD</span><span class="p">):</span> <span class="n">_GRADIENT_DESCENT_MODEL_SELECTION_DEFAULT_OPTIMIZER</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">GRADIENT_DESCENT_OPTIMIZER</span><span class="p">,</span> <span class="n">views_constant</span><span class="o">.</span><span class="n">GP_HYPER_OPT_ROUTE_NAME</span><span class="p">,</span> <span class="n">LOG_MARGINAL_LIKELIHOOD</span><span class="p">):</span> <span class="n">_GRADIENT_DESCENT_MODEL_SELECTION_DEFAULT_OPTIMIZER</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">NEWTON_OPTIMIZER</span><span class="p">,</span> <span class="n">views_constant</span><span class="o">.</span><span class="n">GP_HYPER_OPT_ROUTE_NAME</span><span class="p">,</span> <span class="n">LOG_MARGINAL_LIKELIHOOD</span><span class="p">):</span> <span class="n">DefaultOptimizerInfoTuple</span><span class="p">(</span>
+        <span class="n">DEFAULT_NEWTON_MULTISTARTS_MODEL_SELECTION</span><span class="p">,</span>
+        <span class="n">DEFAULT_NEWTON_NUM_RANDOM_SAMPLES_MODEL_SELECTION</span><span class="p">,</span>
+        <span class="n">DEFAULT_NEWTON_PARAMETERS_MODEL_SELECTION</span><span class="p">,</span>
+    <span class="p">),</span>
+<span class="p">}</span>
 
 <span class="c"># Constant Liar constants</span>
 <span class="n">CONSTANT_LIAR_MIN</span> <span class="o">=</span> <span class="s">&#39;constant_liar_min&#39;</span>
 <span class="n">CONSTANT_LIAR_MAX</span> <span class="o">=</span> <span class="s">&#39;constant_liar_max&#39;</span>
 <span class="n">CONSTANT_LIAR_MEAN</span> <span class="o">=</span> <span class="s">&#39;constant_liar_mean&#39;</span>
 
+<span class="c">#: Pre-defined constant liar &quot;lie&quot; methods supported by :mod:`moe`</span>
 <span class="n">CONSTANT_LIAR_METHODS</span> <span class="o">=</span> <span class="p">[</span>
         <span class="n">CONSTANT_LIAR_MIN</span><span class="p">,</span>
         <span class="n">CONSTANT_LIAR_MAX</span><span class="p">,</span>
@@ -350,7 +464,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2014, Yelp and Cornell Collaboration.
+        &copy; Copyright 2012-2014 Yelp. MOE is licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0.
     </p>
   </div>
 
