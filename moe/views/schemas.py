@@ -34,7 +34,7 @@ class StrictMappingSchema(colander.MappingSchema):
         This solution follows: https://github.com/Pylons/colander/issues/116
 
         .. Note:: colander's default behavior is ``unknown='ignore'``; the other option
-          is ``'preserve'. See: http://colander.readthedocs.org/en/latest/api.html#colander.Mapping
+          is ``'preserve'``. See: http://colander.readthedocs.org/en/latest/api.html#colander.Mapping
 
         """
         return colander.Mapping(unknown='raise')
@@ -147,6 +147,10 @@ class BoundedDomainInfo(DomainInfo):
 
     """The domain info needed for every request, along with bounds for optimization.
 
+    .. Note:: For EI/next points, selecting a domain that is substantially larger than
+      the bounding box of the historical data may lead MOE to favor exploring near the
+      boundaries instead of near existing data.
+
     **Required fields**
 
     All required fields from :class:`~moe.views.schemas.DomainInfo`
@@ -237,10 +241,16 @@ class CovarianceInfo(StrictMappingSchema):
 
     """The covariance info needed for every request.
 
+    .. Warning:: Very large length scales (adverse conditioning effects) and very small length scales (irrelevant dimensions)
+      can negatively impact MOE's performance. It may be worth checking that your length scales are "reasonable."
+
+      Additionally, MOE's default optimization parameters were tuned for hyperparameter values roughly in [0.01, 100].
+      Venturing too far out of this range means the defaults may perform poorly.
+
     **Required fields**
 
-     :ivar covariance_type: (*str*) a covariance type in :const:`moe.optimal_learning.python.python_version.constant.COVARIANCE_TYPES`
-     :hyperparameters: (*list of float64*) the hyperparameters corresponding to the given :attr:`covariance_type`
+    :ivar covariance_type: (*str*) a covariance type in :const:`moe.optimal_learning.python.python_version.constant.COVARIANCE_TYPES`
+    :ivar hyperparameters: (*list of float64*) the hyperparameters corresponding to the given :attr:`covariance_type`
 
     """
 
@@ -259,6 +269,20 @@ class CovarianceInfo(StrictMappingSchema):
 class GpHistoricalInfo(StrictMappingSchema):
 
     """The Gaussian Process info needed for every request.
+
+    .. Warning:: If the points are too close together (relative to the length scales in :class:`moe.views.schemas.CovarianceInfo`)
+      with simultaneously very low or zero noise, the condition number of the GPP's covariance matrix can be very large. The
+      matrix may even become numerically singular.
+
+      In such cases, check for (nearly) duplicates points and be mindful of large length scales.
+
+    .. Warning:: 0 ``noise_variance`` in the input historical data may lead to [numerically] singular covariance matrices. This
+      becomes more likely as ``num_sampled`` increases. Noise caps the condition number at roughly ``1.0 / min(noise)``, so
+      adding artificial noise (e.g., ``1.0e-12``) can aid with conditioning issues.
+
+      MOE does not do this for you automatically since 0 noise may be extremely important for some users.
+
+    .. Note:: MOE performs best if the input ``points_sampled_value`` are 0 mean.
 
     **Required fields**
 
@@ -307,7 +331,7 @@ class OptimizerInfo(StrictMappingSchema):
 
     """Schema specifying the behavior of the multistarted optimizers in the optimal_learning library.
 
-    .. Warning:: This schema does not provide default values for its fields. These defaults
+    .. Note:: This schema does not provide default values for its fields. These defaults
       ***DO EXIST***; see :mod:`moe.optimal_learning.python.constant`. However the defaults are
       dependent on external factors (like whether we're computing EI, log marginal, etc.) and
       are not known statically.
@@ -315,7 +339,7 @@ class OptimizerInfo(StrictMappingSchema):
       See :meth:`moe.views.optimizable_gp_pretty_view.OptimizableGpPrettyView.get_params_from_request`
       for an example of how this schema is used.
 
-    .. Warning:: The field :attr:`optimizer_parameters` is ***NOT VALIDATED***. Users of this
+    .. Note:: The field :attr:`optimizer_parameters` is ***NOT VALIDATED***. Users of this
       schema are responsible for passing its contents through the appropriate schema using
       the :const:`moe.views.schemas.OPTIMIZER_TYPES_TO_SCHEMA_CLASSES` dict provided above.
 
@@ -355,6 +379,13 @@ class OptimizerInfo(StrictMappingSchema):
 class GpNextPointsRequest(StrictMappingSchema):
 
     """A request colander schema for the various subclasses of :class:`moe.views.gp_next_points_pretty_view.GpNextPointsPrettyView`; e.g., :class:`moe.views.rest.gp_next_points_epi.GpNextPointsEpi`.
+
+    .. Warning:: Requesting ``num_to_sample`` > ``num_sampled`` can lead to singular GP-variance
+      matrices and other conditioning issues (e.g., the resulting points may be tightly
+      clustered). We suggest bootstrapping with a few grid points, random search, etc.
+
+    See additional notes in :class:`moe.views.schemas.CovarianceInfo`,
+    :class:`moe.views.schemas.BoundedDomainInfo`, :class:`moe.views.schemas.GpHistoricalInfo`.
 
     **Required fields**
 
@@ -516,6 +547,20 @@ class GpNextPointsConstantLiarRequest(GpNextPointsRequest):
 
     See :func:`moe.optimal_learning.python.cpp_wrappers.expected_improvement.constant_liar_expected_improvement_optimization` for more info.
 
+    .. Warning:: Setting :attr:`lie_value` ``< best_so_far`` (``= min(points_sampled_value)``)
+      will lead to poor results. The resulting ``points_to_sample`` will be tightly clustered.
+      Such results are generally of low value and may cause singular GP-variance matrices too.
+
+    .. Warning:: Setting :attr:`lie_noise_variance` to 0 may cause singular GP covariance
+      matrices when paired with large ``num_to_sample`` (for the same reason given in
+      :class:`moe.views.schemas.GpHistoricalInfo`).
+
+      Setting large :attr:`lie_noise_variance` may cause the output ``points_to_sample``
+      to cluster--if one heuristic estimate is good and has large noise, MOE will want to
+      increase resample that location to increase certainty.
+
+    See additional notes/warnings in :class:`moe.views.schemas.GpNextPointsRequest`.
+
     **Required fields**
 
     :ivar gp_historical_info: (:class:`moe.views.schemas.GpHistoricalInfo`) dict of historical data
@@ -524,7 +569,7 @@ class GpNextPointsConstantLiarRequest(GpNextPointsRequest):
     **Optional fields**
 
     :ivar num_to_sample: (*int*) number of next points to generate (default: 1)
-    :ivar lie_method: (*str) name from `CONSTANT_LIAR_METHODS` representing the liar method to use (default: 'constant_liar_min')
+    :ivar lie_method: (*str*) name from `CONSTANT_LIAR_METHODS` representing the liar method to use (default: 'constant_liar_min')
     :ivar lie_value: (*float64*) the 'lie' the Constant Liar heuristic will use (default: None). If `lie_value` is not None the algorithm will use this value instead of one calculated using `lie_method`.
     :ivar lie_noise_variance: (*float64 >= 0.0*) the noise variance of the 'lie' value (default: 0.0)
     :ivar covariance_info: (:class:`moe.views.schemas.CovarianceInfo`) dict of covariance information
@@ -582,6 +627,16 @@ class GpNextPointsKrigingRequest(GpNextPointsRequest):
     """Extends the standard request :class:`moe.views.schemas.GpNextPointsRequest` with kriging parameters, for use with :class:`moe.views.rest.gp_next_points_kriging.GpNextPointsKriging`.
 
     See :func:`moe.optimal_learning.python.cpp_wrappers.expected_improvement.kriging_believer_expected_improvement_optimization` for more info.
+
+    .. Warning:: Setting :attr:`kriging_noise_variance` to 0 may cause singular GP covariance
+      matrices when paired with large ``num_to_sample`` (for the same reason given in
+      :class:`moe.views.schemas.GpHistoricalInfo`).
+
+      Setting large :attr:`kriging_noise_variance` may cause the output ``points_to_sample``
+      to cluster--if one heuristic estimate is good and has large noise, MOE will want to
+      increase resample that location to increase certainty.
+
+    See additional notes/warnings in :class:`moe.views.schemas.GpNextPointsRequest`.
 
     **Required fields**
 
@@ -697,6 +752,17 @@ class GpNextPointsResponse(StrictMappingSchema):
 class GpHyperOptRequest(StrictMappingSchema):
 
     """A :class:`moe.views.rest.gp_hyper_opt.GpHyperOptView` request colander schema.
+
+    .. Note:: Particularly when the amount of historical data is low, the log likelihood
+      may grow toward extreme hyperparameter values (i.e., toward 0 or infinity). Select
+      reasonable domain bounds. For example, in a driving distance parameter, the scale
+      of feet is irrelevant, as is the scale of 1000s of miles.
+
+    .. Note:: MOE's default optimization parameters were tuned for hyperparameter values roughly in [0.01, 100].
+      Venturing too far out of this range means the defaults may perform poorly.
+
+    See additional notes in :class:`moe.views.schemas.CovarianceInfo`,
+    :class:`moe.views.schemas.GpHistoricalInfo`.
 
     **Required fields**
 
@@ -869,6 +935,12 @@ class GpHyperOptResponse(StrictMappingSchema):
 class GpMeanVarRequest(StrictMappingSchema):
 
     """A request colander schema for the views in :mod:`moe.views.rest.gp_mean_var`.
+
+    .. Note:: Requesting ``points_to_evaluate`` that are close to each or close to existing
+      ``points_sampled`` may result in a [numerically] singular GP-variance matrix.
+
+    See additional notes in :class:`moe.views.schemas.CovarianceInfo`,
+    :class:`moe.views.schemas.GpHistoricalInfo`.
 
     **Required fields**
 
@@ -1078,6 +1150,13 @@ class GpMeanVarDiagResponse(GpMeanResponse, GpVarDiagMixinResponse):
 class GpEiRequest(StrictMappingSchema):
 
     """A :class:`moe.views.rest.gp_ei.GpEiView` request colander schema.
+
+    .. Note:: Requesting ``points_to_evaluate`` and ``points_being_sampled`` that are close
+      to each or close to existing ``points_sampled`` may result in a [numerically] singular
+      GP-variance matrix (which is required by EI).
+
+    See additional notes in :class:`moe.views.schemas.CovarianceInfo`,
+    :class:`moe.views.schemas.GpHistoricalInfo`.
 
     **Required fields**
 
