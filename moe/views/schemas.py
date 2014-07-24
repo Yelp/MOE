@@ -1,8 +1,16 @@
 # -*- coding: utf-8 -*-
-"""Base level schemas for the response/request schemas of each MOE REST endpoint."""
+"""Base level schemas for the response/request schemas of each MOE REST endpoint.
+
+.. Warning:: Outputs of colander schema serialization/deserialization should be treated as
+  READ-ONLY. It appears that "missing=" and "default=" value are weak-copied (by reference).
+  Thus changing missing/default fields in the output dict can modify the schema!
+
+TODO(GH-291): make sure previous warning is moved to the schemas/__init__.py file
+
+"""
 import colander
 
-from moe.optimal_learning.python.constant import DEFAULT_NEWTON_PARAMETERS, DEFAULT_GRADIENT_DESCENT_PARAMETERS, GRADIENT_DESCENT_OPTIMIZER, DEFAULT_OPTIMIZER_MULTISTARTS, DEFAULT_OPTIMIZER_NUM_RANDOM_SAMPLES, TENSOR_PRODUCT_DOMAIN_TYPE, SQUARE_EXPONENTIAL_COVARIANCE_TYPE, NULL_OPTIMIZER, NEWTON_OPTIMIZER, DOMAIN_TYPES, OPTIMIZER_TYPES, COVARIANCE_TYPES, CONSTANT_LIAR_METHODS, DEFAULT_MAX_NUM_THREADS, DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS, LIKELIHOOD_TYPES, LOG_MARGINAL_LIKELIHOOD, DEFAULT_CONSTANT_LIAR_METHOD, DEFAULT_CONSTANT_LIAR_LIE_NOISE_VARIANCE, DEFAULT_KRIGING_NOISE_VARIANCE, DEFAULT_KRIGING_STD_DEVIATION_COEF
+from moe.optimal_learning.python.constant import GRADIENT_DESCENT_OPTIMIZER, TENSOR_PRODUCT_DOMAIN_TYPE, SQUARE_EXPONENTIAL_COVARIANCE_TYPE, NULL_OPTIMIZER, NEWTON_OPTIMIZER, DOMAIN_TYPES, OPTIMIZER_TYPES, COVARIANCE_TYPES, CONSTANT_LIAR_METHODS, DEFAULT_MAX_NUM_THREADS, MAX_ALLOWED_NUM_THREADS, DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS, LIKELIHOOD_TYPES, LOG_MARGINAL_LIKELIHOOD, DEFAULT_CONSTANT_LIAR_METHOD, DEFAULT_CONSTANT_LIAR_LIE_NOISE_VARIANCE, DEFAULT_KRIGING_NOISE_VARIANCE, DEFAULT_KRIGING_STD_DEVIATION_COEF
 
 
 class StrictMappingSchema(colander.MappingSchema):
@@ -71,11 +79,11 @@ class SinglePoint(StrictMappingSchema):
 
     """A point object.
 
-    Contains:
+    **Required fields**
 
-        * point - ListOfFloats
-        * value - float
-        * value_var - float >= 0.0
+    :ivar point: (:class:`moe.views.schemas.ListOfFloats`) The point sampled (in the domain of the function)
+    :ivar value: (*float64*) The value returned by the function
+    :ivar value_var: (*float64 >= 0.0*) The noise/measurement variance (if any) associated with :attr:`value`
 
     """
 
@@ -116,11 +124,11 @@ class DomainInfo(StrictMappingSchema):
 
     **Required fields**
 
-        :dim: the dimension of the domain (int)
+    :ivar dim: (*int >= 0*) the dimension of the domain (int)
 
     **Optional fields**
 
-        :domain_type: the type of domain to use in ``moe.optimal_learning.python.python_version.constant.DOMAIN_TYPES`` (default: TENSOR_PRODUCT_DOMAIN_TYPE)
+    :ivar domain_type: (*str*) the type of domain to use, one of :const:`moe.optimal_learning.python.python_version.constant.DOMAIN_TYPES` (default: TENSOR_PRODUCT_DOMAIN_TYPE)
 
     """
 
@@ -141,8 +149,9 @@ class BoundedDomainInfo(DomainInfo):
 
     **Required fields**
 
-        All required fields from :class:`~moe.views.schemas.DomainInfo`
-        :domain_bounds: the bounds of the domain of type :class:`moe.views.schemas.Domain`
+    All required fields from :class:`~moe.views.schemas.DomainInfo`
+
+    :ivar domain_bounds: (*list of list of float64*) the bounds of the domain of type :class:`moe.views.schemas.Domain`
 
     """
 
@@ -159,40 +168,30 @@ class GradientDescentParametersSchema(StrictMappingSchema):
 
     max_num_steps = colander.SchemaNode(
             colander.Int(),
-            missing=DEFAULT_GRADIENT_DESCENT_PARAMETERS.max_num_steps,
             validator=colander.Range(min=1),
             )
     max_num_restarts = colander.SchemaNode(
             colander.Int(),
-            missing=DEFAULT_GRADIENT_DESCENT_PARAMETERS.max_num_restarts,
             validator=colander.Range(min=1),
             )
     num_steps_averaged = colander.SchemaNode(
             colander.Int(),
-            missing=DEFAULT_GRADIENT_DESCENT_PARAMETERS.num_steps_averaged,
-            validator=colander.Range(min=1),
+            validator=colander.Range(min=0),
             )
     gamma = colander.SchemaNode(
             colander.Float(),
-            missing=DEFAULT_GRADIENT_DESCENT_PARAMETERS.gamma,
             validator=colander.Range(min=0.0),
             )
     pre_mult = colander.SchemaNode(
             colander.Float(),
-            missing=DEFAULT_GRADIENT_DESCENT_PARAMETERS.pre_mult,
             validator=colander.Range(min=0.0),
             )
     max_relative_change = colander.SchemaNode(
             colander.Float(),
-            missing=DEFAULT_GRADIENT_DESCENT_PARAMETERS.max_relative_change,
-            validator=colander.Range(
-                min=0.0,
-                max=1.0,
-                ),
+            validator=colander.Range(min=0.0, max=1.0),
             )
     tolerance = colander.SchemaNode(
             colander.Float(),
-            missing=DEFAULT_NEWTON_PARAMETERS.tolerance,
             validator=colander.Range(min=0.0),
             )
 
@@ -207,30 +206,22 @@ class NewtonParametersSchema(StrictMappingSchema):
 
     max_num_steps = colander.SchemaNode(
             colander.Int(),
-            missing=DEFAULT_NEWTON_PARAMETERS.max_num_steps,
             validator=colander.Range(min=1),
             )
     gamma = colander.SchemaNode(
             colander.Float(),
-            missing=DEFAULT_NEWTON_PARAMETERS.gamma,
-            validator=colander.Range(min=0.0),
+            validator=colander.Range(min=1.0),
             )
     time_factor = colander.SchemaNode(
             colander.Float(),
-            missing=DEFAULT_NEWTON_PARAMETERS.time_factor,
-            validator=colander.Range(min=0.0),
+            validator=colander.Range(min=1.0e-16),
             )
     max_relative_change = colander.SchemaNode(
             colander.Float(),
-            missing=DEFAULT_NEWTON_PARAMETERS.max_relative_change,
-            validator=colander.Range(
-                min=0.0,
-                max=1.0,
-                ),
+            validator=colander.Range(min=0.0, max=1.0),
             )
     tolerance = colander.SchemaNode(
             colander.Float(),
-            missing=DEFAULT_NEWTON_PARAMETERS.tolerance,
             validator=colander.Range(min=0.0),
             )
 
@@ -248,8 +239,8 @@ class CovarianceInfo(StrictMappingSchema):
 
     **Required fields**
 
-        :covariance_type: a covariance type in ``moe.optimal_learning.python.python_version.constant.COVARIANCE_TYPES``
-        :hyperparameters: the hyperparameters corresponding to the given covariance_type
+     :ivar covariance_type: (*str*) a covariance type in :const:`moe.optimal_learning.python.python_version.constant.COVARIANCE_TYPES`
+     :hyperparameters: (*list of float64*) the hyperparameters corresponding to the given :attr:`covariance_type`
 
     """
 
@@ -269,9 +260,10 @@ class GpHistoricalInfo(StrictMappingSchema):
 
     """The Gaussian Process info needed for every request.
 
-    Contains:
+    **Required fields**
 
-        * points_sampled - PointsSampled
+    :ivar points_sampled: (*list of PointsSampled*) The :class:`moe.views.schemas.PointsSampled` (point, value, noise) that make up
+      the historical data.
 
     """
 
@@ -302,6 +294,8 @@ class MatrixOfFloats(colander.SequenceSchema):
     row_of_matrix = ListOfFloats()
 
 
+#: Mapping from optimizer types (:const:`moe.optimal_learning.python.constant.OPTIMIZER_TYPES`) to
+#: optimizer schemas, e.g., :class:`moe.views.schemas.NewtonParametersSchema`.
 OPTIMIZER_TYPES_TO_SCHEMA_CLASSES = {
         NULL_OPTIMIZER: NullParametersSchema,
         NEWTON_OPTIMIZER: NewtonParametersSchema,
@@ -311,29 +305,45 @@ OPTIMIZER_TYPES_TO_SCHEMA_CLASSES = {
 
 class OptimizerInfo(StrictMappingSchema):
 
-    """Optimization information needed for each next point endpoint.
+    """Schema specifying the behavior of the multistarted optimizers in the optimal_learning library.
 
-    **Optimization fields**
+    .. Warning:: This schema does not provide default values for its fields. These defaults
+      ***DO EXIST***; see :mod:`moe.optimal_learning.python.constant`. However the defaults are
+      dependent on external factors (like whether we're computing EI, log marginal, etc.) and
+      are not known statically.
 
-        :optimizer_type: a string defining the optimizer type from `moe.optimal_learning.python.constant.OPTIMIZER_TYPES` (default: GRADIENT_DESCENT_OPTIMIZER)
-        :optimizer_parameters: a dict corresponding the the parameters of the optimization method
+      See :meth:`moe.views.optimizable_gp_pretty_view.OptimizableGpPrettyView.get_params_from_request`
+      for an example of how this schema is used.
+
+    .. Warning:: The field :attr:`optimizer_parameters` is ***NOT VALIDATED***. Users of this
+      schema are responsible for passing its contents through the appropriate schema using
+      the :const:`moe.views.schemas.OPTIMIZER_TYPES_TO_SCHEMA_CLASSES` dict provided above.
+
+    TODO(GH-303): Try schema bindings as a way to automate setting validators and missing values.
+
+    **Optional fields**
+
+    :ivar optimizer_type: (*str*) the optimization type from :const:`moe.optimal_learning.python.constant.OPTIMIZER_TYPES` (default: GRADIENT_DESCENT_OPTIMIZER)
+    :ivar num_multistarts: (*int > 0*) number of locations from which to start optimization runs
+    :ivar num_random_samples: (*int >= 0*) number of random search points to use if multistart optimization fails
+    :ivar optimizer_parameters: (*dict*) a dict corresponding the the parameters of the optimization method
 
     """
 
     optimizer_type = colander.SchemaNode(
             colander.String(),
             validator=colander.OneOf(OPTIMIZER_TYPES),
-            missing=GRADIENT_DESCENT_OPTIMIZER,
+            missing=None,
             )
     num_multistarts = colander.SchemaNode(
             colander.Int(),
-            missing=DEFAULT_OPTIMIZER_MULTISTARTS,
             validator=colander.Range(min=1),
+            missing=None,
             )
     num_random_samples = colander.SchemaNode(
             colander.Int(),
-            missing=DEFAULT_OPTIMIZER_NUM_RANDOM_SAMPLES,
-            validator=colander.Range(min=1),
+            validator=colander.Range(min=0),
+            missing=None,
             )
     # TODO(GH-303): Use schema binding to set up missing/default and validation dynamically
     optimizer_parameters = colander.SchemaNode(
@@ -344,21 +354,70 @@ class OptimizerInfo(StrictMappingSchema):
 
 class GpNextPointsRequest(StrictMappingSchema):
 
-    """A ``gp_next_points_*`` request colander schema.
+    """A request colander schema for the various subclasses of :class:`moe.views.gp_next_points_pretty_view.GpNextPointsPrettyView`; e.g., :class:`moe.views.rest.gp_next_points_epi.GpNextPointsEpi`.
 
     **Required fields**
 
-        :gp_historical_info: a :class:`moe.views.schemas.GpHistoricalInfo` dict of historical data
-        :domain_info: a :class:`moe.views.schemas.BoundedDomainInfo` dict of domain information
+    :ivar gp_historical_info: (:class:`moe.views.schemas.GpHistoricalInfo`) dict of historical data
+    :ivar domain_info: (:class:`moe.views.schemas.BoundedDomainInfo`) dict of domain information
 
     **Optional fields**
 
-        :num_to_sample: number of next points to generate (default: 1)
-        :mc_iterations: number of Monte Carlo (MC) iterations to perform in numerical integration to calculate EI
-        :max_num_threads: maximum number of threads to use in computation (default: 1)
-        :covariance_info: a :class:`moe.views.schemas.CovarianceInfo` dict of covariance information
-        :optimizer_info: a :class:`moe.views.schemas.OptimizerInfo` dict of optimization information
-        :points_being_sampled: list of points in domain being sampled in concurrent experiments (default: [])
+    :ivar num_to_sample: (*int*) number of next points to generate (default: 1)
+    :ivar mc_iterations: (*int*) number of Monte Carlo (MC) iterations to perform in numerical integration to calculate EI
+    :ivar max_num_threads: (*int*) maximum number of threads to use in computation
+    :ivar covariance_info: (:class:`moe.views.schemas.CovarianceInfo`) dict of covariance information
+    :ivar optimizer_info: (:class:`moe.views.schemas.OptimizerInfo`) dict of optimizer information
+    :ivar points_being_sampled: (*list of float64*) points in domain being sampled in concurrent experiments (default: [])
+
+    **General Timing Results**
+
+    Here are some "broad-strokes" timing results for EI optimization.
+    These tests are not complete nor comprehensive; they're just a starting point.
+    The tests were run on a Sandy Bridge 2.3 GHz quad-core CPU. Data was generated
+    from a Gaussian Process prior. The optimization parameters were the default
+    values (see :mod:`moe.optimal_learning.python.constant`) as of sha
+    ``c19257049f16036e5e2823df87fbe0812720e291``.
+
+    Below, ``N = num_sampled``, ``MC = num_mc_iterations``, and ``q = num_to_sample``
+
+    .. Note:: constant liar, kriging, and EPI (with ``num_to_sample = 1``) all fall
+      under the ``analytic EI`` name.
+
+    .. Note:: EI optimization times can vary widely as some randomly generated test
+      cases are very "easy." Thus we give rough ranges.
+
+    =============  =======================
+     Analytic EI
+    --------------------------------------
+      dim, N           Gradient Descent
+    =============  =======================
+      3, 20               0.3 - 0.6s
+      3, 40               0.5 - 1.4s
+      3, 120              0.8 - 2.9s
+      6, 20               0.4 - 0.9s
+      6, 40              1.25 - 1.8s
+      6, 120              2.9 - 5.0s
+    =============  =======================
+
+    We expect this to scale as ``~ O(dim)`` and ``~ O(N^3)``. The ``O(N^3)`` only happens
+    once per multistart. Per iteration there's an ``O(N^2)`` dependence but as you can
+    see, the dependence on ``dim`` is stronger.
+
+    =============  =======================
+     MC EI (``N = 20``, ``dim = 3``)
+    --------------------------------------
+      q, MC           Gradient Descent
+    =============  =======================
+      2, 10k                50 - 80s
+      4, 10k              120 - 180s
+      8, 10k              400 - 580s
+      2, 40k              230 - 480s
+      4, 40k              600 - 700s
+    =============  =======================
+
+    We expect this to scale as ``~ O(q^2)`` and ``~ O(MC)``. Scaling with ``dim`` and ``N``
+    should be similar to the analytic case.
 
     **Example Minimal Request**
 
@@ -435,7 +494,7 @@ class GpNextPointsRequest(StrictMappingSchema):
             )
     max_num_threads = colander.SchemaNode(
             colander.Int(),
-            validator=colander.Range(min=1),
+            validator=colander.Range(min=1, max=MAX_ALLOWED_NUM_THREADS),
             missing=DEFAULT_MAX_NUM_THREADS,
             )
     gp_historical_info = GpHistoricalInfo()
@@ -453,21 +512,28 @@ class GpNextPointsRequest(StrictMappingSchema):
 
 class GpNextPointsConstantLiarRequest(GpNextPointsRequest):
 
-    """Extends the standard request :class:`moe.views.gp_next_points_pretty_view.GpNextPointsRequest` with a lie value.
+    """Extends the standard request :class:`moe.views.schemas.GpNextPointsRequest` with a lie value, for use with :class:`moe.views.rest.gp_next_points_constant_liar.GpNextPointsConstantLiar`.
+
+    See :func:`moe.optimal_learning.python.cpp_wrappers.expected_improvement.constant_liar_expected_improvement_optimization` for more info.
 
     **Required fields**
 
-        :gp_historical_info: a :class:`moe.views.schemas.GpHistoricalInfo` dict of historical data
-        :domain_info: a :class:`moe.views.schemas.BoundedDomainInfo` dict of domain information
+    :ivar gp_historical_info: (:class:`moe.views.schemas.GpHistoricalInfo`) dict of historical data
+    :ivar domain_info: (:class:`moe.views.schemas.BoundedDomainInfo`) dict of domain information
 
     **Optional fields**
 
-        :num_to_sample: number of next points to generate (default: 1)
-        :lie_method: a string from `CONSTANT_LIAR_METHODS` representing the liar method to use (default: 'constant_liar_min')
-        :lie_value: a float representing the 'lie' the Constant Liar heuristic will use (default: None). If `lie_value` is not None the algorithm will use this value instead of one calculated using `lie_method`.
-        :lie_noise_variance: a positive (>= 0) float representing the noise variance of the 'lie' value (default: 0.0)
-        :covariance_info: a :class:`moe.views.schemas.CovarianceInfo` dict of covariance information
-        :optimiaztion_info: a :class:`moe.views.schemas.OptimizerInfo` dict of optimization information
+    :ivar num_to_sample: (*int*) number of next points to generate (default: 1)
+    :ivar lie_method: (*str) name from `CONSTANT_LIAR_METHODS` representing the liar method to use (default: 'constant_liar_min')
+    :ivar lie_value: (*float64*) the 'lie' the Constant Liar heuristic will use (default: None). If `lie_value` is not None the algorithm will use this value instead of one calculated using `lie_method`.
+    :ivar lie_noise_variance: (*float64 >= 0.0*) the noise variance of the 'lie' value (default: 0.0)
+    :ivar covariance_info: (:class:`moe.views.schemas.CovarianceInfo`) dict of covariance information
+    :ivar optimiaztion_info: (:class:`moe.views.schemas.OptimizerInfo`) dict of optimization information
+
+    **General Timing Results**
+
+    See the ``Analytic EI`` table in :class:`moe.views.schemas.GpNextPointsRequest` for
+    rough timing numbers.
 
     **Example Request**
 
@@ -513,20 +579,29 @@ class GpNextPointsConstantLiarRequest(GpNextPointsRequest):
 
 class GpNextPointsKrigingRequest(GpNextPointsRequest):
 
-    """Extends the standard request :class:`moe.views.gp_next_points_pretty_view.GpNextPointsRequest` with kriging parameters.
+    """Extends the standard request :class:`moe.views.schemas.GpNextPointsRequest` with kriging parameters, for use with :class:`moe.views.rest.gp_next_points_kriging.GpNextPointsKriging`.
+
+    See :func:`moe.optimal_learning.python.cpp_wrappers.expected_improvement.kriging_believer_expected_improvement_optimization` for more info.
 
     **Required fields**
 
-        :gp_historical_info: a :class:`moe.views.schemas.GpHistoricalInfo` dict of historical data
-        :domain_info: a :class:`moe.views.schemas.BoundedDomainInfo` dict of domain information
+    :ivar gp_historical_info: (:class:`moe.views.schemas.GpHistoricalInfo`) dict of historical data
+    :ivar domain_info: (:class:`moe.views.schemas.BoundedDomainInfo`) dict of domain information
 
     **Optional fields**
 
-        :num_to_sample: number of next points to generate (default: 1)
-        :std_deviation_coef: a float used in Kriging, see Kriging implementation docs (default: 0.0)
-        :kriging_noise_variance: a positive (>= 0) float used in Kriging, see Kriging implementation docs (default: 0.0)
-        :covariance_info: a :class:`moe.views.schemas.CovarianceInfo` dict of covariance information
-        :optimiaztion_info: a :class:`moe.views.schemas.OptimizerInfo` dict of optimization information
+    :ivar num_to_sample: number of next points to generate (default: 1)
+    :ivar std_deviation_coef: (*float64*) amount of GP-variance to add to each Kriging estimate, see
+      :func:`moe.optimal_learning.python.cpp_wrappers.expected_improvement.kriging_believer_expected_improvement_optimization` (default: 0.0)
+    :ivar kriging_noise_variance: (*float64 >= 0.0*) noise variance for each Kriging estimate, see
+      :func:`moe.optimal_learning.python.cpp_wrappers.expected_improvement.kriging_believer_expected_improvement_optimization` (default: 0.0)
+    :ivar covariance_info: (:class:`moe.views.schemas.CovarianceInfo`) dict of covariance information
+    :ivar optimiaztion_info: (:class:`moe.views.schemas.OptimizerInfo`) dict of optimization information
+
+    **General Timing Results**
+
+    See the ``Analytic EI`` table in :class:`moe.views.schemas.GpNextPointsRequest` for
+    rough timing numbers.
 
     **Example Request**
 
@@ -565,51 +640,111 @@ class GpNextPointsKrigingRequest(GpNextPointsRequest):
             )
 
 
-class GpNextPointsResponse(StrictMappingSchema):
+class GpNextPointsStatus(StrictMappingSchema):
 
-    """A ``gp_next_points_*`` response colander schema.
+    """A status schema for the various subclasses of :class:`moe.views.gp_next_points_pretty_view.GpNextPointsPrettyView`; e.g., :class:`moe.views.rest.gp_next_points_epi.GpNextPointsEpi`.
 
     **Output fields**
 
-        :endpoint: the endpoint that was called
-        :points_to_sample: list of points in the domain to sample next (:class:`moe.views.schemas.ListOfPointsInDomain`)
-        :expected_improvement: list of EI of points in points_to_sample (:class:`moe.views.schemas.ListOfExpectedImprovements`)
+    :ivar expected_improvement: (*float64 >= 0.0*) EI evaluated at ``points_to_sample`` (:class:`moe.views.schemas.ListOfExpectedImprovements`)
+    :ivar optimizer_success: (*dict*) Whether or not the optimizer converged to an optimal set of ``points_to_sample``
+
+    """
+
+    expected_improvement = colander.SchemaNode(
+            colander.Float(),
+            validator=colander.Range(min=0.0),
+            )
+    optimizer_success = colander.SchemaNode(
+        colander.Mapping(unknown='preserve'),
+        default={'found_update': False},
+    )
+
+
+class GpNextPointsResponse(StrictMappingSchema):
+
+    """A response colander schema for the various subclasses of :class:`moe.views.gp_next_points_pretty_view.GpNextPointsPrettyView`; e.g., :class:`moe.views.rest.gp_next_points_epi.GpNextPointsEpi`.
+
+    **Output fields**
+
+    :ivar endpoint: (*str*) the endpoint that was called
+    :ivar points_to_sample: (*list of list of float64*) points in the domain to sample next (:class:`moe.views.schemas.ListOfPointsInDomain`)
+    :ivar status: (:class:`moe.views.schemas.GpNextPointsStatus`) dict indicating final EI value and
+      optimization status messages (e.g., success)
 
     **Example Response**
 
     .. sourcecode:: http
 
         {
-            "endpoint":"gp_ei",
+            "endpoint": "gp_ei",
             "points_to_sample": [["0.478332304526"]],
-            "expected_improvement": "0.443478498868",
+            "status": {
+                "expected_improvement": "0.443478498868",
+                "optimizer_success": {
+                    'gradient_descent_tensor_product_domain_found_update': True,
+                    },
+                },
         }
 
     """
 
     endpoint = colander.SchemaNode(colander.String())
     points_to_sample = ListOfPointsInDomain()
-    expected_improvement = colander.SchemaNode(
-            colander.Float(),
-            validator=colander.Range(min=0.0),
-            )
+    status = GpNextPointsStatus()
 
 
 class GpHyperOptRequest(StrictMappingSchema):
 
-    """A gp_hyper_opt request colander schema.
+    """A :class:`moe.views.rest.gp_hyper_opt.GpHyperOptView` request colander schema.
 
     **Required fields**
 
-        :gp_historical_info: a :class:`moe.views.schemas.GpHistoricalInfo` object of historical data
-        :domain_info: a :class:`moe.views.schemas.DomainInfo` dict of domain information for the GP
-        :hyperparameter_domain_info: a :class:`moe.views.schemas.BoundedDomainInfo` dict of domain information for the hyperparameter optimization
+    :ivar gp_historical_info: (:class:`moe.views.schemas.GpHistoricalInfo`) object of historical data
+    :ivar domain_info: (:class:`moe.views.schemas.DomainInfo`) dict of domain information for the GP
+    :ivar hyperparameter_domain_info: (:class:`moe.views.schemas.BoundedDomainInfo`) dict of domain information for the hyperparameter optimization
 
     **Optional fields**
 
-        :max_num_threads: maximum number of threads to use in computation (default: 1)
-        :covariance_info: a :class:`moe.views.schemas.CovarianceInfo` dict of covariance information, used as a starting point for optimization
-        :optimizer_info: a :class:`moe.views.schemas.OptimizerInfo` dict of optimization information
+    :ivar max_num_threads: (*int*) maximum number of threads to use in computation
+    :ivar covariance_info: (:class:`moe.views.schemas.CovarianceInfo`) dict of covariance information, used as a starting point for optimization
+    :ivar optimizer_info: (:class:`moe.views.schemas.OptimizerInfo`) dict of optimizer information
+
+    **General Timing Results**
+
+    Here are some "broad-strokes" timing results for hyperparameter optimization.
+    These tests are not complete nor comprehensive; they're just a starting point.
+    The tests were run on a Sandy Bridge 2.3 GHz quad-core CPU. Data was generated
+    from a Gaussian Process prior. The optimization parameters were the default
+    values (see :mod:`moe.optimal_learning.python.constant`) as of sha
+    ``c19257049f16036e5e2823df87fbe0812720e291``.
+
+    Below, ``N = num_sampled``.
+
+    ======== ===================== ========================
+    Scaling with dim (N = 40)
+    -------------------------------------------------------
+      dim     Gradient Descent             Newton
+    ======== ===================== ========================
+      3           85s                      3.6s
+      6           80s                      7.2s
+      12         108s                     19.5s
+    ======== ===================== ========================
+
+    GD scales ``~ O(dim)`` and Newton ``~ O(dim^2)`` although these dim values
+    are not large enough to show the asymptotic behavior.
+
+    ======== ===================== ========================
+    Scaling with N (dim = 3)
+    -------------------------------------------------------
+      N       Gradient Descent             Newton
+    ======== ===================== ========================
+      20        14s                       0.72s
+      40        85s                        3.6s
+      120       2100s                       60s
+    ======== ===================== ========================
+
+    Both methods scale as ``~ O(N^3)`` which is clearly shown here.
 
     **Example Request**
 
@@ -640,11 +775,11 @@ class GpHyperOptRequest(StrictMappingSchema):
                     ],
                 },
             "optimizer_info": {
-                "optimizer_type": "gradient_descent_optimizer",
+                "optimizer_type": "newton_optimizer",
                 "num_multistarts": 200,
                 "num_random_samples": 4000,
                 "optimizer_parameters": {
-                    "gamma": 0.5,
+                    "gamma": 1.2,
                     ...
                     },
                 },
@@ -655,7 +790,7 @@ class GpHyperOptRequest(StrictMappingSchema):
 
     max_num_threads = colander.SchemaNode(
             colander.Int(),
-            validator=colander.Range(min=1),
+            validator=colander.Range(min=1, max=MAX_ALLOWED_NUM_THREADS),
             missing=DEFAULT_MAX_NUM_THREADS,
             )
     gp_historical_info = GpHistoricalInfo()
@@ -676,29 +811,34 @@ class GpHyperOptRequest(StrictMappingSchema):
 
 class GpHyperOptStatus(StrictMappingSchema):
 
-    """A gp_hyper_opt status schema.
+    """A :class:`moe.views.rest.gp_hyper_opt.GpHyperOptView` status schema.
 
     **Output fields**
 
-       :log_likelihood: The log likelihood at the new hyperparameters
-       :grad_log_likelihood: The gradient of the log likelihood at the new hyperparameters
-       :optimizer_success: Whether or not the optimizer converged to an optimal set of hyperparameters
+    :ivar log_likelihood: (*float64*) The log likelihood at the new hyperparameters
+    :ivar grad_log_likelihood: (*list of float64*) The gradient of the log likelihood at the new hyperparameters
+    :ivar optimizer_success: (*dict*) Whether or not the optimizer converged to an optimal set of hyperparameters
 
     """
 
     log_likelihood = colander.SchemaNode(colander.Float())
     grad_log_likelihood = ListOfFloats()
-    optimizer_success = colander.SchemaNode(colander.String())
+    optimizer_success = colander.SchemaNode(
+        colander.Mapping(unknown='preserve'),
+        default={'found_update': False},
+    )
 
 
 class GpHyperOptResponse(StrictMappingSchema):
 
-    """A gp_hyper_opt response colander schema.
+    """A :class:`moe.views.rest.gp_hyper_opt.GpHyperOptView` response colander schema.
 
     **Output fields**
 
-        :endpoint: the endpoint that was called
-        :covariance_info: a :class:`moe.views.schemas.CovarianceInfo` dict of covariance information
+    :ivar endpoint: (*str*) the endpoint that was called
+    :ivar covariance_info: (:class:`moe.views.schemas.CovarianceInfo`) dict of covariance information
+    :ivar status: (:class:`moe.views.schemas.GpHyperOptStatus`) dict indicating final log likelihood value/gradient and
+      optimization status messages (e.g., success)
 
     **Example Response**
 
@@ -708,7 +848,14 @@ class GpHyperOptResponse(StrictMappingSchema):
             "endpoint":"gp_hyper_opt",
             "covariance_info": {
                 "covariance_type": "square_exponential",
-                "hyperparameters": [0.88, 1.24],
+                "hyperparameters": ["0.88", "1.24"],
+                },
+            "status": {
+                "log_likelihood": "-37.3279872",
+                "grad_log_likelihood: ["-3.8897e-12", "1.32789789e-11"],
+                "optimizer_success": {
+                        'newton_found_update': True,
+                    },
                 },
         }
 
@@ -721,16 +868,16 @@ class GpHyperOptResponse(StrictMappingSchema):
 
 class GpMeanVarRequest(StrictMappingSchema):
 
-    """A gp_mean_var request colander schema.
+    """A request colander schema for the views in :mod:`moe.views.rest.gp_mean_var`.
 
     **Required fields**
 
-        :points_to_evaluate: list of points in domain to calculate the Gaussian Process (GP) mean and covariance at (:class:`moe.views.schemas.ListOfPointsInDomain`)
-        :gp_historical_info: a :class:`moe.views.schemas.GpHistoricalInfo` object of historical data
+    :ivar points_to_evaluate: (*list of list of float64*) points in domain to calculate the Gaussian Process (GP) mean and covariance at (:class:`moe.views.schemas.ListOfPointsInDomain`)
+    :ivar gp_historical_info: (:class:`moe.views.schemas.GpHistoricalInfo`) object of historical data
 
     **Optional fields**
 
-        :covariance_info: a :class:`moe.views.schemas.CovarianceInfo` dict of covariance information
+    :ivar covariance_info: (:class:`moe.views.schemas.CovarianceInfo`) dict of covariance information
 
     **Example Minimal Request**
 
@@ -791,7 +938,7 @@ class GpEndpointResponse(StrictMappingSchema):
 
     **Output fields**
 
-        :endpoint: the endpoint that was called
+    :ivar endpoint: (*str*) the endpoint that was called
 
     **Example Response**
 
@@ -812,7 +959,7 @@ class GpMeanMixinResponse(StrictMappingSchema):
 
     **Output fields**
 
-        :mean: list of the means of the GP at ``points_to_evaluate`` (:class:`moe.views.schemas.ListOfFloats`)
+    :ivar mean: (*list of float64*) the means of the GP at ``points_to_evaluate`` (:class:`moe.views.schemas.ListOfFloats`)
 
     **Example Response**
 
@@ -833,7 +980,7 @@ class GpVarMixinResponse(StrictMappingSchema):
 
     **Output fields**
 
-        :variance: matrix of covariance of the GP at ``points_to_evaluate`` (:class:`moe.views.schemas.MatrixOfFloats`)
+    :ivar var: (:class:`moe.views.schemas.MatrixOfFloats`) matrix of covariance of the GP at ``points_to_evaluate``
 
     **Example Response**
 
@@ -858,7 +1005,7 @@ class GpVarDiagMixinResponse(StrictMappingSchema):
 
     **Output fields**
 
-        :variance: list of variances of the GP at ``points_to_evaluate``; i.e., diagonal of the ``variance`` response from gp_mean_var (:class:`moe.views.schemas.ListOfFloats`)
+    :ivar var: (*list of float64*) variances of the GP at ``points_to_evaluate``; i.e., diagonal of the ``var`` response from gp_mean_var (:class:`moe.views.schemas.ListOfFloats`)
 
     **Example Response**
 
@@ -875,14 +1022,7 @@ class GpVarDiagMixinResponse(StrictMappingSchema):
 
 class GpMeanResponse(GpEndpointResponse, GpMeanMixinResponse):
 
-    """A gp_mean response colander schema.
-
-    **Output fields**
-
-        :endpoint: the endpoint that was called
-        :mean: list of the means of the GP at ``points_to_evaluate`` (:class:`moe.views.schemas.ListOfFloats`)
-
-    **Example Response**
+    """A :class:`moe.views.rest.gp_mean_var.GpMeanView` response colander schema.
 
     See composing members' docstrings.
 
@@ -893,14 +1033,7 @@ class GpMeanResponse(GpEndpointResponse, GpMeanMixinResponse):
 
 class GpVarResponse(GpEndpointResponse, GpVarMixinResponse):
 
-    """A gp_var response colander schema.
-
-    **Output fields**
-
-        :endpoint: the endpoint that was called
-        :variance: matrix of covariance of the GP at ``points_to_evaluate`` (:class:`moe.views.schemas.MatrixOfFloats`)
-
-    **Example Response**
+    """A :class:`moe.views.rest.gp_mean_var.GpVarView` response colander schema.
 
     See composing members' docstrings.
 
@@ -911,14 +1044,7 @@ class GpVarResponse(GpEndpointResponse, GpVarMixinResponse):
 
 class GpVarDiagResponse(GpEndpointResponse, GpVarDiagMixinResponse):
 
-    """A gp_var_diag response colander schema.
-
-    **Output fields**
-
-        :endpoint: the endpoint that was called
-        :variance: list of variances of the GP at ``points_to_evaluate``; i.e., diagonal of the ``variance`` response from gp_mean_var (:class:`moe.views.schemas.ListOfFloats`)
-
-    **Example Response**
+    """A :class:`moe.views.rest.gp_mean_var.GpVarDiagView` response colander schema.
 
     See composing members' docstrings.
 
@@ -929,15 +1055,7 @@ class GpVarDiagResponse(GpEndpointResponse, GpVarDiagMixinResponse):
 
 class GpMeanVarResponse(GpMeanResponse, GpVarMixinResponse):
 
-    """A gp_mean_var response colander schema.
-
-    **Output fields**
-
-        :endpoint: the endpoint that was called
-        :mean: list of the means of the GP at ``points_to_evaluate`` (:class:`moe.views.schemas.ListOfFloats`)
-        :variance: matrix of covariance of the GP at ``points_to_evaluate`` (:class:`moe.views.schemas.MatrixOfFloats`)
-
-    **Example Response**
+    """A :class:`moe.views.rest.gp_mean_var.GpMeanVarView` response colander schema.
 
     See composing members' docstrings.
 
@@ -948,17 +1066,7 @@ class GpMeanVarResponse(GpMeanResponse, GpVarMixinResponse):
 
 class GpMeanVarDiagResponse(GpMeanResponse, GpVarDiagMixinResponse):
 
-    """A gp_mean_var_diag response colander schema.
-
-    **Output fields**
-
-        :endpoint: the endpoint that was called
-        :mean: list of the means of the GP at ``points_to_evaluate`` (:class:`moe.views.schemas.ListOfFloats`)
-        :variance: list of variances of the GP at ``points_to_evaluate``; i.e., diagonal of the ``variance`` response from gp_mean_var (:class:`moe.views.schemas.ListOfFloats`)
-
-    **Example Response**
-
-    .. sourcecode:: http
+    """A :class:`moe.views.rest.gp_mean_var.GpMeanVarDiagView` response colander schema.
 
     See composing members' docstrings.
 
@@ -969,19 +1077,19 @@ class GpMeanVarDiagResponse(GpMeanResponse, GpVarDiagMixinResponse):
 
 class GpEiRequest(StrictMappingSchema):
 
-    """A gp_ei request colander schema.
+    """A :class:`moe.views.rest.gp_ei.GpEiView` request colander schema.
 
     **Required fields**
 
-        :points_to_evaluate: list of points in domain to calculate Expected Improvement (EI) at (:class:`moe.views.schemas.ListOfPointsInDomain`)
-        :gp_historical_info: a :class:`moe.views.schemas.GpHistoricalInfo` object of historical data
+    :ivar points_to_evaluate: (*list of list of float64*) points in domain to calculate Expected Improvement (EI) at (:class:`moe.views.schemas.ListOfPointsInDomain`)
+    :ivar gp_historical_info: (:class:`moe.views.schemas.GpHistoricalInfo`) object of historical data
 
     **Optional fields**
 
-        :points_being_sampled: list of points in domain being sampled in concurrent experiments (default: []) (:class:`moe.views.schemas.ListOfPointsInDomain`)
-        :mc_iterations: number of Monte Carlo (MC) iterations to perform in numerical integration to calculate EI
-        :max_num_threads: maximum number of threads to use in computation (default: 1)
-        :covariance_info: a :class:`moe.views.schemas.CovarianceInfo` dict of covariance information
+    :ivar points_being_sampled: (*list of list of float64*) points in domain being sampled in concurrent experiments (default: []) (:class:`moe.views.schemas.ListOfPointsInDomain`)
+    :ivar mc_iterations: (*int*) number of Monte Carlo (MC) iterations to perform in numerical integration to calculate EI
+    :ivar max_num_threads: (*int*) maximum number of threads to use in computation (default: 1)
+    :ivar covariance_info: (:class:`moe.views.schemas.CovarianceInfo`) dict of covariance information
 
     **Example Minimal Request**
 
@@ -1042,7 +1150,7 @@ class GpEiRequest(StrictMappingSchema):
             )
     max_num_threads = colander.SchemaNode(
             colander.Int(),
-            validator=colander.Range(min=1),
+            validator=colander.Range(min=1, max=MAX_ALLOWED_NUM_THREADS),
             missing=DEFAULT_MAX_NUM_THREADS,
             )
     gp_historical_info = GpHistoricalInfo()
@@ -1054,12 +1162,12 @@ class GpEiRequest(StrictMappingSchema):
 
 class GpEiResponse(StrictMappingSchema):
 
-    """A gp_ei response colander schema.
+    """A :class:`moe.views.rest.gp_ei.GpEiView` response colander schema.
 
     **Output fields**
 
-        :endpoint: the endpoint that was called
-        :expected_improvement: list of calculated expected improvements (:class:`moe.views.schemas.ListOfExpectedImprovements`)
+    :ivar endpoint: (*str*) the endpoint that was called
+    :ivar expected_improvement: (*list of float64*) calculated expected improvements (:class:`moe.views.schemas.ListOfExpectedImprovements`)
 
     **Example Response**
 

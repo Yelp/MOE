@@ -77,6 +77,7 @@ class GpPrettyView(Root):
         """Return the deserialized parameters from the json_body of a request.
 
         :returns: A deserialized self.request_schema object
+        :rtype: dict
 
         """
         self._create_moe_log_line(
@@ -92,9 +93,12 @@ class GpPrettyView(Root):
         :param response_dict: a dict that can be serialized by self.response_schema
         :type response_dict: dict
         :returns: a serialized self.response_schema object
+        :rtype: dict
+
         """
         self._create_moe_log_line(
                 type='response',
                 content=response_dict,
                 )
+
         return self.response_schema.serialize(response_dict)

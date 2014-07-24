@@ -1,25 +1,32 @@
 # -*- coding: utf-8 -*-
-"""A class to encapsulate 'pretty' views for ``gp_next_points_*`` endpoints.
+"""A class to encapsulate 'pretty' views for ``gp_next_points_*`` endpoints; e.g., :class:`moe.views.rest.gp_next_points_epi.GpNextPointsEpi`.
 
 Include:
+
     1. Request and response schemas
-    2. Class that extends GpPrettyView for next_points optimizers
+    2. Class that extends :class:`moe.views.optimizable_gp_pretty_view.GpPrettyView` for next_points optimizers
+
 """
 import numpy
 
 import moe.optimal_learning.python.cpp_wrappers.expected_improvement
 from moe.optimal_learning.python.cpp_wrappers.expected_improvement import ExpectedImprovement
+from moe.optimal_learning.python.timing import timing_context
 from moe.views.gp_pretty_view import GpPrettyView
 from moe.views.optimizable_gp_pretty_view import OptimizableGpPrettyView
 from moe.views.schemas import GpNextPointsRequest, GpNextPointsResponse
 from moe.views.utils import _make_gp_from_params, _make_domain_from_params, _make_optimizer_parameters_from_params
 
 
+EPI_OPTIMIZATION_TIMING_LABEL = 'EPI optimization time'
+
+
 class GpNextPointsPrettyView(OptimizableGpPrettyView):
 
-    """A class to encapsulate 'pretty' ``gp_next_points_*`` views.
+    """A class to encapsulate 'pretty' ``gp_next_points_*`` views; e.g., :class:`moe.views.rest.gp_next_points_epi.GpNextPointsEpi`.
 
-    Extends GpPrettyView with:
+    Extends :class:`moe.views.optimizable_gp_pretty_view.GpPrettyView` with:
+
         1. gaussian_process generation from params
         2. Converting params into a C++ consumable set of optimizer parameters
         3. A method (compute_next_points_to_sample_response) for computing the next best points to sample from a gaussian_process
@@ -46,12 +53,17 @@ class GpNextPointsPrettyView(OptimizableGpPrettyView):
     def compute_next_points_to_sample_response(self, params, optimizer_method_name, route_name, *args, **kwargs):
         """Compute the next points to sample (and their expected improvement) using optimizer_method_name from params in the request.
 
+        .. Warning:: Attempting to find ``num_to_sample`` optimal points with
+          ``num_sampled < num_to_sample`` historical points sampled can cause matrix issues under
+          some conditions. Try requesting ``num_to_sample < num_sampled`` points for better
+          performance. To bootstrap more points try sampling at random, or from a grid.
+
         :param request_params: the deserialized REST request, containing ei_optimizer_parameters and gp_historical_info
         :type request_params: a deserialized self.request_schema object as a dict
         :param optimizer_method_name: the optimization method to use
-        :type optimizer_method_name: string in ``moe.views.constant.OPTIMIZER_METHOD_NAMES``
+        :type optimizer_method_name: string in :const:`moe.views.constant.NEXT_POINTS_OPTIMIZER_METHOD_NAMES`
         :param route_name: name of the route being called
-        :type route_name: string in ``moe.views.constant.ALL_REST_ROUTES_ROUTE_NAME_TO_ENDPOINT.keys()``
+        :type route_name: string in :const:`moe.views.constant.ALL_REST_ROUTES_ROUTE_NAME_TO_ENDPOINT`
         :param ``*args``: extra args to be passed to optimization method
         :param ``**kwargs``: extra kwargs to be passed to optimization method
 
@@ -63,21 +75,20 @@ class GpNextPointsPrettyView(OptimizableGpPrettyView):
 
         gaussian_process = _make_gp_from_params(params)
 
-        if gaussian_process.num_sampled < num_to_sample:
-            self.log.warning("Attempting to find {0:d} optimal points with only {1:d} (< {0:d}) historical points sampled. This can cause matrix issues under some conditions. Try requesting < {0:d} points for better performance. To bootstrap more points try sampling at random, or from a grid.".format(num_to_sample, gaussian_process.num_sampled))
-
         expected_improvement_evaluator = ExpectedImprovement(
                 gaussian_process,
                 points_being_sampled=points_being_sampled,
                 num_mc_iterations=num_mc_iterations,
                 )
 
+        ei_opt_status = {}
         # TODO(GH-89): Make the optimal_learning library handle this case 'organically' with
         # reasonable default behavior and remove hacks like this one.
         if gaussian_process.num_sampled == 0:
             # If there is no initial data we bootstrap with random points
             py_domain = _make_domain_from_params(params, python_version=True)
             next_points = py_domain.generate_uniform_random_points_in_domain(num_to_sample)
+            ei_opt_status['found_update'] = True
         else:
             # Calculate the next best points to sample given the historical data
             domain = _make_domain_from_params(params)
@@ -93,14 +104,16 @@ class GpNextPointsPrettyView(OptimizableGpPrettyView):
 
             opt_method = getattr(moe.optimal_learning.python.cpp_wrappers.expected_improvement, optimizer_method_name)
 
-            next_points = opt_method(
+            with timing_context(EPI_OPTIMIZATION_TIMING_LABEL):
+                next_points = opt_method(
                     expected_improvement_optimizer,
                     optimizer_parameters.num_multistarts,
                     num_to_sample,
                     max_num_threads=max_num_threads,
+                    status=ei_opt_status,
                     *args,
                     **kwargs
-                    )
+                )
 
         # TODO(GH-285): Use analytic q-EI here
         expected_improvement_evaluator.current_point = next_points
@@ -109,5 +122,8 @@ class GpNextPointsPrettyView(OptimizableGpPrettyView):
         return self.form_response({
                 'endpoint': route_name,
                 'points_to_sample': next_points.tolist(),
-                'expected_improvement': expected_improvement,
+                'status': {
+                    'expected_improvement': expected_improvement,
+                    'optimizer_success': ei_opt_status,
+                    },
                 })
