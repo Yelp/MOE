@@ -55,3 +55,8 @@ By continuing to optimize over many iterations, MOE quickly finds approximate op
     :scale: 100%
 
 For more examples on how MOE can be used see :doc:`examples`, or see :doc:`why_moe` for information about how MOE is useful for these kinds of problems and some alternate methods.
+
+.. _RW Chapter 2: http://www.gaussianprocess.org/gpml/chapters/RW2.pdf
+.. _RW Chapter 4: http://www.gaussianprocess.org/gpml/chapters/RW4.pdf
+.. _RW Chapter 5: http://www.gaussianprocess.org/gpml/chapters/RW5.pdf
+.. _EGO Paper: http://www.ressources-actuarielles.net/EXT/ISFA/1226.nsf/0/f84f7ac703bf5862c12576d8002f5259/$FILE/Jones98.pdf
