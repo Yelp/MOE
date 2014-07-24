@@ -13,7 +13,7 @@
                     </div>
                     <div class="col-md-6 middle-text">
                         Endpoint(s):
-                        <a href="http://sc932.github.io/MOE/moe.views.rest.html#module-moe.views.rest.gp_mean_var_diag"><strong><code>gp_mean_var_diag</code></strong></a>
+                        <a href="http://yelp.github.io/MOE/moe.views.rest.html#module-moe.views.rest.gp_mean_var_diag"><strong><code>gp_mean_var_diag</code></strong></a>
                         <span class="glyphicon glyphicon-question-sign tooltip-rdy small" data-original-title="The endpoint(s) (and docs) used to generate the below graph." data-placement="top"><span>
                     </div>
                 </div>
@@ -27,7 +27,7 @@
                     </div>
                     <div class="col-md-6 middle-text">
                         Endpoint(s):
-                        <a href="http://sc932.github.io/MOE/moe.views.rest.html#module-moe.views.rest.gp_ei"><strong><code>gp_ei</code></strong></a> and <a href="http://sc932.github.io/MOE/moe.views.rest.html#module-moe.views.rest.gp_next_points_epi"><strong><code>gp_next_points_epi</code></strong></a>
+                        <a href="http://yelp.github.io/MOE/moe.views.rest.html#module-moe.views.rest.gp_ei"><strong><code>gp_ei</code></strong></a> and <a href="http://yelp.github.io/MOE/moe.views.rest.html#module-moe.views.rest.gp_next_points_epi"><strong><code>gp_next_points_epi</code></strong></a>
                         <span class="glyphicon glyphicon-question-sign tooltip-rdy small" data-original-title="The endpoint(s) (and docs) used to generate the below graph." data-placement="top"><span>
                     </div>
                 </div>
@@ -159,9 +159,23 @@ optimalLearning.updateGraphs = function() {
         xvals.push( [i / 200.0] );
     }
 
-    var post_data = {
-        'points_to_sample': xvals,
+    var gp_post_data = {
         'points_to_evaluate': xvals,
+        'gp_historical_info': {
+            'points_sampled': optimalLearning.pointsSampled,
+            },
+        'domain_info': {
+            'dim': 1,
+            },
+        'covariance_info': {
+            'covariance_type': 'square_exponential',
+            'hyperparameters': [
+                $.parseJSON($('#hyperparameters-alpha').val()),
+                $.parseJSON($('#hyperparameters-length').val())
+                ],
+            },
+        }
+    var gp_optimize_post_data = {
         'gp_historical_info': {
             'points_sampled': optimalLearning.pointsSampled,
             },
@@ -188,12 +202,10 @@ optimalLearning.updateGraphs = function() {
             },
         }
 
-    console.log(post_data);
-
     var gp_data, ei_raw_data, next_points_raw_data, single_point_gp_data;
     var jqxhr1 = $.post(
         "${request.route_url('gp_mean_var_diag')}",
-        JSON.stringify(post_data),
+        JSON.stringify(gp_post_data),
         function( data ) {
             gp_data = data;
         }
@@ -202,17 +214,17 @@ optimalLearning.updateGraphs = function() {
 
     var jqxhr2 = $.post(
         "${request.route_url('gp_ei')}",
-        JSON.stringify(post_data),
+        JSON.stringify(gp_post_data),
         function( data ) {
             ei_raw_data = data;
         }
     );
     jqxhr2.fail(optimalLearning.errorAlert);
 
-    post_data['num_to_sample'] = 1;
+    gp_optimize_post_data['num_to_sample'] = 1;
     var jqxhr3 = $.post(
         "${request.route_url('gp_next_points_epi')}",
-        JSON.stringify(post_data),
+        JSON.stringify(gp_optimize_post_data),
         function( data ) {
             next_points_raw_data = data;
         }
@@ -235,10 +247,10 @@ optimalLearning.updateGraphs = function() {
         });
 
         var single_point_gp_data;
-        post_data['points_to_sample'] = next_points_raw_data['points_to_sample'];
+        gp_post_data['points_to_evaluate'] = next_points_raw_data['points_to_sample'];
         var jqxhr4 = $.post(
             "${request.route_url('gp_mean_var_diag')}",
-            JSON.stringify(post_data),
+            JSON.stringify(gp_post_data),
             function( data ) {
                 single_point_gp_data = data;
             }

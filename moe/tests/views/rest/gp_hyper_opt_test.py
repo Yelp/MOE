@@ -6,7 +6,7 @@ import simplejson as json
 
 import testify as T
 
-from moe.optimal_learning.python.constant import TEST_OPTIMIZER_MULTISTARTS, TEST_GRADIENT_DESCENT_PARAMETERS, TEST_OPTIMIZER_NUM_RANDOM_SAMPLES
+from moe.optimal_learning.python.constant import TEST_OPTIMIZER_MULTISTARTS, TEST_GRADIENT_DESCENT_PARAMETERS, TEST_OPTIMIZER_NUM_RANDOM_SAMPLES, GRADIENT_DESCENT_OPTIMIZER
 from moe.tests.optimal_learning.python.gaussian_process_test_case import GaussianProcessTestCase
 from moe.tests.views.rest_test_case import RestTestCase
 from moe.views.constant import GP_HYPER_OPT_MOE_ROUTE
@@ -28,6 +28,7 @@ class TestGpHyperOptViews(GaussianProcessTestCase, RestTestCase):
             'covariance_info': covariance.get_json_serializable_info(),
             'domain_info': domain.get_json_serializable_info(minimal=True),
             'optimizer_info': {
+                'optimizer_type': GRADIENT_DESCENT_OPTIMIZER,
                 'num_multistarts': TEST_OPTIMIZER_MULTISTARTS,
                 'num_random_samples': TEST_OPTIMIZER_NUM_RANDOM_SAMPLES,
                 'optimizer_parameters': dict(TEST_GRADIENT_DESCENT_PARAMETERS._asdict()),
@@ -96,12 +97,12 @@ class TestGpHyperOptViews(GaussianProcessTestCase, RestTestCase):
 
         T.assert_equal(
                 optimizer_parameters.num_multistarts,
-                TEST_OPTIMIZER_MULTISTARTS
+                TEST_OPTIMIZER_MULTISTARTS,
                 )
 
         T.assert_equal(
                 optimizer_parameters._python_max_num_steps,
-                TEST_GRADIENT_DESCENT_PARAMETERS.max_num_steps
+                TEST_GRADIENT_DESCENT_PARAMETERS.max_num_steps,
                 )
 
         # Test arbitrary parameters get passed through
@@ -116,12 +117,12 @@ class TestGpHyperOptViews(GaussianProcessTestCase, RestTestCase):
 
         T.assert_equal(
                 optimizer_parameters.num_multistarts,
-                TEST_OPTIMIZER_MULTISTARTS + 5
+                TEST_OPTIMIZER_MULTISTARTS + 5,
                 )
 
         T.assert_equal(
                 optimizer_parameters._python_max_num_steps,
-                TEST_GRADIENT_DESCENT_PARAMETERS.max_num_steps + 10
+                TEST_GRADIENT_DESCENT_PARAMETERS.max_num_steps + 10,
                 )
 
     def test_interface_returns_same_as_cpp(self):

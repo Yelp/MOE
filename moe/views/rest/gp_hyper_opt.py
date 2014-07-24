@@ -2,19 +2,26 @@
 """Classes for gp_hyper_opt endpoints.
 
 Includes:
+
     1. request and response schemas
     2. pretty and backend views
+
 """
 from pyramid.view import view_config
 
+from moe.optimal_learning.python.constant import OPTIMIZER_TYPE_AND_OBJECTIVE_TO_DEFAULT_PARAMETERS, ENDPOINT_TO_DEFAULT_OPTIMIZER_TYPE
 from moe.optimal_learning.python.cpp_wrappers.log_likelihood import multistart_hyperparameter_optimization
 from moe.optimal_learning.python.linkers import LOG_LIKELIHOOD_TYPES_TO_LOG_LIKELIHOOD_METHODS
+from moe.optimal_learning.python.timing import timing_context
 from moe.views.constant import GP_HYPER_OPT_ROUTE_NAME, GP_HYPER_OPT_PRETTY_ROUTE_NAME
 from moe.views.gp_pretty_view import GpPrettyView
 from moe.views.optimizable_gp_pretty_view import OptimizableGpPrettyView
 from moe.views.pretty_view import PRETTY_RENDERER
 from moe.views.schemas import GpHyperOptRequest, GpHyperOptResponse
 from moe.views.utils import _make_domain_from_params, _make_gp_from_params, _make_optimizer_parameters_from_params
+
+
+MODEL_SELECTION_TIMING_LABEL = 'model selection time'
 
 
 class GpHyperOptView(OptimizableGpPrettyView):
@@ -45,6 +52,34 @@ class GpHyperOptView(OptimizableGpPrettyView):
                     ],
                 },
             }
+
+    def _get_default_optimizer_type(self, params):
+        """Get the optimizer type associated with this REST endpoint and requested ``log_likelihood_type``.
+
+        :param params: a (partially) deserialized REST request with everything except possibly
+          ``params['optimizer_info']``
+        :type params: dict
+        :return: optimizer type to use, one of :const:`moe.optimal_learning.python.constant.OPTIMIZER_TYPES`
+        :rtype: str
+
+        """
+        log_likelihood_type = params.get('log_likelihood_info')
+        return ENDPOINT_TO_DEFAULT_OPTIMIZER_TYPE[(self._route_name, log_likelihood_type)]
+
+    def _get_default_optimizer_params(self, params):
+        """Get the default optimizer parameters associated with the desired ``optimizer_type``, REST endpoint, and ``log_likelihood_type``.
+
+        :param params: a (partially) deserialized REST request with everything except possibly
+          ``params['optimizer_info']``
+        :type params: dict
+        :return: default multistart and optimizer parameters to use with this REST request
+        :rtype: :class:`moe.optimal_learning.python.constant.DefaultOptimizerInfoTuple`
+
+        """
+        optimizer_type = params['optimizer_info']['optimizer_type']
+        log_likelihood_type = params.get('log_likelihood_info')
+        optimizer_parameters_lookup = (optimizer_type, self._route_name, log_likelihood_type)
+        return OPTIMIZER_TYPE_AND_OBJECTIVE_TO_DEFAULT_PARAMETERS[optimizer_parameters_lookup]
 
     @view_config(route_name=_pretty_route_name, renderer=PRETTY_RENDERER)
     def pretty_view(self):
@@ -92,12 +127,13 @@ class GpHyperOptView(OptimizableGpPrettyView):
         )
 
         hyperopt_status = {}
-        optimized_hyperparameters = multistart_hyperparameter_optimization(
-            log_likelihood_optimizer,
-            optimizer_parameters.num_multistarts,
-            max_num_threads=max_num_threads,
-            status=hyperopt_status,
-        )
+        with timing_context(MODEL_SELECTION_TIMING_LABEL):
+            optimized_hyperparameters = multistart_hyperparameter_optimization(
+                log_likelihood_optimizer,
+                optimizer_parameters.num_multistarts,
+                max_num_threads=max_num_threads,
+                status=hyperopt_status,
+            )
 
         covariance_of_process.hyperparameters = optimized_hyperparameters
 
@@ -109,6 +145,6 @@ class GpHyperOptView(OptimizableGpPrettyView):
                 'status': {
                     'log_likelihood': log_likelihood_eval.compute_log_likelihood(),
                     'grad_log_likelihood': log_likelihood_eval.compute_grad_log_likelihood().tolist(),
-                    'optimizer_success': hyperopt_status['gradient_descent_found_update'],
+                    'optimizer_success': hyperopt_status,
                     },
                 })

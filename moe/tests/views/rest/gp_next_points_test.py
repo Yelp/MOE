@@ -45,6 +45,8 @@ class TestGpNextPointsViews(GaussianProcessTestCase, RestTestCase):
 
     def test_optimizer_params_passed_through(self):
         """Test that the optimizer parameters get passed through to the endpoint."""
+        # TODO(GH-305): turn this into a unit test by going through OptimizableGpPrettyView
+        # and mocking out dependencies (instead of awkwardly constructing a more complex object).
         test_case = self.gp_test_environments[0]
         num_to_sample = 1
 
@@ -57,17 +59,20 @@ class TestGpNextPointsViews(GaussianProcessTestCase, RestTestCase):
         request = pyramid.testing.DummyRequest(post=json_payload)
         request.json_body = json_payload
         view = GpNextPointsPrettyView(request)
+        # get_params_from_request() requires this field is set. value is arbitrary for now.
+        # TODO(GH-305): mock out this and other members
+        view._route_name = GP_NEXT_POINTS_CONSTANT_LIAR_ROUTE_NAME
         params = view.get_params_from_request()
         _, optimizer_parameters, num_random_samples = _make_optimizer_parameters_from_params(params)
 
         T.assert_equal(
                 optimizer_parameters.num_multistarts,
-                TEST_OPTIMIZER_MULTISTARTS
+                TEST_OPTIMIZER_MULTISTARTS,
                 )
 
         T.assert_equal(
                 optimizer_parameters._python_max_num_steps,
-                TEST_GRADIENT_DESCENT_PARAMETERS.max_num_steps
+                TEST_GRADIENT_DESCENT_PARAMETERS.max_num_steps,
                 )
 
         # Test arbitrary parameters get passed through
@@ -77,17 +82,20 @@ class TestGpNextPointsViews(GaussianProcessTestCase, RestTestCase):
         request = pyramid.testing.DummyRequest(post=json_payload)
         request.json_body = json_payload
         view = GpNextPointsPrettyView(request)
+        # get_params_from_request() requires this field is set. value is arbitrary for now.
+        # TODO(GH-305): mock out this and other members
+        view._route_name = GP_NEXT_POINTS_CONSTANT_LIAR_ROUTE_NAME
         params = view.get_params_from_request()
         _, optimizer_parameters, num_random_samples = _make_optimizer_parameters_from_params(params)
 
         T.assert_equal(
                 optimizer_parameters.num_multistarts,
-                TEST_OPTIMIZER_MULTISTARTS + 5
+                TEST_OPTIMIZER_MULTISTARTS + 5,
                 )
 
         T.assert_equal(
                 optimizer_parameters._python_max_num_steps,
-                TEST_GRADIENT_DESCENT_PARAMETERS.max_num_steps + 10
+                TEST_GRADIENT_DESCENT_PARAMETERS.max_num_steps + 10,
                 )
 
     def test_all_constant_liar_methods_function(self):
@@ -114,8 +122,9 @@ class TestGpNextPointsViews(GaussianProcessTestCase, RestTestCase):
                 T.assert_equal(len(resp_dict['points_to_sample']), 2)  # num_to_sample
                 T.assert_equal(len(resp_dict['points_to_sample'][0]), python_gp.dim)
 
-                T.assert_in('expected_improvement', resp_dict)
-                T.assert_gte(resp_dict['expected_improvement'], 0.0)
+                T.assert_in('status', resp_dict)
+                T.assert_in('expected_improvement', resp_dict['status'])
+                T.assert_gte(resp_dict['status']['expected_improvement'], 0.0)
 
     def test_interface_returns_same_as_cpp(self):
         """Integration test for the /gp/next_points/* endpoints."""
@@ -138,8 +147,9 @@ class TestGpNextPointsViews(GaussianProcessTestCase, RestTestCase):
                     T.assert_equal(len(resp_dict['points_to_sample']), num_to_sample)
                     T.assert_equal(len(resp_dict['points_to_sample'][0]), python_gp.dim)
 
-                    T.assert_in('expected_improvement', resp_dict)
-                    T.assert_gte(resp_dict['expected_improvement'], 0.0)
+                    T.assert_in('status', resp_dict)
+                    T.assert_in('expected_improvement', resp_dict['status'])
+                    T.assert_gte(resp_dict['status']['expected_improvement'], 0.0)
 
 
 if __name__ == "__main__":

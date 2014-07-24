@@ -15,15 +15,6 @@
   <!-- d3 -->
   <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.1/d3.js"></script>
   <link rel="stylesheet" href="${request.static_url('moe:static/css/d3.css')}" />
-  <!-- background image -->
-  <style type='text/css'>
-      .background-image {
-          background-image: url("${request.static_url('moe:static/img/moe_standing.png')}");
-          background-position: right top;
-          background-repeat: no-repeat;
-          min-height: 500px;
-          }
-  </style>
 </head>
 <body>
   <div class="navbar navbar-default navbar-fixed-top" role="navigation">

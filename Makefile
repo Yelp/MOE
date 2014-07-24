@@ -23,6 +23,5 @@ style-test:
 docs:
 		python docs/cpp_rst_maker.py
 		doxygen docs/doxygen_config
-		sphinx-apidoc -f -o docs moe
-		sphinx-apidoc -f -o docs moe_examples
+		sphinx-apidoc -f -o docs moe moe_examples
 		sphinx-build -b html docs docs/_build/html
