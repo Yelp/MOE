@@ -107,7 +107,7 @@ MOE does this internally by:
 Externally you can use MOE through:
 
     * :doc:`The REST interface </moe.views.rest>`
-    * :doc:`The python interface </moe.optimal_learning.python.python_version>`
+    * :doc:`The Python interface </moe.optimal_learning.python.python_version>`
     * :doc:`The C++ interface </cpp_tree>`
     * The CUDA kernels.
 
@@ -173,7 +173,7 @@ From ipython
 
 ``easy_interface`` documentation: :doc:`moe.easy_interface`
 
-Within python
+Within Python
 .............
 
 See :mod:`moe_examples.next_point_via_simple_endpoint` or :doc:`examples` for more examples.
