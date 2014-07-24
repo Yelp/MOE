@@ -390,7 +390,7 @@ class LogMarginalLikelihoodEvaluator final {
       :log_likelihood_state[1]: properly configured state object
     \output
       :log_likelihood_state[1]: state object with temporary storage modified
-      :hessian_hyperparameter_cov_matrix[num_sampled_][num_sampled_][n_hyper][n_hyper]:
+      :hessian_hyperparameter_cov_matrix[num_sampled][num_sampled][n_hyper][n_hyper]:
         ``(i,j,k,l)``-th entry is ``\mixpderiv{cov(X_i, X_j)}{\theta_k}{\theta_l}``
   \endrst*/
   void BuildHyperparameterHessianCovarianceMatrix(StateType * log_likelihood_state,

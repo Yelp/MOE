@@ -2,7 +2,8 @@
 """Test cases for the Square Exponential covariance function and its spatial gradient.
 
 Testing is sparse at the moment. The C++ implementations are tested thoroughly (gpp_covariance_test.hpp/cpp) and
-we rely more on cpp_wrappers/covariance_test.py's comparison with C++ for verification of the Python code.
+we rely more on :mod:`moe.tests.optimal_learning.python.cpp_wrappers.covariance_test`'s comparison
+with C++ for verification of the Python code.
 
 TODO(GH-175): Ping testing for spatial gradients and hyperparameter gradients/hessian.
 TODO(GH-176): Make test structure general enough to support other covariance functions automatically.
