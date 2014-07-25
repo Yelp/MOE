@@ -1,6 +1,6 @@
 ![MOE logo](https://github.com/yelp/MOE/raw/master/moe/static/img/moe_logo_48.png)
 
-[![Build Status](https://travis-ci.org/Yelp/MOE.svg?branch=master)](https://magnum.travis-ci.com/Yelp/MOE)
+[![Build Status](https://travis-ci.org/Yelp/MOE.svg?branch=master)](https://travis-ci.org/Yelp/MOE)
 
 Metric Optimization Engine. A global, black box optimization engine for real world metric optimization.
 
