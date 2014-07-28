@@ -22,7 +22,8 @@ class RepeatedDomain(DomainInterface):
 
     In general, kernel domain operations need be performed ``num_repeats`` times, once
     for each point. This class hides the looping logic so that use cases like various
-    OptimizerInterface subclasses (optimization.py) do not need to be explicitly aware
+    :class:`moe.optimal_learning.python.interfaces.optimization_interface.OptimizerInterface`
+    subclasses do not need to be explicitly aware
     of whether they are optimizing 1 point or 50 points. Instead, the OptimizableInterface
     implementation provides problem_size() and appropriately sized gradient information.
     Coupled with RepeatedDomain, Optimizers can remain oblivious.

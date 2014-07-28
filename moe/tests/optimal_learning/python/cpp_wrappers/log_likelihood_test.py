@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Test cases to check that C++ and Python implementations of interfaces/log_likelihood.py match."""
+"""Test cases to check that C++ and Python implementations of :mod:`moe.optimal_learning.python.interfaces.log_likelihood_interface` match."""
 import testify as T
 
 import moe.optimal_learning.python.cpp_wrappers.covariance

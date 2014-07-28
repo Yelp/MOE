@@ -2,18 +2,24 @@
 """Classes for gp_ei endpoints.
 
 Includes:
+
     1. request and response schemas
     2. pretty and backend views
+
 """
 import numpy
 
 from pyramid.view import view_config
 
 from moe.optimal_learning.python.cpp_wrappers.expected_improvement import ExpectedImprovement
+from moe.optimal_learning.python.timing import timing_context
 from moe.views.constant import GP_EI_ROUTE_NAME, GP_EI_PRETTY_ROUTE_NAME
 from moe.views.gp_pretty_view import GpPrettyView, PRETTY_RENDERER
 from moe.views.schemas import GpEiRequest, GpEiResponse
 from moe.views.utils import _make_gp_from_params
+
+
+EI_COMPUTATION_TIMING_LABEL = 'EI computation time'
 
 
 class GpEiView(GpPrettyView):
@@ -52,8 +58,8 @@ class GpEiView(GpPrettyView):
 
            Calculates the Expected Improvement (EI) of a set of points, given historical data.
 
-           :input: :class:`moe.views.gp_ei.GpEiRequest`
-           :output: :class:`moe.views.gp_ei.GpEiResponse`
+           :input: :class:`moe.views.schemas.GpEiRequest`
+           :output: :class:`moe.views.schemas.GpEiResponse`
 
            :status 201: returns a response
            :status 500: server error
@@ -76,10 +82,11 @@ class GpEiView(GpPrettyView):
                 num_mc_iterations=num_mc_iterations,
                 )
 
-        expected_improvement = expected_improvement_evaluator.evaluate_at_point_list(
+        with timing_context(EI_COMPUTATION_TIMING_LABEL):
+            expected_improvement = expected_improvement_evaluator.evaluate_at_point_list(
                 points_to_evaluate,
                 max_num_threads=max_num_threads,
-                )
+            )
 
         return self.form_response({
                 'endpoint': self._route_name,

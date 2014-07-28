@@ -1,3 +1,7 @@
+.. image:: ../moe/static/img/moe_logo_48.png
+
+|
+
 Welcome to MOE's documentation!
 ===============================
 
@@ -10,7 +14,7 @@ Welcome to MOE's documentation!
     #. `Source Documentation`_
     #. :doc:`Contributing </contributing>`
 
-.. _Github repo: https://github.com/sc932/MOE
+.. _Github repo: https://github.com/Yelp/MOE
 
 What is MOE?
 ------------
@@ -25,6 +29,8 @@ Here are some examples of when you could use MOE:
 
 * **Optimizing the design of an engineering system** (an airplane, the traffic network in a city, a combustion engine, a hospital).  MOE is useful if evaluating a design requires running a complex physics-based numerical simulation on a supercomputer. 
 
+* **Optimizing the parameters of a real-world experiment** (a chemistry, biology, or physics experiment, a drug trial).  MOE is useful when every experiment needs to be physically created in a lab, or very few experiments can be run in parallel.
+
 MOE is ideal for problems in which the optimization problem's objective function is a black box, not necessarily convex or concave, derivatives are unavailable, and we seek a global optimum, rather than just a local one. This ability to handle black-box objective functions allows us to use MOE to optimize nearly any system, without requiring any internal knowledge or access. To use MOE, we simply need to specify some :doc:`objective function </objective_functions>`, some set of :doc:`parameters </objective_functions>`, and any historical data we may have from previous evaluations of the objective function. MOE then finds the set of parameters that maximize (or minimize) the objective function, while evaluating the objective function as little as possible. 
 
 Inside, MOE uses *Bayesian global optimization*, which performs optimization using Bayesian statistics and *optimal learning*. 
@@ -37,10 +43,9 @@ Optimal learning is the study of efficient methods for collecting information, p
 .. _Princeton, Operations Research and Financial Engineering: http://orfe.princeton.edu/
 .. _intro slides: http://people.orie.cornell.edu/pfrazier/Presentations/2014.01.Lancaster.BGO.pdf
 
-
 **Example**:
 
-To illustrate how MOE works, suppose we wish to maximize the click-through-rate (CTR) on a website we manage, by varying some real-valued parameter vector :math:`\vec{x}` that govern how site content is presented to the user.  Evaluating the CTR for a new set of parameters requires running an A/B test over a period of several days.  We write this problem mathematically as,
+To illustrate how MOE works, suppose we wish to maximize the click-through-rate (CTR) on a website we manage, by varying some real-valued parameter vector :math:`\vec{x}` that governs how site content is presented to the user.  Evaluating the CTR for a new set of parameters requires running an A/B test over a period of several days.  We write this problem mathematically as,
 
 .. math::
 
@@ -48,7 +53,7 @@ To illustrate how MOE works, suppose we wish to maximize the click-through-rate 
 
 We want to find the best set of parameters :math:`\vec{x}` while evaluating the underlying function (CTR) as few times as possible. See :doc:`Objective Functions </objective_functions>` for more examples of objective functions and the best ways to combine metrics.
 
-MOE builds the following loop, in which it takes the results from those A/B tests that have been run so far, processes them through its internal engine, and then determines at which parameter vector :math:`vec{x}` it would be most valuable to next observe the CTR.  MOE runs an A/B test at this new parameter vector, and then repeats the loop.
+MOE builds the following loop, in which it takes the results from those A/B tests that have been run so far, processes them through its internal engine, and then determines at which parameter vector :math:`\vec{x}` it would be most valuable to next observe the CTR.  MOE runs an A/B test at this new parameter vector, and then repeats the loop.
 
 This choice of the most valuable point trades a desire to evaluate points where we have a lot of uncertainty about the CTR (this is called *exploration*), and to evaluate points where we think the CTR is large (this is called *exploitation*).
 
@@ -67,7 +72,6 @@ Video and slidedeck introduction to MOE:
     * `MOE intro slides`_
 
 .. _15 min MOE intro video: http://www.youtube.com/watch?v=qAN6iyYPbEE
-
 .. _MOE intro slides: http://www.slideshare.net/YelpEngineering/yelp-engineering-open-house-112013-optimally-learning-for-fun-and-profit
 
 
@@ -87,7 +91,7 @@ MOE does this internally by:
     - `RW Chapter 4`_
     - `RW Chapter 5`_
 
-3. Finding the points of highest Expected Improvement (EI)
+3. Finding the point(s) of highest Expected Improvement (EI)
 
     - :doc:`gpp_expected_improvement_demo`
     - :mod:`moe.views.rest.gp_ei`
@@ -96,17 +100,14 @@ MOE does this internally by:
 4. Returning the points to sample, then repeat
 
 .. _RW Chapter 2: http://www.gaussianprocess.org/gpml/chapters/RW2.pdf
-
 .. _RW Chapter 4: http://www.gaussianprocess.org/gpml/chapters/RW4.pdf
-
 .. _RW Chapter 5: http://www.gaussianprocess.org/gpml/chapters/RW5.pdf
-
 .. _EGO Paper: http://www.ressources-actuarielles.net/EXT/ISFA/1226.nsf/0/f84f7ac703bf5862c12576d8002f5259/$FILE/Jones98.pdf
 
 Externally you can use MOE through:
 
     * :doc:`The REST interface </moe.views.rest>`
-    * :doc:`The python interface </moe.optimal_learning.python.python_version>`
+    * :doc:`The Python interface </moe.optimal_learning.python.python_version>`
     * :doc:`The C++ interface </cpp_tree>`
     * The CUDA kernels.
 
@@ -125,7 +126,7 @@ Docker (http://docs.docker.io/) is a container based virtualization framework. U
 
 ::
 
-    $ git clone https://github.com/sc932/MOE.git
+    $ git clone https://github.com/Yelp/MOE.git
     $ cd MOE
     $ docker build -t moe_container .
     $ docker run -p 6543:6543 moe_container
@@ -147,15 +148,13 @@ To get the REST server running locally, from the directory MOE is installed:
 
 ::
 
-    $ pserve --reload development.ini
+    $ pserve --reload development.ini # MOE server is now running at http://localhost:6543
 
-In your favorite browser go to: http://127.0.0.1:6543/
-
-Or, from the command line,
+You can access the server from a browser or from the command line,
 
 ::
 
-    $ curl -X POST -H "Content-Type: application/json" -d '{"domain_info": {"dim": 1}, "points_to_evaluate": [[0.1], [0.5], [0.9]], "gp_info": {"points_sampled": [{"value_var": 0.01, "value": 0.1, "point": [0.0]}, {"value_var": 0.01, "value": 0.2, "point": [1.0]}]}}' http://127.0.0.1:6543/gp/ei
+    $ curl -X POST -H "Content-Type: application/json" -d '{"domain_info": {"dim": 1}, "points_to_evaluate": [[0.1], [0.5], [0.9]], "gp_historical_info": {"points_sampled": [{"value_var": 0.01, "value": 0.1, "point": [0.0]}, {"value_var": 0.01, "value": 0.2, "point": [1.0]}]}}' http://127.0.0.1:6543/gp/ei
 
 ``gp_ei`` endpoint documentation: :mod:`moe.views.rest.gp_ei`
 
@@ -168,13 +167,13 @@ From ipython
     > from moe.easy_interface.experiment import Experiment
     > from moe.easy_interface.simple_endpoint import gp_next_points
     > exp = Experiment([[0, 2], [0, 4]])
-    > exp.historical_data.append_sample_points([[0, 0], 1.0, 0.01])
+    > exp.historical_data.append_sample_points([[[0, 0], 1.0, 0.01]])
     > next_point_to_sample = gp_next_points(exp)
     > print next_point_to_sample
 
 ``easy_interface`` documentation: :doc:`moe.easy_interface`
 
-Within python
+Within Python
 .............
 
 See :mod:`moe_examples.next_point_via_simple_endpoint` or :doc:`examples` for more examples.
@@ -223,6 +222,13 @@ Examples:
     3. :doc:`gpp_hyper_and_EI_demo`
 
 
+Licence
+-------
+
+MOE is licensed under the `Apache License, Version 2.0`_
+
+.. _Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
+
 Source Documentation
 ====================
 
@@ -234,9 +240,13 @@ Documentation
 
    why_moe.rst
    install.rst
+   moe_math.rst
+   demo_tutorial.rst
+   pretty_endpoints.rst
    objective_functions.rst
    examples.rst
    contributing.rst
+   faq.rst
 
 Python Files
 ------------

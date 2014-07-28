@@ -7,7 +7,7 @@
   .. Note:: several internal functions of this source file are only called from ``Export*()`` functions,
     so their description, inputs, outputs, etc. comments have been moved. These comments exist in
     ``Export*()`` as Python docstrings, so we saw no need to repeat ourselves.
-*/
+\endrst*/
 // This include violates the Google Style Guide by placing an "other" system header ahead of C and C++ system headers.  However,
 // it needs to be at the top, otherwise compilation fails on some systems with some versions of python: OS X, python 2.7.3.
 // Putting this include first prevents pyport from doing something illegal in C++; reference: http://bugs.python.org/issue10910
