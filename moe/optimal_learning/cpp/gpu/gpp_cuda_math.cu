@@ -201,15 +201,15 @@ CudaError CudaGetEI(double * __restrict__ mu, double * __restrict__ chol_var, do
   *ei_val = 0.0;
   CudaError _success = {cudaSuccess, OL_CUDA_STRINGIFY_FILE_AND_LINE, __func__};
 
-  // We assign ei_block_no blocks and ei_thread_no threads/block for EI computation, so there are (ei_block_no * ei_thread_no) threads in total to execute kernel function in parallel
-  dim3 threads(ei_thread_no);
-  dim3 grid(ei_block_no);
-  double EI_storage[ei_thread_no * ei_block_no];
-  int num_iteration = num_mc / (ei_thread_no * ei_block_no) + 1;   // make sure num_iteration is always >= 1
+  // We assign kEINumBlocks blocks and kEINumThreads threads/block for EI computation, so there are (kEINumBlocks * kEINumThreads) threads in total to execute kernel function in parallel
+  dim3 threads(kEINumThreads);
+  dim3 grid(kEINumBlocks);
+  double EI_storage[kEINumThreads * kEINumBlocks];
+  int num_iteration = num_mc / (kEINumThreads * kEINumBlocks) + 1;   // make sure num_iteration is always >= 1
 
   int mem_size_mu = num_union * sizeof(double);
   int mem_size_chol_var = num_union * num_union * sizeof(double);
-  int mem_size_ei_storage = ei_thread_no * ei_block_no * sizeof(double);
+  int mem_size_ei_storage = kEINumThreads * kEINumBlocks * sizeof(double);
   // copy mu, chol_var to GPU
   OL_CUDA_ERROR_RETURN(cudaMemcpy(gpu_mu, mu, mem_size_mu, cudaMemcpyHostToDevice))
   OL_CUDA_ERROR_RETURN(cudaMemcpy(gpu_chol_var, chol_var, mem_size_chol_var, cudaMemcpyHostToDevice))
@@ -220,15 +220,15 @@ CudaError CudaGetEI(double * __restrict__ mu, double * __restrict__ chol_var, do
   OL_CUDA_ERROR_RETURN(cudaMemcpy(EI_storage, gpu_ei_storage, mem_size_ei_storage, cudaMemcpyDeviceToHost))
   // copy gpu_random_number_ei back to CPU if configure_for_test is on
   if (configure_for_test) {
-      int mem_size_random_number_ei = num_iteration * ei_thread_no * ei_block_no * num_union * sizeof(double);
+      int mem_size_random_number_ei = num_iteration * kEINumThreads * kEINumBlocks * num_union * sizeof(double);
       OL_CUDA_ERROR_RETURN(cudaMemcpy(random_number_ei, gpu_random_number_ei, mem_size_random_number_ei, cudaMemcpyDeviceToHost))
   }
   // average EI_storage
   double ave = 0.0;
-  for (int i = 0; i < (ei_thread_no*ei_block_no); ++i) {
+  for (int i = 0; i < (kEINumThreads*kEINumBlocks); ++i) {
       ave += EI_storage[i];
   }
-  *ei_val = ave / static_cast<double>(ei_thread_no*ei_block_no);
+  *ei_val = ave / static_cast<double>(kEINumThreads*kEINumBlocks);
   return _success;
 }
 
@@ -236,19 +236,19 @@ CudaError CudaGetEI(double * __restrict__ mu, double * __restrict__ chol_var, do
 CudaError CudaGetGradEI(double * __restrict__ mu, double * __restrict__ grad_mu, double * __restrict__ chol_var, double * __restrict__ grad_chol_var, double best, int num_union, int num_to_sample, int dim, double * __restrict__ gpu_mu, double * __restrict__ gpu_grad_mu, double * __restrict__ gpu_chol_var, double * __restrict__ gpu_grad_chol_var, double * __restrict__ gpu_grad_ei_storage, unsigned int seed, int num_mc, double * __restrict__ grad_ei, double* __restrict__ gpu_random_number_grad_ei, double* __restrict__ random_number_grad_ei, bool configure_for_test) {
   CudaError _success = {cudaSuccess, OL_CUDA_STRINGIFY_FILE_AND_LINE, __func__};
 
-  double grad_ei_storage[num_to_sample * dim * grad_ei_thread_no * grad_ei_block_no];
+  double grad_ei_storage[num_to_sample * dim * kGradEINumThreads * kGradEINumBlocks];
   std::fill(grad_ei, grad_ei + num_to_sample * dim, 0.0);
 
-  // We assign grad_ei_block_no blocks and grad_ei_thread_no threads/block for grad_ei computation, so there are (grad_ei_block_no * grad_ei_thread_no) threads in total to execute kernel function in parallel
-  dim3 threads(grad_ei_thread_no);
-  dim3 grid(grad_ei_block_no);
-  int num_iteration = num_mc / (grad_ei_thread_no * grad_ei_block_no) + 1;   // make sure num_iteration is always >= 1
+  // We assign kGradEINumBlocks blocks and kGradEINumThreads threads/block for grad_ei computation, so there are (kGradEINumBlocks * kGradEINumThreads) threads in total to execute kernel function in parallel
+  dim3 threads(kGradEINumThreads);
+  dim3 grid(kGradEINumBlocks);
+  int num_iteration = num_mc / (kGradEINumThreads * kGradEINumBlocks) + 1;   // make sure num_iteration is always >= 1
 
   int mem_size_mu = num_union * sizeof(double);
   int mem_size_grad_mu = num_to_sample * dim * sizeof(double);
   int mem_size_chol_var = num_union * num_union *sizeof(double);
   int mem_size_grad_chol_var = num_to_sample * num_union * num_union * dim * sizeof(double);
-  int mem_size_grad_ei_storage= grad_ei_thread_no * grad_ei_block_no * num_to_sample * dim * sizeof(double);
+  int mem_size_grad_ei_storage= kGradEINumThreads * kGradEINumBlocks * num_to_sample * dim * sizeof(double);
 
   OL_CUDA_ERROR_RETURN(cudaMemcpy(gpu_mu, mu, mem_size_mu, cudaMemcpyHostToDevice))
   OL_CUDA_ERROR_RETURN(cudaMemcpy(gpu_grad_mu, grad_mu, mem_size_grad_mu, cudaMemcpyHostToDevice))
@@ -264,20 +264,20 @@ CudaError CudaGetGradEI(double * __restrict__ mu, double * __restrict__ grad_mu,
   OL_CUDA_ERROR_RETURN(cudaMemcpy(grad_ei_storage, gpu_grad_ei_storage, mem_size_grad_ei_storage, cudaMemcpyDeviceToHost))
   // copy gpu_random_number_grad_ei back to CPU if configure_for_test is on
   if (configure_for_test) {
-      int mem_size_random_number_grad_ei = num_iteration * grad_ei_thread_no * grad_ei_block_no * num_union * sizeof(double);
+      int mem_size_random_number_grad_ei = num_iteration * kGradEINumThreads * kGradEINumBlocks * num_union * sizeof(double);
       OL_CUDA_ERROR_RETURN(cudaMemcpy(random_number_grad_ei, gpu_random_number_grad_ei, mem_size_random_number_grad_ei, cudaMemcpyDeviceToHost))
   }
 
   // The code block below extracts grad_ei from grad_ei_storage, which is output from the function
   // "CudaGetGradEI" run on gpu. The way to do that is for each component of grad_ei, we find all
   // the threads calculating the corresponding component and average over the threads.
-  for (int n = 0; n < (grad_ei_thread_no*grad_ei_block_no); ++n) {
+  for (int n = 0; n < (kGradEINumThreads*kGradEINumBlocks); ++n) {
       for (int i = 0; i < num_to_sample*dim; ++i) {
           grad_ei[i] += grad_ei_storage[n*num_to_sample*dim + i];
       }
   }
   for (int i = 0; i < num_to_sample*dim; ++i) {
-      grad_ei[i] /= static_cast<double>(grad_ei_thread_no*grad_ei_block_no);
+      grad_ei[i] /= static_cast<double>(kGradEINumThreads*kGradEINumBlocks);
   }
   return _success;
 }

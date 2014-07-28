@@ -11,17 +11,24 @@
 
 namespace optimal_learning {
 
-static unsigned int ei_thread_no = 256;
-static unsigned int ei_block_no = 32;
-static unsigned int grad_ei_thread_no = 256;
-static unsigned int grad_ei_block_no = 32;
+//! Number of blocks assigned for computing Expected Improvement on GPU
+static unsigned int kEINumBlocks = 32;
+//! Number of threads per block assigned for computing Expected Improvement on GPU
+static unsigned int kEINumThreads = 256;
+//! Number of blocks assigned for computing Gradient of Expected Improvement on GPU
+static unsigned int kGradEINumBlocks = 32;
+//! Number of threads per block assigned for computing Gradient of Expected Improvement on GPU
+static unsigned int kGradEINumThreads = 256;
 
-/*
+/*!\rst
   This C struct contains error information that are used by exception handling in gpp_expected_improvement_gpu.hpp/cpp
-*/
+\endrst*/
 struct CudaError {
+  //! error returned by CUDA API functions(basiclly enum type)
   cudaError_t err;
-  char const * line_info;
+  //! file and line info of the function which returned error
+  char const * file_and_line_info;
+  //! name of the function that returned error
   char const * func_info;
 };
 

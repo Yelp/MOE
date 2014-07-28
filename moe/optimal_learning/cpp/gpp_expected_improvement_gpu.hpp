@@ -16,7 +16,7 @@
 #include "gpp_random.hpp"
 
 #ifdef OL_GPU_ENABLED
-#define OL_CUDA_THROW_EXCEPTION(_ERR) ThrowException(OptimalLearningException((_ERR).line_info, (_ERR).func_info, cudaGetErrorString((_ERR).err)));
+#define OL_CUDA_THROW_EXCEPTION(_ERR) ThrowException(OptimalLearningException((_ERR).file_and_line_info, (_ERR).func_info, cudaGetErrorString((_ERR).err)));
 #define OL_CUDA_ERROR_THROW(_ERR) {if((_ERR).err != cudaSuccess) {OL_CUDA_THROW_EXCEPTION(_ERR)}}
 #endif
 
