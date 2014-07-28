@@ -94,7 +94,7 @@ The parameters :math:`\omega_{M}, \tau_{M}` represent the weight and threshold o
         \Phi\left(C_{S}, \mathbb{P}\right) = 0.
     \end{equation}
 
-One can break the objective function for each metric into two distinct parts. First, the relitave gain over the status quo,
+One can break the objective function for each metric into two distinct parts. First, the relative gain over the status quo,
 
 .. math::
     \begin{equation}
