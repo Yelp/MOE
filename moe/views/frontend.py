@@ -2,7 +2,7 @@
 """Frontend views for the MOE app."""
 from pyramid.view import view_config
 
-from moe.optimal_learning.python.constant import DEFAULT_GAUSSIAN_PROCESS_PARAMETERS, DEMO_GRADIENT_DESCENT_PARAMETERS, PRETTY_OPTIMIZER_MULTISTARTS
+from moe.optimal_learning.python.constant import DEFAULT_GAUSSIAN_PROCESS_PARAMETERS, DEMO_GRADIENT_DESCENT_PARAMETERS, DEMO_OPTIMIZER_MULTISTARTS
 
 
 @view_config(route_name='home', renderer='moe:templates/index.mako')
@@ -28,5 +28,5 @@ def gp_plot_page(request):
             'nav_active': 'demo',
             'default_gaussian_process_parameters': DEFAULT_GAUSSIAN_PROCESS_PARAMETERS,
             'default_ei_optimizer_parameters': DEMO_GRADIENT_DESCENT_PARAMETERS,
-            'default_num_multistarts': PRETTY_OPTIMIZER_MULTISTARTS,
+            'default_num_multistarts': DEMO_OPTIMIZER_MULTISTARTS,
             }

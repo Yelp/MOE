@@ -1,7 +1,7 @@
-moe_examples
-============
+moe
+===
 
 .. toctree::
    :maxdepth: 4
 
-   moe_examples
+   moe

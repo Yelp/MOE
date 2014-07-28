@@ -326,7 +326,7 @@ class GaussianProcess final {
          For any such objects "state", call state.SetupState(...) to restore them.
 
     \param
-      :hyperparameters_new[covariance_ptr_->GetNumberOfHyperparameters]: new hyperparameter array
+      :hyperparameters_new[covariance_ptr->GetNumberOfHyperparameters]: new hyperparameter array
   \endrst*/
   void SetCovarianceHyperparameters(double const * restrict hyperparameters_new) OL_NONNULL_POINTERS {
     covariance_ptr_->SetHyperparameters(hyperparameters_new);

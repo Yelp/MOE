@@ -20,8 +20,8 @@
   two random variables change in relation to each other--more explicitly, in a GP they specify how similar two points are.
   The choice of covariance function is important because it encodes our assumptions about how the "world" behaves.
 
-  Currently, all covariance functions in this file require dim+1 hyperparameters: \alpha, L_1, ... L_d.  \alpha
-  is \sigma_f^2, the signal variance.  L_1, ... , L_d are the length scales, one per spatial dimension.  We do not
+  Currently, all covariance functions in this file require ``dim+1`` hyperparameters: ``\alpha, L_1, ... L_d``. ``\alpha``
+  is ``\sigma_f^2``, the signal variance. ``L_1, ... , L_d`` are the length scales, one per spatial dimension.  We do not
   currently support non-axis-aligned anisotropy.
 
   Specifying hyperparameters is tricky because changing them fundamentally changes the behavior of the GP.
