@@ -53,7 +53,7 @@ class DummyDomain {
     Always returns true: DummyDomain contains all points.
 
     \param
-      :point[dim_]: point to check
+      :point[dim]: point to check
     \return
       true if point is inside the domain or on its boundary, false otherwise
   \endrst*/
@@ -128,7 +128,7 @@ class TensorProductDomain {
     Check if a point is inside the domain/on its boundary or outside.
 
     \param
-      :point[dim_]: point to check
+      :point[dim]: point to check
     \return
       true if point is inside the domain or on its boundary, false otherwise
   \endrst*/
@@ -141,10 +141,10 @@ class TensorProductDomain {
 
     \param
       :uniform_generator[1]: a UniformRandomGenerator object providing the random engine for uniform random numbers
-      :random_point[dim_]: properly sized array
+      :random_point[dim]: properly sized array
     \output
       :uniform_generator[1]: UniformRandomGenerator object will have its state changed due to random draws
-      :random_point[dim_]: point with coordinates inside the domain (left in invalid state if fcn returns false)
+      :random_point[dim]: point with coordinates inside the domain (left in invalid state if fcn returns false)
     \return
       true if point generation succeeded
   \endrst*/
@@ -158,10 +158,10 @@ class TensorProductDomain {
     \param
       :num_points: number of random points to generate
       :uniform_generator[1]: a UniformRandomGenerator object providing the random engine for uniform random numbers
-      :random_points[dim_][num_points]: properly sized array
+      :random_points[dim][num_points]: properly sized array
     \output
       :uniform_generator[1]: UniformRandomGenerator object will have its state changed due to random draws
-      :random_points[dim_][num_points]: point with coordinates inside the domain
+      :random_points[dim][num_points]: point with coordinates inside the domain
     \return
       number of points generated (always num_points; ok to not use this result)
   \endrst*/
@@ -180,10 +180,10 @@ class TensorProductDomain {
 
     \param
       :max_relative_change: max change allowed per update (as a relative fraction of current distance to boundary)
-      :current_point[dim_]: starting point
-      :update_vector[dim_]: proposed update
+      :current_point[dim]: starting point
+      :update_vector[dim]: proposed update
     \output
-      :update_vector[dim_]: modified update so that the final point remains inside the domain
+      :update_vector[dim]: modified update so that the final point remains inside the domain
   \endrst*/
   void LimitUpdate(double max_relative_change, double const * restrict current_point,
                    double * restrict update_vector) const OL_NONNULL_POINTERS;
@@ -269,7 +269,7 @@ class SimplexIntersectTensorProductDomain {
     Check if a point is inside the domain/on its domain or outside
 
     \param
-      :point[dim_]: point to check
+      :point[dim]: point to check
     \return
       true if point is inside the domain or on its boundary, false otherwise
   \endrst*/
@@ -284,10 +284,10 @@ class SimplexIntersectTensorProductDomain {
 
     \param
       :uniform_generator[1]: a UniformRandomGenerator object providing the random engine for uniform random numbers
-      :random_point[dim_]: properly sized array
+      :random_point[dim]: properly sized array
     \output
       :uniform_generator[1]: UniformRandomGenerator object will have its state changed due to random draws
-      :random_point[dim_]: point with coordinates inside the domain (left in invalid state if fcn returns false)
+      :random_point[dim]: point with coordinates inside the domain (left in invalid state if fcn returns false)
     \return
       true if point generation succeeded
   \endrst*/
@@ -303,10 +303,10 @@ class SimplexIntersectTensorProductDomain {
     \param
       :num_points: number of random points to generate
       :uniform_generator[1]: a UniformRandomGenerator object providing the random engine for uniform random numbers
-      :random_points[dim_][num_points]: properly sized array
+      :random_points[dim][num_points]: properly sized array
     \output
       :uniform_generator[1]: UniformRandomGenerator object will have its state changed due to random draws
-      :random_points[dim_][num_points]: point with coordinates inside the domain
+      :random_points[dim][num_points]: point with coordinates inside the domain
     \return
       number of points actually generated
   \endrst*/
@@ -325,10 +325,10 @@ class SimplexIntersectTensorProductDomain {
 
     \param
       :max_relative_change: max change allowed per update (as a relative fraction of current distance to boundary)
-      :current_point[dim_]: starting point
-      :update_vector[dim_]: proposed update
+      :current_point[dim]: starting point
+      :update_vector[dim]: proposed update
     \output
-      :update_vector[dim_]: modified update so that the final point remains inside the domain
+      :update_vector[dim]: modified update so that the final point remains inside the domain
   \endrst*/
   void LimitUpdate(double max_relative_change, double const * restrict current_point,
                    double * restrict update_vector) const OL_NONNULL_POINTERS;
@@ -416,7 +416,7 @@ class RepeatedDomain {
     Check if a point is inside the domain/on its domain or outside
 
     \param
-      :point[dim_][num_repeats_]: point to check
+      :point[dim][num_repeats]: point to check
     \return
       true if point is inside the domain or on its boundary, false otherwise
   \endrst*/
@@ -437,10 +437,10 @@ class RepeatedDomain {
 
     \param
       :uniform_generator[1]: a UniformRandomGenerator object providing the random engine for uniform random numbers
-      :random_point[dim_][num_repeats_]: properly sized array
+      :random_point[dim][num_repeats]: properly sized array
     \output
       :uniform_generator[1]: UniformRandomGenerator object will have its state changed due to random draws
-      :random_point[dim_][num_repeats_]: point with coordinates inside the domain (left in invalid state if fcn returns false)
+      :random_point[dim][num_repeats]: point with coordinates inside the domain (left in invalid state if fcn returns false)
     \return
       true if point generation succeeded
   \endrst*/
@@ -463,10 +463,10 @@ class RepeatedDomain {
     \param
       :num_points: number of random points to generate
       :uniform_generator[1]: a UniformRandomGenerator object providing the random engine for uniform random numbers
-      :random_points[dim_][num_repeats_][num_points]: properly sized array
+      :random_points[dim][num_repeats][num_points]: properly sized array
     \output
       :uniform_generator[1]: UniformRandomGenerator object will have its state changed due to random draws
-      :random_points[dim_][num_repeats_][num_points]: point with coordinates inside the domain
+      :random_points[dim][num_repeats][num_points]: point with coordinates inside the domain
     \return
       number of points actually generated
   \endrst*/
@@ -509,10 +509,10 @@ class RepeatedDomain {
 
     \param
       :max_relative_change: max change allowed per update (as a relative fraction of current distance to boundary)
-      :current_point[dim_][num_repeats_]: starting point
-      :update_vector[dim_][num_repeats_]: proposed update
+      :current_point[dim][num_repeats]: starting point
+      :update_vector[dim][num_repeats]: proposed update
     \output
-      :update_vector[dim_][num_repeats_]: modified update so that the final point remains inside the domain
+      :update_vector[dim][num_repeats]: modified update so that the final point remains inside the domain
   \endrst*/
   void LimitUpdate(double max_relative_change, double const * restrict current_point, double * restrict update_vector) const OL_NONNULL_POINTERS {
     for (int i = 0; i < num_repeats_; ++i) {

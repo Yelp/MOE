@@ -47,7 +47,7 @@ In this way, we can make the local and global optimizers completely agonistic to
 **2a. GRADIENT DESCENT (GD)**
 
 .. Note:: Below there is some discussion of "restarted" Gradient Descent; this is not yet implemented in Python.
-    See cpp_wrappers/optimization.py if you want to use this feature.
+    See :mod:`moe.optimal_learning.python.cpp_wrappers.optimization` if you want to use this feature.
 
 **2a, i. OVERVIEW**
 
@@ -87,7 +87,7 @@ loop, where we fire off another GD run from the current location unless converge
 
 **2b. NEWTON'S METHOD:**
 
-.. Note:: Newton's method is not yet implemented in Python. See cpp_wrappers/optimization.py if you want to use this feature.
+.. Note:: Newton's method is not yet implemented in Python. See :mod:`moe.optimal_learning.python.cpp_wrappers.optimization` if you want to use this feature.
 
 **2b, i. OVERVIEW**
 
@@ -199,12 +199,10 @@ def multistart_optimize(optimizer, starting_points=None, num_multistarts=None):
 
     :param optimizer: object that will perform the optimization
     :type optimizer: interfaces.optimization_interface.OptimizerInterface subclass
-    :param points_to_evaluate: points at which to compute the objective
-    :type points_to_evaluate: array of float64 with shape (num_points, evaluator.problem_size)
+    :param starting_points: points at which to initialize optimization runs
+    :type starting_points: array of float64 with shape (num_points, evaluator.problem_size)
     :return: (best point found, objective function values at the end of each optimization run)
     :rtype: tuple: (array of float64 with shape (optimizer.dim), array of float64 with shape (starting_points.shape[0]) or (num_multistarts))
-    :return: objective function value at each specified point
-    :rtype: array of float64 with shape (points_to_evaluate.shape[0])
     :raises: ValueError: if both ``starting_points`` and ``num_multistarts`` are None
 
     """
@@ -234,7 +232,7 @@ _BaseNewtonParameters = collections.namedtuple('_BaseNewtonParameters', [
 
 class NewtonParameters(_BaseNewtonParameters):
 
-    """See docstring at :class:`moe.optimal_learning.python.cpp_wrappers.optimization`."""
+    """See docstring at :class:`moe.optimal_learning.python.cpp_wrappers.optimization.NewtonParameters`."""
 
     __slots__ = ()
 
