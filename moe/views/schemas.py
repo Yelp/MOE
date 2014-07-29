@@ -10,7 +10,7 @@ TODO(GH-291): make sure previous warning is moved to the schemas/__init__.py fil
 """
 import colander
 
-from moe.bandit.constant import DEFAULT_EPSILON
+from moe.bandit.constant import DEFAULT_EPSILON, DEFAULT_TOTAL_SAMPLES, EPSILON_SUBTYPE_FIRST, EPSILON_SUBTYPE_GREEDY
 from moe.bandit.data_containers import SampleArm
 from moe.optimal_learning.python.constant import GRADIENT_DESCENT_OPTIMIZER, TENSOR_PRODUCT_DOMAIN_TYPE, SQUARE_EXPONENTIAL_COVARIANCE_TYPE, NULL_OPTIMIZER, NEWTON_OPTIMIZER, DOMAIN_TYPES, OPTIMIZER_TYPES, COVARIANCE_TYPES, CONSTANT_LIAR_METHODS, DEFAULT_MAX_NUM_THREADS, MAX_ALLOWED_NUM_THREADS, DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS, LIKELIHOOD_TYPES, LOG_MARGINAL_LIKELIHOOD, DEFAULT_CONSTANT_LIAR_METHOD, DEFAULT_CONSTANT_LIAR_LIE_NOISE_VARIANCE, DEFAULT_KRIGING_NOISE_VARIANCE, DEFAULT_KRIGING_STD_DEVIATION_COEF
 
@@ -326,13 +326,14 @@ class CovarianceInfo(StrictMappingSchema):
             )
 
 
-class BanditEpsilonHyperparameterInfo(colander.MappingSchema):
+class BanditEpsilonFirstHyperparameterInfo(StrictMappingSchema):
 
-    """The hyperparameter info needed for every  Bandit Epsilon request.
+    """The hyperparameter info needed for every  Bandit Epsilon-First request.
 
     **Required fields**
 
-        :epsilon: epsilon value for epsilon-greedy bandit. This strategy pulls the optimal arm (best expected return) with probability 1-epsilon. With probability epsilon a random arm is pulled.
+        :epsilon: epsilon value for epsilon bandits. This strategy pulls the optimal arm (best expected return) with probability 1-epsilon. With probability epsilon a random arm is pulled.
+        :total_samples: total number of samples for epsilon-first bandit. total_samples is T from :doc:`bandit`.
 
     """
 
@@ -341,6 +342,37 @@ class BanditEpsilonHyperparameterInfo(colander.MappingSchema):
             validator=colander.Range(min=0),
             missing=DEFAULT_EPSILON,
             )
+
+    total_samples = colander.SchemaNode(
+            colander.Int(),
+            validator=colander.Range(min=0),
+            missing=DEFAULT_TOTAL_SAMPLES,
+            )
+
+
+class BanditEpsilonGreedyHyperparameterInfo(StrictMappingSchema):
+
+    """The hyperparameter info needed for every  Bandit Epsilon-Greedy request.
+
+    **Required fields**
+
+        :epsilon: epsilon value for epsilon bandits. This strategy pulls the optimal arm (best expected return) with probability 1-epsilon. With probability epsilon a random arm is pulled.
+
+    """
+
+    epsilon = colander.SchemaNode(
+            colander.Float(),
+            validator=colander.Range(min=0),
+            missing=DEFAULT_EPSILON,
+            )
+
+
+#: Mapping from bandit epsilon subtypes (:const:`moe.bandit.constant.EPSILON_SUBTYPES`) to
+#: hyperparameter info schemas, e.g., :class:`moe.views.schemas.BanditEpsilonFirstHyperparameterInfo`.
+BANDIT_EPSILON_SUBTYPES_TO_HYPERPARAMETER_INFO_SCHEMA_CLASSES = {
+        EPSILON_SUBTYPE_FIRST: BanditEpsilonFirstHyperparameterInfo,
+        EPSILON_SUBTYPE_GREEDY: BanditEpsilonGreedyHyperparameterInfo,
+        }
 
 
 class GpHistoricalInfo(StrictMappingSchema):

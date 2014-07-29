@@ -8,8 +8,11 @@ DEFAULT_BANDIT_HISTORICAL_INFO = {
                                             }
                            }
 
+# Default Hyperparameters
 DEFAULT_EPSILON = 0.05
+DEFAULT_TOTAL_SAMPLES = 100
 
 # Epsilon subtypes
+EPSILON_SUBTYPE_FIRST = 'first'
 EPSILON_SUBTYPE_GREEDY = 'greedy'
-EPSILON_SUBTYPES = [EPSILON_SUBTYPE_GREEDY]
+EPSILON_SUBTYPES = [EPSILON_SUBTYPE_FIRST, EPSILON_SUBTYPE_GREEDY]
