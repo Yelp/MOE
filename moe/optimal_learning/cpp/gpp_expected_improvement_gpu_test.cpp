@@ -248,13 +248,13 @@ int RunGPUTests() {
   return total_errors;
 }
 
-#else
+#else  // OL_GPU_ENABLED
 
 int RunGPUTests() {
   OL_WARNING_PRINTF("no gpu component is enabled, this test did not run.\n");
   return 0;
 }
 
-#endif
+#endif  // OL_GPU_ENABLED
 
 }  // end namespace optimal_learning

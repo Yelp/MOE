@@ -27,12 +27,16 @@ namespace optimal_learning {
 
 #ifdef OL_GPU_ENABLED
 
+inline int get_vector_size(int num_mc_itr, int num_threads, int num_blocks, int num_points) {
+  return ((static_cast<int>(num_mc_itr / (num_threads * num_blocks)) + 1) * (num_threads * num_blocks) * num_points);
+}
+
 CudaDevicePointer::CudaDevicePointer(int num_doubles_in) : num_doubles(num_doubles_in) {
   if (num_doubles_in > 0) {
       CudaError _err = CudaAllocateMemForDoubleVector(num_doubles, &ptr);
       if (_err.err != cudaSuccess) {
           ptr = nullptr;
-          OL_CUDA_THROW_EXCEPTION(_err)
+          ThrowException(OptimalLearningCudaException(_err));
       }
   } else {
       ptr = nullptr;
@@ -42,6 +46,9 @@ CudaDevicePointer::CudaDevicePointer(int num_doubles_in) : num_doubles(num_doubl
 CudaDevicePointer::~CudaDevicePointer() {
     CudaFreeMem(ptr);
 }
+
+OptimalLearningCudaException::OptimalLearningCudaException(const CudaError& _err)
+      : OptimalLearningException(_err.file_and_line_info, _err.func_info, cudaGetErrorString(_err.err)) {};
 
 double CudaExpectedImprovementEvaluator::ComputeExpectedImprovement(StateType * ei_state) const {
   double EI_val;
@@ -54,12 +61,11 @@ double CudaExpectedImprovementEvaluator::ComputeExpectedImprovement(StateType * 
                        num_union, leading_minor_index);
   }
   unsigned int seed_in = (ei_state->uniform_rng->GetEngine())();
-  CudaError _err = CudaGetEI(ei_state->to_sample_mean.data(), ei_state->cholesky_to_sample_var.data(),
+  OL_CUDA_ERROR_THROW(CudaGetEI(ei_state->to_sample_mean.data(), ei_state->cholesky_to_sample_var.data(),
                              best_so_far_, num_union, ei_state->gpu_mu.ptr, ei_state->gpu_chol_var.ptr,
-                             ei_state->gpu_ei_storage.ptr, seed_in, num_mc, &EI_val,
+                             ei_state->gpu_ei_storage.ptr, seed_in, num_mc_, &EI_val,
                              ei_state->gpu_random_number_ei.ptr, ei_state->random_number_ei.data(),
-                             ei_state->configure_for_test);
-  OL_CUDA_ERROR_THROW(_err)
+                             ei_state->configure_for_test))
   return EI_val;
 }
 
@@ -84,25 +90,23 @@ void CudaExpectedImprovementEvaluator::ComputeGradExpectedImprovement(StateType 
                                                          ei_state->grad_chol_decomp.data());
   unsigned int seed_in = (ei_state->uniform_rng->GetEngine())();
 
-  CudaError _err = CudaGetGradEI(ei_state->to_sample_mean.data(), ei_state->grad_mu.data(),
+  OL_CUDA_ERROR_THROW(CudaGetGradEI(ei_state->to_sample_mean.data(), ei_state->grad_mu.data(),
                                  ei_state->cholesky_to_sample_var.data(), ei_state->grad_chol_decomp.data(),
                                  best_so_far_, num_union, num_to_sample, dim_,
                                  (ei_state->gpu_mu).ptr, (ei_state->gpu_grad_mu).ptr, (ei_state->gpu_chol_var).ptr,
                                  (ei_state->gpu_grad_chol_var).ptr, (ei_state->gpu_grad_ei_storage).ptr,
-                                 seed_in, num_mc, grad_ei, ei_state->gpu_random_number_grad_ei.ptr,
-                                 ei_state->random_number_grad_ei.data(), ei_state->configure_for_test);
-  OL_CUDA_ERROR_THROW(_err)
+                                 seed_in, num_mc_, grad_ei, ei_state->gpu_random_number_grad_ei.ptr,
+                                 ei_state->random_number_grad_ei.data(), ei_state->configure_for_test))
 }
 
 void CudaExpectedImprovementEvaluator::setupGPU(int devID) {
-  CudaError _err = CudaSetDevice(devID);
-  OL_CUDA_ERROR_THROW(_err)
+  OL_CUDA_ERROR_THROW(CudaSetDevice(devID))
 }
 
 CudaExpectedImprovementEvaluator::CudaExpectedImprovementEvaluator(const GaussianProcess& gaussian_process_in,
                                    int num_mc_in, double best_so_far, int devID_in)
       : dim_(gaussian_process_in.dim()),
-        num_mc(num_mc_in),
+        num_mc_(num_mc_in),
         best_so_far_(best_so_far),
         gaussian_process_(&gaussian_process_in) {
     setupGPU(devID_in);
@@ -169,14 +173,10 @@ CudaExpectedImprovementState::CudaExpectedImprovementState(const EvaluatorType& 
       gpu_grad_chol_var(dim * Square(num_union) * num_derivatives),
       gpu_ei_storage(kEINumThreads * kEINumBlocks),
       gpu_grad_ei_storage(kGradEINumThreads * kGradEINumBlocks * dim * num_derivatives),
-      gpu_random_number_ei(configure_for_test ? (static_cast<int>(ei_evaluator.num_mc_itr() / (kEINumThreads * kEINumBlocks)) + 1) *
-                           (kEINumThreads * kEINumBlocks) * num_union : 0),
-      gpu_random_number_grad_ei(configure_for_test ? (static_cast<int>(ei_evaluator.num_mc_itr() / (kGradEINumThreads * kGradEINumBlocks)) + 1) *
-                                (kGradEINumThreads * kGradEINumBlocks) * num_union : 0),
-      random_number_ei(configure_for_test ? (static_cast<int>(ei_evaluator.num_mc_itr() / (kEINumThreads * kEINumBlocks)) + 1) *
-                       (kEINumThreads * kEINumBlocks) * num_union : 0),
-      random_number_grad_ei(configure_for_test ? (static_cast<int>(ei_evaluator.num_mc_itr() / (kGradEINumThreads * kGradEINumBlocks)) + 1) *
-                            (kGradEINumThreads * kGradEINumBlocks) * num_union : 0) {
+      gpu_random_number_ei(configure_for_test ? get_vector_size(ei_evaluator.num_mc_itr(), kEINumThreads, kEINumBlocks, num_union) : 0),
+      gpu_random_number_grad_ei(configure_for_test ? get_vector_size(ei_evaluator.num_mc_itr(), kGradEINumThreads, kGradEINumBlocks, num_union) : 0),
+      random_number_ei(configure_for_test ? get_vector_size(ei_evaluator.num_mc_itr(), kEINumThreads, kEINumBlocks, num_union) : 0),
+      random_number_grad_ei(configure_for_test ? get_vector_size(ei_evaluator.num_mc_itr(), kGradEINumThreads, kGradEINumBlocks, num_union) : 0) {
 }
 
 std::vector<double> CudaExpectedImprovementState::BuildUnionOfPoints(double const * restrict points_to_sample, double const * restrict points_being_sampled,
@@ -199,7 +199,7 @@ void CudaExpectedImprovementState::SetupState(const EvaluatorType& ei_evaluator,
   // update quantities derived from points_to_sample
   UpdateCurrentPoint(ei_evaluator, points_to_sample);
 }
-#endif
+#endif  // OL_GPU_ENABLED
 
 }  // end namespace optimal_learning
 

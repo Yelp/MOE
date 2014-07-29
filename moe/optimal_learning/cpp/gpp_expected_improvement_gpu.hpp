@@ -11,13 +11,14 @@
 #include <algorithm>
 
 #include "gpp_common.hpp"
+#include "gpp_exception.hpp"
 #include "gpp_logging.hpp"
 #include "gpp_math.hpp"
 #include "gpp_random.hpp"
 
 #ifdef OL_GPU_ENABLED
-#define OL_CUDA_THROW_EXCEPTION(_ERR) ThrowException(OptimalLearningException((_ERR).file_and_line_info, (_ERR).func_info, cudaGetErrorString((_ERR).err)));
-#define OL_CUDA_ERROR_THROW(_ERR) {if((_ERR).err != cudaSuccess) {OL_CUDA_THROW_EXCEPTION(_ERR)}}
+#include "gpu/gpp_cuda_math.hpp"
+#define OL_CUDA_ERROR_THROW(X) do {CudaError _ERR = X; if((_ERR).err != cudaSuccess) {ThrowException(OptimalLearningCudaException(_ERR));}} while(0);
 #endif
 
 namespace optimal_learning {
@@ -37,6 +38,26 @@ struct CudaDevicePointer final {
   int num_doubles;
 
   OL_DISALLOW_DEFAULT_AND_COPY_AND_ASSIGN(CudaDevicePointer);
+};
+
+/*!\rst
+  Exception to handle runtime errors returned by CUDA API functions. This class subclasses
+  OptimalLearningException in gpp_exception.hpp/cpp, and basiclly has the same functionality
+  as its superclass, except the constructor is different.
+\endrst*/
+class OptimalLearningCudaException : public OptimalLearningException {
+ public:
+  //! String name of this exception ofr logging.
+  constexpr static char const * kName = "OptimalLearningCudaException";
+
+  /*!\rst
+    Constructs a OptimalLearningCudaException with struct CudaError
+    \param
+      :_err: C struct that contains error message returned by CUDA API functions
+  \endrst*/
+  OptimalLearningCudaException(const CudaError& _err);
+
+  OL_DISALLOW_DEFAULT_AND_ASSIGN(OptimalLearningCudaException);
 };
 
 struct CudaExpectedImprovementState;
@@ -61,7 +82,7 @@ class CudaExpectedImprovementEvaluator final {
   }
 
   int num_mc_itr() const noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
-    return num_mc;
+    return num_mc_;
   }
 
   const GaussianProcess * gaussian_process() const noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
@@ -113,7 +134,7 @@ class CudaExpectedImprovementEvaluator final {
   //! spatial dimension (e.g., entries per point of points_sampled)
   const int dim_;
   //! number of mc iterations
-  int num_mc;
+  int num_mc_;
   //! best (minimum) objective function value (in points_sampled_value)
   double best_so_far_;
   //! pointer to gaussian process used in EI computations
@@ -276,7 +297,7 @@ struct CudaExpectedImprovementState final {
   OL_DISALLOW_DEFAULT_AND_COPY_AND_ASSIGN(CudaExpectedImprovementState);
 };
 
-#endif
+#endif  // OL_GPU_ENABLED
 
 }   // end namespace optimal_learning
 #endif  // MOE_OPTIMAL_LEARNING_CPP_GPP_EXPECTED_IMPROVEMENT_GPU_HPP_

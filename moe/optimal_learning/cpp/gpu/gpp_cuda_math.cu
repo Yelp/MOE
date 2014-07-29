@@ -53,10 +53,11 @@ __device__ void CudaGeneralMatrixVectorMultiply(double const * __restrict__ A, d
   }
 }
 
-// This inline function copies element from one array to the other, it also checks if index is out of bound before initiating the copy operation.
-__forceinline__ __device__ void CudaCopyElement(int index, int bound, double const * __restrict__ origin, double * __restrict__ destination) {
-    if (index < bound) {
-        destination[index] = origin[index];
+// This inline function copies [begin, begin+1, ..., end-1] elements from one array to the other, if bound < end, then end = bound
+__forceinline__ __device__ void CudaCopyElement(int begin, int end, int bound, double const * __restrict__ origin, double * __restrict__ destination) {
+    int local_end = end < bound ? end : bound;
+    for (int idx = begin; idx < local_end; ++idx) {
+        destination[idx] = origin[idx];
     }
 }
 
@@ -71,11 +72,10 @@ __global__ void CudaComputeEIGpu(double const * __restrict__ chol_var, double co
   double * mu_local = chol_var_local + num_union * num_union;
   const int idx = threadIdx.x;
   const int IDX = threadIdx.x + blockDim.x * blockIdx.x;
-  const int loop_no = num_union * num_union / blockDim.x;
-  for (int k = 0; k <= loop_no; ++k) {
-    CudaCopyElement(k*blockDim.x+idx, num_union*num_union, chol_var, chol_var_local);
-    CudaCopyElement(k*blockDim.x+idx, num_union, mu, mu_local);
-  }
+  int chunk_size = (num_union * num_union - 1)/ blockDim.x + 1;
+  CudaCopyElement(chunk_size * idx, chunk_size * (idx + 1), num_union * num_union, chol_var, chol_var_local);
+  chunk_size = (num_union - 1)/ blockDim.x + 1;
+  CudaCopyElement(chunk_size * idx, chunk_size * (idx + 1), num_union,  mu, mu_local);
   __syncthreads();
 
   // MC start
@@ -122,13 +122,14 @@ __global__ void CudaComputeGradEIGpu(double const * __restrict__ mu, double cons
   double * grad_chol_var_local = grad_mu_local + num_to_sample * dim;
   const int idx = threadIdx.x;
   const int IDX = threadIdx.x + blockDim.x * blockIdx.x;
-  const int loop_no = num_to_sample * num_union * num_union * dim / blockDim.x;
-  for (int k = 0; k <= loop_no; ++k) {
-      CudaCopyElement(k*blockDim.x+idx, num_to_sample*num_union*num_union*dim, grad_chol_var, grad_chol_var_local);
-      CudaCopyElement(k*blockDim.x+idx, num_union*num_union, chol_var, chol_var_local);
-      CudaCopyElement(k*blockDim.x+idx, num_to_sample*dim, grad_mu, grad_mu_local);
-      CudaCopyElement(k*blockDim.x+idx, num_union, mu, mu_local);
-  }
+  int chunk_size = (num_to_sample * num_union * num_union * dim - 1)/ blockDim.x + 1;
+  CudaCopyElement(chunk_size * idx, chunk_size * (idx + 1), num_to_sample * num_union * num_union * dim, grad_chol_var, grad_chol_var_local);
+  chunk_size = (num_union * num_union - 1)/ blockDim.x + 1;
+  CudaCopyElement(chunk_size * idx, chunk_size * (idx + 1), num_union * num_union, chol_var, chol_var_local);
+  chunk_size = (num_to_sample * dim - 1)/ blockDim.x + 1;
+  CudaCopyElement(chunk_size * idx, chunk_size * (idx + 1), num_to_sample * dim, grad_mu, grad_mu_local);
+  chunk_size = (num_union - 1)/ blockDim.x + 1;
+  CudaCopyElement(chunk_size * idx, chunk_size * (idx + 1), num_union, mu, mu_local);
   __syncthreads();
 
   int i, k, mc, winner;
