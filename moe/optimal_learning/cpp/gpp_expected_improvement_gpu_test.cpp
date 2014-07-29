@@ -20,6 +20,7 @@
 
 #include "gpp_common.hpp"
 #include "gpp_exception.hpp"
+#include "gpp_expected_improvement_gpu.hpp"
 #include "gpp_math.hpp"
 #include "gpp_random.hpp"
 #include "gpp_test_utils.hpp"
@@ -221,7 +222,8 @@ int RunCudaEIvsCpuEITests() {
   }
   return total_errors;
 }
-}
+
+}  // end unnamed namespace
 
 /*!\rst
   Invoke all tests for GPU functions.

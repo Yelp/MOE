@@ -7,6 +7,7 @@
 
 #include "gpp_expected_improvement_gpu.hpp"
 
+#include <algorithm>
 #include <vector>
 
 #include "gpp_common.hpp"
@@ -48,7 +49,7 @@ CudaDevicePointer::~CudaDevicePointer() {
 }
 
 OptimalLearningCudaException::OptimalLearningCudaException(const CudaError& _err)
-      : OptimalLearningException(_err.file_and_line_info, _err.func_info, cudaGetErrorString(_err.err)) {};
+      : OptimalLearningException(_err.file_and_line_info, _err.func_info, cudaGetErrorString(_err.err)) {}
 
 double CudaExpectedImprovementEvaluator::ComputeExpectedImprovement(StateType * ei_state) const {
   double EI_val;
@@ -65,7 +66,7 @@ double CudaExpectedImprovementEvaluator::ComputeExpectedImprovement(StateType * 
                              best_so_far_, num_union, ei_state->gpu_mu.ptr, ei_state->gpu_chol_var.ptr,
                              ei_state->gpu_ei_storage.ptr, seed_in, num_mc_, &EI_val,
                              ei_state->gpu_random_number_ei.ptr, ei_state->random_number_ei.data(),
-                             ei_state->configure_for_test))
+                             ei_state->configure_for_test));
   return EI_val;
 }
 
@@ -96,11 +97,11 @@ void CudaExpectedImprovementEvaluator::ComputeGradExpectedImprovement(StateType 
                                  (ei_state->gpu_mu).ptr, (ei_state->gpu_grad_mu).ptr, (ei_state->gpu_chol_var).ptr,
                                  (ei_state->gpu_grad_chol_var).ptr, (ei_state->gpu_grad_ei_storage).ptr,
                                  seed_in, num_mc_, grad_ei, ei_state->gpu_random_number_grad_ei.ptr,
-                                 ei_state->random_number_grad_ei.data(), ei_state->configure_for_test))
+                                 ei_state->random_number_grad_ei.data(), ei_state->configure_for_test));
 }
 
-void CudaExpectedImprovementEvaluator::setupGPU(int devID) {
-  OL_CUDA_ERROR_THROW(CudaSetDevice(devID))
+void CudaExpectedImprovementEvaluator::SetupGPU(int devID) {
+  OL_CUDA_ERROR_THROW(CudaSetDevice(devID));
 }
 
 CudaExpectedImprovementEvaluator::CudaExpectedImprovementEvaluator(const GaussianProcess& gaussian_process_in,
@@ -109,7 +110,7 @@ CudaExpectedImprovementEvaluator::CudaExpectedImprovementEvaluator(const Gaussia
         num_mc_(num_mc_in),
         best_so_far_(best_so_far),
         gaussian_process_(&gaussian_process_in) {
-    setupGPU(devID_in);
+    SetupGPU(devID_in);
   }
 
 CudaExpectedImprovementEvaluator::~CudaExpectedImprovementEvaluator() {
@@ -173,10 +174,10 @@ CudaExpectedImprovementState::CudaExpectedImprovementState(const EvaluatorType& 
       gpu_grad_chol_var(dim * Square(num_union) * num_derivatives),
       gpu_ei_storage(kEINumThreads * kEINumBlocks),
       gpu_grad_ei_storage(kGradEINumThreads * kGradEINumBlocks * dim * num_derivatives),
-      gpu_random_number_ei(configure_for_test ? get_vector_size(ei_evaluator.num_mc_itr(), kEINumThreads, kEINumBlocks, num_union) : 0),
-      gpu_random_number_grad_ei(configure_for_test ? get_vector_size(ei_evaluator.num_mc_itr(), kGradEINumThreads, kGradEINumBlocks, num_union) : 0),
-      random_number_ei(configure_for_test ? get_vector_size(ei_evaluator.num_mc_itr(), kEINumThreads, kEINumBlocks, num_union) : 0),
-      random_number_grad_ei(configure_for_test ? get_vector_size(ei_evaluator.num_mc_itr(), kGradEINumThreads, kGradEINumBlocks, num_union) : 0) {
+      gpu_random_number_ei(configure_for_test ? get_vector_size(ei_evaluator.num_mc(), kEINumThreads, kEINumBlocks, num_union) : 0),
+      gpu_random_number_grad_ei(configure_for_test ? get_vector_size(ei_evaluator.num_mc(), kGradEINumThreads, kGradEINumBlocks, num_union) : 0),
+      random_number_ei(configure_for_test ? get_vector_size(ei_evaluator.num_mc(), kEINumThreads, kEINumBlocks, num_union) : 0),
+      random_number_grad_ei(configure_for_test ? get_vector_size(ei_evaluator.num_mc(), kGradEINumThreads, kGradEINumBlocks, num_union) : 0) {
 }
 
 std::vector<double> CudaExpectedImprovementState::BuildUnionOfPoints(double const * restrict points_to_sample, double const * restrict points_being_sampled,

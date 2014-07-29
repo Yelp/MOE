@@ -7,20 +7,14 @@
 
   * consistency test against analytical 1,0-EI result
   * compare with CPU(MC) results
+  .. Note:: These tests do not run if GPU computation (``OL_GPU_ENABLED``) is disabled.
 
 \endrst*/
 
 #ifndef MOE_OPTIMAL_LEARNING_CPP_GPP_EXPECTED_IMPROVEMENT_GPU_TEST_HPP_
 #define MOE_OPTIMAL_LEARNING_CPP_GPP_EXPECTED_IMPROVEMENT_GPU_TEST_HPP_
 
-#include <vector>
-
 #include "gpp_common.hpp"
-#include "gpp_domain.hpp"
-#include "gpp_exception.hpp"
-#include "gpp_expected_improvement_gpu.hpp"
-#include "gpp_math.hpp"
-#include "gpp_test_utils.hpp"
 
 namespace optimal_learning {
 /*!\rst

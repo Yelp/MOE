@@ -232,7 +232,8 @@ function(configure_exec_targets exec_names exec_sources dependencies compile_fla
       )
     if (${MOE_USE_GPU} MATCHES "1")
         add_dependencies(${name} GPU_LIB)
-        target_link_libraries(${name} ${CUDA_LIBRARIES} ${CMAKE_BINARY_DIR}/gpu/libGPU.so)
+        target_link_libraries(${name} ${CUDA_LIBRARIES}
+            ${CMAKE_BINARY_DIR}/gpu/libOL_GPU.so)
     endif()
   endforeach()
 endfunction(configure_exec_targets)
@@ -355,7 +356,7 @@ endif()
 
 target_link_libraries(GPP ${PYTHON_LIBRARIES} ${Boost_LIBRARIES})
 if (${MOE_USE_GPU} MATCHES "1")
-    target_link_libraries(GPP ${CUDA_LIBRARIES} ${CMAKE_BINARY_DIR}/gpu/libGPU.so)
+    target_link_libraries(GPP ${CUDA_LIBRARIES} ${CMAKE_BINARY_DIR}/gpu/libOL_GPU.so)
 endif()
         
 # Make sure lib ends in ".so"

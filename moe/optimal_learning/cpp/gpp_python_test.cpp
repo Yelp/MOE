@@ -17,6 +17,7 @@
 #include "gpp_covariance_test.hpp"
 #include "gpp_domain.hpp"
 #include "gpp_domain_test.hpp"
+#include "gpp_expected_improvement_gpu_test.hpp"
 #include "gpp_geometry_test.hpp"
 #include "gpp_heuristic_expected_improvement_optimization_test.hpp"
 #include "gpp_linear_algebra_test.hpp"
@@ -26,7 +27,6 @@
 #include "gpp_optimization_test.hpp"
 #include "gpp_random_test.hpp"
 #include "gpp_test_utils_test.hpp"
-#include "gpp_expected_improvement_gpu_test.hpp"
 
 namespace optimal_learning {
 
@@ -77,6 +77,11 @@ int RunCppTestsWrapper() {
   total_errors += error;
 
   error = RunGPUTests();
+  if (error != 0) {
+    OL_FAILURE_PRINTF("GPU tests failed\n");
+  } else {
+    OL_SUCCESS_PRINTF("GPU tests passed\n");
+  }
   total_errors += error;
 
   error = RunLogLikelihoodPingTests();

@@ -7,8 +7,8 @@
 #ifndef MOE_OPTIMAL_LEARNING_CPP_GPP_EXPECTED_IMPROVEMENT_GPU_HPP_
 #define MOE_OPTIMAL_LEARNING_CPP_GPP_EXPECTED_IMPROVEMENT_GPU_HPP_
 
-#include <vector>
 #include <algorithm>
+#include <vector>
 
 #include "gpp_common.hpp"
 #include "gpp_exception.hpp"
@@ -18,7 +18,7 @@
 
 #ifdef OL_GPU_ENABLED
 #include "gpu/gpp_cuda_math.hpp"
-#define OL_CUDA_ERROR_THROW(X) do {CudaError _ERR = X; if((_ERR).err != cudaSuccess) {ThrowException(OptimalLearningCudaException(_ERR));}} while(0);
+#define OL_CUDA_ERROR_THROW(X) do {CudaError _ERR = X; if ((_ERR).err != cudaSuccess) {ThrowException(OptimalLearningCudaException(_ERR));}} while (0)
 #endif
 
 namespace optimal_learning {
@@ -55,7 +55,7 @@ class OptimalLearningCudaException : public OptimalLearningException {
     \param
       :_err: C struct that contains error message returned by CUDA API functions
   \endrst*/
-  OptimalLearningCudaException(const CudaError& _err);
+  explicit OptimalLearningCudaException(const CudaError& _err);
 
   OL_DISALLOW_DEFAULT_AND_ASSIGN(OptimalLearningCudaException);
 };
@@ -81,7 +81,7 @@ class CudaExpectedImprovementEvaluator final {
     return dim_;
   }
 
-  int num_mc_itr() const noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
+  int num_mc() const noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
     return num_mc_;
   }
 
@@ -126,7 +126,14 @@ class CudaExpectedImprovementEvaluator final {
   \endrst*/
   void ComputeGradExpectedImprovement(StateType * ei_state, double * restrict grad_ei) const OL_NONNULL_POINTERS;
 
-  void setupGPU(int devID);
+  /*!\rst
+    Call CUDA API function to activate a GPU.
+    Refer to: http://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__DEVICE.html#group__CUDART__DEVICE_1g418c299b069c4803bfb7cab4943da383
+
+    \param
+      :devID: device ID of the GPU need to be activated
+  \endrst*/
+  void SetupGPU(int devID);
 
   OL_DISALLOW_DEFAULT_AND_COPY_AND_ASSIGN(CudaExpectedImprovementEvaluator);
 
@@ -202,7 +209,7 @@ struct CudaExpectedImprovementState final {
       std::vector<double> with the union of the input arrays: points_being_sampled is *appended* to points_to_sample
   \endrst*/
   static std::vector<double> BuildUnionOfPoints(double const * restrict points_to_sample, double const * restrict points_being_sampled,
-                                                int num_to_sample, int num_being_sampled, int dim) noexcept OL_WARN_UNUSED_RESULT; 
+                                                int num_to_sample, int num_being_sampled, int dim) noexcept OL_WARN_UNUSED_RESULT;
 
   int GetProblemSize() const noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
     return dim*num_to_sample;
@@ -226,7 +233,7 @@ struct CudaExpectedImprovementState final {
       :ei_evaluator: expected improvement evaluator object that specifies the parameters & GP for EI evaluation
       :points_to_sample[dim][num_to_sample]: potential future samples whose EI (and/or gradients) are being evaluated
   \endrst*/
-  void UpdateCurrentPoint(const EvaluatorType& ei_evaluator, double const * restrict points_to_sample) OL_NONNULL_POINTERS; 
+  void UpdateCurrentPoint(const EvaluatorType& ei_evaluator, double const * restrict points_to_sample) OL_NONNULL_POINTERS;
 
   /*!\rst
     Configures this state object with new ``points_to_sample``, the location of the potential samples whose EI is to be evaluated.
@@ -241,7 +248,7 @@ struct CudaExpectedImprovementState final {
       :ei_evaluator: expected improvement evaluator object that specifies the parameters & GP for EI evaluation
       :points_to_sample[dim][num_to_sample]: potential future samples whose EI (and/or gradients) are being evaluated
   \endrst*/
-  void SetupState(const EvaluatorType& ei_evaluator, double const * restrict points_to_sample) OL_NONNULL_POINTERS; 
+  void SetupState(const EvaluatorType& ei_evaluator, double const * restrict points_to_sample) OL_NONNULL_POINTERS;
 
   // size information
   //! spatial dimension (e.g., entries per point of ``points_sampled``)

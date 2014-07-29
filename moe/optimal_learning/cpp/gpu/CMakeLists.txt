@@ -10,11 +10,11 @@ set(CUDA_SRCS
     gpp_cuda_math.cu
     )
 
-# Possibility to stear compiler flags - eg different compute capabilites 
+# Compiler flags - eg specify different compute capabilites 
 list(APPEND CUDA_NVCC_FLAGS --gpu-architecture sm_20)
 
 CUDA_ADD_LIBRARY(
-    GPU
+    OL_GPU
     ${CUDA_SRCS}
     SHARED
     )
