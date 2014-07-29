@@ -32,20 +32,21 @@ CHANGELOG Updates
 
 Before your change will be accepted into master, you must update ``CHANGELOG.md`` in the MOE root directory. The changelog contains a listing of major changes associated with each release, broken down into relevant categories (e.g., ``Features``, ``Changes``, ``Bugs``). The top of the changelog is for the current MOE version under development; this is where your changes go. Past releases are listed below the current candidate in reverse-chronological order.
 
-Add your changes under the appropriate categories at the TOP of ``CHANGELOG.md``. Add new categories as needed.
+Add your changes under the appropriate categories at the TOP of ``CHANGELOG.md``. Add new categories as needed. Where relevant, include issue number(s).
 
 The changelog might look like:
 
 ::
 
    * Features
-     * Cool new feature
-     * Even cooler, newer feature
-     * YOUR NEW FEATURE HERE!
+     * Cool new feature (#314)
+       * Sub-features so cool that they're sub-zero
+     * Even cooler, newer feature (#271)
+     * YOUR NEW FEATURE HERE! (#1)
    * Changes
-     * Earth-shattering change
+     * Earth-shattering change (#9)
    * Bugs
-     * Running MOE no longer causes black holes
+     * Running MOE no longer causes black holes (#1217)
 
 Pull request review templates
 .............................
@@ -190,6 +191,11 @@ Releasing (For Maintainers)
 
 The MOE repository maintainers decide when to tag official releases. They may decide to bump versions immediately after a pull request for a critical bug fix, or they may decide to wait and combine several inbound pull requests into one version bump. (Having ``MOE v10.87.3091`` makes the history unwieldy).
 
+When you are ready to mark a new release:
+
+1. Tag the release (`Tagging Releases`_).
+2. Push a Docker container for the new release to DockerHub (`Updating DockerHub`).
+
 Tagging Releases
 ................
 
@@ -213,12 +219,12 @@ Tagging Releases
       SHA: ``271828someshagoeshere314159``
 
       * Features
-        * Copied from ``CHANGELOG.md``
-        * More features!
+        * Copied from ``CHANGELOG.md`` (#123)
+        * More features! (#456)
       * Changes
-        * etc
+        * etc (#721)
 
 Updating DockerHub
 ..................
 
-TODO(sclark)
+TODO(GH-341): write up this section
