@@ -28,6 +28,7 @@ RUN python setup.py install
 
 # Build the C++
 WORKDIR /home/app/MOE/moe
+RUN rm -rf build
 RUN mkdir build
 WORKDIR /home/app/MOE/moe/build
 RUN cmake /home/app/MOE/moe/optimal_learning/cpp/
@@ -40,7 +41,7 @@ RUN chown -R app:app /home/app/MOE && chmod -R a+r /home/app/MOE
 WORKDIR /home/app/MOE
 
 # Run tests
-RUN testify -v moe.tests
+RUN make test
 
 # Configure docker container.
 EXPOSE 6543

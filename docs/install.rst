@@ -12,12 +12,19 @@ This is the recommended way to run the MOE REST server. All dependencies and bui
 
 ::
 
+    $ docker pull yelpmoe/v0.1.0
+    $ docker run -p 6543:6543 yelpmoe/v0.1.0
+
+On OSX you may need to build this manually (may take several minutes to compile scipy etc)
+
+::
+
     $ git clone https://github.com/Yelp/MOE.git
     $ cd MOE
     $ docker build -t moe_container .
     $ docker run -p 6543:6543 moe_container
 
-The webserver and REST interface is now running on port 6543 from within the container.
+The webserver and REST interface is now running on port 6543 from within the container. http://localhost:6543
 
 Install from source
 -------------------
