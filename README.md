@@ -61,11 +61,10 @@ This is the recommended way to run the MOE REST server. All dependencies and bui
 [Docker (http://docs.docker.io/)][6] is a container based virtualization framework. Unlike traditional virtualization Docker is fast, lightweight and easy to use. Docker allows you to create containers holding all the dependencies for an application. Each container is kept isolated from any other, and nothing gets shared.
 
 ```bash
-$ docker pull yelpmoe/v0.1.0
-$ docker run -p 6543:6543 yelpmoe/v0.1.0
+$ docker pull yelpmoe/latest # You can also pull specific versions like yelpmoe/v0.1.0
+$ docker run -p 6543:6543 yelpmoe/latest
 ```
-
-On OSX you may need to build this manually (may take several minutes to compile scipy etc)
+If you are on OSX, or want a build based on the current master branch you may need to build this manually.
 
 ```bash
 $ git clone https://github.com/Yelp/MOE.git

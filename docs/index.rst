@@ -126,10 +126,10 @@ Docker (http://docs.docker.io/) is a container based virtualization framework. U
 
 ::
 
-    $ docker pull yelpmoe/v0.1.0
-    $ docker run -p 6543:6543 yelpmoe/v0.1.0
+    $ docker pull yelpmoe/latest # You can also pull specific versions like yelpmoe/v0.1.0
+    $ docker run -p 6543:6543 yelpmoe/latest
 
-On OSX you may need to build this manually (may take several minutes to compile scipy etc)
+If you are on OSX, or want a build based on the current master branch you may need to build this manually.
 
 ::
     $ git clone https://github.com/Yelp/MOE.git
