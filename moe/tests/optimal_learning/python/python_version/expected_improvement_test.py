@@ -357,10 +357,10 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
         best_point = multistart_expected_improvement_optimization(ei_optimizer, num_multistarts, num_to_sample)
 
         # Check that gradients are "small" or on border. MC is very inaccurate near 0, so use finite difference
-        # gradient instead. 
+        # gradient instead.
         ei_eval.current_point = best_point
         ei_final = ei_eval.compute_expected_improvement()
-        
+
         finite_diff_grad = numpy.zeros(best_point.shape)
         h_value = 0.00001
         for i in range(best_point.shape[0]):
@@ -368,7 +368,7 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
                 best_point[i, j] += h_value
                 ei_eval.current_point = best_point
                 ei_upper = ei_eval.compute_expected_improvement()
-                best_point[i, j] -= 2*h_value
+                best_point[i, j] -= 2 * h_value
                 ei_eval.current_point = best_point
                 ei_lower = ei_eval.compute_expected_improvement()
                 best_point[i, j] += h_value
