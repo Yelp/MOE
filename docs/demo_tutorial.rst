@@ -34,6 +34,8 @@ This view has several components (check out the tooltips for specific components
  * On the right are various hyperparameters of the GP covariance and the parameters of the Stochastic Gradient Descent algorithm that we use to optimize EI.
  * On the bottom right we can specify new historical points to update the GP. By default the GUI suggests the point of highest EI and generates a value for the point drawn from the GP prior.
 
+.. _sampling-points:
+
 Sampling Points
 ...............
 
