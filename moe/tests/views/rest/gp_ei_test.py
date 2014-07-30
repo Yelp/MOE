@@ -11,7 +11,7 @@ from moe.optimal_learning.python.cpp_wrappers.expected_improvement import Expect
 from moe.optimal_learning.python.cpp_wrappers.gaussian_process import GaussianProcess
 from moe.tests.views.rest_gaussian_process_test_case import RestGaussianProcessTestCase
 from moe.views.constant import GP_EI_ENDPOINT
-from moe.views.rest.gp_ei import GpEiResponse
+from moe.views.schemas.rest.gp_ei import GpEiResponse
 
 
 class TestGpEiView(RestGaussianProcessTestCase):

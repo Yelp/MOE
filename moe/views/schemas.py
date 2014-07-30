@@ -5,7 +5,7 @@
   READ-ONLY. It appears that "missing=" and "default=" value are weak-copied (by reference).
   Thus changing missing/default fields in the output dict can modify the schema!
 
-TODO(GH-291): make sure previous warning is moved to the schemas/__init__.py file
+TODO(GH-336): make sure previous warning is moved to the schemas/__init__.py file
 
 """
 import colander
@@ -376,7 +376,7 @@ class OptimizerInfo(StrictMappingSchema):
             )
 
 
-class GpNextPointsRequest(StrictMappingSchema):
+class GpNextPointsRequest(base_schemas.StrictMappingSchema):
 
     """A request colander schema for the various subclasses of :class:`moe.views.gp_next_points_pretty_view.GpNextPointsPrettyView`; e.g., :class:`moe.views.rest.gp_next_points_epi.GpNextPointsEpi`.
 
@@ -695,7 +695,7 @@ class GpNextPointsKrigingRequest(GpNextPointsRequest):
             )
 
 
-class GpNextPointsStatus(StrictMappingSchema):
+class GpNextPointsStatus(base_schemas.StrictMappingSchema):
 
     """A status schema for the various subclasses of :class:`moe.views.gp_next_points_pretty_view.GpNextPointsPrettyView`; e.g., :class:`moe.views.rest.gp_next_points_epi.GpNextPointsEpi`.
 
@@ -716,7 +716,7 @@ class GpNextPointsStatus(StrictMappingSchema):
     )
 
 
-class GpNextPointsResponse(StrictMappingSchema):
+class GpNextPointsResponse(base_schemas.StrictMappingSchema):
 
     """A response colander schema for the various subclasses of :class:`moe.views.gp_next_points_pretty_view.GpNextPointsPrettyView`; e.g., :class:`moe.views.rest.gp_next_points_epi.GpNextPointsEpi`.
 
@@ -749,7 +749,7 @@ class GpNextPointsResponse(StrictMappingSchema):
     status = GpNextPointsStatus()
 
 
-class GpHyperOptRequest(StrictMappingSchema):
+class GpHyperOptRequest(base_schemas.StrictMappingSchema):
 
     """A :class:`moe.views.rest.gp_hyper_opt.GpHyperOptView` request colander schema.
 
@@ -875,7 +875,7 @@ class GpHyperOptRequest(StrictMappingSchema):
             )
 
 
-class GpHyperOptStatus(StrictMappingSchema):
+class GpHyperOptStatus(base_schemas.StrictMappingSchema):
 
     """A :class:`moe.views.rest.gp_hyper_opt.GpHyperOptView` status schema.
 
@@ -895,7 +895,7 @@ class GpHyperOptStatus(StrictMappingSchema):
     )
 
 
-class GpHyperOptResponse(StrictMappingSchema):
+class GpHyperOptResponse(base_schemas.StrictMappingSchema):
 
     """A :class:`moe.views.rest.gp_hyper_opt.GpHyperOptView` response colander schema.
 
@@ -932,7 +932,7 @@ class GpHyperOptResponse(StrictMappingSchema):
     status = GpHyperOptStatus()
 
 
-class GpMeanVarRequest(StrictMappingSchema):
+class GpMeanVarRequest(base_schemas.StrictMappingSchema):
 
     """A request colander schema for the views in :mod:`moe.views.rest.gp_mean_var`.
 
@@ -1004,7 +1004,7 @@ class GpMeanVarRequest(StrictMappingSchema):
             )
 
 
-class GpEndpointResponse(StrictMappingSchema):
+class GpEndpointResponse(base_schemas.StrictMappingSchema):
 
     """A base schema for the endpoint name.
 
@@ -1025,7 +1025,7 @@ class GpEndpointResponse(StrictMappingSchema):
     endpoint = colander.SchemaNode(colander.String())
 
 
-class GpMeanMixinResponse(StrictMappingSchema):
+class GpMeanMixinResponse(base_schemas.StrictMappingSchema):
 
     """A mixin response colander schema for the mean of a gaussian process.
 
@@ -1046,7 +1046,7 @@ class GpMeanMixinResponse(StrictMappingSchema):
     mean = ListOfFloats()
 
 
-class GpVarMixinResponse(StrictMappingSchema):
+class GpVarMixinResponse(base_schemas.StrictMappingSchema):
 
     """A mixin response colander schema for the [co]variance of a gaussian process.
 
@@ -1071,7 +1071,7 @@ class GpVarMixinResponse(StrictMappingSchema):
     var = MatrixOfFloats()
 
 
-class GpVarDiagMixinResponse(StrictMappingSchema):
+class GpVarDiagMixinResponse(base_schemas.StrictMappingSchema):
 
     """A mixin response colander schema for the variance of a gaussian process.
 
@@ -1147,7 +1147,7 @@ class GpMeanVarDiagResponse(GpMeanResponse, GpVarDiagMixinResponse):
     pass
 
 
-class GpEiRequest(StrictMappingSchema):
+class GpEiRequest(base_schemas.StrictMappingSchema):
 
     """A :class:`moe.views.rest.gp_ei.GpEiView` request colander schema.
 
@@ -1239,7 +1239,7 @@ class GpEiRequest(StrictMappingSchema):
             )
 
 
-class GpEiResponse(StrictMappingSchema):
+class GpEiResponse(base_schemas.StrictMappingSchema):
 
     """A :class:`moe.views.rest.gp_ei.GpEiView` response colander schema.
 

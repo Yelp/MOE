@@ -9,7 +9,8 @@ import testify as T
 from moe.optimal_learning.python.constant import TEST_OPTIMIZER_MULTISTARTS, TEST_GRADIENT_DESCENT_PARAMETERS, TEST_OPTIMIZER_NUM_RANDOM_SAMPLES, GRADIENT_DESCENT_OPTIMIZER
 from moe.tests.views.rest_gaussian_process_test_case import RestGaussianProcessTestCase
 from moe.views.constant import GP_HYPER_OPT_MOE_ROUTE
-from moe.views.rest.gp_hyper_opt import GpHyperOptResponse, GpHyperOptView
+from moe.views.rest.gp_hyper_opt import GpHyperOptView
+from moe.views.schemas.rest.gp_hyper_opt import GpHyperOptResponse
 from moe.views.utils import _make_optimizer_parameters_from_params
 
 

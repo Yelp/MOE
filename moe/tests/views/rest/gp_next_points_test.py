@@ -9,7 +9,8 @@ import testify as T
 from moe.optimal_learning.python.constant import TEST_OPTIMIZER_MULTISTARTS, TEST_GRADIENT_DESCENT_PARAMETERS, TEST_OPTIMIZER_NUM_RANDOM_SAMPLES, TEST_EXPECTED_IMPROVEMENT_MC_ITERATIONS, CONSTANT_LIAR_METHODS
 from moe.tests.views.rest_gaussian_process_test_case import RestGaussianProcessTestCase
 from moe.views.constant import ALL_NEXT_POINTS_MOE_ROUTES, GP_NEXT_POINTS_CONSTANT_LIAR_ROUTE_NAME, GP_NEXT_POINTS_CONSTANT_LIAR_ENDPOINT
-from moe.views.gp_next_points_pretty_view import GpNextPointsResponse, GpNextPointsPrettyView
+from moe.views.gp_next_points_pretty_view import GpNextPointsPrettyView
+from moe.views.schemas.gp_next_points_pretty_view import GpNextPointsResponse
 from moe.views.utils import _make_optimizer_parameters_from_params
 
 

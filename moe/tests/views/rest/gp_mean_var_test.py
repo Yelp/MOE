@@ -10,7 +10,7 @@ from moe.optimal_learning.python.cpp_wrappers.covariance import SquareExponentia
 from moe.optimal_learning.python.cpp_wrappers.gaussian_process import GaussianProcess
 from moe.tests.views.rest_gaussian_process_test_case import RestGaussianProcessTestCase
 from moe.views.constant import GP_MEAN_ENDPOINT, GP_VAR_ENDPOINT, GP_VAR_DIAG_ENDPOINT, GP_MEAN_VAR_ENDPOINT, GP_MEAN_VAR_DIAG_ENDPOINT
-from moe.views.rest.gp_mean_var import GpMeanResponse, GpVarResponse, GpVarDiagResponse, GpMeanVarResponse, GpMeanVarDiagResponse
+from moe.views.schemas.rest.gp_mean_var import GpMeanResponse, GpVarResponse, GpVarDiagResponse, GpMeanVarResponse, GpMeanVarDiagResponse
 
 
 class TestGpMeanVarView(RestGaussianProcessTestCase):
