@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 """Utilities for MOE views."""
+from moe.bandit.data_containers import HistoricalData as BanditHistoricalData
+from moe.bandit.data_containers import SampleArm
 from moe.optimal_learning.python.cpp_wrappers.gaussian_process import GaussianProcess
 from moe.optimal_learning.python.data_containers import SamplePoint, HistoricalData
 from moe.optimal_learning.python.geometry_utils import ClosedInterval
@@ -113,3 +115,26 @@ def _make_gp_from_params(params):
             )
 
     return gaussian_process
+
+
+def _make_bandit_historical_info_from_params(params):
+    """Create and return a bandit historical info from the request params as a dict.
+
+    ``params`` has the following form::
+
+        params = {
+            'historical_info': <instance of :class:`moe.views.schemas.bandit_pretty_view.BanditHistoricalInfo`>,
+            }
+
+    :param params: The request params dict
+    :type params: dict
+
+    """
+    arms_sampled = {}
+    # Load up the info
+    for arm_name, sampled_arm in params.get("historical_info").get("arms_sampled").iteritems():
+        arms_sampled[arm_name] = SampleArm(win=sampled_arm.get("win"), loss=sampled_arm.get("loss"), total=sampled_arm.get("total"))
+
+    bandit_historical_info = BanditHistoricalData(sample_arms=arms_sampled)
+
+    return bandit_historical_info

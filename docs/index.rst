@@ -132,6 +132,7 @@ Docker (http://docs.docker.io/) is a container based virtualization framework. U
 If you are on OSX, or want a build based on the current master branch you may need to build this manually.
 
 ::
+
     $ git clone https://github.com/Yelp/MOE.git
     $ cd MOE
     $ docker build -t moe_container .
@@ -250,6 +251,7 @@ Documentation
    demo_tutorial.rst
    pretty_endpoints.rst
    objective_functions.rst
+   bandit.rst
    examples.rst
    contributing.rst
    faq.rst

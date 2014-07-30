@@ -1,5 +1,9 @@
 * Features
-    * Added support for the L-BFGS-B optimizer. (#296)
+
+  * Added multi-armed bandit endpoint. (#255)
+    * Implemented epsilon-greedy.
+  * Added support for the L-BFGS-B optimizer. (#296)
+
 * Changes
 
 * Bugs

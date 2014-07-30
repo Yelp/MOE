@@ -9,7 +9,7 @@ from pyramid.view import view_config
 
 from moe.views.constant import GP_NEXT_POINTS_KRIGING_ROUTE_NAME, GP_NEXT_POINTS_KRIGING_PRETTY_ROUTE_NAME, GP_NEXT_POINTS_KRIGING_OPTIMIZER_METHOD_NAME
 from moe.views.gp_next_points_pretty_view import GpNextPointsPrettyView
-from moe.views.gp_pretty_view import PRETTY_RENDERER
+from moe.views.pretty_view import PRETTY_RENDERER
 from moe.views.schemas.rest.gp_next_points_kriging import GpNextPointsKrigingRequest
 
 
