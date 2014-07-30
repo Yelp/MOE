@@ -1,5 +1,5 @@
 * Features
-
+    * Added support for the L-BFGS-B optimizer. (#296)
 * Changes
 
 * Bugs
