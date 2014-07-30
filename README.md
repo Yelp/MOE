@@ -52,9 +52,36 @@ Externally you can use MOE through:
 
 You can be up and optimizing in a matter of minutes. [Examples of using MOE][13]
 
-## Running MOE
+# Install
 
-### REST/web server and interactive demo
+## Install in docker:
+
+This is the recommended way to run the MOE REST server. All dependencies and building is done automatically and in an isolated container.
+
+[Docker (http://docs.docker.io/)][6] is a container based virtualization framework. Unlike traditional virtualization Docker is fast, lightweight and easy to use. Docker allows you to create containers holding all the dependencies for an application. Each container is kept isolated from any other, and nothing gets shared.
+
+```bash
+$ docker pull yelpmoe/latest # You can also pull specific versions like yelpmoe/v0.1.0
+$ docker run -p 6543:6543 yelpmoe/latest
+```
+If you are on OSX, or want a build based on the current master branch you may need to build this manually.
+
+```bash
+$ git clone https://github.com/Yelp/MOE.git
+$ cd MOE
+$ docker build -t moe_container .
+$ docker run -p 6543:6543 moe_container
+```
+
+The webserver and REST interface is now running on port 6543 from within the container. http://localhost:6543
+
+## Install from source:
+
+See [Install Documentation][7]
+
+# Running MOE
+
+## REST/web server and interactive demo
 
 from the directory MOE is installed:
 
@@ -71,7 +98,7 @@ $ curl -X POST -H "Content-Type: application/json" -d '{"domain_info": {"dim": 1
 ```
 [`gp_ei` endpoint documentation.][4]
 
-### From ipython
+## From ipython
 
 ```bash
 $ ipython
@@ -84,7 +111,7 @@ $ ipython
 ```
 [`easy_interface` documentation.][5]
 
-### Within Python
+## Within Python
 
 See ``examples/next_point_via_simple_endpoint.py`` for this code or http://yelp.github.io/MOE/examples.html for more examples.
 
@@ -124,38 +151,17 @@ if __name__ == '__main__':
 
 More examples can be found in the `<MOE_DIR>/examples` directory.
 
-### Within C++
+## Within C++
 
 Expected Improvement Demo - http://yelp.github.io/MOE/gpp_expected_improvement_demo.html
 Gaussian Process Hyperparameter Optimization Demo - http://yelp.github.io/MOE/gpp_hyperparameter_optimization_demo.html
 Combined Demo - http://yelp.github.io/MOE/gpp_hyper_and_EI_demo.html
 
-# Install
-
-## Install in docker:
-
-This is the recommended way to run the MOE REST server. All dependencies and building is done automatically and in an isolated container.
-
-[Docker (http://docs.docker.io/)][6] is a container based virtualization framework. Unlike traditional virtualization Docker is fast, lightweight and easy to use. Docker allows you to create containers holding all the dependencies for an application. Each container is kept isolated from any other, and nothing gets shared.
-
-```bash
-$ git clone https://github.com/Yelp/MOE.git
-$ cd MOE
-$ docker build -t moe_container .
-$ docker run -p 6543:6543 moe_container
-```
-
-The webserver and REST interface is now running on port 6543 from within the container.
-
-## Install from source:
-
-See [Install Documentation][7]
-
-## Contributing
+# Contributing
 
 See [Contributing Documentation][8]
 
-## License
+# License
 
 MOE is licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
 
