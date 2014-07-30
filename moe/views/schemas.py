@@ -10,6 +10,8 @@ TODO(GH-291): make sure previous warning is moved to the schemas/__init__.py fil
 """
 import colander
 
+from moe.bandit.constant import DEFAULT_EPSILON
+from moe.bandit.data_containers import SampleArm
 from moe.optimal_learning.python.constant import GRADIENT_DESCENT_OPTIMIZER, TENSOR_PRODUCT_DOMAIN_TYPE, SQUARE_EXPONENTIAL_COVARIANCE_TYPE, NULL_OPTIMIZER, NEWTON_OPTIMIZER, DOMAIN_TYPES, OPTIMIZER_TYPES, COVARIANCE_TYPES, CONSTANT_LIAR_METHODS, DEFAULT_MAX_NUM_THREADS, MAX_ALLOWED_NUM_THREADS, DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS, LIKELIHOOD_TYPES, LOG_MARGINAL_LIKELIHOOD, DEFAULT_CONSTANT_LIAR_METHOD, DEFAULT_CONSTANT_LIAR_LIE_NOISE_VARIANCE, DEFAULT_KRIGING_NOISE_VARIANCE, DEFAULT_KRIGING_STD_DEVIATION_COEF
 
 
@@ -38,6 +40,64 @@ class StrictMappingSchema(colander.MappingSchema):
 
         """
         return colander.Mapping(unknown='raise')
+
+
+class ArmAllocations(colander.MappingSchema):
+
+    """Colander SingleArm Dictionary of (arm name, allocation) key-value pairs."""
+
+    schema_type = colander.MappingSchema
+    title = 'Arm Allocations'
+
+    def __init__(self):
+        """Allow any arm name to be a valid key."""
+        super(ArmAllocations, self).__init__(colander.Mapping(unknown='preserve'))
+
+    def validator(self, node, cstruct):
+        """Raise an exception if the node value (cstruct) is not a valid dictionary of (arm name, allocation) key-value pairs.
+
+        The total allocation must sums to 1.
+        Each allocation is in range [0,1].
+
+        :param node: the node being validated (usually self)
+        :type node: colander.SchemaNode subclass instance
+        :param cstruct: the value being validated
+        :type cstruct: dictionary of (arm name, allocation) key-value pairs
+
+        """
+        total_allocation = 0.0
+        for arm_name, allocation in cstruct.iteritems():
+            total_allocation += allocation
+            if not 0.0 <= allocation <= 1.0:
+                raise colander.Invalid(node, msg='Allocation = {:f} must be in range [0,1].'.format(allocation))
+        if total_allocation != 1.0:
+            raise colander.Invalid(node, msg='Total Allocation = {:f} must be 1.0.'.format(total_allocation))
+
+
+class ArmsSampled(colander.MappingSchema):
+
+    """Colander SingleArm Dictionary of (arm name, SingleArm) key-value pairs."""
+
+    schema_type = colander.MappingSchema
+    title = 'Arms Sampled'
+
+    def __init__(self):
+        """Allow any arm name to be a valid key."""
+        super(ArmsSampled, self).__init__(colander.Mapping(unknown='preserve'))
+
+    def validator(self, node, cstruct):
+        """Raise an exception if the node value (cstruct) is not a valid dictionary of (arm name, SingleArm) key-value pairs.
+
+        :param node: the node being validated (usually self)
+        :type node: colander.SchemaNode subclass instance
+        :param cstruct: the value being validated
+        :type cstruct: dictionary of (arm name, SingleArm) key-value pairs
+
+        """
+        for arm_name, sample_arm in cstruct.iteritems():
+            if set(sample_arm.keys()) != set(['win', 'loss', 'total']):
+                raise colander.Invalid(node, msg='Value = {:f} must be a valid SampleArm.'.format(cstruct))
+            SampleArm(sample_arm['win'], sample_arm['loss'], sample_arm['total'])
 
 
 class PositiveFloat(colander.SchemaNode):
@@ -266,6 +326,23 @@ class CovarianceInfo(StrictMappingSchema):
             )
 
 
+class BanditEpsilonHyperparameterInfo(colander.MappingSchema):
+
+    """The hyperparameter info needed for every  Bandit Epsilon request.
+
+    **Required fields**
+
+        :epsilon: epsilon value for epsilon-greedy bandit. This strategy pulls the optimal arm (best expected return) with probability 1-epsilon. With probability epsilon a random arm is pulled.
+
+    """
+
+    epsilon = colander.SchemaNode(
+            colander.Float(),
+            validator=colander.Range(min=0),
+            missing=DEFAULT_EPSILON,
+            )
+
+
 class GpHistoricalInfo(StrictMappingSchema):
 
     """The Gaussian Process info needed for every request.
@@ -292,6 +369,19 @@ class GpHistoricalInfo(StrictMappingSchema):
     """
 
     points_sampled = PointsSampled()
+
+
+class BanditHistoricalInfo(colander.MappingSchema):
+
+    """The Bandit historical info needed for every request.
+
+    Contains:
+
+        * arms_sampled - ArmsSampled
+
+    """
+
+    arms_sampled = ArmsSampled()
 
 
 class ListOfPointsInDomain(colander.SequenceSchema):

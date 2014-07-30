@@ -251,6 +251,7 @@ Documentation
    demo_tutorial.rst
    pretty_endpoints.rst
    objective_functions.rst
+   bandit.rst
    examples.rst
    contributing.rst
    faq.rst

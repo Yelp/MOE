@@ -18,7 +18,7 @@ from pyramid.view import view_config
 from moe.optimal_learning.python.constant import CONSTANT_LIAR_MIN, CONSTANT_LIAR_MAX, CONSTANT_LIAR_MEAN, DEFAULT_CONSTANT_LIAR_METHOD
 from moe.views.constant import GP_NEXT_POINTS_CONSTANT_LIAR_ROUTE_NAME, GP_NEXT_POINTS_CONSTANT_LIAR_PRETTY_ROUTE_NAME, GP_NEXT_POINTS_CONSTANT_LIAR_OPTIMIZER_METHOD_NAME
 from moe.views.gp_next_points_pretty_view import GpNextPointsPrettyView
-from moe.views.gp_pretty_view import PRETTY_RENDERER
+from moe.views.pretty_view import PRETTY_RENDERER
 from moe.views.schemas import GpNextPointsConstantLiarRequest
 from moe.views.utils import _make_gp_from_params
 
