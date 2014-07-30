@@ -98,7 +98,7 @@ class BanditEpsilonResponse(colander.MappingSchema):
 
     {
                 "endpoint":"bandit_epsilon",
-                "arms": {
+                "arm_allocations": {
                     "arm1": 0.95,
                     "arm2": 0.025,
                     "arm3": 0.025,
@@ -109,7 +109,7 @@ class BanditEpsilonResponse(colander.MappingSchema):
     """
 
     endpoint = colander.SchemaNode(colander.String())
-    arms = ArmAllocations()
+    arm_allocations = ArmAllocations()
     winner = colander.SchemaNode(colander.String())
 
 
@@ -194,6 +194,6 @@ class BanditEpsilonView(BanditPrettyView):
 
         return self.form_response({
                 'endpoint': self._route_name,
-                'arms': bandit_class.allocate_arms(),
+                'arm_allocations': bandit_class.allocate_arms(),
                 'winner': bandit_class.choose_arm(),
                 })

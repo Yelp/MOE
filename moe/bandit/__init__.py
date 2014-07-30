@@ -3,6 +3,7 @@
 
 Contains:
 
-    * epsilon.py - epsilon-greedy
+    * :mod:`moe.bandit.epsilon.Epsilon`
+    * :mod:`moe.bandit.epsilon_greedy.EpsilonGreedy`
 
 """
