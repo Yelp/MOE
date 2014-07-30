@@ -319,13 +319,12 @@ $ docker run -p 6543:6543 yelpmoe/latest
 </pre></div>
 </div>
 <p>If you are on OSX, or want a build based on the current master branch you may need to build this manually.</p>
-<dl class="docutils">
-<dt>::</dt>
-<dd>$ git clone <a class="reference external" href="https://github.com/Yelp/MOE.git">https://github.com/Yelp/MOE.git</a>
+<div class="highlight-python"><div class="highlight"><pre>$ git clone https://github.com/Yelp/MOE.git
 $ cd MOE
 $ docker build -t moe_container .
-$ docker run -p 6543:6543 moe_container</dd>
-</dl>
+$ docker run -p 6543:6543 moe_container
+</pre></div>
+</div>
 <p>The webserver and REST interface is now running on port 6543 from within the container. <a class="reference external" href="http://localhost:6543">http://localhost:6543</a></p>
 </div>
 <div class="section" id="build-from-source-linux-and-osx-10-8-and-10-9-supported">
