@@ -107,6 +107,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../../../contributing.html#documentation">Documentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../../contributing.html#testing">Testing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../../contributing.html#style">Style</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../contributing.html#versioning">Versioning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../contributing.html#releasing-for-maintainers">Releasing (For Maintainers)</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../../faq.html">Frequently Asked Questions</a><ul>
@@ -230,7 +232,7 @@
 <span class="kn">from</span> <span class="nn">moe.optimal_learning.python.python_version.domain</span> <span class="kn">import</span> <span class="n">TensorProductDomain</span>
 <span class="kn">from</span> <span class="nn">moe.optimal_learning.python.python_version.expected_improvement</span> <span class="kn">import</span> <span class="n">multistart_expected_improvement_optimization</span><span class="p">,</span> <span class="n">ExpectedImprovement</span>
 <span class="kn">from</span> <span class="nn">moe.optimal_learning.python.python_version.gaussian_process</span> <span class="kn">import</span> <span class="n">GaussianProcess</span>
-<span class="kn">from</span> <span class="nn">moe.optimal_learning.python.python_version.optimization</span> <span class="kn">import</span> <span class="n">GradientDescentParameters</span><span class="p">,</span> <span class="n">GradientDescentOptimizer</span>
+<span class="kn">from</span> <span class="nn">moe.optimal_learning.python.python_version.optimization</span> <span class="kn">import</span> <span class="n">GradientDescentParameters</span><span class="p">,</span> <span class="n">GradientDescentOptimizer</span><span class="p">,</span> <span class="n">LBFGSBParameters</span><span class="p">,</span> <span class="n">LBFGSBOptimizer</span>
 <span class="kn">from</span> <span class="nn">moe.optimal_learning.python.repeated_domain</span> <span class="kn">import</span> <span class="n">RepeatedDomain</span>
 <span class="kn">from</span> <span class="nn">moe.tests.optimal_learning.python.gaussian_process_test_case</span> <span class="kn">import</span> <span class="n">GaussianProcessTestCase</span><span class="p">,</span> <span class="n">GaussianProcessTestEnvironmentInput</span>
 
@@ -271,6 +273,21 @@
 
     <span class="n">num_mc_iterations</span> <span class="o">=</span> <span class="mi">747</span>
     <span class="n">rng_seed</span> <span class="o">=</span> <span class="mi">314</span>
+
+    <span class="n">approx_grad</span> <span class="o">=</span> <span class="bp">True</span>
+    <span class="n">max_func_evals</span> <span class="o">=</span> <span class="mi">150000</span>
+    <span class="n">max_metric_correc</span> <span class="o">=</span> <span class="mi">10</span>
+    <span class="n">factr</span> <span class="o">=</span> <span class="mf">10.0</span>
+    <span class="n">pgtol</span> <span class="o">=</span> <span class="mf">1e-10</span>
+    <span class="n">epsilon</span> <span class="o">=</span> <span class="mf">1e-8</span>
+    <span class="n">BFGS_parameters</span> <span class="o">=</span> <span class="n">LBFGSBParameters</span><span class="p">(</span>
+        <span class="n">approx_grad</span><span class="p">,</span>
+        <span class="n">max_func_evals</span><span class="p">,</span>
+        <span class="n">max_metric_correc</span><span class="p">,</span>
+        <span class="n">factr</span><span class="p">,</span>
+        <span class="n">pgtol</span><span class="p">,</span>
+        <span class="n">epsilon</span><span class="p">,</span>
+    <span class="p">)</span>
 
     <span class="nd">@T.class_setup</span>
 <div class="viewcode-block" id="ExpectedImprovementTest.base_setup"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.base_setup">[docs]</a>    <span class="k">def</span> <span class="nf">base_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -535,6 +552,57 @@
         <span class="c"># grad EI should have improved</span>
         <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndindex</span><span class="p">(</span><span class="n">grad_ei_final</span><span class="o">.</span><span class="n">shape</span><span class="p">):</span>
             <span class="n">T</span><span class="o">.</span><span class="n">assert_lt</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">grad_ei_final</span><span class="p">[</span><span class="n">index</span><span class="p">]),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">grad_ei_initial</span><span class="p">[</span><span class="n">index</span><span class="p">]))</span>
+</div>
+<div class="viewcode-block" id="ExpectedImprovementTest.test_multistart_qei_expected_improvement_dfo"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.test_multistart_qei_expected_improvement_dfo">[docs]</a>    <span class="k">def</span> <span class="nf">test_multistart_qei_expected_improvement_dfo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Check that multistart optimization (BFGS) can find the optimum point to sample (using 2-EI).&quot;&quot;&quot;</span>
+        <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">7860</span><span class="p">)</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">greater_equal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_sampled_list</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
+        <span class="n">domain</span><span class="p">,</span> <span class="n">gaussian_process</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gp_test_environments</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+
+        <span class="n">tolerance</span> <span class="o">=</span> <span class="mf">6.0e-5</span>
+        <span class="n">num_multistarts</span> <span class="o">=</span> <span class="mi">3</span>
+
+        <span class="c"># Expand the domain so that we are definitely not doing constrained optimization</span>
+        <span class="n">expanded_domain</span> <span class="o">=</span> <span class="n">TensorProductDomain</span><span class="p">([</span><span class="n">ClosedInterval</span><span class="p">(</span><span class="o">-</span><span class="mf">4.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">)]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
+        <span class="n">num_to_sample</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="n">repeated_domain</span> <span class="o">=</span> <span class="n">RepeatedDomain</span><span class="p">(</span><span class="n">num_to_sample</span><span class="p">,</span> <span class="n">expanded_domain</span><span class="p">)</span>
+
+        <span class="n">num_mc_iterations</span> <span class="o">=</span> <span class="mi">100000</span>
+        <span class="c"># Just any random point that won&#39;t be optimal</span>
+        <span class="n">points_to_sample</span> <span class="o">=</span> <span class="n">repeated_domain</span><span class="o">.</span><span class="n">generate_random_point_in_domain</span><span class="p">()</span>
+        <span class="n">ei_eval</span> <span class="o">=</span> <span class="n">ExpectedImprovement</span><span class="p">(</span><span class="n">gaussian_process</span><span class="p">,</span> <span class="n">points_to_sample</span><span class="p">,</span> <span class="n">num_mc_iterations</span><span class="o">=</span><span class="n">num_mc_iterations</span><span class="p">)</span>
+        <span class="c"># Compute EI and its gradient for the sake of comparison</span>
+        <span class="n">ei_initial</span> <span class="o">=</span> <span class="n">ei_eval</span><span class="o">.</span><span class="n">compute_expected_improvement</span><span class="p">()</span>
+
+        <span class="n">ei_optimizer</span> <span class="o">=</span> <span class="n">LBFGSBOptimizer</span><span class="p">(</span><span class="n">repeated_domain</span><span class="p">,</span> <span class="n">ei_eval</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">BFGS_parameters</span><span class="p">)</span>
+        <span class="n">best_point</span> <span class="o">=</span> <span class="n">multistart_expected_improvement_optimization</span><span class="p">(</span><span class="n">ei_optimizer</span><span class="p">,</span> <span class="n">num_multistarts</span><span class="p">,</span> <span class="n">num_to_sample</span><span class="p">)</span>
+
+        <span class="c"># Check that gradients are &quot;small&quot; or on border. MC is very inaccurate near 0, so use finite difference</span>
+        <span class="c"># gradient instead.</span>
+        <span class="n">ei_eval</span><span class="o">.</span><span class="n">current_point</span> <span class="o">=</span> <span class="n">best_point</span>
+        <span class="n">ei_final</span> <span class="o">=</span> <span class="n">ei_eval</span><span class="o">.</span><span class="n">compute_expected_improvement</span><span class="p">()</span>
+
+        <span class="n">finite_diff_grad</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">best_point</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="n">h_value</span> <span class="o">=</span> <span class="mf">0.00001</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">best_point</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">best_point</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+                <span class="n">best_point</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">+=</span> <span class="n">h_value</span>
+                <span class="n">ei_eval</span><span class="o">.</span><span class="n">current_point</span> <span class="o">=</span> <span class="n">best_point</span>
+                <span class="n">ei_upper</span> <span class="o">=</span> <span class="n">ei_eval</span><span class="o">.</span><span class="n">compute_expected_improvement</span><span class="p">()</span>
+                <span class="n">best_point</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">-=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">h_value</span>
+                <span class="n">ei_eval</span><span class="o">.</span><span class="n">current_point</span> <span class="o">=</span> <span class="n">best_point</span>
+                <span class="n">ei_lower</span> <span class="o">=</span> <span class="n">ei_eval</span><span class="o">.</span><span class="n">compute_expected_improvement</span><span class="p">()</span>
+                <span class="n">best_point</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">+=</span> <span class="n">h_value</span>
+                <span class="n">finite_diff_grad</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">ei_upper</span> <span class="o">-</span> <span class="n">ei_lower</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">h_value</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assert_vector_within_relative</span><span class="p">(</span><span class="n">finite_diff_grad</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">finite_diff_grad</span><span class="o">.</span><span class="n">shape</span><span class="p">),</span> <span class="n">tolerance</span><span class="p">)</span>
+
+        <span class="c"># Check that output is in the domain</span>
+        <span class="n">T</span><span class="o">.</span><span class="n">assert_true</span><span class="p">(</span><span class="n">repeated_domain</span><span class="o">.</span><span class="n">check_point_inside</span><span class="p">(</span><span class="n">best_point</span><span class="p">))</span>
+
+        <span class="c"># Since we didn&#39;t really converge to the optimal EI (too costly), do some other sanity checks</span>
+        <span class="c"># EI should have improved</span>
+        <span class="n">T</span><span class="o">.</span><span class="n">assert_gt</span><span class="p">(</span><span class="n">ei_final</span><span class="p">,</span> <span class="n">ei_initial</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="ExpectedImprovementTest.test_qd_ei_with_self"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.test_qd_ei_with_self">[docs]</a>    <span class="k">def</span> <span class="nf">test_qd_ei_with_self</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Compare the 1D analytic EI results to the qD analytic EI results, checking several random points per test case.</span>

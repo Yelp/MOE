@@ -107,6 +107,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../../contributing.html#documentation">Documentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../contributing.html#testing">Testing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../contributing.html#style">Style</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../contributing.html#versioning">Versioning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../contributing.html#releasing-for-maintainers">Releasing (For Maintainers)</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../faq.html">Frequently Asked Questions</a><ul>
@@ -299,6 +301,10 @@
         <span class="c"># Generate a list of bool; i-th entry is True if i-th coordinate is inside the i-th bounds.</span>
         <span class="c"># Then check that all entries are True.</span>
         <span class="k">return</span> <span class="nb">all</span><span class="p">([</span><span class="n">interval</span><span class="o">.</span><span class="n">is_inside</span><span class="p">(</span><span class="n">point</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">interval</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_domain_bounds</span><span class="p">)])</span>
+</div>
+<div class="viewcode-block" id="TensorProductDomain.get_bounding_box"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.domain.TensorProductDomain.get_bounding_box">[docs]</a>    <span class="k">def</span> <span class="nf">get_bounding_box</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a list of ClosedIntervals representing a bounding box for this domain.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_domain_bounds</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="TensorProductDomain.generate_random_point_in_domain"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.domain.TensorProductDomain.generate_random_point_in_domain">[docs]</a>    <span class="k">def</span> <span class="nf">generate_random_point_in_domain</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">random_source</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Generate ``point`` uniformly at random such that ``self.check_point_inside(point)`` is True.</span>

@@ -107,6 +107,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../../../contributing.html#documentation">Documentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../../contributing.html#testing">Testing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../../contributing.html#style">Style</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../contributing.html#versioning">Versioning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../contributing.html#releasing-for-maintainers">Releasing (For Maintainers)</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../../faq.html">Frequently Asked Questions</a><ul>
@@ -226,7 +228,7 @@
 <span class="kn">from</span> <span class="nn">moe.optimal_learning.python.geometry_utils</span> <span class="kn">import</span> <span class="n">ClosedInterval</span>
 <span class="kn">from</span> <span class="nn">moe.optimal_learning.python.interfaces.optimization_interface</span> <span class="kn">import</span> <span class="n">OptimizableInterface</span>
 <span class="kn">from</span> <span class="nn">moe.optimal_learning.python.python_version.domain</span> <span class="kn">import</span> <span class="n">TensorProductDomain</span>
-<span class="kn">from</span> <span class="nn">moe.optimal_learning.python.python_version.optimization</span> <span class="kn">import</span> <span class="n">multistart_optimize</span><span class="p">,</span> <span class="n">GradientDescentParameters</span><span class="p">,</span> <span class="n">NullOptimizer</span><span class="p">,</span> <span class="n">GradientDescentOptimizer</span><span class="p">,</span> <span class="n">MultistartOptimizer</span>
+<span class="kn">from</span> <span class="nn">moe.optimal_learning.python.python_version.optimization</span> <span class="kn">import</span> <span class="n">multistart_optimize</span><span class="p">,</span> <span class="n">LBFGSBParameters</span><span class="p">,</span> <span class="n">GradientDescentParameters</span><span class="p">,</span> <span class="n">NullOptimizer</span><span class="p">,</span> <span class="n">GradientDescentOptimizer</span><span class="p">,</span> <span class="n">MultistartOptimizer</span><span class="p">,</span> <span class="n">LBFGSBOptimizer</span>
 <span class="kn">from</span> <span class="nn">moe.tests.optimal_learning.python.optimal_learning_test_case</span> <span class="kn">import</span> <span class="n">OptimalLearningTestCase</span>
 
 
@@ -402,6 +404,21 @@
             <span class="n">max_relative_change</span><span class="p">,</span>
             <span class="n">tolerance</span><span class="p">,</span>
         <span class="p">)</span>
+
+        <span class="n">approx_grad</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="n">max_func_evals</span> <span class="o">=</span> <span class="mi">150000</span>
+        <span class="n">max_metric_correc</span> <span class="o">=</span> <span class="mi">10</span>
+        <span class="n">factr</span> <span class="o">=</span> <span class="mf">1000.0</span>
+        <span class="n">pgtol</span> <span class="o">=</span> <span class="mf">1e-10</span>
+        <span class="n">epsilon</span> <span class="o">=</span> <span class="mf">1e-8</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">BFGS_parameters</span> <span class="o">=</span> <span class="n">LBFGSBParameters</span><span class="p">(</span>
+            <span class="n">approx_grad</span><span class="p">,</span>
+            <span class="n">max_func_evals</span><span class="p">,</span>
+            <span class="n">max_metric_correc</span><span class="p">,</span>
+            <span class="n">factr</span><span class="p">,</span>
+            <span class="n">pgtol</span><span class="p">,</span>
+            <span class="n">epsilon</span><span class="p">,</span>
+        <span class="p">)</span>
 </div>
 <div class="viewcode-block" id="GradientDescentOptimizerTest.test_gradient_descent_optimizer"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.optimization_test.GradientDescentOptimizerTest.test_gradient_descent_optimizer">[docs]</a>    <span class="k">def</span> <span class="nf">test_gradient_descent_optimizer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Check that gradient descent can find the optimum of the quadratic test objective.&quot;&quot;&quot;</span>
@@ -565,6 +582,60 @@
         <span class="n">num_points</span> <span class="o">=</span> <span class="mi">10</span>
         <span class="n">gradient_descent_optimizer</span> <span class="o">=</span> <span class="n">GradientDescentOptimizer</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">polynomial</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gd_parameters</span><span class="p">)</span>
         <span class="n">multistart_optimizer</span> <span class="o">=</span> <span class="n">MultistartOptimizer</span><span class="p">(</span><span class="n">gradient_descent_optimizer</span><span class="p">,</span> <span class="n">num_points</span><span class="p">)</span>
+
+        <span class="n">output</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">multistart_optimizer</span><span class="o">.</span><span class="n">optimize</span><span class="p">()</span>
+        <span class="c"># Verify coordinates</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assert_vector_within_relative</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">polynomial</span><span class="o">.</span><span class="n">optimum_point</span><span class="p">,</span> <span class="n">tolerance</span><span class="p">)</span>
+
+        <span class="c"># Verify function value</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">polynomial</span><span class="o">.</span><span class="n">compute_objective_function</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assert_scalar_within_relative</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">polynomial</span><span class="o">.</span><span class="n">optimum_value</span><span class="p">,</span> <span class="n">tolerance</span><span class="p">)</span>
+
+        <span class="c"># Verify derivative</span>
+        <span class="n">gradient</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">polynomial</span><span class="o">.</span><span class="n">compute_grad_objective_function</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assert_vector_within_relative</span><span class="p">(</span><span class="n">gradient</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">polynomial</span><span class="o">.</span><span class="n">dim</span><span class="p">),</span> <span class="n">tolerance</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="GradientDescentOptimizerTest.test_bfgs_optimizer"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.optimization_test.GradientDescentOptimizerTest.test_bfgs_optimizer">[docs]</a>    <span class="k">def</span> <span class="nf">test_bfgs_optimizer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Check that BFGS can find the optimum of the quadratic test objective.&quot;&quot;&quot;</span>
+        <span class="c"># Check the claimed optima is an optima</span>
+        <span class="n">optimum_point</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">polynomial</span><span class="o">.</span><span class="n">optimum_point</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">polynomial</span><span class="o">.</span><span class="n">current_point</span> <span class="o">=</span> <span class="n">optimum_point</span>
+        <span class="n">gradient</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">polynomial</span><span class="o">.</span><span class="n">compute_grad_objective_function</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assert_vector_within_relative</span><span class="p">(</span><span class="n">gradient</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">polynomial</span><span class="o">.</span><span class="n">dim</span><span class="p">),</span> <span class="mf">0.0</span><span class="p">)</span>
+
+        <span class="c"># Verify that gradient descent does not move from the optima if we start it there.</span>
+        <span class="n">bfgs_optimizer</span> <span class="o">=</span> <span class="n">LBFGSBOptimizer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">polynomial</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">BFGS_parameters</span><span class="p">)</span>
+        <span class="n">bfgs_optimizer</span><span class="o">.</span><span class="n">optimize</span><span class="p">()</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">bfgs_optimizer</span><span class="o">.</span><span class="n">objective_function</span><span class="o">.</span><span class="n">current_point</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assert_vector_within_relative</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">optimum_point</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+
+        <span class="c"># Start at a wrong point and check optimization</span>
+        <span class="n">tolerance</span> <span class="o">=</span> <span class="mf">2.0e-13</span>
+        <span class="n">initial_guess</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">polynomial</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">)</span>
+        <span class="n">bfgs_optimizer</span><span class="o">.</span><span class="n">objective_function</span><span class="o">.</span><span class="n">current_point</span> <span class="o">=</span> <span class="n">initial_guess</span>
+        <span class="n">bfgs_optimizer</span><span class="o">.</span><span class="n">optimize</span><span class="p">()</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">bfgs_optimizer</span><span class="o">.</span><span class="n">objective_function</span><span class="o">.</span><span class="n">current_point</span>
+        <span class="c"># Verify coordinates</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assert_vector_within_relative</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">optimum_point</span><span class="p">,</span> <span class="n">tolerance</span><span class="p">)</span>
+
+        <span class="c"># Verify function value</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">polynomial</span><span class="o">.</span><span class="n">compute_objective_function</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assert_scalar_within_relative</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">polynomial</span><span class="o">.</span><span class="n">optimum_value</span><span class="p">,</span> <span class="n">tolerance</span><span class="p">)</span>
+
+        <span class="c"># Verify derivative</span>
+        <span class="n">gradient</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">polynomial</span><span class="o">.</span><span class="n">compute_grad_objective_function</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assert_vector_within_relative</span><span class="p">(</span><span class="n">gradient</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">polynomial</span><span class="o">.</span><span class="n">dim</span><span class="p">),</span> <span class="n">tolerance</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="GradientDescentOptimizerTest.test_multistarted_bfgs_optimizer"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.optimization_test.GradientDescentOptimizerTest.test_multistarted_bfgs_optimizer">[docs]</a>    <span class="k">def</span> <span class="nf">test_multistarted_bfgs_optimizer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Check that multistarted GD can find the optimum in a &#39;very&#39; large domain.&quot;&quot;&quot;</span>
+        <span class="c"># Set a large domain: a single GD run is unlikely to reach the optimum</span>
+        <span class="n">domain_bounds</span> <span class="o">=</span> <span class="p">[</span><span class="n">ClosedInterval</span><span class="p">(</span><span class="o">-</span><span class="mf">10.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">)]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span>
+        <span class="n">domain</span> <span class="o">=</span> <span class="n">TensorProductDomain</span><span class="p">(</span><span class="n">domain_bounds</span><span class="p">)</span>
+
+        <span class="n">tolerance</span> <span class="o">=</span> <span class="mf">2.0e-10</span>
+        <span class="n">num_points</span> <span class="o">=</span> <span class="mi">10</span>
+        <span class="n">bfgs_optimizer</span> <span class="o">=</span> <span class="n">LBFGSBOptimizer</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">polynomial</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">BFGS_parameters</span><span class="p">)</span>
+        <span class="n">multistart_optimizer</span> <span class="o">=</span> <span class="n">MultistartOptimizer</span><span class="p">(</span><span class="n">bfgs_optimizer</span><span class="p">,</span> <span class="n">num_points</span><span class="p">)</span>
 
         <span class="n">output</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">multistart_optimizer</span><span class="o">.</span><span class="n">optimize</span><span class="p">()</span>
         <span class="c"># Verify coordinates</span>

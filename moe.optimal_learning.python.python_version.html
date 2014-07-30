@@ -109,6 +109,8 @@
 <li class="toctree-l2"><a class="reference internal" href="contributing.html#documentation">Documentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="contributing.html#testing">Testing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="contributing.html#style">Style</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#versioning">Versioning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#releasing-for-maintainers">Releasing (For Maintainers)</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a><ul>
@@ -561,6 +563,12 @@ independently.</p>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.optimal_learning.python.python_version.domain.TensorProductDomain.get_bounding_box">
+<tt class="descname">get_bounding_box</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/domain.html#TensorProductDomain.get_bounding_box"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.domain.TensorProductDomain.get_bounding_box" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of ClosedIntervals representing a bounding box for this domain.</p>
 </dd></dl>
 
 <dl class="method">
@@ -1887,6 +1895,57 @@ rate control forces steps to fall below 1.0e-3 quickly, then GD will quit &#8220
 (suggest: 0.5-1.0 for less sensitive problems like EI; 0.02 for more sensitive problems like hyperparameter opt)</li>
 <li><strong>tolerance</strong> &#8211; (<em>float 64 &gt;= 0.0</em>) when the magnitude of the gradient falls below this value OR we will not move farther than tolerance
 (e.g., at a boundary), stop.  (suggest: 1.0e-7)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="moe.optimal_learning.python.python_version.optimization.LBFGSBOptimizer">
+<em class="property">class </em><tt class="descclassname">moe.optimal_learning.python.python_version.optimization.</tt><tt class="descname">LBFGSBOptimizer</tt><big>(</big><em>domain</em>, <em>optimizable</em>, <em>optimization_parameters</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/optimization.html#LBFGSBOptimizer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.optimization.LBFGSBOptimizer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="moe.optimal_learning.python.interfaces.html#moe.optimal_learning.python.interfaces.optimization_interface.OptimizerInterface" title="moe.optimal_learning.python.interfaces.optimization_interface.OptimizerInterface"><tt class="xref py py-class docutils literal"><span class="pre">moe.optimal_learning.python.interfaces.optimization_interface.OptimizerInterface</span></tt></a></p>
+<p>Optimizes an objective function over the specified domain with the L-BFGS-B method.</p>
+<p>The BFGS (Broyden-Fletcher-Goldfarb-Shanno) algorithm is a quasi-Newton algorithm for optimization. It can
+be used for DFO (Derivative-Free Optimization) when the gradient is not available, such as is the case for
+the analytic qEI algorithm.</p>
+<p>L-BFGS is a memory efficient version of BFGS, and BFGS-B is a variant that handles simple box constraints.
+We use L-BFGS-B, which is a combination of the two, and is often the optimization algorithm of choice for
+these types of problems.</p>
+<p>For more information:
+<a class="reference external" href="http://en.wikipedia.org/wiki/Limited-memory_BFGS">http://en.wikipedia.org/wiki/Limited-memory_BFGS</a>
+<a class="reference external" href="http://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.fmin_l_bfgs_b.html">http://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.fmin_l_bfgs_b.html</a></p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">See optimize() docstring for more details.</p>
+</div>
+<dl class="method">
+<dt id="moe.optimal_learning.python.python_version.optimization.LBFGSBOptimizer.optimize">
+<tt class="descname">optimize</tt><big>(</big><em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/optimization.html#LBFGSBOptimizer.optimize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.optimization.LBFGSBOptimizer.optimize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform an L-BFGS-B optimization given the parameters in optimization_parameters.</p>
+<p>objective_function.current_point will be set to the optimal point found.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="moe.optimal_learning.python.python_version.optimization.LBFGSBParameters">
+<em class="property">class </em><tt class="descclassname">moe.optimal_learning.python.python_version.optimization.</tt><tt class="descname">LBFGSBParameters</tt><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/optimization.html#LBFGSBParameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.optimization.LBFGSBParameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">moe.optimal_learning.python.python_version.optimization._BaseLBFGSBParameters</span></tt></p>
+<p>Container to hold parameters that specify the behavior of L-BFGS-B.</p>
+<p>Suggested values come from scipy documentation for scipy.optimize.fmin_l_bfgs_b.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>approx_grad</strong> &#8211; (<em>bool</em>) if true, BFGS will approximate the gradient</li>
+<li><strong>max_func_evals</strong> &#8211; (<em>int &gt; 0</em>) maximum number of objective function calls to make (suggest: 15000)</li>
+<li><strong>max_metric_correc</strong> &#8211; (<em>int &gt; 0</em>) maximum number of variable metric corrections used to define the limited memorty matrix (suggest: 10)</li>
+<li><strong>factr</strong> &#8211; (<em>float64 &gt; 1.0</em>) 1e12 for low accuracy, 1e7 for moderate accuracy, and 10 for extremely high accuracy (suggest: 1000.0)</li>
+<li><strong>pgtol</strong> &#8211; (<em>float64 &gt; 0.0</em>) cutoff for highest component of gradient to be considered a critical point (suggest: 1.0e-5)</li>
+<li><strong>epsilon</strong> &#8211; (<em>float64 &gt; 0.0</em>) step size for approximating the gradient (suggest: 1.0e-8)</li>
 </ul>
 </td>
 </tr>

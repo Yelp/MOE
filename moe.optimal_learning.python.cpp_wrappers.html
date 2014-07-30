@@ -109,6 +109,8 @@
 <li class="toctree-l2"><a class="reference internal" href="contributing.html#documentation">Documentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="contributing.html#testing">Testing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="contributing.html#style">Style</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#versioning">Versioning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#releasing-for-maintainers">Releasing (For Maintainers)</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a><ul>
@@ -499,6 +501,12 @@ internals to Python.</p>
 <tt class="descname">generate_uniform_random_points_in_domain</tt><big>(</big><em>num_points</em>, <em>random_source=None</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/cpp_wrappers/domain.html#TensorProductDomain.generate_uniform_random_points_in_domain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.cpp_wrappers.domain.TensorProductDomain.generate_uniform_random_points_in_domain" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate <tt class="docutils literal"><span class="pre">num_points</span></tt> uniformly distributed points from the domain.</p>
 <p>We do not currently expose a C++ endpoint for this call; see <a class="reference internal" href="moe.optimal_learning.python.interfaces.html#module-moe.optimal_learning.python.interfaces.domain_interface" title="moe.optimal_learning.python.interfaces.domain_interface"><tt class="xref py py-mod docutils literal"><span class="pre">moe.optimal_learning.python.interfaces.domain_interface</span></tt></a> for interface specification.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.optimal_learning.python.cpp_wrappers.domain.TensorProductDomain.get_bounding_box">
+<tt class="descname">get_bounding_box</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/cpp_wrappers/domain.html#TensorProductDomain.get_bounding_box"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.cpp_wrappers.domain.TensorProductDomain.get_bounding_box" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of ClosedIntervals representing a bounding box for this domain.</p>
 </dd></dl>
 
 <dl class="method">

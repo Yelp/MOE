@@ -107,6 +107,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#documentation">Documentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#testing">Testing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#style">Style</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#versioning">Versioning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#releasing-for-maintainers">Releasing (For Maintainers)</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../faq.html">Frequently Asked Questions</a><ul>
@@ -293,6 +295,10 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">all</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">_domain</span><span class="o">.</span><span class="n">check_point_inside</span><span class="p">(</span><span class="n">point</span><span class="p">)</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points</span><span class="p">])</span>
+</div>
+<div class="viewcode-block" id="RepeatedDomain.get_bounding_box"><a class="viewcode-back" href="../../../../moe.optimal_learning.python.html#moe.optimal_learning.python.repeated_domain.RepeatedDomain.get_bounding_box">[docs]</a>    <span class="k">def</span> <span class="nf">get_bounding_box</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a list of ClosedIntervals representing a bounding box for this domain.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_domain</span><span class="o">.</span><span class="n">get_bounding_box</span><span class="p">()</span>
 </div>
 <div class="viewcode-block" id="RepeatedDomain.generate_random_point_in_domain"><a class="viewcode-back" href="../../../../moe.optimal_learning.python.html#moe.optimal_learning.python.repeated_domain.RepeatedDomain.generate_random_point_in_domain">[docs]</a>    <span class="k">def</span> <span class="nf">generate_random_point_in_domain</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">random_source</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Generate ``point`` uniformly at random such that ``self.check_point_inside(point)`` is True.</span>

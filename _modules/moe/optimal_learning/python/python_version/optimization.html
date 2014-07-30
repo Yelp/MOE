@@ -107,6 +107,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../../contributing.html#documentation">Documentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../contributing.html#testing">Testing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../contributing.html#style">Style</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../contributing.html#versioning">Versioning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../contributing.html#releasing-for-maintainers">Releasing (For Maintainers)</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../faq.html">Frequently Asked Questions</a><ul>
@@ -396,6 +398,8 @@
 
 <span class="kn">import</span> <span class="nn">numpy</span>
 
+<span class="kn">import</span> <span class="nn">scipy.optimize</span>
+
 <span class="kn">from</span> <span class="nn">moe.optimal_learning.python.interfaces.optimization_interface</span> <span class="kn">import</span> <span class="n">OptimizerInterface</span>
 
 
@@ -506,6 +510,35 @@
 <span class="sd">           (suggest: 0.5-1.0 for less sensitive problems like EI; 0.02 for more sensitive problems like hyperparameter opt)</span>
 <span class="sd">    :ivar tolerance: (*float 64 &gt;= 0.0*) when the magnitude of the gradient falls below this value OR we will not move farther than tolerance</span>
 <span class="sd">           (e.g., at a boundary), stop.  (suggest: 1.0e-7)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">__slots__</span> <span class="o">=</span> <span class="p">()</span>
+
+
+<span class="c"># See LBFGSBParameters (below) for docstring.</span></div>
+<span class="n">_BaseLBFGSBParameters</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">namedtuple</span><span class="p">(</span><span class="s">&#39;_BaseLBFGSBParameters&#39;</span><span class="p">,</span> <span class="p">[</span>
+    <span class="s">&#39;approx_grad&#39;</span><span class="p">,</span>
+    <span class="s">&#39;max_func_evals&#39;</span><span class="p">,</span>
+    <span class="s">&#39;max_metric_correc&#39;</span><span class="p">,</span>
+    <span class="s">&#39;factr&#39;</span><span class="p">,</span>
+    <span class="s">&#39;pgtol&#39;</span><span class="p">,</span>
+    <span class="s">&#39;epsilon&#39;</span><span class="p">,</span>
+<span class="p">])</span>
+
+
+<div class="viewcode-block" id="LBFGSBParameters"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.optimization.LBFGSBParameters">[docs]</a><span class="k">class</span> <span class="nc">LBFGSBParameters</span><span class="p">(</span><span class="n">_BaseLBFGSBParameters</span><span class="p">):</span>
+
+    <span class="sd">r&quot;&quot;&quot;Container to hold parameters that specify the behavior of L-BFGS-B.</span>
+
+<span class="sd">    Suggested values come from scipy documentation for scipy.optimize.fmin_l_bfgs_b.</span>
+
+<span class="sd">    :ivar approx_grad: (*bool*) if true, BFGS will approximate the gradient</span>
+<span class="sd">    :ivar max_func_evals: (*int &gt; 0*) maximum number of objective function calls to make (suggest: 15000)</span>
+<span class="sd">    :ivar max_metric_correc: (*int &gt; 0*) maximum number of variable metric corrections used to define the limited memorty matrix (suggest: 10)</span>
+<span class="sd">    :ivar factr: (*float64 &gt; 1.0*) 1e12 for low accuracy, 1e7 for moderate accuracy, and 10 for extremely high accuracy (suggest: 1000.0)</span>
+<span class="sd">    :ivar pgtol: (*float64 &gt; 0.0*) cutoff for highest component of gradient to be considered a critical point (suggest: 1.0e-5)</span>
+<span class="sd">    :ivar epsilon: (*float64 &gt; 0.0*) step size for approximating the gradient (suggest: 1.0e-8)</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -743,7 +776,98 @@
                 <span class="n">best_function_value</span> <span class="o">=</span> <span class="n">function_value</span>
                 <span class="n">best_point</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">objective_function</span><span class="o">.</span><span class="n">current_point</span>
 
-        <span class="k">return</span> <span class="n">best_point</span><span class="p">,</span> <span class="n">function_value_list</span></div></div>
+        <span class="k">return</span> <span class="n">best_point</span><span class="p">,</span> <span class="n">function_value_list</span>
+
+</div></div>
+<div class="viewcode-block" id="LBFGSBOptimizer"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.optimization.LBFGSBOptimizer">[docs]</a><span class="k">class</span> <span class="nc">LBFGSBOptimizer</span><span class="p">(</span><span class="n">OptimizerInterface</span><span class="p">):</span>
+
+    <span class="sd">r&quot;&quot;&quot;Optimizes an objective function over the specified domain with the L-BFGS-B method.</span>
+
+<span class="sd">    The BFGS (Broyden-Fletcher-Goldfarb-Shanno) algorithm is a quasi-Newton algorithm for optimization. It can</span>
+<span class="sd">    be used for DFO (Derivative-Free Optimization) when the gradient is not available, such as is the case for</span>
+<span class="sd">    the analytic qEI algorithm.</span>
+
+<span class="sd">    L-BFGS is a memory efficient version of BFGS, and BFGS-B is a variant that handles simple box constraints.</span>
+<span class="sd">    We use L-BFGS-B, which is a combination of the two, and is often the optimization algorithm of choice for</span>
+<span class="sd">    these types of problems.</span>
+
+<span class="sd">    For more information:</span>
+<span class="sd">    http://en.wikipedia.org/wiki/Limited-memory_BFGS</span>
+<span class="sd">    http://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.fmin_l_bfgs_b.html</span>
+
+<span class="sd">    .. Note:: See optimize() docstring for more details.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">domain</span><span class="p">,</span> <span class="n">optimizable</span><span class="p">,</span> <span class="n">optimization_parameters</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construct a LBFGSBOptimizer.</span>
+
+<span class="sd">        :param domain: the domain that this optimizer operates over</span>
+<span class="sd">        :type domain: interfaces.domain_interface.DomainInterface subclass. Only supports TensorProductDomain.</span>
+<span class="sd">        :param optimizable: object representing the objective function being optimized</span>
+<span class="sd">        :type optimizable: interfaces.optimization_interface.OptimizableInterface subclass</span>
+<span class="sd">        :param optimization_parameters: parameters describing how to perform optimization (tolerances, iterations, etc.)</span>
+<span class="sd">        :type optimization_parameters: python_version.optimization.LBFGSBParameters object</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">domain</span> <span class="o">=</span> <span class="n">domain</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">objective_function</span> <span class="o">=</span> <span class="n">optimizable</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">optimization_parameters</span> <span class="o">=</span> <span class="n">optimization_parameters</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_num_points</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="p">,</span> <span class="s">&#39;num_repeats&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_num_points</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">num_repeats</span>
+
+    <span class="k">def</span> <span class="nf">_scipy_decorator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Wrapper function for expected improvement calculation to feed into BFGS.</span>
+
+<span class="sd">        func should be of the form compute_* in interfaces.optimization_interface.OptimizableInterface.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">def</span> <span class="nf">decorated</span><span class="p">(</span><span class="n">point</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;Decorator for compute_* functions in interfaces.optimization_interface.OptimizableInterface.</span>
+
+<span class="sd">            Converts the point to proper format and sets the current point before calling the compute function.</span>
+
+<span class="sd">            :param point: the point on which to do the calculation</span>
+<span class="sd">            :type point: array of float64 with shape (self._num_points * self.domain.dim)</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">shaped_point</span> <span class="o">=</span> <span class="n">point</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_num_points</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">objective_function</span><span class="o">.</span><span class="n">current_point</span> <span class="o">=</span> <span class="n">shaped_point</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="o">-</span><span class="n">func</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)):</span>
+                <span class="k">return</span> <span class="n">value</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">value</span>
+
+        <span class="k">return</span> <span class="n">decorated</span>
+
+<div class="viewcode-block" id="LBFGSBOptimizer.optimize"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.optimization.LBFGSBOptimizer.optimize">[docs]</a>    <span class="k">def</span> <span class="nf">optimize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Perform an L-BFGS-B optimization given the parameters in optimization_parameters.</span>
+
+<span class="sd">        objective_function.current_point will be set to the optimal point found.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">domain_bounding_box</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">get_bounding_box</span><span class="p">()</span>
+        <span class="n">domain_list</span> <span class="o">=</span> <span class="p">[(</span><span class="n">interval</span><span class="o">.</span><span class="n">min</span><span class="p">,</span> <span class="n">interval</span><span class="o">.</span><span class="n">max</span><span class="p">)</span> <span class="k">for</span> <span class="n">interval</span> <span class="ow">in</span> <span class="n">domain_bounding_box</span><span class="p">]</span>
+        <span class="n">domain_numpy</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">domain_list</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_points</span><span class="p">)</span>
+
+        <span class="c"># Parameters defined above in LBFGSBParameters class.</span>
+        <span class="n">unshaped_point</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">optimize</span><span class="o">.</span><span class="n">fmin_l_bfgs_b</span><span class="p">(</span>
+            <span class="n">func</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_scipy_decorator</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">objective_function</span><span class="o">.</span><span class="n">compute_objective_function</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">),</span>
+            <span class="n">x0</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">objective_function</span><span class="o">.</span><span class="n">current_point</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span>
+            <span class="n">bounds</span><span class="o">=</span><span class="n">domain_numpy</span><span class="p">,</span>
+            <span class="n">fprime</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_scipy_decorator</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">objective_function</span><span class="o">.</span><span class="n">compute_grad_objective_function</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">),</span>
+            <span class="n">approx_grad</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">optimization_parameters</span><span class="o">.</span><span class="n">approx_grad</span><span class="p">,</span>
+            <span class="n">factr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">optimization_parameters</span><span class="o">.</span><span class="n">factr</span><span class="p">,</span>
+            <span class="n">maxfun</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">optimization_parameters</span><span class="o">.</span><span class="n">max_func_evals</span><span class="p">,</span>
+            <span class="n">m</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">optimization_parameters</span><span class="o">.</span><span class="n">max_metric_correc</span><span class="p">,</span>
+            <span class="n">pgtol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">optimization_parameters</span><span class="o">.</span><span class="n">pgtol</span><span class="p">,</span>
+            <span class="n">epsilon</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">optimization_parameters</span><span class="o">.</span><span class="n">epsilon</span><span class="p">,</span>
+        <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_points</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">shaped_point</span> <span class="o">=</span> <span class="n">unshaped_point</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">shaped_point</span> <span class="o">=</span> <span class="n">unshaped_point</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_num_points</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">objective_function</span><span class="o">.</span><span class="n">current_point</span> <span class="o">=</span> <span class="n">shaped_point</span></div></div>
 </pre></div>
 
           </div>
