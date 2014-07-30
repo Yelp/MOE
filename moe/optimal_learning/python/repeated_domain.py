@@ -75,6 +75,10 @@ class RepeatedDomain(DomainInterface):
         """
         return all([self._domain.check_point_inside(point) for point in points])
 
+    def get_bounding_box(self):
+        """Return a list of ClosedIntervals representing a bounding box for this domain."""
+        return self._domain.get_bounding_box()
+
     def generate_random_point_in_domain(self, random_source=None):
         """Generate ``point`` uniformly at random such that ``self.check_point_inside(point)`` is True.
 

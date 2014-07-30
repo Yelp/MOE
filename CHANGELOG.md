@@ -1,7 +1,8 @@
 * Features
 
-  * multi-armed bandit endpoint
-    * epsilon-greedy
+  * Added multi-armed bandit endpoint. (#255)
+    * Implemented epsilon-greedy.
+  * Added support for the L-BFGS-B optimizer. (#296)
 
 * Changes
 
