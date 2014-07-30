@@ -147,9 +147,9 @@
 <li class="toctree-l1"><a class="reference internal" href="cpp_tree.html">C++ Files</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimization_test.html">gpp_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_domain_test.html">gpp_domain_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_exception.html">gpp_exception</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_geometry.html">gpp_geometry</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_test_utils.html">gpp_test_utils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_logging.html">gpp_logging</a></li>
@@ -170,7 +170,7 @@
 <li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra.html">gpp_linear_algebra</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_exception.html">gpp_exception</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_model_selection.html">gpp_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_covariance_test.html">gpp_covariance_test</a></li>
@@ -178,7 +178,7 @@
 <li class="toctree-l2"><a class="reference internal" href="gpp_python.html">gpp_python</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_test.html">gpp_model_selection_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_common.html">gpp_common</a></li>
 </ul>
 </li>
@@ -574,18 +574,18 @@ $ docker run -p 6543:6543 moe_container</dd>
 <li class="toctree-l3"><a class="reference internal" href="gpp_domain_test.html#gpp-domain-test-cpp">gpp_domain_test.cpp</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_exception.html">gpp_exception</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="gpp_exception.html#gpp-exception-hpp">gpp_exception.hpp</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gpp_exception.html#gpp-exception-cpp">gpp_exception.cpp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gpp_linear_algebra_test.html#gpp-linear-algebra-test-hpp">gpp_linear_algebra_test.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gpp_linear_algebra_test.html#gpp-linear-algebra-test-cpp">gpp_linear_algebra_test.cpp</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_geometry.html">gpp_geometry</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="gpp_geometry.html#gpp-geometry-hpp">gpp_geometry.hpp</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html#gpp-heuristic-expected-improvement-optimization-hpp">gpp_heuristic_expected_improvement_optimization.hpp</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html#gpp-heuristic-expected-improvement-optimization-cpp">gpp_heuristic_expected_improvement_optimization.cpp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gpp_python_gaussian_process.html#gpp-python-gaussian-process-hpp">gpp_python_gaussian_process.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gpp_python_gaussian_process.html#gpp-python-gaussian-process-cpp">gpp_python_gaussian_process.cpp</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a><ul>
@@ -684,9 +684,9 @@ $ docker run -p 6543:6543 moe_container</dd>
 <li class="toctree-l3"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html#gpp-heuristic-expected-improvement-optimization-test-cpp">gpp_heuristic_expected_improvement_optimization_test.cpp</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="gpp_linear_algebra_test.html#gpp-linear-algebra-test-hpp">gpp_linear_algebra_test.hpp</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gpp_linear_algebra_test.html#gpp-linear-algebra-test-cpp">gpp_linear_algebra_test.cpp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_exception.html">gpp_exception</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gpp_exception.html#gpp-exception-hpp">gpp_exception.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gpp_exception.html#gpp-exception-cpp">gpp_exception.cpp</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_model_selection.html">gpp_model_selection</a><ul>
@@ -720,9 +720,9 @@ $ docker run -p 6543:6543 moe_container</dd>
 <li class="toctree-l3"><a class="reference internal" href="gpp_hyper_and_EI_demo.html#gpp-hyper-and-ei-demo-cpp">gpp_hyper_and_EI_demo.cpp</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="gpp_python_gaussian_process.html#gpp-python-gaussian-process-hpp">gpp_python_gaussian_process.hpp</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gpp_python_gaussian_process.html#gpp-python-gaussian-process-cpp">gpp_python_gaussian_process.cpp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html#gpp-heuristic-expected-improvement-optimization-hpp">gpp_heuristic_expected_improvement_optimization.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html#gpp-heuristic-expected-improvement-optimization-cpp">gpp_heuristic_expected_improvement_optimization.cpp</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_common.html">gpp_common</a><ul>

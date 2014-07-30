@@ -109,6 +109,8 @@
 <li class="toctree-l2"><a class="reference internal" href="contributing.html#documentation">Documentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="contributing.html#testing">Testing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="contributing.html#style">Style</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#versioning">Versioning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#releasing-for-maintainers">Releasing (For Maintainers)</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a><ul>
@@ -147,9 +149,9 @@
 <li class="toctree-l1"><a class="reference internal" href="cpp_tree.html">C++ Files</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimization_test.html">gpp_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_domain_test.html">gpp_domain_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_exception.html">gpp_exception</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_geometry.html">gpp_geometry</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_test_utils.html">gpp_test_utils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_logging.html">gpp_logging</a></li>
@@ -170,7 +172,7 @@
 <li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra.html">gpp_linear_algebra</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_exception.html">gpp_exception</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_model_selection.html">gpp_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_covariance_test.html">gpp_covariance_test</a></li>
@@ -178,7 +180,7 @@
 <li class="toctree-l2"><a class="reference internal" href="gpp_python.html">gpp_python</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_test.html">gpp_model_selection_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_common.html">gpp_common</a></li>
 </ul>
 </li>
@@ -288,6 +290,16 @@ TODO(GH-176): Make test structure general enough to support other covariance fun
 opaque. So we verify one against the other.</p>
 <p>Fully verifying the monte carlo implemetation (e.g., conducting convergence tests, comparing against analytic results)
 is expensive and already a part of the C++ unit test suite.</p>
+<dl class="attribute">
+<dt id="moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.BFGS_parameters">
+<tt class="descname">BFGS_parameters</tt><em class="property"> = _BaseLBFGSBParameters(approx_grad=True, max_func_evals=150000, max_metric_correc=10, factr=10.0, pgtol=1e-10, epsilon=1e-08)</em><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.BFGS_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.approx_grad">
+<tt class="descname">approx_grad</tt><em class="property"> = True</em><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.approx_grad" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.base_setup">
 <tt class="descname">base_setup</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/python_version/expected_improvement_test.html#ExpectedImprovementTest.base_setup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.base_setup" title="Permalink to this definition">¶</a></dt>
@@ -302,8 +314,28 @@ which makes it difficult to set meaningful tolerances for the checks.</p>
 <dd></dd></dl>
 
 <dl class="attribute">
+<dt id="moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.epsilon">
+<tt class="descname">epsilon</tt><em class="property"> = 1e-08</em><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.epsilon" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.factr">
+<tt class="descname">factr</tt><em class="property"> = 10.0</em><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.factr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
 <dt id="moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.gp_test_environment_input">
-<tt class="descname">gp_test_environment_input</tt><em class="property"> = &lt;moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestEnvironmentInput object at 0x1135b9f10&gt;</em><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.gp_test_environment_input" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">gp_test_environment_input</tt><em class="property"> = &lt;moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestEnvironmentInput object at 0x2ac2e406ca90&gt;</em><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.gp_test_environment_input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.max_func_evals">
+<tt class="descname">max_func_evals</tt><em class="property"> = 150000</em><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.max_func_evals" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.max_metric_correc">
+<tt class="descname">max_metric_correc</tt><em class="property"> = 10</em><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.max_metric_correc" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -324,6 +356,11 @@ which makes it difficult to set meaningful tolerances for the checks.</p>
 <dl class="attribute">
 <dt id="moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.num_sampled_list">
 <tt class="descname">num_sampled_list</tt><em class="property"> = (1, 2, 5, 10, 16, 20, 50)</em><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.num_sampled_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.pgtol">
+<tt class="descname">pgtol</tt><em class="property"> = 1e-10</em><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.pgtol" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -376,6 +413,12 @@ between the naive and vectorized versions.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.test_multistart_qei_expected_improvement_dfo">
+<tt class="descname">test_multistart_qei_expected_improvement_dfo</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/python_version/expected_improvement_test.html#ExpectedImprovementTest.test_multistart_qei_expected_improvement_dfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.test_multistart_qei_expected_improvement_dfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check that multistart optimization (BFGS) can find the optimum point to sample (using 2-EI).</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.test_qd_and_1d_return_same_analytic_ei">
 <tt class="descname">test_qd_and_1d_return_same_analytic_ei</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/python_version/expected_improvement_test.html#ExpectedImprovementTest.test_qd_and_1d_return_same_analytic_ei"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.test_qd_and_1d_return_same_analytic_ei" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compare the 1D analytic EI results to the qD analytic EI results, checking several random points per test case.</p>
@@ -415,7 +458,7 @@ comparison with C++ for verification of the Python code.</p>
 
 <dl class="attribute">
 <dt id="moe.tests.optimal_learning.python.python_version.log_likelihood_test.GaussianProcessLogMarginalLikelihoodTest.gp_test_environment_input">
-<tt class="descname">gp_test_environment_input</tt><em class="property"> = &lt;moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestEnvironmentInput object at 0x113797890&gt;</em><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.log_likelihood_test.GaussianProcessLogMarginalLikelihoodTest.gp_test_environment_input" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">gp_test_environment_input</tt><em class="property"> = &lt;moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestEnvironmentInput object at 0x2ac2e4272750&gt;</em><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.log_likelihood_test.GaussianProcessLogMarginalLikelihoodTest.gp_test_environment_input" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -481,6 +524,12 @@ path to the maxima. Averaging can only reduce the accuracy of the solve.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="moe.tests.optimal_learning.python.python_version.optimization_test.GradientDescentOptimizerTest.test_bfgs_optimizer">
+<tt class="descname">test_bfgs_optimizer</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/python_version/optimization_test.html#GradientDescentOptimizerTest.test_bfgs_optimizer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.optimization_test.GradientDescentOptimizerTest.test_bfgs_optimizer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check that BFGS can find the optimum of the quadratic test objective.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="moe.tests.optimal_learning.python.python_version.optimization_test.GradientDescentOptimizerTest.test_get_averaging_range">
 <tt class="descname">test_get_averaging_range</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/python_version/optimization_test.html#GradientDescentOptimizerTest.test_get_averaging_range"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.optimization_test.GradientDescentOptimizerTest.test_get_averaging_range" title="Permalink to this definition">¶</a></dt>
 <dd><p>Test the method used to produce what interval to average over in Polyak-Ruppert averaging.</p>
@@ -504,6 +553,12 @@ path to the maxima. Averaging can only reduce the accuracy of the solve.</p>
 <dd><p>Check that gradient descent can find the optimum of the quadratic test objective with averaging on.</p>
 <p>This test doesn&#8217;t exercise the purpose of averaging (i.e., this objective isn&#8217;t stochastic), but it does
 check that it at least runs.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.optimal_learning.python.python_version.optimization_test.GradientDescentOptimizerTest.test_multistarted_bfgs_optimizer">
+<tt class="descname">test_multistarted_bfgs_optimizer</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/python_version/optimization_test.html#GradientDescentOptimizerTest.test_multistarted_bfgs_optimizer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.python_version.optimization_test.GradientDescentOptimizerTest.test_multistarted_bfgs_optimizer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check that multistarted GD can find the optimum in a &#8216;very&#8217; large domain.</p>
 </dd></dl>
 
 <dl class="method">
