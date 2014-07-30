@@ -3,8 +3,7 @@
 
 Include:
 
-    1. Request and response schemas
-    2. Class that extends :class:`moe.views.optimizable_gp_pretty_view.GpPrettyView` for next_points optimizers
+    1. Class that extends :class:`moe.views.optimizable_gp_pretty_view.GpPrettyView` for next_points optimizers
 
 """
 import numpy

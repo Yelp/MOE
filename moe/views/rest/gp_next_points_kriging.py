@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
-"""Classes for gp_next_points_kriging endpoints.
+"""Classes for ``gp_next_points_kriging`` endpoints.
 
 Includes:
     1. pretty and backend views
+
 """
 from pyramid.view import view_config
 

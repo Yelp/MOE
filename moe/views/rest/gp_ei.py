@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
-"""Classes for gp_ei endpoints.
+"""Classes for ``gp_ei`` endpoints.
 
 Includes:
 
-    1. request and response schemas
-    2. pretty and backend views
+    1. pretty and backend views
 
 """
 import numpy

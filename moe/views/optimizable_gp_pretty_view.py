@@ -4,7 +4,7 @@ import copy
 
 from moe.optimal_learning.python.constant import OPTIMIZER_TYPE_AND_OBJECTIVE_TO_DEFAULT_PARAMETERS, ENDPOINT_TO_DEFAULT_OPTIMIZER_TYPE
 from moe.views.gp_pretty_view import GpPrettyView
-from moe.views.schemas import OptimizerInfo, OPTIMIZER_TYPES_TO_SCHEMA_CLASSES
+from moe.views.schemas.base_schemas import OptimizerInfo, OPTIMIZER_TYPES_TO_SCHEMA_CLASSES
 
 
 class OptimizableGpPrettyView(GpPrettyView):

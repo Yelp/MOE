@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
-"""Classes for gp_mean, gp_var, and gp_mean_var (and _diag) endpoints.
+"""Classes for ``gp_mean``, ``gp_var``, and ``gp_mean_var`` (and ``_diag``) endpoints.
 
 Includes:
-    1. request and response schemas
-    2. pretty and backend views
+
+    1. pretty and backend views
+
 """
 import numpy
 

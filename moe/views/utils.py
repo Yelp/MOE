@@ -12,7 +12,7 @@ def _make_domain_from_params(params, domain_info_key="domain_info", python_versi
     ``params`` has the following form::
 
         params = {
-            'domain_info': <instance of moe.rest.schemas.BoundedDomainInfo>,
+            'domain_info': <instance of :class:`moe.views.schemas.base_schemas.BoundedDomainInfo`>
             ...
             }
 
@@ -35,7 +35,7 @@ def _make_covariance_of_process_from_params(params):
     ``params`` has the following form::
 
         params = {
-            'covariance_info': <instance of moe.rest.schemas.CovarianceInfo>,
+            'covariance_info': <instance of :class:`moe.views.schemas.base_schemas.CovarianceInfo`>,
             ...
             }
 
@@ -81,9 +81,9 @@ def _make_gp_from_params(params):
     ``params`` has the following form::
 
         params = {
-            'gp_historical_info': <instance of moe.rest.schemas.GpHistoricalInfo>,
-            'domain_info': <instance of moe.rest.schemas.DomainInfo>,
-            'covariance_info': <instance of moe.rest.schemas.CovarianceInfo>,
+            'gp_historical_info': <instance of :class:`moe.views.schemas.base_schemas.GpHistoricalInfo`>,
+            'domain_info': <instance of :class:`moe.views.schemas.base_schemas.DomainInfo`>,
+            'covariance_info': <instance of :class:`moe.views.schemas.base_schemas.CovarianceInfo`>,
             }
 
     :param params: The request params dict
