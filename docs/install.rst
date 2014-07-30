@@ -26,6 +26,15 @@ If you are on OSX, or want a build based on the current master branch you may ne
 
 The webserver and REST interface is now running on port 6543 from within the container. http://localhost:6543
 
+If you want to build a specific version of the container locally then use::
+
+    $ git clone https://github.com/Yelp/MOE.git
+    $ cd MOE
+    $ git tag -l # lists all versions
+    $ git checkout tags/v0.1.0 # or whatever version you want
+    $ docker build -t moe_container_v0.1.0 .
+    $ docker run -p 6543:6543 moe_container_v0.1.0
+
 Install from source
 -------------------
 
