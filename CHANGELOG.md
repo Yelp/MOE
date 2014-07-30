@@ -1,5 +1,8 @@
 * Features
 
+  * multi-armed bandit endpoint
+    * epsilon-greedy
+
 * Changes
 
 * Bugs

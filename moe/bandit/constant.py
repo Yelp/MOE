@@ -13,5 +13,5 @@ DEFAULT_EPSILON = 0.05
 # Epsilon subtypes
 EPSILON_SUBTYPE_GREEDY = 'greedy'
 EPSILON_SUBTYPES = [
-                EPSILON_SUBTYPE_GREEDY
+                EPSILON_SUBTYPE_GREEDY,
                 ]

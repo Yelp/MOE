@@ -28,7 +28,7 @@ class BanditTestCase(T.TestCase):
                             two_new_arms_test_case,
                             two_arms_test_case,
                             three_arms_test_case,
-                            three_arms_float_payoffs_test_case
+                            three_arms_float_payoffs_test_case,
                             ]
 
     def _test_init_default(self):

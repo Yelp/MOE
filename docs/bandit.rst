@@ -35,7 +35,9 @@ The tradeoff of each pull is gaining knowledge about the payout rates vs. gettin
 
         Regret = \mathbb{E} [ \sum\limits_{i=1}^T r_{t,a_t}^{\star} ] - \mathbb{E} [ \sum\limits_{i=1}^T r_{t,a_t} ] = best\;possible\;reward - actually\;obtained\;reward
 
-Any policy that explores at all will have non-zero regret.
+.. note::
+
+        Any policy that explores at all will have non-zero regret.
 
 Applications
 -----------------------------------
