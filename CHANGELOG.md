@@ -1,7 +1,13 @@
-## 0.1.0 (2014-07-24)
+* Features
+    * Added support for the L-BFGS-B optimizer. (#296)
+* Changes
 
-SHA: ``7b79c85f9df14b0cebd40c96c3cb09bd7a7f7ec1``
+* Bugs
 
-Features:
+## v0.1.0 (2014-07-29)
 
-  - initial open source release
+SHA: ``5fef1d242cc8b6e0d6443522f8ba73ba743607de``
+
+* Features
+
+  * initial open source release

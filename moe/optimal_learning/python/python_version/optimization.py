@@ -173,19 +173,13 @@ can have exceptionally poor convergence characteristics or run too slowly.  In c
 fail, we commonly fall back to 'dumb' search.
 
 """
-
 import collections
 
 import numpy
 
-import scipy.optimize as optimize
+import scipy.optimize
 
 from moe.optimal_learning.python.interfaces.optimization_interface import OptimizerInterface
-
-
-# In the LBFGSBOptimizer, there is some precision loss while carrying through from the wrappers.
-# We shrink the bounds by (1 - DOMAIN_ERROR).
-DOMAIN_ERROR = 1.0e-16
 
 
 def multistart_optimize(optimizer, starting_points=None, num_multistarts=None):
@@ -628,21 +622,17 @@ class LBFGSBOptimizer(OptimizerInterface):
     def optimize(self, **kwargs):
         """Perform an L-BFGS-B optimization given the parameters in optimization_parameters.
 
-        :return: (best point found, None)
-        :rtype: tuple: (array of float64 with shape (self.optimizer.dim), None)
-
+        objective_function.current_point will be set to the optimal point found.
         """
-        # The wrappers lead to some lost precision, which may cause the function to return a value just outside the bound.
-        # Shriking the bounds is a solution.
         domain_bounding_box = self.domain.get_bounding_box()
         domain_list = [(interval.min, interval.max) for interval in domain_bounding_box]
-        domain_with_error = numpy.array(domain_list * self._num_points) * (1 - DOMAIN_ERROR)
+        domain_numpy = numpy.array(domain_list * self._num_points)
 
         # Parameters defined above in LBFGSBParameters class.
-        unshaped_point = optimize.fmin_l_bfgs_b(
+        unshaped_point = scipy.optimize.fmin_l_bfgs_b(
             func=self._scipy_decorator(self.objective_function.compute_objective_function, **kwargs),
             x0=self.objective_function.current_point.flatten(),
-            bounds=domain_with_error,
+            bounds=domain_numpy,
             fprime=self._scipy_decorator(self.objective_function.compute_grad_objective_function, **kwargs),
             approx_grad=self.optimization_parameters.approx_grad,
             factr=self.optimization_parameters.factr,
@@ -657,4 +647,3 @@ class LBFGSBOptimizer(OptimizerInterface):
             shaped_point = unshaped_point.reshape(self._num_points, self.domain.dim)
 
         self.objective_function.current_point = shaped_point
-        return shaped_point, None
