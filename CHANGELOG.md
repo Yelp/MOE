@@ -6,6 +6,8 @@
 
 * Changes
 
+  * Split up old schemas.py file into schemas/ directory with several subfiles (#291)
+
 * Bugs
 
 ## v0.1.0 (2014-07-29)
