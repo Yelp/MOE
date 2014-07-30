@@ -622,9 +622,7 @@ class LBFGSBOptimizer(OptimizerInterface):
     def optimize(self, **kwargs):
         """Perform an L-BFGS-B optimization given the parameters in optimization_parameters.
 
-        :return: (best point found, None)
-        :rtype: tuple: (array of float64 with shape (self.optimizer.dim), None)
-
+        objective_function.current_point will be set to the optimal point found.
         """
         domain_bounding_box = self.domain.get_bounding_box()
         domain_list = [(interval.min, interval.max) for interval in domain_bounding_box]
