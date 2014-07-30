@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Classes (Python) to compute the Bandit Epsilon-Greedy arm allocation and choosing the arm to pull next.
 
-See :class:`moe.bandit.epsilon.Epsilon` for further details on bandit.
+See :class:`moe.bandit.epsilon.Epsilon` for further details on this bandit.
 
 """
 import numpy

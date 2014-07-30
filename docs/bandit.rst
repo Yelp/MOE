@@ -11,7 +11,7 @@ Multi-Armed Bandits
 What is the multi-armed bandit problem?
 ------------------------------
 
-Let us explain the problem intuitively. Imagine you are in front of *K* slot machines.
+Imagine you are in front of *K* slot machines.
 Each machine has a possibly different, unknown payout rate. You are allowed to pull the arm *T* times.
 The problem is how to allocate the number of pulls to each machine to maximize your payout.
 
@@ -35,6 +35,7 @@ The tradeoff of each pull is gaining knowledge about the payout rates vs. gettin
 
         Regret = \mathbb{E} [ \sum\limits_{i=1}^T r_{t,a_t}^{\star} ] - \mathbb{E} [ \sum\limits_{i=1}^T r_{t,a_t} ] = best\;possible\;reward - actually\;obtained\;reward
 
+Any policy that explores at all will have non-zero regret.
 
 Applications
 -----------------------------------
@@ -54,17 +55,28 @@ Policies
 
 There are many different policies for this problem:
 
+We have implemented the following policies in our package:
+
+* :mod:`~moe.bandit.epsilon_greedy.EpsilonGreedy`
+
+Other policies include:
+
 * Weighted random choice
-* Epsilon-greedy
-* Epsilon-decreasing \*
-* UCB-exp (Upper Confidence Bound) \*
-* UCB-tuned\*
-* BLA (Bayesian Learning Automaton) \*
-* SoftMax\*
+* `Epsilon-first`_
+* `Epsilon-decreasing`_ \*
+* `UCB-exp (Upper Confidence Bound)`_ \*
+* `UCB-tuned`_ \*
+* `BLA (Bayesian Learning Automaton)`_ \*
+* `SoftMax`_ \*
 
 \* Regret bounded as :math:`t \rightarrow \infty`
 
-We have implemented several of them in our package.
+.. _Epsilon-first: http://en.wikipedia.org/wiki/Multi-armed_bandit#Semi-uniform_strategies
+.. _Epsilon-decreasing: http://en.wikipedia.org/wiki/Multi-armed_bandit#Semi-uniform_strategies
+.. _UCB-exp (Upper Confidence Bound): http://moodle.technion.ac.il/pluginfile.php/192340/mod_resource/content/0/UCB.pdf
+.. _UCB-tuned: http://moodle.technion.ac.il/pluginfile.php/192340/mod_resource/content/0/UCB.pdf
+.. _BLA (Bayesian Learning Automaton): http://dl.acm.org/citation.cfm?id=1491370
+.. _SoftMax: http://arxiv.org/pdf/1402.6028v1.pdf
 
 Pointers
 -----------------------------------

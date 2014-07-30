@@ -77,12 +77,12 @@ class TestBanditEpsilonViews(BanditTestCase, RestTestCase):
             resp = self.testapp.post(moe_route.endpoint, json_payload)
             resp_schema = BanditEpsilonResponse()
             resp_dict = resp_schema.deserialize(json.loads(resp.body))
-            resp_arm_names = set([arm_name for arm_name in resp_dict['arms'].iterkeys()])
+            resp_arm_names = set([arm_name for arm_name in resp_dict['arm_allocations'].iterkeys()])
             T.assert_sets_equal(arm_names, resp_arm_names)
             # The allocations should be in range [0, 1]
             # The sum of all allocations should be 1.0.
             total_allocation = 0
-            for allocation in resp_dict['arms'].itervalues():
+            for allocation in resp_dict['arm_allocations'].itervalues():
                 T.assert_gte(allocation, 0)
                 T.assert_lte(allocation, 1)
                 total_allocation += allocation
