@@ -192,7 +192,8 @@ import moe.build.GPP as C_GP
 from moe.optimal_learning.python.interfaces.optimization_interface import OptimizerInterface
 
 
-class NullParameters(collections.namedtuple('NullParameters', [])):
+# TODO(GH-167): Kill 'num_multistarts' when you reoganize num_multistarts for C++.
+class NullParameters(collections.namedtuple('NullParameters', ['num_multistarts'])):
 
     """Empty container for optimizers that do not require any parameters (e.g., the null optimizer)."""
 

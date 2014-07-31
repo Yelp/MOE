@@ -47,6 +47,9 @@ class OptimizableGpPrettyView(GpPrettyView):
         different combinations of ``optimizer_type``, endpoint, and other features.
         See :const:`moe.optimal_learning.python.constants.OPTIMIZER_TYPE_AND_OBJECTIVE_TO_DEFAULT_PARAMETERS`
 
+        .. Note:: specifying ``num_multistarts = 0`` or ``num_random_samples = 0`` in the POST
+          request will set them to their default values internally.
+
         :returns: A deserialized self.request_schema object
         :rtype: dict
 

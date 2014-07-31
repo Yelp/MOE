@@ -1240,6 +1240,10 @@ void EvaluateEIAtPointList(const GaussianProcess& gaussian_process, const Thread
                            int num_multistarts, int num_to_sample, int num_being_sampled, double best_so_far,
                            int max_int_steps, bool * restrict found_flag, NormalRNG * normal_rng,
                            double * restrict function_values, double * restrict best_next_point) {
+  if (unlikely(num_multistarts <= 0)) {
+    OL_THROW_EXCEPTION(LowerBoundException<int>, "num_multistarts must be > 1", num_multistarts, 1);
+  }
+
   using DomainType = DummyDomain;
   DomainType dummy_domain;
   bool configure_for_gradients = false;

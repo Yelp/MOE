@@ -147,6 +147,7 @@ def evaluate_log_likelihood_at_hyperparameter_list(
         log_likelihood_evaluator,
         hyperparameters_to_evaluate,
         max_num_threads=DEFAULT_MAX_NUM_THREADS,
+        status=None,
 ):
     """Compute the specified log likelihood measure at each input set of hyperparameters.
 
@@ -161,10 +162,16 @@ def evaluate_log_likelihood_at_hyperparameter_list(
     :type hyperparameters_to_evaluate: array of float64 with shape (num_to_eval, log_likelihood_evaluator.num_hyperparameters)
     :param max_num_threads: maximum number of threads to use, >= 1
     :type max_num_threads: int > 0
+    :param status: status messages from C++ (e.g., reporting on optimizer success, etc.)
+    :type status: dict
     :return: log likelihood value at each specified set of hyperparameters
     :rtype: array of float64 with shape (hyperparameters_to_evaluate.shape[0])
 
     """
+    # status must be an initialized dict for the call to C++.
+    if status is None:
+        status = {}
+
     # We could just call log_likelihood_evaluator.compute_log_likelihood() in a loop, but instead we do
     # the looping in C++ where it can be multithreaded.
     log_likelihood_list = C_GP.evaluate_log_likelihood_at_hyperparameter_list(
@@ -178,6 +185,7 @@ def evaluate_log_likelihood_at_hyperparameter_list(
         cpp_utils.cppify(log_likelihood_evaluator._points_sampled_noise_variance),
         hyperparameters_to_evaluate.shape[0],
         max_num_threads,
+        status,
     )
     return numpy.array(log_likelihood_list)
 

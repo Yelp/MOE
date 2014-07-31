@@ -341,6 +341,9 @@ class OptimizerInfo(StrictMappingSchema):
       schema are responsible for passing its contents through the appropriate schema using
       the :const:`moe.views.schemas.base_schemas.OPTIMIZER_TYPES_TO_SCHEMA_CLASSES` dict provided above.
 
+    .. Note:: specifying :attr:`num_multistarts` = 0 or :attr:`num_random_samples` = 0 in the POST
+      request will set them to their default values internally.
+
     TODO(GH-303): Try schema bindings as a way to automate setting validators and missing values.
 
     **Optional fields**

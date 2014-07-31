@@ -1364,6 +1364,10 @@ OL_NONNULL_POINTERS void ComputeOptimalPointsToSampleViaMultistartGradientDescen
     NormalRNG * normal_rng,
     bool * restrict found_flag,
     double * restrict best_next_point) {
+  if (unlikely(num_multistarts <= 0)) {
+    OL_THROW_EXCEPTION(LowerBoundException<int>, "num_multistarts must be > 1", num_multistarts, 1);
+  }
+
   bool configure_for_gradients = true;
   if (num_to_sample == 1 && num_being_sampled == 0) {
     // special analytic case when we are not using (or not accounting for) multiple, simultaneous experiments

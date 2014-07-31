@@ -18,6 +18,7 @@
 // NOLINT-ing the C, C++ header includes as well; otherwise cpplint gets confused
 #include <algorithm>  // NOLINT(build/include_order)
 #include <limits>  // NOLINT(build/include_order)
+#include <string>  // NOLINT(build/include_order)
 #include <vector>  // NOLINT(build/include_order)
 
 #include <boost/python/def.hpp>  // NOLINT(build/include_order)
@@ -169,18 +170,13 @@ void DispatchHyperparameterOptimization(const boost::python::object& optimizer_p
   bool found_flag = false;
   switch (optimizer_type) {
     case OptimizerTypes::kNull: {
-      // found_flag set to true; 'dumb' search cannot fail
-      // TODO(GH-189): Remove this assumption and have 'dumb' search function pass
-      // out found_flag like every other optimizer does.
-      found_flag = true;
-
-      ThreadSchedule thread_schedule(max_num_threads, omp_sched_guided);
       // optimizer_parameters must contain an int num_random_samples field, extract it
       int num_random_samples = boost::python::extract<int>(optimizer_parameters.attr("num_random_samples"));
+      ThreadSchedule thread_schedule(max_num_threads, omp_sched_guided);
       LatinHypercubeSearchHyperparameterOptimization(log_likelihood_eval, covariance, hyperparameter_domain,
-                                                     thread_schedule, num_random_samples,
+                                                     thread_schedule, num_random_samples, &found_flag,
                                                      &randomness_source.uniform_generator, new_hyperparameters);
-      status["lhc_found_update"] = found_flag;
+      status[std::string() + log_likelihood_eval.kName + "_lhc_found_update"] = found_flag;
       break;
     }  // end case kNull for optimizer_type
     case OptimizerTypes::kGradientDescent: {
@@ -194,7 +190,7 @@ void DispatchHyperparameterOptimization(const boost::python::object& optimizer_p
                                                           thread_schedule, &found_flag,
                                                           &randomness_source.uniform_generator,
                                                           new_hyperparameters);
-      status["gradient_descent_found_update"] = found_flag;
+      status[std::string() + log_likelihood_eval.kName + "_gradient_descent_found_update"] = found_flag;
       break;
     }  // end case kGradientDescent for optimizer_type
     case OptimizerTypes::kNewton: {
@@ -207,7 +203,7 @@ void DispatchHyperparameterOptimization(const boost::python::object& optimizer_p
                                                  thread_schedule, &found_flag,
                                                  &randomness_source.uniform_generator,
                                                  new_hyperparameters);
-      status["newton_found_update"] = found_flag;
+      status[std::string() + log_likelihood_eval.kName + "_newton_found_update"] = found_flag;
       break;
     }  // end case kNewton for optimizer_type
     default: {
@@ -286,7 +282,8 @@ boost::python::list EvaluateLogLikelihoodAtHyperparameterListWrapper(const boost
                                                                      LogLikelihoodTypes objective_mode,
                                                                      const boost::python::list& hyperparameters,
                                                                      const boost::python::list& noise_variance,
-                                                                     int num_multistarts, int max_num_threads) {
+                                                                     int num_multistarts, int max_num_threads,
+                                                                     boost::python::dict& status) {
   const int num_to_sample = 0;
   const boost::python::list points_to_sample_dummy;
   PythonInterfaceInputContainer input_container(hyperparameters, points_sampled, points_sampled_value,
@@ -304,6 +301,7 @@ boost::python::list EvaluateLogLikelihoodAtHyperparameterListWrapper(const boost
   TensorProductDomain dummy_domain(nullptr, 0);
   ThreadSchedule thread_schedule(max_num_threads, omp_sched_guided);
 
+  bool found_flag = false;
   switch (objective_mode) {
     case LogLikelihoodTypes::kLogMarginalLikelihood: {
       LogMarginalLikelihoodEvaluator log_likelihood_eval(input_container.points_sampled.data(),
@@ -311,8 +309,9 @@ boost::python::list EvaluateLogLikelihoodAtHyperparameterListWrapper(const boost
                                                          input_container.noise_variance.data(),
                                                          input_container.dim, input_container.num_sampled);
       EvaluateLogLikelihoodAtPointList(log_likelihood_eval, square_exponential, dummy_domain, thread_schedule,
-                                       initial_guesses_C.data(), num_multistarts, result_function_values_C.data(),
-                                       new_hyperparameters_C.data());
+                                       initial_guesses_C.data(), num_multistarts, &found_flag,
+                                       result_function_values_C.data(), new_hyperparameters_C.data());
+      status[std::string() + "evaluate_" + log_likelihood_eval.kName + "_at_hyperparameter_list"] = found_flag;
       break;
     }
     case LogLikelihoodTypes::kLeaveOneOutLogLikelihood: {
@@ -321,12 +320,14 @@ boost::python::list EvaluateLogLikelihoodAtHyperparameterListWrapper(const boost
                                                             input_container.noise_variance.data(),
                                                             input_container.dim, input_container.num_sampled);
       EvaluateLogLikelihoodAtPointList(log_likelihood_eval, square_exponential, dummy_domain, thread_schedule,
-                                       initial_guesses_C.data(), num_multistarts, result_function_values_C.data(),
-                                       new_hyperparameters_C.data());
+                                       initial_guesses_C.data(), num_multistarts, &found_flag,
+                                       result_function_values_C.data(), new_hyperparameters_C.data());
+      status[std::string() + "evaluate_" + log_likelihood_eval.kName + "_at_hyperparameter_list"] = found_flag;
       break;
     }
     default: {
       std::fill(result_function_values_C.begin(), result_function_values_C.end(), -std::numeric_limits<double>::max());
+      status["evaluate_invalid_log_likelihood_at_hyperparameter_list"] = found_flag;
       OL_THROW_EXCEPTION(OptimalLearningException, "ERROR: invalid objective mode choice. Setting all results to -DBL_MAX.");
       break;
     }
@@ -464,6 +465,8 @@ void ExportModelSelectionFunctions() {
     :type num_multistarts: int > 0
     :param max_num_threads: max number of threads to use during EI optimization
     :type max_num_threads: int >= 1
+    :param status: pydict object (cannot be None!); modified on exit to describe whether convergence occurred
+    :type status: dict
     :return: log likelihood values at each point of the hyperparameter_list list, in the same order
     :rtype: list of float64 with shape (num_multistarts, )
     )%%");
