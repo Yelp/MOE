@@ -59,8 +59,8 @@ class GpNextPointsEpi(GpNextPointsPrettyView):
 
            Calculates the next best points to sample, given historical data, using Expected Parallel Improvement (EPI).
 
-           :input: :class:`moe.views.schemas.GpNextPointsRequest`
-           :output: :class:`moe.views.schemas.GpNextPointsResponse`
+           :input: :class:`moe.views.schemas.gp_next_points_pretty_view.GpNextPointsRequest`
+           :output: :class:`moe.views.schemas.gp_next_points_pretty_view.GpNextPointsResponse`
 
            :status 200: returns a response
            :status 500: server error

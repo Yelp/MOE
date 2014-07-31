@@ -12,7 +12,7 @@ from moe.optimal_learning.python.cpp_wrappers.gaussian_process import GaussianPr
 from moe.tests.optimal_learning.python.gaussian_process_test_case import GaussianProcessTestCase
 from moe.tests.views.rest_test_case import RestTestCase
 from moe.views.constant import GP_EI_ENDPOINT
-from moe.views.rest.gp_ei import GpEiResponse
+from moe.views.schemas.rest.gp_ei import GpEiResponse
 
 
 class TestGpEiView(GaussianProcessTestCase, RestTestCase):
