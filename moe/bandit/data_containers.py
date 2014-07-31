@@ -93,7 +93,7 @@ class HistoricalData(object):
     The SampleArm class (above) provides a convenient representation of this input format, but users are *not* required
     to use it.
 
-    :ivar _arms_sampled: (*dictionary of arm names to already-sampled arms)
+    :ivar _arms_sampled: (*dict*) mapping of arm names to already-sampled arms
 
     """
 

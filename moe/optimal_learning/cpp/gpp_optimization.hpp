@@ -828,10 +828,10 @@ OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT int NewtonOptimization(
     return 0;
   }
   const int problem_size = objective_state->GetProblemSize();
-  std::vector<double> new_point(problem_size);
+  std::vector<double> next_point(problem_size);
 
   // read out starting point coordinates from state
-  objective_state->GetCurrentPoint(new_point.data());
+  objective_state->GetCurrentPoint(next_point.data());
 
   std::vector<int> pivot(problem_size);
   std::vector<double> step(problem_size);
@@ -899,18 +899,18 @@ OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT int NewtonOptimization(
       step[j] = -gradient_objective[j];
     }
     // limit step size to ensure we stay inside the domain
-    domain.LimitUpdate(newton_parameters.max_relative_change, new_point.data(), step.data());
+    domain.LimitUpdate(newton_parameters.max_relative_change, next_point.data(), step.data());
     // take the step
     for (int j = 0; j < problem_size; ++j) {
-      new_point[j] += step[j];
+      next_point[j] += step[j];
     }
 
     // set new point for next run
-    objective_state->UpdateCurrentPoint(objective_evaluator, new_point.data());
+    objective_state->UpdateCurrentPoint(objective_evaluator, next_point.data());
 #ifdef OL_VERBOSE_PRINT
     norm_gradient_objective = VectorNorm(gradient_objective.data(), problem_size);
     OL_VERBOSE_PRINTF("iter %d: norm update: %.18E, coord:\n", newton_iter, norm_gradient_objective);
-    PrintMatrix(new_point.data(), 1, problem_size);
+    PrintMatrix(next_point.data(), 1, problem_size);
 #endif
 
     double norm_step = VectorNorm(step.data(), problem_size);
@@ -918,12 +918,12 @@ OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT int NewtonOptimization(
       ++newton_iter;
       break;
     }
-  }
+  }  // end loop over newton_iter
 
 #ifdef OL_OPTIMIZATION_VERBOSE_PRINT
   double norm_gradient_objective = VectorNorm(gradient_objective.data(), problem_size);
   OL_VERBOSE_PRINTF("iter %d: norm gradient: %.18E\n", newton_iter, norm_gradient_objective);
-  PrintMatrix(new_point.data(), 1, problem_size);
+  PrintMatrix(next_point.data(), 1, problem_size);
 #endif
 
   return error;
@@ -1027,20 +1027,20 @@ class GradientDescentOptimizer final {
     }
     const int problem_size = objective_state->GetProblemSize();
     std::vector<double> current_point(problem_size);
-    std::vector<double> new_point(problem_size);
+    std::vector<double> next_point(problem_size);
 
-    // loop structure expects that "new_point" contains the new current location at the start of each iteration
-    objective_state->GetCurrentPoint(new_point.data());
+    // loop structure expects that "next_point" contains the new current location at the start of each iteration
+    objective_state->GetCurrentPoint(next_point.data());
 
     for (int i = 0; i < gd_parameters.max_num_restarts; ++i) {
       // save off current location so we can compute the update norm
-      std::copy(new_point.begin(), new_point.end(), current_point.begin());
+      std::copy(next_point.begin(), next_point.end(), current_point.begin());
       // get next gradient descent update
-      GradientDescentOptimization(objective_evaluator, gd_parameters, domain, objective_state, new_point.data());
+      GradientDescentOptimization(objective_evaluator, gd_parameters, domain, objective_state, next_point.data());
 
       // compute norm of the update
       for (int j = 0; j < problem_size; ++j) {
-        current_point[j] -= new_point[j];
+        current_point[j] -= next_point[j];
       }
       double norm_delta_coord = VectorNorm(current_point.data(), problem_size);
       OL_VERBOSE_PRINTF("norm of coord change: %.18E\n", norm_delta_coord);
