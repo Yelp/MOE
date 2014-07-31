@@ -29,7 +29,7 @@ class EpsilonGreedyTest(EpsilonTestCase):
             T.assert_equal(bandit.choose_arm(), "arm1")
 
     def test_two_new_arms(self):
-        """Check that the two-new-arms case always allocate each arm equally (the allocation is 0.5 for both arms)."""
+        """Check that the two-new-arms case always allocate each arm equally (the allocation is 0.5 for both arms). This tests num_winning_arms == num_arms > 1."""
         for epsilon in self.epsilons_to_test:
             bandit = self.bandit_class(self.two_new_arms_test_case, epsilon)
             T.assert_dicts_equal(bandit.allocate_arms(), {"arm1": 0.5, "arm2": 0.5})
@@ -53,6 +53,12 @@ class EpsilonGreedyTest(EpsilonTestCase):
         for historical_info in [self.three_arms_test_case, self.three_arms_float_payoffs_test_case]:
             bandit = self.bandit_class(historical_info, epsilon)
             T.assert_dicts_equal(bandit.allocate_arms(), {"arm1": 0.98, "arm2": 0.01, "arm3": 0.01})
+
+    def test_three_arms_two_winners(self):
+        """Check that the three-arms cases with two winners return the expected arm allocations. This tests num_arms > num_winning_arms > 1."""
+        epsilon = 0.03
+        bandit = self.bandit_class(self.three_arms_two_winners_test_case, epsilon)
+        T.assert_dicts_equal(bandit.allocate_arms(), {"arm1": 0.495, "arm2": 0.495, "arm3": 0.01})
 
 
 if __name__ == "__main__":
