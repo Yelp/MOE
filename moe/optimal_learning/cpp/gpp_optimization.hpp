@@ -613,31 +613,27 @@ struct OptimizationIOContainer final {
     :objective_state[1]: a state object whose temporary data members may have been modified
                          objective_state.GetCurrentPoint() will return the point yielding the best objective function value
                          according to gradient descent
-    :next_point[problem_size]: point yielding the best objective function value according to gradient descent, SAME as
-                               objective_state.GetCurrentPoint() (see previous item)
-
-  TODO(GH-186): The next_point output is redundant with objective_state.GetCurrentPoint(). Remove it.
 \endrst*/
 template <typename ObjectiveFunctionEvaluator, typename DomainType>
 OL_NONNULL_POINTERS void GradientDescentOptimization(
     const ObjectiveFunctionEvaluator& objective_evaluator,
     const GradientDescentParameters& gd_parameters,
     const DomainType& domain,
-    typename ObjectiveFunctionEvaluator::StateType * objective_state,
-    double * restrict next_point) {
+    typename ObjectiveFunctionEvaluator::StateType * objective_state) {
   const int problem_size = objective_state->GetProblemSize();
   std::vector<double> grad_objective(problem_size);
   std::vector<double> step(problem_size);
+  std::vector<double> next_point(problem_size);
 
   // read out starting point coordinates
-  objective_state->GetCurrentPoint(next_point);
+  objective_state->GetCurrentPoint(next_point.data());
 
   // save off some data for reporting if needed
 #ifdef OL_VERBOSE_PRINT
   std::vector<double> initial_point(problem_size);
   // initial value of the objective function
   double obj_func_initial = objective_evaluator.ComputeObjectiveFunction(objective_state);
-  std::copy(next_point, next_point + problem_size, initial_point.begin());
+  std::copy(next_point.begin(), next_point.end(), initial_point.begin());
 #endif
 
   const double step_tolerance = gd_parameters.tolerance / static_cast<double>(gd_parameters.max_num_steps);
@@ -656,14 +652,14 @@ OL_NONNULL_POINTERS void GradientDescentOptimization(
       step[j] = alpha_n*grad_objective[j];
     }
     // limit step size to ensure we stay inside the domain
-    domain.LimitUpdate(gd_parameters.max_relative_change, next_point, step.data());
+    domain.LimitUpdate(gd_parameters.max_relative_change, next_point.data(), step.data());
     // take the step
     for (int j = 0; j < problem_size; ++j) {
       next_point[j] += step[j];
     }
 
     // update state
-    objective_state->UpdateCurrentPoint(objective_evaluator, next_point);
+    objective_state->UpdateCurrentPoint(objective_evaluator, next_point.data());
 
     double norm_step = VectorNorm(step.data(), problem_size);
     if (norm_step < step_tolerance) {
@@ -1036,7 +1032,8 @@ class GradientDescentOptimizer final {
       // save off current location so we can compute the update norm
       std::copy(next_point.begin(), next_point.end(), current_point.begin());
       // get next gradient descent update
-      GradientDescentOptimization(objective_evaluator, gd_parameters, domain, objective_state, next_point.data());
+      GradientDescentOptimization(objective_evaluator, gd_parameters, domain, objective_state);
+      objective_state->GetCurrentPoint(next_point.data());
 
       // compute norm of the update
       for (int j = 0; j < problem_size; ++j) {
