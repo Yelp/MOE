@@ -6,6 +6,7 @@ Includes:
     2. pretty and backend views
 """
 import colander
+
 import copy
 
 from pyramid.view import view_config
@@ -89,7 +90,7 @@ class BanditEpsilonResponse(colander.MappingSchema):
     **Output fields**
 
         :endpoint: the endpoint that was called
-        :arms: a dictionary of (arm name, allocaiton) key-value pairs (:class:`moe.views.schemas.ArmAllocations`)
+        :arms: a dictionary of (arm name, allocation) key-value pairs (:class:`moe.views.schemas.ArmAllocations`)
         :winner: winning arm name
 
     **Example Response**

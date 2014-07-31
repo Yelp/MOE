@@ -103,7 +103,7 @@ class EpsilonFirst(Epsilon):
                 arms_to_allocations[arm_name] = equal_allocation
             return arms_to_allocations
 
-        # Exploitation phase, trials 1,2,..., epsilon * T+1, ..., T
+        # Exploitation phase, trials epsilon * T+1, ..., T
         avg_payoff_arm_name_list = []
         for arm_name, sampled_arm in arms_sampled.iteritems():
             avg_payoff = numpy.float64(sampled_arm.win - sampled_arm.loss) / sampled_arm.total if sampled_arm.total > 0 else 0
