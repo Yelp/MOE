@@ -6,7 +6,11 @@
 
 * Changes
 
-  * Split up old schemas.py file into schemas/ directory with several subfiles (#291)
+  * Split up old ``schemas.py`` file into ``schemas/`` directory with several subfiles (#291)
+  * Improved Dockerfile, reducing Docker-based install times substantially, https://hub.docker.com/u/yelpmoe/ (#332)
+    * Created ``min_reqs`` docker container which is a snapshot of all MOE third-party requirements
+    * Created ``latest``, which tracks the latest MOE build
+    * Started releasing docker containers for each tagged MOE release (currently just ``v0.1.0``)
 
 * Bugs
 
