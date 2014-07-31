@@ -27,13 +27,13 @@ class BanditEpsilonRequest(base_schemas.StrictMappingSchema):
         Content-Type: text/javascript
 
         {
-                    "historical_info": {
-                        "arms_sampled": {
-                                "arm1": {"win": 20, "loss": 5, "total": 25},
-                                "arm2": {"win": 20, "loss": 10, "total": 30},
-                                "arm3": {"win": 0, "loss": 0, "total": 0},
-                            },
-                        },
+            "historical_info": {
+                "arms_sampled": {
+                    "arm1": {"win": 20, "loss": 5, "total": 25},
+                    "arm2": {"win": 20, "loss": 10, "total": 30},
+                    "arm3": {"win": 0, "loss": 0, "total": 0},
+                    },
+                },
         }
 
     **Example Full Request**
@@ -43,17 +43,17 @@ class BanditEpsilonRequest(base_schemas.StrictMappingSchema):
         Content-Type: text/javascript
 
         {
-                    "subtype": "greedy",
-                    "historical_info": {
-                        "arms_sampled": {
-                                "arm1": {"win": 20, "loss": 5, "total": 25},
-                                "arm2": {"win": 20, "loss": 10, "total": 30},
-                                "arm3": {"win": 0, "loss": 0, "total": 0},
-                            },
-                        },
-                    "hyperparameter_info": {
-                        "epsilon": 0.05,
-                        },
+            "subtype": "greedy",
+            "historical_info": {
+                "arms_sampled": {
+                    "arm1": {"win": 20, "loss": 5, "total": 25},
+                    "arm2": {"win": 20, "loss": 10, "total": 30},
+                    "arm3": {"win": 0, "loss": 0, "total": 0},
+                    },
+                },
+            "hyperparameter_info": {
+                "epsilon": 0.05,
+                },
         }
 
     """
@@ -81,15 +81,17 @@ class BanditEpsilonResponse(base_schemas.StrictMappingSchema):
 
     .. sourcecode:: http
 
-    {
-                "endpoint":"bandit_epsilon",
-                "arm_allocations": {
-                    "arm1": 0.95,
-                    "arm2": 0.025,
-                    "arm3": 0.025,
-                    }
-                "winner": "arm1",
-    }
+        Content-Type: text/javascript
+
+        {
+            "endpoint":"bandit_epsilon",
+            "arm_allocations": {
+                "arm1": 0.95,
+                "arm2": 0.025,
+                "arm3": 0.025,
+                }
+            "winner": "arm1",
+        }
 
     """
 
