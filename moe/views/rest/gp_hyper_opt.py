@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
-"""Classes for gp_hyper_opt endpoints.
+"""Classes for ``gp_hyper_opt`` endpoints.
 
 Includes:
 
-    1. request and response schemas
-    2. pretty and backend views
+    1. pretty and backend views
 
 """
 from pyramid.view import view_config
@@ -14,9 +13,10 @@ from moe.optimal_learning.python.cpp_wrappers.log_likelihood import multistart_h
 from moe.optimal_learning.python.linkers import LOG_LIKELIHOOD_TYPES_TO_LOG_LIKELIHOOD_METHODS
 from moe.optimal_learning.python.timing import timing_context
 from moe.views.constant import GP_HYPER_OPT_ROUTE_NAME, GP_HYPER_OPT_PRETTY_ROUTE_NAME
-from moe.views.gp_pretty_view import GpPrettyView, PRETTY_RENDERER
+from moe.views.gp_pretty_view import GpPrettyView
 from moe.views.optimizable_gp_pretty_view import OptimizableGpPrettyView
-from moe.views.schemas import GpHyperOptRequest, GpHyperOptResponse
+from moe.views.pretty_view import PRETTY_RENDERER
+from moe.views.schemas.rest.gp_hyper_opt import GpHyperOptRequest, GpHyperOptResponse
 from moe.views.utils import _make_domain_from_params, _make_gp_from_params, _make_optimizer_parameters_from_params
 
 
@@ -97,10 +97,10 @@ class GpHyperOptView(OptimizableGpPrettyView):
 
            Calculates the optimal hyperparameters for a gaussian process, given historical data.
 
-           :input: :class:`moe.views.schemas.GpHyperOptRequest`
-           :output: :class:`moe.views.schemas.GpHyperOptResponse`
+           :input: :class:`moe.views.schemas.rest.gp_hyper_opt.GpHyperOptRequest`
+           :output: :class:`moe.views.schemas.rest.gp_hyper_opt.GpHyperOptResponse`
 
-           :status 201: returns a response
+           :status 200: returns a response
            :status 500: server error
 
         """
