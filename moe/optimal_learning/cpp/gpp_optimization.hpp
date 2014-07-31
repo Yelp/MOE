@@ -216,7 +216,7 @@
 
     int GetProblemSize();  // how many dimensions to optimize
     void GetCurrentPoint(double * point);  // get current point at which Evalutor is computing results
-    void UpdateCurrentPoint(double const * point);  // set current point at which Evalutor is computing results
+    void SetCurrentPoint(double const * point);  // set current point at which Evalutor is computing results
 
   gpp_math.hpp and gpp_model_selection.hpp have (Evaluator, State) examples that implement
   the above interface:
@@ -659,7 +659,7 @@ OL_NONNULL_POINTERS void GradientDescentOptimization(
     }
 
     // update state
-    objective_state->UpdateCurrentPoint(objective_evaluator, next_point.data());
+    objective_state->SetCurrentPoint(objective_evaluator, next_point.data());
 
     double norm_step = VectorNorm(step.data(), problem_size);
     if (norm_step < step_tolerance) {
@@ -902,7 +902,7 @@ OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT int NewtonOptimization(
     }
 
     // set new point for next run
-    objective_state->UpdateCurrentPoint(objective_evaluator, next_point.data());
+    objective_state->SetCurrentPoint(objective_evaluator, next_point.data());
 #ifdef OL_VERBOSE_PRINT
     norm_gradient_objective = VectorNorm(gradient_objective.data(), problem_size);
     OL_VERBOSE_PRINTF("iter %d: norm update: %.18E, coord:\n", newton_iter, norm_gradient_objective);
@@ -1220,7 +1220,7 @@ class MultistartOptimizer final {
         best_point IF found_flag is true.
         Unchanged from input otherwise. See struct docs in gpp_optimization.hpp for details.
     \raise
-      if any of objective_state_vector->UpdateCurrentPoint(), optimizer.Optimize(), or
+      if any of objective_state_vector->SetCurrentPoint(), optimizer.Optimize(), or
       objective_evaluator.ComputeObjectiveFunction() throws, the exception (or one of the exceptions in the
       event of multiple throws due to threading, usually the first temporally) will be saved and rethrown by
       this function. ``io_container`` will be in a valid state; ``function_values`` may not.
@@ -1271,7 +1271,7 @@ class MultistartOptimizer final {
         // exception out of this structured block, we will capture an active exception into a std::exception_ptr.
         // Typically, the *first* exception thrown (temporally) will be captured.
         try {
-          objective_state_vector[thread_id].UpdateCurrentPoint(objective_evaluator, initial_guesses + i*problem_size);
+          objective_state_vector[thread_id].SetCurrentPoint(objective_evaluator, initial_guesses + i*problem_size);
 
           if (unlikely(optimizer.Optimize(objective_evaluator, optimizer_parameters, domain, objective_state_vector + thread_id) != 0)) {
             ++total_errors;

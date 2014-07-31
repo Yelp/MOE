@@ -441,9 +441,9 @@ struct LogMarginalLikelihoodState final {
     return num_hyperparameters;
   }
 
-  void UpdateCurrentPoint(const EvaluatorType& log_likelihood_eval,
+  void SetCurrentPoint(const EvaluatorType& log_likelihood_eval,
                           double const * restrict hyperparameters) OL_NONNULL_POINTERS {
-    UpdateHyperparameters(log_likelihood_eval, hyperparameters);
+    SetHyperparameters(log_likelihood_eval, hyperparameters);
   }
 
   void GetCurrentPoint(double * restrict hyperparameters) OL_NONNULL_POINTERS {
@@ -468,7 +468,7 @@ struct LogMarginalLikelihoodState final {
       :log_likelihood_eval: LogMarginalLikelihoodEvaluator object that this state is being used with
       :hyperparameters[num_hyperparameters]: hyperparameters to change to
   \endrst*/
-  void UpdateHyperparameters(const EvaluatorType& log_likelihood_eval,
+  void SetHyperparameters(const EvaluatorType& log_likelihood_eval,
                              double const * restrict hyperparameters) OL_NONNULL_POINTERS;
 
   /*!\rst
@@ -705,9 +705,9 @@ struct LeaveOneOutLogLikelihoodState final {
     return num_hyperparameters;
   }
 
-  void UpdateCurrentPoint(const EvaluatorType& log_likelihood_eval,
+  void SetCurrentPoint(const EvaluatorType& log_likelihood_eval,
                           double const * restrict hyperparameters) OL_NONNULL_POINTERS {
-    UpdateHyperparameters(log_likelihood_eval, hyperparameters);
+    SetHyperparameters(log_likelihood_eval, hyperparameters);
   }
 
   void GetCurrentPoint(double * restrict hyperparameters) OL_NONNULL_POINTERS {
@@ -732,7 +732,7 @@ struct LeaveOneOutLogLikelihoodState final {
       :log_likelihood_eval: LeaveOneOutLogLikelihoodEvaluator object that this state is being used with
       :hyperparameters[num_hyperparameters]: hyperparameters to change to
   \endrst*/
-  void UpdateHyperparameters(const EvaluatorType& log_likelihood_eval,
+  void SetHyperparameters(const EvaluatorType& log_likelihood_eval,
                              double const * restrict hyperparameters) OL_NONNULL_POINTERS;
 
   /*!\rst
@@ -870,14 +870,14 @@ OL_NONNULL_POINTERS void InitializeBestKnownPoint(const LogLikelihoodEvaluator& 
                                                   typename LogLikelihoodEvaluator::StateType * log_likelihood_state,
                                                   OptimizationIOContainer * io_container) {
   // initialize io_container to the first point (arbitrary, but valid choice)
-  log_likelihood_state->UpdateCurrentPoint(log_likelihood_evaluator, initial_guesses);
+  log_likelihood_state->SetCurrentPoint(log_likelihood_evaluator, initial_guesses);
   io_container->best_objective_value_so_far = log_likelihood_evaluator.ComputeObjectiveFunction(log_likelihood_state);
   std::copy(initial_guesses, initial_guesses + num_hyperparameters, io_container->best_point.data());
 
   if (check_all_points) {
     // eval objective at all initial_guesses, set io_container to the best values
     for (int i = 1; i < num_multistarts; ++i) {
-      log_likelihood_state->UpdateCurrentPoint(log_likelihood_evaluator, initial_guesses + i*num_hyperparameters);
+      log_likelihood_state->SetCurrentPoint(log_likelihood_evaluator, initial_guesses + i*num_hyperparameters);
       double log_likelihood = log_likelihood_evaluator.ComputeObjectiveFunction(log_likelihood_state);
       if (io_container->best_objective_value_so_far < log_likelihood) {
         io_container->best_objective_value_so_far = log_likelihood;

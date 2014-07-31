@@ -820,12 +820,12 @@ int EIOnePotentialSampleEdgeCasesTest() {
 
     for (auto shift : shifts) {
       point_to_sample = base_coord - shift;
-      ei_state.UpdateCurrentPoint(ei_evaluator, &point_to_sample);
+      ei_state.SetCurrentPoint(ei_evaluator, &point_to_sample);
       left_ei = ei_evaluator.ComputeExpectedImprovement(&ei_state);
       ei_evaluator.ComputeGradExpectedImprovement(&ei_state, &left_grad_ei);
 
       point_to_sample = base_coord + shift;
-      ei_state.UpdateCurrentPoint(ei_evaluator, &point_to_sample);
+      ei_state.SetCurrentPoint(ei_evaluator, &point_to_sample);
       right_ei = ei_evaluator.ComputeExpectedImprovement(&ei_state);
       ei_evaluator.ComputeGradExpectedImprovement(&ei_state, &right_grad_ei);
 
@@ -845,7 +845,7 @@ int EIOnePotentialSampleEdgeCasesTest() {
 
   double shift = 3.0e-12;
   point_to_sample = base_coord - shift;
-  ei_state.UpdateCurrentPoint(ei_evaluator, &point_to_sample);
+  ei_state.SetCurrentPoint(ei_evaluator, &point_to_sample);
   ei = ei_evaluator.ComputeExpectedImprovement(&ei_state);
   ei_evaluator.ComputeGradExpectedImprovement(&ei_state, &grad_ei);
 
@@ -1399,7 +1399,7 @@ OL_WARN_UNUSED_RESULT int ExpectedImprovementOptimizationTestCore(ExpectedImprov
     ei_optimized = ei_evaluator.ComputeExpectedImprovement(&ei_state);
     ei_evaluator.ComputeGradExpectedImprovement(&ei_state, grad_ei.data());
 
-    ei_state.UpdateCurrentPoint(ei_evaluator, grid_search_best_point.data());
+    ei_state.SetCurrentPoint(ei_evaluator, grid_search_best_point.data());
     ei_grid_search = ei_evaluator.ComputeExpectedImprovement(&ei_state);
   } else {
     max_int_steps = 1000000;
@@ -1415,7 +1415,7 @@ OL_WARN_UNUSED_RESULT int ExpectedImprovementOptimizationTestCore(ExpectedImprov
     ei_optimized = ei_evaluator.ComputeExpectedImprovement(&ei_state);
     ei_evaluator.ComputeGradExpectedImprovement(&ei_state, grad_ei.data());
 
-    ei_state.UpdateCurrentPoint(ei_evaluator, grid_search_best_point.data());
+    ei_state.SetCurrentPoint(ei_evaluator, grid_search_best_point.data());
     ei_grid_search = ei_evaluator.ComputeExpectedImprovement(&ei_state);
   }
 
@@ -1607,7 +1607,7 @@ OL_WARN_UNUSED_RESULT int ExpectedImprovementOptimizationSimplexTestCore(Expecte
     ei_optimized = ei_evaluator.ComputeExpectedImprovement(&ei_state);
     ei_evaluator.ComputeGradExpectedImprovement(&ei_state, grad_ei.data());
 
-    ei_state.UpdateCurrentPoint(ei_evaluator, grid_search_best_point.data());
+    ei_state.SetCurrentPoint(ei_evaluator, grid_search_best_point.data());
     ei_grid_search = ei_evaluator.ComputeExpectedImprovement(&ei_state);
   } else {
     max_int_steps = 1000000;
@@ -1623,7 +1623,7 @@ OL_WARN_UNUSED_RESULT int ExpectedImprovementOptimizationSimplexTestCore(Expecte
     ei_optimized = ei_evaluator.ComputeExpectedImprovement(&ei_state);
     ei_evaluator.ComputeGradExpectedImprovement(&ei_state, grad_ei.data());
 
-    ei_state.UpdateCurrentPoint(ei_evaluator, grid_search_best_point.data());
+    ei_state.SetCurrentPoint(ei_evaluator, grid_search_best_point.data());
     ei_grid_search = ei_evaluator.ComputeExpectedImprovement(&ei_state);
   }
 

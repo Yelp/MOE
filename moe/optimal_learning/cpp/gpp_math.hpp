@@ -903,7 +903,7 @@ struct ExpectedImprovementState final {
       :ei_evaluator: expected improvement evaluator object that specifies the parameters & GP for EI evaluation
       :points_to_sample[dim][num_to_sample]: potential future samples whose EI (and/or gradients) are being evaluated
   \endrst*/
-  void UpdateCurrentPoint(const EvaluatorType& ei_evaluator,
+  void SetCurrentPoint(const EvaluatorType& ei_evaluator,
                           double const * restrict points_to_sample) OL_NONNULL_POINTERS;
 
   /*!\rst
@@ -1134,7 +1134,7 @@ struct OnePotentialSampleExpectedImprovementState final {
       :ei_evaluator: expected improvement evaluator object that specifies the parameters & GP for EI evaluation
       :point_to_sample[dim]: potential future sample whose EI (and/or gradients) is being evaluated
   \endrst*/
-  void UpdateCurrentPoint(const EvaluatorType& ei_evaluator,
+  void SetCurrentPoint(const EvaluatorType& ei_evaluator,
                           double const * restrict point_to_sample_in) OL_NONNULL_POINTERS;
 
   /*!\rst

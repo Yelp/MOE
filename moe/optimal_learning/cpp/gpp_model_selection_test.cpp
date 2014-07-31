@@ -412,7 +412,7 @@ OL_WARN_UNUSED_RESULT int HyperparameterLikelihoodOptimizationTestCore(LogLikeli
   OL_VERBOSE_PRINTF("initial likelihood: %.18E\n", initial_likelihood);
 
   RestartedGradientDescentHyperparameterOptimization(log_likelihood_eval, covariance_wrong, gd_parameters, hyperparameter_domain, hyperparameters_optimized.data());
-  log_likelihood_state.UpdateHyperparameters(log_likelihood_eval, hyperparameters_optimized.data());
+  log_likelihood_state.SetHyperparameters(log_likelihood_eval, hyperparameters_optimized.data());
   final_likelihood = log_likelihood_eval.ComputeLogLikelihood(log_likelihood_state);
 
   // verify that convergence occurred
@@ -562,7 +562,7 @@ OL_WARN_UNUSED_RESULT int HyperparameterLikelihoodNewtonOptimizationTestCore(Log
 
   total_errors += NewtonHyperparameterOptimization(log_likelihood_eval, covariance_wrong, newton_parameters, hyperparameter_domain, hyperparameters_optimized.data());
   covariance_wrong.SetHyperparameters(hyperparameters_optimized.data());
-  log_likelihood_state.UpdateHyperparameters(log_likelihood_eval, hyperparameters_optimized.data());
+  log_likelihood_state.SetHyperparameters(log_likelihood_eval, hyperparameters_optimized.data());
   final_likelihood = log_likelihood_eval.ComputeLogLikelihood(log_likelihood_state);
 #ifdef OL_VERBOSE_PRINT
   OL_VERBOSE_PRINTF("final likelihood: %.18E\n", final_likelihood);
@@ -716,7 +716,7 @@ OL_WARN_UNUSED_RESULT int MultistartHyperparameterLikelihoodNewtonOptimizationTe
     ++total_errors;
   }
 
-  log_likelihood_state.UpdateHyperparameters(log_likelihood_eval, hyperparameters_optimized.data());
+  log_likelihood_state.SetHyperparameters(log_likelihood_eval, hyperparameters_optimized.data());
   final_likelihood = log_likelihood_eval.ComputeLogLikelihood(log_likelihood_state);
 #ifdef OL_VERBOSE_PRINT
   OL_VERBOSE_PRINTF("final likelihood: %.18E\n", final_likelihood);

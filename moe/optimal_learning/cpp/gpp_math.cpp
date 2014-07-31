@@ -1073,7 +1073,7 @@ void ExpectedImprovementEvaluator::ComputeGradExpectedImprovement(StateType * ei
   }
 }
 
-void ExpectedImprovementState::UpdateCurrentPoint(const EvaluatorType& ei_evaluator,
+void ExpectedImprovementState::SetCurrentPoint(const EvaluatorType& ei_evaluator,
                           double const * restrict points_to_sample) {
   // update points_to_sample in union_of_points
   std::copy(points_to_sample, points_to_sample + num_to_sample*dim, union_of_points.data());
@@ -1114,7 +1114,7 @@ void ExpectedImprovementState::SetupState(const EvaluatorType& ei_evaluator,
   }
 
   // update quantities derived from points_to_sample
-  UpdateCurrentPoint(ei_evaluator, points_to_sample);
+  SetCurrentPoint(ei_evaluator, points_to_sample);
 }
 
 OnePotentialSampleExpectedImprovementEvaluator::OnePotentialSampleExpectedImprovementEvaluator(
@@ -1186,7 +1186,7 @@ void OnePotentialSampleExpectedImprovementEvaluator::ComputeGradExpectedImprovem
   }
 }
 
-void OnePotentialSampleExpectedImprovementState::UpdateCurrentPoint(const EvaluatorType& ei_evaluator,
+void OnePotentialSampleExpectedImprovementState::SetCurrentPoint(const EvaluatorType& ei_evaluator,
                                                                     double const * restrict point_to_sample_in) {
   // update current point in union_of_points
   std::copy(point_to_sample_in, point_to_sample_in + dim, point_to_sample.data());
@@ -1228,7 +1228,7 @@ void OnePotentialSampleExpectedImprovementState::SetupState(const EvaluatorType&
     OL_THROW_EXCEPTION(InvalidValueException<int>, "Evaluator's and State's dim do not match!", dim, ei_evaluator.dim());
   }
 
-  UpdateCurrentPoint(ei_evaluator, point_to_sample_in);
+  SetCurrentPoint(ei_evaluator, point_to_sample_in);
 }
 
 /*!\rst
