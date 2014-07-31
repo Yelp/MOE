@@ -194,7 +194,8 @@ The MOE repository maintainers decide when to tag official releases. They may de
 When you are ready to mark a new release:
 
 1. Tag the release (`Tagging Releases`_).
-2. Push a Docker container for the new release to DockerHub (`Updating DockerHub`).
+2. Update the documentation (`Building the documentation`_); in all likelihood the new code includes documentation changes.
+3. Push a Docker container for the new release to DockerHub (`Updating DockerHub`).
 
 Tagging Releases
 ................
