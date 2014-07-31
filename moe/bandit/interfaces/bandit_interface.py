@@ -10,6 +10,7 @@ class BanditInterface(object):
     r"""Interface for a bandit algorithm.
 
     Abstract class to enable bandit functions, supports allocate arms and choose arm.
+    Implementers of this interface will never override the method choose_arm.
 
     Implementers of this ABC are required to manage their own hyperparameters.
 
@@ -33,6 +34,8 @@ class BanditInterface(object):
         r"""First compute the allocation to each arm, then choose the arm based on allocation information.
 
         Throws an exception when no arm is given in historical info.
+        Implementers of this interface will never override this method.
+
         :return: name of the chosen arm
         :rtype: String()
 
