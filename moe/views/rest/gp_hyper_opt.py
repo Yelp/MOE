@@ -122,7 +122,7 @@ class GpHyperOptView(OptimizableGpPrettyView):
             hyperparameter_domain,
             log_likelihood_eval,
             optimizer_parameters,
-            num_random_samples=0,  # hyperopt doesn't use dumb search if optimization fails
+            num_random_samples=num_random_samples,
         )
 
         hyperopt_status = {}

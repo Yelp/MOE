@@ -59,17 +59,17 @@ class OptimizableGpPrettyView(GpPrettyView):
         params['optimizer_info'] = copy.deepcopy(params['optimizer_info'])
 
         # Set optimizer_type to default value if the user did not provide a value
-        if not params['optimizer_info']['optimizer_type']:
+        if params['optimizer_info']['optimizer_type'] is None:
             params['optimizer_info']['optimizer_type'] = self._get_default_optimizer_type(params)
 
         default_optimizer_parameters = self._get_default_optimizer_params(params)
 
         # Set num_multistarts to default value if the user did not provide a value
-        if not params['optimizer_info']['num_multistarts']:
+        if params['optimizer_info']['num_multistarts'] is None:
             params['optimizer_info']['num_multistarts'] = default_optimizer_parameters.num_multistarts
 
         # Set num_random_samples to default value if the user did not provide a value
-        if not params['optimizer_info']['num_random_samples']:
+        if params['optimizer_info']['num_random_samples'] is None:
             params['optimizer_info']['num_random_samples'] = default_optimizer_parameters.num_random_samples
 
         # Override the defaults with information that may be in the optimizer parameters

@@ -153,7 +153,7 @@ void DispatchExpectedImprovementOptimization(const boost::python::object& optimi
                                                           randomness_source.normal_rng_vec.data(),
                                                           best_points_to_sample);
 
-      status[std::string() + "lhc_" + domain.kName + "_domain_found_update"] = found_flag;
+      status[std::string("lhc_") + domain.kName + "_domain_found_update"] = found_flag;
       break;
     }  // end case kNull optimizer_type
     case OptimizerTypes::kGradientDescent: {
@@ -171,7 +171,7 @@ void DispatchExpectedImprovementOptimization(const boost::python::object& optimi
                                    &randomness_source.uniform_generator,
                                    randomness_source.normal_rng_vec.data(), best_points_to_sample);
 
-      status[std::string() + "gradient_descent_" + domain.kName + "_domain_found_update"] = found_flag;
+      status[std::string("gradient_descent_") + domain.kName + "_domain_found_update"] = found_flag;
       break;
     }  // end case kGradientDescent optimizer_type
     default: {
@@ -287,7 +287,7 @@ void DispatchHeuristicExpectedImprovementOptimization(const boost::python::objec
                                      &found_flag, &randomness_source.uniform_generator,
                                      best_points_to_sample);
 
-      status[std::string() + "lhc_" + domain.kName + "_domain_found_update"] = found_flag;
+      status[std::string("lhc_") + domain.kName + "_domain_found_update"] = found_flag;
       break;
     }  // end case kNull optimizer_type
     case OptimizerTypes::kGradientDescent: {
@@ -303,7 +303,7 @@ void DispatchHeuristicExpectedImprovementOptimization(const boost::python::objec
                                      &found_flag, &randomness_source.uniform_generator,
                                      best_points_to_sample);
 
-      status[std::string() + "gradient_descent_" + domain.kName + "_domain_found_update"] = found_flag;
+      status[std::string("gradient_descent_") + domain.kName + "_domain_found_update"] = found_flag;
       break;
     }  // end case kGradientDescent optimizer_type
     default: {

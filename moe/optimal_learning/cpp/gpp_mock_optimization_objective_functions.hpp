@@ -54,7 +54,7 @@ class SimpleObjectiveFunctionEvaluator {
     Helpful for testing so we know what the optimum is.  This value should be the result of::
 
       GetOptimumPoint(point);
-      state.UpdateCurrentPoint(point);
+      state.SetCurrentPoint(point);
       optimum_value = ComputeObjectiveFunction(state);
 
     Then ``optimum_value == GetOptimumValue()``.
@@ -134,7 +134,7 @@ struct SimpleObjectiveFunctionState final {
     std::copy(current_point.begin(), current_point.end(), current_point_in);
   }
 
-  void UpdateCurrentPoint(const EvaluatorType& OL_UNUSED(ei_eval), double const * restrict current_point_in) noexcept OL_NONNULL_POINTERS {
+  void SetCurrentPoint(const EvaluatorType& OL_UNUSED(ei_eval), double const * restrict current_point_in) noexcept OL_NONNULL_POINTERS {
     std::copy(current_point_in, current_point_in + dim, current_point.begin());
   }
 

@@ -77,7 +77,7 @@ def multistart_expected_improvement_optimization(
     :type randomness: (UNUSED)
     :param max_num_threads: maximum number of threads to use, >= 1 (UNUSED)
     :type max_num_threads: int > 0
-    :param status: status messages from C++ (e.g., reporting on optimizer success, etc.)
+    :param status: (output) status messages from C++ (e.g., reporting on optimizer success, etc.)
     :type status: dict
     :return: point(s) that maximize the expected improvement (solving the q,p-EI problem)
     :rtype: array of float64 with shape (num_to_sample, ei_evaluator.dim)
@@ -214,7 +214,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         :type randomness: (UNUSED)
         :param max_num_threads: maximum number of threads to use, >= 1 (UNUSED)
         :type max_num_threads: int > 0
-        :param status: status messages from C++ (e.g., reporting on optimizer success, etc.)
+        :param status: (output) status messages from C++ (e.g., reporting on optimizer success, etc.)
         :type status: dict
         :return: EI evaluated at each of points_to_evaluate
         :rtype: array of float64 with shape (points_to_evaluate.shape[0])
