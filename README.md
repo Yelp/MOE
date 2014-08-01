@@ -1,4 +1,4 @@
-![MOE logo](https://github.com/yelp/MOE/raw/master/moe/static/img/moe_logo_48.png)
+![MOE logo](https://github.com/yelp/MOE/raw/master/moe/static/img/MOE_full_logo.png)
 
 [![Build Status](https://travis-ci.org/Yelp/MOE.svg?branch=master)](https://travis-ci.org/Yelp/MOE)
 

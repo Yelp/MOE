@@ -1,4 +1,4 @@
-.. image:: ../moe/static/img/moe_logo_48.png
+.. image:: ../moe/static/img/MOE_full_logo.png
 
 |
 

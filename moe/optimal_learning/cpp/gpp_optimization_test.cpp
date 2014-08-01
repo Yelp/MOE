@@ -266,7 +266,7 @@ OL_WARN_UNUSED_RESULT int MockObjectiveGradientDescentOptimizationTestCore() {
   GradientDescentOptimizer<MockEvaluator, DomainType> gd_opt;
 
   // verify that gradient descent does not move from the optima if we start it there
-  objective_state.UpdateCurrentPoint(objective_eval, maxima_point.data());
+  objective_state.SetCurrentPoint(objective_eval, maxima_point.data());
   gd_opt.Optimize(objective_eval, gd_parameters, domain, &objective_state);
   objective_state.GetCurrentPoint(point_optimized.data());
 #ifdef OL_VERBOSE_PRINT
@@ -279,7 +279,7 @@ OL_WARN_UNUSED_RESULT int MockObjectiveGradientDescentOptimizationTestCore() {
   }
 
   // store initial objective function
-  objective_state.UpdateCurrentPoint(objective_eval, wrong_point.data());
+  objective_state.SetCurrentPoint(objective_eval, wrong_point.data());
   initial_objective = objective_eval.ComputeObjectiveFunction(&objective_state);
 
   // verify that gradient descent can find the optima
@@ -406,7 +406,7 @@ OL_WARN_UNUSED_RESULT int MockObjectiveGradientDescentConstrainedOptimizationTes
   GradientDescentOptimizer<MockEvaluator, DomainType> gd_opt;
 
   // verify that gradient descent does not move from the optima if we start it there
-  objective_state.UpdateCurrentPoint(objective_eval, best_in_domain_point.data());
+  objective_state.SetCurrentPoint(objective_eval, best_in_domain_point.data());
   gd_opt.Optimize(objective_eval, gd_parameters, domain, &objective_state);
   objective_state.GetCurrentPoint(point_optimized.data());
 #ifdef OL_VERBOSE_PRINT
@@ -419,11 +419,11 @@ OL_WARN_UNUSED_RESULT int MockObjectiveGradientDescentConstrainedOptimizationTes
   }
 
   // store initial objective function
-  objective_state.UpdateCurrentPoint(objective_eval, wrong_point.data());
+  objective_state.SetCurrentPoint(objective_eval, wrong_point.data());
   initial_objective = objective_eval.ComputeObjectiveFunction(&objective_state);
 
   // verify that gradient descent can find the optima
-  objective_state.UpdateCurrentPoint(objective_eval, wrong_point.data());
+  objective_state.SetCurrentPoint(objective_eval, wrong_point.data());
   gd_opt.Optimize(objective_eval, gd_parameters, domain, &objective_state);
   objective_state.GetCurrentPoint(point_optimized.data());
 
@@ -532,7 +532,7 @@ OL_WARN_UNUSED_RESULT int MockObjectiveNewtonOptimizationTestCore() {
   NewtonOptimizer<MockEvaluator, DomainType> newton_opt;
 
   // verify that newton does not move from the optima if we start it there
-  objective_state.UpdateCurrentPoint(objective_eval, maxima_point.data());
+  objective_state.SetCurrentPoint(objective_eval, maxima_point.data());
   total_errors += newton_opt.Optimize(objective_eval, newton_parameters, domain, &objective_state);
   objective_state.GetCurrentPoint(point_optimized.data());
 #ifdef OL_VERBOSE_PRINT
@@ -545,7 +545,7 @@ OL_WARN_UNUSED_RESULT int MockObjectiveNewtonOptimizationTestCore() {
   }
 
   // store initial objective function
-  objective_state.UpdateCurrentPoint(objective_eval, wrong_point.data());
+  objective_state.SetCurrentPoint(objective_eval, wrong_point.data());
   initial_objective = objective_eval.ComputeObjectiveFunction(&objective_state);
 
   // verify that newton can find the optima
@@ -671,7 +671,7 @@ OL_WARN_UNUSED_RESULT int MockObjectiveNewtonConstrainedOptimizationTestCore() {
   NewtonOptimizer<MockEvaluator, DomainType> newton_opt;
 
   // verify that newton does not move from the optima if we start it there
-  objective_state.UpdateCurrentPoint(objective_eval, best_in_domain_point.data());
+  objective_state.SetCurrentPoint(objective_eval, best_in_domain_point.data());
   total_errors += newton_opt.Optimize(objective_eval, newton_parameters, domain, &objective_state);
   objective_state.GetCurrentPoint(point_optimized.data());
 #ifdef OL_VERBOSE_PRINT
@@ -684,11 +684,11 @@ OL_WARN_UNUSED_RESULT int MockObjectiveNewtonConstrainedOptimizationTestCore() {
   }
 
   // store initial objective function
-  objective_state.UpdateCurrentPoint(objective_eval, wrong_point.data());
+  objective_state.SetCurrentPoint(objective_eval, wrong_point.data());
   initial_objective = objective_eval.ComputeObjectiveFunction(&objective_state);
 
   // verify that newton can find the optima
-  objective_state.UpdateCurrentPoint(objective_eval, wrong_point.data());
+  objective_state.SetCurrentPoint(objective_eval, wrong_point.data());
   total_errors += newton_opt.Optimize(objective_eval, newton_parameters, domain, &objective_state);
   objective_state.GetCurrentPoint(point_optimized.data());
 #ifdef OL_VERBOSE_PRINT

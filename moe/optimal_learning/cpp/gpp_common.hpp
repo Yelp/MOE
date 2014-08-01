@@ -336,8 +336,8 @@
 
         struct State {
           void ComputationWithBasicGuarantee(...);
-          void UpdateCurrentPoint(double *);
-          void GetCurrentPoint(doubl e*);
+          void SetCurrentPoint(double *);
+          void GetCurrentPoint(double *);
           int GetProblemSize();
         };
 
@@ -348,7 +348,7 @@
             try {
               ComputationWithBasicGuarantee(...);
             } catch (const std::exception& e) {
-              UpdateCurrentPoint(point.data());  // reset state
+              SetCurrentPoint(point.data());  // reset state
               throw;
             }
           }

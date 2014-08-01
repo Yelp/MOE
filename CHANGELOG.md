@@ -11,8 +11,13 @@
     * Created ``min_reqs`` docker container which is a snapshot of all MOE third-party requirements
     * Created ``latest``, which tracks the latest MOE build
     * Started releasing docker containers for each tagged MOE release (currently just ``v0.1.0``)
+  * ``GradientDescentOptimization`` (C++) no longer has a separate ``next_points`` output (#186)
+  * LogLikelihood evaluate at point list and latin hypercube search now return status dicts like every other optimizer (#189)
+    * status dicts also a little more informative/standardized now
 
 * Bugs
+
+  * Throw exceptions (C++) if ``num_multistarts`` or ``num_random_samples`` is 0 (#345)
 
 ## v0.1.0 (2014-07-29)
 

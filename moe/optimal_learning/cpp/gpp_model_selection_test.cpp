@@ -412,7 +412,7 @@ OL_WARN_UNUSED_RESULT int HyperparameterLikelihoodOptimizationTestCore(LogLikeli
   OL_VERBOSE_PRINTF("initial likelihood: %.18E\n", initial_likelihood);
 
   RestartedGradientDescentHyperparameterOptimization(log_likelihood_eval, covariance_wrong, gd_parameters, hyperparameter_domain, hyperparameters_optimized.data());
-  log_likelihood_state.UpdateHyperparameters(log_likelihood_eval, hyperparameters_optimized.data());
+  log_likelihood_state.SetHyperparameters(log_likelihood_eval, hyperparameters_optimized.data());
   final_likelihood = log_likelihood_eval.ComputeLogLikelihood(log_likelihood_state);
 
   // verify that convergence occurred
@@ -562,7 +562,7 @@ OL_WARN_UNUSED_RESULT int HyperparameterLikelihoodNewtonOptimizationTestCore(Log
 
   total_errors += NewtonHyperparameterOptimization(log_likelihood_eval, covariance_wrong, newton_parameters, hyperparameter_domain, hyperparameters_optimized.data());
   covariance_wrong.SetHyperparameters(hyperparameters_optimized.data());
-  log_likelihood_state.UpdateHyperparameters(log_likelihood_eval, hyperparameters_optimized.data());
+  log_likelihood_state.SetHyperparameters(log_likelihood_eval, hyperparameters_optimized.data());
   final_likelihood = log_likelihood_eval.ComputeLogLikelihood(log_likelihood_state);
 #ifdef OL_VERBOSE_PRINT
   OL_VERBOSE_PRINTF("final likelihood: %.18E\n", final_likelihood);
@@ -716,7 +716,7 @@ OL_WARN_UNUSED_RESULT int MultistartHyperparameterLikelihoodNewtonOptimizationTe
     ++total_errors;
   }
 
-  log_likelihood_state.UpdateHyperparameters(log_likelihood_eval, hyperparameters_optimized.data());
+  log_likelihood_state.SetHyperparameters(log_likelihood_eval, hyperparameters_optimized.data());
   final_likelihood = log_likelihood_eval.ComputeLogLikelihood(log_likelihood_state);
 #ifdef OL_VERBOSE_PRINT
   OL_VERBOSE_PRINTF("final likelihood: %.18E\n", final_likelihood);
@@ -790,7 +790,7 @@ OL_WARN_UNUSED_RESULT int MultistartHyperparameterLikelihoodNewtonOptimizationTe
 
     OptimizationIOContainer io_container(log_likelihood_state_vector[0].GetProblemSize());
     InitializeBestKnownPoint(log_likelihood_eval, initial_guesses.data(), num_hyperparameters,
-                             newton_parameters.num_multistarts, true,
+                             newton_parameters.num_multistarts,
                              log_likelihood_state_vector.data(), &io_container);
 
     io_container.found_flag = true;  // want to see that this flag is flipped to false
@@ -919,10 +919,15 @@ int EvaluateLogLikelihoodAtPointListTest() {
   }
   HyperparameterDomainType hyperparameter_domain_linearspace(hyperparameter_domain_linearspace_bounds.data(), num_hyperparameters);
 
+  bool found_flag = false;
   EvaluateLogLikelihoodAtPointList(log_marginal_eval, *mock_gp_data.covariance_ptr,
                                    hyperparameter_domain_linearspace, thread_schedule,
-                                   initial_guesses.data(), num_grid_search_points,
+                                   initial_guesses.data(), num_grid_search_points, &found_flag,
                                    function_values.data(), grid_search_best_point.data());
+
+  if (!found_flag) {
+    ++total_errors;
+  }
 
   // find the max function_value and the index at which it occurs
   auto max_value_ptr = std::max_element(function_values.begin(), function_values.end());
@@ -940,11 +945,16 @@ int EvaluateLogLikelihoodAtPointListTest() {
     std::vector<double> grid_search_best_point_single_thread(num_hyperparameters);
     std::vector<double> function_values_single_thread(num_grid_search_points);
     ThreadSchedule single_thread_schedule(1, omp_sched_static);
+    found_flag = false;
     EvaluateLogLikelihoodAtPointList(log_marginal_eval, *mock_gp_data.covariance_ptr,
                                      hyperparameter_domain_linearspace, single_thread_schedule,
                                      initial_guesses.data(), num_grid_search_points,
-                                     function_values_single_thread.data(),
+                                     &found_flag, function_values_single_thread.data(),
                                      grid_search_best_point_single_thread.data());
+
+    if (!found_flag) {
+      ++total_errors;
+    }
 
     // check against multi-threaded result matches single
     for (int i = 0; i < num_hyperparameters; ++i) {
