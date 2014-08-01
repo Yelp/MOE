@@ -1,11 +1,8 @@
 # -*- coding: utf-8 -*-
 """Utilities for MOE views."""
-<<<<<<< HEAD
 from moe.optimal_learning.python.constant import L_BFGS_B_OPTIMIZER
-=======
 from moe.bandit.data_containers import HistoricalData as BanditHistoricalData
 from moe.bandit.data_containers import SampleArm
->>>>>>> 1672b4c74274228eada1036a06b34a0c8b173bbd
 from moe.optimal_learning.python.cpp_wrappers.gaussian_process import GaussianProcess
 from moe.optimal_learning.python.data_containers import SamplePoint, HistoricalData
 from moe.optimal_learning.python.geometry_utils import ClosedInterval
