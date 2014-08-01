@@ -53,11 +53,11 @@ class BanditEpsilonView(BanditPrettyView):
         params = super(BanditEpsilonView, self).get_params_from_request()
 
         # colander deserialized results are READ-ONLY. We will potentially be overwriting
-        # fields of ``params['optimizer_info']``, so we need to copy it first.
+        # fields of ``params['hyperparameter_info']``, so we need to copy it first.
         params['hyperparameter_info'] = copy.deepcopy(params['hyperparameter_info'])
 
-        # Find the schma class that corresponds to the ``optimizer_type`` of the request
-        # optimizer_parameters has *not been validated yet*, so we need to validate manually.
+        # Find the schema class that corresponds to the ``subtype`` of the request
+        # hyperparameter_info has *not been validated yet*, so we need to validate manually.
         schema_class = BANDIT_EPSILON_SUBTYPES_TO_HYPERPARAMETER_INFO_SCHEMA_CLASSES[params['subtype']]()
 
         # Deserialize and validate the parameters

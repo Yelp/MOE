@@ -4,8 +4,6 @@
 See :class:`moe.bandit.epsilon.Epsilon` for further details on bandit.
 
 """
-import numpy
-
 from moe.bandit.constant import DEFAULT_EPSILON, DEFAULT_TOTAL_SAMPLES, EPSILON_SUBTYPE_FIRST
 from moe.bandit.epsilon import Epsilon
 
@@ -106,7 +104,7 @@ class EpsilonFirst(Epsilon):
             return arms_to_allocations
 
         # Exploitation phase, trials epsilon * T+1, ..., T
-        winning_arm_names = self._get_winning_arm_names(arms_sampled)
+        winning_arm_names = self.get_winning_arm_names(arms_sampled)
 
         num_winning_arms = len(winning_arm_names)
         arms_to_allocations = {}

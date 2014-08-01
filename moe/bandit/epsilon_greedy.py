@@ -4,8 +4,6 @@
 See :class:`moe.bandit.epsilon.Epsilon` for further details on this bandit.
 
 """
-import numpy
-
 from moe.bandit.constant import DEFAULT_EPSILON, EPSILON_SUBTYPE_GREEDY
 from moe.bandit.epsilon import Epsilon
 
@@ -69,7 +67,7 @@ class EpsilonGreedy(Epsilon):
         if not arms_sampled:
             raise ValueError('sample_arms are empty!')
 
-        winning_arm_names = self._get_winning_arm_names(arms_sampled)
+        winning_arm_names = self.get_winning_arm_names(arms_sampled)
 
         num_winning_arms = len(winning_arm_names)
         epsilon_allocation = self._epsilon / num_arms

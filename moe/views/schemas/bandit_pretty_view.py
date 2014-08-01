@@ -73,13 +73,13 @@ class BanditEpsilonFirstHyperparameterInfo(base_schemas.StrictMappingSchema):
 
     :ivar epsilon: (*0.0 <= float64 <= 1.0*) epsilon value for epsilon-first bandit. This strategy pulls the optimal arm
       (best expected return) with if it is in exploitation phase (number sampled > epsilon * total_samples). Otherwise a random arm is pulled (exploration).
-    :ivar total_samples: total number of samples for epsilon-first bandit. total_samples is T from :doc:`bandit`.
+    :ivar total_samples: (*int >= 0*) total number of samples for epsilon-first bandit. total_samples is T from :doc:`bandit`.
 
     """
 
     epsilon = colander.SchemaNode(
             colander.Float(),
-            validator=colander.Range(min=0),
+            validator=colander.Range(min=0.0, max=1.0),
             missing=DEFAULT_EPSILON,
             )
 
@@ -103,7 +103,7 @@ class BanditEpsilonGreedyHyperparameterInfo(base_schemas.StrictMappingSchema):
 
     epsilon = colander.SchemaNode(
             colander.Float(),
-            validator=colander.Range(min=0),
+            validator=colander.Range(min=0.0, max=1.0),
             missing=DEFAULT_EPSILON,
             )
 
