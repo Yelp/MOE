@@ -54,10 +54,11 @@ class Epsilon(BanditInterface):
         :type arms_sampled: dictionary of (String(), SampleArm()) pairs
         :return: of set of names of the winning arms
         :rtype: frozenset(String())
+        :raise: ValueError when ``arms_sampled`` are empty.
 
         """
         if not arms_sampled:
-            raise ValueError('sample_arms is empty!')
+            raise ValueError('arms_sampled is empty!')
 
         avg_payoff_arm_name_list = []
         for arm_name, sampled_arm in arms_sampled.iteritems():

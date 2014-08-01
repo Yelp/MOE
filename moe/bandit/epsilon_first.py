@@ -85,6 +85,7 @@ class EpsilonFirst(Epsilon):
 
         :return: the dictionary of (arm, allocation) key-value pairs
         :rtype: a dictionary of (String(), float64) pairs
+        :raise: ValueError when ``sample_arms`` are empty.
 
         """
         arms_sampled = self._historical_info.arms_sampled
