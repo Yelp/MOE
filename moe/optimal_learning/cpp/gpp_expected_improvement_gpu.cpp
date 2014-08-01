@@ -48,7 +48,7 @@ CudaDevicePointer::~CudaDevicePointer() {
 
 OptimalLearningCudaException::OptimalLearningCudaException(const CudaError& error)
       : OptimalLearningException(error.file_and_line_info, error.func_info, cudaGetErrorString(error.err)) {
-      }
+}
 
 double CudaExpectedImprovementEvaluator::ComputeExpectedImprovement(StateType * ei_state) const {
   double EI_val;

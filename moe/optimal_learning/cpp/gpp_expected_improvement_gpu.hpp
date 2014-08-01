@@ -234,6 +234,7 @@ struct CudaExpectedImprovementState final {
       int: number of random numbers generated in GPU computation
   \endrst*/
   static int GetVectorSize(int num_mc_itr, int num_threads, int num_blocks, int num_points) noexcept OL_WARN_UNUSED_RESULT;
+
   int GetProblemSize() const noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
     return dim*num_to_sample;
   }
