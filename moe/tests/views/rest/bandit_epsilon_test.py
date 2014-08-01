@@ -17,8 +17,6 @@ class TestBanditEpsilonViews(BanditTestCase, RestTestCase):
 
     """Integration test for the /bandit/epsilon endpoint."""
 
-    precompute_gaussian_process_data = True
-
     def _build_json_payload(self, subtype, historical_info, epsilon):
         """Create a json_payload to POST to the /bandit/epsilon endpoint with all needed info."""
         dict_to_dump = {

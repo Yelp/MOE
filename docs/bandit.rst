@@ -9,7 +9,7 @@ Multi-Armed Bandits
     #. `Pointers`_
 
 What is the multi-armed bandit problem?
-------------------------------
+---------------------------------------
 
 Imagine you are in front of *K* slot machines.
 Each machine has a possibly different, unknown payout rate. You are allowed to pull the arm *T* times.
@@ -40,7 +40,7 @@ The tradeoff of each pull is gaining knowledge about the payout rates vs. gettin
         Any policy that explores at all will have non-zero regret.
 
 Applications
------------------------------------
+------------
 
 There are many applications that map well onto this problem.
 For example, we can model a Click Through Rate (CTR) problem as
@@ -53,7 +53,7 @@ where we would like to find the best solutions as fast as possible
 and limit how often bad solutions are chosen.
 
 Policies
------------------------------------
+--------
 
 There are many different policies for this problem:
 
@@ -81,7 +81,7 @@ Other policies include:
 .. _SoftMax: http://arxiv.org/pdf/1402.6028v1.pdf
 
 Pointers
------------------------------------
+--------
 
 You can learn more about multi-armed bandits at: http://www.youtube.com/watch?v=qAN6iyYPbEE
 

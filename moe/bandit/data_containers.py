@@ -39,6 +39,7 @@ class SampleArm(object):
 
         :param arm: arm samples to add to this arm
         :type arm: a SampleArm object
+
         """
         self._win += arm.win
         self._loss += arm.loss
@@ -145,7 +146,7 @@ class HistoricalData(object):
     def validate_sample_arms(sample_arms):
         """Check that sample_arms passes basic validity checks: all values are finite.
 
-        :param sample_arms: the already-sampled arms: names, wins, losses, and totals
+        :param sample_arms: already-sampled arms: names, wins, losses, and totals
         :type sample_arms: a dictionary of  (arm name, SampleArm) key-value pairs
         :return: True if inputs are valid
         :rtype: boolean
@@ -154,18 +155,6 @@ class HistoricalData(object):
         if sample_arms:
             for arm in sample_arms.itervalues():
                 arm.validate()
-
-    @staticmethod
-    def validate_historical_data(arms_sampled):
-        """Check that the historical data components (wins, losses, and total) all have finite values.
-
-        :param arms_sampled: already-sampled arms
-        :type arms_sampled: a dictionary of  (arm name, SampleArm) key-value pairs
-        :return: True if inputs are valid
-        :rtype: boolean
-
-        """
-        HistoricalData.validate_sample_arms(arms_sampled)
 
     def append_sample_arms(self, sample_arms, validate=True):
         """Append the contents of ``sample_arms`` to the data members of this class.
