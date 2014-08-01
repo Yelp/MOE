@@ -313,6 +313,7 @@ CudaError CudaGetGradEI(double * __restrict__ mu, double * __restrict__ grad_mu,
 CudaError CudaSetDevice(int devID) {
   CudaError _success = {cudaSuccess, OL_CUDA_STRINGIFY_FILE_AND_LINE, __func__};
   OL_CUDA_ERROR_RETURN(cudaSetDevice(devID))
+  OL_CUDA_ERROR_RETURN(cudaDeviceSetCacheConfig(cudaFuncCachePreferShared))
   return _success;
 }
 
