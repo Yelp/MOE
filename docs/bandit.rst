@@ -59,12 +59,12 @@ There are many different policies for this problem:
 
 We have implemented the following policies in our package:
 
+* :mod:`~moe.bandit.epsilon_first.EpsilonFirst`
 * :mod:`~moe.bandit.epsilon_greedy.EpsilonGreedy`
 
 Other policies include:
 
 * Weighted random choice
-* `Epsilon-first`_
 * `Epsilon-decreasing`_ \*
 * `UCB-exp (Upper Confidence Bound)`_ \*
 * `UCB-tuned`_ \*
@@ -73,7 +73,6 @@ Other policies include:
 
 \* Regret bounded as :math:`t \rightarrow \infty`
 
-.. _Epsilon-first: http://en.wikipedia.org/wiki/Multi-armed_bandit#Semi-uniform_strategies
 .. _Epsilon-decreasing: http://en.wikipedia.org/wiki/Multi-armed_bandit#Semi-uniform_strategies
 .. _UCB-exp (Upper Confidence Bound): http://moodle.technion.ac.il/pluginfile.php/192340/mod_resource/content/0/UCB.pdf
 .. _UCB-tuned: http://moodle.technion.ac.il/pluginfile.php/192340/mod_resource/content/0/UCB.pdf

@@ -86,6 +86,7 @@ class EpsilonFirst(Epsilon):
 
         :return: the dictionary of (arm, allocation) key-value pairs
         :rtype: a dictionary of (String(), float64) pairs
+
         """
         arms_sampled = self._historical_info.arms_sampled
         num_arms = self._historical_info.num_arms
@@ -110,7 +111,7 @@ class EpsilonFirst(Epsilon):
             avg_payoff_arm_name_list.append((avg_payoff, arm_name))
         avg_payoff_arm_name_list.sort(reverse=True)
 
-        best_payoff, _ = avg_payoff_arm_name_list[0]
+        best_payoff, _ = max(avg_payoff_arm_name_list)
         # Filter out arms that have average payoff less than the best payoff
         winning_arm_payoff_name_list = filter(lambda avg_payoff_arm_name: avg_payoff_arm_name[0] == best_payoff, avg_payoff_arm_name_list)
         # Extract a list of winning arm names from a list of (average payoff, arm name) tuples.
