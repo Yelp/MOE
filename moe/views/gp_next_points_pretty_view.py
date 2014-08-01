@@ -3,8 +3,7 @@
 
 Include:
 
-    1. Request and response schemas
-    2. Class that extends :class:`moe.views.optimizable_gp_pretty_view.GpPrettyView` for next_points optimizers
+    1. Class that extends :class:`moe.views.optimizable_gp_pretty_view.GpPrettyView` for next_points optimizers
 
 """
 import numpy
@@ -15,7 +14,7 @@ from moe.optimal_learning.python.python_version.expected_improvement import Expe
 from moe.optimal_learning.python.timing import timing_context
 from moe.views.gp_pretty_view import GpPrettyView
 from moe.views.optimizable_gp_pretty_view import OptimizableGpPrettyView
-from moe.views.schemas import GpNextPointsRequest, GpNextPointsResponse
+from moe.views.schemas.gp_next_points_pretty_view import GpNextPointsRequest, GpNextPointsResponse
 from moe.views.utils import _make_gp_from_params, _make_domain_from_params, _make_optimizer_parameters_from_params
 
 

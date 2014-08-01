@@ -33,9 +33,9 @@ class EpsilonGreedy(Epsilon):
             )
 
     def allocate_arms(self):
-        r"""Compute the allocation to each arm given ``historical_info``, running bandit ``subtype`` endpoint with hyperparameters in ``hyperparameter_info``.
+        r"""Compute the allocation to each arm given ``historical_info``, running bandit ``subtype`` endpoint with hyperparameter epsilon.
 
-        Computes the allocation to each arm based on the given subtype, historical info, and hyperparameter info.
+        Computes the allocation to each arm based on the given subtype, historical info, and hyperparameter epsilon.
 
         Works with k-armed bandits (k >= 1).
 
@@ -62,6 +62,7 @@ class EpsilonGreedy(Epsilon):
 
         :return: the dictionary of (arm, allocation) key-value pairs
         :rtype: a dictionary of (String(), float64) pairs
+
         """
         arms_sampled = self._historical_info.arms_sampled
         num_arms = self._historical_info.num_arms
@@ -71,9 +72,8 @@ class EpsilonGreedy(Epsilon):
         for arm_name, sampled_arm in arms_sampled.iteritems():
             avg_payoff = numpy.float64(sampled_arm.win - sampled_arm.loss) / sampled_arm.total if sampled_arm.total > 0 else 0
             avg_payoff_arm_name_list.append((avg_payoff, arm_name))
-        avg_payoff_arm_name_list.sort(reverse=True)
 
-        best_payoff, _ = avg_payoff_arm_name_list[0]
+        best_payoff, _ = max(avg_payoff_arm_name_list)
         # Filter out arms that have average payoff less than the best payoff
         winning_arm_payoff_name_list = filter(lambda avg_payoff_arm_name: avg_payoff_arm_name[0] == best_payoff, avg_payoff_arm_name_list)
         # Extract a list of winning arm names from a list of (average payoff, arm name) tuples.

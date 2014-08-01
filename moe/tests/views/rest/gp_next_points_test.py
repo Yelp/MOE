@@ -10,7 +10,8 @@ from moe.optimal_learning.python.constant import TEST_OPTIMIZER_MULTISTARTS, TES
 from moe.tests.optimal_learning.python.gaussian_process_test_case import GaussianProcessTestCase
 from moe.tests.views.rest_test_case import RestTestCase
 from moe.views.constant import ALL_NEXT_POINTS_MOE_ROUTES, GP_NEXT_POINTS_CONSTANT_LIAR_ROUTE_NAME, GP_NEXT_POINTS_CONSTANT_LIAR_ENDPOINT
-from moe.views.gp_next_points_pretty_view import GpNextPointsResponse, GpNextPointsPrettyView
+from moe.views.gp_next_points_pretty_view import GpNextPointsPrettyView
+from moe.views.schemas.gp_next_points_pretty_view import GpNextPointsResponse
 from moe.views.utils import _make_optimizer_parameters_from_params
 
 

@@ -34,7 +34,7 @@ The most expensive part of MOE is when we form the Cholesky Decomposition of the
 
 Within MOE techniques like Stochastic Gradient Descent and Monte Carlo integration are used. These methods have tunable parameters like number of multistarts and number of iterations. MOE is linear in complexity with respect to each of these parameters. Depending on the problem, it may take many millions of MC iterations to get an accurate representation of the gradient of the Expected Improvement in high dimension.
 
-For more information about the runtime of MOE check out :doc:`gpp_linear_algebra`, :doc:`gpp_math`, :doc:`gpp_model_selection` and :class:`moe.views.schemas.GpHyperOptRequest` for some more info. Timing information is placed within the relevent docstrings throughout the code.
+For more information about the runtime of MOE check out :doc:`gpp_linear_algebra`, :doc:`gpp_math`, :doc:`gpp_model_selection`, :class:`moe.views.schemas.rest.gp_hyper_opt.GpHyperOptRequest`, and :class:`moe.views.schemas.gp_next_points_pretty_view.GpNextPointsRequest` for some more info. Timing information is placed within the relevent docstrings throughout the code; ``GpHyperOptRequest`` and ``GpNextPointsRequest`` in particular have some specific results.
 
 How do I cite MOE?
 ------------------
