@@ -7,17 +7,19 @@
 
     <div class="span12">
       <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-5">
           <div class="panel panel-info">
             <div class="panel-heading"><b>Documentation</b></div>
               <ul class="list-group">
-                <a href="http://sc932.github.io/MOE/" class="list-group-item">Full Online Documentation</a>
-                <a href="http://sc932.github.io/MOE/moe.views.rest.html" class="list-group-item">REST Endpoint Documentation</a>
-                <a href="http://github.com/sc932/MOE/" class="list-group-item">Github repo</a>
+                <a href="http://yelp.github.io/MOE/" class="list-group-item">Full Online Documentation</a>
+                <a href="http://yelp.github.io/MOE/moe.views.rest.html" class="list-group-item">REST Endpoint Documentation</a>
+                <a href="http://github.com/Yelp/MOE/" class="list-group-item">Github repo</a>
                 <a href="${request.route_url( 'gp_plot' )}" class="list-group-item">Interactive Demo</a>
               </ul>
           </div>
+        </div>
 
+        <div class="col-md-6">
           <div class="panel panel-success">
             <div class="panel-heading"><b>Gaussian Process (GP) Pretty Endpoints</b></div>
             <div class="panel-body">
@@ -41,6 +43,18 @@
 
                 <li class="list-group-item"><b>Gaussian Process (GP) Hyperparameter Optimization Endpoints</b></li>
                 <a href="${request.route_url( 'gp_hyper_opt_pretty' )}" class="list-group-item">GP hyperparameter optimization</a>
+                
+              </ul>
+            </div>
+
+          <div class="panel panel-success">
+            <div class="panel-heading"><b>Bandit Pretty Endpoints</b></div>
+            <div class="panel-body">
+              <p>Interactive forms for trying and testing the various MOE REST endpoints.</p>
+            </div>
+              <ul class="list-group">
+                <li class="list-group-item"><b>Bandit Endpoints</b></li>
+                <a href="${request.route_url( 'bandit_epsilon_pretty' )}" class="list-group-item">Bandit epsilon</a>
                 
               </ul>
             </div>

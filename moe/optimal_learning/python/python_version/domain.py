@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 """Various python implementations of interfaces.domain_interface.DomainInterface (e.g., TensorProduct).
 
-These are currently used to describe domain limits for optimizers (i.e., implementations of interfaces/optimization_interface.py)
+These are currently used to describe domain limits for optimizers (i.e., implementations of
+:mod:`moe.optimal_learning.python.interfaces.optimization_interface`).
 
 Each domain provides functions to:
 
@@ -49,13 +50,23 @@ class TensorProductDomain(DomainInterface):
         """Return the number of spatial dimensions."""
         return len(self._domain_bounds)
 
-    def get_json_serializable_info(self):
-        """Create and return a domain_info dictionary of this domain object."""
-        return {
-                'domain_type': self.domain_type,
-                'dim': self.dim,
-                'domain_bounds': self._domain_bounds,
-                }
+    def get_json_serializable_info(self, minimal=False):
+        """Create and return a domain_info dictionary of this domain object.
+
+        :param minimal: True for all domain contents; False for ``domain_type`` and ``dim`` only
+        :type minimal: bool
+        :return: dict representation of this domain
+        :rtype: dict
+
+        """
+        response = {
+            'domain_type': self.domain_type,
+            'dim': self.dim,
+        }
+        if not minimal:
+            response['domain_bounds'] = self._domain_bounds
+
+        return response
 
     def check_point_inside(self, point):
         r"""Check if a point is inside the domain/on its boundary or outside.
@@ -69,6 +80,10 @@ class TensorProductDomain(DomainInterface):
         # Generate a list of bool; i-th entry is True if i-th coordinate is inside the i-th bounds.
         # Then check that all entries are True.
         return all([interval.is_inside(point[i]) for i, interval in enumerate(self._domain_bounds)])
+
+    def get_bounding_box(self):
+        """Return a list of ClosedIntervals representing a bounding box for this domain."""
+        return copy.copy(self._domain_bounds)
 
     def generate_random_point_in_domain(self, random_source=None):
         """Generate ``point`` uniformly at random such that ``self.check_point_inside(point)`` is True.

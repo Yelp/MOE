@@ -13,7 +13,7 @@ Contributors
 ------------
 
 - Peter Frazier (pf98@cornell.edu, http://people.orie.cornell.edu/pfrazier/)
-- JiaLei Wang (jw865@cornell.edu, [@garywang304][5])
+- JiaLei Wang (jw865@cornell.edu, http://www.jialeiwang.net, [@garywang304][5])
 - Deniz Oktay (denizokt@mit.edu)
 - Norases Vesdapunt (norases@cs.stanford.edu, [@norasesv][6])
 [0]: http://www.yelp.com/careers

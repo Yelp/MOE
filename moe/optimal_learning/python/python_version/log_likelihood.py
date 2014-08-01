@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 r"""Tools to compute log likelihood-like measures of model fit and optimize them (wrt the hyperparameters of covariance) to select the best model for a given set of historical data.
 
-See the file comments in interfaces/log_likelihood_interface.py for an overview of log likelihood-like metrics and their role
+See the file comments in :mod:`moe.optimal_learning.python.interfaces.log_likelihood_interface`
+for an overview of log likelihood-like metrics and their role
 in model selection. This file provides an implementation of the Log Marginal Likelihood.
 
-.. Note:: This is a copy of the file comments in cpp_wrappers/log_likelihood.py.
-  See this file's comments and interfaces.log_likelihood_interface for more details as well as the cpp_wrappers version.
+.. Note:: This is a copy of the file comments in :mod:`moe.optimal_learning.python.cpp_wrappers.log_likelihood`.
 
 **LOG MARGINAL LIKELIHOOD (LML)**
 
@@ -58,10 +58,12 @@ def multistart_hyperparameter_optimization(
 ):
     r"""Select the hyperparameters that maximize the specified log likelihood measure of model fit (over the historical data) within the specified domain.
 
-    .. Note:: The following comments are copied from multistart_hyperparameter_optimization() in cpp_wrappers/log_likelihood.py
+    .. Note:: The following comments are copied from
+      :func:`moe.optimal_learning.python.cpp_wrappers.log_likelihood.multistart_hyperparameter_optimization`.
 
-    See GaussianProcessLogMarginalLikelihood and GaussianProcessLeaveOneOutLogLikelihood for an overview of some
-    example log likelihood-like measures.
+    See :class:`moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogMarginalLikelihood` and
+    :class:`moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLeaveOneOutLogLikelihood`
+    for an overview of some example log likelihood-like measures.
 
     Optimizers are: null ('dumb' search), gradient descent, newton
     Newton is the suggested optimizer, which is not presently available in Python (use the C++ interface). In Python,
@@ -95,7 +97,7 @@ def multistart_hyperparameter_optimization(
     :type randomness: (UNUSED)
     :param max_num_threads: maximum number of threads to use, >= 1 (UNUSED)
     :type max_num_threads: int > 0
-    :param status: status messages (e.g., reporting on optimizer success, etc.)
+    :param status: (output) status messages (e.g., reporting on optimizer success, etc.)
     :type status: dict
     :return: hyperparameters that maximize the specified log likelihood measure within the specified domain
     :rtype: array of float64 with shape (log_likelihood_evaluator.num_hyperparameters)
@@ -121,6 +123,7 @@ def evaluate_log_likelihood_at_hyperparameter_list(
         log_likelihood_evaluator,
         hyperparameters_to_evaluate,
         max_num_threads=DEFAULT_MAX_NUM_THREADS,
+        status=None,
 ):
     """Compute the specified log likelihood measure at each input set of hyperparameters.
 
@@ -133,12 +136,20 @@ def evaluate_log_likelihood_at_hyperparameter_list(
     :type hyperparameters_to_evaluate: array of float64 with shape (num_to_eval, log_likelihood_evaluator.num_hyperparameters)
     :param max_num_threads: maximum number of threads to use, >= 1 (UNUSED)
     :type max_num_threads: int
+    :param status: (output) status messages (e.g., reporting on optimizer success, etc.)
+    :type status: dict
     :return: log likelihood value at each specified set of hyperparameters
     :rtype: array of float64 with shape (hyperparameters_to_evaluate.shape[0])
 
     """
     null_optimizer = NullOptimizer(None, log_likelihood_evaluator)
     _, values = multistart_optimize(null_optimizer, starting_points=hyperparameters_to_evaluate)
+
+    # TODO(GH-59): Have null optimizer actually indicate whether updates were found, e.g., in an IOContainer-like structure.
+    found_flag = True
+    if status is not None:
+        status["evaluate_log_likelihood_at_hyperparameter_list"] = found_flag
+
     return values
 
 
@@ -151,8 +162,8 @@ class GaussianProcessLogMarginalLikelihood(GaussianProcessLogLikelihoodInterface
 
     This is a measure of how likely it is that the observed values came from our Gaussian Process Prior.
 
-    .. Note:: This is a copy of GaussianProcessLogMarginalLikelihood's class comments in cpp_wrappers/log_likelihood.py.
-      See this file's comments and interfaces.log_likelihood_interface for more details as well as the cpp_wrappers version.
+    .. Note:: Comments are copied from
+      :class:`moe.optimal_learning.python.cpp_wrappers.log_likelihood.GaussianProcessLogMarginalLikelihood`.
 
     Given a particular covariance function (including hyperparameters) and
     training data ((point, function value, measurement noise) tuples), the log marginal likelihood is the log probability that
@@ -168,8 +179,12 @@ class GaussianProcessLogMarginalLikelihood(GaussianProcessLogLikelihoodInterface
     hyperparameters (or even changing covariance functions) to improve our model quality.  Hence this class provides access
     to functions for computing log marginal likelihood and its hyperparameter gradients.
 
-    .. Note:: Equivalent methods of LogLikelihoodInterface and OptimizableInterface are aliased below (e.g.,
-      problem_size and num_hyperparameters, compute_log_likelihood and compute_objective_function, etc).
+    .. Note:: Equivalent methods of :class:`moe.optimal_learning.python.interfaces.log_likelihood_interface.GaussianProcessLogLikelihoodInterface` and
+      :class:`moe.optimal_learning.python.interfaces.optimization_interface.OptimizableInterface`
+      are aliased below (e.g., :class:`~moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogLikelihood.problem_size` and
+      :class:`~moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogLikelihood.num_hyperparameters`,
+      :class:`~moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogLikelihood.compute_log_likelihood` and
+      :class:`~moe.optimal_learning.python.python_version.log_likelihood.GaussianProcessLogLikelihood.compute_objective_function`, etc).
 
     """
 
@@ -177,9 +192,9 @@ class GaussianProcessLogMarginalLikelihood(GaussianProcessLogLikelihoodInterface
         """Construct a LogLikelihood object that knows how to call C++ for evaluation of member functions.
 
         :param covariance_function: covariance object encoding assumptions about the GP's behavior on our data
-        :type covariance_function: Covariance object exposing hyperparameters (e.g., from python_version.covariance)
+        :type covariance_function: :class:`moe.optimal_learning.python.interfaces.covariance_interface.CovarianceInterface` subclass
         :param historical_data: object specifying the already-sampled points, the objective value at those points, and the noise variance associated with each observation
-        :type historical_data: HistoricalData object
+        :type historical_data: :class:`moe.optimal_learning.python.data_containers.HistoricalData` object
 
         """
         self._covariance = copy.deepcopy(covariance_function)
@@ -219,17 +234,17 @@ class GaussianProcessLogMarginalLikelihood(GaussianProcessLogLikelihoodInterface
 
     @property
     def _points_sampled(self):
-        """Return the coordinates of the already-sampled points; see data_containers.HistoricalData."""
+        """Return the coordinates of the already-sampled points; see :class:`moe.optimal_learning.python.data_containers.HistoricalData`."""
         return self._historical_data.points_sampled
 
     @property
     def _points_sampled_value(self):
-        """Return the function values measured at each of points_sampled; see data_containers.HistoricalData."""
+        """Return the function values measured at each of points_sampled; see :class:`moe.optimal_learning.python.data_containers.HistoricalData`."""
         return self._historical_data.points_sampled_value
 
     @property
     def _points_sampled_noise_variance(self):
-        """Return the noise variance associated with points_sampled_value; see data_containers.HistoricalData."""
+        """Return the noise variance associated with points_sampled_value; see :class:`moe.optimal_learning.python.data_containers.HistoricalData`."""
         return self._historical_data.points_sampled_noise_variance
 
     def get_covariance_copy(self):

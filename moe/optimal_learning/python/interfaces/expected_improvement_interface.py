@@ -3,7 +3,7 @@ r"""Interface for computation of the Expected Improvement at points sampled from
 
 .. NOTE:: These comments were copied from the file comments in gpp_math.cpp.
 
-See the package docs (interfaces/__init__.py) for the basics of expected improvement and the definition of the q,p-EI problem.
+See the package docs (:mod:`moe.optimal_learning.python.interfaces`) for the basics of expected improvement and the definition of the q,p-EI problem.
 
 Then the improvement for this single sample is:
 ``I = { best_known - min(y)   if (best_known - min(y) > 0)      (Equation 5)``
@@ -11,8 +11,8 @@ Then the improvement for this single sample is:
 where y is a particular prediction from the underlying Gaussian Process and best_known is the best observed value (min) so far.
 
 And the expected improvement, EI, can be computed by averaging repeated computations of I; i.e., monte-carlo integration.
-This is done in ExpectedImprovementInterface.compute_expected_improvement(); we can also compute the gradient. This
-computation is needed in the optimization of q,p-EI.
+This is done in :mod:`moe.optimal_learning.python.interfaces.expected_improvement_interface.ExpectedImprovementInterface.compute_expected_improvement`;
+we can also compute the gradient. This computation is needed in the optimization of q,p-EI.
 
 There is also a special, analytic case of EI computation that does not require monte-carlo integration. This special
 case can only be used to compute 1,0-EI (and its gradient). Still this can be very useful (e.g., the heuristic
@@ -22,7 +22,9 @@ optimization in gpp_heuristic_expected_improvement_optimization.hpp estimates q,
 From there, since EI is taken from a sum of gaussians, we expect it to be reasonably smooth
 and apply multistart, restarted gradient descent to find the optimum.  The use of gradient descent
 implies the need for all of the various "grad" functions, e.g., gaussian_process.compute_grad_mean_of_points().
-This is handled by coupling an implementation of ExpectedImprovementInterface to an optimizer (optimization_interface.py).
+This is handled by coupling an implementation of
+:class:`moe.optimal_learning.python.interfaces.expected_improvement_interface.ExpectedImprovementInterface`
+to an optimizer (:mod:`moe.optimal_learning.python.interfaces.optimization_interface`).
 
 """
 from abc import ABCMeta, abstractmethod, abstractproperty
@@ -70,8 +72,9 @@ class ExpectedImprovementInterface(object):
         r"""Compute the expected improvement at ``points_to_sample``, with ``points_being_sampled`` concurrent points being sampled.
 
         .. NOTE:: These comments were copied from ExpectedImprovementEvaluator::ComputeExpectedImprovement in gpp_math.hpp.
-           and duplicated in cpp_wrappers/expected_improvement.py and python_version/expected_improvement.py
-           in the functions of the same name.
+          and duplicated in
+          :meth:`moe.optimal_learning.python.cpp_wrappers.expected_improvement.ExpectedImprovement.compute_expected_improvement` and
+          :meth:`moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.compute_expected_improvement`
 
         ``points_to_sample`` is the "q" and ``points_being_sampled`` is the "p" in q,p-EI.
 
@@ -109,8 +112,9 @@ class ExpectedImprovementInterface(object):
         r"""Compute the gradient of expected improvement at ``points_to_sample`` wrt ``points_to_sample``, with ``points_being_sampled`` concurrent samples.
 
         .. NOTE:: These comments were copied from ExpectedImprovementEvaluator::ComputeGradExpectedImprovement in gpp_math.hpp
-           and duplicated in cpp_wrappers/expected_improvement.py and python_version/expected_improvement.py
-           in the functions of the same name.
+          and duplicated
+          :meth:`moe.optimal_learning.python.cpp_wrappers.expected_improvement.ExpectedImprovement.compute_grad_expected_improvement` and
+          :meth:`moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement.compute_grad_expected_improvement`
 
         ``points_to_sample`` is the "q" and ``points_being_sampled`` is the "p" in q,p-EI.
 

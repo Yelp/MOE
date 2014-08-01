@@ -8,9 +8,6 @@
 # Data files
 *.mat
 
-# Tox files
-.tox
-
 # OSX crap
 *.DS_Store
 
@@ -39,7 +36,9 @@ docs/latex/*
 docs/html/*
 docs/.doctrees/*
 docs/moe.*.rst
+docs/moe.rst
 docs/moe_examples.rst
+docs/moe_examples.*.rst
 docs/gpp_*.rst
 docs/cpp_tree.rst
 

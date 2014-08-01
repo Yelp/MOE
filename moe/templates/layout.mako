@@ -15,15 +15,6 @@
   <!-- d3 -->
   <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.1/d3.js"></script>
   <link rel="stylesheet" href="${request.static_url('moe:static/css/d3.css')}" />
-  <!-- background image -->
-  <style type='text/css'>
-      .background-image {
-          background-image: url("${request.static_url('moe:static/img/moe_standing.png')}");
-          background-position: right top;
-          background-repeat: no-repeat;
-          min-height: 500px;
-          }
-  </style>
 </head>
 <body>
   <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -35,7 +26,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="${request.route_url('home')}">MOE</a>
+        <a class="navbar-brand" href="${request.route_url('home')}"><img src="${request.static_url('moe:static/img/moe_logo_24.png')}"></a>
       </div>
       <div class="collapse navbar-collapse">
         <ul class="nav navbar-nav">
@@ -49,5 +40,9 @@
   <div class="container">
     ${next.body()}
   </div>
+
+  <footer>
+      <center><img src="${request.static_url('moe:static/img/moe_logo_24.png')}"> © 2012-2014 Yelp</center>
+  </footer>
 </body>
 </html>

@@ -28,7 +28,7 @@
 #include "gpp_domain.hpp"
 #include "gpp_logging.hpp"
 #include "gpp_model_selection.hpp"
-#include "gpp_optimization_parameters.hpp"
+#include "gpp_optimizer_parameters.hpp"
 #include "gpp_random.hpp"
 
 namespace optimal_learning {
@@ -203,7 +203,7 @@ void ExportEnumTypes() {
       ;  // NOLINT, this is boost style
 }
 
-void ExportOptimizationParameterStructs() {
+void ExportOptimizerParameterStructs() {
   boost::python::class_<GradientDescentParameters, boost::noncopyable>("GradientDescentParameters", boost::python::init<int, int, int, double, double, double, double>(R"%%(
     Constructor for a GradientDescentParameters object.
 

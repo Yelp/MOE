@@ -7,21 +7,29 @@
 #ifndef MOE_OPTIMAL_LEARNING_CPP_GPP_EXPECTED_IMPROVEMENT_GPU_HPP_
 #define MOE_OPTIMAL_LEARNING_CPP_GPP_EXPECTED_IMPROVEMENT_GPU_HPP_
 
-#include <vector>
 #include <algorithm>
+#include <vector>
 
 #include "gpp_common.hpp"
+#include "gpp_exception.hpp"
 #include "gpp_logging.hpp"
-#include "gpp_random.hpp"
 #include "gpp_math.hpp"
+#include "gpp_random.hpp"
 
 #ifdef OL_GPU_ENABLED
-#define OL_CUDA_THROW_EXCEPTION(_ERR) ThrowException(OptimalLearningException((_ERR).line_info, (_ERR).func_info, cudaGetErrorString((_ERR).err)));
-#define OL_CUDA_ERROR_THROW(_ERR) {if((_ERR).err != cudaSuccess) {OL_CUDA_THROW_EXCEPTION(_ERR)}}
+
+#include "gpu/gpp_cuda_math.hpp"
+/*!\rst
+  Macro that checks error message (CudaError object) returned by CUDA functions, and throws
+  OptimalLearningCudaException if there is error.
+\endrst*/
+#define OL_CUDA_ERROR_THROW(X) do {CudaError _ERR = (X); if ((_ERR).err != cudaSuccess) {ThrowException(OptimalLearningCudaException(_ERR));}} while (0)
+
 #endif
 
 namespace optimal_learning {
 #ifdef OL_GPU_ENABLED
+
 /*!\rst
   This struct does the same job as C++ smart pointer. It contains pointer to memory location on
   GPU, its constructor and destructor also take care of memory allocation/deallocation on GPU. 
@@ -37,6 +45,26 @@ struct CudaDevicePointer final {
   int num_doubles;
 
   OL_DISALLOW_DEFAULT_AND_COPY_AND_ASSIGN(CudaDevicePointer);
+};
+
+/*!\rst
+  Exception to handle runtime errors returned by CUDA API functions. This class subclasses
+  OptimalLearningException in gpp_exception.hpp/cpp, and basiclly has the same functionality
+  as its superclass, except the constructor is different.
+\endrst*/
+class OptimalLearningCudaException : public OptimalLearningException {
+ public:
+  //! String name of this exception ofr logging.
+  constexpr static char const * kName = "OptimalLearningCudaException";
+
+  /*!\rst
+    Constructs a OptimalLearningCudaException with struct CudaError
+    \param
+      :error: C struct that contains error message returned by CUDA API functions
+  \endrst*/
+  explicit OptimalLearningCudaException(const CudaError& error);
+
+  OL_DISALLOW_DEFAULT_AND_ASSIGN(OptimalLearningCudaException);
 };
 
 struct CudaExpectedImprovementState;
@@ -60,8 +88,8 @@ class CudaExpectedImprovementEvaluator final {
     return dim_;
   }
 
-  int num_mc_itr() const noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
-    return num_mc;
+  int num_mc() const noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
+    return num_mc_;
   }
 
   const GaussianProcess * gaussian_process() const noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
@@ -78,8 +106,8 @@ class CudaExpectedImprovementEvaluator final {
   /*!\rst
     Wrapper for ComputeGradExpectedImprovement(); see that function for details.
   \endrst*/
-  void ComputeGradObjectiveFunction(StateType * ei_state, double * restrict grad_EI) const OL_NONNULL_POINTERS {
-    ComputeGradExpectedImprovement(ei_state, grad_EI);
+  void ComputeGradObjectiveFunction(StateType * ei_state, double * restrict grad_ei) const OL_NONNULL_POINTERS {
+    ComputeGradExpectedImprovement(ei_state, grad_ei);
   }
 
   /*!\rst
@@ -101,11 +129,18 @@ class CudaExpectedImprovementEvaluator final {
       :ei_state[1]: properly configured state object
     \output
       :ei_state[1]: state with temporary storage modified; ``uniform_rng`` modified
-      :grad_EI[dim][num_to_sample]: gradient of EI
+      :grad_ei[dim][num_to_sample]: gradient of EI
   \endrst*/
-  void ComputeGradExpectedImprovement(StateType * ei_state, double * restrict grad_EI) const OL_NONNULL_POINTERS;
+  void ComputeGradExpectedImprovement(StateType * ei_state, double * restrict grad_ei) const OL_NONNULL_POINTERS;
 
-  void setupGPU(int devID);
+  /*!\rst
+    Call CUDA API function to activate a GPU.
+    Refer to: http://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__DEVICE.html#group__CUDART__DEVICE_1g418c299b069c4803bfb7cab4943da383
+
+    \param
+      :devID: device ID of the GPU need to be activated
+  \endrst*/
+  void SetupGPU(int devID);
 
   OL_DISALLOW_DEFAULT_AND_COPY_AND_ASSIGN(CudaExpectedImprovementEvaluator);
 
@@ -113,7 +148,7 @@ class CudaExpectedImprovementEvaluator final {
   //! spatial dimension (e.g., entries per point of points_sampled)
   const int dim_;
   //! number of mc iterations
-  int num_mc;
+  int num_mc_;
   //! best (minimum) objective function value (in points_sampled_value)
   double best_so_far_;
   //! pointer to gaussian process used in EI computations
@@ -180,13 +215,25 @@ struct CudaExpectedImprovementState final {
     \return
       std::vector<double> with the union of the input arrays: points_being_sampled is *appended* to points_to_sample
   \endrst*/
-  static std::vector<double> BuildUnionOfPoints(double const * restrict points_to_sample, double const * restrict points_being_sampled,
-                                                int num_to_sample, int num_being_sampled, int dim) noexcept OL_WARN_UNUSED_RESULT {
-    std::vector<double> union_of_points(dim*(num_to_sample + num_being_sampled));
-    std::copy(points_to_sample, points_to_sample + dim*num_to_sample, union_of_points.data());
-    std::copy(points_being_sampled, points_being_sampled + dim*num_being_sampled, union_of_points.data() + dim*num_to_sample);
-    return union_of_points;
-  }
+  static std::vector<double> BuildUnionOfPoints(double const * restrict points_to_sample,
+                                                double const * restrict points_being_sampled,
+                                                int num_to_sample, int num_being_sampled, int dim)
+                                                noexcept OL_WARN_UNUSED_RESULT;
+
+  /*!\rst
+    A simple utility function to calculate how many random numbers will be generated by GPU computation of EI/gradEI given
+    number of MC simulations. (user set num_mc_itr is not necessarily equal to the actual num_mc_itr used in GPU computation,
+    because actual num_mc_itr has to be multiple of (num_threads * num_blocks)
+
+    \param:
+      :num_mc_itr: number of MC simulations
+      :num_threads: number of threads per block in GPU computation
+      :num_blocks: number of blocks in GPU computation
+      :num_points: number of points interested (aka q+p)
+    \return
+      int: number of random numbers generated in GPU computation
+  \endrst*/
+  static int GetVectorSize(int num_mc_itr, int num_threads, int num_blocks, int num_points) noexcept OL_WARN_UNUSED_RESULT;
 
   int GetProblemSize() const noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
     return dim*num_to_sample;
@@ -210,13 +257,7 @@ struct CudaExpectedImprovementState final {
       :ei_evaluator: expected improvement evaluator object that specifies the parameters & GP for EI evaluation
       :points_to_sample[dim][num_to_sample]: potential future samples whose EI (and/or gradients) are being evaluated
   \endrst*/
-  void UpdateCurrentPoint(const EvaluatorType& ei_evaluator, double const * restrict points_to_sample) OL_NONNULL_POINTERS {
-    // update points_to_sample in union_of_points
-    std::copy(points_to_sample, points_to_sample + num_to_sample*dim, union_of_points.data());
-
-    // evaluate derived quantities for the GP
-    points_to_sample_state.SetupState(*ei_evaluator.gaussian_process(), union_of_points.data(), num_union, num_derivatives);
-  }
+  void UpdateCurrentPoint(const EvaluatorType& ei_evaluator, double const * restrict points_to_sample) OL_NONNULL_POINTERS;
 
   /*!\rst
     Configures this state object with new ``points_to_sample``, the location of the potential samples whose EI is to be evaluated.
@@ -231,10 +272,7 @@ struct CudaExpectedImprovementState final {
       :ei_evaluator: expected improvement evaluator object that specifies the parameters & GP for EI evaluation
       :points_to_sample[dim][num_to_sample]: potential future samples whose EI (and/or gradients) are being evaluated
   \endrst*/
-  void SetupState(const EvaluatorType& ei_evaluator, double const * restrict points_to_sample) OL_NONNULL_POINTERS {
-    // update quantities derived from points_to_sample
-    UpdateCurrentPoint(ei_evaluator, points_to_sample);
-  }
+  void SetupState(const EvaluatorType& ei_evaluator, double const * restrict points_to_sample) OL_NONNULL_POINTERS;
 
   // size information
   //! spatial dimension (e.g., entries per point of ``points_sampled``)
@@ -276,52 +314,22 @@ struct CudaExpectedImprovementState final {
   CudaDevicePointer gpu_grad_mu;
   CudaDevicePointer gpu_grad_chol_var;
   //! data containing results returned by GPU computations
-  CudaDevicePointer gpu_EI_storage;
-  CudaDevicePointer gpu_grad_EI_storage;
+  CudaDevicePointer gpu_ei_storage;
+  CudaDevicePointer gpu_grad_ei_storage;
   //! data containing random numbers used in GPU computations, which are only
-  //used for testing
-  CudaDevicePointer gpu_random_number_EI;
-  CudaDevicePointer gpu_random_number_gradEI;
+  //! used for testing
+  CudaDevicePointer gpu_random_number_ei;
+  CudaDevicePointer gpu_random_number_grad_ei;
 
-  //! storage for random numbers used in computing EI & grad_EI, this is only used to setup unit test
-  std::vector<double> random_number_EI;
-  std::vector<double> random_number_gradEI;
+  //! storage for random numbers used in computing EI & grad_ei, this is only used to setup unit test
+  std::vector<double> random_number_ei;
+  std::vector<double> random_number_grad_ei;
 
   OL_DISALLOW_DEFAULT_AND_COPY_AND_ASSIGN(CudaExpectedImprovementState);
 };
 
-#else
-struct CudaExpectedImprovementState;
-
-class CudaExpectedImprovementEvaluator {
- public:
-  using StateType = CudaExpectedImprovementState;
-  CudaExpectedImprovementEvaluator(const GaussianProcess& gaussian_process_in, int num_mc_in, double best_so_far, int devID_in);
-
-  double ComputeObjectiveFunction(StateType * ei_state) const {
-    return ComputeExpectedImprovement(ei_state);
-  }
-
-  void ComputeGradObjectiveFunction(StateType * ei_state, double * restrict grad_EI) const {
-    ComputeGradExpectedImprovement(ei_state, grad_EI);
-  }
-
-  double ComputeExpectedImprovement(StateType * ei_state) const;
-
-  void ComputeGradExpectedImprovement(StateType * ei_state, double * restrict grad_EI) const;
-
-  OL_DISALLOW_DEFAULT_AND_COPY_AND_ASSIGN(CudaExpectedImprovementEvaluator);
-};
-
-struct CudaExpectedImprovementState {
-  using EvaluatorType = CudaExpectedImprovementEvaluator;
-  CudaExpectedImprovementState(const EvaluatorType& ei_evaluator, double const * restrict points_to_sample,
-                               double const * restrict points_being_sampled, int num_to_sample_in,
-                               int num_being_sampled_in, bool configure_for_gradients,
-                               UniformRandomGenerator * uniform_rng_in);
-};
-
-#endif
+#endif  // OL_GPU_ENABLED
 
 }   // end namespace optimal_learning
+
 #endif  // MOE_OPTIMAL_LEARNING_CPP_GPP_EXPECTED_IMPROVEMENT_GPU_HPP_

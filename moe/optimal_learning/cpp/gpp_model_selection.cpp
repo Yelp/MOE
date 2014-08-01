@@ -277,7 +277,7 @@
 #include "gpp_math.hpp"
 #include "gpp_mock_optimization_objective_functions.hpp"
 #include "gpp_optimization.hpp"
-#include "gpp_optimization_parameters.hpp"
+#include "gpp_optimizer_parameters.hpp"
 
 namespace optimal_learning {
 
@@ -693,7 +693,7 @@ void LogMarginalLikelihoodEvaluator::ComputeHessianLogLikelihood(LogMarginalLike
   }
 }
 
-void LogMarginalLikelihoodState::UpdateHyperparameters(const EvaluatorType& log_likelihood_eval,
+void LogMarginalLikelihoodState::SetHyperparameters(const EvaluatorType& log_likelihood_eval,
                                                        double const * restrict hyperparameters) {
   // update hyperparameters
   covariance_ptr->SetHyperparameters(hyperparameters);
@@ -713,7 +713,7 @@ void LogMarginalLikelihoodState::SetupState(const EvaluatorType& log_likelihood_
   }
 
   // set hyperparameters and derived quantities
-  UpdateHyperparameters(log_likelihood_eval, hyperparameters);
+  SetHyperparameters(log_likelihood_eval, hyperparameters);
 }
 
 LogMarginalLikelihoodState::LogMarginalLikelihoodState(const EvaluatorType& log_likelihood_eval,
@@ -973,7 +973,7 @@ void LeaveOneOutLogLikelihoodEvaluator::ComputeHessianLogLikelihood(
   OL_THROW_EXCEPTION(OptimalLearningException, "LeaveOneOutLogLikelihoodEvaluator::ComputeHessianLogLikelihood is NOT IMPLEMENTED. Try using Gradient Descent instead of Newton.");
 }
 
-void LeaveOneOutLogLikelihoodState::UpdateHyperparameters(const EvaluatorType& log_likelihood_eval,
+void LeaveOneOutLogLikelihoodState::SetHyperparameters(const EvaluatorType& log_likelihood_eval,
                                                         double const * restrict hyperparameters) {
   // update hyperparameters
   covariance_ptr->SetHyperparameters(hyperparameters);
@@ -995,7 +995,7 @@ void LeaveOneOutLogLikelihoodState::SetupState(const EvaluatorType& log_likeliho
   }
 
   // set hyperparameters and derived quantities
-  UpdateHyperparameters(log_likelihood_eval, hyperparameters);
+  SetHyperparameters(log_likelihood_eval, hyperparameters);
 }
 
 LeaveOneOutLogLikelihoodState::LeaveOneOutLogLikelihoodState(const EvaluatorType& log_likelihood_eval,

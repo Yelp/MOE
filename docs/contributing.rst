@@ -8,6 +8,9 @@ Anyone and everyone is encouraged to help work on and develop for MOE. Below are
     #. `Making a pull request`_
     #. `Documentation`_
     #. `Testing`_
+    #. `Style`_
+    #. `Versioning`_
+    #. `Releasing (For Maintainers)`_
 
 Making a pull request
 ---------------------
@@ -20,8 +23,30 @@ Making a pull request
 6. Test against styleguide (``make style-test``)
 7. Commit your changes (``git commit -am "Added Some Mathemagics"``)
 8. Push to the branch (``git push origin my_moe_branch``)
-9. Open a Pull Request - http://github.com/sc932/MOE/pulls
-10. Optimize locally while you wait
+9. Update the CHANGELOG (`CHANGELOG Updates`_)
+10. Open a Pull Request - http://github.com/Yelp/MOE/pulls (Use the template here: `Pull request review templates`_)
+11. Optimize locally while you wait
+
+CHANGELOG Updates
+.................
+
+Before your change will be accepted into master, you must update ``CHANGELOG.md`` in the MOE root directory. The changelog contains a listing of major changes associated with each release, broken down into relevant categories (e.g., ``Features``, ``Changes``, ``Bugs``). The top of the changelog is for the current MOE version under development; this is where your changes go. Past releases are listed below the current candidate in reverse-chronological order.
+
+Add your changes under the appropriate categories at the TOP of ``CHANGELOG.md``. Add new categories as needed. Where relevant, include issue number(s).
+
+The changelog might look like:
+
+::
+
+   * Features
+     * Cool new feature (#314)
+       * Sub-features so cool that they're sub-zero
+     * Even cooler, newer feature (#271)
+     * YOUR NEW FEATURE HERE! (#1)
+   * Changes
+     * Earth-shattering change (#9)
+   * Bugs
+     * Running MOE no longer causes black holes (#1217)
 
 Pull request review templates
 .............................
@@ -42,10 +67,9 @@ Pull request review templates
 ``PEOPLE`` section
 ^^^^^^^^^^^^^^^^^^
 
-``Primary reviewer``: the primary code reviewer. This person is *EQUALLY RESPONSIBLE* for your branch. They should read and familiarize themselves with all aspects of the code, checking for style, correctness, maintainability, testing, etc.
-Ask the primary reviewer first if your branch is particularly large (and try to avoid large branches, anything over 300+ lines).
+``Primary reviewer``: the primary code reviewer. This person is *EQUALLY RESPONSIBLE* for your branch. They should read and familiarize themselves with all aspects of the code, checking for style, correctness, maintainability, testing, etc. If you do not know who to put then use @sc932 and/or @suntzu86.
 
-``Reviewers``: the people (including primary) that you would like to read your branch. Please use full email addresses or @<GITHUB NAME>. Right now, only people shown here: https://github.com/sc932/MOE/watchers can see the review.
+``Reviewers``: the people (including primary) that you would like to read your branch. Please use full email addresses or @<GITHUB NAME>.
 
 ``DESCRIPTION`` section
 ^^^^^^^^^^^^^^^^^^^^^^^
@@ -56,9 +80,9 @@ Ask the primary reviewer first if your branch is particularly large (and try to 
 
 Examples::
 
-  eliu_ads_3094_python_implementation_of_ABCs
-  eliu_gh_74_fix_todos_ticket_numbers_comments
-  sclark_21_fix_tooltips
+  suntzu86_ads_3094_python_implementation_of_ABCs
+  suntzu86_gh_74_fix_todos_ticket_numbers_comments
+  sc932_21_fix_tooltips
 
 ``Ticket(s)/Issue(s)``: usually GH-##. Github will autolink “GH-##” ticket numbers. If your tickets live elsewhere (e.g., JIRA), provide a link. You can also do #XX
 
@@ -146,3 +170,62 @@ MOE uses the google style guides found here:
 .. Note::
 
     All new code should conform to these style guides
+
+Versioning
+----------
+
+MOE uses semantic versioning (http://semver.org). To summarize, our patch numbers look like:
+
+::
+
+   MAJOR.MINOR.PATCH
+
+1. ``MAJOR``: incremented for incompatible API changes (this includes the REST, Python, and C++ interfaces; e.g., removing functionality from an endpoint, modifying arguments to a library call)
+2. ``MINOR``: incremented for adding functionality in a backwards-compatible manner (e.g., adding a new REST endpoint, adding capabilities to an existing endpoint)
+3. ``PATCH``: incremented for backward-compatible bug fixes and minor capability improvements (e.g., fixing bugs, performance improvements, code cleanup/refactoring)
+
+We do not increment versions for documentation and other non-code changes.
+
+Releasing (For Maintainers)
+---------------------------
+
+The MOE repository maintainers decide when to tag official releases. They may decide to bump versions immediately after a pull request for a critical bug fix, or they may decide to wait and combine several inbound pull requests into one version bump. (Having ``MOE v10.87.3091`` makes the history unwieldy).
+
+When you are ready to mark a new release:
+
+1. Tag the release (`Tagging Releases`_).
+2. Update the documentation (`Building the documentation`_); in all likelihood the new code includes documentation changes.
+3. Push a Docker container for the new release to DockerHub (`Updating DockerHub`).
+
+Tagging Releases
+................
+
+#. On the GitHub releases page (https://github.com/Yelp/MOE/releases), click ``Draft a new release``.
+#. Choose a new version number; see `Versioning`_.
+#. Select a target branch (most likely ``master``).
+#. Name the release (``Release Title`` field) with just the version number.
+#. In the description field, copy-paste the current release decriptors from ``CHANGELOG.md``.
+#. Update ``CHANGELOG.md``. Label the current set of features, changes, etc. with the new version number and date in parenthesis, preceded by a ``##`` header marker. Write down the associated SHA. And make new category headers at the top of the file for future commits. For example, after marking the current version for release, change ``CHANGELOG.md`` to look like:
+
+   ::
+
+      * Features
+
+      * Changes
+
+      * Bugs
+
+      ## vMAJOR.MINOR.PATCH (YEAR-MONTH-DAY)
+
+      SHA: ``271828someshagoeshere314159``
+
+      * Features
+        * Copied from ``CHANGELOG.md`` (#123)
+        * More features! (#456)
+      * Changes
+        * etc (#721)
+
+Updating DockerHub
+..................
+
+TODO(GH-341): write up this section

@@ -216,7 +216,7 @@
 
     int GetProblemSize();  // how many dimensions to optimize
     void GetCurrentPoint(double * point);  // get current point at which Evalutor is computing results
-    void UpdateCurrentPoint(double const * point);  // set current point at which Evalutor is computing results
+    void SetCurrentPoint(double const * point);  // set current point at which Evalutor is computing results
 
   gpp_math.hpp and gpp_model_selection.hpp have (Evaluator, State) examples that implement
   the above interface:
@@ -351,7 +351,7 @@
 #include "gpp_domain.hpp"
 #include "gpp_linear_algebra.hpp"
 #include "gpp_logging.hpp"
-#include "gpp_optimization_parameters.hpp"
+#include "gpp_optimizer_parameters.hpp"
 
 namespace optimal_learning {
 
@@ -613,31 +613,27 @@ struct OptimizationIOContainer final {
     :objective_state[1]: a state object whose temporary data members may have been modified
                          objective_state.GetCurrentPoint() will return the point yielding the best objective function value
                          according to gradient descent
-    :next_point[problem_size]: point yielding the best objective function value according to gradient descent, SAME as
-                               objective_state.GetCurrentPoint() (see previous item)
-
-  TODO(GH-186): The next_point output is redundant with objective_state.GetCurrentPoint(). Remove it.
 \endrst*/
 template <typename ObjectiveFunctionEvaluator, typename DomainType>
 OL_NONNULL_POINTERS void GradientDescentOptimization(
     const ObjectiveFunctionEvaluator& objective_evaluator,
     const GradientDescentParameters& gd_parameters,
     const DomainType& domain,
-    typename ObjectiveFunctionEvaluator::StateType * objective_state,
-    double * restrict next_point) {
+    typename ObjectiveFunctionEvaluator::StateType * objective_state) {
   const int problem_size = objective_state->GetProblemSize();
   std::vector<double> grad_objective(problem_size);
   std::vector<double> step(problem_size);
+  std::vector<double> next_point(problem_size);
 
   // read out starting point coordinates
-  objective_state->GetCurrentPoint(next_point);
+  objective_state->GetCurrentPoint(next_point.data());
 
   // save off some data for reporting if needed
 #ifdef OL_VERBOSE_PRINT
   std::vector<double> initial_point(problem_size);
   // initial value of the objective function
   double obj_func_initial = objective_evaluator.ComputeObjectiveFunction(objective_state);
-  std::copy(next_point, next_point + problem_size, initial_point.begin());
+  std::copy(next_point.begin(), next_point.end(), initial_point.begin());
 #endif
 
   const double step_tolerance = gd_parameters.tolerance / static_cast<double>(gd_parameters.max_num_steps);
@@ -656,14 +652,14 @@ OL_NONNULL_POINTERS void GradientDescentOptimization(
       step[j] = alpha_n*grad_objective[j];
     }
     // limit step size to ensure we stay inside the domain
-    domain.LimitUpdate(gd_parameters.max_relative_change, next_point, step.data());
+    domain.LimitUpdate(gd_parameters.max_relative_change, next_point.data(), step.data());
     // take the step
     for (int j = 0; j < problem_size; ++j) {
       next_point[j] += step[j];
     }
 
     // update state
-    objective_state->UpdateCurrentPoint(objective_evaluator, next_point);
+    objective_state->SetCurrentPoint(objective_evaluator, next_point.data());
 
     double norm_step = VectorNorm(step.data(), problem_size);
     if (norm_step < step_tolerance) {
@@ -828,10 +824,10 @@ OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT int NewtonOptimization(
     return 0;
   }
   const int problem_size = objective_state->GetProblemSize();
-  std::vector<double> new_point(problem_size);
+  std::vector<double> next_point(problem_size);
 
   // read out starting point coordinates from state
-  objective_state->GetCurrentPoint(new_point.data());
+  objective_state->GetCurrentPoint(next_point.data());
 
   std::vector<int> pivot(problem_size);
   std::vector<double> step(problem_size);
@@ -899,18 +895,18 @@ OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT int NewtonOptimization(
       step[j] = -gradient_objective[j];
     }
     // limit step size to ensure we stay inside the domain
-    domain.LimitUpdate(newton_parameters.max_relative_change, new_point.data(), step.data());
+    domain.LimitUpdate(newton_parameters.max_relative_change, next_point.data(), step.data());
     // take the step
     for (int j = 0; j < problem_size; ++j) {
-      new_point[j] += step[j];
+      next_point[j] += step[j];
     }
 
     // set new point for next run
-    objective_state->UpdateCurrentPoint(objective_evaluator, new_point.data());
+    objective_state->SetCurrentPoint(objective_evaluator, next_point.data());
 #ifdef OL_VERBOSE_PRINT
     norm_gradient_objective = VectorNorm(gradient_objective.data(), problem_size);
     OL_VERBOSE_PRINTF("iter %d: norm update: %.18E, coord:\n", newton_iter, norm_gradient_objective);
-    PrintMatrix(new_point.data(), 1, problem_size);
+    PrintMatrix(next_point.data(), 1, problem_size);
 #endif
 
     double norm_step = VectorNorm(step.data(), problem_size);
@@ -918,12 +914,12 @@ OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT int NewtonOptimization(
       ++newton_iter;
       break;
     }
-  }
+  }  // end loop over newton_iter
 
 #ifdef OL_OPTIMIZATION_VERBOSE_PRINT
   double norm_gradient_objective = VectorNorm(gradient_objective.data(), problem_size);
   OL_VERBOSE_PRINTF("iter %d: norm gradient: %.18E\n", newton_iter, norm_gradient_objective);
-  PrintMatrix(new_point.data(), 1, problem_size);
+  PrintMatrix(next_point.data(), 1, problem_size);
 #endif
 
   return error;
@@ -1027,20 +1023,21 @@ class GradientDescentOptimizer final {
     }
     const int problem_size = objective_state->GetProblemSize();
     std::vector<double> current_point(problem_size);
-    std::vector<double> new_point(problem_size);
+    std::vector<double> next_point(problem_size);
 
-    // loop structure expects that "new_point" contains the new current location at the start of each iteration
-    objective_state->GetCurrentPoint(new_point.data());
+    // loop structure expects that "next_point" contains the new current location at the start of each iteration
+    objective_state->GetCurrentPoint(next_point.data());
 
     for (int i = 0; i < gd_parameters.max_num_restarts; ++i) {
       // save off current location so we can compute the update norm
-      std::copy(new_point.begin(), new_point.end(), current_point.begin());
+      std::copy(next_point.begin(), next_point.end(), current_point.begin());
       // get next gradient descent update
-      GradientDescentOptimization(objective_evaluator, gd_parameters, domain, objective_state, new_point.data());
+      GradientDescentOptimization(objective_evaluator, gd_parameters, domain, objective_state);
+      objective_state->GetCurrentPoint(next_point.data());
 
       // compute norm of the update
       for (int j = 0; j < problem_size; ++j) {
-        current_point[j] -= new_point[j];
+        current_point[j] -= next_point[j];
       }
       double norm_delta_coord = VectorNorm(current_point.data(), problem_size);
       OL_VERBOSE_PRINTF("norm of coord change: %.18E\n", norm_delta_coord);
@@ -1223,7 +1220,7 @@ class MultistartOptimizer final {
         best_point IF found_flag is true.
         Unchanged from input otherwise. See struct docs in gpp_optimization.hpp for details.
     \raise
-      if any of objective_state_vector->UpdateCurrentPoint(), optimizer.Optimize(), or
+      if any of objective_state_vector->SetCurrentPoint(), optimizer.Optimize(), or
       objective_evaluator.ComputeObjectiveFunction() throws, the exception (or one of the exceptions in the
       event of multiple throws due to threading, usually the first temporally) will be saved and rethrown by
       this function. ``io_container`` will be in a valid state; ``function_values`` may not.
@@ -1274,7 +1271,7 @@ class MultistartOptimizer final {
         // exception out of this structured block, we will capture an active exception into a std::exception_ptr.
         // Typically, the *first* exception thrown (temporally) will be captured.
         try {
-          objective_state_vector[thread_id].UpdateCurrentPoint(objective_evaluator, initial_guesses + i*problem_size);
+          objective_state_vector[thread_id].SetCurrentPoint(objective_evaluator, initial_guesses + i*problem_size);
 
           if (unlikely(optimizer.Optimize(objective_evaluator, optimizer_parameters, domain, objective_state_vector + thread_id) != 0)) {
             ++total_errors;

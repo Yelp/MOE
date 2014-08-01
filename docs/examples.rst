@@ -127,6 +127,8 @@ In this example we use :mod:`moe.easy_interface.simple_endpoint` to use the endp
 
 See the code for the full example, and the individual endpoints for examples on more options for each.
 
+.. _ads-example:
+
 Setting thresholds for advertising units
 ----------------------------------------
 

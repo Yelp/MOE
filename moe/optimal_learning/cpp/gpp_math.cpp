@@ -263,7 +263,7 @@
 #include "gpp_linear_algebra-inl.hpp"
 #include "gpp_logging.hpp"
 #include "gpp_optimization.hpp"
-#include "gpp_optimization_parameters.hpp"
+#include "gpp_optimizer_parameters.hpp"
 #include "gpp_random.hpp"
 
 namespace optimal_learning {
@@ -1073,7 +1073,7 @@ void ExpectedImprovementEvaluator::ComputeGradExpectedImprovement(StateType * ei
   }
 }
 
-void ExpectedImprovementState::UpdateCurrentPoint(const EvaluatorType& ei_evaluator,
+void ExpectedImprovementState::SetCurrentPoint(const EvaluatorType& ei_evaluator,
                           double const * restrict points_to_sample) {
   // update points_to_sample in union_of_points
   std::copy(points_to_sample, points_to_sample + num_to_sample*dim, union_of_points.data());
@@ -1114,7 +1114,7 @@ void ExpectedImprovementState::SetupState(const EvaluatorType& ei_evaluator,
   }
 
   // update quantities derived from points_to_sample
-  UpdateCurrentPoint(ei_evaluator, points_to_sample);
+  SetCurrentPoint(ei_evaluator, points_to_sample);
 }
 
 OnePotentialSampleExpectedImprovementEvaluator::OnePotentialSampleExpectedImprovementEvaluator(
@@ -1186,7 +1186,7 @@ void OnePotentialSampleExpectedImprovementEvaluator::ComputeGradExpectedImprovem
   }
 }
 
-void OnePotentialSampleExpectedImprovementState::UpdateCurrentPoint(const EvaluatorType& ei_evaluator,
+void OnePotentialSampleExpectedImprovementState::SetCurrentPoint(const EvaluatorType& ei_evaluator,
                                                                     double const * restrict point_to_sample_in) {
   // update current point in union_of_points
   std::copy(point_to_sample_in, point_to_sample_in + dim, point_to_sample.data());
@@ -1228,7 +1228,7 @@ void OnePotentialSampleExpectedImprovementState::SetupState(const EvaluatorType&
     OL_THROW_EXCEPTION(InvalidValueException<int>, "Evaluator's and State's dim do not match!", dim, ei_evaluator.dim());
   }
 
-  UpdateCurrentPoint(ei_evaluator, point_to_sample_in);
+  SetCurrentPoint(ei_evaluator, point_to_sample_in);
 }
 
 /*!\rst
@@ -1240,6 +1240,10 @@ void EvaluateEIAtPointList(const GaussianProcess& gaussian_process, const Thread
                            int num_multistarts, int num_to_sample, int num_being_sampled, double best_so_far,
                            int max_int_steps, bool * restrict found_flag, NormalRNG * normal_rng,
                            double * restrict function_values, double * restrict best_next_point) {
+  if (unlikely(num_multistarts <= 0)) {
+    OL_THROW_EXCEPTION(LowerBoundException<int>, "num_multistarts must be > 1", num_multistarts, 1);
+  }
+
   using DomainType = DummyDomain;
   DomainType dummy_domain;
   bool configure_for_gradients = false;
@@ -1296,7 +1300,7 @@ void EvaluateEIAtPointList(const GaussianProcess& gaussian_process, const Thread
 \endrst*/
 template <typename DomainType>
 void ComputeOptimalPointsToSample(const GaussianProcess& gaussian_process,
-                                  const GradientDescentParameters& optimization_parameters,
+                                  const GradientDescentParameters& optimizer_parameters,
                                   const DomainType& domain, const ThreadSchedule& thread_schedule,
                                   double const * restrict points_being_sampled,
                                   int num_to_sample, int num_being_sampled, double best_so_far,
@@ -1312,7 +1316,7 @@ void ComputeOptimalPointsToSample(const GaussianProcess& gaussian_process,
 
   bool found_flag_local = false;
   if (lhc_search_only == false) {
-    ComputeOptimalPointsToSampleWithRandomStarts(gaussian_process, optimization_parameters,
+    ComputeOptimalPointsToSampleWithRandomStarts(gaussian_process, optimizer_parameters,
                                                  domain, thread_schedule, points_being_sampled,
                                                  num_to_sample, num_being_sampled,
                                                  best_so_far, max_int_steps,
@@ -1327,22 +1331,26 @@ void ComputeOptimalPointsToSample(const GaussianProcess& gaussian_process,
       OL_WARNING_PRINTF("Attempting latin hypercube search\n");
     }
 
-    // Note: using a schedule different than "static" may lead to flakiness in monte-carlo EI optimization tests.
-    // Besides, this is the fastest setting.
-    ThreadSchedule thread_schedule_naive_search(thread_schedule);
-    thread_schedule_naive_search.schedule = omp_sched_static;
-    ComputeOptimalPointsToSampleViaLatinHypercubeSearch(gaussian_process, domain,
-                                                        thread_schedule_naive_search,
-                                                        points_being_sampled,
-                                                        num_lhc_samples, num_to_sample,
-                                                        num_being_sampled, best_so_far,
-                                                        max_int_steps,
-                                                        &found_flag_local, uniform_generator,
-                                                        normal_rng, next_points_to_sample.data());
+    if (num_lhc_samples > 0) {
+      // Note: using a schedule different than "static" may lead to flakiness in monte-carlo EI optimization tests.
+      // Besides, this is the fastest setting.
+      ThreadSchedule thread_schedule_naive_search(thread_schedule);
+      thread_schedule_naive_search.schedule = omp_sched_static;
+      ComputeOptimalPointsToSampleViaLatinHypercubeSearch(gaussian_process, domain,
+                                                          thread_schedule_naive_search,
+                                                          points_being_sampled,
+                                                          num_lhc_samples, num_to_sample,
+                                                          num_being_sampled, best_so_far,
+                                                          max_int_steps,
+                                                          &found_flag_local, uniform_generator,
+                                                          normal_rng, next_points_to_sample.data());
 
-    // if latin hypercube 'dumb' search failed
-    if (unlikely(found_flag_local == false)) {
-      OL_ERROR_PRINTF("ERROR: %d,%d-EI latin hypercube search FAILED on\n", num_to_sample, num_being_sampled);
+      // if latin hypercube 'dumb' search failed
+      if (unlikely(found_flag_local == false)) {
+        OL_ERROR_PRINTF("ERROR: %d,%d-EI latin hypercube search FAILED on\n", num_to_sample, num_being_sampled);
+      }
+    } else {
+      OL_WARNING_PRINTF("num_lhc_samples <= 0. Skipping latin hypercube search\n");
     }
   }
 
@@ -1353,14 +1361,14 @@ void ComputeOptimalPointsToSample(const GaussianProcess& gaussian_process,
 
 // template explicit instantiation definitions, see gpp_common.hpp header comments, item 6
 template void ComputeOptimalPointsToSample(
-    const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters,
+    const GaussianProcess& gaussian_process, const GradientDescentParameters& optimizer_parameters,
     const TensorProductDomain& domain, const ThreadSchedule& thread_schedule,
     double const * restrict points_being_sampled, int num_to_sample,
     int num_being_sampled, double best_so_far, int max_int_steps, bool lhc_search_only,
     int num_lhc_samples, bool * restrict found_flag, UniformRandomGenerator * uniform_generator,
     NormalRNG * normal_rng, double * restrict best_points_to_sample);
 template void ComputeOptimalPointsToSample(
-    const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters,
+    const GaussianProcess& gaussian_process, const GradientDescentParameters& optimizer_parameters,
     const SimplexIntersectTensorProductDomain& domain, const ThreadSchedule& thread_schedule,
     double const * restrict points_being_sampled,
     int num_to_sample, int num_being_sampled, double best_so_far, int max_int_steps,

@@ -7,7 +7,9 @@ import simplejson as json
 
 from moe.optimal_learning.python.data_containers import SamplePoint, HistoricalData
 from moe.views.constant import ALL_REST_ROUTES_ROUTE_NAME_TO_ENDPOINT, GP_NEXT_POINTS_EPI_ROUTE_NAME, GP_MEAN_VAR_ROUTE_NAME, GP_HYPER_OPT_ROUTE_NAME
-from moe.views.schemas import GpNextPointsResponse, GpHyperOptResponse, GpMeanVarResponse
+from moe.views.schemas.gp_next_points_pretty_view import GpNextPointsResponse
+from moe.views.schemas.rest.gp_hyper_opt import GpHyperOptResponse
+from moe.views.schemas.rest.gp_mean_var import GpMeanVarResponse
 
 
 DEFAULT_HOST = '127.0.0.1'
@@ -100,7 +102,7 @@ def gp_hyper_opt(
 
 def gp_mean_var(
         points_sampled,
-        points_to_sample,
+        points_to_evaluate,
         rest_host=DEFAULT_HOST,
         rest_port=DEFAULT_PORT,
         testapp=None,
@@ -110,12 +112,12 @@ def gp_mean_var(
     endpoint = ALL_REST_ROUTES_ROUTE_NAME_TO_ENDPOINT[GP_MEAN_VAR_ROUTE_NAME]
     raw_payload = kwargs.copy()  # Any options can be set via the kwargs ('covariance_info' etc.)
 
-    raw_payload['points_to_sample'] = points_to_sample
+    raw_payload['points_to_evaluate'] = points_to_evaluate
 
     # Sanitize input points
     points_sampled_clean = [SamplePoint._make(point) for point in points_sampled]
     historical_data = HistoricalData(
-            len(points_to_sample[0]),  # The dim of the space
+            len(points_to_evaluate[0]),  # The dim of the space
             sample_points=points_sampled_clean,
             )
 
@@ -123,7 +125,7 @@ def gp_mean_var(
         raw_payload['gp_historical_info'] = historical_data.json_payload()
 
     if 'domain_info' not in raw_payload:
-        raw_payload['domain_info'] = {'dim': len(points_to_sample[0])}
+        raw_payload['domain_info'] = {'dim': len(points_to_evaluate[0])}
 
     json_payload = json.dumps(raw_payload)
 

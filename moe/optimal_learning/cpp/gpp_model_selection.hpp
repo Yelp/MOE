@@ -204,16 +204,18 @@
 #include <cmath>
 
 #include <algorithm>
+#include <limits>
 #include <memory>
 #include <vector>
 
 #include "gpp_common.hpp"
 #include "gpp_covariance.hpp"
 #include "gpp_domain.hpp"
+#include "gpp_exception.hpp"
 #include "gpp_logging.hpp"
 #include "gpp_mock_optimization_objective_functions.hpp"
 #include "gpp_optimization.hpp"
-#include "gpp_optimization_parameters.hpp"
+#include "gpp_optimizer_parameters.hpp"
 #include "gpp_random.hpp"
 
 namespace optimal_learning {
@@ -256,6 +258,9 @@ struct LeaveOneOutLogLikelihoodState;
 \endrst*/
 class LogMarginalLikelihoodEvaluator final {
  public:
+  //! string name of this log likelihood evaluator for logging
+  constexpr static char const * kName = "log_marginal_likelihood";
+
   using StateType = LogMarginalLikelihoodState;
 
   /*!\rst
@@ -390,7 +395,7 @@ class LogMarginalLikelihoodEvaluator final {
       :log_likelihood_state[1]: properly configured state object
     \output
       :log_likelihood_state[1]: state object with temporary storage modified
-      :hessian_hyperparameter_cov_matrix[num_sampled_][num_sampled_][n_hyper][n_hyper]:
+      :hessian_hyperparameter_cov_matrix[num_sampled][num_sampled][n_hyper][n_hyper]:
         ``(i,j,k,l)``-th entry is ``\mixpderiv{cov(X_i, X_j)}{\theta_k}{\theta_l}``
   \endrst*/
   void BuildHyperparameterHessianCovarianceMatrix(StateType * log_likelihood_state,
@@ -441,9 +446,9 @@ struct LogMarginalLikelihoodState final {
     return num_hyperparameters;
   }
 
-  void UpdateCurrentPoint(const EvaluatorType& log_likelihood_eval,
+  void SetCurrentPoint(const EvaluatorType& log_likelihood_eval,
                           double const * restrict hyperparameters) OL_NONNULL_POINTERS {
-    UpdateHyperparameters(log_likelihood_eval, hyperparameters);
+    SetHyperparameters(log_likelihood_eval, hyperparameters);
   }
 
   void GetCurrentPoint(double * restrict hyperparameters) OL_NONNULL_POINTERS {
@@ -468,7 +473,7 @@ struct LogMarginalLikelihoodState final {
       :log_likelihood_eval: LogMarginalLikelihoodEvaluator object that this state is being used with
       :hyperparameters[num_hyperparameters]: hyperparameters to change to
   \endrst*/
-  void UpdateHyperparameters(const EvaluatorType& log_likelihood_eval,
+  void SetHyperparameters(const EvaluatorType& log_likelihood_eval,
                              double const * restrict hyperparameters) OL_NONNULL_POINTERS;
 
   /*!\rst
@@ -542,6 +547,9 @@ struct LogMarginalLikelihoodState final {
 \endrst*/
 class LeaveOneOutLogLikelihoodEvaluator final {
  public:
+  //! string name of this log likelihood evaluator for logging
+  constexpr static char const * kName = "leave_one_out_log_likelihood";
+
   using StateType = LeaveOneOutLogLikelihoodState;
 
   /*!\rst
@@ -705,9 +713,9 @@ struct LeaveOneOutLogLikelihoodState final {
     return num_hyperparameters;
   }
 
-  void UpdateCurrentPoint(const EvaluatorType& log_likelihood_eval,
+  void SetCurrentPoint(const EvaluatorType& log_likelihood_eval,
                           double const * restrict hyperparameters) OL_NONNULL_POINTERS {
-    UpdateHyperparameters(log_likelihood_eval, hyperparameters);
+    SetHyperparameters(log_likelihood_eval, hyperparameters);
   }
 
   void GetCurrentPoint(double * restrict hyperparameters) OL_NONNULL_POINTERS {
@@ -732,7 +740,7 @@ struct LeaveOneOutLogLikelihoodState final {
       :log_likelihood_eval: LeaveOneOutLogLikelihoodEvaluator object that this state is being used with
       :hyperparameters[num_hyperparameters]: hyperparameters to change to
   \endrst*/
-  void UpdateHyperparameters(const EvaluatorType& log_likelihood_eval,
+  void SetHyperparameters(const EvaluatorType& log_likelihood_eval,
                              double const * restrict hyperparameters) OL_NONNULL_POINTERS;
 
   /*!\rst
@@ -855,7 +863,6 @@ OL_NONNULL_POINTERS void SetupLogLikelihoodState(const LogLikelihoodEvaluator& l
     :initial_guesses[num_hyperparameters][num_multistarts]: list of hyperparameters at which to compute log likelihood
     :num_hyperparameters: dimension of the domain
     :num_multistarts: number of random points to draw
-    :check_all_points: true to select the initial_guess with the best log_likelihood; false to select any initial_guess
     :log_likelihood_state[1]: properly constructed/configured LogLikelihoodEvaluator::State object
     :io_container[1]: properly constructed OptimizationIOContainer object
   \output
@@ -866,24 +873,20 @@ template <typename LogLikelihoodEvaluator>
 OL_NONNULL_POINTERS void InitializeBestKnownPoint(const LogLikelihoodEvaluator& log_likelihood_evaluator,
                                                   double const * restrict initial_guesses,
                                                   int num_hyperparameters, int num_multistarts,
-                                                  bool check_all_points,
                                                   typename LogLikelihoodEvaluator::StateType * log_likelihood_state,
                                                   OptimizationIOContainer * io_container) {
   // initialize io_container to the first point (arbitrary, but valid choice)
-  log_likelihood_state->UpdateCurrentPoint(log_likelihood_evaluator, initial_guesses);
-  io_container->best_objective_value_so_far = log_likelihood_evaluator.ComputeObjectiveFunction(log_likelihood_state);
+  io_container->best_objective_value_so_far = -std::numeric_limits<double>::infinity();
   std::copy(initial_guesses, initial_guesses + num_hyperparameters, io_container->best_point.data());
 
-  if (check_all_points) {
-    // eval objective at all initial_guesses, set io_container to the best values
-    for (int i = 1; i < num_multistarts; ++i) {
-      log_likelihood_state->UpdateCurrentPoint(log_likelihood_evaluator, initial_guesses + i*num_hyperparameters);
-      double log_likelihood = log_likelihood_evaluator.ComputeObjectiveFunction(log_likelihood_state);
-      if (io_container->best_objective_value_so_far < log_likelihood) {
-        io_container->best_objective_value_so_far = log_likelihood;
-        std::copy(initial_guesses + i*num_hyperparameters, initial_guesses + (i+1)*num_hyperparameters,
-                  io_container->best_point.data());
-      }
+  // eval objective at all initial_guesses, set io_container to the best values
+  for (int i = 0; i < num_multistarts; ++i) {
+    log_likelihood_state->SetCurrentPoint(log_likelihood_evaluator, initial_guesses + i*num_hyperparameters);
+    double log_likelihood = log_likelihood_evaluator.ComputeObjectiveFunction(log_likelihood_state);
+    if (io_container->best_objective_value_so_far < log_likelihood) {
+      io_container->best_objective_value_so_far = log_likelihood;
+      std::copy(initial_guesses + i*num_hyperparameters, initial_guesses + (i+1)*num_hyperparameters,
+                io_container->best_point.data());
     }
   }
 }
@@ -892,7 +895,7 @@ OL_NONNULL_POINTERS void InitializeBestKnownPoint(const LogLikelihoodEvaluator& 
   Optimize a log likelihood measure of model fit (as a function of the hyperparameters
   of a covariance function) using the prior (i.e., sampled points, values).  Optimization is done
   using restarted Gradient Descent, via GradientDescentOptimizer<...>::Optimize() from gpp_optimization.hpp.
-  Please see that file for details on gradient descent and see gpp_optimization_parameters.hpp for the meanings of
+  Please see that file for details on gradient descent and see gpp_optimizer_parameters.hpp for the meanings of
   the GradientDescentParameters.
 
   This function is just a simple wrapper that sets up the Evaluator's State and calls a general template for restarted GD.
@@ -999,6 +1002,10 @@ OL_NONNULL_POINTERS void MultistartGradientDescentHyperparameterOptimization(
     bool * restrict found_flag,
     UniformRandomGenerator * uniform_generator,
     double * restrict next_hyperparameters) {
+  if (unlikely(gd_parameters.num_multistarts <= 0)) {
+    OL_THROW_EXCEPTION(LowerBoundException<int>, "num_multistarts must be > 1", gd_parameters.num_multistarts, 1);
+  }
+
   const int num_hyperparameters = covariance.GetNumberOfHyperparameters();
   std::vector<double> initial_guesses(num_hyperparameters*gd_parameters.num_multistarts);
   std::vector<ClosedInterval> domain_linearspace_bounds(domain, domain + num_hyperparameters);
@@ -1014,7 +1021,7 @@ OL_NONNULL_POINTERS void MultistartGradientDescentHyperparameterOptimization(
 
   OptimizationIOContainer io_container(log_likelihood_state_vector[0].GetProblemSize());
   InitializeBestKnownPoint(log_likelihood_evaluator, initial_guesses.data(), num_hyperparameters,
-                           gd_parameters.num_multistarts, true, log_likelihood_state_vector.data(), &io_container);
+                           gd_parameters.num_multistarts, log_likelihood_state_vector.data(), &io_container);
 
   GradientDescentOptimizer<LogLikelihoodEvaluator, TensorProductDomain> gd_opt;
   MultistartOptimizer<GradientDescentOptimizer<LogLikelihoodEvaluator, TensorProductDomain> > multistart_optimizer;
@@ -1032,7 +1039,7 @@ OL_NONNULL_POINTERS void MultistartGradientDescentHyperparameterOptimization(
   Optimize a log likelihood measure of model fit (as a function of the hyperparameters
   of a covariance function) using the prior (i.e., sampled points, values).  Optimization is done
   using Newton's method for optimization, via NewtonOptimization() from gpp_optimization.hpp.
-  Please see that file for details on Newton and see gpp_optimization_parameters.hpp for the meanings of the NewtonParameters.
+  Please see that file for details on Newton and see gpp_optimizer_parameters.hpp for the meanings of the NewtonParameters.
 
   This function is just a simple wrapper that sets up the Evaluator's State and calls a general template for Newton,
   NewtonOptimization<...>(...) (in gpp_optimization.hpp).
@@ -1136,6 +1143,10 @@ OL_NONNULL_POINTERS void MultistartNewtonHyperparameterOptimization(
     bool * restrict found_flag,
     UniformRandomGenerator * uniform_generator,
     double * restrict next_hyperparameters) {
+  if (unlikely(newton_parameters.num_multistarts <= 0)) {
+    OL_THROW_EXCEPTION(LowerBoundException<int>, "num_multistarts must be > 1", newton_parameters.num_multistarts, 1);
+  }
+
   const int num_hyperparameters = covariance.GetNumberOfHyperparameters();
   std::vector<double> initial_guesses(num_hyperparameters*newton_parameters.num_multistarts);
   std::vector<ClosedInterval> domain_linearspace_bounds(domain, domain + num_hyperparameters);
@@ -1151,7 +1162,7 @@ OL_NONNULL_POINTERS void MultistartNewtonHyperparameterOptimization(
 
   OptimizationIOContainer io_container(log_likelihood_state_vector[0].GetProblemSize());
   InitializeBestKnownPoint(log_likelihood_evaluator, initial_guesses.data(), num_hyperparameters,
-                           newton_parameters.num_multistarts, true, log_likelihood_state_vector.data(), &io_container);
+                           newton_parameters.num_multistarts, log_likelihood_state_vector.data(), &io_container);
 
   NewtonOptimizer<LogLikelihoodEvaluator, TensorProductDomain> newton_opt;
   MultistartOptimizer<NewtonOptimizer<LogLikelihoodEvaluator, TensorProductDomain> > multistart_optimizer;
@@ -1187,6 +1198,7 @@ OL_NONNULL_POINTERS void MultistartNewtonHyperparameterOptimization(
     :initial_guesses[n_hyper][num_multistarts]: list of hyperparameters at which to compute log likelihood
     :num_multistarts: number of random points to generate for use as initial guesses
   \output
+    :found_flag[1]: true if next_hyperparameters corresponds to a finite log likelihood
     :function_values[num_multistarts]: log likelihood evaluated at each point of initial_guesses, in the same order as initial_guesses; never dereferenced if nullptr
     :next_hyperparameters[n_hyper]: the new hyperparameters found by "dumb" search
 \endrst*/
@@ -1198,16 +1210,22 @@ void EvaluateLogLikelihoodAtPointList(
     const ThreadSchedule& thread_schedule,
     double const * restrict initial_guesses,
     int num_multistarts,
+    bool * restrict found_flag,
     double * restrict function_values,
     double * restrict next_hyperparameters) {
+  if (unlikely(num_multistarts <= 0)) {
+    OL_THROW_EXCEPTION(LowerBoundException<int>, "num_multistarts must be > 1", num_multistarts, 1);
+  }
+
   std::vector<typename LogLikelihoodEvaluator::StateType> log_likelihood_state_vector;
   SetupLogLikelihoodState(log_likelihood_evaluator, covariance, thread_schedule.max_num_threads,
                           &log_likelihood_state_vector);
 
-  const int num_hyperparameters = covariance.GetNumberOfHyperparameters();
-  OptimizationIOContainer io_container(log_likelihood_state_vector[0].GetProblemSize());
-  InitializeBestKnownPoint(log_likelihood_evaluator, initial_guesses, num_hyperparameters, num_multistarts,
-                           false, log_likelihood_state_vector.data(), &io_container);
+  // initialize io_container to the first point (arbitrary, but valid choice)
+  // set the value to -infinity
+  OptimizationIOContainer io_container(log_likelihood_state_vector[0].GetProblemSize(),
+                                       -std::numeric_limits<double>::infinity(),
+                                       initial_guesses);
 
   NullOptimizer<LogLikelihoodEvaluator, DomainType> null_opt;
   typename NullOptimizer<LogLikelihoodEvaluator, DomainType>::ParameterStruct null_parameters;
@@ -1217,6 +1235,7 @@ void EvaluateLogLikelihoodAtPointList(
                                           num_multistarts, log_likelihood_state_vector.data(),
                                           function_values, &io_container);
 
+  *found_flag = io_container.found_flag;
   std::copy(io_container.best_point.begin(), io_container.best_point.end(), next_hyperparameters);
 }
 
@@ -1246,6 +1265,7 @@ void EvaluateLogLikelihoodAtPointList(
     :num_multistarts: number of random points to generate for use as initial guesses
     :uniform_generator[1]: a UniformRandomGenerator object providing the random engine for uniform random numbers
   \output
+    :found_flag[1]: true if next_hyperparameters corresponds to a finite log likelihood
     :uniform_generator[1]: UniformRandomGenerator object will have its state changed due to random draws
     :next_hyperparameters[n_hyper]: the new hyperparameters found by "dumb" search
 \endrst*/
@@ -1256,6 +1276,7 @@ OL_NONNULL_POINTERS void LatinHypercubeSearchHyperparameterOptimization(
     ClosedInterval const * restrict domain,
     const ThreadSchedule& thread_schedule,
     int num_multistarts,
+    bool * restrict found_flag,
     UniformRandomGenerator * uniform_generator,
     double * restrict next_hyperparameters) {
   const int num_hyperparameters = covariance.GetNumberOfHyperparameters();
@@ -1268,7 +1289,7 @@ OL_NONNULL_POINTERS void LatinHypercubeSearchHyperparameterOptimization(
 
   EvaluateLogLikelihoodAtPointList(log_likelihood_evaluator, covariance, domain_linearspace,
                                    thread_schedule, initial_guesses.data(), num_multistarts,
-                                   nullptr, next_hyperparameters);
+                                   found_flag, nullptr, next_hyperparameters);
 }
 
 }  // end namespace optimal_learning

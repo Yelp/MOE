@@ -33,7 +33,7 @@
 #include "gpp_heuristic_expected_improvement_optimization.hpp"
 #include "gpp_math.hpp"
 #include "gpp_optimization.hpp"
-#include "gpp_optimization_parameters.hpp"
+#include "gpp_optimizer_parameters.hpp"
 #include "gpp_python_common.hpp"
 
 namespace optimal_learning {
@@ -106,7 +106,7 @@ boost::python::list ComputeGradExpectedImprovementWrapper(const GaussianProcess&
   This is just used to reduce copy-pasted code.
 
   \param
-    :optimization_parameters: python/cpp_wrappers/optimization._CppOptimizationParameters
+    :optimizer_parameters: python/cpp_wrappers/optimization._CppOptimizerParameters
       Python object containing the DomainTypes domain_type and OptimizerTypes optimzer_type to use as well as
       appropriate parameter structs e.g., NewtonParameters for type kNewton).
       See comments on the python interface for multistart_expected_improvement_optimization_wrapper
@@ -127,7 +127,7 @@ boost::python::list ComputeGradExpectedImprovementWrapper(const GaussianProcess&
     :best_points_to_sample[num_to_sample][dim]: next set of points to evaluate
 \endrst*/
 template <typename DomainType>
-void DispatchExpectedImprovementOptimization(const boost::python::object& optimization_parameters,
+void DispatchExpectedImprovementOptimization(const boost::python::object& optimizer_parameters,
                                              const GaussianProcess& gaussian_process,
                                              const PythonInterfaceInputContainer& input_container,
                                              const DomainType& domain,
@@ -141,8 +141,8 @@ void DispatchExpectedImprovementOptimization(const boost::python::object& optimi
   switch (optimizer_type) {
     case OptimizerTypes::kNull: {
       ThreadSchedule thread_schedule(max_num_threads, omp_sched_static);
-      // optimization_parameters must contain an int num_random_samples field, extract it
-      int num_random_samples = boost::python::extract<int>(optimization_parameters.attr("num_random_samples"));
+      // optimizer_parameters must contain an int num_random_samples field, extract it
+      int num_random_samples = boost::python::extract<int>(optimizer_parameters.attr("num_random_samples"));
 
       ComputeOptimalPointsToSampleViaLatinHypercubeSearch(gaussian_process, domain, thread_schedule,
                                                           input_container.points_being_sampled.data(),
@@ -153,15 +153,15 @@ void DispatchExpectedImprovementOptimization(const boost::python::object& optimi
                                                           randomness_source.normal_rng_vec.data(),
                                                           best_points_to_sample);
 
-      status[std::string() + "lhc_" + domain.kName + "_domain_found_update"] = found_flag;
+      status[std::string("lhc_") + domain.kName + "_domain_found_update"] = found_flag;
       break;
     }  // end case kNull optimizer_type
     case OptimizerTypes::kGradientDescent: {
-      // optimization_parameters must contain a optimizer_parameters field
+      // optimizer_parameters must contain a optimizer_parameters field
       // of type GradientDescentParameters. extract it
-      const GradientDescentParameters& gradient_descent_parameters = boost::python::extract<GradientDescentParameters&>(optimization_parameters.attr("optimizer_parameters"));
+      const GradientDescentParameters& gradient_descent_parameters = boost::python::extract<GradientDescentParameters&>(optimizer_parameters.attr("optimizer_parameters"));
       ThreadSchedule thread_schedule(max_num_threads, omp_sched_dynamic);
-      int num_random_samples = boost::python::extract<int>(optimization_parameters.attr("num_random_samples"));
+      int num_random_samples = boost::python::extract<int>(optimizer_parameters.attr("num_random_samples"));
 
       bool random_search_only = false;
       ComputeOptimalPointsToSample(gaussian_process, gradient_descent_parameters, domain, thread_schedule,
@@ -171,7 +171,7 @@ void DispatchExpectedImprovementOptimization(const boost::python::object& optimi
                                    &randomness_source.uniform_generator,
                                    randomness_source.normal_rng_vec.data(), best_points_to_sample);
 
-      status[std::string() + "gradient_descent_" + domain.kName + "_domain_found_update"] = found_flag;
+      status[std::string("gradient_descent_") + domain.kName + "_domain_found_update"] = found_flag;
       break;
     }  // end case kGradientDescent optimizer_type
     default: {
@@ -182,7 +182,7 @@ void DispatchExpectedImprovementOptimization(const boost::python::object& optimi
   }  // end switch over optimizer_type
 }
 
-boost::python::list MultistartExpectedImprovementOptimizationWrapper(const boost::python::object& optimization_parameters,
+boost::python::list MultistartExpectedImprovementOptimizationWrapper(const boost::python::object& optimizer_parameters,
                                                                      const GaussianProcess& gaussian_process,
                                                                      const boost::python::list& domain_bounds,
                                                                      const boost::python::list& points_being_sampled,
@@ -192,7 +192,7 @@ boost::python::list MultistartExpectedImprovementOptimizationWrapper(const boost
                                                                      RandomnessSourceContainer& randomness_source,
                                                                      boost::python::dict& status) {
   // TODO(GH-131): make domain objects constructible from python; and pass them in through
-  // the optimization_parameters python object
+  // the optimizer_parameters python object
 
   // abort if we do not have enough sources of randomness to run with max_num_threads
   if (unlikely(max_num_threads > static_cast<int>(randomness_source.normal_rng_vec.size()))) {
@@ -207,13 +207,13 @@ boost::python::list MultistartExpectedImprovementOptimizationWrapper(const boost
 
   std::vector<double> best_points_to_sample_C(input_container.dim*num_to_sample);
 
-  DomainTypes domain_type = boost::python::extract<DomainTypes>(optimization_parameters.attr("domain_type"));
-  OptimizerTypes optimizer_type = boost::python::extract<OptimizerTypes>(optimization_parameters.attr("optimizer_type"));
+  DomainTypes domain_type = boost::python::extract<DomainTypes>(optimizer_parameters.attr("domain_type"));
+  OptimizerTypes optimizer_type = boost::python::extract<OptimizerTypes>(optimizer_parameters.attr("optimizer_type"));
   switch (domain_type) {
     case DomainTypes::kTensorProduct: {
       TensorProductDomain domain(domain_bounds_C.data(), input_container.dim);
 
-      DispatchExpectedImprovementOptimization(optimization_parameters, gaussian_process, input_container,
+      DispatchExpectedImprovementOptimization(optimizer_parameters, gaussian_process, input_container,
                                               domain, optimizer_type, num_to_sample, best_so_far,
                                               max_int_steps, max_num_threads, randomness_source,
                                               status, best_points_to_sample_C.data());
@@ -222,7 +222,7 @@ boost::python::list MultistartExpectedImprovementOptimizationWrapper(const boost
     case DomainTypes::kSimplex: {
       SimplexIntersectTensorProductDomain domain(domain_bounds_C.data(), input_container.dim);
 
-      DispatchExpectedImprovementOptimization(optimization_parameters, gaussian_process, input_container,
+      DispatchExpectedImprovementOptimization(optimizer_parameters, gaussian_process, input_container,
                                               domain, optimizer_type, num_to_sample, best_so_far,
                                               max_int_steps, max_num_threads, randomness_source,
                                               status, best_points_to_sample_C.data());
@@ -243,7 +243,7 @@ boost::python::list MultistartExpectedImprovementOptimizationWrapper(const boost
   This is just used to reduce copy-pasted code.
 
   \param
-    :optimization_parameters: python/cpp_wrappers/optimization._CppOptimizationParameters
+    :optimizer_parameters: python/cpp_wrappers/optimization._CppOptimizerParameters
       Python object containing the DomainTypes domain_type and OptimizerTypes optimzer_type to use as well as
       appropriate parameter structs e.g., NewtonParameters for type kNewton).
       See comments on the python interface for multistart_expected_improvement_optimization_wrapper
@@ -263,7 +263,7 @@ boost::python::list MultistartExpectedImprovementOptimizationWrapper(const boost
     :best_points_to_sample[num_to_sample][dim]: next set of points to evaluate
 \endrst*/
 template <typename DomainType>
-void DispatchHeuristicExpectedImprovementOptimization(const boost::python::object& optimization_parameters,
+void DispatchHeuristicExpectedImprovementOptimization(const boost::python::object& optimizer_parameters,
                                                       const GaussianProcess& gaussian_process,
                                                       const DomainType& domain,
                                                       OptimizerTypes optimizer_type,
@@ -276,8 +276,8 @@ void DispatchHeuristicExpectedImprovementOptimization(const boost::python::objec
   bool found_flag = false;
   switch (optimizer_type) {
     case OptimizerTypes::kNull: {
-      // optimization_parameters must contain an int num_multistarts field, extract it
-      int num_random_samples = boost::python::extract<int>(optimization_parameters.attr("num_random_samples"));
+      // optimizer_parameters must contain an int num_multistarts field, extract it
+      int num_random_samples = boost::python::extract<int>(optimizer_parameters.attr("num_random_samples"));
 
       bool random_search_only = true;
       GradientDescentParameters gradient_descent_parameters(0, 0, 0, 1.0, 1.0, 1.0, 0.0);  // dummy struct; we aren't using gradient descent
@@ -287,14 +287,14 @@ void DispatchHeuristicExpectedImprovementOptimization(const boost::python::objec
                                      &found_flag, &randomness_source.uniform_generator,
                                      best_points_to_sample);
 
-      status[std::string() + "lhc_" + domain.kName + "_domain_found_update"] = found_flag;
+      status[std::string("lhc_") + domain.kName + "_domain_found_update"] = found_flag;
       break;
     }  // end case kNull optimizer_type
     case OptimizerTypes::kGradientDescent: {
-      // optimization_parameters must contain a optimizer_parameters field
+      // optimizer_parameters must contain a optimizer_parameters field
       // of type GradientDescentParameters. extract it
-      const GradientDescentParameters& gradient_descent_parameters = boost::python::extract<GradientDescentParameters&>(optimization_parameters.attr("optimizer_parameters"));
-      int num_random_samples = boost::python::extract<int>(optimization_parameters.attr("num_random_samples"));
+      const GradientDescentParameters& gradient_descent_parameters = boost::python::extract<GradientDescentParameters&>(optimizer_parameters.attr("optimizer_parameters"));
+      int num_random_samples = boost::python::extract<int>(optimizer_parameters.attr("num_random_samples"));
 
       bool random_search_only = false;
       ComputeHeuristicPointsToSample(gaussian_process, gradient_descent_parameters, domain,
@@ -303,7 +303,7 @@ void DispatchHeuristicExpectedImprovementOptimization(const boost::python::objec
                                      &found_flag, &randomness_source.uniform_generator,
                                      best_points_to_sample);
 
-      status[std::string() + "gradient_descent_" + domain.kName + "_domain_found_update"] = found_flag;
+      status[std::string("gradient_descent_") + domain.kName + "_domain_found_update"] = found_flag;
       break;
     }  // end case kGradientDescent optimizer_type
     default: {
@@ -314,7 +314,7 @@ void DispatchHeuristicExpectedImprovementOptimization(const boost::python::objec
   }  // end switch over optimizer_type
 }
 
-boost::python::list HeuristicExpectedImprovementOptimizationWrapper(const boost::python::object& optimization_parameters,
+boost::python::list HeuristicExpectedImprovementOptimizationWrapper(const boost::python::object& optimizer_parameters,
                                                                     const GaussianProcess& gaussian_process,
                                                                     const boost::python::list& domain_bounds,
                                                                     const ObjectiveEstimationPolicyInterface& estimation_policy,
@@ -322,20 +322,20 @@ boost::python::list HeuristicExpectedImprovementOptimizationWrapper(const boost:
                                                                     RandomnessSourceContainer& randomness_source,
                                                                     boost::python::dict& status) {
   // TODO(GH-131): make domain objects constructible from python; and pass them in through
-  // the optimization_parameters python object
+  // the optimizer_parameters python object
   int dim = gaussian_process.dim();
   std::vector<ClosedInterval> domain_bounds_C(dim);
   CopyPylistToClosedIntervalVector(domain_bounds, dim, domain_bounds_C);
 
   std::vector<double> best_points_to_sample_C(dim*num_to_sample);
 
-  DomainTypes domain_type = boost::python::extract<DomainTypes>(optimization_parameters.attr("domain_type"));
-  OptimizerTypes optimizer_type = boost::python::extract<OptimizerTypes>(optimization_parameters.attr("optimizer_type"));
+  DomainTypes domain_type = boost::python::extract<DomainTypes>(optimizer_parameters.attr("domain_type"));
+  OptimizerTypes optimizer_type = boost::python::extract<OptimizerTypes>(optimizer_parameters.attr("optimizer_type"));
   switch (domain_type) {
     case DomainTypes::kTensorProduct: {
       TensorProductDomain domain(domain_bounds_C.data(), dim);
 
-      DispatchHeuristicExpectedImprovementOptimization(optimization_parameters, gaussian_process, domain,
+      DispatchHeuristicExpectedImprovementOptimization(optimizer_parameters, gaussian_process, domain,
                                                        optimizer_type, estimation_policy, num_to_sample,
                                                        best_so_far, max_num_threads, randomness_source,
                                                        status, best_points_to_sample_C.data());
@@ -344,7 +344,7 @@ boost::python::list HeuristicExpectedImprovementOptimizationWrapper(const boost:
     case DomainTypes::kSimplex: {
       SimplexIntersectTensorProductDomain domain(domain_bounds_C.data(), dim);
 
-      DispatchHeuristicExpectedImprovementOptimization(optimization_parameters, gaussian_process, domain,
+      DispatchHeuristicExpectedImprovementOptimization(optimizer_parameters, gaussian_process, domain,
                                                        optimizer_type, estimation_policy, num_to_sample,
                                                        best_so_far, max_num_threads, randomness_source,
                                                        status, best_points_to_sample_C.data());
@@ -505,8 +505,8 @@ void ExportExpectedImprovementFunctions() {
     Can optimize for num_to_sample new points to sample (i.e., aka "q", experiments to run) simultaneously.
     Allows the user to specify num_being_sampled (aka "p") ongoing/concurrent experiments.
 
-    The _CppOptimizationParameters object is a python class defined in:
-    python/cpp_wrappers/optimization._CppOptimizationParameters
+    The _CppOptimizerParameters object is a python class defined in:
+    python/cpp_wrappers/optimization._CppOptimizerParameters
     See that class definition for more details.
 
     This function expects it to have the fields:
@@ -515,15 +515,15 @@ void ExportExpectedImprovementFunctions() {
     * optimizer_type (OptimizerTypes enum from this file)
     * num_random_samples (int, number of samples to 'dumb' search over, if 'dumb' search is being used.
       e.g., if optimizer = kNull or if to_sample > 1)
-    * optimizer_parameters (*Parameters struct (gpp_optimization_parameters.hpp) where * matches optimizer_type
+    * optimizer_parameters (*Parameters struct (gpp_optimizer_parameters.hpp) where * matches optimizer_type
       unused if optimizer_type == kNull)
 
     .. WARNING:: this function FAILS and returns an EMPTY LIST if the number of random sources < max_num_threads
 
-    :param optimization_parameters: python object containing the DomainTypes domain_type and
+    :param optimizer_parameters: python object containing the DomainTypes domain_type and
       OptimizerTypes optimzer_type to use as well as
       appropriate parameter structs e.g., NewtonParameters for type kNewton)
-    :type optimization_parameters: _CppOptimizationParameters
+    :type optimizer_parameters: _CppOptimizerParameters
     :param gaussian_process: GaussianProcess object (holds points_sampled, values, noise_variance, derived quantities)
     :type gaussian_process: GPP.GaussianProcess (boost::python ctor wrapper around optimal_learning::GaussianProcess)
     :param domain: [lower, upper] bound pairs for each dimension
@@ -567,8 +567,8 @@ void ExportExpectedImprovementFunctions() {
 
     See gpp_heuristic_expected_improvement_optimization.hpp for further details on the algorithm.
 
-    The _CppOptimizationParameters object is a python class defined in:
-    ``python/cpp_wrappers/optimization._CppOptimizationParameters``
+    The _CppOptimizerParameters object is a python class defined in:
+    ``python/cpp_wrappers/optimization._CppOptimizerParameters``
     See that class definition for more details.
 
     This function expects it to have the fields:
@@ -577,15 +577,15 @@ void ExportExpectedImprovementFunctions() {
     * optimizer_type (OptimizerTypes enum from this file)
     * num_random_samples (int, number of samples to 'dumb' search over, if 'dumb' search is being used.
       e.g., if optimizer = kNull or if to_sample > 1)
-    * optimizer_parameters (*Parameters struct (gpp_optimization_parameters.hpp) where * matches optimizer_type
+    * optimizer_parameters (*Parameters struct (gpp_optimizer_parameters.hpp) where * matches optimizer_type
       unused if optimizer_type == kNull)
 
     .. WARNING:: this function FAILS and returns an EMPTY LIST if the number of random sources < max_num_threads
 
-    :param optimization_parameters: python object containing the DomainTypes domain_type and
+    :param optimizer_parameters: python object containing the DomainTypes domain_type and
       OptimizerTypes optimzer_type to use as well as
       appropriate parameter structs e.g., NewtonParameters for type kNewton)
-    :type optimization_parameters: _CppOptimizationParameters
+    :type optimizer_parameters: _CppOptimizerParameters
     :param gaussian_process: GaussianProcess object (holds points_sampled, values, noise_variance, derived quantities)
     :type gaussian_process: GPP.GaussianProcess (boost::python ctor wrapper around optimal_learning::GaussianProcess)
     :param domain: [lower, upper] bound pairs for each dimension

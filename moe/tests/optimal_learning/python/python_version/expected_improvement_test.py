@@ -11,7 +11,7 @@ from moe.optimal_learning.python.python_version.covariance import SquareExponent
 from moe.optimal_learning.python.python_version.domain import TensorProductDomain
 from moe.optimal_learning.python.python_version.expected_improvement import multistart_expected_improvement_optimization, ExpectedImprovement
 from moe.optimal_learning.python.python_version.gaussian_process import GaussianProcess
-from moe.optimal_learning.python.python_version.optimization import GradientDescentParameters, GradientDescentOptimizer
+from moe.optimal_learning.python.python_version.optimization import GradientDescentParameters, GradientDescentOptimizer, LBFGSBParameters, LBFGSBOptimizer
 from moe.optimal_learning.python.repeated_domain import RepeatedDomain
 from moe.tests.optimal_learning.python.gaussian_process_test_case import GaussianProcessTestCase, GaussianProcessTestEnvironmentInput
 
@@ -52,6 +52,21 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
 
     num_mc_iterations = 747
     rng_seed = 314
+
+    approx_grad = True
+    max_func_evals = 150000
+    max_metric_correc = 10
+    factr = 10.0
+    pgtol = 1e-10
+    epsilon = 1e-8
+    BFGS_parameters = LBFGSBParameters(
+        approx_grad,
+        max_func_evals,
+        max_metric_correc,
+        factr,
+        pgtol,
+        epsilon,
+    )
 
     @T.class_setup
     def base_setup(self):
@@ -317,6 +332,57 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
         for index in numpy.ndindex(grad_ei_final.shape):
             T.assert_lt(numpy.fabs(grad_ei_final[index]), numpy.fabs(grad_ei_initial[index]))
 
+    def test_multistart_qei_expected_improvement_dfo(self):
+        """Check that multistart optimization (BFGS) can find the optimum point to sample (using 2-EI)."""
+        numpy.random.seed(7860)
+        index = numpy.argmax(numpy.greater_equal(self.num_sampled_list, 20))
+        domain, gaussian_process = self.gp_test_environments[index]
+
+        tolerance = 6.0e-5
+        num_multistarts = 3
+
+        # Expand the domain so that we are definitely not doing constrained optimization
+        expanded_domain = TensorProductDomain([ClosedInterval(-4.0, 3.0)] * self.dim)
+        num_to_sample = 2
+        repeated_domain = RepeatedDomain(num_to_sample, expanded_domain)
+
+        num_mc_iterations = 100000
+        # Just any random point that won't be optimal
+        points_to_sample = repeated_domain.generate_random_point_in_domain()
+        ei_eval = ExpectedImprovement(gaussian_process, points_to_sample, num_mc_iterations=num_mc_iterations)
+        # Compute EI and its gradient for the sake of comparison
+        ei_initial = ei_eval.compute_expected_improvement()
+
+        ei_optimizer = LBFGSBOptimizer(repeated_domain, ei_eval, self.BFGS_parameters)
+        best_point = multistart_expected_improvement_optimization(ei_optimizer, num_multistarts, num_to_sample)
+
+        # Check that gradients are "small" or on border. MC is very inaccurate near 0, so use finite difference
+        # gradient instead.
+        ei_eval.current_point = best_point
+        ei_final = ei_eval.compute_expected_improvement()
+
+        finite_diff_grad = numpy.zeros(best_point.shape)
+        h_value = 0.00001
+        for i in range(best_point.shape[0]):
+            for j in range(best_point.shape[1]):
+                best_point[i, j] += h_value
+                ei_eval.current_point = best_point
+                ei_upper = ei_eval.compute_expected_improvement()
+                best_point[i, j] -= 2 * h_value
+                ei_eval.current_point = best_point
+                ei_lower = ei_eval.compute_expected_improvement()
+                best_point[i, j] += h_value
+                finite_diff_grad[i, j] = (ei_upper - ei_lower) / (2 * h_value)
+
+        self.assert_vector_within_relative(finite_diff_grad, numpy.zeros(finite_diff_grad.shape), tolerance)
+
+        # Check that output is in the domain
+        T.assert_true(repeated_domain.check_point_inside(best_point))
+
+        # Since we didn't really converge to the optimal EI (too costly), do some other sanity checks
+        # EI should have improved
+        T.assert_gt(ei_final, ei_initial)
+
     def test_qd_ei_with_self(self):
         """Compare the 1D analytic EI results to the qD analytic EI results, checking several random points per test case.
 
@@ -358,7 +424,7 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
     def test_qd_and_1d_return_same_analytic_ei(self):
         """Compare the 1D analytic EI results to the qD analytic EI results, checking several random points per test case."""
         num_tests_per_case = 10
-        ei_tolerance = 6.0e-10
+        ei_tolerance = 1.0e-9
 
         for test_case in self.gp_test_environments:
             domain, python_gp = test_case

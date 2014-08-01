@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 r"""Tools to compute log likelihood-like measures of model fit and optimize them (wrt the hyperparameters of covariance).
 
-See the file comments in interfaces/log_likelihood_interface.py for an overview of log likelihood-like metrics and their role
+See the file comments in :mod:`moe.optimal_learning.python.interfaces.log_likelihood_interface`
+for an overview of log likelihood-like metrics and their role
 in model selection. This file provides hooks to implementations of two such metrics in C++: Log Marginal Likelihood and
 Leave One Out Cross Validation Log Pseudo-Likelihood.
 
 .. Note:: This is a copy of the file comments in gpp_model_selection.hpp.
-  These comments are copied in python_version/log_likelihood.py.
+  These comments are copied in :mod:`moe.optimal_learning.python.python_version.log_likelihood`.
   See this file's comments and interfaces.log_likelihood_interface for more details as well as the hpp and corresponding .cpp file.
 
 **a. LOG MARGINAL LIKELIHOOD (LML)**
@@ -69,18 +70,20 @@ def multistart_hyperparameter_optimization(
 ):
     r"""Select the hyperparameters that maximize the specified log likelihood measure of model fit (over the historical data) within the specified domain.
 
-    .. Note:: The following comments are copied to multistart_hyperparameter_optimization() in python_version/log_likelihood.py
+    .. Note:: The following comments are copied to
+      :mod:`moe.optimal_learning.python.python_version.log_likelihood.multistart_hyperparameter_optimization`.
 
-    See GaussianProcessLogMarginalLikelihood and GaussianProcessLeaveOneOutLogLikelihood for an overview of some
-    example log likelihood-like measures.
+    See :class:`moe.optimal_learning.python.cpp_wrappers.log_likelihood.GaussianProcessLogMarginalLikelihood` and
+    :class:`moe.optimal_learning.python.cpp_wrappers.log_likelihood.GaussianProcessLeaveOneOutLogLikelihood`
+    for an overview of some example log likelihood-like measures.
 
     Optimizers are: null ('dumb' search), gradient descent, newton
     Newton is the suggested optimizer.
 
     'dumb' search means this will just evaluate the objective log likelihood measure at num_multistarts 'points'
     (hyperparameters) in the domain, uniformly sampled using latin hypercube sampling.
-    The hyperparameter_optimization_parameters input specifies the desired optimization technique as well as parameters controlling
-    its behavior (see cpp_wrappers.optimization.py).
+    The hyperparameter_optimizer_parameters input specifies the desired optimization technique as well as parameters controlling
+    its behavior (see :mod:`moe.optimal_learning.python.cpp_wrappers.optimization`).
 
     See gpp_python_common.cpp for C++ enum declarations laying out the options for objective and optimizer types.
 
@@ -98,13 +101,13 @@ def multistart_hyperparameter_optimization(
 
     :param ei_optimizer: object that optimizes (e.g., gradient descent, newton) log likelihood over a domain
     :type ei_optimizer: cpp_wrappers.optimization.*Optimizer object
-    :param num_multistarts: number of times to multistart ``ei_optimizer`` (UNUSED, data is in log_likelihood_optimizer.optimization_parameters)
+    :param num_multistarts: number of times to multistart ``ei_optimizer`` (UNUSED, data is in log_likelihood_optimizer.optimizer_parameters)
     :type num_multistarts: int > 0
     :param randomness: RNGs used by C++ to generate initial guesses
     :type randomness: RandomnessSourceContainer (C++ object; e.g., from C_GP.RandomnessSourceContainer())
     :param max_num_threads: maximum number of threads to use, >= 1
     :type max_num_threads: int > 0
-    :param status: status messages from C++ (e.g., reporting on optimizer success, etc.)
+    :param status: (output) status messages from C++ (e.g., reporting on optimizer success, etc.)
     :type status: dict
     :return: hyperparameters that maximize the specified log likelihood measure within the specified domain
     :rtype: array of float64 with shape (log_likelihood_optimizer.objective_function.num_hyperparameters)
@@ -125,7 +128,7 @@ def multistart_hyperparameter_optimization(
     domain_bounds_log10 = numpy.log10(log_likelihood_optimizer.domain._domain_bounds)
 
     hyperparameters_opt = C_GP.multistart_hyperparameter_optimization(
-        log_likelihood_optimizer.optimization_parameters,
+        log_likelihood_optimizer.optimizer_parameters,
         cpp_utils.cppify(domain_bounds_log10),
         cpp_utils.cppify(log_likelihood_optimizer.objective_function._points_sampled),
         cpp_utils.cppify(log_likelihood_optimizer.objective_function._points_sampled_value),
@@ -144,6 +147,7 @@ def evaluate_log_likelihood_at_hyperparameter_list(
         log_likelihood_evaluator,
         hyperparameters_to_evaluate,
         max_num_threads=DEFAULT_MAX_NUM_THREADS,
+        status=None,
 ):
     """Compute the specified log likelihood measure at each input set of hyperparameters.
 
@@ -158,10 +162,16 @@ def evaluate_log_likelihood_at_hyperparameter_list(
     :type hyperparameters_to_evaluate: array of float64 with shape (num_to_eval, log_likelihood_evaluator.num_hyperparameters)
     :param max_num_threads: maximum number of threads to use, >= 1
     :type max_num_threads: int > 0
+    :param status: (output) status messages from C++ (e.g., reporting on optimizer success, etc.)
+    :type status: dict
     :return: log likelihood value at each specified set of hyperparameters
     :rtype: array of float64 with shape (hyperparameters_to_evaluate.shape[0])
 
     """
+    # status must be an initialized dict for the call to C++.
+    if status is None:
+        status = {}
+
     # We could just call log_likelihood_evaluator.compute_log_likelihood() in a loop, but instead we do
     # the looping in C++ where it can be multithreaded.
     log_likelihood_list = C_GP.evaluate_log_likelihood_at_hyperparameter_list(
@@ -175,6 +185,7 @@ def evaluate_log_likelihood_at_hyperparameter_list(
         cpp_utils.cppify(log_likelihood_evaluator._points_sampled_noise_variance),
         hyperparameters_to_evaluate.shape[0],
         max_num_threads,
+        status,
     )
     return numpy.array(log_likelihood_list)
 
@@ -183,13 +194,19 @@ class GaussianProcessLogLikelihood(GaussianProcessLogLikelihoodInterface, Optimi
 
     r"""Class for computing log likelihood-like measures of model fit via C++ wrappers (currently log marginal and leave one out cross validation).
 
-    See GaussianProcessLogMarginalLikelihood and GaussianProcessLeaveOneOutLogLikelihood classes below for some more
-    details on these metrics. Users may find it more convenient to construct these objects instead of a LogLikelihood
-    object directly. Since these various metrics are fairly different, the member function docs in this class will
-    remain generic.
+    See :class:`moe.optimal_learning.python.cpp_wrappers.log_likelihood.GaussianProcessLogMarginalLikelihood` and
+    :class:`moe.optimal_learning.python.cpp_wrappers.log_likelihood.GaussianProcessLeaveOneOutLogLikelihood`
+    classes below for some more details on these metrics. Users may find it more convenient to
+    construct these objects instead of a :class:`~moe.optimal_learning.python.cpp_wrappers.log_likelihood.GaussianProcessLogLikelihood`
+    object directly. Since these various metrics are fairly different, the member function docs
+    in this class will remain generic.
 
-    .. Note:: Equivalent methods of LogLikelihoodInterface and OptimizableInterface are aliased below (e.g.,
-      problem_size and num_hyperparameters, compute_log_likelihood and compute_objective_function, etc).
+    .. Note:: Equivalent methods of :class:`moe.optimal_learning.python.interfaces.log_likelihood_interface.GaussianProcessLogLikelihoodInterface` and
+      :class:`moe.optimal_learning.python.interfaces.optimization_interface.OptimizableInterface`
+      are aliased below (e.g., :class:`~moe.optimal_learning.python.cpp_wrappers.log_likelihood.GaussianProcessLogLikelihood.problem_size` and
+      :class:`~moe.optimal_learning.python.cpp_wrappers.log_likelihood.GaussianProcessLogLikelihood.num_hyperparameters`,
+      :class:`~moe.optimal_learning.python.cpp_wrappers.log_likelihood.GaussianProcessLogLikelihood.compute_log_likelihood` and
+      :class:`~moe.optimal_learning.python.cpp_wrappers.log_likelihood.GaussianProcessLogLikelihood.compute_objective_function`, etc).
 
     See gpp_model_selection.hpp/cpp for further overview and in-depth discussion, respectively.
 
@@ -199,9 +216,10 @@ class GaussianProcessLogLikelihood(GaussianProcessLogLikelihoodInterface, Optimi
         """Construct a LogLikelihood object that knows how to call C++ for evaluation of member functions.
 
         :param covariance_function: covariance object encoding assumptions about the GP's behavior on our data
-        :type covariance_function: Covariance object exposing hyperparameters (e.g., from cpp_wrappers.covariance)
+        :type covariance_function: :class:`moe.optimal_learning.python.interfaces.covariance_interface.CovarianceInterface` subclass
+          (e.g., from :mod:`moe.optimal_learning.python.cpp_wrappers.covariance`).
         :param historical_data: object specifying the already-sampled points, the objective value at those points, and the noise variance associated with each observation
-        :type historical_data: HistoricalData object
+        :type historical_data: :class:`moe.optimal_learning.python.data_containers.HistoricalData` object
         :param log_likelihood_type: enum specifying which log likelihood measure to compute
         :type log_likelihood_type: GPP.LogLikelihoodTypes
 
@@ -221,6 +239,7 @@ class GaussianProcessLogLikelihood(GaussianProcessLogLikelihoodInterface, Optimi
         """Return the number of hyperparameters aka the number of independent parameters to optimize."""
         return self._covariance.num_hyperparameters
 
+    #: an alias for num_hyperparameters to fulfill :class:`moe.optimal_learning.python.interfaces.optimization_interface.OptimizableInterface`
     problem_size = num_hyperparameters
 
     def get_hyperparameters(self):
@@ -250,17 +269,17 @@ class GaussianProcessLogLikelihood(GaussianProcessLogLikelihoodInterface, Optimi
 
     @property
     def _points_sampled(self):
-        """Return the coordinates of the already-sampled points; see data_containers.HistoricalData."""
+        """Return the coordinates of the already-sampled points; see :class:`moe.optimal_learning.python.data_containers.HistoricalData`."""
         return self._historical_data.points_sampled
 
     @property
     def _points_sampled_value(self):
-        """Return the function values measured at each of points_sampled; see data_containers.HistoricalData."""
+        """Return the function values measured at each of points_sampled; see :class:`moe.optimal_learning.python.data_containers.HistoricalData`."""
         return self._historical_data.points_sampled_value
 
     @property
     def _points_sampled_noise_variance(self):
-        """Return the noise variance associated with points_sampled_value; see data_containers.HistoricalData."""
+        """Return the noise variance associated with points_sampled_value; see :class:`moe.optimal_learning.python.data_containers.HistoricalData`."""
         return self._historical_data.points_sampled_noise_variance
 
     def get_covariance_copy(self):
@@ -337,7 +356,8 @@ class GaussianProcessLogMarginalLikelihood(GaussianProcessLogLikelihood):
     This is a measure of how likely it is that the observed values came from our Gaussian Process Prior.
 
     .. Note:: This is a copy of LogMarginalLikelihoodEvaluator's class comments in gpp_model_selection.hpp.
-      See this file's comments and interfaces.log_likelihood_interface for more details as well as the hpp and corresponding .cpp file.
+      See this file's comments and :mod:`moe.optimal_learning.python.interfaces.log_likelihood_interface`
+      for more details as well as the hpp and corresponding .cpp file.
 
     Given a particular covariance function (including hyperparameters) and
     training data ((point, function value, measurement noise) tuples), the log marginal likelihood is the log probability that
@@ -372,7 +392,8 @@ class GaussianProcessLeaveOneOutLogLikelihood(GaussianProcessLogLikelihood):
     tuples), the log LOO-CV pseudo-likelihood expresses how well the model explains itself.
 
     .. Note:: This is a copy of LeaveOneOutLogLikelihoodEvaluator's class comments in gpp_model_selection.hpp.
-      See this file's comments and interfaces.log_likelihood_interface for more details as well as the hpp and corresponding .cpp file.
+      See this file's comments and :mod:`moe.optimal_learning.python.interfaces.log_likelihood_interface`
+      for more details as well as the hpp and corresponding .cpp file.
 
     That is, cross validation involves splitting the training set into a sub-training set and a validation set.  Then we measure
     the log likelihood that a model built on the sub-training set could produce the values in the validation set.

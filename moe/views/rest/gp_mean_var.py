@@ -1,18 +1,24 @@
 # -*- coding: utf-8 -*-
-"""Classes for gp_mean, gp_var, and gp_mean_var (and _diag) endpoints.
+"""Classes for ``gp_mean``, ``gp_var``, and ``gp_mean_var`` (and ``_diag``) endpoints.
 
 Includes:
-    1. request and response schemas
-    2. pretty and backend views
+
+    1. pretty and backend views
+
 """
 import numpy
 
 from pyramid.view import view_config
 
+from moe.optimal_learning.python.timing import timing_context
 from moe.views.constant import GP_MEAN_ROUTE_NAME, GP_MEAN_PRETTY_ROUTE_NAME, GP_VAR_ROUTE_NAME, GP_VAR_PRETTY_ROUTE_NAME, GP_VAR_DIAG_ROUTE_NAME, GP_VAR_DIAG_PRETTY_ROUTE_NAME, GP_MEAN_VAR_ROUTE_NAME, GP_MEAN_VAR_PRETTY_ROUTE_NAME, GP_MEAN_VAR_DIAG_ROUTE_NAME, GP_MEAN_VAR_DIAG_PRETTY_ROUTE_NAME
-from moe.views.gp_pretty_view import GpPrettyView, PRETTY_RENDERER
-from moe.views.schemas import GpMeanVarRequest, GpMeanVarResponse, GpMeanVarDiagResponse, GpMeanResponse, GpVarResponse, GpVarDiagResponse
+from moe.views.gp_pretty_view import GpPrettyView
+from moe.views.pretty_view import PRETTY_RENDERER
+from moe.views.schemas.rest.gp_mean_var import GpMeanVarRequest, GpMeanVarResponse, GpMeanVarDiagResponse, GpMeanResponse, GpVarResponse, GpVarDiagResponse
 from moe.views.utils import _make_gp_from_params
+
+
+MEAN_VAR_COMPUTATION_TIMING_LABEL = 'mean/var computation time'
 
 
 class GpMeanVarBaseView(GpPrettyView):
@@ -22,7 +28,7 @@ class GpMeanVarBaseView(GpPrettyView):
     request_schema = GpMeanVarRequest()
 
     _pretty_default_request = {
-            "points_to_sample": [
+            "points_to_evaluate": [
                 [0.1], [0.5], [0.9],
                 ],
             "gp_historical_info": GpPrettyView._pretty_default_gp_historical_info,
@@ -45,21 +51,23 @@ class GpMeanVarBaseView(GpPrettyView):
         """
         params = self.get_params_from_request()
 
-        points_to_sample = numpy.array(params.get('points_to_sample'))
+        points_to_evaluate = numpy.array(params.get('points_to_evaluate'))
         gaussian_process = _make_gp_from_params(params)
 
         response_dict = {}
         response_dict['endpoint'] = self._route_name
-        if compute_mean:
-            response_dict['mean'] = gaussian_process.compute_mean_of_points(points_to_sample).tolist()
 
-        if compute_var:
-            if var_diag:
-                response_dict['var'] = numpy.diag(
-                    gaussian_process.compute_variance_of_points(points_to_sample)
-                ).tolist()
-            else:
-                response_dict['var'] = gaussian_process.compute_variance_of_points(points_to_sample).tolist()
+        with timing_context(MEAN_VAR_COMPUTATION_TIMING_LABEL):
+            if compute_mean:
+                response_dict['mean'] = gaussian_process.compute_mean_of_points(points_to_evaluate).tolist()
+
+            if compute_var:
+                if var_diag:
+                    response_dict['var'] = numpy.diag(
+                        gaussian_process.compute_variance_of_points(points_to_evaluate)
+                    ).tolist()
+                else:
+                    response_dict['var'] = gaussian_process.compute_variance_of_points(points_to_evaluate).tolist()
 
         return response_dict
 
@@ -90,8 +98,8 @@ class GpMeanVarView(GpMeanVarBaseView):
 
            Calculates the GP mean and covariance of a set of points, given historical data.
 
-           :input: :class:`moe.views.gp_ei.GpMeanVarRequest`
-           :output: :class:`moe.views.gp_ei.GpMeanVarResponse`
+           :input: :class:`moe.views.schemas.rest.gp_mean_var.GpMeanVarRequest`
+           :output: :class:`moe.views.schemas.rest.gp_mean_var.GpMeanVarResponse`
 
            :status 200: returns a response
            :status 500: server error
@@ -128,8 +136,8 @@ class GpMeanVarDiagView(GpMeanVarBaseView):
 
            Calculates the GP mean and variance of a set of points, given historical data.
 
-           :input: :class:`moe.views.gp_ei.GpMeanVarRequest`
-           :output: :class:`moe.views.gp_ei.GpMeanVarDiagResponse`
+           :input: :class:`moe.views.schemas.rest.gp_mean_var.GpMeanVarRequest`
+           :output: :class:`moe.views.schemas.rest.gp_mean_var.GpMeanVarDiagResponse`
 
            :status 200: returns a response
            :status 500: server error
@@ -166,8 +174,8 @@ class GpMeanView(GpMeanVarBaseView):
 
            Calculates the GP mean of a set of points, given historical data.
 
-           :input: :class:`moe.views.gp_ei.GpMeanVarRequest`
-           :output: :class:`moe.views.gp_ei.GpMeanResponse`
+           :input: :class:`moe.views.schemas.rest.gp_mean_var.GpMeanVarRequest`
+           :output: :class:`moe.views.schemas.rest.gp_mean_var.GpMeanResponse`
 
            :status 200: returns a response
            :status 500: server error
@@ -204,8 +212,8 @@ class GpVarView(GpMeanVarBaseView):
 
            Calculates the GP covariance of a set of points, given historical data.
 
-           :input: :class:`moe.views.gp_ei.GpMeanVarRequest`
-           :output: :class:`moe.views.gp_ei.GpVarResponse`
+           :input: :class:`moe.views.schemas.rest.gp_mean_var.GpMeanVarRequest`
+           :output: :class:`moe.views.schemas.rest.gp_mean_var.GpVarResponse`
 
            :status 200: returns a response
            :status 500: server error
@@ -242,8 +250,8 @@ class GpVarDiagView(GpMeanVarBaseView):
 
            Calculates the GP variance of a set of points, given historical data.
 
-           :input: :class:`moe.views.gp_ei.GpMeanVarRequest`
-           :output: :class:`moe.views.gp_ei.GpVarDiagResponse`
+           :input: :class:`moe.views.schemas.rest.gp_mean_var.GpMeanVarRequest`
+           :output: :class:`moe.views.schemas.rest.gp_mean_var.GpVarDiagResponse`
 
            :status 200: returns a response
            :status 500: server error

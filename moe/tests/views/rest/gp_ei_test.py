@@ -9,12 +9,13 @@ import testify as T
 from moe.optimal_learning.python.cpp_wrappers.covariance import SquareExponential
 from moe.optimal_learning.python.cpp_wrappers.expected_improvement import ExpectedImprovement
 from moe.optimal_learning.python.cpp_wrappers.gaussian_process import GaussianProcess
-from moe.tests.views.rest_gaussian_process_test_case import RestGaussianProcessTestCase
+from moe.tests.optimal_learning.python.gaussian_process_test_case import GaussianProcessTestCase
+from moe.tests.views.rest_test_case import RestTestCase
 from moe.views.constant import GP_EI_ENDPOINT
-from moe.views.rest.gp_ei import GpEiResponse
+from moe.views.schemas.rest.gp_ei import GpEiResponse
 
 
-class TestGpEiView(RestGaussianProcessTestCase):
+class TestGpEiView(GaussianProcessTestCase, RestTestCase):
 
     """Test that the /gp/ei endpoint does the same thing as the C++ interface."""
 
@@ -28,7 +29,7 @@ class TestGpEiView(RestGaussianProcessTestCase):
             'points_being_sampled': [],
             'gp_historical_info': historical_data.json_payload(),
             'covariance_info': covariance.get_json_serializable_info(),
-            'domain_info': domain.get_json_serializable_info(),
+            'domain_info': domain.get_json_serializable_info(minimal=True),
             })
 
         return json_payload
