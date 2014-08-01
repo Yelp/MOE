@@ -177,9 +177,9 @@ bool CheckDoubleWithin(double value, double truth, double tolerance) noexcept {
   return passed;
 }
 
-bool CheckDoubleWithinRelative(double value, double truth, double tolerance) noexcept {
+bool CheckDoubleWithinRelativeWithThreshold(double value, double truth, double tolerance, double threshold) noexcept {
   double denom = std::fabs(truth);
-  if (denom < std::numeric_limits<double>::min()) {
+  if (denom < threshold) {
     denom = 1.0;  // don't divide by 0
   }
   double diff = std::fabs((value - truth)/denom);
@@ -187,8 +187,11 @@ bool CheckDoubleWithinRelative(double value, double truth, double tolerance) noe
   if (passed != true) {
     OL_ERROR_PRINTF("value = %.18E, truth = %.18E, diff = %.18E, tol = %.18E\n", value, truth, diff, tolerance);
   }
-
   return passed;
+}
+
+bool CheckDoubleWithinRelative(double value, double truth, double tolerance) noexcept {
+  return CheckDoubleWithinRelativeWithThreshold(value, truth, tolerance, std::numeric_limits<double>::min());
 }
 
 /*!\rst
