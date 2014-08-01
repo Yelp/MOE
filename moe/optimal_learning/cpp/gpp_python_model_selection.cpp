@@ -176,7 +176,7 @@ void DispatchHyperparameterOptimization(const boost::python::object& optimizer_p
       LatinHypercubeSearchHyperparameterOptimization(log_likelihood_eval, covariance, hyperparameter_domain,
                                                      thread_schedule, num_random_samples, &found_flag,
                                                      &randomness_source.uniform_generator, new_hyperparameters);
-      status[std::string() + log_likelihood_eval.kName + "_lhc_found_update"] = found_flag;
+      status[std::string(log_likelihood_eval.kName) + "_lhc_found_update"] = found_flag;
       break;
     }  // end case kNull for optimizer_type
     case OptimizerTypes::kGradientDescent: {
@@ -190,7 +190,7 @@ void DispatchHyperparameterOptimization(const boost::python::object& optimizer_p
                                                           thread_schedule, &found_flag,
                                                           &randomness_source.uniform_generator,
                                                           new_hyperparameters);
-      status[std::string() + log_likelihood_eval.kName + "_gradient_descent_found_update"] = found_flag;
+      status[std::string(log_likelihood_eval.kName) + "_gradient_descent_found_update"] = found_flag;
       break;
     }  // end case kGradientDescent for optimizer_type
     case OptimizerTypes::kNewton: {
@@ -203,7 +203,7 @@ void DispatchHyperparameterOptimization(const boost::python::object& optimizer_p
                                                  thread_schedule, &found_flag,
                                                  &randomness_source.uniform_generator,
                                                  new_hyperparameters);
-      status[std::string() + log_likelihood_eval.kName + "_newton_found_update"] = found_flag;
+      status[std::string(log_likelihood_eval.kName) + "_newton_found_update"] = found_flag;
       break;
     }  // end case kNewton for optimizer_type
     default: {
@@ -311,7 +311,7 @@ boost::python::list EvaluateLogLikelihoodAtHyperparameterListWrapper(const boost
       EvaluateLogLikelihoodAtPointList(log_likelihood_eval, square_exponential, dummy_domain, thread_schedule,
                                        initial_guesses_C.data(), num_multistarts, &found_flag,
                                        result_function_values_C.data(), new_hyperparameters_C.data());
-      status[std::string() + "evaluate_" + log_likelihood_eval.kName + "_at_hyperparameter_list"] = found_flag;
+      status[std::string("evaluate_") + log_likelihood_eval.kName + "_at_hyperparameter_list"] = found_flag;
       break;
     }
     case LogLikelihoodTypes::kLeaveOneOutLogLikelihood: {
@@ -322,7 +322,7 @@ boost::python::list EvaluateLogLikelihoodAtHyperparameterListWrapper(const boost
       EvaluateLogLikelihoodAtPointList(log_likelihood_eval, square_exponential, dummy_domain, thread_schedule,
                                        initial_guesses_C.data(), num_multistarts, &found_flag,
                                        result_function_values_C.data(), new_hyperparameters_C.data());
-      status[std::string() + "evaluate_" + log_likelihood_eval.kName + "_at_hyperparameter_list"] = found_flag;
+      status[std::string("evaluate_") + log_likelihood_eval.kName + "_at_hyperparameter_list"] = found_flag;
       break;
     }
     default: {

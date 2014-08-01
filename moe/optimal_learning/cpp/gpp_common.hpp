@@ -337,7 +337,7 @@
         struct State {
           void ComputationWithBasicGuarantee(...);
           void SetCurrentPoint(double *);
-          void GetCurrentPoint(doubl e*);
+          void GetCurrentPoint(double *);
           int GetProblemSize();
         };
 

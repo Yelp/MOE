@@ -107,7 +107,7 @@ def multistart_hyperparameter_optimization(
     :type randomness: RandomnessSourceContainer (C++ object; e.g., from C_GP.RandomnessSourceContainer())
     :param max_num_threads: maximum number of threads to use, >= 1
     :type max_num_threads: int > 0
-    :param status: status messages from C++ (e.g., reporting on optimizer success, etc.)
+    :param status: (output) status messages from C++ (e.g., reporting on optimizer success, etc.)
     :type status: dict
     :return: hyperparameters that maximize the specified log likelihood measure within the specified domain
     :rtype: array of float64 with shape (log_likelihood_optimizer.objective_function.num_hyperparameters)
@@ -162,7 +162,7 @@ def evaluate_log_likelihood_at_hyperparameter_list(
     :type hyperparameters_to_evaluate: array of float64 with shape (num_to_eval, log_likelihood_evaluator.num_hyperparameters)
     :param max_num_threads: maximum number of threads to use, >= 1
     :type max_num_threads: int > 0
-    :param status: status messages from C++ (e.g., reporting on optimizer success, etc.)
+    :param status: (output) status messages from C++ (e.g., reporting on optimizer success, etc.)
     :type status: dict
     :return: log likelihood value at each specified set of hyperparameters
     :rtype: array of float64 with shape (hyperparameters_to_evaluate.shape[0])
