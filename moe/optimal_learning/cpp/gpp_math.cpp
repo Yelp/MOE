@@ -1331,22 +1331,26 @@ void ComputeOptimalPointsToSample(const GaussianProcess& gaussian_process,
       OL_WARNING_PRINTF("Attempting latin hypercube search\n");
     }
 
-    // Note: using a schedule different than "static" may lead to flakiness in monte-carlo EI optimization tests.
-    // Besides, this is the fastest setting.
-    ThreadSchedule thread_schedule_naive_search(thread_schedule);
-    thread_schedule_naive_search.schedule = omp_sched_static;
-    ComputeOptimalPointsToSampleViaLatinHypercubeSearch(gaussian_process, domain,
-                                                        thread_schedule_naive_search,
-                                                        points_being_sampled,
-                                                        num_lhc_samples, num_to_sample,
-                                                        num_being_sampled, best_so_far,
-                                                        max_int_steps,
-                                                        &found_flag_local, uniform_generator,
-                                                        normal_rng, next_points_to_sample.data());
+    if (num_lhc_samples > 0) {
+      // Note: using a schedule different than "static" may lead to flakiness in monte-carlo EI optimization tests.
+      // Besides, this is the fastest setting.
+      ThreadSchedule thread_schedule_naive_search(thread_schedule);
+      thread_schedule_naive_search.schedule = omp_sched_static;
+      ComputeOptimalPointsToSampleViaLatinHypercubeSearch(gaussian_process, domain,
+                                                          thread_schedule_naive_search,
+                                                          points_being_sampled,
+                                                          num_lhc_samples, num_to_sample,
+                                                          num_being_sampled, best_so_far,
+                                                          max_int_steps,
+                                                          &found_flag_local, uniform_generator,
+                                                          normal_rng, next_points_to_sample.data());
 
-    // if latin hypercube 'dumb' search failed
-    if (unlikely(found_flag_local == false)) {
-      OL_ERROR_PRINTF("ERROR: %d,%d-EI latin hypercube search FAILED on\n", num_to_sample, num_being_sampled);
+      // if latin hypercube 'dumb' search failed
+      if (unlikely(found_flag_local == false)) {
+        OL_ERROR_PRINTF("ERROR: %d,%d-EI latin hypercube search FAILED on\n", num_to_sample, num_being_sampled);
+      }
+    } else {
+      OL_WARNING_PRINTF("num_lhc_samples <= 0. Skipping latin hypercube search\n");
     }
   }
 
