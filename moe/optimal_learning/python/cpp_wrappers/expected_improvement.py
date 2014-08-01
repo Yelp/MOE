@@ -59,7 +59,7 @@ def multistart_expected_improvement_optimization(
     :type randomness: RandomnessSourceContainer (C++ object; e.g., from C_GP.RandomnessSourceContainer())
     :param max_num_threads: maximum number of threads to use, >= 1
     :type max_num_threads: int > 0
-    :param status: status messages from C++ (e.g., reporting on optimizer success, etc.)
+    :param status: (output) status messages from C++ (e.g., reporting on optimizer success, etc.)
     :type status: dict
     :return: point(s) that maximize the expected improvement (solving the q,p-EI problem)
     :rtype: array of float64 with shape (num_to_sample, ei_optimizer.objective_function.dim)
@@ -175,7 +175,7 @@ def _heuristic_expected_improvement_optimization(
     :type randomness: RandomnessSourceContainer (C++ object; e.g., from C_GP.RandomnessSourceContainer())
     :param max_num_threads: maximum number of threads to use, >= 1
     :type max_num_threads: int > 0
-    :param status: status messages from C++ (e.g., reporting on optimizer success, etc.)
+    :param status: (output) status messages from C++ (e.g., reporting on optimizer success, etc.)
     :type status: dict
     :return: point(s) that approximately maximize the expected improvement (solving the q,0-EI problem)
     :rtype: array of float64 with shape (num_to_sample, ei_optimizer.objective_function.dim)
@@ -251,7 +251,7 @@ def constant_liar_expected_improvement_optimization(
     :type randomness: RandomnessSourceContainer (C++ object; e.g., from C_GP.RandomnessSourceContainer())
     :param max_num_threads: maximum number of threads to use, >= 1
     :type max_num_threads: int > 0
-    :param status: status messages from C++ (e.g., reporting on optimizer success, etc.)
+    :param status: (output) status messages from C++ (e.g., reporting on optimizer success, etc.)
     :type status: dict
     :return: point(s) that approximately maximize the expected improvement (solving the q,0-EI problem)
     :rtype: array of float64 with shape (num_to_sample, ei_optimizer.objective_function.dim)
@@ -314,7 +314,7 @@ def kriging_believer_expected_improvement_optimization(
     :type randomness: RandomnessSourceContainer (C++ object; e.g., from C_GP.RandomnessSourceContainer())
     :param max_num_threads: maximum number of threads to use, >= 1
     :type max_num_threads: int > 0
-    :param status: status messages from C++ (e.g., reporting on optimizer success, etc.)
+    :param status: (output) status messages from C++ (e.g., reporting on optimizer success, etc.)
     :type status: dict
     :return: point(s) that approximately maximize the expected improvement (solving the q,0-EI problem)
     :rtype: array of float64 with shape (num_to_sample, ei_optimizer.objective_function.dim)
@@ -453,7 +453,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         :type randomness: RandomnessSourceContainer (C++ object; e.g., from C_GP.RandomnessSourceContainer())
         :param max_num_threads: maximum number of threads to use, >= 1
         :type max_num_threads: int > 0
-        :param status: status messages from C++ (e.g., reporting on optimizer success, etc.)
+        :param status: (output) status messages from C++ (e.g., reporting on optimizer success, etc.)
         :type status: dict
         :return: EI evaluated at each of points_to_evaluate
         :rtype: array of float64 with shape (points_to_evaluate.shape[0])
