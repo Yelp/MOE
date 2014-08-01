@@ -73,6 +73,7 @@ set(OPTIMAL_LEARNING_CORE_SOURCES
   gpp_math.cpp
   gpp_model_selection.cpp
   gpp_random.cpp
+  gpp_expected_improvement_gpu.cpp
   )
 
 # readonly
@@ -88,6 +89,7 @@ set(OPTIMAL_LEARNING_TEST_SOURCES
   gpp_random_test.cpp
   gpp_test_utils.cpp
   gpp_test_utils_test.cpp
+  gpp_expected_improvement_gpu_test.cpp
   )
 
 # readonly
@@ -228,6 +230,11 @@ function(configure_exec_targets exec_names exec_sources dependencies compile_fla
       COMPILE_DEFINITIONS "${compile_definitions}"
       LINK_FLAGS "${EXTRA_LINK_FLAGS}"
       )
+    if (${MOE_USE_GPU} MATCHES "1")
+        add_dependencies(${name} GPU_LIB)
+        target_link_libraries(${name} ${CUDA_LIBRARIES}
+            ${CMAKE_BINARY_DIR}/gpu/libOL_GPU.so)
+    endif()
   endforeach()
 endfunction(configure_exec_targets)
 
@@ -257,6 +264,50 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -fopenmp -Wall -Wextra ${EXTR
 
 # O3 takes longer to compile and the code produced is at best no faster than O2 (gcc, icc).
 string(REGEX REPLACE "O3" "O2" CMAKE_CXX_FLAGS_RELEASE ${CMAKE_CXX_FLAGS_RELEASE})
+
+#### GPU Component
+# readonly
+set(EXTRA_COMPILE_DEFINITIONS_GPU OL_GPU_ENABLED)
+
+# CUDA C compiler may be different from the c/c++ compiler used for compiling cpp
+# code, because current available CUDA version does not support gcc 4.7+
+set(GPU_CC ${CMAKE_C_COMPILER})
+set(GPU_CXX ${CMAKE_CXX_COMPILER})
+
+if (EXISTS ${MOE_GPU_CC})
+    set(GPU_CC ${MOE_GPU_CC})
+endif()
+if (EXISTS ${MOE_GPU_CXX})
+    set(GPU_CXX ${MOE_GPU_CXX})
+endif()
+
+# If MOE_USE_GPU is turned on via MOE_CMAKE_OPTS, cmake will try to find CUDA
+# package and call gpu cmake to build CUDA code
+if (${MOE_USE_GPU} MATCHES "1")
+    if (NOT (EXISTS ${MOE_CUDA_SDK_INCLUDE_DIRS}))
+        message( FATAL_ERROR "MOE_CUDA_SDK_INCLUDE_DIRS not set!" )
+    endif()
+    find_package(CUDA 5.0 REQUIRED)
+    include_directories(${CUDA_INCLUDE_DIRS})
+    set(EXTRA_COMPILE_DEFINITIONS ${EXTRA_COMPILE_DEFINITIONS}
+       ${EXTRA_COMPILE_DEFINITIONS_GPU})
+    set(MOE_GPU_CMAKE_OPTS
+        "-D MOE_CUDA_SDK_INCLUDE_DIRS=${MOE_CUDA_SDK_INCLUDE_DIRS}")
+    add_custom_target(
+        GPU_FOLDER
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+        COMMAND mkdir -p ${CMAKE_BINARY_DIR}/gpu/
+        )
+    add_custom_target(
+        GPU_LIB
+        DEPENDS GPU_FOLDER
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/gpu/
+        COMMAND CC=${GPU_CC} CXX=${GPU_CXX} cmake `echo
+        ${MOE_GPU_CMAKE_OPTS}` ${CMAKE_SOURCE_DIR}/gpu/
+        COMMAND make
+        )
+endif()
+
 
 #### Object libraries
 # See configure_object_library() function comments for more details.
@@ -299,9 +350,15 @@ add_library(
   $<TARGET_OBJECTS:OPTIMAL_LEARNING_TEST_BUNDLE>
   ${CMAKE_BINARY_DIR}/__init__.py
   )
+if (${MOE_USE_GPU} MATCHES "1")
+    add_dependencies(GPP GPU_LIB)
+endif()
 
 target_link_libraries(GPP ${PYTHON_LIBRARIES} ${Boost_LIBRARIES})
-
+if (${MOE_USE_GPU} MATCHES "1")
+    target_link_libraries(GPP ${CUDA_LIBRARIES} ${CMAKE_BINARY_DIR}/gpu/libOL_GPU.so)
+endif()
+        
 # Make sure lib ends in ".so"
 set_target_properties(
   GPP PROPERTIES

@@ -17,6 +17,7 @@
 #include "gpp_covariance_test.hpp"
 #include "gpp_domain.hpp"
 #include "gpp_domain_test.hpp"
+#include "gpp_expected_improvement_gpu_test.hpp"
 #include "gpp_geometry_test.hpp"
 #include "gpp_heuristic_expected_improvement_optimization_test.hpp"
 #include "gpp_linear_algebra_test.hpp"
@@ -72,6 +73,14 @@ int RunCppTestsWrapper() {
     OL_FAILURE_PRINTF("analytic, MC EI do not match for 1 potential sample case\n");
   } else {
     OL_SUCCESS_PRINTF("analytic, MC EI match for 1 potential sample case\n");
+  }
+  total_errors += error;
+
+  error = RunGPUTests();
+  if (error != 0) {
+    OL_FAILURE_PRINTF("GPU tests failed\n");
+  } else {
+    OL_SUCCESS_PRINTF("GPU tests passed\n");
   }
   total_errors += error;
 

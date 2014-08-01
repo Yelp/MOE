@@ -1,6 +1,11 @@
 # -*- coding: utf-8 -*-
 """Utilities for MOE views."""
+<<<<<<< HEAD
 from moe.optimal_learning.python.constant import L_BFGS_B_OPTIMIZER
+=======
+from moe.bandit.data_containers import HistoricalData as BanditHistoricalData
+from moe.bandit.data_containers import SampleArm
+>>>>>>> 1672b4c74274228eada1036a06b34a0c8b173bbd
 from moe.optimal_learning.python.cpp_wrappers.gaussian_process import GaussianProcess
 from moe.optimal_learning.python.data_containers import SamplePoint, HistoricalData
 from moe.optimal_learning.python.geometry_utils import ClosedInterval
@@ -12,7 +17,7 @@ def _make_domain_from_params(params, domain_info_key="domain_info", python_versi
     ``params`` has the following form::
 
         params = {
-            'domain_info': <instance of moe.rest.schemas.BoundedDomainInfo>,
+            'domain_info': <instance of :class:`moe.views.schemas.base_schemas.BoundedDomainInfo`>
             ...
             }
 
@@ -35,7 +40,7 @@ def _make_covariance_of_process_from_params(params):
     ``params`` has the following form::
 
         params = {
-            'covariance_info': <instance of moe.rest.schemas.CovarianceInfo>,
+            'covariance_info': <instance of :class:`moe.views.schemas.base_schemas.CovarianceInfo`>,
             ...
             }
 
@@ -84,9 +89,9 @@ def _make_gp_from_params(params):
     ``params`` has the following form::
 
         params = {
-            'gp_historical_info': <instance of moe.rest.schemas.GpHistoricalInfo>,
-            'domain_info': <instance of moe.rest.schemas.DomainInfo>,
-            'covariance_info': <instance of moe.rest.schemas.CovarianceInfo>,
+            'gp_historical_info': <instance of :class:`moe.views.schemas.base_schemas.GpHistoricalInfo`>,
+            'domain_info': <instance of :class:`moe.views.schemas.base_schemas.DomainInfo`>,
+            'covariance_info': <instance of :class:`moe.views.schemas.base_schemas.CovarianceInfo`>,
             }
 
     :param params: The request params dict
@@ -116,3 +121,26 @@ def _make_gp_from_params(params):
             )
 
     return gaussian_process
+
+
+def _make_bandit_historical_info_from_params(params):
+    """Create and return a bandit historical info from the request params as a dict.
+
+    ``params`` has the following form::
+
+        params = {
+            'historical_info': <instance of :class:`moe.views.schemas.bandit_pretty_view.BanditHistoricalInfo`>,
+            }
+
+    :param params: The request params dict
+    :type params: dict
+
+    """
+    arms_sampled = {}
+    # Load up the info
+    for arm_name, sampled_arm in params.get("historical_info").get("arms_sampled").iteritems():
+        arms_sampled[arm_name] = SampleArm(win=sampled_arm.get("win"), loss=sampled_arm.get("loss"), total=sampled_arm.get("total"))
+
+    bandit_historical_info = BanditHistoricalData(sample_arms=arms_sampled)
+
+    return bandit_historical_info
