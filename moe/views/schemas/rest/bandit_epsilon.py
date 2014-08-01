@@ -4,7 +4,7 @@ import colander
 
 from moe.bandit.constant import EPSILON_SUBTYPE_GREEDY, EPSILON_SUBTYPES
 from moe.views.schemas import base_schemas
-from moe.views.schemas.bandit_pretty_view import ArmAllocations, BanditEpsilonHyperparameterInfo, BanditHistoricalInfo
+from moe.views.schemas.bandit_pretty_view import ArmAllocations, BanditHistoricalInfo
 
 
 class BanditEpsilonRequest(base_schemas.StrictMappingSchema):
@@ -18,7 +18,7 @@ class BanditEpsilonRequest(base_schemas.StrictMappingSchema):
     **Optional fields**
 
     :ivar subtype: (*str*) subtype of the epsilon bandit algorithm (default: greedy)
-    :ivar hyperparameter_info: (:class:`moe.views.schemas.bandit_pretty_view.BanditEpsilonHyperparameterInfo`) dict of hyperparameter information
+    :ivar hyperparameter_info: (:class:`~moe.views.schemas.bandit_pretty_view.BanditEpsilonFirstHyperparameterInfo` or :class:`~moe.views.schemas.bandit_pretty_view.BanditEpsilonGreedyHyperparameterInfo`) dict of hyperparameter information
 
     **Example Minimal Request**
 
@@ -64,7 +64,10 @@ class BanditEpsilonRequest(base_schemas.StrictMappingSchema):
             missing=EPSILON_SUBTYPE_GREEDY,
             )
     historical_info = BanditHistoricalInfo()
-    hyperparameter_info = BanditEpsilonHyperparameterInfo()
+    hyperparameter_info = colander.SchemaNode(
+            colander.Mapping(unknown='preserve'),
+            missing={},
+            )
 
 
 class BanditEpsilonResponse(base_schemas.StrictMappingSchema):

@@ -2,7 +2,7 @@
 """Base schemas for creating SampledArm and allocations for bandit endpoints along with base request/response schema components."""
 import colander
 
-from moe.bandit.constant import DEFAULT_EPSILON
+from moe.bandit.constant import DEFAULT_EPSILON, DEFAULT_TOTAL_SAMPLES, EPSILON_SUBTYPE_FIRST, EPSILON_SUBTYPE_GREEDY
 from moe.bandit.data_containers import SampleArm
 from moe.views.schemas import base_schemas
 
@@ -65,7 +65,32 @@ class ArmsSampled(colander.MappingSchema):
             SampleArm(sample_arm['win'], sample_arm['loss'], sample_arm['total'])
 
 
-class BanditEpsilonHyperparameterInfo(base_schemas.StrictMappingSchema):
+class BanditEpsilonFirstHyperparameterInfo(base_schemas.StrictMappingSchema):
+
+    """The hyperparameter info needed for every  Bandit Epsilon-First request.
+
+    **Required fields**
+
+    :ivar epsilon: (*0.0 <= float64 <= 1.0*) epsilon value for epsilon-first bandit. This strategy pulls the optimal arm
+      (best expected return) with if it is in exploitation phase (number sampled > epsilon * total_samples). Otherwise a random arm is pulled (exploration).
+    :ivar total_samples: (*int >= 0*) total number of samples for epsilon-first bandit. total_samples is T from :doc:`bandit`.
+
+    """
+
+    epsilon = colander.SchemaNode(
+            colander.Float(),
+            validator=colander.Range(min=0.0, max=1.0),
+            missing=DEFAULT_EPSILON,
+            )
+
+    total_samples = colander.SchemaNode(
+            colander.Int(),
+            validator=colander.Range(min=0),
+            missing=DEFAULT_TOTAL_SAMPLES,
+            )
+
+
+class BanditEpsilonGreedyHyperparameterInfo(base_schemas.StrictMappingSchema):
 
     """The hyperparameter info needed for every  Bandit Epsilon request.
 
@@ -81,6 +106,14 @@ class BanditEpsilonHyperparameterInfo(base_schemas.StrictMappingSchema):
             validator=colander.Range(min=0.0, max=1.0),
             missing=DEFAULT_EPSILON,
             )
+
+
+#: Mapping from bandit epsilon subtypes (:const:`moe.bandit.constant.EPSILON_SUBTYPES`) to
+#: hyperparameter info schemas, e.g., :class:`moe.views.schemas.bandit_pretty_view.BanditEpsilonFirstHyperparameterInfo`.
+BANDIT_EPSILON_SUBTYPES_TO_HYPERPARAMETER_INFO_SCHEMA_CLASSES = {
+        EPSILON_SUBTYPE_FIRST: BanditEpsilonFirstHyperparameterInfo,
+        EPSILON_SUBTYPE_GREEDY: BanditEpsilonGreedyHyperparameterInfo,
+        }
 
 
 class BanditHistoricalInfo(base_schemas.StrictMappingSchema):

@@ -45,4 +45,14 @@
 
         .. http:get:: /gp/next_points/kriging/pretty
 
+**Bandit endpoints:**
+
+    * :mod:`~moe.views.rest.bandit_epsilon`
+
+        .. http:post:: /bandit/epsilon
+
+           Calculates the arm allocations and the best arm to pull next, given subtype, historical data, hyperparameters.
+
+        .. http:get:: /bandit/epsilon/pretty
+
 """
