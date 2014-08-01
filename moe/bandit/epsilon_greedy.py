@@ -68,18 +68,10 @@ class EpsilonGreedy(Epsilon):
         num_arms = self._historical_info.num_arms
         if not arms_sampled:
             raise ValueError('sample_arms are empty!')
-        avg_payoff_arm_name_list = []
-        for arm_name, sampled_arm in arms_sampled.iteritems():
-            avg_payoff = numpy.float64(sampled_arm.win - sampled_arm.loss) / sampled_arm.total if sampled_arm.total > 0 else 0
-            avg_payoff_arm_name_list.append((avg_payoff, arm_name))
 
-        best_payoff, _ = max(avg_payoff_arm_name_list)
-        # Filter out arms that have average payoff less than the best payoff
-        winning_arm_payoff_name_list = filter(lambda avg_payoff_arm_name: avg_payoff_arm_name[0] == best_payoff, avg_payoff_arm_name_list)
-        # Extract a list of winning arm names from a list of (average payoff, arm name) tuples.
-        _, winning_arm_name_list = map(list, zip(*winning_arm_payoff_name_list))
+        winning_arm_names = self._get_winning_arm_names(arms_sampled)
 
-        num_winning_arms = len(winning_arm_name_list)
+        num_winning_arms = len(winning_arm_names)
         epsilon_allocation = self._epsilon / num_arms
         arms_to_allocations = {}
 
@@ -89,7 +81,7 @@ class EpsilonGreedy(Epsilon):
 
         # With probability 1-epsilon, split allocation among winning arms.
         winning_arm_allocation = (1.0 - self._epsilon) / num_winning_arms
-        for winning_arm_name in winning_arm_name_list:
+        for winning_arm_name in winning_arm_names:
             arms_to_allocations[winning_arm_name] += winning_arm_allocation
 
         return arms_to_allocations

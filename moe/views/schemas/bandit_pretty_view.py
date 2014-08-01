@@ -72,7 +72,7 @@ class BanditEpsilonFirstHyperparameterInfo(base_schemas.StrictMappingSchema):
     **Required fields**
 
     :ivar epsilon: (*0.0 <= float64 <= 1.0*) epsilon value for epsilon-first bandit. This strategy pulls the optimal arm
-      (best expected return) with if it is in exploitation phase (#sampled > epsilon * total_samples). Otherwise a random arm is pulled (exploration).
+      (best expected return) with if it is in exploitation phase (number sampled > epsilon * total_samples). Otherwise a random arm is pulled (exploration).
     :ivar total_samples: total number of samples for epsilon-first bandit. total_samples is T from :doc:`bandit`.
 
     """
