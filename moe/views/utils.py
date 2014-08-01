@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """Utilities for MOE views."""
+from moe.optimal_learning.python.constant import L_BFGS_B_OPTIMIZER
 from moe.optimal_learning.python.cpp_wrappers.gaussian_process import GaussianProcess
 from moe.optimal_learning.python.data_containers import SamplePoint, HistoricalData
 from moe.optimal_learning.python.geometry_utils import ClosedInterval
 from moe.optimal_learning.python.linkers import DOMAIN_TYPES_TO_DOMAIN_LINKS, COVARIANCE_TYPES_TO_CLASSES, OPTIMIZER_TYPES_TO_OPTIMIZER_METHODS
-
 
 def _make_domain_from_params(params, domain_info_key="domain_info", python_version=False):
     """Create and return a C++ ingestable domain from the request params.
@@ -55,7 +55,7 @@ def _make_covariance_of_process_from_params(params):
     return covariance_of_process
 
 
-def _make_optimizer_parameters_from_params(params):
+def _make_optimizer_parameters_from_params(params): 
     """Figure out which cpp_wrappers.* objects to construct from params, validate and return them.
 
     :param params: the deserialized REST request, containing optimizer_info
@@ -68,11 +68,14 @@ def _make_optimizer_parameters_from_params(params):
 
     optimizer_method = OPTIMIZER_TYPES_TO_OPTIMIZER_METHODS[optimizer_info.get('optimizer_type')]
 
-    # TODO(GH-167): Kill this when you reoganize num_multistarts for C++.
-    validated_optimizer_parameters['num_multistarts'] = optimizer_info['num_multistarts']
-    optimizer_parameters = optimizer_method.cpp_parameters_class(**validated_optimizer_parameters)
-
-    return optimizer_method.cpp_optimizer_class, optimizer_parameters, num_random_samples
+    if optimizer_info.get('optimizer_type') != L_BFGS_B_OPTIMIZER:
+        # TODO(GH-167): Kill this when you reoganize num_multistarts for C++.
+        validated_optimizer_parameters['num_multistarts'] = optimizer_info['num_multistarts']
+        optimizer_parameters = optimizer_method.cpp_parameters_class(**validated_optimizer_parameters)
+        return optimizer_method.cpp_optimizer_class, optimizer_parameters, num_random_samples
+    else:
+        optimizer_parameters = optimizer_method.python_parameters_class(**validated_optimizer_parameters)
+        return optimizer_method.python_optimizer_class, optimizer_parameters, num_random_samples
 
 
 def _make_gp_from_params(params):

@@ -10,7 +10,7 @@ TODO(GH-291): make sure previous warning is moved to the schemas/__init__.py fil
 """
 import colander
 
-from moe.optimal_learning.python.constant import GRADIENT_DESCENT_OPTIMIZER, TENSOR_PRODUCT_DOMAIN_TYPE, SQUARE_EXPONENTIAL_COVARIANCE_TYPE, NULL_OPTIMIZER, NEWTON_OPTIMIZER, DOMAIN_TYPES, OPTIMIZER_TYPES, COVARIANCE_TYPES, CONSTANT_LIAR_METHODS, DEFAULT_MAX_NUM_THREADS, MAX_ALLOWED_NUM_THREADS, DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS, LIKELIHOOD_TYPES, LOG_MARGINAL_LIKELIHOOD, DEFAULT_CONSTANT_LIAR_METHOD, DEFAULT_CONSTANT_LIAR_LIE_NOISE_VARIANCE, DEFAULT_KRIGING_NOISE_VARIANCE, DEFAULT_KRIGING_STD_DEVIATION_COEF
+from moe.optimal_learning.python.constant import GRADIENT_DESCENT_OPTIMIZER, L_BFGS_B_OPTIMIZER, TENSOR_PRODUCT_DOMAIN_TYPE, SQUARE_EXPONENTIAL_COVARIANCE_TYPE, NULL_OPTIMIZER, NEWTON_OPTIMIZER, DOMAIN_TYPES, OPTIMIZER_TYPES, COVARIANCE_TYPES, CONSTANT_LIAR_METHODS, DEFAULT_MAX_NUM_THREADS, MAX_ALLOWED_NUM_THREADS, DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS, LIKELIHOOD_TYPES, LOG_MARGINAL_LIKELIHOOD, DEFAULT_CONSTANT_LIAR_METHOD, DEFAULT_CONSTANT_LIAR_LIE_NOISE_VARIANCE, DEFAULT_KRIGING_NOISE_VARIANCE, DEFAULT_KRIGING_STD_DEVIATION_COEF
 
 
 class StrictMappingSchema(colander.MappingSchema):
@@ -200,6 +200,39 @@ class GradientDescentParametersSchema(StrictMappingSchema):
             )
 
 
+class LBFGSBParametersSchema(StrictMappingSchema):
+
+    """Parameters for the L-BFGS-B optimizer.
+
+    See :class:`moe.optimal_learning.python.cpp_wrappers.optimization.GradientDescentParameters`
+
+    """
+
+    approx_grad = colander.SchemaNode(
+            colander.Boolean(),
+            )
+    max_func_evals = colander.SchemaNode(
+            colander.Int(),
+            validator=colander.Range(min=1),
+            )
+    max_metric_correc = colander.SchemaNode(
+            colander.Int(),
+            validator=colander.Range(min=1),
+            )
+    factr = colander.SchemaNode(
+            colander.Float(),
+            validator=colander.Range(min=1.0),
+            )
+    pgtol = colander.SchemaNode(
+            colander.Float(),
+            validator=colander.Range(min=0.0),
+            )
+    epsilon = colander.SchemaNode(
+            colander.Float(),
+            validator=colander.Range(min=0.0),
+            )
+
+
 class NewtonParametersSchema(StrictMappingSchema):
 
     """Parameters for the newton optimizer.
@@ -324,6 +357,7 @@ OPTIMIZER_TYPES_TO_SCHEMA_CLASSES = {
         NULL_OPTIMIZER: NullParametersSchema,
         NEWTON_OPTIMIZER: NewtonParametersSchema,
         GRADIENT_DESCENT_OPTIMIZER: GradientDescentParametersSchema,
+        L_BFGS_B_OPTIMIZER: LBFGSBParametersSchema,
         }
 
 

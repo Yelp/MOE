@@ -8,7 +8,7 @@ Includes:
 """
 from pyramid.view import view_config
 
-from moe.optimal_learning.python.constant import OPTIMIZER_TYPE_AND_OBJECTIVE_TO_DEFAULT_PARAMETERS, EI_COMPUTE_TYPE_ANALYTIC, EI_COMPUTE_TYPE_MONTE_CARLO
+from moe.optimal_learning.python.constant import OPTIMIZER_TYPE_AND_OBJECTIVE_TO_DEFAULT_PARAMETERS, EI_COMPUTE_TYPE_ANALYTIC, EI_COMPUTE_TYPE_MONTE_CARLO, GRADIENT_DESCENT_OPTIMIZER, L_BFGS_B_OPTIMIZER, ENDPOINT_TO_DEFAULT_OPTIMIZER_TYPE
 from moe.views.constant import GP_NEXT_POINTS_EPI_ROUTE_NAME, GP_NEXT_POINTS_EPI_PRETTY_ROUTE_NAME, GP_NEXT_POINTS_EPI_OPTIMIZER_METHOD_NAME
 from moe.views.gp_next_points_pretty_view import GpNextPointsPrettyView
 from moe.views.gp_pretty_view import PRETTY_RENDERER
@@ -20,6 +20,18 @@ class GpNextPointsEpi(GpNextPointsPrettyView):
 
     _route_name = GP_NEXT_POINTS_EPI_ROUTE_NAME
     _pretty_route_name = GP_NEXT_POINTS_EPI_PRETTY_ROUTE_NAME
+
+    def _get_default_optimizer_type(self, params):
+        """Get the optimizer type associated with this REST endpoint.
+
+        :param params: a (partially) deserialized REST request with everything except possibly
+          ``params['optimizer_info']``
+        :type params: dict
+        :return: optimizer type to use, one of :const:`moe.optimal_learning.python.constant.OPTIMIZER_TYPES`
+        :rtype: str
+
+        """
+        return ENDPOINT_TO_DEFAULT_OPTIMIZER_TYPE[(self._route_name, EI_COMPUTE_TYPE_ANALYTIC)]
 
     def _get_default_optimizer_params(self, params):
         """Get the default optimizer parameters associated with the desired ``optimizer_type``, REST endpoint, and analytic vs monte carlo computation.
@@ -33,12 +45,16 @@ class GpNextPointsEpi(GpNextPointsPrettyView):
         """
         optimizer_type = params['optimizer_info']['optimizer_type']
         optimizer_parameters_lookup = (optimizer_type, self._route_name)
+        print "optimizer_type is {0}".format(optimizer_type)
 
         num_to_sample = params.get('num_to_sample')
-        if num_to_sample == 1:
+        if optimizer_type == GRADIENT_DESCENT_OPTIMIZER:
+            if num_to_sample == 1:
+                optimizer_parameters_lookup += (EI_COMPUTE_TYPE_ANALYTIC, )
+            else:
+                optimizer_parameters_lookup += (EI_COMPUTE_TYPE_MONTE_CARLO, )
+        elif optimizer_type == L_BFGS_B_OPTIMIZER:
             optimizer_parameters_lookup += (EI_COMPUTE_TYPE_ANALYTIC, )
-        else:
-            optimizer_parameters_lookup += (EI_COMPUTE_TYPE_MONTE_CARLO, )
 
         return OPTIMIZER_TYPE_AND_OBJECTIVE_TO_DEFAULT_PARAMETERS[optimizer_parameters_lookup]
 
