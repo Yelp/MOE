@@ -8,6 +8,7 @@ from moe.optimal_learning.python.data_containers import SamplePoint, HistoricalD
 from moe.optimal_learning.python.geometry_utils import ClosedInterval
 from moe.optimal_learning.python.linkers import DOMAIN_TYPES_TO_DOMAIN_LINKS, COVARIANCE_TYPES_TO_CLASSES, OPTIMIZER_TYPES_TO_OPTIMIZER_METHODS
 
+
 def _make_domain_from_params(params, domain_info_key="domain_info", python_version=False):
     """Create and return a C++ ingestable domain from the request params.
 
@@ -57,7 +58,7 @@ def _make_covariance_of_process_from_params(params):
     return covariance_of_process
 
 
-def _make_optimizer_parameters_from_params(params): 
+def _make_optimizer_parameters_from_params(params):
     """Figure out which cpp_wrappers.* objects to construct from params, validate and return them.
 
     :param params: the deserialized REST request, containing optimizer_info

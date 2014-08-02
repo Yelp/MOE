@@ -118,7 +118,7 @@ class GpNextPointsPrettyView(OptimizableGpPrettyView):
             with timing_context(EPI_OPTIMIZATION_TIMING_LABEL):
                 next_points = opt_method(
                     expected_improvement_optimizer,
-                    300, #optimizer_parameters.num_multistarts,
+                    300,  # optimizer_parameters.num_multistarts,
                     num_to_sample,
                     max_num_threads=max_num_threads,
                     status=ei_opt_status,
