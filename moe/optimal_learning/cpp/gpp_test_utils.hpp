@@ -417,7 +417,7 @@ bool CheckDoubleWithin(double value, double truth, double tolerance) noexcept OL
 /*!\rst
   Checks if ``|value - truth| / |truth| <= tolerance`` (relative error)
 
-  If truth = 0.0, CheckDoubleWithin() is performed.
+  If ``truth = 0.0``, ``CheckDoubleWithin()`` is performed.
 
   \param
     :value: number to be tested
@@ -431,13 +431,14 @@ bool CheckDoubleWithinRelative(double value, double truth, double tolerance) noe
 /*!\rst
   Checks if ``|value - truth| / |truth| <= tolerance`` (relative error)
 
-  If truth < threshold, CheckDoubleWithin() is performed.
+  If ``truth < threshold``, ``CheckDoubleWithin()`` is performed.
 
   \param
     :value: number to be tested
     :truth: the exact/desired result
     :tolerance: permissible relative difference
-    :threshold: tolerance = |value - truth| if |truth| < threshold, this is to control unexpected large or undefined relative diff when truth is "too small" (0 for example)
+    :threshold: ``tolerance = |value - truth|`` if ``|truth| < threshold``, this is to control unexpected large or
+      undefined relative diff when truth is "too small" (0 for example)
   \return
     true if value, truth differ relatively by no more than tolerance.
 \endrst*/
