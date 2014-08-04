@@ -5,7 +5,9 @@ Contains:
 
     * :mod:`moe.views.frontend`: the frontend code
     * :mod:`moe.views.rest`: various REST endpoints for internal gaussian process information
-    * :mod:`moe.views.gp_pretty_view`: base view for all REST endpoints
+    * :mod:`moe.views.pretty_view`: base view for all REST endpoints
+    * :mod:`moe.views.bandit_pretty_view`: base view for all bandit REST endpoints
+    * :mod:`moe.views.gp_pretty_view`: base view for all GP REST endpoints
     * :mod:`moe.views.optimizable_gp_pretty_view`: base view for REST endpoints that require optimization
     * :mod:`moe.views.gp_next_points_pretty_view`: base view for getting the next best points to sample
     * :mod:`moe.views.schemas`: schemas used to deserialize/serialize inputs/outputs in the REST interface
