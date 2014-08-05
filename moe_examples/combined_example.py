@@ -66,6 +66,7 @@ def run_example(num_to_sample=20, verbose=True, testapp=None, **kwargs):
             exp.historical_data.to_list_of_sample_points(),  # Historical data to inform Gaussian Process
             points_to_evaluate,  # We will calculate the mean and variance of the GP at these points
             testapp=testapp,
+            **kwargs
             )
 
     if verbose:
