@@ -49,6 +49,7 @@ def run_example(num_to_sample=20, verbose=True, testapp=None, gp_next_points_kwa
 
     """
     # Set and combine all optional kwargs
+    # Note that the more specific kwargs take precedence (and will override general kwargs)
     if gp_next_points_kwargs is None:
         gp_next_points_kwargs = {}
     else:
@@ -99,7 +100,7 @@ def run_example(num_to_sample=20, verbose=True, testapp=None, gp_next_points_kwa
             exp.historical_data.to_list_of_sample_points(),  # Historical data to inform Gaussian Process
             points_to_evaluate,  # We will calculate the mean and variance of the GP at these points
             testapp=testapp,
-            **kwargs
+            **gp_mean_var_kwargs
             )
 
     if verbose:
