@@ -3,7 +3,7 @@
 
 This file contains a class to manipulate a Gaussian Process through numpy/scipy.
 
-See interfaces.gaussian_process_interface.py for more details.
+See :mod:`moe.optimal_learning.python.interfaces.gaussian_process_interface` for more details.
 
 """
 import copy
@@ -16,13 +16,13 @@ from moe.optimal_learning.python.interfaces.gaussian_process_interface import Ga
 from moe.optimal_learning.python.python_version import python_utils
 
 
-# Minimum allowed standard deviation value in ComputeGradCholeskyVarianceOfPointsPerPoint (= machine precision).
-# Values that are too small result in problems b/c we may compute ``std_dev/var`` (which is enormous
-# if ``std_dev = 1.0e-150`` and ``var = 1.0e-300``) since this only arises when we fail to compute ``std_dev = var = 0.0``.
-# Note: this is only relevant if noise = 0.0; this minimum will not affect GPs with noise since this value
-# is below the smallest amount of noise users can meaningfully add.
-# This value was chosen to be consistent with the singularity condition in scipy.linalg.cho_factor
-# and tested for robustness with the setup in test_1d_analytic_ei_edge_cases().
+#: Minimum allowed standard deviation value in ``ComputeGradCholeskyVarianceOfPointsPerPoint`` (= machine precision).
+#: Values that are too small result in problems b/c we may compute ``std_dev/var`` (which is enormous
+#: if ``std_dev = 1.0e-150`` and ``var = 1.0e-300``) since this only arises when we fail to compute ``std_dev = var = 0.0``.
+#: Note: this is only relevant if noise = 0.0; this minimum will not affect GPs with noise since this value
+#: is below the smallest amount of noise users can meaningfully add.
+#: This value was chosen to be consistent with the singularity condition in scipy.linalg.cho_factor
+#: and tested for robustness with the setup in test_1d_analytic_ei_edge_cases().
 MINIMUM_STD_DEV_GRAD_CHOLESKY = numpy.finfo(numpy.float64).eps
 
 
@@ -30,7 +30,7 @@ class GaussianProcess(GaussianProcessInterface):
 
     r"""Implementation of a GaussianProcess strictly in Python.
 
-    .. Note:: Comments in this class are copied from this object's superclass in interfaces.gaussian_process_interface.py.
+    .. Note:: Comments in this class are copied from this object's superclass in :mod:`moe.optimal_learning.python.interfaces.gaussian_process_interface`.
 
     Object that encapsulates Gaussian Process Priors (GPPs).  A GPP is defined by a set of
     (sample point, function value, noise variance) triples along with a covariance function that relates the points.
@@ -69,9 +69,9 @@ class GaussianProcess(GaussianProcessInterface):
         TODO(GH-56): Have a way to set private RNG state for self.sample_point_from_gp()
 
         :param covariance_function: covariance object encoding assumptions about the GP's behavior on our data
-        :type covariance_function: Covariance object exposing hyperparameters (e.g., from python_version.covariance)
+        :type covariance_function: :class:`moe.optimal_learning.python.interfaces.covariance_interface.CovarianceInterface` subclass
         :param historical_data: object specifying the already-sampled points, the objective value at those points, and the noise variance associated with each observation
-        :type historical_data: HistoricalData object
+        :type historical_data: :class:`moe.optimal_learning.python.data_containers.HistoricalData` object
 
         """
         self._covariance = copy.deepcopy(covariance_function)
@@ -88,6 +88,39 @@ class GaussianProcess(GaussianProcessInterface):
         """Return the number of sampled points."""
         return self._historical_data.num_sampled
 
+    @property
+    def _points_sampled(self):
+        """Return the coordinates of the already-sampled points; see :class:`moe.optimal_learning.python.data_containers.HistoricalData`."""
+        return self._historical_data.points_sampled
+
+    @property
+    def _points_sampled_value(self):
+        """Return the function values measured at each of points_sampled; see :class:`moe.optimal_learning.python.data_containers.HistoricalData`."""
+        return self._historical_data.points_sampled_value
+
+    @property
+    def _points_sampled_noise_variance(self):
+        """Return the noise variance associated with points_sampled_value; see :class:`moe.optimal_learning.python.data_containers.HistoricalData`."""
+        return self._historical_data.points_sampled_noise_variance
+
+    def get_covariance_copy(self):
+        """Return a copy of the covariance object specifying the Gaussian Process.
+
+        :return: covariance object encoding assumptions about the GP's behavior on our data
+        :rtype: interfaces.covariance_interface.CovarianceInterface subclass
+
+        """
+        return copy.deepcopy(self._covariance)
+
+    def get_historical_data_copy(self):
+        """Return the data (points, function values, noise) specifying the prior of the Gaussian Process.
+
+        :return: object specifying the already-sampled points, the objective value at those points, and the noise variance associated with each observation
+        :rtype: data_containers.HistoricalData
+
+        """
+        return copy.deepcopy(self._historical_data)
+
     def _build_precomputed_data(self):
         """Set up precomputed data (cholesky factorization of K and K^-1 * y)."""
         if self.num_sampled == 0:
@@ -96,18 +129,19 @@ class GaussianProcess(GaussianProcessInterface):
         else:
             covariance_matrix = python_utils.build_covariance_matrix(
                 self._covariance,
-                self._historical_data.points_sampled,
-                noise_variance=self._historical_data.points_sampled_noise_variance,
+                self._points_sampled,
+                noise_variance=self._points_sampled_noise_variance,
             )
             self._K_chol = scipy.linalg.cho_factor(covariance_matrix, lower=True, overwrite_a=True)
-            self._K_inv_y = scipy.linalg.cho_solve(self._K_chol, self._historical_data.points_sampled_value)
+            self._K_inv_y = scipy.linalg.cho_solve(self._K_chol, self._points_sampled_value)
 
     def compute_mean_of_points(self, points_to_sample):
         r"""Compute the mean of this GP at each of point of ``Xs`` (``points_to_sample``).
 
         .. Warning:: ``points_to_sample`` should not contain duplicate points.
 
-        .. Note:: Comments in this class are copied from this's superclass in interfaces.gaussian_process_interface.py.
+        .. Note:: Comments are copied from
+          :mod:`moe.optimal_learning.python.interfaces.gaussian_process_interface.GaussianProcessInterface.compute_mean_of_points`
 
         :param points_to_sample: num_to_sample points (in dim dimensions) being sampled from the GP
         :type points_to_sample: array of float64 with shape (num_to_sample, dim)
@@ -120,7 +154,7 @@ class GaussianProcess(GaussianProcessInterface):
 
         K_star = python_utils.build_mix_covariance_matrix(
             self._covariance,
-            self._historical_data.points_sampled,
+            self._points_sampled,
             points_to_sample,
         )
         mu_star = numpy.dot(K_star.T, self._K_inv_y)
@@ -137,7 +171,8 @@ class GaussianProcess(GaussianProcessInterface):
         (See references or implementation for further details.)
         Thus, ``grad_mu`` is stored in a reduced form which only tracks the nonzero entries.
 
-        .. Note:: Comments in this class are copied from this's superclass in interfaces.gaussian_process_interface.py.
+        .. Note:: Comments are copied from
+          :mod:`moe.optimal_learning.python.interfaces.gaussian_process_interface.GaussianProcessInterface.compute_grad_mean_of_points`
 
         :param points_to_sample: num_to_sample points (in dim dimensions) being sampled from the GP
         :type points_to_sample: array of float64 with shape (num_to_sample, dim)
@@ -149,9 +184,9 @@ class GaussianProcess(GaussianProcessInterface):
 
         """
         num_derivatives = self._clamp_num_derivatives(points_to_sample.shape[0], num_derivatives)
-        grad_K_star = numpy.empty((num_derivatives, self._historical_data.points_sampled.shape[0], self.dim))
+        grad_K_star = numpy.empty((num_derivatives, self._points_sampled.shape[0], self.dim))
         for i, point_one in enumerate(points_to_sample[:num_derivatives, ...]):
-            for j, point_two in enumerate(self._historical_data.points_sampled):
+            for j, point_two in enumerate(self._points_sampled):
                 grad_K_star[i, j, ...] = self._covariance.grad_covariance(point_one, point_two)
 
         # y_{k,i} = A_{k,j,i} * x_j
@@ -165,7 +200,8 @@ class GaussianProcess(GaussianProcessInterface):
 
         The variance matrix is symmetric although we currently return the full representation.
 
-        .. Note:: Comments in this class are copied from this's superclass in interfaces.gaussian_process_interface.py.
+        .. Note:: Comments are copied from
+          :mod:`moe.optimal_learning.python.interfaces.gaussian_process_interface.GaussianProcessInterface.compute_variance_of_points`
 
         :param points_to_sample: num_to_sample points (in dim dimensions) being sampled from the GP
         :type points_to_sample: array of float64 with shape (num_to_sample, dim)
@@ -179,7 +215,7 @@ class GaussianProcess(GaussianProcessInterface):
 
         K_star = python_utils.build_mix_covariance_matrix(
             self._covariance,
-            self._historical_data.points_sampled,
+            self._points_sampled,
             points_to_sample,
         )
         V = scipy.linalg.solve_triangular(
@@ -213,7 +249,7 @@ class GaussianProcess(GaussianProcessInterface):
     def _compute_grad_variance_of_points_per_point(self, points_to_sample, var_of_grad):
         r"""Compute the gradient of the variance (matrix) of this GP at a single point of ``Xs`` (``points_to_sample``) wrt ``Xs``.
 
-        See compute_grad_variance_of_points() for more details.
+        See :meth:`~moe.optimal_learning.python.python_version.gaussian_process.GaussianProcess.compute_grad_variance_of_points` for more details.
 
         :param points_to_sample: num_to_sample points (in dim dimensions) being sampled from the GP
         :type points_to_sample: array of float64 with shape (num_to_sample, dim)
@@ -231,7 +267,7 @@ class GaussianProcess(GaussianProcessInterface):
 
         K_star = python_utils.build_mix_covariance_matrix(
             self._covariance,
-            self._historical_data.points_sampled,
+            self._points_sampled,
             points_to_sample,
         )
         K_inv_times_K_star = scipy.linalg.cho_solve(self._K_chol, K_star, overwrite_b=True)
@@ -239,15 +275,15 @@ class GaussianProcess(GaussianProcessInterface):
             for j, point_two in enumerate(points_to_sample):
                 if var_of_grad == i and var_of_grad == j:
                     grad_var[i, j, ...] = self._covariance.grad_covariance(point_one, point_two)
-                    for idx_two, sampled_two in enumerate(self._historical_data.points_sampled):
+                    for idx_two, sampled_two in enumerate(self._points_sampled):
                         grad_var[i, j, ...] -= 2.0 * K_inv_times_K_star[idx_two, i] * self._covariance.grad_covariance(point_one, sampled_two)
                 elif var_of_grad == i:
                     grad_var[i, j, ...] = self._covariance.grad_covariance(point_one, point_two)
-                    for idx_two, sampled_two in enumerate(self._historical_data.points_sampled):
+                    for idx_two, sampled_two in enumerate(self._points_sampled):
                         grad_var[i, j, ...] -= K_inv_times_K_star[idx_two, j] * self._covariance.grad_covariance(point_one, sampled_two)
                 elif var_of_grad == j:
                     grad_var[i, j, ...] = self._covariance.grad_covariance(point_two, point_one)
-                    for idx_one, sampled_one in enumerate(self._historical_data.points_sampled):
+                    for idx_one, sampled_one in enumerate(self._points_sampled):
                         grad_var[i, j, ...] -= K_inv_times_K_star[idx_one, i] * self._covariance.grad_covariance(point_two, sampled_one)
         return grad_var
 
@@ -259,7 +295,8 @@ class GaussianProcess(GaussianProcessInterface):
         This function is similar to compute_grad_cholesky_variance_of_points() (below), except this does not include
         gradient terms from the cholesky factorization. Description will not be duplicated here.
 
-        .. Note:: Comments in this class are copied from this's superclass in interfaces.gaussian_process_interface.py.
+        .. Note:: Comments are copied from
+          :mod:`moe.optimal_learning.python.interfaces.gaussian_process_interface.GaussianProcessInterface.compute_grad_variance_of_points`
 
         :param points_to_sample: num_to_sample points (in dim dimensions) being sampled from the GP
         :type points_to_sample: array of float64 with shape (num_to_sample, dim)
@@ -278,7 +315,7 @@ class GaussianProcess(GaussianProcessInterface):
     def _compute_grad_cholesky_variance_of_points_per_point(self, points_to_sample, chol_var, var_of_grad):
         r"""Compute the gradient of the cholesky factorization of the variance (matrix) of this GP a single point of ``Xs`` (``points_to_sample``) wrt ``Xs``.
 
-        See compute_grad_cholesky_variance_of_points() for more details.
+        See :meth:`~moe.optimal_learning.python.python_version.gaussian_process.GaussianProcess.compute_grad_cholesky_variance_of_points` for more details.
 
         :param points_to_sample: num_to_sample points (in dim dimensions) being sampled from the GP
         :type points_to_sample: array of float64 with shape (num_to_sample, dim)
@@ -330,7 +367,9 @@ class GaussianProcess(GaussianProcessInterface):
         Let this be indexed ``grad_chol[k][j][i][d]``, which is read the derivative of ``var[j][i]``
         with respect to ``x_{k,d}`` (x = ``points_to_sample``)
 
-        .. Note:: Comments in this class are copied from this's superclass in interfaces.gaussian_process_interface.py.
+
+        .. Note:: Comments are copied from
+          :mod:`moe.optimal_learning.python.interfaces.gaussian_process_interface.GaussianProcessInterface.compute_grad_cholesky_variance_of_points`
 
         :param points_to_sample: num_to_sample points (in dim dimensions) being sampled from the GP
         :type points_to_sample: array of float64 with shape (num_to_sample, dim)
@@ -364,8 +403,8 @@ class GaussianProcess(GaussianProcessInterface):
 
         Also forces recomputation of all derived quantities for GP to remain consistent.
 
-        :param sampled_points: SampledPoint objects to load into the GP (containing point, function value, and noise variance)
-        :type sampled_points: list of SampledPoint objects
+        :param sampled_points: SamplePoint objects to load into the GP (containing point, function value, and noise variance)
+        :type sampled_points: list of :class:`moe.optimal_learning.python.SamplePoint` objects
         :param validate: whether to sanity-check the input sample_points
         :type validate: boolean
 
@@ -386,7 +425,8 @@ class GaussianProcess(GaussianProcessInterface):
              BUT if the drawn (point, value) pair is meant to be added back into the GP (e.g., for testing), then this point
              MUST be drawn with noise_variance equal to the noise associated with "point" as a member of "points_sampled"
 
-        .. Note:: Comments in this class are copied from this's superclass in interfaces.gaussian_process_interface.py.
+        .. Note:: Comments are copied from
+          :mod:`moe.optimal_learning.python.interfaces.gaussian_process_interface.GaussianProcessInterface.sample_point_from_gp`
 
         :param point_to_sample: point (in dim dimensions) at which to sample from this GP
         :type points_to_sample: array of float64 with shape (dim)

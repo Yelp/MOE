@@ -2,9 +2,10 @@
 """Links between the python and cpp_wrapper implementations of domains, covariances and optimizations."""
 from collections import namedtuple
 
-from moe.optimal_learning.python.constant import SQUARE_EXPONENTIAL_COVARIANCE_TYPE, TENSOR_PRODUCT_DOMAIN_TYPE, SIMPLEX_INTERSECT_TENSOR_PRODUCT_DOMAIN_TYPE, NULL_OPTIMIZER, NEWTON_OPTIMIZER, GRADIENT_DESCENT_OPTIMIZER
+from moe.optimal_learning.python.constant import SQUARE_EXPONENTIAL_COVARIANCE_TYPE, TENSOR_PRODUCT_DOMAIN_TYPE, SIMPLEX_INTERSECT_TENSOR_PRODUCT_DOMAIN_TYPE, NULL_OPTIMIZER, NEWTON_OPTIMIZER, GRADIENT_DESCENT_OPTIMIZER, LOG_MARGINAL_LIKELIHOOD, LEAVE_ONE_OUT_LOG_LIKELIHOOD
 import moe.optimal_learning.python.cpp_wrappers.covariance as cpp_covariance
 import moe.optimal_learning.python.cpp_wrappers.domain as cpp_domain
+from moe.optimal_learning.python.cpp_wrappers.log_likelihood import GaussianProcessLogMarginalLikelihood, GaussianProcessLeaveOneOutLogLikelihood
 import moe.optimal_learning.python.cpp_wrappers.optimization as cpp_optimization
 import moe.optimal_learning.python.python_version.covariance as python_covariance
 import moe.optimal_learning.python.python_version.domain as python_domain
@@ -48,10 +49,10 @@ DOMAIN_TYPES_TO_DOMAIN_LINKS = {
         }
 
 # Optimization
-OptimizationMethod = namedtuple(
-        'OptimizationMethod',
+OptimizerMethod = namedtuple(
+        'OptimizerMethod',
         [
-            'optimization_type',
+            'optimizer_type',
             'python_parameters_class',
             'cpp_parameters_class',
             'python_optimizer_class',
@@ -59,26 +60,46 @@ OptimizationMethod = namedtuple(
             ],
         )
 
-OPTIMIZATION_TYPES_TO_OPTIMIZATION_METHODS = {
-        NULL_OPTIMIZER: OptimizationMethod(
-            optimization_type=NULL_OPTIMIZER,
+OPTIMIZER_TYPES_TO_OPTIMIZER_METHODS = {
+        NULL_OPTIMIZER: OptimizerMethod(
+            optimizer_type=NULL_OPTIMIZER,
             python_parameters_class=python_optimization.NullParameters,
             cpp_parameters_class=cpp_optimization.NullParameters,
             python_optimizer_class=python_optimization.NullOptimizer,
             cpp_optimizer_class=cpp_optimization.NullOptimizer,
             ),
-        NEWTON_OPTIMIZER: OptimizationMethod(
-            optimization_type=NEWTON_OPTIMIZER,
+        NEWTON_OPTIMIZER: OptimizerMethod(
+            optimizer_type=NEWTON_OPTIMIZER,
             python_parameters_class=python_optimization.NewtonParameters,
             cpp_parameters_class=cpp_optimization.NewtonParameters,
             python_optimizer_class=None,
             cpp_optimizer_class=cpp_optimization.NewtonOptimizer,
             ),
-        GRADIENT_DESCENT_OPTIMIZER: OptimizationMethod(
-            optimization_type=GRADIENT_DESCENT_OPTIMIZER,
+        GRADIENT_DESCENT_OPTIMIZER: OptimizerMethod(
+            optimizer_type=GRADIENT_DESCENT_OPTIMIZER,
             python_parameters_class=python_optimization.GradientDescentParameters,
             cpp_parameters_class=cpp_optimization.GradientDescentParameters,
             python_optimizer_class=python_optimization.GradientDescentOptimizer,
             cpp_optimizer_class=cpp_optimization.GradientDescentOptimizer,
+            ),
+        }
+
+# Log Likelihood
+LogLikelihoodMethod = namedtuple(
+        'LogLikelihoodMethod',
+        [
+            'log_likelihood_type',
+            'log_likelihood_class',
+            ]
+        )
+
+LOG_LIKELIHOOD_TYPES_TO_LOG_LIKELIHOOD_METHODS = {
+        LOG_MARGINAL_LIKELIHOOD: LogLikelihoodMethod(
+            log_likelihood_type=LOG_MARGINAL_LIKELIHOOD,
+            log_likelihood_class=GaussianProcessLogMarginalLikelihood,
+            ),
+        LEAVE_ONE_OUT_LOG_LIKELIHOOD: LogLikelihoodMethod(
+            log_likelihood_type=LEAVE_ONE_OUT_LOG_LIKELIHOOD,
+            log_likelihood_class=GaussianProcessLeaveOneOutLogLikelihood,
             ),
         }

@@ -14,7 +14,7 @@
   3. Export*() functions for giving Python access to various C++ calls via boost::python.
 
      a. enum classes
-     b. optimization parameter structs
+     b. optimizer parameter structs
      c. RandomnessSourceContainer from item 2)
 
   Functions callable from Python generally have the following form:
@@ -142,9 +142,7 @@ class RandomnessSourceContainer {
 
     Random sources are seeded to a repeatable combination of the default seed and the thread id.
   \endrst*/
-  explicit RandomnessSourceContainer(int num_threads) : uniform_generator(kUniformDefaultSeed), normal_rng_vec(num_threads), num_normal_rng_(num_threads) {
-    SetExplicitNormalRNGSeed(kNormalDefaultSeed);
-  }
+  explicit RandomnessSourceContainer(int num_threads);
 
   /*!\rst
     Get the current number of threads being tracked.  Can be less than normal_rng_vec.size()
@@ -159,9 +157,7 @@ class RandomnessSourceContainer {
     \param
       :seed: base seed value to use
   \endrst*/
-  void SetExplicitUniformGeneratorSeed(NormalRNG::EngineType::result_type seed) {
-    uniform_generator.SetExplicitSeed(seed);
-  }
+  void SetExplicitUniformGeneratorSeed(NormalRNG::EngineType::result_type seed);
 
   /*!\rst
     Seeds uniform generator with current time information
@@ -169,16 +165,12 @@ class RandomnessSourceContainer {
     \param
       :seed: base seed value to use
   \endrst*/
-  void SetRandomizedUniformGeneratorSeed(NormalRNG::EngineType::result_type seed) {
-    uniform_generator.SetRandomizedSeed(seed, 0);  // single instance, so thread_id = 0
-  }
+  void SetRandomizedUniformGeneratorSeed(NormalRNG::EngineType::result_type seed);
 
   /*!\rst
     Resets uniform generator to its most recently used seed.
   \endrst*/
-  void ResetUniformGeneratorState() {
-    uniform_generator.ResetToMostRecentSeed();
-  }
+  void ResetUniformGeneratorState();
 
   /*!\rst
     Seeds RNG of thread i to f_i(seed, thread_id_i) such that f_i != f_j for i != j.  f_i is repeatable.
@@ -189,11 +181,7 @@ class RandomnessSourceContainer {
     \param
       :seed: base seed value to use
   \endrst*/
-  void SetExplicitNormalRNGSeed(NormalRNG::EngineType::result_type seed) {
-    for (IdentifyType<decltype(normal_rng_vec)>::type::size_type i = 0, size = normal_rng_vec.size(); i < size; ++i) {
-      normal_rng_vec[i].SetExplicitSeed(seed + i);
-    }
-  }
+  void SetExplicitNormalRNGSeed(NormalRNG::EngineType::result_type seed);
 
   /*!\rst
     Seeds each thread with a combination of current time, thread_id, and (potentially) other factors.
@@ -202,11 +190,7 @@ class RandomnessSourceContainer {
     \param
       :seed: base seed value to use
   \endrst*/
-  void SetRandomizedNormalRNGSeed(NormalRNG::EngineType::result_type seed) {
-    for (IdentifyType<decltype(normal_rng_vec)>::type::size_type i = 0, size = normal_rng_vec.size(); i < size; ++i) {
-      normal_rng_vec[i].SetRandomizedSeed(seed, i);
-    }
-  }
+  void SetRandomizedNormalRNGSeed(NormalRNG::EngineType::result_type seed);
 
   /*!\rst
     If ``seed_flag_list[i]`` is true, sets the normal rng seed of the ``i``-th thread to the value of ``seed_list[i]``.
@@ -224,11 +208,7 @@ class RandomnessSourceContainer {
   /*!\rst
     Resets all threads' RNGs to the seed values they were initialized with.  Useful for testing.
   \endrst*/
-  void ResetNormalRNGState() {
-    for (auto& entry : normal_rng_vec) {
-      entry.ResetToMostRecentSeed();
-    }
-  }
+  void ResetNormalRNGState();
 
   void PrintState();
 
@@ -289,9 +269,9 @@ boost::python::list VectorToPylist(const std::vector<double>& input);
 void ExportEnumTypes();
 
 /*!\rst
-  Export the parameter structs from gpp_optimization_parameters.hpp to Python. Includes docstrings.
+  Export the parameter structs from gpp_optimizer_parameters.hpp to Python. Includes docstrings.
 \endrst*/
-void ExportOptimizationParameterStructs();
+void ExportOptimizerParameterStructs();
 
 /*!\rst
   Export the class RandomnessSourceContainer and its member functions to Python. Includes docstrings.

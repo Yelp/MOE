@@ -30,6 +30,30 @@ class GaussianProcessTest(GaussianProcessTestCase):
         numpy.random.seed(8794)
         super(GaussianProcessTest, self).base_setup()
 
+    def test_sample_point_from_gp(self):
+        """Test that sampling points from the GP works."""
+        point_one = SamplePoint([0.0, 1.0], -1.0, 0.0)
+        point_two = SamplePoint([2.0, 2.5], 1.0, 0.1)
+        covariance = SquareExponential([1.0, 1.0, 1.0])
+        historical_data = HistoricalData(len(point_one.point), [point_one, point_two])
+
+        gaussian_process = GaussianProcess(covariance, historical_data)
+        out_values = numpy.zeros(3)
+        for i in xrange(3):
+            out_values[i] = gaussian_process.sample_point_from_gp(point_two.point, 0.001)
+
+        gaussian_process._gaussian_process.reset_to_most_recent_seed()
+        out_values_test = numpy.ones(3)
+        for i in xrange(3):
+            out_values_test[i] = gaussian_process.sample_point_from_gp(point_two.point, 0.001)
+
+        # Exact match b/c we should've run over the exact same computations
+        self.assert_vector_within_relative(out_values_test, out_values, 0.0)
+
+        # Sampling from a historical point (that had 0 noise) should produce the same value associated w/that point
+        value = gaussian_process.sample_point_from_gp(point_one.point, 0.0)
+        self.assert_scalar_within_relative(value, point_one.value, numpy.finfo(numpy.float64).eps)
+
     def test_gp_construction_singular_covariance_matrix(self):
         """Test that the GaussianProcess ctor indicates a singular covariance matrix when points_sampled contains duplicates (0 noise)."""
         index = numpy.argmax(numpy.greater_equal(self.num_sampled_list, 1))
@@ -40,7 +64,7 @@ class GaussianProcessTest(GaussianProcessTestCase):
         point_three = point_two
 
         historical_data = HistoricalData(len(point_one.point), [point_one, point_two, point_three])
-        T.assert_raises(C_GP.SingularMatrixException, GaussianProcess, gaussian_process._covariance, historical_data)
+        T.assert_raises(C_GP.SingularMatrixException, GaussianProcess, gaussian_process.get_covariance_copy(), historical_data)
 
     def test_gp_add_sampled_points_singular_covariance_matrix(self):
         """Test that GaussianProcess.add_sampled_points indicates a singular covariance matrix when points_sampled contains duplicates (0 noise)."""
@@ -67,9 +91,10 @@ class GaussianProcessTest(GaussianProcessTestCase):
 
         for test_case in self.gp_test_environments:
             domain, python_gp = test_case
+            python_cov, historical_data = python_gp.get_core_data_copy()
 
-            cpp_cov = SquareExponential(python_gp._covariance.hyperparameters)
-            cpp_gp = GaussianProcess(cpp_cov, python_gp._historical_data)
+            cpp_cov = SquareExponential(python_cov.hyperparameters)
+            cpp_gp = GaussianProcess(cpp_cov, historical_data)
 
             for num_to_sample in self.num_to_sample_list:
                 for _ in xrange(num_tests_per_case):
@@ -91,9 +116,10 @@ class GaussianProcessTest(GaussianProcessTestCase):
 
         for test_case in self.gp_test_environments:
             domain, python_gp = test_case
+            python_cov, historical_data = python_gp.get_core_data_copy()
 
-            cpp_cov = SquareExponential(python_gp._covariance.hyperparameters)
-            cpp_gp = GaussianProcess(cpp_cov, python_gp._historical_data)
+            cpp_cov = SquareExponential(python_cov.hyperparameters)
+            cpp_gp = GaussianProcess(cpp_cov, historical_data)
 
             for num_to_sample in self.num_to_sample_list:
                 for _ in xrange(num_tests_per_case):
@@ -116,9 +142,10 @@ class GaussianProcessTest(GaussianProcessTestCase):
 
         for test_case in self.gp_test_environments:
             domain, python_gp = test_case
+            python_cov, historical_data = python_gp.get_core_data_copy()
 
-            cpp_cov = SquareExponential(python_gp._covariance.hyperparameters)
-            cpp_gp = GaussianProcess(cpp_cov, python_gp._historical_data)
+            cpp_cov = SquareExponential(python_cov.hyperparameters)
+            cpp_gp = GaussianProcess(cpp_cov, historical_data)
 
             for num_to_sample in self.num_to_sample_list:
                 for _ in xrange(num_tests_per_case):

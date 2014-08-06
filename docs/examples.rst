@@ -1,7 +1,7 @@
 Examples
 ========
 
-Below are some examples for use cases in which MOE can provide value
+Below are some python examples for use cases in which MOE can provide value. C++ examples can be found in :doc:`gpp_expected_improvement_demo`, :doc:`gpp_hyperparameter_optimization_demo` and :doc:`gpp_hyper_and_EI_demo`.
 
 **Contents:**
 
@@ -14,7 +14,7 @@ Below are some examples for use cases in which MOE can provide value
 Minimizing an arbitrary function
 --------------------------------
 
-This example can be found in ``<MOE_DIR>/examples/next_point_via_simple_endpoint.py``
+This example can be found in :mod:`moe_examples.next_point_via_simple_endpoint`
 
 In this example we use :mod:`moe.easy_interface.simple_endpoint` to use the endpoint :mod:`moe.views.rest.gp_ei`.
 
@@ -23,10 +23,7 @@ First we define an arbitrary function to minimize,
 .. code-block:: python
 
     def function_to_minimize(x):
-        """Calculate an aribitrary 2-d function with some noise.
-
-        This function has a minimum near [1, 2.6].
-        """
+        """Calculate an aribitrary 2-d function with some noise with minimum near [1, 2.6]."""
         return math.sin(x[0]) * math.cos(x[1]) + math.cos(x[0] + x[1]) + random.uniform(-0.02, 0.02)
 
 .. Note:
@@ -72,7 +69,7 @@ We can also use other GP optimization methods:
 Gaussian Process regression given historical data
 -------------------------------------------------
 
-This example can be found in ``<MOE_DIR>/examples/mean_and_var_of_gp_from_historic_data.py``
+This example can be found in :mod:`moe_examples.mean_and_var_of_gp_from_historic_data`
 
 In this example we use :mod:`moe.easy_interface.simple_endpoint` to use the endpoint :mod:`moe.views.rest.gp_mean_var`. We will be calculating the posterior mean and variance of a Gaussian Process (GP) given some historical data.
 
@@ -105,7 +102,7 @@ For examples of more options we can pass this endpoint see the documentation her
 Hyperparameter optimization of a Gaussian Process
 -------------------------------------------------
 
-This example can be found in ``<MOE_DIR>/examples/hyper_opt_of_gp_from_historical_data.py``
+This example can be found in :mod:`moe_examples.hyper_opt_of_gp_from_historical_data`
 
 In this example we use :mod:`moe.easy_interface.simple_endpoint` to use the endpoint :mod:`moe.views.rest.gp_hyper_opt`. It calculates the optimal hyperparameters for a Gaussian Process given historical data.
 
@@ -124,11 +121,13 @@ For examples of more options we can pass this endpoint see the documentation her
 All above examples combined
 ---------------------------
 
-This example can be found in ``<MOE_DIR>/examples/combined_example.py``
+This example can be found in :mod:`moe_examples.combined_example`
 
 In this example we use :mod:`moe.easy_interface.simple_endpoint` to use the endpoints :mod:`moe.views.rest.gp_next_points_epi`, :mod:`moe.views.rest.gp_mean_var`, :mod:`moe.views.rest.gp_hyper_opt`.
 
 See the code for the full example, and the individual endpoints for examples on more options for each.
+
+.. _ads-example:
 
 Setting thresholds for advertising units
 ----------------------------------------

@@ -12,12 +12,28 @@ This is the recommended way to run the MOE REST server. All dependencies and bui
 
 ::
 
-    $ git clone https://github.com/sc932/MOE.git
+    $ docker pull yelpmoe/latest # You can also pull specific versions like yelpmoe/v0.1.0
+    $ docker run -p 6543:6543 yelpmoe/latest
+
+If you are on OSX, or want a build based on the current master branch you may need to build this manually.
+
+::
+
+    $ git clone https://github.com/Yelp/MOE.git
     $ cd MOE
     $ docker build -t moe_container .
     $ docker run -p 6543:6543 moe_container
 
-The webserver and REST interface is now running on port 6543 from within the container.
+The webserver and REST interface is now running on port 6543 from within the container. http://localhost:6543
+
+If you want to build a specific version of the container locally then use::
+
+    $ git clone https://github.com/Yelp/MOE.git
+    $ cd MOE
+    $ git tag -l # lists all versions
+    $ git checkout tags/v0.1.0 # or whatever version you want
+    $ docker build -t moe_container_v0.1.0 .
+    $ docker run -p 6543:6543 moe_container_v0.1.0
 
 Install from source
 -------------------
@@ -52,9 +68,9 @@ Requires:
 
    ::
 
-      $ git clone https://github.com/sc932/MOE.git
+      $ git clone https://github.com/Yelp/MOE.git
       $ cd MOE
-      $ pip install -e .
+      $ pip install -r requirements.txt
       $ python setup.py install
 
    .. Note:: MOE's ``setup.py`` invokes cmake. Users can pass command line arguments to cmake via the ``MOE_CMAKE_OPTS`` environment variable. Other sections (e.g., `Python Tips`_, `CMake Tips`_) detail additional environment variables that may be needed to customize cmake's behavior.
@@ -226,14 +242,42 @@ If cmake is unable to find Boost, finds the wrong version of Boost, etc. then tr
 Linux Tips
 ----------
 
-1. You can apt-get everything you need. Yay for real package managers!
+1. For Ubuntu 13.04+ can apt-get everything you need. Yay for real package managers!
 
    ::
 
       $ apt-get update
-      $ apt-get install python python-dev gcc cmake libboost-all-dev python-pip doxygen libblas-dev liblapack-dev gfortran git
+      $ apt-get install python python-dev gcc cmake libboost-all-dev python-pip doxygen libblas-dev liblapack-dev gfortran git python-numpy python-scipy
+      $ pip install -r requirements.txt
+      $ python setup.py install
+      $ pserve --reload development.ini # MOE server is now running at http://localhost:6543
 
 2. If you are having strange errors (no current thread, segfault, etc.) or need to specify different versions of software (Boost, Python, etc.), check `Python Tips`_ and/or `Connecting Boost to MOE`_.
+
+Ubuntu 12.04 Tips
+^^^^^^^^^^^^^^^^^
+
+Ubuntu 12.04 repositories don't contain the versions of ``gcc``, ``cmake``, ``python-numpy`` or ``libboost`` that MOE requires so we need to do some PPA magic::
+
+    # PPA for gcc and g++ 4.7
+    $ sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+    # PPA for boost 1.55
+    $ sudo add-apt-repository -y ppa:boost-latest/ppa
+    # PPA for cmake 1.8.12.2
+    $ sudo add-apt-repository -y ppa:kalakris/cmake
+    # PPA for numpy 1.8.1
+    $ sudo add-apt-repository -y ppa:chris-lea/python-numpy
+    $ sudo apt-get update -qq
+    $ sudo apt-get install -y build-essential python python-dev python2.7 python2.7-dev doxygen libblas-dev liblapack-dev gfortran git make flex bison libssl-dev libedit-dev python-scipy gcc-4.7 g++-4.7 boost1.55 cmake python-numpy
+    # Now we need to tell ubuntu to use the correct gcc/g++
+    $ sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.7 20
+    $ sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.7 20
+    $ sudo update-alternatives --config gcc
+    $ sudo update-alternatives --config g++
+    $ pip install -r requirements.txt
+    $ python setup.py install
+
+If you are having strange errors (no current thread, segfault, etc.) or need to specify different versions of software (Boost, Python, etc.), check `Python Tips`_ and/or `Connecting Boost to MOE`_.
 
 CMake Tips
 ----------

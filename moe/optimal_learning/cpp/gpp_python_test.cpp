@@ -17,6 +17,7 @@
 #include "gpp_covariance_test.hpp"
 #include "gpp_domain.hpp"
 #include "gpp_domain_test.hpp"
+#include "gpp_expected_improvement_gpu_test.hpp"
 #include "gpp_geometry_test.hpp"
 #include "gpp_heuristic_expected_improvement_optimization_test.hpp"
 #include "gpp_linear_algebra_test.hpp"
@@ -26,7 +27,6 @@
 #include "gpp_optimization_test.hpp"
 #include "gpp_random_test.hpp"
 #include "gpp_test_utils_test.hpp"
-#include "gpp_expected_improvement_gpu_test.hpp"
 
 namespace optimal_learning {
 
@@ -76,22 +76,13 @@ int RunCppTestsWrapper() {
   }
   total_errors += error;
 
-  error = RunCudaEIConsistencyTests();
+  error = RunGPUTests();
   if (error != 0) {
-    OL_FAILURE_PRINTF("analytic, Cuda EI do not match for 1 potential sample case\n");
+    OL_FAILURE_PRINTF("GPU tests failed\n");
   } else {
-    OL_SUCCESS_PRINTF("analytic, Cuda EI match for 1 potential sample case\n");
+    OL_SUCCESS_PRINTF("GPU tests passed\n");
   }
   total_errors += error;
-
-  error = RunCudaEIvsCpuEI();
-  if (error != 0) {
-    OL_FAILURE_PRINTF("cudaEI vs cpuEI consistency check failed\n");
-  } else {
-    OL_SUCCESS_PRINTF("cudaEI vs cpuEI consistency check successed\n");
-  }
-  total_errors += error;
-
 
   error = RunLogLikelihoodPingTests();
   if (error != 0) {
@@ -229,23 +220,21 @@ int RunCppTestsWrapper() {
   }
   total_errors += error;
 
-  // TODO(GH-226): re-enable this test once it is switched to static thread scheduling
-  // error = ExpectedImprovementOptimizationTest(DomainTypes::kTensorProduct, ExpectedImprovementEvaluationMode::kMonteCarlo);
-  // if (error != 0) {
-  //   OL_FAILURE_PRINTF("monte-carlo EI optimization\n");
-  // } else {
-  //   OL_SUCCESS_PRINTF("monte-carlo EI optimization\n");
-  // }
-  // total_errors += error;
+  error = ExpectedImprovementOptimizationTest(DomainTypes::kTensorProduct, ExpectedImprovementEvaluationMode::kMonteCarlo);
+  if (error != 0) {
+    OL_FAILURE_PRINTF("monte-carlo EI optimization\n");
+  } else {
+    OL_SUCCESS_PRINTF("monte-carlo EI optimization\n");
+  }
+  total_errors += error;
 
-  // TODO(GH-226): re-enable this test once it is switched to static thread scheduling
-  // error = ExpectedImprovementOptimizationMultipleSamplesTest();
-  // if (error != 0) {
-  //   OL_FAILURE_PRINTF("monte-carlo EI optimization for multiple simultaneous experiments\n");
-  // } else {
-  //   OL_SUCCESS_PRINTF("monte-carlo EI optimization for multiple simultaneous experiments\n");
-  // }
-  // total_errors += error;
+  error = ExpectedImprovementOptimizationMultipleSamplesTest();
+  if (error != 0) {
+    OL_FAILURE_PRINTF("monte-carlo EI optimization for multiple simultaneous experiments\n");
+  } else {
+    OL_SUCCESS_PRINTF("monte-carlo EI optimization for multiple simultaneous experiments\n");
+  }
+  total_errors += error;
 
   error = ExpectedImprovementOptimizationTest(DomainTypes::kSimplex, ExpectedImprovementEvaluationMode::kAnalytic);
   if (error != 0) {
@@ -255,14 +244,13 @@ int RunCppTestsWrapper() {
   }
   total_errors += error;
 
-  // TODO(GH-226): re-enable this test once it is switched to static thread scheduling
-  // error = ExpectedImprovementOptimizationTest(DomainTypes::kSimplex, ExpectedImprovementEvaluationMode::kMonteCarlo);
-  // if (error != 0) {
-  //   OL_FAILURE_PRINTF("monte-carlo simplex EI optimization\n");
-  // } else {
-  //   OL_SUCCESS_PRINTF("monte-carlo simplex EI optimization\n");
-  // }
-  // total_errors += error;
+  error = ExpectedImprovementOptimizationTest(DomainTypes::kSimplex, ExpectedImprovementEvaluationMode::kMonteCarlo);
+  if (error != 0) {
+    OL_FAILURE_PRINTF("monte-carlo simplex EI optimization\n");
+  } else {
+    OL_SUCCESS_PRINTF("monte-carlo simplex EI optimization\n");
+  }
+  total_errors += error;
 
   return total_errors;
 }

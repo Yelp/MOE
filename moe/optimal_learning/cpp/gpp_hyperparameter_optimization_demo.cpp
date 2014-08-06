@@ -1,6 +1,8 @@
 /*!
   \file gpp_hyperparameter_optimization_demo.cpp
   \rst
+  ``moe/optimal_learning/cpp/gpp_hyperparameter_optimization_demo.cpp``
+
   This is a demo for the model selection (via hyperparameter optimization) capability
   present in this project.  These capabilities live in
   gpp_model_selection.
@@ -44,7 +46,7 @@
 #include "gpp_logging.hpp"
 #include "gpp_math.hpp"
 #include "gpp_model_selection.hpp"
-#include "gpp_optimization_parameters.hpp"
+#include "gpp_optimizer_parameters.hpp"
 #include "gpp_random.hpp"
 #include "gpp_test_utils.hpp"
 
@@ -107,10 +109,12 @@ int main() {
   // hyperparameters later on
   // Generate hyperparameters randomly
   boost::uniform_real<double> uniform_double_for_hyperparameter(0.5, 1.5);
-  FillRandomCovarianceHyperparameters(uniform_double_for_hyperparameter, &uniform_generator, &hyperparameters_original, &covariance_original);
+  FillRandomCovarianceHyperparameters(uniform_double_for_hyperparameter, &uniform_generator,
+                                      &hyperparameters_original, &covariance_original);
 
   std::vector<ClosedInterval> hyperparameter_domain_bounds(covariance_original.GetNumberOfHyperparameters(), {1.0e-10, 1.0e10});
-  HyperparameterDomainType hyperparameter_domain(hyperparameter_domain_bounds.data(), covariance_original.GetNumberOfHyperparameters());
+  HyperparameterDomainType hyperparameter_domain(hyperparameter_domain_bounds.data(),
+                                                 covariance_original.GetNumberOfHyperparameters());
 
   // now fill data
 #if OL_USER_INPUTS == 1
@@ -134,9 +138,11 @@ int main() {
   domain.GenerateUniformPointsInDomain(num_sampled, &uniform_generator, points_sampled.data());
 
   // build an empty GP: since num_sampled (last arg) is 0, none of the data arrays will be used here
-  GaussianProcess gp_generator(covariance_original, points_sampled.data(), points_sampled_value.data(), noise_variance.data(), dim, 0);
+  GaussianProcess gp_generator(covariance_original, points_sampled.data(), points_sampled_value.data(),
+                               noise_variance.data(), dim, 0);
   // fill the GP with randomly generated data
-  FillRandomGaussianProcess(points_sampled.data(), noise_variance.data(), dim, num_sampled, points_sampled_value.data(), &gp_generator);
+  FillRandomGaussianProcess(points_sampled.data(), noise_variance.data(), dim, num_sampled,
+                            points_sampled_value.data(), &gp_generator);
 
   // choose a random initial guess reasonably far away from hyperparameters_original
   // to find some optima (see WARNING2 below), it may be necessary to start with hyperparameters smaller than the originals or
@@ -144,13 +150,15 @@ int main() {
   std::vector<double> hyperparameters_perturbed(covariance_original.GetNumberOfHyperparameters());
   CovarianceClass covariance_perturbed(dim, 1.0, 1.0);
   boost::uniform_real<double> uniform_double_for_wrong_hyperparameter(5.0, 12.0);
-  FillRandomCovarianceHyperparameters(uniform_double_for_wrong_hyperparameter, &uniform_generator, &hyperparameters_perturbed, &covariance_perturbed);
+  FillRandomCovarianceHyperparameters(uniform_double_for_wrong_hyperparameter, &uniform_generator,
+                                      &hyperparameters_perturbed, &covariance_perturbed);
 #endif
 
   // log likelihood type selection
   using LogLikelihoodEvaluator = LogMarginalLikelihoodEvaluator;
   // log likelihood evaluator object
-  LogLikelihoodEvaluator log_marginal_eval(points_sampled.data(), points_sampled_value.data(), noise_variance.data(), dim, num_sampled);
+  LogLikelihoodEvaluator log_marginal_eval(points_sampled.data(), points_sampled_value.data(),
+                                           noise_variance.data(), dim, num_sampled);
 
   int total_newton_errors = 0;  // number of newton runs that failed due to singular hessians
   int newton_max_num_steps = 500;  // max number of newton steps
@@ -158,7 +166,8 @@ int main() {
   double pre_mult_newton = 1.0e-1;  // newton diagonal dominance scaling factor (see newton docs for details)
   double max_relative_change_newton = 1.0;
   double tolerance_newton = 1.0e-11;
-  NewtonParameters newton_parameters(1, newton_max_num_steps, gamma_newton, pre_mult_newton, max_relative_change_newton, tolerance_newton);
+  NewtonParameters newton_parameters(1, newton_max_num_steps, gamma_newton, pre_mult_newton,
+                                     max_relative_change_newton, tolerance_newton);
 
   // call newton to optimize hyperparameters
   // in general if this takes the full hyperparameter_max_num_steps iterations, something went wrong
@@ -171,7 +180,9 @@ int main() {
 
   printf(OL_ANSI_COLOR_CYAN "NEWTON OPTIMIZED HYPERPARAMETERS:\n" OL_ANSI_COLOR_RESET);
   // run newton optimization
-  total_newton_errors += NewtonHyperparameterOptimization(log_marginal_eval, covariance_perturbed, newton_parameters, hyperparameter_domain, new_newton_hyperparameters.data());
+  total_newton_errors += NewtonHyperparameterOptimization(log_marginal_eval, covariance_perturbed,
+                                                          newton_parameters, hyperparameter_domain,
+                                                          new_newton_hyperparameters.data());
   // WARNING: the gradient of log marginal appears to go to 0 as you move toward infinity.  if you do not start
   // close enough to an optima or have overly aggressive diagonal dominance settings, newton will skip miss everything
   // going on locally and shoot out to these solutions.
@@ -203,23 +214,27 @@ int main() {
   printf(OL_ANSI_COLOR_CYAN "LOG LIKELIHOOD + GRADIENT AT NEWTON OPTIMIZED FINAL HYPERPARAMS:\n" OL_ANSI_COLOR_RESET);
 
   CovarianceClass covariance_final(dim, new_newton_hyperparameters[0], new_newton_hyperparameters.data() + 1);
-  typename LogLikelihoodEvaluator::StateType log_marginal_state_newton_optimized_hyper(log_marginal_eval, covariance_final);
+  typename LogLikelihoodEvaluator::StateType log_marginal_state_newton_optimized_hyper(log_marginal_eval,
+                                                                                       covariance_final);
   double newton_log_marginal_opt = log_marginal_eval.ComputeLogLikelihood(log_marginal_state_newton_optimized_hyper);
   printf("newton optimized log marginal likelihood = %.18E\n", newton_log_marginal_opt);
 
   std::vector<double> grad_log_marginal_opt(covariance_final.GetNumberOfHyperparameters());
-  log_marginal_eval.ComputeGradLogLikelihood(&log_marginal_state_newton_optimized_hyper, grad_log_marginal_opt.data());
+  log_marginal_eval.ComputeGradLogLikelihood(&log_marginal_state_newton_optimized_hyper,
+                                             grad_log_marginal_opt.data());
   printf("grad log likelihood: ");
   PrintMatrix(grad_log_marginal_opt.data(), 1, covariance_final.GetNumberOfHyperparameters());
 
   printf(OL_ANSI_COLOR_CYAN "LOG LIKELIHOOD + GRADIENT AT ORIGINAL HYPERPARAMS:\n" OL_ANSI_COLOR_RESET);
-  typename LogLikelihoodEvaluator::StateType log_marginal_state_original_hyper(log_marginal_eval, covariance_original);
+  typename LogLikelihoodEvaluator::StateType log_marginal_state_original_hyper(log_marginal_eval,
+                                                                               covariance_original);
 
   double original_log_marginal = log_marginal_eval.ComputeLogLikelihood(log_marginal_state_original_hyper);
   printf("original log marginal likelihood = %.18E\n", original_log_marginal);
 
   std::vector<double> original_grad_log_marginal(covariance_original.GetNumberOfHyperparameters());
-  log_marginal_eval.ComputeGradLogLikelihood(&log_marginal_state_original_hyper, original_grad_log_marginal.data());
+  log_marginal_eval.ComputeGradLogLikelihood(&log_marginal_state_original_hyper,
+                                             original_grad_log_marginal.data());
   printf("grad log likelihood: ");
   PrintMatrix(original_grad_log_marginal.data(), 1, covariance_original.GetNumberOfHyperparameters());
 

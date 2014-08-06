@@ -589,7 +589,7 @@ BOOST_PYTHON_MODULE(GPP) {
   ExportExpectedImprovementFunctions();
   ExportGaussianProcessFunctions();
   ExportModelSelectionFunctions();
-  ExportOptimizationParameterStructs();
+  ExportOptimizerParameterStructs();
   ExportRandomnessContainer();
 }  // end BOOST_PYTHON_MODULE(GPP) definition
 

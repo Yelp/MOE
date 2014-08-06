@@ -3,7 +3,7 @@ r"""Interface for computation of log likelihood (and similar) measures of model 
 
 As a preface, you should read gpp_math.hpp's comments first (if not also gpp_math.cpp) to get an overview
 of Gaussian Processes (GPs) and how we are using them (Expected Improvement, EI). Python readers can get the basic
-overview in interfaces/gaussian_process_interface.py.
+overview in :mod:`moe.optimal_learning.python.interfaces.gaussian_process_interface`.
 
 .. Note:: these comments are copied from the file comments of gpp_model_selection.hpp.
 
@@ -58,8 +58,9 @@ where "generalization error" is defined as "the average error on unseen test exa
 as the training cases)."  So it's a measure of how well or poorly the model predicts reality.
 
 For further details and examples of log likelihood measures, see gpp_model_selection.hpp.
-Overview of some log likelihood measures can be found in GaussianProcessLogMarginalLikelihood and
-GaussianProcessLeaveOneOutLogLikelihood in cpp_wrappers/log_likelihood.py.
+Overview of some log likelihood measures can be found in
+:class:`moe.optimal_learning.python.cpp_wrappers.log_likelihood.GaussianProcessLogMarginalLikelihood` and
+:class:`moe.optimal_learning.python.cpp_wrappers.log_likelihood.GaussianProcessLeaveOneOutLogLikelihood`.
 
 **OPTIMIZATION**
 
@@ -85,8 +86,10 @@ of one or more hyperparameters).
 """
 from abc import ABCMeta, abstractmethod, abstractproperty
 
+from moe.optimal_learning.python.interfaces.gaussian_process_interface import GaussianProcessDataInterface
 
-class GaussianProcessLogLikelihoodInterface(object):
+
+class GaussianProcessLogLikelihoodInterface(GaussianProcessDataInterface):
 
     r"""Interface for computation of log likelihood (and log likelihood-like) measures of model fit along with its gradient and hessian.
 
@@ -151,7 +154,8 @@ class GaussianProcessLogLikelihoodInterface(object):
     def compute_hessian_log_likelihood(self):
         r"""Compute the hessian (wrt hyperparameters) of this log likelihood measure of model fit.
 
-        See CovarianceInterface.hyperparameter_hessian_covariance() in interfaces/covariance_interface.py for data ordering.
+        See :meth:`moe.optimal_learning.python.interfaces.covariance_interfaceCovarianceInterface.hyperparameter_hessian_covariance`
+        for data ordering.
 
         :return: hessian_log_likelihood: ``(i,j)``-th entry is ``\mixpderiv{LL(y | X, \theta)}{\theta_i}{\theta_j}``
         :rtype: array of float64 with shape (num_hyperparameters, num_hyperparameters)

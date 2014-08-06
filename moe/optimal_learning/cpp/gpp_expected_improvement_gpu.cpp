@@ -1,11 +1,15 @@
 /*!
   \file gpp_expected_improvement_gpu.cpp
   \rst
-  gpu code for calculating Expected Improvemnet & gradient of Expected Improvement
+  This file contains implementations of GPU related functions. They are actually C++ wrappers for
+  CUDA C functions defined in gpu/gpp_cuda_math.cu.
 \endrst*/
 
 #include "gpp_expected_improvement_gpu.hpp"
 
+#include <stdint.h>
+
+#include <algorithm>
 #include <vector>
 
 #include "gpp_common.hpp"
@@ -15,33 +19,35 @@
 #include "gpp_random.hpp"
 
 #ifdef OL_GPU_ENABLED
+
 #include "gpu/gpp_cuda_math.hpp"
 #include "driver_types.h"
 #include "cuda_runtime.h"
 
-#define OL_CUDA_THROW_EXCEPTION(_ERR) ThrowException(OptimalLearningException((_ERR).line_info, (_ERR).func_info, cudaGetErrorString((_ERR).err)));
-#define OL_CUDA_ERROR_THROW(_ERR) {if((_ERR).err != cudaSuccess) {OL_CUDA_THROW_EXCEPTION(_ERR)}}
 #endif
 
 namespace optimal_learning {
+
 #ifdef OL_GPU_ENABLED
-CudaDevicePointer::CudaDevicePointer(int num_doubles_in)
-  : num_doubles(num_doubles_in) {
-    if (num_doubles_in > 0) {
-        CudaError _err = cuda_allocate_mem_for_double_vector(num_doubles, &ptr);
-        if (_err.err != cudaSuccess) {
-            ptr = nullptr;
-            OL_CUDA_THROW_EXCEPTION(_err)
-        }
-    } else {
-        ptr = nullptr;
-    }
+
+CudaDevicePointer::CudaDevicePointer(int num_doubles_in) : num_doubles(num_doubles_in) {
+  if (num_doubles_in > 0) {
+      CudaError error = CudaAllocateMemForDoubleVector(num_doubles, &ptr);
+      if (error.err != cudaSuccess) {
+          ptr = nullptr;
+          ThrowException(OptimalLearningCudaException(error));
+      }
+  } else {
+      ptr = nullptr;
   }
+}
 
 CudaDevicePointer::~CudaDevicePointer() {
-  if (ptr != nullptr) {
-      cuda_free_mem(ptr);
-  }
+    CudaFreeMem(ptr);
+}
+
+OptimalLearningCudaException::OptimalLearningCudaException(const CudaError& error)
+      : OptimalLearningException(error.file_and_line_info, error.func_info, cudaGetErrorString(error.err)) {
 }
 
 double CudaExpectedImprovementEvaluator::ComputeExpectedImprovement(StateType * ei_state) const {
@@ -51,15 +57,21 @@ double CudaExpectedImprovementEvaluator::ComputeExpectedImprovement(StateType * 
   gaussian_process_->ComputeVarianceOfPoints(&(ei_state->points_to_sample_state), ei_state->cholesky_to_sample_var.data());
   int leading_minor_index = ComputeCholeskyFactorL(num_union, ei_state->cholesky_to_sample_var.data());
   if (unlikely(leading_minor_index != 0)) {
-    OL_THROW_EXCEPTION(SingularMatrixException, "GP-Variance matrix singular. Check for duplicate points_to_sample/being_sampled or points_to_sample/being_sampled duplicating points_sampled with 0 noise.", ei_state->cholesky_to_sample_var.data(), num_union, leading_minor_index);
+    OL_THROW_EXCEPTION(SingularMatrixException,
+                       "GP-Variance matrix singular. Check for duplicate points_to_sample/being_sampled or points_to_sample/being_sampled duplicating points_sampled with 0 noise.",
+                       ei_state->cholesky_to_sample_var.data(), num_union, leading_minor_index);
   }
-  unsigned int seed_in = (ei_state->uniform_rng->GetEngine())();
-  CudaError _err = cuda_get_EI(ei_state->to_sample_mean.data(), ei_state->cholesky_to_sample_var.data(), best_so_far_, num_union, ei_state->gpu_mu.ptr, ei_state->gpu_L.ptr, ei_state->gpu_EI_storage.ptr, seed_in, num_mc, &EI_val, ei_state->gpu_random_number_EI.ptr, ei_state->random_number_EI.data(), ei_state->configure_for_test);
-  OL_CUDA_ERROR_THROW(_err)
+  uint64_t seed_in = (ei_state->uniform_rng->GetEngine())();
+  OL_CUDA_ERROR_THROW(CudaGetEI(ei_state->to_sample_mean.data(), ei_state->cholesky_to_sample_var.data(),
+                                num_union, num_mc_, seed_in, best_so_far_, ei_state->configure_for_test,
+                                ei_state->random_number_ei.data(), &EI_val, ei_state->gpu_mu.ptr,
+                                ei_state->gpu_chol_var.ptr, ei_state->gpu_random_number_ei.ptr,
+                                ei_state->gpu_ei_storage.ptr));
   return EI_val;
 }
 
-void CudaExpectedImprovementEvaluator::ComputeGradExpectedImprovement(StateType * ei_state, double * restrict grad_EI) const {
+void CudaExpectedImprovementEvaluator::ComputeGradExpectedImprovement(StateType * ei_state,
+                                                                      double * restrict grad_ei) const {
   if (ei_state->num_derivatives == 0) {
     OL_THROW_EXCEPTION(OptimalLearningException, "configure_for_gradients set to false, gradient computation is disabled!");
   }
@@ -70,124 +82,143 @@ void CudaExpectedImprovementEvaluator::ComputeGradExpectedImprovement(StateType 
   gaussian_process_->ComputeVarianceOfPoints(&(ei_state->points_to_sample_state), ei_state->cholesky_to_sample_var.data());
   int leading_minor_index = ComputeCholeskyFactorL(num_union, ei_state->cholesky_to_sample_var.data());
   if (unlikely(leading_minor_index != 0)) {
-    OL_THROW_EXCEPTION(SingularMatrixException, "GP-Variance matrix singular. Check for duplicate points_to_sample/being_sampled or points_to_sample/being_sampled duplicating points_sampled with 0 noise.", ei_state->cholesky_to_sample_var.data(), num_union, leading_minor_index);
+    OL_THROW_EXCEPTION(SingularMatrixException,
+                       "GP-Variance matrix singular. Check for duplicate points_to_sample/being_sampled or points_to_sample/being_sampled duplicating points_sampled with 0 noise.",
+                       ei_state->cholesky_to_sample_var.data(), num_union, leading_minor_index);
   }
 
-  gaussian_process_->ComputeGradCholeskyVarianceOfPoints(&(ei_state->points_to_sample_state), ei_state->cholesky_to_sample_var.data(), ei_state->grad_chol_decomp.data());
-  unsigned int seed_in = (ei_state->uniform_rng->GetEngine())();
+  gaussian_process_->ComputeGradCholeskyVarianceOfPoints(&(ei_state->points_to_sample_state),
+                                                         ei_state->cholesky_to_sample_var.data(),
+                                                         ei_state->grad_chol_decomp.data());
+  uint64_t seed_in = (ei_state->uniform_rng->GetEngine())();
 
-  CudaError _err = cuda_get_gradEI(ei_state->to_sample_mean.data(), ei_state->grad_mu.data(), ei_state->cholesky_to_sample_var.data(), ei_state->grad_chol_decomp.data(), best_so_far_, num_union, num_to_sample, dim_, (ei_state->gpu_mu).ptr, (ei_state->gpu_grad_mu).ptr, (ei_state->gpu_L).ptr, (ei_state->gpu_grad_L).ptr, (ei_state->gpu_grad_EI_storage).ptr, seed_in, num_mc, grad_EI, ei_state->gpu_random_number_gradEI.ptr, ei_state->random_number_gradEI.data(), ei_state->configure_for_test);
-  OL_CUDA_ERROR_THROW(_err)
+  OL_CUDA_ERROR_THROW(CudaGetGradEI(ei_state->to_sample_mean.data(), ei_state->cholesky_to_sample_var.data(),
+                                    ei_state->grad_mu.data(), ei_state->grad_chol_decomp.data(), num_union,
+                                    num_to_sample, dim_, num_mc_, seed_in, best_so_far_, ei_state->configure_for_test,
+                                    ei_state->random_number_grad_ei.data(), grad_ei, ei_state->gpu_mu.ptr,
+                                    ei_state->gpu_chol_var.ptr, ei_state->gpu_grad_mu.ptr, ei_state->gpu_grad_chol_var.ptr,
+                                    ei_state->gpu_random_number_grad_ei.ptr, ei_state->gpu_grad_ei_storage.ptr));
 }
 
-void CudaExpectedImprovementEvaluator::setupGPU(int devID) {
-  CudaError _err = cuda_set_device(devID);
-  OL_CUDA_ERROR_THROW(_err)
+void CudaExpectedImprovementEvaluator::SetupGPU(int devID) {
+  OL_CUDA_ERROR_THROW(CudaSetDevice(devID));
 }
+
+CudaExpectedImprovementEvaluator::CudaExpectedImprovementEvaluator(const GaussianProcess& gaussian_process_in,
+                                                                   int num_mc_in, double best_so_far, int devID_in)
+      : dim_(gaussian_process_in.dim()),
+        num_mc_(num_mc_in),
+        best_so_far_(best_so_far),
+        gaussian_process_(&gaussian_process_in) {
+    SetupGPU(devID_in);
+  }
 
 CudaExpectedImprovementEvaluator::~CudaExpectedImprovementEvaluator() {
   cudaDeviceReset();
 }
 
-CudaExpectedImprovementState::CudaExpectedImprovementState(const EvaluatorType& ei_evaluator, double const * restrict points_to_sample, double const * restrict points_being_sampled, int num_to_sample_in, int num_being_sampled_in, bool configure_for_gradients, UniformRandomGenerator * uniform_rng_in)
-  : dim(ei_evaluator.dim()),
-    num_to_sample(num_to_sample_in),
-    num_being_sampled(num_being_sampled_in),
-    num_derivatives(configure_for_gradients ? num_to_sample : 0),
-    num_union(num_to_sample + num_being_sampled),
-    union_of_points(BuildUnionOfPoints(points_to_sample, points_being_sampled, num_to_sample, num_being_sampled, dim)),
-    points_to_sample_state(*ei_evaluator.gaussian_process(), union_of_points.data(), num_union, num_derivatives),
-    uniform_rng(uniform_rng_in),
-    to_sample_mean(num_union),
-    grad_mu(dim*num_derivatives),
-    cholesky_to_sample_var(Square(num_union)),
-    grad_chol_decomp(dim*Square(num_union)*num_derivatives),
-    configure_for_test(false),
-    gpu_mu(num_union),
-    gpu_L(Square(num_union)),
-    gpu_grad_mu(dim * num_derivatives),
-    gpu_grad_L(dim * Square(num_union) * num_derivatives),
-    gpu_EI_storage(OL_EI_THREAD_NO * OL_EI_BLOCK_NO),
-    gpu_grad_EI_storage(OL_GRAD_EI_THREAD_NO * OL_GRAD_EI_BLOCK_NO * dim * num_derivatives),
-    gpu_random_number_EI(0),
-    gpu_random_number_gradEI(0),
-    random_number_EI(0),
-    random_number_gradEI(0) {
-    }
-
-CudaExpectedImprovementState::CudaExpectedImprovementState(const EvaluatorType& ei_evaluator, double const * restrict points_to_sample, double const * restrict points_being_sampled, int num_to_sample_in, int num_being_sampled_in, bool configure_for_gradients, UniformRandomGenerator * uniform_rng_in, bool configure_for_test_in)
-  : dim(ei_evaluator.dim()),
-    num_to_sample(num_to_sample_in),
-    num_being_sampled(num_being_sampled_in),
-    num_derivatives(configure_for_gradients ? num_to_sample : 0),
-    num_union(num_to_sample + num_being_sampled),
-    union_of_points(BuildUnionOfPoints(points_to_sample, points_being_sampled, num_to_sample, num_being_sampled, dim)),
-    points_to_sample_state(*ei_evaluator.gaussian_process(), union_of_points.data(), num_union, num_derivatives),
-    uniform_rng(uniform_rng_in),
-    to_sample_mean(num_union),
-    grad_mu(dim*num_derivatives),
-    cholesky_to_sample_var(Square(num_union)),
-    grad_chol_decomp(dim*Square(num_union)*num_derivatives),
-    configure_for_test(configure_for_test_in),
-    gpu_mu(num_union),
-    gpu_L(Square(num_union)),
-    gpu_grad_mu(dim * num_derivatives),
-    gpu_grad_L(dim * Square(num_union) * num_derivatives),
-    gpu_EI_storage(OL_EI_THREAD_NO * OL_EI_BLOCK_NO),
-    gpu_grad_EI_storage(OL_GRAD_EI_THREAD_NO * OL_GRAD_EI_BLOCK_NO * dim * num_derivatives),
-    gpu_random_number_EI(configure_for_test ? (static_cast<int>(ei_evaluator.num_mc_itr() / (OL_EI_THREAD_NO * OL_EI_BLOCK_NO)) + 1) * (OL_EI_THREAD_NO * OL_EI_BLOCK_NO) * num_union : 0),
-    gpu_random_number_gradEI(configure_for_test ? (static_cast<int>(ei_evaluator.num_mc_itr() / (OL_GRAD_EI_THREAD_NO * OL_GRAD_EI_BLOCK_NO)) + 1) * (OL_GRAD_EI_THREAD_NO * OL_GRAD_EI_BLOCK_NO) * num_union : 0),
-    random_number_EI(configure_for_test ? (static_cast<int>(ei_evaluator.num_mc_itr() / (OL_EI_THREAD_NO * OL_EI_BLOCK_NO)) + 1) * (OL_EI_THREAD_NO * OL_EI_BLOCK_NO) * num_union : 0),
-    random_number_gradEI(configure_for_test ? (static_cast<int>(ei_evaluator.num_mc_itr() / (OL_GRAD_EI_THREAD_NO * OL_GRAD_EI_BLOCK_NO)) + 1) * (OL_GRAD_EI_THREAD_NO * OL_GRAD_EI_BLOCK_NO) * num_union : 0) {
-    }
-
-#else
-
-double CudaExpectedImprovementEvaluator::ComputeExpectedImprovement(StateType * ei_state) const {
-  OL_THROW_EXCEPTION(OptimalLearningException, "GPU component is disabled or unavailable, cannot call gpu function!\n");
+CudaExpectedImprovementState::CudaExpectedImprovementState(const EvaluatorType& ei_evaluator,
+                                                           double const * restrict points_to_sample,
+                                                           double const * restrict points_being_sampled,
+                                                           int num_to_sample_in, int num_being_sampled_in,
+                                                           bool configure_for_gradients,
+                                                           UniformRandomGenerator * uniform_rng_in)
+    : dim(ei_evaluator.dim()),
+      num_to_sample(num_to_sample_in),
+      num_being_sampled(num_being_sampled_in),
+      num_derivatives(configure_for_gradients ? num_to_sample : 0),
+      num_union(num_to_sample + num_being_sampled),
+      union_of_points(BuildUnionOfPoints(points_to_sample, points_being_sampled, num_to_sample, num_being_sampled, dim)),
+      points_to_sample_state(*ei_evaluator.gaussian_process(), union_of_points.data(), num_union, num_derivatives),
+      uniform_rng(uniform_rng_in),
+      to_sample_mean(num_union),
+      grad_mu(dim*num_derivatives),
+      cholesky_to_sample_var(Square(num_union)),
+      grad_chol_decomp(dim*Square(num_union)*num_derivatives),
+      configure_for_test(false),
+      gpu_mu(num_union),
+      gpu_chol_var(Square(num_union)),
+      gpu_grad_mu(dim * num_derivatives),
+      gpu_grad_chol_var(dim * Square(num_union) * num_derivatives),
+      gpu_ei_storage(kEINumThreads * kEINumBlocks),
+      gpu_grad_ei_storage(kGradEINumThreads * kGradEINumBlocks * dim * num_derivatives),
+      gpu_random_number_ei(0),
+      gpu_random_number_grad_ei(0),
+      random_number_ei(0),
+      random_number_grad_ei(0) {
 }
 
-void CudaExpectedImprovementEvaluator::ComputeGradExpectedImprovement(StateType * ei_state, double * restrict grad_EI) const {
-  OL_THROW_EXCEPTION(OptimalLearningException, "GPU component is disabled or unavailable, cannot call gpu function!\n");
+CudaExpectedImprovementState::CudaExpectedImprovementState(const EvaluatorType& ei_evaluator,
+                                                           double const * restrict points_to_sample,
+                                                           double const * restrict points_being_sampled,
+                                                           int num_to_sample_in, int num_being_sampled_in,
+                                                           bool configure_for_gradients,
+                                                           UniformRandomGenerator * uniform_rng_in,
+                                                           bool configure_for_test_in)
+    : dim(ei_evaluator.dim()),
+      num_to_sample(num_to_sample_in),
+      num_being_sampled(num_being_sampled_in),
+      num_derivatives(configure_for_gradients ? num_to_sample : 0),
+      num_union(num_to_sample + num_being_sampled),
+      union_of_points(BuildUnionOfPoints(points_to_sample, points_being_sampled, num_to_sample, num_being_sampled, dim)),
+      points_to_sample_state(*ei_evaluator.gaussian_process(), union_of_points.data(), num_union, num_derivatives),
+      uniform_rng(uniform_rng_in),
+      to_sample_mean(num_union),
+      grad_mu(dim*num_derivatives),
+      cholesky_to_sample_var(Square(num_union)),
+      grad_chol_decomp(dim*Square(num_union)*num_derivatives),
+      configure_for_test(configure_for_test_in),
+      gpu_mu(num_union),
+      gpu_chol_var(Square(num_union)),
+      gpu_grad_mu(dim * num_derivatives),
+      gpu_grad_chol_var(dim * Square(num_union) * num_derivatives),
+      gpu_ei_storage(kEINumThreads * kEINumBlocks),
+      gpu_grad_ei_storage(kGradEINumThreads * kGradEINumBlocks * dim * num_derivatives),
+      gpu_random_number_ei(configure_for_test ? GetVectorSize(ei_evaluator.num_mc(), kEINumThreads, kEINumBlocks, num_union) : 0),
+      gpu_random_number_grad_ei(configure_for_test ? GetVectorSize(ei_evaluator.num_mc(), kGradEINumThreads, kGradEINumBlocks, num_union) : 0),
+      random_number_ei(configure_for_test ? GetVectorSize(ei_evaluator.num_mc(), kEINumThreads, kEINumBlocks, num_union) : 0),
+      random_number_grad_ei(configure_for_test ? GetVectorSize(ei_evaluator.num_mc(), kGradEINumThreads, kGradEINumBlocks, num_union) : 0) {
 }
 
-void CudaExpectedImprovementEvaluator::setupGPU(int devID) {
-  OL_THROW_EXCEPTION(OptimalLearningException, "GPU component is disabled or unavailable, cannot call gpu function!\n");
+std::vector<double> CudaExpectedImprovementState::BuildUnionOfPoints(double const * restrict points_to_sample,
+                                                                     double const * restrict points_being_sampled,
+                                                                     int num_to_sample, int num_being_sampled, int dim) noexcept {
+  std::vector<double> union_of_points(dim*(num_to_sample + num_being_sampled));
+  std::copy(points_to_sample, points_to_sample + dim*num_to_sample, union_of_points.data());
+  std::copy(points_being_sampled, points_being_sampled + dim*num_being_sampled, union_of_points.data() + dim*num_to_sample);
+  return union_of_points;
 }
 
-CudaExpectedImprovementEvaluator::~CudaExpectedImprovementEvaluator() {
+int CudaExpectedImprovementState::GetVectorSize(int num_mc_itr, int num_threads, int num_blocks, int num_points) noexcept {
+  return ((static_cast<int>(num_mc_itr / (num_threads * num_blocks)) + 1) * (num_threads * num_blocks) * num_points);
 }
 
-CudaExpectedImprovementState::CudaExpectedImprovementState(const EvaluatorType& ei_evaluator, double const * restrict points_to_sample, double const * restrict points_being_sampled, int num_to_sample_in, int num_being_sampled_in, bool configure_for_gradients, UniformRandomGenerator * uniform_rng_in)
-  : dim(ei_evaluator.dim()),
-    num_to_sample(num_to_sample_in),
-    num_being_sampled(num_being_sampled_in),
-    num_derivatives(configure_for_gradients ? num_to_sample : 0),
-    num_union(num_to_sample + num_being_sampled),
-    union_of_points(BuildUnionOfPoints(points_to_sample, points_being_sampled, num_to_sample, num_being_sampled, dim)),
-    points_to_sample_state(*ei_evaluator.gaussian_process(), union_of_points.data(), num_union, num_derivatives),
-    uniform_rng(uniform_rng_in),
-    to_sample_mean(num_union),
-    grad_mu(dim*num_derivatives),
-    cholesky_to_sample_var(Square(num_union)),
-    grad_chol_decomp(dim*Square(num_union)*num_derivatives) {
-        OL_THROW_EXCEPTION(OptimalLearningException, "GPU component is disabled or unavailable, cannot call gpu function!\n");
-    }
-#endif
+void CudaExpectedImprovementState::SetCurrentPoint(const EvaluatorType& ei_evaluator, double const * restrict points_to_sample) {
+  // update points_to_sample in union_of_points
+  std::copy(points_to_sample, points_to_sample + num_to_sample*dim, union_of_points.data());
 
+  // evaluate derived quantities for the GP
+  points_to_sample_state.SetupState(*ei_evaluator.gaussian_process(), union_of_points.data(), num_union, num_derivatives);
+}
+
+void CudaExpectedImprovementState::SetupState(const EvaluatorType& ei_evaluator, double const * restrict points_to_sample) {
+  // update quantities derived from points_to_sample
+  SetCurrentPoint(ei_evaluator, points_to_sample);
+}
 
 /*!\rst
   Routes the EI computation through MultistartOptimizer + NullOptimizer to perform EI function evaluations at the list of input
   points, using the appropriate EI evaluator (e.g., monte carlo vs analytic) depending on inputs.
 \endrst*/
-void CudaEvaluateEIAtPointList(const GaussianProcess& gaussian_process, double const * restrict initial_guesses,
-                           double const * restrict points_being_sampled, int num_multistarts, int num_to_sample,
-                           int num_being_sampled, double best_so_far, int max_int_steps, int which_gpu, int max_num_threads,
-                           bool * restrict found_flag, UniformRandomGenerator* uniform_rng, double * restrict function_values,
-                           double * restrict best_next_point) {
-  // set chunk_size; see gpp_common.hpp header comments, item 7
-  const int chunk_size = std::max(std::min(40, std::max(1, num_multistarts/max_num_threads)),
-                                  num_multistarts/(max_num_threads*120));
+void CudaEvaluateEIAtPointList(const GaussianProcess& gaussian_process, const ThreadSchedule& thread_schedule,
+                               double const * restrict initial_guesses, double const * restrict points_being_sampled,
+                               int num_multistarts, int num_to_sample, int num_being_sampled, double best_so_far,
+                               int max_int_steps, bool * restrict found_flag, int which_gpu,
+                               UniformRandomGenerator* uniform_rng, double * restrict function_values,
+                               double * restrict best_next_point) {
+  if (unlikely(num_multistarts <= 0)) {
+    OL_THROW_EXCEPTION(LowerBoundException<int>, "num_multistarts must be > 1", num_multistarts, 1);
+  }
 
   using DomainType = DummyDomain;
   DomainType dummy_domain;
@@ -197,7 +228,7 @@ void CudaEvaluateEIAtPointList(const GaussianProcess& gaussian_process, double c
     OnePotentialSampleExpectedImprovementEvaluator ei_evaluator(gaussian_process, best_so_far);
 
     std::vector<typename OnePotentialSampleExpectedImprovementEvaluator::StateType> ei_state_vector;
-    SetupExpectedImprovementState(ei_evaluator, initial_guesses, max_num_threads,
+    SetupExpectedImprovementState(ei_evaluator, initial_guesses, thread_schedule.max_num_threads,
                                   configure_for_gradients, &ei_state_vector);
 
     // init winner to be first point in set and 'force' its value to be 0.0; we cannot do worse than this
@@ -207,7 +238,7 @@ void CudaEvaluateEIAtPointList(const GaussianProcess& gaussian_process, double c
     typename NullOptimizer<OnePotentialSampleExpectedImprovementEvaluator, DomainType>::ParameterStruct null_parameters;
     MultistartOptimizer<NullOptimizer<OnePotentialSampleExpectedImprovementEvaluator, DomainType> > multistart_optimizer;
     multistart_optimizer.MultistartOptimize(null_opt, ei_evaluator, null_parameters, dummy_domain,
-                                            initial_guesses, num_multistarts, max_num_threads, chunk_size,
+                                            thread_schedule, initial_guesses, num_multistarts,
                                             ei_state_vector.data(), function_values, &io_container);
     *found_flag = io_container.found_flag;
     std::copy(io_container.best_point.begin(), io_container.best_point.end(), best_next_point);
@@ -223,7 +254,7 @@ void CudaEvaluateEIAtPointList(const GaussianProcess& gaussian_process, double c
     typename NullOptimizer<CudaExpectedImprovementEvaluator, DomainType>::ParameterStruct null_parameters;
     MultistartOptimizer<NullOptimizer<CudaExpectedImprovementEvaluator, DomainType> > multistart_optimizer;
     multistart_optimizer.MultistartOptimize(null_opt, ei_evaluator, null_parameters, dummy_domain,
-                                            initial_guesses, num_multistarts, 1, 1,
+                                            thread_schedule, initial_guesses, num_multistarts,
                                             &ei_state, function_values, &io_container);
     *found_flag = io_container.found_flag;
     std::copy(io_container.best_point.begin(), io_container.best_point.end(), best_next_point);
@@ -231,19 +262,25 @@ void CudaEvaluateEIAtPointList(const GaussianProcess& gaussian_process, double c
 }
 
 /*!\rst
-  This is a simple wrapper around CudaComputeOptimalPointsToSampleWithRandomStarts() and
+  This is a simple wrapper around ComputeOptimalPointsToSampleWithRandomStarts() and
   ComputeOptimalPointsToSampleViaLatinHypercubeSearch(). That is, this method attempts multistart gradient descent
   and falls back to latin hypercube search if gradient descent fails (or is not desired).
+
+  TODO(GH-77): Instead of random search, we may want to fall back on the methods in
+  ``gpp_heuristic_expected_improvement_optimization.hpp`` if gradient descent fails; esp for larger q
+  (even ``q \approx 4``), latin hypercube search does a pretty terrible job.
+  This is more for general q,p-EI as these two things are equivalent for 1,0-EI.
 \endrst*/
 template <typename DomainType>
 void CudaComputeOptimalPointsToSample(const GaussianProcess& gaussian_process,
-                                  const GradientDescentParameters& optimization_parameters,
-                                  const DomainType& domain, double const * restrict points_being_sampled,
-                                  int num_to_sample, int num_being_sampled, double best_so_far,
-                                  int max_int_steps, int which_gpu, int max_num_threads, bool lhc_search_only,
-                                  int num_lhc_samples, bool * restrict found_flag,
-                                  UniformRandomGenerator * uniform_generator,
-                                  double * restrict best_points_to_sample) {
+                                      const GradientDescentParameters& optimizer_parameters,
+                                      const DomainType& domain, const ThreadSchedule& thread_schedule,
+                                      double const * restrict points_being_sampled,
+                                      int num_to_sample, int num_being_sampled, double best_so_far,
+                                      int max_int_steps, bool lhc_search_only,
+                                      int num_lhc_samples, bool * restrict found_flag, int which_gpu,
+                                      UniformRandomGenerator * uniform_generator,
+                                      double * restrict best_points_to_sample) {
   if (unlikely(num_to_sample <= 0)) {
     return;
   }
@@ -252,11 +289,12 @@ void CudaComputeOptimalPointsToSample(const GaussianProcess& gaussian_process,
 
   bool found_flag_local = false;
   if (lhc_search_only == false) {
-    CudaComputeOptimalPointsToSampleWithRandomStarts(gaussian_process, optimization_parameters, domain,
-                                                 points_being_sampled, num_to_sample, num_being_sampled,
-                                                 best_so_far, max_int_steps, which_gpu, max_num_threads,
-                                                 &found_flag_local, uniform_generator,
-                                                 next_points_to_sample.data());
+    CudaComputeOptimalPointsToSampleWithRandomStarts(gaussian_process, optimizer_parameters,
+                                                     domain, thread_schedule, points_being_sampled,
+                                                     num_to_sample, num_being_sampled,
+                                                     best_so_far, max_int_steps,
+                                                     &found_flag_local, which_gpu, uniform_generator,
+                                                     next_points_to_sample.data());
   }
 
   // if gradient descent EI optimization failed OR we're only doing latin hypercube searches
@@ -266,15 +304,26 @@ void CudaComputeOptimalPointsToSample(const GaussianProcess& gaussian_process,
       OL_WARNING_PRINTF("Attempting latin hypercube search\n");
     }
 
-    CudaComputeOptimalPointsToSampleViaLatinHypercubeSearch(gaussian_process, domain, points_being_sampled,
-                                                        num_lhc_samples, num_to_sample, num_being_sampled,
-                                                        best_so_far, max_int_steps, which_gpu, max_num_threads,
-                                                        &found_flag_local, uniform_generator,
-                                                        next_points_to_sample.data());
+    if (num_lhc_samples > 0) {
+      // Note: using a schedule different than "static" may lead to flakiness in monte-carlo EI optimization tests.
+      // Besides, this is the fastest setting.
+      ThreadSchedule thread_schedule_naive_search(thread_schedule);
+      thread_schedule_naive_search.schedule = omp_sched_static;
+      CudaComputeOptimalPointsToSampleViaLatinHypercubeSearch(gaussian_process, domain,
+                                                              thread_schedule_naive_search,
+                                                              points_being_sampled,
+                                                              num_lhc_samples, num_to_sample,
+                                                              num_being_sampled, best_so_far,
+                                                              max_int_steps, &found_flag_local,
+                                                              which_gpu, uniform_generator,
+                                                              next_points_to_sample.data());
 
-    // if latin hypercube 'dumb' search failed
-    if (unlikely(found_flag_local == false)) {
-      OL_ERROR_PRINTF("ERROR: %d,%d-EI latin hypercube search FAILED on\n", num_to_sample, num_being_sampled);
+      // if latin hypercube 'dumb' search failed
+      if (unlikely(found_flag_local == false)) {
+        OL_ERROR_PRINTF("ERROR: %d,%d-EI latin hypercube search FAILED on\n", num_to_sample, num_being_sampled);
+      }
+    } else {
+      OL_WARNING_PRINTF("num_lhc_samples <= 0. Skipping latin hypercube search\n");
     }
   }
 
@@ -285,17 +334,20 @@ void CudaComputeOptimalPointsToSample(const GaussianProcess& gaussian_process,
 
 // template explicit instantiation definitions, see gpp_common.hpp header comments, item 6
 template void CudaComputeOptimalPointsToSample(
-    const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters,
-    const TensorProductDomain& domain, double const * restrict points_being_sampled, int num_to_sample,
-    int num_being_sampled, double best_so_far, int max_int_steps, int which_gpu, int max_num_threads, bool lhc_search_only,
-    int num_lhc_samples, bool * restrict found_flag, UniformRandomGenerator * uniform_generator,
-    double * restrict best_points_to_sample);
-template void CudaComputeOptimalPointsToSample(
-    const GaussianProcess& gaussian_process, const GradientDescentParameters& optimization_parameters,
-    const SimplexIntersectTensorProductDomain& domain, double const * restrict points_being_sampled,
-    int num_to_sample, int num_being_sampled, double best_so_far, int max_int_steps, int which_gpu,
-    int max_num_threads, bool lhc_search_only, int num_lhc_samples, bool * restrict found_flag,
+    const GaussianProcess& gaussian_process, const GradientDescentParameters& optimizer_parameters,
+    const TensorProductDomain& domain, const ThreadSchedule& thread_schedule,
+    double const * restrict points_being_sampled, int num_to_sample,
+    int num_being_sampled, double best_so_far, int max_int_steps, bool lhc_search_only,
+    int num_lhc_samples, bool * restrict found_flag, int which_gpu,
     UniformRandomGenerator * uniform_generator, double * restrict best_points_to_sample);
+template void CudaComputeOptimalPointsToSample(
+    const GaussianProcess& gaussian_process, const GradientDescentParameters& optimizer_parameters,
+    const SimplexIntersectTensorProductDomain& domain, const ThreadSchedule& thread_schedule,
+    double const * restrict points_being_sampled,
+    int num_to_sample, int num_being_sampled, double best_so_far, int max_int_steps,
+    bool lhc_search_only, int num_lhc_samples, bool * restrict found_flag, int which_gpu,
+    UniformRandomGenerator * uniform_generator, double * restrict best_points_to_sample);
+#endif  // OL_GPU_ENABLED
 
 }  // end namespace optimal_learning
 

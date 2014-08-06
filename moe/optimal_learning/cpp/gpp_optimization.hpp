@@ -216,7 +216,7 @@
 
     int GetProblemSize();  // how many dimensions to optimize
     void GetCurrentPoint(double * point);  // get current point at which Evalutor is computing results
-    void UpdateCurrentPoint(double const * point);  // set current point at which Evalutor is computing results
+    void SetCurrentPoint(double const * point);  // set current point at which Evalutor is computing results
 
   gpp_math.hpp and gpp_model_selection.hpp have (Evaluator, State) examples that implement
   the above interface:
@@ -351,9 +351,131 @@
 #include "gpp_domain.hpp"
 #include "gpp_linear_algebra.hpp"
 #include "gpp_logging.hpp"
-#include "gpp_optimization_parameters.hpp"
+#include "gpp_optimizer_parameters.hpp"
 
 namespace optimal_learning {
+
+/*!\rst
+  **Overview**
+
+  When we ask openmp to parallelize a for loop, we can give it additional information on how to
+  distribute the work. In particular, the overall work (N iterations) needs to be divided up amongst
+  the threads. We have two major ways to affect how openmp structures the loop:
+  ``schedule`` and ``chunk_size``.
+
+  ``chunk_size`` changes meaning depending on ``schedule``. Here we list out the options for
+  ``schedule`` as ``name (ENV_NAME, enum_name)`` where ``ENV_NAME`` is the corresponding value
+  of ``OMP_SCHEDULE`` (not used by ``optimal_learning``) and ``enum_name`` is the corresponding
+  type from ``opm_sched_t`` in ``omp.h``. Below, "work" refers to loop iterations (``N`` total).
+
+  **Schedule Types**
+
+  a. static ("static", omp_sched_static):
+
+     Work is divided into ``N/chunk_size`` *contiguous* chunks (of ``chunk_size`` iterations) and
+     distributed amongst the threads statically in a round-robin fashion. Use when you are
+     confident all chunks will take the same amount of time.
+
+     Low control overhead but high waste if one iteration is very slow (since the other
+     threads will sit idle).
+
+     Default ``chunk_size``: ``N / number_of_threads``.
+
+     This schedule type is *repeatable*: repeated runs/calls (with the same work) will produce the
+     same mapping of loop iterations to threads every time.
+
+  b. dynamic ("dynamic", omp_sched_dynamic):
+
+     Work is divided into ``N/chunk_size`` *contiguous* chunks (of ``chunk_size`` iterations) and
+     distributed to threads as they complete their work, first-come first-serve. If there is
+     a chunk that is very slow, the other threads can finish all remaining work instead of
+     sitting idle.
+
+     High control overhead, use when you have no idea how long each chunk will take.
+
+     Default ``chunk_size``: 1.
+
+     This schedule type does not produce repeatable mappings of iterations to threads.
+
+  c. guided ("guided", omp_sched_guided):
+
+     Work is divided into progressively smaller chunks; ``chunk_size`` sets the minimum value.
+     As with dynamic, chunks are assigned on a first-come, first-serve basis.  Less overhead than
+     dynamic (b/c ``chunk_size`` scale down).
+
+     Useful when iteration times are similar but not identical.  Less overhead than dynamic while
+     guaranteeing the waste case of static doesn't arise.
+
+     Default ``chunk_size``: approximately ``N / number_of_threads``.
+
+     This schedule type does not produce repeatable mappings of iterations to threads.
+
+  d. auto ("auto", omp_sched_auto):
+
+     The compiler decides how to map iterations to threads; this mapping is not required
+     to be one of the previous choices.
+
+     chunk_size has *no meaning* when the schedule is auto.
+     See: https://gcc.gnu.org/onlinedocs/libgomp/omp_005fset_005fschedule.html
+
+     This schedule type is not guaranteed to be repeatable.
+
+  Further documentation:
+  http://openmp.org/mp-documents/OpenMP3.1-CCard.pdf
+  https://software.intel.com/en-us/articles/openmp-loop-scheduling
+  http://publib.boulder.ibm.com/infocenter/comphelp/v8v101/index.jsp?topic=%2Fcom.ibm.xlcpp8a.doc%2Fcompiler%2Fref%2Fruompfor.htm
+\endrst*/
+struct ThreadSchedule {
+  /*!\rst
+    Construct a ThreadSchedule using the specified number of threads, schedule type, and chunk_size.
+
+    \param
+      :max_num_threads: maximum number of threads for use by OpenMP (generally should be <= # cores)
+      :schedule: static, dynamic, guided, or auto. See class comments for more details.
+      :chunk_size: how to distribute work to threads; the precise meaning depends on schedule.
+        Zero or negative chunk_size ask OpenMP to use its default behavior. See class comments for details.
+  \endrst*/
+  ThreadSchedule(int max_num_threads_in, omp_sched_t schedule_in, int chunk_size_in)
+      : max_num_threads(max_num_threads_in), schedule(schedule_in), chunk_size(chunk_size_in) {
+  }
+
+  /*!\rst
+    Construct a ThreadSchedule using the specified number of threads and schedule type with default chunk_size.
+
+    \param
+      :max_num_threads: maximum number of threads for use by OpenMP (generally should be <= # cores)
+      :schedule: static, dynamic, guided, or auto. See class comments for more details.
+  \endrst*/
+  ThreadSchedule(int max_num_threads_in, omp_sched_t schedule_in) : ThreadSchedule(max_num_threads_in, schedule_in, 0) {
+  }
+
+  /*!\rst
+    Construct a ThreadSchedule using the specified number of threads with default schedule type and chunk_size.
+
+    \param
+      :max_num_threads: maximum number of threads for use by OpenMP (generally should be <= # cores)
+  \endrst*/
+  explicit ThreadSchedule(int max_num_threads_in) : ThreadSchedule(max_num_threads_in, omp_sched_auto) {
+  }
+
+  /*!\rst
+    Construct a ThreadSchedule using the default number of threads, schedule type, and chunk_size.
+  \endrst*/
+  ThreadSchedule() : ThreadSchedule(0) {
+  }
+
+  //! The maximum number of threads for use by OpenMP (generally should be <= # cores).
+  //! The (default) value of 0 results in omp_get_num_procs() threads; note that this
+  //! is limited by omp_get_thread_limit() (set in OMP_THREAD_LIMIT).
+  int max_num_threads;
+
+  //! The thread schedule to use: static, dynamic, guided, or auto. See class comments for more details.
+  omp_sched_t schedule;
+
+  //! Chunk size to use when distributing work to threads; the precise meaning depends on schedule.
+  //! Zero or negative chunk_size ask OpenMP to use its default behavior. See class comments for details.
+  int chunk_size;
+};
 
 /*!\rst
   This object holds the input/output fields for optimizers (maximization).  On input, this can be used to specify the current
@@ -491,31 +613,27 @@ struct OptimizationIOContainer final {
     :objective_state[1]: a state object whose temporary data members may have been modified
                          objective_state.GetCurrentPoint() will return the point yielding the best objective function value
                          according to gradient descent
-    :next_point[problem_size]: point yielding the best objective function value according to gradient descent, SAME as
-                               objective_state.GetCurrentPoint() (see previous item)
-
-  TODO(GH-186): The next_point output is redundant with objective_state.GetCurrentPoint(). Remove it.
 \endrst*/
 template <typename ObjectiveFunctionEvaluator, typename DomainType>
 OL_NONNULL_POINTERS void GradientDescentOptimization(
     const ObjectiveFunctionEvaluator& objective_evaluator,
     const GradientDescentParameters& gd_parameters,
     const DomainType& domain,
-    typename ObjectiveFunctionEvaluator::StateType * objective_state,
-    double * restrict next_point) {
+    typename ObjectiveFunctionEvaluator::StateType * objective_state) {
   const int problem_size = objective_state->GetProblemSize();
   std::vector<double> grad_objective(problem_size);
   std::vector<double> step(problem_size);
+  std::vector<double> next_point(problem_size);
 
   // read out starting point coordinates
-  objective_state->GetCurrentPoint(next_point);
+  objective_state->GetCurrentPoint(next_point.data());
 
   // save off some data for reporting if needed
 #ifdef OL_VERBOSE_PRINT
   std::vector<double> initial_point(problem_size);
   // initial value of the objective function
   double obj_func_initial = objective_evaluator.ComputeObjectiveFunction(objective_state);
-  std::copy(next_point, next_point + problem_size, initial_point.begin());
+  std::copy(next_point.begin(), next_point.end(), initial_point.begin());
 #endif
 
   const double step_tolerance = gd_parameters.tolerance / static_cast<double>(gd_parameters.max_num_steps);
@@ -534,14 +652,14 @@ OL_NONNULL_POINTERS void GradientDescentOptimization(
       step[j] = alpha_n*grad_objective[j];
     }
     // limit step size to ensure we stay inside the domain
-    domain.LimitUpdate(gd_parameters.max_relative_change, next_point, step.data());
+    domain.LimitUpdate(gd_parameters.max_relative_change, next_point.data(), step.data());
     // take the step
     for (int j = 0; j < problem_size; ++j) {
       next_point[j] += step[j];
     }
 
     // update state
-    objective_state->UpdateCurrentPoint(objective_evaluator, next_point);
+    objective_state->SetCurrentPoint(objective_evaluator, next_point.data());
 
     double norm_step = VectorNorm(step.data(), problem_size);
     if (norm_step < step_tolerance) {
@@ -706,10 +824,10 @@ OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT int NewtonOptimization(
     return 0;
   }
   const int problem_size = objective_state->GetProblemSize();
-  std::vector<double> new_point(problem_size);
+  std::vector<double> next_point(problem_size);
 
   // read out starting point coordinates from state
-  objective_state->GetCurrentPoint(new_point.data());
+  objective_state->GetCurrentPoint(next_point.data());
 
   std::vector<int> pivot(problem_size);
   std::vector<double> step(problem_size);
@@ -777,18 +895,18 @@ OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT int NewtonOptimization(
       step[j] = -gradient_objective[j];
     }
     // limit step size to ensure we stay inside the domain
-    domain.LimitUpdate(newton_parameters.max_relative_change, new_point.data(), step.data());
+    domain.LimitUpdate(newton_parameters.max_relative_change, next_point.data(), step.data());
     // take the step
     for (int j = 0; j < problem_size; ++j) {
-      new_point[j] += step[j];
+      next_point[j] += step[j];
     }
 
     // set new point for next run
-    objective_state->UpdateCurrentPoint(objective_evaluator, new_point.data());
+    objective_state->SetCurrentPoint(objective_evaluator, next_point.data());
 #ifdef OL_VERBOSE_PRINT
     norm_gradient_objective = VectorNorm(gradient_objective.data(), problem_size);
     OL_VERBOSE_PRINTF("iter %d: norm update: %.18E, coord:\n", newton_iter, norm_gradient_objective);
-    PrintMatrix(new_point.data(), 1, problem_size);
+    PrintMatrix(next_point.data(), 1, problem_size);
 #endif
 
     double norm_step = VectorNorm(step.data(), problem_size);
@@ -796,12 +914,12 @@ OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT int NewtonOptimization(
       ++newton_iter;
       break;
     }
-  }
+  }  // end loop over newton_iter
 
 #ifdef OL_OPTIMIZATION_VERBOSE_PRINT
   double norm_gradient_objective = VectorNorm(gradient_objective.data(), problem_size);
   OL_VERBOSE_PRINTF("iter %d: norm gradient: %.18E\n", newton_iter, norm_gradient_objective);
-  PrintMatrix(new_point.data(), 1, problem_size);
+  PrintMatrix(next_point.data(), 1, problem_size);
 #endif
 
   return error;
@@ -905,20 +1023,21 @@ class GradientDescentOptimizer final {
     }
     const int problem_size = objective_state->GetProblemSize();
     std::vector<double> current_point(problem_size);
-    std::vector<double> new_point(problem_size);
+    std::vector<double> next_point(problem_size);
 
-    // loop structure expects that "new_point" contains the new current location at the start of each iteration
-    objective_state->GetCurrentPoint(new_point.data());
+    // loop structure expects that "next_point" contains the new current location at the start of each iteration
+    objective_state->GetCurrentPoint(next_point.data());
 
     for (int i = 0; i < gd_parameters.max_num_restarts; ++i) {
       // save off current location so we can compute the update norm
-      std::copy(new_point.begin(), new_point.end(), current_point.begin());
+      std::copy(next_point.begin(), next_point.end(), current_point.begin());
       // get next gradient descent update
-      GradientDescentOptimization(objective_evaluator, gd_parameters, domain, objective_state, new_point.data());
+      GradientDescentOptimization(objective_evaluator, gd_parameters, domain, objective_state);
+      objective_state->GetCurrentPoint(next_point.data());
 
       // compute norm of the update
       for (int j = 0; j < problem_size; ++j) {
-        current_point[j] -= new_point[j];
+        current_point[j] -= next_point[j];
       }
       double norm_delta_coord = VectorNorm(current_point.data(), problem_size);
       OL_VERBOSE_PRINTF("norm of coord change: %.18E\n", norm_delta_coord);
@@ -1043,18 +1162,21 @@ class MultistartOptimizer final {
   MultistartOptimizer() = default;
 
   /*!\rst
-    Performs multistart optimization with the specified Optimizer (class template parameter) to optimize the specified
-    ObjectiveFunctionEvaluator over the specified DomainType. Optimizer behavior is controlled by the specified ParameterStruct.
-    See class docs and header docs of this file, section 2c and 3b, iii), for more information.
+    Performs multistart optimization with the specified Optimizer (class template parameter)
+    to optimize the specified ObjectiveFunctionEvaluator over the specified DomainType.
+    Optimizer behavior is controlled by the specified ParameterStruct. See class docs and header
+    docs of this file, section 2c and 3b, iii), for more information.
 
-    The method allows you to specify what the current best is, so that if optimization cannot beat it, no improvement will be
-    reported.  It will otherwise report the overall best improvement (through io_container) as well as the result of every
-    individual multistart run if desired (through function_values).
+    The method allows you to specify what the current best is, so that if optimization cannot
+    beat it, no improvement will be reported.  It will otherwise report the overall best
+    improvement (through io_container) as well as the result of every individual multistart run
+    if desired (through function_values).
 
     .. Note:: comments copied to MultistartOptimizer.optimize() in python_version/optimization.py.
 
-    Generally, you will not call this function directly.  Instead, it is intended to be used in wrappers that set up state,
-    chunk_size, etc. for the specific optimization problem at hand.  For examples with Expected Improvement (EI), see gpp_math:
+    Generally, you will not call this function directly.  Instead, it is intended to be used in
+    wrappers that set up state, thread_schedule, etc. for the specific optimization problem at hand.
+    For examples with Expected Improvement (EI), see gpp_math:
 
     * ``EvaluateEIAtPointList()``
     * ``ComputeOptimalPointsToSampleViaMultistartGradientDescent()``
@@ -1065,48 +1187,49 @@ class MultistartOptimizer final {
     * ``MultistartGradientDescentHyperparameterOptimization()``
     * ``MultistartNewtonHyperparameterOptimization()``
 
-    problem_size refers to objective_state->GetProblemSize(), the number of dimensions in a "point" aka the number of
-    variables being optimized.  (This might be the spatial dimension for EI or the number of hyperparameters for log likelihood.)
+    problem_size refers to objective_state->GetProblemSize(), the number of dimensions in a "point"
+    aka the number of variables being optimized.  (This might be the spatial dimension for EI or the
+    number of hyperparameters for log likelihood.)
 
     \param
-      :optimizer: object with the desired Optimize() functionality (e.g., do nothing for 'dumb' search, gradient descent, etc.)
-      :objective_evaluator: reference to object that can compute the objective function, its gradient, and/or its hessian,
-                            depending on the needs of optimizer
-      :optimizer_parameters: Optimizer::ParameterStruct object that describes the parameters for optimization
-        (e.g., number of iterations, tolerances, scale factors, etc.)
+      :optimizer: object with the desired Optimize() functionality (e.g., do nothing for
+        'dumb' search, gradient descent, etc.)
+      :objective_evaluator: reference to object that can compute the objective function,
+        its gradient, and/or its hessian, depending on the needs of optimizer
+      :optimizer_parameters: Optimizer::ParameterStruct object that describes the parameters
+        for optimization (e.g., number of iterations, tolerances, scale factors, etc.)
       :domain: object specifying the domain to optimize over (see gpp_domain.hpp)
-      :initial_guesses[problem_size][num_multistarts]: list of points at which to start optimization runs; all points must lie
-                                                       INSIDE the specified domain
+      :thread_schedule: struct instructing OpenMP on how to schedule threads; i.e.,
+        max_num_threads, schedule type, chunk_size
+      :initial_guesses[problem_size][num_multistarts]: list of points at which to start
+        optimization runs; all points must lie INSIDE the specified domain
       :num_multistarts: number of random points to use from initial guesses
-      :max_num_threads: maximum number of threads for use by OpenMP (generally should be <= # cores)
-      :chunk_size: (a guide to) how much work to give each thread at a time, see gpp_common.hpp header comments, item 7
-      :objective_state_vector[max_num_threads]: properly constructed/configured ObjectiveFunctionEvaluator::State objects,
-                                                at least one per thread
-                                                objective_state.GetCurrentPoint() will be used to obtain the initial guess
+      :objective_state_vector[thread_schedule.max_num_threads]:
+        properly constructed/configured ObjectiveFunctionEvaluator::State objects,
+        at least one per thread objective_state.GetCurrentPoint() will be used to obtain the initial guess
       :io_container[1]: object with best_objective_value_so_far and corresponding best_point properly initialized.
                         See struct docs in gpp_optimization.hpp for details.
     \output
-      :objective_state_vector[max_num_threads]: internal states of state objects may be modified
-      :function_values[num_multistarts]: objective fcn value at the end of each optimization run, in the same order as
-                                         initial_guesses. Can be used to check what each optimization run converged to.
-                                         More commonly used only with NullOptimizer to get a list of objective values
-                                         at each point of initial_guesses.  Never dereferenced if nullptr
-      :io_container[1]: object container new best_objective_value_so_far and corresponding best_point IF found_flag is true.
-                        unchanged from input otherwise. See struct docs in gpp_optimization.hpp for details.
+      :objective_state_vector[thread_schedule.max_num_threads]: internal states of state objects may be modified
+      :function_values[num_multistarts]: objective fcn value at the end of each
+        optimization run, in the same order as initial_guesses. Can be used to check
+        what each optimization run converged to.
+        More commonly used only with NullOptimizer to get a list of objective values  at each point of initial_guesses.
+        Never dereferenced if nullptr.
+      :io_container[1]: object container new best_objective_value_so_far and corresponding
+        best_point IF found_flag is true.
+        Unchanged from input otherwise. See struct docs in gpp_optimization.hpp for details.
     \raise
-      if any of objective_state_vector->UpdateCurrentPoint(), optimizer.Optimize(), or
+      if any of objective_state_vector->SetCurrentPoint(), optimizer.Optimize(), or
       objective_evaluator.ComputeObjectiveFunction() throws, the exception (or one of the exceptions in the
       event of multiple throws due to threading, usually the first temporally) will be saved and rethrown by
       this function. ``io_container`` will be in a valid state; ``function_values`` may not.
-
-    TODO(GH-150): consider having multiple versions of this for static/guided/dynamic scheduling.
-    Unforutnately openmp doesn't let you choose that parameter programmatically. This would be nice for testing.
-    enough
   \endrst*/
   void MultistartOptimize(const Optimizer& optimizer, const ObjectiveFunctionEvaluator& objective_evaluator,
                           const ParameterStruct& optimizer_parameters, const DomainType& domain,
-                          double const * restrict initial_guesses, int num_multistarts, int max_num_threads,
-                          int chunk_size, typename ObjectiveFunctionEvaluator::StateType * objective_state_vector,
+                          const ThreadSchedule& thread_schedule, double const * restrict initial_guesses,
+                          int num_multistarts,
+                          typename ObjectiveFunctionEvaluator::StateType * objective_state_vector,
                           double * restrict function_values, OptimizationIOContainer * restrict io_container) {
     const int problem_size = objective_state_vector[0].GetProblemSize();
 
@@ -1122,7 +1245,9 @@ class MultistartOptimizer final {
     io_container->found_flag = false;
     const double best_objective_value_so_far_init = io_container->best_objective_value_so_far;
     int total_errors = 0;
-#pragma omp parallel num_threads(max_num_threads)
+
+    omp_set_schedule(thread_schedule.schedule, thread_schedule.chunk_size);
+#pragma omp parallel num_threads(thread_schedule.max_num_threads)
     {
       double best_objective_value_so_far_local = best_objective_value_so_far_init;
       double objective_value;
@@ -1130,7 +1255,7 @@ class MultistartOptimizer final {
       std::vector<double> best_next_point_local(problem_size);
       int thread_id = omp_get_thread_num();
 
-#pragma omp for nowait schedule(guided, chunk_size) reduction(+:total_errors)
+#pragma omp for nowait schedule(runtime) reduction(+:total_errors)
       for (int i = 0; i < num_multistarts; ++i) {
         // It is illegal for exceptions to leave OpenMP blocks. Violating this condition leads to undefined behavior
         // (usually program termination). See:
@@ -1146,7 +1271,7 @@ class MultistartOptimizer final {
         // exception out of this structured block, we will capture an active exception into a std::exception_ptr.
         // Typically, the *first* exception thrown (temporally) will be captured.
         try {
-          objective_state_vector[thread_id].UpdateCurrentPoint(objective_evaluator, initial_guesses + i*problem_size);
+          objective_state_vector[thread_id].SetCurrentPoint(objective_evaluator, initial_guesses + i*problem_size);
 
           if (unlikely(optimizer.Optimize(objective_evaluator, optimizer_parameters, domain, objective_state_vector + thread_id) != 0)) {
             ++total_errors;
@@ -1173,7 +1298,7 @@ class MultistartOptimizer final {
 #endif
           }
         } catch (const std::exception& except) {
-          OL_ERROR_PRINTF("Thread %d of %d failed on iteration %d of %d. Message:\n%s\n", thread_id, max_num_threads, i, num_multistarts, except.what());
+          OL_ERROR_PRINTF("Thread %d of %d failed on iteration %d of %d. Message:\n%s\n", thread_id, thread_schedule.max_num_threads, i, num_multistarts, except.what());
           // std::call_once() ensures that the code body here is executed *once* for each unique std::once_flag (we
           // only have 1 instance). Additionally, the operations inside are "atomic" in the sense that no invocation of
           // call_once() will return before the aforementioned single execution is complete (so no risk of partially

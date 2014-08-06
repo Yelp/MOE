@@ -2,10 +2,12 @@
 """Tools to compute ExpectedImprovement and optimize the next best point(s) to sample using EI through C++ calls.
 
 This file contains a class to compute Expected Improvement + derivatives and a functions to solve the q,p-EI optimization problem.
-The ExpectedImprovement class implements interfaces.ExpectedImproventInterface. The optimization functions are convenient
-wrappers around the matching C++ calls.
+The :class:`moe.optimal_learning.python.cpp_wrappers.expected_improvement.ExpectedImprovement`
+class implements :class:`moe.optimal_learning.python.interfaces.expected_improvement_interface.ExpectedImproventInterface`.
+The optimization functions are convenient wrappers around the matching C++ calls.
 
-See interfaces/expected_improvement_interface.py or gpp_math.hpp/cpp for further details on expected improvement.
+See :class:`moe.optimal_learning.python.interfaces.expected_improvement_interface` or
+gpp_math.hpp/cpp for further details on expected improvement.
 
 """
 import numpy
@@ -30,7 +32,8 @@ def multistart_expected_improvement_optimization(
     When ``points_being_sampled.size == 0 && num_to_sample == 1``, this function will use (fast) analytic EI computations.
 
     .. NOTE:: The following comments are copied from gpp_math.hpp, ComputeOptimalPointsToSample().
-        These comments are copied into multistart_expected_improvement_optimization() in python_version/expected_improvement.py
+      These comments are copied into
+      :func:`moe.optimal_learning.python.python_version.expected_improvement.multistart_expected_improvement_optimization`
 
     This is the primary entry-point for EI optimization in the optimal_learning library. It offers our best shot at
     improving robustness by combining higher accuracy methods like gradient descent with fail-safes like random/grid search.
@@ -48,7 +51,7 @@ def multistart_expected_improvement_optimization(
 
     :param ei_optimizer: object that optimizes (e.g., gradient descent, newton) EI over a domain
     :type ei_optimizer: cpp_wrappers.optimization.*Optimizer object
-    :param num_multistarts: number of times to multistart ``ei_optimizer`` (UNUSED, data is in ei_optimizer.optimization_parameters)
+    :param num_multistarts: number of times to multistart ``ei_optimizer`` (UNUSED, data is in ei_optimizer.optimizer_parameters)
     :type num_multistarts: int > 0
     :param num_to_sample: how many simultaneous experiments you would like to run (i.e., the q in q,p-EI)
     :type num_to_sample: int >= 1
@@ -56,7 +59,7 @@ def multistart_expected_improvement_optimization(
     :type randomness: RandomnessSourceContainer (C++ object; e.g., from C_GP.RandomnessSourceContainer())
     :param max_num_threads: maximum number of threads to use, >= 1
     :type max_num_threads: int > 0
-    :param status: status messages from C++ (e.g., reporting on optimizer success, etc.)
+    :param status: (output) status messages from C++ (e.g., reporting on optimizer success, etc.)
     :type status: dict
     :return: point(s) that maximize the expected improvement (solving the q,p-EI problem)
     :rtype: array of float64 with shape (num_to_sample, ei_optimizer.objective_function.dim)
@@ -74,7 +77,7 @@ def multistart_expected_improvement_optimization(
         status = {}
 
     best_points_to_sample = C_GP.multistart_expected_improvement_optimization(
-        ei_optimizer.optimization_parameters,
+        ei_optimizer.optimizer_parameters,
         ei_optimizer.objective_function._gaussian_process._gaussian_process,
         cpp_utils.cppify(ei_optimizer.domain.domain_bounds),
         cpp_utils.cppify(ei_optimizer.objective_function._points_being_sampled),
@@ -160,7 +163,7 @@ def _heuristic_expected_improvement_optimization(
 
     :param ei_optimizer: object that optimizes (e.g., gradient descent, newton) EI over a domain
     :type ei_optimizer: cpp_wrappers.optimization.*Optimizer object
-    :param num_multistarts: number of times to multistart ``ei_optimizer`` (UNUSED, data is in ei_optimizer.optimization_parameters)
+    :param num_multistarts: number of times to multistart ``ei_optimizer`` (UNUSED, data is in ei_optimizer.optimizer_parameters)
     :type num_multistarts: int > 0
     :param num_to_sample: how many simultaneous experiments you would like to run (i.e., the q in q,0-EI)
     :type num_to_sample: int >= 1
@@ -172,7 +175,7 @@ def _heuristic_expected_improvement_optimization(
     :type randomness: RandomnessSourceContainer (C++ object; e.g., from C_GP.RandomnessSourceContainer())
     :param max_num_threads: maximum number of threads to use, >= 1
     :type max_num_threads: int > 0
-    :param status: status messages from C++ (e.g., reporting on optimizer success, etc.)
+    :param status: (output) status messages from C++ (e.g., reporting on optimizer success, etc.)
     :type status: dict
     :return: point(s) that approximately maximize the expected improvement (solving the q,0-EI problem)
     :rtype: array of float64 with shape (num_to_sample, ei_optimizer.objective_function.dim)
@@ -190,7 +193,7 @@ def _heuristic_expected_improvement_optimization(
         status = {}
 
     best_points_to_sample = C_GP.heuristic_expected_improvement_optimization(
-        ei_optimizer.optimization_parameters,
+        ei_optimizer.optimizer_parameters,
         ei_optimizer.objective_function._gaussian_process._gaussian_process,
         cpp_utils.cppify(ei_optimizer.domain._domain_bounds),
         estimation_policy,
@@ -236,7 +239,7 @@ def constant_liar_expected_improvement_optimization(
 
     :param ei_optimizer: object that optimizes (e.g., gradient descent, newton) EI over a domain
     :type ei_optimizer: cpp_wrappers.optimization.*Optimizer object
-    :param num_multistarts: number of times to multistart ``ei_optimizer`` (UNUSED, data is in ei_optimizer.optimization_parameters)
+    :param num_multistarts: number of times to multistart ``ei_optimizer`` (UNUSED, data is in ei_optimizer.optimizer_parameters)
     :type num_multistarts: int > 0
     :param num_to_sample: how many simultaneous experiments you would like to run (i.e., the q in q,0-EI)
     :type num_to_sample: int >= 1
@@ -248,7 +251,7 @@ def constant_liar_expected_improvement_optimization(
     :type randomness: RandomnessSourceContainer (C++ object; e.g., from C_GP.RandomnessSourceContainer())
     :param max_num_threads: maximum number of threads to use, >= 1
     :type max_num_threads: int > 0
-    :param status: status messages from C++ (e.g., reporting on optimizer success, etc.)
+    :param status: (output) status messages from C++ (e.g., reporting on optimizer success, etc.)
     :type status: dict
     :return: point(s) that approximately maximize the expected improvement (solving the q,0-EI problem)
     :rtype: array of float64 with shape (num_to_sample, ei_optimizer.objective_function.dim)
@@ -299,7 +302,7 @@ def kriging_believer_expected_improvement_optimization(
 
     :param ei_optimizer: object that optimizes (e.g., gradient descent, newton) EI over a domain
     :type ei_optimizer: cpp_wrappers.optimization.*Optimizer object
-    :param num_multistarts: number of times to multistart ``ei_optimizer`` (UNUSED, data is in ei_optimizer.optimization_parameters)
+    :param num_multistarts: number of times to multistart ``ei_optimizer`` (UNUSED, data is in ei_optimizer.optimizer_parameters)
     :type num_multistarts: int > 0
     :param num_to_sample: how many simultaneous experiments you would like to run (i.e., the q in q,0-EI)
     :type num_to_sample: int >= 1
@@ -311,7 +314,7 @@ def kriging_believer_expected_improvement_optimization(
     :type randomness: RandomnessSourceContainer (C++ object; e.g., from C_GP.RandomnessSourceContainer())
     :param max_num_threads: maximum number of threads to use, >= 1
     :type max_num_threads: int > 0
-    :param status: status messages from C++ (e.g., reporting on optimizer success, etc.)
+    :param status: (output) status messages from C++ (e.g., reporting on optimizer success, etc.)
     :type status: dict
     :return: point(s) that approximately maximize the expected improvement (solving the q,0-EI problem)
     :rtype: array of float64 with shape (num_to_sample, ei_optimizer.objective_function.dim)
@@ -337,7 +340,10 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
     associated GaussianProcess. The general EI computation requires monte-carlo integration; it can support q,p-EI optimization.
     It is designed to work with any GaussianProcess.
 
-    See interfaces/expected_improvement_interface.py docs for further details.
+    .. Note:: Equivalent methods of ExpectedImprovementInterface and OptimizableInterface are aliased below (e.g.,
+      compute_expected_improvement and compute_objective_function, etc).
+
+    See :mod:`moe.optimal_learning.python.interfaces.expected_improvement_interface` docs for further details.
 
     """
 
@@ -409,7 +415,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
     @property
     def problem_size(self):
         """Return the number of independent parameters to optimize."""
-        return self.dim
+        return self.num_to_sample * self.dim
 
     def get_current_point(self):
         """Get the current_point (array of float64 with shape (problem_size)) at which this object is evaluating the objective function, ``f(x)``."""
@@ -447,7 +453,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         :type randomness: RandomnessSourceContainer (C++ object; e.g., from C_GP.RandomnessSourceContainer())
         :param max_num_threads: maximum number of threads to use, >= 1
         :type max_num_threads: int > 0
-        :param status: status messages from C++ (e.g., reporting on optimizer success, etc.)
+        :param status: (output) status messages from C++ (e.g., reporting on optimizer success, etc.)
         :type status: dict
         :return: EI evaluated at each of points_to_evaluate
         :rtype: array of float64 with shape (points_to_evaluate.shape[0])
@@ -489,7 +495,8 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
     def compute_expected_improvement(self, force_monte_carlo=False):
         r"""Compute the expected improvement at ``points_to_sample``, with ``points_being_sampled`` concurrent points being sampled.
 
-        .. Note:: These comments were copied from this object's superclass in expected_improvement_interface.py.
+        .. Note:: These comments were copied from
+          :meth:`moe.optimal_learning.python.interfaces.expected_improvement_interface.ExpectedImprovementInterface.compute_expected_improvement`
 
         ``points_to_sample`` is the "q" and ``points_being_sampled`` is the "p" in q,p-EI.
 
@@ -534,14 +541,13 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
             self._randomness,
         )
 
-    def compute_objective_function(self, **kwargs):
-        """Wrapper for compute_expected_improvement; see that function's docstring."""
-        return self.compute_expected_improvement(**kwargs)
+    compute_objective_function = compute_expected_improvement
 
     def compute_grad_expected_improvement(self, force_monte_carlo=False):
         r"""Compute the gradient of expected improvement at ``points_to_sample`` wrt ``points_to_sample``, with ``points_being_sampled`` concurrent samples.
 
-        .. Note:: These comments were copied from this's superclass in expected_improvement_interface.py.
+        .. Note:: These comments were copied from
+          :meth:`moe.optimal_learning.python.interfaces.expected_improvement_interface.ExpectedImprovementInterface.compute_grad_expected_improvement`
 
         ``points_to_sample`` is the "q" and ``points_being_sampled`` is the "p" in q,p-EI.
 
@@ -577,9 +583,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         )
         return cpp_utils.uncppify(grad_ei, (self.num_to_sample, self.dim))
 
-    def compute_grad_objective_function(self, **kwargs):
-        """Wrapper for compute_grad_expected_improvement; see that function's docstring."""
-        return self.compute_grad_expected_improvement(**kwargs)
+    compute_grad_objective_function = compute_grad_expected_improvement
 
     def compute_hessian_objective_function(self, **kwargs):
         """We do not currently support computation of the (spatial) hessian of Expected Improvement."""

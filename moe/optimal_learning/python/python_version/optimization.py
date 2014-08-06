@@ -47,7 +47,7 @@ In this way, we can make the local and global optimizers completely agonistic to
 **2a. GRADIENT DESCENT (GD)**
 
 .. Note:: Below there is some discussion of "restarted" Gradient Descent; this is not yet implemented in Python.
-    See cpp_wrappers/optimization.py if you want to use this feature.
+    See :mod:`moe.optimal_learning.python.cpp_wrappers.optimization` if you want to use this feature.
 
 **2a, i. OVERVIEW**
 
@@ -87,7 +87,7 @@ loop, where we fire off another GD run from the current location unless converge
 
 **2b. NEWTON'S METHOD:**
 
-.. Note:: Newton's method is not yet implemented in Python. See cpp_wrappers/optimization.py if you want to use this feature.
+.. Note:: Newton's method is not yet implemented in Python. See :mod:`moe.optimal_learning.python.cpp_wrappers.optimization` if you want to use this feature.
 
 **2b, i. OVERVIEW**
 
@@ -177,6 +177,8 @@ import collections
 
 import numpy
 
+import scipy.optimize
+
 from moe.optimal_learning.python.interfaces.optimization_interface import OptimizerInterface
 
 
@@ -191,12 +193,10 @@ def multistart_optimize(optimizer, starting_points=None, num_multistarts=None):
 
     :param optimizer: object that will perform the optimization
     :type optimizer: interfaces.optimization_interface.OptimizerInterface subclass
-    :param points_to_evaluate: points at which to compute the objective
-    :type points_to_evaluate: array of float64 with shape (num_points, evaluator.problem_size)
+    :param starting_points: points at which to initialize optimization runs
+    :type starting_points: array of float64 with shape (num_points, evaluator.problem_size)
     :return: (best point found, objective function values at the end of each optimization run)
     :rtype: tuple: (array of float64 with shape (optimizer.dim), array of float64 with shape (starting_points.shape[0]) or (num_multistarts))
-    :return: objective function value at each specified point
-    :rtype: array of float64 with shape (points_to_evaluate.shape[0])
     :raises: ValueError: if both ``starting_points`` and ``num_multistarts`` are None
 
     """
@@ -226,7 +226,7 @@ _BaseNewtonParameters = collections.namedtuple('_BaseNewtonParameters', [
 
 class NewtonParameters(_BaseNewtonParameters):
 
-    """See docstring at :class:`moe.optimal_learning.python.cpp_wrappers.optimization`."""
+    """See docstring at :class:`moe.optimal_learning.python.cpp_wrappers.optimization.NewtonParameters`."""
 
     __slots__ = ()
 
@@ -295,6 +295,35 @@ class GradientDescentParameters(_BaseGradientDescentParameters):
     __slots__ = ()
 
 
+# See LBFGSBParameters (below) for docstring.
+_BaseLBFGSBParameters = collections.namedtuple('_BaseLBFGSBParameters', [
+    'approx_grad',
+    'max_func_evals',
+    'max_metric_correc',
+    'factr',
+    'pgtol',
+    'epsilon',
+])
+
+
+class LBFGSBParameters(_BaseLBFGSBParameters):
+
+    r"""Container to hold parameters that specify the behavior of L-BFGS-B.
+
+    Suggested values come from scipy documentation for scipy.optimize.fmin_l_bfgs_b.
+
+    :ivar approx_grad: (*bool*) if true, BFGS will approximate the gradient
+    :ivar max_func_evals: (*int > 0*) maximum number of objective function calls to make (suggest: 15000)
+    :ivar max_metric_correc: (*int > 0*) maximum number of variable metric corrections used to define the limited memorty matrix (suggest: 10)
+    :ivar factr: (*float64 > 1.0*) 1e12 for low accuracy, 1e7 for moderate accuracy, and 10 for extremely high accuracy (suggest: 1000.0)
+    :ivar pgtol: (*float64 > 0.0*) cutoff for highest component of gradient to be considered a critical point (suggest: 1.0e-5)
+    :ivar epsilon: (*float64 > 0.0*) step size for approximating the gradient (suggest: 1.0e-8)
+
+    """
+
+    __slots__ = ()
+
+
 class NullOptimizer(OptimizerInterface):
 
     """A "null" or identity optimizer: this does nothing. It is used to perform "dumb" search with MultistartOptimizer."""
@@ -324,20 +353,20 @@ class GradientDescentOptimizer(OptimizerInterface):
 
     """
 
-    def __init__(self, domain, optimizable, optimization_parameters):
+    def __init__(self, domain, optimizable, optimizer_parameters):
         """Construct a GradientDescentOptimizer.
 
         :param domain: the domain that this optimizer operates over
         :type domain: interfaces.domain_interface.DomainInterface subclass
         :param optimizable: object representing the objective function being optimized
         :type optimizable: interfaces.optimization_interface.OptimizableInterface subclass
-        :param optimization_parameters: parameters describing how to perform optimization (tolerances, iterations, etc.)
-        :type optimization_parameters: python_version.optimization.GradientDescentParameters object
+        :param optimizer_parameters: parameters describing how to perform optimization (tolerances, iterations, etc.)
+        :type optimizer_parameters: python_version.optimization.GradientDescentParameters object
 
         """
         self.domain = domain
         self.objective_function = optimizable
-        self.optimization_parameters = optimization_parameters
+        self.optimizer_parameters = optimizer_parameters
 
     @staticmethod
     def _get_averaging_range(num_steps_averaged, num_steps_total):
@@ -424,19 +453,19 @@ class GradientDescentOptimizer(OptimizerInterface):
         # TODO(GH-59): Implement restarts like in the C++ code.
         initial_guess = self.objective_function.current_point
         x_hat = initial_guess
-        x_path = numpy.empty((self.optimization_parameters.max_num_steps + 1, ) + initial_guess.shape)
+        x_path = numpy.empty((self.optimizer_parameters.max_num_steps + 1, ) + initial_guess.shape)
         x_path[0, ...] = initial_guess
 
         step_counter = 1
-        while step_counter <= self.optimization_parameters.max_num_steps:
-            alpha_n = self.optimization_parameters.pre_mult * numpy.power(float(step_counter), -self.optimization_parameters.gamma)
+        while step_counter <= self.optimizer_parameters.max_num_steps:
+            alpha_n = self.optimizer_parameters.pre_mult * numpy.power(float(step_counter), -self.optimizer_parameters.gamma)
 
             self.objective_function.current_point = x_path[step_counter - 1, ...]
             orig_step = self.objective_function.compute_grad_objective_function(**kwargs)
 
             orig_step *= alpha_n
             fixed_step = self.domain.compute_update_restricted_to_domain(
-                self.optimization_parameters.max_relative_change,
+                self.optimizer_parameters.max_relative_change,
                 x_path[step_counter - 1, ...],
                 orig_step,
             )
@@ -449,7 +478,7 @@ class GradientDescentOptimizer(OptimizerInterface):
         # Polyak-Ruppert averaging: postprocessing step where we replace x_n with:
         # \overbar{x} = \frac{1}{n - n_0} \sum_{t=n_0 + 1}^n x_t
         # n_0 = 0 averages all steps; n_0 = n - 1 is equivalent to returning x_n directly.
-        start, end = self._get_averaging_range(self.optimization_parameters.num_steps_averaged, step_counter - 1)
+        start, end = self._get_averaging_range(self.optimizer_parameters.num_steps_averaged, step_counter - 1)
         x_hat = numpy.mean(x_path[start:end, ...], axis=0)
         self.objective_function.current_point = x_hat
 
@@ -477,12 +506,12 @@ class MultistartOptimizer(OptimizerInterface):
     """
 
     def __init__(self, optimizer, num_multistarts):
-        """Construct a MultistartOptimizer for multistarting any implementation of OptimizationInterface.
+        """Construct a MultistartOptimizer for multistarting any implementation of OptimizerInterface.
 
         :param optimizer: object representing the optimization method to be multistarted
         :type optimizer: interfaces.optimization_interface.OptimizableInterface subclass (except itself)
-        :param optimization_parameters:
-        :type optimization_parameters:
+        :param optimizer_parameters:
+        :type optimizer_parameters:
 
         """
         self.optimizer = optimizer
@@ -527,3 +556,94 @@ class MultistartOptimizer(OptimizerInterface):
                 best_point = self.optimizer.objective_function.current_point
 
         return best_point, function_value_list
+
+
+class LBFGSBOptimizer(OptimizerInterface):
+
+    r"""Optimizes an objective function over the specified domain with the L-BFGS-B method.
+
+    The BFGS (Broyden-Fletcher-Goldfarb-Shanno) algorithm is a quasi-Newton algorithm for optimization. It can
+    be used for DFO (Derivative-Free Optimization) when the gradient is not available, such as is the case for
+    the analytic qEI algorithm.
+
+    L-BFGS is a memory efficient version of BFGS, and BFGS-B is a variant that handles simple box constraints.
+    We use L-BFGS-B, which is a combination of the two, and is often the optimization algorithm of choice for
+    these types of problems.
+
+    For more information:
+    http://en.wikipedia.org/wiki/Limited-memory_BFGS
+    http://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.fmin_l_bfgs_b.html
+
+    .. Note:: See optimize() docstring for more details.
+
+    """
+
+    def __init__(self, domain, optimizable, optimization_parameters):
+        """Construct a LBFGSBOptimizer.
+
+        :param domain: the domain that this optimizer operates over
+        :type domain: interfaces.domain_interface.DomainInterface subclass. Only supports TensorProductDomain.
+        :param optimizable: object representing the objective function being optimized
+        :type optimizable: interfaces.optimization_interface.OptimizableInterface subclass
+        :param optimization_parameters: parameters describing how to perform optimization (tolerances, iterations, etc.)
+        :type optimization_parameters: python_version.optimization.LBFGSBParameters object
+
+        """
+        self.domain = domain
+        self.objective_function = optimizable
+        self.optimization_parameters = optimization_parameters
+        self._num_points = 1
+        if hasattr(self.domain, 'num_repeats'):
+            self._num_points = self.domain.num_repeats
+
+    def _scipy_decorator(self, func, **kwargs):
+        """Wrapper function for expected improvement calculation to feed into BFGS.
+
+        func should be of the form compute_* in interfaces.optimization_interface.OptimizableInterface.
+        """
+        def decorated(point):
+            """Decorator for compute_* functions in interfaces.optimization_interface.OptimizableInterface.
+
+            Converts the point to proper format and sets the current point before calling the compute function.
+
+            :param point: the point on which to do the calculation
+            :type point: array of float64 with shape (self._num_points * self.domain.dim)
+            """
+            shaped_point = point.reshape(self._num_points, self.domain.dim)
+            self.objective_function.current_point = shaped_point
+            value = -func(**kwargs)
+            if isinstance(value, (numpy.ndarray)):
+                return value.flatten()
+            else:
+                return value
+
+        return decorated
+
+    def optimize(self, **kwargs):
+        """Perform an L-BFGS-B optimization given the parameters in optimization_parameters.
+
+        objective_function.current_point will be set to the optimal point found.
+        """
+        domain_bounding_box = self.domain.get_bounding_box()
+        domain_list = [(interval.min, interval.max) for interval in domain_bounding_box]
+        domain_numpy = numpy.array(domain_list * self._num_points)
+
+        # Parameters defined above in LBFGSBParameters class.
+        unshaped_point = scipy.optimize.fmin_l_bfgs_b(
+            func=self._scipy_decorator(self.objective_function.compute_objective_function, **kwargs),
+            x0=self.objective_function.current_point.flatten(),
+            bounds=domain_numpy,
+            fprime=self._scipy_decorator(self.objective_function.compute_grad_objective_function, **kwargs),
+            approx_grad=self.optimization_parameters.approx_grad,
+            factr=self.optimization_parameters.factr,
+            maxfun=self.optimization_parameters.max_func_evals,
+            m=self.optimization_parameters.max_metric_correc,
+            pgtol=self.optimization_parameters.pgtol,
+            epsilon=self.optimization_parameters.epsilon,
+        )[0]
+        if self._num_points == 1:
+            shaped_point = unshaped_point
+        else:
+            shaped_point = unshaped_point.reshape(self._num_points, self.domain.dim)
+
+        self.objective_function.current_point = shaped_point
