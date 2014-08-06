@@ -64,7 +64,6 @@ class Epsilon(BanditInterface):
         for arm_name, sampled_arm in arms_sampled.iteritems():
             avg_payoff = numpy.float64(sampled_arm.win - sampled_arm.loss) / sampled_arm.total if sampled_arm.total > 0 else 0
             avg_payoff_arm_name_list.append((avg_payoff, arm_name))
-        avg_payoff_arm_name_list.sort(reverse=True)
 
         best_payoff, _ = max(avg_payoff_arm_name_list)
         # Filter out arms that have average payoff less than the best payoff

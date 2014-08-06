@@ -10,7 +10,8 @@ from moe.bandit.constant import EPSILON_SUBTYPES, EPSILON_SUBTYPES_TO_DEFAULT_HY
 from moe.tests.bandit.bandit_test_case import BanditTestCase
 from moe.tests.views.rest_test_case import RestTestCase
 from moe.views.constant import BANDIT_EPSILON_MOE_ROUTE
-from moe.views.rest.bandit_epsilon import BanditEpsilonResponse, BanditEpsilonView
+from moe.views.rest.bandit_epsilon import BanditEpsilonView
+from moe.views.schemas.bandit_pretty_view import BanditResponse
 
 
 class TestBanditEpsilonViews(BanditTestCase, RestTestCase):
@@ -98,7 +99,7 @@ class TestBanditEpsilonViews(BanditTestCase, RestTestCase):
                 json_payload = self._build_json_payload(subtype, historical_info, EPSILON_SUBTYPES_TO_DEFAULT_HYPERPARAMETER_INFOS[subtype])
                 arm_names = set([arm_name for arm_name in historical_info.arms_sampled.iterkeys()])
                 resp = self.testapp.post(moe_route.endpoint, json_payload)
-                resp_schema = BanditEpsilonResponse()
+                resp_schema = BanditResponse()
                 resp_dict = resp_schema.deserialize(json.loads(resp.body))
                 resp_arm_names = set([arm_name for arm_name in resp_dict['arm_allocations'].iterkeys()])
                 T.assert_sets_equal(arm_names, resp_arm_names)

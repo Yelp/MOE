@@ -26,6 +26,6 @@ This package includes:
 * :mod:`moe.tests.bandit.epsilon_test`: tests for :mod:`moe.bandit.epsilon_greedy.Epsilon`
 * :mod:`moe.tests.bandit.epsilon_test_case`: test cases for classes under :mod:`moe.bandit.epsilon.Epsilon`
 * :mod:`moe.tests.bandit.linkers_test`: tests for :mod:`moe.bandit.linkers`
-
+* :mod:`moe.tests.bandit.ucb1_test`: tests for :mod:`moe.bandit.ucb1.UCB1`
 
 """

@@ -61,12 +61,12 @@ We have implemented the following policies in our package:
 
 * :mod:`~moe.bandit.epsilon_first.EpsilonFirst`
 * :mod:`~moe.bandit.epsilon_greedy.EpsilonGreedy`
+* :mod:`~moe.bandit.ucb1.UCB1`
 
 Other policies include:
 
 * Weighted random choice
 * `Epsilon-decreasing`_ \*
-* `UCB-exp (Upper Confidence Bound)`_ \*
 * `UCB-tuned`_ \*
 * `BLA (Bayesian Learning Automaton)`_ \*
 * `SoftMax`_ \*
@@ -74,7 +74,6 @@ Other policies include:
 \* Regret bounded as :math:`t \rightarrow \infty`
 
 .. _Epsilon-decreasing: http://en.wikipedia.org/wiki/Multi-armed_bandit#Semi-uniform_strategies
-.. _UCB-exp (Upper Confidence Bound): http://moodle.technion.ac.il/pluginfile.php/192340/mod_resource/content/0/UCB.pdf
 .. _UCB-tuned: http://moodle.technion.ac.il/pluginfile.php/192340/mod_resource/content/0/UCB.pdf
 .. _BLA (Bayesian Learning Automaton): http://dl.acm.org/citation.cfm?id=1491370
 .. _SoftMax: http://arxiv.org/pdf/1402.6028v1.pdf

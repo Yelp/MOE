@@ -16,6 +16,12 @@ EPSILON_SUBTYPES = [
                 EPSILON_SUBTYPE_GREEDY,
                 ]
 
+# UCB subtypes
+UCB_SUBTYPE_1 = '1'
+UCB_SUBTYPES = [
+                UCB_SUBTYPE_1,
+                ]
+
 # Default Hyperparameters
 DEFAULT_EPSILON = 0.05
 DEFAULT_TOTAL_SAMPLES = 100

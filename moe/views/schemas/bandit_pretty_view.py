@@ -127,3 +127,36 @@ class BanditHistoricalInfo(base_schemas.StrictMappingSchema):
     """
 
     arms_sampled = ArmsSampled()
+
+
+class BanditResponse(base_schemas.StrictMappingSchema):
+
+    """A :mod:`moe.views.rest.bandit_epsilon` and :mod:`moe.views.rest.bandit_ucb` response colander schema.
+
+    **Output fields**
+
+    :ivar endpoint: (*str*) the endpoint that was called
+    :ivar arms: (:class:`moe.views.schemas.bandit_pretty_view.ArmAllocations`) a dictionary of (arm name, allocaiton) key-value pairs
+    :ivar winner: (*str*) winning arm name
+
+    **Example Response**
+
+    .. sourcecode:: http
+
+        Content-Type: text/javascript
+
+        {
+            "endpoint":"bandit_epsilon",
+            "arm_allocations": {
+                "arm1": 0.95,
+                "arm2": 0.025,
+                "arm3": 0.025,
+                }
+            "winner": "arm1",
+        }
+
+    """
+
+    endpoint = colander.SchemaNode(colander.String())
+    arm_allocations = ArmAllocations()
+    winner = colander.SchemaNode(colander.String())
