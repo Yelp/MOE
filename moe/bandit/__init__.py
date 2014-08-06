@@ -6,6 +6,8 @@
 * :mod:`moe.bandit.constant`: some default configuration values for ``optimal_learning`` components
 * :mod:`moe.bandit.data_containers`: :class:`~moe.bandit.data_containers.SampleArm`
   and :class:`~moe.bandit.data_containers.HistoricalData` containers for passing data to the ``bandit`` library
+* :mod:`moe.bandit.epsilon_first`: :class:`~moe.bandit.epsilon_first.EpsilonFirst`
+  object for allocating bandit arms and choosing the winning arm based on epsilon-first policy.
 * :mod:`moe.bandit.epsilon_greedy`: :class:`~moe.bandit.epsilon_greedy.EpsilonGreedy`
   object for allocating bandit arms and choosing the winning arm based on epsilon-greedy policy.
 * :mod:`moe.bandit.epsilon`: a base :class:`~moe.bandit.epsilon.Epsilon`

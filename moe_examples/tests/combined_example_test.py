@@ -12,18 +12,29 @@ class CombinedExampleTest(MoeExampleTestCase):
 
     """Test the combined_example MOE example."""
 
-    def test_example_runs(self):
-        """Simple integration test for example."""
+    def test_example_runs_with_non_default_optimizer_kwargs(self):
+        """Simple integration test for example with non default kwargs."""
         run_example(
                 num_to_sample=1,
                 verbose=False,
                 testapp=self.testapp,
-                optimizer_info={
-                    'num_multistarts': TEST_OPTIMIZER_MULTISTARTS,
-                    'num_random_samples': TEST_OPTIMIZER_NUM_RANDOM_SAMPLES,
-                    'optimizer_parameters': TEST_GRADIENT_DESCENT_PARAMETERS._asdict(),
-                    })
-
+                gp_next_points_kwargs={
+                    'optimizer_info': {
+                        'num_multistarts': TEST_OPTIMIZER_MULTISTARTS,
+                        'num_random_samples': TEST_OPTIMIZER_NUM_RANDOM_SAMPLES,
+                        'optimizer_parameters': TEST_GRADIENT_DESCENT_PARAMETERS._asdict(),
+                        }
+                    },
+                gp_hyper_opt_kwargs={
+                    'optimizer_info': {
+                        'num_multistarts': TEST_OPTIMIZER_MULTISTARTS,
+                        'num_random_samples': TEST_OPTIMIZER_NUM_RANDOM_SAMPLES,
+                        'optimizer_parameters': TEST_GRADIENT_DESCENT_PARAMETERS._asdict(),
+                        }
+                    },
+                gp_mean_var_kwargs={},
+                rest_port=1337,
+                )
 
 if __name__ == "__main__":
     T.run()

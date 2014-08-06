@@ -3,6 +3,7 @@
 
 Contains:
 
+    * :mod:`moe.views.schemas.bandit_pretty_view`: common schemas for the ``bandit_*`` endpoints
     * :mod:`moe.views.schemas.base_schemas`: basic building-block schemas for use in other, more complex schemas
     * :mod:`moe.views.schemas.gp_next_points_pretty_view`: common schemas for the ``gp_next_points_*`` endpoints
     * :mod:`moe.views.rest`: schemas for specific REST endpoints
