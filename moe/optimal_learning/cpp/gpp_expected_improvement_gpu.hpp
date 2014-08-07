@@ -545,7 +545,7 @@ void CudaEvaluateEIAtPointList(const GaussianProcess& gaussian_process,
                                int num_multistarts, int num_to_sample,
                                int num_being_sampled, double best_so_far,
                                int max_int_steps, bool * restrict found_flag,
-                               int which_gpu, UniformRandomGenerator* uniform_rng, 
+                               int which_gpu, UniformRandomGenerator* uniform_rng,
                                double * restrict function_values,
                                double * restrict best_next_point);
 
