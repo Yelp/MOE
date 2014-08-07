@@ -85,6 +85,11 @@ class GpNextPointsPrettyView(OptimizableGpPrettyView):
             py_domain = _make_domain_from_params(params, python_version=True)
             next_points = py_domain.generate_uniform_random_points_in_domain(num_to_sample)
             ei_opt_status['found_update'] = True
+            expected_improvement_evaluator = PythonExpectedImprovement(
+                    gaussian_process,
+                    points_being_sampled=points_being_sampled,
+                    num_mc_iterations=num_mc_iterations,
+                    )
         else:
             # Calculate the next best points to sample given the historical data
 
