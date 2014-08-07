@@ -191,11 +191,13 @@ Releasing (For Maintainers)
 
 The MOE repository maintainers decide when to tag official releases. They may decide to bump versions immediately after a pull request for a critical bug fix, or they may decide to wait and combine several inbound pull requests into one version bump. (Having ``MOE v10.87.3091`` makes the history unwieldy).
 
-When you are ready to mark a new release:
+When you are ready to mark a new release (stop and fix any issues encountered):
 
-1. Tag the release (`Tagging Releases`_).
-2. Update the documentation (`Building the documentation`_); in all likelihood the new code includes documentation changes.
-3. Push a Docker container for the new release to DockerHub (`Updating DockerHub`).
+1. Update the ``__version___`` string in ``moe/__init__.py``. It is OK to do this directly on GitHub; this MUST be the last change to the MOE master repository before tagging (below).
+2. Create a Docker container for the new release to DockerHub (`Updating DockerHub`_).
+3. Tag the release (`Tagging Releases`_).
+4. Update the documentation (`Building the documentation`_); in all likelihood the new code includes documentation changes.
+5. Push the Docker container created in step 2 to DockerHub (`Updating DockerHub`_).
 
 Tagging Releases
 ................
