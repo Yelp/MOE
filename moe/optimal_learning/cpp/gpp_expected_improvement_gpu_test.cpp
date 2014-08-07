@@ -233,7 +233,7 @@ int RunCudaEIvsCpuEITests() {
   5. final grad EI is sufficiently small
 
   The test sets up a toy problem by repeatedly drawing from a GP with made-up hyperparameters.
-  Then it runs EI optimization, attempting to sample 3 points simultaneously.
+  Then it runs EI optimization, attempting to sample 2 points simultaneously.
 \endrst*/
 int CudaExpectedImprovementOptimizationMultipleSamplesTest() {
   using DomainType = TensorProductDomain;
@@ -244,7 +244,7 @@ int CudaExpectedImprovementOptimizationMultipleSamplesTest() {
 
   // gradient descent parameters
   const double gamma = 0.5;
-  const double pre_mult = 1.5;
+  const double pre_mult = 1.0;
   const double max_relative_change = 1.0;
   const double tolerance = 1.0e-5;
   const int max_gradient_descent_steps = 250;
@@ -255,25 +255,25 @@ int CudaExpectedImprovementOptimizationMultipleSamplesTest() {
                                       max_relative_change, tolerance);
 
   // grid search parameters
-  int num_grid_search_points = 1000;
+  int num_grid_search_points = 5000;
 
   // q,p-EI computation parameters
   const int num_to_sample = 3;
   const int num_being_sampled = 0;
 
   std::vector<double> points_being_sampled(dim*num_being_sampled);
-  int max_int_steps = 10000000;
+  int max_int_steps = 1000000;
 
   // random number generators
   UniformRandomGenerator uniform_generator(314);
   boost::uniform_real<double> uniform_double_hyperparameter(0.4, 1.3);
-  boost::uniform_real<double> uniform_double_lower_bound(-2.0, 0.5);
-  boost::uniform_real<double> uniform_double_upper_bound(1.0, 2.5);
+  boost::uniform_real<double> uniform_double_lower_bound(-5.0, -4.5);
+  boost::uniform_real<double> uniform_double_upper_bound(4.0, 4.5);
 
   static const int kMaxNumThreads = 1;
   ThreadSchedule thread_schedule(kMaxNumThreads, omp_sched_static);
 
-  const int num_sampled = 20;
+  const int num_sampled = 50;
   std::vector<double> noise_variance(num_sampled, 0.002);
   MockGaussianProcessPriorData<DomainType> mock_gp_data(SquareExponential(dim, 1.0, 1.0),
                                                         noise_variance, dim, num_sampled,
@@ -350,7 +350,7 @@ int CudaExpectedImprovementOptimizationMultipleSamplesTest() {
   double tolerance_result = tolerance;
   {
     max_int_steps = 100000000;  // evaluate the final results with high accuracy
-    tolerance_result = 2.0e-3;  // reduce b/c we cannot achieve full accuracy in the monte-carlo case
+    tolerance_result = 3.5e-3;  // reduce b/c we cannot achieve full accuracy in the monte-carlo case
     // while still having this test run in a reasonable amt of time
     bool configure_for_gradients = true;
     CudaExpectedImprovementEvaluator ei_evaluator(*mock_gp_data.gaussian_process_ptr,
