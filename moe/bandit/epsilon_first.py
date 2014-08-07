@@ -84,7 +84,7 @@ class EpsilonFirst(Epsilon):
         ``{arm1: 0.33, arm2: 0.33, arm3: 0.33}``
 
         :return: the dictionary of (arm, allocation) key-value pairs
-        :rtype: a dictionary of (String(), float64) pairs
+        :rtype: a dictionary of (str, float64) pairs
         :raise: ValueError when ``sample_arms`` are empty.
 
         """

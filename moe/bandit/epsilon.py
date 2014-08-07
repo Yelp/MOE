@@ -32,9 +32,9 @@ class Epsilon(BanditInterface):
         """Construct an Epsilon object.
 
         :param historical_info: a dictionary of arms sampled
-        :type historical_info: dictionary of (String(), SampleArm()) pairs (see :class:`moe.bandit.data_containers.SampleArm` for more details)
+        :type historical_info: dictionary of (str, SampleArm()) pairs (see :class:`moe.bandit.data_containers.SampleArm` for more details)
         :param subtype: subtype of the epsilon bandit algorithm (default: None)
-        :type subtype: String()
+        :type subtype: str
         :param epsilon: epsilon hyperparameter for the epsilon bandit algorithm (default: :const:`~moe.bandit.constant.DEFAULT_EPSILON`)
         :type epsilon: float64 in range [0.0, 1.0]
 
@@ -51,9 +51,9 @@ class Epsilon(BanditInterface):
         Implementers of this interface will never override this method.
 
         :param arms_sampled: a dictionary of arm name to :class:`moe.bandit.data_containers.SampleArm`
-        :type arms_sampled: dictionary of (String(), SampleArm()) pairs
+        :type arms_sampled: dictionary of (str, SampleArm()) pairs
         :return: of set of names of the winning arms
-        :rtype: frozenset(String())
+        :rtype: frozenset(str)
         :raise: ValueError when ``arms_sampled`` are empty.
 
         """
