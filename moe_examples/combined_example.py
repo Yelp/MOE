@@ -29,7 +29,15 @@ def function_to_minimize(x):
     return numpy.sin(x[0]) * numpy.cos(x[1]) + numpy.cos(x[0] + x[1]) + numpy.random.uniform(-0.02, 0.02)
 
 
-def run_example(num_to_sample=20, verbose=True, testapp=None, gp_next_points_kwargs=None, gp_hyper_opt_kwargs=None, gp_mean_var_kwargs=None, **kwargs):
+def run_example(
+        num_to_sample=20,
+        verbose=True,
+        testapp=None,
+        gp_next_points_kwargs=None,
+        gp_hyper_opt_kwargs=None,
+        gp_mean_var_kwargs=None,
+        **kwargs
+):
     """Run the combined example.
 
     :param num_to_sample: Number of points for MOE to suggest and then sample [20]
@@ -52,18 +60,15 @@ def run_example(num_to_sample=20, verbose=True, testapp=None, gp_next_points_kwa
     # Note that the more specific kwargs take precedence (and will override general kwargs)
     if gp_next_points_kwargs is None:
         gp_next_points_kwargs = {}
-    else:
-        gp_next_points_kwargs = dict(kwargs.items() + gp_next_points_kwargs.items())
+    gp_next_points_kwargs = dict(kwargs.items() + gp_next_points_kwargs.items())
 
     if gp_hyper_opt_kwargs is None:
         gp_hyper_opt_kwargs = {}
-    else:
-        gp_hyper_opt_kwargs = dict(kwargs.items() + gp_hyper_opt_kwargs.items())
+    gp_hyper_opt_kwargs = dict(kwargs.items() + gp_hyper_opt_kwargs.items())
 
     if gp_mean_var_kwargs is None:
         gp_mean_var_kwargs = {}
-    else:
-        gp_mean_var_kwargs = dict(kwargs.items() + gp_mean_var_kwargs.items())
+    gp_mean_var_kwargs = dict(kwargs.items() + gp_mean_var_kwargs.items())
 
     exp = Experiment([[0, 2], [0, 4]])
     # Bootstrap with some known or already sampled point(s)

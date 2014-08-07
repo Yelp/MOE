@@ -20,6 +20,9 @@
 * Bugs
 
   * Throw exceptions (C++) if ``num_multistarts`` or ``num_random_samples`` is 0 (#345)
+  * ``combined_example`` endpoint was not passing ``kwargs`` through so users could not change the default server (#356)
+    * fix sometimes dropped general ``kwargs`` (#358)
+  * ``mean_var_of_gp_from_historic_data`` was also not passing ``kwargs`` (#359)
 
 ## v0.1.0 (2014-07-29)
 

@@ -19,13 +19,14 @@ points_sampled = [
         ]
 
 
-def run_example(verbose=True, testapp=None):
+def run_example(verbose=True, testapp=None, **kwargs):
     """Run the example, finding the posterior mean and variance for various poinst from a random GP."""
     points_to_evaluate = [[x] for x in numpy.arange(0, 1, 0.05)]  # uniform grid of points
     mean, var = gp_mean_var(
             points_sampled,  # Historical data to inform Gaussian Process
             points_to_evaluate,  # We will calculate the mean and variance of the GP at these points
             testapp=testapp,
+            **kwargs
             )
 
     if verbose:
