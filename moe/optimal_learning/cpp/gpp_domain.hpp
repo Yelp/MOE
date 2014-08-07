@@ -117,6 +117,7 @@ class TensorProductDomain {
     Used for testing.
 
     Let max_num_bound = GetMaxNumberOfBoundaryPlanes()
+
     \param
       :planes[max_num_bound]: properly allocated space: max_num_bound Plane objects in dim spatial dimensions
     \output
@@ -170,13 +171,15 @@ class TensorProductDomain {
 
   /*!\rst
     Changes update_vector so that:
+
       ``point_new = point + update_vector``
-    has coordinates such that CheckPointInside(point_new) returns true.
 
-    update_vector is UNMODIFIED if point_new is already inside the domain.
+    has coordinates such that ``CheckPointInside(point_new)`` returns true.
 
-    Note: we modify update_vector (instead of returning point_new) so that further update
-    limiting/testing may be performed.
+    ``update_vector`` is UNMODIFIED if point_new is already inside the domain.
+
+    .. Note:: we modify update_vector (instead of returning ``point_new``) so that further update
+      limiting/testing may be performed.
 
     \param
       :max_relative_change: max change allowed per update (as a relative fraction of current distance to boundary)
@@ -258,6 +261,7 @@ class SimplexIntersectTensorProductDomain {
     Used for testing.
 
     Let max_num_bound = GetMaxNumberOfBoundaryPlanes()
+
     \param
       :planes[max_num_bound]: properly allocated space: max_num_bound Plane objects in dim spatial dimensions
     \output
@@ -315,13 +319,15 @@ class SimplexIntersectTensorProductDomain {
 
   /*!\rst
     Changes update_vector so that:
+
       ``point_new = point + update_vector``
-    has coordinates such that CheckPointInside(point_new) returns true.
 
-    update_vector is UNMODIFIED if point_new is already inside the domain.
+    has coordinates such that ``CheckPointInside(point_new)`` returns true.
 
-    Note: we modify update_vector (instead of returning point_new) so that further update
-    limiting/testing may be performed.
+    ``update_vector`` is UNMODIFIED if point_new is already inside the domain.
+
+    .. Note:: we modify update_vector (instead of returning ``point_new``) so that further update
+      limiting/testing may be performed.
 
     \param
       :max_relative_change: max change allowed per update (as a relative fraction of current distance to boundary)
@@ -499,13 +505,15 @@ class RepeatedDomain {
 
   /*!\rst
     Changes update_vector so that:
+
       ``point_new = point + update_vector``
-    has coordinates such that CheckPointInside(point_new) returns true.
 
-    update_vector is UNMODIFIED if point_new is already inside the domain.
+    has coordinates such that ``CheckPointInside(point_new)`` returns true.
 
-    Note: we modify update_vector (instead of returning point_new) so that further update
-    limiting/testing may be performed.
+    ``update_vector`` is UNMODIFIED if point_new is already inside the domain.
+
+    .. Note:: we modify update_vector (instead of returning ``point_new``) so that further update
+      limiting/testing may be performed.
 
     \param
       :max_relative_change: max change allowed per update (as a relative fraction of current distance to boundary)

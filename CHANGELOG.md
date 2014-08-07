@@ -15,6 +15,8 @@
   * ``GradientDescentOptimization`` (C++) no longer has a separate ``next_points`` output (#186)
   * LogLikelihood evaluate at point list and latin hypercube search now return status dicts like every other optimizer (#189)
     * status dicts also a little more informative/standardized now
+  * Update C++ autodoc tools to handle the new ``gpu`` directory (#353)
+  * Added ``__version__`` to ``moe/__init__.py`` (#353)
 
 * Bugs
 
