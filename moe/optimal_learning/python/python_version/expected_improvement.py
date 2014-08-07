@@ -335,6 +335,8 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
                     sum_term += cov_k[i, k] * singlevar_norm_pdf(m_k[i], cov_k[i, i], b_k[i]) * multivar_norm_cdf(c_k, cov_k_no_i)
 
             expected_improvement += (prob_term + sum_term)
+        if numpy.isnan(expected_improvement):
+            raise Exception
         return numpy.fmax(0.0, expected_improvement)
 
     def _compute_expected_improvement_1d_analytic(self, mu_star, var_star):

@@ -11,6 +11,7 @@ import numpy
 import moe.optimal_learning.python.cpp_wrappers.expected_improvement
 from moe.optimal_learning.python.cpp_wrappers.expected_improvement import ExpectedImprovement
 from moe.optimal_learning.python.python_version.expected_improvement import ExpectedImprovement as PythonExpectedImprovement
+from moe.optimal_learning.python.repeated_domain import RepeatedDomain
 import moe.optimal_learning.python.python_version.optimization as python_optimization
 from moe.optimal_learning.python.timing import timing_context
 from moe.views.gp_pretty_view import GpPrettyView
@@ -90,7 +91,7 @@ class GpNextPointsPrettyView(OptimizableGpPrettyView):
             optimizer_class, optimizer_parameters, num_random_samples = _make_optimizer_parameters_from_params(params)
 
             if optimizer_class == python_optimization.LBFGSBOptimizer:
-                domain = _make_domain_from_params(params, python_version=True)
+                domain = RepeatedDomain(num_to_sample, _make_domain_from_params(params, python_version=True))
                 expected_improvement_evaluator = PythonExpectedImprovement(
                         gaussian_process,
                         points_being_sampled=points_being_sampled,
@@ -99,7 +100,7 @@ class GpNextPointsPrettyView(OptimizableGpPrettyView):
 
                 opt_method = getattr(moe.optimal_learning.python.python_version.expected_improvement, optimizer_method_name)
             else:
-                domain = _make_domain_from_params(params)
+                domain = _make_domain_from_params(params, python_version=False)
                 expected_improvement_evaluator = ExpectedImprovement(
                         gaussian_process,
                         points_being_sampled=points_being_sampled,
@@ -118,7 +119,7 @@ class GpNextPointsPrettyView(OptimizableGpPrettyView):
             with timing_context(EPI_OPTIMIZATION_TIMING_LABEL):
                 next_points = opt_method(
                     expected_improvement_optimizer,
-                    300,  # optimizer_parameters.num_multistarts,
+                    params.get('optimizer_info')['num_multistarts'],  # optimizer_parameters.num_multistarts,
                     num_to_sample,
                     max_num_threads=max_num_threads,
                     status=ei_opt_status,

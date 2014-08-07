@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 """Utilities for MOE views."""
-from moe.optimal_learning.python.constant import L_BFGS_B_OPTIMIZER
 from moe.bandit.data_containers import HistoricalData as BanditHistoricalData
 from moe.bandit.data_containers import SampleArm
 from moe.optimal_learning.python.cpp_wrappers.gaussian_process import GaussianProcess
@@ -71,7 +70,7 @@ def _make_optimizer_parameters_from_params(params):
 
     optimizer_method = OPTIMIZER_TYPES_TO_OPTIMIZER_METHODS[optimizer_info.get('optimizer_type')]
 
-    if optimizer_info.get('optimizer_type') != L_BFGS_B_OPTIMIZER:
+    if optimizer_method.cpp_optimizer_class is not None:
         # TODO(GH-167): Kill this when you reoganize num_multistarts for C++.
         validated_optimizer_parameters['num_multistarts'] = optimizer_info['num_multistarts']
         optimizer_parameters = optimizer_method.cpp_parameters_class(**validated_optimizer_parameters)

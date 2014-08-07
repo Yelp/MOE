@@ -202,7 +202,7 @@ class LBFGSBParametersSchema(StrictMappingSchema):
 
     """Parameters for the L-BFGS-B optimizer.
 
-    See :class:`moe.optimal_learning.python.cpp_wrappers.optimization.GradientDescentParameters`
+    See :class:`moe.optimal_learning.python.python_version.optimization.LBFGSBParameters`
 
     """
 
