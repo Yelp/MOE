@@ -11,4 +11,5 @@ sphinx==1.2.2
 breathe==1.2.0
 sphinxcontrib-httpdomain==1.2.1
 sphinx_rtd_theme==0.1.6
-zope==4.1.1
+zope.deprecation==4.1.1
+zope.interface==4.1.1
