@@ -17,6 +17,7 @@ class UCB1(UCB):
     r"""Implementation of EpsilonGreedy.
 
     A class to encapsulate the computation of bandit UCB1.
+    See :func:`moe.bandit.ucb1.allocate_arms` for more details on how UCB1 allocates arms.
 
     See superclass :class:`moe.bandit.ucb.UCB` for further details.
 
@@ -33,14 +34,14 @@ class UCB1(UCB):
             )
 
     @staticmethod
-    def get_new_arm_names(arms_sampled):
-        r"""Compute the set of winning arm names based on the given ``arms_sampled``..
+    def get_unsampled_arm_names(arms_sampled):
+        r"""Compute the set of unsampled arm names based on the given ``arms_sampled``..
 
         Throws an exception when arms_sampled is empty.
 
         :param arms_sampled: a dictionary of arm name to :class:`moe.bandit.data_containers.SampleArm`
         :type arms_sampled: dictionary of (String(), SampleArm()) pairs
-        :return: of set of names of the winning arms
+        :return: of set of names of the unsampled arms
         :rtype: frozenset(String())
         :raise: ValueError when ``arms_sampled`` are empty.
 
@@ -48,11 +49,11 @@ class UCB1(UCB):
         if not arms_sampled:
             raise ValueError('arms_sampled is empty!')
 
-        new_arm_name_list = []
+        unsampled_arm_name_list = []
         for arm_name, sampled_arm in arms_sampled.iteritems():
             if sampled_arm.total == 0:
-                new_arm_name_list.append(arm_name)
-        return frozenset(new_arm_name_list)
+                unsampled_arm_name_list.append(arm_name)
+        return frozenset(unsampled_arm_name_list)
 
     @staticmethod
     def get_winning_arm_names(arms_sampled):
@@ -70,10 +71,10 @@ class UCB1(UCB):
         if not arms_sampled:
             raise ValueError('arms_sampled is empty!')
 
-        # If there exists a new arm (unsampled), return the names of the new arms
-        new_arm_names = UCB1.get_new_arm_names(arms_sampled)
-        if new_arm_names:
-            return new_arm_names
+        # If there exists an unsampled arm, return the names of the unsampled arms
+        unsampled_arm_names = UCB1.get_unsampled_arm_names(arms_sampled)
+        if unsampled_arm_names:
+            return unsampled_arm_names
 
         number_sampled = sum([sampled_arm.total for sampled_arm in arms_sampled.itervalues()])
 
@@ -100,8 +101,8 @@ class UCB1(UCB):
 
         The Algorithm: http://moodle.technion.ac.il/pluginfile.php/192340/mod_resource/content/0/UCB.pdf
 
-        If there is at least one new arm, this method will choose to pull the new arm
-        (randomly choose a new arm if there are multiple new arms).
+        If there is at least one unsampled arm, this method will choose to pull the unsampled arm
+        (randomly choose an unsampled arm if there are multiple unsampled arms).
         If all arms are pulled at least once, this method will pull the optimal arm
         (best expected upper confidence bound payoff). The expected upper confidence bound payoff (expected UCB payoff) is computed as follows:
 

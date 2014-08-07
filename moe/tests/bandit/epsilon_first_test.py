@@ -31,11 +31,11 @@ class EpsilonFirstTest(EpsilonTestCase):
                 T.assert_dicts_equal(bandit.allocate_arms(), {"arm1": 1.0})
                 T.assert_equal(bandit.choose_arm(), "arm1")
 
-    def test_two_new_arms(self):
-        """Check that the two-new-arms case always allocate each arm equally (the allocation is 0.5 for both arms). This tests num_winning_arms == num_arms > 1."""
+    def test_two_unsampled_arms(self):
+        """Check that the two-unsampled-arms case always allocate each arm equally (the allocation is 0.5 for both arms). This tests num_winning_arms == num_arms > 1."""
         for epsilon in self.epsilons_to_test:
             for total_samples in self.total_samples_to_test:
-                bandit = self.bandit_class(self.two_new_arms_test_case, epsilon, total_samples)
+                bandit = self.bandit_class(self.two_unsampled_arms_test_case, epsilon, total_samples)
                 T.assert_dicts_equal(bandit.allocate_arms(), {"arm1": 0.5, "arm2": 0.5})
 
     def test_two_arms_epsilon_zero(self):

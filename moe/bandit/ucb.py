@@ -14,7 +14,7 @@ class UCB(BanditInterface):
     r"""Implementation of the constructor of UCB. Abstract method allocate_arms implemented in subclass.
 
     A class to encapsulate the computation of bandit UCB.
-    Epsilon is the sole hyperparameter in this class. Subclasses may contain other hyperparameters.
+    The Algorithm: http://moodle.technion.ac.il/pluginfile.php/192340/mod_resource/content/0/UCB.pdf
 
     See :class:`moe.bandit.interfaces.bandit_interface` docs for further details.
 

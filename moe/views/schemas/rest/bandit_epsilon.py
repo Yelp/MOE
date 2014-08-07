@@ -2,7 +2,7 @@
 """Request/response schemas for ``bandit_epsilon`` endpoints."""
 import colander
 
-from moe.bandit.constant import EPSILON_SUBTYPE_GREEDY, EPSILON_SUBTYPES
+from moe.bandit.constant import DEFAULT_EPSILON_SUBTYPE, EPSILON_SUBTYPES
 from moe.views.schemas import base_schemas
 from moe.views.schemas.bandit_pretty_view import BanditHistoricalInfo
 
@@ -61,7 +61,7 @@ class BanditEpsilonRequest(base_schemas.StrictMappingSchema):
     subtype = colander.SchemaNode(
             colander.String(),
             validator=colander.OneOf(EPSILON_SUBTYPES),
-            missing=EPSILON_SUBTYPE_GREEDY,
+            missing=DEFAULT_EPSILON_SUBTYPE,
             )
     historical_info = BanditHistoricalInfo()
     hyperparameter_info = colander.SchemaNode(

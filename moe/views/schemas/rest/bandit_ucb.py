@@ -2,7 +2,7 @@
 """Request/response schemas for ``bandit_ucb`` endpoints."""
 import colander
 
-from moe.bandit.constant import UCB_SUBTYPE_1, UCB_SUBTYPES
+from moe.bandit.constant import DEFAULT_UCB_SUBTYPE, UCB_SUBTYPES
 from moe.views.schemas import base_schemas
 from moe.views.schemas.bandit_pretty_view import BanditHistoricalInfo
 
@@ -43,7 +43,7 @@ class BanditUCBRequest(base_schemas.StrictMappingSchema):
         Content-Type: text/javascript
 
         {
-            "subtype": "1",
+            "subtype": "UCB1",
             "historical_info": {
                 "arms_sampled": {
                     "arm1": {"win": 20, "loss": 5, "total": 25},
@@ -58,6 +58,6 @@ class BanditUCBRequest(base_schemas.StrictMappingSchema):
     subtype = colander.SchemaNode(
             colander.String(),
             validator=colander.OneOf(UCB_SUBTYPES),
-            missing=UCB_SUBTYPE_1,
+            missing=DEFAULT_UCB_SUBTYPE,
             )
     historical_info = BanditHistoricalInfo()

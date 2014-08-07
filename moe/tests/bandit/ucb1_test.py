@@ -2,7 +2,7 @@
 """Test UCB1 bandit implementation.
 
 Test default values with one, two, and three arms.
-Test different cases including new arms and multiple winners.
+Test different cases including unsampled arms and multiple winners.
 
 """
 import testify as T
@@ -27,20 +27,20 @@ class UCB1Test(BanditTestCase):
         T.assert_dicts_equal(bandit.allocate_arms(), {"arm1": 1.0})
         T.assert_equal(bandit.choose_arm(), "arm1")
 
-    def test_two_new_arms(self):
-        """Check that the two-new-arms case always allocate each arm equally (the allocation is 0.5 for both arms). This tests num_new_arms == num_arms > 1."""
-        bandit = self.bandit_class(self.two_new_arms_test_case)
+    def test_two_unsampled_arms(self):
+        """Check that the two-unsampled-arms case always allocate each arm equally (the allocation is 0.5 for both arms). This tests num_unsampled_arms == num_arms > 1."""
+        bandit = self.bandit_class(self.two_unsampled_arms_test_case)
         T.assert_dicts_equal(bandit.allocate_arms(), {"arm1": 0.5, "arm2": 0.5})
 
-    def test_three_arms_one_new_arm(self):
-        """Check that the three-arms cases with integer and float payoffs return the expected arm allocations. When arm3 is the only new arm, we expect all allocation is given to arm3."""
+    def test_three_arms_one_unsampled_arm(self):
+        """Check that the three-arms cases with integer and float payoffs return the expected arm allocations. When arm3 is the only unsampled arm, we expect all allocation is given to arm3."""
         for historical_info in [self.three_arms_test_case, self.three_arms_float_payoffs_test_case, self.three_arms_two_winners_test_case]:
             bandit = self.bandit_class(historical_info)
             T.assert_dicts_equal(bandit.allocate_arms(), {"arm1": 0.0, "arm2": 0.0, "arm3": 1.0})
 
     def test_three_arms_two_winners(self):
         """Check that the three-arms cases with two winners return the expected arm allocations. This tests num_arms > num_winning_arms > 1."""
-        bandit = self.bandit_class(self.three_arms_two_winners_no_new_arm_test_case)
+        bandit = self.bandit_class(self.three_arms_two_winners_no_unsampled_arm_test_case)
         T.assert_dicts_equal(bandit.allocate_arms(), {"arm1": 0.5, "arm2": 0.5, "arm3": 0.0})
 
 
