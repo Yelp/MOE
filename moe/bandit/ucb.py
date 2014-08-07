@@ -28,9 +28,9 @@ class UCB(BanditInterface):
         """Construct a UCB object.
 
         :param historical_info: a dictionary of arms sampled
-        :type historical_info: dictionary of (String(), SampleArm()) pairs (see :class:`moe.bandit.data_containers.SampleArm` for more details)
+        :type historical_info: dict of (str, SampleArm()) pairs (see :class:`moe.bandit.data_containers.SampleArm` for more details)
         :param subtype: subtype of the UCB bandit algorithm (default: None)
-        :type subtype: String()
+        :type subtype: str
 
         """
         self._historical_info = copy.deepcopy(historical_info)

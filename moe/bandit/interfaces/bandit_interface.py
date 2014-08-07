@@ -25,7 +25,7 @@ class BanditInterface(object):
         Computes the allocation to each arm based on the given subtype, historical info, and hyperparameter info.
 
         :return: the dictionary of (arm, allocation) key-value pairs
-        :rtype: a dictionary of (String(), float64) pairs
+        :rtype: a dictionary of (str, float64) pairs
 
         """
         pass
@@ -37,7 +37,7 @@ class BanditInterface(object):
         Implementers of this interface will never override this method.
 
         :return: name of the chosen arm
-        :rtype: String()
+        :rtype: str
 
         """
         arms_to_allocations = self.allocate_arms()

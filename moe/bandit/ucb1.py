@@ -4,9 +4,9 @@
 See :class:`moe.bandit.ucb.UCB` for further details on this bandit.
 
 """
-import numpy
-
 import math
+
+import numpy
 
 from moe.bandit.constant import UCB_SUBTYPE_1
 from moe.bandit.ucb import UCB
@@ -40,19 +40,16 @@ class UCB1(UCB):
         Throws an exception when arms_sampled is empty.
 
         :param arms_sampled: a dictionary of arm name to :class:`moe.bandit.data_containers.SampleArm`
-        :type arms_sampled: dictionary of (String(), SampleArm()) pairs
+        :type arms_sampled: dictionary of (str, SampleArm()) pairs
         :return: of set of names of the unsampled arms
-        :rtype: frozenset(String())
+        :rtype: frozenset(str)
         :raise: ValueError when ``arms_sampled`` are empty.
 
         """
         if not arms_sampled:
             raise ValueError('arms_sampled is empty!')
 
-        unsampled_arm_name_list = []
-        for arm_name, sampled_arm in arms_sampled.iteritems():
-            if sampled_arm.total == 0:
-                unsampled_arm_name_list.append(arm_name)
+        unsampled_arm_name_list = [name for name, sampled_arm in arms_sampled.iteritems() if sampled_arm.total == 0]
         return frozenset(unsampled_arm_name_list)
 
     @staticmethod
@@ -62,9 +59,9 @@ class UCB1(UCB):
         Throws an exception when arms_sampled is empty.
 
         :param arms_sampled: a dictionary of arm name to :class:`moe.bandit.data_containers.SampleArm`
-        :type arms_sampled: dictionary of (String(), SampleArm()) pairs
+        :type arms_sampled: dictionary of (str, SampleArm()) pairs
         :return: of set of names of the winning arms
-        :rtype: frozenset(String())
+        :rtype: frozenset(str)
         :raise: ValueError when ``arms_sampled`` are empty.
 
         """
@@ -81,6 +78,7 @@ class UCB1(UCB):
         ucb_payoff_arm_name_list = []
         for arm_name, sampled_arm in arms_sampled.iteritems():
             avg_payoff = numpy.float64(sampled_arm.win - sampled_arm.loss) / sampled_arm.total if sampled_arm.total > 0 else 0
+            # See :func:`moe.bandit.ucb1.allocate_arms` for the formula to compute UCB1 payoff
             ucb_payoff = avg_payoff + math.sqrt(2.0 * math.log(sampled_arm.total) / number_sampled)
             ucb_payoff_arm_name_list.append((ucb_payoff, arm_name))
 
@@ -118,7 +116,7 @@ class UCB1(UCB):
         ``{arm1: 0.5, arm2: 0.5, arm3: 0.0}``
 
         :return: the dictionary of (arm, allocation) key-value pairs
-        :rtype: a dictionary of (String(), float64) pairs
+        :rtype: a dictionary of (str, float64) pairs
         :raise: ValueError when ``sample_arms`` are empty.
 
         """
