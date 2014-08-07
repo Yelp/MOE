@@ -87,7 +87,7 @@ class UCB1(UCB):
         best_payoff, _ = max(ucb_payoff_arm_name_list)
         # Filter out arms that have average payoff less than the best payoff
         winning_arm_payoff_name_list = filter(lambda ucb_payoff_arm_name: ucb_payoff_arm_name[0] == best_payoff, ucb_payoff_arm_name_list)
-        # Extract a list of winning arm names from a list of (ucb payoff, arm name) tuples.
+        # Extract a list of winning arm names from a list of (UCB payoff, arm name) tuples.
         _, winning_arm_name_list = map(list, zip(*winning_arm_payoff_name_list))
         winning_arm_names = frozenset(winning_arm_name_list)
         return winning_arm_names
