@@ -20,16 +20,36 @@ install:
     - sudo python setup.py install
 before_script:
     - echo "BEFORE SCRIPT"
+    - which python && which python2.7
+    - python -c "import sys; print (sys.version)"
+    - python -c "import sys; print (sys.path)"
+    - python2.7 -c "import sys; print (sys.version)"
+    - python2.7 -c "import sys; print (sys.path)"
 #    - python -c "import zope.interface; print zope.interface.__file__"
 script:
     - echo "BEFORE make docs"
+    - which python && which python2.7
+    - python -c "import sys; print (sys.version)"
+    - python -c "import sys; print (sys.path)"
+    - python2.7 -c "import sys; print (sys.version)"
+    - python2.7 -c "import sys; print (sys.path)"
 #    - python -c "import zope.interface; print zope.interface.__file__"
     - make -B docs
     - echo "AFTER make docs"
+    - which python && which python2.7
+    - python -c "import sys; print (sys.version)"
+    - python -c "import sys; print (sys.path)"
+    - python2.7 -c "import sys; print (sys.version)"
+    - python2.7 -c "import sys; print (sys.path)"
 #    - python -c "import zope.interface; print zope.interface.__file__"
     - make -B test
     - make -B style-test
-#    - python -c "import zope.interface; print zope.interface.__file__"
     - echo "AFTER make test"
+    - which python && which python2.7
+    - python -c "import sys; print (sys.version)"
+    - python -c "import sys; print (sys.path)"
+    - python2.7 -c "import sys; print (sys.version)"
+    - python2.7 -c "import sys; print (sys.path)"
+#    - python -c "import zope.interface; print zope.interface.__file__"
 after_script:
     - echo "AFTER SCRIPT"
