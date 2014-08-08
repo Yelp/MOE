@@ -1,3 +1,4 @@
+language: python
 python:
     - "2.7"
 cache:
@@ -19,6 +20,7 @@ before_install:
 #    - ls /home/travis/virtualenv/python2.7.8/lib/python2.7/site-packages/
     - pip list
     - sudo apt-get update -qq
+    - sudo apt-get uninstall python3.2 python3.2-dev
     - sudo apt-get install -y build-essential libblas-dev liblapack-dev gfortran make libedit-dev python-scipy
     - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test && sudo apt-get update -q && sudo apt-get install -y gcc-4.7 g++-4.7 && sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.7 20 && sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.7 20 && sudo update-alternatives --config gcc && sudo update-alternatives --config g++
     - sudo add-apt-repository -y ppa:boost-latest/ppa && sudo apt-get update -q && sudo apt-get install -y boost1.55
@@ -27,18 +29,18 @@ before_install:
     - wget http://ppa.launchpad.net/libreoffice/ppa/ubuntu/pool/main/d/doxygen/doxygen_1.8.7-2~precise1_amd64.deb -O doxygen.deb
     - sudo dpkg -i doxygen.deb
 install:
-    - sudo pip install -r requirements.txt
-    - sudo pip install flake8 flake8-import-order pep8-naming flake8-docstrings
-    - cd moe
-    - mkdir -p build
-    - cd build
+    - pip install -r requirements.txt
+    - pip install flake8 flake8-import-order pep8-naming flake8-docstrings
+#    - cd moe
+#    - mkdir -p build
+#    - cd build
 #    - cmake -D MOE_PYTHON_INCLUDE_DIR=/usr/include/python2.7/ -D MOE_PYTHON_LIBRARY=/usr/lib/libpython2.7.so ../optimal_learning/cpp
-    - cmake ../optimal_learning/cpp
-    - cmake -LAH
-    - make GPP -j4
-    - cd ../..
+#    - cmake ../optimal_learning/cpp
+#    - cmake -LAH || true
+#    - make GPP -j4
+#    - cd ../..
     - python setup.py install
-    - (cd moe/build; cmake -LAH)
+    - (cd moe/build; cmake -LAH || true)
 before_script:
     - echo "BEFORE SCRIPT"
     - echo $MOE_CMAKE_OPTS
