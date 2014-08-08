@@ -52,7 +52,7 @@ if (EXISTS ${MOE_PYTHON_LIBRARY})
 endif()
 
 set(Python_ADDITIONAL_VERSIONS
-  2.7 3.2
+  ${MOE_PYTHON_ADDITIONAL_VERSIONS}
   CACHE STRING "List of Python versions; e.g., 2.7"
   )
 
