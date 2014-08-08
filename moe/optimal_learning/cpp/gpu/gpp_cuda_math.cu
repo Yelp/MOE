@@ -104,8 +104,15 @@ __forceinline__ __device__ void CudaCopyElements(int begin, int end, int bound, 
   **Shared Memory Requirements**
 
   This method requires the caller to allocate 3 arrays: chol_var_local, mu_local and normals, with
-  (num_union * num_union + num_union + num_union * num_threads) doubles in total in shared memory.
-  The order of the arrays placed in this shared memory is like [chol_var_local, mu_local, normals]
+  
+  (num_union * num_union + num_union + num_union * num_threads)
+  
+  doubles in total in shared memory. The order of the arrays placed in this shared memory is like
+  [chol_var_local, mu_local, normals]
+
+  Currently size of shared memory per block is set to 48K, to give you a sense, that is approximately
+  6144 doubles, for example, this caller works when num_union = 22 without blowing up shared memory
+  (currently num_threads = 256).
 
   * chol_var_local[num_union][num_union]: copy of chol_var in shared memory for each block
   * mu_local[num_union]: copy of mu in shared memory for each block
@@ -187,10 +194,18 @@ __global__ void CudaComputeEIGpu(double const * __restrict__ mu, double const * 
   **Shared Memory Requirements**
 
   This method requires the caller to allocate 5 arrays: mu_local, chol_var_local, grad_mu_local,
-  grad_chol_var_local and normals, with (num_union + num_union * num_union + dim * num_to_sample +
-  dim * num_union * num_union * num_to_sample + 2 * num_union * num_threads) doubles in total in shared memory.
+  grad_chol_var_local and normals, with
+
+  (num_union + num_union * num_union + dim * num_to_sample + dim * num_union * num_union *
+   num_to_sample + 2 * num_union * num_threads)
+   
+  doubles in total in shared memory.
   The order of the arrays placed in this shared memory is like [mu_local, chol_var_local, grad_mu_local,
   grad_chol_var_local, normals]
+
+  Currently size of shared memory per block is set to 48K, to give you a sense, that is approximately
+  6144 doubles, for example, this caller works for num_union = num_to_sample = 8, dim = 3 without
+  blowing up shared memory (currently num_threads = 256).
 
   * mu_local[num_union]: copy of mu in shared memory for each block
   * chol_var_local[num_union][num_union]: copy of chol_var in shared memory for each block
