@@ -4,7 +4,7 @@ python:
 cache:
     - apt
 env:
-    - MOE_CMAKE_OPTS="-D MOE_PYTHON_INCLUDE_DIR=/usr/include/python2.7/ -D MOE_PYTHON_LIBRARY=/usr/lib/libpython2.7.so" MOE_OLD_OPTS='-D MOE_PYTHON_INCLUDE_DIR=/usr/include/python2.7/ -D MOE_PYTHON_LIBRARY=/usr/lib/libpython2.7.so' MOE_DERP_OPTS="-D MOE_PYTHON_INCLUDE_DIR=/usr/include/python2.7/ -D MOE_PYTHON_LIBRARY=/usr/lib/libpython2.7.so" MOE_FOO_OPTS=WEEEEEEE PYTHONPATH=/usr/local/lib/python2.7/dist-packages:/usr/lib/python2.7/dist-packages
+    - MOE_CMAKE_OPTS="-D MOE_PYTHON_INCLUDE_DIR=/usr/include/python2.7/ -D MOE_PYTHON_LIBRARY=/usr/lib/libpython2.7.so" MOE_OLD_OPTS='-D MOE_PYTHON_INCLUDE_DIR=/usr/include/python2.7/ -D MOE_PYTHON_LIBRARY=/usr/lib/libpython2.7.so' MOE_DERP_OPTS="-D MOE_PYTHON_INCLUDE_DIR=/usr/include/python2.7/ -D MOE_PYTHON_LIBRARY=/usr/lib/libpython2.7.so" MOE_FOO_OPTS=WEEEEEEE
 before_install:
     - which python && which python2.7
     - python -c "import sys; print (sys.version)"
