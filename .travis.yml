@@ -1,10 +1,9 @@
-language: python
 python:
     - "2.7"
 cache:
     - apt
 env:
-    - "MOE_CMAKE_OPTS='-D MOE_PYTHON_INCLUDE_DIR=/usr/include/python2.7/ -D MOE_PYTHON_LIBRARY=/usr/lib/libpython2.7.so'" MOE_OLD_OPTS='-D MOE_PYTHON_INCLUDE_DIR=/usr/include/python2.7/ -D MOE_PYTHON_LIBRARY=/usr/lib/libpython2.7.so' MOE_DERP_OPTS="-D MOE_PYTHON_INCLUDE_DIR=/usr/include/python2.7/ -D MOE_PYTHON_LIBRARY=/usr/lib/libpython2.7.so" MOE_FOO_OPTS=WEEEEEEE
+    - MOE_CMAKE_OPTS="-D MOE_PYTHON_INCLUDE_DIR=/usr/include/python2.7/ -D MOE_PYTHON_LIBRARY=/usr/lib/libpython2.7.so" MOE_OLD_OPTS='-D MOE_PYTHON_INCLUDE_DIR=/usr/include/python2.7/ -D MOE_PYTHON_LIBRARY=/usr/lib/libpython2.7.so' MOE_DERP_OPTS="-D MOE_PYTHON_INCLUDE_DIR=/usr/include/python2.7/ -D MOE_PYTHON_LIBRARY=/usr/lib/libpython2.7.so" MOE_FOO_OPTS=WEEEEEEE
 before_install:
     - sudo apt-get update -qq
     - sudo apt-get install -y build-essential libblas-dev liblapack-dev gfortran make libedit-dev python-scipy
@@ -30,6 +29,8 @@ before_script:
     - python2.7 -c "import sys; print (sys.version)"
     - python2.7 -c "import sys; print (sys.path)"
     - ls /home/travis/virtualenv/python2.7.8/lib/python2.7/site-packages/
+    - pip list
+    - python -c "import pyramid; import pkg_resources; print pyramid.__file__; print pkg_resources.get_distribution('pyramid').version"
 #    - python -c "import zope.interface; print zope.interface.__file__"
 script:
     - echo "BEFORE make docs"
@@ -39,6 +40,7 @@ script:
     - python2.7 -c "import sys; print (sys.version)"
     - python2.7 -c "import sys; print (sys.path)"
     - ls /home/travis/virtualenv/python2.7.8/lib/python2.7/site-packages/
+    - pip list
 #    - python -c "import zope.interface; print zope.interface.__file__"
     - make -B docs
     - echo "AFTER make docs"
@@ -48,6 +50,7 @@ script:
     - python2.7 -c "import sys; print (sys.version)"
     - python2.7 -c "import sys; print (sys.path)"
     - ls /home/travis/virtualenv/python2.7.8/lib/python2.7/site-packages/
+    - pip list
 #    - python -c "import zope.interface; print zope.interface.__file__"
     - make -B test
     - make -B style-test
@@ -58,6 +61,7 @@ script:
     - python2.7 -c "import sys; print (sys.version)"
     - python2.7 -c "import sys; print (sys.path)"
     - ls /home/travis/virtualenv/python2.7.8/lib/python2.7/site-packages/
+    - pip list
 #    - python -c "import zope.interface; print zope.interface.__file__"
 after_script:
     - echo "AFTER SCRIPT"
