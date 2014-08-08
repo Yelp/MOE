@@ -212,8 +212,8 @@ __global__ void CudaComputeEIGpu(double const * __restrict__ mu, double const * 
   :grad_mu_local[dim][num_to_sample]: copy of grad_mu in shared memory for each block
   :grad_chol_var_local[dim][num_union][num_union][num_to_sample]: copy of grad_chol_var_local in shared memory for each block
   :normals[2 * num_union][num_threads]: shared memory for storage of normal random numbers for each block, and for each thread
-   it gets 2 * num_union normal random numbers, with one set of normals occupying the first num_union doubles, and we store a copy
-   of them in the rest of the spaces.
+    it gets 2 * num_union normal random numbers, with one set of normals occupying the first num_union doubles, and we store a copy
+    of them in the rest of the spaces.
 
   \param
     :mu[num_union]: the mean of the GP evaluated at points interested
