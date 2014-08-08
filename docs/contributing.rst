@@ -255,10 +255,13 @@ Now go to https://registry.hub.docker.com/u/yelpmoe/VERSION/ and update the desc
 
     See the full docs for more information: [http://yelp.github.io/MOE/][3]
 
+    Check out the github tag for this version here: [https://github.com/Yelp/MOE/releases/tag/VERSION][4]
+
 
       [1]: https://github.com/Yelp/MOE
       [2]: http://localhost:6543
       [3]: http://yelp.github.io/MOE/
+      [4]: https://github.com/Yelp/MOE/releases/tag/VERSION
 
 and the short description to be
 
@@ -266,4 +269,4 @@ and the short description to be
 
     Version VERSION of MOE, the Metric Optimization Engine
 
-    https://github.com/Yelp/MOE/tree/VERSION
+    https://github.com/Yelp/MOE/releases/tag/VERSION
