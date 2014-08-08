@@ -19,7 +19,7 @@ class UtilsTest(BanditTestCase):
                 )
 
     def test_get_equal_arm_allocations_one_winner(self):
-        """Test allocations split among all sample arms when there is no winner."""
+        """Test all allocation given to the winning arm."""
         T.assert_dicts_equal(
                 get_equal_arm_allocations(self.three_arms_test_case.arms_sampled, frozenset(["arm1"])),
                 {"arm1": 1.0, "arm2": 0.0, "arm3": 0.0}
