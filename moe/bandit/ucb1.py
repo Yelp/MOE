@@ -10,7 +10,7 @@ import numpy
 
 from moe.bandit.constant import UCB_SUBTYPE_1
 from moe.bandit.ucb import UCB
-
+from moe.bandit.utils import get_equal_arm_allocations
 
 class UCB1(UCB):
 
@@ -41,7 +41,7 @@ class UCB1(UCB):
 
         :param arms_sampled: a dictionary of arm name to :class:`moe.bandit.data_containers.SampleArm`
         :type arms_sampled: dictionary of (str, SampleArm()) pairs
-        :return: of set of names of the unsampled arms
+        :return: set of names of the unsampled arms
         :rtype: frozenset(str)
         :raise: ValueError when ``arms_sampled`` are empty.
 
@@ -60,7 +60,7 @@ class UCB1(UCB):
 
         :param arms_sampled: a dictionary of arm name to :class:`moe.bandit.data_containers.SampleArm`
         :type arms_sampled: dictionary of (str, SampleArm()) pairs
-        :return: of set of names of the winning arms
+        :return: set of names of the winning arms
         :rtype: frozenset(str)
         :raise: ValueError when ``arms_sampled`` are empty.
 
@@ -124,13 +124,4 @@ class UCB1(UCB):
         if not arms_sampled:
             raise ValueError('sample_arms are empty!')
 
-        winning_arm_names = self.get_winning_arm_names(arms_sampled)
-        num_winning_arms = len(winning_arm_names)
-        arms_to_allocations = {}
-
-        winning_arm_allocation = 1.0 / num_winning_arms
-        # Split allocation among winning arms, all other arms get allocation of 0.
-        for arm_name in arms_sampled.iterkeys():
-            arms_to_allocations[arm_name] = winning_arm_allocation if arm_name in winning_arm_names else 0.0
-
-        return arms_to_allocations
+        return get_equal_arm_allocations(arms_sampled, self.get_winning_arm_names(arms_sampled))

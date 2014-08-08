@@ -8,6 +8,7 @@ This package includes:
 
 * Test cases/test setup files
 * Tests for bandit/epsilon
+* Tests for bandit/ucb
 
 **Files in this package**
 
@@ -27,5 +28,6 @@ This package includes:
 * :mod:`moe.tests.bandit.epsilon_test_case`: test cases for classes under :mod:`moe.bandit.epsilon.Epsilon`
 * :mod:`moe.tests.bandit.linkers_test`: tests for :mod:`moe.bandit.linkers`
 * :mod:`moe.tests.bandit.ucb1_test`: tests for :mod:`moe.bandit.ucb1.UCB1`
+* :mod:`moe.tests.bandit.utils_test`: tests for :mod:`moe.bandit.utils`
 
 """

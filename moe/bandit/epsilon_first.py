@@ -6,7 +6,7 @@ See :class:`moe.bandit.epsilon.Epsilon` for further details on bandit.
 """
 from moe.bandit.constant import DEFAULT_EPSILON, DEFAULT_TOTAL_SAMPLES, EPSILON_SUBTYPE_FIRST
 from moe.bandit.epsilon import Epsilon
-
+from moe.bandit.utils import get_equal_arm_allocations
 
 class EpsilonFirst(Epsilon):
 
@@ -98,21 +98,7 @@ class EpsilonFirst(Epsilon):
         # Exploration phase, trials 1,2,..., epsilon * T
         # Allocate equal probability to all arms
         if num_sampled < self._total_samples * self._epsilon:
-            equal_allocation = 1.0 / num_arms
-            arms_to_allocations = {}
-            for arm_name in arms_sampled.iterkeys():
-                arms_to_allocations[arm_name] = equal_allocation
-            return arms_to_allocations
+            return get_equal_arm_allocations(arms_sampled)
 
         # Exploitation phase, trials epsilon * T+1, ..., T
-        winning_arm_names = self.get_winning_arm_names(arms_sampled)
-
-        num_winning_arms = len(winning_arm_names)
-        arms_to_allocations = {}
-
-        winning_arm_allocation = 1.0 / num_winning_arms
-        # Split allocation among winning arms, all other arms get allocation of 0.
-        for arm_name in arms_sampled.iterkeys():
-            arms_to_allocations[arm_name] = winning_arm_allocation if arm_name in winning_arm_names else 0.0
-
-        return arms_to_allocations
+        return get_equal_arm_allocations(arms_sampled, self.get_winning_arm_names(arms_sampled))
