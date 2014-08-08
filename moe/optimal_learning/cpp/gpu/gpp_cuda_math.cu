@@ -105,18 +105,18 @@ __forceinline__ __device__ void CudaCopyElements(int begin, int end, int bound, 
 
   This method requires the caller to allocate 3 arrays: chol_var_local, mu_local and normals, with
   
-  (num_union * num_union + num_union + num_union * num_threads)
+  ``(num_union * num_union + num_union + num_union * num_threads)``
   
   doubles in total in shared memory. The order of the arrays placed in this shared memory is like
-  [chol_var_local, mu_local, normals]
+  ``[chol_var_local, mu_local, normals]``
 
   Currently size of shared memory per block is set to 48K, to give you a sense, that is approximately
   6144 doubles, for example, this caller works when num_union = 22 without blowing up shared memory
   (currently num_threads = 256).
 
-  * chol_var_local[num_union][num_union]: copy of chol_var in shared memory for each block
-  * mu_local[num_union]: copy of mu in shared memory for each block
-  * normals[num_union][num_threads]: shared memory for storage of normal random numbers for each block
+  :chol_var_local[num_union][num_union]: copy of chol_var in shared memory for each block
+  :mu_local[num_union]: copy of mu in shared memory for each block
+  :normals[num_union][num_threads]: shared memory for storage of normal random numbers for each block
 
   \param
     :mu[num_union]: the mean of the GP evaluated at points interested
@@ -196,24 +196,24 @@ __global__ void CudaComputeEIGpu(double const * __restrict__ mu, double const * 
   This method requires the caller to allocate 5 arrays: mu_local, chol_var_local, grad_mu_local,
   grad_chol_var_local and normals, with
 
-  (num_union + num_union * num_union + dim * num_to_sample + dim * num_union * num_union *
-   num_to_sample + 2 * num_union * num_threads)
+  ``(num_union + num_union * num_union + dim * num_to_sample + dim * num_union * num_union *
+   num_to_sample + 2 * num_union * num_threads)``
    
   doubles in total in shared memory.
-  The order of the arrays placed in this shared memory is like [mu_local, chol_var_local, grad_mu_local,
-  grad_chol_var_local, normals]
+  The order of the arrays placed in this shared memory is like ``[mu_local, chol_var_local, grad_mu_local,
+  grad_chol_var_local, normals]``
 
   Currently size of shared memory per block is set to 48K, to give you a sense, that is approximately
   6144 doubles, for example, this caller works for num_union = num_to_sample = 8, dim = 3 without
   blowing up shared memory (currently num_threads = 256).
 
-  * mu_local[num_union]: copy of mu in shared memory for each block
-  * chol_var_local[num_union][num_union]: copy of chol_var in shared memory for each block
-  * grad_mu_local[dim][num_to_sample]: copy of grad_mu in shared memory for each block
-  * grad_chol_var_local[dim][num_union][num_union][num_to_sample]: copy of grad_chol_var_local in shared memory for each block
-  * normals[2 * num_union][num_threads]: shared memory for storage of normal random numbers for each block, and for each thread
-  it gets 2 * num_union normal random numbers, with one set of normals occupying the first num_union doubles, and we store a copy
-  of them in the rest of the spaces.
+  :mu_local[num_union]: copy of mu in shared memory for each block
+  :chol_var_local[num_union][num_union]: copy of chol_var in shared memory for each block
+  :grad_mu_local[dim][num_to_sample]: copy of grad_mu in shared memory for each block
+  :grad_chol_var_local[dim][num_union][num_union][num_to_sample]: copy of grad_chol_var_local in shared memory for each block
+  :normals[2 * num_union][num_threads]: shared memory for storage of normal random numbers for each block, and for each thread
+   it gets 2 * num_union normal random numbers, with one set of normals occupying the first num_union doubles, and we store a copy
+   of them in the rest of the spaces.
 
   \param
     :mu[num_union]: the mean of the GP evaluated at points interested
