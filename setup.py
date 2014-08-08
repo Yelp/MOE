@@ -46,6 +46,8 @@ requires = [
     'breathe',
     'sphinxcontrib-httpdomain',
     'sphinx_rtd_theme',
+    'zope.deprecation',
+    'zope.interface',
     ]
 
 MoeExecutable = namedtuple('MoeExecutable', ['env_var', 'exe_name'])
