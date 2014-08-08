@@ -2,10 +2,9 @@
 """Tests for functions in utils."""
 import testify as T
 
-from moe.bandit.constant import BANDIT_ENDPOINTS, EPSILON_SUBTYPES, UCB_SUBTYPES
-from moe.bandit.linkers import BANDIT_ENDPOINTS_TO_SUBTYPES, EPSILON_SUBTYPES_TO_BANDIT_METHODS, UCB_SUBTYPES_TO_BANDIT_METHODS
 from moe.bandit.utils import get_equal_arm_allocations
 from moe.tests.bandit.bandit_test_case import BanditTestCase
+
 
 class UtilsTest(BanditTestCase):
 

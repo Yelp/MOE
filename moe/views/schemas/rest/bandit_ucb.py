@@ -18,7 +18,6 @@ class BanditUCBRequest(base_schemas.StrictMappingSchema):
     **Optional fields**
 
     :ivar subtype: (*str*) subtype of the UCB bandit algorithm (default: 1)
-    :ivar hyperparameter_info: (:class:`~moe.views.schemas.bandit_pretty_view.BanditEpsilonFirstHyperparameterInfo` or :class:`~moe.views.schemas.bandit_pretty_view.BanditEpsilonGreedyHyperparameterInfo`) dict of hyperparameter information
 
     **Example Minimal Request**
 

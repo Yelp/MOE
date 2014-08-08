@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """Utilities for bandit."""
-import numpy
+
 
 def get_equal_arm_allocations(arms_sampled, winning_arm_names=None):
     r"""Split allocations equally among the given ``winning_arm_names``. If no ``winning_arm_names`` given, split allocations among ``arms_sampled``.
@@ -19,7 +19,7 @@ def get_equal_arm_allocations(arms_sampled, winning_arm_names=None):
     if not arms_sampled:
         raise ValueError('arms_sampled is empty!')
 
-    # If no ``winning_arm_names`` given, split allocations among ``arms_sampled``.    
+    # If no ``winning_arm_names`` given, split allocations among ``arms_sampled``.
     if winning_arm_names is None:
         winning_arm_names = frozenset([arm_name for arm_name in arms_sampled.iterkeys()])
 

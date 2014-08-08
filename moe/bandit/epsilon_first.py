@@ -8,6 +8,7 @@ from moe.bandit.constant import DEFAULT_EPSILON, DEFAULT_TOTAL_SAMPLES, EPSILON_
 from moe.bandit.epsilon import Epsilon
 from moe.bandit.utils import get_equal_arm_allocations
 
+
 class EpsilonFirst(Epsilon):
 
     r"""Implementation of EpsilonFirst.
@@ -89,7 +90,6 @@ class EpsilonFirst(Epsilon):
 
         """
         arms_sampled = self._historical_info.arms_sampled
-        num_arms = self._historical_info.num_arms
 
         if not arms_sampled:
             raise ValueError('sample_arms is empty!')

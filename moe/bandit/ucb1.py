@@ -12,6 +12,7 @@ from moe.bandit.constant import UCB_SUBTYPE_1
 from moe.bandit.ucb import UCB
 from moe.bandit.utils import get_equal_arm_allocations
 
+
 class UCB1(UCB):
 
     r"""Implementation of UCB1.
