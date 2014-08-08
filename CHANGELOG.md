@@ -2,7 +2,8 @@
 
   * Added multi-armed bandit endpoint. (#255)
     * Implemented epsilon-greedy. (#255)
-    * Implemented epsilon-first. (#335)
+    * Implemented epsilon-first. (#335) 
+    * Implemented UCB1. (#354)
   * Added support for the L-BFGS-B optimizer. (#296)
 
 * Changes

@@ -12,6 +12,8 @@
   object for allocating bandit arms and choosing the winning arm based on epsilon-greedy policy.
 * :mod:`moe.bandit.epsilon`: a base :class:`~moe.bandit.epsilon.Epsilon`
   object for all bandit epsilon subtypes.
+* :mod:`moe.bandit.ucb1`: :class:`~moe.bandit.ucb.UCB1`
+  object for allocating bandit arms and choosing the winning arm based on UCB1 policy.
 * :mod:`moe.bandit.linkers`: linkers connecting ``bandit`` components.
 
 compute the Bandit Epsilon arm allocation and choosing the arm to pull next.

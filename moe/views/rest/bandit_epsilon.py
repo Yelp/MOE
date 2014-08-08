@@ -11,12 +11,12 @@ import copy
 from pyramid.view import view_config
 
 from moe.bandit.constant import DEFAULT_EPSILON, EPSILON_SUBTYPE_GREEDY
-from moe.bandit.linkers import EPSILON_SUBTYPES_TO_EPSILON_METHODS
+from moe.bandit.linkers import EPSILON_SUBTYPES_TO_BANDIT_METHODS
 from moe.views.bandit_pretty_view import BanditPrettyView
 from moe.views.constant import BANDIT_EPSILON_ROUTE_NAME, BANDIT_EPSILON_PRETTY_ROUTE_NAME
 from moe.views.pretty_view import PRETTY_RENDERER
-from moe.views.schemas.bandit_pretty_view import BANDIT_EPSILON_SUBTYPES_TO_HYPERPARAMETER_INFO_SCHEMA_CLASSES
-from moe.views.schemas.rest.bandit_epsilon import BanditEpsilonRequest, BanditEpsilonResponse
+from moe.views.schemas.bandit_pretty_view import BanditResponse, BANDIT_EPSILON_SUBTYPES_TO_HYPERPARAMETER_INFO_SCHEMA_CLASSES
+from moe.views.schemas.rest.bandit_epsilon import BanditEpsilonRequest
 from moe.views.utils import _make_bandit_historical_info_from_params
 
 
@@ -28,7 +28,7 @@ class BanditEpsilonView(BanditPrettyView):
     _pretty_route_name = BANDIT_EPSILON_PRETTY_ROUTE_NAME
 
     request_schema = BanditEpsilonRequest()
-    response_schema = BanditEpsilonResponse()
+    response_schema = BanditResponse()
 
     _pretty_default_request = {
             "subtype": EPSILON_SUBTYPE_GREEDY,
@@ -86,7 +86,7 @@ class BanditEpsilonView(BanditPrettyView):
            Predict the optimal arm from a set of arms, given historical data.
 
            :input: :class:`moe.views.schemas.rest.bandit_epsilon.BanditEpsilonRequest`
-           :output: :class:`moe.views.schemas.rest.bandit_epsilon.BanditEpsilonResponse`
+           :output: :class:`moe.views.schemas.bandit_pretty_view.BanditResponse`
 
            :status 200: returns a response
            :status 500: server error
@@ -97,10 +97,11 @@ class BanditEpsilonView(BanditPrettyView):
         subtype = params.get('subtype')
         historical_info = _make_bandit_historical_info_from_params(params)
 
-        bandit_class = EPSILON_SUBTYPES_TO_EPSILON_METHODS[subtype].bandit_class(historical_info=historical_info, **params.get('hyperparameter_info'))
+        bandit_class = EPSILON_SUBTYPES_TO_BANDIT_METHODS[subtype].bandit_class(historical_info=historical_info, **params.get('hyperparameter_info'))
+        arms_to_allocations = bandit_class.allocate_arms()
 
         return self.form_response({
                 'endpoint': self._route_name,
-                'arm_allocations': bandit_class.allocate_arms(),
-                'winner': bandit_class.choose_arm(),
+                'arm_allocations': arms_to_allocations,
+                'winner': bandit_class.choose_arm(arms_to_allocations),
                 })
