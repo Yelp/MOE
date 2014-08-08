@@ -51,6 +51,11 @@ if (EXISTS ${MOE_PYTHON_LIBRARY})
     )
 endif()
 
+set(Python_ADDITIONAL_VERSIONS
+  2.7
+  CACHE STRING "List of Python versions; e.g., 2.7"
+  )
+
 #### External dependencies
 find_package(PythonLibs REQUIRED)
 find_package(Boost 1.51 COMPONENTS python REQUIRED)
