@@ -4,7 +4,7 @@ python:
 cache:
     - apt
 env:
-    - MOE_CMAKE_OPTS="-D MOE_PYTHON_INCLUDE_DIR=/usr/include/python2.7/ -D MOE_PYTHON_LIBRARY=/usr/lib/libpython2.7.so" MOE_OLD_OPTS='-D MOE_PYTHON_INCLUDE_DIR=/usr/include/python2.7/ -D MOE_PYTHON_LIBRARY=/usr/lib/libpython2.7.so' MOE_DERP_OPTS="-D MOE_PYTHON_INCLUDE_DIR=/usr/include/python2.7/ -D MOE_PYTHON_LIBRARY=/usr/lib/libpython2.7.so" MOE_FOO_OPTS=WEEEEEEE
+    - MOE_CMAKE_OPTS="-D MOE_PYTHON_INCLUDE_DIR=/usr/include/python2.7/ -D MOE_PYTHON_LIBRARY=/usr/lib/libpython2.7.so" MOE_OLD_OPTS='-D MOE_PYTHON_INCLUDE_DIR=/usr/include/python2.7/ -D MOE_PYTHON_LIBRARY=/usr/lib/libpython2.7.so' MOE_DERP_OPTS="-D MOE_PYTHON_INCLUDE_DIR=/usr/include/python2.7/ -D MOE_PYTHON_LIBRARY=/usr/lib/libpython2.7.so" MOE_FOO_OPTS=WEEEEEEE PYTHONPATH=/usr/local/lib/python2.7/dist-packages:/usr/lib/python2.7/dist-packages
 before_install:
     - which python && which python2.7
     - python -c "import sys; print (sys.version)"
@@ -44,7 +44,7 @@ before_script:
     - ls /usr/lib/python2.7/dist-packages
     - ls /home/travis/virtualenv/python2.7.8/lib/python2.7/site-packages/
     - pip list
-    - python -c "import pyramid; import pkg_resources; print pyramid.__file__; print pkg_resources.get_distribution('pyramid').version"
+#    - python -c "import pyramid; import pkg_resources; print pyramid.__file__; print pkg_resources.get_distribution('pyramid').version"
 #    - python -c "import zope.interface; print zope.interface.__file__"
 script:
     - make -B docs
