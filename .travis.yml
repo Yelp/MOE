@@ -27,8 +27,8 @@ before_install:
     - wget http://ppa.launchpad.net/libreoffice/ppa/ubuntu/pool/main/d/doxygen/doxygen_1.8.7-2~precise1_amd64.deb -O doxygen.deb
     - sudo dpkg -i doxygen.deb
 install:
-    - pip install -r requirements.txt
-    - pip install flake8 flake8-import-order pep8-naming flake8-docstrings
+    - sudo pip install -r requirements.txt
+    - sudo pip install flake8 flake8-import-order pep8-naming flake8-docstrings
     - cd moe
     - mkdir -p build
     - cd build
