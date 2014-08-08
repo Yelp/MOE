@@ -83,8 +83,7 @@ class UCB1(UCB):
             ucb_payoff = avg_payoff + math.sqrt(2.0 * math.log(sampled_arm.total) / number_sampled)
             ucb_payoff_arm_name_list.append((ucb_payoff, arm_name))
 
-        winning_arm_names = get_winning_arm_names_from_payoff_arm_name_list(ucb_payoff_arm_name_list)
-        return winning_arm_names
+        return get_winning_arm_names_from_payoff_arm_name_list(ucb_payoff_arm_name_list)
 
     def allocate_arms(self):
         r"""Compute the allocation to each arm given ``historical_info``, running bandit ``subtype`` endpoint.

@@ -66,5 +66,4 @@ class Epsilon(BanditInterface):
             avg_payoff = numpy.float64(sampled_arm.win - sampled_arm.loss) / sampled_arm.total if sampled_arm.total > 0 else 0
             avg_payoff_arm_name_list.append((avg_payoff, arm_name))
 
-        winning_arm_names = get_winning_arm_names_from_payoff_arm_name_list(avg_payoff_arm_name_list)
-        return winning_arm_names
+        return get_winning_arm_names_from_payoff_arm_name_list(avg_payoff_arm_name_list)
