@@ -10,6 +10,7 @@ import numpy
 
 from moe.bandit.constant import DEFAULT_EPSILON
 from moe.bandit.interfaces.bandit_interface import BanditInterface
+from moe.bandit.utils import get_winning_arm_names_from_payoff_arm_name_list
 
 
 class Epsilon(BanditInterface):
@@ -65,10 +66,5 @@ class Epsilon(BanditInterface):
             avg_payoff = numpy.float64(sampled_arm.win - sampled_arm.loss) / sampled_arm.total if sampled_arm.total > 0 else 0
             avg_payoff_arm_name_list.append((avg_payoff, arm_name))
 
-        best_payoff, _ = max(avg_payoff_arm_name_list)
-        # Filter out arms that have average payoff less than the best payoff
-        winning_arm_payoff_name_list = filter(lambda avg_payoff_arm_name: avg_payoff_arm_name[0] == best_payoff, avg_payoff_arm_name_list)
-        # Extract a list of winning arm names from a list of (average payoff, arm name) tuples.
-        _, winning_arm_name_list = map(list, zip(*winning_arm_payoff_name_list))
-        winning_arm_names = frozenset(winning_arm_name_list)
+        winning_arm_names = get_winning_arm_names_from_payoff_arm_name_list(avg_payoff_arm_name_list)
         return winning_arm_names

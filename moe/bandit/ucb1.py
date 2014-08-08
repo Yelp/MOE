@@ -10,7 +10,7 @@ import numpy
 
 from moe.bandit.constant import UCB_SUBTYPE_1
 from moe.bandit.ucb import UCB
-from moe.bandit.utils import get_equal_arm_allocations
+from moe.bandit.utils import get_winning_arm_names_from_payoff_arm_name_list, get_equal_arm_allocations
 
 
 class UCB1(UCB):
@@ -83,12 +83,7 @@ class UCB1(UCB):
             ucb_payoff = avg_payoff + math.sqrt(2.0 * math.log(sampled_arm.total) / number_sampled)
             ucb_payoff_arm_name_list.append((ucb_payoff, arm_name))
 
-        best_payoff, _ = max(ucb_payoff_arm_name_list)
-        # Filter out arms that have average payoff less than the best payoff
-        winning_arm_payoff_name_list = filter(lambda ucb_payoff_arm_name: ucb_payoff_arm_name[0] == best_payoff, ucb_payoff_arm_name_list)
-        # Extract a list of winning arm names from a list of (UCB payoff, arm name) tuples.
-        _, winning_arm_name_list = map(list, zip(*winning_arm_payoff_name_list))
-        winning_arm_names = frozenset(winning_arm_name_list)
+        winning_arm_names = get_winning_arm_names_from_payoff_arm_name_list(ucb_payoff_arm_name_list)
         return winning_arm_names
 
     def allocate_arms(self):

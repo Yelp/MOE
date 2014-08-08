@@ -46,9 +46,9 @@ class BanditInterface(object):
         if not arms_to_allocations:
             raise ValueError('arms_to_allocations is empty!')
 
-        # Generate a numpy array of type (string, float) pairs of arm name and its allocation
-        # allocations['arms'] is an array of arm names, allocations['allocation'] is an array of allocations
-        allocations = numpy.array([(arm, allocation) for arm, allocation in arms_to_allocations.iteritems()], dtype=([('arm', '|S256'), ('allocation', float)]))
+        allocations = numpy.array(arms_to_allocations.values())
         # The winning arm is chosen based on the distribution of arm allocations.
-        winner = numpy.argmax(numpy.random.dirichlet(allocations['allocation']))
-        return allocations['arm'][winner]
+        winner = numpy.argmax(numpy.random.dirichlet(allocations))
+        # While the internal order of a dict is unknowable a priori, the order presented by the various iterators
+        # and list-ify methods is always the same as long as the dict is not modified between calls to these methods.
+        return arms_to_allocations.keys()[winner]
