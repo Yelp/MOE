@@ -101,7 +101,13 @@ class InstallCppComponents(install):
                     )
                 )
 
-        cmake_options = os.environ.get('MOE_CMAKE_OPTS', '')
+        print 'hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii'
+        print env.get('MOE_CMAKE_OPTS', '')
+        print env.get('MOE_OLD_OPTS', '')
+        print env.get('MOE_DERP_OPTS', '')
+        print env.get('MOE_FOO_OPTS', '')
+
+        cmake_options = env.get('MOE_CMAKE_OPTS', '')
         if cmake_options == '':
             print "MOE_CMAKE_OPTS not set. Passing no extra args to cmake."
         else:
