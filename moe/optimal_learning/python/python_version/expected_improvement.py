@@ -279,9 +279,10 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
                  std_upper,  # The upper bound of integration
                  numpy.zeros(upper.size, dtype=int),  # For each dim, 0 means -inf for lower bound
                  corr_matrix[strict_lower_diag_indices],  # The vector of strict lower triangular correlation coefficients
-                 maxpts=20000 * upper.size,  # Maximum number of iterations for the mvndst function
-                 releps=1e-5,  # The error allowed relative to actual value
+                 maxpts=200000 * upper.size,  # Maximum number of iterations for the mvndst function
+                 releps=1e-9,  # The error allowed relative to actual value
                  )
+            print "mvndst error flag: {0}".format(out[2])
             return out[1]  # Index 1 corresponds to the actual value. 0 has the error, and 2 is a flag denoting whether releps was reached
 
         # Calculation of outer sum (from Proposition 2, equation 3)
