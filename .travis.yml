@@ -32,12 +32,13 @@ install:
     - cd moe
     - mkdir -p build
     - cd build
-    - cmake -D MOE_PYTHON_INCLUDE_DIR=/usr/include/python2.7/ -D MOE_PYTHON_LIBRARY=/usr/lib/libpython2.7.so ../optimal_learning/cpp
-    - cat CMakeCache.txt
+#    - cmake -D MOE_PYTHON_INCLUDE_DIR=/usr/include/python2.7/ -D MOE_PYTHON_LIBRARY=/usr/lib/libpython2.7.so ../optimal_learning/cpp
+    - cmake ../optimal_learning/cpp
+    - cmake -LAH
     - make GPP -j4
     - cd ../..
     - python setup.py install
-    - cat moe/build/CMakeCache.txt
+    - (cd moe/build; cmake -LAH)
 before_script:
     - echo "BEFORE SCRIPT"
     - echo $MOE_CMAKE_OPTS
