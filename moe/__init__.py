@@ -10,6 +10,10 @@ from moe.views.constant import ALL_MOE_ROUTES
 __version__ = '0.1.0'
 
 
+import zope.interface
+print zope.interface.__file__
+
+
 def main(global_config, **settings):
     """Return a WSGI application."""
     config = Configurator(settings=settings, root_factory=Root)

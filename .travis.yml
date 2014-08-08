@@ -3,6 +3,8 @@ python:
     - "2.7"
 cache:
     - apt
+env:
+    - MOE_CMAKE_OPTS='-D MOE_PYTHON_INCLUDE_DIR=/usr/include/python2.7/ -D MOE_PYTHON_LIBRARY=/usr/lib/libpython2.7.so'
 before_install:
     - sudo apt-get update -qq
     - sudo apt-get install -y build-essential libblas-dev liblapack-dev gfortran make libedit-dev
@@ -15,20 +17,19 @@ before_install:
     - sudo pip install -r requirements.txt
     - sudo pip install flake8 flake8-import-order pep8-naming flake8-docstrings
 install:
-    - export MOE_CMAKE_OPTS='-D MOE_PYTHON_INCLUDE_DIR=/usr/include/python2.7/ -D MOE_PYTHON_LIBRARY=/usr/lib/libpython2.7.so'
     - sudo python setup.py install
 before_script:
     - echo "BEFORE SCRIPT"
-    - python -c "import zope.interface; print zope.interface.__file__"
+#    - python -c "import zope.interface; print zope.interface.__file__"
 script:
     - echo "BEFORE make docs"
-    - python -c "import zope.interface; print zope.interface.__file__"
+#    - python -c "import zope.interface; print zope.interface.__file__"
     - make -B docs
     - echo "AFTER make docs"
-    - python -c "import zope.interface; print zope.interface.__file__"
+#    - python -c "import zope.interface; print zope.interface.__file__"
     - make -B test
     - make -B style-test
-    - python -c "import zope.interface; print zope.interface.__file__"
+#    - python -c "import zope.interface; print zope.interface.__file__"
     - echo "AFTER make test"
 after_script:
     - echo "AFTER SCRIPT"
