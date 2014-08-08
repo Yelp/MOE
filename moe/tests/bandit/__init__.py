@@ -21,6 +21,7 @@ This package includes:
 
 **Files in this package**
 
+* :mod:`moe.tests.bandit.bandit_interface_test`: tests for :mod:`moe.bandit.interfaces.bandit_interface.BanditInterface`
 * :mod:`moe.tests.bandit.bandit_test_case`: base test case for bandit tests with a simple integration test case
 * :mod:`moe.tests.bandit.epsilon_first_test`: tests for :mod:`moe.bandit.epsilon_greedy.EpsilonFirst`
 * :mod:`moe.tests.bandit.epsilon_greedy_test`: tests for :mod:`moe.bandit.epsilon_greedy.EpsilonGreedy`

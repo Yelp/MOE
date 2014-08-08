@@ -30,17 +30,22 @@ class BanditInterface(object):
         """
         pass
 
-    def choose_arm(self):
-        r"""First compute the allocation to each arm, then choose the arm based on allocation information.
+    @staticmethod
+    def choose_arm(arms_to_allocations):
+        r"""Choose the arm based on allocation information given in ``arms_to_allocations``.
 
-        Throws an exception when no arm is given in historical info.
+        Throws an exception when 'arms_to_allocations' is empty.
         Implementers of this interface will never override this method.
 
+        :param arms_to_allocations: the dictionary of (arm, allocation) key-value pairs
+        :rtype arms_to_allocations: a dictionary of (str, float64) pairs
         :return: name of the chosen arm
         :rtype: str
 
         """
-        arms_to_allocations = self.allocate_arms()
+        if not arms_to_allocations:
+            raise ValueError('arms_to_allocations is empty!')
+
         # Generate a numpy array of type (string, float) pairs of arm name and its allocation
         # allocations['arms'] is an array of arm names, allocations['allocation'] is an array of allocations
         allocations = numpy.array([(arm, allocation) for arm, allocation in arms_to_allocations.iteritems()], dtype=([('arm', '|S256'), ('allocation', float)]))

@@ -28,8 +28,7 @@ class EpsilonFirstTest(EpsilonTestCase):
         for epsilon in self.epsilons_to_test:
             for total_samples in self.total_samples_to_test:
                 bandit = self.bandit_class(self.one_arm_test_case, epsilon, total_samples)
-                T.assert_dicts_equal(bandit.allocate_arms(), {"arm1": 1.0})
-                T.assert_equal(bandit.choose_arm(), "arm1")
+                self._test_one_arm(bandit)
 
     def test_two_unsampled_arms(self):
         """Check that the two-unsampled-arms case always allocate each arm equally (the allocation is 0.5 for both arms). This tests num_winning_arms == num_arms > 1."""
@@ -42,8 +41,9 @@ class EpsilonFirstTest(EpsilonTestCase):
         """Check that the two-arms case with zero epsilon (always exploit) always allocate arm1:1.0 and arm2:0.0 when average payoffs are arm1:1.0 and arm2:0.0."""
         epsilon = 0.0
         bandit = self.bandit_class(self.two_arms_test_case, epsilon)
-        T.assert_dicts_equal(bandit.allocate_arms(), {"arm1": 1.0, "arm2": 0.0})
-        T.assert_equal(bandit.choose_arm(), "arm1")
+        arms_to_allocations = bandit.allocate_arms()
+        T.assert_dicts_equal(arms_to_allocations, {"arm1": 1.0, "arm2": 0.0})
+        T.assert_equal(bandit.choose_arm(arms_to_allocations), "arm1")
 
     def test_two_arms_epsilon_one(self):
         """Check that the two-arms case with one epsilon (always explore) always allocate arm1:0.5 and arm2:0.5 when average payoffs are arm1:1.0 and arm2:0.0."""

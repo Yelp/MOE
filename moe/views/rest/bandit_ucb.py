@@ -63,9 +63,10 @@ class BanditUCBView(BanditPrettyView):
         historical_info = _make_bandit_historical_info_from_params(params)
 
         bandit_class = UCB_SUBTYPES_TO_BANDIT_METHODS[subtype].bandit_class(historical_info=historical_info)
+        arms_to_allocations = bandit_class.allocate_arms()
 
         return self.form_response({
                 'endpoint': self._route_name,
-                'arm_allocations': bandit_class.allocate_arms(),
-                'winner': bandit_class.choose_arm(),
+                'arm_allocations': arms_to_allocations,
+                'winner': bandit_class.choose_arm(arms_to_allocations),
                 })
