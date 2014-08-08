@@ -28,7 +28,10 @@ before_script:
     - python -c "import sys; print (sys.path)"
     - python2.7 -c "import sys; print (sys.version)"
     - python2.7 -c "import sys; print (sys.path)"
-    - ls /home/travis/virtualenv/python2.7.8/lib/python2.7/site-packages/
+    - ls /usr/local/lib/python2.7/dist-packages/
+    - ls /usr/local/lib/python2.7/site-packages/
+    - ls /usr/lib/python2.7/dist-packages
+#    - ls /home/travis/virtualenv/python2.7.8/lib/python2.7/site-packages/
     - pip list
     - python -c "import pyramid; import pkg_resources; print pyramid.__file__; print pkg_resources.get_distribution('pyramid').version"
 #    - python -c "import zope.interface; print zope.interface.__file__"
@@ -39,7 +42,10 @@ script:
     - python -c "import sys; print (sys.path)"
     - python2.7 -c "import sys; print (sys.version)"
     - python2.7 -c "import sys; print (sys.path)"
-    - ls /home/travis/virtualenv/python2.7.8/lib/python2.7/site-packages/
+    - ls /usr/local/lib/python2.7/dist-packages/
+    - ls /usr/local/lib/python2.7/site-packages/
+    - ls /usr/lib/python2.7/dist-packages
+#    - ls /home/travis/virtualenv/python2.7.8/lib/python2.7/site-packages/
     - pip list
 #    - python -c "import zope.interface; print zope.interface.__file__"
     - make -B docs
@@ -49,7 +55,10 @@ script:
     - python -c "import sys; print (sys.path)"
     - python2.7 -c "import sys; print (sys.version)"
     - python2.7 -c "import sys; print (sys.path)"
-    - ls /home/travis/virtualenv/python2.7.8/lib/python2.7/site-packages/
+    - ls /usr/local/lib/python2.7/dist-packages/
+    - ls /usr/local/lib/python2.7/site-packages/
+    - ls /usr/lib/python2.7/dist-packages
+#    - ls /home/travis/virtualenv/python2.7.8/lib/python2.7/site-packages/
     - pip list
 #    - python -c "import zope.interface; print zope.interface.__file__"
     - make -B test
@@ -60,7 +69,10 @@ script:
     - python -c "import sys; print (sys.path)"
     - python2.7 -c "import sys; print (sys.version)"
     - python2.7 -c "import sys; print (sys.path)"
-    - ls /home/travis/virtualenv/python2.7.8/lib/python2.7/site-packages/
+    - ls /usr/local/lib/python2.7/dist-packages/
+    - ls /usr/local/lib/python2.7/site-packages/
+    - ls /usr/lib/python2.7/dist-packages
+#    - ls /home/travis/virtualenv/python2.7.8/lib/python2.7/site-packages/
     - pip list
 #    - python -c "import zope.interface; print zope.interface.__file__"
 after_script:
