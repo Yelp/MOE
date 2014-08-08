@@ -114,11 +114,13 @@ class CovarianceInterface {
   virtual void HyperparameterGradCovariance(double const * restrict point_one, double const * restrict point_two, double * restrict grad_hyperparameter_cov) const noexcept OL_NONNULL_POINTERS = 0;
 
   /*!\rst
-    The Hessian matrix of the covariance evaluated at x_1, x_2 with respect to the hyperparameters.  The Hessian is defined as:
-    ``[ \ppderiv{cov}{\theta_0^2}              \mixpderiv{cov}{\theta_0}{\theta_1}    ... \mixpderiv{cov}{\theta_0}{\theta_{n-1}} ]``
-    ``[ \mixpderiv{cov}{\theta_1}{\theta_0}    \ppderiv{cov}{\theta_1^2 }             ... \mixpderiv{cov}{\theta_1}{\theta_{n-1}} ]``
-    ``[      ...                                                                                     ...                          ]``
-    ``[ \mixpderiv{cov}{\theta_{n-1}{\theta_0} \mixpderiv{cov}{\theta_{n-1}{\theta_1} ... \ppderiv{cov}{\theta_{n-1}^2}           ]``
+    The Hessian matrix of the covariance evaluated at x_1, x_2 with respect to the hyperparameters.  The Hessian is defined as::
+
+      [ \ppderiv{cov}{\theta_0^2}              \mixpderiv{cov}{\theta_0}{\theta_1}    ... \mixpderiv{cov}{\theta_0}{\theta_{n-1}} ]
+      [ \mixpderiv{cov}{\theta_1}{\theta_0}    \ppderiv{cov}{\theta_1^2 }             ... \mixpderiv{cov}{\theta_1}{\theta_{n-1}} ]
+      [      ...                                                                                     ...                          ]
+      [ \mixpderiv{cov}{\theta_{n-1}{\theta_0} \mixpderiv{cov}{\theta_{n-1}{\theta_1} ... \ppderiv{cov}{\theta_{n-1}^2}           ]
+
     where "cov" abbreviates covariance(x_1, x_2) and "n" refers to the number of hyperparameters.
 
     Unless noted otherwise in subclasses, the Hessian is symmetric (due to the equality of mixed derivatives when a function
@@ -129,6 +131,7 @@ class CovarianceInterface {
     For further details: http://en.wikipedia.org/wiki/Hessian_matrix
 
     Let n_hyper = this.GetNumberOfHyperparameters()
+
     \param
       :point_one[dim]: first spatial coordinate
       :point_two[dim]: second spatial coordinate

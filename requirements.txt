@@ -5,9 +5,11 @@ testify==0.5.3
 webtest==2.0.15
 simplejson==3.5.3
 numpy==1.8.1
-scipy==0.14.0
+scipy>=0.8.0
 colander==1.0b1
 sphinx==1.2.2
 breathe==1.2.0
 sphinxcontrib-httpdomain==1.2.1
 sphinx_rtd_theme==0.1.6
+zope.deprecation==4.1.1
+zope.interface==4.1.1

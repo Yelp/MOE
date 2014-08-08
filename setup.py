@@ -46,6 +46,8 @@ requires = [
     'breathe',
     'sphinxcontrib-httpdomain',
     'sphinx_rtd_theme',
+    'zope.deprecation',
+    'zope.interface',
     ]
 
 MoeExecutable = namedtuple('MoeExecutable', ['env_var', 'exe_name'])
@@ -99,7 +101,7 @@ class InstallCppComponents(install):
                     )
                 )
 
-        cmake_options = os.environ.get('MOE_CMAKE_OPTS', '')
+        cmake_options = env.get('MOE_CMAKE_OPTS', '')
         if cmake_options == '':
             print "MOE_CMAKE_OPTS not set. Passing no extra args to cmake."
         else:

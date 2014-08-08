@@ -28,6 +28,7 @@
 #endif
 
 namespace optimal_learning {
+
 #ifdef OL_GPU_ENABLED
 
 /*!\rst
@@ -49,7 +50,7 @@ struct CudaDevicePointer final {
 
 /*!\rst
   Exception to handle runtime errors returned by CUDA API functions. This class subclasses
-  OptimalLearningException in gpp_exception.hpp/cpp, and basiclly has the same functionality
+  OptimalLearningException in gpp_exception.hpp/cpp, and basically has the same functionality
   as its superclass, except the constructor is different.
 \endrst*/
 class OptimalLearningCudaException : public OptimalLearningException {
@@ -58,7 +59,8 @@ class OptimalLearningCudaException : public OptimalLearningException {
   constexpr static char const * kName = "OptimalLearningCudaException";
 
   /*!\rst
-    Constructs a OptimalLearningCudaException with struct CudaError
+    Constructs a OptimalLearningCudaException with struct CudaError.
+
     \param
       :error: C struct that contains error message returned by CUDA API functions
   \endrst*/
@@ -113,6 +115,7 @@ class CudaExpectedImprovementEvaluator final {
   /*!\rst
     This function has the same functionality as ComputeExpectedImprovement (see gpp_math.hpp)
     in class ExpectedImprovementEvaluator.
+
     \param
       :ei_state[1]: properly configured state object
     \output
@@ -125,6 +128,7 @@ class CudaExpectedImprovementEvaluator final {
   /*!\rst
     This function has the same functionality as ComputeGradExpectedImprovement (see gpp_math.hpp)
     in class ExpectedImprovementEvaluator.
+
     \param
       :ei_state[1]: properly configured state object
     \output
