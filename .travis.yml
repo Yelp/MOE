@@ -6,6 +6,7 @@ cache:
 env:
     - MOE_CMAKE_OPTS='-D MOE_PYTHON_INCLUDE_DIR=/usr/include/python2.7/ -D MOE_PYTHON_LIBRARY=/usr/lib/libpython2.7.so'
 before_install:
+    - python --version
     - ls /usr/include/python2.7/
     - ls /usr/lib/libpython*
     - which python && which python2.7
@@ -30,6 +31,7 @@ install:
     - pip install -r requirements.txt
     - pip install flake8 flake8-import-order pep8-naming flake8-docstrings
     - python setup.py install
+    - cat moe/build/CMakeCache.txt
 before_script:
     - echo "BEFORE SCRIPT"
     - echo $MOE_CMAKE_OPTS
