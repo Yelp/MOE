@@ -3,7 +3,11 @@ python:
     - "2.7"
 cache:
     - apt
+env:
+    - MOE_CMAKE_OPTS='-D MOE_PYTHON_INCLUDE_DIR=/usr/include/python2.7/ -D MOE_PYTHON_LIBRARY=/usr/lib/libpython2.7.so'
 before_install:
+    - ls /usr/include/python2.7/
+    - ls /usr/lib/libpython*
     - which python && which python2.7
     - python -c "import sys; print (sys.version)"
     - python -c "import sys; print (sys.path)"
