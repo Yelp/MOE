@@ -5,7 +5,7 @@ cache:
     - apt
 env:
 #    - MOE_CMAKE_OPTS="-D MOE_PYTHON_ADDITIONAL_VERSIONS='`echo $TRAVIS_PYTHON_VERSION`'"
-    - MOE_CMAKE_OPTS="-D MOE_PYTHON_ADDITIONAL_VERSIONS='3.2 2.6'"
+    - MOE_CMAKE_OPTS="-D MOE_PYTHON_ADDITIONAL_VERSIONS='3.2'"
 before_install:
     - python --version
     - echo $TRAVIS_PYTHON_VERSION
