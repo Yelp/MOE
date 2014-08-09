@@ -38,6 +38,8 @@ endif()
 # Sometimes cmake has difficulty finding Python (e.g., multiple installations, especially on OS X with
 # system vs macport/homebrew versions); explicitly specify the location of Python when that happens.
 # See documentation in FindPythonLibs.cmake for more information.
+
+# User specifies where to look for Python
 if (EXISTS ${MOE_PYTHON_INCLUDE_DIR})
   set(PYTHON_INCLUDE_DIR
     ${MOE_PYTHON_INCLUDE_DIR}
@@ -51,9 +53,15 @@ if (EXISTS ${MOE_PYTHON_LIBRARY})
     )
 endif()
 
+# User specifies priority Python versions to look for (in decreasing order of priority)
+# Default to 2.7 if user does not specify
+if (NOT EXISTS ${MOE_PYTHON_ADDITIONAL_VERSIONS})
+   set(MOE_PYTHON_ADDITIONAL_VERSIONS 2.7)
+endif()
+
 set(Python_ADDITIONAL_VERSIONS
   ${MOE_PYTHON_ADDITIONAL_VERSIONS}
-  CACHE STRING "List of Python versions; e.g., 2.7"
+  CACHE STRING "List of Python versions; e.g., 2.7 2.6 3.2"
   )
 
 #### External dependencies
