@@ -404,28 +404,22 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
             5.83583593328e-08,
             2.40176803674e-07,
             0.349595041008,
-            0.350524308404,
-            0.350524856612,
-            0.350524821708,
-            0.409582656814,
+            0.350524674435,
+            0.350524720501,
+            0.350524799491,
+            0.409585935352,
         ]
-        print "\n", os.system("gfortran --version")
-        print os.system("python --version")
         for test_case in self.gp_test_environments[2:3]:
             domain, python_gp = test_case
             all_points = domain.generate_uniform_random_points_in_domain(9)
 
             for i in range(2, 10):
-                print "\nSampling {0} points.".format(i)
-                print "Historical points are:\n{0}".format(python_gp.get_historical_data_copy())
                 points_to_sample = all_points[0:i]
-                print "Points to sample are:\n{0}".format(points_to_sample)
                 python_ei_eval = moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement(python_gp, points_to_sample)
 
                 python_ei_eval.current_point = points_to_sample
                 python_qd_ei = python_ei_eval.compute_expected_improvement()
-#                self.assert_scalar_within_relative(python_qd_ei, precomputed_answers[i - 2], ei_tolerance)
-                print "Expected improvement is: {0}".format(python_qd_ei)
+                self.assert_scalar_within_relative(python_qd_ei, precomputed_answers[i - 2], ei_tolerance)
 
     def test_qd_and_1d_return_same_analytic_ei(self):
         """Compare the 1D analytic EI results to the qD analytic EI results, checking several random points per test case."""

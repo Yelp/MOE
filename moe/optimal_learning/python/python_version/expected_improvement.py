@@ -282,7 +282,6 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
                  maxpts=200000 * upper.size,  # Maximum number of iterations for the mvndst function
                  releps=1e-9,  # The error allowed relative to actual value
                  )
-            print "mvndst error flag: {0}".format(out[2])
             return out[1]  # Index 1 corresponds to the actual value. 0 has the error, and 2 is a flag denoting whether releps was reached
 
         # Calculation of outer sum (from Proposition 2, equation 3)
