@@ -14,7 +14,6 @@ from moe.optimal_learning.python.python_version.gaussian_process import Gaussian
 from moe.optimal_learning.python.python_version.optimization import GradientDescentParameters, GradientDescentOptimizer, LBFGSBParameters, LBFGSBOptimizer
 from moe.optimal_learning.python.repeated_domain import RepeatedDomain
 from moe.tests.optimal_learning.python.gaussian_process_test_case import GaussianProcessTestCase, GaussianProcessTestEnvironmentInput
-import os
 
 
 class ExpectedImprovementTest(GaussianProcessTestCase):
@@ -409,6 +408,7 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
             0.350524799491,
             0.409585935352,
         ]
+
         for test_case in self.gp_test_environments[2:3]:
             domain, python_gp = test_case
             all_points = domain.generate_uniform_random_points_in_domain(9)
