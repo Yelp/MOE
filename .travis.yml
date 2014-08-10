@@ -32,6 +32,7 @@ install:
     - pip install -r requirements.txt
     - pip install flake8 flake8-import-order pep8-naming flake8-docstrings
     - python setup.py install
+    - (cd moe/build; cmake -LAH || true)
 script:
     - make -B test
     - make -B style-test

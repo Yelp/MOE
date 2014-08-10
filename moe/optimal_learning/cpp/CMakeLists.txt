@@ -56,7 +56,7 @@ endif()
 # User specifies priority Python versions to look for (in decreasing order of priority)
 # Default to 2.7 if user does not specify
 if (EXISTS ${MOE_PYTHON_ADDITIONAL_VERSIONS})
-  set(Python_ADDITIONAL_VERSIONS
+  set(Python_ADDITIONAL_VERSIONS_TEST
     ${MOE_PYTHON_ADDITIONAL_VERSIONS}
     CACHE STRING "List of Python version(s), ranked by priority; e.g., 2.7 2.6 3.2"
     )
