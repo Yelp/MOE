@@ -62,6 +62,11 @@ if (EXISTS ${MOE_PYTHON_ADDITIONAL_VERSIONS})
     )
 endif()
 
+set(Python_ADDITIONAL_VERSIONS
+  2.7
+  CACHE STRING "List of Python version(s), ranked by priority; e.g., 2.7 2.6 3.2"
+  )
+
 #### External dependencies
 find_package(PythonLibs REQUIRED)
 find_package(Boost 1.51 COMPONENTS python REQUIRED)
