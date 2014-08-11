@@ -55,6 +55,7 @@
               <ul class="list-group">
                 <li class="list-group-item"><b>Bandit Endpoints</b></li>
                 <a href="${request.route_url( 'bandit_epsilon_pretty' )}" class="list-group-item">Bandit epsilon</a>
+                <a href="${request.route_url( 'bandit_ucb_pretty' )}" class="list-group-item">Bandit UCB</a>
                 
               </ul>
             </div>

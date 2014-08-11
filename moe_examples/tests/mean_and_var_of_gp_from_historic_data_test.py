@@ -15,6 +15,7 @@ class MeanAndVarOfGpFromHistoricDataTest(MoeExampleTestCase):
         run_example(
                 verbose=False,
                 testapp=self.testapp,
+                rest_port=1337,
                 )
 
 

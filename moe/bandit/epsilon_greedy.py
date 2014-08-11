@@ -59,7 +59,7 @@ class EpsilonGreedy(Epsilon):
         .. math:: \frac{\epsilon}{3} = \frac{0.12}{3} = 0.04
 
         :return: the dictionary of (arm, allocation) key-value pairs
-        :rtype: a dictionary of (String(), float64) pairs
+        :rtype: a dictionary of (str, float64) pairs
         :raise: ValueError when ``sample_arms`` are empty.
 
         """

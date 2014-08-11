@@ -29,8 +29,47 @@ def function_to_minimize(x):
     return numpy.sin(x[0]) * numpy.cos(x[1]) + numpy.cos(x[0] + x[1]) + numpy.random.uniform(-0.02, 0.02)
 
 
-def run_example(num_to_sample=20, verbose=True, testapp=None, **kwargs):
-    """Run the combined example."""
+def run_example(
+        num_to_sample=20,
+        verbose=True,
+        testapp=None,
+        gp_next_points_kwargs=None,
+        gp_hyper_opt_kwargs=None,
+        gp_mean_var_kwargs=None,
+        **kwargs
+):
+    """Run the combined example.
+
+    :param num_to_sample: Number of points for MOE to suggest and then sample [20]
+    :type num_to_sample: int > 0
+    :param verbose: Whether to print information to the screen [True]
+    :type verbose: bool
+    :param testapp: Whether to use a supplied test pyramid application or a rest server [None]
+    :type testapp: Pyramid test application
+    :param gp_next_points_kwargs: Optional kwargs to pass to gp_next_points endpoint
+    :type gp_next_points_kwargs: dict
+    :param gp_hyper_opt_kwargs: Optional kwargs to pass to gp_hyper_opt_kwargs endpoint
+    :type gp_hyper_opt_kwargs: dict
+    :param gp_mean_var_kwargs: Optional kwargs to pass to gp_mean_var_kwargs endpoint
+    :type gp_mean_var_kwargs: dict
+    :param kwargs: Optional kwargs to pass to all endpoints
+    :type kwargs: dict
+
+    """
+    # Set and combine all optional kwargs
+    # Note that the more specific kwargs take precedence (and will override general kwargs)
+    if gp_next_points_kwargs is None:
+        gp_next_points_kwargs = {}
+    gp_next_points_kwargs = dict(kwargs.items() + gp_next_points_kwargs.items())
+
+    if gp_hyper_opt_kwargs is None:
+        gp_hyper_opt_kwargs = {}
+    gp_hyper_opt_kwargs = dict(kwargs.items() + gp_hyper_opt_kwargs.items())
+
+    if gp_mean_var_kwargs is None:
+        gp_mean_var_kwargs = {}
+    gp_mean_var_kwargs = dict(kwargs.items() + gp_mean_var_kwargs.items())
+
     exp = Experiment([[0, 2], [0, 4]])
     # Bootstrap with some known or already sampled point(s)
     exp.historical_data.append_sample_points([
@@ -41,7 +80,7 @@ def run_example(num_to_sample=20, verbose=True, testapp=None, **kwargs):
     for i in range(num_to_sample):
         covariance_info = {}
         if i > 0 and i % 5 == 0:
-            covariance_info = gp_hyper_opt(exp.historical_data.to_list_of_sample_points(), testapp=testapp, **kwargs)
+            covariance_info = gp_hyper_opt(exp.historical_data.to_list_of_sample_points(), testapp=testapp, **gp_hyper_opt_kwargs)
 
             if verbose:
                 print "Updated covariance_info with {0:s}".format(str(covariance_info))
@@ -50,7 +89,7 @@ def run_example(num_to_sample=20, verbose=True, testapp=None, **kwargs):
                 exp,
                 covariance_info=covariance_info,
                 testapp=testapp,
-                **kwargs
+                **gp_next_points_kwargs
                 )[0]  # By default we only ask for one point
         # Sample the point from our objective function, we can replace this with any function
         value_of_next_point = function_to_minimize(next_point_to_sample)
@@ -66,6 +105,7 @@ def run_example(num_to_sample=20, verbose=True, testapp=None, **kwargs):
             exp.historical_data.to_list_of_sample_points(),  # Historical data to inform Gaussian Process
             points_to_evaluate,  # We will calculate the mean and variance of the GP at these points
             testapp=testapp,
+            **gp_mean_var_kwargs
             )
 
     if verbose:

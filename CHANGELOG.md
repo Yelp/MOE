@@ -3,7 +3,10 @@
   * Added multi-armed bandit endpoint. (#255)
     * Implemented epsilon-greedy. (#255)
     * Implemented epsilon-first. (#335) 
+    * Implemented UCB1. (#354)
   * Added support for the L-BFGS-B optimizer. (#296)
+  * Added GPU implementation for q,p-EI and its gradient computation. (#219)
+    * Speed up GPU functions by redesign of memory allocation. (#297)
 
 * Changes
 
@@ -19,6 +22,9 @@
 * Bugs
 
   * Throw exceptions (C++) if ``num_multistarts`` or ``num_random_samples`` is 0 (#345)
+  * ``combined_example`` endpoint was not passing ``kwargs`` through so users could not change the default server (#356)
+    * fix sometimes dropped general ``kwargs`` (#358)
+  * ``mean_var_of_gp_from_historic_data`` was also not passing ``kwargs`` (#359)
 
 ## v0.1.0 (2014-07-29)
 
