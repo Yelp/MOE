@@ -2,7 +2,7 @@
 """Links between the python and cpp_wrapper implementations of domains, covariances and optimizations."""
 from collections import namedtuple
 
-from moe.optimal_learning.python.constant import SQUARE_EXPONENTIAL_COVARIANCE_TYPE, TENSOR_PRODUCT_DOMAIN_TYPE, SIMPLEX_INTERSECT_TENSOR_PRODUCT_DOMAIN_TYPE, NULL_OPTIMIZER, NEWTON_OPTIMIZER, GRADIENT_DESCENT_OPTIMIZER, LOG_MARGINAL_LIKELIHOOD, LEAVE_ONE_OUT_LOG_LIKELIHOOD
+from moe.optimal_learning.python.constant import SQUARE_EXPONENTIAL_COVARIANCE_TYPE, TENSOR_PRODUCT_DOMAIN_TYPE, SIMPLEX_INTERSECT_TENSOR_PRODUCT_DOMAIN_TYPE, NULL_OPTIMIZER, NEWTON_OPTIMIZER, GRADIENT_DESCENT_OPTIMIZER, L_BFGS_B_OPTIMIZER, LOG_MARGINAL_LIKELIHOOD, LEAVE_ONE_OUT_LOG_LIKELIHOOD
 import moe.optimal_learning.python.cpp_wrappers.covariance as cpp_covariance
 import moe.optimal_learning.python.cpp_wrappers.domain as cpp_domain
 from moe.optimal_learning.python.cpp_wrappers.log_likelihood import GaussianProcessLogMarginalLikelihood, GaussianProcessLeaveOneOutLogLikelihood
@@ -81,6 +81,13 @@ OPTIMIZER_TYPES_TO_OPTIMIZER_METHODS = {
             cpp_parameters_class=cpp_optimization.GradientDescentParameters,
             python_optimizer_class=python_optimization.GradientDescentOptimizer,
             cpp_optimizer_class=cpp_optimization.GradientDescentOptimizer,
+            ),
+        L_BFGS_B_OPTIMIZER: OptimizerMethod(
+            optimizer_type=L_BFGS_B_OPTIMIZER,
+            python_parameters_class=python_optimization.LBFGSBParameters,
+            cpp_parameters_class=None,
+            python_optimizer_class=python_optimization.LBFGSBOptimizer,
+            cpp_optimizer_class=None,
             ),
         }
 

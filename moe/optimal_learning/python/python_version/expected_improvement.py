@@ -279,8 +279,8 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
                  std_upper,  # The upper bound of integration
                  numpy.zeros(upper.size, dtype=int),  # For each dim, 0 means -inf for lower bound
                  corr_matrix[strict_lower_diag_indices],  # The vector of strict lower triangular correlation coefficients
-                 maxpts=20000 * upper.size,  # Maximum number of iterations for the mvndst function
-                 releps=1e-5,  # The error allowed relative to actual value
+                 maxpts=200000 * upper.size,  # Maximum number of iterations for the mvndst function
+                 releps=1e-9,  # The error allowed relative to actual value
                  )
             return out[1]  # Index 1 corresponds to the actual value. 0 has the error, and 2 is a flag denoting whether releps was reached
 
@@ -335,6 +335,8 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
                     sum_term += cov_k[i, k] * singlevar_norm_pdf(m_k[i], cov_k[i, i], b_k[i]) * multivar_norm_cdf(c_k, cov_k_no_i)
 
             expected_improvement += (prob_term + sum_term)
+        if not numpy.isfinite(expected_improvement):
+            raise RuntimeError("Expected improvement not finite. Variance matrix may be singular.")
         return numpy.fmax(0.0, expected_improvement)
 
     def _compute_expected_improvement_1d_analytic(self, mu_star, var_star):

@@ -70,11 +70,14 @@ def _make_optimizer_parameters_from_params(params):
 
     optimizer_method = OPTIMIZER_TYPES_TO_OPTIMIZER_METHODS[optimizer_info.get('optimizer_type')]
 
-    # TODO(GH-167): Kill this when you reoganize num_multistarts for C++.
-    validated_optimizer_parameters['num_multistarts'] = optimizer_info['num_multistarts']
-    optimizer_parameters = optimizer_method.cpp_parameters_class(**validated_optimizer_parameters)
-
-    return optimizer_method.cpp_optimizer_class, optimizer_parameters, num_random_samples
+    if optimizer_method.cpp_optimizer_class is not None:
+        # TODO(GH-167): Kill this when you reoganize num_multistarts for C++.
+        validated_optimizer_parameters['num_multistarts'] = optimizer_info['num_multistarts']
+        optimizer_parameters = optimizer_method.cpp_parameters_class(**validated_optimizer_parameters)
+        return optimizer_method.cpp_optimizer_class, optimizer_parameters, num_random_samples
+    else:
+        optimizer_parameters = optimizer_method.python_parameters_class(**validated_optimizer_parameters)
+        return optimizer_method.python_optimizer_class, optimizer_parameters, num_random_samples
 
 
 def _make_gp_from_params(params):
