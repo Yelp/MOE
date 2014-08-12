@@ -48,7 +48,7 @@ class SampleArm(object):
         self._loss += arm.loss
         self._total += arm.total
         if self._variance is not None or arm.variance is not None:
-            raise ValueError('Cannot add arms when variance is not None!')
+            raise ValueError('Cannot add arms when variance is not None! Please combine arms manually.')
 
     def json_payload(self):
         """Convert the sample_arm into a dict to be consumed by json for a REST request."""

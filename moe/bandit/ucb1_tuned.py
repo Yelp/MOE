@@ -8,7 +8,7 @@ import math
 
 import numpy
 
-from moe.bandit.constant import UCB_SUBTYPE_1_TUNED
+from moe.bandit.constant import MAX_BERNOULLI_RANDOM_VARIABLE_VARIANCE, UCB_SUBTYPE_1_TUNED
 from moe.bandit.ucb import UCB
 
 
@@ -65,7 +65,6 @@ class UCB1Tuned(UCB):
         if number_sampled == 0:
             return 0.0
 
-        MAX_BERNOULLI_RANDOM_VARIABLE_VARIANCE = 0.25
         if sampled_arm.variance is None:
             # If variance is None, use the variance of Bernoulli random variable
             p = sampled_arm.win / sampled_arm.total if sampled_arm.total > 0 else 0

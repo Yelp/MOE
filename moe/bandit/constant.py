@@ -26,6 +26,9 @@ UCB_SUBTYPES = [
                 UCB_SUBTYPE_1_TUNED,
                 ]
 
+# See http://en.wikipedia.org/wiki/Bernoulli_distribution for more details.
+MAX_BERNOULLI_RANDOM_VARIABLE_VARIANCE = 0.25
+
 # Default Hyperparameters
 DEFAULT_EPSILON = 0.05
 DEFAULT_TOTAL_SAMPLES = 100
