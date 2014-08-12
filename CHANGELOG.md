@@ -6,6 +6,8 @@
     * Implemented UCB1. (#354)
     * Implemented UCB1-tuned. (#366)
   * Added support for the L-BFGS-B optimizer. (#296)
+  * Added GPU implementation for q,p-EI and its gradient computation. (#219)
+    * Speed up GPU functions by redesign of memory allocation. (#297)
 
 * Changes
 
