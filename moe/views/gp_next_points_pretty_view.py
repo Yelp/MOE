@@ -11,6 +11,8 @@ import numpy
 import moe.optimal_learning.python.cpp_wrappers.expected_improvement
 from moe.optimal_learning.python.cpp_wrappers.expected_improvement import ExpectedImprovement
 from moe.optimal_learning.python.python_version.expected_improvement import ExpectedImprovement as PythonExpectedImprovement
+from moe.optimal_learning.python.repeated_domain import RepeatedDomain
+import moe.optimal_learning.python.python_version.optimization as python_optimization
 from moe.optimal_learning.python.timing import timing_context
 from moe.views.gp_pretty_view import GpPrettyView
 from moe.views.optimizable_gp_pretty_view import OptimizableGpPrettyView
@@ -75,12 +77,6 @@ class GpNextPointsPrettyView(OptimizableGpPrettyView):
 
         gaussian_process = _make_gp_from_params(params)
 
-        expected_improvement_evaluator = ExpectedImprovement(
-                gaussian_process,
-                points_being_sampled=points_being_sampled,
-                num_mc_iterations=num_mc_iterations,
-                )
-
         ei_opt_status = {}
         # TODO(GH-89): Make the optimal_learning library handle this case 'organically' with
         # reasonable default behavior and remove hacks like this one.
@@ -89,11 +85,34 @@ class GpNextPointsPrettyView(OptimizableGpPrettyView):
             py_domain = _make_domain_from_params(params, python_version=True)
             next_points = py_domain.generate_uniform_random_points_in_domain(num_to_sample)
             ei_opt_status['found_update'] = True
+            expected_improvement_evaluator = PythonExpectedImprovement(
+                    gaussian_process,
+                    points_being_sampled=points_being_sampled,
+                    num_mc_iterations=num_mc_iterations,
+                    )
         else:
             # Calculate the next best points to sample given the historical data
-            domain = _make_domain_from_params(params)
 
             optimizer_class, optimizer_parameters, num_random_samples = _make_optimizer_parameters_from_params(params)
+
+            if optimizer_class == python_optimization.LBFGSBOptimizer:
+                domain = RepeatedDomain(num_to_sample, _make_domain_from_params(params, python_version=True))
+                expected_improvement_evaluator = PythonExpectedImprovement(
+                        gaussian_process,
+                        points_being_sampled=points_being_sampled,
+                        num_mc_iterations=num_mc_iterations,
+                        )
+
+                opt_method = getattr(moe.optimal_learning.python.python_version.expected_improvement, optimizer_method_name)
+            else:
+                domain = _make_domain_from_params(params, python_version=False)
+                expected_improvement_evaluator = ExpectedImprovement(
+                        gaussian_process,
+                        points_being_sampled=points_being_sampled,
+                        num_mc_iterations=num_mc_iterations,
+                        )
+
+                opt_method = getattr(moe.optimal_learning.python.cpp_wrappers.expected_improvement, optimizer_method_name)
 
             expected_improvement_optimizer = optimizer_class(
                     domain,
@@ -102,12 +121,10 @@ class GpNextPointsPrettyView(OptimizableGpPrettyView):
                     num_random_samples=num_random_samples,
                     )
 
-            opt_method = getattr(moe.optimal_learning.python.cpp_wrappers.expected_improvement, optimizer_method_name)
-
             with timing_context(EPI_OPTIMIZATION_TIMING_LABEL):
                 next_points = opt_method(
                     expected_improvement_optimizer,
-                    optimizer_parameters.num_multistarts,
+                    params.get('optimizer_info')['num_multistarts'],  # optimizer_parameters.num_multistarts,
                     num_to_sample,
                     max_num_threads=max_num_threads,
                     status=ei_opt_status,

@@ -353,7 +353,7 @@ class GradientDescentOptimizer(OptimizerInterface):
 
     """
 
-    def __init__(self, domain, optimizable, optimizer_parameters):
+    def __init__(self, domain, optimizable, optimizer_parameters, num_random_samples=None):
         """Construct a GradientDescentOptimizer.
 
         :param domain: the domain that this optimizer operates over
@@ -578,7 +578,7 @@ class LBFGSBOptimizer(OptimizerInterface):
 
     """
 
-    def __init__(self, domain, optimizable, optimization_parameters):
+    def __init__(self, domain, optimizable, optimization_parameters, num_random_samples=None):
         """Construct a LBFGSBOptimizer.
 
         :param domain: the domain that this optimizer operates over
