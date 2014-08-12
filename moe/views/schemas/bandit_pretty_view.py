@@ -64,8 +64,6 @@ class ArmsSampled(colander.MappingSchema):
                 raise colander.Invalid(node, msg='Value = {:s} must be a valid SampleArm.'.format(sample_arm))
             if 'variance' not in sample_arm:
                 sample_arm['variance'] = None
-            else:
-                print 'Variance found!'
             SampleArm(sample_arm['win'], sample_arm['loss'], sample_arm['total'], sample_arm['variance'])
 
 
