@@ -30,7 +30,7 @@ project(optimal_learning)
 
 #### Build type
 # Why wouldn't you always want the -g flag?
-if(NOT CMAKE_BUILD_TYPE)
+if (NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE RelWithDebInfo)
 endif()
 
@@ -39,33 +39,37 @@ endif()
 # system vs macport/homebrew versions); explicitly specify the location of Python when that happens.
 # See documentation in FindPythonLibs.cmake for more information.
 
-# User specifies where to look for Python
-if (EXISTS ${MOE_PYTHON_INCLUDE_DIR})
-  set(PYTHON_INCLUDE_DIR
-    ${MOE_PYTHON_INCLUDE_DIR}
-    CACHE PATH "Path to where Python.h is found."
-    )
+# User specifies what directory to look for Python headers in
+if (DEFINED MOE_PYTHON_INCLUDE_DIR)
+  if (IS_DIRECTORY ${MOE_PYTHON_INCLUDE_DIR})
+    set(PYTHON_INCLUDE_DIR
+      ${MOE_PYTHON_INCLUDE_DIR}
+      CACHE PATH "*Full* path to where Python.h is found."
+      )
+  else()
+    message(FATAL_ERROR "MOE_PYTHON_INCLUDE_DIR is not a valid directory: " ${MOE_PYTHON_INCLUDE_DIR})
+  endif()
 endif()
-if (EXISTS ${MOE_PYTHON_LIBRARY})
-  set(PYTHON_LIBRARY
-    ${MOE_PYTHON_LIBRARY}
-    CACHE FILEPATH "Path to Python shared object (e.g., libpython2.7.so or .dylib)."
-    )
+
+# User specifies the location of the Python dynamic library
+if (DEFINED MOE_PYTHON_LIBRARY)
+  if (EXISTS ${MOE_PYTHON_LIBRARY} AND NOT IS_DIRECTORY ${MOE_PYTHON_LIBRARY})
+    set(PYTHON_LIBRARY
+      ${MOE_PYTHON_LIBRARY}
+      CACHE FILEPATH "*Full* path to Python shared object (e.g., libpython2.7.so or .dylib)."
+      )
+  else()
+    message(FATAL_ERROR "MOE_PYTHON_LIBRARY is not a valid file: " ${MOE_PYTHON_LIBRARY})
+  endif()
 endif()
 
 # User specifies priority Python versions to look for (in decreasing order of priority)
-# Default to 2.7 if user does not specify
-if (EXISTS ${MOE_PYTHON_ADDITIONAL_VERSIONS})
-  set(Python_ADDITIONAL_VERSIONS_TEST
+if (DEFINED MOE_PYTHON_ADDITIONAL_VERSIONS)
+  set(Python_ADDITIONAL_VERSIONS
     ${MOE_PYTHON_ADDITIONAL_VERSIONS}
-    CACHE STRING "List of Python version(s), ranked by priority; e.g., 2.7 2.6 3.2"
+    CACHE STRING "List (semicolon-separated) of Python version(s), ranked by priority; e.g., 2.7;2.6;3.2"
     )
 endif()
-
-set(Python_ADDITIONAL_VERSIONS
-  2.7
-  CACHE STRING "List of Python version(s), ranked by priority; e.g., 2.7 2.6 3.2"
-  )
 
 #### External dependencies
 find_package(PythonLibs REQUIRED)
@@ -301,7 +305,7 @@ endif()
 # package and call gpu cmake to build CUDA code
 if (${MOE_USE_GPU} MATCHES "1")
     if (NOT (EXISTS ${MOE_CUDA_SDK_INCLUDE_DIRS}))
-        message( FATAL_ERROR "MOE_CUDA_SDK_INCLUDE_DIRS not set!" )
+        message(FATAL_ERROR "MOE_CUDA_SDK_INCLUDE_DIRS not set!")
     endif()
     find_package(CUDA 5.0 REQUIRED)
     include_directories(${CUDA_INCLUDE_DIRS})
