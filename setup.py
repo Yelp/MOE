@@ -6,17 +6,18 @@ import shutil
 import subprocess
 from collections import namedtuple
 
+from moe import __version__
+
 from setuptools import setup, find_packages
 from setuptools.command.install import install
+
 
 here = os.path.abspath(os.path.dirname(__file__))
 README = open(os.path.join(here, 'README.md')).read()
 
-# Following the versioning system at http://semver.org/
-MAJOR = 0
-MINOR = 1
-MICRO = 0
-VERSION = "{0:d}.{1:d}.{2:d}".format(MAJOR, MINOR, MICRO)
+
+VERSION = __version__
+
 
 CLASSIFIERS = """
         Development Status :: 4 - Beta
@@ -30,6 +31,7 @@ CLASSIFIERS = """
         Operating System :: MacOS
 
         """
+
 
 # If you change something here, change it in requirements.txt
 requires = [
@@ -46,9 +48,8 @@ requires = [
     'breathe',
     'sphinxcontrib-httpdomain',
     'sphinx_rtd_theme',
-    'zope.deprecation',
-    'zope.interface',
     ]
+
 
 MoeExecutable = namedtuple('MoeExecutable', ['env_var', 'exe_name'])
 

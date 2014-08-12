@@ -7,11 +7,11 @@ from moe.views.constant import ALL_MOE_ROUTES
 
 
 #: Latest release version of MOE
-__version__ = '0.1.0'
-
-
-import zope.interface
-print zope.interface.__file__
+#: Following the versioning system at http://semver.org/
+MAJOR = 0
+MINOR = 1
+MICRO = 0
+__version__ = "{0:d}.{1:d}.{2:d}".format(MAJOR, MINOR, MICRO)
 
 
 def main(global_config, **settings):
