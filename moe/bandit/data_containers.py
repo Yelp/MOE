@@ -7,7 +7,7 @@ import numpy
 
 class SampleArm(object):
 
-    """An arm (name, win, loss, total) sampled from the objective function we are modeling/optimizing.
+    """An arm (name, win, loss, total, variance) sampled from the objective function we are modeling/optimizing.
 
     This class is a representation of a "Sample Arm," which is defined by the three data members listed here.
     SampleArm is a convenient way of communicating data to the rest of the bandit library (via the
@@ -18,16 +18,18 @@ class SampleArm(object):
     :ivar win: (*float64 >= 0.0*) The amount won from playing this arm
     :ivar loss: (*float64 >= 0.0*) The amount loss from playing this arm
     :ivar total: (*int >= 0*) The number of times we have played this arm
+    :ivar variance: (*float >= 0.0*) The variance of this arm, if there is no variance it is equal to None
 
     """
 
-    __slots__ = ('_win', '_loss', '_total')
+    __slots__ = ('_win', '_loss', '_total', '_variance')
 
-    def __init__(self, win=0.0, loss=0.0, total=0):
+    def __init__(self, win=0.0, loss=0.0, total=0, variance=None):
         """Allocate and construct a new instance with the specified data fields; see class docstring for input descriptions."""
         self._win = win
         self._loss = loss
         self._total = total
+        self._variance = variance
         self.validate()
 
     def __str__(self):
@@ -39,11 +41,14 @@ class SampleArm(object):
 
         :param arm: arm samples to add to this arm
         :type arm: a SampleArm object
+        :raise: ValueError when ``arm.variance`` or self.variance is not None.
 
         """
         self._win += arm.win
         self._loss += arm.loss
         self._total += arm.total
+        if self._variance is not None or arm.variance is not None:
+            raise ValueError('Cannot add arms when variance is not None!')
 
     def json_payload(self):
         """Convert the sample_arm into a dict to be consumed by json for a REST request."""
@@ -51,6 +56,7 @@ class SampleArm(object):
                 'win': self.win,
                 'loss': self.loss,
                 'total': self.total,
+                'variance': self.variance,
                 }
 
     def validate(self):
@@ -66,8 +72,12 @@ class SampleArm(object):
             raise ValueError('loss = {0} is non-finite or negative!'.format(self.loss))
         if self.total < 0 or not numpy.isfinite(self.total):
             raise ValueError('total = {0} is non-finite or negative!'.format(self.total))
+        if self.variance is not None and (self.variance < 0.0 or not numpy.isfinite(self.variance)):
+            raise ValueError('variance = {0} is non-finite or negative!'.format(self.variance))
         if self.total == 0 and not (self.win == 0.0 and self.loss == 0.0):
             raise ValueError('win or loss is not 0 when total is 0!')
+        if self.variance is None and self.win > self.total:
+            raise ValueError('win cannot be greater than total when default variance computation is used! Please specify variance.')
 
     @property
     def win(self):
@@ -83,6 +93,11 @@ class SampleArm(object):
     def total(self):
         """Return the total number of tries, always a non-negative integer."""
         return self._total
+
+    @property
+    def variance(self):
+        """Return the variance of sampled tries, always greater than or equal to zero, if there is no variance it is equal to None."""
+        return self._variance
 
 
 class HistoricalData(object):

@@ -19,9 +19,11 @@ EPSILON_SUBTYPES = [
 
 # UCB subtypes
 UCB_SUBTYPE_1 = 'UCB1'
-DEFAULT_UCB_SUBTYPE = UCB_SUBTYPE_1
+UCB_SUBTYPE_1_TUNED = 'UCB1-tuned'
+DEFAULT_UCB_SUBTYPE = UCB_SUBTYPE_1_TUNED
 UCB_SUBTYPES = [
                 UCB_SUBTYPE_1,
+                UCB_SUBTYPE_1_TUNED,
                 ]
 
 # Default Hyperparameters

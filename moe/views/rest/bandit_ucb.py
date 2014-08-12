@@ -8,7 +8,7 @@ Includes:
 """
 from pyramid.view import view_config
 
-from moe.bandit.constant import UCB_SUBTYPE_1
+from moe.bandit.constant import DEFAULT_UCB_SUBTYPE
 from moe.bandit.linkers import UCB_SUBTYPES_TO_BANDIT_METHODS
 from moe.views.bandit_pretty_view import BanditPrettyView
 from moe.views.constant import BANDIT_UCB_ROUTE_NAME, BANDIT_UCB_PRETTY_ROUTE_NAME
@@ -29,7 +29,7 @@ class BanditUCBView(BanditPrettyView):
     response_schema = BanditResponse()
 
     _pretty_default_request = {
-            "subtype": UCB_SUBTYPE_1,
+            "subtype": DEFAULT_UCB_SUBTYPE,
             "historical_info": BanditPrettyView._pretty_default_historical_info,
             }
 

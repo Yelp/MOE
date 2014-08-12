@@ -42,11 +42,11 @@ class BanditUCBRequest(base_schemas.StrictMappingSchema):
         Content-Type: text/javascript
 
         {
-            "subtype": "UCB1",
+            "subtype": "UCB1-tuned",
             "historical_info": {
                 "arms_sampled": {
-                    "arm1": {"win": 20, "loss": 5, "total": 25},
-                    "arm2": {"win": 20, "loss": 10, "total": 30},
+                    "arm1": {"win": 20, "loss": 5, "total": 25, "variance": 0.1},
+                    "arm2": {"win": 20, "loss": 10, "total": 30, "variance": 0.2},
                     "arm3": {"win": 0, "loss": 0, "total": 0},
                     },
                 },

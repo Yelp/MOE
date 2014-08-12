@@ -4,6 +4,7 @@
     * Implemented epsilon-greedy. (#255)
     * Implemented epsilon-first. (#335) 
     * Implemented UCB1. (#354)
+    * Implemented UCB1-tuned. (#366)
   * Added support for the L-BFGS-B optimizer. (#296)
 
 * Changes
