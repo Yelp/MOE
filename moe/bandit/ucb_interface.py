@@ -12,12 +12,15 @@ from moe.bandit.interfaces.bandit_interface import BanditInterface
 from moe.bandit.utils import get_winning_arm_names_from_payoff_arm_name_list, get_equal_arm_allocations
 
 
-class UCB(BanditInterface):
+class UCBInterface(BanditInterface):
 
     r"""Implementation of the constructor of UCB and method allocate_arms. The method get_ucb_payoff is implemented in subclass.
 
     A class to encapsulate the computation of bandit UCB.
     The Algorithm: http://moodle.technion.ac.il/pluginfile.php/192340/mod_resource/content/0/UCB.pdf
+
+    To inherit this class, a subclass needs to implement get_ucb_payoff
+    (see :func:`moe,bandit.ucb1.UCB1.get_ucb_payoff` for an example), everything else is already implemented.
 
     See :class:`moe.bandit.interfaces.bandit_interface` docs for further details.
 
@@ -89,7 +92,7 @@ class UCB(BanditInterface):
         If all arms are pulled at least once, this method will pull the optimal arm
         (best expected upper confidence bound payoff).
 
-        See :func:`moe.bandit.ucb.UCB.get_ucb_payoff` for details on how to compute the expected upper confidence bound payoff (expected UCB payoff)
+        See :func:`moe.bandit.ucb_interface.UCBInterface.get_ucb_payoff` for details on how to compute the expected upper confidence bound payoff (expected UCB payoff)
 
         In case of a tie, the method will split the allocation among the optimal arms.
         For example, if we have three arms (arm1, arm2, and arm3) with expected UCB payoff 0.5, 0.5, and 0.1 respectively.
@@ -124,14 +127,12 @@ class UCB(BanditInterface):
             raise ValueError('arms_sampled is empty!')
 
         # If there exists an unsampled arm, return the names of the unsampled arms
-        unsampled_arm_names = UCB.get_unsampled_arm_names(arms_sampled)
+        unsampled_arm_names = self.get_unsampled_arm_names(arms_sampled)
         if unsampled_arm_names:
             return unsampled_arm_names
 
         number_sampled = sum([sampled_arm.total for sampled_arm in arms_sampled.itervalues()])
 
-        ucb_payoff_arm_name_list = []
-        for arm_name, sampled_arm in arms_sampled.iteritems():
-            ucb_payoff_arm_name_list.append((self.get_ucb_payoff(sampled_arm, number_sampled), arm_name))
+        ucb_payoff_arm_name_list = [(self.get_ucb_payoff(sampled_arm, number_sampled), arm_name) for arm_name, sampled_arm in arms_sampled.iteritems()]
 
         return get_winning_arm_names_from_payoff_arm_name_list(ucb_payoff_arm_name_list)

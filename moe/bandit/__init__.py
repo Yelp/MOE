@@ -10,13 +10,13 @@
   object for allocating bandit arms and choosing the winning arm based on epsilon-first policy.
 * :mod:`moe.bandit.epsilon_greedy`: :class:`~moe.bandit.epsilon_greedy.EpsilonGreedy`
   object for allocating bandit arms and choosing the winning arm based on epsilon-greedy policy.
-* :mod:`moe.bandit.epsilon`: a base :class:`~moe.bandit.epsilon.Epsilon`
+* :mod:`moe.bandit.epsilon_interface`: a base :class:`~moe.bandit.epsilon_interface.EpsilonInterface`
   object for all bandit epsilon subtypes.
-* :mod:`moe.bandit.ucb1`: :class:`~moe.bandit.ucb.UCB1`
+* :mod:`moe.bandit.ucb1`: :class:`~moe.bandit.ucb1.UCB1`
   object for allocating bandit arms and choosing the winning arm based on UCB1 policy.
-* :mod:`moe.bandit.ucb1_tuned`: :class:`~moe.bandit.ucb.UCB1Tuned`
+* :mod:`moe.bandit.ucb1_tuned`: :class:`~moe.bandit.ucb1_tuned.UCB1Tuned`
   object for allocating bandit arms and choosing the winning arm based on UCB1-tuned policy.
-* :mod:`moe.bandit.ucb`: a base :class:`~moe.bandit.epsilon.UCB`
+* :mod:`moe.bandit.ucb_interface`: a base :class:`~moe.bandit.ucb_interface.UCBInterface`
   object for all bandit UCB subtypes.
 * :mod:`moe.bandit.linkers`: linkers connecting ``bandit`` components.
 
