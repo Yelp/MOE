@@ -130,6 +130,15 @@ To update the online documentation::
     git commit -m "updated online docs" --no-verify
     git push origin HEAD
 
+.. Note::
+
+    Unfortunately, building the docs generates a substantial number of warnings. Some are unavoidable due to the the doxygen-sphinx-breathe combination not playing along. The current number of warnings on a fresh build is::
+
+        build succeeded, 70 warnings.
+
+    Maintainers: please check that the number of warnings is not increasing.
+
+
 Python Documentation
 ....................
 
@@ -195,7 +204,7 @@ When you are ready to mark a new release (stop and fix any issues encountered):
 
 1. Update the ``__version___`` string in ``moe/__init__.py``. It is OK to do this directly on GitHub; this MUST be the last change to the MOE master repository before tagging (below).
 2. Tag the release (`Tagging Releases`_).
-3. Update the documentation (`Building the documentation`_); in all likelihood the new code includes documentation changes.
+3. Update the documentation (`Building the documentation`_); in all likelihood the new code includes documentation changes. Be sure to double check the number of warnings is not increasing (see link).
 4. Create and push Docker containers for the new release (`Updating DockerHub`_).
 
 Tagging Releases
