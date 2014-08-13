@@ -30,9 +30,9 @@ class EpsilonTest(EpsilonTestCase):
         """Test empty ``sample_arms`` causes an ValueError."""
         T.assert_raises(ValueError, Epsilon.get_winning_arm_names, {})
 
-    def test_two_new_arms(self):
-        """Check that the two-new-arms case always returns both arms as winning arms. This tests num_winning_arms == num_arms > 1."""
-        T.assert_sets_equal(Epsilon.get_winning_arm_names(self.two_new_arms_test_case.arms_sampled), frozenset(["arm1", "arm2"]))
+    def test_two_unsampled_arms(self):
+        """Check that the two-unsampled-arms case always returns both arms as winning arms. This tests num_winning_arms == num_arms > 1."""
+        T.assert_sets_equal(Epsilon.get_winning_arm_names(self.two_unsampled_arms_test_case.arms_sampled), frozenset(["arm1", "arm2"]))
 
     def test_three_arms_two_winners(self):
         """Check that the three-arms cases with two winners return the expected winning arms. This tests num_arms > num_winning_arms > 1."""

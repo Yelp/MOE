@@ -238,4 +238,45 @@ Tagging Releases
 Updating DockerHub
 ..................
 
-TODO(GH-341): write up this section
+First we build the containers, then we upload them to dockerhub, then we update the descriptions. Throughout this section replace ``VERSION`` with the version that was just bumped, like ``v0.1.0``.
+
+::
+
+    docker login # log in with yelpmoe creds
+    docker build -t yelpmoe/VERSION # like v0.1.0
+    docker push yelpmoe/VERSION
+    docker build -t yelpmoe/latest .
+    docker push yelpmoe/latest
+
+Now go to https://registry.hub.docker.com/u/yelpmoe/VERSION/ and update the description to be
+
+::
+
+    Version VERSION of MOE, the Metric Optimization Engine.
+
+    [https://github.com/Yelp/MOE][1]
+
+    To install:
+
+        $ docker pull yelpmoe/VERSION # You can also pull the newest version: yelpmoe/latest
+        $ docker run -p 6543:6543 yelpmoe/VERSION
+
+    MOE is now running at [http://localhost:6543][2]
+
+    See the full docs for more information: [http://yelp.github.io/MOE/][3]
+
+    Check out the github tag for this version here: [https://github.com/Yelp/MOE/releases/tag/VERSION][4]
+
+
+      [1]: https://github.com/Yelp/MOE
+      [2]: http://localhost:6543
+      [3]: http://yelp.github.io/MOE/
+      [4]: https://github.com/Yelp/MOE/releases/tag/VERSION
+
+and the short description to be
+
+::
+
+    Version VERSION of MOE, the Metric Optimization Engine
+
+    https://github.com/Yelp/MOE/releases/tag/VERSION

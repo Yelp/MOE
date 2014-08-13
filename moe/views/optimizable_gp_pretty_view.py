@@ -78,7 +78,7 @@ class OptimizableGpPrettyView(GpPrettyView):
             for param, val in params['optimizer_info']['optimizer_parameters'].iteritems():
                 optimizer_parameters_dict[param] = val
 
-        # Find the schma class that corresponds to the ``optimizer_type`` of the request
+        # Find the schema class that corresponds to the ``optimizer_type`` of the request
         # TODO(GH-303): Until this ticket is complete (see schemas.OptimizerInfo),
         # optimizer_parameters has *not been validated yet*, so we need to validate manually.
         schema_class = OPTIMIZER_TYPES_TO_SCHEMA_CLASSES[params['optimizer_info']['optimizer_type']]()

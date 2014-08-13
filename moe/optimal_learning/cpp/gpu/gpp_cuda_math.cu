@@ -99,7 +99,24 @@ __forceinline__ __device__ void CudaCopyElements(int begin, int end, int bound, 
 }
 
 /*!\rst
-  Device code to compute Expected Improvement by Monte-Carlo on GPU
+  GPU kernel function of computing Expected Improvement using Monte-Carlo.
+
+  **Shared Memory Requirements**
+
+  This method requires the caller to allocate 3 arrays: chol_var_local, mu_local and normals, with
+
+  ``(num_union * num_union + num_union + num_union * num_threads)``
+
+  doubles in total in shared memory. The order of the arrays placed in this shared memory is like
+  ``[chol_var_local, mu_local, normals]``
+
+  Currently size of shared memory per block is set to 48K, to give you a sense, that is approximately
+  6144 doubles, for example, this caller works when num_union = 22 without blowing up shared memory
+  (currently num_threads = 256).
+
+  :chol_var_local[num_union][num_union]: copy of chol_var in shared memory for each block
+  :mu_local[num_union]: copy of mu in shared memory for each block
+  :normals[num_union][num_threads]: shared memory for storage of normal random numbers for each block
 
   \param
     :mu[num_union]: the mean of the GP evaluated at points interested
@@ -119,15 +136,15 @@ __forceinline__ __device__ void CudaCopyElements(int begin, int end, int bound, 
 \endrst*/
 __global__ void CudaComputeEIGpu(double const * __restrict__ mu, double const * __restrict__ chol_var,
                                  int num_union, int num_iteration, double best, uint64_t seed,
-                                 double * __restrict__ ei_storage, double* __restrict__ gpu_random_number_ei,
+                                 double * __restrict__ ei_storage, double * __restrict__ gpu_random_number_ei,
                                  bool configure_for_test) {
   // copy mu, chol_var to shared memory mu_local & chol_var_local
   // For multiple dynamically sized arrays in a single kernel, declare a single extern unsized array, and use
   // pointers into it to divide it into multiple arrays
   // refer to http://devblogs.nvidia.com/parallelforall/using-shared-memory-cuda-cc/
   extern __shared__ double storage[];
-  double * chol_var_local = storage;
-  double * mu_local = chol_var_local + num_union * num_union;
+  double * __restrict__ chol_var_local = storage;
+  double * __restrict__ mu_local = chol_var_local + num_union * num_union;
   const int idx = threadIdx.x;
   const int IDX = threadIdx.x + blockDim.x * blockIdx.x;
   int chunk_size = (num_union * num_union - 1)/ blockDim.x + 1;
@@ -135,6 +152,7 @@ __global__ void CudaComputeEIGpu(double const * __restrict__ mu, double const * 
   chunk_size = (num_union - 1)/ blockDim.x + 1;
   CudaCopyElements(chunk_size * idx, chunk_size * (idx + 1), num_union,  mu, mu_local);
   __syncthreads();
+  double * __restrict__ normals = mu_local + num_union + idx * num_union;
 
   // MC start
   // RNG setup
@@ -143,7 +161,6 @@ __global__ void CudaComputeEIGpu(double const * __restrict__ mu, double const * 
   // seed a random number generator
   curand_init(local_seed, 0, 0, &random_state);
 
-  double *normals = reinterpret_cast<double *>(malloc(sizeof(*chol_var_local) * num_union));
   double agg = 0.0;
   double improvement_this_step;
   double EI;
@@ -159,7 +176,9 @@ __global__ void CudaComputeEIGpu(double const * __restrict__ mu, double const * 
             gpu_random_number_ei[IDX * num_iteration * num_union + mc * num_union + i] = normals[i];
         }
     }
+
     CudaTriangularMatrixVectorMultiply(chol_var_local, num_union, normals);
+
     for (int i = 0; i < num_union; ++i) {
         EI = best - (mu_local[i] + normals[i]);
         improvement_this_step = fmax(EI, improvement_this_step);
@@ -167,11 +186,34 @@ __global__ void CudaComputeEIGpu(double const * __restrict__ mu, double const * 
     agg += improvement_this_step;
   }
   ei_storage[IDX] = agg / static_cast<double>(num_iteration);
-  free(normals);
 }
 
 /*!\rst
-  Device code to compute Gradient of Expected Improvement by Monte-Carlo on GPU
+  Device code to compute Gradient of Expected Improvement by Monte-Carlo on GPU.
+
+  **Shared Memory Requirements**
+
+  This method requires the caller to allocate 5 arrays: mu_local, chol_var_local, grad_mu_local,
+  grad_chol_var_local and normals, with
+
+  ``(num_union + num_union * num_union + dim * num_to_sample + dim * num_union * num_union *
+    num_to_sample + 2 * num_union * num_threads)``
+
+  doubles in total in shared memory.
+  The order of the arrays placed in this shared memory is like ``[mu_local, chol_var_local, grad_mu_local,
+  grad_chol_var_local, normals]``
+
+  Currently size of shared memory per block is set to 48K, to give you a sense, that is approximately
+  6144 doubles, for example, this caller works for num_union = num_to_sample = 8, dim = 3 without
+  blowing up shared memory (currently num_threads = 256).
+
+  :mu_local[num_union]: copy of mu in shared memory for each block
+  :chol_var_local[num_union][num_union]: copy of chol_var in shared memory for each block
+  :grad_mu_local[dim][num_to_sample]: copy of grad_mu in shared memory for each block
+  :grad_chol_var_local[dim][num_union][num_union][num_to_sample]: copy of grad_chol_var_local in shared memory for each block
+  :normals[2 * num_union][num_threads]: shared memory for storage of normal random numbers for each block, and for each thread
+    it gets 2 * num_union normal random numbers, with one set of normals occupying the first num_union doubles, and we store a copy
+    of them in the rest of the spaces.
 
   \param
     :mu[num_union]: the mean of the GP evaluated at points interested
@@ -202,10 +244,10 @@ __global__ void CudaComputeGradEIGpu(double const * __restrict__ mu, double cons
                                      double* __restrict__ gpu_random_number_grad_ei, bool configure_for_test) {
   // copy mu, chol_var, grad_mu, grad_chol_var to shared memory
   extern __shared__ double storage[];
-  double * mu_local = storage;
-  double * chol_var_local = mu_local + num_union;
-  double * grad_mu_local = chol_var_local + num_union * num_union;
-  double * grad_chol_var_local = grad_mu_local + num_to_sample * dim;
+  double * __restrict__ mu_local = storage;
+  double * __restrict__ chol_var_local = mu_local + num_union;
+  double * __restrict__ grad_mu_local = chol_var_local + num_union * num_union;
+  double * __restrict__ grad_chol_var_local = grad_mu_local + num_to_sample * dim;
   const int idx = threadIdx.x;
   const int IDX = threadIdx.x + blockDim.x * blockIdx.x;
   int chunk_size = (num_to_sample * num_union * num_union * dim - 1)/ blockDim.x + 1;
@@ -218,6 +260,8 @@ __global__ void CudaComputeGradEIGpu(double const * __restrict__ mu, double cons
   chunk_size = (num_union - 1)/ blockDim.x + 1;
   CudaCopyElements(chunk_size * idx, chunk_size * (idx + 1), num_union, mu, mu_local);
   __syncthreads();
+  double * __restrict__ normals = grad_chol_var_local + num_union * num_union * num_to_sample * dim + idx * num_union * 2;
+  double * __restrict__ normals_copy = normals + num_union;
 
   int i, k, mc, winner;
   double EI, improvement_this_step;
@@ -225,8 +269,6 @@ __global__ void CudaComputeGradEIGpu(double const * __restrict__ mu, double cons
   uint64_t local_seed = seed + IDX;
   curandState random_state;
   curand_init(local_seed, 0, 0, &random_state);
-  double* normals = reinterpret_cast<double*>(malloc(sizeof(*mu_local) * num_union));
-  double* normals_copy = reinterpret_cast<double*>(malloc(sizeof(*mu_local) * num_union));
   // initialize grad_ei_storage
   for (int i = 0; i < (num_to_sample * dim); ++i) {
       grad_ei_storage[IDX*num_to_sample*dim + i] = 0.0;
@@ -239,8 +281,8 @@ __global__ void CudaComputeGradEIGpu(double const * __restrict__ mu, double cons
           normals[i] = curand_normal_double(&random_state);
           normals_copy[i] = normals[i];
             // If configure_for_test is true, random numbers used in MC computations will be saved as output.
-            // In fact we will let grad_ei compuation on CPU use the same sequence of random numbers saved here,
-            // so that grad_ei compuation on CPU & GPU can be compared directly for unit test purpose.
+            // In fact we will let gradEI compuation on CPU use the same sequence of random numbers saved here,
+            // so that gradEI compuation on CPU & GPU can be compared directly for unit test purpose.
           if (configure_for_test) {
               gpu_random_number_grad_ei[IDX * num_iteration * num_union + mc * num_union + i] = normals[i];
           }
@@ -260,9 +302,9 @@ __global__ void CudaComputeGradEIGpu(double const * __restrict__ mu, double cons
               }
           }
           for (i = 0; i < num_to_sample; ++i) {   // derivative w.r.t ith point
-              CudaGeneralMatrixVectorMultiply(grad_chol_var_local + i * num_union * num_union * dim +
-                                              winner * num_union * dim, normals_copy, dim, num_union,
-                                              dim, grad_ei_storage + IDX * num_to_sample * dim + i * dim);
+              CudaGeneralMatrixVectorMultiply(grad_chol_var_local + i*num_union*num_union*dim + winner*num_union*dim,
+                                              normals_copy, dim, num_union, dim,
+                                              grad_ei_storage + IDX*num_to_sample*dim + i*dim);
           }
       }
   }
@@ -270,8 +312,6 @@ __global__ void CudaComputeGradEIGpu(double const * __restrict__ mu, double cons
   for (int i = 0; i < num_to_sample*dim; ++i) {
       grad_ei_storage[IDX*num_to_sample*dim + i] /= static_cast<double>(num_iteration);
   }
-  free(normals);
-  free(normals_copy);
 }
 
 }  // end unnamed namespace
@@ -308,7 +348,7 @@ CudaError CudaGetEI(double * __restrict__ mu, double * __restrict__ chol_var, in
   OL_CUDA_ERROR_RETURN(cudaMemcpy(gpu_mu, mu, mem_size_mu, cudaMemcpyHostToDevice));
   OL_CUDA_ERROR_RETURN(cudaMemcpy(gpu_chol_var, chol_var, mem_size_chol_var, cudaMemcpyHostToDevice));
   // execute kernel
-  CudaComputeEIGpu <<< grid, threads, num_union*sizeof(*mu)+num_union*num_union*sizeof(*mu) >>>
+  CudaComputeEIGpu <<< grid, threads, num_union*sizeof(*mu)+num_union*num_union*sizeof(*mu)+num_union*kEINumThreads*sizeof(*mu) >>>
                    (gpu_mu, gpu_chol_var, num_union, num_iteration, best, seed, gpu_ei_storage,
                     gpu_random_number_ei, configure_for_test);
   OL_CUDA_ERROR_RETURN(cudaPeekAtLastError());
@@ -360,7 +400,7 @@ CudaError CudaGetGradEI(double * __restrict__ mu, double * __restrict__ chol_var
   // execute kernel
   // inputs: gpu_mu, gpu_chol_var, gpu_grad_mu, gpu_grad_chol_var, best, num_union, num_to_sample, dim, num_iteration, seed
   // output: gpu_grad_ei_storage
-  CudaComputeGradEIGpu <<< grid, threads, mem_size_mu+mem_size_chol_var+mem_size_grad_mu+mem_size_grad_chol_var >>>
+  CudaComputeGradEIGpu <<< grid, threads, mem_size_mu+mem_size_chol_var+mem_size_grad_mu+mem_size_grad_chol_var+num_union*kGradEINumThreads*2*sizeof(*mu) >>>
                        (gpu_mu, gpu_chol_var, gpu_grad_mu, gpu_grad_chol_var, num_union, num_to_sample, dim,
                         num_iteration, best, seed, gpu_grad_ei_storage, gpu_random_number_grad_ei, configure_for_test);
   OL_CUDA_ERROR_RETURN(cudaPeekAtLastError());
@@ -389,6 +429,8 @@ CudaError CudaGetGradEI(double * __restrict__ mu, double * __restrict__ chol_var
 CudaError CudaSetDevice(int devID) {
   CudaError _success = {cudaSuccess, OL_CUDA_STRINGIFY_FILE_AND_LINE, __func__};
   OL_CUDA_ERROR_RETURN(cudaSetDevice(devID));
+  // Cuda API to set memory config preference: in our code we prefer to use more shared memory
+  OL_CUDA_ERROR_RETURN(cudaDeviceSetCacheConfig(cudaFuncCachePreferShared));
   return _success;
 }
 

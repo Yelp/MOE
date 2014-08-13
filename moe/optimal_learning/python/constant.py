@@ -48,12 +48,14 @@ DOMAIN_TYPES = [
 NULL_OPTIMIZER = 'null_optimizer'
 NEWTON_OPTIMIZER = 'newton_optimizer'
 GRADIENT_DESCENT_OPTIMIZER = 'gradient_descent_optimizer'
+L_BFGS_B_OPTIMIZER = 'l_bfgs_b_optimizer'
 
 #: Optimizer types supported by :mod:`moe`
 OPTIMIZER_TYPES = [
         NULL_OPTIMIZER,
         NEWTON_OPTIMIZER,
         GRADIENT_DESCENT_OPTIMIZER,
+        L_BFGS_B_OPTIMIZER,
         ]
 
 # Likelihood constants
@@ -84,6 +86,15 @@ TEST_GRADIENT_DESCENT_PARAMETERS = python_optimization.GradientDescentParameters
         tolerance=1.0e-3,
         )
 
+TEST_LBFGSB_PARAMETERS = python_optimization.LBFGSBParameters(
+        approx_grad=True,
+        max_func_evals=5,
+        max_metric_correc=10,
+        factr=10000000000.0,
+        pgtol=1.0e-1,
+        epsilon=1.0e-3,
+        )
+
 DEMO_OPTIMIZER_MULTISTARTS = 50
 DEMO_GRADIENT_DESCENT_PARAMETERS = python_optimization.GradientDescentParameters(
         max_num_steps=300,
@@ -96,6 +107,8 @@ DEMO_GRADIENT_DESCENT_PARAMETERS = python_optimization.GradientDescentParameters
         )
 
 # Default optimization parameters for various combinations of optimizer (Newton, GD) and objective functions (EI, Log Likelihood)
+DEFAULT_MULTISTARTS = 300  # Fix once cpp num_multistarts is consistent.
+
 DEFAULT_NEWTON_MULTISTARTS_MODEL_SELECTION = 200
 DEFAULT_NEWTON_NUM_RANDOM_SAMPLES_MODEL_SELECTION = 0
 DEFAULT_NEWTON_PARAMETERS_MODEL_SELECTION = python_optimization.NewtonParameters(
@@ -148,6 +161,18 @@ DEFAULT_GRADIENT_DESCENT_PARAMETERS_EI_MC = python_optimization.GradientDescentP
         tolerance=1.0e-5,
         )
 
+DEFAULT_LBFGSB_MULTISTARTS_QEI = 200
+DEFAULT_LBFGSB_NUM_RANDOM_SAMPLES_QEI = 4000
+DEFAULT_LBFGSB_PARAMETERS_QEI = python_optimization.LBFGSBParameters(
+        approx_grad=True,
+        max_func_evals=15000,
+        max_metric_correc=10,
+        factr=10000000.0,
+        pgtol=1.0e-5,
+        epsilon=1.0e-8,
+        )
+
+
 # See DefaultOptimizerInfoTuple below for docstring.
 _BaseDefaultOptimizerInfoTuple = namedtuple('_BaseDefaultOptimizerInfoTuple', [
     'num_multistarts',
@@ -183,6 +208,12 @@ _EI_ANALYTIC_DEFAULT_OPTIMIZER = DefaultOptimizerInfoTuple(
     DEFAULT_GRADIENT_DESCENT_PARAMETERS_EI_ANALYTIC,
 )
 
+_EI_MULTIPOINT_DEFAULT_OPTIMIZER = DefaultOptimizerInfoTuple(
+    DEFAULT_LBFGSB_MULTISTARTS_QEI,
+    DEFAULT_LBFGSB_NUM_RANDOM_SAMPLES_QEI,
+    DEFAULT_LBFGSB_PARAMETERS_QEI,
+)
+
 _MODEL_SELECTION_NULL_OPTIMIZER = DefaultOptimizerInfoTuple(
     1,  # unused but the min value is 1
     DEFAULT_NULL_NUM_RANDOM_SAMPLES_MODEL_SELECTION,
@@ -203,7 +234,8 @@ EI_COMPUTE_TYPE_MONTE_CARLO = 'ei_monte_carlo'
 ENDPOINT_TO_DEFAULT_OPTIMIZER_TYPE = {
     views_constant.GP_NEXT_POINTS_KRIGING_ROUTE_NAME: GRADIENT_DESCENT_OPTIMIZER,
     views_constant.GP_NEXT_POINTS_CONSTANT_LIAR_ROUTE_NAME: GRADIENT_DESCENT_OPTIMIZER,
-    views_constant.GP_NEXT_POINTS_EPI_ROUTE_NAME: GRADIENT_DESCENT_OPTIMIZER,
+    (views_constant.GP_NEXT_POINTS_EPI_ROUTE_NAME, EI_COMPUTE_TYPE_ANALYTIC): L_BFGS_B_OPTIMIZER,
+    (views_constant.GP_NEXT_POINTS_EPI_ROUTE_NAME, EI_COMPUTE_TYPE_MONTE_CARLO): GRADIENT_DESCENT_OPTIMIZER,
     (views_constant.GP_HYPER_OPT_ROUTE_NAME, LEAVE_ONE_OUT_LOG_LIKELIHOOD): GRADIENT_DESCENT_OPTIMIZER,
     (views_constant.GP_HYPER_OPT_ROUTE_NAME, LOG_MARGINAL_LIKELIHOOD): NEWTON_OPTIMIZER,
 }
@@ -220,6 +252,7 @@ OPTIMIZER_TYPE_AND_OBJECTIVE_TO_DEFAULT_PARAMETERS = {
     (NULL_OPTIMIZER, views_constant.GP_NEXT_POINTS_EPI_ROUTE_NAME, EI_COMPUTE_TYPE_ANALYTIC): _EI_ANALYTIC_NULL_OPTIMIZER,
     (GRADIENT_DESCENT_OPTIMIZER, views_constant.GP_NEXT_POINTS_KRIGING_ROUTE_NAME): _EI_ANALYTIC_DEFAULT_OPTIMIZER,
     (GRADIENT_DESCENT_OPTIMIZER, views_constant.GP_NEXT_POINTS_CONSTANT_LIAR_ROUTE_NAME): _EI_ANALYTIC_DEFAULT_OPTIMIZER,
+    (L_BFGS_B_OPTIMIZER, views_constant.GP_NEXT_POINTS_EPI_ROUTE_NAME, EI_COMPUTE_TYPE_ANALYTIC): _EI_MULTIPOINT_DEFAULT_OPTIMIZER,
     (GRADIENT_DESCENT_OPTIMIZER, views_constant.GP_NEXT_POINTS_EPI_ROUTE_NAME, EI_COMPUTE_TYPE_ANALYTIC): _EI_ANALYTIC_DEFAULT_OPTIMIZER,
     (NULL_OPTIMIZER, views_constant.GP_NEXT_POINTS_EPI_ROUTE_NAME, EI_COMPUTE_TYPE_MONTE_CARLO): DefaultOptimizerInfoTuple(
         1,  # unused but the min value is 1
