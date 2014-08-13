@@ -18,7 +18,7 @@ install:
     # Tell MOE to install the Python specified in Travis (b/c many are installed)
     # The env-var may be "x.x_with_system_site_packages" so we need to extract just the front of the string
 #    - export MOE_CMAKE_OPTS="-D MOE_PYTHON_ADDITIONAL_VERSIONS='`echo $TRAVIS_PYTHON_VERSION | cut -d '_' -f 1`'"
-    - export MOE_CMAKE_OPTS="-D MOE_PYTHON_ADDITIONAL_VERSIONS='2.6;2.7'"
+    - export MOE_CMAKE_OPTS="-D MOE_PYTHON_ADDITIONAL_VERSIONS='2.6; 2.7'"
     - python setup.py install
 script:
     - make -B test
