@@ -419,7 +419,7 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
 
                 python_ei_eval.current_point = points_to_sample
                 python_qd_ei = python_ei_eval.compute_expected_improvement()
-                print 'rel: {0:.18E}, abs: {1:.18E}'.format((python_qd_ei - precomputed_answers[i - 2]) / precomputed_answers[i - 2], python_qd_ei, precomputed_answers[i - 2])
+                print 'rel: {0:.18E}, abs: {1:.18E}'.format((python_qd_ei - precomputed_answers[i - 2]) / precomputed_answers[i - 2], python_qd_ei - precomputed_answers[i - 2])
                 self.assert_scalar_within_relative(python_qd_ei, precomputed_answers[i - 2], ei_tolerance)
 
     def test_qd_and_1d_return_same_analytic_ei(self):
