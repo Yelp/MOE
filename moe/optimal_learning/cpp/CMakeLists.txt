@@ -67,7 +67,7 @@ endif()
 if (DEFINED MOE_PYTHON_ADDITIONAL_VERSIONS)
   set(Python_ADDITIONAL_VERSIONS
     ${MOE_PYTHON_ADDITIONAL_VERSIONS}
-    CACHE STRING "List (semicolon-separated) of Python version(s), ranked by priority; e.g., 2.7;2.6;3.2"
+    CACHE STRING "List (semicolon-separated, NO SPACES) of Python version(s), ranked by priority; e.g., 2.7;2.6;3.2"
     )
 endif()
 
