@@ -26,6 +26,13 @@ UCB_SUBTYPES = [
                 UCB_SUBTYPE_1_TUNED,
                 ]
 
+# BLA subtypes
+BLA_SUBTYPE_BLA = 'BLA'
+DEFAULT_BLA_SUBTYPE = BLA_SUBTYPE_BLA
+BLA_SUBTYPES = [
+                BLA_SUBTYPE_BLA,
+                ]
+
 # See http://en.wikipedia.org/wiki/Bernoulli_distribution for more details.
 MAX_BERNOULLI_RANDOM_VARIABLE_VARIANCE = 0.25
 
@@ -39,9 +46,11 @@ EPSILON_SUBTYPES_TO_DEFAULT_HYPERPARAMETER_INFOS = {
         }
 
 # Bandit Endpoints
+BANDIT_BLA_ENDPOINT = 'bla_endpoint'
 BANDIT_EPSILON_ENDPOINT = 'epsilon_endpoint'
 BANDIT_UCB_ENDPOINT = 'ucb_endpoint'
 BANDIT_ENDPOINTS = [
-                    BANDIT_UCB_ENDPOINT,
+                    BANDIT_BLA_ENDPOINT,
                     BANDIT_EPSILON_ENDPOINT,
+                    BANDIT_UCB_ENDPOINT,
                     ]
