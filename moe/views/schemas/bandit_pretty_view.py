@@ -138,7 +138,7 @@ class BanditResponse(base_schemas.StrictMappingSchema):
     **Output fields**
 
     :ivar endpoint: (*str*) the endpoint that was called
-    :ivar arms: (:class:`moe.views.schemas.bandit_pretty_view.ArmAllocations`) a dictionary of (arm name, allocaiton) key-value pairs
+    :ivar arms: (:class:`moe.views.schemas.bandit_pretty_view.ArmAllocations`) a dictionary of (arm name, allocation) key-value pairs
     :ivar winner: (*str*) winning arm name
 
     **Example Response**
