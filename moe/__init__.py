@@ -6,8 +6,16 @@ from moe.resources import Root
 from moe.views.constant import ALL_MOE_ROUTES
 
 
+#: Following the versioning system at http://semver.org/
+#: See also docs/contributing.rst, section ``Versioning``
+#: MAJOR: incremented for incompatible API changes
+MAJOR = 0
+#: MINOR: incremented for adding functionality in a backwards-compatible manner
+MINOR = 1
+#: PATCH: incremented for backward-compatible bug fixes and minor capability improvements
+PATCH = 0
 #: Latest release version of MOE
-__version__ = '0.1.0'
+__version__ = "{0:d}.{1:d}.{2:d}".format(MAJOR, MINOR, PATCH)
 
 
 def main(global_config, **settings):
