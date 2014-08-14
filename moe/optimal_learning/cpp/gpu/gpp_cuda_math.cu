@@ -99,14 +99,14 @@ __forceinline__ __device__ void CudaCopyElements(int begin, int end, int bound, 
 }
 
 /*!\rst
-  GPU kernel function of computing Expected Improvement using Monte-Carlo. 
+  GPU kernel function of computing Expected Improvement using Monte-Carlo.
 
   **Shared Memory Requirements**
 
   This method requires the caller to allocate 3 arrays: chol_var_local, mu_local and normals, with
-  
+
   ``(num_union * num_union + num_union + num_union * num_threads)``
-  
+
   doubles in total in shared memory. The order of the arrays placed in this shared memory is like
   ``[chol_var_local, mu_local, normals]``
 
@@ -127,12 +127,12 @@ __forceinline__ __device__ void CudaCopyElements(int begin, int end, int bound, 
     :seed: seed for RNG
     :ei_storage[num_threads][num_blocks]: array storing values of EI on GPU
     :gpu_random_number_ei[num_union][num_iteration][num_threads][num_blocks]: array storing random
-     numbers used for computing EI, for testing purpose only
+      numbers used for computing EI, for testing purpose only
     :configure_for_test: whether record random_number_ei or not
   \output
     :ei_storage[num_threads][num_blocks]: each thread write result of computed EI to its corresponding position
     :gpu_random_number_ei[num_union][num_iteration][num_threads][num_blocks]: write random numbers
-     used for computing EI into the array, for testing purpose only
+      used for computing EI into the array, for testing purpose only
 \endrst*/
 __global__ void CudaComputeEIGpu(double const * __restrict__ mu, double const * __restrict__ chol_var,
                                  int num_union, int num_iteration, double best, uint64_t seed,
@@ -189,7 +189,7 @@ __global__ void CudaComputeEIGpu(double const * __restrict__ mu, double const * 
 }
 
 /*!\rst
-  Device code to compute Gradient of Expected Improvement by Monte-Carlo on GPU
+  Device code to compute Gradient of Expected Improvement by Monte-Carlo on GPU.
 
   **Shared Memory Requirements**
 
@@ -197,8 +197,8 @@ __global__ void CudaComputeEIGpu(double const * __restrict__ mu, double const * 
   grad_chol_var_local and normals, with
 
   ``(num_union + num_union * num_union + dim * num_to_sample + dim * num_union * num_union *
-   num_to_sample + 2 * num_union * num_threads)``
-   
+    num_to_sample + 2 * num_union * num_threads)``
+
   doubles in total in shared memory.
   The order of the arrays placed in this shared memory is like ``[mu_local, chol_var_local, grad_mu_local,
   grad_chol_var_local, normals]``
@@ -220,7 +220,7 @@ __global__ void CudaComputeEIGpu(double const * __restrict__ mu, double const * 
     :chol_var[num_union][num_union]: cholesky factorization of the GP variance evaluated at points interested
     :grad_mu[dim][num_to_sample]: the gradient of mean of the GP evaluated at points interested
     :grad_chol_var[dim][num_union][num_union][num_to_sample]: gradient of cholesky factorization of the GP variance
-     evaluated at points interested
+      evaluated at points interested
     :num_union: number of the union of points (aka q+p)
     :num_to_sample: number of points to sample (aka q)
     :dim: dimension of point space
@@ -229,13 +229,13 @@ __global__ void CudaComputeEIGpu(double const * __restrict__ mu, double const * 
     :seed: seed for RNG
     :grad_ei_storage[dim][num_to_sample][num_threads][num_blocks]: A vector storing result of grad_ei from each thread
     :gpu_random_number_grad_ei[num_union][num_itreration][num_threads][num_blocks]: array storing
-     random numbers used for computing gradEI, for testing purpose only
+      random numbers used for computing gradEI, for testing purpose only
     :configure_for_test: whether record random_number_grad_ei or not
   \output
     :grad_ei_storage[dim][num_to_sample][num_threads][num_blocks]: each thread write result of grad_ei
-     to its corresponding positions
+      to its corresponding positions
     :gpu_random_number_grad_ei[num_union][num_iteration][num_threads][num_blocks]: write random numbers
-     used for computing gradEI to the array, for testing purpose only
+      used for computing gradEI to the array, for testing purpose only
 \endrst*/
 __global__ void CudaComputeGradEIGpu(double const * __restrict__ mu, double const * __restrict__ chol_var,
                                      double const * __restrict__ grad_mu, double const * __restrict__ grad_chol_var,
@@ -435,4 +435,3 @@ CudaError CudaSetDevice(int devID) {
 }
 
 }    // end namespace optimal_learning
-

@@ -205,7 +205,7 @@ void CudaExpectedImprovementState::SetupState(const EvaluatorType& ei_evaluator,
   // update quantities derived from points_to_sample
   UpdateCurrentPoint(ei_evaluator, points_to_sample);
 }
+
 #endif  // OL_GPU_ENABLED
 
 }  // end namespace optimal_learning
-
