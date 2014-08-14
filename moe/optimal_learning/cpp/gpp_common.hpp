@@ -19,7 +19,8 @@
      memory is released appropriately.
 
      In fact, ``new`` and ``delete`` (as they pertain to memory) should almost NEVER be used.
-       Exception: ``Clone()`` functions and inputs to std::unique_ptr's ctor may use ``new``.
+
+     Exception: ``Clone()`` functions and inputs to std::unique_ptr's ctor may use ``new``.
 
      Finally, ``malloc``/``free`` should be AVOIDED ENTIRELY.  Use std::vector instead of malloc'd arrays and
      std::unique_ptr when singleton object allocation is desired.  If you *ABSOLUTELY* must, use ``new``/``delete``
@@ -31,18 +32,26 @@
      However, for convenience, C multi-dimensional indexing will be used to describe
      matrices: e.g., A[dim1][dim2] is a matrix with dim1 rows and dim2 columns.  But
      dim1 is the most rapidly-varying index here.
-     for example: ``A[3][4] =``
-     ``[4  32  5  2``
-     `` 53 12  8  1``
-     `` 81  2  93 0]``
+     for example::
+
+       A[3][4] =
+         [4  32  5  2
+          53 12  8  1
+          81  2  93 0]
+
       would be FLATTENED into an array:
+
       ``A_flat[12] = [4 53 81 32 12 2 5 8 93 2 1 0]``
 
       So ``A[dim_1][dim_2]...[dim_n]`` would be represented as an array of size
+
       ``dim_1*dim_2*...*dim_n``.
+
       If I wanted to access ``A[i_1][i_2]...[i_n]`` in a multi-dimensional array, I would perform the following
       in a flat array:
+
       ``A[i_n*dim_1*dim_2*...*dim_{n-1} + ... + i_2*dim_1 + i_1]`` (note that ``dim_n`` never appears in the index!)
+
       (See gpp_math.cpp header comments for more details on a more efficient way of array accessing.)
 
    3. The meaning of ``lda, ldb, ldc``.  ``lda``, for example, is short for
@@ -162,18 +171,23 @@
          The State's constructor must size them properly, but their contents can be *anything*.
          DO NOT rely on the values in these members!  Set before using!
 
-      List of classes implementing this relationship:
-      ``Class                                           State``
-      ``GaussianProcess                                 PointsToSampleState``
-      ``ExpectedImprovementEvaluator                    ExpectedImprovementState``
-      ``OnePotentialSampleExpectedImprovementEvaluator  OnePotentialSampleExpectedImprovementState``
-      ``LogMarginalLikelihoodEvaluator                  LogMarginalLikelihoodState``
-      ``LeaveOneOutLogLikelihoodEvaluator               LeaveOneOutLogLikelihoodState``
+      =================================================  ===============================================
+      List of classes implementing the Evaluator/State relationship
+      --------------------------------------------------------------------------------------------------
+      Class                                               State
+      =================================================  ===============================================
+      GaussianProcess                                     PointsToSampleState
+      ExpectedImprovementEvaluator                        ExpectedImprovementState
+      OnePotentialSampleExpectedImprovementEvaluator      OnePotentialSampleExpectedImprovementState
+      LogMarginalLikelihoodEvaluator                      LogMarginalLikelihoodState
+      LeaveOneOutLogLikelihoodEvaluator                   LeaveOneOutLogLikelihoodState
+      =================================================  ===============================================
 
       One set of noteable exceptions to this 'rule' is the RNG classes.  These objects' sole purpose
       is to hold mutable state so there's nothing to be gained from just splitting code and data members.
 
    6. Explicit [template] Instantiation.
+
       Summarizing the syntax briefly:
 
       **FOR FUNCTIONS**
@@ -364,12 +378,17 @@
 
   Lastly, some general mathematical notation:
   A vector "x" of length size may be represented: (LOWER CASE letters)
+
   ``x[size], x_i``
 
   A matrix "A" of size size_1 x size_2 (#rows x #columns) may be represented: (UPPER CASE letters)
+
   ``A[size_1][size_2], A_{i,j}, A_ij``
+
   ``A_i`` may also be used to refer to the i-th column of a matrix A.
+
   Matrices are stored flat in column-major (implementation note 2).  So the concept ``A[i][j]`` is actually accessed via:
+
   ``A[j*size_1 + i]``
 
   Finally, a note about function comment style:
@@ -681,11 +700,13 @@ namespace optimal_learning {
   This means SQ will fail with non-constexpr inputs.
 
   .. WARNING:: this is pass-by-VALUE.  In combination with constexpr, this fcn is only meant for very simple operations.
-  (i.e., this shouldn't be used with a matrix class supporting operator*, and it probably wouldn't compile anyway.)
-  If you need pass-by-reference, be warned that it ``Square(const T&)`` may fail in icc:
-  http://software.intel.com/en-us/articles/c0x-features-supported-by-intel-c-compiler
-  http://software.intel.com/en-us/forums/topic/391885
-  They claim it'll be available in the 14.0 compiler.
+    (i.e., this shouldn't be used with a matrix class supporting operator*, and it probably wouldn't compile anyway.)
+    If you need pass-by-reference, be warned that it ``Square(const T&)`` may fail in icc:
+
+    http://software.intel.com/en-us/articles/c0x-features-supported-by-intel-c-compiler
+    http://software.intel.com/en-us/forums/topic/391885
+
+    They claim it'll be available in the 14.0 compiler.
 
   \param
     :value: value to be squared

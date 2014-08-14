@@ -1,7 +1,7 @@
 /*!
   \file gpp_logging.cpp
   \rst
-  Utilities for printing commonly used structures. We put printing code here to hide std::printf() calls.
+  Utilities for printing commonly used structures. We put printing code here to hide ``std::printf()`` calls.
 \endrst*/
 
 #include "gpp_logging.hpp"
