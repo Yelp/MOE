@@ -294,30 +294,47 @@ set(EXTRA_COMPILE_DEFINITIONS_GPU OL_GPU_ENABLED)
 set(GPU_CC ${CMAKE_C_COMPILER})
 set(GPU_CXX ${CMAKE_CXX_COMPILER})
 
-if (EXISTS ${MOE_GPU_CC})
+if (DEFINED MOE_GPU_CC)
+  if (EXISTS ${MOE_GPU_CC} AND NOT IS_DIRECTORY ${MOE_GPU_CC})
     set(GPU_CC ${MOE_GPU_CC})
+  else()
+    message(FATAL_ERROR "MOE_GPU_CC is not a valid file: " ${MOE_GPU_CC})
+  endif()
 endif()
-if (EXISTS ${MOE_GPU_CXX})
+
+if (DEFINED MOE_GPU_CXX)
+  if (EXISTS ${MOE_GPU_CXX} AND NOT IS_DIRECTORY ${MOE_GPU_CXX})
     set(GPU_CXX ${MOE_GPU_CXX})
+  else()
+    message(FATAL_ERROR "MOE_GPU_CXX is not a valid file: " ${MOE_GPU_CXX})
+  endif()
 endif()
 
 # If MOE_USE_GPU is turned on via MOE_CMAKE_OPTS, cmake will try to find CUDA
 # package and call gpu cmake to build CUDA code
 if (${MOE_USE_GPU} MATCHES "1")
-    if (NOT (EXISTS ${MOE_CUDA_SDK_INCLUDE_DIRS}))
+    if (DEFINED MOE_CUDA_SDK_INCLUDE_DIRS)
+        if (NOT IS_DIRECTORY ${MOE_CUDA_SDK_INCLUDE_DIRS})
+            message(FATAL_ERROR "MOE_CUDA_SDK_INCLUDE_DIRS is not a valid directory: " ${MOE_CUDA_SDK_INCLUDE_DIRS})
+        endif()
+    else()
         message(FATAL_ERROR "MOE_CUDA_SDK_INCLUDE_DIRS not set!")
     endif()
+
     find_package(CUDA 5.0 REQUIRED)
     include_directories(${CUDA_INCLUDE_DIRS})
+
     set(EXTRA_COMPILE_DEFINITIONS ${EXTRA_COMPILE_DEFINITIONS}
        ${EXTRA_COMPILE_DEFINITIONS_GPU})
     set(MOE_GPU_CMAKE_OPTS
         "-D MOE_CUDA_SDK_INCLUDE_DIRS=${MOE_CUDA_SDK_INCLUDE_DIRS}")
+
     add_custom_target(
         GPU_FOLDER
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
         COMMAND mkdir -p ${CMAKE_BINARY_DIR}/gpu/
         )
+
     add_custom_target(
         GPU_LIB
         DEPENDS GPU_FOLDER
@@ -327,7 +344,6 @@ if (${MOE_USE_GPU} MATCHES "1")
         COMMAND make
         )
 endif()
-
 
 #### Object libraries
 # See configure_object_library() function comments for more details.

@@ -171,14 +171,17 @@
          The State's constructor must size them properly, but their contents can be *anything*.
          DO NOT rely on the values in these members!  Set before using!
 
-      List of classes implementing this relationship::
-
-        Class                                           State
-        GaussianProcess                                 PointsToSampleState
-        ExpectedImprovementEvaluator                    ExpectedImprovementState
-        OnePotentialSampleExpectedImprovementEvaluator  OnePotentialSampleExpectedImprovementState
-        LogMarginalLikelihoodEvaluator                  LogMarginalLikelihoodState
-        LeaveOneOutLogLikelihoodEvaluator               LeaveOneOutLogLikelihoodState
+      =================================================  ===============================================
+      List of classes implementing the Evaluator/State relationship
+      --------------------------------------------------------------------------------------------------
+      Class                                               State
+      =================================================  ===============================================
+      GaussianProcess                                     PointsToSampleState
+      ExpectedImprovementEvaluator                        ExpectedImprovementState
+      OnePotentialSampleExpectedImprovementEvaluator      OnePotentialSampleExpectedImprovementState
+      LogMarginalLikelihoodEvaluator                      LogMarginalLikelihoodState
+      LeaveOneOutLogLikelihoodEvaluator                   LeaveOneOutLogLikelihoodState
+      =================================================  ===============================================
 
       One set of noteable exceptions to this 'rule' is the RNG classes.  These objects' sole purpose
       is to hold mutable state so there's nothing to be gained from just splitting code and data members.

@@ -132,12 +132,13 @@ To update the online documentation::
 
 .. Note::
 
-    Unfortunately, building the docs generates a substantial number of warnings. Some are unavoidable due to the the doxygen-sphinx-breathe combination not playing along. The current number of warnings on a fresh build is::
+    Unfortunately, building the docs generates a substantial number of warnings. Some are unavoidable due to the the doxygen-sphinx-breathe combination not playing along. For example, ``C++`` namespaces are treated as multiply defined, leading to 2 warnings per file, but there appears to be no plan to fix the behavior (see: https://github.com/michaeljones/breathe/issues/14#issuecomment-532475).
+
+    The current number of warnings on a fresh build is::
 
         build succeeded, 70 warnings.
 
     Maintainers: please check that the number of warnings is not increasing.
-
 
 Python Documentation
 ....................
