@@ -36,6 +36,10 @@ class TestGpNextPointsViews(GaussianProcessTestCase, RestTestCase):
                     'num_random_samples': TEST_OPTIMIZER_NUM_RANDOM_SAMPLES,
                     'optimizer_parameters': dict(TEST_LBFGSB_PARAMETERS._asdict()),
                     },
+                'mvndst_parameters': {
+                    'releps': 1.0,
+                    'maxpts_multiplier': 200,
+                    },
                 }
         else:
             dict_to_dump = {

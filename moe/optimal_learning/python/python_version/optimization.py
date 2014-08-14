@@ -645,5 +645,4 @@ class LBFGSBOptimizer(OptimizerInterface):
             shaped_point = unshaped_point
         else:
             shaped_point = unshaped_point.reshape(self._num_points, self.domain.dim)
-
         self.objective_function.current_point = shaped_point

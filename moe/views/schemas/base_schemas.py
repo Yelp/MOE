@@ -160,6 +160,26 @@ class BoundedDomainInfo(DomainInfo):
     domain_bounds = Domain()
 
 
+class MVNDSTParametersSchema(StrictMappingSchema):
+
+    """Parameters for mvndst within qEI.
+
+    See :class:`moe.optimal_learning.python.python_version.expected_improvement.MVNDSTParameters`
+
+    """
+
+    releps = colander.SchemaNode(
+            colander.Float(),
+            validator=colander.Range(min=0),
+            missing=1.0e-9,
+            )
+    maxpts_multiplier = colander.SchemaNode(
+            colander.Int(),
+            validator=colander.Range(min=1),
+            missing=2000,
+            )
+
+
 class GradientDescentParametersSchema(StrictMappingSchema):
 
     """Parameters for the gradient descent optimizer.

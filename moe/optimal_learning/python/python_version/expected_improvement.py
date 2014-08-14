@@ -5,6 +5,7 @@ See :mod:`moe.optimal_learning.python.interfaces.expected_improvement_interface`
 gpp_math.hpp/cpp for further details on expected improvement.
 
 """
+import collections
 import logging
 
 import numpy
@@ -34,6 +35,32 @@ MINIMUM_VARIANCE_EI = numpy.finfo(numpy.float64).tiny
 #: The 150.0 was determined by numerical experiment with the setup in test_1d_analytic_ei_edge_cases()
 #: in order to find a setting that would be robust (no 0/0) while introducing minimal error.
 MINIMUM_VARIANCE_GRAD_EI = 150 * MINIMUM_STD_DEV_GRAD_CHOLESKY ** 2
+
+
+# See MVNDSTParameters (below) for docstring.
+_BaseMVNDSTParameters = collections.namedtuple('_BaseMVNDSTParameters', [
+    'releps',
+    'maxpts_multiplier',
+])
+
+
+class MVNDSTParameters(_BaseMVNDSTParameters):
+
+    """Container to hold parameters that specify the behavior of mvndst, which qEI uses to calculate EI.
+
+    :ivar releps: (*float > 0.0*) accuracy at which to calculate the cdf (suggest: 1.0e-12)
+    :ivar maxpts_multiplier: (*int > 0*) the total number of iterations mvndst will do is num_dimensions * maxpts_multiplier (suggest: 20000)
+
+    """
+
+    __slots__ = ()
+
+
+# EI mvndst computation defauls
+DEFAULT_MVNDST_PARAMS = MVNDSTParameters(
+        releps=1.0e-9,
+        maxpts_multiplier=2000,
+        )
 
 
 def multistart_expected_improvement_optimization(
@@ -152,6 +179,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         else:
             self.current_point = points_to_sample
 
+        self.mvndst_parameters = DEFAULT_MVNDST_PARAMS
         self.log = logging.getLogger(__name__)
 
     @property
@@ -188,6 +216,20 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         self._points_to_sample = numpy.copy(numpy.atleast_2d(points_to_sample))
 
     current_point = property(get_current_point, set_current_point)
+
+    def get_mvndst_parameters(self):
+        """Get the current mvndst_params (:class:`moe.optimal_learning.python.python_version.expected_improvement.MVNDSTParameters`) struct."""
+        return self._mvndst_params
+
+    def set_mvndst_parameters(self, params):
+        """Set the current mvndst_params struct.
+
+        :param mvndst_parameters: the parameters to set the mvndst_parameters to
+        :type mvndst_parameters: :class:`moe.optimal_learning.python.python_version.expected_improvement.MVNDSTParameters`
+        """
+        self._mvndst_params = params
+
+    mvndst_parameters = property(get_mvndst_parameters, set_mvndst_parameters)
 
     def evaluate_at_point_list(
             self,
@@ -236,7 +278,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         This function is deterministic; it does not perform explicit numerical integration or require access
         to a random number generator.
 
-        If we denote PHI_q by the q-dimensional multivariate gaussian, this method requires q calls to PHI_q,
+        If we denote PHI_q as the cdf of a q-dimensional multivariate gaussian, this method requires q calls to PHI_q,
         where q is also the number of points being sampled, and q^2 calls to PHI_(q-1). This approach is therefore
         more tractable with moderate q (lower than 10). Higher values of q may require the Monte-Carlo approach.
 
@@ -279,8 +321,8 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
                  std_upper,  # The upper bound of integration
                  numpy.zeros(upper.size, dtype=int),  # For each dim, 0 means -inf for lower bound
                  corr_matrix[strict_lower_diag_indices],  # The vector of strict lower triangular correlation coefficients
-                 maxpts=200000 * upper.size,  # Maximum number of iterations for the mvndst function
-                 releps=1e-9,  # The error allowed relative to actual value
+                 maxpts=self.mvndst_parameters.maxpts_multiplier * upper.size,  # Maximum number of iterations for the mvndst function
+                 releps=self.mvndst_parameters.releps,  # The error allowed relative to actual value
                  )
             return out[1]  # Index 1 corresponds to the actual value. 0 has the error, and 2 is a flag denoting whether releps was reached
 

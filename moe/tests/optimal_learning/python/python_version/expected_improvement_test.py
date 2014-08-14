@@ -416,6 +416,10 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
             for i in range(2, 10):
                 points_to_sample = all_points[0:i]
                 python_ei_eval = moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement(python_gp, points_to_sample)
+                python_ei_eval.mvndst_parameters = moe.optimal_learning.python.python_version.expected_improvement.MVNDSTParameters(
+                        releps=1.0e-14,
+                        maxpts_multiplier=200000,
+                        )
 
                 python_ei_eval.current_point = points_to_sample
                 python_qd_ei = python_ei_eval.compute_expected_improvement()

@@ -71,6 +71,7 @@ LIKELIHOOD_TYPES = [
 # EI Monte-Carlo computation defaults
 DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS = 10000
 
+
 # Minimal parameters for testing and demos (where speed is more important than accuracy)
 TEST_EXPECTED_IMPROVEMENT_MC_ITERATIONS = 50
 TEST_OPTIMIZER_MULTISTARTS = 3
@@ -88,11 +89,11 @@ TEST_GRADIENT_DESCENT_PARAMETERS = python_optimization.GradientDescentParameters
 
 TEST_LBFGSB_PARAMETERS = python_optimization.LBFGSBParameters(
         approx_grad=True,
-        max_func_evals=5,
+        max_func_evals=1,
         max_metric_correc=10,
-        factr=10000000000.0,
-        pgtol=1.0e-1,
-        epsilon=1.0e-3,
+        factr=100000000.0,
+        pgtol=1.0e1,
+        epsilon=1.0e-1,
         )
 
 DEMO_OPTIMIZER_MULTISTARTS = 50
