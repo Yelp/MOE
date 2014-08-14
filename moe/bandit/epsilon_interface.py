@@ -13,7 +13,7 @@ from moe.bandit.interfaces.bandit_interface import BanditInterface
 from moe.bandit.utils import get_winning_arm_names_from_payoff_arm_name_list
 
 
-class Epsilon(BanditInterface):
+class EpsilonInterface(BanditInterface):
 
     r"""Implementation of the constructor and common methods of Epsilon. Abstract method allocate_arms implemented in subclass.
 

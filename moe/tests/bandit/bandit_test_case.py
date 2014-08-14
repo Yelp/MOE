@@ -24,6 +24,7 @@ class BanditTestCase(T.TestCase):
     three_arms_float_payoffs_test_case = HistoricalData(sample_arms={"arm1": SampleArm(win=2.2, loss=1.1, total=3), "arm2": SampleArm(win=2.1, loss=1.1, total=3), "arm3": SampleArm(win=0, loss=0, total=0)})
     three_arms_two_winners_test_case = HistoricalData(sample_arms={"arm1": SampleArm(win=2, loss=1, total=3), "arm2": SampleArm(win=2, loss=1, total=3), "arm3": SampleArm(win=0, loss=0, total=0)})
     three_arms_two_winners_no_unsampled_arm_test_case = HistoricalData(sample_arms={"arm1": SampleArm(win=2, loss=1, total=3), "arm2": SampleArm(win=2, loss=1, total=3), "arm3": SampleArm(win=0, loss=1, total=1)})
+    three_arms_with_variance_no_unsampled_arm_test_case = HistoricalData(sample_arms={"arm1": SampleArm(win=2, loss=1, total=500, variance=0.1), "arm2": SampleArm(win=2, loss=1, total=500, variance=0.01), "arm3": SampleArm(win=2, loss=1, total=500, variance=0.001)})
 
     historical_infos_to_test = [
                             one_arm_test_case,
@@ -33,6 +34,7 @@ class BanditTestCase(T.TestCase):
                             three_arms_float_payoffs_test_case,
                             three_arms_two_winners_test_case,
                             three_arms_two_winners_no_unsampled_arm_test_case,
+                            three_arms_with_variance_no_unsampled_arm_test_case,
                             ]
 
     def _test_init_default(self):
