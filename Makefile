@@ -8,8 +8,8 @@ production:
 		python setup.py install
 
 test:
-		testify -v moe.tests
-		testify -v moe_examples.tests
+		testify -v --exclude-suite=disabled moe.tests
+		testify -v --exclude-suite=disabled moe_examples.tests
 
 style-test:
 		pip install flake8 flake8-import-order pep8-naming flake8-docstrings pyflakes
