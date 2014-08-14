@@ -1,36 +1,41 @@
 # -*- coding: utf-8 -*-
 """Automatically create *.rst files for sphinx for all doxygen+breathe created C++ api docs."""
+from collections import defaultdict
 from os import listdir
 from os.path import isfile, join, splitext
 
 
-CPP_FILE_PATH = join(
+CPP_FILE_PATHS = [
+    join(
         'moe',
         'optimal_learning',
         'cpp',
-        )
+    ),
+    join(
+        'moe',
+        'optimal_learning',
+        'cpp',
+        'gpu',
+    ),
+]
 
+CPP_FILE_TYPES = ['.h', '.hpp', '.c', '.cc', '.cxx', '.cpp', '.cu']
 
 def get_cpp_files():
-    """Find all files in CPP_FILE_PATH that are *.hpp or *.cpp."""
-    cpp_files = {}
-    for file_name in listdir(CPP_FILE_PATH):
-        if isfile(join(CPP_FILE_PATH, file_name)):
-            file_base, file_ext = splitext(file_name)
-            # Skip any files that don't have an extension
-            if not file_ext:
-                continue
+    """Find all files in CPP_FILE_PATHS directories that are C++/cuda/etc source/headers."""
+    cpp_files = defaultdict(dict)
+    for directory in CPP_FILE_PATHS:
+        for file_name in listdir(directory):
+            if isfile(join(directory, file_name)):
+                file_base, file_ext = splitext(file_name)
+                # Skip any files that don't have an extension
+                if not file_ext:
+                    continue
 
-            if file_base not in cpp_files and file_ext in ['.hpp', '.cpp']:
-                cpp_files[file_base] = {
-                        'cpp': None,
-                        'hpp': None,
-                        }
-            if file_ext == '.hpp':
-                cpp_files[file_base]['hpp'] = file_name
-            elif file_ext == '.cpp':
-                cpp_files[file_base]['cpp'] = file_name
-    return cpp_files
+                if file_ext in CPP_FILE_TYPES:
+                    cpp_files[file_base][file_ext] = file_name
+
+    return dict(cpp_files)
 
 
 def create_cpp_tree(cpp_files):
@@ -74,14 +79,14 @@ def create_rst_file(file_base, files):
 """.format(file_base, "="*len(file_base))
     )
     index_count = 1
-    for file_type in ['hpp', 'cpp']:
-        if files[file_type] is not None:
+    for file_type in CPP_FILE_TYPES:
+        if files.has_key(file_type):
             fout.write('    {0:d}. `{1:s}`_\n'.format(index_count, files[file_type]))
             index_count += 1
     fout.write('\n')
 
-    for file_type in ['hpp', 'cpp']:
-        if files[file_type] is not None:
+    for file_type in CPP_FILE_TYPES:
+        if files.has_key(file_type):
             fout.write("""
 {0:s}
 {1:s}

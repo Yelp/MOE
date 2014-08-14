@@ -19,7 +19,7 @@
   of Gaussian Processes (GPs) and how we are using them (Expected Improvement, EI).
 
   .. NOTE:: These comments have been copied into interfaces/log_likelihood_interface.py (file comments) and
-     cpp_wrappers/log_likelihood.py (LogMarginalLikelihood and LeaveOneOutLogLikelihood class comments).
+    cpp_wrappers/log_likelihood.py (LogMarginalLikelihood and LeaveOneOutLogLikelihood class comments).
 
   This file deals with model selection via hyperparameter optimization, as the name implies.  In our discussion of GPs,
   we did not pay much attention to the underlying covariance function.  We noted that the covariance is extremely
@@ -58,7 +58,9 @@
   Typically these will not be called directly.
 
   To better understand model selection, let's look at a common covariance used in our computation, square exponential:
+
   ``cov(x_1, x_2) = \alpha * \exp(-0.5*r^2), where r = \sum_{i=1}^d (x_1_i - x_2_i)^2 / L_i^2``.
+
   Here, ``\alpha`` is ``\sigma_f^2``, the signal variance, and the ``L_i`` are length scales.  The vector ``[\alpha, L_1, ... , L_d]``
   are called the "hyperparameters" or "free parameters" (see gpp_covariance.hpp for more details).  There is nothing in
   the covariance  that guides the choice of the hyperparameters; ``L_1 = 0.001`` is just as valid as ``L_1 = 1000.0.``
@@ -801,10 +803,10 @@ struct LeaveOneOutLogLikelihoodState final {
     :num_hyperparameters: dimension of the domain
     :num_multistarts: number of random points to draw
     :uniform_generator[1]: a UniformRandomGenerator object providing the random engine for uniform random numbers
-    :domain_bounds[1]: vector<ClosedInterval> with >= num_hyperparameters elements specifying
+    :domain_bounds[1]: ``std::vector<ClosedInterval>`` with ``>= num_hyperparameters`` elements specifying
       the boundaries of a n_hyper-dimensional tensor-product domain
       Specify in LOG-10 SPACE!
-    :initial_guesses[1]: vector<double> with >= num_hyperparameters*num_multistarts elements.
+    :initial_guesses[1]: ``std::vector<double>`` with ``>= num_hyperparameters*num_multistarts`` elements.
       will be overwritten; ordered data[num_hyperparameters][num_multistarts]
   \output
     :uniform_generator[1]: UniformRandomGenerator object will have its state changed due to random draws
@@ -1054,8 +1056,8 @@ OL_NONNULL_POINTERS void MultistartGradientDescentHyperparameterOptimization(
   1. easier testing
   2. if you really know what you're doing
 
-  ``gamma = 1.01, time_factor = 1.0e-3`` should lead to good robustness at reasonable speed.  This should be a fairly safe default.
-  ``gamma = 1.05, time_factor = 1.0e-1`` will be several times faster but not as robust.
+  | ``gamma = 1.01, time_factor = 1.0e-3`` should lead to good robustness at reasonable speed.  This should be a fairly safe default.
+  | ``gamma = 1.05, time_factor = 1.0e-1`` will be several times faster but not as robust.
 
   Let ``n_hyper = covariance.GetNumberOfHyperparameters();``
 
@@ -1099,6 +1101,7 @@ OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT int NewtonHyperparameterOptimization(
   It constructs the required state objects, builds a NewtonOptimizer object, and wraps a series of calls:
 
   * The heart of multistarting is in MultistartOptimizer<...>::MultistartOptimize<...>(...) (in gpp_optimization.hpp).
+
     * The heart of Newton is in NewtonOptimization() (in gpp_optimization.hpp).
     * Log likelihood is computed in ComputeLogLikelihood(), its gradient in ComputeGradLogLikelihood(), and its hessian in
     * ComputeHessianLogLikelihood(), which must be member functions of the LogLikelihoodEvaluator template parameter.

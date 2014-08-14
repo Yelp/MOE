@@ -383,6 +383,7 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
         # EI should have improved
         T.assert_gt(ei_final, ei_initial)
 
+    @T.suite('disabled', reason='Flaky. See GH-376.')
     def test_qd_ei_with_self(self):
         """Compare the 1D analytic EI results to the qD analytic EI results, checking several random points per test case.
 

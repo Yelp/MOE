@@ -28,7 +28,9 @@ This package includes:
 * :mod:`moe.tests.bandit.epsilon_test`: tests for :mod:`moe.bandit.epsilon_greedy.Epsilon`
 * :mod:`moe.tests.bandit.epsilon_test_case`: test cases for classes under :mod:`moe.bandit.epsilon.Epsilon`
 * :mod:`moe.tests.bandit.linkers_test`: tests for :mod:`moe.bandit.linkers`
+* :mod:`moe.tests.bandit.ucb_test_case`: base test case for UCB tests
 * :mod:`moe.tests.bandit.ucb1_test`: tests for :mod:`moe.bandit.ucb1.UCB1`
+* :mod:`moe.tests.bandit.ucb1_tuned_test`: tests for :mod:`moe.bandit.ucb1_tuned.UCB1Tuned`
 * :mod:`moe.tests.bandit.utils_test`: tests for :mod:`moe.bandit.utils`
 
 """

@@ -35,7 +35,7 @@ class GpNextPointsRequest(base_schemas.StrictMappingSchema):
 
     Here are some "broad-strokes" timing results for EI optimization.
     These tests are not complete nor comprehensive; they're just a starting point.
-    The tests were run on a Sandy Bridge 2.3 GHz quad-core CPU. Data was generated
+    The tests were run on a Ivy Bridge 2.3 GHz quad-core CPU (i7-3615QM). Data was generated
     from a Gaussian Process prior. The optimization parameters were the default
     values (see :mod:`moe.optimal_learning.python.constant`) as of sha
     ``c19257049f16036e5e2823df87fbe0812720e291``.

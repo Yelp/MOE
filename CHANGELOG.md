@@ -4,6 +4,7 @@
     * Implemented epsilon-greedy. (#255)
     * Implemented epsilon-first. (#335) 
     * Implemented UCB1. (#354)
+    * Implemented UCB1-tuned. (#366)
   * Added support for the L-BFGS-B optimizer. (#296)
   * Added GPU implementation for q,p-EI and its gradient computation. (#219)
     * Speed up GPU functions by redesign of memory allocation. (#297)
@@ -18,6 +19,8 @@
   * ``GradientDescentOptimization`` (C++) no longer has a separate ``next_points`` output (#186)
   * LogLikelihood evaluate at point list and latin hypercube search now return status dicts like every other optimizer (#189)
     * status dicts also a little more informative/standardized now
+  * Update C++ autodoc tools to handle the new ``gpu`` directory (#353)
+  * Added ``__version__`` to ``moe/__init__.py`` (#353)
 
 * Bugs
 
