@@ -30,6 +30,7 @@ namespace optimal_learning {
 #ifdef OL_GPU_ENABLED
 
 namespace {
+
 /*!\rst
   Test that the EI + grad EI computation (using MC integration) is consistent
   with the special analytic case of EI when there is only *ONE* potential point
@@ -227,6 +228,7 @@ int RunCudaEIvsCpuEITests() {
 
 /*!\rst
   Invoke all tests for GPU functions.
+
   \return
     number of test failures: 0 if all is working well.
 \endrst*/

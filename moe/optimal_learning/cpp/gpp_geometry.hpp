@@ -90,6 +90,7 @@ struct ClosedInterval {
 
   /*!\rst
     Checks whether the interval is \ms\emptyset\me (i.e., ``max`` < ``min``).
+
     Equivalent to Length() \ms\geq\me 0.0.
 
     \return
@@ -109,6 +110,7 @@ struct ClosedInterval {
   * http://mathworld.wolfram.com/HessianNormalForm.html
 
   The equation of plane requires dim + 1 real numbers:
+
   \ms a_0 + \sum_{i=0}^{dim} n_i x_i = 0\me
 
   Hence we can describe any plane as a vector, \ms [n_0, n_2, ..., n_{dim-1}]\me, and a real number, \ms a_0\me.
@@ -117,6 +119,7 @@ struct ClosedInterval {
   \ms a_0\me is the *signed* distance to the origin. This is the distance from the plane to the origin in the direction of
   \ms n_{vec}\me. Put another way, \ms a_0\me is positive if the origin is in the same half-space "pointed to" by
   \ms n_{vec}\me and negative otherwise.
+
   Note: \ms a_0\me is measured in units of \ms \|n_{vec}\|\me, so if it is *not* an unit vector, that is analogous to scaling \ms a_0\nme.
 
   As an example, let's consider 4 planes with dim = 2:
@@ -152,6 +155,7 @@ struct Plane {
 
   /*!\rst
     Creates a plane in dim-dimensions with the specified unit normal (\ms n_i\me) and offset (\ms a_0\me):
+
     \ms a_0 + \sum_{i=0}^{dim} n_i * x_i = 0\me
 
     .. NOTE::
@@ -231,7 +235,9 @@ struct Plane {
   /*!\rst
     Computes the signed distance from the specified ``point`` to this plane along the specified ``vector``. This result
     is computed in units of \ms\|vector\|_2\me. That is, a distance of 3.14 means if we compute:
-    new_point = 3.14*vector + point,
+
+    ``new_point = 3.14*vector + point``,
+
     then new_point will be on this plane.
 
     A negative distance means the plane is "behind" the ray.

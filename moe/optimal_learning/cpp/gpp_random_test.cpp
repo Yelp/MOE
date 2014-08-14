@@ -67,6 +67,7 @@ OL_WARN_UNUSED_RESULT int RandomPointInDomainTest() {
 
 /*!\rst
   Just your basic bubble sort.
+
   Need the ability to sort matrices ``A_{ij}`` in blocks of ``A_{i*}``, doing comparisons only on
   ``j``-th entries.  This is (as far as I know) awkward with STL vectors/sort.
 \endrst*/
@@ -238,11 +239,11 @@ namespace {
 
   \input
     :input_vector: vector to be checked
-  \output
+  \return
     true if all elements are distinct
 \endrst*/
 template <typename T>
-OL_WARN_UNUSED_RESULT int CheckAllElementsUnique(const std::vector<T>& input_vector) {
+OL_WARN_UNUSED_RESULT bool CheckAllElementsUnique(const std::vector<T>& input_vector) {
   return std::unordered_set<T>(input_vector.begin(), input_vector.end()).size() == input_vector.size();
 }
 
