@@ -52,7 +52,7 @@ class MVNDSTParameters(_BaseMVNDSTParameters):
     For more information about these parameters, consult: http://www.math.wsu.edu/faculty/genz/software/fort77/mvndstpack.f
 
     .. NOTE:: The actual accuracy used in mvndst is MAX(abseps, FINEST * releps), where FINEST is the estimate of the cdf integral.
-      Because of this, it is almost always the case that abseps should be set to 0 for releps to be used.
+        Because of this, it is almost always the case that abseps should be set to 0 for releps to be used.
 
     :ivar releps: (*float > 0.0*) relative accuracy at which to calculate the cdf of the multivariate gaussian (suggest: 1.0e-9)
     :ivar abseps: (*float > 0.0*) absolute accuracy at which to calculate the cdf of the multivariate gaussian (suggest: 1.0e-9)
