@@ -40,7 +40,8 @@ MINIMUM_VARIANCE_GRAD_EI = 150 * MINIMUM_STD_DEV_GRAD_CHOLESKY ** 2
 # See MVNDSTParameters (below) for docstring.
 _BaseMVNDSTParameters = collections.namedtuple('_BaseMVNDSTParameters', [
     'releps',
-    'maxpts_multiplier',
+    'abseps',
+    'maxpts_per_dim',
 ])
 
 
@@ -48,8 +49,11 @@ class MVNDSTParameters(_BaseMVNDSTParameters):
 
     """Container to hold parameters that specify the behavior of mvndst, which qEI uses to calculate EI.
 
-    :ivar releps: (*float > 0.0*) accuracy at which to calculate the cdf (suggest: 1.0e-12)
-    :ivar maxpts_multiplier: (*int > 0*) the total number of iterations mvndst will do is num_dimensions * maxpts_multiplier (suggest: 20000)
+    For more information about these parameters, consult: http://www.math.wsu.edu/faculty/genz/software/fort77/mvndstpack.f
+
+    :ivar releps: (*float > 0.0*) relative accuracy at which to calculate the cdf of the multivariate gaussian (suggest: 1.0e-9)
+    :ivar abseps: (*float > 0.0*) absolute accuracy at which to calculate the cdf of the multivariate gaussian (suggest: 1.0e-9)
+    :ivar maxpts_per_dim: (*int > 0*) the maximum number of iterations mvndst will do is num_dimensions * maxpts_per_dim (suggest: 20000)
 
     """
 
@@ -59,7 +63,8 @@ class MVNDSTParameters(_BaseMVNDSTParameters):
 # EI mvndst computation defauls
 DEFAULT_MVNDST_PARAMS = MVNDSTParameters(
         releps=1.0e-9,
-        maxpts_multiplier=2000,
+        abseps=1.0e-9,
+        maxpts_per_dim=20000,
         )
 
 
@@ -145,6 +150,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
             points_being_sampled=None,
             num_mc_iterations=DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS,
             randomness=None,
+            mvndst_parameters=None
     ):
         """Construct an ExpectedImprovement object that supports q,p-EI.
 
@@ -179,7 +185,11 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         else:
             self.current_point = points_to_sample
 
-        self.mvndst_parameters = DEFAULT_MVNDST_PARAMS
+        if mvndst_parameters is None:
+            self._mvndst_parameters = DEFAULT_MVNDST_PARAMS
+        else:
+            self._mvndst_parameters = mvndst_parameters
+
         self.log = logging.getLogger(__name__)
 
     @property
@@ -217,19 +227,19 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
 
     current_point = property(get_current_point, set_current_point)
 
-    def get_mvndst_parameters(self):
-        """Get the current mvndst_params (:class:`moe.optimal_learning.python.python_version.expected_improvement.MVNDSTParameters`) struct."""
-        return self._mvndst_params
-
-    def set_mvndst_parameters(self, params):
-        """Set the current mvndst_params struct.
-
-        :param mvndst_parameters: the parameters to set the mvndst_parameters to
-        :type mvndst_parameters: :class:`moe.optimal_learning.python.python_version.expected_improvement.MVNDSTParameters`
-        """
-        self._mvndst_params = params
-
-    mvndst_parameters = property(get_mvndst_parameters, set_mvndst_parameters)
+#    def get_mvndst_parameters(self):
+#        """Get the current mvndst_params (:class:`moe.optimal_learning.python.python_version.expected_improvement.MVNDSTParameters`) struct."""
+#        return self._mvndst_params
+#
+#    def set_mvndst_parameters(self, params):
+#        """Set the current mvndst_params struct.
+#
+#        :param mvndst_parameters: the parameters to set the mvndst_parameters to
+#        :type mvndst_parameters: :class:`moe.optimal_learning.python.python_version.expected_improvement.MVNDSTParameters`
+#        """
+#        self._mvndst_params = params
+#
+#    mvndst_parameters = property(get_mvndst_parameters, set_mvndst_parameters)
 
     def evaluate_at_point_list(
             self,
@@ -321,8 +331,9 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
                  std_upper,  # The upper bound of integration
                  numpy.zeros(upper.size, dtype=int),  # For each dim, 0 means -inf for lower bound
                  corr_matrix[strict_lower_diag_indices],  # The vector of strict lower triangular correlation coefficients
-                 maxpts=self.mvndst_parameters.maxpts_multiplier * upper.size,  # Maximum number of iterations for the mvndst function
-                 releps=self.mvndst_parameters.releps,  # The error allowed relative to actual value
+                 maxpts=self._mvndst_parameters.maxpts_per_dim * upper.size,  # Maximum number of iterations for the mvndst function
+                 releps=self._mvndst_parameters.releps,  # The error allowed relative to actual value
+                 abseps=self._mvndst_parameters.abseps,  # The absolute error allowed
                  )
             return out[1]  # Index 1 corresponds to the actual value. 0 has the error, and 2 is a flag denoting whether releps was reached
 

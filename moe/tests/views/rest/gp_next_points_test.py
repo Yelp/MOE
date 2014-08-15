@@ -38,7 +38,7 @@ class TestGpNextPointsViews(GaussianProcessTestCase, RestTestCase):
                     },
                 'mvndst_parameters': {
                     'releps': 1.0,
-                    'maxpts_multiplier': 200,
+                    'maxpts_per_dim': 200,
                     },
                 }
         else:

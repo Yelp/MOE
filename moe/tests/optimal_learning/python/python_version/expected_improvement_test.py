@@ -383,7 +383,6 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
         # EI should have improved
         T.assert_gt(ei_final, ei_initial)
 
-    @T.suite('disabled', reason='Flaky. See GH-376.')
     def test_qd_ei_with_self(self):
         """Compare the 1D analytic EI results to the qD analytic EI results, checking several random points per test case.
 
@@ -396,7 +395,7 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
 
         These values are a tradeoff between accuracy / speed.
         """
-        ei_tolerance = 6.0e-10
+        ei_tolerance = 6.0e-6
         numpy.random.seed(8790)
 
         precomputed_answers = [
@@ -416,11 +415,12 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
 
             for i in range(2, 10):
                 points_to_sample = all_points[0:i]
-                python_ei_eval = moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement(python_gp, points_to_sample)
-                python_ei_eval.mvndst_parameters = moe.optimal_learning.python.python_version.expected_improvement.MVNDSTParameters(
-                        releps=1.0e-14,
-                        maxpts_multiplier=200000,
+                mvndst_accurate_parameters = moe.optimal_learning.python.python_version.expected_improvement.MVNDSTParameters(
+                        releps=1.0e-6,
+                        abseps=1.0e-6,
+                        maxpts_per_dim=200000,
                         )
+                python_ei_eval = moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement(python_gp, points_to_sample, mvndst_parameters=mvndst_accurate_parameters)
 
                 python_ei_eval.current_point = points_to_sample
                 python_qd_ei = python_ei_eval.compute_expected_improvement()

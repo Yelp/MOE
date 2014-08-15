@@ -101,8 +101,8 @@ class GpNextPointsPrettyView(OptimizableGpPrettyView):
                         gaussian_process,
                         points_being_sampled=points_being_sampled,
                         num_mc_iterations=num_mc_iterations,
+                        mvndst_parameters=_make_mvndst_parameters_from_params(params)
                         )
-                expected_improvement_evaluator.mvndst_parameters = _make_mvndst_parameters_from_params(params)
 
                 opt_method = getattr(moe.optimal_learning.python.python_version.expected_improvement, optimizer_method_name)
             else:

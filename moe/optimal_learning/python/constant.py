@@ -89,7 +89,7 @@ TEST_GRADIENT_DESCENT_PARAMETERS = python_optimization.GradientDescentParameters
 
 TEST_LBFGSB_PARAMETERS = python_optimization.LBFGSBParameters(
         approx_grad=True,
-        max_func_evals=1,
+        max_func_evals=3,
         max_metric_correc=10,
         factr=100000000.0,
         pgtol=1.0e1,
