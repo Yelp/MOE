@@ -171,12 +171,12 @@ class MVNDSTParametersSchema(StrictMappingSchema):
 
     releps = colander.SchemaNode(
             colander.Float(),
-            validator=colander.Range(min=0),
+            validator=colander.Range(min=0, max=1),
             missing=DEFAULT_MVNDST_PARAMS.releps,
             )
     abseps = colander.SchemaNode(
             colander.Float(),
-            validator=colander.Range(min=0),
+            validator=colander.Range(min=0, max=1),
             missing=DEFAULT_MVNDST_PARAMS.abseps,
             )
     maxpts_per_dim = colander.SchemaNode(

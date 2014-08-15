@@ -5,7 +5,7 @@ See :mod:`moe.optimal_learning.python.interfaces.expected_improvement_interface`
 gpp_math.hpp/cpp for further details on expected improvement.
 
 """
-import collections
+from collections import namedtuple
 import logging
 
 import numpy
@@ -38,7 +38,7 @@ MINIMUM_VARIANCE_GRAD_EI = 150 * MINIMUM_STD_DEV_GRAD_CHOLESKY ** 2
 
 
 # See MVNDSTParameters (below) for docstring.
-_BaseMVNDSTParameters = collections.namedtuple('_BaseMVNDSTParameters', [
+_BaseMVNDSTParameters = namedtuple('_BaseMVNDSTParameters', [
     'releps',
     'abseps',
     'maxpts_per_dim',
@@ -226,20 +226,6 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         self._points_to_sample = numpy.copy(numpy.atleast_2d(points_to_sample))
 
     current_point = property(get_current_point, set_current_point)
-
-#    def get_mvndst_parameters(self):
-#        """Get the current mvndst_params (:class:`moe.optimal_learning.python.python_version.expected_improvement.MVNDSTParameters`) struct."""
-#        return self._mvndst_params
-#
-#    def set_mvndst_parameters(self, params):
-#        """Set the current mvndst_params struct.
-#
-#        :param mvndst_parameters: the parameters to set the mvndst_parameters to
-#        :type mvndst_parameters: :class:`moe.optimal_learning.python.python_version.expected_improvement.MVNDSTParameters`
-#        """
-#        self._mvndst_params = params
-#
-#    mvndst_parameters = property(get_mvndst_parameters, set_mvndst_parameters)
 
     def evaluate_at_point_list(
             self,

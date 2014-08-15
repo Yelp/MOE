@@ -8,7 +8,7 @@ Includes:
 """
 from pyramid.view import view_config
 
-from moe.optimal_learning.python.constant import OPTIMIZER_TYPE_AND_OBJECTIVE_TO_DEFAULT_PARAMETERS, EI_COMPUTE_TYPE_ANALYTIC, EI_COMPUTE_TYPE_MONTE_CARLO, GRADIENT_DESCENT_OPTIMIZER, L_BFGS_B_OPTIMIZER
+from moe.optimal_learning.python.constant import OPTIMIZER_TYPE_AND_OBJECTIVE_TO_DEFAULT_PARAMETERS, EI_COMPUTE_TYPE_ANALYTIC, EI_COMPUTE_TYPE_MONTE_CARLO, ENDPOINT_TO_DEFAULT_OPTIMIZER_TYPE, SINGLE_POINT_EI, MULTI_POINT_EI, GRADIENT_DESCENT_OPTIMIZER, L_BFGS_B_OPTIMIZER
 from moe.views.constant import GP_NEXT_POINTS_EPI_ROUTE_NAME, GP_NEXT_POINTS_EPI_PRETTY_ROUTE_NAME, GP_NEXT_POINTS_EPI_OPTIMIZER_METHOD_NAME
 from moe.views.gp_next_points_pretty_view import GpNextPointsPrettyView
 from moe.views.pretty_view import PRETTY_RENDERER
@@ -33,9 +33,9 @@ class GpNextPointsEpi(GpNextPointsPrettyView):
         """
         num_to_sample = params.get('num_to_sample')
         if num_to_sample == 1:
-            return GRADIENT_DESCENT_OPTIMIZER
+            return ENDPOINT_TO_DEFAULT_OPTIMIZER_TYPE[(self._route_name, SINGLE_POINT_EI)]
         else:
-            return L_BFGS_B_OPTIMIZER
+            return ENDPOINT_TO_DEFAULT_OPTIMIZER_TYPE[(self._route_name, MULTI_POINT_EI)]
 
     def _get_default_optimizer_params(self, params):
         """Get the default optimizer parameters associated with the desired ``optimizer_type``, REST endpoint, and analytic vs monte carlo computation.
