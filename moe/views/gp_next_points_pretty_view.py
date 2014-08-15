@@ -17,7 +17,7 @@ from moe.optimal_learning.python.timing import timing_context
 from moe.views.gp_pretty_view import GpPrettyView
 from moe.views.optimizable_gp_pretty_view import OptimizableGpPrettyView
 from moe.views.schemas.gp_next_points_pretty_view import GpNextPointsRequest, GpNextPointsResponse
-from moe.views.utils import _make_gp_from_params, _make_domain_from_params, _make_optimizer_parameters_from_params
+from moe.views.utils import _make_gp_from_params, _make_domain_from_params, _make_optimizer_parameters_from_params, _make_mvndst_parameters_from_params
 
 
 EPI_OPTIMIZATION_TIMING_LABEL = 'EPI optimization time'
@@ -101,6 +101,7 @@ class GpNextPointsPrettyView(OptimizableGpPrettyView):
                         gaussian_process,
                         points_being_sampled=points_being_sampled,
                         num_mc_iterations=num_mc_iterations,
+                        mvndst_parameters=_make_mvndst_parameters_from_params(params)
                         )
 
                 opt_method = getattr(moe.optimal_learning.python.python_version.expected_improvement, optimizer_method_name)

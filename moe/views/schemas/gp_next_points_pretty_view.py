@@ -169,6 +169,9 @@ class GpNextPointsRequest(base_schemas.StrictMappingSchema):
     points_being_sampled = base_schemas.ListOfPointsInDomain(
             missing=[],
             )
+    mvndst_parameters = base_schemas.MVNDSTParametersSchema(
+            missing=base_schemas.MVNDSTParametersSchema().deserialize({}),
+            )
 
 
 class GpNextPointsStatus(base_schemas.StrictMappingSchema):

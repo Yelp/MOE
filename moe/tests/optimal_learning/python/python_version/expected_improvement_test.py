@@ -383,7 +383,6 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
         # EI should have improved
         T.assert_gt(ei_final, ei_initial)
 
-    @T.suite('disabled', reason='Flaky. See GH-376.')
     def test_qd_ei_with_self(self):
         """Compare the 1D analytic EI results to the qD analytic EI results, checking several random points per test case.
 
@@ -391,23 +390,24 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
         changing the number of iterations or the maximum relative error allowed in the mvndst function leads to different answers.
 
         These precomputed answers were calculated from:
-        maxpts = 20,000 * q
-        releps = 1e-5
+        maxpts = 200,000 * q
+        releps = 1.0e-14
+        abseps = 0
 
         These values are a tradeoff between accuracy / speed.
         """
-        ei_tolerance = 6.0e-10
+        ei_tolerance = 6.0e-6
         numpy.random.seed(8790)
 
         precomputed_answers = [
-            5.83583593191e-08,
-            5.83583593328e-08,
-            2.40176803674e-07,
-            0.349595041008,
-            0.350524674435,
-            0.350524720501,
-            0.350524799491,
-            0.409585935352,
+            5.835835931907665360E-08,
+            5.835835933284698072E-08,
+            2.401743470063156417E-07,
+            3.495950208926061342E-01,
+            3.505247159968049586E-01,
+            3.505247527657193163E-01,
+            3.505247477049012739E-01,
+            4.095861927462218222E-01,
         ]
 
         for test_case in self.gp_test_environments[2:3]:
@@ -416,11 +416,22 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
 
             for i in range(2, 10):
                 points_to_sample = all_points[0:i]
-                python_ei_eval = moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement(python_gp, points_to_sample)
+                mvndst_accurate_parameters = moe.optimal_learning.python.python_version.expected_improvement.MVNDSTParameters(
+                        releps=0,
+                        abseps=1.0e-6,
+                        maxpts_per_dim=200000,
+                        )
+                python_ei_eval = moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement(
+                        python_gp,
+                        points_to_sample,
+                        mvndst_parameters=mvndst_accurate_parameters
+                        )
 
                 python_ei_eval.current_point = points_to_sample
                 python_qd_ei = python_ei_eval.compute_expected_improvement()
-                self.assert_scalar_within_relative(python_qd_ei, precomputed_answers[i - 2], ei_tolerance)
+                # We do an absolute check here because computing to a "high" degree of relative precision
+                # (i.e., releps=1.0e-6, abseps=0) takes 10x longer. A relative check would be preferable, though.
+                self.assert_scalar_within_absolute(python_qd_ei, precomputed_answers[i - 2], ei_tolerance)
 
     def test_qd_and_1d_return_same_analytic_ei(self):
         """Compare the 1D analytic EI results to the qD analytic EI results, checking several random points per test case."""
