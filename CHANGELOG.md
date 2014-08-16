@@ -1,5 +1,15 @@
 * Features
 
+* Changes
+
+* Bugs
+
+## v0.1.0 (2014-08-15)
+
+SHA: ``8201917e3f9b47b8edd8039ea3278ef8631b0f2a``
+
+* Features
+
   * Added multi-armed bandit endpoint. (#255)
     * Implemented epsilon-greedy. (#255)
     * Implemented epsilon-first. (#335) 
