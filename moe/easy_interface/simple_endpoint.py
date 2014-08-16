@@ -7,7 +7,9 @@ import simplejson as json
 
 from moe.optimal_learning.python.data_containers import SamplePoint, HistoricalData
 from moe.views.constant import ALL_REST_ROUTES_ROUTE_NAME_TO_ENDPOINT, GP_NEXT_POINTS_EPI_ROUTE_NAME, GP_MEAN_VAR_ROUTE_NAME, GP_HYPER_OPT_ROUTE_NAME
-from moe.views.schemas import GpNextPointsResponse, GpHyperOptResponse, GpMeanVarResponse
+from moe.views.schemas.gp_next_points_pretty_view import GpNextPointsResponse
+from moe.views.schemas.rest.gp_hyper_opt import GpHyperOptResponse
+from moe.views.schemas.rest.gp_mean_var import GpMeanVarResponse
 
 
 DEFAULT_HOST = '127.0.0.1'

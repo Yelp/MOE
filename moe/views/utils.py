@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 """Utilities for MOE views."""
+from moe.bandit.data_containers import HistoricalData as BanditHistoricalData
+from moe.bandit.data_containers import SampleArm
 from moe.optimal_learning.python.cpp_wrappers.gaussian_process import GaussianProcess
 from moe.optimal_learning.python.data_containers import SamplePoint, HistoricalData
 from moe.optimal_learning.python.geometry_utils import ClosedInterval
 from moe.optimal_learning.python.linkers import DOMAIN_TYPES_TO_DOMAIN_LINKS, COVARIANCE_TYPES_TO_CLASSES, OPTIMIZER_TYPES_TO_OPTIMIZER_METHODS
+from moe.optimal_learning.python.python_version.expected_improvement import MVNDSTParameters
 
 
 def _make_domain_from_params(params, domain_info_key="domain_info", python_version=False):
@@ -12,7 +15,7 @@ def _make_domain_from_params(params, domain_info_key="domain_info", python_versi
     ``params`` has the following form::
 
         params = {
-            'domain_info': <instance of moe.rest.schemas.BoundedDomainInfo>,
+            'domain_info': <instance of :class:`moe.views.schemas.base_schemas.BoundedDomainInfo`>
             ...
             }
 
@@ -35,7 +38,7 @@ def _make_covariance_of_process_from_params(params):
     ``params`` has the following form::
 
         params = {
-            'covariance_info': <instance of moe.rest.schemas.CovarianceInfo>,
+            'covariance_info': <instance of :class:`moe.views.schemas.base_schemas.CovarianceInfo`>,
             ...
             }
 
@@ -68,11 +71,25 @@ def _make_optimizer_parameters_from_params(params):
 
     optimizer_method = OPTIMIZER_TYPES_TO_OPTIMIZER_METHODS[optimizer_info.get('optimizer_type')]
 
-    # TODO(GH-167): Kill this when you reoganize num_multistarts for C++.
-    validated_optimizer_parameters['num_multistarts'] = optimizer_info['num_multistarts']
-    optimizer_parameters = optimizer_method.cpp_parameters_class(**validated_optimizer_parameters)
+    if optimizer_method.cpp_optimizer_class is not None:
+        # TODO(GH-167): Kill this when you reoganize num_multistarts for C++.
+        validated_optimizer_parameters['num_multistarts'] = optimizer_info['num_multistarts']
+        optimizer_parameters = optimizer_method.cpp_parameters_class(**validated_optimizer_parameters)
+        return optimizer_method.cpp_optimizer_class, optimizer_parameters, num_random_samples
+    else:
+        optimizer_parameters = optimizer_method.python_parameters_class(**validated_optimizer_parameters)
+        return optimizer_method.python_optimizer_class, optimizer_parameters, num_random_samples
 
-    return optimizer_method.cpp_optimizer_class, optimizer_parameters, num_random_samples
+
+def _make_mvndst_parameters_from_params(params):
+    """Construct mvndst parameters the deserialized REST request.
+
+    :param params: the deserialized REST request, containing mvndst_parameters
+    :type params: a dictionary with a key mvndst_parameters containing a :class:`moe.views.schemas.base_schemas.MVNDSTParametersSchema()`
+
+    """
+    mvndst_parameters = params.get('mvndst_parameters')
+    return MVNDSTParameters(**mvndst_parameters)
 
 
 def _make_gp_from_params(params):
@@ -81,9 +98,9 @@ def _make_gp_from_params(params):
     ``params`` has the following form::
 
         params = {
-            'gp_historical_info': <instance of moe.rest.schemas.GpHistoricalInfo>,
-            'domain_info': <instance of moe.rest.schemas.DomainInfo>,
-            'covariance_info': <instance of moe.rest.schemas.CovarianceInfo>,
+            'gp_historical_info': <instance of :class:`moe.views.schemas.base_schemas.GpHistoricalInfo`>,
+            'domain_info': <instance of :class:`moe.views.schemas.base_schemas.DomainInfo`>,
+            'covariance_info': <instance of :class:`moe.views.schemas.base_schemas.CovarianceInfo`>,
             }
 
     :param params: The request params dict
@@ -113,3 +130,26 @@ def _make_gp_from_params(params):
             )
 
     return gaussian_process
+
+
+def _make_bandit_historical_info_from_params(params):
+    """Create and return a bandit historical info from the request params as a dict.
+
+    ``params`` has the following form::
+
+        params = {
+            'historical_info': <instance of :class:`moe.views.schemas.bandit_pretty_view.BanditHistoricalInfo`>,
+            }
+
+    :param params: The request params dict
+    :type params: dict
+
+    """
+    arms_sampled = {}
+    # Load up the info
+    for arm_name, sampled_arm in params.get("historical_info").get("arms_sampled").iteritems():
+        arms_sampled[arm_name] = SampleArm(win=sampled_arm.get("win"), loss=sampled_arm.get("loss"), total=sampled_arm.get("total"))
+
+    bandit_historical_info = BanditHistoricalData(sample_arms=arms_sampled)
+
+    return bandit_historical_info

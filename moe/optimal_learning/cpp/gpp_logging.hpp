@@ -82,17 +82,21 @@ namespace optimal_learning {
   of printf until a new color or reset is specified.  These macros can be
   interspersed between strings in printf()'s first argument (see examples).
 
-  Example usage:
-  ``printf(OL_ANSI_COLOR_GREEN "Hi I am %d" OL_ANSI_COLOR_RESET "And you are %d\n", 2, 3);``
-  Would print:
-  ``Hi I am 2 And you are 3.``
-  ``|  GREEN | DEFAULT COLOR|``
+  Example usage::
 
-  Without reset, the following would happen:
-  ``printf(OL_ANSI_COLOR_GREEN "Hi I am %d\n", 2);``
-  ``printf("And you are %d\n", 3);``
-  ``Hi I am 2     <--- in green``
-  ``And you are 3 <--- ALSO in green!``
+    printf(OL_ANSI_COLOR_GREEN "Hi I am %d" OL_ANSI_COLOR_RESET "And you are %d\n", 2, 3);
+
+  Would print::
+
+    Hi I am 2 And you are 3.
+    |  GREEN | DEFAULT COLOR|
+
+  Without reset, the following would happen::
+
+    printf(OL_ANSI_COLOR_GREEN "Hi I am %d\n", 2);
+    printf("And you are %d\n", 3);
+    Hi I am 2     <--- in green
+    And you are 3 <--- ALSO in green!
 \endrst*/
 #define OL_ANSI_COLOR_RESET   "\x1b[0m"                  // reset to default color
 #define OL_ANSI_COLOR_RED     "\x1b[31m"                 // Red
@@ -124,7 +128,9 @@ struct ClosedInterval;
 /*!\rst
   Utility function to print a 2D matrix (formatted) to stdout.
   Uses ``%.18E`` descriptors to printf.
+
   For example, the input: ``A[3][4] = [4 53 81 32 12 2 5 8 93 2 1 0]``
+
   would be printed as (with decimal points removed)::
 
     4  32  5  2
@@ -143,7 +149,9 @@ void PrintMatrix(double const * restrict matrix, int num_rows, int num_cols) noe
 /*!\rst
   Utility function to print the TRANSPOSE of a 2D matrix (formatted) to stdout.
   Uses ``%.18E`` descriptors to printf.
+
   For example, the input: ``A[3][4] = [4 53 81 32 12 2 5 8 93 2 1 0]``
+
   would be printed as (with decimal points removed)::
 
     4  53 81
@@ -170,7 +178,7 @@ void PrintMatrixTrans(double const * restrict matrix, int num_rows, int num_cols
 
   \param
     :domain[dim]: array of ClosedInterval specifying the boundaries of a dim-dimensional tensor-product domain.
-    :dim_in: number of spatial dimensions
+    :dim: number of spatial dimensions
 \endrst*/
 void PrintDomainBounds(ClosedInterval const * restrict domain_bounds, int dim);
 

@@ -97,7 +97,7 @@ def multistart_hyperparameter_optimization(
     :type randomness: (UNUSED)
     :param max_num_threads: maximum number of threads to use, >= 1 (UNUSED)
     :type max_num_threads: int > 0
-    :param status: status messages (e.g., reporting on optimizer success, etc.)
+    :param status: (output) status messages (e.g., reporting on optimizer success, etc.)
     :type status: dict
     :return: hyperparameters that maximize the specified log likelihood measure within the specified domain
     :rtype: array of float64 with shape (log_likelihood_evaluator.num_hyperparameters)
@@ -123,6 +123,7 @@ def evaluate_log_likelihood_at_hyperparameter_list(
         log_likelihood_evaluator,
         hyperparameters_to_evaluate,
         max_num_threads=DEFAULT_MAX_NUM_THREADS,
+        status=None,
 ):
     """Compute the specified log likelihood measure at each input set of hyperparameters.
 
@@ -135,12 +136,20 @@ def evaluate_log_likelihood_at_hyperparameter_list(
     :type hyperparameters_to_evaluate: array of float64 with shape (num_to_eval, log_likelihood_evaluator.num_hyperparameters)
     :param max_num_threads: maximum number of threads to use, >= 1 (UNUSED)
     :type max_num_threads: int
+    :param status: (output) status messages (e.g., reporting on optimizer success, etc.)
+    :type status: dict
     :return: log likelihood value at each specified set of hyperparameters
     :rtype: array of float64 with shape (hyperparameters_to_evaluate.shape[0])
 
     """
     null_optimizer = NullOptimizer(None, log_likelihood_evaluator)
     _, values = multistart_optimize(null_optimizer, starting_points=hyperparameters_to_evaluate)
+
+    # TODO(GH-59): Have null optimizer actually indicate whether updates were found, e.g., in an IOContainer-like structure.
+    found_flag = True
+    if status is not None:
+        status["evaluate_log_likelihood_at_hyperparameter_list"] = found_flag
+
     return values
 
 

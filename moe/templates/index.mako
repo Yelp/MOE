@@ -46,6 +46,19 @@
                 
               </ul>
             </div>
+
+          <div class="panel panel-success">
+            <div class="panel-heading"><b>Bandit Pretty Endpoints</b></div>
+            <div class="panel-body">
+              <p>Interactive forms for trying and testing the various MOE REST endpoints.</p>
+            </div>
+              <ul class="list-group">
+                <li class="list-group-item"><b>Bandit Endpoints</b></li>
+                <a href="${request.route_url( 'bandit_epsilon_pretty' )}" class="list-group-item">Bandit epsilon</a>
+                <a href="${request.route_url( 'bandit_ucb_pretty' )}" class="list-group-item">Bandit UCB</a>
+                
+              </ul>
+            </div>
           </div>
         </div>
       </div>

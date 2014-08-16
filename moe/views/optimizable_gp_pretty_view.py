@@ -4,7 +4,7 @@ import copy
 
 from moe.optimal_learning.python.constant import OPTIMIZER_TYPE_AND_OBJECTIVE_TO_DEFAULT_PARAMETERS, ENDPOINT_TO_DEFAULT_OPTIMIZER_TYPE
 from moe.views.gp_pretty_view import GpPrettyView
-from moe.views.schemas import OptimizerInfo, OPTIMIZER_TYPES_TO_SCHEMA_CLASSES
+from moe.views.schemas.base_schemas import OptimizerInfo, OPTIMIZER_TYPES_TO_SCHEMA_CLASSES
 
 
 class OptimizableGpPrettyView(GpPrettyView):
@@ -59,17 +59,17 @@ class OptimizableGpPrettyView(GpPrettyView):
         params['optimizer_info'] = copy.deepcopy(params['optimizer_info'])
 
         # Set optimizer_type to default value if the user did not provide a value
-        if not params['optimizer_info']['optimizer_type']:
+        if params['optimizer_info']['optimizer_type'] is None:
             params['optimizer_info']['optimizer_type'] = self._get_default_optimizer_type(params)
 
         default_optimizer_parameters = self._get_default_optimizer_params(params)
 
         # Set num_multistarts to default value if the user did not provide a value
-        if not params['optimizer_info']['num_multistarts']:
+        if params['optimizer_info']['num_multistarts'] is None:
             params['optimizer_info']['num_multistarts'] = default_optimizer_parameters.num_multistarts
 
         # Set num_random_samples to default value if the user did not provide a value
-        if not params['optimizer_info']['num_random_samples']:
+        if params['optimizer_info']['num_random_samples'] is None:
             params['optimizer_info']['num_random_samples'] = default_optimizer_parameters.num_random_samples
 
         # Override the defaults with information that may be in the optimizer parameters
@@ -78,7 +78,7 @@ class OptimizableGpPrettyView(GpPrettyView):
             for param, val in params['optimizer_info']['optimizer_parameters'].iteritems():
                 optimizer_parameters_dict[param] = val
 
-        # Find the schma class that corresponds to the ``optimizer_type`` of the request
+        # Find the schema class that corresponds to the ``optimizer_type`` of the request
         # TODO(GH-303): Until this ticket is complete (see schemas.OptimizerInfo),
         # optimizer_parameters has *not been validated yet*, so we need to validate manually.
         schema_class = OPTIMIZER_TYPES_TO_SCHEMA_CLASSES[params['optimizer_info']['optimizer_type']]()

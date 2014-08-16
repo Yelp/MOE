@@ -174,29 +174,29 @@
   **5. CITATIONS**
 
   a. Gaussian Processes for Machine Learning.
-  Carl Edward Rasmussen and Christopher K. I. Williams. 2006.
-  Massachusetts Institute of Technology.  55 Hayward St., Cambridge, MA 02142.
-  http://www.gaussianprocess.org/gpml/ (free electronic copy)
+     Carl Edward Rasmussen and Christopher K. I. Williams. 2006.
+     Massachusetts Institute of Technology.  55 Hayward St., Cambridge, MA 02142.
+     http://www.gaussianprocess.org/gpml/ (free electronic copy)
 
   b. Parallel Machine Learning Algorithms In Bioinformatics and Global Optimization (PhD Dissertation).
-  Part II, EPI: Expected Parallel Improvement
-  Scott Clark. 2012.
-  Cornell University, Center for Applied Mathematics.  Ithaca, NY.
-  https://github.com/sc932/Thesis
-  sclark@yelp.com
+     Part II, EPI: Expected Parallel Improvement
+     Scott Clark. 2012.
+     Cornell University, Center for Applied Mathematics.  Ithaca, NY.
+     https://github.com/sc932/Thesis
+     sclark@yelp.com
 
   c. Differentiation of the Cholesky Algorithm.
-  S. P. Smith. 1995.
-  Journal of Computational and Graphical Statistics. Volume 4. Number 2. p134-147
+     S. P. Smith. 1995.
+     Journal of Computational and Graphical Statistics. Volume 4. Number 2. p134-147
 
   d. A Multi-points Criterion for Deterministic Parallel Global Optimization based on Gaussian Processes.
-  David Ginsbourger, Rodolphe Le Riche, and Laurent Carraro.  2008.
-  D´epartement 3MI. Ecole Nationale Sup´erieure des Mines. 158 cours Fauriel, Saint-Etienne, France.
-  {ginsbourger, leriche, carraro}@emse.fr
+     David Ginsbourger, Rodolphe Le Riche, and Laurent Carraro.  2008.
+     D´epartement 3MI. Ecole Nationale Sup´erieure des Mines. 158 cours Fauriel, Saint-Etienne, France.
+     ginsbourger@emse.fr, leriche@emse.fr, carraro@emse.fr
 
   e. Efficient Global Optimization of Expensive Black-Box Functions.
-  Jones, D.R., Schonlau, M., Welch, W.J. 1998.
-  Journal of Global Optimization, 13, 455-492.
+     Jones, D.R., Schonlau, M., Welch, W.J. 1998.
+     Journal of Global Optimization, 13, 455-492.
 \endrst*/
 
 #ifndef MOE_OPTIMAL_LEARNING_CPP_GPP_MATH_HPP_
@@ -452,7 +452,9 @@ class GaussianProcess final {
     ``points_to_sample`` is not allowed to contain duplicate points. Violating this results in a singular variance matrix.
 
     Note that ``grad_chol`` is nominally sized:
+
     ``grad_chol[dim][num_to_sample][num_to_sample][num_to_sample]``.
+
     Let this be indexed ``grad_chol[d][i][j][k]``, which is read the derivative of ``var[i][j]``
     with respect to ``x_{d,k}`` (x = ``points_to_sample``)
 
@@ -744,10 +746,14 @@ class ExpectedImprovementEvaluator final {
     The idea of the MC approach is to repeatedly sample at the union of ``points_to_sample`` and
     ``points_being_sampled``. This is analogous to gaussian_process_interface.sample_point_from_gp,
     but we sample ``num_union`` points at once:
+
     ``y = \mu + Lw``
+
     where ``\mu`` is the GP-mean, ``L`` is the ``chol_factor(GP-variance)`` and ``w`` is a vector
     of ``num_union`` draws from N(0, 1). Then:
+
     ``improvement_per_step = max(max(best_so_far - y), 0.0)``
+
     Observe that the inner ``max`` means only the smallest component of ``y`` contributes in each iteration.
     We compute the improvement over many random draws and average.
 
@@ -775,7 +781,9 @@ class ExpectedImprovementEvaluator final {
     The MC computation of grad EI is similar to the computation of EI (decsribed in
     compute_expected_improvement). We differentiate ``y = \mu + Lw`` wrt ``points_to_sample``;
     only terms from the gradient of ``\mu`` and ``L`` contribute. In EI, we computed:
+
     ``improvement_per_step = max(max(best_so_far - y), 0.0)``
+
     and noted that only the smallest component of ``y`` may contribute (if it is > 0.0).
     Call this index ``winner``. Thus in computing grad EI, we only add gradient terms
     that are attributable to the ``winner``-th component of ``y``.
@@ -903,7 +911,7 @@ struct ExpectedImprovementState final {
       :ei_evaluator: expected improvement evaluator object that specifies the parameters & GP for EI evaluation
       :points_to_sample[dim][num_to_sample]: potential future samples whose EI (and/or gradients) are being evaluated
   \endrst*/
-  void UpdateCurrentPoint(const EvaluatorType& ei_evaluator,
+  void SetCurrentPoint(const EvaluatorType& ei_evaluator,
                           double const * restrict points_to_sample) OL_NONNULL_POINTERS;
 
   /*!\rst
@@ -1134,7 +1142,7 @@ struct OnePotentialSampleExpectedImprovementState final {
       :ei_evaluator: expected improvement evaluator object that specifies the parameters & GP for EI evaluation
       :point_to_sample[dim]: potential future sample whose EI (and/or gradients) is being evaluated
   \endrst*/
-  void UpdateCurrentPoint(const EvaluatorType& ei_evaluator,
+  void SetCurrentPoint(const EvaluatorType& ei_evaluator,
                           double const * restrict point_to_sample_in) OL_NONNULL_POINTERS;
 
   /*!\rst
@@ -1182,6 +1190,7 @@ struct OnePotentialSampleExpectedImprovementState final {
   This is a utility function just for reducing code duplication.
 
   dim is the spatial dimension, ``ei_evaluator.dim()``
+
   \param
     :ei_evaluator: evaluator object associated w/the state objects being constructed
     :starting_point[dim]: initial point to load into state (must be a valid point for the problem)
@@ -1250,6 +1259,7 @@ inline OL_NONNULL_POINTERS void SetupExpectedImprovementState(
   This function does not perform multistarting or employ any other robustness-boosting heuristcs; it only
   converges if the ``initial_guess`` is close to the solution. In general,
   ComputeOptimalPointsToSample() (see below) is preferred. This function is meant for:
+
   1. easier testing;
   2. if you really know what you're doing.
 
@@ -1364,6 +1374,10 @@ OL_NONNULL_POINTERS void ComputeOptimalPointsToSampleViaMultistartGradientDescen
     NormalRNG * normal_rng,
     bool * restrict found_flag,
     double * restrict best_next_point) {
+  if (unlikely(num_multistarts <= 0)) {
+    OL_THROW_EXCEPTION(LowerBoundException<int>, "num_multistarts must be > 1", num_multistarts, 1);
+  }
+
   bool configure_for_gradients = true;
   if (num_to_sample == 1 && num_being_sampled == 0) {
     // special analytic case when we are not using (or not accounting for) multiple, simultaneous experiments

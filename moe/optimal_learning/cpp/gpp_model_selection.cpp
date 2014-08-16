@@ -44,21 +44,29 @@
   GPs resulting from different classes of covariance or entirely different models.
 
   Then the "posterior over the parameters" is:
+
   ``p(w | y, X, \theta, H_i) = \frac{p(y | X, w, H_i) * p(w | \theta, H_i)}{p(y | X, \theta, H_i)}``
+
   where ``p(y | X, w, H_i)`` is the "likelihood" (of the model) and ``p(w | \theta, H_i)`` is the "parameter prior" (encoding what
   we know about the model parameters *before* seeing data).  The denominator is the "marginal likelihood."  Using
   total probability, it is given as:
+
   ``p(y | X, \theta, H_i) = \int p(y | X, w, H_i) * p(w | \theta, H_i) dw``,
+
   where we have marginalized out ``w ~ p(w | \theta, H_i)`` from the likelihood, ``p(y | X, w, H_i)``, to produce the marginal likelihood.
   This is just the integral of the numerator over ``w``, so it can be viewed as a normalizing constant too--however you
   like think about Bayes' Theorem.
 
   From that marginal likelihood, we can also produce the posterior over hyperparameters:
+
   ``p(\theta | y, X, H_i) = \frac{p(y | X, \theta, H_i * p(\theta, H_i)}{p(y | X, H_i)}``
+
   where ``p(\theta, H_i)`` is called the "hyper-prior" and the denominator is constructed as before.
 
   And finally, the posterior for the models:
+
   ``p(H_i | y, X) = \frac{p(y | X, H_i) * p(H_i)}{p(y | X)}``
+
   Here ``p(y | X)`` is not an integral since ``H_i`` is discrete: ``= \sum_i p(y | X, H_i) * p(H_i)``
 
   These integrals can be extremely complicated, often requiring Monte-Carlo (MC) integration.  In particular,
@@ -89,8 +97,10 @@
   ``y_i = x_i\beta_i`` as in linear regression.  However, the function values ``f`` at the training points
   (``points_sampled``) are analogous to parameters; the more sampled points, the more complex the model (more params).
 
-  Then the log marginal likelihood, ``\log(p(y | X, \theta))``, examines the probability of the model given the data.  It is:
-  ``log p(y | X, \theta) = -\frac{1}{2} * y^T * K^-1 * y - \frac{1}{2} * \log(det(K)) - \frac{n}{2} * \log(2*pi)  (Equation 1)``
+  Then the log marginal likelihood, ``\log(p(y | X, \theta))``, examines the probability of the model given the data.  It is::
+
+    log p(y | X, \theta) = -\frac{1}{2} * y^T * K^-1 * y - \frac{1}{2} * \log(det(K)) - \frac{n}{2} * \log(2*pi)  (Equation 1)
+
   where ``n`` is ``num_sampled``, ``\theta`` are the hyperparameters, and ``\log`` is the natural logarithm.
 
   To maximize ``p``, we can equivalently maximize ``log(p)``.
@@ -101,7 +111,9 @@
   Anyway, despite the complex integrals and whatnot in the general Bayesian model inference method, the LML for GPs
   is very easy to derive.  From the discussion in gpp_math.hpp/cpp, it should be clear that the GP is distributed
   like a multi-variate Gaussian:
+
   ``N(\mu, K) = \frac{1}{\sqrt{(2\pi)^n * det(K)}} * \exp(-\frac{1}{2}*(y-\mu)^T * K^-1 * (y - \mu))``
+
   And our ``GP ~ N(0, K)``; hence ``p(y | X, \theta) ~ N(0,K)`` by definition.  Take the logarithm and we reach Equation 1.
 
   Let's look at the terms:
@@ -115,9 +127,11 @@
   * ``term1``: the only term that depends on the observed function values, ``y``.  This is called the "data-fit."  The data fit
     decreases monotonically as covariance length scales (part of hyperparameters) increase since long lengths force the
     model to change 'slowly', making it less flexible.
+
   * ``term2``: this term is the complexity penalty, depending only on ``K``.  One can think of complexity as a concrete measure of
     how "bumpy" (short length scales, high frequency) or "not-bumpy" (long length scales, low frequency) the distribution is.\*
     This term increases with length scale; low frequency => low complexity.
+
   * ``term3``: the simplest term, this is just from normalization (so the hyper-volume under the hyper-surface is 1)
 
   \* Here we're talking about the variance of the distribution, not the mean since ``term2`` only deals with ``K``; e.g.,
@@ -157,9 +171,12 @@
 
   (Rasmussen & Williams, Chp 5.4.2)
   For a GP, LOO-CV, which we denote ``L_{LOO}`` is:
+
   Let ``\log p(y_i | X_{-i}, y_{-i}, \theta) = -0.5\log(\sigma_i^2) - 0.5*(y_i - \mu_i)^2/\sigma_i^2 - 0.5\log(2\pi)``.
   Then we compute:
+
   ``L_{LOO}(X ,y, \theta) = \sum_{i = 1}^n \log p(y_i | X_{-i}, y_{-i})``.
+
   where ``X_{-i}`` and ``y_{-i}`` are the training data with the ``i``-th point removed.  Then ``X_i`` is taken as the point to sample.
   ``\sigma_i^2`` and ``\mu_i`` are the GP (predicted) variance/mean at the point to sample, ``X \ X_{-i}``.
 
@@ -173,8 +190,10 @@
   in terms of ``K^-1``.
   Wikipedia for block matrix inverse: http://en.wikipedia.org/wiki/Invertible_matrix#Blockwise_inversion
   We can then directly show that:
-  ``\mu_i = y_i - \alpha_i / K^{-1}_{ii}``
-  ``\sigma_i^2 = 1/K^{-1}_{ii}``
+
+  | ``\mu_i = y_i - \alpha_i / K^{-1}_{ii}``
+  | ``\sigma_i^2 = 1/K^{-1}_{ii}``
+
   where ``\alpha = K^-1 * y``
 
   **2a, iii. REMARKS**
@@ -285,7 +304,9 @@ namespace {  // utilities for building covariance matrix and its hyperparameter 
 
 /*!\rst
   Computes the covariance matrix of a list of points, ``X_i``.  Matrix is computed as:
+
   ``A_{i,j} = covariance(X_i, X_j)``.
+
   Result is SPD assuming covariance operator is SPD and points are unique.
 
   Generally, this is called from other functions with "points_sampled" as the input and not any
@@ -320,6 +341,7 @@ OL_NONNULL_POINTERS void BuildCovarianceMatrixWithNoiseVariance(const Covariance
 
 /*!\rst
   Build ``A_{jik} = \pderiv{K_{ij}}{\theta_k}``
+
   Hence the outer loop structure is identical to BuildCovarianceMatrix().
 
   Note the structure of the resulting tensor is ``num_hyperparameters`` blocks of size
@@ -486,6 +508,7 @@ void LogMarginalLikelihoodEvaluator::FillLogLikelihoodState(LogMarginalLikelihoo
   .. NOTE:: These comments have been copied into the matching method of LogMarginalLikelihood in python_version/log_likelihood.py.
 
   ``log p(y | X, \theta) = -\frac{1}{2} * y^T * K^-1 * y - \frac{1}{2} * \log(det(K)) - \frac{n}{2} * \log(2*pi)``
+
   where n is ``num_sampled``, ``\theta`` are the hyperparameters, and ``\log`` is the natural logarithm.  In the following,
 
   * ``term1 = -\frac{1}{2} * y^T * K^-1 * y``
@@ -493,9 +516,13 @@ void LogMarginalLikelihoodEvaluator::FillLogLikelihoodState(LogMarginalLikelihoo
   * ``term3 = -\frac{n}{2} * \log(2*pi)``
 
   For an SPD matrix ``K = L * L^T``,
+
   ``det(K) = \Pi_i L_ii^2``
+
   We could compute this directly and then take a logarithm.  But we also know:
+
   ``\log(det(K)) = 2 * \sum_i \log(L_ii)``
+
   The latter method is (currently) preferred for computing ``\log(det(K))`` due to reduced chance for overflow
   and (possibly) better numerical conditioning.
 \endrst*/
@@ -523,9 +550,15 @@ double LogMarginalLikelihoodEvaluator::ComputeLogLikelihood(
 /*!\rst
   .. NOTE:: These comments have been copied into the matching method of LogMarginalLikelihood in python_version/log_likelihood.py.
 
-  Computes ``\pderiv{log(p(y | X, \theta))}{\theta_k} = \frac{1}{2} * y_i * \pderiv{K_{ij}}{\theta_k} * y_j - \frac{1}{2}``
-  ``* trace(K^{-1}_{ij}\pderiv{K_{ij}}{\theta_k})``
-  Or equivalently, ``= \frac{1}{2} * trace([\alpha_i \alpha_j - K^{-1}_{ij}]*\pderiv{K_{ij}}{\theta_k})``,
+  Computes::
+
+    \pderiv{log(p(y | X, \theta))}{\theta_k} = \frac{1}{2} * y_i * \pderiv{K_{ij}}{\theta_k} * y_j -
+                                               \frac{1}{2} * trace(K^{-1}_{ij}\pderiv{K_{ij}}{\theta_k})
+
+  Or equivalently::
+
+    = \frac{1}{2} * trace([\alpha_i \alpha_j - K^{-1}_{ij}]*\pderiv{K_{ij}}{\theta_k}),
+
   where ``\alpha_i = K^{-1}_{ij} * y_j``
 \endrst*/
 #define OL_USE_INVERSE 0
@@ -579,11 +612,13 @@ void LogMarginalLikelihoodEvaluator::ComputeGradLogLikelihood(LogMarginalLikelih
 }
 
 /*!\rst
-  Computes the Hessian matrix of the log (marginal) likelihood wrt the hyperparameters:
-  ``\mixpderiv{log(p(y | X, \theta_k))}{\theta_i}{\theta_j} =``
-  ``    (-\alpha * \pderiv{K}{\theta_i} * K^-1 * \pderiv{K}{\theta_j} * \alpha)``
-  ``  + (\alpha * \mixpderiv{K}{\theta_i}{\theta_j} * \alpha)``
-  ``  - 0.5 * tr(-K^-1 * \pderiv{K}{\theta_i} * K^-1 * \pderiv{K}{\theta_j} + K^-1 * \mixpderiv{K}{\theta_i}{\theta_j})``
+  Computes the Hessian matrix of the log (marginal) likelihood wrt the hyperparameters::
+
+    \mixpderiv{log(p(y | X, \theta_k))}{\theta_i}{\theta_j} =
+        (-\alpha * \pderiv{K}{\theta_i} * K^-1 * \pderiv{K}{\theta_j} * \alpha)
+      + (\alpha * \mixpderiv{K}{\theta_i}{\theta_j} * \alpha)
+      - 0.5 * tr(-K^-1 * \pderiv{K}{\theta_i} * K^-1 * \pderiv{K}{\theta_j} + K^-1 * \mixpderiv{K}{\theta_i}{\theta_j})
+
   Note that as usual, ``K`` is the covariance matrix (bearing its own two indices, say ``K_{k,l}``) which are omitted here.
 
   This expression arises from differentating each entry of the gradient (see function comments for
@@ -693,7 +728,7 @@ void LogMarginalLikelihoodEvaluator::ComputeHessianLogLikelihood(LogMarginalLike
   }
 }
 
-void LogMarginalLikelihoodState::UpdateHyperparameters(const EvaluatorType& log_likelihood_eval,
+void LogMarginalLikelihoodState::SetHyperparameters(const EvaluatorType& log_likelihood_eval,
                                                        double const * restrict hyperparameters) {
   // update hyperparameters
   covariance_ptr->SetHyperparameters(hyperparameters);
@@ -713,7 +748,7 @@ void LogMarginalLikelihoodState::SetupState(const EvaluatorType& log_likelihood_
   }
 
   // set hyperparameters and derived quantities
-  UpdateHyperparameters(log_likelihood_eval, hyperparameters);
+  SetHyperparameters(log_likelihood_eval, hyperparameters);
 }
 
 LogMarginalLikelihoodState::LogMarginalLikelihoodState(const EvaluatorType& log_likelihood_eval,
@@ -864,9 +899,13 @@ void LeaveOneOutLogLikelihoodEvaluator::FillLogLikelihoodState(
 
 /*!\rst
   Computes the Leave-One-Out Cross Validation log pseudo-likelihood.
+
   Let ``\log p(y_i | X_{-i}, y_{-i}, \theta) = -0.5\log(\sigma_i^2) - 0.5*(y_i - \mu_i)^2/\sigma_i^2 - 0.5\log(2\pi)``
+
   Then we compute:
+
   ``L_{LOO}(X, y, \theta) = \sum_{i = 1}^n \log p(y_i | X_{-i}, y_{-i}.``
+
   where ``X_{-i}`` and ``y_{-i}`` are the training data with the ``i``-th point removed.  Then ``X_i`` is taken as the point to sample.
   ``\sigma_i^2`` and ``\mu_i`` are the GP (predicted) variance/mean at the point to sample.
 
@@ -907,15 +946,18 @@ double LeaveOneOutLogLikelihoodEvaluator::ComputeLogLikelihood(
 /*!\rst
   Computes the gradients (wrt hyperparameters, ``\theta``) of the Leave-One-Out Cross Validation log pseudo-likelihood, ``L_{LOO}``.
 
-  See function definition get_leave_one_out_likelihood() function defn docs for definition of ``L_{LOO}``.  We compute:
-  ``\pderiv{L_{LOO}}{\theta_j} = \sum_{i = 1}^n \frac{1}{(K^-1)_ii} *``
-  ``             \left(\alpha_i[Z_j\alpha]_i - 0.5(1 + \frac{\alpha_i^2}{(K^-1)_ii})[Z_j K^-1]_ii \right)``
+  See function definition get_leave_one_out_likelihood() function defn docs for definition of ``L_{LOO}``.  We compute::
+
+    \pderiv{L_{LOO}}{\theta_j} = \sum_{i = 1}^n \frac{1}{(K^-1)_ii} *
+                 \left(\alpha_i[Z_j\alpha]_i - 0.5(1 + \frac{\alpha_i^2}{(K^-1)_ii})[Z_j K^-1]_ii \right)
+
   where ``\alpha = K^-1 * y``, and ``Z_j = K^-1 * \pderiv{K}{\theta_j}``.
 
   Note that formation of ``[Z_j * K^-1] = K^-1 * \pderiv{K}{\theta_j} * K^-1`` requires some care.  We prefer not to use the explicit
   inverse whenever possible.  But we are readily able to compute ``A^-1 * B`` via "backsolve" (of a factored ``A``), so we do:
-  ``A := K^-1 * Z^T``
-  ``result := A^T`` gives us the desired ``[Z_j * K^-1]`` without forming ``K^-1``.
+
+  | ``A := K^-1 * Z^T``
+  | ``result := A^T`` gives us the desired ``[Z_j * K^-1]`` without forming ``K^-1``.
 
   Note that this formulation uses ``(K^-1)_ii`` directly to avoid the (very high) expense of evaluating the GP mean, variance n times.
   This is analogous to using LeaveOneOutCoreWithMatrixInverse() over LeaveOneOutCoreAccurate(), which is an assumption
@@ -973,7 +1015,7 @@ void LeaveOneOutLogLikelihoodEvaluator::ComputeHessianLogLikelihood(
   OL_THROW_EXCEPTION(OptimalLearningException, "LeaveOneOutLogLikelihoodEvaluator::ComputeHessianLogLikelihood is NOT IMPLEMENTED. Try using Gradient Descent instead of Newton.");
 }
 
-void LeaveOneOutLogLikelihoodState::UpdateHyperparameters(const EvaluatorType& log_likelihood_eval,
+void LeaveOneOutLogLikelihoodState::SetHyperparameters(const EvaluatorType& log_likelihood_eval,
                                                         double const * restrict hyperparameters) {
   // update hyperparameters
   covariance_ptr->SetHyperparameters(hyperparameters);
@@ -995,7 +1037,7 @@ void LeaveOneOutLogLikelihoodState::SetupState(const EvaluatorType& log_likeliho
   }
 
   // set hyperparameters and derived quantities
-  UpdateHyperparameters(log_likelihood_eval, hyperparameters);
+  SetHyperparameters(log_likelihood_eval, hyperparameters);
 }
 
 LeaveOneOutLogLikelihoodState::LeaveOneOutLogLikelihoodState(const EvaluatorType& log_likelihood_eval,

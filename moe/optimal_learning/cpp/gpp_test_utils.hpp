@@ -5,8 +5,10 @@
   checks and a few mathematical utilities.
 
   The "big stuff" in this file is a class that defines the interface for a pingable function:
-  PingableMatrixInputVectorOutputInterface
-  Then there is a PingDerivative() function that can conduct ping testing on any implementer of this interface.
+
+  ``PingableMatrixInputVectorOutputInterface``
+
+  Then there is a ``PingDerivative()`` function that can conduct ping testing on any implementer of this interface.
 
   There's also a mock environment class that sets up quantities commonly needed by tests of GP functionality.
   Similarly, there is a mock data class that builds up "history" (points_sampled, points_sampled_value) by
@@ -38,9 +40,13 @@ class SimplexIntersectTensorProductDomain;
 
 /*!\rst
   Class to enable numerical and analytic differentiation of functions of the form:
+
   ``f_{k} = f(X_{d,i})``
+
   with derivatives taken wrt each member of ``X_{d,i}``,
+
   ``gradf_{k,d,i} = \frac{\partial f_k}{\partial X_{d,i}}``
+
   In the nomenclature used in the class:
 
   * ``d`` indexes over num_rows (set in GetInputSizes())
@@ -68,12 +74,18 @@ class SimplexIntersectTensorProductDomain;
   happen on-the-fly in GetAnalyticGradient() if desired.
 
   So to ping a derivative, you can:
+
   ``f_p = EvaluateFunction(X + h)``, ``f_m = EvaluateFunction(X - h)``
+
   Compare:
+
   ``(f_p - f_m)/(2h)``
+
   to
-  GetAnalyticGradient
-  See PingDerivative() docs for more details.
+
+  ``GetAnalyticGradient``
+
+  See ``PingDerivative()`` docs for more details.
 \endrst*/
 class PingableMatrixInputVectorOutputInterface {
  public:
@@ -382,6 +394,7 @@ bool CheckIntEquals(int64_t value, int64_t truth) noexcept OL_PURE_FUNCTION OL_W
 
 /*!\rst
   Computes ``||b - A*x||_2``
+
   The quantity ``b - A*x`` is called the "residual."  This is meaningful when x is
   the solution of the linear system ``A*x = b``.
 
@@ -394,7 +407,7 @@ bool CheckIntEquals(int64_t value, int64_t truth) noexcept OL_PURE_FUNCTION OL_W
 
   \param
     :A[size][size]: the linear system
-    :x[size}: the solution vector
+    :x[size]: the solution vector
     :b[size]: the RHS vector
     :size: the dimension of the problem
   \return
@@ -417,7 +430,7 @@ bool CheckDoubleWithin(double value, double truth, double tolerance) noexcept OL
 /*!\rst
   Checks if ``|value - truth| / |truth| <= tolerance`` (relative error)
 
-  If truth = 0.0, CheckDoubleWithin() is performed.
+  If ``truth = 0.0``, ``CheckDoubleWithin()`` is performed.
 
   \param
     :value: number to be tested
@@ -429,10 +442,26 @@ bool CheckDoubleWithin(double value, double truth, double tolerance) noexcept OL
 bool CheckDoubleWithinRelative(double value, double truth, double tolerance) noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT;
 
 /*!\rst
+  Checks if ``|value - truth| / |truth| <= tolerance`` (relative error)
+
+  If ``truth < threshold``, ``CheckDoubleWithin()`` is performed.
+
+  \param
+    :value: number to be tested
+    :truth: the exact/desired result
+    :tolerance: permissible relative difference
+    :threshold: ``tolerance = |value - truth|`` if ``|truth| < threshold``, this is to control unexpected large or
+      undefined relative diff when truth is "too small" (0 for example)
+  \return
+    true if value, truth differ relatively by no more than tolerance.
+\endrst*/
+bool CheckDoubleWithinRelativeWithThreshold(double value, double truth, double tolerance, double threshold) noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT;
+
+/*!\rst
   Checks that ``||A - B||_F <= tolerance``
 
-  Note: the user may want to scale this norm by \sqrt(size) because ||I||_F = \sqrt(size),
-  and we may desire that the norm of the idenity be 1.
+  .. Note: the user may want to scale this norm by \sqrt(size) because ``||I||_F = \sqrt(size)``,
+    and we may desire that the norm of the idenity be 1.
 
   \param
     :matrix1[size_m][size_n]: matrix A
@@ -477,13 +506,17 @@ int CheckPointsAreDistinct(double const * restrict point_list, int num_points, i
   This is an "expert tool" and not necessarily the most user-friendly at that.
 
   This function produces the most useful debugging output when in PingableMatrixInputVectorOutputInterface,
+
   ``num_rows`` = spatial dimension (``d``)
+
   ``num_cols`` = num_points (``i``)
-  GetOutputSize() = num_outputs (``k``)
+
+  ``GetOutputSize() = num_outputs`` (``k``)
+
   for functions ``f_k = f(X_{d,i})``
 
-  WARNING: this function generates ~10 lines of output (to stdout) PER FAILURE. If your implementation
-  is incorrect, expect a large number of lines printed to stdout.
+  .. WARNING:: this function generates ~10 lines of output (to stdout) PER FAILURE. If your implementation
+    is incorrect, expect a large number of lines printed to stdout.
 
   \param
     :function_and_derivative_evaluator: an object that inherits from
@@ -525,7 +558,8 @@ void ExpandDomainBounds(double scale_factor, std::vector<ClosedInterval> * domai
 /*!\rst
   Generates random hyperparameters and sets a covariance object's hyperparameters to the new values.
 
-  Let ``n_hyper = covariance->GetNumberOfHyperparameters()``;
+  Let ``n_hyper = covariance->GetNumberOfHyperparameters()``.
+
   \param
     :uniform_double_hyperparameter: an uniform range, [min, max], from which to draw the hyperparameters
     :uniform_generator[1]: a UniformRandomGenerator object providing the random engine for uniform random numbers
@@ -540,7 +574,9 @@ void FillRandomCovarianceHyperparameters(const boost::uniform_real<double>& unif
 
 /*!\rst
   Generates a random list of ``domain_bounds->size()`` ``[min_i, max_i]`` pairs such that:
+
   ``min_i \in [uniform_double_lower_bound.a(), uniform_double_lower_bound.b()]``
+
   ``max_i \in [uniform_double_upper_bound.a(), uniform_double_upper_bound.b()]``
 
   \param

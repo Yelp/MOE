@@ -140,12 +140,14 @@ bool CheckIntEquals(int64_t value, int64_t truth) noexcept {
 
 /*!\rst
   ``\|b - A*x\|_2``
+
   The quantity ``b - A*x`` is called the "residual."  This is meaningful when ``x`` is
   the solution of the linear system ``A*x = b``.  Then having a small residual norm
   is a *NECESSARY* but *NOT SUFFICIENT* indicator of accuracy in ``x``; that is,
   these quantities need not be small simultaneously.  In particular, we know:
 
   ``\|\delta x\| / \|x\| \le cond(A) * \|r\| / (\|A\| * \|x\|)``
+
   where ``x`` is the approximate solution and \delta x is the error.  So
   ``\delta x = 0 <=> r = 0`` BUT if not identically 0, ||r|| can be much larger.
 
@@ -155,7 +157,9 @@ bool CheckIntEquals(int64_t value, int64_t truth) noexcept {
   residual norm is a valuable measure of correctness.
 
   Suppose ``x`` (computed solution) satisfies: ``(A + \delta A)*x = b``.  Then:
+
   ``\|r\| / (\|A\| * \|x\|) \le \|\delta A\| / \|A\|``
+
   So large ``\|r\|`` indicates a large backward error, implying the linear solver
   is not backward stable (and hence should not be used).
 \endrst*/
@@ -177,9 +181,9 @@ bool CheckDoubleWithin(double value, double truth, double tolerance) noexcept {
   return passed;
 }
 
-bool CheckDoubleWithinRelative(double value, double truth, double tolerance) noexcept {
+bool CheckDoubleWithinRelativeWithThreshold(double value, double truth, double tolerance, double threshold) noexcept {
   double denom = std::fabs(truth);
-  if (denom < std::numeric_limits<double>::min()) {
+  if (denom < threshold) {
     denom = 1.0;  // don't divide by 0
   }
   double diff = std::fabs((value - truth)/denom);
@@ -187,8 +191,11 @@ bool CheckDoubleWithinRelative(double value, double truth, double tolerance) noe
   if (passed != true) {
     OL_ERROR_PRINTF("value = %.18E, truth = %.18E, diff = %.18E, tol = %.18E\n", value, truth, diff, tolerance);
   }
-
   return passed;
+}
+
+bool CheckDoubleWithinRelative(double value, double truth, double tolerance) noexcept {
+  return CheckDoubleWithinRelativeWithThreshold(value, truth, tolerance, std::numeric_limits<double>::min());
 }
 
 /*!\rst
@@ -226,6 +233,7 @@ namespace {
 
 /*!\rst
   Computes the 2nd order centered finite difference approximation to the derivative:
+
   ``( f(x + h) - f(x - h) )/ (2 * h)``
 
   \input
@@ -243,20 +251,33 @@ OL_CONST_FUNCTION OL_WARN_UNUSED_RESULT double SecondOrderCenteredFiniteDifferen
 
 /*!\rst
   Pings the gradient ``\nabla f`` of a function ``f``, using second order finite differences:
+
   ``grad_f_approximate = ( f(x + h) - f(x - h) )/ (2 * h)``
+
   This converges as ``O(h^2)`` (Taylor series expansion) for twice-differentiable functions.
   Thus for ``h_1 != h_2``, we can compute two ``grad_f_approximate`` results and thus two errors, ``e_1, e_2``.
   Then (in exact precision), we would obtain:
+
   ``log(e_1/e_2) / log(h_1/h_2) >= 2``.
+
   (> sign because superconvergence can happen.)
+
   Proof: By taylor-expanding ``grad_f_approximate``, we see that:
+
     ```e = grad_f_anlytic - grad_f_approximate = O(h^2) = c*h^2 + H.O.T`` (Higher Order Terms).
+
   Assuming ``H.O.T \approx 0``, then
+
     ``e_1/e_2 \approx c*h_1^2 / (c*h_2^2) = h_1^2 / h_2^2``,
+
   and
+
     ``log(e_1/e_2) \approx log(h_1^2 / h_2^2) = 2 * log(h_1/h_2)``.
+
   Hence
+
     ``rate = log(e_1/e_2) / log(h_1/h_2) = 2``, *in exact precision.*
+
   If ``c = 0`` (or is very small), then H.O.T. matters: we could have ``e = 0*h^2 + c_1*h^3 + H.O.T``.
   And we will compute rates larger than 2 (superconvergence). This is not true in general but it can happen.
 
@@ -267,9 +288,13 @@ OL_CONST_FUNCTION OL_WARN_UNUSED_RESULT double SecondOrderCenteredFiniteDifferen
   of inputs, ``X``.  Analytic gradients and finite difference approximations
   are computed for each output of ``f()`` with respect to each entry in the input, ``X``.  In particular, this
   function can handle ``f()``:
+
   ``f_k = f(X_{d,i})``
+
   computing gradients:
+
   ``gradf_{d,i,k} = \frac{\partial f_k}{\partial X_{i,d}}``.
+
   So ``d, i`` index the inputs and ``k`` indexes the outputs.
 
   The basic structure is as follows::
@@ -366,13 +391,13 @@ OL_CONST_FUNCTION OL_WARN_UNUSED_RESULT double SecondOrderCenteredFiniteDifferen
   This is why OL_PING_TEST_DEBUG_PRINTF is important when debugging. If a true positive comes up, then
   there are probably many more, which can be viewed by parsing the more detailed output.
 
-  WARNING: This function is NOT a catch-all. With the heuristics in place, you could adversarially construct an
-  implementation that is wrong but passes this test.
+  .. WARNING:: This function is NOT a catch-all. With the heuristics in place, you could adversarially construct an
+    implementation that is wrong but passes this test.
 
-  WARNING: Additionally, this function cannot detect errors that are not in the gradient. If you intended
-  to implement ``f = sin(x)``, ``f' = cos(x)``, but instead coded ``g = sin(x) + 1``, this function will not find it.
-  This cannot detect small amounts of noise in the gradient either (e.g., ``f' = cos(x) + 1.0e-15``). There is no
-  way to tell whether that is noise due to numerical error or noise due to incorrectness.
+  .. WARNING:: Additionally, this function cannot detect errors that are not in the gradient. If you intended
+    to implement ``f = sin(x)``, ``f' = cos(x)``, but instead coded ``g = sin(x) + 1``, this function will not find it.
+    This cannot detect small amounts of noise in the gradient either (e.g., ``f' = cos(x) + 1.0e-15``). There is no
+    way to tell whether that is noise due to numerical error or noise due to incorrectness.
 
   TODO(GH-162): thresholds are an imperfect tool for this task. Loss of precision is not a binary event; you are not
   certain at ``2^{-52}`` but uncertain at ``2^{-51}``. It might be better to estimate the range over which we go from

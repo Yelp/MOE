@@ -22,7 +22,9 @@ class NextPointsViaSimpleEndpointTest(MoeExampleTestCase):
                     'num_multistarts': TEST_OPTIMIZER_MULTISTARTS,
                     'num_random_samples': TEST_OPTIMIZER_NUM_RANDOM_SAMPLES,
                     'optimizer_parameters': TEST_GRADIENT_DESCENT_PARAMETERS._asdict(),
-                    })
+                    },
+                rest_port=1337,
+        )
 
 
 if __name__ == "__main__":
