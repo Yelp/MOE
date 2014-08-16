@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>moe package &mdash; MOE 0.1.0 documentation</title>
+  <title>moe package &mdash; MOE 0.2.0 documentation</title>
   
 
   
@@ -32,8 +32,8 @@
   
     <link rel="stylesheet" href="_static/breathe.css" type="text/css" />
   
-    <link rel="top" title="MOE 0.1.0 documentation" href="index.html"/>
-        <link rel="next" title="moe.build package" href="moe.build.html"/>
+    <link rel="top" title="MOE 0.2.0 documentation" href="index.html"/>
+        <link rel="next" title="moe.bandit package" href="moe.bandit.html"/>
         <link rel="prev" title="Frequently Asked Questions" href="faq.html"/> 
 
   
@@ -95,6 +95,13 @@
 <li class="toctree-l2"><a class="reference internal" href="objective_functions.html#example-of-objective-functions">Example of Objective Functions</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="bandit.html">Multi-Armed Bandits</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#what-is-the-multi-armed-bandit-problem">What is the multi-armed bandit problem?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#applications">Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#policies">Policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#pointers">Pointers</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="examples.html#minimizing-an-arbitrary-function">Minimizing an arbitrary function</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples.html#gaussian-process-regression-given-historical-data">Gaussian Process regression given historical data</a></li>
@@ -148,9 +155,11 @@
 <li class="toctree-l1"><a class="reference internal" href="cpp_tree.html">C++ Files</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimization_test.html">gpp_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_domain_test.html">gpp_domain_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_gpu.html">gpp_expected_improvement_gpu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_geometry.html">gpp_geometry</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_test_utils.html">gpp_test_utils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_logging.html">gpp_logging</a></li>
@@ -159,28 +168,29 @@
 <li class="toctree-l2"><a class="reference internal" href="gpp_domain.html">gpp_domain</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_python_common.html">gpp_python_common</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_hyperparameter_optimization_demo.html">gpp_hyperparameter_optimization_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_test_utils_test.html">gpp_test_utils_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_math_test.html">gpp_math_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_cuda_math.html">gpp_cuda_math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_python_model_selection.html">gpp_python_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_math.html">gpp_math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_random_test.html">gpp_random_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimizer_parameters.html">gpp_optimizer_parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_random.html">gpp_random</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_test_utils_test.html">gpp_test_utils_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra.html">gpp_linear_algebra</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_exception.html">gpp_exception</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_model_selection.html">gpp_model_selection</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_random.html">gpp_random</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_covariance_test.html">gpp_covariance_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_python.html">gpp_python</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_test.html">gpp_model_selection_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_common.html">gpp_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_gpu_test.html">gpp_expected_improvement_gpu_test</a></li>
 </ul>
 </li>
 </ul>
@@ -223,8 +233,28 @@
 <h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="moe.build.html">moe.build package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="moe.build.html#module-moe.build">Module contents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="moe.bandit.html">moe.bandit package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="moe.bandit.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="moe.bandit.interfaces.html">moe.bandit.interfaces package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="moe.bandit.interfaces.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.bandit.interfaces.html#module-moe.bandit.interfaces.bandit_interface">moe.bandit.interfaces.bandit_interface module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.bandit.interfaces.html#module-moe.bandit.interfaces">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="moe.bandit.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.bandit.html#module-moe.bandit.constant">moe.bandit.constant module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.bandit.html#module-moe.bandit.data_containers">moe.bandit.data_containers module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.bandit.html#module-moe.bandit.epsilon_first">moe.bandit.epsilon_first module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.bandit.html#module-moe.bandit.epsilon_greedy">moe.bandit.epsilon_greedy module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.bandit.html#module-moe.bandit.epsilon_interface">moe.bandit.epsilon_interface module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.bandit.html#module-moe.bandit.linkers">moe.bandit.linkers module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.bandit.html#module-moe.bandit.ucb1">moe.bandit.ucb1 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.bandit.html#module-moe.bandit.ucb1_tuned">moe.bandit.ucb1_tuned module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.bandit.html#module-moe.bandit.ucb_interface">moe.bandit.ucb_interface module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.bandit.html#module-moe.bandit.utils">moe.bandit.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.bandit.html#module-moe.bandit">Module contents</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="moe.easy_interface.html">moe.easy_interface package</a><ul>
@@ -296,6 +326,22 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="moe.tests.html">moe.tests package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="moe.tests.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="moe.tests.bandit.html">moe.tests.bandit package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="moe.tests.bandit.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.tests.bandit.html#module-moe.tests.bandit.bandit_interface_test">moe.tests.bandit.bandit_interface_test module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.tests.bandit.html#module-moe.tests.bandit.bandit_test_case">moe.tests.bandit.bandit_test_case module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.tests.bandit.html#module-moe.tests.bandit.epsilon_first_test">moe.tests.bandit.epsilon_first_test module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.tests.bandit.html#module-moe.tests.bandit.epsilon_greedy_test">moe.tests.bandit.epsilon_greedy_test module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.tests.bandit.html#module-moe.tests.bandit.epsilon_test">moe.tests.bandit.epsilon_test module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.tests.bandit.html#module-moe.tests.bandit.epsilon_test_case">moe.tests.bandit.epsilon_test_case module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.tests.bandit.html#module-moe.tests.bandit.linkers_test">moe.tests.bandit.linkers_test module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.tests.bandit.html#module-moe.tests.bandit.ucb1_test">moe.tests.bandit.ucb1_test module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.tests.bandit.html#module-moe.tests.bandit.ucb1_tuned_test">moe.tests.bandit.ucb1_tuned_test module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.tests.bandit.html#module-moe.tests.bandit.ucb_test_case">moe.tests.bandit.ucb_test_case module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.tests.bandit.html#module-moe.tests.bandit.utils_test">moe.tests.bandit.utils_test module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.tests.bandit.html#module-moe.tests.bandit">Module contents</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="moe.tests.optimal_learning.html">moe.tests.optimal_learning package</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="moe.tests.optimal_learning.html#subpackages">Subpackages</a><ul>
 <li class="toctree-l5"><a class="reference internal" href="moe.tests.optimal_learning.python.html">moe.tests.optimal_learning.python package</a><ul>
@@ -344,6 +390,9 @@
 <li class="toctree-l4"><a class="reference internal" href="moe.tests.views.html#subpackages">Subpackages</a><ul>
 <li class="toctree-l5"><a class="reference internal" href="moe.tests.views.rest.html">moe.tests.views.rest package</a><ul>
 <li class="toctree-l6"><a class="reference internal" href="moe.tests.views.rest.html#submodules">Submodules</a></li>
+<li class="toctree-l6"><a class="reference internal" href="moe.tests.views.rest.html#module-moe.tests.views.rest.bandit_epsilon_test">moe.tests.views.rest.bandit_epsilon_test module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="moe.tests.views.rest.html#module-moe.tests.views.rest.bandit_test">moe.tests.views.rest.bandit_test module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="moe.tests.views.rest.html#module-moe.tests.views.rest.bandit_ucb_test">moe.tests.views.rest.bandit_ucb_test module</a></li>
 <li class="toctree-l6"><a class="reference internal" href="moe.tests.views.rest.html#module-moe.tests.views.rest.gp_ei_test">moe.tests.views.rest.gp_ei_test module</a></li>
 <li class="toctree-l6"><a class="reference internal" href="moe.tests.views.rest.html#module-moe.tests.views.rest.gp_hyper_opt_test">moe.tests.views.rest.gp_hyper_opt_test module</a></li>
 <li class="toctree-l6"><a class="reference internal" href="moe.tests.views.rest.html#module-moe.tests.views.rest.gp_mean_var_test">moe.tests.views.rest.gp_mean_var_test module</a></li>
@@ -355,7 +404,7 @@
 </li>
 <li class="toctree-l4"><a class="reference internal" href="moe.tests.views.html#submodules">Submodules</a></li>
 <li class="toctree-l4"><a class="reference internal" href="moe.tests.views.html#module-moe.tests.views.exceptions_test">moe.tests.views.exceptions_test module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="moe.tests.views.html#module-moe.tests.views.rest_gaussian_process_test_case">moe.tests.views.rest_gaussian_process_test_case module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.tests.views.html#module-moe.tests.views.rest_test_case">moe.tests.views.rest_test_case module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="moe.tests.views.html#module-moe.tests.views">Module contents</a></li>
 </ul>
 </li>
@@ -368,6 +417,8 @@
 <li class="toctree-l2"><a class="reference internal" href="moe.views.html#subpackages">Subpackages</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="moe.views.rest.html">moe.views.rest package</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="moe.views.rest.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.views.rest.html#module-moe.views.rest.bandit_epsilon">moe.views.rest.bandit_epsilon module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.views.rest.html#module-moe.views.rest.bandit_ucb">moe.views.rest.bandit_ucb module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="moe.views.rest.html#module-moe.views.rest.gp_ei">moe.views.rest.gp_ei module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="moe.views.rest.html#module-moe.views.rest.gp_hyper_opt">moe.views.rest.gp_hyper_opt module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="moe.views.rest.html#module-moe.views.rest.gp_mean_var">moe.views.rest.gp_mean_var module</a></li>
@@ -377,9 +428,33 @@
 <li class="toctree-l4"><a class="reference internal" href="moe.views.rest.html#module-moe.views.rest">Module contents</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="moe.views.schemas.html">moe.views.schemas package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="moe.views.schemas.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="moe.views.schemas.rest.html">moe.views.schemas.rest package</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="moe.views.schemas.rest.html#submodules">Submodules</a></li>
+<li class="toctree-l6"><a class="reference internal" href="moe.views.schemas.rest.html#module-moe.views.schemas.rest.bandit_epsilon">moe.views.schemas.rest.bandit_epsilon module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="moe.views.schemas.rest.html#module-moe.views.schemas.rest.bandit_ucb">moe.views.schemas.rest.bandit_ucb module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="moe.views.schemas.rest.html#module-moe.views.schemas.rest.gp_ei">moe.views.schemas.rest.gp_ei module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="moe.views.schemas.rest.html#module-moe.views.schemas.rest.gp_hyper_opt">moe.views.schemas.rest.gp_hyper_opt module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="moe.views.schemas.rest.html#module-moe.views.schemas.rest.gp_mean_var">moe.views.schemas.rest.gp_mean_var module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="moe.views.schemas.rest.html#module-moe.views.schemas.rest.gp_next_points_constant_liar">moe.views.schemas.rest.gp_next_points_constant_liar module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="moe.views.schemas.rest.html#module-moe.views.schemas.rest.gp_next_points_kriging">moe.views.schemas.rest.gp_next_points_kriging module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="moe.views.schemas.rest.html#module-moe.views.schemas.rest">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="moe.views.schemas.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.views.schemas.html#module-moe.views.schemas.bandit_pretty_view">moe.views.schemas.bandit_pretty_view module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.views.schemas.html#module-moe.views.schemas.base_schemas">moe.views.schemas.base_schemas module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.views.schemas.html#module-moe.views.schemas.gp_next_points_pretty_view">moe.views.schemas.gp_next_points_pretty_view module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.views.schemas.html#module-moe.views.schemas">Module contents</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="moe.views.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.views.html#module-moe.views.bandit_pretty_view">moe.views.bandit_pretty_view module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe.views.html#module-moe.views.constant">moe.views.constant module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe.views.html#module-moe.views.exceptions">moe.views.exceptions module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe.views.html#module-moe.views.frontend">moe.views.frontend module</a></li>
@@ -387,7 +462,7 @@
 <li class="toctree-l2"><a class="reference internal" href="moe.views.html#module-moe.views.gp_next_points_pretty_view">moe.views.gp_next_points_pretty_view module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe.views.html#module-moe.views.gp_pretty_view">moe.views.gp_pretty_view module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe.views.html#module-moe.views.optimizable_gp_pretty_view">moe.views.optimizable_gp_pretty_view module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="moe.views.html#module-moe.views.schemas">moe.views.schemas module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.views.html#module-moe.views.pretty_view">moe.views.pretty_view module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe.views.html#module-moe.views.utils">moe.views.utils module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe.views.html#module-moe.views">Module contents</a></li>
 </ul>
@@ -412,6 +487,26 @@
 <div class="section" id="module-moe">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-moe" title="Permalink to this headline">¶</a></h2>
 <p>Base pyramid app for MOE.</p>
+<dl class="data">
+<dt id="moe.MAJOR">
+<tt class="descclassname">moe.</tt><tt class="descname">MAJOR</tt><em class="property"> = 0</em><a class="headerlink" href="#moe.MAJOR" title="Permalink to this definition">¶</a></dt>
+<dd><p>Following the versioning system at <a class="reference external" href="http://semver.org/">http://semver.org/</a>
+See also docs/contributing.rst, section <tt class="docutils literal"><span class="pre">Versioning</span></tt>
+MAJOR: incremented for incompatible API changes</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="moe.MINOR">
+<tt class="descclassname">moe.</tt><tt class="descname">MINOR</tt><em class="property"> = 2</em><a class="headerlink" href="#moe.MINOR" title="Permalink to this definition">¶</a></dt>
+<dd><p>MINOR: incremented for adding functionality in a backwards-compatible manner</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="moe.PATCH">
+<tt class="descclassname">moe.</tt><tt class="descname">PATCH</tt><em class="property"> = 0</em><a class="headerlink" href="#moe.PATCH" title="Permalink to this definition">¶</a></dt>
+<dd><p>PATCH: incremented for backward-compatible bug fixes and minor capability improvements</p>
+</dd></dl>
+
 <dl class="function">
 <dt id="moe.main">
 <tt class="descclassname">moe.</tt><tt class="descname">main</tt><big>(</big><em>global_config</em>, <em>**settings</em><big>)</big><a class="reference internal" href="_modules/moe.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.main" title="Permalink to this definition">¶</a></dt>
@@ -427,7 +522,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="moe.build.html" class="btn btn-neutral float-right" title="moe.build package"/>Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="moe.bandit.html" class="btn btn-neutral float-right" title="moe.bandit package"/>Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="faq.html" class="btn btn-neutral" title="Frequently Asked Questions"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -459,7 +554,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.1.0',
+            VERSION:'0.2.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

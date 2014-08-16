@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>gpp_test_utils &mdash; MOE 0.1.0 documentation</title>
+  <title>gpp_test_utils &mdash; MOE 0.2.0 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
     <link rel="stylesheet" href="_static/breathe.css" type="text/css" />
   
-    <link rel="top" title="MOE 0.1.0 documentation" href="index.html"/>
+    <link rel="top" title="MOE 0.2.0 documentation" href="index.html"/>
         <link rel="up" title="C++ Files" href="cpp_tree.html"/>
         <link rel="next" title="gpp_logging" href="gpp_logging.html"/>
         <link rel="prev" title="gpp_linear_algebra-inl" href="gpp_linear_algebra-inl.html"/> 
@@ -96,6 +96,13 @@
 <li class="toctree-l2"><a class="reference internal" href="objective_functions.html#example-of-objective-functions">Example of Objective Functions</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="bandit.html">Multi-Armed Bandits</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#what-is-the-multi-armed-bandit-problem">What is the multi-armed bandit problem?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#applications">Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#policies">Policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#pointers">Pointers</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="examples.html#minimizing-an-arbitrary-function">Minimizing an arbitrary function</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples.html#gaussian-process-regression-given-historical-data">Gaussian Process regression given historical data</a></li>
@@ -149,9 +156,11 @@
 <li class="toctree-l1 current"><a class="reference internal" href="cpp_tree.html">C++ Files</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimization_test.html">gpp_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_domain_test.html">gpp_domain_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_gpu.html">gpp_expected_improvement_gpu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_geometry.html">gpp_geometry</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="">gpp_test_utils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_logging.html">gpp_logging</a></li>
@@ -160,28 +169,29 @@
 <li class="toctree-l2"><a class="reference internal" href="gpp_domain.html">gpp_domain</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_python_common.html">gpp_python_common</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_hyperparameter_optimization_demo.html">gpp_hyperparameter_optimization_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_test_utils_test.html">gpp_test_utils_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_math_test.html">gpp_math_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_cuda_math.html">gpp_cuda_math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_python_model_selection.html">gpp_python_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_math.html">gpp_math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_random_test.html">gpp_random_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimizer_parameters.html">gpp_optimizer_parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_random.html">gpp_random</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_test_utils_test.html">gpp_test_utils_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra.html">gpp_linear_algebra</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_exception.html">gpp_exception</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_model_selection.html">gpp_model_selection</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_random.html">gpp_random</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_covariance_test.html">gpp_covariance_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_python.html">gpp_python</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_test.html">gpp_model_selection_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_common.html">gpp_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_gpu_test.html">gpp_expected_improvement_gpu_test</a></li>
 </ul>
 </li>
 </ul>
@@ -234,9 +244,9 @@
 <p></p>
 <p><p><p>This file declares functions and classes that are useful for unit testing.  This includes some relative/absolute precision
 checks and a few mathematical utilities.</p>
-<p>The &#8220;big stuff&#8221; in this file is a class that defines the interface for a pingable function:
-PingableMatrixInputVectorOutputInterface
-Then there is a PingDerivative() function that can conduct ping testing on any implementer of this interface.</p>
+<p>The &#8220;big stuff&#8221; in this file is a class that defines the interface for a pingable function:</p>
+<p><tt class="docutils literal"><span class="pre">PingableMatrixInputVectorOutputInterface</span></tt></p>
+<p>Then there is a <tt class="docutils literal"><span class="pre">PingDerivative()</span></tt> function that can conduct ping testing on any implementer of this interface.</p>
 <p>There&#8217;s also a mock environment class that sets up quantities commonly needed by tests of GP functionality.
 Similarly, there is a mock data class that builds up &#8220;history&#8221; (points_sampled, points_sampled_value) by
 constructing a GP with random hyperparameters on a random domain.</p>
@@ -261,226 +271,6 @@ error checking, etc.</p>
 <blockquote>
 <div><p></p>
 <p></p>
-<p><p id="project0classoptimal__learning_1_1_pingable_matrix_input_vector_output_interface"><em>class</em> <strong>PingableMatrixInputVectorOutputInterface</strong></p>
-<blockquote>
-<div><p></p>
-<p><p>Class to enable numerical and analytic differentiation of functions of the form:
-<tt class="docutils literal"><span class="pre">f_{k}</span> <span class="pre">=</span> <span class="pre">f(X_{d,i})</span></tt>
-with derivatives taken wrt each member of <tt class="docutils literal"><span class="pre">X_{d,i}</span></tt>,
-<tt class="docutils literal"><span class="pre">gradf_{k,d,i}</span> <span class="pre">=</span> <span class="pre">\frac{\partial</span> <span class="pre">f_k}{\partial</span> <span class="pre">X_{d,i}}</span></tt>
-In the nomenclature used in the class:</p>
-<ul class="simple">
-<li><tt class="docutils literal"><span class="pre">d</span></tt> indexes over num_rows (set in GetInputSizes())</li>
-<li><tt class="docutils literal"><span class="pre">i</span></tt> indexes over num_cols (set in GetInputSizes())</li>
-<li><tt class="docutils literal"><span class="pre">k</span></tt> indexes over GetOutputSize()</li>
-</ul>
-<p>Typically <tt class="docutils literal"><span class="pre">d</span></tt> is the spatial_dimension of the problem.  So if <tt class="docutils literal"><span class="pre">i</span></tt> ranges over <tt class="docutils literal"><span class="pre">1</span> <span class="pre">..</span> <span class="pre">num_points</span></tt>,
-then <tt class="docutils literal"><span class="pre">X_{d,i}</span></tt> is a matrix of num_points points each with dimension spatial_dim.
-And <tt class="docutils literal"><span class="pre">k</span></tt> refers to num_outputs.</p>
-<p><tt class="docutils literal"><span class="pre">X_{d,i}</span></tt> can of course be any arbitrary matrix; <tt class="docutils literal"><span class="pre">d,</span> <span class="pre">i</span></tt> need not refer to spatial dimension and num_points.  But
-that is currently the most common use case.</p>
-<p>This class enables easy pinging of a multitude of <tt class="docutils literal"><span class="pre">f,</span> <span class="pre">X</span></tt> combinations.  Since it abstracts away indexing, it does not limit
-how implementations store/compute <tt class="docutils literal"><span class="pre">f()</span></tt> and its gradient.</p>
-<p>Generally, usage goes as follows:</p>
-<ul class="simple">
-<li>Use GetInputSizes(), GetOutputSize(), and possibly GetGradientsSize() to inspect the dimensions of the problem</li>
-<li>EvaluateAndStoreAnalyticGradient(): compute and internally store the gradient evaluated at a given input*</li>
-<li>GetAnalyticGradient: returns the value of the analytic gradient for a given output (<tt class="docutils literal"><span class="pre">k</span></tt>), wrt a given point <tt class="docutils literal"><span class="pre">(d,i)</span></tt></li>
-<li>EvaluateFunction: returns all outputs of the function for a given input</li>
-</ul>
-<p>* It is not necessary to fully evaluate the gradient here.  Instead, the input point can be stored and evaluation can
-happen on-the-fly in GetAnalyticGradient() if desired.</p>
-<p>So to ping a derivative, you can:
-<tt class="docutils literal"><span class="pre">f_p</span> <span class="pre">=</span> <span class="pre">EvaluateFunction(X</span> <span class="pre">+</span> <span class="pre">h)</span></tt>, <tt class="docutils literal"><span class="pre">f_m</span> <span class="pre">=</span> <span class="pre">EvaluateFunction(X</span> <span class="pre">-</span> <span class="pre">h)</span></tt>
-Compare:
-<tt class="docutils literal"><span class="pre">(f_p</span> <span class="pre">-</span> <span class="pre">f_m)/(2h)</span></tt>
-to
-GetAnalyticGradient
-See PingDerivative() docs for more details.</p>
- </p>
-<em>Public Functions</em><blockquote>
-<div><p><span class="target" id="project0classoptimal__learning_1_1_pingable_matrix_input_vector_output_interface_1aae2e0fa3e2ab70de89abac30458f8b52"></span><div class="line-block">
-<div class="line">void <strong>GetInputSizes</strong>(int * num_rows, int * num_cols)</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p><p>Number of rows and columns of the input, <tt class="docutils literal"><span class="pre">X_{d,i}</span></tt>, to <tt class="docutils literal"><span class="pre">f()</span></tt>.</p>
-<p>For example, the input might be a <tt class="docutils literal"><span class="pre">N_d</span> <span class="pre">X</span> <span class="pre">N_i</span></tt> matrix, <tt class="docutils literal"><span class="pre">points_to_sample</span></tt>, where <tt class="docutils literal"><span class="pre">N_d</span></tt> = spatial dimension (rows)
-and <tt class="docutils literal"><span class="pre">N_i</span></tt> = number of points (columns).</p>
-<dl class="docutils">
-<dt><strong>Outputs</strong>:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">num_rows[1]:</th><td class="field-body">the number of rows of the input matrix <tt class="docutils literal"><span class="pre">X</span></tt></td>
-</tr>
-<tr class="field-even field"><th class="field-name">num_cols[1]:</th><td class="field-body">the number of columns of the input matrix <tt class="docutils literal"><span class="pre">X</span></tt></td>
-</tr>
-</tbody>
-</table>
-</dd>
-</dl>
- </p>
-</div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_pingable_matrix_input_vector_output_interface_1a618a890a7f5e9059b88499963277bc96"></span><div class="line-block">
-<div class="line">int <strong>GetOutputSize</strong>()</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p><p>Number of outputs of the function <tt class="docutils literal"><span class="pre">f_k</span> <span class="pre">=</span> <span class="pre">f(X_{d,i})</span></tt>; i.e., <tt class="docutils literal"><span class="pre">length(f_k)</span></tt></p>
-<dl class="docutils">
-<dt><strong>Returns</strong>:</dt>
-<dd>The number of entries in <tt class="docutils literal"><span class="pre">f_k</span></tt> aka number of outputs of <tt class="docutils literal"><span class="pre">f()</span></tt></dd>
-</dl>
- </p>
-</div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_pingable_matrix_input_vector_output_interface_1afe065587368c70b5de0da86792f72f3c"></span><div class="line-block">
-<div class="line">int <strong>GetGradientsSize</strong>()</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p><p>Number of entries in the gradient of the output wrt each entry of the input.</p>
-<p>This should generally not be used unless you require direct access to the analytic gradient.</p>
-<dl class="docutils">
-<dt><strong>Returns</strong>:</dt>
-<dd>MUST be <tt class="docutils literal"><span class="pre">num_rows*num_cols*GetOutputSize()</span></tt> invalid memory read/writes may occur</dd>
-</dl>
- </p>
-</div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_pingable_matrix_input_vector_output_interface_1a238a21daa3611c30580534a90bf75534"></span><div class="line-block">
-<div class="line">void <strong>EvaluateAndStoreAnalyticGradient</strong>(double const *restrict input_matrix, double *restrict gradients)</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p><p>Setup so that GetAnalyticGradient(row, column, output) will be able to return
-<tt class="docutils literal"><span class="pre">gradf[row][column][output]</span></tt> evaluated at <tt class="docutils literal"><span class="pre">X</span></tt>, &#8220;input_matrix.&#8221;</p>
-<p>Typically this will entail computing and storing the analytic gradient.  But the only thing that needs
-to be saved is the contents of input_matrix for later access.</p>
-<p>MUST BE CALLED before using GetAnalyticGradient!</p>
-<dl class="docutils">
-<dt><strong>Parameters</strong>:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">input_matrix[num_rows][num_cols]:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">the input, <tt class="docutils literal"><span class="pre">X_{d,i}</span></tt></td>
-</tr>
-</tbody>
-</table>
-</dd>
-<dt><strong>Outputs</strong>:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">gradients[num_rows][num_cols][num_outputs]:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">filled with the gradient evaluated at
-input_matrix.  Ignored if nullptr.  IMPLEMENTATION NOT REQUIRED.</td>
-</tr>
-</tbody>
-</table>
-</dd>
-</dl>
- </p>
-</div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_pingable_matrix_input_vector_output_interface_1a3d99731d1cb8b1d0d1d4bb85338dabba"></span><div class="line-block">
-<div class="line">double <strong>GetAnalyticGradient</strong>(int row_index, int column_index, int output_index)</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p><p>The gradients are indexed by: <tt class="docutils literal"><span class="pre">dA[input_row][input_column][output_index]</span></tt>, where row, column index
-the input matrix and output_index indexes the output.</p>
-<p>Returns the gradient computed/stored by EvaluateAndStoreAnalyticGradient().</p>
-<dl class="docutils">
-<dt><strong>Parameters</strong>:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">row_index:</th><td class="field-body">row_index (<tt class="docutils literal"><span class="pre">d</span></tt>) of the input to be differentiated with respect to</td>
-</tr>
-<tr class="field-even field"><th class="field-name">column_index:</th><td class="field-body">column_index (<tt class="docutils literal"><span class="pre">i</span></tt>) of the input to be differentiated with respect to</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">output_index:</th><td class="field-body">(flat) index into the output</td>
-</tr>
-</tbody>
-</table>
-</dd>
-<dt><strong>Returns</strong>:</dt>
-<dd>The <tt class="docutils literal"><span class="pre">[row_index][column_index][output_index]'th</span></tt> entry of the analytic gradient evaluated at input_matrix (where
-input matrix was specified in EvaluateAndStoreAnalyticGradient()).</dd>
-</dl>
- </p>
-</div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_pingable_matrix_input_vector_output_interface_1af5990c6775d5cfca73692a544f146e3a"></span><div class="line-block">
-<div class="line">void <strong>EvaluateFunction</strong>(double const *restrict input_matrix, double *restrict function_values)</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p><p>Evalutes <tt class="docutils literal"><span class="pre">f_k</span> <span class="pre">=</span> <span class="pre">f(X_{d,i})</span></tt>.  <tt class="docutils literal"><span class="pre">X_{d,i}</span></tt> is the &#8220;input_matrix&#8221; and <tt class="docutils literal"><span class="pre">f_k</span></tt> is in &#8220;function_values.&#8221;</p>
-<dl class="docutils">
-<dt><strong>Parameters</strong>:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">input_matrix[num_rows][num_cols]:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">the matrix of inputs</td>
-</tr>
-</tbody>
-</table>
-</dd>
-<dt><strong>Outputs</strong>:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">function_values[num_outputs]:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">vector of outputs of <tt class="docutils literal"><span class="pre">f()</span></tt></td>
-</tr>
-</tbody>
-</table>
-</dd>
-</dl>
- </p>
-</div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_pingable_matrix_input_vector_output_interface_1a9e1d28ce8619c73a680989bc2756ed40"></span><div class="line-block">
-<div class="line"> <strong>OL_DISALLOW_COPY_AND_ASSIGN</strong>(<a class="reference internal" href="#project0classoptimal__learning_1_1_pingable_matrix_input_vector_output_interface"><em>PingableMatrixInputVectorOutputInterface</em></a>)</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p></p>
-</div></blockquote>
-</div></blockquote>
-<em>Protected Functions</em><blockquote>
-<div><p><span class="target" id="project0classoptimal__learning_1_1_pingable_matrix_input_vector_output_interface_1a663c67662a7a6a971aaf0123efa865e2"></span><div class="line-block">
-<div class="line"> <strong>PingableMatrixInputVectorOutputInterface</strong>()</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p></p>
-</div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_pingable_matrix_input_vector_output_interface_1adeae44f38006ae39e4f4afbc9544b909"></span><div class="line-block">
-<div class="line"> <strong>~PingableMatrixInputVectorOutputInterface</strong>()</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p></p>
-</div></blockquote>
-</div></blockquote>
-</div></blockquote>
-</p>
 <p><p id="project0classoptimal__learning_1_1_mock_expected_improvement_environment"><em>class</em> <strong>MockExpectedImprovementEnvironment</strong></p>
 <blockquote>
 <div><p></p>
@@ -934,6 +724,226 @@ Modifies: covariance_ptr, best_so_far, gaussian_procss_ptr</p>
 </div></blockquote>
 </div></blockquote>
 </p>
+<p><p id="project0classoptimal__learning_1_1_pingable_matrix_input_vector_output_interface"><em>class</em> <strong>PingableMatrixInputVectorOutputInterface</strong></p>
+<blockquote>
+<div><p></p>
+<p><p>Class to enable numerical and analytic differentiation of functions of the form:</p>
+<p><tt class="docutils literal"><span class="pre">f_{k}</span> <span class="pre">=</span> <span class="pre">f(X_{d,i})</span></tt></p>
+<p>with derivatives taken wrt each member of <tt class="docutils literal"><span class="pre">X_{d,i}</span></tt>,</p>
+<p><tt class="docutils literal"><span class="pre">gradf_{k,d,i}</span> <span class="pre">=</span> <span class="pre">\frac{\partial</span> <span class="pre">f_k}{\partial</span> <span class="pre">X_{d,i}}</span></tt></p>
+<p>In the nomenclature used in the class:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">d</span></tt> indexes over num_rows (set in GetInputSizes())</li>
+<li><tt class="docutils literal"><span class="pre">i</span></tt> indexes over num_cols (set in GetInputSizes())</li>
+<li><tt class="docutils literal"><span class="pre">k</span></tt> indexes over GetOutputSize()</li>
+</ul>
+<p>Typically <tt class="docutils literal"><span class="pre">d</span></tt> is the spatial_dimension of the problem.  So if <tt class="docutils literal"><span class="pre">i</span></tt> ranges over <tt class="docutils literal"><span class="pre">1</span> <span class="pre">..</span> <span class="pre">num_points</span></tt>,
+then <tt class="docutils literal"><span class="pre">X_{d,i}</span></tt> is a matrix of num_points points each with dimension spatial_dim.
+And <tt class="docutils literal"><span class="pre">k</span></tt> refers to num_outputs.</p>
+<p><tt class="docutils literal"><span class="pre">X_{d,i}</span></tt> can of course be any arbitrary matrix; <tt class="docutils literal"><span class="pre">d,</span> <span class="pre">i</span></tt> need not refer to spatial dimension and num_points.  But
+that is currently the most common use case.</p>
+<p>This class enables easy pinging of a multitude of <tt class="docutils literal"><span class="pre">f,</span> <span class="pre">X</span></tt> combinations.  Since it abstracts away indexing, it does not limit
+how implementations store/compute <tt class="docutils literal"><span class="pre">f()</span></tt> and its gradient.</p>
+<p>Generally, usage goes as follows:</p>
+<ul class="simple">
+<li>Use GetInputSizes(), GetOutputSize(), and possibly GetGradientsSize() to inspect the dimensions of the problem</li>
+<li>EvaluateAndStoreAnalyticGradient(): compute and internally store the gradient evaluated at a given input*</li>
+<li>GetAnalyticGradient: returns the value of the analytic gradient for a given output (<tt class="docutils literal"><span class="pre">k</span></tt>), wrt a given point <tt class="docutils literal"><span class="pre">(d,i)</span></tt></li>
+<li>EvaluateFunction: returns all outputs of the function for a given input</li>
+</ul>
+<p>* It is not necessary to fully evaluate the gradient here.  Instead, the input point can be stored and evaluation can
+happen on-the-fly in GetAnalyticGradient() if desired.</p>
+<p>So to ping a derivative, you can:</p>
+<p><tt class="docutils literal"><span class="pre">f_p</span> <span class="pre">=</span> <span class="pre">EvaluateFunction(X</span> <span class="pre">+</span> <span class="pre">h)</span></tt>, <tt class="docutils literal"><span class="pre">f_m</span> <span class="pre">=</span> <span class="pre">EvaluateFunction(X</span> <span class="pre">-</span> <span class="pre">h)</span></tt></p>
+<p>Compare:</p>
+<p><tt class="docutils literal"><span class="pre">(f_p</span> <span class="pre">-</span> <span class="pre">f_m)/(2h)</span></tt></p>
+<p>to</p>
+<p><tt class="docutils literal"><span class="pre">GetAnalyticGradient</span></tt></p>
+<p>See <tt class="docutils literal"><span class="pre">PingDerivative()</span></tt> docs for more details.</p>
+ </p>
+<em>Public Functions</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_pingable_matrix_input_vector_output_interface_1aae2e0fa3e2ab70de89abac30458f8b52"></span><div class="line-block">
+<div class="line">void <strong>GetInputSizes</strong>(int * num_rows, int * num_cols)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Number of rows and columns of the input, <tt class="docutils literal"><span class="pre">X_{d,i}</span></tt>, to <tt class="docutils literal"><span class="pre">f()</span></tt>.</p>
+<p>For example, the input might be a <tt class="docutils literal"><span class="pre">N_d</span> <span class="pre">X</span> <span class="pre">N_i</span></tt> matrix, <tt class="docutils literal"><span class="pre">points_to_sample</span></tt>, where <tt class="docutils literal"><span class="pre">N_d</span></tt> = spatial dimension (rows)
+and <tt class="docutils literal"><span class="pre">N_i</span></tt> = number of points (columns).</p>
+<dl class="docutils">
+<dt><strong>Outputs</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">num_rows[1]:</th><td class="field-body">the number of rows of the input matrix <tt class="docutils literal"><span class="pre">X</span></tt></td>
+</tr>
+<tr class="field-even field"><th class="field-name">num_cols[1]:</th><td class="field-body">the number of columns of the input matrix <tt class="docutils literal"><span class="pre">X</span></tt></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_pingable_matrix_input_vector_output_interface_1a618a890a7f5e9059b88499963277bc96"></span><div class="line-block">
+<div class="line">int <strong>GetOutputSize</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Number of outputs of the function <tt class="docutils literal"><span class="pre">f_k</span> <span class="pre">=</span> <span class="pre">f(X_{d,i})</span></tt>; i.e., <tt class="docutils literal"><span class="pre">length(f_k)</span></tt></p>
+<dl class="docutils">
+<dt><strong>Returns</strong>:</dt>
+<dd>The number of entries in <tt class="docutils literal"><span class="pre">f_k</span></tt> aka number of outputs of <tt class="docutils literal"><span class="pre">f()</span></tt></dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_pingable_matrix_input_vector_output_interface_1afe065587368c70b5de0da86792f72f3c"></span><div class="line-block">
+<div class="line">int <strong>GetGradientsSize</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Number of entries in the gradient of the output wrt each entry of the input.</p>
+<p>This should generally not be used unless you require direct access to the analytic gradient.</p>
+<dl class="docutils">
+<dt><strong>Returns</strong>:</dt>
+<dd>MUST be <tt class="docutils literal"><span class="pre">num_rows*num_cols*GetOutputSize()</span></tt> invalid memory read/writes may occur</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_pingable_matrix_input_vector_output_interface_1a238a21daa3611c30580534a90bf75534"></span><div class="line-block">
+<div class="line">void <strong>EvaluateAndStoreAnalyticGradient</strong>(double const *restrict input_matrix, double *restrict gradients)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Setup so that GetAnalyticGradient(row, column, output) will be able to return
+<tt class="docutils literal"><span class="pre">gradf[row][column][output]</span></tt> evaluated at <tt class="docutils literal"><span class="pre">X</span></tt>, &#8220;input_matrix.&#8221;</p>
+<p>Typically this will entail computing and storing the analytic gradient.  But the only thing that needs
+to be saved is the contents of input_matrix for later access.</p>
+<p>MUST BE CALLED before using GetAnalyticGradient!</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">input_matrix[num_rows][num_cols]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">the input, <tt class="docutils literal"><span class="pre">X_{d,i}</span></tt></td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Outputs</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">gradients[num_rows][num_cols][num_outputs]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">filled with the gradient evaluated at
+input_matrix.  Ignored if nullptr.  IMPLEMENTATION NOT REQUIRED.</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_pingable_matrix_input_vector_output_interface_1a3d99731d1cb8b1d0d1d4bb85338dabba"></span><div class="line-block">
+<div class="line">double <strong>GetAnalyticGradient</strong>(int row_index, int column_index, int output_index)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>The gradients are indexed by: <tt class="docutils literal"><span class="pre">dA[input_row][input_column][output_index]</span></tt>, where row, column index
+the input matrix and output_index indexes the output.</p>
+<p>Returns the gradient computed/stored by EvaluateAndStoreAnalyticGradient().</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">row_index:</th><td class="field-body">row_index (<tt class="docutils literal"><span class="pre">d</span></tt>) of the input to be differentiated with respect to</td>
+</tr>
+<tr class="field-even field"><th class="field-name">column_index:</th><td class="field-body">column_index (<tt class="docutils literal"><span class="pre">i</span></tt>) of the input to be differentiated with respect to</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">output_index:</th><td class="field-body">(flat) index into the output</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd>The <tt class="docutils literal"><span class="pre">[row_index][column_index][output_index]'th</span></tt> entry of the analytic gradient evaluated at input_matrix (where
+input matrix was specified in EvaluateAndStoreAnalyticGradient()).</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_pingable_matrix_input_vector_output_interface_1af5990c6775d5cfca73692a544f146e3a"></span><div class="line-block">
+<div class="line">void <strong>EvaluateFunction</strong>(double const *restrict input_matrix, double *restrict function_values)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Evalutes <tt class="docutils literal"><span class="pre">f_k</span> <span class="pre">=</span> <span class="pre">f(X_{d,i})</span></tt>.  <tt class="docutils literal"><span class="pre">X_{d,i}</span></tt> is the &#8220;input_matrix&#8221; and <tt class="docutils literal"><span class="pre">f_k</span></tt> is in &#8220;function_values.&#8221;</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">input_matrix[num_rows][num_cols]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">the matrix of inputs</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Outputs</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">function_values[num_outputs]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">vector of outputs of <tt class="docutils literal"><span class="pre">f()</span></tt></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_pingable_matrix_input_vector_output_interface_1a9e1d28ce8619c73a680989bc2756ed40"></span><div class="line-block">
+<div class="line"> <strong>OL_DISALLOW_COPY_AND_ASSIGN</strong>(<a class="reference internal" href="#project0classoptimal__learning_1_1_pingable_matrix_input_vector_output_interface"><em>PingableMatrixInputVectorOutputInterface</em></a>)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Protected Functions</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_pingable_matrix_input_vector_output_interface_1a663c67662a7a6a971aaf0123efa865e2"></span><div class="line-block">
+<div class="line"> <strong>PingableMatrixInputVectorOutputInterface</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_pingable_matrix_input_vector_output_interface_1adeae44f38006ae39e4f4afbc9544b909"></span><div class="line-block">
+<div class="line"> <strong>~PingableMatrixInputVectorOutputInterface</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</p>
 </div></blockquote>
 </p>
 </div>
@@ -985,25 +995,25 @@ Modifies: covariance_ptr, best_so_far, gaussian_procss_ptr</p>
 </p>
 <blockquote>
 <div><p></p>
-<p><p><p><tt class="docutils literal"><span class="pre">\|b</span> <span class="pre">-</span> <span class="pre">A*x\|_2</span></tt>
-The quantity <tt class="docutils literal"><span class="pre">b</span> <span class="pre">-</span> <span class="pre">A*x</span></tt> is called the &#8220;residual.&#8221;  This is meaningful when <tt class="docutils literal"><span class="pre">x</span></tt> is
+<p><p><p><tt class="docutils literal"><span class="pre">\|b</span> <span class="pre">-</span> <span class="pre">A*x\|_2</span></tt></p>
+<p>The quantity <tt class="docutils literal"><span class="pre">b</span> <span class="pre">-</span> <span class="pre">A*x</span></tt> is called the &#8220;residual.&#8221;  This is meaningful when <tt class="docutils literal"><span class="pre">x</span></tt> is
 the solution of the linear system <tt class="docutils literal"><span class="pre">A*x</span> <span class="pre">=</span> <span class="pre">b</span></tt>.  Then having a small residual norm
 is a <em>NECESSARY</em> but <em>NOT SUFFICIENT</em> indicator of accuracy in <tt class="docutils literal"><span class="pre">x</span></tt>; that is,
 these quantities need not be small simultaneously.  In particular, we know:</p>
-<p><tt class="docutils literal"><span class="pre">\|\delta</span> <span class="pre">x\|</span> <span class="pre">/</span> <span class="pre">\|x\|</span> <span class="pre">\le</span> <span class="pre">cond(A)</span> <span class="pre">*</span> <span class="pre">\|r\|</span> <span class="pre">/</span> <span class="pre">(\|A\|</span> <span class="pre">*</span> <span class="pre">\|x\|)</span></tt>
-where <tt class="docutils literal"><span class="pre">x</span></tt> is the approximate solution and delta x is the error.  So
+<p><tt class="docutils literal"><span class="pre">\|\delta</span> <span class="pre">x\|</span> <span class="pre">/</span> <span class="pre">\|x\|</span> <span class="pre">\le</span> <span class="pre">cond(A)</span> <span class="pre">*</span> <span class="pre">\|r\|</span> <span class="pre">/</span> <span class="pre">(\|A\|</span> <span class="pre">*</span> <span class="pre">\|x\|)</span></tt></p>
+<p>where <tt class="docutils literal"><span class="pre">x</span></tt> is the approximate solution and delta x is the error.  So
 <tt class="docutils literal"><span class="pre">\delta</span> <span class="pre">x</span> <span class="pre">=</span> <span class="pre">0</span> <span class="pre">&lt;=&gt;</span> <span class="pre">r</span> <span class="pre">=</span> <span class="pre">0</span></tt> BUT if not identically 0, ||r|| can be much larger.</p>
 <p>However, a numerically (backward) stable algorithm will compute solutions
 with small relative residual norms <em>regardless</em> of conditioning.  Hence
 coupled with knowledge of the particular algorithm for solving <tt class="docutils literal"><span class="pre">A*x</span> <span class="pre">=</span> <span class="pre">b</span></tt>,
 residual norm is a valuable measure of correctness.</p>
-<p>Suppose <tt class="docutils literal"><span class="pre">x</span></tt> (computed solution) satisfies: <tt class="docutils literal"><span class="pre">(A</span> <span class="pre">+</span> <span class="pre">\delta</span> <span class="pre">A)*x</span> <span class="pre">=</span> <span class="pre">b</span></tt>.  Then:
-<tt class="docutils literal"><span class="pre">\|r\|</span> <span class="pre">/</span> <span class="pre">(\|A\|</span> <span class="pre">*</span> <span class="pre">\|x\|)</span> <span class="pre">\le</span> <span class="pre">\|\delta</span> <span class="pre">A\|</span> <span class="pre">/</span> <span class="pre">\|A\|</span></tt>
-So large <tt class="docutils literal"><span class="pre">\|r\|</span></tt> indicates a large backward error, implying the linear solver
+<p>Suppose <tt class="docutils literal"><span class="pre">x</span></tt> (computed solution) satisfies: <tt class="docutils literal"><span class="pre">(A</span> <span class="pre">+</span> <span class="pre">\delta</span> <span class="pre">A)*x</span> <span class="pre">=</span> <span class="pre">b</span></tt>.  Then:</p>
+<p><tt class="docutils literal"><span class="pre">\|r\|</span> <span class="pre">/</span> <span class="pre">(\|A\|</span> <span class="pre">*</span> <span class="pre">\|x\|)</span> <span class="pre">\le</span> <span class="pre">\|\delta</span> <span class="pre">A\|</span> <span class="pre">/</span> <span class="pre">\|A\|</span></tt></p>
+<p>So large <tt class="docutils literal"><span class="pre">\|r\|</span></tt> indicates a large backward error, implying the linear solver
 is not backward stable (and hence should not be used).</p>
 </p>
-<p><p>Computes <tt class="docutils literal"><span class="pre">||b</span> <span class="pre">-</span> <span class="pre">A*x||_2</span></tt>
-The quantity <tt class="docutils literal"><span class="pre">b</span> <span class="pre">-</span> <span class="pre">A*x</span></tt> is called the &#8220;residual.&#8221;  This is meaningful when x is
+<p><p>Computes <tt class="docutils literal"><span class="pre">||b</span> <span class="pre">-</span> <span class="pre">A*x||_2</span></tt></p>
+<p>The quantity <tt class="docutils literal"><span class="pre">b</span> <span class="pre">-</span> <span class="pre">A*x</span></tt> is called the &#8220;residual.&#8221;  This is meaningful when x is
 the solution of the linear system <tt class="docutils literal"><span class="pre">A*x</span> <span class="pre">=</span> <span class="pre">b</span></tt>.</p>
 <p>Coupled with knowledge of the underlying algorithm, having a small residual
 norm is a useful measure of method correctness.  See implementation documentation
@@ -1018,7 +1028,7 @@ are not working with least squares solutions and require that <tt class="docutil
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">A[size][size]:</th><td class="field-body">the linear system</td>
 </tr>
-<tr class="field-even field"><th class="field-name">x[size}:</th><td class="field-body">the solution vector</td>
+<tr class="field-even field"><th class="field-name">x[size]:</th><td class="field-body">the solution vector</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">b[size]:</th><td class="field-body">the RHS vector</td>
 </tr>
@@ -1060,6 +1070,37 @@ are not working with least squares solutions and require that <tt class="docutil
 </dl>
  </p>
 </div></blockquote>
+<p><span class="target" id="project0namespaceoptimal__learning_1adb72a9cde266e4a0532503a9c20bcdbb"></span><div class="line-block">
+<div class="line">bool <strong>CheckDoubleWithinRelativeWithThreshold</strong>(double value, double truth, double tolerance, double threshold)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Checks if <tt class="docutils literal"><span class="pre">|value</span> <span class="pre">-</span> <span class="pre">truth|</span> <span class="pre">/</span> <span class="pre">|truth|</span> <span class="pre">&lt;=</span> <span class="pre">tolerance</span></tt> (relative error)</p>
+<p>If <tt class="docutils literal"><span class="pre">truth</span> <span class="pre">&lt;</span> <span class="pre">threshold</span></tt>, <tt class="docutils literal"><span class="pre">CheckDoubleWithin()</span></tt> is performed.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">value:</th><td class="field-body">number to be tested</td>
+</tr>
+<tr class="field-even field"><th class="field-name">truth:</th><td class="field-body">the exact/desired result</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">tolerance:</th><td class="field-body">permissible relative difference</td>
+</tr>
+<tr class="field-even field"><th class="field-name">threshold:</th><td class="field-body"><tt class="docutils literal"><span class="pre">tolerance</span> <span class="pre">=</span> <span class="pre">|value</span> <span class="pre">-</span> <span class="pre">truth|</span></tt> if <tt class="docutils literal"><span class="pre">|truth|</span> <span class="pre">&lt;</span> <span class="pre">threshold</span></tt>, this is to control unexpected large or
+undefined relative diff when truth is &#8220;too small&#8221; (0 for example)</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd>true if value, truth differ relatively by no more than tolerance.</dd>
+</dl>
+ </p>
+</div></blockquote>
 <p><span class="target" id="project0namespaceoptimal__learning_1a17833a2fec9cb99b6096b523428d7242"></span><div class="line-block">
 <div class="line">bool <strong>CheckDoubleWithinRelative</strong>(double value, double truth, double tolerance)</div>
 </div>
@@ -1067,7 +1108,7 @@ are not working with least squares solutions and require that <tt class="docutil
 <blockquote>
 <div><p></p>
 <p><p>Checks if <tt class="docutils literal"><span class="pre">|value</span> <span class="pre">-</span> <span class="pre">truth|</span> <span class="pre">/</span> <span class="pre">|truth|</span> <span class="pre">&lt;=</span> <span class="pre">tolerance</span></tt> (relative error)</p>
-<p>If truth = 0.0, CheckDoubleWithin() is performed.</p>
+<p>If <tt class="docutils literal"><span class="pre">truth</span> <span class="pre">=</span> <span class="pre">0.0</span></tt>, <tt class="docutils literal"><span class="pre">CheckDoubleWithin()</span></tt> is performed.</p>
 <dl class="docutils">
 <dt><strong>Parameters</strong>:</dt>
 <dd><table class="first last docutils field-list" frame="void" rules="none">
@@ -1096,8 +1137,6 @@ are not working with least squares solutions and require that <tt class="docutil
 <div><p></p>
 <p><p>Uses the Frobenius Norm for convenience; matrix 2-norms are expensive to compute.</p>
 <p><p>Checks that <tt class="docutils literal"><span class="pre">||A</span> <span class="pre">-</span> <span class="pre">B||_F</span> <span class="pre">&lt;=</span> <span class="pre">tolerance</span></tt></p>
-<p>Note: the user may want to scale this norm by sqrt(size) because ||I||_F = sqrt(size),
-and we may desire that the norm of the idenity be 1.</p>
 <dl class="docutils">
 <dt><strong>Parameters</strong>:</dt>
 <dd><table class="first last docutils field-list" frame="void" rules="none">
@@ -1161,24 +1200,25 @@ and we may desire that the norm of the idenity be 1.</p>
 </p>
 <blockquote>
 <div><p></p>
-<p><p><p>Pings the gradient <tt class="docutils literal"><span class="pre">\nabla</span> <span class="pre">f</span></tt> of a function <tt class="docutils literal"><span class="pre">f</span></tt>, using second order finite differences:
-<tt class="docutils literal"><span class="pre">grad_f_approximate</span> <span class="pre">=</span> <span class="pre">(</span> <span class="pre">f(x</span> <span class="pre">+</span> <span class="pre">h)</span> <span class="pre">-</span> <span class="pre">f(x</span> <span class="pre">-</span> <span class="pre">h)</span> <span class="pre">)/</span> <span class="pre">(2</span> <span class="pre">*</span> <span class="pre">h)</span></tt>
-This converges as <tt class="docutils literal"><span class="pre">O(h^2)</span></tt> (Taylor series expansion) for twice-differentiable functions.
+<p><p><p>Pings the gradient <tt class="docutils literal"><span class="pre">\nabla</span> <span class="pre">f</span></tt> of a function <tt class="docutils literal"><span class="pre">f</span></tt>, using second order finite differences:</p>
+<p><tt class="docutils literal"><span class="pre">grad_f_approximate</span> <span class="pre">=</span> <span class="pre">(</span> <span class="pre">f(x</span> <span class="pre">+</span> <span class="pre">h)</span> <span class="pre">-</span> <span class="pre">f(x</span> <span class="pre">-</span> <span class="pre">h)</span> <span class="pre">)/</span> <span class="pre">(2</span> <span class="pre">*</span> <span class="pre">h)</span></tt></p>
+<p>This converges as <tt class="docutils literal"><span class="pre">O(h^2)</span></tt> (Taylor series expansion) for twice-differentiable functions.
 Thus for <tt class="docutils literal"><span class="pre">h_1</span> <span class="pre">!=</span> <span class="pre">h_2</span></tt>, we can compute two <tt class="docutils literal"><span class="pre">grad_f_approximate</span></tt> results and thus two errors, <tt class="docutils literal"><span class="pre">e_1,</span> <span class="pre">e_2</span></tt>.
-Then (in exact precision), we would obtain:
-<tt class="docutils literal"><span class="pre">log(e_1/e_2)</span> <span class="pre">/</span> <span class="pre">log(h_1/h_2)</span> <span class="pre">&gt;=</span> <span class="pre">2</span></tt>.
-(&gt; sign because superconvergence can happen.)
-Proof: By taylor-expanding <tt class="docutils literal"><span class="pre">grad_f_approximate</span></tt>, we see that:</p>
+Then (in exact precision), we would obtain:</p>
+<p><tt class="docutils literal"><span class="pre">log(e_1/e_2)</span> <span class="pre">/</span> <span class="pre">log(h_1/h_2)</span> <span class="pre">&gt;=</span> <span class="pre">2</span></tt>.</p>
+<p>(&gt; sign because superconvergence can happen.)</p>
+<p>Proof: By taylor-expanding <tt class="docutils literal"><span class="pre">grad_f_approximate</span></tt>, we see that:</p>
 <blockquote>
 <div><tt class="docutils literal"><span class="pre">`e</span> <span class="pre">=</span> <span class="pre">grad_f_anlytic</span> <span class="pre">-</span> <span class="pre">grad_f_approximate</span> <span class="pre">=</span> <span class="pre">O(h^2)</span> <span class="pre">=</span> <span class="pre">c*h^2</span> <span class="pre">+</span> <span class="pre">H.O.T</span></tt> (Higher Order Terms).</div></blockquote>
-<dl class="docutils">
-<dt>Assuming <tt class="docutils literal"><span class="pre">H.O.T</span> <span class="pre">\approx</span> <span class="pre">0</span></tt>, then</dt>
-<dd><tt class="docutils literal"><span class="pre">e_1/e_2</span> <span class="pre">\approx</span> <span class="pre">c*h_1^2</span> <span class="pre">/</span> <span class="pre">(c*h_2^2)</span> <span class="pre">=</span> <span class="pre">h_1^2</span> <span class="pre">/</span> <span class="pre">h_2^2</span></tt>,</dd>
-<dt>and</dt>
-<dd><tt class="docutils literal"><span class="pre">log(e_1/e_2)</span> <span class="pre">\approx</span> <span class="pre">log(h_1^2</span> <span class="pre">/</span> <span class="pre">h_2^2)</span> <span class="pre">=</span> <span class="pre">2</span> <span class="pre">*</span> <span class="pre">log(h_1/h_2)</span></tt>.</dd>
-<dt>Hence</dt>
-<dd><tt class="docutils literal"><span class="pre">rate</span> <span class="pre">=</span> <span class="pre">log(e_1/e_2)</span> <span class="pre">/</span> <span class="pre">log(h_1/h_2)</span> <span class="pre">=</span> <span class="pre">2</span></tt>, <em>in exact precision.</em></dd>
-</dl>
+<p>Assuming <tt class="docutils literal"><span class="pre">H.O.T</span> <span class="pre">\approx</span> <span class="pre">0</span></tt>, then</p>
+<blockquote>
+<div><tt class="docutils literal"><span class="pre">e_1/e_2</span> <span class="pre">\approx</span> <span class="pre">c*h_1^2</span> <span class="pre">/</span> <span class="pre">(c*h_2^2)</span> <span class="pre">=</span> <span class="pre">h_1^2</span> <span class="pre">/</span> <span class="pre">h_2^2</span></tt>,</div></blockquote>
+<p>and</p>
+<blockquote>
+<div><tt class="docutils literal"><span class="pre">log(e_1/e_2)</span> <span class="pre">\approx</span> <span class="pre">log(h_1^2</span> <span class="pre">/</span> <span class="pre">h_2^2)</span> <span class="pre">=</span> <span class="pre">2</span> <span class="pre">*</span> <span class="pre">log(h_1/h_2)</span></tt>.</div></blockquote>
+<p>Hence</p>
+<blockquote>
+<div><tt class="docutils literal"><span class="pre">rate</span> <span class="pre">=</span> <span class="pre">log(e_1/e_2)</span> <span class="pre">/</span> <span class="pre">log(h_1/h_2)</span> <span class="pre">=</span> <span class="pre">2</span></tt>, <em>in exact precision.</em></div></blockquote>
 <p>If <tt class="docutils literal"><span class="pre">c</span> <span class="pre">=</span> <span class="pre">0</span></tt> (or is very small), then H.O.T. matters: we could have <tt class="docutils literal"><span class="pre">e</span> <span class="pre">=</span> <span class="pre">0*h^2</span> <span class="pre">+</span> <span class="pre">c_1*h^3</span> <span class="pre">+</span> <span class="pre">H.O.T</span></tt>.
 And we will compute rates larger than 2 (superconvergence). This is not true in general but it can happen.</p>
 <p>This function verifies that the expected convergence rate is obtained with acceptable accuracy in the
@@ -1186,11 +1226,11 @@ presence of floating point errors.</p>
 <p>This function knows how to deal with vector-valued <tt class="docutils literal"><span class="pre">f()</span></tt> which accepts a matrix
 of inputs, <tt class="docutils literal"><span class="pre">X</span></tt>.  Analytic gradients and finite difference approximations
 are computed for each output of <tt class="docutils literal"><span class="pre">f()</span></tt> with respect to each entry in the input, <tt class="docutils literal"><span class="pre">X</span></tt>.  In particular, this
-function can handle <tt class="docutils literal"><span class="pre">f()</span></tt>:
-<tt class="docutils literal"><span class="pre">f_k</span> <span class="pre">=</span> <span class="pre">f(X_{d,i})</span></tt>
-computing gradients:
-<tt class="docutils literal"><span class="pre">gradf_{d,i,k}</span> <span class="pre">=</span> <span class="pre">\frac{\partial</span> <span class="pre">f_k}{\partial</span> <span class="pre">X_{i,d}}</span></tt>.
-So <tt class="docutils literal"><span class="pre">d,</span> <span class="pre">i</span></tt> index the inputs and <tt class="docutils literal"><span class="pre">k</span></tt> indexes the outputs.</p>
+function can handle <tt class="docutils literal"><span class="pre">f()</span></tt>:</p>
+<p><tt class="docutils literal"><span class="pre">f_k</span> <span class="pre">=</span> <span class="pre">f(X_{d,i})</span></tt></p>
+<p>computing gradients:</p>
+<p><tt class="docutils literal"><span class="pre">gradf_{d,i,k}</span> <span class="pre">=</span> <span class="pre">\frac{\partial</span> <span class="pre">f_k}{\partial</span> <span class="pre">X_{i,d}}</span></tt>.</p>
+<p>So <tt class="docutils literal"><span class="pre">d,</span> <span class="pre">i</span></tt> index the inputs and <tt class="docutils literal"><span class="pre">k</span></tt> indexes the outputs.</p>
 <p>The basic structure is as follows:</p>
 <div class="highlight-python"><div class="highlight"><pre>for i
   for d
@@ -1276,12 +1316,18 @@ magic numbers.</p>
 <p>We chose the bypasses to heavily favor eliminating false positives. Some true positives are <em>also lost</em>.
 This is why OL_PING_TEST_DEBUG_PRINTF is important when debugging. If a true positive comes up, then
 there are probably many more, which can be viewed by parsing the more detailed output.</p>
-<p>WARNING: This function is NOT a catch-all. With the heuristics in place, you could adversarially construct an
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This function is NOT a catch-all. With the heuristics in place, you could adversarially construct an
 implementation that is wrong but passes this test.</p>
-<p>WARNING: Additionally, this function cannot detect errors that are not in the gradient. If you intended
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Additionally, this function cannot detect errors that are not in the gradient. If you intended
 to implement <tt class="docutils literal"><span class="pre">f</span> <span class="pre">=</span> <span class="pre">sin(x)</span></tt>, <tt class="docutils literal"><span class="pre">f'</span> <span class="pre">=</span> <span class="pre">cos(x)</span></tt>, but instead coded <tt class="docutils literal"><span class="pre">g</span> <span class="pre">=</span> <span class="pre">sin(x)</span> <span class="pre">+</span> <span class="pre">1</span></tt>, this function will not find it.
 This cannot detect small amounts of noise in the gradient either (e.g., <tt class="docutils literal"><span class="pre">f'</span> <span class="pre">=</span> <span class="pre">cos(x)</span> <span class="pre">+</span> <span class="pre">1.0e-15</span></tt>). There is no
 way to tell whether that is noise due to numerical error or noise due to incorrectness.</p>
+</div>
 <p>TODO(GH-162): thresholds are an imperfect tool for this task. Loss of precision is not a binary event; you are not
 certain at <tt class="docutils literal"><span class="pre">2^{-52}</span></tt> but uncertain at <tt class="docutils literal"><span class="pre">2^{-51}</span></tt>. It might be better to estimate the range over which we go from
 meaningful loss of precision to complete noise and have a linear ramp for the tolerance over that space. Maybe
@@ -1299,13 +1345,16 @@ false positive rate to 0. Some true positives are lost in the process. So we obt
 certainty&#8221; by testing a large number of points.</p>
 <p>If you are implementing/testing new gradients code, please read the function comments for this as well.
 This is an &#8220;expert tool&#8221; and not necessarily the most user-friendly at that.</p>
-<p>This function produces the most useful debugging output when in PingableMatrixInputVectorOutputInterface,
-<tt class="docutils literal"><span class="pre">num_rows</span></tt> = spatial dimension (<tt class="docutils literal"><span class="pre">d</span></tt>)
-<tt class="docutils literal"><span class="pre">num_cols</span></tt> = num_points (<tt class="docutils literal"><span class="pre">i</span></tt>)
-GetOutputSize() = num_outputs (<tt class="docutils literal"><span class="pre">k</span></tt>)
-for functions <tt class="docutils literal"><span class="pre">f_k</span> <span class="pre">=</span> <span class="pre">f(X_{d,i})</span></tt></p>
-<p>WARNING: this function generates ~10 lines of output (to stdout) PER FAILURE. If your implementation
+<p>This function produces the most useful debugging output when in PingableMatrixInputVectorOutputInterface,</p>
+<p><tt class="docutils literal"><span class="pre">num_rows</span></tt> = spatial dimension (<tt class="docutils literal"><span class="pre">d</span></tt>)</p>
+<p><tt class="docutils literal"><span class="pre">num_cols</span></tt> = num_points (<tt class="docutils literal"><span class="pre">i</span></tt>)</p>
+<p><tt class="docutils literal"><span class="pre">GetOutputSize()</span> <span class="pre">=</span> <span class="pre">num_outputs</span></tt> (<tt class="docutils literal"><span class="pre">k</span></tt>)</p>
+<p>for functions <tt class="docutils literal"><span class="pre">f_k</span> <span class="pre">=</span> <span class="pre">f(X_{d,i})</span></tt></p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">this function generates ~10 lines of output (to stdout) PER FAILURE. If your implementation
 is incorrect, expect a large number of lines printed to stdout.</p>
+</div>
 <dl class="docutils">
 <dt><strong>Parameters</strong>:</dt>
 <dd><table class="first last docutils field-list" frame="void" rules="none">
@@ -1393,10 +1442,10 @@ scale the side-lengths by some &#8220;reasonable&#8221; amount.</p>
 <blockquote>
 <div><p></p>
 <p><p>Generates random hyperparameters and sets a covariance object&#8217;s hyperparameters to the new values.</p>
-<p>Let <tt class="docutils literal"><span class="pre">n_hyper</span> <span class="pre">=</span> <span class="pre">covariance-&gt;GetNumberOfHyperparameters()</span></tt>;
-<strong>Parameters</strong>:</p>
-<blockquote>
-<div><table class="docutils field-list" frame="void" rules="none">
+<p>Let <tt class="docutils literal"><span class="pre">n_hyper</span> <span class="pre">=</span> <span class="pre">covariance-&gt;GetNumberOfHyperparameters()</span></tt>.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
@@ -1413,8 +1462,7 @@ scale the side-lengths by some &#8220;reasonable&#8221; amount.</p>
 </tr>
 </tbody>
 </table>
-</div></blockquote>
-<dl class="docutils">
+</dd>
 <dt><strong>Outputs</strong>:</dt>
 <dd><table class="first last docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1440,9 +1488,9 @@ scale the side-lengths by some &#8220;reasonable&#8221; amount.</p>
 </p>
 <blockquote>
 <div><p></p>
-<p><p>Generates a random list of <tt class="docutils literal"><span class="pre">domain_bounds-&gt;size()</span></tt> <tt class="docutils literal"><span class="pre">[min_i,</span> <span class="pre">max_i]</span></tt> pairs such that:
-<tt class="docutils literal"><span class="pre">min_i</span> <span class="pre">\in</span> <span class="pre">[uniform_double_lower_bound.a(),</span> <span class="pre">uniform_double_lower_bound.b()]</span></tt>
-<tt class="docutils literal"><span class="pre">max_i</span> <span class="pre">\in</span> <span class="pre">[uniform_double_upper_bound.a(),</span> <span class="pre">uniform_double_upper_bound.b()]</span></tt></p>
+<p><p>Generates a random list of <tt class="docutils literal"><span class="pre">domain_bounds-&gt;size()</span></tt> <tt class="docutils literal"><span class="pre">[min_i,</span> <span class="pre">max_i]</span></tt> pairs such that:</p>
+<p><tt class="docutils literal"><span class="pre">min_i</span> <span class="pre">\in</span> <span class="pre">[uniform_double_lower_bound.a(),</span> <span class="pre">uniform_double_lower_bound.b()]</span></tt></p>
+<p><tt class="docutils literal"><span class="pre">max_i</span> <span class="pre">\in</span> <span class="pre">[uniform_double_upper_bound.a(),</span> <span class="pre">uniform_double_upper_bound.b()]</span></tt></p>
 <dl class="docutils">
 <dt><strong>Parameters</strong>:</dt>
 <dd><table class="first last docutils field-list" frame="void" rules="none">
@@ -1572,7 +1620,7 @@ the new data; and its internal PRNG state is modified</td>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.1.0',
+            VERSION:'0.2.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>gpp_logging &mdash; MOE 0.1.0 documentation</title>
+  <title>gpp_logging &mdash; MOE 0.2.0 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
     <link rel="stylesheet" href="_static/breathe.css" type="text/css" />
   
-    <link rel="top" title="MOE 0.1.0 documentation" href="index.html"/>
+    <link rel="top" title="MOE 0.2.0 documentation" href="index.html"/>
         <link rel="up" title="C++ Files" href="cpp_tree.html"/>
         <link rel="next" title="gpp_covariance" href="gpp_covariance.html"/>
         <link rel="prev" title="gpp_test_utils" href="gpp_test_utils.html"/> 
@@ -96,6 +96,13 @@
 <li class="toctree-l2"><a class="reference internal" href="objective_functions.html#example-of-objective-functions">Example of Objective Functions</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="bandit.html">Multi-Armed Bandits</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#what-is-the-multi-armed-bandit-problem">What is the multi-armed bandit problem?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#applications">Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#policies">Policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#pointers">Pointers</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="examples.html#minimizing-an-arbitrary-function">Minimizing an arbitrary function</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples.html#gaussian-process-regression-given-historical-data">Gaussian Process regression given historical data</a></li>
@@ -149,9 +156,11 @@
 <li class="toctree-l1 current"><a class="reference internal" href="cpp_tree.html">C++ Files</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimization_test.html">gpp_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_domain_test.html">gpp_domain_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_gpu.html">gpp_expected_improvement_gpu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_geometry.html">gpp_geometry</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_test_utils.html">gpp_test_utils</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="">gpp_logging</a></li>
@@ -160,28 +169,29 @@
 <li class="toctree-l2"><a class="reference internal" href="gpp_domain.html">gpp_domain</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_python_common.html">gpp_python_common</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_hyperparameter_optimization_demo.html">gpp_hyperparameter_optimization_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_test_utils_test.html">gpp_test_utils_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_math_test.html">gpp_math_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_cuda_math.html">gpp_cuda_math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_python_model_selection.html">gpp_python_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_math.html">gpp_math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_random_test.html">gpp_random_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimizer_parameters.html">gpp_optimizer_parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_random.html">gpp_random</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_test_utils_test.html">gpp_test_utils_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra.html">gpp_linear_algebra</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_exception.html">gpp_exception</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_model_selection.html">gpp_model_selection</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_random.html">gpp_random</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_covariance_test.html">gpp_covariance_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_python.html">gpp_python</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_test.html">gpp_model_selection_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_common.html">gpp_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_gpu_test.html">gpp_expected_improvement_gpu_test</a></li>
 </ul>
 </li>
 </ul>
@@ -277,16 +287,22 @@ This is meant for printing messages that are errors&#8211;something went catastr
 <p>Inserting these macros before a string component of printf() changes the color
 of printf until a new color or reset is specified.  These macros can be
 interspersed between strings in printf()&#8217;s first argument (see examples).</p>
-<p>Example usage:
-<tt class="docutils literal"><span class="pre">printf(OL_ANSI_COLOR_GREEN</span> <span class="pre">&quot;Hi</span> <span class="pre">I</span> <span class="pre">am</span> <span class="pre">%d&quot;</span> <span class="pre">OL_ANSI_COLOR_RESET</span> <span class="pre">&quot;And</span> <span class="pre">you</span> <span class="pre">are</span> <span class="pre">%d\n&quot;,</span> <span class="pre">2,</span> <span class="pre">3);</span></tt>
-Would print:
-<tt class="docutils literal"><span class="pre">Hi</span> <span class="pre">I</span> <span class="pre">am</span> <span class="pre">2</span> <span class="pre">And</span> <span class="pre">you</span> <span class="pre">are</span> <span class="pre">3.</span></tt>
-<tt class="docutils literal"><span class="pre">|</span>&nbsp; <span class="pre">GREEN</span> <span class="pre">|</span> <span class="pre">DEFAULT</span> <span class="pre">COLOR|</span></tt></p>
-<p>Without reset, the following would happen:
-<tt class="docutils literal"><span class="pre">printf(OL_ANSI_COLOR_GREEN</span> <span class="pre">&quot;Hi</span> <span class="pre">I</span> <span class="pre">am</span> <span class="pre">%d\n&quot;,</span> <span class="pre">2);</span></tt>
-<tt class="docutils literal"><span class="pre">printf(&quot;And</span> <span class="pre">you</span> <span class="pre">are</span> <span class="pre">%d\n&quot;,</span> <span class="pre">3);</span></tt>
-<tt class="docutils literal"><span class="pre">Hi</span> <span class="pre">I</span> <span class="pre">am</span> <span class="pre">2</span>&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">&lt;---</span> <span class="pre">in</span> <span class="pre">green</span></tt>
-<tt class="docutils literal"><span class="pre">And</span> <span class="pre">you</span> <span class="pre">are</span> <span class="pre">3</span> <span class="pre">&lt;---</span> <span class="pre">ALSO</span> <span class="pre">in</span> <span class="pre">green!</span></tt></p>
+<p>Example usage:</p>
+<div class="highlight-python"><div class="highlight"><pre>printf(OL_ANSI_COLOR_GREEN &quot;Hi I am %d&quot; OL_ANSI_COLOR_RESET &quot;And you are %d\n&quot;, 2, 3);
+</pre></div>
+</div>
+<p>Would print:</p>
+<div class="highlight-python"><div class="highlight"><pre>Hi I am 2 And you are 3.
+|  GREEN | DEFAULT COLOR|
+</pre></div>
+</div>
+<p>Without reset, the following would happen:</p>
+<div class="highlight-python"><div class="highlight"><pre>printf(OL_ANSI_COLOR_GREEN &quot;Hi I am %d\n&quot;, 2);
+printf(&quot;And you are %d\n&quot;, 3);
+Hi I am 2     &lt;--- in green
+And you are 3 &lt;--- ALSO in green!
+</pre></div>
+</div>
  </p>
 </div></blockquote>
 <p><span class="target" id="project0gpp__logging_8hpp_1a0a1523099b182eeb8f980dc1ee7da820"></span><strong>OL_ANSI_COLOR_RED</strong></p>
@@ -400,7 +416,7 @@ Would print:
 <div class="section" id="gpp-logging-cpp">
 <h2>gpp_logging.cpp<a class="headerlink" href="#gpp-logging-cpp" title="Permalink to this headline">¶</a></h2>
 <p></p>
-<p><p>Utilities for printing commonly used structures. We put printing code here to hide std::printf() calls.</p>
+<p><p>Utilities for printing commonly used structures. We put printing code here to hide <tt class="docutils literal"><span class="pre">std::printf()</span></tt> calls.</p>
  </p>
 <p><p id="project0namespaceoptimal__learning"><em>namespace</em> <strong>optimal_learning</strong></p>
 <blockquote>
@@ -427,9 +443,9 @@ is by rows, we need to access the matrix in transposed order.</p>
 matrix storage ordering.</p>
 <p><blockquote>
 <div><p>Utility function to print a 2D matrix (formatted) to stdout.
-Uses <tt class="docutils literal"><span class="pre">%.18E</span></tt> descriptors to printf.
-For example, the input: <tt class="docutils literal"><span class="pre">A[3][4]</span> <span class="pre">=</span> <span class="pre">[4</span> <span class="pre">53</span> <span class="pre">81</span> <span class="pre">32</span> <span class="pre">12</span> <span class="pre">2</span> <span class="pre">5</span> <span class="pre">8</span> <span class="pre">93</span> <span class="pre">2</span> <span class="pre">1</span> <span class="pre">0]</span></tt>
-would be printed as (with decimal points removed):</p>
+Uses <tt class="docutils literal"><span class="pre">%.18E</span></tt> descriptors to printf.</p>
+<p>For example, the input: <tt class="docutils literal"><span class="pre">A[3][4]</span> <span class="pre">=</span> <span class="pre">[4</span> <span class="pre">53</span> <span class="pre">81</span> <span class="pre">32</span> <span class="pre">12</span> <span class="pre">2</span> <span class="pre">5</span> <span class="pre">8</span> <span class="pre">93</span> <span class="pre">2</span> <span class="pre">1</span> <span class="pre">0]</span></tt></p>
+<p>would be printed as (with decimal points removed):</p>
 <div class="highlight-python"><div class="highlight"><pre>4  32  5  2
 53 12  8  1
 81  2  93 0
@@ -459,9 +475,9 @@ void PrintMatrix(double const * restrict matrix, int num_rows, int num_cols) noe
 <dl class="docutils">
 <dt>/<a href="#id1"><span class="problematic" id="id2">*</span></a>!verbatim embed:rst</dt>
 <dd><p class="first">Utility function to print the TRANSPOSE of a 2D matrix (formatted) to stdout.
-Uses <tt class="docutils literal"><span class="pre">%.18E</span></tt> descriptors to printf.
-For example, the input: <tt class="docutils literal"><span class="pre">A[3][4]</span> <span class="pre">=</span> <span class="pre">[4</span> <span class="pre">53</span> <span class="pre">81</span> <span class="pre">32</span> <span class="pre">12</span> <span class="pre">2</span> <span class="pre">5</span> <span class="pre">8</span> <span class="pre">93</span> <span class="pre">2</span> <span class="pre">1</span> <span class="pre">0]</span></tt>
-would be printed as (with decimal points removed):</p>
+Uses <tt class="docutils literal"><span class="pre">%.18E</span></tt> descriptors to printf.</p>
+<p>For example, the input: <tt class="docutils literal"><span class="pre">A[3][4]</span> <span class="pre">=</span> <span class="pre">[4</span> <span class="pre">53</span> <span class="pre">81</span> <span class="pre">32</span> <span class="pre">12</span> <span class="pre">2</span> <span class="pre">5</span> <span class="pre">8</span> <span class="pre">93</span> <span class="pre">2</span> <span class="pre">1</span> <span class="pre">0]</span></tt></p>
+<p>would be printed as (with decimal points removed):</p>
 <div class="highlight-python"><div class="highlight"><pre>4  53 81
 32 12 2
 5  8  93
@@ -511,7 +527,7 @@ would be printed as (with decimal points removed):</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">domain[dim]:</th><td class="field-body">array of ClosedInterval specifying the boundaries of a dim-dimensional tensor-product domain.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">dim_in:</th><td class="field-body">number of spatial dimensions</td>
+<tr class="field-even field"><th class="field-name">dim:</th><td class="field-body">number of spatial dimensions</td>
 </tr>
 </tbody>
 </table>
@@ -563,7 +579,7 @@ would be printed as (with decimal points removed):</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.1.0',
+            VERSION:'0.2.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

@@ -4,6 +4,30 @@ moe.tests.views.rest package
 Submodules
 ----------
 
+moe.tests.views.rest.bandit_epsilon_test module
+-----------------------------------------------
+
+.. automodule:: moe.tests.views.rest.bandit_epsilon_test
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+moe.tests.views.rest.bandit_test module
+---------------------------------------
+
+.. automodule:: moe.tests.views.rest.bandit_test
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+moe.tests.views.rest.bandit_ucb_test module
+-------------------------------------------
+
+.. automodule:: moe.tests.views.rest.bandit_ucb_test
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 moe.tests.views.rest.gp_ei_test module
 --------------------------------------
 

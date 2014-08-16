@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>gpp_geometry &mdash; MOE 0.1.0 documentation</title>
+  <title>gpp_geometry &mdash; MOE 0.2.0 documentation</title>
   
 
   
@@ -32,9 +32,9 @@
   
     <link rel="stylesheet" href="_static/breathe.css" type="text/css" />
   
-    <link rel="top" title="MOE 0.1.0 documentation" href="index.html"/>
+    <link rel="top" title="MOE 0.2.0 documentation" href="index.html"/>
         <link rel="up" title="C++ Files" href="cpp_tree.html"/>
-        <link rel="next" title="gpp_python_gaussian_process" href="gpp_python_gaussian_process.html"/>
+        <link rel="next" title="gpp_heuristic_expected_improvement_optimization" href="gpp_heuristic_expected_improvement_optimization.html"/>
         <link rel="prev" title="gpp_linear_algebra_test" href="gpp_linear_algebra_test.html"/> 
 
   
@@ -96,6 +96,13 @@
 <li class="toctree-l2"><a class="reference internal" href="objective_functions.html#example-of-objective-functions">Example of Objective Functions</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="bandit.html">Multi-Armed Bandits</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#what-is-the-multi-armed-bandit-problem">What is the multi-armed bandit problem?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#applications">Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#policies">Policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#pointers">Pointers</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="examples.html#minimizing-an-arbitrary-function">Minimizing an arbitrary function</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples.html#gaussian-process-regression-given-historical-data">Gaussian Process regression given historical data</a></li>
@@ -149,9 +156,11 @@
 <li class="toctree-l1 current"><a class="reference internal" href="cpp_tree.html">C++ Files</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimization_test.html">gpp_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_domain_test.html">gpp_domain_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_gpu.html">gpp_expected_improvement_gpu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="">gpp_geometry</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_test_utils.html">gpp_test_utils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_logging.html">gpp_logging</a></li>
@@ -160,28 +169,29 @@
 <li class="toctree-l2"><a class="reference internal" href="gpp_domain.html">gpp_domain</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_python_common.html">gpp_python_common</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_hyperparameter_optimization_demo.html">gpp_hyperparameter_optimization_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_test_utils_test.html">gpp_test_utils_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_math_test.html">gpp_math_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_cuda_math.html">gpp_cuda_math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_python_model_selection.html">gpp_python_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_math.html">gpp_math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_random_test.html">gpp_random_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimizer_parameters.html">gpp_optimizer_parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_random.html">gpp_random</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_test_utils_test.html">gpp_test_utils_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra.html">gpp_linear_algebra</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_exception.html">gpp_exception</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_model_selection.html">gpp_model_selection</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_random.html">gpp_random</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_covariance_test.html">gpp_covariance_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_python.html">gpp_python</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_test.html">gpp_model_selection_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_common.html">gpp_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_gpu_test.html">gpp_expected_improvement_gpu_test</a></li>
 </ul>
 </li>
 </ul>
@@ -419,8 +429,8 @@ follow list initialization rules (not aggregate initialization):</p>
 </p>
 <blockquote>
 <div><p></p>
-<p><p>Checks whether the interval is <span class="math">\(\,\emptyset\)</span> (i.e., <tt class="docutils literal"><span class="pre">max</span></tt> &lt; <tt class="docutils literal"><span class="pre">min</span></tt>).
-Equivalent to Length() <span class="math">\(\,\geq\)</span> 0.0.</p>
+<p><p>Checks whether the interval is <span class="math">\(\,\emptyset\)</span> (i.e., <tt class="docutils literal"><span class="pre">max</span></tt> &lt; <tt class="docutils literal"><span class="pre">min</span></tt>).</p>
+<p>Equivalent to Length() <span class="math">\(\,\geq\)</span> 0.0.</p>
 <dl class="docutils">
 <dt><strong>Returns</strong>:</dt>
 <dd>true if the interval is non-empty: <tt class="docutils literal"><span class="pre">max</span></tt> <span class="math">\(\,\geq\)</span> <tt class="docutils literal"><span class="pre">min</span></tt></dd>
@@ -449,14 +459,14 @@ Equivalent to Length() <span class="math">\(\,\geq\)</span> 0.0.</p>
 <ul class="simple">
 <li><a class="reference external" href="http://mathworld.wolfram.com/HessianNormalForm.html">http://mathworld.wolfram.com/HessianNormalForm.html</a></li>
 </ul>
-<p>The equation of plane requires dim + 1 real numbers:
-<span class="math">\(\, a_0 + \sum_{i=0}^{dim} n_i x_i = 0\)</span></p>
+<p>The equation of plane requires dim + 1 real numbers:</p>
+<p><span class="math">\(\, a_0 + \sum_{i=0}^{dim} n_i x_i = 0\)</span></p>
 <p>Hence we can describe any plane as a vector, <span class="math">\(\, [n_0, n_2, ..., n_{dim-1}]\)</span>, and a real number, <span class="math">\(\, a_0\)</span>.</p>
 <p>Let <span class="math">\(\, n_{vec} = [n_0, ..., n_{dim-1}]\)</span> be the (outward) <em>unit</em> normal vector. By convention, <span class="math">\(\, \|n_{vec}\|_2 = 1\)</span>.
 <span class="math">\(\, a_0\)</span> is the <em>signed</em> distance to the origin. This is the distance from the plane to the origin in the direction of
 <span class="math">\(\, n_{vec}\)</span>. Put another way, <span class="math">\(\, a_0\)</span> is positive if the origin is in the same half-space &#8220;pointed to&#8221; by
-<span class="math">\(\, n_{vec}\)</span> and negative otherwise.
-Note: <span class="math">\(\, a_0\)</span> is measured in units of <span class="math">\(\, \|n_{vec}\|\)</span>, so if it is <em>not</em> an unit vector, that is analogous to scaling :math:<a href="#id1"><span class="problematic" id="id2">`</span></a>, a_0nme.</p>
+<span class="math">\(\, n_{vec}\)</span> and negative otherwise.</p>
+<p>Note: <span class="math">\(\, a_0\)</span> is measured in units of <span class="math">\(\, \|n_{vec}\|\)</span>, so if it is <em>not</em> an unit vector, that is analogous to scaling :math:<a href="#id1"><span class="problematic" id="id2">`</span></a>, a_0nme.</p>
 <p>As an example, let&#8217;s consider 4 planes with dim = 2:</p>
 <ul class="simple">
 <li><span class="math">\(\, a_0\)</span> = -1, and <span class="math">\(\, n_{vec}\)</span> = { 1.0, 0.0}: the plane x =  1 with rightward pointing normal.</li>
@@ -511,8 +521,8 @@ That said, no member functions will fail even without complete initialization.</
 </p>
 <blockquote>
 <div><p></p>
-<p><p>Creates a plane in dim-dimensions with the specified unit normal (<span class="math">\(\, n_i\)</span>) and offset (<span class="math">\(\, a_0\)</span>):
-<span class="math">\(\, a_0 + \sum_{i=0}^{dim} n_i * x_i = 0\)</span></p>
+<p><p>Creates a plane in dim-dimensions with the specified unit normal (<span class="math">\(\, n_i\)</span>) and offset (<span class="math">\(\, a_0\)</span>):</p>
+<p><span class="math">\(\, a_0 + \sum_{i=0}^{dim} n_i * x_i = 0\)</span></p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Failure to specify a unit normal will result in surprising behavior. <span class="math">\(\, a_0\)</span> is really in units of
@@ -641,9 +651,9 @@ determined by the direction of <tt class="docutils literal"><span class="pre">un
 <blockquote>
 <div><p></p>
 <p><p>Computes the signed distance from the specified <tt class="docutils literal"><span class="pre">point</span></tt> to this plane along the specified <tt class="docutils literal"><span class="pre">vector</span></tt>. This result
-is computed in units of <span class="math">\(\,\|vector\|_2\)</span>. That is, a distance of 3.14 means if we compute:
-new_point = 3.14*vector + point,
-then new_point will be on this plane.</p>
+is computed in units of <span class="math">\(\,\|vector\|_2\)</span>. That is, a distance of 3.14 means if we compute:</p>
+<p><tt class="docutils literal"><span class="pre">new_point</span> <span class="pre">=</span> <span class="pre">3.14*vector</span> <span class="pre">+</span> <span class="pre">point</span></tt>,</p>
+<p>then new_point will be on this plane.</p>
 <p>A negative distance means the plane is &#8220;behind&#8221; the ray.</p>
 <dl class="docutils">
 <dt><strong>Parameters</strong>:</dt>
@@ -690,7 +700,7 @@ This result is in units of <span class="math">\(\,\|vector\|_2\)</span>; normali
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="gpp_python_gaussian_process.html" class="btn btn-neutral float-right" title="gpp_python_gaussian_process"/>Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="gpp_heuristic_expected_improvement_optimization.html" class="btn btn-neutral float-right" title="gpp_heuristic_expected_improvement_optimization"/>Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="gpp_linear_algebra_test.html" class="btn btn-neutral" title="gpp_linear_algebra_test"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -722,7 +732,7 @@ This result is in units of <span class="math">\(\,\|vector\|_2\)</span>; normali
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.1.0',
+            VERSION:'0.2.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

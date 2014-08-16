@@ -8,7 +8,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Index &mdash; MOE 0.1.0 documentation</title>
+  <title>Index &mdash; MOE 0.2.0 documentation</title>
   
 
   
@@ -33,7 +33,7 @@
   
     <link rel="stylesheet" href="_static/breathe.css" type="text/css" />
   
-    <link rel="top" title="MOE 0.1.0 documentation" href="index.html"/> 
+    <link rel="top" title="MOE 0.2.0 documentation" href="index.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -94,6 +94,13 @@
 <li class="toctree-l2"><a class="reference internal" href="objective_functions.html#example-of-objective-functions">Example of Objective Functions</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="bandit.html">Multi-Armed Bandits</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#what-is-the-multi-armed-bandit-problem">What is the multi-armed bandit problem?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#applications">Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#policies">Policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#pointers">Pointers</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="examples.html#minimizing-an-arbitrary-function">Minimizing an arbitrary function</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples.html#gaussian-process-regression-given-historical-data">Gaussian Process regression given historical data</a></li>
@@ -147,9 +154,11 @@
 <li class="toctree-l1"><a class="reference internal" href="cpp_tree.html">C++ Files</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimization_test.html">gpp_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_domain_test.html">gpp_domain_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_gpu.html">gpp_expected_improvement_gpu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_geometry.html">gpp_geometry</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_test_utils.html">gpp_test_utils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_logging.html">gpp_logging</a></li>
@@ -158,28 +167,29 @@
 <li class="toctree-l2"><a class="reference internal" href="gpp_domain.html">gpp_domain</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_python_common.html">gpp_python_common</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_hyperparameter_optimization_demo.html">gpp_hyperparameter_optimization_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_test_utils_test.html">gpp_test_utils_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_math_test.html">gpp_math_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_cuda_math.html">gpp_cuda_math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_python_model_selection.html">gpp_python_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_math.html">gpp_math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_random_test.html">gpp_random_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimizer_parameters.html">gpp_optimizer_parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_random.html">gpp_random</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_test_utils_test.html">gpp_test_utils_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra.html">gpp_linear_algebra</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_exception.html">gpp_exception</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_model_selection.html">gpp_model_selection</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_random.html">gpp_random</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_covariance_test.html">gpp_covariance_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_python.html">gpp_python</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_test.html">gpp_model_selection_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_common.html">gpp_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_gpu_test.html">gpp_expected_improvement_gpu_test</a></li>
 </ul>
 </li>
 </ul>
@@ -240,6 +250,7 @@
  | <a href="#T"><strong>T</strong></a>
  | <a href="#U"><strong>U</strong></a>
  | <a href="#V"><strong>V</strong></a>
+ | <a href="#W"><strong>W</strong></a>
  
 </div>
 <h2 id="A">A</h2>
@@ -264,21 +275,59 @@
   </dt>
 
       
+  <dt><a href="moe.bandit.html#moe.bandit.epsilon_first.EpsilonFirst.allocate_arms">allocate_arms() (moe.bandit.epsilon_first.EpsilonFirst method)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="moe.bandit.html#moe.bandit.epsilon_greedy.EpsilonGreedy.allocate_arms">(moe.bandit.epsilon_greedy.EpsilonGreedy method)</a>
+  </dt>
+
+        
+  <dt><a href="moe.bandit.interfaces.html#moe.bandit.interfaces.bandit_interface.BanditInterface.allocate_arms">(moe.bandit.interfaces.bandit_interface.BanditInterface method)</a>
+  </dt>
+
+        
+  <dt><a href="moe.bandit.html#moe.bandit.ucb_interface.UCBInterface.allocate_arms">(moe.bandit.ucb_interface.UCBInterface method)</a>
+  </dt>
+
+      </dl></dd>
+      
   <dt><a href="moe.optimal_learning.python.html#moe.optimal_learning.python.data_containers.HistoricalData.append_historical_data">append_historical_data() (moe.optimal_learning.python.data_containers.HistoricalData method)</a>
+  </dt>
+
+      
+  <dt><a href="moe.bandit.html#moe.bandit.data_containers.HistoricalData.append_sample_arms">append_sample_arms() (moe.bandit.data_containers.HistoricalData method)</a>
   </dt>
 
       
   <dt><a href="moe.optimal_learning.python.html#moe.optimal_learning.python.data_containers.HistoricalData.append_sample_points">append_sample_points() (moe.optimal_learning.python.data_containers.HistoricalData method)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.approx_grad">approx_grad (moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest attribute)</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="moe.views.schemas.html#moe.views.schemas.bandit_pretty_view.ArmAllocations">ArmAllocations (class in moe.views.schemas.bandit_pretty_view)</a>
+  </dt>
+
+      
+  <dt><a href="moe.bandit.html#moe.bandit.data_containers.HistoricalData.arms_sampled">arms_sampled (moe.bandit.data_containers.HistoricalData attribute)</a>
+  </dt>
+
+      
+  <dt><a href="moe.views.schemas.html#moe.views.schemas.bandit_pretty_view.ArmsSampled">ArmsSampled (class in moe.views.schemas.bandit_pretty_view)</a>
+  </dt>
+
       
   <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase.assert_points_distinct">assert_points_distinct() (moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase method)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase.assert_scalar_within_absolute">assert_scalar_within_absolute() (moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase method)</a>
   </dt>
 
       
@@ -295,6 +344,98 @@
 <h2 id="B">B</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="moe.bandit.html#moe.bandit.linkers.BanditMethod.bandit_class">bandit_class (moe.bandit.linkers.BanditMethod attribute)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.bandit_test_case.BanditTestCase.bandit_class">(moe.tests.bandit.bandit_test_case.BanditTestCase attribute)</a>
+  </dt>
+
+        
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.epsilon_first_test.EpsilonFirstTest.bandit_class">(moe.tests.bandit.epsilon_first_test.EpsilonFirstTest attribute)</a>
+  </dt>
+
+        
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.epsilon_greedy_test.EpsilonGreedyTest.bandit_class">(moe.tests.bandit.epsilon_greedy_test.EpsilonGreedyTest attribute)</a>
+  </dt>
+
+        
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.ucb1_test.UCB1Test.bandit_class">(moe.tests.bandit.ucb1_test.UCB1Test attribute)</a>
+  </dt>
+
+        
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.ucb1_tuned_test.UCB1TunedTest.bandit_class">(moe.tests.bandit.ucb1_tuned_test.UCB1TunedTest attribute)</a>
+  </dt>
+
+      </dl></dd>
+      
+  <dt><a href="moe.views.schemas.html#moe.views.schemas.bandit_pretty_view.BANDIT_EPSILON_SUBTYPES_TO_HYPERPARAMETER_INFO_SCHEMA_CLASSES">BANDIT_EPSILON_SUBTYPES_TO_HYPERPARAMETER_INFO_SCHEMA_CLASSES (in module moe.views.schemas.bandit_pretty_view)</a>
+  </dt>
+
+      
+  <dt><a href="moe.views.rest.html#moe.views.rest.bandit_epsilon.BanditEpsilonView.bandit_epsilon_view">bandit_epsilon_view() (moe.views.rest.bandit_epsilon.BanditEpsilonView method)</a>
+  </dt>
+
+      
+  <dt><a href="moe.views.rest.html#moe.views.rest.bandit_ucb.BanditUCBView.bandit_ucb_view">bandit_ucb_view() (moe.views.rest.bandit_ucb.BanditUCBView method)</a>
+  </dt>
+
+      
+  <dt><a href="moe.views.schemas.html#moe.views.schemas.bandit_pretty_view.BanditEpsilonFirstHyperparameterInfo">BanditEpsilonFirstHyperparameterInfo (class in moe.views.schemas.bandit_pretty_view)</a>
+  </dt>
+
+      
+  <dt><a href="moe.views.schemas.html#moe.views.schemas.bandit_pretty_view.BanditEpsilonGreedyHyperparameterInfo">BanditEpsilonGreedyHyperparameterInfo (class in moe.views.schemas.bandit_pretty_view)</a>
+  </dt>
+
+      
+  <dt><a href="moe.views.schemas.rest.html#moe.views.schemas.rest.bandit_epsilon.BanditEpsilonRequest">BanditEpsilonRequest (class in moe.views.schemas.rest.bandit_epsilon)</a>
+  </dt>
+
+      
+  <dt><a href="moe.views.rest.html#moe.views.rest.bandit_epsilon.BanditEpsilonView">BanditEpsilonView (class in moe.views.rest.bandit_epsilon)</a>
+  </dt>
+
+      
+  <dt><a href="moe.views.schemas.html#moe.views.schemas.bandit_pretty_view.BanditHistoricalInfo">BanditHistoricalInfo (class in moe.views.schemas.bandit_pretty_view)</a>
+  </dt>
+
+      
+  <dt><a href="moe.bandit.interfaces.html#moe.bandit.interfaces.bandit_interface.BanditInterface">BanditInterface (class in moe.bandit.interfaces.bandit_interface)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.bandit_interface_test.BanditInterfaceTest">BanditInterfaceTest (class in moe.tests.bandit.bandit_interface_test)</a>
+  </dt>
+
+      
+  <dt><a href="moe.bandit.html#moe.bandit.linkers.BanditMethod">BanditMethod (class in moe.bandit.linkers)</a>
+  </dt>
+
+      
+  <dt><a href="moe.views.html#moe.views.bandit_pretty_view.BanditPrettyView">BanditPrettyView (class in moe.views.bandit_pretty_view)</a>
+  </dt>
+
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="moe.views.schemas.html#moe.views.schemas.bandit_pretty_view.BanditResponse">BanditResponse (class in moe.views.schemas.bandit_pretty_view)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.bandit_test_case.BanditTestCase">BanditTestCase (class in moe.tests.bandit.bandit_test_case)</a>
+  </dt>
+
+      
+  <dt><a href="moe.views.schemas.rest.html#moe.views.schemas.rest.bandit_ucb.BanditUCBRequest">BanditUCBRequest (class in moe.views.schemas.rest.bandit_ucb)</a>
+  </dt>
+
+      
+  <dt><a href="moe.views.rest.html#moe.views.rest.bandit_ucb.BanditUCBView">BanditUCBView (class in moe.views.rest.bandit_ucb)</a>
+  </dt>
+
       
   <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.expected_improvement_test.ExpectedImprovementTest.base_setup">base_setup() (moe.tests.optimal_learning.python.cpp_wrappers.expected_improvement_test.ExpectedImprovementTest method)</a>
   </dt>
@@ -338,7 +479,7 @@
   </dt>
 
       
-  <dt><a href="moe.views.html#moe.views.schemas.BoundedDomainInfo">BoundedDomainInfo (class in moe.views.schemas)</a>
+  <dt><a href="moe.views.schemas.html#moe.views.schemas.base_schemas.BoundedDomainInfo">BoundedDomainInfo (class in moe.views.schemas.base_schemas)</a>
   </dt>
 
       
@@ -349,8 +490,6 @@
   <dt><a href="moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.python_utils.build_covariance_matrix">build_covariance_matrix() (in module moe.optimal_learning.python.python_version.python_utils)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.python_utils.build_hyperparameter_grad_covariance_matrix">build_hyperparameter_grad_covariance_matrix() (in module moe.optimal_learning.python.python_version.python_utils)</a>
   </dt>
@@ -399,6 +538,10 @@
   </dt>
 
       </dl></dd>
+      
+  <dt><a href="moe.bandit.interfaces.html#moe.bandit.interfaces.bandit_interface.BanditInterface.choose_arm">choose_arm() (moe.bandit.interfaces.bandit_interface.BanditInterface static method)</a>
+  </dt>
+
       
   <dt><a href="moe.optimal_learning.python.html#moe.optimal_learning.python.geometry_utils.ClosedInterval">ClosedInterval (class in moe.optimal_learning.python.geometry_utils)</a>
   </dt>
@@ -712,7 +855,7 @@
   </dt>
 
       
-  <dt><a href="moe.views.html#moe.views.schemas.CovarianceInfo">CovarianceInfo (class in moe.views.schemas)</a>
+  <dt><a href="moe.views.schemas.html#moe.views.schemas.base_schemas.CovarianceInfo">CovarianceInfo (class in moe.views.schemas.base_schemas)</a>
   </dt>
 
       
@@ -752,7 +895,7 @@
   </dt>
 
       
-  <dt><a href="moe.tests.views.html#moe.tests.views.rest_gaussian_process_test_case.RestGaussianProcessTestCase.create_webapp">create_webapp() (moe.tests.views.rest_gaussian_process_test_case.RestGaussianProcessTestCase method)</a>
+  <dt><a href="moe.tests.views.html#moe.tests.views.rest_test_case.RestTestCase.create_webapp">create_webapp() (moe.tests.views.rest_test_case.RestTestCase method)</a>
   </dt>
 
       <dd><dl>
@@ -888,11 +1031,25 @@
 
       </dl></dd>
       
-  <dt><a href="moe.tests.views.html#moe.tests.views.exceptions_test.RestGaussianProcessTestCaseWithExceptions.disable_logging">disable_logging() (moe.tests.views.exceptions_test.RestGaussianProcessTestCaseWithExceptions method)</a>
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.bandit_interface_test.BanditInterfaceTest.disable_logging">disable_logging() (moe.tests.bandit.bandit_interface_test.BanditInterfaceTest method)</a>
   </dt>
 
+      <dd><dl>
+        
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.epsilon_test.EpsilonTest.disable_logging">(moe.tests.bandit.epsilon_test.EpsilonTest method)</a>
+  </dt>
+
+        
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.utils_test.UtilsTest.disable_logging">(moe.tests.bandit.utils_test.UtilsTest method)</a>
+  </dt>
+
+        
+  <dt><a href="moe.tests.views.html#moe.tests.views.exceptions_test.RestGaussianProcessTestCaseWithExceptions.disable_logging">(moe.tests.views.exceptions_test.RestGaussianProcessTestCaseWithExceptions method)</a>
+  </dt>
+
+      </dl></dd>
       
-  <dt><a href="moe.views.html#moe.views.schemas.Domain">Domain (class in moe.views.schemas)</a>
+  <dt><a href="moe.views.schemas.html#moe.views.schemas.base_schemas.Domain">Domain (class in moe.views.schemas.base_schemas)</a>
   </dt>
 
       
@@ -926,11 +1083,11 @@
   </dt>
 
       
-  <dt><a href="moe.views.html#moe.views.schemas.DomainCoordinate">DomainCoordinate (class in moe.views.schemas)</a>
+  <dt><a href="moe.views.schemas.html#moe.views.schemas.base_schemas.DomainCoordinate">DomainCoordinate (class in moe.views.schemas.base_schemas)</a>
   </dt>
 
       
-  <dt><a href="moe.views.html#moe.views.schemas.DomainInfo">DomainInfo (class in moe.views.schemas)</a>
+  <dt><a href="moe.views.schemas.html#moe.views.schemas.base_schemas.DomainInfo">DomainInfo (class in moe.views.schemas.base_schemas)</a>
   </dt>
 
       
@@ -948,9 +1105,23 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="moe.tests.views.html#moe.tests.views.exceptions_test.RestGaussianProcessTestCaseWithExceptions.enable_logging">enable_logging() (moe.tests.views.exceptions_test.RestGaussianProcessTestCaseWithExceptions method)</a>
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.bandit_interface_test.BanditInterfaceTest.enable_logging">enable_logging() (moe.tests.bandit.bandit_interface_test.BanditInterfaceTest method)</a>
   </dt>
 
+      <dd><dl>
+        
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.epsilon_test.EpsilonTest.enable_logging">(moe.tests.bandit.epsilon_test.EpsilonTest method)</a>
+  </dt>
+
+        
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.utils_test.UtilsTest.enable_logging">(moe.tests.bandit.utils_test.UtilsTest method)</a>
+  </dt>
+
+        
+  <dt><a href="moe.tests.views.html#moe.tests.views.exceptions_test.RestGaussianProcessTestCaseWithExceptions.enable_logging">(moe.tests.views.exceptions_test.RestGaussianProcessTestCaseWithExceptions method)</a>
+  </dt>
+
+      </dl></dd>
       
   <dt><a href="moe.tests.views.rest.html#moe.tests.views.rest.gp_ei_test.TestGpEiView.endpoint">endpoint (moe.tests.views.rest.gp_ei_test.TestGpEiView attribute)</a>
   </dt>
@@ -961,7 +1132,7 @@
   </dt>
 
         
-  <dt><a href="moe.tests.views.html#moe.tests.views.rest_gaussian_process_test_case.RestGaussianProcessTestCase.endpoint">(moe.tests.views.rest_gaussian_process_test_case.RestGaussianProcessTestCase attribute)</a>
+  <dt><a href="moe.tests.views.html#moe.tests.views.rest_test_case.RestTestCase.endpoint">(moe.tests.views.rest_test_case.RestTestCase attribute)</a>
   </dt>
 
       </dl></dd>
@@ -971,6 +1142,40 @@
 
       
   <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.epsilon">epsilon (moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest attribute)</a>
+  </dt>
+
+      
+  <dt><a href="moe.bandit.html#moe.bandit.epsilon_first.EpsilonFirst">EpsilonFirst (class in moe.bandit.epsilon_first)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.epsilon_first_test.EpsilonFirstTest">EpsilonFirstTest (class in moe.tests.bandit.epsilon_first_test)</a>
+  </dt>
+
+      
+  <dt><a href="moe.bandit.html#moe.bandit.epsilon_greedy.EpsilonGreedy">EpsilonGreedy (class in moe.bandit.epsilon_greedy)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.epsilon_greedy_test.EpsilonGreedyTest">EpsilonGreedyTest (class in moe.tests.bandit.epsilon_greedy_test)</a>
+  </dt>
+
+      
+  <dt><a href="moe.bandit.html#moe.bandit.epsilon_interface.EpsilonInterface">EpsilonInterface (class in moe.bandit.epsilon_interface)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.epsilon_test_case.EpsilonTestCase.epsilons_to_test">epsilons_to_test (moe.tests.bandit.epsilon_test_case.EpsilonTestCase attribute)</a>
+  </dt>
+
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.epsilon_test.EpsilonTest">EpsilonTest (class in moe.tests.bandit.epsilon_test)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.epsilon_test_case.EpsilonTestCase">EpsilonTestCase (class in moe.tests.bandit.epsilon_test_case)</a>
   </dt>
 
       
@@ -993,8 +1198,6 @@
   </dt>
 
       </dl></dd>
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.exception_test.ExceptionStructureTest">ExceptionStructureTest (class in moe.tests.optimal_learning.python.cpp_wrappers.exception_test)</a>
   </dt>
@@ -1052,7 +1255,7 @@
   </dt>
 
       
-  <dt><a href="moe.views.html#moe.views.gp_pretty_view.GpPrettyView.form_response">form_response() (moe.views.gp_pretty_view.GpPrettyView method)</a>
+  <dt><a href="moe.views.html#moe.views.pretty_view.PrettyView.form_response">form_response() (moe.views.pretty_view.PrettyView method)</a>
   </dt>
 
       
@@ -1254,6 +1457,10 @@
 
       </dl></dd>
       
+  <dt><a href="moe.bandit.html#moe.bandit.utils.get_equal_arm_allocations">get_equal_arm_allocations() (in module moe.bandit.utils)</a>
+  </dt>
+
+      
   <dt><a href="moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.gaussian_process.GaussianProcess.get_historical_data_copy">get_historical_data_copy() (moe.optimal_learning.python.cpp_wrappers.gaussian_process.GaussianProcess method)</a>
   </dt>
 
@@ -1324,15 +1531,51 @@
   </dt>
 
       
-  <dt><a href="moe.views.html#moe.views.gp_pretty_view.GpPrettyView.get_params_from_request">get_params_from_request() (moe.views.gp_pretty_view.GpPrettyView method)</a>
+  <dt><a href="moe.views.html#moe.views.optimizable_gp_pretty_view.OptimizableGpPrettyView.get_params_from_request">get_params_from_request() (moe.views.optimizable_gp_pretty_view.OptimizableGpPrettyView method)</a>
   </dt>
 
       <dd><dl>
         
-  <dt><a href="moe.views.html#moe.views.optimizable_gp_pretty_view.OptimizableGpPrettyView.get_params_from_request">(moe.views.optimizable_gp_pretty_view.OptimizableGpPrettyView method)</a>
+  <dt><a href="moe.views.html#moe.views.pretty_view.PrettyView.get_params_from_request">(moe.views.pretty_view.PrettyView method)</a>
+  </dt>
+
+        
+  <dt><a href="moe.views.rest.html#moe.views.rest.bandit_epsilon.BanditEpsilonView.get_params_from_request">(moe.views.rest.bandit_epsilon.BanditEpsilonView method)</a>
   </dt>
 
       </dl></dd>
+      
+  <dt><a href="moe.bandit.html#moe.bandit.ucb1.UCB1.get_ucb_payoff">get_ucb_payoff() (moe.bandit.ucb1.UCB1 method)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="moe.bandit.html#moe.bandit.ucb1_tuned.UCB1Tuned.get_ucb_payoff">(moe.bandit.ucb1_tuned.UCB1Tuned method)</a>
+  </dt>
+
+        
+  <dt><a href="moe.bandit.html#moe.bandit.ucb_interface.UCBInterface.get_ucb_payoff">(moe.bandit.ucb_interface.UCBInterface method)</a>
+  </dt>
+
+      </dl></dd>
+      
+  <dt><a href="moe.bandit.html#moe.bandit.ucb_interface.UCBInterface.get_unsampled_arm_names">get_unsampled_arm_names() (moe.bandit.ucb_interface.UCBInterface static method)</a>
+  </dt>
+
+      
+  <dt><a href="moe.bandit.html#moe.bandit.epsilon_interface.EpsilonInterface.get_winning_arm_names">get_winning_arm_names() (moe.bandit.epsilon_interface.EpsilonInterface static method)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="moe.bandit.html#moe.bandit.ucb_interface.UCBInterface.get_winning_arm_names">(moe.bandit.ucb_interface.UCBInterface method)</a>
+  </dt>
+
+      </dl></dd>
+      
+  <dt><a href="moe.bandit.html#moe.bandit.utils.get_winning_arm_names_from_payoff_arm_name_list">get_winning_arm_names_from_payoff_arm_name_list() (in module moe.bandit.utils)</a>
+  </dt>
+
       
   <dt><a href="moe.views.rest.html#moe.views.rest.gp_ei.GpEiView.gp_ei_view">gp_ei_view() (moe.views.rest.gp_ei.GpEiView method)</a>
   </dt>
@@ -1381,6 +1624,8 @@
   <dt><a href="moe.views.rest.html#moe.views.rest.gp_next_points_kriging.GpNextPointsKriging.gp_next_points_kriging_view">gp_next_points_kriging_view() (moe.views.rest.gp_next_points_kriging.GpNextPointsKriging method)</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="moe.views.html#moe.views.frontend.gp_plot_page">gp_plot_page() (in module moe.views.frontend)</a>
   </dt>
@@ -1407,8 +1652,6 @@
   </dt>
 
       </dl></dd>
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="moe.views.rest.html#moe.views.rest.gp_mean_var.GpVarDiagView.gp_var_diag_view">gp_var_diag_view() (moe.views.rest.gp_mean_var.GpVarDiagView method)</a>
   </dt>
@@ -1423,12 +1666,12 @@
 
       <dd><dl>
         
-  <dt><a href="moe.views.html#moe.views.schemas.GpEiRequest">(class in moe.views.schemas)</a>
+  <dt><a href="moe.views.schemas.rest.html#moe.views.schemas.rest.gp_ei.GpEiRequest">(class in moe.views.schemas.rest.gp_ei)</a>
   </dt>
 
       </dl></dd>
       
-  <dt><a href="moe.views.html#moe.views.schemas.GpEiResponse">GpEiResponse (class in moe.views.schemas)</a>
+  <dt><a href="moe.views.schemas.rest.html#moe.views.schemas.rest.gp_ei.GpEiResponse">GpEiResponse (class in moe.views.schemas.rest.gp_ei)</a>
   </dt>
 
       
@@ -1436,23 +1679,23 @@
   </dt>
 
       
-  <dt><a href="moe.views.html#moe.views.schemas.GpEndpointResponse">GpEndpointResponse (class in moe.views.schemas)</a>
+  <dt><a href="moe.views.schemas.rest.html#moe.views.schemas.rest.gp_mean_var.GpEndpointResponse">GpEndpointResponse (class in moe.views.schemas.rest.gp_mean_var)</a>
   </dt>
 
       
-  <dt><a href="moe.views.html#moe.views.schemas.GpHistoricalInfo">GpHistoricalInfo (class in moe.views.schemas)</a>
+  <dt><a href="moe.views.schemas.html#moe.views.schemas.base_schemas.GpHistoricalInfo">GpHistoricalInfo (class in moe.views.schemas.base_schemas)</a>
   </dt>
 
       
-  <dt><a href="moe.views.html#moe.views.schemas.GpHyperOptRequest">GpHyperOptRequest (class in moe.views.schemas)</a>
+  <dt><a href="moe.views.schemas.rest.html#moe.views.schemas.rest.gp_hyper_opt.GpHyperOptRequest">GpHyperOptRequest (class in moe.views.schemas.rest.gp_hyper_opt)</a>
   </dt>
 
       
-  <dt><a href="moe.views.html#moe.views.schemas.GpHyperOptResponse">GpHyperOptResponse (class in moe.views.schemas)</a>
+  <dt><a href="moe.views.schemas.rest.html#moe.views.schemas.rest.gp_hyper_opt.GpHyperOptResponse">GpHyperOptResponse (class in moe.views.schemas.rest.gp_hyper_opt)</a>
   </dt>
 
       
-  <dt><a href="moe.views.html#moe.views.schemas.GpHyperOptStatus">GpHyperOptStatus (class in moe.views.schemas)</a>
+  <dt><a href="moe.views.schemas.rest.html#moe.views.schemas.rest.gp_hyper_opt.GpHyperOptStatus">GpHyperOptStatus (class in moe.views.schemas.rest.gp_hyper_opt)</a>
   </dt>
 
       
@@ -1460,11 +1703,11 @@
   </dt>
 
       
-  <dt><a href="moe.views.html#moe.views.schemas.GpMeanMixinResponse">GpMeanMixinResponse (class in moe.views.schemas)</a>
+  <dt><a href="moe.views.schemas.rest.html#moe.views.schemas.rest.gp_mean_var.GpMeanMixinResponse">GpMeanMixinResponse (class in moe.views.schemas.rest.gp_mean_var)</a>
   </dt>
 
       
-  <dt><a href="moe.views.html#moe.views.schemas.GpMeanResponse">GpMeanResponse (class in moe.views.schemas)</a>
+  <dt><a href="moe.views.schemas.rest.html#moe.views.schemas.rest.gp_mean_var.GpMeanResponse">GpMeanResponse (class in moe.views.schemas.rest.gp_mean_var)</a>
   </dt>
 
       
@@ -1472,7 +1715,7 @@
   </dt>
 
       
-  <dt><a href="moe.views.html#moe.views.schemas.GpMeanVarDiagResponse">GpMeanVarDiagResponse (class in moe.views.schemas)</a>
+  <dt><a href="moe.views.schemas.rest.html#moe.views.schemas.rest.gp_mean_var.GpMeanVarDiagResponse">GpMeanVarDiagResponse (class in moe.views.schemas.rest.gp_mean_var)</a>
   </dt>
 
       
@@ -1480,11 +1723,11 @@
   </dt>
 
       
-  <dt><a href="moe.views.html#moe.views.schemas.GpMeanVarRequest">GpMeanVarRequest (class in moe.views.schemas)</a>
+  <dt><a href="moe.views.schemas.rest.html#moe.views.schemas.rest.gp_mean_var.GpMeanVarRequest">GpMeanVarRequest (class in moe.views.schemas.rest.gp_mean_var)</a>
   </dt>
 
       
-  <dt><a href="moe.views.html#moe.views.schemas.GpMeanVarResponse">GpMeanVarResponse (class in moe.views.schemas)</a>
+  <dt><a href="moe.views.schemas.rest.html#moe.views.schemas.rest.gp_mean_var.GpMeanVarResponse">GpMeanVarResponse (class in moe.views.schemas.rest.gp_mean_var)</a>
   </dt>
 
       
@@ -1500,7 +1743,7 @@
   </dt>
 
       
-  <dt><a href="moe.views.html#moe.views.schemas.GpNextPointsConstantLiarRequest">GpNextPointsConstantLiarRequest (class in moe.views.schemas)</a>
+  <dt><a href="moe.views.schemas.rest.html#moe.views.schemas.rest.gp_next_points_constant_liar.GpNextPointsConstantLiarRequest">GpNextPointsConstantLiarRequest (class in moe.views.schemas.rest.gp_next_points_constant_liar)</a>
   </dt>
 
       
@@ -1512,7 +1755,7 @@
   </dt>
 
       
-  <dt><a href="moe.views.html#moe.views.schemas.GpNextPointsKrigingRequest">GpNextPointsKrigingRequest (class in moe.views.schemas)</a>
+  <dt><a href="moe.views.schemas.rest.html#moe.views.schemas.rest.gp_next_points_kriging.GpNextPointsKrigingRequest">GpNextPointsKrigingRequest (class in moe.views.schemas.rest.gp_next_points_kriging)</a>
   </dt>
 
       
@@ -1520,15 +1763,15 @@
   </dt>
 
       
-  <dt><a href="moe.views.html#moe.views.schemas.GpNextPointsRequest">GpNextPointsRequest (class in moe.views.schemas)</a>
+  <dt><a href="moe.views.schemas.html#moe.views.schemas.gp_next_points_pretty_view.GpNextPointsRequest">GpNextPointsRequest (class in moe.views.schemas.gp_next_points_pretty_view)</a>
   </dt>
 
       
-  <dt><a href="moe.views.html#moe.views.schemas.GpNextPointsResponse">GpNextPointsResponse (class in moe.views.schemas)</a>
+  <dt><a href="moe.views.schemas.html#moe.views.schemas.gp_next_points_pretty_view.GpNextPointsResponse">GpNextPointsResponse (class in moe.views.schemas.gp_next_points_pretty_view)</a>
   </dt>
 
       
-  <dt><a href="moe.views.html#moe.views.schemas.GpNextPointsStatus">GpNextPointsStatus (class in moe.views.schemas)</a>
+  <dt><a href="moe.views.schemas.html#moe.views.schemas.gp_next_points_pretty_view.GpNextPointsStatus">GpNextPointsStatus (class in moe.views.schemas.gp_next_points_pretty_view)</a>
   </dt>
 
       
@@ -1536,11 +1779,11 @@
   </dt>
 
       
-  <dt><a href="moe.views.html#moe.views.schemas.GpVarDiagMixinResponse">GpVarDiagMixinResponse (class in moe.views.schemas)</a>
+  <dt><a href="moe.views.schemas.rest.html#moe.views.schemas.rest.gp_mean_var.GpVarDiagMixinResponse">GpVarDiagMixinResponse (class in moe.views.schemas.rest.gp_mean_var)</a>
   </dt>
 
       
-  <dt><a href="moe.views.html#moe.views.schemas.GpVarDiagResponse">GpVarDiagResponse (class in moe.views.schemas)</a>
+  <dt><a href="moe.views.schemas.rest.html#moe.views.schemas.rest.gp_mean_var.GpVarDiagResponse">GpVarDiagResponse (class in moe.views.schemas.rest.gp_mean_var)</a>
   </dt>
 
       
@@ -1548,11 +1791,11 @@
   </dt>
 
       
-  <dt><a href="moe.views.html#moe.views.schemas.GpVarMixinResponse">GpVarMixinResponse (class in moe.views.schemas)</a>
+  <dt><a href="moe.views.schemas.rest.html#moe.views.schemas.rest.gp_mean_var.GpVarMixinResponse">GpVarMixinResponse (class in moe.views.schemas.rest.gp_mean_var)</a>
   </dt>
 
       
-  <dt><a href="moe.views.html#moe.views.schemas.GpVarResponse">GpVarResponse (class in moe.views.schemas)</a>
+  <dt><a href="moe.views.schemas.rest.html#moe.views.schemas.rest.gp_mean_var.GpVarResponse">GpVarResponse (class in moe.views.schemas.rest.gp_mean_var)</a>
   </dt>
 
       
@@ -1598,7 +1841,7 @@
 
       </dl></dd>
       
-  <dt><a href="moe.views.html#moe.views.schemas.GradientDescentParametersSchema">GradientDescentParametersSchema (class in moe.views.schemas)</a>
+  <dt><a href="moe.views.schemas.html#moe.views.schemas.base_schemas.GradientDescentParametersSchema">GradientDescentParametersSchema (class in moe.views.schemas.base_schemas)</a>
   </dt>
 
       
@@ -1612,13 +1855,25 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="moe.optimal_learning.python.html#moe.optimal_learning.python.data_containers.HistoricalData">HistoricalData (class in moe.optimal_learning.python.data_containers)</a>
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.bandit_test_case.BanditTestCase.historical_infos_to_test">historical_infos_to_test (moe.tests.bandit.bandit_test_case.BanditTestCase attribute)</a>
   </dt>
 
+      
+  <dt><a href="moe.bandit.html#moe.bandit.data_containers.HistoricalData">HistoricalData (class in moe.bandit.data_containers)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="moe.optimal_learning.python.html#moe.optimal_learning.python.data_containers.HistoricalData">(class in moe.optimal_learning.python.data_containers)</a>
+  </dt>
+
+      </dl></dd>
       
   <dt><a href="moe_examples.tests.html#moe_examples.tests.hyper_opt_of_gp_from_historical_data_test.HyperOptOfGpFromHistoricalDataTest">HyperOptOfGpFromHistoricalDataTest (class in moe_examples.tests.hyper_opt_of_gp_from_historical_data_test)</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.covariance.SquareExponential.hyperparameter_grad_covariance">hyperparameter_grad_covariance() (moe.optimal_learning.python.cpp_wrappers.covariance.SquareExponential method)</a>
   </dt>
@@ -1633,8 +1888,6 @@
   </dt>
 
       </dl></dd>
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.covariance.SquareExponential.hyperparameter_hessian_covariance">hyperparameter_hessian_covariance() (moe.optimal_learning.python.cpp_wrappers.covariance.SquareExponential method)</a>
   </dt>
@@ -1702,10 +1955,18 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="moe.optimal_learning.python.html#moe.optimal_learning.python.data_containers.HistoricalData.json_payload">json_payload() (moe.optimal_learning.python.data_containers.HistoricalData method)</a>
+  <dt><a href="moe.bandit.html#moe.bandit.data_containers.HistoricalData.json_payload">json_payload() (moe.bandit.data_containers.HistoricalData method)</a>
   </dt>
 
       <dd><dl>
+        
+  <dt><a href="moe.bandit.html#moe.bandit.data_containers.SampleArm.json_payload">(moe.bandit.data_containers.SampleArm method)</a>
+  </dt>
+
+        
+  <dt><a href="moe.optimal_learning.python.html#moe.optimal_learning.python.data_containers.HistoricalData.json_payload">(moe.optimal_learning.python.data_containers.HistoricalData method)</a>
+  </dt>
+
         
   <dt><a href="moe.optimal_learning.python.html#moe.optimal_learning.python.data_containers.SamplePoint.json_payload">(moe.optimal_learning.python.data_containers.SamplePoint method)</a>
   </dt>
@@ -1740,6 +2001,10 @@
   </dt>
 
       
+  <dt><a href="moe.views.schemas.html#moe.views.schemas.base_schemas.LBFGSBParametersSchema">LBFGSBParametersSchema (class in moe.views.schemas.base_schemas)</a>
+  </dt>
+
+      
   <dt><a href="moe.optimal_learning.python.html#moe.optimal_learning.python.geometry_utils.ClosedInterval.length">length (moe.optimal_learning.python.geometry_utils.ClosedInterval attribute)</a>
   </dt>
 
@@ -1752,25 +2017,31 @@
   </dt>
 
       
-  <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.linkers_test.LinkersTest">LinkersTest (class in moe.tests.optimal_learning.python.linkers_test)</a>
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.linkers_test.LinkersTest">LinkersTest (class in moe.tests.bandit.linkers_test)</a>
   </dt>
 
+      <dd><dl>
+        
+  <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.linkers_test.LinkersTest">(class in moe.tests.optimal_learning.python.linkers_test)</a>
+  </dt>
+
+      </dl></dd>
       
-  <dt><a href="moe.views.html#moe.views.schemas.ListOfExpectedImprovements">ListOfExpectedImprovements (class in moe.views.schemas)</a>
+  <dt><a href="moe.views.schemas.html#moe.views.schemas.base_schemas.ListOfExpectedImprovements">ListOfExpectedImprovements (class in moe.views.schemas.base_schemas)</a>
   </dt>
 
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="moe.views.html#moe.views.schemas.ListOfFloats">ListOfFloats (class in moe.views.schemas)</a>
+  <dt><a href="moe.views.schemas.html#moe.views.schemas.base_schemas.ListOfFloats">ListOfFloats (class in moe.views.schemas.base_schemas)</a>
   </dt>
 
       
-  <dt><a href="moe.views.html#moe.views.schemas.ListOfPointsInDomain">ListOfPointsInDomain (class in moe.views.schemas)</a>
+  <dt><a href="moe.views.schemas.html#moe.views.schemas.base_schemas.ListOfPointsInDomain">ListOfPointsInDomain (class in moe.views.schemas.base_schemas)</a>
   </dt>
 
       
-  <dt><a href="moe.views.html#moe.views.schemas.ListOfPositiveFloats">ListOfPositiveFloats (class in moe.views.schemas)</a>
+  <dt><a href="moe.views.schemas.html#moe.views.schemas.base_schemas.ListOfPositiveFloats">ListOfPositiveFloats (class in moe.views.schemas.base_schemas)</a>
   </dt>
 
       
@@ -1789,6 +2060,10 @@
   <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.log_likelihood_test.LogLikelihoodTest">LogLikelihoodTest (class in moe.tests.optimal_learning.python.cpp_wrappers.log_likelihood_test)</a>
   </dt>
 
+      
+  <dt><a href="moe.bandit.html#moe.bandit.data_containers.SampleArm.loss">loss (moe.bandit.data_containers.SampleArm attribute)</a>
+  </dt>
+
   </dl></td>
 </tr></table>
 
@@ -1800,15 +2075,23 @@
   </dt>
 
       
+  <dt><a href="moe.html#moe.MAJOR">MAJOR (in module moe)</a>
+  </dt>
+
+      
   <dt><a href="moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.covariance.SquareExponential.make_default_hyperparameters">make_default_hyperparameters() (moe.optimal_learning.python.cpp_wrappers.covariance.SquareExponential static method)</a>
   </dt>
 
       
-  <dt><a href="moe.views.html#moe.views.schemas.MatrixOfFloats">MatrixOfFloats (class in moe.views.schemas)</a>
+  <dt><a href="moe.views.schemas.html#moe.views.schemas.base_schemas.MatrixOfFloats">MatrixOfFloats (class in moe.views.schemas.base_schemas)</a>
   </dt>
 
       
   <dt><a href="moe.optimal_learning.python.html#moe.optimal_learning.python.constant.MAX_ALLOWED_NUM_THREADS">MAX_ALLOWED_NUM_THREADS (in module moe.optimal_learning.python.constant)</a>
+  </dt>
+
+      
+  <dt><a href="moe.bandit.html#moe.bandit.constant.MAX_BERNOULLI_RANDOM_VARIABLE_VARIANCE">MAX_BERNOULLI_RANDOM_VARIABLE_VARIANCE (in module moe.bandit.constant)</a>
   </dt>
 
       
@@ -1836,11 +2119,63 @@
   </dt>
 
       
+  <dt><a href="moe.html#moe.MINOR">MINOR (in module moe)</a>
+  </dt>
+
+      
   <dt><a href="moe.html#module-moe">moe (module)</a>
   </dt>
 
       
-  <dt><a href="moe.build.html#module-moe.build">moe.build (module)</a>
+  <dt><a href="moe.bandit.html#module-moe.bandit">moe.bandit (module)</a>
+  </dt>
+
+      
+  <dt><a href="moe.bandit.html#module-moe.bandit.constant">moe.bandit.constant (module)</a>
+  </dt>
+
+      
+  <dt><a href="moe.bandit.html#module-moe.bandit.data_containers">moe.bandit.data_containers (module)</a>
+  </dt>
+
+      
+  <dt><a href="moe.bandit.html#module-moe.bandit.epsilon_first">moe.bandit.epsilon_first (module)</a>
+  </dt>
+
+      
+  <dt><a href="moe.bandit.html#module-moe.bandit.epsilon_greedy">moe.bandit.epsilon_greedy (module)</a>
+  </dt>
+
+      
+  <dt><a href="moe.bandit.html#module-moe.bandit.epsilon_interface">moe.bandit.epsilon_interface (module)</a>
+  </dt>
+
+      
+  <dt><a href="moe.bandit.interfaces.html#module-moe.bandit.interfaces">moe.bandit.interfaces (module)</a>
+  </dt>
+
+      
+  <dt><a href="moe.bandit.interfaces.html#module-moe.bandit.interfaces.bandit_interface">moe.bandit.interfaces.bandit_interface (module)</a>
+  </dt>
+
+      
+  <dt><a href="moe.bandit.html#module-moe.bandit.linkers">moe.bandit.linkers (module)</a>
+  </dt>
+
+      
+  <dt><a href="moe.bandit.html#module-moe.bandit.ucb1">moe.bandit.ucb1 (module)</a>
+  </dt>
+
+      
+  <dt><a href="moe.bandit.html#module-moe.bandit.ucb1_tuned">moe.bandit.ucb1_tuned (module)</a>
+  </dt>
+
+      
+  <dt><a href="moe.bandit.html#module-moe.bandit.ucb_interface">moe.bandit.ucb_interface (module)</a>
+  </dt>
+
+      
+  <dt><a href="moe.bandit.html#module-moe.bandit.utils">moe.bandit.utils (module)</a>
   </dt>
 
       
@@ -1992,6 +2327,54 @@
   </dt>
 
       
+  <dt><a href="moe.tests.bandit.html#module-moe.tests.bandit">moe.tests.bandit (module)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.bandit.html#module-moe.tests.bandit.bandit_interface_test">moe.tests.bandit.bandit_interface_test (module)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.bandit.html#module-moe.tests.bandit.bandit_test_case">moe.tests.bandit.bandit_test_case (module)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.bandit.html#module-moe.tests.bandit.epsilon_first_test">moe.tests.bandit.epsilon_first_test (module)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.bandit.html#module-moe.tests.bandit.epsilon_greedy_test">moe.tests.bandit.epsilon_greedy_test (module)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.bandit.html#module-moe.tests.bandit.epsilon_test">moe.tests.bandit.epsilon_test (module)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.bandit.html#module-moe.tests.bandit.epsilon_test_case">moe.tests.bandit.epsilon_test_case (module)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.bandit.html#module-moe.tests.bandit.linkers_test">moe.tests.bandit.linkers_test (module)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.bandit.html#module-moe.tests.bandit.ucb1_test">moe.tests.bandit.ucb1_test (module)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.bandit.html#module-moe.tests.bandit.ucb1_tuned_test">moe.tests.bandit.ucb1_tuned_test (module)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.bandit.html#module-moe.tests.bandit.ucb_test_case">moe.tests.bandit.ucb_test_case (module)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.bandit.html#module-moe.tests.bandit.utils_test">moe.tests.bandit.utils_test (module)</a>
+  </dt>
+
+      
   <dt><a href="moe.tests.optimal_learning.html#module-moe.tests.optimal_learning">moe.tests.optimal_learning (module)</a>
   </dt>
 
@@ -2003,6 +2386,8 @@
   <dt><a href="moe.tests.optimal_learning.python.cpp_unit_tests.html#module-moe.tests.optimal_learning.python.cpp_unit_tests">moe.tests.optimal_learning.python.cpp_unit_tests (module)</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="moe.tests.optimal_learning.python.cpp_unit_tests.html#module-moe.tests.optimal_learning.python.cpp_unit_tests.cpp_unit_test_wrapper_test">moe.tests.optimal_learning.python.cpp_unit_tests.cpp_unit_test_wrapper_test (module)</a>
   </dt>
@@ -2019,8 +2404,6 @@
   <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#module-moe.tests.optimal_learning.python.cpp_wrappers.expected_improvement_test">moe.tests.optimal_learning.python.cpp_wrappers.expected_improvement_test (module)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#module-moe.tests.optimal_learning.python.cpp_wrappers.gaussian_process_test">moe.tests.optimal_learning.python.cpp_wrappers.gaussian_process_test (module)</a>
   </dt>
@@ -2082,6 +2465,18 @@
   </dt>
 
       
+  <dt><a href="moe.tests.views.rest.html#module-moe.tests.views.rest.bandit_epsilon_test">moe.tests.views.rest.bandit_epsilon_test (module)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.views.rest.html#module-moe.tests.views.rest.bandit_test">moe.tests.views.rest.bandit_test (module)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.views.rest.html#module-moe.tests.views.rest.bandit_ucb_test">moe.tests.views.rest.bandit_ucb_test (module)</a>
+  </dt>
+
+      
   <dt><a href="moe.tests.views.rest.html#module-moe.tests.views.rest.gp_ei_test">moe.tests.views.rest.gp_ei_test (module)</a>
   </dt>
 
@@ -2098,11 +2493,15 @@
   </dt>
 
       
-  <dt><a href="moe.tests.views.html#module-moe.tests.views.rest_gaussian_process_test_case">moe.tests.views.rest_gaussian_process_test_case (module)</a>
+  <dt><a href="moe.tests.views.html#module-moe.tests.views.rest_test_case">moe.tests.views.rest_test_case (module)</a>
   </dt>
 
       
   <dt><a href="moe.views.html#module-moe.views">moe.views (module)</a>
+  </dt>
+
+      
+  <dt><a href="moe.views.html#module-moe.views.bandit_pretty_view">moe.views.bandit_pretty_view (module)</a>
   </dt>
 
       
@@ -2134,7 +2533,19 @@
   </dt>
 
       
+  <dt><a href="moe.views.html#module-moe.views.pretty_view">moe.views.pretty_view (module)</a>
+  </dt>
+
+      
   <dt><a href="moe.views.rest.html#module-moe.views.rest">moe.views.rest (module)</a>
+  </dt>
+
+      
+  <dt><a href="moe.views.rest.html#module-moe.views.rest.bandit_epsilon">moe.views.rest.bandit_epsilon (module)</a>
+  </dt>
+
+      
+  <dt><a href="moe.views.rest.html#module-moe.views.rest.bandit_ucb">moe.views.rest.bandit_ucb (module)</a>
   </dt>
 
       
@@ -2162,7 +2573,51 @@
   </dt>
 
       
-  <dt><a href="moe.views.html#module-moe.views.schemas">moe.views.schemas (module)</a>
+  <dt><a href="moe.views.schemas.html#module-moe.views.schemas">moe.views.schemas (module)</a>
+  </dt>
+
+      
+  <dt><a href="moe.views.schemas.html#module-moe.views.schemas.bandit_pretty_view">moe.views.schemas.bandit_pretty_view (module)</a>
+  </dt>
+
+      
+  <dt><a href="moe.views.schemas.html#module-moe.views.schemas.base_schemas">moe.views.schemas.base_schemas (module)</a>
+  </dt>
+
+      
+  <dt><a href="moe.views.schemas.html#module-moe.views.schemas.gp_next_points_pretty_view">moe.views.schemas.gp_next_points_pretty_view (module)</a>
+  </dt>
+
+      
+  <dt><a href="moe.views.schemas.rest.html#module-moe.views.schemas.rest">moe.views.schemas.rest (module)</a>
+  </dt>
+
+      
+  <dt><a href="moe.views.schemas.rest.html#module-moe.views.schemas.rest.bandit_epsilon">moe.views.schemas.rest.bandit_epsilon (module)</a>
+  </dt>
+
+      
+  <dt><a href="moe.views.schemas.rest.html#module-moe.views.schemas.rest.bandit_ucb">moe.views.schemas.rest.bandit_ucb (module)</a>
+  </dt>
+
+      
+  <dt><a href="moe.views.schemas.rest.html#module-moe.views.schemas.rest.gp_ei">moe.views.schemas.rest.gp_ei (module)</a>
+  </dt>
+
+      
+  <dt><a href="moe.views.schemas.rest.html#module-moe.views.schemas.rest.gp_hyper_opt">moe.views.schemas.rest.gp_hyper_opt (module)</a>
+  </dt>
+
+      
+  <dt><a href="moe.views.schemas.rest.html#module-moe.views.schemas.rest.gp_mean_var">moe.views.schemas.rest.gp_mean_var (module)</a>
+  </dt>
+
+      
+  <dt><a href="moe.views.schemas.rest.html#module-moe.views.schemas.rest.gp_next_points_constant_liar">moe.views.schemas.rest.gp_next_points_constant_liar (module)</a>
+  </dt>
+
+      
+  <dt><a href="moe.views.schemas.rest.html#module-moe.views.schemas.rest.gp_next_points_kriging">moe.views.schemas.rest.gp_next_points_kriging (module)</a>
   </dt>
 
       
@@ -2253,6 +2708,14 @@
   <dt><a href="moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.optimization.MultistartOptimizer">MultistartOptimizer (class in moe.optimal_learning.python.python_version.optimization)</a>
   </dt>
 
+      
+  <dt><a href="moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.expected_improvement.MVNDSTParameters">MVNDSTParameters (class in moe.optimal_learning.python.python_version.expected_improvement)</a>
+  </dt>
+
+      
+  <dt><a href="moe.views.schemas.html#moe.views.schemas.base_schemas.MVNDSTParametersSchema">MVNDSTParametersSchema (class in moe.views.schemas.base_schemas)</a>
+  </dt>
+
   </dl></td>
 </tr></table>
 
@@ -2274,7 +2737,7 @@
 
       </dl></dd>
       
-  <dt><a href="moe.views.html#moe.views.schemas.NewtonParametersSchema">NewtonParametersSchema (class in moe.views.schemas)</a>
+  <dt><a href="moe.views.schemas.html#moe.views.schemas.base_schemas.NewtonParametersSchema">NewtonParametersSchema (class in moe.views.schemas.base_schemas)</a>
   </dt>
 
       
@@ -2334,7 +2797,11 @@
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="moe.views.html#moe.views.schemas.NullParametersSchema">NullParametersSchema (class in moe.views.schemas)</a>
+  <dt><a href="moe.views.schemas.html#moe.views.schemas.base_schemas.NullParametersSchema">NullParametersSchema (class in moe.views.schemas.base_schemas)</a>
+  </dt>
+
+      
+  <dt><a href="moe.bandit.html#moe.bandit.data_containers.HistoricalData.num_arms">num_arms (moe.bandit.data_containers.HistoricalData attribute)</a>
   </dt>
 
       
@@ -2478,6 +2945,10 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
       
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.bandit_test_case.BanditTestCase.one_arm_test_case">one_arm_test_case (moe.tests.bandit.bandit_test_case.BanditTestCase attribute)</a>
+  </dt>
+
+      
   <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase">OptimalLearningTestCase (class in moe.tests.optimal_learning.python.optimal_learning_test_case)</a>
   </dt>
 
@@ -2531,18 +3002,18 @@
   <dt><a href="moe.optimal_learning.python.html#moe.optimal_learning.python.constant.OPTIMIZER_TYPE_AND_OBJECTIVE_TO_DEFAULT_PARAMETERS">OPTIMIZER_TYPE_AND_OBJECTIVE_TO_DEFAULT_PARAMETERS (in module moe.optimal_learning.python.constant)</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="moe.optimal_learning.python.html#moe.optimal_learning.python.constant.OPTIMIZER_TYPES">OPTIMIZER_TYPES (in module moe.optimal_learning.python.constant)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="moe.views.html#moe.views.schemas.OPTIMIZER_TYPES_TO_SCHEMA_CLASSES">OPTIMIZER_TYPES_TO_SCHEMA_CLASSES (in module moe.views.schemas)</a>
+  <dt><a href="moe.views.schemas.html#moe.views.schemas.base_schemas.OPTIMIZER_TYPES_TO_SCHEMA_CLASSES">OPTIMIZER_TYPES_TO_SCHEMA_CLASSES (in module moe.views.schemas.base_schemas)</a>
   </dt>
 
       
-  <dt><a href="moe.views.html#moe.views.schemas.OptimizerInfo">OptimizerInfo (class in moe.views.schemas)</a>
+  <dt><a href="moe.views.schemas.html#moe.views.schemas.base_schemas.OptimizerInfo">OptimizerInfo (class in moe.views.schemas.base_schemas)</a>
   </dt>
 
       
@@ -2568,6 +3039,10 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
       
+  <dt><a href="moe.html#moe.PATCH">PATCH (in module moe)</a>
+  </dt>
+
+      
   <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.pgtol">pgtol (moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest attribute)</a>
   </dt>
 
@@ -2584,11 +3059,11 @@
   </dt>
 
       
-  <dt><a href="moe.views.html#moe.views.schemas.PointsSampled">PointsSampled (class in moe.views.schemas)</a>
+  <dt><a href="moe.views.schemas.html#moe.views.schemas.base_schemas.PointsSampled">PointsSampled (class in moe.views.schemas.base_schemas)</a>
   </dt>
 
       
-  <dt><a href="moe.views.html#moe.views.schemas.PositiveFloat">PositiveFloat (class in moe.views.schemas)</a>
+  <dt><a href="moe.views.schemas.html#moe.views.schemas.base_schemas.PositiveFloat">PositiveFloat (class in moe.views.schemas.base_schemas)</a>
   </dt>
 
       
@@ -2634,16 +3109,24 @@
 
       </dl></dd>
       
-  <dt><a href="moe.views.html#moe.views.gp_pretty_view.GpPrettyView.pretty_response">pretty_response() (moe.views.gp_pretty_view.GpPrettyView method)</a>
+  <dt><a href="moe.views.html#moe.views.pretty_view.PrettyView.pretty_response">pretty_response() (moe.views.pretty_view.PrettyView method)</a>
   </dt>
 
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="moe.views.rest.html#moe.views.rest.gp_ei.GpEiView.pretty_view">pretty_view() (moe.views.rest.gp_ei.GpEiView method)</a>
+  <dt><a href="moe.views.rest.html#moe.views.rest.bandit_epsilon.BanditEpsilonView.pretty_view">pretty_view() (moe.views.rest.bandit_epsilon.BanditEpsilonView method)</a>
   </dt>
 
       <dd><dl>
+        
+  <dt><a href="moe.views.rest.html#moe.views.rest.bandit_ucb.BanditUCBView.pretty_view">(moe.views.rest.bandit_ucb.BanditUCBView method)</a>
+  </dt>
+
+        
+  <dt><a href="moe.views.rest.html#moe.views.rest.gp_ei.GpEiView.pretty_view">(moe.views.rest.gp_ei.GpEiView method)</a>
+  </dt>
+
         
   <dt><a href="moe.views.rest.html#moe.views.rest.gp_hyper_opt.GpHyperOptView.pretty_view">(moe.views.rest.gp_hyper_opt.GpHyperOptView method)</a>
   </dt>
@@ -2681,6 +3164,10 @@
   </dt>
 
       </dl></dd>
+      
+  <dt><a href="moe.views.html#moe.views.pretty_view.PrettyView">PrettyView (class in moe.views.pretty_view)</a>
+  </dt>
+
       
   <dt><a href="moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.expected_improvement.ExpectedImprovement.problem_size">problem_size (moe.optimal_learning.python.cpp_wrappers.expected_improvement.ExpectedImprovement attribute)</a>
   </dt>
@@ -2753,7 +3240,15 @@
 
       <dd><dl>
         
-  <dt><a href="moe.views.html#moe.views.gp_pretty_view.GpPrettyView.request_schema">(moe.views.gp_pretty_view.GpPrettyView attribute)</a>
+  <dt><a href="moe.views.html#moe.views.pretty_view.PrettyView.request_schema">(moe.views.pretty_view.PrettyView attribute)</a>
+  </dt>
+
+        
+  <dt><a href="moe.views.rest.html#moe.views.rest.bandit_epsilon.BanditEpsilonView.request_schema">(moe.views.rest.bandit_epsilon.BanditEpsilonView attribute)</a>
+  </dt>
+
+        
+  <dt><a href="moe.views.rest.html#moe.views.rest.bandit_ucb.BanditUCBView.request_schema">(moe.views.rest.bandit_ucb.BanditUCBView attribute)</a>
   </dt>
 
         
@@ -2783,7 +3278,15 @@
 
       <dd><dl>
         
-  <dt><a href="moe.views.html#moe.views.gp_pretty_view.GpPrettyView.response_schema">(moe.views.gp_pretty_view.GpPrettyView attribute)</a>
+  <dt><a href="moe.views.html#moe.views.pretty_view.PrettyView.response_schema">(moe.views.pretty_view.PrettyView attribute)</a>
+  </dt>
+
+        
+  <dt><a href="moe.views.rest.html#moe.views.rest.bandit_epsilon.BanditEpsilonView.response_schema">(moe.views.rest.bandit_epsilon.BanditEpsilonView attribute)</a>
+  </dt>
+
+        
+  <dt><a href="moe.views.rest.html#moe.views.rest.bandit_ucb.BanditUCBView.response_schema">(moe.views.rest.bandit_ucb.BanditUCBView attribute)</a>
   </dt>
 
         
@@ -2816,13 +3319,13 @@
 
       </dl></dd>
       
-  <dt><a href="moe.tests.views.html#moe.tests.views.rest_gaussian_process_test_case.RestGaussianProcessTestCase">RestGaussianProcessTestCase (class in moe.tests.views.rest_gaussian_process_test_case)</a>
+  <dt><a href="moe.tests.views.html#moe.tests.views.exceptions_test.RestGaussianProcessTestCaseWithExceptions">RestGaussianProcessTestCaseWithExceptions (class in moe.tests.views.exceptions_test)</a>
   </dt>
 
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="moe.tests.views.html#moe.tests.views.exceptions_test.RestGaussianProcessTestCaseWithExceptions">RestGaussianProcessTestCaseWithExceptions (class in moe.tests.views.exceptions_test)</a>
+  <dt><a href="moe.tests.views.html#moe.tests.views.rest_test_case.RestTestCase">RestTestCase (class in moe.tests.views.rest_test_case)</a>
   </dt>
 
       
@@ -2872,15 +3375,29 @@
 
       </dl></dd>
       
+  <dt><a href="moe.bandit.html#moe.bandit.data_containers.SampleArm">SampleArm (class in moe.bandit.data_containers)</a>
+  </dt>
+
+      
   <dt><a href="moe.optimal_learning.python.html#moe.optimal_learning.python.data_containers.SamplePoint">SamplePoint (class in moe.optimal_learning.python.data_containers)</a>
   </dt>
 
       
-  <dt><a href="moe.views.html#moe.views.schemas.PositiveFloat.schema_type">schema_type (moe.views.schemas.PositiveFloat attribute)</a>
+  <dt><a href="moe.views.schemas.html#moe.views.schemas.bandit_pretty_view.ArmAllocations.schema_type">schema_type (moe.views.schemas.bandit_pretty_view.ArmAllocations attribute)</a>
   </dt>
 
+      <dd><dl>
+        
+  <dt><a href="moe.views.schemas.html#moe.views.schemas.bandit_pretty_view.ArmsSampled.schema_type">(moe.views.schemas.bandit_pretty_view.ArmsSampled attribute)</a>
+  </dt>
+
+        
+  <dt><a href="moe.views.schemas.html#moe.views.schemas.base_schemas.PositiveFloat.schema_type">(moe.views.schemas.base_schemas.PositiveFloat attribute)</a>
+  </dt>
+
+      </dl></dd>
       
-  <dt><a href="moe.views.html#moe.views.schemas.StrictMappingSchema.schema_type">schema_type() (moe.views.schemas.StrictMappingSchema method)</a>
+  <dt><a href="moe.views.schemas.html#moe.views.schemas.base_schemas.StrictMappingSchema.schema_type">schema_type() (moe.views.schemas.base_schemas.StrictMappingSchema method)</a>
   </dt>
 
       
@@ -2938,7 +3455,7 @@
   </dt>
 
       
-  <dt><a href="moe.views.html#moe.views.schemas.SinglePoint">SinglePoint (class in moe.views.schemas)</a>
+  <dt><a href="moe.views.schemas.html#moe.views.schemas.base_schemas.SinglePoint">SinglePoint (class in moe.views.schemas.base_schemas)</a>
   </dt>
 
       
@@ -2956,7 +3473,11 @@
   </dt>
 
       
-  <dt><a href="moe.views.html#moe.views.schemas.StrictMappingSchema">StrictMappingSchema (class in moe.views.schemas)</a>
+  <dt><a href="moe.views.schemas.html#moe.views.schemas.base_schemas.StrictMappingSchema">StrictMappingSchema (class in moe.views.schemas.base_schemas)</a>
+  </dt>
+
+      
+  <dt><a href="moe.bandit.html#moe.bandit.linkers.BanditMethod.subtype">subtype (moe.bandit.linkers.BanditMethod attribute)</a>
   </dt>
 
   </dl></td>
@@ -2988,6 +3509,10 @@
   </dt>
 
       
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.linkers_test.LinkersTest.test_bandit_links_have_all_bandit_endpoints">test_bandit_links_have_all_bandit_endpoints() (moe.tests.bandit.linkers_test.LinkersTest method)</a>
+  </dt>
+
+      
   <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.optimization_test.GradientDescentOptimizerTest.test_bfgs_optimizer">test_bfgs_optimizer() (moe.tests.optimal_learning.python.python_version.optimization_test.GradientDescentOptimizerTest method)</a>
   </dt>
 
@@ -3000,7 +3525,29 @@
   </dt>
 
       
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.bandit_interface_test.BanditInterfaceTest.test_empty_arm_invalid">test_empty_arm_invalid() (moe.tests.bandit.bandit_interface_test.BanditInterfaceTest method)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.epsilon_test.EpsilonTest.test_empty_arm_invalid">(moe.tests.bandit.epsilon_test.EpsilonTest method)</a>
+  </dt>
+
+      </dl></dd>
+      
   <dt><a href="moe.tests.views.html#moe.tests.views.exceptions_test.RestGaussianProcessTestCaseWithExceptions.test_empty_json_payload_invalid">test_empty_json_payload_invalid() (moe.tests.views.exceptions_test.RestGaussianProcessTestCaseWithExceptions method)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.views.rest.html#moe.tests.views.rest.bandit_epsilon_test.TestBanditEpsilonViews.test_epsilon_first_hyperparameters_passed_through">test_epsilon_first_hyperparameters_passed_through() (moe.tests.views.rest.bandit_epsilon_test.TestBanditEpsilonViews method)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.views.rest.html#moe.tests.views.rest.bandit_epsilon_test.TestBanditEpsilonViews.test_epsilon_greedy_hyperparameters_passed_through">test_epsilon_greedy_hyperparameters_passed_through() (moe.tests.views.rest.bandit_epsilon_test.TestBanditEpsilonViews method)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.linkers_test.LinkersTest.test_epsilon_links_have_all_epsilon_subtypes">test_epsilon_links_have_all_epsilon_subtypes() (moe.tests.bandit.linkers_test.LinkersTest method)</a>
   </dt>
 
       
@@ -3012,14 +3559,10 @@
   </dt>
 
       
-  <dt><a href="moe_examples.tests.html#moe_examples.tests.combined_example_test.CombinedExampleTest.test_example_runs">test_example_runs() (moe_examples.tests.combined_example_test.CombinedExampleTest method)</a>
+  <dt><a href="moe_examples.tests.html#moe_examples.tests.hyper_opt_of_gp_from_historical_data_test.HyperOptOfGpFromHistoricalDataTest.test_example_runs">test_example_runs() (moe_examples.tests.hyper_opt_of_gp_from_historical_data_test.HyperOptOfGpFromHistoricalDataTest method)</a>
   </dt>
 
       <dd><dl>
-        
-  <dt><a href="moe_examples.tests.html#moe_examples.tests.hyper_opt_of_gp_from_historical_data_test.HyperOptOfGpFromHistoricalDataTest.test_example_runs">(moe_examples.tests.hyper_opt_of_gp_from_historical_data_test.HyperOptOfGpFromHistoricalDataTest method)</a>
-  </dt>
-
         
   <dt><a href="moe_examples.tests.html#moe_examples.tests.mean_and_var_of_gp_from_historic_data_test.MeanAndVarOfGpFromHistoricDataTest.test_example_runs">(moe_examples.tests.mean_and_var_of_gp_from_historic_data_test.MeanAndVarOfGpFromHistoricDataTest method)</a>
   </dt>
@@ -3029,6 +3572,10 @@
   </dt>
 
       </dl></dd>
+      
+  <dt><a href="moe_examples.tests.html#moe_examples.tests.combined_example_test.CombinedExampleTest.test_example_runs_with_non_default_optimizer_kwargs">test_example_runs_with_non_default_optimizer_kwargs() (moe_examples.tests.combined_example_test.CombinedExampleTest method)</a>
+  </dt>
+
       
   <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.exception_test.ExceptionStructureTest.test_exception_class_hierarchy">test_exception_class_hierarchy() (moe.tests.optimal_learning.python.cpp_wrappers.exception_test.ExceptionStructureTest method)</a>
   </dt>
@@ -3043,6 +3590,34 @@
 
       
   <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.optimization_test.GradientDescentOptimizerTest.test_get_averaging_range">test_get_averaging_range() (moe.tests.optimal_learning.python.python_version.optimization_test.GradientDescentOptimizerTest method)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.utils_test.UtilsTest.test_get_equal_arm_allocations_empty_arm_invalid">test_get_equal_arm_allocations_empty_arm_invalid() (moe.tests.bandit.utils_test.UtilsTest method)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.utils_test.UtilsTest.test_get_equal_arm_allocations_no_winner">test_get_equal_arm_allocations_no_winner() (moe.tests.bandit.utils_test.UtilsTest method)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.utils_test.UtilsTest.test_get_equal_arm_allocations_one_winner">test_get_equal_arm_allocations_one_winner() (moe.tests.bandit.utils_test.UtilsTest method)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.utils_test.UtilsTest.test_get_equal_arm_allocations_two_winners">test_get_equal_arm_allocations_two_winners() (moe.tests.bandit.utils_test.UtilsTest method)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.utils_test.UtilsTest.test_get_winning_arm_names_from_payoff_arm_name_list_empty_list_invalid">test_get_winning_arm_names_from_payoff_arm_name_list_empty_list_invalid() (moe.tests.bandit.utils_test.UtilsTest method)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.utils_test.UtilsTest.test_get_winning_arm_names_from_payoff_arm_name_list_one_winner">test_get_winning_arm_names_from_payoff_arm_name_list_one_winner() (moe.tests.bandit.utils_test.UtilsTest method)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.utils_test.UtilsTest.test_get_winning_arm_names_from_payoff_arm_name_list_two_winners">test_get_winning_arm_names_from_payoff_arm_name_list_two_winners() (moe.tests.bandit.utils_test.UtilsTest method)</a>
   </dt>
 
       
@@ -3074,6 +3649,16 @@
   </dt>
 
       
+  <dt><a href="moe.tests.views.rest.html#moe.tests.views.rest.bandit_epsilon_test.TestBanditEpsilonViews.test_historical_info_passed_through">test_historical_info_passed_through() (moe.tests.views.rest.bandit_epsilon_test.TestBanditEpsilonViews method)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="moe.tests.views.rest.html#moe.tests.views.rest.bandit_ucb_test.TestBanditUCBViews.test_historical_info_passed_through">(moe.tests.views.rest.bandit_ucb_test.TestBanditUCBViews method)</a>
+  </dt>
+
+      </dl></dd>
+      
   <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.covariance_test.SquareExponentialTest.test_hyperparameter_gradient_pings">test_hyperparameter_gradient_pings() (moe.tests.optimal_learning.python.python_version.covariance_test.SquareExponentialTest method)</a>
   </dt>
 
@@ -3081,6 +3666,34 @@
   <dt><a href="moe.tests.views.rest.html#moe.tests.views.rest.gp_hyper_opt_test.TestGpHyperOptViews.test_hyperparameters_passed_through">test_hyperparameters_passed_through() (moe.tests.views.rest.gp_hyper_opt_test.TestGpHyperOptViews method)</a>
   </dt>
 
+      
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.epsilon_first_test.EpsilonFirstTest.test_init_default">test_init_default() (moe.tests.bandit.epsilon_first_test.EpsilonFirstTest method)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.epsilon_greedy_test.EpsilonGreedyTest.test_init_default">(moe.tests.bandit.epsilon_greedy_test.EpsilonGreedyTest method)</a>
+  </dt>
+
+        
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.ucb1_test.UCB1Test.test_init_default">(moe.tests.bandit.ucb1_test.UCB1Test method)</a>
+  </dt>
+
+        
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.ucb1_tuned_test.UCB1TunedTest.test_init_default">(moe.tests.bandit.ucb1_tuned_test.UCB1TunedTest method)</a>
+  </dt>
+
+      </dl></dd>
+      
+  <dt><a href="moe.tests.views.rest.html#moe.tests.views.rest.bandit_epsilon_test.TestBanditEpsilonViews.test_interface_returns_as_expected">test_interface_returns_as_expected() (moe.tests.views.rest.bandit_epsilon_test.TestBanditEpsilonViews method)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="moe.tests.views.rest.html#moe.tests.views.rest.bandit_ucb_test.TestBanditUCBViews.test_interface_returns_as_expected">(moe.tests.views.rest.bandit_ucb_test.TestBanditUCBViews method)</a>
+  </dt>
+
+      </dl></dd>
       
   <dt><a href="moe.tests.views.rest.html#moe.tests.views.rest.gp_ei_test.TestGpEiView.test_interface_returns_same_as_cpp">test_interface_returns_same_as_cpp() (moe.tests.views.rest.gp_ei_test.TestGpEiView method)</a>
   </dt>
@@ -3127,8 +3740,6 @@
   <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.geometry_utils_test.ClosedIntervalTest.test_length">test_length() (moe.tests.optimal_learning.python.geometry_utils_test.ClosedIntervalTest method)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.linkers_test.LinkersTest.test_likelihood_links_have_all_likelihood_types">test_likelihood_links_have_all_likelihood_types() (moe.tests.optimal_learning.python.linkers_test.LinkersTest method)</a>
   </dt>
@@ -3149,6 +3760,8 @@
   <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.log_likelihood_test.GaussianProcessLogMarginalLikelihoodTest.test_multistart_hyperparameter_optimization">test_multistart_hyperparameter_optimization() (moe.tests.optimal_learning.python.python_version.log_likelihood_test.GaussianProcessLogMarginalLikelihoodTest method)</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.test_multistart_monte_carlo_expected_improvement_optimization">test_multistart_monte_carlo_expected_improvement_optimization() (moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest method)</a>
   </dt>
@@ -3177,6 +3790,28 @@
   <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.optimization_test.NullOptimizerTest.test_null_optimizer">test_null_optimizer() (moe.tests.optimal_learning.python.python_version.optimization_test.NullOptimizerTest method)</a>
   </dt>
 
+      
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.bandit_interface_test.BanditInterfaceTest.test_one_arm">test_one_arm() (moe.tests.bandit.bandit_interface_test.BanditInterfaceTest method)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.epsilon_first_test.EpsilonFirstTest.test_one_arm">(moe.tests.bandit.epsilon_first_test.EpsilonFirstTest method)</a>
+  </dt>
+
+        
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.epsilon_greedy_test.EpsilonGreedyTest.test_one_arm">(moe.tests.bandit.epsilon_greedy_test.EpsilonGreedyTest method)</a>
+  </dt>
+
+        
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.ucb1_test.UCB1Test.test_one_arm">(moe.tests.bandit.ucb1_test.UCB1Test method)</a>
+  </dt>
+
+        
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.ucb1_tuned_test.UCB1TunedTest.test_one_arm">(moe.tests.bandit.ucb1_tuned_test.UCB1TunedTest method)</a>
+  </dt>
+
+      </dl></dd>
       
   <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.linkers_test.LinkersTest.test_optimization_links_have_all_optimizer_types">test_optimization_links_have_all_optimizer_types() (moe.tests.optimal_learning.python.linkers_test.LinkersTest method)</a>
   </dt>
@@ -3240,6 +3875,120 @@
   </dt>
 
       
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.epsilon_greedy_test.EpsilonGreedyTest.test_three_arms">test_three_arms() (moe.tests.bandit.epsilon_greedy_test.EpsilonGreedyTest method)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.ucb1_tuned_test.UCB1TunedTest.test_three_arms_diferent_variance">test_three_arms_diferent_variance() (moe.tests.bandit.ucb1_tuned_test.UCB1TunedTest method)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.epsilon_first_test.EpsilonFirstTest.test_three_arms_exploit">test_three_arms_exploit() (moe.tests.bandit.epsilon_first_test.EpsilonFirstTest method)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.epsilon_first_test.EpsilonFirstTest.test_three_arms_exploit_two_winners">test_three_arms_exploit_two_winners() (moe.tests.bandit.epsilon_first_test.EpsilonFirstTest method)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.epsilon_first_test.EpsilonFirstTest.test_three_arms_explore">test_three_arms_explore() (moe.tests.bandit.epsilon_first_test.EpsilonFirstTest method)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.ucb1_test.UCB1Test.test_three_arms_one_unsampled_arm">test_three_arms_one_unsampled_arm() (moe.tests.bandit.ucb1_test.UCB1Test method)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.ucb1_tuned_test.UCB1TunedTest.test_three_arms_one_unsampled_arm">(moe.tests.bandit.ucb1_tuned_test.UCB1TunedTest method)</a>
+  </dt>
+
+      </dl></dd>
+      
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.bandit_interface_test.BanditInterfaceTest.test_three_arms_two_winners">test_three_arms_two_winners() (moe.tests.bandit.bandit_interface_test.BanditInterfaceTest method)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.epsilon_greedy_test.EpsilonGreedyTest.test_three_arms_two_winners">(moe.tests.bandit.epsilon_greedy_test.EpsilonGreedyTest method)</a>
+  </dt>
+
+        
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.epsilon_test.EpsilonTest.test_three_arms_two_winners">(moe.tests.bandit.epsilon_test.EpsilonTest method)</a>
+  </dt>
+
+        
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.ucb1_test.UCB1Test.test_three_arms_two_winners">(moe.tests.bandit.ucb1_test.UCB1Test method)</a>
+  </dt>
+
+        
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.ucb1_tuned_test.UCB1TunedTest.test_three_arms_two_winners">(moe.tests.bandit.ucb1_tuned_test.UCB1TunedTest method)</a>
+  </dt>
+
+      </dl></dd>
+      
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.epsilon_first_test.EpsilonFirstTest.test_two_arms_epsilon_one">test_two_arms_epsilon_one() (moe.tests.bandit.epsilon_first_test.EpsilonFirstTest method)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.epsilon_greedy_test.EpsilonGreedyTest.test_two_arms_epsilon_one">(moe.tests.bandit.epsilon_greedy_test.EpsilonGreedyTest method)</a>
+  </dt>
+
+      </dl></dd>
+      
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.epsilon_first_test.EpsilonFirstTest.test_two_arms_epsilon_zero">test_two_arms_epsilon_zero() (moe.tests.bandit.epsilon_first_test.EpsilonFirstTest method)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.epsilon_greedy_test.EpsilonGreedyTest.test_two_arms_epsilon_zero">(moe.tests.bandit.epsilon_greedy_test.EpsilonGreedyTest method)</a>
+  </dt>
+
+      </dl></dd>
+      
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.bandit_interface_test.BanditInterfaceTest.test_two_arms_one_winner">test_two_arms_one_winner() (moe.tests.bandit.bandit_interface_test.BanditInterfaceTest method)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.epsilon_first_test.EpsilonFirstTest.test_two_unsampled_arms">test_two_unsampled_arms() (moe.tests.bandit.epsilon_first_test.EpsilonFirstTest method)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.epsilon_greedy_test.EpsilonGreedyTest.test_two_unsampled_arms">(moe.tests.bandit.epsilon_greedy_test.EpsilonGreedyTest method)</a>
+  </dt>
+
+        
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.epsilon_test.EpsilonTest.test_two_unsampled_arms">(moe.tests.bandit.epsilon_test.EpsilonTest method)</a>
+  </dt>
+
+        
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.ucb1_test.UCB1Test.test_two_unsampled_arms">(moe.tests.bandit.ucb1_test.UCB1Test method)</a>
+  </dt>
+
+        
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.ucb1_tuned_test.UCB1TunedTest.test_two_unsampled_arms">(moe.tests.bandit.ucb1_tuned_test.UCB1TunedTest method)</a>
+  </dt>
+
+      </dl></dd>
+      
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.linkers_test.LinkersTest.test_ucb_links_have_all_ucb_subtypes">test_ucb_links_have_all_ucb_subtypes() (moe.tests.bandit.linkers_test.LinkersTest method)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.views.rest.html#moe.tests.views.rest.bandit_epsilon_test.TestBanditEpsilonViews">TestBanditEpsilonViews (class in moe.tests.views.rest.bandit_epsilon_test)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.views.rest.html#moe.tests.views.rest.bandit_ucb_test.TestBanditUCBViews">TestBanditUCBViews (class in moe.tests.views.rest.bandit_ucb_test)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.views.rest.html#moe.tests.views.rest.bandit_test.TestBanditViews">TestBanditViews (class in moe.tests.views.rest.bandit_test)</a>
+  </dt>
+
+      
   <dt><a href="moe.tests.views.rest.html#moe.tests.views.rest.gp_ei_test.TestGpEiView">TestGpEiView (class in moe.tests.views.rest.gp_ei_test)</a>
   </dt>
 
@@ -3256,15 +4005,61 @@
   </dt>
 
       
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.bandit_test_case.BanditTestCase.three_arms_float_payoffs_test_case">three_arms_float_payoffs_test_case (moe.tests.bandit.bandit_test_case.BanditTestCase attribute)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.bandit_test_case.BanditTestCase.three_arms_test_case">three_arms_test_case (moe.tests.bandit.bandit_test_case.BanditTestCase attribute)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.bandit_test_case.BanditTestCase.three_arms_two_winners_no_unsampled_arm_test_case">three_arms_two_winners_no_unsampled_arm_test_case (moe.tests.bandit.bandit_test_case.BanditTestCase attribute)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.bandit_test_case.BanditTestCase.three_arms_two_winners_test_case">three_arms_two_winners_test_case (moe.tests.bandit.bandit_test_case.BanditTestCase attribute)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.bandit_test_case.BanditTestCase.three_arms_with_variance_no_unsampled_arm_test_case">three_arms_with_variance_no_unsampled_arm_test_case (moe.tests.bandit.bandit_test_case.BanditTestCase attribute)</a>
+  </dt>
+
+      
   <dt><a href="moe.optimal_learning.python.html#moe.optimal_learning.python.timing.timing_context">timing_context() (in module moe.optimal_learning.python.timing)</a>
   </dt>
 
       
-  <dt><a href="moe.views.html#moe.views.schemas.PositiveFloat.title">title (moe.views.schemas.PositiveFloat attribute)</a>
+  <dt><a href="moe.views.schemas.html#moe.views.schemas.bandit_pretty_view.ArmAllocations.title">title (moe.views.schemas.bandit_pretty_view.ArmAllocations attribute)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="moe.views.schemas.html#moe.views.schemas.bandit_pretty_view.ArmsSampled.title">(moe.views.schemas.bandit_pretty_view.ArmsSampled attribute)</a>
+  </dt>
+
+        
+  <dt><a href="moe.views.schemas.html#moe.views.schemas.base_schemas.PositiveFloat.title">(moe.views.schemas.base_schemas.PositiveFloat attribute)</a>
+  </dt>
+
+      </dl></dd>
+      
+  <dt><a href="moe.optimal_learning.python.html#moe.optimal_learning.python.data_containers.HistoricalData.to_list_of_sample_points">to_list_of_sample_points() (moe.optimal_learning.python.data_containers.HistoricalData method)</a>
   </dt>
 
       
-  <dt><a href="moe.optimal_learning.python.html#moe.optimal_learning.python.data_containers.HistoricalData.to_list_of_sample_points">to_list_of_sample_points() (moe.optimal_learning.python.data_containers.HistoricalData method)</a>
+  <dt><a href="moe.bandit.html#moe.bandit.data_containers.SampleArm.total">total (moe.bandit.data_containers.SampleArm attribute)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.epsilon_first_test.EpsilonFirstTest.total_samples_to_test">total_samples_to_test (moe.tests.bandit.epsilon_first_test.EpsilonFirstTest attribute)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.bandit_test_case.BanditTestCase.two_arms_test_case">two_arms_test_case (moe.tests.bandit.bandit_test_case.BanditTestCase attribute)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.bandit_test_case.BanditTestCase.two_unsampled_arms_test_case">two_unsampled_arms_test_case (moe.tests.bandit.bandit_test_case.BanditTestCase attribute)</a>
   </dt>
 
   </dl></td>
@@ -3274,7 +4069,37 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
       
+  <dt><a href="moe.bandit.html#moe.bandit.ucb1.UCB1">UCB1 (class in moe.bandit.ucb1)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.ucb1_test.UCB1Test">UCB1Test (class in moe.tests.bandit.ucb1_test)</a>
+  </dt>
+
+      
+  <dt><a href="moe.bandit.html#moe.bandit.ucb1_tuned.UCB1Tuned">UCB1Tuned (class in moe.bandit.ucb1_tuned)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.ucb1_tuned_test.UCB1TunedTest">UCB1TunedTest (class in moe.tests.bandit.ucb1_tuned_test)</a>
+  </dt>
+
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="moe.bandit.html#moe.bandit.ucb_interface.UCBInterface">UCBInterface (class in moe.bandit.ucb_interface)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.ucb_test_case.UCBTestCase">UCBTestCase (class in moe.tests.bandit.ucb_test_case)</a>
+  </dt>
+
+      
   <dt><a href="moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.cpp_utils.uncppify">uncppify() (in module moe.optimal_learning.python.cpp_wrappers.cpp_utils)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.utils_test.UtilsTest">UtilsTest (class in moe.tests.bandit.utils_test)</a>
   </dt>
 
   </dl></td>
@@ -3284,11 +4109,21 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="moe.optimal_learning.python.html#moe.optimal_learning.python.data_containers.SamplePoint.validate">validate() (moe.optimal_learning.python.data_containers.SamplePoint method)</a>
+  <dt><a href="moe.bandit.html#moe.bandit.data_containers.SampleArm.validate">validate() (moe.bandit.data_containers.SampleArm method)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="moe.optimal_learning.python.html#moe.optimal_learning.python.data_containers.SamplePoint.validate">(moe.optimal_learning.python.data_containers.SamplePoint method)</a>
+  </dt>
+
+      </dl></dd>
+      
+  <dt><a href="moe.optimal_learning.python.html#moe.optimal_learning.python.data_containers.HistoricalData.validate_historical_data">validate_historical_data() (moe.optimal_learning.python.data_containers.HistoricalData static method)</a>
   </dt>
 
       
-  <dt><a href="moe.optimal_learning.python.html#moe.optimal_learning.python.data_containers.HistoricalData.validate_historical_data">validate_historical_data() (moe.optimal_learning.python.data_containers.HistoricalData static method)</a>
+  <dt><a href="moe.bandit.html#moe.bandit.data_containers.HistoricalData.validate_sample_arms">validate_sample_arms() (moe.bandit.data_containers.HistoricalData static method)</a>
   </dt>
 
   </dl></td>
@@ -3298,7 +4133,31 @@
   </dt>
 
       
-  <dt><a href="moe.views.html#moe.views.schemas.PositiveFloat.validator">validator() (moe.views.schemas.PositiveFloat method)</a>
+  <dt><a href="moe.views.schemas.html#moe.views.schemas.bandit_pretty_view.ArmAllocations.validator">validator() (moe.views.schemas.bandit_pretty_view.ArmAllocations method)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="moe.views.schemas.html#moe.views.schemas.bandit_pretty_view.ArmsSampled.validator">(moe.views.schemas.bandit_pretty_view.ArmsSampled method)</a>
+  </dt>
+
+        
+  <dt><a href="moe.views.schemas.html#moe.views.schemas.base_schemas.PositiveFloat.validator">(moe.views.schemas.base_schemas.PositiveFloat method)</a>
+  </dt>
+
+      </dl></dd>
+      
+  <dt><a href="moe.bandit.html#moe.bandit.data_containers.SampleArm.variance">variance (moe.bandit.data_containers.SampleArm attribute)</a>
+  </dt>
+
+  </dl></td>
+</tr></table>
+
+<h2 id="W">W</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="moe.bandit.html#moe.bandit.data_containers.SampleArm.win">win (moe.bandit.data_containers.SampleArm attribute)</a>
   </dt>
 
   </dl></td>
@@ -3334,7 +4193,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.1.0',
+            VERSION:'0.2.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

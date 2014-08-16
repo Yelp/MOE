@@ -1,0 +1,70 @@
+moe.views.schemas.rest package
+==============================
+
+Submodules
+----------
+
+moe.views.schemas.rest.bandit_epsilon module
+--------------------------------------------
+
+.. automodule:: moe.views.schemas.rest.bandit_epsilon
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+moe.views.schemas.rest.bandit_ucb module
+----------------------------------------
+
+.. automodule:: moe.views.schemas.rest.bandit_ucb
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+moe.views.schemas.rest.gp_ei module
+-----------------------------------
+
+.. automodule:: moe.views.schemas.rest.gp_ei
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+moe.views.schemas.rest.gp_hyper_opt module
+------------------------------------------
+
+.. automodule:: moe.views.schemas.rest.gp_hyper_opt
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+moe.views.schemas.rest.gp_mean_var module
+-----------------------------------------
+
+.. automodule:: moe.views.schemas.rest.gp_mean_var
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+moe.views.schemas.rest.gp_next_points_constant_liar module
+----------------------------------------------------------
+
+.. automodule:: moe.views.schemas.rest.gp_next_points_constant_liar
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+moe.views.schemas.rest.gp_next_points_kriging module
+----------------------------------------------------
+
+.. automodule:: moe.views.schemas.rest.gp_next_points_kriging
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: moe.views.schemas.rest
+    :members:
+    :undoc-members:
+    :show-inheritance:

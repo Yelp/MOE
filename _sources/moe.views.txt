@@ -7,9 +7,18 @@ Subpackages
 .. toctree::
 
     moe.views.rest
+    moe.views.schemas
 
 Submodules
 ----------
+
+moe.views.bandit_pretty_view module
+-----------------------------------
+
+.. automodule:: moe.views.bandit_pretty_view
+    :members:
+    :undoc-members:
+    :show-inheritance:
 
 moe.views.constant module
 -------------------------
@@ -67,10 +76,10 @@ moe.views.optimizable_gp_pretty_view module
     :undoc-members:
     :show-inheritance:
 
-moe.views.schemas module
-------------------------
+moe.views.pretty_view module
+----------------------------
 
-.. automodule:: moe.views.schemas
+.. automodule:: moe.views.pretty_view
     :members:
     :undoc-members:
     :show-inheritance:

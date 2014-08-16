@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>moe.tests.views.rest package &mdash; MOE 0.1.0 documentation</title>
+  <title>moe.tests.views.rest package &mdash; MOE 0.2.0 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
     <link rel="stylesheet" href="_static/breathe.css" type="text/css" />
   
-    <link rel="top" title="MOE 0.1.0 documentation" href="index.html"/>
+    <link rel="top" title="MOE 0.2.0 documentation" href="index.html"/>
         <link rel="up" title="moe.tests.views package" href="moe.tests.views.html"/>
         <link rel="next" title="moe.views package" href="moe.views.html"/>
         <link rel="prev" title="moe.tests.views package" href="moe.tests.views.html"/> 
@@ -96,6 +96,13 @@
 <li class="toctree-l2"><a class="reference internal" href="objective_functions.html#example-of-objective-functions">Example of Objective Functions</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="bandit.html">Multi-Armed Bandits</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#what-is-the-multi-armed-bandit-problem">What is the multi-armed bandit problem?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#applications">Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#policies">Policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#pointers">Pointers</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="examples.html#minimizing-an-arbitrary-function">Minimizing an arbitrary function</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples.html#gaussian-process-regression-given-historical-data">Gaussian Process regression given historical data</a></li>
@@ -149,9 +156,11 @@
 <li class="toctree-l1"><a class="reference internal" href="cpp_tree.html">C++ Files</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimization_test.html">gpp_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_domain_test.html">gpp_domain_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_gpu.html">gpp_expected_improvement_gpu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_geometry.html">gpp_geometry</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_test_utils.html">gpp_test_utils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_logging.html">gpp_logging</a></li>
@@ -160,28 +169,29 @@
 <li class="toctree-l2"><a class="reference internal" href="gpp_domain.html">gpp_domain</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_python_common.html">gpp_python_common</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_hyperparameter_optimization_demo.html">gpp_hyperparameter_optimization_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_test_utils_test.html">gpp_test_utils_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_math_test.html">gpp_math_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_cuda_math.html">gpp_cuda_math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_python_model_selection.html">gpp_python_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_math.html">gpp_math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_random_test.html">gpp_random_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimizer_parameters.html">gpp_optimizer_parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_random.html">gpp_random</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_test_utils_test.html">gpp_test_utils_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra.html">gpp_linear_algebra</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_exception.html">gpp_exception</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_model_selection.html">gpp_model_selection</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_random.html">gpp_random</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_covariance_test.html">gpp_covariance_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_python.html">gpp_python</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_test.html">gpp_model_selection_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_common.html">gpp_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_gpu_test.html">gpp_expected_improvement_gpu_test</a></li>
 </ul>
 </li>
 </ul>
@@ -229,13 +239,82 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
+<div class="section" id="module-moe.tests.views.rest.bandit_epsilon_test">
+<span id="moe-tests-views-rest-bandit-epsilon-test-module"></span><h2>moe.tests.views.rest.bandit_epsilon_test module<a class="headerlink" href="#module-moe.tests.views.rest.bandit_epsilon_test" title="Permalink to this headline">¶</a></h2>
+<p>Test class for bandit_epsilon view.</p>
+<dl class="class">
+<dt id="moe.tests.views.rest.bandit_epsilon_test.TestBanditEpsilonViews">
+<em class="property">class </em><tt class="descclassname">moe.tests.views.rest.bandit_epsilon_test.</tt><tt class="descname">TestBanditEpsilonViews</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/tests/views/rest/bandit_epsilon_test.html#TestBanditEpsilonViews"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.views.rest.bandit_epsilon_test.TestBanditEpsilonViews" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#moe.tests.views.rest.bandit_test.TestBanditViews" title="moe.tests.views.rest.bandit_test.TestBanditViews"><tt class="xref py py-class docutils literal"><span class="pre">moe.tests.views.rest.bandit_test.TestBanditViews</span></tt></a></p>
+<p>Integration test for the /bandit/epsilon endpoint.</p>
+<dl class="method">
+<dt id="moe.tests.views.rest.bandit_epsilon_test.TestBanditEpsilonViews.test_epsilon_first_hyperparameters_passed_through">
+<tt class="descname">test_epsilon_first_hyperparameters_passed_through</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/views/rest/bandit_epsilon_test.html#TestBanditEpsilonViews.test_epsilon_first_hyperparameters_passed_through"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.views.rest.bandit_epsilon_test.TestBanditEpsilonViews.test_epsilon_first_hyperparameters_passed_through" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test that the hyperparameters get passed through to the epsilon-first endpoint.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.views.rest.bandit_epsilon_test.TestBanditEpsilonViews.test_epsilon_greedy_hyperparameters_passed_through">
+<tt class="descname">test_epsilon_greedy_hyperparameters_passed_through</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/views/rest/bandit_epsilon_test.html#TestBanditEpsilonViews.test_epsilon_greedy_hyperparameters_passed_through"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.views.rest.bandit_epsilon_test.TestBanditEpsilonViews.test_epsilon_greedy_hyperparameters_passed_through" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test that the hyperparameters get passed through to the epsilon-greedy endpoint.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.views.rest.bandit_epsilon_test.TestBanditEpsilonViews.test_historical_info_passed_through">
+<tt class="descname">test_historical_info_passed_through</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/views/rest/bandit_epsilon_test.html#TestBanditEpsilonViews.test_historical_info_passed_through"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.views.rest.bandit_epsilon_test.TestBanditEpsilonViews.test_historical_info_passed_through" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test that the historical info get passed through to the endpoint.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.views.rest.bandit_epsilon_test.TestBanditEpsilonViews.test_interface_returns_as_expected">
+<tt class="descname">test_interface_returns_as_expected</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/views/rest/bandit_epsilon_test.html#TestBanditEpsilonViews.test_interface_returns_as_expected"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.views.rest.bandit_epsilon_test.TestBanditEpsilonViews.test_interface_returns_as_expected" title="Permalink to this definition">¶</a></dt>
+<dd><p>Integration test for the /bandit/epsilon endpoint.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-moe.tests.views.rest.bandit_test">
+<span id="moe-tests-views-rest-bandit-test-module"></span><h2>moe.tests.views.rest.bandit_test module<a class="headerlink" href="#module-moe.tests.views.rest.bandit_test" title="Permalink to this headline">¶</a></h2>
+<p>Test class for bandit views.</p>
+<dl class="class">
+<dt id="moe.tests.views.rest.bandit_test.TestBanditViews">
+<em class="property">class </em><tt class="descclassname">moe.tests.views.rest.bandit_test.</tt><tt class="descname">TestBanditViews</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/tests/views/rest/bandit_test.html#TestBanditViews"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.views.rest.bandit_test.TestBanditViews" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="moe.tests.bandit.html#moe.tests.bandit.bandit_test_case.BanditTestCase" title="moe.tests.bandit.bandit_test_case.BanditTestCase"><tt class="xref py py-class docutils literal"><span class="pre">moe.tests.bandit.bandit_test_case.BanditTestCase</span></tt></a>, <a class="reference internal" href="moe.tests.views.html#moe.tests.views.rest_test_case.RestTestCase" title="moe.tests.views.rest_test_case.RestTestCase"><tt class="xref py py-class docutils literal"><span class="pre">moe.tests.views.rest_test_case.RestTestCase</span></tt></a></p>
+<p>Integration test for the /bandit endpoints.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-moe.tests.views.rest.bandit_ucb_test">
+<span id="moe-tests-views-rest-bandit-ucb-test-module"></span><h2>moe.tests.views.rest.bandit_ucb_test module<a class="headerlink" href="#module-moe.tests.views.rest.bandit_ucb_test" title="Permalink to this headline">¶</a></h2>
+<p>Test class for bandit_ucb view.</p>
+<dl class="class">
+<dt id="moe.tests.views.rest.bandit_ucb_test.TestBanditUCBViews">
+<em class="property">class </em><tt class="descclassname">moe.tests.views.rest.bandit_ucb_test.</tt><tt class="descname">TestBanditUCBViews</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/tests/views/rest/bandit_ucb_test.html#TestBanditUCBViews"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.views.rest.bandit_ucb_test.TestBanditUCBViews" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#moe.tests.views.rest.bandit_test.TestBanditViews" title="moe.tests.views.rest.bandit_test.TestBanditViews"><tt class="xref py py-class docutils literal"><span class="pre">moe.tests.views.rest.bandit_test.TestBanditViews</span></tt></a></p>
+<p>Integration test for the /bandit/ucb endpoint.</p>
+<dl class="method">
+<dt id="moe.tests.views.rest.bandit_ucb_test.TestBanditUCBViews.test_historical_info_passed_through">
+<tt class="descname">test_historical_info_passed_through</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/views/rest/bandit_ucb_test.html#TestBanditUCBViews.test_historical_info_passed_through"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.views.rest.bandit_ucb_test.TestBanditUCBViews.test_historical_info_passed_through" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test that the historical info get passed through to the endpoint.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.views.rest.bandit_ucb_test.TestBanditUCBViews.test_interface_returns_as_expected">
+<tt class="descname">test_interface_returns_as_expected</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/views/rest/bandit_ucb_test.html#TestBanditUCBViews.test_interface_returns_as_expected"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.views.rest.bandit_ucb_test.TestBanditUCBViews.test_interface_returns_as_expected" title="Permalink to this definition">¶</a></dt>
+<dd><p>Integration test for the /bandit/ucb endpoint.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
 <div class="section" id="module-moe.tests.views.rest.gp_ei_test">
 <span id="moe-tests-views-rest-gp-ei-test-module"></span><h2>moe.tests.views.rest.gp_ei_test module<a class="headerlink" href="#module-moe.tests.views.rest.gp_ei_test" title="Permalink to this headline">¶</a></h2>
 <p>Test class for gp_mean_var view.</p>
 <dl class="class">
 <dt id="moe.tests.views.rest.gp_ei_test.TestGpEiView">
 <em class="property">class </em><tt class="descclassname">moe.tests.views.rest.gp_ei_test.</tt><tt class="descname">TestGpEiView</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/tests/views/rest/gp_ei_test.html#TestGpEiView"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.views.rest.gp_ei_test.TestGpEiView" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="moe.tests.views.html#moe.tests.views.rest_gaussian_process_test_case.RestGaussianProcessTestCase" title="moe.tests.views.rest_gaussian_process_test_case.RestGaussianProcessTestCase"><tt class="xref py py-class docutils literal"><span class="pre">moe.tests.views.rest_gaussian_process_test_case.RestGaussianProcessTestCase</span></tt></a></p>
+<dd><p>Bases: <a class="reference internal" href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestCase" title="moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestCase"><tt class="xref py py-class docutils literal"><span class="pre">moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestCase</span></tt></a>, <a class="reference internal" href="moe.tests.views.html#moe.tests.views.rest_test_case.RestTestCase" title="moe.tests.views.rest_test_case.RestTestCase"><tt class="xref py py-class docutils literal"><span class="pre">moe.tests.views.rest_test_case.RestTestCase</span></tt></a></p>
 <p>Test that the /gp/ei endpoint does the same thing as the C++ interface.</p>
 <dl class="attribute">
 <dt id="moe.tests.views.rest.gp_ei_test.TestGpEiView.endpoint">
@@ -262,7 +341,7 @@
 <dl class="class">
 <dt id="moe.tests.views.rest.gp_hyper_opt_test.TestGpHyperOptViews">
 <em class="property">class </em><tt class="descclassname">moe.tests.views.rest.gp_hyper_opt_test.</tt><tt class="descname">TestGpHyperOptViews</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/tests/views/rest/gp_hyper_opt_test.html#TestGpHyperOptViews"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.views.rest.gp_hyper_opt_test.TestGpHyperOptViews" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="moe.tests.views.html#moe.tests.views.rest_gaussian_process_test_case.RestGaussianProcessTestCase" title="moe.tests.views.rest_gaussian_process_test_case.RestGaussianProcessTestCase"><tt class="xref py py-class docutils literal"><span class="pre">moe.tests.views.rest_gaussian_process_test_case.RestGaussianProcessTestCase</span></tt></a></p>
+<dd><p>Bases: <a class="reference internal" href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestCase" title="moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestCase"><tt class="xref py py-class docutils literal"><span class="pre">moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestCase</span></tt></a>, <a class="reference internal" href="moe.tests.views.html#moe.tests.views.rest_test_case.RestTestCase" title="moe.tests.views.rest_test_case.RestTestCase"><tt class="xref py py-class docutils literal"><span class="pre">moe.tests.views.rest_test_case.RestTestCase</span></tt></a></p>
 <p>Integration test for the /gp/hyper_opt endpoint.</p>
 <dl class="attribute">
 <dt id="moe.tests.views.rest.gp_hyper_opt_test.TestGpHyperOptViews.precompute_gaussian_process_data">
@@ -296,7 +375,7 @@
 <dl class="class">
 <dt id="moe.tests.views.rest.gp_mean_var_test.TestGpMeanVarView">
 <em class="property">class </em><tt class="descclassname">moe.tests.views.rest.gp_mean_var_test.</tt><tt class="descname">TestGpMeanVarView</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/tests/views/rest/gp_mean_var_test.html#TestGpMeanVarView"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.views.rest.gp_mean_var_test.TestGpMeanVarView" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="moe.tests.views.html#moe.tests.views.rest_gaussian_process_test_case.RestGaussianProcessTestCase" title="moe.tests.views.rest_gaussian_process_test_case.RestGaussianProcessTestCase"><tt class="xref py py-class docutils literal"><span class="pre">moe.tests.views.rest_gaussian_process_test_case.RestGaussianProcessTestCase</span></tt></a></p>
+<dd><p>Bases: <a class="reference internal" href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestCase" title="moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestCase"><tt class="xref py py-class docutils literal"><span class="pre">moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestCase</span></tt></a>, <a class="reference internal" href="moe.tests.views.html#moe.tests.views.rest_test_case.RestTestCase" title="moe.tests.views.rest_test_case.RestTestCase"><tt class="xref py py-class docutils literal"><span class="pre">moe.tests.views.rest_test_case.RestTestCase</span></tt></a></p>
 <p>Test that the /gp/mean_var endpoint does the same thing as the C++ interface.</p>
 <dl class="attribute">
 <dt id="moe.tests.views.rest.gp_mean_var_test.TestGpMeanVarView.endpoint">
@@ -334,7 +413,7 @@
 <dl class="class">
 <dt id="moe.tests.views.rest.gp_next_points_test.TestGpNextPointsViews">
 <em class="property">class </em><tt class="descclassname">moe.tests.views.rest.gp_next_points_test.</tt><tt class="descname">TestGpNextPointsViews</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/tests/views/rest/gp_next_points_test.html#TestGpNextPointsViews"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.views.rest.gp_next_points_test.TestGpNextPointsViews" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="moe.tests.views.html#moe.tests.views.rest_gaussian_process_test_case.RestGaussianProcessTestCase" title="moe.tests.views.rest_gaussian_process_test_case.RestGaussianProcessTestCase"><tt class="xref py py-class docutils literal"><span class="pre">moe.tests.views.rest_gaussian_process_test_case.RestGaussianProcessTestCase</span></tt></a></p>
+<dd><p>Bases: <a class="reference internal" href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestCase" title="moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestCase"><tt class="xref py py-class docutils literal"><span class="pre">moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestCase</span></tt></a>, <a class="reference internal" href="moe.tests.views.html#moe.tests.views.rest_test_case.RestTestCase" title="moe.tests.views.rest_test_case.RestTestCase"><tt class="xref py py-class docutils literal"><span class="pre">moe.tests.views.rest_test_case.RestTestCase</span></tt></a></p>
 <p>Integration test for the /gp/next_points/* endpoints.</p>
 <dl class="attribute">
 <dt id="moe.tests.views.rest.gp_next_points_test.TestGpNextPointsViews.num_sampled_list">
@@ -411,7 +490,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.1.0',
+            VERSION:'0.2.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

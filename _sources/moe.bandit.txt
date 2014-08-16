@@ -1,0 +1,101 @@
+moe.bandit package
+==================
+
+Subpackages
+-----------
+
+.. toctree::
+
+    moe.bandit.interfaces
+
+Submodules
+----------
+
+moe.bandit.constant module
+--------------------------
+
+.. automodule:: moe.bandit.constant
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+moe.bandit.data_containers module
+---------------------------------
+
+.. automodule:: moe.bandit.data_containers
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+moe.bandit.epsilon_first module
+-------------------------------
+
+.. automodule:: moe.bandit.epsilon_first
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+moe.bandit.epsilon_greedy module
+--------------------------------
+
+.. automodule:: moe.bandit.epsilon_greedy
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+moe.bandit.epsilon_interface module
+-----------------------------------
+
+.. automodule:: moe.bandit.epsilon_interface
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+moe.bandit.linkers module
+-------------------------
+
+.. automodule:: moe.bandit.linkers
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+moe.bandit.ucb1 module
+----------------------
+
+.. automodule:: moe.bandit.ucb1
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+moe.bandit.ucb1_tuned module
+----------------------------
+
+.. automodule:: moe.bandit.ucb1_tuned
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+moe.bandit.ucb_interface module
+-------------------------------
+
+.. automodule:: moe.bandit.ucb_interface
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+moe.bandit.utils module
+-----------------------
+
+.. automodule:: moe.bandit.utils
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: moe.bandit
+    :members:
+    :undoc-members:
+    :show-inheritance:

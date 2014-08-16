@@ -1,0 +1,20 @@
+gpp_expected_improvement_gpu
+============================
+
+**Contents:**
+
+    1. `gpp_expected_improvement_gpu.hpp`_
+    2. `gpp_expected_improvement_gpu.cpp`_
+
+
+gpp_expected_improvement_gpu.hpp
+--------------------------------
+
+.. doxygenfile:: gpp_expected_improvement_gpu.hpp
+
+
+gpp_expected_improvement_gpu.cpp
+--------------------------------
+
+.. doxygenfile:: gpp_expected_improvement_gpu.cpp
+

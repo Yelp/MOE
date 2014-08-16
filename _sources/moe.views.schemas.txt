@@ -1,0 +1,45 @@
+moe.views.schemas package
+=========================
+
+Subpackages
+-----------
+
+.. toctree::
+
+    moe.views.schemas.rest
+
+Submodules
+----------
+
+moe.views.schemas.bandit_pretty_view module
+-------------------------------------------
+
+.. automodule:: moe.views.schemas.bandit_pretty_view
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+moe.views.schemas.base_schemas module
+-------------------------------------
+
+.. automodule:: moe.views.schemas.base_schemas
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+moe.views.schemas.gp_next_points_pretty_view module
+---------------------------------------------------
+
+.. automodule:: moe.views.schemas.gp_next_points_pretty_view
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: moe.views.schemas
+    :members:
+    :undoc-members:
+    :show-inheritance:

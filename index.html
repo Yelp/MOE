@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Welcome to MOE’s documentation! &mdash; MOE 0.1.0 documentation</title>
+  <title>Welcome to MOE’s documentation! &mdash; MOE 0.2.0 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
     <link rel="stylesheet" href="_static/breathe.css" type="text/css" />
   
-    <link rel="top" title="MOE 0.1.0 documentation" href="#"/>
+    <link rel="top" title="MOE 0.2.0 documentation" href="#"/>
         <link rel="next" title="Why Do We Need MOE?" href="why_moe.html"/> 
 
   
@@ -94,6 +94,13 @@
 <li class="toctree-l2"><a class="reference internal" href="objective_functions.html#example-of-objective-functions">Example of Objective Functions</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="bandit.html">Multi-Armed Bandits</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#what-is-the-multi-armed-bandit-problem">What is the multi-armed bandit problem?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#applications">Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#policies">Policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#pointers">Pointers</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="examples.html#minimizing-an-arbitrary-function">Minimizing an arbitrary function</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples.html#gaussian-process-regression-given-historical-data">Gaussian Process regression given historical data</a></li>
@@ -147,9 +154,11 @@
 <li class="toctree-l1"><a class="reference internal" href="cpp_tree.html">C++ Files</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimization_test.html">gpp_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_domain_test.html">gpp_domain_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_gpu.html">gpp_expected_improvement_gpu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_geometry.html">gpp_geometry</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_test_utils.html">gpp_test_utils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_logging.html">gpp_logging</a></li>
@@ -158,28 +167,29 @@
 <li class="toctree-l2"><a class="reference internal" href="gpp_domain.html">gpp_domain</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_python_common.html">gpp_python_common</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_hyperparameter_optimization_demo.html">gpp_hyperparameter_optimization_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_test_utils_test.html">gpp_test_utils_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_math_test.html">gpp_math_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_cuda_math.html">gpp_cuda_math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_python_model_selection.html">gpp_python_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_math.html">gpp_math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_random_test.html">gpp_random_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimizer_parameters.html">gpp_optimizer_parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_random.html">gpp_random</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_test_utils_test.html">gpp_test_utils_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra.html">gpp_linear_algebra</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_exception.html">gpp_exception</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_model_selection.html">gpp_model_selection</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_random.html">gpp_random</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_covariance_test.html">gpp_covariance_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_python.html">gpp_python</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_test.html">gpp_model_selection_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_common.html">gpp_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_gpu_test.html">gpp_expected_improvement_gpu_test</a></li>
 </ul>
 </li>
 </ul>
@@ -216,7 +226,7 @@
 </div>
           <div role="main">
             
-  <img alt="_images/moe_logo_48.png" src="_images/moe_logo_48.png" />
+  <img alt="_images/MOE_full_logo.png" src="_images/MOE_full_logo.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
@@ -452,6 +462,13 @@ $ docker run -p 6543:6543 moe_container
 <li class="toctree-l2"><a class="reference internal" href="objective_functions.html#example-of-objective-functions">Example of Objective Functions</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="bandit.html">Multi-Armed Bandits</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#what-is-the-multi-armed-bandit-problem">What is the multi-armed bandit problem?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#applications">Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#policies">Policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#pointers">Pointers</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="examples.html#minimizing-an-arbitrary-function">Minimizing an arbitrary function</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples.html#gaussian-process-regression-given-historical-data">Gaussian Process regression given historical data</a></li>
@@ -490,8 +507,20 @@ $ docker run -p 6543:6543 moe_container
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="moe.html">moe package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="moe.html#subpackages">Subpackages</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="moe.build.html">moe.build package</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="moe.build.html#module-moe.build">Module contents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="moe.bandit.html">moe.bandit package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="moe.bandit.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.bandit.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.bandit.html#module-moe.bandit.constant">moe.bandit.constant module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.bandit.html#module-moe.bandit.data_containers">moe.bandit.data_containers module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.bandit.html#module-moe.bandit.epsilon_first">moe.bandit.epsilon_first module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.bandit.html#module-moe.bandit.epsilon_greedy">moe.bandit.epsilon_greedy module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.bandit.html#module-moe.bandit.epsilon_interface">moe.bandit.epsilon_interface module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.bandit.html#module-moe.bandit.linkers">moe.bandit.linkers module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.bandit.html#module-moe.bandit.ucb1">moe.bandit.ucb1 module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.bandit.html#module-moe.bandit.ucb1_tuned">moe.bandit.ucb1_tuned module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.bandit.html#module-moe.bandit.ucb_interface">moe.bandit.ucb_interface module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.bandit.html#module-moe.bandit.utils">moe.bandit.utils module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.bandit.html#module-moe.bandit">Module contents</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="moe.easy_interface.html">moe.easy_interface package</a><ul>
@@ -514,6 +543,7 @@ $ docker run -p 6543:6543 moe_container
 <li class="toctree-l3"><a class="reference internal" href="moe.views.html">moe.views package</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="moe.views.html#subpackages">Subpackages</a></li>
 <li class="toctree-l4"><a class="reference internal" href="moe.views.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.views.html#module-moe.views.bandit_pretty_view">moe.views.bandit_pretty_view module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="moe.views.html#module-moe.views.constant">moe.views.constant module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="moe.views.html#module-moe.views.exceptions">moe.views.exceptions module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="moe.views.html#module-moe.views.frontend">moe.views.frontend module</a></li>
@@ -521,7 +551,7 @@ $ docker run -p 6543:6543 moe_container
 <li class="toctree-l4"><a class="reference internal" href="moe.views.html#module-moe.views.gp_next_points_pretty_view">moe.views.gp_next_points_pretty_view module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="moe.views.html#module-moe.views.gp_pretty_view">moe.views.gp_pretty_view module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="moe.views.html#module-moe.views.optimizable_gp_pretty_view">moe.views.optimizable_gp_pretty_view module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="moe.views.html#module-moe.views.schemas">moe.views.schemas module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.views.html#module-moe.views.pretty_view">moe.views.pretty_view module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="moe.views.html#module-moe.views.utils">moe.views.utils module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="moe.views.html#module-moe.views">Module contents</a></li>
 </ul>
@@ -573,6 +603,16 @@ $ docker run -p 6543:6543 moe_container
 <li class="toctree-l3"><a class="reference internal" href="gpp_domain_test.html#gpp-domain-test-cpp">gpp_domain_test.cpp</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_gpu.html">gpp_expected_improvement_gpu</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gpp_expected_improvement_gpu.html#gpp-expected-improvement-gpu-hpp">gpp_expected_improvement_gpu.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gpp_expected_improvement_gpu.html#gpp-expected-improvement-gpu-cpp">gpp_expected_improvement_gpu.cpp</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html#gpp-heuristic-expected-improvement-optimization-test-hpp">gpp_heuristic_expected_improvement_optimization_test.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html#gpp-heuristic-expected-improvement-optimization-test-cpp">gpp_heuristic_expected_improvement_optimization_test.cpp</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="gpp_linear_algebra_test.html#gpp-linear-algebra-test-hpp">gpp_linear_algebra_test.hpp</a></li>
 <li class="toctree-l3"><a class="reference internal" href="gpp_linear_algebra_test.html#gpp-linear-algebra-test-cpp">gpp_linear_algebra_test.cpp</a></li>
@@ -582,9 +622,9 @@ $ docker run -p 6543:6543 moe_container
 <li class="toctree-l3"><a class="reference internal" href="gpp_geometry.html#gpp-geometry-hpp">gpp_geometry.hpp</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="gpp_python_gaussian_process.html#gpp-python-gaussian-process-hpp">gpp_python_gaussian_process.hpp</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gpp_python_gaussian_process.html#gpp-python-gaussian-process-cpp">gpp_python_gaussian_process.cpp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html#gpp-heuristic-expected-improvement-optimization-hpp">gpp_heuristic_expected_improvement_optimization.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html#gpp-heuristic-expected-improvement-optimization-cpp">gpp_heuristic_expected_improvement_optimization.cpp</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a><ul>
@@ -625,9 +665,9 @@ $ docker run -p 6543:6543 moe_container
 <li class="toctree-l3"><a class="reference internal" href="gpp_hyperparameter_optimization_demo.html#gpp-hyperparameter-optimization-demo-cpp">gpp_hyperparameter_optimization_demo.cpp</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_test_utils_test.html">gpp_test_utils_test</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="gpp_test_utils_test.html#gpp-test-utils-test-hpp">gpp_test_utils_test.hpp</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gpp_test_utils_test.html#gpp-test-utils-test-cpp">gpp_test_utils_test.cpp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gpp_geometry_test.html#gpp-geometry-test-hpp">gpp_geometry_test.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gpp_geometry_test.html#gpp-geometry-test-cpp">gpp_geometry_test.cpp</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_math_test.html">gpp_math_test</a><ul>
@@ -635,9 +675,9 @@ $ docker run -p 6543:6543 moe_container
 <li class="toctree-l3"><a class="reference internal" href="gpp_math_test.html#gpp-math-test-cpp">gpp_math_test.cpp</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_python_expected_improvement.html">gpp_python_expected_improvement</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="gpp_python_expected_improvement.html#gpp-python-expected-improvement-hpp">gpp_python_expected_improvement.hpp</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gpp_python_expected_improvement.html#gpp-python-expected-improvement-cpp">gpp_python_expected_improvement.cpp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_cuda_math.html">gpp_cuda_math</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gpp_cuda_math.html#gpp-cuda-math-hpp">gpp_cuda_math.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gpp_cuda_math.html#gpp-cuda-math-cu">gpp_cuda_math.cu</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_python_model_selection.html">gpp_python_model_selection</a><ul>
@@ -663,14 +703,13 @@ $ docker run -p 6543:6543 moe_container
 <li class="toctree-l3"><a class="reference internal" href="gpp_expected_improvement_demo.html#gpp-expected-improvement-demo-cpp">gpp_expected_improvement_demo.cpp</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_random.html">gpp_random</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="gpp_random.html#gpp-random-hpp">gpp_random.hpp</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gpp_random.html#gpp-random-cpp">gpp_random.cpp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gpp_optimization.html#gpp-optimization-hpp">gpp_optimization.hpp</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="gpp_geometry_test.html#gpp-geometry-test-hpp">gpp_geometry_test.hpp</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gpp_geometry_test.html#gpp-geometry-test-cpp">gpp_geometry_test.cpp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_test_utils_test.html">gpp_test_utils_test</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gpp_test_utils_test.html#gpp-test-utils-test-hpp">gpp_test_utils_test.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gpp_test_utils_test.html#gpp-test-utils-test-cpp">gpp_test_utils_test.cpp</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra.html">gpp_linear_algebra</a><ul>
@@ -678,9 +717,9 @@ $ docker run -p 6543:6543 moe_container
 <li class="toctree-l3"><a class="reference internal" href="gpp_linear_algebra.html#gpp-linear-algebra-cpp">gpp_linear_algebra.cpp</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html#gpp-heuristic-expected-improvement-optimization-test-hpp">gpp_heuristic_expected_improvement_optimization_test.hpp</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html#gpp-heuristic-expected-improvement-optimization-test-cpp">gpp_heuristic_expected_improvement_optimization_test.cpp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_expected_improvement.html">gpp_python_expected_improvement</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gpp_python_expected_improvement.html#gpp-python-expected-improvement-hpp">gpp_python_expected_improvement.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gpp_python_expected_improvement.html#gpp-python-expected-improvement-cpp">gpp_python_expected_improvement.cpp</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_exception.html">gpp_exception</a><ul>
@@ -693,8 +732,9 @@ $ docker run -p 6543:6543 moe_container
 <li class="toctree-l3"><a class="reference internal" href="gpp_model_selection.html#gpp-model-selection-cpp">gpp_model_selection.cpp</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="gpp_optimization.html#gpp-optimization-hpp">gpp_optimization.hpp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_random.html">gpp_random</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gpp_random.html#gpp-random-hpp">gpp_random.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gpp_random.html#gpp-random-cpp">gpp_random.cpp</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_covariance_test.html">gpp_covariance_test</a><ul>
@@ -719,13 +759,18 @@ $ docker run -p 6543:6543 moe_container
 <li class="toctree-l3"><a class="reference internal" href="gpp_hyper_and_EI_demo.html#gpp-hyper-and-ei-demo-cpp">gpp_hyper_and_EI_demo.cpp</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html#gpp-heuristic-expected-improvement-optimization-hpp">gpp_heuristic_expected_improvement_optimization.hpp</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html#gpp-heuristic-expected-improvement-optimization-cpp">gpp_heuristic_expected_improvement_optimization.cpp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gpp_python_gaussian_process.html#gpp-python-gaussian-process-hpp">gpp_python_gaussian_process.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gpp_python_gaussian_process.html#gpp-python-gaussian-process-cpp">gpp_python_gaussian_process.cpp</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_common.html">gpp_common</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="gpp_common.html#gpp-common-hpp">gpp_common.hpp</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_gpu_test.html">gpp_expected_improvement_gpu_test</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gpp_expected_improvement_gpu_test.html#gpp-expected-improvement-gpu-test-hpp">gpp_expected_improvement_gpu_test.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gpp_expected_improvement_gpu_test.html#gpp-expected-improvement-gpu-test-cpp">gpp_expected_improvement_gpu_test.cpp</a></li>
 </ul>
 </li>
 </ul>
@@ -779,7 +824,7 @@ $ docker run -p 6543:6543 moe_container
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.1.0',
+            VERSION:'0.2.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

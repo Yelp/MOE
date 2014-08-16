@@ -1,0 +1,504 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>moe.bandit.data_containers &mdash; MOE 0.2.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../_static/breathe.css" type="text/css" />
+  
+    <link rel="top" title="MOE 0.2.0 documentation" href="../../../index.html"/>
+        <link rel="up" title="moe" href="../../moe.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="../../../index.html" class="fa fa-home"> MOE</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../why_moe.html">Why Do We Need MOE?</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../why_moe.html#other-methods">Other Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">Install</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../install.html#install-in-docker">Install in docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../install.html#install-from-source">Install from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../install.html#osx-tips">OSX Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../install.html#building-boost">Building Boost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../install.html#linux-tips">Linux Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../install.html#cmake-tips">CMake Tips</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../moe_math.html">How does MOE work?</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../moe_math.html#build-a-gaussian-process-gp-with-the-historical-data">Build a Gaussian Process (GP) with the historical data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../moe_math.html#optimize-the-hyperparameters-of-the-gaussian-process">Optimize the hyperparameters of the Gaussian Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../moe_math.html#find-the-point-s-of-highest-expected-improvement-ei">Find the point(s) of highest Expected Improvement (EI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../moe_math.html#return-the-point-s-to-sample-then-repeat">Return the point(s) to sample, then repeat</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../demo_tutorial.html">Demo Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../demo_tutorial.html#the-interactive-demo">The Interactive Demo</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pretty_endpoints.html">Pretty Endpoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../objective_functions.html">Objective Functions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../objective_functions.html#what-is-an-objective-function">What is an objective function?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../objective_functions.html#properties-of-an-objective-function">Properties of an objective function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../objective_functions.html#parameters">Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../objective_functions.html#id1"><span class="math">\(\Phi\)</span> Objective Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../objective_functions.html#example-of-objective-functions">Example of Objective Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bandit.html">Multi-Armed Bandits</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../bandit.html#what-is-the-multi-armed-bandit-problem">What is the multi-armed bandit problem?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../bandit.html#applications">Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../bandit.html#policies">Policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../bandit.html#pointers">Pointers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../examples.html#minimizing-an-arbitrary-function">Minimizing an arbitrary function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../examples.html#gaussian-process-regression-given-historical-data">Gaussian Process regression given historical data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../examples.html#hyperparameter-optimization-of-a-gaussian-process">Hyperparameter optimization of a Gaussian Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../examples.html#all-above-examples-combined">All above examples combined</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../examples.html#setting-thresholds-for-advertising-units">Setting thresholds for advertising units</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#making-a-pull-request">Making a pull request</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#documentation">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#testing">Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#style">Style</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#versioning">Versioning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#releasing-for-maintainers">Releasing (For Maintainers)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq.html">Frequently Asked Questions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../faq.html#what-license-is-moe-released-under">What license is MOE released under?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../faq.html#when-should-i-use-moe">When should I use MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../faq.html#what-is-the-time-complexity-of-moe">What is the time complexity of MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../faq.html#how-do-i-cite-moe">How do I cite MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../faq.html#why-does-moe-take-so-long-to-return-the-next-points-to-sample-for-some-inputs">Why does MOE take so long to return the next points to sample for some inputs?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../faq.html#how-do-i-bootstrap-moe-what-initial-data-does-it-need">How do I bootstrap MOE? What initial data does it need?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../faq.html#how-many-function-evaluations-do-i-need-before-moe-is-done">How many function evaluations do I need before MOE is &#8220;done&#8221;?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../faq.html#how-many-function-evaluations-do-i-perform-before-i-update-the-hyperparameters-of-the-gp">How many function evaluations do I perform before I update the hyperparameters of the GP?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../faq.html#will-you-accept-my-pull-request">Will you accept my pull request?</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../moe.html">moe package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../moe.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../moe.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../moe.html#module-moe.resources">moe.resources module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../moe.html#module-moe">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../moe_examples.html">moe_examples package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../moe_examples.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../moe_examples.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../moe_examples.html#module-moe_examples.next_point_via_simple_endpoint">moe_examples.next_point_via_simple_endpoint module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../moe_examples.html#module-moe_examples">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../cpp_tree.html">C++ Files</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_optimization_test.html">gpp_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_domain_test.html">gpp_domain_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_expected_improvement_gpu.html">gpp_expected_improvement_gpu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_geometry.html">gpp_geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_test_utils.html">gpp_test_utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_logging.html">gpp_logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_covariance.html">gpp_covariance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_python_test.html">gpp_python_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_domain.html">gpp_domain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_python_common.html">gpp_python_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_hyperparameter_optimization_demo.html">gpp_hyperparameter_optimization_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_geometry_test.html">gpp_geometry_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_math_test.html">gpp_math_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_cuda_math.html">gpp_cuda_math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_python_model_selection.html">gpp_python_model_selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_math.html">gpp_math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_random_test.html">gpp_random_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_optimizer_parameters.html">gpp_optimizer_parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_test_utils_test.html">gpp_test_utils_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_linear_algebra.html">gpp_linear_algebra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_exception.html">gpp_exception</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_model_selection.html">gpp_model_selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_random.html">gpp_random</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_covariance_test.html">gpp_covariance_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_python.html">gpp_python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_model_selection_test.html">gpp_model_selection_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_common.html">gpp_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gpp_expected_improvement_gpu_test.html">gpp_expected_improvement_gpu_test</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../index.html">MOE</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      
+          <li><a href="../../moe.html">moe</a> &raquo;</li>
+      
+    <li>moe.bandit.data_containers</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <h1>Source code for moe.bandit.data_containers</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;Data containers convenient for/used to interact with bandit members.&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">pprint</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+
+<div class="viewcode-block" id="SampleArm"><a class="viewcode-back" href="../../../moe.bandit.html#moe.bandit.data_containers.SampleArm">[docs]</a><span class="k">class</span> <span class="nc">SampleArm</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;An arm (name, win, loss, total, variance) sampled from the objective function we are modeling/optimizing.</span>
+
+<span class="sd">    This class is a representation of a &quot;Sample Arm,&quot; which is defined by the three data members listed here.</span>
+<span class="sd">    SampleArm is a convenient way of communicating data to the rest of the bandit library (via the</span>
+<span class="sd">    HistoricalData container); it also provides a convenient grouping for interactive introspection.</span>
+
+<span class="sd">    Users are not required to use SampleArm, iterables with the same data layout will suffice.</span>
+
+<span class="sd">    :ivar win: (*float64 &gt;= 0.0*) The amount won from playing this arm</span>
+<span class="sd">    :ivar loss: (*float64 &gt;= 0.0*) The amount loss from playing this arm</span>
+<span class="sd">    :ivar total: (*int &gt;= 0*) The number of times we have played this arm</span>
+<span class="sd">    :ivar variance: (*float &gt;= 0.0*) The variance of this arm, if there is no variance it is equal to None</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;_win&#39;</span><span class="p">,</span> <span class="s">&#39;_loss&#39;</span><span class="p">,</span> <span class="s">&#39;_total&#39;</span><span class="p">,</span> <span class="s">&#39;_variance&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">win</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">loss</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">variance</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Allocate and construct a new instance with the specified data fields; see class docstring for input descriptions.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_win</span> <span class="o">=</span> <span class="n">win</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_loss</span> <span class="o">=</span> <span class="n">loss</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_total</span> <span class="o">=</span> <span class="n">total</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_variance</span> <span class="o">=</span> <span class="n">variance</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">validate</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Pretty print this object as a dict.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">pprint</span><span class="o">.</span><span class="n">pformat</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_asdict</span><span class="p">()))</span>
+
+    <span class="k">def</span> <span class="nf">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arm</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Overload Add operator to add sampled arm results to this arm.</span>
+
+<span class="sd">        :param arm: arm samples to add to this arm</span>
+<span class="sd">        :type arm: a SampleArm object</span>
+<span class="sd">        :raise: ValueError when ``arm.variance`` or self.variance is not None.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_win</span> <span class="o">+=</span> <span class="n">arm</span><span class="o">.</span><span class="n">win</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_loss</span> <span class="o">+=</span> <span class="n">arm</span><span class="o">.</span><span class="n">loss</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_total</span> <span class="o">+=</span> <span class="n">arm</span><span class="o">.</span><span class="n">total</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_variance</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">arm</span><span class="o">.</span><span class="n">variance</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Cannot add arms when variance is not None! Please combine arms manually.&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="SampleArm.json_payload"><a class="viewcode-back" href="../../../moe.bandit.html#moe.bandit.data_containers.SampleArm.json_payload">[docs]</a>    <span class="k">def</span> <span class="nf">json_payload</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert the sample_arm into a dict to be consumed by json for a REST request.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span>
+                <span class="s">&#39;win&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">win</span><span class="p">,</span>
+                <span class="s">&#39;loss&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss</span><span class="p">,</span>
+                <span class="s">&#39;total&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">total</span><span class="p">,</span>
+                <span class="s">&#39;variance&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">variance</span><span class="p">,</span>
+                <span class="p">}</span>
+</div>
+<div class="viewcode-block" id="SampleArm.validate"><a class="viewcode-back" href="../../../moe.bandit.html#moe.bandit.data_containers.SampleArm.validate">[docs]</a>    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Check this SampleArm passes basic validity checks: all values are finite.</span>
+
+<span class="sd">        :raises ValueError: if any member data is non-finite or out of range</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># check that all values are finite</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">win</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">numpy</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">win</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;win = {0} is non-finite or negative!&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">win</span><span class="p">))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">numpy</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">loss</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;loss = {0} is non-finite or negative!&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">loss</span><span class="p">))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">total</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">numpy</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">total</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;total = {0} is non-finite or negative!&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">total</span><span class="p">))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">variance</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variance</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">numpy</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variance</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;variance = {0} is non-finite or negative!&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variance</span><span class="p">))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">total</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="ow">not</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">win</span> <span class="o">==</span> <span class="mf">0.0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;win or loss is not 0 when total is 0!&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">variance</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">win</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">total</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;win cannot be greater than total when default variance computation is used! Please specify variance.&#39;</span><span class="p">)</span>
+</div>
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="SampleArm.win"><a class="viewcode-back" href="../../../moe.bandit.html#moe.bandit.data_containers.SampleArm.win">[docs]</a>    <span class="k">def</span> <span class="nf">win</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the amount win, always greater than or equal to zero.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_win</span>
+</div>
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="SampleArm.loss"><a class="viewcode-back" href="../../../moe.bandit.html#moe.bandit.data_containers.SampleArm.loss">[docs]</a>    <span class="k">def</span> <span class="nf">loss</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the amount loss, always greater than or equal to zero.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loss</span>
+</div>
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="SampleArm.total"><a class="viewcode-back" href="../../../moe.bandit.html#moe.bandit.data_containers.SampleArm.total">[docs]</a>    <span class="k">def</span> <span class="nf">total</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the total number of tries, always a non-negative integer.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_total</span>
+</div>
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="SampleArm.variance"><a class="viewcode-back" href="../../../moe.bandit.html#moe.bandit.data_containers.SampleArm.variance">[docs]</a>    <span class="k">def</span> <span class="nf">variance</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the variance of sampled tries, always greater than or equal to zero, if there is no variance it is equal to None.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_variance</span>
+
+</div></div>
+<div class="viewcode-block" id="HistoricalData"><a class="viewcode-back" href="../../../moe.bandit.html#moe.bandit.data_containers.HistoricalData">[docs]</a><span class="k">class</span> <span class="nc">HistoricalData</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;A data container for storing the historical data from an entire experiment in a layout convenient for this library.</span>
+
+<span class="sd">    Users will likely find it most convenient to store experiment historical data of arms in &quot;tuples&quot; of</span>
+<span class="sd">    (win, loss, total); for example, these could be the columns of a database row, part of an ORM, etc.</span>
+<span class="sd">    The SampleArm class (above) provides a convenient representation of this input format, but users are *not* required</span>
+<span class="sd">    to use it.</span>
+
+<span class="sd">    :ivar _arms_sampled: (*dict*) mapping of arm names to already-sampled arms</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;_arms_sampled&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sample_arms</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">validate</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a HistoricalData object tracking the state of an experiment (already-sampled arms).</span>
+
+<span class="sd">        :param sample_arms: the already-sampled arms: names, wins, losses, and totals</span>
+<span class="sd">        :type sample_arms: a dictionary of (arm name, SampleArm) key-value pairs</span>
+<span class="sd">        :param validate: whether to sanity-check the input sample_arms</span>
+<span class="sd">        :type validate: boolean</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">sample_arms</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">sample_arms</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">if</span> <span class="n">validate</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">validate_sample_arms</span><span class="p">(</span><span class="n">sample_arms</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_arms_sampled</span> <span class="o">=</span> <span class="n">sample_arms</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pretty_print</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;String representation of this HistoricalData object.</span>
+
+<span class="sd">        pretty-print&#39;ing produces output that is easily read by humans.</span>
+<span class="sd">        Disabling it prints the member arrays to the screen in full precision; this is convenient for</span>
+<span class="sd">        pasting into C++ or other debugging purposes.</span>
+
+<span class="sd">        :param pretty_print: enable pretty-printing for formatted, human-readable output</span>
+<span class="sd">        :type pretty_print: bool</span>
+<span class="sd">        :return: string representation</span>
+<span class="sd">        :rtype: string</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">pretty_print</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">pprint</span><span class="o">.</span><span class="n">pformat</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_arms_sampled</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_arms_sampled</span><span class="p">)</span>
+
+<div class="viewcode-block" id="HistoricalData.json_payload"><a class="viewcode-back" href="../../../moe.bandit.html#moe.bandit.data_containers.HistoricalData.json_payload">[docs]</a>    <span class="k">def</span> <span class="nf">json_payload</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construct a json serializeable and MOE REST recognizeable dictionary of the historical data.&quot;&quot;&quot;</span>
+        <span class="n">json_arms_sampled</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">arm</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_arms_sampled</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="n">json_arms_sampled</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">arm</span><span class="o">.</span><span class="n">json_payload</span><span class="p">()</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s">&#39;arms_sampled&#39;</span><span class="p">:</span> <span class="n">json_arms_sampled</span><span class="p">}</span>
+</div>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="HistoricalData.validate_sample_arms"><a class="viewcode-back" href="../../../moe.bandit.html#moe.bandit.data_containers.HistoricalData.validate_sample_arms">[docs]</a>    <span class="k">def</span> <span class="nf">validate_sample_arms</span><span class="p">(</span><span class="n">sample_arms</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Check that sample_arms passes basic validity checks: all values are finite.</span>
+
+<span class="sd">        :param sample_arms: already-sampled arms: names, wins, losses, and totals</span>
+<span class="sd">        :type sample_arms: a dictionary of  (arm name, SampleArm) key-value pairs</span>
+<span class="sd">        :return: True if inputs are valid</span>
+<span class="sd">        :rtype: boolean</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">sample_arms</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">arm</span> <span class="ow">in</span> <span class="n">sample_arms</span><span class="o">.</span><span class="n">itervalues</span><span class="p">():</span>
+                <span class="n">arm</span><span class="o">.</span><span class="n">validate</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="HistoricalData.append_sample_arms"><a class="viewcode-back" href="../../../moe.bandit.html#moe.bandit.data_containers.HistoricalData.append_sample_arms">[docs]</a>    <span class="k">def</span> <span class="nf">append_sample_arms</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sample_arms</span><span class="p">,</span> <span class="n">validate</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Append the contents of ``sample_arms`` to the data members of this class.</span>
+
+<span class="sd">        This method first validates the arms and then updates the historical data.</span>
+<span class="sd">        The result of combining two valid arms is always a valid arm.</span>
+
+<span class="sd">        :param sample_arms: the already-sampled arms: wins, losses, and totals</span>
+<span class="sd">        :type sample_arms: a dictionary of  (arm name, SampleArm) key-value pairs</span>
+<span class="sd">        :param validate: whether to sanity-check the input sample_arms</span>
+<span class="sd">        :type validate: boolean</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">sample_arms</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="n">validate</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">validate_sample_arms</span><span class="p">(</span><span class="n">sample_arms</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_historical_data</span><span class="p">(</span><span class="n">sample_arms</span><span class="p">)</span>
+</div>
+    <span class="k">def</span> <span class="nf">_update_historical_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sample_arms</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add arm sampled ersults from ``sample_arms`` into this object&#39;s data member.</span>
+
+<span class="sd">        :param sample_arms: the already-sampled arms: wins, losses, and totals</span>
+<span class="sd">        :type sample_arms: dictionary of (arm name, SampleArm) key-value pairs</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">arm</span> <span class="ow">in</span> <span class="n">sample_arms</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_arms_sampled</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_arms_sampled</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">+=</span> <span class="n">arm</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_arms_sampled</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">arm</span>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="HistoricalData.num_arms"><a class="viewcode-back" href="../../../moe.bandit.html#moe.bandit.data_containers.HistoricalData.num_arms">[docs]</a>    <span class="k">def</span> <span class="nf">num_arms</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the number of sampled arms.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_arms_sampled</span><span class="p">)</span>
+</div>
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="HistoricalData.arms_sampled"><a class="viewcode-back" href="../../../moe.bandit.html#moe.bandit.data_containers.HistoricalData.arms_sampled">[docs]</a>    <span class="k">def</span> <span class="nf">arms_sampled</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the arms_sampled, a dictionary of (arm name, SampleArm) key-value pairs.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_arms_sampled</span></div></div>
+</pre></div>
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2012-2014 Yelp. MOE is licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.2.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>gpp_model_selection &mdash; MOE 0.1.0 documentation</title>
+  <title>gpp_model_selection &mdash; MOE 0.2.0 documentation</title>
   
 
   
@@ -32,9 +32,9 @@
   
     <link rel="stylesheet" href="_static/breathe.css" type="text/css" />
   
-    <link rel="top" title="MOE 0.1.0 documentation" href="index.html"/>
+    <link rel="top" title="MOE 0.2.0 documentation" href="index.html"/>
         <link rel="up" title="C++ Files" href="cpp_tree.html"/>
-        <link rel="next" title="gpp_optimization" href="gpp_optimization.html"/>
+        <link rel="next" title="gpp_random" href="gpp_random.html"/>
         <link rel="prev" title="gpp_exception" href="gpp_exception.html"/> 
 
   
@@ -96,6 +96,13 @@
 <li class="toctree-l2"><a class="reference internal" href="objective_functions.html#example-of-objective-functions">Example of Objective Functions</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="bandit.html">Multi-Armed Bandits</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#what-is-the-multi-armed-bandit-problem">What is the multi-armed bandit problem?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#applications">Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#policies">Policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#pointers">Pointers</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="examples.html#minimizing-an-arbitrary-function">Minimizing an arbitrary function</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples.html#gaussian-process-regression-given-historical-data">Gaussian Process regression given historical data</a></li>
@@ -149,9 +156,11 @@
 <li class="toctree-l1 current"><a class="reference internal" href="cpp_tree.html">C++ Files</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimization_test.html">gpp_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_domain_test.html">gpp_domain_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_gpu.html">gpp_expected_improvement_gpu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_geometry.html">gpp_geometry</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_test_utils.html">gpp_test_utils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_logging.html">gpp_logging</a></li>
@@ -160,28 +169,29 @@
 <li class="toctree-l2"><a class="reference internal" href="gpp_domain.html">gpp_domain</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_python_common.html">gpp_python_common</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_hyperparameter_optimization_demo.html">gpp_hyperparameter_optimization_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_test_utils_test.html">gpp_test_utils_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_math_test.html">gpp_math_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_cuda_math.html">gpp_cuda_math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_python_model_selection.html">gpp_python_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_math.html">gpp_math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_random_test.html">gpp_random_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimizer_parameters.html">gpp_optimizer_parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_random.html">gpp_random</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_test_utils_test.html">gpp_test_utils_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra.html">gpp_linear_algebra</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_exception.html">gpp_exception</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="">gpp_model_selection</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_random.html">gpp_random</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_covariance_test.html">gpp_covariance_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_python.html">gpp_python</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_test.html">gpp_model_selection_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_common.html">gpp_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_gpu_test.html">gpp_expected_improvement_gpu_test</a></li>
 </ul>
 </li>
 </ul>
@@ -284,9 +294,9 @@ with the routines in gpp_optimization.hpp.  These are the preferred endpoints fo
 <li>NewtonHyperparameterOptimization&lt;LogLikelihoodEvaluator, Domain&gt;()</li>
 </ul>
 <p>Typically these will not be called directly.</p>
-<p>To better understand model selection, let&#8217;s look at a common covariance used in our computation, square exponential:
-<tt class="docutils literal"><span class="pre">cov(x_1,</span> <span class="pre">x_2)</span> <span class="pre">=</span> <span class="pre">\alpha</span> <span class="pre">*</span> <span class="pre">\exp(-0.5*r^2),</span> <span class="pre">where</span> <span class="pre">r</span> <span class="pre">=</span> <span class="pre">\sum_{i=1}^d</span> <span class="pre">(x_1_i</span> <span class="pre">-</span> <span class="pre">x_2_i)^2</span> <span class="pre">/</span> <span class="pre">L_i^2</span></tt>.
-Here, <tt class="docutils literal"><span class="pre">\alpha</span></tt> is <tt class="docutils literal"><span class="pre">\sigma_f^2</span></tt>, the signal variance, and the <tt class="docutils literal"><span class="pre">L_i</span></tt> are length scales.  The vector <tt class="docutils literal"><span class="pre">[\alpha,</span> <span class="pre">L_1,</span> <span class="pre">...</span> <span class="pre">,</span> <span class="pre">L_d]</span></tt>
+<p>To better understand model selection, let&#8217;s look at a common covariance used in our computation, square exponential:</p>
+<p><tt class="docutils literal"><span class="pre">cov(x_1,</span> <span class="pre">x_2)</span> <span class="pre">=</span> <span class="pre">\alpha</span> <span class="pre">*</span> <span class="pre">\exp(-0.5*r^2),</span> <span class="pre">where</span> <span class="pre">r</span> <span class="pre">=</span> <span class="pre">\sum_{i=1}^d</span> <span class="pre">(x_1_i</span> <span class="pre">-</span> <span class="pre">x_2_i)^2</span> <span class="pre">/</span> <span class="pre">L_i^2</span></tt>.</p>
+<p>Here, <tt class="docutils literal"><span class="pre">\alpha</span></tt> is <tt class="docutils literal"><span class="pre">\sigma_f^2</span></tt>, the signal variance, and the <tt class="docutils literal"><span class="pre">L_i</span></tt> are length scales.  The vector <tt class="docutils literal"><span class="pre">[\alpha,</span> <span class="pre">L_1,</span> <span class="pre">...</span> <span class="pre">,</span> <span class="pre">L_d]</span></tt>
 are called the &#8220;hyperparameters&#8221; or &#8220;free parameters&#8221; (see gpp_covariance.hpp for more details).  There is nothing in
 the covariance  that guides the choice of the hyperparameters; <tt class="docutils literal"><span class="pre">L_1</span> <span class="pre">=</span> <span class="pre">0.001</span></tt> is just as valid as <tt class="docutils literal"><span class="pre">L_1</span> <span class="pre">=</span> <span class="pre">1000.0.</span></tt></p>
 <p>Clearly, the value of the covariance changes substantially if <tt class="docutils literal"><span class="pre">L_i</span></tt> varies by a factor of two, much less 6 orders of
@@ -450,12 +460,12 @@ Uniformly samples <tt class="docutils literal"><span class="pre">num_multistarts
 <tr class="field-odd field"><td>&nbsp;</td><td class="field-body">a UniformRandomGenerator object providing the random engine for uniform random numbers</td>
 </tr>
 <tr class="field-even field"><th class="field-name" colspan="2">domain_bounds[1]:</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">vector&lt;ClosedInterval&gt; with &gt;= num_hyperparameters elements specifying
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><tt class="docutils literal"><span class="pre">std::vector&lt;ClosedInterval&gt;</span></tt> with <tt class="docutils literal"><span class="pre">&gt;=</span> <span class="pre">num_hyperparameters</span></tt> elements specifying
 the boundaries of a n_hyper-dimensional tensor-product domain
 Specify in LOG-10 SPACE!</td>
 </tr>
 <tr class="field-odd field"><th class="field-name" colspan="2">initial_guesses[1]:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">vector&lt;double&gt; with &gt;= num_hyperparameters*num_multistarts elements.
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><tt class="docutils literal"><span class="pre">std::vector&lt;double&gt;</span></tt> with <tt class="docutils literal"><span class="pre">&gt;=</span> <span class="pre">num_hyperparameters*num_multistarts</span></tt> elements.
 will be overwritten; ordered data[num_hyperparameters][num_multistarts]</td>
 </tr>
 </tbody>
@@ -524,9 +534,9 @@ will be overwritten; ordered data[num_hyperparameters][num_multistarts]</td>
 </dl>
  </p>
 </div></blockquote>
-<p><span class="target" id="project0namespaceoptimal__learning_1a326301932f7208892ca866340c46dd1c"></span><div class="line-block">
+<p><span class="target" id="project0namespaceoptimal__learning_1a55fefa6c099c4acb060c2f6d55e7fdd5"></span><div class="line-block">
 <div class="line">template &lt; typename LogLikelihoodEvaluator &gt;</div>
-<div class="line"><a class="reference internal" href="gpp_common.html#project0gpp__common_8hpp_1a43aad231fa6009d48201a76fd7dfb6dc"><em>OL_NONNULL_POINTERS</em></a>  void <strong>InitializeBestKnownPoint</strong>(const LogLikelihoodEvaluator &amp; log_likelihood_evaluator, double const *restrict initial_guesses, int num_hyperparameters, int num_multistarts, bool check_all_points, typename LogLikelihoodEvaluator::StateType * log_likelihood_state, <a class="reference internal" href="gpp_optimization.html#project0structoptimal__learning_1_1_optimization_i_o_container"><em>OptimizationIOContainer</em></a>  * io_container)</div>
+<div class="line"><a class="reference internal" href="gpp_common.html#project0gpp__common_8hpp_1a43aad231fa6009d48201a76fd7dfb6dc"><em>OL_NONNULL_POINTERS</em></a>  void <strong>InitializeBestKnownPoint</strong>(const LogLikelihoodEvaluator &amp; log_likelihood_evaluator, double const *restrict initial_guesses, int num_hyperparameters, int num_multistarts, typename LogLikelihoodEvaluator::StateType * log_likelihood_state, <a class="reference internal" href="gpp_optimization.html#project0structoptimal__learning_1_1_optimization_i_o_container"><em>OptimizationIOContainer</em></a>  * io_container)</div>
 </div>
 </p>
 <blockquote>
@@ -551,14 +561,11 @@ will be overwritten; ordered data[num_hyperparameters][num_multistarts]</td>
 <tr class="field-even field"><th class="field-name" colspan="2">num_multistarts:</th></tr>
 <tr class="field-even field"><td>&nbsp;</td><td class="field-body">number of random points to draw</td>
 </tr>
-<tr class="field-odd field"><th class="field-name" colspan="2">check_all_points:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">true to select the initial_guess with the best log_likelihood; false to select any initial_guess</td>
+<tr class="field-odd field"><th class="field-name" colspan="2">log_likelihood_state[1]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">properly constructed/configured LogLikelihoodEvaluator::State object</td>
 </tr>
-<tr class="field-even field"><th class="field-name" colspan="2">log_likelihood_state[1]:</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">properly constructed/configured LogLikelihoodEvaluator::State object</td>
-</tr>
-<tr class="field-odd field"><th class="field-name" colspan="2">io_container[1]:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">properly constructed OptimizationIOContainer object</td>
+<tr class="field-even field"><th class="field-name" colspan="2">io_container[1]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">properly constructed OptimizationIOContainer object</td>
 </tr>
 </tbody>
 </table>
@@ -750,8 +757,10 @@ Generally, calling that function should be preferred.  This is meant for:</p>
 <li>easier testing</li>
 <li>if you really know what you&#8217;re doing</li>
 </ol>
-<p><tt class="docutils literal"><span class="pre">gamma</span> <span class="pre">=</span> <span class="pre">1.01,</span> <span class="pre">time_factor</span> <span class="pre">=</span> <span class="pre">1.0e-3</span></tt> should lead to good robustness at reasonable speed.  This should be a fairly safe default.
-<tt class="docutils literal"><span class="pre">gamma</span> <span class="pre">=</span> <span class="pre">1.05,</span> <span class="pre">time_factor</span> <span class="pre">=</span> <span class="pre">1.0e-1</span></tt> will be several times faster but not as robust.</p>
+<div class="line-block">
+<div class="line"><tt class="docutils literal"><span class="pre">gamma</span> <span class="pre">=</span> <span class="pre">1.01,</span> <span class="pre">time_factor</span> <span class="pre">=</span> <span class="pre">1.0e-3</span></tt> should lead to good robustness at reasonable speed.  This should be a fairly safe default.</div>
+<div class="line"><tt class="docutils literal"><span class="pre">gamma</span> <span class="pre">=</span> <span class="pre">1.05,</span> <span class="pre">time_factor</span> <span class="pre">=</span> <span class="pre">1.0e-1</span></tt> will be several times faster but not as robust.</div>
+</div>
 <p>Let <tt class="docutils literal"><span class="pre">n_hyper</span> <span class="pre">=</span> <span class="pre">covariance.GetNumberOfHyperparameters();</span></tt></p>
 <dl class="docutils">
 <dt><strong>Parameters</strong>:</dt>
@@ -802,10 +811,12 @@ an optimization run from each guess.</p>
 This is the primary endpoint for hyperparameter optimization using Newton&#8217;s method.
 It constructs the required state objects, builds a NewtonOptimizer object, and wraps a series of calls:</p>
 <ul class="simple">
-<li>The heart of multistarting is in MultistartOptimizer&lt;...&gt;::MultistartOptimize&lt;...&gt;(...) (in gpp_optimization.hpp).
-* The heart of Newton is in NewtonOptimization() (in gpp_optimization.hpp).
-* Log likelihood is computed in ComputeLogLikelihood(), its gradient in ComputeGradLogLikelihood(), and its hessian in
-* ComputeHessianLogLikelihood(), which must be member functions of the LogLikelihoodEvaluator template parameter.</li>
+<li>The heart of multistarting is in MultistartOptimizer&lt;...&gt;::MultistartOptimize&lt;...&gt;(...) (in gpp_optimization.hpp).<ul>
+<li>The heart of Newton is in NewtonOptimization() (in gpp_optimization.hpp).</li>
+<li>Log likelihood is computed in ComputeLogLikelihood(), its gradient in ComputeGradLogLikelihood(), and its hessian in</li>
+<li>ComputeHessianLogLikelihood(), which must be member functions of the LogLikelihoodEvaluator template parameter.</li>
+</ul>
+</li>
 </ul>
 <p>Currently, during optimization, we recommend that the coordinates of the initial guesses not differ from the
 coordinates of the optima by more than about 1 order of magnitude. This is a very (VERY!) rough guideline for
@@ -871,9 +882,9 @@ max_num_threads (num cpu cores), schedule type (omp_sched_dynamic), chunk_size (
 </dl>
  </p>
 </div></blockquote>
-<p><span class="target" id="project0namespaceoptimal__learning_1af667d0e9eb0e8a58ea327447c200aa76"></span><div class="line-block">
+<p><span class="target" id="project0namespaceoptimal__learning_1a71447e9e4f689c6a4a4ddd283431d531"></span><div class="line-block">
 <div class="line">template &lt; typename LogLikelihoodEvaluator, typename DomainType &gt;</div>
-<div class="line">void <strong>EvaluateLogLikelihoodAtPointList</strong>(const LogLikelihoodEvaluator &amp; log_likelihood_evaluator, const  <a class="reference internal" href="gpp_covariance.html#project0classoptimal__learning_1_1_covariance_interface"><em>CovarianceInterface</em></a>  &amp; covariance, const DomainType &amp; domain_linearspace, const  <a class="reference internal" href="gpp_optimization.html#project0structoptimal__learning_1_1_thread_schedule"><em>ThreadSchedule</em></a>  &amp; thread_schedule, double const *restrict initial_guesses, int num_multistarts, double *restrict function_values, double *restrict next_hyperparameters)</div>
+<div class="line">void <strong>EvaluateLogLikelihoodAtPointList</strong>(const LogLikelihoodEvaluator &amp; log_likelihood_evaluator, const  <a class="reference internal" href="gpp_covariance.html#project0classoptimal__learning_1_1_covariance_interface"><em>CovarianceInterface</em></a>  &amp; covariance, const DomainType &amp; domain_linearspace, const  <a class="reference internal" href="gpp_optimization.html#project0structoptimal__learning_1_1_thread_schedule"><em>ThreadSchedule</em></a>  &amp; thread_schedule, double const *restrict initial_guesses, int num_multistarts, bool *restrict found_flag, double *restrict function_values, double *restrict next_hyperparameters)</div>
 </div>
 </p>
 <blockquote>
@@ -917,11 +928,13 @@ max_num_threads (num cpu cores), schedule type (omp_sched_guided), chunk_size (0
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">function_values[num_multistarts]:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">log likelihood evaluated at each point of initial_guesses, in the same order as initial_guesses; never dereferenced if nullptr</td>
+<tr class="field-odd field"><th class="field-name">found_flag[1]:</th><td class="field-body">true if next_hyperparameters corresponds to a finite log likelihood</td>
 </tr>
-<tr class="field-even field"><th class="field-name" colspan="2">next_hyperparameters[n_hyper]:</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">the new hyperparameters found by &#8220;dumb&#8221; search</td>
+<tr class="field-even field"><th class="field-name" colspan="2">function_values[num_multistarts]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">log likelihood evaluated at each point of initial_guesses, in the same order as initial_guesses; never dereferenced if nullptr</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">next_hyperparameters[n_hyper]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">the new hyperparameters found by &#8220;dumb&#8221; search</td>
 </tr>
 </tbody>
 </table>
@@ -929,9 +942,9 @@ max_num_threads (num cpu cores), schedule type (omp_sched_guided), chunk_size (0
 </dl>
  </p>
 </div></blockquote>
-<p><span class="target" id="project0namespaceoptimal__learning_1ab3cc02eb9c7d39abe1e180d57c8d0106"></span><div class="line-block">
+<p><span class="target" id="project0namespaceoptimal__learning_1abdb48cb92bbfb51fb2799d7ba55bc82c"></span><div class="line-block">
 <div class="line">template &lt; typename LogLikelihoodEvaluator &gt;</div>
-<div class="line"><a class="reference internal" href="gpp_common.html#project0gpp__common_8hpp_1a43aad231fa6009d48201a76fd7dfb6dc"><em>OL_NONNULL_POINTERS</em></a>  void <strong>LatinHypercubeSearchHyperparameterOptimization</strong>(const LogLikelihoodEvaluator &amp; log_likelihood_evaluator, const  <a class="reference internal" href="gpp_covariance.html#project0classoptimal__learning_1_1_covariance_interface"><em>CovarianceInterface</em></a>  &amp; covariance, <a class="reference internal" href="gpp_geometry.html#project0structoptimal__learning_1_1_closed_interval"><em>ClosedInterval</em></a>  const *restrict domain, const  <a class="reference internal" href="gpp_optimization.html#project0structoptimal__learning_1_1_thread_schedule"><em>ThreadSchedule</em></a>  &amp; thread_schedule, int num_multistarts, <a class="reference internal" href="gpp_random.html#project0structoptimal__learning_1_1_uniform_random_generator"><em>UniformRandomGenerator</em></a>  * uniform_generator, double *restrict next_hyperparameters)</div>
+<div class="line"><a class="reference internal" href="gpp_common.html#project0gpp__common_8hpp_1a43aad231fa6009d48201a76fd7dfb6dc"><em>OL_NONNULL_POINTERS</em></a>  void <strong>LatinHypercubeSearchHyperparameterOptimization</strong>(const LogLikelihoodEvaluator &amp; log_likelihood_evaluator, const  <a class="reference internal" href="gpp_covariance.html#project0classoptimal__learning_1_1_covariance_interface"><em>CovarianceInterface</em></a>  &amp; covariance, <a class="reference internal" href="gpp_geometry.html#project0structoptimal__learning_1_1_closed_interval"><em>ClosedInterval</em></a>  const *restrict domain, const  <a class="reference internal" href="gpp_optimization.html#project0structoptimal__learning_1_1_thread_schedule"><em>ThreadSchedule</em></a>  &amp; thread_schedule, int num_multistarts, bool *restrict found_flag, <a class="reference internal" href="gpp_random.html#project0structoptimal__learning_1_1_uniform_random_generator"><em>UniformRandomGenerator</em></a>  * uniform_generator, double *restrict next_hyperparameters)</div>
 </div>
 </p>
 <blockquote>
@@ -981,11 +994,13 @@ max_num_threads (num cpu cores), schedule type (omp_sched_guided), chunk_size (0
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">uniform_generator[1]:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">UniformRandomGenerator object will have its state changed due to random draws</td>
+<tr class="field-odd field"><th class="field-name">found_flag[1]:</th><td class="field-body">true if next_hyperparameters corresponds to a finite log likelihood</td>
 </tr>
-<tr class="field-even field"><th class="field-name" colspan="2">next_hyperparameters[n_hyper]:</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">the new hyperparameters found by &#8220;dumb&#8221; search</td>
+<tr class="field-even field"><th class="field-name" colspan="2">uniform_generator[1]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">UniformRandomGenerator object will have its state changed due to random draws</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">next_hyperparameters[n_hyper]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">the new hyperparameters found by &#8220;dumb&#8221; search</td>
 </tr>
 </tbody>
 </table>
@@ -994,6 +1009,572 @@ max_num_threads (num cpu cores), schedule type (omp_sched_guided), chunk_size (0
  </p>
 </div></blockquote>
 </div></blockquote>
+<p><p id="project0classoptimal__learning_1_1_leave_one_out_log_likelihood_evaluator"><em>class</em> <strong>LeaveOneOutLogLikelihoodEvaluator</strong></p>
+<blockquote>
+<div><p></p>
+<p><p>This serves as a quick summary of Leave One Out Cross Validation (LOO-CV).  Please see the file comments here and
+in the corresponding .cpp file for further details.</p>
+<p>Class for computing the Leave-One-Out Cross Validation (LOO-CV) Log Pseudo-Likelihood.  Given a particular covariance
+function (including hyperparameters) and training data ((point, function value, measurement noise) tuples), the log
+LOO-CV pseudo-likelihood expresses how well the model explains itself.</p>
+<p>That is, cross validation involves splitting the training set into a sub-training set and a validation set.  Then we measure
+the log likelihood that a model built on the sub-training set could produce the values in the validation set.</p>
+<p>Leave-One-Out CV does this process <tt class="docutils literal"><span class="pre">|y|</span></tt> times: on the <tt class="docutils literal"><span class="pre">i</span></tt>-th run, the sub-training set is <tt class="docutils literal"><span class="pre">(X,</span> <span class="pre">y)</span></tt> with the <tt class="docutils literal"><span class="pre">i</span></tt>-th point removed
+and the validation set is the <tt class="docutils literal"><span class="pre">i</span></tt>-th point.  Then the predictive performance of each sub-model are aggregated into a
+psuedo-likelihood.</p>
+<p>This quantity primarily deals with the internal consistency of the model&#8211;how well it explains itself.  The LOO-CV
+likelihood gives an &#8220;estimate for the predictive probability, whether or not the assumptions of the model may be
+fulfilled.&#8221; It is a more frequentist view of model selection. (Rasmussen &amp; Williams p118)
+See Rasmussen &amp; Williams 5.3 and 5.4.2 for more details.</p>
+<p>As with the log marginal likelihood, we can use this quantity to measure the performance of our model.  We can also
+maximize it (via hyperparameter modifications or covariance function changes) to improve model performance.
+It has also been argued that LOO-CV is better at detecting model mis-specification (e.g., wrong covariance function)
+than log marginal measures (Rasmussen &amp; Williams p118).</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">These class comments are duplicated in Python: cpp_wrappers.log_likelihood.LeaveOneOutLogLikelihood</p>
+</div>
+ </p>
+<em>Public Type</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_leave_one_out_log_likelihood_evaluator_1a69d08f6cd0d790b95263a7cc2d1eac39"></span>typedef <a class="reference internal" href="#project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state"><em>LeaveOneOutLogLikelihoodState</em></a> <strong>StateType</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Public Functions</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_leave_one_out_log_likelihood_evaluator_1addaa2f9fb6b9caf6b4ac0fa07265b56a"></span><div class="line-block">
+<div class="line"> <strong>LeaveOneOutLogLikelihoodEvaluator</strong>(double const *restrict points_sampled_in, double const *restrict points_sampled_value_in, double const *restrict noise_variance_in, int dim_in, int num_sampled_in)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Constructs a LeaveOneOutLogLikelihoodEvaluator object.  All inputs are required; no default constructor nor copy/assignment are allowed.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">covariance:</th><td class="field-body">the CovarianceFunction object encoding assumptions about the GP&#8217;s behavior on our data</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">points_sampled[dim][num_sampled]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">points that have already been sampled</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">points_sampled_value[num_sampled]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">values of the already-sampled points</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">noise_variance[num_sampled]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">the <tt class="docutils literal"><span class="pre">\sigma_n^2</span></tt> (noise variance) associated w/observation, points_sampled_value</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">dim:</th><td class="field-body">the spatial dimension of a point (i.e., number of independent params in experiment)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">num_sampled:</th><td class="field-body">number of already-sampled points</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_leave_one_out_log_likelihood_evaluator_1a1c8b50fa8f3a356b5e581310e2601c78"></span><div class="line-block">
+<div class="line">int <strong>dim</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_leave_one_out_log_likelihood_evaluator_1af2666d5ea0723d4f9ce9e0385394d2e4"></span><div class="line-block">
+<div class="line">int <strong>num_sampled</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_leave_one_out_log_likelihood_evaluator_1a2f2446dd298491074f4f23c4693efc20"></span><div class="line-block">
+<div class="line">double <strong>ComputeObjectiveFunction</strong>(<a class="reference internal" href="#project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state"><em>StateType</em></a>  * log_likelihood_state)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Wrapper for ComputeLogLikelihood(); see that function for details.</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_leave_one_out_log_likelihood_evaluator_1aae61041eab9e9a9c3a9643f5104734b1"></span><div class="line-block">
+<div class="line">void <strong>ComputeGradObjectiveFunction</strong>(<a class="reference internal" href="#project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state"><em>StateType</em></a>  * log_likelihood_state, double *restrict grad_loo)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Wrapper for ComputeGradLogLikelihood(); see that function for details.</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_leave_one_out_log_likelihood_evaluator_1a2fca431f169e1b0d82a8e3cf3165921a"></span><div class="line-block">
+<div class="line">void <strong>ComputeHessianObjectiveFunction</strong>(<a class="reference internal" href="#project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state"><em>StateType</em></a>  * log_likelihood_state, double *restrict hessian_loo)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Wrapper for ComputeHessianLogLikelihood(); see that function for details.</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_leave_one_out_log_likelihood_evaluator_1a8021ff21476192431c06dfbf1d168481"></span><div class="line-block">
+<div class="line">void <strong>FillLogLikelihoodState</strong>(<a class="reference internal" href="#project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state"><em>StateType</em></a>  * log_likelihood_state)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Sets up the LeaveOneOutLogLikelihoodState object so that it can be used to compute log marginal and its gradients.
+ASSUMES all needed space is ALREADY ALLOCATED.</p>
+<p>This function should not be called directly; instead use LeaveOneOutLogLikelihoodState::SetupState.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">log_likelihood_state[1]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">constructed state object with appropriate sized allocations</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Outputs</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">log_likelihood_state[1]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">fully configured state object, ready for use by this class&#8217;s member functions</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_leave_one_out_log_likelihood_evaluator_1ae2de1ae883552de9b0741fc59af21be5"></span><div class="line-block">
+<div class="line">double <strong>ComputeLogLikelihood</strong>(const  <a class="reference internal" href="#project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state"><em>StateType</em></a>  &amp; log_likelihood_state)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p><p>Computes the log LOO-CV pseudo-likelihood
+That is, split the training data <tt class="docutils literal"><span class="pre">(X,</span> <span class="pre">y)</span></tt> into <tt class="docutils literal"><span class="pre">|y|</span></tt> training set groups, where in the i-th group, the validation set is
+the <tt class="docutils literal"><span class="pre">i</span></tt>-th point of <tt class="docutils literal"><span class="pre">(X,</span> <span class="pre">y)</span></tt> and the training set is <tt class="docutils literal"><span class="pre">(X,</span> <span class="pre">y)</span></tt> with the <tt class="docutils literal"><span class="pre">i</span></tt>-th point removed.
+Then this likelihood measures the aggregate performance of the ability of a model built on each &#8220;leave one out&#8221;
+training set to predict the corresponding validation set.  So in some sense it is a measure of model consitency, ensuring
+that we do not perform well on a few points while doing horribly on the others.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">log_likelihood_state:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">properly configured state oboject</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd>:natural log of the leave one out cross validation pseudo-likelihood of the GP model</dd>
+</dl>
+</p>
+<p><p>Computes the Leave-One-Out Cross Validation log pseudo-likelihood.</p>
+<p>Let <tt class="docutils literal"><span class="pre">\log</span> <span class="pre">p(y_i</span> <span class="pre">|</span> <span class="pre">X_{-i},</span> <span class="pre">y_{-i},</span> <span class="pre">\theta)</span> <span class="pre">=</span> <span class="pre">-0.5\log(\sigma_i^2)</span> <span class="pre">-</span> <span class="pre">0.5*(y_i</span> <span class="pre">-</span> <span class="pre">\mu_i)^2/\sigma_i^2</span> <span class="pre">-</span> <span class="pre">0.5\log(2\pi)</span></tt></p>
+<p>Then we compute:</p>
+<p><tt class="docutils literal"><span class="pre">L_{LOO}(X,</span> <span class="pre">y,</span> <span class="pre">\theta)</span> <span class="pre">=</span> <span class="pre">\sum_{i</span> <span class="pre">=</span> <span class="pre">1}^n</span> <span class="pre">\log</span> <span class="pre">p(y_i</span> <span class="pre">|</span> <span class="pre">X_{-i},</span> <span class="pre">y_{-i}.</span></tt></p>
+<p>where <tt class="docutils literal"><span class="pre">X_{-i}</span></tt> and <tt class="docutils literal"><span class="pre">y_{-i}</span></tt> are the training data with the <tt class="docutils literal"><span class="pre">i</span></tt>-th point removed.  Then <tt class="docutils literal"><span class="pre">X_i</span></tt> is taken as the point to sample.
+<tt class="docutils literal"><span class="pre">\sigma_i^2</span></tt> and <tt class="docutils literal"><span class="pre">\mu_i</span></tt> are the GP (predicted) variance/mean at the point to sample.</p>
+<p>This function currently uses LeaveOneOutCoreWithMatrixInverse() to compute <tt class="docutils literal"><span class="pre">\sigma_i^2</span></tt> and <tt class="docutils literal"><span class="pre">\mu_i</span></tt>, which is potentially
+ill-conditioned.  This has not proven to be an issue in testing, but _accurate() is preferred when loss of prescision is
+suspected.</p>
+<p>See Rasmussen &amp; Williams 5.4.2 for more details.</p>
+ </p>
+</p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_leave_one_out_log_likelihood_evaluator_1ab1519614e0c16f4d47b4557f1932cf87"></span><div class="line-block">
+<div class="line">void <strong>ComputeGradLogLikelihood</strong>(<a class="reference internal" href="#project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state"><em>StateType</em></a>  * log_likelihood_state, double *restrict grad_loo)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p><p>Computes the (partial) derivatives of the leave-one-out cross validation log pseudo-likelihood with respect to each hyperparameter of our covariance function.</p>
+<p>Let <tt class="docutils literal"><span class="pre">n_hyper</span> <span class="pre">=</span> <span class="pre">covariance_ptr-&gt;GetNumberOfHyperparameters();</span></tt></p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">log_likelihood_state[1]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">properly configured state oboject</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Outputs</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">log_likelihood_state[1]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">state with temporary storage modified</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">grad_loo[n_hyper]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">gradient of leave one out cross validation log likelihood wrt each hyperparameter of covariance</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</p>
+<p><p>Computes the gradients (wrt hyperparameters, <tt class="docutils literal"><span class="pre">\theta</span></tt>) of the Leave-One-Out Cross Validation log pseudo-likelihood, <tt class="docutils literal"><span class="pre">L_{LOO}</span></tt>.</p>
+<p>See function definition get_leave_one_out_likelihood() function defn docs for definition of <tt class="docutils literal"><span class="pre">L_{LOO}</span></tt>.  We compute:</p>
+<div class="highlight-python"><div class="highlight"><pre>\pderiv{L_{LOO}}{\theta_j} = \sum_{i = 1}^n \frac{1}{(K^-1)_ii} *
+             \left(\alpha_i[Z_j\alpha]_i - 0.5(1 + \frac{\alpha_i^2}{(K^-1)_ii})[Z_j K^-1]_ii \right)
+</pre></div>
+</div>
+<p>where <tt class="docutils literal"><span class="pre">\alpha</span> <span class="pre">=</span> <span class="pre">K^-1</span> <span class="pre">*</span> <span class="pre">y</span></tt>, and <tt class="docutils literal"><span class="pre">Z_j</span> <span class="pre">=</span> <span class="pre">K^-1</span> <span class="pre">*</span> <span class="pre">\pderiv{K}{\theta_j}</span></tt>.</p>
+<p>Note that formation of <tt class="docutils literal"><span class="pre">[Z_j</span> <span class="pre">*</span> <span class="pre">K^-1]</span> <span class="pre">=</span> <span class="pre">K^-1</span> <span class="pre">*</span> <span class="pre">\pderiv{K}{\theta_j}</span> <span class="pre">*</span> <span class="pre">K^-1</span></tt> requires some care.  We prefer not to use the explicit
+inverse whenever possible.  But we are readily able to compute <tt class="docutils literal"><span class="pre">A^-1</span> <span class="pre">*</span> <span class="pre">B</span></tt> via &#8220;backsolve&#8221; (of a factored <tt class="docutils literal"><span class="pre">A</span></tt>), so we do:</p>
+<div class="line-block">
+<div class="line"><tt class="docutils literal"><span class="pre">A</span> <span class="pre">:=</span> <span class="pre">K^-1</span> <span class="pre">*</span> <span class="pre">Z^T</span></tt></div>
+<div class="line"><tt class="docutils literal"><span class="pre">result</span> <span class="pre">:=</span> <span class="pre">A^T</span></tt> gives us the desired <tt class="docutils literal"><span class="pre">[Z_j</span> <span class="pre">*</span> <span class="pre">K^-1]</span></tt> without forming <tt class="docutils literal"><span class="pre">K^-1</span></tt>.</div>
+</div>
+<p>Note that this formulation uses <tt class="docutils literal"><span class="pre">(K^-1)_ii</span></tt> directly to avoid the (very high) expense of evaluating the GP mean, variance n times.
+This is analogous to using LeaveOneOutCoreWithMatrixInverse() over LeaveOneOutCoreAccurate(), which is an assumption
+that seems reasonable now but may need revisiting later.</p>
+<p>See Rasmussen &amp; Williams 5.4.2 for details.</p>
+ </p>
+</p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_leave_one_out_log_likelihood_evaluator_1acdaefda72f366a5ae444fc7b49f3fceb"></span><div class="line-block">
+<div class="line">void <strong>ComputeHessianLogLikelihood</strong>(<a class="reference internal" href="#project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state"><em>StateType</em></a>  * log_likelihood_state, double *restrict hessian_loo)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>NOT IMPLEMENTED.
+Kludge to make it so that I can instantiate MultistartNewtonOptimization&lt;&gt; with LeaveOneOutLogLikelihoodEvaluator in
+gpp_python.cpp. It is an error to select NewtonOptimization with LeaveOneOutLogLikelihoodEvaluator, but I can&#8217;t find a nicer
+way to generate this error while still being able to treat MultistartNewtonOptimization&lt;&gt; generically.</p>
+<p><p>NOT IMPLEMENTED
+Kludge to make it so that I can use general template code w/o special casing LeaveOneOutLogLikelihoodEvaluator.</p>
+ </p>
+</p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_leave_one_out_log_likelihood_evaluator_1a77b0c1778262caa8cdd90715d144376c"></span><div class="line-block">
+<div class="line"> <strong>OL_DISALLOW_DEFAULT_AND_COPY_AND_ASSIGN</strong>(<a class="reference internal" href="#project0classoptimal__learning_1_1_leave_one_out_log_likelihood_evaluator"><em>LeaveOneOutLogLikelihoodEvaluator</em></a>)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Public Static Attributes</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_leave_one_out_log_likelihood_evaluator_1a902f9117f3b6b36ac8bbe7a96ea8704b"></span>constexpr char const * <strong>kName</strong></p>
+<blockquote>
+<div><p>string name of this log likelihood evaluator for logging </p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Private Functions</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_leave_one_out_log_likelihood_evaluator_1aca8f71a03e1de155da7138e5ca50b68c"></span><div class="line-block">
+<div class="line">void <strong>BuildHyperparameterGradCovarianceMatrix</strong>(<a class="reference internal" href="#project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state"><em>StateType</em></a>  * log_likelihood_state)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Constructs the tensor of gradients (wrt hyperparameters) of the covariance function at all pairs of <tt class="docutils literal"><span class="pre">points_sampled_</span></tt>.</p>
+<p>The result is stored in <tt class="docutils literal"><span class="pre">state-&gt;grad_hyperparameter_cov_matrix</span></tt>.  So we are computing <tt class="docutils literal"><span class="pre">\pderiv{cov(X_i,</span> <span class="pre">X_j)}{\theta_k</span></tt>}.  These
+data are ordered as: <tt class="docutils literal"><span class="pre">grad_hyperparameter_cov_matrix[i][j][k]</span></tt> (i.e., <tt class="docutils literal"><span class="pre">num_hyperparmeters</span></tt> matrices of size <tt class="docutils literal"><span class="pre">Square(num_sampled_)</span></tt>).</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><tt class="docutils literal"><span class="pre">grad_hyperparameter_cov_matrix[i][j][k]</span> <span class="pre">==</span> <span class="pre">grad_hyperparameter_cov_matrix[j][i][k]</span></tt></p>
+</div>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">log_likelihood_state[1]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">properly configured state object</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Outputs</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">log_likelihood_state[1]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">state with grad_hyperparameter_cov_matrix filled</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+</div></blockquote>
+<em>Private Members</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_leave_one_out_log_likelihood_evaluator_1ac691d56873cab9283f971db030f32e17"></span>const int <strong>dim_</strong></p>
+<blockquote>
+<div><p>spatial dimension (e.g., entries per point of points_sampled) </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_leave_one_out_log_likelihood_evaluator_1aa16cf62568f81d28121b424781c3d86b"></span>int <strong>num_sampled_</strong></p>
+<blockquote>
+<div><p>number of points in points_sampled </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_leave_one_out_log_likelihood_evaluator_1a0f0a66b84e6a0018053a5b327573ff04"></span>std::vector&lt; double &gt; <strong>points_sampled_</strong></p>
+<blockquote>
+<div><p>coordinates of already-sampled points, <tt class="docutils literal"><span class="pre">X</span></tt> </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_leave_one_out_log_likelihood_evaluator_1adc9a594fe6b2f1d37985120dd73b9c71"></span>std::vector&lt; double &gt; <strong>points_sampled_value_</strong></p>
+<blockquote>
+<div><p>function values at points_sampled, <tt class="docutils literal"><span class="pre">y</span></tt> </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_leave_one_out_log_likelihood_evaluator_1ac2ba6986a10a87f019557410c374777a"></span>std::vector&lt; double &gt; <strong>noise_variance_</strong></p>
+<blockquote>
+<div><p><tt class="docutils literal"><span class="pre">\sigma_n^2</span></tt>, the noise variance </p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</p>
+<p><p id="project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state"><em>class</em> <strong>LeaveOneOutLogLikelihoodState</strong></p>
+<blockquote>
+<div><p></p>
+<p><p>State object for LeaveOneOutLogLikelihoodEvaluator.  This object tracks the covariance object as well as derived quantities
+that (along with the training points/values in the Evaluator class) fully specify the log marginal likelihood.  Since this
+is used to optimize the log marginal likelihood, the covariance&#8217;s hyperparameters are variable.</p>
+<p>See general comments on State structs in gpp_common.hpp&#8217;s header docs.</p>
+ </p>
+<em>Public Type</em><blockquote>
+<div><p><span class="target" id="project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state_1ada55be15f96b2bf4492510baab8487ca"></span>typedef <a class="reference internal" href="#project0classoptimal__learning_1_1_leave_one_out_log_likelihood_evaluator"><em>LeaveOneOutLogLikelihoodEvaluator</em></a> <strong>EvaluatorType</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Public Functions</em><blockquote>
+<div><p><span class="target" id="project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state_1a3ceed85ef0b47498a06027f8472fac4d"></span><div class="line-block">
+<div class="line"> <strong>LeaveOneOutLogLikelihoodState</strong>(const  <a class="reference internal" href="#project0classoptimal__learning_1_1_leave_one_out_log_likelihood_evaluator"><em>EvaluatorType</em></a>  &amp; log_likelihood_eval, const  <a class="reference internal" href="gpp_covariance.html#project0classoptimal__learning_1_1_covariance_interface"><em>CovarianceInterface</em></a>  &amp; covariance_in)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Constructs a LeaveOneOutLogLikelihoodState object with a specified covariance object (in particular, new hyperparameters).
+Ensures all state variables &amp; temporaries are properly sized.
+Properly sets all state variables so that the Evaluator can be used to compute log marginal likelihood, gradients, etc.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This object&#8217;s state is INVALIDATED if the log_likelihood_eval used in construction is mutated!
+SetupState() should be called again in such a situation.</p>
+</div>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">log_likelihood_eval:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">LogMarginalLikelihoodEvaluator object that this state is being used with</td>
+</tr>
+<tr class="field-even field"><th class="field-name">covariance_in:</th><td class="field-body">the CovarianceFunction object encoding assumptions about the GP&#8217;s behavior on our data</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state_1afc17ee4cc7a15a4e87920dbf3ac95a79"></span><div class="line-block">
+<div class="line"> <strong>LeaveOneOutLogLikelihoodState</strong>(<a class="reference internal" href="#project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state"><em>LeaveOneOutLogLikelihoodState</em></a>  &amp;&amp; other)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state_1ae255455b59659ba14a8e4e45b0984ade"></span><div class="line-block">
+<div class="line">int <strong>GetProblemSize</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state_1a85aa030333748c492e19d9fd22eead4b"></span><div class="line-block">
+<div class="line">void <strong>SetCurrentPoint</strong>(const  <a class="reference internal" href="#project0classoptimal__learning_1_1_leave_one_out_log_likelihood_evaluator"><em>EvaluatorType</em></a>  &amp; log_likelihood_eval, double const *restrict hyperparameters)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state_1a3a36507b3513bc4b064c7a98f8003020"></span><div class="line-block">
+<div class="line">void <strong>GetCurrentPoint</strong>(double *restrict hyperparameters)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state_1a1e1df00226bbb32e0e195ebf38fded67"></span><div class="line-block">
+<div class="line">void <strong>GetHyperparameters</strong>(double *restrict hyperparameters)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Get hyperparameters of underlying covariance function.</p>
+<dl class="docutils">
+<dt><strong>Outputs</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">hyperparameters[num_hyperparameters]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">covariance&#8217;s hyperparameters</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state_1ad2672ab3a98d76ca646ff51e2255125c"></span><div class="line-block">
+<div class="line">void <strong>SetHyperparameters</strong>(const  <a class="reference internal" href="#project0classoptimal__learning_1_1_leave_one_out_log_likelihood_evaluator"><em>EvaluatorType</em></a>  &amp; log_likelihood_eval, double const *restrict hyperparameters)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Change the hyperparameters of the underlying covariance function.
+Update the state&#8217;s derived quantities to be consistent with the new hyperparameters.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">log_likelihood_eval:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">LeaveOneOutLogLikelihoodEvaluator object that this state is being used with</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">hyperparameters[num_hyperparameters]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">hyperparameters to change to</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state_1a12ceb078800ba63bd1cea2be0df39747"></span><div class="line-block">
+<div class="line">void <strong>SetupState</strong>(const  <a class="reference internal" href="#project0classoptimal__learning_1_1_leave_one_out_log_likelihood_evaluator"><em>EvaluatorType</em></a>  &amp; log_likelihood_eval, double const *restrict hyperparameters)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Configures this state object with new hyperparameters.
+Ensures all state variables &amp; temporaries are properly sized.
+Properly sets all state variables for log likelihood (+ gradient) evaluation.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This object&#8217;s state is INVALIDATED if the log_likelihood used in SetupState is mutated!
+SetupState() should be called again in such a situation.</p>
+</div>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">log_likelihood_eval:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">log likelihood evaluator object that describes the training/already-measured data</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">hyperparameters[num_hyperparameters]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">hyperparameters to change to</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state_1a1d9c223a828ac184e9a7447b2f377759"></span><div class="line-block">
+<div class="line"> <strong>OL_DISALLOW_DEFAULT_AND_COPY_AND_ASSIGN</strong>(<a class="reference internal" href="#project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state"><em>LeaveOneOutLogLikelihoodState</em></a>)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Public Members</em><blockquote>
+<div><p><span class="target" id="project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state_1a0df1f47534ecaeddf57540e376284aaa"></span>const int <strong>dim</strong></p>
+<blockquote>
+<div><p>spatial dimension (e.g., entries per point of points_sampled) </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state_1a3baafaf06f9fdc5fee7373b8105ce808"></span>int <strong>num_sampled</strong></p>
+<blockquote>
+<div><p>number of points in points_sampled </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state_1a486a30f23a841d78ca416c3c8104e10f"></span>int <strong>num_hyperparameters</strong></p>
+<blockquote>
+<div><p>number of hyperparameters of covariance; i.e., covariance_ptr-&gt;GetNumberOfHyperparameters() </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state_1ac6f099fffb77406de55de41fbae4056a"></span>std::unique_ptr&lt;  <a class="reference internal" href="gpp_covariance.html#project0classoptimal__learning_1_1_covariance_interface"><em>CovarianceInterface</em></a>  &gt; <strong>covariance_ptr</strong></p>
+<blockquote>
+<div><p>covariance class (for computing covariance and its gradients) </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state_1ac75d90cb4edc345b7c53f6d536de1689"></span>std::vector&lt; double &gt; <strong>K_chol</strong></p>
+<blockquote>
+<div><p>cholesky factorization of <tt class="docutils literal"><span class="pre">K</span></tt> </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state_1a0eabfdbcd0c707a2f7c6bffb3af45f8e"></span>std::vector&lt; double &gt; <strong>K_inv</strong></p>
+<blockquote>
+<div><p><tt class="docutils literal"><span class="pre">K^-1</span></tt> </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state_1a1e2b3295ad8598f1cffa94a5b1740bd6"></span>std::vector&lt; double &gt; <strong>K_inv_y</strong></p>
+<blockquote>
+<div><p><tt class="docutils literal"><span class="pre">K^-1</span> <span class="pre">*</span> <span class="pre">y</span></tt>; computed WITHOUT forming <tt class="docutils literal"><span class="pre">K^-1</span></tt> </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state_1a765ae0219e1a3163fa20db5f22b2c61e"></span>std::vector&lt; double &gt; <strong>grad_hyperparameter_cov_matrix</strong></p>
+<blockquote>
+<div><p><tt class="docutils literal"><span class="pre">\pderiv{K_{ij}}{\theta_k}</span></tt>; temporary b/c it is overwritten with each computation of GradLikelihood </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state_1a69a93cea73cc6484bd3ebc8e7f0298cc"></span>std::vector&lt; double &gt; <strong>Z_alpha</strong></p>
+<blockquote>
+<div><p>temporary: <tt class="docutils literal"><span class="pre">K^-1</span> <span class="pre">*</span> <span class="pre">grad_hyperparameter_cov_matrix</span> <span class="pre">*</span> <span class="pre">K^-1</span> <span class="pre">*</span> <span class="pre">y</span></tt> </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state_1af83b317e3b408c8685c3dfe9484f851e"></span>std::vector&lt; double &gt; <strong>Z_K_inv</strong></p>
+<blockquote>
+<div><p>temporary: <tt class="docutils literal"><span class="pre">K^-1</span> <span class="pre">*</span> <span class="pre">grad_hyperparameter_cov_matrix</span> <span class="pre">*</span> <span class="pre">K^-1</span></tt> </p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</p>
 <p><p id="project0classoptimal__learning_1_1_log_marginal_likelihood_evaluator"><em>class</em> <strong>LogMarginalLikelihoodEvaluator</strong></p>
 <blockquote>
 <div><p></p>
@@ -1165,18 +1746,18 @@ and hyperparameters (of the covariance function), <tt class="docutils literal"><
 <p class="first admonition-title">Note</p>
 <p class="last">These comments have been copied into the matching method of LogMarginalLikelihood in python_version/log_likelihood.py.</p>
 </div>
-<p><tt class="docutils literal"><span class="pre">log</span> <span class="pre">p(y</span> <span class="pre">|</span> <span class="pre">X,</span> <span class="pre">\theta)</span> <span class="pre">=</span> <span class="pre">-\frac{1}{2}</span> <span class="pre">*</span> <span class="pre">y^T</span> <span class="pre">*</span> <span class="pre">K^-1</span> <span class="pre">*</span> <span class="pre">y</span> <span class="pre">-</span> <span class="pre">\frac{1}{2}</span> <span class="pre">*</span> <span class="pre">\log(det(K))</span> <span class="pre">-</span> <span class="pre">\frac{n}{2}</span> <span class="pre">*</span> <span class="pre">\log(2*pi)</span></tt>
-where n is <tt class="docutils literal"><span class="pre">num_sampled</span></tt>, <tt class="docutils literal"><span class="pre">\theta</span></tt> are the hyperparameters, and <tt class="docutils literal"><span class="pre">\log</span></tt> is the natural logarithm.  In the following,</p>
+<p><tt class="docutils literal"><span class="pre">log</span> <span class="pre">p(y</span> <span class="pre">|</span> <span class="pre">X,</span> <span class="pre">\theta)</span> <span class="pre">=</span> <span class="pre">-\frac{1}{2}</span> <span class="pre">*</span> <span class="pre">y^T</span> <span class="pre">*</span> <span class="pre">K^-1</span> <span class="pre">*</span> <span class="pre">y</span> <span class="pre">-</span> <span class="pre">\frac{1}{2}</span> <span class="pre">*</span> <span class="pre">\log(det(K))</span> <span class="pre">-</span> <span class="pre">\frac{n}{2}</span> <span class="pre">*</span> <span class="pre">\log(2*pi)</span></tt></p>
+<p>where n is <tt class="docutils literal"><span class="pre">num_sampled</span></tt>, <tt class="docutils literal"><span class="pre">\theta</span></tt> are the hyperparameters, and <tt class="docutils literal"><span class="pre">\log</span></tt> is the natural logarithm.  In the following,</p>
 <ul class="simple">
 <li><tt class="docutils literal"><span class="pre">term1</span> <span class="pre">=</span> <span class="pre">-\frac{1}{2}</span> <span class="pre">*</span> <span class="pre">y^T</span> <span class="pre">*</span> <span class="pre">K^-1</span> <span class="pre">*</span> <span class="pre">y</span></tt></li>
 <li><tt class="docutils literal"><span class="pre">term2</span> <span class="pre">=</span> <span class="pre">-\frac{1}{2}</span> <span class="pre">*</span> <span class="pre">\log(det(K))</span></tt></li>
 <li><tt class="docutils literal"><span class="pre">term3</span> <span class="pre">=</span> <span class="pre">-\frac{n}{2}</span> <span class="pre">*</span> <span class="pre">\log(2*pi)</span></tt></li>
 </ul>
-<p>For an SPD matrix <tt class="docutils literal"><span class="pre">K</span> <span class="pre">=</span> <span class="pre">L</span> <span class="pre">*</span> <span class="pre">L^T</span></tt>,
-<tt class="docutils literal"><span class="pre">det(K)</span> <span class="pre">=</span> <span class="pre">\Pi_i</span> <span class="pre">L_ii^2</span></tt>
-We could compute this directly and then take a logarithm.  But we also know:
-<tt class="docutils literal"><span class="pre">\log(det(K))</span> <span class="pre">=</span> <span class="pre">2</span> <span class="pre">*</span> <span class="pre">\sum_i</span> <span class="pre">\log(L_ii)</span></tt>
-The latter method is (currently) preferred for computing <tt class="docutils literal"><span class="pre">\log(det(K))</span></tt> due to reduced chance for overflow
+<p>For an SPD matrix <tt class="docutils literal"><span class="pre">K</span> <span class="pre">=</span> <span class="pre">L</span> <span class="pre">*</span> <span class="pre">L^T</span></tt>,</p>
+<p><tt class="docutils literal"><span class="pre">det(K)</span> <span class="pre">=</span> <span class="pre">\Pi_i</span> <span class="pre">L_ii^2</span></tt></p>
+<p>We could compute this directly and then take a logarithm.  But we also know:</p>
+<p><tt class="docutils literal"><span class="pre">\log(det(K))</span> <span class="pre">=</span> <span class="pre">2</span> <span class="pre">*</span> <span class="pre">\sum_i</span> <span class="pre">\log(L_ii)</span></tt></p>
+<p>The latter method is (currently) preferred for computing <tt class="docutils literal"><span class="pre">\log(det(K))</span></tt> due to reduced chance for overflow
 and (possibly) better numerical conditioning.</p>
  </p>
 </p>
@@ -1256,12 +1837,14 @@ of the Hessian matrix.</p>
 </dd>
 </dl>
 </p>
-<p><p>Computes the Hessian matrix of the log (marginal) likelihood wrt the hyperparameters:
-<tt class="docutils literal"><span class="pre">\mixpderiv{log(p(y</span> <span class="pre">|</span> <span class="pre">X,</span> <span class="pre">\theta_k))}{\theta_i}{\theta_j}</span> <span class="pre">=</span></tt>
-``    (-alpha * pderiv{K}{theta_i} * K^-1 * pderiv{K}{theta_j} * alpha)``
-``  + (alpha * mixpderiv{K}{theta_i}{theta_j} * alpha)``
-``  - 0.5 * tr(-K^-1 * pderiv{K}{theta_i} * K^-1 * pderiv{K}{theta_j} + K^-1 * mixpderiv{K}{theta_i}{theta_j})``
-Note that as usual, <tt class="docutils literal"><span class="pre">K</span></tt> is the covariance matrix (bearing its own two indices, say <tt class="docutils literal"><span class="pre">K_{k,l}</span></tt>) which are omitted here.</p>
+<p><p>Computes the Hessian matrix of the log (marginal) likelihood wrt the hyperparameters:</p>
+<div class="highlight-python"><div class="highlight"><pre>\mixpderiv{log(p(y | X, \theta_k))}{\theta_i}{\theta_j} =
+    (-\alpha * \pderiv{K}{\theta_i} * K^-1 * \pderiv{K}{\theta_j} * \alpha)
+  + (\alpha * \mixpderiv{K}{\theta_i}{\theta_j} * \alpha)
+  - 0.5 * tr(-K^-1 * \pderiv{K}{\theta_i} * K^-1 * \pderiv{K}{\theta_j} + K^-1 * \mixpderiv{K}{\theta_i}{\theta_j})
+</pre></div>
+</div>
+<p>Note that as usual, <tt class="docutils literal"><span class="pre">K</span></tt> is the covariance matrix (bearing its own two indices, say <tt class="docutils literal"><span class="pre">K_{k,l}</span></tt>) which are omitted here.</p>
 <p>This expression arises from differentating each entry of the gradient (see function comments for
 LogMarginalLikelihoodEvaluator::ComputeGradLogLikelihood for expression) of the log marginal wrt each hyperparameter.</p>
 <p>We use the identity: <tt class="docutils literal"><span class="pre">\pderiv{K^-1}{X}</span> <span class="pre">=</span> <span class="pre">-K^-1</span> <span class="pre">*</span> <span class="pre">\pderiv{K}{X}</span> <span class="pre">*</span> <span class="pre">K^-1</span></tt>;
@@ -1277,6 +1860,13 @@ and the various symmetries of the gradient/hessians of K (see function declarati
 </p>
 <blockquote>
 <div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Public Static Attributes</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_log_marginal_likelihood_evaluator_1a17806073cf128e6698a8e8da2fb30bfd"></span>constexpr char const * <strong>kName</strong></p>
+<blockquote>
+<div><p>string name of this log likelihood evaluator for logging </p>
 <p></p>
 </div></blockquote>
 </div></blockquote>
@@ -1454,8 +2044,8 @@ SetupState() should be called again in such a situation.</p>
 <div><p></p>
 <p></p>
 </div></blockquote>
-<p><span class="target" id="project0structoptimal__learning_1_1_log_marginal_likelihood_state_1afe67b6ade8e61153f5a871d965f2b4ac"></span><div class="line-block">
-<div class="line">void <strong>UpdateCurrentPoint</strong>(const  <a class="reference internal" href="#project0classoptimal__learning_1_1_log_marginal_likelihood_evaluator"><em>EvaluatorType</em></a>  &amp; log_likelihood_eval, double const *restrict hyperparameters)</div>
+<p><span class="target" id="project0structoptimal__learning_1_1_log_marginal_likelihood_state_1a4eab52995c995819d7c7235c583cfe07"></span><div class="line-block">
+<div class="line">void <strong>SetCurrentPoint</strong>(const  <a class="reference internal" href="#project0classoptimal__learning_1_1_log_marginal_likelihood_evaluator"><em>EvaluatorType</em></a>  &amp; log_likelihood_eval, double const *restrict hyperparameters)</div>
 </div>
 </p>
 <blockquote>
@@ -1492,8 +2082,8 @@ SetupState() should be called again in such a situation.</p>
 </dl>
  </p>
 </div></blockquote>
-<p><span class="target" id="project0structoptimal__learning_1_1_log_marginal_likelihood_state_1a6b94077b99552675f7689eb563e91b11"></span><div class="line-block">
-<div class="line">void <strong>UpdateHyperparameters</strong>(const  <a class="reference internal" href="#project0classoptimal__learning_1_1_log_marginal_likelihood_evaluator"><em>EvaluatorType</em></a>  &amp; log_likelihood_eval, double const *restrict hyperparameters)</div>
+<p><span class="target" id="project0structoptimal__learning_1_1_log_marginal_likelihood_state_1a6de9aa192fa17bc2546526a06fc0df06"></span><div class="line-block">
+<div class="line">void <strong>SetHyperparameters</strong>(const  <a class="reference internal" href="#project0classoptimal__learning_1_1_log_marginal_likelihood_evaluator"><em>EvaluatorType</em></a>  &amp; log_likelihood_eval, double const *restrict hyperparameters)</div>
 </div>
 </p>
 <blockquote>
@@ -1603,561 +2193,6 @@ SetupState() should be called again in such a situation.</p>
 </div></blockquote>
 </div></blockquote>
 </p>
-<p><p id="project0classoptimal__learning_1_1_leave_one_out_log_likelihood_evaluator"><em>class</em> <strong>LeaveOneOutLogLikelihoodEvaluator</strong></p>
-<blockquote>
-<div><p></p>
-<p><p>This serves as a quick summary of Leave One Out Cross Validation (LOO-CV).  Please see the file comments here and
-in the corresponding .cpp file for further details.</p>
-<p>Class for computing the Leave-One-Out Cross Validation (LOO-CV) Log Pseudo-Likelihood.  Given a particular covariance
-function (including hyperparameters) and training data ((point, function value, measurement noise) tuples), the log
-LOO-CV pseudo-likelihood expresses how well the model explains itself.</p>
-<p>That is, cross validation involves splitting the training set into a sub-training set and a validation set.  Then we measure
-the log likelihood that a model built on the sub-training set could produce the values in the validation set.</p>
-<p>Leave-One-Out CV does this process <tt class="docutils literal"><span class="pre">|y|</span></tt> times: on the <tt class="docutils literal"><span class="pre">i</span></tt>-th run, the sub-training set is <tt class="docutils literal"><span class="pre">(X,</span> <span class="pre">y)</span></tt> with the <tt class="docutils literal"><span class="pre">i</span></tt>-th point removed
-and the validation set is the <tt class="docutils literal"><span class="pre">i</span></tt>-th point.  Then the predictive performance of each sub-model are aggregated into a
-psuedo-likelihood.</p>
-<p>This quantity primarily deals with the internal consistency of the model&#8211;how well it explains itself.  The LOO-CV
-likelihood gives an &#8220;estimate for the predictive probability, whether or not the assumptions of the model may be
-fulfilled.&#8221; It is a more frequentist view of model selection. (Rasmussen &amp; Williams p118)
-See Rasmussen &amp; Williams 5.3 and 5.4.2 for more details.</p>
-<p>As with the log marginal likelihood, we can use this quantity to measure the performance of our model.  We can also
-maximize it (via hyperparameter modifications or covariance function changes) to improve model performance.
-It has also been argued that LOO-CV is better at detecting model mis-specification (e.g., wrong covariance function)
-than log marginal measures (Rasmussen &amp; Williams p118).</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">These class comments are duplicated in Python: cpp_wrappers.log_likelihood.LeaveOneOutLogLikelihood</p>
-</div>
- </p>
-<em>Public Type</em><blockquote>
-<div><p><span class="target" id="project0classoptimal__learning_1_1_leave_one_out_log_likelihood_evaluator_1a69d08f6cd0d790b95263a7cc2d1eac39"></span>typedef <a class="reference internal" href="#project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state"><em>LeaveOneOutLogLikelihoodState</em></a> <strong>StateType</strong></p>
-<blockquote>
-<div><p></p>
-<p></p>
-</div></blockquote>
-</div></blockquote>
-<em>Public Functions</em><blockquote>
-<div><p><span class="target" id="project0classoptimal__learning_1_1_leave_one_out_log_likelihood_evaluator_1addaa2f9fb6b9caf6b4ac0fa07265b56a"></span><div class="line-block">
-<div class="line"> <strong>LeaveOneOutLogLikelihoodEvaluator</strong>(double const *restrict points_sampled_in, double const *restrict points_sampled_value_in, double const *restrict noise_variance_in, int dim_in, int num_sampled_in)</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p><p>Constructs a LeaveOneOutLogLikelihoodEvaluator object.  All inputs are required; no default constructor nor copy/assignment are allowed.</p>
-<dl class="docutils">
-<dt><strong>Parameters</strong>:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">covariance:</th><td class="field-body">the CovarianceFunction object encoding assumptions about the GP&#8217;s behavior on our data</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">points_sampled[dim][num_sampled]:</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">points that have already been sampled</td>
-</tr>
-<tr class="field-odd field"><th class="field-name" colspan="2">points_sampled_value[num_sampled]:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">values of the already-sampled points</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">noise_variance[num_sampled]:</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">the <tt class="docutils literal"><span class="pre">\sigma_n^2</span></tt> (noise variance) associated w/observation, points_sampled_value</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">dim:</th><td class="field-body">the spatial dimension of a point (i.e., number of independent params in experiment)</td>
-</tr>
-<tr class="field-even field"><th class="field-name">num_sampled:</th><td class="field-body">number of already-sampled points</td>
-</tr>
-</tbody>
-</table>
-</dd>
-</dl>
- </p>
-</div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_leave_one_out_log_likelihood_evaluator_1a1c8b50fa8f3a356b5e581310e2601c78"></span><div class="line-block">
-<div class="line">int <strong>dim</strong>()</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p></p>
-</div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_leave_one_out_log_likelihood_evaluator_1af2666d5ea0723d4f9ce9e0385394d2e4"></span><div class="line-block">
-<div class="line">int <strong>num_sampled</strong>()</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p></p>
-</div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_leave_one_out_log_likelihood_evaluator_1a2f2446dd298491074f4f23c4693efc20"></span><div class="line-block">
-<div class="line">double <strong>ComputeObjectiveFunction</strong>(<a class="reference internal" href="#project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state"><em>StateType</em></a>  * log_likelihood_state)</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p><p>Wrapper for ComputeLogLikelihood(); see that function for details.</p>
- </p>
-</div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_leave_one_out_log_likelihood_evaluator_1aae61041eab9e9a9c3a9643f5104734b1"></span><div class="line-block">
-<div class="line">void <strong>ComputeGradObjectiveFunction</strong>(<a class="reference internal" href="#project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state"><em>StateType</em></a>  * log_likelihood_state, double *restrict grad_loo)</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p><p>Wrapper for ComputeGradLogLikelihood(); see that function for details.</p>
- </p>
-</div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_leave_one_out_log_likelihood_evaluator_1a2fca431f169e1b0d82a8e3cf3165921a"></span><div class="line-block">
-<div class="line">void <strong>ComputeHessianObjectiveFunction</strong>(<a class="reference internal" href="#project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state"><em>StateType</em></a>  * log_likelihood_state, double *restrict hessian_loo)</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p><p>Wrapper for ComputeHessianLogLikelihood(); see that function for details.</p>
- </p>
-</div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_leave_one_out_log_likelihood_evaluator_1a8021ff21476192431c06dfbf1d168481"></span><div class="line-block">
-<div class="line">void <strong>FillLogLikelihoodState</strong>(<a class="reference internal" href="#project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state"><em>StateType</em></a>  * log_likelihood_state)</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p><p>Sets up the LeaveOneOutLogLikelihoodState object so that it can be used to compute log marginal and its gradients.
-ASSUMES all needed space is ALREADY ALLOCATED.</p>
-<p>This function should not be called directly; instead use LeaveOneOutLogLikelihoodState::SetupState.</p>
-<dl class="docutils">
-<dt><strong>Parameters</strong>:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">log_likelihood_state[1]:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">constructed state object with appropriate sized allocations</td>
-</tr>
-</tbody>
-</table>
-</dd>
-<dt><strong>Outputs</strong>:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">log_likelihood_state[1]:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">fully configured state object, ready for use by this class&#8217;s member functions</td>
-</tr>
-</tbody>
-</table>
-</dd>
-</dl>
- </p>
-</div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_leave_one_out_log_likelihood_evaluator_1ae2de1ae883552de9b0741fc59af21be5"></span><div class="line-block">
-<div class="line">double <strong>ComputeLogLikelihood</strong>(const  <a class="reference internal" href="#project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state"><em>StateType</em></a>  &amp; log_likelihood_state)</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p><p><p>Computes the log LOO-CV pseudo-likelihood
-That is, split the training data <tt class="docutils literal"><span class="pre">(X,</span> <span class="pre">y)</span></tt> into <tt class="docutils literal"><span class="pre">|y|</span></tt> training set groups, where in the i-th group, the validation set is
-the <tt class="docutils literal"><span class="pre">i</span></tt>-th point of <tt class="docutils literal"><span class="pre">(X,</span> <span class="pre">y)</span></tt> and the training set is <tt class="docutils literal"><span class="pre">(X,</span> <span class="pre">y)</span></tt> with the <tt class="docutils literal"><span class="pre">i</span></tt>-th point removed.
-Then this likelihood measures the aggregate performance of the ability of a model built on each &#8220;leave one out&#8221;
-training set to predict the corresponding validation set.  So in some sense it is a measure of model consitency, ensuring
-that we do not perform well on a few points while doing horribly on the others.</p>
-<dl class="docutils">
-<dt><strong>Parameters</strong>:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">log_likelihood_state:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">properly configured state oboject</td>
-</tr>
-</tbody>
-</table>
-</dd>
-<dt><strong>Returns</strong>:</dt>
-<dd>:natural log of the leave one out cross validation pseudo-likelihood of the GP model</dd>
-</dl>
-</p>
-<p><p>Computes the Leave-One-Out Cross Validation log pseudo-likelihood.
-Let <tt class="docutils literal"><span class="pre">\log</span> <span class="pre">p(y_i</span> <span class="pre">|</span> <span class="pre">X_{-i},</span> <span class="pre">y_{-i},</span> <span class="pre">\theta)</span> <span class="pre">=</span> <span class="pre">-0.5\log(\sigma_i^2)</span> <span class="pre">-</span> <span class="pre">0.5*(y_i</span> <span class="pre">-</span> <span class="pre">\mu_i)^2/\sigma_i^2</span> <span class="pre">-</span> <span class="pre">0.5\log(2\pi)</span></tt>
-Then we compute:
-<tt class="docutils literal"><span class="pre">L_{LOO}(X,</span> <span class="pre">y,</span> <span class="pre">\theta)</span> <span class="pre">=</span> <span class="pre">\sum_{i</span> <span class="pre">=</span> <span class="pre">1}^n</span> <span class="pre">\log</span> <span class="pre">p(y_i</span> <span class="pre">|</span> <span class="pre">X_{-i},</span> <span class="pre">y_{-i}.</span></tt>
-where <tt class="docutils literal"><span class="pre">X_{-i}</span></tt> and <tt class="docutils literal"><span class="pre">y_{-i}</span></tt> are the training data with the <tt class="docutils literal"><span class="pre">i</span></tt>-th point removed.  Then <tt class="docutils literal"><span class="pre">X_i</span></tt> is taken as the point to sample.
-<tt class="docutils literal"><span class="pre">\sigma_i^2</span></tt> and <tt class="docutils literal"><span class="pre">\mu_i</span></tt> are the GP (predicted) variance/mean at the point to sample.</p>
-<p>This function currently uses LeaveOneOutCoreWithMatrixInverse() to compute <tt class="docutils literal"><span class="pre">\sigma_i^2</span></tt> and <tt class="docutils literal"><span class="pre">\mu_i</span></tt>, which is potentially
-ill-conditioned.  This has not proven to be an issue in testing, but _accurate() is preferred when loss of prescision is
-suspected.</p>
-<p>See Rasmussen &amp; Williams 5.4.2 for more details.</p>
- </p>
-</p>
-</div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_leave_one_out_log_likelihood_evaluator_1ab1519614e0c16f4d47b4557f1932cf87"></span><div class="line-block">
-<div class="line">void <strong>ComputeGradLogLikelihood</strong>(<a class="reference internal" href="#project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state"><em>StateType</em></a>  * log_likelihood_state, double *restrict grad_loo)</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p><p><p>Computes the (partial) derivatives of the leave-one-out cross validation log pseudo-likelihood with respect to each hyperparameter of our covariance function.</p>
-<p>Let <tt class="docutils literal"><span class="pre">n_hyper</span> <span class="pre">=</span> <span class="pre">covariance_ptr-&gt;GetNumberOfHyperparameters();</span></tt></p>
-<dl class="docutils">
-<dt><strong>Parameters</strong>:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">log_likelihood_state[1]:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">properly configured state oboject</td>
-</tr>
-</tbody>
-</table>
-</dd>
-<dt><strong>Outputs</strong>:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">log_likelihood_state[1]:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">state with temporary storage modified</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">grad_loo[n_hyper]:</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">gradient of leave one out cross validation log likelihood wrt each hyperparameter of covariance</td>
-</tr>
-</tbody>
-</table>
-</dd>
-</dl>
-</p>
-<p><p>Computes the gradients (wrt hyperparameters, <tt class="docutils literal"><span class="pre">\theta</span></tt>) of the Leave-One-Out Cross Validation log pseudo-likelihood, <tt class="docutils literal"><span class="pre">L_{LOO}</span></tt>.</p>
-<p>See function definition get_leave_one_out_likelihood() function defn docs for definition of <tt class="docutils literal"><span class="pre">L_{LOO}</span></tt>.  We compute:
-<tt class="docutils literal"><span class="pre">\pderiv{L_{LOO}}{\theta_j}</span> <span class="pre">=</span> <span class="pre">\sum_{i</span> <span class="pre">=</span> <span class="pre">1}^n</span> <span class="pre">\frac{1}{(K^-1)_ii}</span> <span class="pre">*</span></tt>
-``             left(alpha_i[Z_jalpha]_i - 0.5(1 + frac{alpha_i^2}{(K^-1)_ii})[Z_j K^-1]_ii right)``
-where <tt class="docutils literal"><span class="pre">\alpha</span> <span class="pre">=</span> <span class="pre">K^-1</span> <span class="pre">*</span> <span class="pre">y</span></tt>, and <tt class="docutils literal"><span class="pre">Z_j</span> <span class="pre">=</span> <span class="pre">K^-1</span> <span class="pre">*</span> <span class="pre">\pderiv{K}{\theta_j}</span></tt>.</p>
-<p>Note that formation of <tt class="docutils literal"><span class="pre">[Z_j</span> <span class="pre">*</span> <span class="pre">K^-1]</span> <span class="pre">=</span> <span class="pre">K^-1</span> <span class="pre">*</span> <span class="pre">\pderiv{K}{\theta_j}</span> <span class="pre">*</span> <span class="pre">K^-1</span></tt> requires some care.  We prefer not to use the explicit
-inverse whenever possible.  But we are readily able to compute <tt class="docutils literal"><span class="pre">A^-1</span> <span class="pre">*</span> <span class="pre">B</span></tt> via &#8220;backsolve&#8221; (of a factored <tt class="docutils literal"><span class="pre">A</span></tt>), so we do:
-<tt class="docutils literal"><span class="pre">A</span> <span class="pre">:=</span> <span class="pre">K^-1</span> <span class="pre">*</span> <span class="pre">Z^T</span></tt>
-<tt class="docutils literal"><span class="pre">result</span> <span class="pre">:=</span> <span class="pre">A^T</span></tt> gives us the desired <tt class="docutils literal"><span class="pre">[Z_j</span> <span class="pre">*</span> <span class="pre">K^-1]</span></tt> without forming <tt class="docutils literal"><span class="pre">K^-1</span></tt>.</p>
-<p>Note that this formulation uses <tt class="docutils literal"><span class="pre">(K^-1)_ii</span></tt> directly to avoid the (very high) expense of evaluating the GP mean, variance n times.
-This is analogous to using LeaveOneOutCoreWithMatrixInverse() over LeaveOneOutCoreAccurate(), which is an assumption
-that seems reasonable now but may need revisiting later.</p>
-<p>See Rasmussen &amp; Williams 5.4.2 for details.</p>
- </p>
-</p>
-</div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_leave_one_out_log_likelihood_evaluator_1acdaefda72f366a5ae444fc7b49f3fceb"></span><div class="line-block">
-<div class="line">void <strong>ComputeHessianLogLikelihood</strong>(<a class="reference internal" href="#project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state"><em>StateType</em></a>  * log_likelihood_state, double *restrict hessian_loo)</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p><p>NOT IMPLEMENTED.
-Kludge to make it so that I can instantiate MultistartNewtonOptimization&lt;&gt; with LeaveOneOutLogLikelihoodEvaluator in
-gpp_python.cpp. It is an error to select NewtonOptimization with LeaveOneOutLogLikelihoodEvaluator, but I can&#8217;t find a nicer
-way to generate this error while still being able to treat MultistartNewtonOptimization&lt;&gt; generically.</p>
-<p><p>NOT IMPLEMENTED
-Kludge to make it so that I can use general template code w/o special casing LeaveOneOutLogLikelihoodEvaluator.</p>
- </p>
-</p>
-</div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_leave_one_out_log_likelihood_evaluator_1a77b0c1778262caa8cdd90715d144376c"></span><div class="line-block">
-<div class="line"> <strong>OL_DISALLOW_DEFAULT_AND_COPY_AND_ASSIGN</strong>(<a class="reference internal" href="#project0classoptimal__learning_1_1_leave_one_out_log_likelihood_evaluator"><em>LeaveOneOutLogLikelihoodEvaluator</em></a>)</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p></p>
-</div></blockquote>
-</div></blockquote>
-<em>Private Functions</em><blockquote>
-<div><p><span class="target" id="project0classoptimal__learning_1_1_leave_one_out_log_likelihood_evaluator_1aca8f71a03e1de155da7138e5ca50b68c"></span><div class="line-block">
-<div class="line">void <strong>BuildHyperparameterGradCovarianceMatrix</strong>(<a class="reference internal" href="#project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state"><em>StateType</em></a>  * log_likelihood_state)</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p><p>Constructs the tensor of gradients (wrt hyperparameters) of the covariance function at all pairs of <tt class="docutils literal"><span class="pre">points_sampled_</span></tt>.</p>
-<p>The result is stored in <tt class="docutils literal"><span class="pre">state-&gt;grad_hyperparameter_cov_matrix</span></tt>.  So we are computing <tt class="docutils literal"><span class="pre">\pderiv{cov(X_i,</span> <span class="pre">X_j)}{\theta_k</span></tt>}.  These
-data are ordered as: <tt class="docutils literal"><span class="pre">grad_hyperparameter_cov_matrix[i][j][k]</span></tt> (i.e., <tt class="docutils literal"><span class="pre">num_hyperparmeters</span></tt> matrices of size <tt class="docutils literal"><span class="pre">Square(num_sampled_)</span></tt>).</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last"><tt class="docutils literal"><span class="pre">grad_hyperparameter_cov_matrix[i][j][k]</span> <span class="pre">==</span> <span class="pre">grad_hyperparameter_cov_matrix[j][i][k]</span></tt></p>
-</div>
-<dl class="docutils">
-<dt><strong>Parameters</strong>:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">log_likelihood_state[1]:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">properly configured state object</td>
-</tr>
-</tbody>
-</table>
-</dd>
-<dt><strong>Outputs</strong>:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">log_likelihood_state[1]:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">state with grad_hyperparameter_cov_matrix filled</td>
-</tr>
-</tbody>
-</table>
-</dd>
-</dl>
- </p>
-</div></blockquote>
-</div></blockquote>
-<em>Private Members</em><blockquote>
-<div><p><span class="target" id="project0classoptimal__learning_1_1_leave_one_out_log_likelihood_evaluator_1ac691d56873cab9283f971db030f32e17"></span>const int <strong>dim_</strong></p>
-<blockquote>
-<div><p>spatial dimension (e.g., entries per point of points_sampled) </p>
-<p></p>
-</div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_leave_one_out_log_likelihood_evaluator_1aa16cf62568f81d28121b424781c3d86b"></span>int <strong>num_sampled_</strong></p>
-<blockquote>
-<div><p>number of points in points_sampled </p>
-<p></p>
-</div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_leave_one_out_log_likelihood_evaluator_1a0f0a66b84e6a0018053a5b327573ff04"></span>std::vector&lt; double &gt; <strong>points_sampled_</strong></p>
-<blockquote>
-<div><p>coordinates of already-sampled points, <tt class="docutils literal"><span class="pre">X</span></tt> </p>
-<p></p>
-</div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_leave_one_out_log_likelihood_evaluator_1adc9a594fe6b2f1d37985120dd73b9c71"></span>std::vector&lt; double &gt; <strong>points_sampled_value_</strong></p>
-<blockquote>
-<div><p>function values at points_sampled, <tt class="docutils literal"><span class="pre">y</span></tt> </p>
-<p></p>
-</div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_leave_one_out_log_likelihood_evaluator_1ac2ba6986a10a87f019557410c374777a"></span>std::vector&lt; double &gt; <strong>noise_variance_</strong></p>
-<blockquote>
-<div><p><tt class="docutils literal"><span class="pre">\sigma_n^2</span></tt>, the noise variance </p>
-<p></p>
-</div></blockquote>
-</div></blockquote>
-</div></blockquote>
-</p>
-<p><p id="project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state"><em>class</em> <strong>LeaveOneOutLogLikelihoodState</strong></p>
-<blockquote>
-<div><p></p>
-<p><p>State object for LeaveOneOutLogLikelihoodEvaluator.  This object tracks the covariance object as well as derived quantities
-that (along with the training points/values in the Evaluator class) fully specify the log marginal likelihood.  Since this
-is used to optimize the log marginal likelihood, the covariance&#8217;s hyperparameters are variable.</p>
-<p>See general comments on State structs in gpp_common.hpp&#8217;s header docs.</p>
- </p>
-<em>Public Type</em><blockquote>
-<div><p><span class="target" id="project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state_1ada55be15f96b2bf4492510baab8487ca"></span>typedef <a class="reference internal" href="#project0classoptimal__learning_1_1_leave_one_out_log_likelihood_evaluator"><em>LeaveOneOutLogLikelihoodEvaluator</em></a> <strong>EvaluatorType</strong></p>
-<blockquote>
-<div><p></p>
-<p></p>
-</div></blockquote>
-</div></blockquote>
-<em>Public Functions</em><blockquote>
-<div><p><span class="target" id="project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state_1a3ceed85ef0b47498a06027f8472fac4d"></span><div class="line-block">
-<div class="line"> <strong>LeaveOneOutLogLikelihoodState</strong>(const  <a class="reference internal" href="#project0classoptimal__learning_1_1_leave_one_out_log_likelihood_evaluator"><em>EvaluatorType</em></a>  &amp; log_likelihood_eval, const  <a class="reference internal" href="gpp_covariance.html#project0classoptimal__learning_1_1_covariance_interface"><em>CovarianceInterface</em></a>  &amp; covariance_in)</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p><p>Constructs a LeaveOneOutLogLikelihoodState object with a specified covariance object (in particular, new hyperparameters).
-Ensures all state variables &amp; temporaries are properly sized.
-Properly sets all state variables so that the Evaluator can be used to compute log marginal likelihood, gradients, etc.</p>
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">This object&#8217;s state is INVALIDATED if the log_likelihood_eval used in construction is mutated!
-SetupState() should be called again in such a situation.</p>
-</div>
-<dl class="docutils">
-<dt><strong>Parameters</strong>:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">log_likelihood_eval:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">LogMarginalLikelihoodEvaluator object that this state is being used with</td>
-</tr>
-<tr class="field-even field"><th class="field-name">covariance_in:</th><td class="field-body">the CovarianceFunction object encoding assumptions about the GP&#8217;s behavior on our data</td>
-</tr>
-</tbody>
-</table>
-</dd>
-</dl>
- </p>
-</div></blockquote>
-<p><span class="target" id="project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state_1afc17ee4cc7a15a4e87920dbf3ac95a79"></span><div class="line-block">
-<div class="line"> <strong>LeaveOneOutLogLikelihoodState</strong>(<a class="reference internal" href="#project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state"><em>LeaveOneOutLogLikelihoodState</em></a>  &amp;&amp; other)</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p></p>
-</div></blockquote>
-<p><span class="target" id="project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state_1ae255455b59659ba14a8e4e45b0984ade"></span><div class="line-block">
-<div class="line">int <strong>GetProblemSize</strong>()</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p></p>
-</div></blockquote>
-<p><span class="target" id="project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state_1ad869c023d4b5f314327fbe227018b8ef"></span><div class="line-block">
-<div class="line">void <strong>UpdateCurrentPoint</strong>(const  <a class="reference internal" href="#project0classoptimal__learning_1_1_leave_one_out_log_likelihood_evaluator"><em>EvaluatorType</em></a>  &amp; log_likelihood_eval, double const *restrict hyperparameters)</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p></p>
-</div></blockquote>
-<p><span class="target" id="project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state_1a3a36507b3513bc4b064c7a98f8003020"></span><div class="line-block">
-<div class="line">void <strong>GetCurrentPoint</strong>(double *restrict hyperparameters)</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p></p>
-</div></blockquote>
-<p><span class="target" id="project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state_1a1e1df00226bbb32e0e195ebf38fded67"></span><div class="line-block">
-<div class="line">void <strong>GetHyperparameters</strong>(double *restrict hyperparameters)</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p><p>Get hyperparameters of underlying covariance function.</p>
-<dl class="docutils">
-<dt><strong>Outputs</strong>:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">hyperparameters[num_hyperparameters]:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">covariance&#8217;s hyperparameters</td>
-</tr>
-</tbody>
-</table>
-</dd>
-</dl>
- </p>
-</div></blockquote>
-<p><span class="target" id="project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state_1ae5d04d9a0aef07eaa49757ccd1d0fe51"></span><div class="line-block">
-<div class="line">void <strong>UpdateHyperparameters</strong>(const  <a class="reference internal" href="#project0classoptimal__learning_1_1_leave_one_out_log_likelihood_evaluator"><em>EvaluatorType</em></a>  &amp; log_likelihood_eval, double const *restrict hyperparameters)</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p><p>Change the hyperparameters of the underlying covariance function.
-Update the state&#8217;s derived quantities to be consistent with the new hyperparameters.</p>
-<dl class="docutils">
-<dt><strong>Parameters</strong>:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">log_likelihood_eval:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">LeaveOneOutLogLikelihoodEvaluator object that this state is being used with</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">hyperparameters[num_hyperparameters]:</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">hyperparameters to change to</td>
-</tr>
-</tbody>
-</table>
-</dd>
-</dl>
- </p>
-</div></blockquote>
-<p><span class="target" id="project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state_1a12ceb078800ba63bd1cea2be0df39747"></span><div class="line-block">
-<div class="line">void <strong>SetupState</strong>(const  <a class="reference internal" href="#project0classoptimal__learning_1_1_leave_one_out_log_likelihood_evaluator"><em>EvaluatorType</em></a>  &amp; log_likelihood_eval, double const *restrict hyperparameters)</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p><p>Configures this state object with new hyperparameters.
-Ensures all state variables &amp; temporaries are properly sized.
-Properly sets all state variables for log likelihood (+ gradient) evaluation.</p>
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">This object&#8217;s state is INVALIDATED if the log_likelihood used in SetupState is mutated!
-SetupState() should be called again in such a situation.</p>
-</div>
-<dl class="docutils">
-<dt><strong>Parameters</strong>:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">log_likelihood_eval:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">log likelihood evaluator object that describes the training/already-measured data</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">hyperparameters[num_hyperparameters]:</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">hyperparameters to change to</td>
-</tr>
-</tbody>
-</table>
-</dd>
-</dl>
- </p>
-</div></blockquote>
-<p><span class="target" id="project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state_1a1d9c223a828ac184e9a7447b2f377759"></span><div class="line-block">
-<div class="line"> <strong>OL_DISALLOW_DEFAULT_AND_COPY_AND_ASSIGN</strong>(<a class="reference internal" href="#project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state"><em>LeaveOneOutLogLikelihoodState</em></a>)</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p></p>
-</div></blockquote>
-</div></blockquote>
-<em>Public Members</em><blockquote>
-<div><p><span class="target" id="project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state_1a0df1f47534ecaeddf57540e376284aaa"></span>const int <strong>dim</strong></p>
-<blockquote>
-<div><p>spatial dimension (e.g., entries per point of points_sampled) </p>
-<p></p>
-</div></blockquote>
-<p><span class="target" id="project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state_1a3baafaf06f9fdc5fee7373b8105ce808"></span>int <strong>num_sampled</strong></p>
-<blockquote>
-<div><p>number of points in points_sampled </p>
-<p></p>
-</div></blockquote>
-<p><span class="target" id="project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state_1a486a30f23a841d78ca416c3c8104e10f"></span>int <strong>num_hyperparameters</strong></p>
-<blockquote>
-<div><p>number of hyperparameters of covariance; i.e., covariance_ptr-&gt;GetNumberOfHyperparameters() </p>
-<p></p>
-</div></blockquote>
-<p><span class="target" id="project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state_1ac6f099fffb77406de55de41fbae4056a"></span>std::unique_ptr&lt;  <a class="reference internal" href="gpp_covariance.html#project0classoptimal__learning_1_1_covariance_interface"><em>CovarianceInterface</em></a>  &gt; <strong>covariance_ptr</strong></p>
-<blockquote>
-<div><p>covariance class (for computing covariance and its gradients) </p>
-<p></p>
-</div></blockquote>
-<p><span class="target" id="project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state_1ac75d90cb4edc345b7c53f6d536de1689"></span>std::vector&lt; double &gt; <strong>K_chol</strong></p>
-<blockquote>
-<div><p>cholesky factorization of <tt class="docutils literal"><span class="pre">K</span></tt> </p>
-<p></p>
-</div></blockquote>
-<p><span class="target" id="project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state_1a0eabfdbcd0c707a2f7c6bffb3af45f8e"></span>std::vector&lt; double &gt; <strong>K_inv</strong></p>
-<blockquote>
-<div><p><tt class="docutils literal"><span class="pre">K^-1</span></tt> </p>
-<p></p>
-</div></blockquote>
-<p><span class="target" id="project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state_1a1e2b3295ad8598f1cffa94a5b1740bd6"></span>std::vector&lt; double &gt; <strong>K_inv_y</strong></p>
-<blockquote>
-<div><p><tt class="docutils literal"><span class="pre">K^-1</span> <span class="pre">*</span> <span class="pre">y</span></tt>; computed WITHOUT forming <tt class="docutils literal"><span class="pre">K^-1</span></tt> </p>
-<p></p>
-</div></blockquote>
-<p><span class="target" id="project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state_1a765ae0219e1a3163fa20db5f22b2c61e"></span>std::vector&lt; double &gt; <strong>grad_hyperparameter_cov_matrix</strong></p>
-<blockquote>
-<div><p><tt class="docutils literal"><span class="pre">\pderiv{K_{ij}}{\theta_k}</span></tt>; temporary b/c it is overwritten with each computation of GradLikelihood </p>
-<p></p>
-</div></blockquote>
-<p><span class="target" id="project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state_1a69a93cea73cc6484bd3ebc8e7f0298cc"></span>std::vector&lt; double &gt; <strong>Z_alpha</strong></p>
-<blockquote>
-<div><p>temporary: <tt class="docutils literal"><span class="pre">K^-1</span> <span class="pre">*</span> <span class="pre">grad_hyperparameter_cov_matrix</span> <span class="pre">*</span> <span class="pre">K^-1</span> <span class="pre">*</span> <span class="pre">y</span></tt> </p>
-<p></p>
-</div></blockquote>
-<p><span class="target" id="project0structoptimal__learning_1_1_leave_one_out_log_likelihood_state_1af83b317e3b408c8685c3dfe9484f851e"></span>std::vector&lt; double &gt; <strong>Z_K_inv</strong></p>
-<blockquote>
-<div><p>temporary: <tt class="docutils literal"><span class="pre">K^-1</span> <span class="pre">*</span> <span class="pre">grad_hyperparameter_cov_matrix</span> <span class="pre">*</span> <span class="pre">K^-1</span></tt> </p>
-<p></p>
-</div></blockquote>
-</div></blockquote>
-</div></blockquote>
-</p>
 </div></blockquote>
 </p>
 </div>
@@ -2208,21 +2243,21 @@ This analysis is usually performed hierarchically.  The pararameters, w, are at 
 in linear regression.  The hyperparameters, <tt class="docutils literal"><span class="pre">\theta</span></tt>, sit at the next level; these are free-floating parameters that
 control model performance such as length scales.  Finally, the highest level is a discrete set of models, <tt class="docutils literal"><span class="pre">H_i</span></tt>; e.g.,
 GPs resulting from different classes of covariance or entirely different models.</p>
-<p>Then the &#8220;posterior over the parameters&#8221; is:
-<tt class="docutils literal"><span class="pre">p(w</span> <span class="pre">|</span> <span class="pre">y,</span> <span class="pre">X,</span> <span class="pre">\theta,</span> <span class="pre">H_i)</span> <span class="pre">=</span> <span class="pre">\frac{p(y</span> <span class="pre">|</span> <span class="pre">X,</span> <span class="pre">w,</span> <span class="pre">H_i)</span> <span class="pre">*</span> <span class="pre">p(w</span> <span class="pre">|</span> <span class="pre">\theta,</span> <span class="pre">H_i)}{p(y</span> <span class="pre">|</span> <span class="pre">X,</span> <span class="pre">\theta,</span> <span class="pre">H_i)}</span></tt>
-where <tt class="docutils literal"><span class="pre">p(y</span> <span class="pre">|</span> <span class="pre">X,</span> <span class="pre">w,</span> <span class="pre">H_i)</span></tt> is the &#8220;likelihood&#8221; (of the model) and <tt class="docutils literal"><span class="pre">p(w</span> <span class="pre">|</span> <span class="pre">\theta,</span> <span class="pre">H_i)</span></tt> is the &#8220;parameter prior&#8221; (encoding what
+<p>Then the &#8220;posterior over the parameters&#8221; is:</p>
+<p><tt class="docutils literal"><span class="pre">p(w</span> <span class="pre">|</span> <span class="pre">y,</span> <span class="pre">X,</span> <span class="pre">\theta,</span> <span class="pre">H_i)</span> <span class="pre">=</span> <span class="pre">\frac{p(y</span> <span class="pre">|</span> <span class="pre">X,</span> <span class="pre">w,</span> <span class="pre">H_i)</span> <span class="pre">*</span> <span class="pre">p(w</span> <span class="pre">|</span> <span class="pre">\theta,</span> <span class="pre">H_i)}{p(y</span> <span class="pre">|</span> <span class="pre">X,</span> <span class="pre">\theta,</span> <span class="pre">H_i)}</span></tt></p>
+<p>where <tt class="docutils literal"><span class="pre">p(y</span> <span class="pre">|</span> <span class="pre">X,</span> <span class="pre">w,</span> <span class="pre">H_i)</span></tt> is the &#8220;likelihood&#8221; (of the model) and <tt class="docutils literal"><span class="pre">p(w</span> <span class="pre">|</span> <span class="pre">\theta,</span> <span class="pre">H_i)</span></tt> is the &#8220;parameter prior&#8221; (encoding what
 we know about the model parameters <em>before</em> seeing data).  The denominator is the &#8220;marginal likelihood.&#8221;  Using
-total probability, it is given as:
-<tt class="docutils literal"><span class="pre">p(y</span> <span class="pre">|</span> <span class="pre">X,</span> <span class="pre">\theta,</span> <span class="pre">H_i)</span> <span class="pre">=</span> <span class="pre">\int</span> <span class="pre">p(y</span> <span class="pre">|</span> <span class="pre">X,</span> <span class="pre">w,</span> <span class="pre">H_i)</span> <span class="pre">*</span> <span class="pre">p(w</span> <span class="pre">|</span> <span class="pre">\theta,</span> <span class="pre">H_i)</span> <span class="pre">dw</span></tt>,
-where we have marginalized out <tt class="docutils literal"><span class="pre">w</span> <span class="pre">~</span> <span class="pre">p(w</span> <span class="pre">|</span> <span class="pre">\theta,</span> <span class="pre">H_i)</span></tt> from the likelihood, <tt class="docutils literal"><span class="pre">p(y</span> <span class="pre">|</span> <span class="pre">X,</span> <span class="pre">w,</span> <span class="pre">H_i)</span></tt>, to produce the marginal likelihood.
+total probability, it is given as:</p>
+<p><tt class="docutils literal"><span class="pre">p(y</span> <span class="pre">|</span> <span class="pre">X,</span> <span class="pre">\theta,</span> <span class="pre">H_i)</span> <span class="pre">=</span> <span class="pre">\int</span> <span class="pre">p(y</span> <span class="pre">|</span> <span class="pre">X,</span> <span class="pre">w,</span> <span class="pre">H_i)</span> <span class="pre">*</span> <span class="pre">p(w</span> <span class="pre">|</span> <span class="pre">\theta,</span> <span class="pre">H_i)</span> <span class="pre">dw</span></tt>,</p>
+<p>where we have marginalized out <tt class="docutils literal"><span class="pre">w</span> <span class="pre">~</span> <span class="pre">p(w</span> <span class="pre">|</span> <span class="pre">\theta,</span> <span class="pre">H_i)</span></tt> from the likelihood, <tt class="docutils literal"><span class="pre">p(y</span> <span class="pre">|</span> <span class="pre">X,</span> <span class="pre">w,</span> <span class="pre">H_i)</span></tt>, to produce the marginal likelihood.
 This is just the integral of the numerator over <tt class="docutils literal"><span class="pre">w</span></tt>, so it can be viewed as a normalizing constant too&#8211;however you
 like think about Bayes&#8217; Theorem.</p>
-<p>From that marginal likelihood, we can also produce the posterior over hyperparameters:
-<tt class="docutils literal"><span class="pre">p(\theta</span> <span class="pre">|</span> <span class="pre">y,</span> <span class="pre">X,</span> <span class="pre">H_i)</span> <span class="pre">=</span> <span class="pre">\frac{p(y</span> <span class="pre">|</span> <span class="pre">X,</span> <span class="pre">\theta,</span> <span class="pre">H_i</span> <span class="pre">*</span> <span class="pre">p(\theta,</span> <span class="pre">H_i)}{p(y</span> <span class="pre">|</span> <span class="pre">X,</span> <span class="pre">H_i)}</span></tt>
-where <tt class="docutils literal"><span class="pre">p(\theta,</span> <span class="pre">H_i)</span></tt> is called the &#8220;hyper-prior&#8221; and the denominator is constructed as before.</p>
-<p>And finally, the posterior for the models:
-<tt class="docutils literal"><span class="pre">p(H_i</span> <span class="pre">|</span> <span class="pre">y,</span> <span class="pre">X)</span> <span class="pre">=</span> <span class="pre">\frac{p(y</span> <span class="pre">|</span> <span class="pre">X,</span> <span class="pre">H_i)</span> <span class="pre">*</span> <span class="pre">p(H_i)}{p(y</span> <span class="pre">|</span> <span class="pre">X)}</span></tt>
-Here <tt class="docutils literal"><span class="pre">p(y</span> <span class="pre">|</span> <span class="pre">X)</span></tt> is not an integral since <tt class="docutils literal"><span class="pre">H_i</span></tt> is discrete: <tt class="docutils literal"><span class="pre">=</span> <span class="pre">\sum_i</span> <span class="pre">p(y</span> <span class="pre">|</span> <span class="pre">X,</span> <span class="pre">H_i)</span> <span class="pre">*</span> <span class="pre">p(H_i)</span></tt></p>
+<p>From that marginal likelihood, we can also produce the posterior over hyperparameters:</p>
+<p><tt class="docutils literal"><span class="pre">p(\theta</span> <span class="pre">|</span> <span class="pre">y,</span> <span class="pre">X,</span> <span class="pre">H_i)</span> <span class="pre">=</span> <span class="pre">\frac{p(y</span> <span class="pre">|</span> <span class="pre">X,</span> <span class="pre">\theta,</span> <span class="pre">H_i</span> <span class="pre">*</span> <span class="pre">p(\theta,</span> <span class="pre">H_i)}{p(y</span> <span class="pre">|</span> <span class="pre">X,</span> <span class="pre">H_i)}</span></tt></p>
+<p>where <tt class="docutils literal"><span class="pre">p(\theta,</span> <span class="pre">H_i)</span></tt> is called the &#8220;hyper-prior&#8221; and the denominator is constructed as before.</p>
+<p>And finally, the posterior for the models:</p>
+<p><tt class="docutils literal"><span class="pre">p(H_i</span> <span class="pre">|</span> <span class="pre">y,</span> <span class="pre">X)</span> <span class="pre">=</span> <span class="pre">\frac{p(y</span> <span class="pre">|</span> <span class="pre">X,</span> <span class="pre">H_i)</span> <span class="pre">*</span> <span class="pre">p(H_i)}{p(y</span> <span class="pre">|</span> <span class="pre">X)}</span></tt></p>
+<p>Here <tt class="docutils literal"><span class="pre">p(y</span> <span class="pre">|</span> <span class="pre">X)</span></tt> is not an integral since <tt class="docutils literal"><span class="pre">H_i</span></tt> is discrete: <tt class="docutils literal"><span class="pre">=</span> <span class="pre">\sum_i</span> <span class="pre">p(y</span> <span class="pre">|</span> <span class="pre">X,</span> <span class="pre">H_i)</span> <span class="pre">*</span> <span class="pre">p(H_i)</span></tt></p>
 <p>These integrals can be extremely complicated, often requiring Monte-Carlo (MC) integration.  In particular,
 computing the posterior over hyperparameters is usually particularly painful.  This would be the ideal step in
 the Bayesian framework for selecting hyperparameters; with the posterior distribution we can simply choose the most
@@ -2245,17 +2280,19 @@ Now we specialize the Bayesian technique for GPs.  We will be working with the l
 GPs are non-parametric in the sense that we are not directly computing parameters <tt class="docutils literal"><span class="pre">\beta_i</span></tt> to evaluate
 <tt class="docutils literal"><span class="pre">y_i</span> <span class="pre">=</span> <span class="pre">x_i\beta_i</span></tt> as in linear regression.  However, the function values <tt class="docutils literal"><span class="pre">f</span></tt> at the training points
 (<tt class="docutils literal"><span class="pre">points_sampled</span></tt>) are analogous to parameters; the more sampled points, the more complex the model (more params).</p>
-<p>Then the log marginal likelihood, <tt class="docutils literal"><span class="pre">\log(p(y</span> <span class="pre">|</span> <span class="pre">X,</span> <span class="pre">\theta))</span></tt>, examines the probability of the model given the data.  It is:
-<tt class="docutils literal"><span class="pre">log</span> <span class="pre">p(y</span> <span class="pre">|</span> <span class="pre">X,</span> <span class="pre">\theta)</span> <span class="pre">=</span> <span class="pre">-\frac{1}{2}</span> <span class="pre">*</span> <span class="pre">y^T</span> <span class="pre">*</span> <span class="pre">K^-1</span> <span class="pre">*</span> <span class="pre">y</span> <span class="pre">-</span> <span class="pre">\frac{1}{2}</span> <span class="pre">*</span> <span class="pre">\log(det(K))</span> <span class="pre">-</span> <span class="pre">\frac{n}{2}</span> <span class="pre">*</span> <span class="pre">\log(2*pi)</span>&nbsp; <span class="pre">(Equation</span> <span class="pre">1)</span></tt>
-where <tt class="docutils literal"><span class="pre">n</span></tt> is <tt class="docutils literal"><span class="pre">num_sampled</span></tt>, <tt class="docutils literal"><span class="pre">\theta</span></tt> are the hyperparameters, and <tt class="docutils literal"><span class="pre">\log</span></tt> is the natural logarithm.</p>
+<p>Then the log marginal likelihood, <tt class="docutils literal"><span class="pre">\log(p(y</span> <span class="pre">|</span> <span class="pre">X,</span> <span class="pre">\theta))</span></tt>, examines the probability of the model given the data.  It is:</p>
+<div class="highlight-python"><div class="highlight"><pre>log p(y | X, \theta) = -\frac{1}{2} * y^T * K^-1 * y - \frac{1}{2} * \log(det(K)) - \frac{n}{2} * \log(2*pi)  (Equation 1)
+</pre></div>
+</div>
+<p>where <tt class="docutils literal"><span class="pre">n</span></tt> is <tt class="docutils literal"><span class="pre">num_sampled</span></tt>, <tt class="docutils literal"><span class="pre">\theta</span></tt> are the hyperparameters, and <tt class="docutils literal"><span class="pre">\log</span></tt> is the natural logarithm.</p>
 <p>To maximize <tt class="docutils literal"><span class="pre">p</span></tt>, we can equivalently maximize <tt class="docutils literal"><span class="pre">log(p)</span></tt>.</p>
 <p>Since we almost never work with noise-free priors, we drop the subscript <tt class="docutils literal"><span class="pre">y</span></tt> from <tt class="docutils literal"><span class="pre">K_y</span></tt> in future discussion; e.g,. in
 <tt class="docutils literal"><span class="pre">LogMarginalLikelihoodEvaluator::ComputeLogLikelihood()</span></tt>.</p>
 <p>Anyway, despite the complex integrals and whatnot in the general Bayesian model inference method, the LML for GPs
 is very easy to derive.  From the discussion in gpp_math.hpp/cpp, it should be clear that the GP is distributed
-like a multi-variate Gaussian:
-<tt class="docutils literal"><span class="pre">N(\mu,</span> <span class="pre">K)</span> <span class="pre">=</span> <span class="pre">\frac{1}{\sqrt{(2\pi)^n</span> <span class="pre">*</span> <span class="pre">det(K)}}</span> <span class="pre">*</span> <span class="pre">\exp(-\frac{1}{2}*(y-\mu)^T</span> <span class="pre">*</span> <span class="pre">K^-1</span> <span class="pre">*</span> <span class="pre">(y</span> <span class="pre">-</span> <span class="pre">\mu))</span></tt>
-And our <tt class="docutils literal"><span class="pre">GP</span> <span class="pre">~</span> <span class="pre">N(0,</span> <span class="pre">K)</span></tt>; hence <tt class="docutils literal"><span class="pre">p(y</span> <span class="pre">|</span> <span class="pre">X,</span> <span class="pre">\theta)</span> <span class="pre">~</span> <span class="pre">N(0,K)</span></tt> by definition.  Take the logarithm and we reach Equation 1.</p>
+like a multi-variate Gaussian:</p>
+<p><tt class="docutils literal"><span class="pre">N(\mu,</span> <span class="pre">K)</span> <span class="pre">=</span> <span class="pre">\frac{1}{\sqrt{(2\pi)^n</span> <span class="pre">*</span> <span class="pre">det(K)}}</span> <span class="pre">*</span> <span class="pre">\exp(-\frac{1}{2}*(y-\mu)^T</span> <span class="pre">*</span> <span class="pre">K^-1</span> <span class="pre">*</span> <span class="pre">(y</span> <span class="pre">-</span> <span class="pre">\mu))</span></tt></p>
+<p>And our <tt class="docutils literal"><span class="pre">GP</span> <span class="pre">~</span> <span class="pre">N(0,</span> <span class="pre">K)</span></tt>; hence <tt class="docutils literal"><span class="pre">p(y</span> <span class="pre">|</span> <span class="pre">X,</span> <span class="pre">\theta)</span> <span class="pre">~</span> <span class="pre">N(0,K)</span></tt> by definition.  Take the logarithm and we reach Equation 1.</p>
 <p>Let&#8217;s look at the terms:</p>
 <ul class="simple">
 <li><tt class="docutils literal"><span class="pre">term1</span> <span class="pre">=</span> <span class="pre">-\frac{1}{2}</span> <span class="pre">*</span> <span class="pre">y^T</span> <span class="pre">*</span> <span class="pre">K^-1</span> <span class="pre">*</span> <span class="pre">y</span></tt></li>
@@ -2298,11 +2335,11 @@ most common measure is the squared error loss, but for probabilistic models like
 sense.</p>
 <p><strong>2a, ii, A. LEAVE ONE OUT CROSS VALIDATION (LOO-CV)</strong></p>
 <p>(Rasmussen &amp; Williams, Chp 5.4.2)
-For a GP, LOO-CV, which we denote <tt class="docutils literal"><span class="pre">L_{LOO}</span></tt> is:
-Let <tt class="docutils literal"><span class="pre">\log</span> <span class="pre">p(y_i</span> <span class="pre">|</span> <span class="pre">X_{-i},</span> <span class="pre">y_{-i},</span> <span class="pre">\theta)</span> <span class="pre">=</span> <span class="pre">-0.5\log(\sigma_i^2)</span> <span class="pre">-</span> <span class="pre">0.5*(y_i</span> <span class="pre">-</span> <span class="pre">\mu_i)^2/\sigma_i^2</span> <span class="pre">-</span> <span class="pre">0.5\log(2\pi)</span></tt>.
-Then we compute:
-<tt class="docutils literal"><span class="pre">L_{LOO}(X</span> <span class="pre">,y,</span> <span class="pre">\theta)</span> <span class="pre">=</span> <span class="pre">\sum_{i</span> <span class="pre">=</span> <span class="pre">1}^n</span> <span class="pre">\log</span> <span class="pre">p(y_i</span> <span class="pre">|</span> <span class="pre">X_{-i},</span> <span class="pre">y_{-i})</span></tt>.
-where <tt class="docutils literal"><span class="pre">X_{-i}</span></tt> and <tt class="docutils literal"><span class="pre">y_{-i}</span></tt> are the training data with the <tt class="docutils literal"><span class="pre">i</span></tt>-th point removed.  Then <tt class="docutils literal"><span class="pre">X_i</span></tt> is taken as the point to sample.
+For a GP, LOO-CV, which we denote <tt class="docutils literal"><span class="pre">L_{LOO}</span></tt> is:</p>
+<p>Let <tt class="docutils literal"><span class="pre">\log</span> <span class="pre">p(y_i</span> <span class="pre">|</span> <span class="pre">X_{-i},</span> <span class="pre">y_{-i},</span> <span class="pre">\theta)</span> <span class="pre">=</span> <span class="pre">-0.5\log(\sigma_i^2)</span> <span class="pre">-</span> <span class="pre">0.5*(y_i</span> <span class="pre">-</span> <span class="pre">\mu_i)^2/\sigma_i^2</span> <span class="pre">-</span> <span class="pre">0.5\log(2\pi)</span></tt>.
+Then we compute:</p>
+<p><tt class="docutils literal"><span class="pre">L_{LOO}(X</span> <span class="pre">,y,</span> <span class="pre">\theta)</span> <span class="pre">=</span> <span class="pre">\sum_{i</span> <span class="pre">=</span> <span class="pre">1}^n</span> <span class="pre">\log</span> <span class="pre">p(y_i</span> <span class="pre">|</span> <span class="pre">X_{-i},</span> <span class="pre">y_{-i})</span></tt>.</p>
+<p>where <tt class="docutils literal"><span class="pre">X_{-i}</span></tt> and <tt class="docutils literal"><span class="pre">y_{-i}</span></tt> are the training data with the <tt class="docutils literal"><span class="pre">i</span></tt>-th point removed.  Then <tt class="docutils literal"><span class="pre">X_i</span></tt> is taken as the point to sample.
 <tt class="docutils literal"><span class="pre">\sigma_i^2</span></tt> and <tt class="docutils literal"><span class="pre">\mu_i</span></tt> are the GP (predicted) variance/mean at the point to sample, <tt class="docutils literal"><span class="pre">X</span> <span class="pre">\</span> <span class="pre">X_{-i}</span></tt>.</p>
 <p>On the surface, it looks like we would have to form an entirely new GP <tt class="docutils literal"><span class="pre">n</span></tt> times to compute <tt class="docutils literal"><span class="pre">\mu_i,</span> <span class="pre">\sigma_i^2</span></tt> for <tt class="docutils literal"><span class="pre">i</span> <span class="pre">=</span> <span class="pre">1..n</span></tt>.
 However, in each of these cases, the <tt class="docutils literal"><span class="pre">X_{-i},</span> <span class="pre">f_{-i},</span> <span class="pre">\sigma_n_{-i}</span></tt> inputs to the GP are almost identical, so there is a
@@ -2312,10 +2349,12 @@ GP operations involve applying <tt class="docutils literal"><span class="pre">K_
 <p>By partitioning <tt class="docutils literal"><span class="pre">K</span></tt> into 4 block matrices, we can (after row/column swap) isolate the element being removed, and solve for it
 in terms of <tt class="docutils literal"><span class="pre">K^-1</span></tt>.
 Wikipedia for block matrix inverse: <a class="reference external" href="http://en.wikipedia.org/wiki/Invertible_matrix#Blockwise_inversion">http://en.wikipedia.org/wiki/Invertible_matrix#Blockwise_inversion</a>
-We can then directly show that:
-<tt class="docutils literal"><span class="pre">\mu_i</span> <span class="pre">=</span> <span class="pre">y_i</span> <span class="pre">-</span> <span class="pre">\alpha_i</span> <span class="pre">/</span> <span class="pre">K^{-1}_{ii}</span></tt>
-<tt class="docutils literal"><span class="pre">\sigma_i^2</span> <span class="pre">=</span> <span class="pre">1/K^{-1}_{ii}</span></tt>
-where <tt class="docutils literal"><span class="pre">\alpha</span> <span class="pre">=</span> <span class="pre">K^-1</span> <span class="pre">*</span> <span class="pre">y</span></tt></p>
+We can then directly show that:</p>
+<div class="line-block">
+<div class="line"><tt class="docutils literal"><span class="pre">\mu_i</span> <span class="pre">=</span> <span class="pre">y_i</span> <span class="pre">-</span> <span class="pre">\alpha_i</span> <span class="pre">/</span> <span class="pre">K^{-1}_{ii}</span></tt></div>
+<div class="line"><tt class="docutils literal"><span class="pre">\sigma_i^2</span> <span class="pre">=</span> <span class="pre">1/K^{-1}_{ii}</span></tt></div>
+</div>
+<p>where <tt class="docutils literal"><span class="pre">\alpha</span> <span class="pre">=</span> <span class="pre">K^-1</span> <span class="pre">*</span> <span class="pre">y</span></tt></p>
 <p><strong>2a, iii. REMARKS</strong></p>
 <p>We have not been able to find much information on whether LML or LOO-CV should be preferred.  Rasmussen &amp; Williams
 say, &#8220;[the LML gives] the probability of the observations emph{given the assumptions of the model}.&#8221;  And &#8220;the
@@ -2416,10 +2455,16 @@ may be heavily affected by numerical error (if K is poorly conditioned).</li>
 <p class="first admonition-title">Note</p>
 <p class="last">These comments have been copied into the matching method of LogMarginalLikelihood in python_version/log_likelihood.py.</p>
 </div>
-<p>Computes <tt class="docutils literal"><span class="pre">\pderiv{log(p(y</span> <span class="pre">|</span> <span class="pre">X,</span> <span class="pre">\theta))}{\theta_k}</span> <span class="pre">=</span> <span class="pre">\frac{1}{2}</span> <span class="pre">*</span> <span class="pre">y_i</span> <span class="pre">*</span> <span class="pre">\pderiv{K_{ij}}{\theta_k}</span> <span class="pre">*</span> <span class="pre">y_j</span> <span class="pre">-</span> <span class="pre">\frac{1}{2}</span></tt>
-<tt class="docutils literal"><span class="pre">*</span> <span class="pre">trace(K^{-1}_{ij}\pderiv{K_{ij}}{\theta_k})</span></tt>
-Or equivalently, <tt class="docutils literal"><span class="pre">=</span> <span class="pre">\frac{1}{2}</span> <span class="pre">*</span> <span class="pre">trace([\alpha_i</span> <span class="pre">\alpha_j</span> <span class="pre">-</span> <span class="pre">K^{-1}_{ij}]*\pderiv{K_{ij}}{\theta_k})</span></tt>,
-where <tt class="docutils literal"><span class="pre">\alpha_i</span> <span class="pre">=</span> <span class="pre">K^{-1}_{ij}</span> <span class="pre">*</span> <span class="pre">y_j</span></tt></p>
+<p>Computes:</p>
+<div class="highlight-python"><div class="highlight"><pre>\pderiv{log(p(y | X, \theta))}{\theta_k} = \frac{1}{2} * y_i * \pderiv{K_{ij}}{\theta_k} * y_j -
+                                           \frac{1}{2} * trace(K^{-1}_{ij}\pderiv{K_{ij}}{\theta_k})
+</pre></div>
+</div>
+<p>Or equivalently:</p>
+<div class="highlight-python"><div class="highlight"><pre>= \frac{1}{2} * trace([\alpha_i \alpha_j - K^{-1}_{ij}]*\pderiv{K_{ij}}{\theta_k}),
+</pre></div>
+</div>
+<p>where <tt class="docutils literal"><span class="pre">\alpha_i</span> <span class="pre">=</span> <span class="pre">K^{-1}_{ij}</span> <span class="pre">*</span> <span class="pre">y_j</span></tt></p>
  </p>
 </div></blockquote>
 </div></blockquote>
@@ -2438,7 +2483,7 @@ where <tt class="docutils literal"><span class="pre">\alpha_i</span> <span class
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="gpp_optimization.html" class="btn btn-neutral float-right" title="gpp_optimization"/>Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="gpp_random.html" class="btn btn-neutral float-right" title="gpp_random"/>Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="gpp_exception.html" class="btn btn-neutral" title="gpp_exception"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -2470,7 +2515,7 @@ where <tt class="docutils literal"><span class="pre">\alpha_i</span> <span class
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.1.0',
+            VERSION:'0.2.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

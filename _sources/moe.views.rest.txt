@@ -4,6 +4,22 @@ moe.views.rest package
 Submodules
 ----------
 
+moe.views.rest.bandit_epsilon module
+------------------------------------
+
+.. automodule:: moe.views.rest.bandit_epsilon
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+moe.views.rest.bandit_ucb module
+--------------------------------
+
+.. automodule:: moe.views.rest.bandit_ucb
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 moe.views.rest.gp_ei module
 ---------------------------
 

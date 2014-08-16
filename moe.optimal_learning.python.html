@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>moe.optimal_learning.python package &mdash; MOE 0.1.0 documentation</title>
+  <title>moe.optimal_learning.python package &mdash; MOE 0.2.0 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
     <link rel="stylesheet" href="_static/breathe.css" type="text/css" />
   
-    <link rel="top" title="MOE 0.1.0 documentation" href="index.html"/>
+    <link rel="top" title="MOE 0.2.0 documentation" href="index.html"/>
         <link rel="up" title="moe.optimal_learning package" href="moe.optimal_learning.html"/>
         <link rel="next" title="moe.optimal_learning.python.cpp_wrappers package" href="moe.optimal_learning.python.cpp_wrappers.html"/>
         <link rel="prev" title="moe.optimal_learning.cpp package" href="moe.optimal_learning.cpp.html"/> 
@@ -96,6 +96,13 @@
 <li class="toctree-l2"><a class="reference internal" href="objective_functions.html#example-of-objective-functions">Example of Objective Functions</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="bandit.html">Multi-Armed Bandits</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#what-is-the-multi-armed-bandit-problem">What is the multi-armed bandit problem?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#applications">Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#policies">Policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#pointers">Pointers</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="examples.html#minimizing-an-arbitrary-function">Minimizing an arbitrary function</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples.html#gaussian-process-regression-given-historical-data">Gaussian Process regression given historical data</a></li>
@@ -149,9 +156,11 @@
 <li class="toctree-l1"><a class="reference internal" href="cpp_tree.html">C++ Files</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimization_test.html">gpp_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_domain_test.html">gpp_domain_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_gpu.html">gpp_expected_improvement_gpu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_geometry.html">gpp_geometry</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_test_utils.html">gpp_test_utils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_logging.html">gpp_logging</a></li>
@@ -160,28 +169,29 @@
 <li class="toctree-l2"><a class="reference internal" href="gpp_domain.html">gpp_domain</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_python_common.html">gpp_python_common</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_hyperparameter_optimization_demo.html">gpp_hyperparameter_optimization_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_test_utils_test.html">gpp_test_utils_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_math_test.html">gpp_math_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_cuda_math.html">gpp_cuda_math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_python_model_selection.html">gpp_python_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_math.html">gpp_math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_random_test.html">gpp_random_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimizer_parameters.html">gpp_optimizer_parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_random.html">gpp_random</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_test_utils_test.html">gpp_test_utils_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra.html">gpp_linear_algebra</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_exception.html">gpp_exception</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_model_selection.html">gpp_model_selection</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_random.html">gpp_random</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_covariance_test.html">gpp_covariance_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_python.html">gpp_python</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_test.html">gpp_model_selection_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_common.html">gpp_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_gpu_test.html">gpp_expected_improvement_gpu_test</a></li>
 </ul>
 </li>
 </ul>
@@ -300,7 +310,7 @@
 <dt id="moe.optimal_learning.python.constant.DefaultOptimizerInfoTuple">
 <em class="property">class </em><tt class="descclassname">moe.optimal_learning.python.constant.</tt><tt class="descname">DefaultOptimizerInfoTuple</tt><a class="reference internal" href="_modules/moe/optimal_learning/python/constant.html#DefaultOptimizerInfoTuple"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.constant.DefaultOptimizerInfoTuple" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">moe.optimal_learning.python.constant._BaseDefaultOptimizerInfoTuple</span></tt></p>
-<p>Container holding default values to use with a <a class="reference internal" href="moe.views.html#moe.views.schemas.OptimizerInfo" title="moe.views.schemas.OptimizerInfo"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.OptimizerInfo</span></tt></a>.</p>
+<p>Container holding default values to use with a <tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.OptimizerInfo</span></tt>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -320,7 +330,7 @@ i.e., one of <a class="reference internal" href="moe.optimal_learning.python.pyt
 
 <dl class="data">
 <dt id="moe.optimal_learning.python.constant.ENDPOINT_TO_DEFAULT_OPTIMIZER_TYPE">
-<tt class="descclassname">moe.optimal_learning.python.constant.</tt><tt class="descname">ENDPOINT_TO_DEFAULT_OPTIMIZER_TYPE</tt><em class="property"> = {'gp_next_points_epi': 'gradient_descent_optimizer', 'gp_next_points_constant_liar': 'gradient_descent_optimizer', ('gp_hyper_opt', 'leave_one_out_log_likelihood'): 'gradient_descent_optimizer', 'gp_next_points_kriging': 'gradient_descent_optimizer', ('gp_hyper_opt', 'log_marginal_likelihood'): 'newton_optimizer'}</em><a class="headerlink" href="#moe.optimal_learning.python.constant.ENDPOINT_TO_DEFAULT_OPTIMIZER_TYPE" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">moe.optimal_learning.python.constant.</tt><tt class="descname">ENDPOINT_TO_DEFAULT_OPTIMIZER_TYPE</tt><em class="property"> = {'gp_next_points_kriging': 'gradient_descent_optimizer', ('gp_hyper_opt', 'leave_one_out_log_likelihood'): 'gradient_descent_optimizer', ('gp_next_points_epi', 'multi_point_ei'): 'l_bfgs_b_optimizer', 'gp_next_points_constant_liar': 'gradient_descent_optimizer', ('gp_hyper_opt', 'log_marginal_likelihood'): 'newton_optimizer', ('gp_next_points_epi', 'single_point_ei'): 'gradient_descent_optimizer'}</em><a class="headerlink" href="#moe.optimal_learning.python.constant.ENDPOINT_TO_DEFAULT_OPTIMIZER_TYPE" title="Permalink to this definition">¶</a></dt>
 <dd><p>dict mapping from tuples describing endpoints and objective functions to optimizer type strings;
 i.e., one of <a class="reference internal" href="#moe.optimal_learning.python.constant.OPTIMIZER_TYPES" title="moe.optimal_learning.python.constant.OPTIMIZER_TYPES"><tt class="xref py py-const docutils literal"><span class="pre">moe.optimal_learning.python.constant.OPTIMIZER_TYPES</span></tt></a>.</p>
 </dd></dl>
@@ -359,13 +369,13 @@ TODO(GH-301): make this a server configurable value or set appropriate openmp en
 
 <dl class="data">
 <dt id="moe.optimal_learning.python.constant.OPTIMIZER_TYPES">
-<tt class="descclassname">moe.optimal_learning.python.constant.</tt><tt class="descname">OPTIMIZER_TYPES</tt><em class="property"> = ['null_optimizer', 'newton_optimizer', 'gradient_descent_optimizer']</em><a class="headerlink" href="#moe.optimal_learning.python.constant.OPTIMIZER_TYPES" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">moe.optimal_learning.python.constant.</tt><tt class="descname">OPTIMIZER_TYPES</tt><em class="property"> = ['null_optimizer', 'newton_optimizer', 'gradient_descent_optimizer', 'l_bfgs_b_optimizer']</em><a class="headerlink" href="#moe.optimal_learning.python.constant.OPTIMIZER_TYPES" title="Permalink to this definition">¶</a></dt>
 <dd><p>Optimizer types supported by <a class="reference internal" href="moe.html#module-moe" title="moe"><tt class="xref py py-mod docutils literal"><span class="pre">moe</span></tt></a></p>
 </dd></dl>
 
 <dl class="data">
 <dt id="moe.optimal_learning.python.constant.OPTIMIZER_TYPE_AND_OBJECTIVE_TO_DEFAULT_PARAMETERS">
-<tt class="descclassname">moe.optimal_learning.python.constant.</tt><tt class="descname">OPTIMIZER_TYPE_AND_OBJECTIVE_TO_DEFAULT_PARAMETERS</tt><em class="property"> = {('gradient_descent_optimizer', 'gp_next_points_epi', 'ei_analytic'): _BaseDefaultOptimizerInfoTuple(num_multistarts=600, num_random_samples=10000, optimizer_parameters=_BaseGradientDescentParameters(max_num_steps=500, max_num_restarts=4, num_steps_averaged=0, gamma=0.6, pre_mult=1.0, max_relative_change=1.0, tolerance=1e-07)), ('gradient_descent_optimizer', 'gp_hyper_opt', 'leave_one_out_log_likelihood'): _BaseDefaultOptimizerInfoTuple(num_multistarts=400, num_random_samples=0, optimizer_parameters=_BaseGradientDescentParameters(max_num_steps=600, max_num_restarts=10, num_steps_averaged=0, gamma=0.9, pre_mult=0.25, max_relative_change=0.2, tolerance=1e-05)), ('newton_optimizer', 'gp_hyper_opt', 'log_marginal_likelihood'): _BaseDefaultOptimizerInfoTuple(num_multistarts=200, num_random_samples=0, optimizer_parameters=_BaseNewtonParameters(max_num_steps=150, gamma=1.2, time_factor=0.0005, max_relative_change=1.0, tolerance=1e-09)), ('gradient_descent_optimizer', 'gp_hyper_opt', 'log_marginal_likelihood'): _BaseDefaultOptimizerInfoTuple(num_multistarts=400, num_random_samples=0, optimizer_parameters=_BaseGradientDescentParameters(max_num_steps=600, max_num_restarts=10, num_steps_averaged=0, gamma=0.9, pre_mult=0.25, max_relative_change=0.2, tolerance=1e-05)), ('gradient_descent_optimizer', 'gp_next_points_constant_liar'): _BaseDefaultOptimizerInfoTuple(num_multistarts=600, num_random_samples=10000, optimizer_parameters=_BaseGradientDescentParameters(max_num_steps=500, max_num_restarts=4, num_steps_averaged=0, gamma=0.6, pre_mult=1.0, max_relative_change=1.0, tolerance=1e-07)), ('gradient_descent_optimizer', 'gp_next_points_kriging'): _BaseDefaultOptimizerInfoTuple(num_multistarts=600, num_random_samples=10000, optimizer_parameters=_BaseGradientDescentParameters(max_num_steps=500, max_num_restarts=4, num_steps_averaged=0, gamma=0.6, pre_mult=1.0, max_relative_change=1.0, tolerance=1e-07)), ('gradient_descent_optimizer', 'gp_next_points_epi', 'ei_monte_carlo'): _BaseDefaultOptimizerInfoTuple(num_multistarts=200, num_random_samples=4000, optimizer_parameters=_BaseGradientDescentParameters(max_num_steps=500, max_num_restarts=4, num_steps_averaged=100, gamma=0.6, pre_mult=1.0, max_relative_change=1.0, tolerance=1e-05))}</em><a class="headerlink" href="#moe.optimal_learning.python.constant.OPTIMIZER_TYPE_AND_OBJECTIVE_TO_DEFAULT_PARAMETERS" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">moe.optimal_learning.python.constant.</tt><tt class="descname">OPTIMIZER_TYPE_AND_OBJECTIVE_TO_DEFAULT_PARAMETERS</tt><em class="property"> = {('gradient_descent_optimizer', 'gp_next_points_epi', 'ei_analytic'): _BaseDefaultOptimizerInfoTuple(num_multistarts=600, num_random_samples=50000, optimizer_parameters=_BaseGradientDescentParameters(max_num_steps=500, max_num_restarts=4, num_steps_averaged=0, gamma=0.6, pre_mult=1.0, max_relative_change=1.0, tolerance=1e-07)), ('null_optimizer', 'gp_next_points_epi', 'ei_monte_carlo'): _BaseDefaultOptimizerInfoTuple(num_multistarts=1, num_random_samples=50000, optimizer_parameters=NullParameters()), ('null_optimizer', 'gp_hyper_opt', 'log_marginal_likelihood'): _BaseDefaultOptimizerInfoTuple(num_multistarts=1, num_random_samples=300000, optimizer_parameters=NullParameters()), ('null_optimizer', 'gp_next_points_epi', 'ei_analytic'): _BaseDefaultOptimizerInfoTuple(num_multistarts=1, num_random_samples=500000, optimizer_parameters=NullParameters()), ('null_optimizer', 'gp_next_points_kriging'): _BaseDefaultOptimizerInfoTuple(num_multistarts=1, num_random_samples=500000, optimizer_parameters=NullParameters()), ('null_optimizer', 'gp_next_points_constant_liar'): _BaseDefaultOptimizerInfoTuple(num_multistarts=1, num_random_samples=500000, optimizer_parameters=NullParameters()), ('null_optimizer', 'gp_hyper_opt', 'leave_one_out_log_likelihood'): _BaseDefaultOptimizerInfoTuple(num_multistarts=1, num_random_samples=300000, optimizer_parameters=NullParameters()), ('newton_optimizer', 'gp_hyper_opt', 'log_marginal_likelihood'): _BaseDefaultOptimizerInfoTuple(num_multistarts=200, num_random_samples=0, optimizer_parameters=_BaseNewtonParameters(max_num_steps=150, gamma=1.2, time_factor=0.0005, max_relative_change=1.0, tolerance=1e-09)), ('gradient_descent_optimizer', 'gp_hyper_opt', 'leave_one_out_log_likelihood'): _BaseDefaultOptimizerInfoTuple(num_multistarts=400, num_random_samples=0, optimizer_parameters=_BaseGradientDescentParameters(max_num_steps=600, max_num_restarts=10, num_steps_averaged=0, gamma=0.9, pre_mult=0.25, max_relative_change=0.2, tolerance=1e-05)), ('gradient_descent_optimizer', 'gp_next_points_kriging'): _BaseDefaultOptimizerInfoTuple(num_multistarts=600, num_random_samples=50000, optimizer_parameters=_BaseGradientDescentParameters(max_num_steps=500, max_num_restarts=4, num_steps_averaged=0, gamma=0.6, pre_mult=1.0, max_relative_change=1.0, tolerance=1e-07)), ('l_bfgs_b_optimizer', 'gp_next_points_epi', 'ei_analytic'): _BaseDefaultOptimizerInfoTuple(num_multistarts=200, num_random_samples=4000, optimizer_parameters=_BaseLBFGSBParameters(approx_grad=True, max_func_evals=15000, max_metric_correc=10, factr=10000000.0, pgtol=1e-05, epsilon=1e-08)), ('gradient_descent_optimizer', 'gp_hyper_opt', 'log_marginal_likelihood'): _BaseDefaultOptimizerInfoTuple(num_multistarts=400, num_random_samples=0, optimizer_parameters=_BaseGradientDescentParameters(max_num_steps=600, max_num_restarts=10, num_steps_averaged=0, gamma=0.9, pre_mult=0.25, max_relative_change=0.2, tolerance=1e-05)), ('gradient_descent_optimizer', 'gp_next_points_constant_liar'): _BaseDefaultOptimizerInfoTuple(num_multistarts=600, num_random_samples=50000, optimizer_parameters=_BaseGradientDescentParameters(max_num_steps=500, max_num_restarts=4, num_steps_averaged=0, gamma=0.6, pre_mult=1.0, max_relative_change=1.0, tolerance=1e-07)), ('gradient_descent_optimizer', 'gp_next_points_epi', 'ei_monte_carlo'): _BaseDefaultOptimizerInfoTuple(num_multistarts=200, num_random_samples=4000, optimizer_parameters=_BaseGradientDescentParameters(max_num_steps=500, max_num_restarts=4, num_steps_averaged=100, gamma=0.6, pre_mult=1.0, max_relative_change=1.0, tolerance=1e-05))}</em><a class="headerlink" href="#moe.optimal_learning.python.constant.OPTIMIZER_TYPE_AND_OBJECTIVE_TO_DEFAULT_PARAMETERS" title="Permalink to this definition">¶</a></dt>
 <dd><p>dict mapping from tuples of optimizer type, endpoint, etc. to default optimizer parameters. The default parameter
 structs are of type <a class="reference internal" href="#moe.optimal_learning.python.constant.DefaultOptimizerInfoTuple" title="moe.optimal_learning.python.constant.DefaultOptimizerInfoTuple"><tt class="xref py py-class docutils literal"><span class="pre">moe.optimal_learning.python.constant.DefaultOptimizerInfoTuple</span></tt></a> and the actual default
 parameters are defined in <a class="reference internal" href="#module-moe.optimal_learning.python.constant" title="moe.optimal_learning.python.constant"><tt class="xref py py-mod docutils literal"><span class="pre">moe.optimal_learning.python.constant</span></tt></a>.
@@ -1113,7 +1123,7 @@ implementation in Python while connecting it to C++ evaluation of objective func
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.1.0',
+            VERSION:'0.2.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

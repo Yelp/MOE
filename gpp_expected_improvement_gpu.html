@@ -1,0 +1,1003 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>gpp_expected_improvement_gpu &mdash; MOE 0.2.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="_static/breathe.css" type="text/css" />
+  
+    <link rel="top" title="MOE 0.2.0 documentation" href="index.html"/>
+        <link rel="up" title="C++ Files" href="cpp_tree.html"/>
+        <link rel="next" title="gpp_heuristic_expected_improvement_optimization_test" href="gpp_heuristic_expected_improvement_optimization_test.html"/>
+        <link rel="prev" title="gpp_domain_test" href="gpp_domain_test.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="index.html" class="fa fa-home"> MOE</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul>
+<li class="toctree-l1"><a class="reference internal" href="why_moe.html">Why Do We Need MOE?</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="why_moe.html#other-methods">Other Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Install</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="install.html#install-in-docker">Install in docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#install-from-source">Install from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#osx-tips">OSX Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#building-boost">Building Boost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="moe_math.html">How does MOE work?</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#build-a-gaussian-process-gp-with-the-historical-data">Build a Gaussian Process (GP) with the historical data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#optimize-the-hyperparameters-of-the-gaussian-process">Optimize the hyperparameters of the Gaussian Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#find-the-point-s-of-highest-expected-improvement-ei">Find the point(s) of highest Expected Improvement (EI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_math.html#return-the-point-s-to-sample-then-repeat">Return the point(s) to sample, then repeat</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="demo_tutorial.html">Demo Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="demo_tutorial.html#the-interactive-demo">The Interactive Demo</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pretty_endpoints.html">Pretty Endpoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="objective_functions.html">Objective Functions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="objective_functions.html#what-is-an-objective-function">What is an objective function?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="objective_functions.html#properties-of-an-objective-function">Properties of an objective function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="objective_functions.html#parameters">Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="objective_functions.html#id1"><span class="math">\(\Phi\)</span> Objective Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="objective_functions.html#example-of-objective-functions">Example of Objective Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="bandit.html">Multi-Armed Bandits</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#what-is-the-multi-armed-bandit-problem">What is the multi-armed bandit problem?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#applications">Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#policies">Policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#pointers">Pointers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#minimizing-an-arbitrary-function">Minimizing an arbitrary function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#gaussian-process-regression-given-historical-data">Gaussian Process regression given historical data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#hyperparameter-optimization-of-a-gaussian-process">Hyperparameter optimization of a Gaussian Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#all-above-examples-combined">All above examples combined</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#setting-thresholds-for-advertising-units">Setting thresholds for advertising units</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#making-a-pull-request">Making a pull request</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#documentation">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#testing">Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#style">Style</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#versioning">Versioning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#releasing-for-maintainers">Releasing (For Maintainers)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#what-license-is-moe-released-under">What license is MOE released under?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#when-should-i-use-moe">When should I use MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#what-is-the-time-complexity-of-moe">What is the time complexity of MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-do-i-cite-moe">How do I cite MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#why-does-moe-take-so-long-to-return-the-next-points-to-sample-for-some-inputs">Why does MOE take so long to return the next points to sample for some inputs?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-do-i-bootstrap-moe-what-initial-data-does-it-need">How do I bootstrap MOE? What initial data does it need?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-many-function-evaluations-do-i-need-before-moe-is-done">How many function evaluations do I need before MOE is &#8220;done&#8221;?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-many-function-evaluations-do-i-perform-before-i-update-the-hyperparameters-of-the-gp">How many function evaluations do I perform before I update the hyperparameters of the GP?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#will-you-accept-my-pull-request">Will you accept my pull request?</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="moe.html">moe package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#module-moe.resources">moe.resources module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.html#module-moe">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="moe_examples.html">moe_examples package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.next_point_via_simple_endpoint">moe_examples.next_point_via_simple_endpoint module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="cpp_tree.html">C++ Files</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimization_test.html">gpp_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_domain_test.html">gpp_domain_test</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">gpp_expected_improvement_gpu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_geometry.html">gpp_geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_test_utils.html">gpp_test_utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_logging.html">gpp_logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_covariance.html">gpp_covariance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_test.html">gpp_python_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_domain.html">gpp_domain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_common.html">gpp_python_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_hyperparameter_optimization_demo.html">gpp_hyperparameter_optimization_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_math_test.html">gpp_math_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_cuda_math.html">gpp_cuda_math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_model_selection.html">gpp_python_model_selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_math.html">gpp_math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_random_test.html">gpp_random_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimizer_parameters.html">gpp_optimizer_parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_test_utils_test.html">gpp_test_utils_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra.html">gpp_linear_algebra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_exception.html">gpp_exception</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection.html">gpp_model_selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_random.html">gpp_random</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_covariance_test.html">gpp_covariance_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python.html">gpp_python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_test.html">gpp_model_selection_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_common.html">gpp_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_gpu_test.html">gpp_expected_improvement_gpu_test</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">MOE</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="cpp_tree.html">C++ Files</a> &raquo;</li>
+      
+    <li>gpp_expected_improvement_gpu</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="_sources/gpp_expected_improvement_gpu.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <div class="section" id="gpp-expected-improvement-gpu">
+<h1>gpp_expected_improvement_gpu<a class="headerlink" href="#gpp-expected-improvement-gpu" title="Permalink to this headline">¶</a></h1>
+<p><strong>Contents:</strong></p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><a class="reference internal" href="#gpp-expected-improvement-gpu-hpp">gpp_expected_improvement_gpu.hpp</a></li>
+<li><a class="reference internal" href="#gpp-expected-improvement-gpu-cpp">gpp_expected_improvement_gpu.cpp</a></li>
+</ol>
+</div></blockquote>
+<div class="section" id="gpp-expected-improvement-gpu-hpp">
+<h2>gpp_expected_improvement_gpu.hpp<a class="headerlink" href="#gpp-expected-improvement-gpu-hpp" title="Permalink to this headline">¶</a></h2>
+<p></p>
+<p><p>All GPU related functions are declared here, and any other C++ functions who wish to call GPU functions should only call functions here.</p>
+ </p>
+<em>Defines</em><blockquote>
+<div><p><span class="target" id="project0gpp__expected__improvement__gpu_8hpp_1a0c727bbaa8d201596c1b81eb4a830d0a"></span><strong>OL_CUDA_ERROR_THROW</strong>(X)</p>
+<blockquote>
+<div><p></p>
+<p><p>Macro that checks error message (CudaError object) returned by CUDA functions, and throws
+OptimalLearningCudaException if there is error.</p>
+ </p>
+</div></blockquote>
+</div></blockquote>
+<p><p id="project0namespaceoptimal__learning"><em>namespace</em> <strong>optimal_learning</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+<p><p id="project0structoptimal__learning_1_1_cuda_device_pointer"><em>class</em> <strong>CudaDevicePointer</strong></p>
+<blockquote>
+<div><p></p>
+<p><p>This struct does the same job as C++ smart pointer. It contains pointer to memory location on
+GPU, its constructor and destructor also take care of memory allocation/deallocation on GPU.</p>
+ </p>
+<em>Public Functions</em><blockquote>
+<div><p><span class="target" id="project0structoptimal__learning_1_1_cuda_device_pointer_1a463fcea05d4cfe5cf472c03b1d9af954"></span><div class="line-block">
+<div class="line"> <strong>CudaDevicePointer</strong>(int num_doubles_in)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_cuda_device_pointer_1ae23b57574513eb5a5f90ac534e462a84"></span><div class="line-block">
+<div class="line"> <strong>~CudaDevicePointer</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_cuda_device_pointer_1ac22f0f37e06fb5f88e308f9cf7d768f5"></span><div class="line-block">
+<div class="line"> <strong>OL_DISALLOW_DEFAULT_AND_COPY_AND_ASSIGN</strong>(<a class="reference internal" href="#project0structoptimal__learning_1_1_cuda_device_pointer"><em>CudaDevicePointer</em></a>)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Public Members</em><blockquote>
+<div><p><span class="target" id="project0structoptimal__learning_1_1_cuda_device_pointer_1a49e77a9eecf30fe9e180dcbc6cc0e0a1"></span>double * <strong>ptr</strong></p>
+<blockquote>
+<div><p>pointer to the memory location on gpu </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_cuda_device_pointer_1ac63dd2d5e1e7b36dcfada692dbeffa04"></span>int <strong>num_doubles</strong></p>
+<blockquote>
+<div><p>number of doubles to allocate on gpu, so the memory size is num_doubles * sizeof(double) </p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</p>
+<p><p id="project0classoptimal__learning_1_1_cuda_expected_improvement_evaluator"><em>class</em> <strong>CudaExpectedImprovementEvaluator</strong></p>
+<blockquote>
+<div><p></p>
+<p><p>This class has the same functionality as ExpectedImprovementEvaluator (see gpp_math.hpp),
+except that computations are performed on GPU.</p>
+ </p>
+<em>Public Type</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_cuda_expected_improvement_evaluator_1a5f056f7ab2d0179753ce7d2226a411a5"></span>typedef <a class="reference internal" href="#project0structoptimal__learning_1_1_cuda_expected_improvement_state"><em>CudaExpectedImprovementState</em></a> <strong>StateType</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Public Functions</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_cuda_expected_improvement_evaluator_1a7fdf63704072a4581a9e6b10b0f976e2"></span><div class="line-block">
+<div class="line"> <strong>CudaExpectedImprovementEvaluator</strong>(const  <a class="reference internal" href="gpp_math.html#project0classoptimal__learning_1_1_gaussian_process"><em>GaussianProcess</em></a>  &amp; gaussian_process_in, int num_mc_in, double best_so_far, int devID_in)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Constructor that also specify which gpu you want to use (for multi-gpu system)</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_cuda_expected_improvement_evaluator_1abe25f44f7e4cef311d663f0b06a9c71f"></span><div class="line-block">
+<div class="line"> <strong>~CudaExpectedImprovementEvaluator</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_cuda_expected_improvement_evaluator_1a93bad37c4061ef0f4ff7176e16bddb57"></span><div class="line-block">
+<div class="line">int <strong>dim</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_cuda_expected_improvement_evaluator_1acbb8747f6655ce453b27cca5db48f5ce"></span><div class="line-block">
+<div class="line">int <strong>num_mc</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_cuda_expected_improvement_evaluator_1a39c04f7451a7e09dee139612c08fc7ae"></span><div class="line-block">
+<div class="line">const  <a class="reference internal" href="gpp_math.html#project0classoptimal__learning_1_1_gaussian_process"><em>GaussianProcess</em></a>  * <strong>gaussian_process</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_cuda_expected_improvement_evaluator_1ab9c74cce261de65c7e87fb3fa09c463a"></span><div class="line-block">
+<div class="line">double <strong>ComputeObjectiveFunction</strong>(<a class="reference internal" href="#project0structoptimal__learning_1_1_cuda_expected_improvement_state"><em>StateType</em></a>  * ei_state)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Wrapper for ComputeExpectedImprovement(); see that function for details.</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_cuda_expected_improvement_evaluator_1a0b055bb3c4a76704e336aa04f28a2bd5"></span><div class="line-block">
+<div class="line">void <strong>ComputeGradObjectiveFunction</strong>(<a class="reference internal" href="#project0structoptimal__learning_1_1_cuda_expected_improvement_state"><em>StateType</em></a>  * ei_state, double *restrict grad_ei)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Wrapper for ComputeGradExpectedImprovement(); see that function for details.</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_cuda_expected_improvement_evaluator_1a1917aaa2eecf26bd6814c486e78cf7d0"></span><div class="line-block">
+<div class="line">double <strong>ComputeExpectedImprovement</strong>(<a class="reference internal" href="#project0structoptimal__learning_1_1_cuda_expected_improvement_state"><em>StateType</em></a>  * ei_state)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>This function has the same functionality as ComputeExpectedImprovement (see gpp_math.hpp)
+in class ExpectedImprovementEvaluator.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">ei_state[1]:</th><td class="field-body">properly configured state object</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Outputs</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">ei_state[1]:</th><td class="field-body">state with temporary storage modified; <tt class="docutils literal"><span class="pre">uniform_rng</span></tt> modified</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd>the expected improvement from sampling <tt class="docutils literal"><span class="pre">points_to_sample</span></tt> with <tt class="docutils literal"><span class="pre">points_being_sampled</span></tt> concurrent experiments</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_cuda_expected_improvement_evaluator_1a3202dc4665d57cbd7882cd05ae441e8b"></span><div class="line-block">
+<div class="line">void <strong>ComputeGradExpectedImprovement</strong>(<a class="reference internal" href="#project0structoptimal__learning_1_1_cuda_expected_improvement_state"><em>StateType</em></a>  * ei_state, double *restrict grad_ei)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>This function has the same functionality as ComputeGradExpectedImprovement (see gpp_math.hpp)
+in class ExpectedImprovementEvaluator.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">ei_state[1]:</th><td class="field-body">properly configured state object</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Outputs</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">ei_state[1]:</th><td class="field-body">state with temporary storage modified; <tt class="docutils literal"><span class="pre">uniform_rng</span></tt> modified</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">grad_ei[dim][num_to_sample]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">gradient of EI</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_cuda_expected_improvement_evaluator_1aeedcc910bd28820df449bcd0508ef61b"></span><div class="line-block">
+<div class="line">void <strong>SetupGPU</strong>(int devID)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Call CUDA API function to activate a GPU.
+Refer to: <a class="reference external" href="http://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__DEVICE.html#group__CUDART__DEVICE_1g418c299b069c4803bfb7cab4943da383">http://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__DEVICE.html#group__CUDART__DEVICE_1g418c299b069c4803bfb7cab4943da383</a></p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">devID:</th><td class="field-body">device ID of the GPU need to be activated</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_cuda_expected_improvement_evaluator_1a93570d48da65b5ceb5d3a4f20ac95693"></span><div class="line-block">
+<div class="line"> <strong>OL_DISALLOW_DEFAULT_AND_COPY_AND_ASSIGN</strong>(<a class="reference internal" href="#project0classoptimal__learning_1_1_cuda_expected_improvement_evaluator"><em>CudaExpectedImprovementEvaluator</em></a>)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Private Members</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_cuda_expected_improvement_evaluator_1a353d95d35a86bdef36577ed8bcf88ea6"></span>const int <strong>dim_</strong></p>
+<blockquote>
+<div><p>spatial dimension (e.g., entries per point of points_sampled) </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_cuda_expected_improvement_evaluator_1a6650ce3a3a713f05cb1306ba891eeee8"></span>int <strong>num_mc_</strong></p>
+<blockquote>
+<div><p>number of mc iterations </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_cuda_expected_improvement_evaluator_1aaefc1993eb20374b9764fc99aedea691"></span>double <strong>best_so_far_</strong></p>
+<blockquote>
+<div><p>best (minimum) objective function value (in points_sampled_value) </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_cuda_expected_improvement_evaluator_1a6f373944b49bd0d7fc2338e949aa995e"></span>const  <a class="reference internal" href="gpp_math.html#project0classoptimal__learning_1_1_gaussian_process"><em>GaussianProcess</em></a>  * <strong>gaussian_process_</strong></p>
+<blockquote>
+<div><p>pointer to gaussian process used in EI computations </p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</p>
+<p><p id="project0structoptimal__learning_1_1_cuda_expected_improvement_state"><em>class</em> <strong>CudaExpectedImprovementState</strong></p>
+<blockquote>
+<div><p></p>
+<p><p>This has the same functionality as ExpectedImprovementState (see gpp_math.hpp) except that it is for GPU computing</p>
+ </p>
+<em>Public Type</em><blockquote>
+<div><p><span class="target" id="project0structoptimal__learning_1_1_cuda_expected_improvement_state_1a9315a01badbcec77961ad12f9d647519"></span>typedef <a class="reference internal" href="#project0classoptimal__learning_1_1_cuda_expected_improvement_evaluator"><em>CudaExpectedImprovementEvaluator</em></a> <strong>EvaluatorType</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Public Functions</em><blockquote>
+<div><p><span class="target" id="project0structoptimal__learning_1_1_cuda_expected_improvement_state_1a5eede740914193a1644081406a6b1bcb"></span><div class="line-block">
+<div class="line"> <strong>CudaExpectedImprovementState</strong>(const  <a class="reference internal" href="#project0classoptimal__learning_1_1_cuda_expected_improvement_evaluator"><em>EvaluatorType</em></a>  &amp; ei_evaluator, double const *restrict points_to_sample, double const *restrict points_being_sampled, int num_to_sample_in, int num_being_sampled_in, bool configure_for_gradients, <a class="reference internal" href="gpp_random.html#project0structoptimal__learning_1_1_uniform_random_generator"><em>UniformRandomGenerator</em></a>  * uniform_rng_in)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Constructs an CudaExpectedImprovementState object with a specified source of randomness for
+the purpose of computing EI(and its gradient) over the specified set of points to sample.
+This establishes properly sized/initialized temporaries for EI computation, including dependent
+state from the associated Gaussian Process (which arrives as part of the ei_evaluator).</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This object is invalidated if the associated ei_evaluator is mutated.  SetupState()</p>
+</div>
+<p>should be called to reset.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Using this object to compute gradients when <tt class="docutils literal"><span class="pre">configure_for_gradients</span></tt> := false results in
+UNDEFINED BEHAVIOR.</p>
+</div>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">ei_evaluator:</th><td class="field-body">expected improvement evaluator object that specifies the parameters &amp; GP for EI evaluation</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">points_to_sample[dim][num_to_sample]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">points at which to evaluate EI and/or its gradient to check their value in future experiments (i.e., test points for GP predictions)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">points_being_sampled[dim][num_being_sampled]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">points being sampled in concurrent experiments</td>
+</tr>
+<tr class="field-even field"><th class="field-name">num_to_sample:</th><td class="field-body">number of potential future samples; gradients are evaluated wrt these points (i.e., the &#8220;q&#8221; in q,p-EI)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">num_being_sampled:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">number of points being sampled in concurrent experiments (i.e., the &#8220;p&#8221; in q,p-EI)</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">configure_for_gradients:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">true if this object will be used to compute gradients, false otherwise</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">uniform_rng[1]:</th><td class="field-body">pointer to a properly initialized* UniformRandomGenerator object</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<ul class="simple">
+<li>The UniformRandomGenerator object must already be seeded.  If multithreaded computation is used for EI, then every state object</li>
+</ul>
+<p class="last">must have a different UniformRandomGenerator (different seeds, not just different objects).</p>
+</div>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_cuda_expected_improvement_state_1ab6c51189b952ad7d96b8353aef015bac"></span><div class="line-block">
+<div class="line"> <strong>CudaExpectedImprovementState</strong>(const  <a class="reference internal" href="#project0classoptimal__learning_1_1_cuda_expected_improvement_evaluator"><em>EvaluatorType</em></a>  &amp; ei_evaluator, double const *restrict points_to_sample, double const *restrict points_being_sampled, int num_to_sample_in, int num_being_sampled_in, bool configure_for_gradients, <a class="reference internal" href="gpp_random.html#project0structoptimal__learning_1_1_uniform_random_generator"><em>UniformRandomGenerator</em></a>  * uniform_rng_in, bool configure_for_test)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_cuda_expected_improvement_state_1a3ca3f64834852eb87c8e6a931bb5715d"></span><div class="line-block">
+<div class="line"> <strong>CudaExpectedImprovementState</strong>(<a class="reference internal" href="#project0structoptimal__learning_1_1_cuda_expected_improvement_state"><em>CudaExpectedImprovementState</em></a>  &amp;&amp; OL_UNUSED)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_cuda_expected_improvement_state_1a5239f57db057279012b20a92c3a49f41"></span><div class="line-block">
+<div class="line">int <strong>GetProblemSize</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_cuda_expected_improvement_state_1aea5c5c37274a0820e109d193ce67a64b"></span><div class="line-block">
+<div class="line">void <strong>GetCurrentPoint</strong>(double *restrict points_to_sample)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Get the <tt class="docutils literal"><span class="pre">points_to_sample</span></tt>: potential future samples whose EI (and/or gradients) are being evaluated</p>
+<dl class="docutils">
+<dt><strong>Outputs</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">points_to_sample[dim][num_to_sample]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">potential future samples whose EI (and/or gradients) are being evaluated</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_cuda_expected_improvement_state_1ab4ad0398cf062b13a12c659cf14661b0"></span><div class="line-block">
+<div class="line">void <strong>UpdateCurrentPoint</strong>(const  <a class="reference internal" href="#project0classoptimal__learning_1_1_cuda_expected_improvement_evaluator"><em>EvaluatorType</em></a>  &amp; ei_evaluator, double const *restrict points_to_sample)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Change the potential samples whose EI (and/or gradient) are being evaluated.
+Update the state&#8217;s derived quantities to be consistent with the new points.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">ei_evaluator:</th><td class="field-body">expected improvement evaluator object that specifies the parameters &amp; GP for EI evaluation</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">points_to_sample[dim][num_to_sample]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">potential future samples whose EI (and/or gradients) are being evaluated</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_cuda_expected_improvement_state_1aa872d9cfc594536f904f977960902543"></span><div class="line-block">
+<div class="line">void <strong>SetupState</strong>(const  <a class="reference internal" href="#project0classoptimal__learning_1_1_cuda_expected_improvement_evaluator"><em>EvaluatorType</em></a>  &amp; ei_evaluator, double const *restrict points_to_sample)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Configures this state object with new <tt class="docutils literal"><span class="pre">points_to_sample</span></tt>, the location of the potential samples whose EI is to be evaluated.
+Ensures all state variables &amp; temporaries are properly sized.
+Properly sets all dependent state variables (e.g., GaussianProcess&#8217;s state) for EI evaluation.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This object&#8217;s state is INVALIDATED if the <tt class="docutils literal"><span class="pre">ei_evaluator</span></tt> (including the GaussianProcess it depends on) used in
+SetupState is mutated! SetupState() should be called again in such a situation.</p>
+</div>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">ei_evaluator:</th><td class="field-body">expected improvement evaluator object that specifies the parameters &amp; GP for EI evaluation</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">points_to_sample[dim][num_to_sample]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">potential future samples whose EI (and/or gradients) are being evaluated</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_cuda_expected_improvement_state_1a20f48e971f88aa850c7db40f7ae1d2a2"></span><div class="line-block">
+<div class="line"> <strong>OL_DISALLOW_DEFAULT_AND_COPY_AND_ASSIGN</strong>(<a class="reference internal" href="#project0structoptimal__learning_1_1_cuda_expected_improvement_state"><em>CudaExpectedImprovementState</em></a>)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Public Members</em><blockquote>
+<div><p><span class="target" id="project0structoptimal__learning_1_1_cuda_expected_improvement_state_1a8940c6a5c776abf82d075b263d36c977"></span>const int <strong>dim</strong></p>
+<blockquote>
+<div><p>spatial dimension (e.g., entries per point of <tt class="docutils literal"><span class="pre">points_sampled</span></tt>) </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_cuda_expected_improvement_state_1a951927d5af71fe9768537b36eb13c369"></span>const int <strong>num_to_sample</strong></p>
+<blockquote>
+<div><p>number of potential future samples; gradients are evaluated wrt these points (i.e., the &#8220;q&#8221; in q,p-EI) </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_cuda_expected_improvement_state_1a2c99d072f0a2153f2069b4340c5c72fd"></span>const int <strong>num_being_sampled</strong></p>
+<blockquote>
+<div><p>number of points being sampled concurrently (i.e., the &#8220;p&#8221; in q,p-EI) </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_cuda_expected_improvement_state_1a4a3b890c30521007c341caab2de58fe6"></span>const int <strong>num_derivatives</strong></p>
+<blockquote>
+<div><p>number of derivative terms desired (usually 0 for no derivatives or num_to_sample) </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_cuda_expected_improvement_state_1acec801aeed3a5b821184ccc24da9712c"></span>const int <strong>num_union</strong></p>
+<blockquote>
+<div><p>number of points in union_of_points: num_to_sample + num_being_sampled </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_cuda_expected_improvement_state_1a7bbf41f62565457a5482fdf60397d59a"></span>std::vector&lt; double &gt; <strong>union_of_points</strong></p>
+<blockquote>
+<div><p></p>
+<p>points currently being sampled; this is the union of the points represented by &#8220;q&#8221; and &#8220;p&#8221; in q,p-EI <tt class="docutils literal"><span class="pre">points_to_sample</span></tt> is stored first in memory, immediately followed by <tt class="docutils literal"><span class="pre">points_being_sampled</span></tt> </p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_cuda_expected_improvement_state_1aa0d9c8bf1a42a95aaab5fcbf792e5b34"></span><a class="reference internal" href="gpp_math.html#project0structoptimal__learning_1_1_points_to_sample_state"><em>GaussianProcess::StateType</em></a> <strong>points_to_sample_state</strong></p>
+<blockquote>
+<div><p>gaussian process state </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_cuda_expected_improvement_state_1a5e3e78ebafb8736ef7acfd98d866beeb"></span><a class="reference internal" href="gpp_random.html#project0structoptimal__learning_1_1_uniform_random_generator"><em>UniformRandomGenerator</em></a>  * <strong>uniform_rng</strong></p>
+<blockquote>
+<div><p>random number generator </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_cuda_expected_improvement_state_1a617874d8986c97bfbfb49ca7d5ae6297"></span>std::vector&lt; double &gt; <strong>to_sample_mean</strong></p>
+<blockquote>
+<div><p>the mean of the GP evaluated at union_of_points </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_cuda_expected_improvement_state_1aa633238e9ff4308278cee0139959e41c"></span>std::vector&lt; double &gt; <strong>grad_mu</strong></p>
+<blockquote>
+<div><p>the gradient of the GP mean evaluated at union_of_points, wrt union_of_points[0:num_to_sample] </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_cuda_expected_improvement_state_1a76d1bf76db0d7345f8ad5114dc147f83"></span>std::vector&lt; double &gt; <strong>cholesky_to_sample_var</strong></p>
+<blockquote>
+<div><p>the cholesky (<tt class="docutils literal"><span class="pre">LL^T</span></tt>) factorization of the GP variance evaluated at union_of_points </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_cuda_expected_improvement_state_1a5ab3ecd624584f9b18c71d14a4e7606f"></span>std::vector&lt; double &gt; <strong>grad_chol_decomp</strong></p>
+<blockquote>
+<div><p>the gradient of the cholesky (<tt class="docutils literal"><span class="pre">LL^T</span></tt>) factorization of the GP variance evaluated at union_of_points wrt union_of_points[0:num_to_sample] </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_cuda_expected_improvement_state_1ae63e116046f527d6d72cb68aac65ef14"></span>bool <strong>configure_for_test</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_cuda_expected_improvement_state_1aea052cd6c431fd5813c188c0e1d2abed"></span><a class="reference internal" href="#project0structoptimal__learning_1_1_cuda_device_pointer"><em>CudaDevicePointer</em></a> <strong>gpu_mu</strong></p>
+<blockquote>
+<div><p></p>
+<p>structs containing pointers to store the memory locations of variables on GPU input data for GPU computations and GPU should not modify them </p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_cuda_expected_improvement_state_1af432fa9970f8e2a4fe0e3f2702767b49"></span><a class="reference internal" href="#project0structoptimal__learning_1_1_cuda_device_pointer"><em>CudaDevicePointer</em></a> <strong>gpu_chol_var</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_cuda_expected_improvement_state_1aa459a98d0c6bd803ddba0ef2754e1f4d"></span><a class="reference internal" href="#project0structoptimal__learning_1_1_cuda_device_pointer"><em>CudaDevicePointer</em></a> <strong>gpu_grad_mu</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_cuda_expected_improvement_state_1a5f5ce4e5f3420fb018c818a13478da45"></span><a class="reference internal" href="#project0structoptimal__learning_1_1_cuda_device_pointer"><em>CudaDevicePointer</em></a> <strong>gpu_grad_chol_var</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_cuda_expected_improvement_state_1a8b90da3c4c7ea6e3e706b94c26312e04"></span><a class="reference internal" href="#project0structoptimal__learning_1_1_cuda_device_pointer"><em>CudaDevicePointer</em></a> <strong>gpu_ei_storage</strong></p>
+<blockquote>
+<div><p>data containing results returned by GPU computations </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_cuda_expected_improvement_state_1a8d58557840e2ef0bb476de1ea5620016"></span><a class="reference internal" href="#project0structoptimal__learning_1_1_cuda_device_pointer"><em>CudaDevicePointer</em></a> <strong>gpu_grad_ei_storage</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_cuda_expected_improvement_state_1a9b0221f952d0820fd576c0fa4dedc584"></span><a class="reference internal" href="#project0structoptimal__learning_1_1_cuda_device_pointer"><em>CudaDevicePointer</em></a> <strong>gpu_random_number_ei</strong></p>
+<blockquote>
+<div><p></p>
+<p>data containing random numbers used in GPU computations, which are only used for testing </p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_cuda_expected_improvement_state_1af368b345f90d8e7001757513e420307c"></span><a class="reference internal" href="#project0structoptimal__learning_1_1_cuda_device_pointer"><em>CudaDevicePointer</em></a> <strong>gpu_random_number_grad_ei</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_cuda_expected_improvement_state_1a50ba0dffb5508495c4046811cd71d029"></span>std::vector&lt; double &gt; <strong>random_number_ei</strong></p>
+<blockquote>
+<div><p>storage for random numbers used in computing EI &amp; grad_ei, this is only used to setup unit test </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_cuda_expected_improvement_state_1a178df2bab6020cab0588bb18699984eb"></span>std::vector&lt; double &gt; <strong>random_number_grad_ei</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Public Static Functions</em><blockquote>
+<div><p><span class="target" id="project0structoptimal__learning_1_1_cuda_expected_improvement_state_1afdb1109ab6b79576651c6f45200df731"></span><div class="line-block">
+<div class="line">std::vector&lt; double &gt; <strong>BuildUnionOfPoints</strong>(double const *restrict points_to_sample, double const *restrict points_being_sampled, int num_to_sample, int num_being_sampled, int dim)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Create a vector with the union of points_to_sample and points_being_sampled (the latter is appended to the former).</p>
+<p>Note the l-value return. Assigning the return to a std::vector&lt;double&gt; or passing it as an argument to the ctor
+will result in copy-elision or move semantics; no copying/performance loss.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>::</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">points_to_sample[dim][num_to_sample]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">points at which to evaluate EI and/or its gradient to check their value in future experiments (i.e., test points for GP predictions)</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">points_being_sampled[dim][num_being_sampled]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">points being sampled in concurrent experiments</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">num_to_sample:</th><td class="field-body">number of potential future samples; gradients are evaluated wrt these points (i.e., the &#8220;q&#8221; in q,p-EI)</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">num_being_sampled:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">number of points being sampled in concurrent experiments (i.e., the &#8220;p&#8221; in q,p-EI)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">dim:</th><td class="field-body">the number of spatial dimensions of each point array</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd>std::vector&lt;double&gt; with the union of the input arrays: points_being_sampled is <em>appended</em> to points_to_sample</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_cuda_expected_improvement_state_1a312528621c58def241992e489679fc68"></span><div class="line-block">
+<div class="line">int <strong>GetVectorSize</strong>(int num_mc_itr, int num_threads, int num_blocks, int num_points)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>A simple utility function to calculate how many random numbers will be generated by GPU computation of EI/gradEI given
+number of MC simulations. (user set num_mc_itr is not necessarily equal to the actual num_mc_itr used in GPU computation,
+because actual num_mc_itr has to be multiple of (num_threads * num_blocks)</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>::</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">num_mc_itr:</th><td class="field-body">number of MC simulations</td>
+</tr>
+<tr class="field-even field"><th class="field-name">num_threads:</th><td class="field-body">number of threads per block in GPU computation</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">num_blocks:</th><td class="field-body">number of blocks in GPU computation</td>
+</tr>
+<tr class="field-even field"><th class="field-name">num_points:</th><td class="field-body">number of points interested (aka q+p)</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd>int: number of random numbers generated in GPU computation</dd>
+</dl>
+ </p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</p>
+<p><p id="project0classoptimal__learning_1_1_optimal_learning_cuda_exception"><em>class</em> <strong>OptimalLearningCudaException</strong></p>
+<blockquote>
+<div><p></p>
+<p><p>Exception to handle runtime errors returned by CUDA API functions. This class subclasses
+OptimalLearningException in gpp_exception.hpp/cpp, and basically has the same functionality
+as its superclass, except the constructor is different.</p>
+ </p>
+<em>Public Functions</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_optimal_learning_cuda_exception_1a9ba2fc9194514d56c15c851a9b2dcfb0"></span><div class="line-block">
+<div class="line"> <strong>OptimalLearningCudaException</strong>(const  <a class="reference internal" href="gpp_cuda_math.html#project0structoptimal__learning_1_1_cuda_error"><em>CudaError</em></a>  &amp; error)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Constructs a OptimalLearningCudaException with struct CudaError.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">error:</th><td class="field-body">C struct that contains error message returned by CUDA API functions</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_optimal_learning_cuda_exception_1aef2eb41fd507d76e80d448e1537fd454"></span><div class="line-block">
+<div class="line"> <strong>OL_DISALLOW_DEFAULT_AND_ASSIGN</strong>(<a class="reference internal" href="#project0classoptimal__learning_1_1_optimal_learning_cuda_exception"><em>OptimalLearningCudaException</em></a>)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Public Static Attributes</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_optimal_learning_cuda_exception_1add6b6bab9a9c79076146c7ce68581015"></span>constexpr char const * <strong>kName</strong></p>
+<blockquote>
+<div><p>String name of this exception ofr logging. </p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</p>
+</div></blockquote>
+</p>
+</div>
+<div class="section" id="gpp-expected-improvement-gpu-cpp">
+<h2>gpp_expected_improvement_gpu.cpp<a class="headerlink" href="#gpp-expected-improvement-gpu-cpp" title="Permalink to this headline">¶</a></h2>
+<p></p>
+<p><p>This file contains implementations of GPU related functions. They are actually C++ wrappers for
+CUDA C functions defined in gpu/gpp_cuda_math.cu.</p>
+ </p>
+<p><p id="project0namespaceoptimal__learning"><em>namespace</em> <strong>optimal_learning</strong></p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</p>
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="gpp_heuristic_expected_improvement_optimization_test.html" class="btn btn-neutral float-right" title="gpp_heuristic_expected_improvement_optimization_test"/>Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="gpp_domain_test.html" class="btn btn-neutral" title="gpp_domain_test"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2012-2014 Yelp. MOE is licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.2.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

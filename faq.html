@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Frequently Asked Questions &mdash; MOE 0.1.0 documentation</title>
+  <title>Frequently Asked Questions &mdash; MOE 0.2.0 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
     <link rel="stylesheet" href="_static/breathe.css" type="text/css" />
   
-    <link rel="top" title="MOE 0.1.0 documentation" href="index.html"/>
+    <link rel="top" title="MOE 0.2.0 documentation" href="index.html"/>
         <link rel="next" title="moe package" href="moe.html"/>
         <link rel="prev" title="Contributing" href="contributing.html"/> 
 
@@ -95,6 +95,13 @@
 <li class="toctree-l2"><a class="reference internal" href="objective_functions.html#example-of-objective-functions">Example of Objective Functions</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="bandit.html">Multi-Armed Bandits</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#what-is-the-multi-armed-bandit-problem">What is the multi-armed bandit problem?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#applications">Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#policies">Policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#pointers">Pointers</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="examples.html#minimizing-an-arbitrary-function">Minimizing an arbitrary function</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples.html#gaussian-process-regression-given-historical-data">Gaussian Process regression given historical data</a></li>
@@ -148,9 +155,11 @@
 <li class="toctree-l1"><a class="reference internal" href="cpp_tree.html">C++ Files</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimization_test.html">gpp_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_domain_test.html">gpp_domain_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_gpu.html">gpp_expected_improvement_gpu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_geometry.html">gpp_geometry</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_test_utils.html">gpp_test_utils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_logging.html">gpp_logging</a></li>
@@ -159,28 +168,29 @@
 <li class="toctree-l2"><a class="reference internal" href="gpp_domain.html">gpp_domain</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_python_common.html">gpp_python_common</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_hyperparameter_optimization_demo.html">gpp_hyperparameter_optimization_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_test_utils_test.html">gpp_test_utils_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_math_test.html">gpp_math_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_cuda_math.html">gpp_cuda_math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_python_model_selection.html">gpp_python_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_math.html">gpp_math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_random_test.html">gpp_random_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimizer_parameters.html">gpp_optimizer_parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_random.html">gpp_random</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_test_utils_test.html">gpp_test_utils_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra.html">gpp_linear_algebra</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_exception.html">gpp_exception</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_model_selection.html">gpp_model_selection</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_random.html">gpp_random</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_covariance_test.html">gpp_covariance_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_python.html">gpp_python</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_test.html">gpp_model_selection_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_common.html">gpp_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_gpu_test.html">gpp_expected_improvement_gpu_test</a></li>
 </ul>
 </li>
 </ul>
@@ -244,7 +254,7 @@
 <h2>What is the time complexity of MOE?<a class="headerlink" href="#what-is-the-time-complexity-of-moe" title="Permalink to this headline">¶</a></h2>
 <p>The most expensive part of MOE is when we form the Cholesky Decomposition of the covariance matrix. This operation is <span class="math">\(O(N^{3})\)</span> where <em>N</em> is the number of historical points.</p>
 <p>Within MOE techniques like Stochastic Gradient Descent and Monte Carlo integration are used. These methods have tunable parameters like number of multistarts and number of iterations. MOE is linear in complexity with respect to each of these parameters. Depending on the problem, it may take many millions of MC iterations to get an accurate representation of the gradient of the Expected Improvement in high dimension.</p>
-<p>For more information about the runtime of MOE check out <a class="reference internal" href="gpp_linear_algebra.html"><em>gpp_linear_algebra</em></a>, <a class="reference internal" href="gpp_math.html"><em>gpp_math</em></a>, <a class="reference internal" href="gpp_model_selection.html"><em>gpp_model_selection</em></a> and <a class="reference internal" href="moe.views.html#moe.views.schemas.GpHyperOptRequest" title="moe.views.schemas.GpHyperOptRequest"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.GpHyperOptRequest</span></tt></a> for some more info. Timing information is placed within the relevent docstrings throughout the code.</p>
+<p>For more information about the runtime of MOE check out <a class="reference internal" href="gpp_linear_algebra.html"><em>gpp_linear_algebra</em></a>, <a class="reference internal" href="gpp_math.html"><em>gpp_math</em></a>, <a class="reference internal" href="gpp_model_selection.html"><em>gpp_model_selection</em></a>, <a class="reference internal" href="moe.views.schemas.rest.html#moe.views.schemas.rest.gp_hyper_opt.GpHyperOptRequest" title="moe.views.schemas.rest.gp_hyper_opt.GpHyperOptRequest"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.rest.gp_hyper_opt.GpHyperOptRequest</span></tt></a>, and <a class="reference internal" href="moe.views.schemas.html#moe.views.schemas.gp_next_points_pretty_view.GpNextPointsRequest" title="moe.views.schemas.gp_next_points_pretty_view.GpNextPointsRequest"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.gp_next_points_pretty_view.GpNextPointsRequest</span></tt></a> for some more info. Timing information is placed within the relevent docstrings throughout the code; <tt class="docutils literal"><span class="pre">GpHyperOptRequest</span></tt> and <tt class="docutils literal"><span class="pre">GpNextPointsRequest</span></tt> in particular have some specific results.</p>
 </div>
 <div class="section" id="how-do-i-cite-moe">
 <h2>How do I cite MOE?<a class="headerlink" href="#how-do-i-cite-moe" title="Permalink to this headline">¶</a></h2>
@@ -267,7 +277,7 @@
 <li>The objective function does not have a mean of 0. MOE assumes that the GP prior has a mean of 0, if the objective function is translated away from this value it may take a long time for MOE to fully explore the space. See <a class="reference internal" href="objective_functions.html"><em>Objective Functions</em></a> for information on constructing a good objective function for MOE.</li>
 </ul>
 </div></blockquote>
-<p>Check out <a class="reference internal" href="#what-is-the-time-complexity-of-moe">What is the time complexity of MOE?</a> and the docs in <a class="reference internal" href="moe.views.html#module-moe.views.schemas" title="moe.views.schemas"><tt class="xref py py-mod docutils literal"><span class="pre">moe.views.schemas</span></tt></a> for more information on timings.</p>
+<p>Check out <a class="reference internal" href="#what-is-the-time-complexity-of-moe">What is the time complexity of MOE?</a> and the docs in <a class="reference internal" href="moe.views.schemas.html#module-moe.views.schemas" title="moe.views.schemas"><tt class="xref py py-mod docutils literal"><span class="pre">moe.views.schemas</span></tt></a> for more information on timings.</p>
 </div>
 <div class="section" id="how-do-i-bootstrap-moe-what-initial-data-does-it-need">
 <h2>How do I bootstrap MOE? What initial data does it need?<a class="headerlink" href="#how-do-i-bootstrap-moe-what-initial-data-does-it-need" title="Permalink to this headline">¶</a></h2>
@@ -342,7 +352,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.1.0',
+            VERSION:'0.2.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

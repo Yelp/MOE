@@ -19,10 +19,10 @@ moe.tests.views.exceptions_test module
     :undoc-members:
     :show-inheritance:
 
-moe.tests.views.rest_gaussian_process_test_case module
-------------------------------------------------------
+moe.tests.views.rest_test_case module
+-------------------------------------
 
-.. automodule:: moe.tests.views.rest_gaussian_process_test_case
+.. automodule:: moe.tests.views.rest_test_case
     :members:
     :undoc-members:
     :show-inheritance:

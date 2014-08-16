@@ -1,0 +1,22 @@
+moe.bandit.interfaces package
+=============================
+
+Submodules
+----------
+
+moe.bandit.interfaces.bandit_interface module
+---------------------------------------------
+
+.. automodule:: moe.bandit.interfaces.bandit_interface
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: moe.bandit.interfaces
+    :members:
+    :undoc-members:
+    :show-inheritance:

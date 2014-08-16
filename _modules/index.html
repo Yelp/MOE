@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Overview: module code &mdash; MOE 0.1.0 documentation</title>
+  <title>Overview: module code &mdash; MOE 0.2.0 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
     <link rel="stylesheet" href="../_static/breathe.css" type="text/css" />
   
-    <link rel="top" title="MOE 0.1.0 documentation" href="../index.html"/> 
+    <link rel="top" title="MOE 0.2.0 documentation" href="../index.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -93,6 +93,13 @@
 <li class="toctree-l2"><a class="reference internal" href="../objective_functions.html#example-of-objective-functions">Example of Objective Functions</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../bandit.html">Multi-Armed Bandits</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../bandit.html#what-is-the-multi-armed-bandit-problem">What is the multi-armed bandit problem?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bandit.html#applications">Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bandit.html#policies">Policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bandit.html#pointers">Pointers</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../examples.html#minimizing-an-arbitrary-function">Minimizing an arbitrary function</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../examples.html#gaussian-process-regression-given-historical-data">Gaussian Process regression given historical data</a></li>
@@ -146,9 +153,11 @@
 <li class="toctree-l1"><a class="reference internal" href="../cpp_tree.html">C++ Files</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../gpp_optimization_test.html">gpp_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../gpp_domain_test.html">gpp_domain_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gpp_expected_improvement_gpu.html">gpp_expected_improvement_gpu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../gpp_geometry.html">gpp_geometry</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../gpp_test_utils.html">gpp_test_utils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../gpp_logging.html">gpp_logging</a></li>
@@ -157,28 +166,29 @@
 <li class="toctree-l2"><a class="reference internal" href="../gpp_domain.html">gpp_domain</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../gpp_python_common.html">gpp_python_common</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../gpp_hyperparameter_optimization_demo.html">gpp_hyperparameter_optimization_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../gpp_test_utils_test.html">gpp_test_utils_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gpp_geometry_test.html">gpp_geometry_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../gpp_math_test.html">gpp_math_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gpp_cuda_math.html">gpp_cuda_math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../gpp_python_model_selection.html">gpp_python_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../gpp_math.html">gpp_math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../gpp_random_test.html">gpp_random_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../gpp_optimizer_parameters.html">gpp_optimizer_parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../gpp_random.html">gpp_random</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../gpp_geometry_test.html">gpp_geometry_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gpp_test_utils_test.html">gpp_test_utils_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../gpp_linear_algebra.html">gpp_linear_algebra</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../gpp_exception.html">gpp_exception</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../gpp_model_selection.html">gpp_model_selection</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gpp_random.html">gpp_random</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../gpp_covariance_test.html">gpp_covariance_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../gpp_python.html">gpp_python</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../gpp_model_selection_test.html">gpp_model_selection_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../gpp_common.html">gpp_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gpp_expected_improvement_gpu_test.html">gpp_expected_improvement_gpu_test</a></li>
 </ul>
 </li>
 </ul>
@@ -215,7 +225,18 @@
             
   <h1>All modules for which code is available</h1>
 <ul><li><a href="moe.html">moe</a></li>
-<ul><li><a href="moe/easy_interface/experiment.html">moe.easy_interface.experiment</a></li>
+<ul><li><a href="moe/bandit/constant.html">moe.bandit.constant</a></li>
+<li><a href="moe/bandit/data_containers.html">moe.bandit.data_containers</a></li>
+<li><a href="moe/bandit/epsilon_first.html">moe.bandit.epsilon_first</a></li>
+<li><a href="moe/bandit/epsilon_greedy.html">moe.bandit.epsilon_greedy</a></li>
+<li><a href="moe/bandit/epsilon_interface.html">moe.bandit.epsilon_interface</a></li>
+<li><a href="moe/bandit/interfaces/bandit_interface.html">moe.bandit.interfaces.bandit_interface</a></li>
+<li><a href="moe/bandit/linkers.html">moe.bandit.linkers</a></li>
+<li><a href="moe/bandit/ucb1.html">moe.bandit.ucb1</a></li>
+<li><a href="moe/bandit/ucb1_tuned.html">moe.bandit.ucb1_tuned</a></li>
+<li><a href="moe/bandit/ucb_interface.html">moe.bandit.ucb_interface</a></li>
+<li><a href="moe/bandit/utils.html">moe.bandit.utils</a></li>
+<li><a href="moe/easy_interface/experiment.html">moe.easy_interface.experiment</a></li>
 <li><a href="moe/easy_interface/simple_endpoint.html">moe.easy_interface.simple_endpoint</a></li>
 <li><a href="moe/optimal_learning/python/constant.html">moe.optimal_learning.python.constant</a></li>
 <li><a href="moe/optimal_learning/python/cpp_wrappers/covariance.html">moe.optimal_learning.python.cpp_wrappers.covariance</a></li>
@@ -244,6 +265,17 @@
 <li><a href="moe/optimal_learning/python/repeated_domain.html">moe.optimal_learning.python.repeated_domain</a></li>
 <li><a href="moe/optimal_learning/python/timing.html">moe.optimal_learning.python.timing</a></li>
 <li><a href="moe/resources.html">moe.resources</a></li>
+<li><a href="moe/tests/bandit/bandit_interface_test.html">moe.tests.bandit.bandit_interface_test</a></li>
+<li><a href="moe/tests/bandit/bandit_test_case.html">moe.tests.bandit.bandit_test_case</a></li>
+<li><a href="moe/tests/bandit/epsilon_first_test.html">moe.tests.bandit.epsilon_first_test</a></li>
+<li><a href="moe/tests/bandit/epsilon_greedy_test.html">moe.tests.bandit.epsilon_greedy_test</a></li>
+<li><a href="moe/tests/bandit/epsilon_test.html">moe.tests.bandit.epsilon_test</a></li>
+<li><a href="moe/tests/bandit/epsilon_test_case.html">moe.tests.bandit.epsilon_test_case</a></li>
+<li><a href="moe/tests/bandit/linkers_test.html">moe.tests.bandit.linkers_test</a></li>
+<li><a href="moe/tests/bandit/ucb1_test.html">moe.tests.bandit.ucb1_test</a></li>
+<li><a href="moe/tests/bandit/ucb1_tuned_test.html">moe.tests.bandit.ucb1_tuned_test</a></li>
+<li><a href="moe/tests/bandit/ucb_test_case.html">moe.tests.bandit.ucb_test_case</a></li>
+<li><a href="moe/tests/bandit/utils_test.html">moe.tests.bandit.utils_test</a></li>
 <li><a href="moe/tests/optimal_learning/python/cpp_unit_tests/cpp_unit_test_wrapper_test.html">moe.tests.optimal_learning.python.cpp_unit_tests.cpp_unit_test_wrapper_test</a></li>
 <li><a href="moe/tests/optimal_learning/python/cpp_wrappers/exception_test.html">moe.tests.optimal_learning.python.cpp_wrappers.exception_test</a></li>
 <li><a href="moe/tests/optimal_learning/python/cpp_wrappers/expected_improvement_test.html">moe.tests.optimal_learning.python.cpp_wrappers.expected_improvement_test</a></li>
@@ -259,11 +291,15 @@
 <li><a href="moe/tests/optimal_learning/python/python_version/log_likelihood_test.html">moe.tests.optimal_learning.python.python_version.log_likelihood_test</a></li>
 <li><a href="moe/tests/optimal_learning/python/python_version/optimization_test.html">moe.tests.optimal_learning.python.python_version.optimization_test</a></li>
 <li><a href="moe/tests/views/exceptions_test.html">moe.tests.views.exceptions_test</a></li>
+<li><a href="moe/tests/views/rest/bandit_epsilon_test.html">moe.tests.views.rest.bandit_epsilon_test</a></li>
+<li><a href="moe/tests/views/rest/bandit_test.html">moe.tests.views.rest.bandit_test</a></li>
+<li><a href="moe/tests/views/rest/bandit_ucb_test.html">moe.tests.views.rest.bandit_ucb_test</a></li>
 <li><a href="moe/tests/views/rest/gp_ei_test.html">moe.tests.views.rest.gp_ei_test</a></li>
 <li><a href="moe/tests/views/rest/gp_hyper_opt_test.html">moe.tests.views.rest.gp_hyper_opt_test</a></li>
 <li><a href="moe/tests/views/rest/gp_mean_var_test.html">moe.tests.views.rest.gp_mean_var_test</a></li>
 <li><a href="moe/tests/views/rest/gp_next_points_test.html">moe.tests.views.rest.gp_next_points_test</a></li>
-<li><a href="moe/tests/views/rest_gaussian_process_test_case.html">moe.tests.views.rest_gaussian_process_test_case</a></li>
+<li><a href="moe/tests/views/rest_test_case.html">moe.tests.views.rest_test_case</a></li>
+<li><a href="moe/views/bandit_pretty_view.html">moe.views.bandit_pretty_view</a></li>
 <li><a href="moe/views/constant.html">moe.views.constant</a></li>
 <li><a href="moe/views/exceptions.html">moe.views.exceptions</a></li>
 <li><a href="moe/views/frontend.html">moe.views.frontend</a></li>
@@ -271,13 +307,25 @@
 <li><a href="moe/views/gp_next_points_pretty_view.html">moe.views.gp_next_points_pretty_view</a></li>
 <li><a href="moe/views/gp_pretty_view.html">moe.views.gp_pretty_view</a></li>
 <li><a href="moe/views/optimizable_gp_pretty_view.html">moe.views.optimizable_gp_pretty_view</a></li>
+<li><a href="moe/views/pretty_view.html">moe.views.pretty_view</a></li>
+<li><a href="moe/views/rest/bandit_epsilon.html">moe.views.rest.bandit_epsilon</a></li>
+<li><a href="moe/views/rest/bandit_ucb.html">moe.views.rest.bandit_ucb</a></li>
 <li><a href="moe/views/rest/gp_ei.html">moe.views.rest.gp_ei</a></li>
 <li><a href="moe/views/rest/gp_hyper_opt.html">moe.views.rest.gp_hyper_opt</a></li>
 <li><a href="moe/views/rest/gp_mean_var.html">moe.views.rest.gp_mean_var</a></li>
 <li><a href="moe/views/rest/gp_next_points_constant_liar.html">moe.views.rest.gp_next_points_constant_liar</a></li>
 <li><a href="moe/views/rest/gp_next_points_epi.html">moe.views.rest.gp_next_points_epi</a></li>
 <li><a href="moe/views/rest/gp_next_points_kriging.html">moe.views.rest.gp_next_points_kriging</a></li>
-<li><a href="moe/views/schemas.html">moe.views.schemas</a></li>
+<li><a href="moe/views/schemas/bandit_pretty_view.html">moe.views.schemas.bandit_pretty_view</a></li>
+<li><a href="moe/views/schemas/base_schemas.html">moe.views.schemas.base_schemas</a></li>
+<li><a href="moe/views/schemas/gp_next_points_pretty_view.html">moe.views.schemas.gp_next_points_pretty_view</a></li>
+<li><a href="moe/views/schemas/rest/bandit_epsilon.html">moe.views.schemas.rest.bandit_epsilon</a></li>
+<li><a href="moe/views/schemas/rest/bandit_ucb.html">moe.views.schemas.rest.bandit_ucb</a></li>
+<li><a href="moe/views/schemas/rest/gp_ei.html">moe.views.schemas.rest.gp_ei</a></li>
+<li><a href="moe/views/schemas/rest/gp_hyper_opt.html">moe.views.schemas.rest.gp_hyper_opt</a></li>
+<li><a href="moe/views/schemas/rest/gp_mean_var.html">moe.views.schemas.rest.gp_mean_var</a></li>
+<li><a href="moe/views/schemas/rest/gp_next_points_constant_liar.html">moe.views.schemas.rest.gp_next_points_constant_liar</a></li>
+<li><a href="moe/views/schemas/rest/gp_next_points_kriging.html">moe.views.schemas.rest.gp_next_points_kriging</a></li>
 </ul><li><a href="moe_examples/combined_example.html">moe_examples.combined_example</a></li>
 <li><a href="moe_examples/hyper_opt_of_gp_from_historical_data.html">moe_examples.hyper_opt_of_gp_from_historical_data</a></li>
 <li><a href="moe_examples/mean_and_var_of_gp_from_historic_data.html">moe_examples.mean_and_var_of_gp_from_historic_data</a></li>
@@ -317,7 +365,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.1.0',
+            VERSION:'0.2.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

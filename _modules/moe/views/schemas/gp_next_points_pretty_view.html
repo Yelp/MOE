@@ -1,0 +1,518 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>moe.views.schemas.gp_next_points_pretty_view &mdash; MOE 0.2.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../../_static/breathe.css" type="text/css" />
+  
+    <link rel="top" title="MOE 0.2.0 documentation" href="../../../../index.html"/>
+        <link rel="up" title="moe" href="../../../moe.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="../../../../index.html" class="fa fa-home"> MOE</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../why_moe.html">Why Do We Need MOE?</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../why_moe.html#other-methods">Other Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../install.html">Install</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../install.html#install-in-docker">Install in docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../install.html#install-from-source">Install from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../install.html#osx-tips">OSX Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../install.html#building-boost">Building Boost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../install.html#linux-tips">Linux Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../install.html#cmake-tips">CMake Tips</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../moe_math.html">How does MOE work?</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe_math.html#build-a-gaussian-process-gp-with-the-historical-data">Build a Gaussian Process (GP) with the historical data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe_math.html#optimize-the-hyperparameters-of-the-gaussian-process">Optimize the hyperparameters of the Gaussian Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe_math.html#find-the-point-s-of-highest-expected-improvement-ei">Find the point(s) of highest Expected Improvement (EI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe_math.html#return-the-point-s-to-sample-then-repeat">Return the point(s) to sample, then repeat</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../demo_tutorial.html">Demo Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../demo_tutorial.html#the-interactive-demo">The Interactive Demo</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pretty_endpoints.html">Pretty Endpoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../objective_functions.html">Objective Functions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../objective_functions.html#what-is-an-objective-function">What is an objective function?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../objective_functions.html#properties-of-an-objective-function">Properties of an objective function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../objective_functions.html#parameters">Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../objective_functions.html#id1"><span class="math">\(\Phi\)</span> Objective Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../objective_functions.html#example-of-objective-functions">Example of Objective Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../bandit.html">Multi-Armed Bandits</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../bandit.html#what-is-the-multi-armed-bandit-problem">What is the multi-armed bandit problem?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../bandit.html#applications">Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../bandit.html#policies">Policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../bandit.html#pointers">Pointers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../examples.html#minimizing-an-arbitrary-function">Minimizing an arbitrary function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../examples.html#gaussian-process-regression-given-historical-data">Gaussian Process regression given historical data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../examples.html#hyperparameter-optimization-of-a-gaussian-process">Hyperparameter optimization of a Gaussian Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../examples.html#all-above-examples-combined">All above examples combined</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../examples.html#setting-thresholds-for-advertising-units">Setting thresholds for advertising units</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#making-a-pull-request">Making a pull request</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#documentation">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#testing">Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#style">Style</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#versioning">Versioning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#releasing-for-maintainers">Releasing (For Maintainers)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../faq.html">Frequently Asked Questions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../faq.html#what-license-is-moe-released-under">What license is MOE released under?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../faq.html#when-should-i-use-moe">When should I use MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../faq.html#what-is-the-time-complexity-of-moe">What is the time complexity of MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../faq.html#how-do-i-cite-moe">How do I cite MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../faq.html#why-does-moe-take-so-long-to-return-the-next-points-to-sample-for-some-inputs">Why does MOE take so long to return the next points to sample for some inputs?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../faq.html#how-do-i-bootstrap-moe-what-initial-data-does-it-need">How do I bootstrap MOE? What initial data does it need?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../faq.html#how-many-function-evaluations-do-i-need-before-moe-is-done">How many function evaluations do I need before MOE is &#8220;done&#8221;?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../faq.html#how-many-function-evaluations-do-i-perform-before-i-update-the-hyperparameters-of-the-gp">How many function evaluations do I perform before I update the hyperparameters of the GP?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../faq.html#will-you-accept-my-pull-request">Will you accept my pull request?</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../moe.html">moe package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe.html#module-moe.resources">moe.resources module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe.html#module-moe">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../moe_examples.html">moe_examples package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#module-moe_examples.next_point_via_simple_endpoint">moe_examples.next_point_via_simple_endpoint module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#module-moe_examples">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../cpp_tree.html">C++ Files</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_optimization_test.html">gpp_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_domain_test.html">gpp_domain_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_expected_improvement_gpu.html">gpp_expected_improvement_gpu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_geometry.html">gpp_geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_test_utils.html">gpp_test_utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_logging.html">gpp_logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_covariance.html">gpp_covariance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_python_test.html">gpp_python_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_domain.html">gpp_domain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_python_common.html">gpp_python_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_hyperparameter_optimization_demo.html">gpp_hyperparameter_optimization_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_geometry_test.html">gpp_geometry_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_math_test.html">gpp_math_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_cuda_math.html">gpp_cuda_math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_python_model_selection.html">gpp_python_model_selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_math.html">gpp_math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_random_test.html">gpp_random_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_optimizer_parameters.html">gpp_optimizer_parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_test_utils_test.html">gpp_test_utils_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_linear_algebra.html">gpp_linear_algebra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_exception.html">gpp_exception</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_model_selection.html">gpp_model_selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_random.html">gpp_random</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_covariance_test.html">gpp_covariance_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_python.html">gpp_python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_model_selection_test.html">gpp_model_selection_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_common.html">gpp_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_expected_improvement_gpu_test.html">gpp_expected_improvement_gpu_test</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../../index.html">MOE</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+      
+          <li><a href="../../../moe.html">moe</a> &raquo;</li>
+      
+    <li>moe.views.schemas.gp_next_points_pretty_view</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <h1>Source code for moe.views.schemas.gp_next_points_pretty_view</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;Base request/response schemas for ``gp_next_points_*`` endpoints; e.g., :class:`moe.views.rest.gp_next_points_epi.GpNextPointsEpi`.&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">colander</span>
+
+<span class="kn">from</span> <span class="nn">moe.optimal_learning.python.constant</span> <span class="kn">import</span> <span class="n">DEFAULT_MAX_NUM_THREADS</span><span class="p">,</span> <span class="n">MAX_ALLOWED_NUM_THREADS</span><span class="p">,</span> <span class="n">DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS</span>
+<span class="kn">from</span> <span class="nn">moe.views.schemas</span> <span class="kn">import</span> <span class="n">base_schemas</span>
+
+
+<div class="viewcode-block" id="GpNextPointsRequest"><a class="viewcode-back" href="../../../../moe.views.schemas.html#moe.views.schemas.gp_next_points_pretty_view.GpNextPointsRequest">[docs]</a><span class="k">class</span> <span class="nc">GpNextPointsRequest</span><span class="p">(</span><span class="n">base_schemas</span><span class="o">.</span><span class="n">StrictMappingSchema</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;A request colander schema for the various subclasses of :class:`moe.views.gp_next_points_pretty_view.GpNextPointsPrettyView`; e.g., :class:`moe.views.rest.gp_next_points_epi.GpNextPointsEpi`.</span>
+
+<span class="sd">    .. Warning:: Requesting ``num_to_sample`` &gt; ``num_sampled`` can lead to singular GP-variance</span>
+<span class="sd">      matrices and other conditioning issues (e.g., the resulting points may be tightly</span>
+<span class="sd">      clustered). We suggest bootstrapping with a few grid points, random search, etc.</span>
+
+<span class="sd">    See additional notes in :class:`moe.views.schemas.base_schemas.CovarianceInfo`,</span>
+<span class="sd">    :class:`moe.views.schemas.base_schemas.BoundedDomainInfo`, :class:`moe.views.schemas.base_schemas.GpHistoricalInfo`.</span>
+
+<span class="sd">    **Required fields**</span>
+
+<span class="sd">    :ivar gp_historical_info: (:class:`moe.views.schemas.base_schemas.GpHistoricalInfo`) dict of historical data</span>
+<span class="sd">    :ivar domain_info: (:class:`moe.views.schemas.base_schemas.BoundedDomainInfo`) dict of domain information</span>
+
+<span class="sd">    **Optional fields**</span>
+
+<span class="sd">    :ivar num_to_sample: (*int*) number of next points to generate (default: 1)</span>
+<span class="sd">    :ivar mc_iterations: (*int*) number of Monte Carlo (MC) iterations to perform in numerical integration to calculate EI</span>
+<span class="sd">    :ivar max_num_threads: (*int*) maximum number of threads to use in computation</span>
+<span class="sd">    :ivar covariance_info: (:class:`moe.views.schemas.base_schemas.CovarianceInfo`) dict of covariance information</span>
+<span class="sd">    :ivar optimizer_info: (:class:`moe.views.schemas.base_schemas.OptimizerInfo`) dict of optimizer information</span>
+<span class="sd">    :ivar points_being_sampled: (*list of float64*) points in domain being sampled in concurrent experiments (default: [])</span>
+
+<span class="sd">    **General Timing Results**</span>
+
+<span class="sd">    Here are some &quot;broad-strokes&quot; timing results for EI optimization.</span>
+<span class="sd">    These tests are not complete nor comprehensive; they&#39;re just a starting point.</span>
+<span class="sd">    The tests were run on a Ivy Bridge 2.3 GHz quad-core CPU (i7-3615QM). Data was generated</span>
+<span class="sd">    from a Gaussian Process prior. The optimization parameters were the default</span>
+<span class="sd">    values (see :mod:`moe.optimal_learning.python.constant`) as of sha</span>
+<span class="sd">    ``c19257049f16036e5e2823df87fbe0812720e291``.</span>
+
+<span class="sd">    Below, ``N = num_sampled``, ``MC = num_mc_iterations``, and ``q = num_to_sample``</span>
+
+<span class="sd">    .. Note:: constant liar, kriging, and EPI (with ``num_to_sample = 1``) all fall</span>
+<span class="sd">      under the ``analytic EI`` name.</span>
+
+<span class="sd">    .. Note:: EI optimization times can vary widely as some randomly generated test</span>
+<span class="sd">      cases are very &quot;easy.&quot; Thus we give rough ranges.</span>
+
+<span class="sd">    =============  =======================</span>
+<span class="sd">     Analytic EI</span>
+<span class="sd">    --------------------------------------</span>
+<span class="sd">      dim, N           Gradient Descent</span>
+<span class="sd">    =============  =======================</span>
+<span class="sd">      3, 20               0.3 - 0.6s</span>
+<span class="sd">      3, 40               0.5 - 1.4s</span>
+<span class="sd">      3, 120              0.8 - 2.9s</span>
+<span class="sd">      6, 20               0.4 - 0.9s</span>
+<span class="sd">      6, 40              1.25 - 1.8s</span>
+<span class="sd">      6, 120              2.9 - 5.0s</span>
+<span class="sd">    =============  =======================</span>
+
+<span class="sd">    We expect this to scale as ``~ O(dim)`` and ``~ O(N^3)``. The ``O(N^3)`` only happens</span>
+<span class="sd">    once per multistart. Per iteration there&#39;s an ``O(N^2)`` dependence but as you can</span>
+<span class="sd">    see, the dependence on ``dim`` is stronger.</span>
+
+<span class="sd">    =============  =======================</span>
+<span class="sd">     MC EI (``N = 20``, ``dim = 3``)</span>
+<span class="sd">    --------------------------------------</span>
+<span class="sd">      q, MC           Gradient Descent</span>
+<span class="sd">    =============  =======================</span>
+<span class="sd">      2, 10k                50 - 80s</span>
+<span class="sd">      4, 10k              120 - 180s</span>
+<span class="sd">      8, 10k              400 - 580s</span>
+<span class="sd">      2, 40k              230 - 480s</span>
+<span class="sd">      4, 40k              600 - 700s</span>
+<span class="sd">    =============  =======================</span>
+
+<span class="sd">    We expect this to scale as ``~ O(q^2)`` and ``~ O(MC)``. Scaling with ``dim`` and ``N``</span>
+<span class="sd">    should be similar to the analytic case.</span>
+
+<span class="sd">    **Example Minimal Request**</span>
+
+<span class="sd">    .. sourcecode:: http</span>
+
+<span class="sd">        Content-Type: text/javascript</span>
+
+<span class="sd">        {</span>
+<span class="sd">            &quot;num_to_sample&quot;: 1,</span>
+<span class="sd">            &quot;gp_historical_info&quot;: {</span>
+<span class="sd">                &quot;points_sampled&quot;: [</span>
+<span class="sd">                        {&quot;value_var&quot;: 0.01, &quot;value&quot;: 0.1, &quot;point&quot;: [0.0]},</span>
+<span class="sd">                        {&quot;value_var&quot;: 0.01, &quot;value&quot;: 0.2, &quot;point&quot;: [1.0]}</span>
+<span class="sd">                    ],</span>
+<span class="sd">                },</span>
+<span class="sd">            &quot;domain_info&quot;: {</span>
+<span class="sd">                &quot;dim&quot;: 1,</span>
+<span class="sd">                &quot;domain_bounds&quot;: [</span>
+<span class="sd">                    {&quot;min&quot;: 0.0, &quot;max&quot;: 1.0},</span>
+<span class="sd">                    ],</span>
+<span class="sd">                },</span>
+<span class="sd">        }</span>
+
+<span class="sd">    **Example Full Request**</span>
+
+<span class="sd">    .. sourcecode:: http</span>
+
+<span class="sd">        Content-Type: text/javascript</span>
+
+<span class="sd">        {</span>
+<span class="sd">            &quot;num_to_sample&quot;: 1,</span>
+<span class="sd">            &quot;points_being_sampled&quot;: [[0.2], [0.7]],</span>
+<span class="sd">            &quot;mc_iterations&quot;: 10000,</span>
+<span class="sd">            &quot;max_num_threads&quot;: 1,</span>
+<span class="sd">            &quot;gp_historical_info&quot;: {</span>
+<span class="sd">                &quot;points_sampled&quot;: [</span>
+<span class="sd">                        {&quot;value_var&quot;: 0.01, &quot;value&quot;: 0.1, &quot;point&quot;: [0.0]},</span>
+<span class="sd">                        {&quot;value_var&quot;: 0.01, &quot;value&quot;: 0.2, &quot;point&quot;: [1.0]}</span>
+<span class="sd">                    ],</span>
+<span class="sd">                },</span>
+<span class="sd">            &quot;domain_info&quot;: {</span>
+<span class="sd">                &quot;domain_type&quot;: &quot;tensor_product&quot;</span>
+<span class="sd">                &quot;dim&quot;: 1,</span>
+<span class="sd">                &quot;domain_bounds&quot;: [</span>
+<span class="sd">                    {&quot;min&quot;: 0.0, &quot;max&quot;: 1.0},</span>
+<span class="sd">                    ],</span>
+<span class="sd">                },</span>
+<span class="sd">            &quot;covariance_info&quot;: {</span>
+<span class="sd">                &quot;covariance_type&quot;: &quot;square_exponential&quot;,</span>
+<span class="sd">                &quot;hyperparameters&quot;: [1.0, 1.0],</span>
+<span class="sd">                },</span>
+<span class="sd">            &quot;optimizer_info&quot;: {</span>
+<span class="sd">                &quot;optimizer_type&quot;: &quot;gradient_descent_optimizer&quot;,</span>
+<span class="sd">                &quot;num_multistarts&quot;: 200,</span>
+<span class="sd">                &quot;num_random_samples&quot;: 4000,</span>
+<span class="sd">                &quot;optimizer_parameters&quot;: {</span>
+<span class="sd">                    &quot;gamma&quot;: 0.5,</span>
+<span class="sd">                    ...</span>
+<span class="sd">                    },</span>
+<span class="sd">                },</span>
+<span class="sd">        }</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">num_to_sample</span> <span class="o">=</span> <span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="p">(</span>
+            <span class="n">colander</span><span class="o">.</span><span class="n">Int</span><span class="p">(),</span>
+            <span class="n">missing</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">validator</span><span class="o">=</span><span class="n">colander</span><span class="o">.</span><span class="n">Range</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+            <span class="p">)</span>
+    <span class="n">mc_iterations</span> <span class="o">=</span> <span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="p">(</span>
+            <span class="n">colander</span><span class="o">.</span><span class="n">Int</span><span class="p">(),</span>
+            <span class="n">validator</span><span class="o">=</span><span class="n">colander</span><span class="o">.</span><span class="n">Range</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+            <span class="n">missing</span><span class="o">=</span><span class="n">DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS</span><span class="p">,</span>
+            <span class="p">)</span>
+    <span class="n">max_num_threads</span> <span class="o">=</span> <span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="p">(</span>
+            <span class="n">colander</span><span class="o">.</span><span class="n">Int</span><span class="p">(),</span>
+            <span class="n">validator</span><span class="o">=</span><span class="n">colander</span><span class="o">.</span><span class="n">Range</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="n">MAX_ALLOWED_NUM_THREADS</span><span class="p">),</span>
+            <span class="n">missing</span><span class="o">=</span><span class="n">DEFAULT_MAX_NUM_THREADS</span><span class="p">,</span>
+            <span class="p">)</span>
+    <span class="n">gp_historical_info</span> <span class="o">=</span> <span class="n">base_schemas</span><span class="o">.</span><span class="n">GpHistoricalInfo</span><span class="p">()</span>
+    <span class="n">domain_info</span> <span class="o">=</span> <span class="n">base_schemas</span><span class="o">.</span><span class="n">BoundedDomainInfo</span><span class="p">()</span>
+    <span class="n">covariance_info</span> <span class="o">=</span> <span class="n">base_schemas</span><span class="o">.</span><span class="n">CovarianceInfo</span><span class="p">(</span>
+            <span class="n">missing</span><span class="o">=</span><span class="n">base_schemas</span><span class="o">.</span><span class="n">CovarianceInfo</span><span class="p">()</span><span class="o">.</span><span class="n">deserialize</span><span class="p">({}),</span>
+            <span class="p">)</span>
+    <span class="n">optimizer_info</span> <span class="o">=</span> <span class="n">base_schemas</span><span class="o">.</span><span class="n">OptimizerInfo</span><span class="p">(</span>
+            <span class="n">missing</span><span class="o">=</span><span class="n">base_schemas</span><span class="o">.</span><span class="n">OptimizerInfo</span><span class="p">()</span><span class="o">.</span><span class="n">deserialize</span><span class="p">({}),</span>
+            <span class="p">)</span>
+    <span class="n">points_being_sampled</span> <span class="o">=</span> <span class="n">base_schemas</span><span class="o">.</span><span class="n">ListOfPointsInDomain</span><span class="p">(</span>
+            <span class="n">missing</span><span class="o">=</span><span class="p">[],</span>
+            <span class="p">)</span>
+    <span class="n">mvndst_parameters</span> <span class="o">=</span> <span class="n">base_schemas</span><span class="o">.</span><span class="n">MVNDSTParametersSchema</span><span class="p">(</span>
+            <span class="n">missing</span><span class="o">=</span><span class="n">base_schemas</span><span class="o">.</span><span class="n">MVNDSTParametersSchema</span><span class="p">()</span><span class="o">.</span><span class="n">deserialize</span><span class="p">({}),</span>
+            <span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="GpNextPointsStatus"><a class="viewcode-back" href="../../../../moe.views.schemas.html#moe.views.schemas.gp_next_points_pretty_view.GpNextPointsStatus">[docs]</a><span class="k">class</span> <span class="nc">GpNextPointsStatus</span><span class="p">(</span><span class="n">base_schemas</span><span class="o">.</span><span class="n">StrictMappingSchema</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;A status schema for the various subclasses of :class:`moe.views.gp_next_points_pretty_view.GpNextPointsPrettyView`; e.g., :class:`moe.views.rest.gp_next_points_epi.GpNextPointsEpi`.</span>
+
+<span class="sd">    **Output fields**</span>
+
+<span class="sd">    :ivar expected_improvement: (*float64 &gt;= 0.0*) EI evaluated at ``points_to_sample`` (:class:`moe.views.schemas.base_schemas.ListOfExpectedImprovements`)</span>
+<span class="sd">    :ivar optimizer_success: (*dict*) Whether or not the optimizer converged to an optimal set of ``points_to_sample``</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">expected_improvement</span> <span class="o">=</span> <span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="p">(</span>
+            <span class="n">colander</span><span class="o">.</span><span class="n">Float</span><span class="p">(),</span>
+            <span class="n">validator</span><span class="o">=</span><span class="n">colander</span><span class="o">.</span><span class="n">Range</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mf">0.0</span><span class="p">),</span>
+            <span class="p">)</span>
+    <span class="n">optimizer_success</span> <span class="o">=</span> <span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="p">(</span>
+        <span class="n">colander</span><span class="o">.</span><span class="n">Mapping</span><span class="p">(</span><span class="n">unknown</span><span class="o">=</span><span class="s">&#39;preserve&#39;</span><span class="p">),</span>
+        <span class="n">default</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;found_update&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">},</span>
+    <span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="GpNextPointsResponse"><a class="viewcode-back" href="../../../../moe.views.schemas.html#moe.views.schemas.gp_next_points_pretty_view.GpNextPointsResponse">[docs]</a><span class="k">class</span> <span class="nc">GpNextPointsResponse</span><span class="p">(</span><span class="n">base_schemas</span><span class="o">.</span><span class="n">StrictMappingSchema</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;A response colander schema for the various subclasses of :class:`moe.views.gp_next_points_pretty_view.GpNextPointsPrettyView`; e.g., :class:`moe.views.rest.gp_next_points_epi.GpNextPointsEpi`.</span>
+
+<span class="sd">    **Output fields**</span>
+
+<span class="sd">    :ivar endpoint: (*str*) the endpoint that was called</span>
+<span class="sd">    :ivar points_to_sample: (*list of list of float64*) points in the domain to sample next (:class:`moe.views.schemas.base_schemas.ListOfPointsInDomain`)</span>
+<span class="sd">    :ivar status: (:class:`moe.views.schemas.gp_next_points_pretty_view.GpNextPointsStatus`) dict indicating final EI value and</span>
+<span class="sd">      optimization status messages (e.g., success)</span>
+
+<span class="sd">    **Example Response**</span>
+
+<span class="sd">    .. sourcecode:: http</span>
+
+<span class="sd">        {</span>
+<span class="sd">            &quot;endpoint&quot;: &quot;gp_ei&quot;,</span>
+<span class="sd">            &quot;points_to_sample&quot;: [[&quot;0.478332304526&quot;]],</span>
+<span class="sd">            &quot;status&quot;: {</span>
+<span class="sd">                &quot;expected_improvement&quot;: &quot;0.443478498868&quot;,</span>
+<span class="sd">                &quot;optimizer_success&quot;: {</span>
+<span class="sd">                    &#39;gradient_descent_tensor_product_domain_found_update&#39;: True,</span>
+<span class="sd">                    },</span>
+<span class="sd">                },</span>
+<span class="sd">        }</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">endpoint</span> <span class="o">=</span> <span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="p">(</span><span class="n">colander</span><span class="o">.</span><span class="n">String</span><span class="p">())</span>
+    <span class="n">points_to_sample</span> <span class="o">=</span> <span class="n">base_schemas</span><span class="o">.</span><span class="n">ListOfPointsInDomain</span><span class="p">()</span>
+    <span class="n">status</span> <span class="o">=</span> <span class="n">GpNextPointsStatus</span><span class="p">()</span></div>
+</pre></div>
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2012-2014 Yelp. MOE is licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'0.2.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

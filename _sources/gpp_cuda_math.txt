@@ -1,0 +1,20 @@
+gpp_cuda_math
+=============
+
+**Contents:**
+
+    1. `gpp_cuda_math.hpp`_
+    2. `gpp_cuda_math.cu`_
+
+
+gpp_cuda_math.hpp
+-----------------
+
+.. doxygenfile:: gpp_cuda_math.hpp
+
+
+gpp_cuda_math.cu
+----------------
+
+.. doxygenfile:: gpp_cuda_math.cu
+

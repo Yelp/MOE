@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>gpp_exception &mdash; MOE 0.1.0 documentation</title>
+  <title>gpp_exception &mdash; MOE 0.2.0 documentation</title>
   
 
   
@@ -32,10 +32,10 @@
   
     <link rel="stylesheet" href="_static/breathe.css" type="text/css" />
   
-    <link rel="top" title="MOE 0.1.0 documentation" href="index.html"/>
+    <link rel="top" title="MOE 0.2.0 documentation" href="index.html"/>
         <link rel="up" title="C++ Files" href="cpp_tree.html"/>
         <link rel="next" title="gpp_model_selection" href="gpp_model_selection.html"/>
-        <link rel="prev" title="gpp_heuristic_expected_improvement_optimization_test" href="gpp_heuristic_expected_improvement_optimization_test.html"/> 
+        <link rel="prev" title="gpp_python_expected_improvement" href="gpp_python_expected_improvement.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -96,6 +96,13 @@
 <li class="toctree-l2"><a class="reference internal" href="objective_functions.html#example-of-objective-functions">Example of Objective Functions</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="bandit.html">Multi-Armed Bandits</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#what-is-the-multi-armed-bandit-problem">What is the multi-armed bandit problem?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#applications">Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#policies">Policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#pointers">Pointers</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="examples.html#minimizing-an-arbitrary-function">Minimizing an arbitrary function</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples.html#gaussian-process-regression-given-historical-data">Gaussian Process regression given historical data</a></li>
@@ -149,9 +156,11 @@
 <li class="toctree-l1 current"><a class="reference internal" href="cpp_tree.html">C++ Files</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimization_test.html">gpp_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_domain_test.html">gpp_domain_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_gpu.html">gpp_expected_improvement_gpu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_geometry.html">gpp_geometry</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_test_utils.html">gpp_test_utils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_logging.html">gpp_logging</a></li>
@@ -160,28 +169,29 @@
 <li class="toctree-l2"><a class="reference internal" href="gpp_domain.html">gpp_domain</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_python_common.html">gpp_python_common</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_hyperparameter_optimization_demo.html">gpp_hyperparameter_optimization_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_test_utils_test.html">gpp_test_utils_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_math_test.html">gpp_math_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_cuda_math.html">gpp_cuda_math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_python_model_selection.html">gpp_python_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_math.html">gpp_math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_random_test.html">gpp_random_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimizer_parameters.html">gpp_optimizer_parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_random.html">gpp_random</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_test_utils_test.html">gpp_test_utils_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra.html">gpp_linear_algebra</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="">gpp_exception</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_model_selection.html">gpp_model_selection</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_random.html">gpp_random</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_covariance_test.html">gpp_covariance_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_python.html">gpp_python</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_test.html">gpp_model_selection_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_common.html">gpp_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_gpu_test.html">gpp_expected_improvement_gpu_test</a></li>
 </ul>
 </li>
 </ul>
@@ -354,144 +364,6 @@ Checks that the argument inherits from std::exception and invokes throw.</p>
 </p>
 </div></blockquote>
 </div></blockquote>
-<p><p id="project0classoptimal__learning_1_1_optimal_learning_exception"><em>class</em> <strong>OptimalLearningException</strong></p>
-<blockquote>
-<div><p></p>
-<p><p><strong>Overview</strong></p>
-<p>Exception to handle general runtime errors (e.g., not fitting into other exception types).
-Subclasses std::exception.
-Serves as the superclass for all other custom exceptions in the <tt class="docutils literal"><span class="pre">optimal_learning</span></tt> library.</p>
-<p>This class is essentially the same as std::runtime_error but it includes a ctor with
-some extra logic for formatting the error message.</p>
-<p>Holds only a std::string containing the message produced by what().</p>
-<p><strong>Message Format</strong></p>
-<p>The <tt class="docutils literal"><span class="pre">what()</span></tt> message is formatted in the class ctor (capitals indicate variable information):</p>
-<div class="highlight-python"><div class="highlight"><pre>R&quot;%%(
-OptimalLearningException: CUSTOM_MESSAGE FUNCTION_NAME FILE_LINE_INFO
-)%%&quot;
-</pre></div>
-</div>
-<p>This format should be overriden by subclasses (at the minimum showing a different exception name).</p>
- </p>
-<em>Public Functions</em><blockquote>
-<div><p><span class="target" id="project0classoptimal__learning_1_1_optimal_learning_exception_1a4386fbcaeeaaf92e35091cfb68c3c399"></span><div class="line-block">
-<div class="line"> <strong>OptimalLearningException</strong>(char const * line_info, char const * func_info, char const * custom_message)</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p><p>Constructs a OptimalLearningException with the specified message.</p>
-<dl class="docutils">
-<dt><strong>Parameters</strong>:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">line_info[]:</th><td class="field-body">ptr to char array containing __FILE__ and __LINE__ info; e.g., from OL_STRINGIFY_FILE_AND_LINE</td>
-</tr>
-<tr class="field-even field"><th class="field-name">func_info[]:</th><td class="field-body">optional ptr to char array from OL_CURRENT_FUNCTION_NAME or similar</td>
-</tr>
-<tr class="field-odd field"><th class="field-name" colspan="2">custom_message[]:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">optional ptr to char array with any additional text/info to print/log</td>
-</tr>
-</tbody>
-</table>
-</dd>
-</dl>
- </p>
-</div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_optimal_learning_exception_1a1c7e0b16cda3457e4b5f247c0d58c689"></span><div class="line-block">
-<div class="line">const char * <strong>what</strong>()</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p><p>Provides a C-string containing information about the conditions of the exception.
-See: <a class="reference external" href="http://en.cppreference.com/w/cpp/error/exception">http://en.cppreference.com/w/cpp/error/exception</a></p>
-<dl class="docutils">
-<dt><strong>Returns</strong>:</dt>
-<dd>C-style char string describing the exception.</dd>
-</dl>
- </p>
-</div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_optimal_learning_exception_1ab43f8cc58c01d7b4aa83dc4f10389f70"></span><div class="line-block">
-<div class="line"> <strong>OptimalLearningException</strong>()</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p></p>
-</div></blockquote>
-</div></blockquote>
-<em>Public Static Attributes</em><blockquote>
-<div><p><span class="target" id="project0classoptimal__learning_1_1_optimal_learning_exception_1aa2ffd19f0c5002c97e529a8f3cffbf7d"></span>constexpr char const * <strong>kName</strong></p>
-<blockquote>
-<div><p>String name of this exception for logging. </p>
-<p></p>
-</div></blockquote>
-</div></blockquote>
-<em>Protected Functions</em><blockquote>
-<div><p><span class="target" id="project0classoptimal__learning_1_1_optimal_learning_exception_1a40f6c5ff7be6d47ea683105b1e64d492"></span><div class="line-block">
-<div class="line"> <strong>OptimalLearningException</strong>(char const * name)</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p><p>Constructs a OptimalLearningException with the specified name.
-This is used by subclasses to override the class name in the message text.</p>
-<dl class="docutils">
-<dt><strong>Parameters</strong>:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">name[]:</th><td class="field-body">the exception name to write into the message</td>
-</tr>
-</tbody>
-</table>
-</dd>
-</dl>
- </p>
-</div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_optimal_learning_exception_1a996480bcb87db69404eeea85cb0930f9"></span><div class="line-block">
-<div class="line">void <strong>AppendCustomMessageAndDebugInfo</strong>(char const * line_info, char const * func_info, char const * custom_message)</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p><p>Utility function to append some additional info (file/line number, function name,
-and/or a custom message) to a specified string.
-This is meant to be used for constructing what() messages for the exception classes
-in gpp_exception.hpp.</p>
-<dl class="docutils">
-<dt><strong>Parameters</strong>:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">line_info[]:</th><td class="field-body">ptr to char array containing __FILE__ and __LINE__ info; e.g., from OL_STRINGIFY_FILE_AND_LINE</td>
-</tr>
-<tr class="field-even field"><th class="field-name">func_info[]:</th><td class="field-body">optional ptr to char array from OL_CURRENT_FUNCTION_NAME or similar</td>
-</tr>
-<tr class="field-odd field"><th class="field-name" colspan="2">custom_message[]:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">optional ptr to char array with any additional text/info to print/log</td>
-</tr>
-</tbody>
-</table>
-</dd>
-</dl>
- </p>
-</div></blockquote>
-</div></blockquote>
-<em>Protected Attributes</em><blockquote>
-<div><p><span class="target" id="project0classoptimal__learning_1_1_optimal_learning_exception_1a9fefafb7cff7bcd78f9444f75cbb9547"></span>std::string <strong>message_</strong></p>
-<blockquote>
-<div><p>a custom message describing this exception, produced by <tt class="docutils literal"><a class="reference internal" href="#project0classoptimal__learning_1_1_optimal_learning_exception_1a1c7e0b16cda3457e4b5f247c0d58c689"><em><span class="pre">what()</span></em></a></tt>. </p>
-<p></p>
-</div></blockquote>
-</div></blockquote>
-</div></blockquote>
-</p>
 <p><p id="project0classoptimal__learning_1_1_bounds_exception"><em>class</em> <strong>BoundsException</strong></p>
 <blockquote>
 <div><p></p>
@@ -604,118 +476,6 @@ CUSTOM_MESSAGE FUNCTION_NAME FILE_LINE_INFO
 <p><span class="target" id="project0classoptimal__learning_1_1_bounds_exception_1ab08df5d96a1d2abd64d7c15cbe62921b"></span>ValueType <strong>max_</strong></p>
 <blockquote>
 <div><p></p>
-<p></p>
-</div></blockquote>
-</div></blockquote>
-</div></blockquote>
-</p>
-<p><p id="project0classoptimal__learning_1_1_lower_bound_exception"><em>class</em> <strong>LowerBoundException</strong></p>
-<blockquote>
-<div><p></p>
-<p><p>Exception to capture value &lt; min_value.
-Simple subclass of BoundsException that sets the max argument to std::numeric_limits&lt;ValueType&gt;::max()</p>
-<p>See BoundsException for <tt class="docutils literal"><span class="pre">what()</span></tt> message format.</p>
- </p>
-<em>Public Functions</em><blockquote>
-<div><p><span class="target" id="project0classoptimal__learning_1_1_lower_bound_exception_1ab12184cc6490aadec3e919fc901290a2"></span><div class="line-block">
-<div class="line"> <strong>LowerBoundException</strong>(char const * line_info, char const * func_info, char const * custom_message, ValueType value_in, ValueType min_in)</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p><p>Constructs a LowerBoundException object with extra fields to flesh out the what() message.</p>
-<dl class="docutils">
-<dt><strong>Parameters</strong>:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">line_info[]:</th><td class="field-body">ptr to char array containing __FILE__ and __LINE__ info; e.g., from OL_STRINGIFY_FILE_AND_LINE</td>
-</tr>
-<tr class="field-even field"><th class="field-name">func_info[]:</th><td class="field-body">optional ptr to char array from OL_CURRENT_FUNCTION_NAME or similar</td>
-</tr>
-<tr class="field-odd field"><th class="field-name" colspan="2">custom_message[]:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">optional ptr to char array with any additional text/info to print/log</td>
-</tr>
-<tr class="field-even field"><th class="field-name">value:</th><td class="field-body">the value that violates its min or max bound</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">min:</th><td class="field-body">the minimum bound for value</td>
-</tr>
-</tbody>
-</table>
-</dd>
-</dl>
- </p>
-</div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_lower_bound_exception_1a972efd727a7d5485a5c01836e1699876"></span><div class="line-block">
-<div class="line"> <strong>OL_DISALLOW_DEFAULT_AND_ASSIGN</strong>(<a class="reference internal" href="#project0classoptimal__learning_1_1_lower_bound_exception"><em>LowerBoundException</em></a>)</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p></p>
-</div></blockquote>
-</div></blockquote>
-<em>Public Static Attributes</em><blockquote>
-<div><p><span class="target" id="project0classoptimal__learning_1_1_lower_bound_exception_1a21de735e810bb3a65827dc0c126184fb"></span>constexpr char const * <strong>kName</strong></p>
-<blockquote>
-<div><p>String name of this exception for logging. </p>
-<p></p>
-</div></blockquote>
-</div></blockquote>
-</div></blockquote>
-</p>
-<p><p id="project0classoptimal__learning_1_1_upper_bound_exception"><em>class</em> <strong>UpperBoundException</strong></p>
-<blockquote>
-<div><p></p>
-<p><p>Exception to capture value &gt; max_value.
-Simple subclass of BoundsException that sets the min argument to std::numeric_limits&lt;ValueType&gt;::lowest()</p>
-<p>See BoundsException for <tt class="docutils literal"><span class="pre">what()</span></tt> message format.</p>
- </p>
-<em>Public Functions</em><blockquote>
-<div><p><span class="target" id="project0classoptimal__learning_1_1_upper_bound_exception_1a406be466e2c455e165b6529c4d15e97f"></span><div class="line-block">
-<div class="line"> <strong>UpperBoundException</strong>(char const * line_info, char const * func_info, char const * custom_message, ValueType value_in, ValueType max_in)</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p><p>Constructs an UpperBoundException object with extra fields to flesh out the what() message.</p>
-<dl class="docutils">
-<dt><strong>Parameters</strong>:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">line_info[]:</th><td class="field-body">ptr to char array containing __FILE__ and __LINE__ info; e.g., from OL_STRINGIFY_FILE_AND_LINE</td>
-</tr>
-<tr class="field-even field"><th class="field-name">func_info[]:</th><td class="field-body">optional ptr to char array from OL_CURRENT_FUNCTION_NAME or similar</td>
-</tr>
-<tr class="field-odd field"><th class="field-name" colspan="2">custom_message[]:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">optional ptr to char array with any additional text/info to print/log</td>
-</tr>
-<tr class="field-even field"><th class="field-name">value:</th><td class="field-body">the value that violates its min or max bound</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">max:</th><td class="field-body">the maximum bound for value</td>
-</tr>
-</tbody>
-</table>
-</dd>
-</dl>
- </p>
-</div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_upper_bound_exception_1a9b5cd529ca90d718b628018ce3424bce"></span><div class="line-block">
-<div class="line"> <strong>OL_DISALLOW_DEFAULT_AND_ASSIGN</strong>(<a class="reference internal" href="#project0classoptimal__learning_1_1_upper_bound_exception"><em>UpperBoundException</em></a>)</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p></p>
-</div></blockquote>
-</div></blockquote>
-<em>Public Static Attributes</em><blockquote>
-<div><p><span class="target" id="project0classoptimal__learning_1_1_upper_bound_exception_1afe0422fe39de23e20930c942844bbfeb"></span>constexpr char const * <strong>kName</strong></p>
-<blockquote>
-<div><p>String name of this exception for logging. </p>
 <p></p>
 </div></blockquote>
 </div></blockquote>
@@ -869,6 +629,200 @@ This ctor additionally has an input for tolerance, and is only enabled for float
 </div></blockquote>
 </div></blockquote>
 </p>
+<p><p id="project0classoptimal__learning_1_1_lower_bound_exception"><em>class</em> <strong>LowerBoundException</strong></p>
+<blockquote>
+<div><p></p>
+<p><p>Exception to capture value &lt; min_value.
+Simple subclass of BoundsException that sets the max argument to std::numeric_limits&lt;ValueType&gt;::max()</p>
+<p>See BoundsException for <tt class="docutils literal"><span class="pre">what()</span></tt> message format.</p>
+ </p>
+<em>Public Functions</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_lower_bound_exception_1ab12184cc6490aadec3e919fc901290a2"></span><div class="line-block">
+<div class="line"> <strong>LowerBoundException</strong>(char const * line_info, char const * func_info, char const * custom_message, ValueType value_in, ValueType min_in)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Constructs a LowerBoundException object with extra fields to flesh out the what() message.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">line_info[]:</th><td class="field-body">ptr to char array containing __FILE__ and __LINE__ info; e.g., from OL_STRINGIFY_FILE_AND_LINE</td>
+</tr>
+<tr class="field-even field"><th class="field-name">func_info[]:</th><td class="field-body">optional ptr to char array from OL_CURRENT_FUNCTION_NAME or similar</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">custom_message[]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">optional ptr to char array with any additional text/info to print/log</td>
+</tr>
+<tr class="field-even field"><th class="field-name">value:</th><td class="field-body">the value that violates its min or max bound</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">min:</th><td class="field-body">the minimum bound for value</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_lower_bound_exception_1a972efd727a7d5485a5c01836e1699876"></span><div class="line-block">
+<div class="line"> <strong>OL_DISALLOW_DEFAULT_AND_ASSIGN</strong>(<a class="reference internal" href="#project0classoptimal__learning_1_1_lower_bound_exception"><em>LowerBoundException</em></a>)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Public Static Attributes</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_lower_bound_exception_1a21de735e810bb3a65827dc0c126184fb"></span>constexpr char const * <strong>kName</strong></p>
+<blockquote>
+<div><p>String name of this exception for logging. </p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</p>
+<p><p id="project0classoptimal__learning_1_1_optimal_learning_exception"><em>class</em> <strong>OptimalLearningException</strong></p>
+<blockquote>
+<div><p></p>
+<p><p><strong>Overview</strong></p>
+<p>Exception to handle general runtime errors (e.g., not fitting into other exception types).
+Subclasses std::exception.
+Serves as the superclass for all other custom exceptions in the <tt class="docutils literal"><span class="pre">optimal_learning</span></tt> library.</p>
+<p>This class is essentially the same as std::runtime_error but it includes a ctor with
+some extra logic for formatting the error message.</p>
+<p>Holds only a std::string containing the message produced by what().</p>
+<p><strong>Message Format</strong></p>
+<p>The <tt class="docutils literal"><span class="pre">what()</span></tt> message is formatted in the class ctor (capitals indicate variable information):</p>
+<div class="highlight-python"><div class="highlight"><pre>R&quot;%%(
+OptimalLearningException: CUSTOM_MESSAGE FUNCTION_NAME FILE_LINE_INFO
+)%%&quot;
+</pre></div>
+</div>
+<p>This format should be overriden by subclasses (at the minimum showing a different exception name).</p>
+ </p>
+<em>Public Functions</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_optimal_learning_exception_1a4386fbcaeeaaf92e35091cfb68c3c399"></span><div class="line-block">
+<div class="line"> <strong>OptimalLearningException</strong>(char const * line_info, char const * func_info, char const * custom_message)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Constructs a OptimalLearningException with the specified message.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">line_info[]:</th><td class="field-body">ptr to char array containing __FILE__ and __LINE__ info; e.g., from OL_STRINGIFY_FILE_AND_LINE</td>
+</tr>
+<tr class="field-even field"><th class="field-name">func_info[]:</th><td class="field-body">optional ptr to char array from OL_CURRENT_FUNCTION_NAME or similar</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">custom_message[]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">optional ptr to char array with any additional text/info to print/log</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_optimal_learning_exception_1a1c7e0b16cda3457e4b5f247c0d58c689"></span><div class="line-block">
+<div class="line">const char * <strong>what</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Provides a C-string containing information about the conditions of the exception.
+See: <a class="reference external" href="http://en.cppreference.com/w/cpp/error/exception">http://en.cppreference.com/w/cpp/error/exception</a></p>
+<dl class="docutils">
+<dt><strong>Returns</strong>:</dt>
+<dd>C-style char string describing the exception.</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_optimal_learning_exception_1ab43f8cc58c01d7b4aa83dc4f10389f70"></span><div class="line-block">
+<div class="line"> <strong>OptimalLearningException</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Public Static Attributes</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_optimal_learning_exception_1aa2ffd19f0c5002c97e529a8f3cffbf7d"></span>constexpr char const * <strong>kName</strong></p>
+<blockquote>
+<div><p>String name of this exception for logging. </p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Protected Functions</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_optimal_learning_exception_1a40f6c5ff7be6d47ea683105b1e64d492"></span><div class="line-block">
+<div class="line"> <strong>OptimalLearningException</strong>(char const * name)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Constructs a OptimalLearningException with the specified name.
+This is used by subclasses to override the class name in the message text.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">name[]:</th><td class="field-body">the exception name to write into the message</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_optimal_learning_exception_1a996480bcb87db69404eeea85cb0930f9"></span><div class="line-block">
+<div class="line">void <strong>AppendCustomMessageAndDebugInfo</strong>(char const * line_info, char const * func_info, char const * custom_message)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Utility function to append some additional info (file/line number, function name,
+and/or a custom message) to a specified string.
+This is meant to be used for constructing what() messages for the exception classes
+in gpp_exception.hpp.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">line_info[]:</th><td class="field-body">ptr to char array containing __FILE__ and __LINE__ info; e.g., from OL_STRINGIFY_FILE_AND_LINE</td>
+</tr>
+<tr class="field-even field"><th class="field-name">func_info[]:</th><td class="field-body">optional ptr to char array from OL_CURRENT_FUNCTION_NAME or similar</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">custom_message[]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">optional ptr to char array with any additional text/info to print/log</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+</div></blockquote>
+<em>Protected Attributes</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_optimal_learning_exception_1a9fefafb7cff7bcd78f9444f75cbb9547"></span>std::string <strong>message_</strong></p>
+<blockquote>
+<div><p>a custom message describing this exception, produced by <tt class="docutils literal"><a class="reference internal" href="#project0classoptimal__learning_1_1_optimal_learning_exception_1a1c7e0b16cda3457e4b5f247c0d58c689"><em><span class="pre">what()</span></em></a></tt>. </p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</p>
 <p><p id="project0classoptimal__learning_1_1_singular_matrix_exception"><em>class</em> <strong>SingularMatrixException</strong></p>
 <blockquote>
 <div><p></p>
@@ -988,6 +942,62 @@ proecss the matrix.</p>
 </div></blockquote>
 </div></blockquote>
 </p>
+<p><p id="project0classoptimal__learning_1_1_upper_bound_exception"><em>class</em> <strong>UpperBoundException</strong></p>
+<blockquote>
+<div><p></p>
+<p><p>Exception to capture value &gt; max_value.
+Simple subclass of BoundsException that sets the min argument to std::numeric_limits&lt;ValueType&gt;::lowest()</p>
+<p>See BoundsException for <tt class="docutils literal"><span class="pre">what()</span></tt> message format.</p>
+ </p>
+<em>Public Functions</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_upper_bound_exception_1a406be466e2c455e165b6529c4d15e97f"></span><div class="line-block">
+<div class="line"> <strong>UpperBoundException</strong>(char const * line_info, char const * func_info, char const * custom_message, ValueType value_in, ValueType max_in)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Constructs an UpperBoundException object with extra fields to flesh out the what() message.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">line_info[]:</th><td class="field-body">ptr to char array containing __FILE__ and __LINE__ info; e.g., from OL_STRINGIFY_FILE_AND_LINE</td>
+</tr>
+<tr class="field-even field"><th class="field-name">func_info[]:</th><td class="field-body">optional ptr to char array from OL_CURRENT_FUNCTION_NAME or similar</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">custom_message[]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">optional ptr to char array with any additional text/info to print/log</td>
+</tr>
+<tr class="field-even field"><th class="field-name">value:</th><td class="field-body">the value that violates its min or max bound</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">max:</th><td class="field-body">the maximum bound for value</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_upper_bound_exception_1a9b5cd529ca90d718b628018ce3424bce"></span><div class="line-block">
+<div class="line"> <strong>OL_DISALLOW_DEFAULT_AND_ASSIGN</strong>(<a class="reference internal" href="#project0classoptimal__learning_1_1_upper_bound_exception"><em>UpperBoundException</em></a>)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Public Static Attributes</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_upper_bound_exception_1afe0422fe39de23e20930c942844bbfeb"></span>constexpr char const * <strong>kName</strong></p>
+<blockquote>
+<div><p>String name of this exception for logging. </p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</p>
 </div></blockquote>
 </p>
 </div>
@@ -1024,7 +1034,7 @@ for floating point types is absolutely terrible (but it works fine for integral 
         <a href="gpp_model_selection.html" class="btn btn-neutral float-right" title="gpp_model_selection"/>Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="gpp_heuristic_expected_improvement_optimization_test.html" class="btn btn-neutral" title="gpp_heuristic_expected_improvement_optimization_test"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="gpp_python_expected_improvement.html" class="btn btn-neutral" title="gpp_python_expected_improvement"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -1053,7 +1063,7 @@ for floating point types is absolutely terrible (but it works fine for integral 
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.1.0',
+            VERSION:'0.2.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

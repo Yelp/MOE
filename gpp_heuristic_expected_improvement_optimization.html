@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>gpp_heuristic_expected_improvement_optimization &mdash; MOE 0.1.0 documentation</title>
+  <title>gpp_heuristic_expected_improvement_optimization &mdash; MOE 0.2.0 documentation</title>
   
 
   
@@ -32,10 +32,10 @@
   
     <link rel="stylesheet" href="_static/breathe.css" type="text/css" />
   
-    <link rel="top" title="MOE 0.1.0 documentation" href="index.html"/>
+    <link rel="top" title="MOE 0.2.0 documentation" href="index.html"/>
         <link rel="up" title="C++ Files" href="cpp_tree.html"/>
-        <link rel="next" title="gpp_common" href="gpp_common.html"/>
-        <link rel="prev" title="gpp_hyper_and_EI_demo" href="gpp_hyper_and_EI_demo.html"/> 
+        <link rel="next" title="gpp_linear_algebra-inl" href="gpp_linear_algebra-inl.html"/>
+        <link rel="prev" title="gpp_geometry" href="gpp_geometry.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -96,6 +96,13 @@
 <li class="toctree-l2"><a class="reference internal" href="objective_functions.html#example-of-objective-functions">Example of Objective Functions</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="bandit.html">Multi-Armed Bandits</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#what-is-the-multi-armed-bandit-problem">What is the multi-armed bandit problem?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#applications">Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#policies">Policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#pointers">Pointers</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="examples.html#minimizing-an-arbitrary-function">Minimizing an arbitrary function</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples.html#gaussian-process-regression-given-historical-data">Gaussian Process regression given historical data</a></li>
@@ -149,9 +156,11 @@
 <li class="toctree-l1 current"><a class="reference internal" href="cpp_tree.html">C++ Files</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimization_test.html">gpp_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_domain_test.html">gpp_domain_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_gpu.html">gpp_expected_improvement_gpu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_geometry.html">gpp_geometry</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">gpp_heuristic_expected_improvement_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_test_utils.html">gpp_test_utils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_logging.html">gpp_logging</a></li>
@@ -160,28 +169,29 @@
 <li class="toctree-l2"><a class="reference internal" href="gpp_domain.html">gpp_domain</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_python_common.html">gpp_python_common</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_hyperparameter_optimization_demo.html">gpp_hyperparameter_optimization_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_test_utils_test.html">gpp_test_utils_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_math_test.html">gpp_math_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_cuda_math.html">gpp_cuda_math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_python_model_selection.html">gpp_python_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_math.html">gpp_math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_random_test.html">gpp_random_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimizer_parameters.html">gpp_optimizer_parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_random.html">gpp_random</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_test_utils_test.html">gpp_test_utils_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra.html">gpp_linear_algebra</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_exception.html">gpp_exception</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_model_selection.html">gpp_model_selection</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_random.html">gpp_random</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_covariance_test.html">gpp_covariance_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_python.html">gpp_python</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_test.html">gpp_model_selection_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_common.html">gpp_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_gpu_test.html">gpp_expected_improvement_gpu_test</a></li>
 </ul>
 </li>
 </ul>
@@ -297,136 +307,6 @@ lets us hide all the implementation details in the .cpp file (e.g., see the long
 </ul>
 </div></blockquote>
 </div></blockquote>
-<p><p id="project0structoptimal__learning_1_1_function_value"><em>class</em> <strong>FunctionValue</strong></p>
-<blockquote>
-<div><p></p>
-<p><p>Container (POD) to represent the notion of a measured function value with some [Gaussian] uncertainty.
-That is, <tt class="docutils literal"><span class="pre">N(\mu,</span> <span class="pre">\sigma)</span></tt>, where <tt class="docutils literal"><span class="pre">\mu</span> <span class="pre">=</span> <span class="pre">function_value</span></tt> and <tt class="docutils literal"><span class="pre">\sigma</span> <span class="pre">=</span> <span class="pre">\sqrt{noise_variance}</span></tt>.</p>
- </p>
-<em>Public Functions</em><blockquote>
-<div><p><span class="target" id="project0structoptimal__learning_1_1_function_value_1aa6be1ebbc0743e5c8ab9aa318aeb3ffa"></span><div class="line-block">
-<div class="line"> <strong>FunctionValue</strong>()</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p><p>Explicitly defaulted default constructor.
-Defining a custom ctor (below) disables the default ctor, so we explicitly default it.
-This is needed to maintain POD-ness.</p>
- </p>
-</div></blockquote>
-<p><span class="target" id="project0structoptimal__learning_1_1_function_value_1ab949f73d9cf3bf463b63571dedc719fe"></span><div class="line-block">
-<div class="line"> <strong>FunctionValue</strong>(double function_value_in)</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p><p>Constructs a FunctionValue object with the specified function_value and 0 noise.</p>
-<dl class="docutils">
-<dt><strong>Parameters</strong>:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">function_value_in:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">the function_value to hold</td>
-</tr>
-</tbody>
-</table>
-</dd>
-</dl>
- </p>
-</div></blockquote>
-<p><span class="target" id="project0structoptimal__learning_1_1_function_value_1a0dbdf049ce58188e21bfff914efff706"></span><div class="line-block">
-<div class="line"> <strong>FunctionValue</strong>(double function_value_in, double noise_variance_in)</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p><p>Constructs a FunctionValue object with the specified function_value noise_variance.</p>
-<dl class="docutils">
-<dt><strong>Parameters</strong>:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">function_value_in:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">the function_value to hold</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">noise_variance_in:</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">the noise_variance to hold</td>
-</tr>
-</tbody>
-</table>
-</dd>
-</dl>
- </p>
-</div></blockquote>
-</div></blockquote>
-<em>Public Members</em><blockquote>
-<div><p><span class="target" id="project0structoptimal__learning_1_1_function_value_1ac96ebf0b8ed440b707f5733344597799"></span>double <strong>function_value</strong></p>
-<blockquote>
-<div><p>the measured function value being represented </p>
-<p></p>
-</div></blockquote>
-<p><span class="target" id="project0structoptimal__learning_1_1_function_value_1aa19a5a8405c23dd04aab703c5d9317d6"></span>double <strong>noise_variance</strong></p>
-<blockquote>
-<div><p>the uncertainty (variance) in the measurement of the function value </p>
-<p></p>
-</div></blockquote>
-</div></blockquote>
-</div></blockquote>
-</p>
-<p><p id="project0classoptimal__learning_1_1_objective_estimation_policy_interface"><em>class</em> <strong>ObjectiveEstimationPolicyInterface</strong></p>
-<blockquote>
-<div><p></p>
-<p><p>At the moment, ComputeEstimatedSetOfPointsToSample() is the sole consumer of this class. Some of the documentation
-here will discuss ObjectiveEstimationPolicyInterface specifically in that light.</p>
-<p>He also points out that larger lie values will lead methods like ComputeEstimatedSetOfPointsToSample() to
-be more explorative and vice versa.</p>
- </p>
-<em>Public Functions</em><blockquote>
-<div><p><span class="target" id="project0classoptimal__learning_1_1_objective_estimation_policy_interface_1af88c15849f5cf4a5994be0925c86d3d8"></span><div class="line-block">
-<div class="line"> <strong>~ObjectiveEstimationPolicyInterface</strong>()</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p></p>
-</div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_objective_estimation_policy_interface_1a5d435bd7802bcdf742c78659d1f217ce"></span><div class="line-block">
-<div class="line"><a class="reference internal" href="#project0structoptimal__learning_1_1_function_value"><em>FunctionValue</em></a> <strong>ComputeEstimate</strong>(const  <a class="reference internal" href="gpp_math.html#project0classoptimal__learning_1_1_gaussian_process"><em>GaussianProcess</em></a>  &amp; gaussian_process, double const *restrict point, int iteration)</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p><p>The estimate is often computed repeatedly (e.g., see ComputeEstimatedSetOfPointsToSample()); we include
-the number of previous calls in the input &#8220;iteration.&#8221; This may be useful if users want to implement an
-analogue of &#8220;Constant Liar&#8221; using a fixed distribution of lies, make random draws, etc.</p>
-<p>Let dim = gaussian_process.dim()</p>
-<dl class="docutils">
-<dt><strong>Parameters</strong>:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">gaussian_process:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">GaussianProcess object (holds points_sampled, values, noise_variance, derived quantities) that describes the
-underlying GP</td>
-</tr>
-<tr class="field-even field"><th class="field-name">point[dim]:</th><td class="field-body">the point at which to compute the estimate</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">iteration:</th><td class="field-body">the number of previous calls to ComputeEstimate()</td>
-</tr>
-</tbody>
-</table>
-</dd>
-</dl>
- </p>
-</div></blockquote>
-</div></blockquote>
-</div></blockquote>
-</p>
 <p><p id="project0classoptimal__learning_1_1_constant_liar_estimation_policy"><em>class</em> <strong>ConstantLiarEstimationPolicy</strong></p>
 <blockquote>
 <div><p></p>
@@ -514,6 +394,86 @@ ComputeEstimatedSetOfPointsToSample() to be more explorative and vice versa.</p>
 <p><span class="target" id="project0classoptimal__learning_1_1_constant_liar_estimation_policy_1ac39a5334f688ae9b2f7f04dc67871ab1"></span>double <strong>lie_noise_variance_</strong></p>
 <blockquote>
 <div><p>the noise variance to associate to the lie_value </p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</p>
+<p><p id="project0structoptimal__learning_1_1_function_value"><em>class</em> <strong>FunctionValue</strong></p>
+<blockquote>
+<div><p></p>
+<p><p>Container (POD) to represent the notion of a measured function value with some [Gaussian] uncertainty.
+That is, <tt class="docutils literal"><span class="pre">N(\mu,</span> <span class="pre">\sigma)</span></tt>, where <tt class="docutils literal"><span class="pre">\mu</span> <span class="pre">=</span> <span class="pre">function_value</span></tt> and <tt class="docutils literal"><span class="pre">\sigma</span> <span class="pre">=</span> <span class="pre">\sqrt{noise_variance}</span></tt>.</p>
+ </p>
+<em>Public Functions</em><blockquote>
+<div><p><span class="target" id="project0structoptimal__learning_1_1_function_value_1aa6be1ebbc0743e5c8ab9aa318aeb3ffa"></span><div class="line-block">
+<div class="line"> <strong>FunctionValue</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Explicitly defaulted default constructor.
+Defining a custom ctor (below) disables the default ctor, so we explicitly default it.
+This is needed to maintain POD-ness.</p>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_function_value_1ab949f73d9cf3bf463b63571dedc719fe"></span><div class="line-block">
+<div class="line"> <strong>FunctionValue</strong>(double function_value_in)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Constructs a FunctionValue object with the specified function_value and 0 noise.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">function_value_in:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">the function_value to hold</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_function_value_1a0dbdf049ce58188e21bfff914efff706"></span><div class="line-block">
+<div class="line"> <strong>FunctionValue</strong>(double function_value_in, double noise_variance_in)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Constructs a FunctionValue object with the specified function_value noise_variance.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">function_value_in:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">the function_value to hold</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">noise_variance_in:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">the noise_variance to hold</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+</div></blockquote>
+<em>Public Members</em><blockquote>
+<div><p><span class="target" id="project0structoptimal__learning_1_1_function_value_1ac96ebf0b8ed440b707f5733344597799"></span>double <strong>function_value</strong></p>
+<blockquote>
+<div><p>the measured function value being represented </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_function_value_1aa19a5a8405c23dd04aab703c5d9317d6"></span>double <strong>noise_variance</strong></p>
+<blockquote>
+<div><p>the uncertainty (variance) in the measurement of the function value </p>
 <p></p>
 </div></blockquote>
 </div></blockquote>
@@ -619,6 +579,56 @@ It is not a performance concern right now (this function is called infrequently)
 <blockquote>
 <div><p>the noise variance to associate to each KrigingBeliever estimate </p>
 <p></p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</p>
+<p><p id="project0classoptimal__learning_1_1_objective_estimation_policy_interface"><em>class</em> <strong>ObjectiveEstimationPolicyInterface</strong></p>
+<blockquote>
+<div><p></p>
+<p><p>At the moment, ComputeEstimatedSetOfPointsToSample() is the sole consumer of this class. Some of the documentation
+here will discuss ObjectiveEstimationPolicyInterface specifically in that light.</p>
+<p>He also points out that larger lie values will lead methods like ComputeEstimatedSetOfPointsToSample() to
+be more explorative and vice versa.</p>
+ </p>
+<em>Public Functions</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_objective_estimation_policy_interface_1af88c15849f5cf4a5994be0925c86d3d8"></span><div class="line-block">
+<div class="line"> <strong>~ObjectiveEstimationPolicyInterface</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_objective_estimation_policy_interface_1a5d435bd7802bcdf742c78659d1f217ce"></span><div class="line-block">
+<div class="line"><a class="reference internal" href="#project0structoptimal__learning_1_1_function_value"><em>FunctionValue</em></a> <strong>ComputeEstimate</strong>(const  <a class="reference internal" href="gpp_math.html#project0classoptimal__learning_1_1_gaussian_process"><em>GaussianProcess</em></a>  &amp; gaussian_process, double const *restrict point, int iteration)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>The estimate is often computed repeatedly (e.g., see ComputeEstimatedSetOfPointsToSample()); we include
+the number of previous calls in the input &#8220;iteration.&#8221; This may be useful if users want to implement an
+analogue of &#8220;Constant Liar&#8221; using a fixed distribution of lies, make random draws, etc.</p>
+<p>Let dim = gaussian_process.dim()</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">gaussian_process:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">GaussianProcess object (holds points_sampled, values, noise_variance, derived quantities) that describes the
+underlying GP</td>
+</tr>
+<tr class="field-even field"><th class="field-name">point[dim]:</th><td class="field-body">the point at which to compute the estimate</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">iteration:</th><td class="field-body">the number of previous calls to ComputeEstimate()</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
 </div></blockquote>
 </div></blockquote>
 </div></blockquote>
@@ -791,10 +801,10 @@ max_num_threads (num cpu cores), schedule type (omp_sched_dynamic), chunk_size (
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="gpp_common.html" class="btn btn-neutral float-right" title="gpp_common"/>Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="gpp_linear_algebra-inl.html" class="btn btn-neutral float-right" title="gpp_linear_algebra-inl"/>Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="gpp_hyper_and_EI_demo.html" class="btn btn-neutral" title="gpp_hyper_and_EI_demo"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="gpp_geometry.html" class="btn btn-neutral" title="gpp_geometry"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -823,7 +833,7 @@ max_num_threads (num cpu cores), schedule type (omp_sched_dynamic), chunk_size (
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.1.0',
+            VERSION:'0.2.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

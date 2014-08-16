@@ -6,6 +6,7 @@ Subpackages
 
 .. toctree::
 
+    moe.tests.bandit
     moe.tests.optimal_learning
     moe.tests.views
 

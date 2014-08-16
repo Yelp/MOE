@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>moe_examples package &mdash; MOE 0.1.0 documentation</title>
+  <title>moe_examples package &mdash; MOE 0.2.0 documentation</title>
   
 
   
@@ -32,9 +32,9 @@
   
     <link rel="stylesheet" href="_static/breathe.css" type="text/css" />
   
-    <link rel="top" title="MOE 0.1.0 documentation" href="index.html"/>
+    <link rel="top" title="MOE 0.2.0 documentation" href="index.html"/>
         <link rel="next" title="moe_examples.tests package" href="moe_examples.tests.html"/>
-        <link rel="prev" title="moe.views.rest package" href="moe.views.rest.html"/> 
+        <link rel="prev" title="moe.views.schemas.rest package" href="moe.views.schemas.rest.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -95,6 +95,13 @@
 <li class="toctree-l2"><a class="reference internal" href="objective_functions.html#example-of-objective-functions">Example of Objective Functions</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="bandit.html">Multi-Armed Bandits</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#what-is-the-multi-armed-bandit-problem">What is the multi-armed bandit problem?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#applications">Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#policies">Policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#pointers">Pointers</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="examples.html#minimizing-an-arbitrary-function">Minimizing an arbitrary function</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples.html#gaussian-process-regression-given-historical-data">Gaussian Process regression given historical data</a></li>
@@ -148,9 +155,11 @@
 <li class="toctree-l1"><a class="reference internal" href="cpp_tree.html">C++ Files</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimization_test.html">gpp_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_domain_test.html">gpp_domain_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_gpu.html">gpp_expected_improvement_gpu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_geometry.html">gpp_geometry</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_test_utils.html">gpp_test_utils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_logging.html">gpp_logging</a></li>
@@ -159,28 +168,29 @@
 <li class="toctree-l2"><a class="reference internal" href="gpp_domain.html">gpp_domain</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_python_common.html">gpp_python_common</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_hyperparameter_optimization_demo.html">gpp_hyperparameter_optimization_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_test_utils_test.html">gpp_test_utils_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_math_test.html">gpp_math_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_cuda_math.html">gpp_cuda_math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_python_model_selection.html">gpp_python_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_math.html">gpp_math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_random_test.html">gpp_random_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimizer_parameters.html">gpp_optimizer_parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_random.html">gpp_random</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_test_utils_test.html">gpp_test_utils_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra.html">gpp_linear_algebra</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_exception.html">gpp_exception</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_model_selection.html">gpp_model_selection</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_random.html">gpp_random</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_covariance_test.html">gpp_covariance_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_python.html">gpp_python</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_test.html">gpp_model_selection_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_common.html">gpp_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_gpu_test.html">gpp_expected_improvement_gpu_test</a></li>
 </ul>
 </li>
 </ul>
@@ -265,8 +275,25 @@ We then calculate the posterior mean and variance of the GP at several points</p
 
 <dl class="function">
 <dt id="moe_examples.combined_example.run_example">
-<tt class="descclassname">moe_examples.combined_example.</tt><tt class="descname">run_example</tt><big>(</big><em>num_to_sample=20</em>, <em>verbose=True</em>, <em>testapp=None</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe_examples/combined_example.html#run_example"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe_examples.combined_example.run_example" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">moe_examples.combined_example.</tt><tt class="descname">run_example</tt><big>(</big><em>num_to_sample=20</em>, <em>verbose=True</em>, <em>testapp=None</em>, <em>gp_next_points_kwargs=None</em>, <em>gp_hyper_opt_kwargs=None</em>, <em>gp_mean_var_kwargs=None</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe_examples/combined_example.html#run_example"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe_examples.combined_example.run_example" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run the combined example.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>num_to_sample</strong> (<em>int &gt; 0</em>) &#8211; Number of points for MOE to suggest and then sample [20]</li>
+<li><strong>verbose</strong> (<em>bool</em>) &#8211; Whether to print information to the screen [True]</li>
+<li><strong>testapp</strong> (<em>Pyramid test application</em>) &#8211; Whether to use a supplied test pyramid application or a rest server [None]</li>
+<li><strong>gp_next_points_kwargs</strong> (<em>dict</em>) &#8211; Optional kwargs to pass to gp_next_points endpoint</li>
+<li><strong>gp_hyper_opt_kwargs</strong> (<em>dict</em>) &#8211; Optional kwargs to pass to gp_hyper_opt_kwargs endpoint</li>
+<li><strong>gp_mean_var_kwargs</strong> (<em>dict</em>) &#8211; Optional kwargs to pass to gp_mean_var_kwargs endpoint</li>
+<li><strong>kwargs</strong> (<em>dict</em>) &#8211; Optional kwargs to pass to all endpoints</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div>
@@ -292,7 +319,7 @@ and a set of points to calculate the posterior mean and variance at.</p>
 <p>The posterior mean and variance is then printed for every point.</p>
 <dl class="function">
 <dt id="moe_examples.mean_and_var_of_gp_from_historic_data.run_example">
-<tt class="descclassname">moe_examples.mean_and_var_of_gp_from_historic_data.</tt><tt class="descname">run_example</tt><big>(</big><em>verbose=True</em>, <em>testapp=None</em><big>)</big><a class="reference internal" href="_modules/moe_examples/mean_and_var_of_gp_from_historic_data.html#run_example"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe_examples.mean_and_var_of_gp_from_historic_data.run_example" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">moe_examples.mean_and_var_of_gp_from_historic_data.</tt><tt class="descname">run_example</tt><big>(</big><em>verbose=True</em>, <em>testapp=None</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe_examples/mean_and_var_of_gp_from_historic_data.html#run_example"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe_examples.mean_and_var_of_gp_from_historic_data.run_example" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run the example, finding the posterior mean and variance for various poinst from a random GP.</p>
 </dd></dl>
 
@@ -335,7 +362,7 @@ and a set of points to calculate the posterior mean and variance at.</p>
         <a href="moe_examples.tests.html" class="btn btn-neutral float-right" title="moe_examples.tests package"/>Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="moe.views.rest.html" class="btn btn-neutral" title="moe.views.rest package"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="moe.views.schemas.rest.html" class="btn btn-neutral" title="moe.views.schemas.rest package"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -364,7 +391,7 @@ and a set of points to calculate the posterior mean and variance at.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.1.0',
+            VERSION:'0.2.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

@@ -1,0 +1,724 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>moe.views.schemas.base_schemas &mdash; MOE 0.2.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../../_static/breathe.css" type="text/css" />
+  
+    <link rel="top" title="MOE 0.2.0 documentation" href="../../../../index.html"/>
+        <link rel="up" title="moe" href="../../../moe.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="../../../../index.html" class="fa fa-home"> MOE</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../why_moe.html">Why Do We Need MOE?</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../why_moe.html#other-methods">Other Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../install.html">Install</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../install.html#install-in-docker">Install in docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../install.html#install-from-source">Install from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../install.html#osx-tips">OSX Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../install.html#building-boost">Building Boost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../install.html#linux-tips">Linux Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../install.html#cmake-tips">CMake Tips</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../moe_math.html">How does MOE work?</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe_math.html#build-a-gaussian-process-gp-with-the-historical-data">Build a Gaussian Process (GP) with the historical data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe_math.html#optimize-the-hyperparameters-of-the-gaussian-process">Optimize the hyperparameters of the Gaussian Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe_math.html#find-the-point-s-of-highest-expected-improvement-ei">Find the point(s) of highest Expected Improvement (EI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe_math.html#return-the-point-s-to-sample-then-repeat">Return the point(s) to sample, then repeat</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../demo_tutorial.html">Demo Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../demo_tutorial.html#the-interactive-demo">The Interactive Demo</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pretty_endpoints.html">Pretty Endpoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../objective_functions.html">Objective Functions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../objective_functions.html#what-is-an-objective-function">What is an objective function?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../objective_functions.html#properties-of-an-objective-function">Properties of an objective function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../objective_functions.html#parameters">Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../objective_functions.html#id1"><span class="math">\(\Phi\)</span> Objective Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../objective_functions.html#example-of-objective-functions">Example of Objective Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../bandit.html">Multi-Armed Bandits</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../bandit.html#what-is-the-multi-armed-bandit-problem">What is the multi-armed bandit problem?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../bandit.html#applications">Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../bandit.html#policies">Policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../bandit.html#pointers">Pointers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../examples.html#minimizing-an-arbitrary-function">Minimizing an arbitrary function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../examples.html#gaussian-process-regression-given-historical-data">Gaussian Process regression given historical data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../examples.html#hyperparameter-optimization-of-a-gaussian-process">Hyperparameter optimization of a Gaussian Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../examples.html#all-above-examples-combined">All above examples combined</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../examples.html#setting-thresholds-for-advertising-units">Setting thresholds for advertising units</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#making-a-pull-request">Making a pull request</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#documentation">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#testing">Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#style">Style</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#versioning">Versioning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#releasing-for-maintainers">Releasing (For Maintainers)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../faq.html">Frequently Asked Questions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../faq.html#what-license-is-moe-released-under">What license is MOE released under?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../faq.html#when-should-i-use-moe">When should I use MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../faq.html#what-is-the-time-complexity-of-moe">What is the time complexity of MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../faq.html#how-do-i-cite-moe">How do I cite MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../faq.html#why-does-moe-take-so-long-to-return-the-next-points-to-sample-for-some-inputs">Why does MOE take so long to return the next points to sample for some inputs?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../faq.html#how-do-i-bootstrap-moe-what-initial-data-does-it-need">How do I bootstrap MOE? What initial data does it need?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../faq.html#how-many-function-evaluations-do-i-need-before-moe-is-done">How many function evaluations do I need before MOE is &#8220;done&#8221;?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../faq.html#how-many-function-evaluations-do-i-perform-before-i-update-the-hyperparameters-of-the-gp">How many function evaluations do I perform before I update the hyperparameters of the GP?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../faq.html#will-you-accept-my-pull-request">Will you accept my pull request?</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../moe.html">moe package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe.html#module-moe.resources">moe.resources module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe.html#module-moe">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../moe_examples.html">moe_examples package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#module-moe_examples.next_point_via_simple_endpoint">moe_examples.next_point_via_simple_endpoint module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#module-moe_examples">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../cpp_tree.html">C++ Files</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_optimization_test.html">gpp_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_domain_test.html">gpp_domain_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_expected_improvement_gpu.html">gpp_expected_improvement_gpu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_geometry.html">gpp_geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_test_utils.html">gpp_test_utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_logging.html">gpp_logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_covariance.html">gpp_covariance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_python_test.html">gpp_python_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_domain.html">gpp_domain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_python_common.html">gpp_python_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_hyperparameter_optimization_demo.html">gpp_hyperparameter_optimization_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_geometry_test.html">gpp_geometry_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_math_test.html">gpp_math_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_cuda_math.html">gpp_cuda_math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_python_model_selection.html">gpp_python_model_selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_math.html">gpp_math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_random_test.html">gpp_random_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_optimizer_parameters.html">gpp_optimizer_parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_test_utils_test.html">gpp_test_utils_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_linear_algebra.html">gpp_linear_algebra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_exception.html">gpp_exception</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_model_selection.html">gpp_model_selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_random.html">gpp_random</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_covariance_test.html">gpp_covariance_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_python.html">gpp_python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_model_selection_test.html">gpp_model_selection_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_common.html">gpp_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_expected_improvement_gpu_test.html">gpp_expected_improvement_gpu_test</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../../index.html">MOE</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+      
+          <li><a href="../../../moe.html">moe</a> &raquo;</li>
+      
+    <li>moe.views.schemas.base_schemas</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <h1>Source code for moe.views.schemas.base_schemas</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;Base level schemas for the response/request schemas of each MOE REST endpoint.</span>
+
+<span class="sd">.. Warning:: Outputs of colander schema serialization/deserialization should be treated as</span>
+<span class="sd">  READ-ONLY. It appears that &quot;missing=&quot; and &quot;default=&quot; value are weak-copied (by reference).</span>
+<span class="sd">  Thus changing missing/default fields in the output dict can modify the schema!</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">colander</span>
+
+<span class="kn">from</span> <span class="nn">moe.optimal_learning.python.constant</span> <span class="kn">import</span> <span class="n">GRADIENT_DESCENT_OPTIMIZER</span><span class="p">,</span> <span class="n">L_BFGS_B_OPTIMIZER</span><span class="p">,</span> <span class="n">TENSOR_PRODUCT_DOMAIN_TYPE</span><span class="p">,</span> <span class="n">SQUARE_EXPONENTIAL_COVARIANCE_TYPE</span><span class="p">,</span> <span class="n">NULL_OPTIMIZER</span><span class="p">,</span> <span class="n">NEWTON_OPTIMIZER</span><span class="p">,</span> <span class="n">DOMAIN_TYPES</span><span class="p">,</span> <span class="n">OPTIMIZER_TYPES</span><span class="p">,</span> <span class="n">COVARIANCE_TYPES</span>
+<span class="kn">from</span> <span class="nn">moe.optimal_learning.python.python_version.expected_improvement</span> <span class="kn">import</span> <span class="n">DEFAULT_MVNDST_PARAMS</span>
+
+
+<div class="viewcode-block" id="StrictMappingSchema"><a class="viewcode-back" href="../../../../moe.views.schemas.html#moe.views.schemas.base_schemas.StrictMappingSchema">[docs]</a><span class="k">class</span> <span class="nc">StrictMappingSchema</span><span class="p">(</span><span class="n">colander</span><span class="o">.</span><span class="n">MappingSchema</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;A ``colander.MappingSchema`` that raises exceptions when asked to serialize/deserialize unknown keys.</span>
+
+<span class="sd">    .. Note:: by default, colander.MappingSchema ignores/throws out unknown keys.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="StrictMappingSchema.schema_type"><a class="viewcode-back" href="../../../../moe.views.schemas.html#moe.views.schemas.base_schemas.StrictMappingSchema.schema_type">[docs]</a>    <span class="k">def</span> <span class="nf">schema_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set MappingSchema to raise ``colander.Invalid`` when serializing/deserializing unknown keys.</span>
+
+<span class="sd">        This overrides the staticmethod of the same name in ``colander._SchemaNode``.</span>
+<span class="sd">        ``schema_type`` encodes the same information as the ``typ`` ctor argument to</span>
+<span class="sd">        ``colander.SchemaNode``</span>
+<span class="sd">        See: http://colander.readthedocs.org/en/latest/api.html#colander.SchemaNode</span>
+
+<span class="sd">        .. Note:: Passing ``typ`` or setting ``schema_type`` in subclasses will ***override*** this!</span>
+
+<span class="sd">        This solution follows: https://github.com/Pylons/colander/issues/116</span>
+
+<span class="sd">        .. Note:: colander&#39;s default behavior is ``unknown=&#39;ignore&#39;``; the other option</span>
+<span class="sd">          is ``&#39;preserve&#39;``. See: http://colander.readthedocs.org/en/latest/api.html#colander.Mapping</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">colander</span><span class="o">.</span><span class="n">Mapping</span><span class="p">(</span><span class="n">unknown</span><span class="o">=</span><span class="s">&#39;raise&#39;</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="PositiveFloat"><a class="viewcode-back" href="../../../../moe.views.schemas.html#moe.views.schemas.base_schemas.PositiveFloat">[docs]</a><span class="k">class</span> <span class="nc">PositiveFloat</span><span class="p">(</span><span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;Colander positive (finite) float.&quot;&quot;&quot;</span>
+
+    <span class="n">schema_type</span> <span class="o">=</span> <span class="n">colander</span><span class="o">.</span><span class="n">Float</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="s">&#39;Positive Float&#39;</span>
+
+<div class="viewcode-block" id="PositiveFloat.validator"><a class="viewcode-back" href="../../../../moe.views.schemas.html#moe.views.schemas.base_schemas.PositiveFloat.validator">[docs]</a>    <span class="k">def</span> <span class="nf">validator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">cstruct</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Raise an exception if the node value (cstruct) is non-positive or non-finite.</span>
+
+<span class="sd">        :param node: the node being validated (usually self)</span>
+<span class="sd">        :type node: colander.SchemaNode subclass instance</span>
+<span class="sd">        :param cstruct: the value being validated</span>
+<span class="sd">        :type cstruct: float</span>
+<span class="sd">        :raise: colander.Invalid if cstruct value is bad</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="mf">0.0</span> <span class="o">&lt;</span> <span class="n">cstruct</span> <span class="o">&lt;</span> <span class="nb">float</span><span class="p">(</span><span class="s">&#39;inf&#39;</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">colander</span><span class="o">.</span><span class="n">Invalid</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">msg</span><span class="o">=</span><span class="s">&#39;Value = {0:f} must be positive and finite.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cstruct</span><span class="p">))</span>
+
+</div></div>
+<div class="viewcode-block" id="ListOfPositiveFloats"><a class="viewcode-back" href="../../../../moe.views.schemas.html#moe.views.schemas.base_schemas.ListOfPositiveFloats">[docs]</a><span class="k">class</span> <span class="nc">ListOfPositiveFloats</span><span class="p">(</span><span class="n">colander</span><span class="o">.</span><span class="n">SequenceSchema</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;Colander list of positive floats.&quot;&quot;&quot;</span>
+
+    <span class="n">float_in_list</span> <span class="o">=</span> <span class="n">PositiveFloat</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="ListOfFloats"><a class="viewcode-back" href="../../../../moe.views.schemas.html#moe.views.schemas.base_schemas.ListOfFloats">[docs]</a><span class="k">class</span> <span class="nc">ListOfFloats</span><span class="p">(</span><span class="n">colander</span><span class="o">.</span><span class="n">SequenceSchema</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;Colander list of floats.&quot;&quot;&quot;</span>
+
+    <span class="n">float_in_list</span> <span class="o">=</span> <span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="p">(</span><span class="n">colander</span><span class="o">.</span><span class="n">Float</span><span class="p">())</span>
+
+</div>
+<div class="viewcode-block" id="SinglePoint"><a class="viewcode-back" href="../../../../moe.views.schemas.html#moe.views.schemas.base_schemas.SinglePoint">[docs]</a><span class="k">class</span> <span class="nc">SinglePoint</span><span class="p">(</span><span class="n">StrictMappingSchema</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;A point object.</span>
+
+<span class="sd">    **Required fields**</span>
+
+<span class="sd">    :ivar point: (:class:`moe.views.schemas.base_schemas.ListOfFloats`) The point sampled (in the domain of the function)</span>
+<span class="sd">    :ivar value: (*float64*) The value returned by the function</span>
+<span class="sd">    :ivar value_var: (*float64 &gt;= 0.0*) The noise/measurement variance (if any) associated with :attr:`value`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">point</span> <span class="o">=</span> <span class="n">ListOfFloats</span><span class="p">()</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="p">(</span><span class="n">colander</span><span class="o">.</span><span class="n">Float</span><span class="p">())</span>
+    <span class="n">value_var</span> <span class="o">=</span> <span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="p">(</span>
+            <span class="n">colander</span><span class="o">.</span><span class="n">Float</span><span class="p">(),</span>
+            <span class="n">validator</span><span class="o">=</span><span class="n">colander</span><span class="o">.</span><span class="n">Range</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mf">0.0</span><span class="p">),</span>
+            <span class="n">missing</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+            <span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="PointsSampled"><a class="viewcode-back" href="../../../../moe.views.schemas.html#moe.views.schemas.base_schemas.PointsSampled">[docs]</a><span class="k">class</span> <span class="nc">PointsSampled</span><span class="p">(</span><span class="n">colander</span><span class="o">.</span><span class="n">SequenceSchema</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;A list of SinglePoint objects.&quot;&quot;&quot;</span>
+
+    <span class="n">point_sampled</span> <span class="o">=</span> <span class="n">SinglePoint</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="DomainCoordinate"><a class="viewcode-back" href="../../../../moe.views.schemas.html#moe.views.schemas.base_schemas.DomainCoordinate">[docs]</a><span class="k">class</span> <span class="nc">DomainCoordinate</span><span class="p">(</span><span class="n">StrictMappingSchema</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;A single domain interval.&quot;&quot;&quot;</span>
+
+    <span class="nb">min</span> <span class="o">=</span> <span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="p">(</span><span class="n">colander</span><span class="o">.</span><span class="n">Float</span><span class="p">())</span>
+    <span class="nb">max</span> <span class="o">=</span> <span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="p">(</span><span class="n">colander</span><span class="o">.</span><span class="n">Float</span><span class="p">())</span>
+
+</div>
+<div class="viewcode-block" id="Domain"><a class="viewcode-back" href="../../../../moe.views.schemas.html#moe.views.schemas.base_schemas.Domain">[docs]</a><span class="k">class</span> <span class="nc">Domain</span><span class="p">(</span><span class="n">colander</span><span class="o">.</span><span class="n">SequenceSchema</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;A list of domain interval DomainCoordinate objects.&quot;&quot;&quot;</span>
+
+    <span class="n">domain_coordinates</span> <span class="o">=</span> <span class="n">DomainCoordinate</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="DomainInfo"><a class="viewcode-back" href="../../../../moe.views.schemas.html#moe.views.schemas.base_schemas.DomainInfo">[docs]</a><span class="k">class</span> <span class="nc">DomainInfo</span><span class="p">(</span><span class="n">StrictMappingSchema</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;The domain info needed for every request.</span>
+
+<span class="sd">    **Required fields**</span>
+
+<span class="sd">    :ivar dim: (*int &gt;= 0*) the dimension of the domain (int)</span>
+
+<span class="sd">    **Optional fields**</span>
+
+<span class="sd">    :ivar domain_type: (*str*) the type of domain to use, one of :const:`moe.optimal_learning.python.python_version.constant.DOMAIN_TYPES` (default: TENSOR_PRODUCT_DOMAIN_TYPE)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">domain_type</span> <span class="o">=</span> <span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="p">(</span>
+            <span class="n">colander</span><span class="o">.</span><span class="n">String</span><span class="p">(),</span>
+            <span class="n">validator</span><span class="o">=</span><span class="n">colander</span><span class="o">.</span><span class="n">OneOf</span><span class="p">(</span><span class="n">DOMAIN_TYPES</span><span class="p">),</span>
+            <span class="n">missing</span><span class="o">=</span><span class="n">TENSOR_PRODUCT_DOMAIN_TYPE</span><span class="p">,</span>
+            <span class="p">)</span>
+    <span class="n">dim</span> <span class="o">=</span> <span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="p">(</span>
+            <span class="n">colander</span><span class="o">.</span><span class="n">Int</span><span class="p">(),</span>
+            <span class="n">validator</span><span class="o">=</span><span class="n">colander</span><span class="o">.</span><span class="n">Range</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+            <span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="BoundedDomainInfo"><a class="viewcode-back" href="../../../../moe.views.schemas.html#moe.views.schemas.base_schemas.BoundedDomainInfo">[docs]</a><span class="k">class</span> <span class="nc">BoundedDomainInfo</span><span class="p">(</span><span class="n">DomainInfo</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;The domain info needed for every request, along with bounds for optimization.</span>
+
+<span class="sd">    .. Note:: For EI/next points, selecting a domain that is substantially larger than</span>
+<span class="sd">      the bounding box of the historical data may lead MOE to favor exploring near the</span>
+<span class="sd">      boundaries instead of near existing data.</span>
+
+<span class="sd">    **Required fields**</span>
+
+<span class="sd">    All required fields from :class:`~moe.views.schemas.base_schemas.DomainInfo`</span>
+
+<span class="sd">    :ivar domain_bounds: (*list of list of float64*) the bounds of the domain of type :class:`moe.views.schemas.base_schemas.Domain`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">domain_bounds</span> <span class="o">=</span> <span class="n">Domain</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="MVNDSTParametersSchema"><a class="viewcode-back" href="../../../../moe.views.schemas.html#moe.views.schemas.base_schemas.MVNDSTParametersSchema">[docs]</a><span class="k">class</span> <span class="nc">MVNDSTParametersSchema</span><span class="p">(</span><span class="n">StrictMappingSchema</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;Parameters for mvndst within qEI (:func:`moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement._compute_expected_improvement_qd_analytic`).</span>
+
+<span class="sd">    See :class:`moe.optimal_learning.python.python_version.expected_improvement.MVNDSTParameters`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">releps</span> <span class="o">=</span> <span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="p">(</span>
+            <span class="n">colander</span><span class="o">.</span><span class="n">Float</span><span class="p">(),</span>
+            <span class="n">validator</span><span class="o">=</span><span class="n">colander</span><span class="o">.</span><span class="n">Range</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+            <span class="n">missing</span><span class="o">=</span><span class="n">DEFAULT_MVNDST_PARAMS</span><span class="o">.</span><span class="n">releps</span><span class="p">,</span>
+            <span class="p">)</span>
+    <span class="n">abseps</span> <span class="o">=</span> <span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="p">(</span>
+            <span class="n">colander</span><span class="o">.</span><span class="n">Float</span><span class="p">(),</span>
+            <span class="n">validator</span><span class="o">=</span><span class="n">colander</span><span class="o">.</span><span class="n">Range</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+            <span class="n">missing</span><span class="o">=</span><span class="n">DEFAULT_MVNDST_PARAMS</span><span class="o">.</span><span class="n">abseps</span><span class="p">,</span>
+            <span class="p">)</span>
+    <span class="n">maxpts_per_dim</span> <span class="o">=</span> <span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="p">(</span>
+            <span class="n">colander</span><span class="o">.</span><span class="n">Int</span><span class="p">(),</span>
+            <span class="n">validator</span><span class="o">=</span><span class="n">colander</span><span class="o">.</span><span class="n">Range</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+            <span class="n">missing</span><span class="o">=</span><span class="n">DEFAULT_MVNDST_PARAMS</span><span class="o">.</span><span class="n">maxpts_per_dim</span><span class="p">,</span>
+            <span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="GradientDescentParametersSchema"><a class="viewcode-back" href="../../../../moe.views.schemas.html#moe.views.schemas.base_schemas.GradientDescentParametersSchema">[docs]</a><span class="k">class</span> <span class="nc">GradientDescentParametersSchema</span><span class="p">(</span><span class="n">StrictMappingSchema</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;Parameters for the gradient descent optimizer.</span>
+
+<span class="sd">    See :class:`moe.optimal_learning.python.cpp_wrappers.optimization.GradientDescentParameters`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">max_num_steps</span> <span class="o">=</span> <span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="p">(</span>
+            <span class="n">colander</span><span class="o">.</span><span class="n">Int</span><span class="p">(),</span>
+            <span class="n">validator</span><span class="o">=</span><span class="n">colander</span><span class="o">.</span><span class="n">Range</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+            <span class="p">)</span>
+    <span class="n">max_num_restarts</span> <span class="o">=</span> <span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="p">(</span>
+            <span class="n">colander</span><span class="o">.</span><span class="n">Int</span><span class="p">(),</span>
+            <span class="n">validator</span><span class="o">=</span><span class="n">colander</span><span class="o">.</span><span class="n">Range</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+            <span class="p">)</span>
+    <span class="n">num_steps_averaged</span> <span class="o">=</span> <span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="p">(</span>
+            <span class="n">colander</span><span class="o">.</span><span class="n">Int</span><span class="p">(),</span>
+            <span class="n">validator</span><span class="o">=</span><span class="n">colander</span><span class="o">.</span><span class="n">Range</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+            <span class="p">)</span>
+    <span class="n">gamma</span> <span class="o">=</span> <span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="p">(</span>
+            <span class="n">colander</span><span class="o">.</span><span class="n">Float</span><span class="p">(),</span>
+            <span class="n">validator</span><span class="o">=</span><span class="n">colander</span><span class="o">.</span><span class="n">Range</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mf">0.0</span><span class="p">),</span>
+            <span class="p">)</span>
+    <span class="n">pre_mult</span> <span class="o">=</span> <span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="p">(</span>
+            <span class="n">colander</span><span class="o">.</span><span class="n">Float</span><span class="p">(),</span>
+            <span class="n">validator</span><span class="o">=</span><span class="n">colander</span><span class="o">.</span><span class="n">Range</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mf">0.0</span><span class="p">),</span>
+            <span class="p">)</span>
+    <span class="n">max_relative_change</span> <span class="o">=</span> <span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="p">(</span>
+            <span class="n">colander</span><span class="o">.</span><span class="n">Float</span><span class="p">(),</span>
+            <span class="n">validator</span><span class="o">=</span><span class="n">colander</span><span class="o">.</span><span class="n">Range</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mf">1.0</span><span class="p">),</span>
+            <span class="p">)</span>
+    <span class="n">tolerance</span> <span class="o">=</span> <span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="p">(</span>
+            <span class="n">colander</span><span class="o">.</span><span class="n">Float</span><span class="p">(),</span>
+            <span class="n">validator</span><span class="o">=</span><span class="n">colander</span><span class="o">.</span><span class="n">Range</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mf">0.0</span><span class="p">),</span>
+            <span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="LBFGSBParametersSchema"><a class="viewcode-back" href="../../../../moe.views.schemas.html#moe.views.schemas.base_schemas.LBFGSBParametersSchema">[docs]</a><span class="k">class</span> <span class="nc">LBFGSBParametersSchema</span><span class="p">(</span><span class="n">StrictMappingSchema</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;Parameters for the L-BFGS-B optimizer.</span>
+
+<span class="sd">    See :class:`moe.optimal_learning.python.python_version.optimization.LBFGSBParameters`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">approx_grad</span> <span class="o">=</span> <span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="p">(</span>
+            <span class="n">colander</span><span class="o">.</span><span class="n">Boolean</span><span class="p">(),</span>
+            <span class="p">)</span>
+    <span class="n">max_func_evals</span> <span class="o">=</span> <span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="p">(</span>
+            <span class="n">colander</span><span class="o">.</span><span class="n">Int</span><span class="p">(),</span>
+            <span class="n">validator</span><span class="o">=</span><span class="n">colander</span><span class="o">.</span><span class="n">Range</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+            <span class="p">)</span>
+    <span class="n">max_metric_correc</span> <span class="o">=</span> <span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="p">(</span>
+            <span class="n">colander</span><span class="o">.</span><span class="n">Int</span><span class="p">(),</span>
+            <span class="n">validator</span><span class="o">=</span><span class="n">colander</span><span class="o">.</span><span class="n">Range</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+            <span class="p">)</span>
+    <span class="n">factr</span> <span class="o">=</span> <span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="p">(</span>
+            <span class="n">colander</span><span class="o">.</span><span class="n">Float</span><span class="p">(),</span>
+            <span class="n">validator</span><span class="o">=</span><span class="n">colander</span><span class="o">.</span><span class="n">Range</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mf">1.0</span><span class="p">),</span>
+            <span class="p">)</span>
+    <span class="n">pgtol</span> <span class="o">=</span> <span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="p">(</span>
+            <span class="n">colander</span><span class="o">.</span><span class="n">Float</span><span class="p">(),</span>
+            <span class="n">validator</span><span class="o">=</span><span class="n">colander</span><span class="o">.</span><span class="n">Range</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mf">0.0</span><span class="p">),</span>
+            <span class="p">)</span>
+    <span class="n">epsilon</span> <span class="o">=</span> <span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="p">(</span>
+            <span class="n">colander</span><span class="o">.</span><span class="n">Float</span><span class="p">(),</span>
+            <span class="n">validator</span><span class="o">=</span><span class="n">colander</span><span class="o">.</span><span class="n">Range</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mf">0.0</span><span class="p">),</span>
+            <span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="NewtonParametersSchema"><a class="viewcode-back" href="../../../../moe.views.schemas.html#moe.views.schemas.base_schemas.NewtonParametersSchema">[docs]</a><span class="k">class</span> <span class="nc">NewtonParametersSchema</span><span class="p">(</span><span class="n">StrictMappingSchema</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;Parameters for the newton optimizer.</span>
+
+<span class="sd">    See :class:`moe.optimal_learning.python.cpp_wrappers.optimization.NewtonParameters`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">max_num_steps</span> <span class="o">=</span> <span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="p">(</span>
+            <span class="n">colander</span><span class="o">.</span><span class="n">Int</span><span class="p">(),</span>
+            <span class="n">validator</span><span class="o">=</span><span class="n">colander</span><span class="o">.</span><span class="n">Range</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+            <span class="p">)</span>
+    <span class="n">gamma</span> <span class="o">=</span> <span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="p">(</span>
+            <span class="n">colander</span><span class="o">.</span><span class="n">Float</span><span class="p">(),</span>
+            <span class="n">validator</span><span class="o">=</span><span class="n">colander</span><span class="o">.</span><span class="n">Range</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mf">1.0</span><span class="p">),</span>
+            <span class="p">)</span>
+    <span class="n">time_factor</span> <span class="o">=</span> <span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="p">(</span>
+            <span class="n">colander</span><span class="o">.</span><span class="n">Float</span><span class="p">(),</span>
+            <span class="n">validator</span><span class="o">=</span><span class="n">colander</span><span class="o">.</span><span class="n">Range</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mf">1.0e-16</span><span class="p">),</span>
+            <span class="p">)</span>
+    <span class="n">max_relative_change</span> <span class="o">=</span> <span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="p">(</span>
+            <span class="n">colander</span><span class="o">.</span><span class="n">Float</span><span class="p">(),</span>
+            <span class="n">validator</span><span class="o">=</span><span class="n">colander</span><span class="o">.</span><span class="n">Range</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mf">1.0</span><span class="p">),</span>
+            <span class="p">)</span>
+    <span class="n">tolerance</span> <span class="o">=</span> <span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="p">(</span>
+            <span class="n">colander</span><span class="o">.</span><span class="n">Float</span><span class="p">(),</span>
+            <span class="n">validator</span><span class="o">=</span><span class="n">colander</span><span class="o">.</span><span class="n">Range</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mf">0.0</span><span class="p">),</span>
+            <span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="NullParametersSchema"><a class="viewcode-back" href="../../../../moe.views.schemas.html#moe.views.schemas.base_schemas.NullParametersSchema">[docs]</a><span class="k">class</span> <span class="nc">NullParametersSchema</span><span class="p">(</span><span class="n">StrictMappingSchema</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;Parameters for the null optimizer.&quot;&quot;&quot;</span>
+
+    <span class="k">pass</span>
+
+</div>
+<div class="viewcode-block" id="CovarianceInfo"><a class="viewcode-back" href="../../../../moe.views.schemas.html#moe.views.schemas.base_schemas.CovarianceInfo">[docs]</a><span class="k">class</span> <span class="nc">CovarianceInfo</span><span class="p">(</span><span class="n">StrictMappingSchema</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;The covariance info needed for every request.</span>
+
+<span class="sd">    .. Warning:: Very large length scales (adverse conditioning effects) and very small length scales (irrelevant dimensions)</span>
+<span class="sd">      can negatively impact MOE&#39;s performance. It may be worth checking that your length scales are &quot;reasonable.&quot;</span>
+
+<span class="sd">      Additionally, MOE&#39;s default optimization parameters were tuned for hyperparameter values roughly in [0.01, 100].</span>
+<span class="sd">      Venturing too far out of this range means the defaults may perform poorly.</span>
+
+<span class="sd">    **Required fields**</span>
+
+<span class="sd">    :ivar covariance_type: (*str*) a covariance type in :const:`moe.optimal_learning.python.python_version.constant.COVARIANCE_TYPES`</span>
+<span class="sd">    :ivar hyperparameters: (*list of float64*) the hyperparameters corresponding to the given :attr:`covariance_type`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">covariance_type</span> <span class="o">=</span> <span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="p">(</span>
+            <span class="n">colander</span><span class="o">.</span><span class="n">String</span><span class="p">(),</span>
+            <span class="n">validator</span><span class="o">=</span><span class="n">colander</span><span class="o">.</span><span class="n">OneOf</span><span class="p">(</span><span class="n">COVARIANCE_TYPES</span><span class="p">),</span>
+            <span class="n">missing</span><span class="o">=</span><span class="n">SQUARE_EXPONENTIAL_COVARIANCE_TYPE</span><span class="p">,</span>
+            <span class="p">)</span>
+    <span class="c"># TODO(GH-216): Improve hyperparameter validation. All &gt; 0 is ok for now but eventually individual covariance objects should</span>
+    <span class="c"># provide their own validation.</span>
+    <span class="n">hyperparameters</span> <span class="o">=</span> <span class="n">ListOfPositiveFloats</span><span class="p">(</span>
+            <span class="n">missing</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+            <span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="GpHistoricalInfo"><a class="viewcode-back" href="../../../../moe.views.schemas.html#moe.views.schemas.base_schemas.GpHistoricalInfo">[docs]</a><span class="k">class</span> <span class="nc">GpHistoricalInfo</span><span class="p">(</span><span class="n">StrictMappingSchema</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;The Gaussian Process info needed for every request.</span>
+
+<span class="sd">    .. Warning:: If the points are too close together (relative to the length scales in :class:`moe.views.schemas.base_schemas.CovarianceInfo`)</span>
+<span class="sd">      with simultaneously very low or zero noise, the condition number of the GPP&#39;s covariance matrix can be very large. The</span>
+<span class="sd">      matrix may even become numerically singular.</span>
+
+<span class="sd">      In such cases, check for (nearly) duplicates points and be mindful of large length scales.</span>
+
+<span class="sd">    .. Warning:: 0 ``noise_variance`` in the input historical data may lead to [numerically] singular covariance matrices. This</span>
+<span class="sd">      becomes more likely as ``num_sampled`` increases. Noise caps the condition number at roughly ``1.0 / min(noise)``, so</span>
+<span class="sd">      adding artificial noise (e.g., ``1.0e-12``) can aid with conditioning issues.</span>
+
+<span class="sd">      MOE does not do this for you automatically since 0 noise may be extremely important for some users.</span>
+
+<span class="sd">    .. Note:: MOE performs best if the input ``points_sampled_value`` are 0 mean.</span>
+
+<span class="sd">    **Required fields**</span>
+
+<span class="sd">    :ivar points_sampled: (*list of PointsSampled*) The :class:`moe.views.schemas.base_schemas.PointsSampled` (point, value, noise) that make up</span>
+<span class="sd">      the historical data.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">points_sampled</span> <span class="o">=</span> <span class="n">PointsSampled</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="ListOfPointsInDomain"><a class="viewcode-back" href="../../../../moe.views.schemas.html#moe.views.schemas.base_schemas.ListOfPointsInDomain">[docs]</a><span class="k">class</span> <span class="nc">ListOfPointsInDomain</span><span class="p">(</span><span class="n">colander</span><span class="o">.</span><span class="n">SequenceSchema</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;A list of lists of floats.&quot;&quot;&quot;</span>
+
+    <span class="n">point_in_domain</span> <span class="o">=</span> <span class="n">ListOfFloats</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="ListOfExpectedImprovements"><a class="viewcode-back" href="../../../../moe.views.schemas.html#moe.views.schemas.base_schemas.ListOfExpectedImprovements">[docs]</a><span class="k">class</span> <span class="nc">ListOfExpectedImprovements</span><span class="p">(</span><span class="n">colander</span><span class="o">.</span><span class="n">SequenceSchema</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;A list of floats all geq 0.0.&quot;&quot;&quot;</span>
+
+    <span class="n">expected_improvement</span> <span class="o">=</span> <span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="p">(</span>
+            <span class="n">colander</span><span class="o">.</span><span class="n">Float</span><span class="p">(),</span>
+            <span class="n">validator</span><span class="o">=</span><span class="n">colander</span><span class="o">.</span><span class="n">Range</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+            <span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="MatrixOfFloats"><a class="viewcode-back" href="../../../../moe.views.schemas.html#moe.views.schemas.base_schemas.MatrixOfFloats">[docs]</a><span class="k">class</span> <span class="nc">MatrixOfFloats</span><span class="p">(</span><span class="n">colander</span><span class="o">.</span><span class="n">SequenceSchema</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;A 2d list of floats.&quot;&quot;&quot;</span>
+
+    <span class="n">row_of_matrix</span> <span class="o">=</span> <span class="n">ListOfFloats</span><span class="p">()</span>
+
+
+<span class="c">#: Mapping from optimizer types (:const:`moe.optimal_learning.python.constant.OPTIMIZER_TYPES`) to</span>
+<span class="c">#: optimizer schemas, e.g., :class:`moe.views.schemas.base_schemas.NewtonParametersSchema`.</span></div>
+<span class="n">OPTIMIZER_TYPES_TO_SCHEMA_CLASSES</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">NULL_OPTIMIZER</span><span class="p">:</span> <span class="n">NullParametersSchema</span><span class="p">,</span>
+        <span class="n">NEWTON_OPTIMIZER</span><span class="p">:</span> <span class="n">NewtonParametersSchema</span><span class="p">,</span>
+        <span class="n">GRADIENT_DESCENT_OPTIMIZER</span><span class="p">:</span> <span class="n">GradientDescentParametersSchema</span><span class="p">,</span>
+        <span class="n">L_BFGS_B_OPTIMIZER</span><span class="p">:</span> <span class="n">LBFGSBParametersSchema</span><span class="p">,</span>
+        <span class="p">}</span>
+
+
+<div class="viewcode-block" id="OptimizerInfo"><a class="viewcode-back" href="../../../../moe.views.schemas.html#moe.views.schemas.base_schemas.OptimizerInfo">[docs]</a><span class="k">class</span> <span class="nc">OptimizerInfo</span><span class="p">(</span><span class="n">StrictMappingSchema</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;Schema specifying the behavior of the multistarted optimizers in the optimal_learning library.</span>
+
+<span class="sd">    .. Note:: This schema does not provide default values for its fields. These defaults</span>
+<span class="sd">      ***DO EXIST***; see :mod:`moe.optimal_learning.python.constant`. However the defaults are</span>
+<span class="sd">      dependent on external factors (like whether we&#39;re computing EI, log marginal, etc.) and</span>
+<span class="sd">      are not known statically.</span>
+
+<span class="sd">      See :meth:`moe.views.optimizable_gp_pretty_view.OptimizableGpPrettyView.get_params_from_request`</span>
+<span class="sd">      for an example of how this schema is used.</span>
+
+<span class="sd">    .. Note:: The field :attr:`optimizer_parameters` is ***NOT VALIDATED***. Users of this</span>
+<span class="sd">      schema are responsible for passing its contents through the appropriate schema using</span>
+<span class="sd">      the :const:`moe.views.schemas.base_schemas.OPTIMIZER_TYPES_TO_SCHEMA_CLASSES` dict provided above.</span>
+
+<span class="sd">    TODO(GH-303): Try schema bindings as a way to automate setting validators and missing values.</span>
+
+<span class="sd">    **Optional fields**</span>
+
+<span class="sd">    :ivar optimizer_type: (*str*) the optimization type from :const:`moe.optimal_learning.python.constant.OPTIMIZER_TYPES` (default: GRADIENT_DESCENT_OPTIMIZER)</span>
+<span class="sd">    :ivar num_multistarts: (*int &gt; 0*) number of locations from which to start optimization runs</span>
+<span class="sd">    :ivar num_random_samples: (*int &gt;= 0*) number of random search points to use if multistart optimization fails</span>
+<span class="sd">    :ivar optimizer_parameters: (*dict*) a dict corresponding the the parameters of the optimization method</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">optimizer_type</span> <span class="o">=</span> <span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="p">(</span>
+            <span class="n">colander</span><span class="o">.</span><span class="n">String</span><span class="p">(),</span>
+            <span class="n">validator</span><span class="o">=</span><span class="n">colander</span><span class="o">.</span><span class="n">OneOf</span><span class="p">(</span><span class="n">OPTIMIZER_TYPES</span><span class="p">),</span>
+            <span class="n">missing</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+            <span class="p">)</span>
+    <span class="n">num_multistarts</span> <span class="o">=</span> <span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="p">(</span>
+            <span class="n">colander</span><span class="o">.</span><span class="n">Int</span><span class="p">(),</span>
+            <span class="n">validator</span><span class="o">=</span><span class="n">colander</span><span class="o">.</span><span class="n">Range</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+            <span class="n">missing</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+            <span class="p">)</span>
+    <span class="n">num_random_samples</span> <span class="o">=</span> <span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="p">(</span>
+            <span class="n">colander</span><span class="o">.</span><span class="n">Int</span><span class="p">(),</span>
+            <span class="n">validator</span><span class="o">=</span><span class="n">colander</span><span class="o">.</span><span class="n">Range</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+            <span class="n">missing</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+            <span class="p">)</span>
+    <span class="c"># TODO(GH-303): Use schema binding to set up missing/default and validation dynamically</span>
+    <span class="n">optimizer_parameters</span> <span class="o">=</span> <span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="p">(</span>
+            <span class="n">colander</span><span class="o">.</span><span class="n">Mapping</span><span class="p">(</span><span class="n">unknown</span><span class="o">=</span><span class="s">&#39;preserve&#39;</span><span class="p">),</span>
+            <span class="n">missing</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+            <span class="p">)</span></div>
+</pre></div>
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2012-2014 Yelp. MOE is licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'0.2.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

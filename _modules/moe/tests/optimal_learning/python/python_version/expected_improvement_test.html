@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>moe.tests.optimal_learning.python.python_version.expected_improvement_test &mdash; MOE 0.1.0 documentation</title>
+  <title>moe.tests.optimal_learning.python.python_version.expected_improvement_test &mdash; MOE 0.2.0 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
     <link rel="stylesheet" href="../../../../../../_static/breathe.css" type="text/css" />
   
-    <link rel="top" title="MOE 0.1.0 documentation" href="../../../../../../index.html"/>
+    <link rel="top" title="MOE 0.2.0 documentation" href="../../../../../../index.html"/>
         <link rel="up" title="moe" href="../../../../../moe.html"/> 
 
   
@@ -94,6 +94,13 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../../../objective_functions.html#example-of-objective-functions">Example of Objective Functions</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../bandit.html">Multi-Armed Bandits</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../bandit.html#what-is-the-multi-armed-bandit-problem">What is the multi-armed bandit problem?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../bandit.html#applications">Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../bandit.html#policies">Policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../bandit.html#pointers">Pointers</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../../examples.html">Examples</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../../examples.html#minimizing-an-arbitrary-function">Minimizing an arbitrary function</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../../examples.html#gaussian-process-regression-given-historical-data">Gaussian Process regression given historical data</a></li>
@@ -147,9 +154,11 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../../../cpp_tree.html">C++ Files</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_optimization_test.html">gpp_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_domain_test.html">gpp_domain_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_expected_improvement_gpu.html">gpp_expected_improvement_gpu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_geometry.html">gpp_geometry</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_test_utils.html">gpp_test_utils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_logging.html">gpp_logging</a></li>
@@ -158,28 +167,29 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_domain.html">gpp_domain</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_python_common.html">gpp_python_common</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_hyperparameter_optimization_demo.html">gpp_hyperparameter_optimization_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_test_utils_test.html">gpp_test_utils_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_geometry_test.html">gpp_geometry_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_math_test.html">gpp_math_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_cuda_math.html">gpp_cuda_math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_python_model_selection.html">gpp_python_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_math.html">gpp_math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_random_test.html">gpp_random_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_optimizer_parameters.html">gpp_optimizer_parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_random.html">gpp_random</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_geometry_test.html">gpp_geometry_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_test_utils_test.html">gpp_test_utils_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_linear_algebra.html">gpp_linear_algebra</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_exception.html">gpp_exception</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_model_selection.html">gpp_model_selection</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_random.html">gpp_random</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_covariance_test.html">gpp_covariance_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_python.html">gpp_python</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_model_selection_test.html">gpp_model_selection_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_common.html">gpp_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../gpp_expected_improvement_gpu_test.html">gpp_expected_improvement_gpu_test</a></li>
 </ul>
 </li>
 </ul>
@@ -611,23 +621,24 @@
 <span class="sd">        changing the number of iterations or the maximum relative error allowed in the mvndst function leads to different answers.</span>
 
 <span class="sd">        These precomputed answers were calculated from:</span>
-<span class="sd">        maxpts = 20,000 * q</span>
-<span class="sd">        releps = 1e-5</span>
+<span class="sd">        maxpts = 200,000 * q</span>
+<span class="sd">        releps = 1.0e-14</span>
+<span class="sd">        abseps = 0</span>
 
 <span class="sd">        These values are a tradeoff between accuracy / speed.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">ei_tolerance</span> <span class="o">=</span> <span class="mf">6.0e-10</span>
+        <span class="n">ei_tolerance</span> <span class="o">=</span> <span class="mf">6.0e-6</span>
         <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">8790</span><span class="p">)</span>
 
         <span class="n">precomputed_answers</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="mf">5.83583593191e-08</span><span class="p">,</span>
-            <span class="mf">5.83583593328e-08</span><span class="p">,</span>
-            <span class="mf">2.40176803674e-07</span><span class="p">,</span>
-            <span class="mf">0.349595041008</span><span class="p">,</span>
-            <span class="mf">0.350524308404</span><span class="p">,</span>
-            <span class="mf">0.350524856612</span><span class="p">,</span>
-            <span class="mf">0.350524821708</span><span class="p">,</span>
-            <span class="mf">0.409582656814</span><span class="p">,</span>
+            <span class="mf">5.835835931907665360E-08</span><span class="p">,</span>
+            <span class="mf">5.835835933284698072E-08</span><span class="p">,</span>
+            <span class="mf">2.401743470063156417E-07</span><span class="p">,</span>
+            <span class="mf">3.495950208926061342E-01</span><span class="p">,</span>
+            <span class="mf">3.505247159968049586E-01</span><span class="p">,</span>
+            <span class="mf">3.505247527657193163E-01</span><span class="p">,</span>
+            <span class="mf">3.505247477049012739E-01</span><span class="p">,</span>
+            <span class="mf">4.095861927462218222E-01</span><span class="p">,</span>
         <span class="p">]</span>
 
         <span class="k">for</span> <span class="n">test_case</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">gp_test_environments</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">3</span><span class="p">]:</span>
@@ -636,11 +647,22 @@
 
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">):</span>
                 <span class="n">points_to_sample</span> <span class="o">=</span> <span class="n">all_points</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">i</span><span class="p">]</span>
-                <span class="n">python_ei_eval</span> <span class="o">=</span> <span class="n">moe</span><span class="o">.</span><span class="n">optimal_learning</span><span class="o">.</span><span class="n">python</span><span class="o">.</span><span class="n">python_version</span><span class="o">.</span><span class="n">expected_improvement</span><span class="o">.</span><span class="n">ExpectedImprovement</span><span class="p">(</span><span class="n">python_gp</span><span class="p">,</span> <span class="n">points_to_sample</span><span class="p">)</span>
+                <span class="n">mvndst_accurate_parameters</span> <span class="o">=</span> <span class="n">moe</span><span class="o">.</span><span class="n">optimal_learning</span><span class="o">.</span><span class="n">python</span><span class="o">.</span><span class="n">python_version</span><span class="o">.</span><span class="n">expected_improvement</span><span class="o">.</span><span class="n">MVNDSTParameters</span><span class="p">(</span>
+                        <span class="n">releps</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                        <span class="n">abseps</span><span class="o">=</span><span class="mf">1.0e-6</span><span class="p">,</span>
+                        <span class="n">maxpts_per_dim</span><span class="o">=</span><span class="mi">200000</span><span class="p">,</span>
+                        <span class="p">)</span>
+                <span class="n">python_ei_eval</span> <span class="o">=</span> <span class="n">moe</span><span class="o">.</span><span class="n">optimal_learning</span><span class="o">.</span><span class="n">python</span><span class="o">.</span><span class="n">python_version</span><span class="o">.</span><span class="n">expected_improvement</span><span class="o">.</span><span class="n">ExpectedImprovement</span><span class="p">(</span>
+                        <span class="n">python_gp</span><span class="p">,</span>
+                        <span class="n">points_to_sample</span><span class="p">,</span>
+                        <span class="n">mvndst_parameters</span><span class="o">=</span><span class="n">mvndst_accurate_parameters</span>
+                        <span class="p">)</span>
 
                 <span class="n">python_ei_eval</span><span class="o">.</span><span class="n">current_point</span> <span class="o">=</span> <span class="n">points_to_sample</span>
                 <span class="n">python_qd_ei</span> <span class="o">=</span> <span class="n">python_ei_eval</span><span class="o">.</span><span class="n">compute_expected_improvement</span><span class="p">()</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">assert_scalar_within_relative</span><span class="p">(</span><span class="n">python_qd_ei</span><span class="p">,</span> <span class="n">precomputed_answers</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">2</span><span class="p">],</span> <span class="n">ei_tolerance</span><span class="p">)</span>
+                <span class="c"># We do an absolute check here because computing to a &quot;high&quot; degree of relative precision</span>
+                <span class="c"># (i.e., releps=1.0e-6, abseps=0) takes 10x longer. A relative check would be preferable, though.</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">assert_scalar_within_absolute</span><span class="p">(</span><span class="n">python_qd_ei</span><span class="p">,</span> <span class="n">precomputed_answers</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">2</span><span class="p">],</span> <span class="n">ei_tolerance</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="ExpectedImprovementTest.test_qd_and_1d_return_same_analytic_ei"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.test_qd_and_1d_return_same_analytic_ei">[docs]</a>    <span class="k">def</span> <span class="nf">test_qd_and_1d_return_same_analytic_ei</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Compare the 1D analytic EI results to the qD analytic EI results, checking several random points per test case.&quot;&quot;&quot;</span>
@@ -693,7 +715,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../../../',
-            VERSION:'0.1.0',
+            VERSION:'0.2.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

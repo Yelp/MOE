@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>moe.optimal_learning.python.constant &mdash; MOE 0.1.0 documentation</title>
+  <title>moe.optimal_learning.python.constant &mdash; MOE 0.2.0 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
     <link rel="stylesheet" href="../../../../_static/breathe.css" type="text/css" />
   
-    <link rel="top" title="MOE 0.1.0 documentation" href="../../../../index.html"/>
+    <link rel="top" title="MOE 0.2.0 documentation" href="../../../../index.html"/>
         <link rel="up" title="moe" href="../../../moe.html"/> 
 
   
@@ -94,6 +94,13 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../objective_functions.html#example-of-objective-functions">Example of Objective Functions</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../bandit.html">Multi-Armed Bandits</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../bandit.html#what-is-the-multi-armed-bandit-problem">What is the multi-armed bandit problem?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../bandit.html#applications">Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../bandit.html#policies">Policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../bandit.html#pointers">Pointers</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../examples.html">Examples</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../../examples.html#minimizing-an-arbitrary-function">Minimizing an arbitrary function</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../examples.html#gaussian-process-regression-given-historical-data">Gaussian Process regression given historical data</a></li>
@@ -147,9 +154,11 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../cpp_tree.html">C++ Files</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../../gpp_optimization_test.html">gpp_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../gpp_domain_test.html">gpp_domain_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_expected_improvement_gpu.html">gpp_expected_improvement_gpu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../gpp_geometry.html">gpp_geometry</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../gpp_test_utils.html">gpp_test_utils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../gpp_logging.html">gpp_logging</a></li>
@@ -158,28 +167,29 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../gpp_domain.html">gpp_domain</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../gpp_python_common.html">gpp_python_common</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../gpp_hyperparameter_optimization_demo.html">gpp_hyperparameter_optimization_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_test_utils_test.html">gpp_test_utils_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_geometry_test.html">gpp_geometry_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../gpp_math_test.html">gpp_math_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_cuda_math.html">gpp_cuda_math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../gpp_python_model_selection.html">gpp_python_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../gpp_math.html">gpp_math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../gpp_random_test.html">gpp_random_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../gpp_optimizer_parameters.html">gpp_optimizer_parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_random.html">gpp_random</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_geometry_test.html">gpp_geometry_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_test_utils_test.html">gpp_test_utils_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../gpp_linear_algebra.html">gpp_linear_algebra</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../gpp_exception.html">gpp_exception</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../gpp_model_selection.html">gpp_model_selection</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_random.html">gpp_random</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../gpp_covariance_test.html">gpp_covariance_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../gpp_python.html">gpp_python</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../gpp_model_selection_test.html">gpp_model_selection_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../gpp_common.html">gpp_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_expected_improvement_gpu_test.html">gpp_expected_improvement_gpu_test</a></li>
 </ul>
 </li>
 </ul>
@@ -269,12 +279,14 @@
 <span class="n">NULL_OPTIMIZER</span> <span class="o">=</span> <span class="s">&#39;null_optimizer&#39;</span>
 <span class="n">NEWTON_OPTIMIZER</span> <span class="o">=</span> <span class="s">&#39;newton_optimizer&#39;</span>
 <span class="n">GRADIENT_DESCENT_OPTIMIZER</span> <span class="o">=</span> <span class="s">&#39;gradient_descent_optimizer&#39;</span>
+<span class="n">L_BFGS_B_OPTIMIZER</span> <span class="o">=</span> <span class="s">&#39;l_bfgs_b_optimizer&#39;</span>
 
 <span class="c">#: Optimizer types supported by :mod:`moe`</span>
 <span class="n">OPTIMIZER_TYPES</span> <span class="o">=</span> <span class="p">[</span>
         <span class="n">NULL_OPTIMIZER</span><span class="p">,</span>
         <span class="n">NEWTON_OPTIMIZER</span><span class="p">,</span>
         <span class="n">GRADIENT_DESCENT_OPTIMIZER</span><span class="p">,</span>
+        <span class="n">L_BFGS_B_OPTIMIZER</span><span class="p">,</span>
         <span class="p">]</span>
 
 <span class="c"># Likelihood constants</span>
@@ -289,6 +301,7 @@
 
 <span class="c"># EI Monte-Carlo computation defaults</span>
 <span class="n">DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS</span> <span class="o">=</span> <span class="mi">10000</span>
+
 
 <span class="c"># Minimal parameters for testing and demos (where speed is more important than accuracy)</span>
 <span class="n">TEST_EXPECTED_IMPROVEMENT_MC_ITERATIONS</span> <span class="o">=</span> <span class="mi">50</span>
@@ -305,6 +318,15 @@
         <span class="n">tolerance</span><span class="o">=</span><span class="mf">1.0e-3</span><span class="p">,</span>
         <span class="p">)</span>
 
+<span class="n">TEST_LBFGSB_PARAMETERS</span> <span class="o">=</span> <span class="n">python_optimization</span><span class="o">.</span><span class="n">LBFGSBParameters</span><span class="p">(</span>
+        <span class="n">approx_grad</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+        <span class="n">max_func_evals</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+        <span class="n">max_metric_correc</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+        <span class="n">factr</span><span class="o">=</span><span class="mf">100000000.0</span><span class="p">,</span>
+        <span class="n">pgtol</span><span class="o">=</span><span class="mf">1.0e1</span><span class="p">,</span>
+        <span class="n">epsilon</span><span class="o">=</span><span class="mf">1.0e-1</span><span class="p">,</span>
+        <span class="p">)</span>
+
 <span class="n">DEMO_OPTIMIZER_MULTISTARTS</span> <span class="o">=</span> <span class="mi">50</span>
 <span class="n">DEMO_GRADIENT_DESCENT_PARAMETERS</span> <span class="o">=</span> <span class="n">python_optimization</span><span class="o">.</span><span class="n">GradientDescentParameters</span><span class="p">(</span>
         <span class="n">max_num_steps</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span>
@@ -317,6 +339,8 @@
         <span class="p">)</span>
 
 <span class="c"># Default optimization parameters for various combinations of optimizer (Newton, GD) and objective functions (EI, Log Likelihood)</span>
+<span class="n">DEFAULT_MULTISTARTS</span> <span class="o">=</span> <span class="mi">300</span>  <span class="c"># Fix once cpp num_multistarts is consistent.</span>
+
 <span class="n">DEFAULT_NEWTON_MULTISTARTS_MODEL_SELECTION</span> <span class="o">=</span> <span class="mi">200</span>
 <span class="n">DEFAULT_NEWTON_NUM_RANDOM_SAMPLES_MODEL_SELECTION</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="n">DEFAULT_NEWTON_PARAMETERS_MODEL_SELECTION</span> <span class="o">=</span> <span class="n">python_optimization</span><span class="o">.</span><span class="n">NewtonParameters</span><span class="p">(</span>
@@ -326,6 +350,8 @@
         <span class="n">max_relative_change</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
         <span class="n">tolerance</span><span class="o">=</span><span class="mf">1.0e-9</span><span class="p">,</span>
         <span class="p">)</span>
+
+<span class="n">DEFAULT_NULL_NUM_RANDOM_SAMPLES_MODEL_SELECTION</span> <span class="o">=</span> <span class="mi">300000</span>
 
 <span class="n">DEFAULT_GRADIENT_DESCENT_MULTISTARTS_MODEL_SELECTION</span> <span class="o">=</span> <span class="mi">400</span>
 <span class="n">DEFAULT_GRADIENT_DESCENT_NUM_RANDOM_SAMPLES_MODEL_SELECTION</span> <span class="o">=</span> <span class="mi">0</span>
@@ -339,8 +365,10 @@
         <span class="n">tolerance</span><span class="o">=</span><span class="mf">1.0e-5</span><span class="p">,</span>
         <span class="p">)</span>
 
+<span class="n">DEFAULT_NULL_NUM_RANDOM_SAMPLES_EI_ANALYTIC</span> <span class="o">=</span> <span class="mi">500000</span>
+
 <span class="n">DEFAULT_GRADIENT_DESCENT_MULTISTARTS_EI_ANALYTIC</span> <span class="o">=</span> <span class="mi">600</span>
-<span class="n">DEFAULT_GRADIENT_DESCENT_NUM_RANDOM_SAMPLES_EI_ANALYTIC</span> <span class="o">=</span> <span class="mi">10000</span>
+<span class="n">DEFAULT_GRADIENT_DESCENT_NUM_RANDOM_SAMPLES_EI_ANALYTIC</span> <span class="o">=</span> <span class="mi">50000</span>
 <span class="n">DEFAULT_GRADIENT_DESCENT_PARAMETERS_EI_ANALYTIC</span> <span class="o">=</span> <span class="n">python_optimization</span><span class="o">.</span><span class="n">GradientDescentParameters</span><span class="p">(</span>
         <span class="n">max_num_steps</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
         <span class="n">max_num_restarts</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
@@ -350,6 +378,8 @@
         <span class="n">max_relative_change</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
         <span class="n">tolerance</span><span class="o">=</span><span class="mf">1.0e-7</span><span class="p">,</span>
         <span class="p">)</span>
+
+<span class="n">DEFAULT_NULL_NUM_RANDOM_SAMPLES_EI_MC</span> <span class="o">=</span> <span class="mi">50000</span>
 
 <span class="n">DEFAULT_GRADIENT_DESCENT_MULTISTARTS_EI_MC</span> <span class="o">=</span> <span class="mi">200</span>
 <span class="n">DEFAULT_GRADIENT_DESCENT_NUM_RANDOM_SAMPLES_EI_MC</span> <span class="o">=</span> <span class="mi">4000</span>
@@ -362,6 +392,18 @@
         <span class="n">max_relative_change</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
         <span class="n">tolerance</span><span class="o">=</span><span class="mf">1.0e-5</span><span class="p">,</span>
         <span class="p">)</span>
+
+<span class="n">DEFAULT_LBFGSB_MULTISTARTS_QEI</span> <span class="o">=</span> <span class="mi">200</span>
+<span class="n">DEFAULT_LBFGSB_NUM_RANDOM_SAMPLES_QEI</span> <span class="o">=</span> <span class="mi">4000</span>
+<span class="n">DEFAULT_LBFGSB_PARAMETERS_QEI</span> <span class="o">=</span> <span class="n">python_optimization</span><span class="o">.</span><span class="n">LBFGSBParameters</span><span class="p">(</span>
+        <span class="n">approx_grad</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+        <span class="n">max_func_evals</span><span class="o">=</span><span class="mi">15000</span><span class="p">,</span>
+        <span class="n">max_metric_correc</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+        <span class="n">factr</span><span class="o">=</span><span class="mf">10000000.0</span><span class="p">,</span>
+        <span class="n">pgtol</span><span class="o">=</span><span class="mf">1.0e-5</span><span class="p">,</span>
+        <span class="n">epsilon</span><span class="o">=</span><span class="mf">1.0e-8</span><span class="p">,</span>
+        <span class="p">)</span>
+
 
 <span class="c"># See DefaultOptimizerInfoTuple below for docstring.</span>
 <span class="n">_BaseDefaultOptimizerInfoTuple</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s">&#39;_BaseDefaultOptimizerInfoTuple&#39;</span><span class="p">,</span> <span class="p">[</span>
@@ -386,13 +428,31 @@
     <span class="n">__slots__</span> <span class="o">=</span> <span class="p">()</span>
 
 </div>
+<span class="n">_EI_ANALYTIC_NULL_OPTIMIZER</span> <span class="o">=</span> <span class="n">DefaultOptimizerInfoTuple</span><span class="p">(</span>
+    <span class="mi">1</span><span class="p">,</span>  <span class="c"># unused but the min value is 1</span>
+    <span class="n">DEFAULT_NULL_NUM_RANDOM_SAMPLES_EI_ANALYTIC</span><span class="p">,</span>
+    <span class="n">python_optimization</span><span class="o">.</span><span class="n">NullParameters</span><span class="p">(),</span>
+<span class="p">)</span>
+
 <span class="n">_EI_ANALYTIC_DEFAULT_OPTIMIZER</span> <span class="o">=</span> <span class="n">DefaultOptimizerInfoTuple</span><span class="p">(</span>
     <span class="n">DEFAULT_GRADIENT_DESCENT_MULTISTARTS_EI_ANALYTIC</span><span class="p">,</span>
     <span class="n">DEFAULT_GRADIENT_DESCENT_NUM_RANDOM_SAMPLES_EI_ANALYTIC</span><span class="p">,</span>
     <span class="n">DEFAULT_GRADIENT_DESCENT_PARAMETERS_EI_ANALYTIC</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="n">_GRADIENT_DESCENT_MODEL_SELECTION_DEFAULT_OPTIMIZER</span> <span class="o">=</span> <span class="n">DefaultOptimizerInfoTuple</span><span class="p">(</span>
+<span class="n">_EI_MULTIPOINT_DEFAULT_OPTIMIZER</span> <span class="o">=</span> <span class="n">DefaultOptimizerInfoTuple</span><span class="p">(</span>
+    <span class="n">DEFAULT_LBFGSB_MULTISTARTS_QEI</span><span class="p">,</span>
+    <span class="n">DEFAULT_LBFGSB_NUM_RANDOM_SAMPLES_QEI</span><span class="p">,</span>
+    <span class="n">DEFAULT_LBFGSB_PARAMETERS_QEI</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">_MODEL_SELECTION_NULL_OPTIMIZER</span> <span class="o">=</span> <span class="n">DefaultOptimizerInfoTuple</span><span class="p">(</span>
+    <span class="mi">1</span><span class="p">,</span>  <span class="c"># unused but the min value is 1</span>
+    <span class="n">DEFAULT_NULL_NUM_RANDOM_SAMPLES_MODEL_SELECTION</span><span class="p">,</span>
+    <span class="n">python_optimization</span><span class="o">.</span><span class="n">NullParameters</span><span class="p">(),</span>
+<span class="p">)</span>
+
+<span class="n">_MODEL_SELECTION_GRADIENT_DESCENT_OPTIMIZER</span> <span class="o">=</span> <span class="n">DefaultOptimizerInfoTuple</span><span class="p">(</span>
     <span class="n">DEFAULT_GRADIENT_DESCENT_MULTISTARTS_MODEL_SELECTION</span><span class="p">,</span>
     <span class="n">DEFAULT_GRADIENT_DESCENT_NUM_RANDOM_SAMPLES_MODEL_SELECTION</span><span class="p">,</span>
     <span class="n">DEFAULT_GRADIENT_DESCENT_PARAMETERS_MODEL_SELECTION</span><span class="p">,</span>
@@ -400,13 +460,16 @@
 
 <span class="n">EI_COMPUTE_TYPE_ANALYTIC</span> <span class="o">=</span> <span class="s">&#39;ei_analytic&#39;</span>
 <span class="n">EI_COMPUTE_TYPE_MONTE_CARLO</span> <span class="o">=</span> <span class="s">&#39;ei_monte_carlo&#39;</span>
+<span class="n">SINGLE_POINT_EI</span> <span class="o">=</span> <span class="s">&#39;single_point_ei&#39;</span>
+<span class="n">MULTI_POINT_EI</span> <span class="o">=</span> <span class="s">&#39;multi_point_ei&#39;</span>
 
 <span class="c">#: dict mapping from tuples describing endpoints and objective functions to optimizer type strings;</span>
 <span class="c">#: i.e., one of :const:`moe.optimal_learning.python.constant.OPTIMIZER_TYPES`.</span>
 <span class="n">ENDPOINT_TO_DEFAULT_OPTIMIZER_TYPE</span> <span class="o">=</span> <span class="p">{</span>
     <span class="n">views_constant</span><span class="o">.</span><span class="n">GP_NEXT_POINTS_KRIGING_ROUTE_NAME</span><span class="p">:</span> <span class="n">GRADIENT_DESCENT_OPTIMIZER</span><span class="p">,</span>
     <span class="n">views_constant</span><span class="o">.</span><span class="n">GP_NEXT_POINTS_CONSTANT_LIAR_ROUTE_NAME</span><span class="p">:</span> <span class="n">GRADIENT_DESCENT_OPTIMIZER</span><span class="p">,</span>
-    <span class="n">views_constant</span><span class="o">.</span><span class="n">GP_NEXT_POINTS_EPI_ROUTE_NAME</span><span class="p">:</span> <span class="n">GRADIENT_DESCENT_OPTIMIZER</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">views_constant</span><span class="o">.</span><span class="n">GP_NEXT_POINTS_EPI_ROUTE_NAME</span><span class="p">,</span> <span class="n">MULTI_POINT_EI</span><span class="p">):</span> <span class="n">L_BFGS_B_OPTIMIZER</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">views_constant</span><span class="o">.</span><span class="n">GP_NEXT_POINTS_EPI_ROUTE_NAME</span><span class="p">,</span> <span class="n">SINGLE_POINT_EI</span><span class="p">):</span> <span class="n">GRADIENT_DESCENT_OPTIMIZER</span><span class="p">,</span>
     <span class="p">(</span><span class="n">views_constant</span><span class="o">.</span><span class="n">GP_HYPER_OPT_ROUTE_NAME</span><span class="p">,</span> <span class="n">LEAVE_ONE_OUT_LOG_LIKELIHOOD</span><span class="p">):</span> <span class="n">GRADIENT_DESCENT_OPTIMIZER</span><span class="p">,</span>
     <span class="p">(</span><span class="n">views_constant</span><span class="o">.</span><span class="n">GP_HYPER_OPT_ROUTE_NAME</span><span class="p">,</span> <span class="n">LOG_MARGINAL_LIKELIHOOD</span><span class="p">):</span> <span class="n">NEWTON_OPTIMIZER</span><span class="p">,</span>
 <span class="p">}</span>
@@ -418,16 +481,27 @@
 <span class="c">#: does not have an entry because this combination is not yet implemented.</span>
 <span class="c">#: Newton is also not implemented for any of the GP_NEXT_POINTS_* endpoints.</span>
 <span class="n">OPTIMIZER_TYPE_AND_OBJECTIVE_TO_DEFAULT_PARAMETERS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="p">(</span><span class="n">NULL_OPTIMIZER</span><span class="p">,</span> <span class="n">views_constant</span><span class="o">.</span><span class="n">GP_NEXT_POINTS_KRIGING_ROUTE_NAME</span><span class="p">):</span> <span class="n">_EI_ANALYTIC_NULL_OPTIMIZER</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">NULL_OPTIMIZER</span><span class="p">,</span> <span class="n">views_constant</span><span class="o">.</span><span class="n">GP_NEXT_POINTS_CONSTANT_LIAR_ROUTE_NAME</span><span class="p">):</span> <span class="n">_EI_ANALYTIC_NULL_OPTIMIZER</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">NULL_OPTIMIZER</span><span class="p">,</span> <span class="n">views_constant</span><span class="o">.</span><span class="n">GP_NEXT_POINTS_EPI_ROUTE_NAME</span><span class="p">,</span> <span class="n">EI_COMPUTE_TYPE_ANALYTIC</span><span class="p">):</span> <span class="n">_EI_ANALYTIC_NULL_OPTIMIZER</span><span class="p">,</span>
     <span class="p">(</span><span class="n">GRADIENT_DESCENT_OPTIMIZER</span><span class="p">,</span> <span class="n">views_constant</span><span class="o">.</span><span class="n">GP_NEXT_POINTS_KRIGING_ROUTE_NAME</span><span class="p">):</span> <span class="n">_EI_ANALYTIC_DEFAULT_OPTIMIZER</span><span class="p">,</span>
     <span class="p">(</span><span class="n">GRADIENT_DESCENT_OPTIMIZER</span><span class="p">,</span> <span class="n">views_constant</span><span class="o">.</span><span class="n">GP_NEXT_POINTS_CONSTANT_LIAR_ROUTE_NAME</span><span class="p">):</span> <span class="n">_EI_ANALYTIC_DEFAULT_OPTIMIZER</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">L_BFGS_B_OPTIMIZER</span><span class="p">,</span> <span class="n">views_constant</span><span class="o">.</span><span class="n">GP_NEXT_POINTS_EPI_ROUTE_NAME</span><span class="p">,</span> <span class="n">EI_COMPUTE_TYPE_ANALYTIC</span><span class="p">):</span> <span class="n">_EI_MULTIPOINT_DEFAULT_OPTIMIZER</span><span class="p">,</span>
     <span class="p">(</span><span class="n">GRADIENT_DESCENT_OPTIMIZER</span><span class="p">,</span> <span class="n">views_constant</span><span class="o">.</span><span class="n">GP_NEXT_POINTS_EPI_ROUTE_NAME</span><span class="p">,</span> <span class="n">EI_COMPUTE_TYPE_ANALYTIC</span><span class="p">):</span> <span class="n">_EI_ANALYTIC_DEFAULT_OPTIMIZER</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">NULL_OPTIMIZER</span><span class="p">,</span> <span class="n">views_constant</span><span class="o">.</span><span class="n">GP_NEXT_POINTS_EPI_ROUTE_NAME</span><span class="p">,</span> <span class="n">EI_COMPUTE_TYPE_MONTE_CARLO</span><span class="p">):</span> <span class="n">DefaultOptimizerInfoTuple</span><span class="p">(</span>
+        <span class="mi">1</span><span class="p">,</span>  <span class="c"># unused but the min value is 1</span>
+        <span class="n">DEFAULT_NULL_NUM_RANDOM_SAMPLES_EI_MC</span><span class="p">,</span>
+        <span class="n">python_optimization</span><span class="o">.</span><span class="n">NullParameters</span><span class="p">(),</span>
+    <span class="p">),</span>
     <span class="p">(</span><span class="n">GRADIENT_DESCENT_OPTIMIZER</span><span class="p">,</span> <span class="n">views_constant</span><span class="o">.</span><span class="n">GP_NEXT_POINTS_EPI_ROUTE_NAME</span><span class="p">,</span> <span class="n">EI_COMPUTE_TYPE_MONTE_CARLO</span><span class="p">):</span> <span class="n">DefaultOptimizerInfoTuple</span><span class="p">(</span>
         <span class="n">DEFAULT_GRADIENT_DESCENT_MULTISTARTS_EI_MC</span><span class="p">,</span>
         <span class="n">DEFAULT_GRADIENT_DESCENT_NUM_RANDOM_SAMPLES_EI_MC</span><span class="p">,</span>
         <span class="n">DEFAULT_GRADIENT_DESCENT_PARAMETERS_EI_MC</span><span class="p">,</span>
     <span class="p">),</span>
-    <span class="p">(</span><span class="n">GRADIENT_DESCENT_OPTIMIZER</span><span class="p">,</span> <span class="n">views_constant</span><span class="o">.</span><span class="n">GP_HYPER_OPT_ROUTE_NAME</span><span class="p">,</span> <span class="n">LEAVE_ONE_OUT_LOG_LIKELIHOOD</span><span class="p">):</span> <span class="n">_GRADIENT_DESCENT_MODEL_SELECTION_DEFAULT_OPTIMIZER</span><span class="p">,</span>
-    <span class="p">(</span><span class="n">GRADIENT_DESCENT_OPTIMIZER</span><span class="p">,</span> <span class="n">views_constant</span><span class="o">.</span><span class="n">GP_HYPER_OPT_ROUTE_NAME</span><span class="p">,</span> <span class="n">LOG_MARGINAL_LIKELIHOOD</span><span class="p">):</span> <span class="n">_GRADIENT_DESCENT_MODEL_SELECTION_DEFAULT_OPTIMIZER</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">NULL_OPTIMIZER</span><span class="p">,</span> <span class="n">views_constant</span><span class="o">.</span><span class="n">GP_HYPER_OPT_ROUTE_NAME</span><span class="p">,</span> <span class="n">LEAVE_ONE_OUT_LOG_LIKELIHOOD</span><span class="p">):</span> <span class="n">_MODEL_SELECTION_NULL_OPTIMIZER</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">NULL_OPTIMIZER</span><span class="p">,</span> <span class="n">views_constant</span><span class="o">.</span><span class="n">GP_HYPER_OPT_ROUTE_NAME</span><span class="p">,</span> <span class="n">LOG_MARGINAL_LIKELIHOOD</span><span class="p">):</span> <span class="n">_MODEL_SELECTION_NULL_OPTIMIZER</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">GRADIENT_DESCENT_OPTIMIZER</span><span class="p">,</span> <span class="n">views_constant</span><span class="o">.</span><span class="n">GP_HYPER_OPT_ROUTE_NAME</span><span class="p">,</span> <span class="n">LEAVE_ONE_OUT_LOG_LIKELIHOOD</span><span class="p">):</span> <span class="n">_MODEL_SELECTION_GRADIENT_DESCENT_OPTIMIZER</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">GRADIENT_DESCENT_OPTIMIZER</span><span class="p">,</span> <span class="n">views_constant</span><span class="o">.</span><span class="n">GP_HYPER_OPT_ROUTE_NAME</span><span class="p">,</span> <span class="n">LOG_MARGINAL_LIKELIHOOD</span><span class="p">):</span> <span class="n">_MODEL_SELECTION_GRADIENT_DESCENT_OPTIMIZER</span><span class="p">,</span>
     <span class="p">(</span><span class="n">NEWTON_OPTIMIZER</span><span class="p">,</span> <span class="n">views_constant</span><span class="o">.</span><span class="n">GP_HYPER_OPT_ROUTE_NAME</span><span class="p">,</span> <span class="n">LOG_MARGINAL_LIKELIHOOD</span><span class="p">):</span> <span class="n">DefaultOptimizerInfoTuple</span><span class="p">(</span>
         <span class="n">DEFAULT_NEWTON_MULTISTARTS_MODEL_SELECTION</span><span class="p">,</span>
         <span class="n">DEFAULT_NEWTON_NUM_RANDOM_SAMPLES_MODEL_SELECTION</span><span class="p">,</span>
@@ -486,7 +560,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'0.1.0',
+            VERSION:'0.2.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

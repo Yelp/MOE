@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>moe.optimal_learning.python.cpp_wrappers package &mdash; MOE 0.1.0 documentation</title>
+  <title>moe.optimal_learning.python.cpp_wrappers package &mdash; MOE 0.2.0 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
     <link rel="stylesheet" href="_static/breathe.css" type="text/css" />
   
-    <link rel="top" title="MOE 0.1.0 documentation" href="index.html"/>
+    <link rel="top" title="MOE 0.2.0 documentation" href="index.html"/>
         <link rel="up" title="moe.optimal_learning.python package" href="moe.optimal_learning.python.html"/>
         <link rel="next" title="moe.optimal_learning.python.interfaces package" href="moe.optimal_learning.python.interfaces.html"/>
         <link rel="prev" title="moe.optimal_learning.python package" href="moe.optimal_learning.python.html"/> 
@@ -96,6 +96,13 @@
 <li class="toctree-l2"><a class="reference internal" href="objective_functions.html#example-of-objective-functions">Example of Objective Functions</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="bandit.html">Multi-Armed Bandits</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#what-is-the-multi-armed-bandit-problem">What is the multi-armed bandit problem?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#applications">Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#policies">Policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#pointers">Pointers</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="examples.html#minimizing-an-arbitrary-function">Minimizing an arbitrary function</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples.html#gaussian-process-regression-given-historical-data">Gaussian Process regression given historical data</a></li>
@@ -149,9 +156,11 @@
 <li class="toctree-l1"><a class="reference internal" href="cpp_tree.html">C++ Files</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimization_test.html">gpp_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_domain_test.html">gpp_domain_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_gpu.html">gpp_expected_improvement_gpu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_geometry.html">gpp_geometry</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_test_utils.html">gpp_test_utils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_logging.html">gpp_logging</a></li>
@@ -160,28 +169,29 @@
 <li class="toctree-l2"><a class="reference internal" href="gpp_domain.html">gpp_domain</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_python_common.html">gpp_python_common</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_hyperparameter_optimization_demo.html">gpp_hyperparameter_optimization_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_test_utils_test.html">gpp_test_utils_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_math_test.html">gpp_math_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_cuda_math.html">gpp_cuda_math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_python_model_selection.html">gpp_python_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_math.html">gpp_math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_random_test.html">gpp_random_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimizer_parameters.html">gpp_optimizer_parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_random.html">gpp_random</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_test_utils_test.html">gpp_test_utils_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra.html">gpp_linear_algebra</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_exception.html">gpp_exception</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_model_selection.html">gpp_model_selection</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_random.html">gpp_random</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_covariance_test.html">gpp_covariance_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_python.html">gpp_python</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_test.html">gpp_model_selection_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_common.html">gpp_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_gpu_test.html">gpp_expected_improvement_gpu_test</a></li>
 </ul>
 </li>
 </ul>
@@ -746,7 +756,7 @@ This function is also useful for plotting or debugging purposes (just to get a b
 <li><strong>points_to_evaluate</strong> (<em>array of float64 with shape (num_to_evaluate, self.dim)</em>) &#8211; points at which to compute EI</li>
 <li><strong>randomness</strong> (<em>RandomnessSourceContainer (C++ object; e.g., from C_GP.RandomnessSourceContainer())</em>) &#8211; RNGs used by C++ to generate initial guesses and as the source of normal random numbers when monte-carlo is used</li>
 <li><strong>max_num_threads</strong> (<em>int &gt; 0</em>) &#8211; maximum number of threads to use, &gt;= 1</li>
-<li><strong>status</strong> (<em>dict</em>) &#8211; status messages from C++ (e.g., reporting on optimizer success, etc.)</li>
+<li><strong>status</strong> (<em>dict</em>) &#8211; (output) status messages from C++ (e.g., reporting on optimizer success, etc.)</li>
 </ul>
 </td>
 </tr>
@@ -830,7 +840,7 @@ ComputeEstimatedSetOfPointsToSample() to be more explorative and vice versa.</p>
 <li><strong>lie_noise_variance</strong> (<em>float64</em>) &#8211; the noise_variance to associate to the lie_value (MUST be &gt;= 0.0)</li>
 <li><strong>randomness</strong> (<em>RandomnessSourceContainer (C++ object; e.g., from C_GP.RandomnessSourceContainer())</em>) &#8211; RNGs used by C++ to generate initial guesses</li>
 <li><strong>max_num_threads</strong> (<em>int &gt; 0</em>) &#8211; maximum number of threads to use, &gt;= 1</li>
-<li><strong>status</strong> (<em>dict</em>) &#8211; status messages from C++ (e.g., reporting on optimizer success, etc.)</li>
+<li><strong>status</strong> (<em>dict</em>) &#8211; (output) status messages from C++ (e.g., reporting on optimizer success, etc.)</li>
 </ul>
 </td>
 </tr>
@@ -877,7 +887,7 @@ explorative and larger negative values are more exploitive.</p>
 <li><strong>kriging_noise_variance</strong> (<em>float64</em>) &#8211; the noise_variance to associate to each function value estimate (MUST be &gt;= 0.0)</li>
 <li><strong>randomness</strong> (<em>RandomnessSourceContainer (C++ object; e.g., from C_GP.RandomnessSourceContainer())</em>) &#8211; RNGs used by C++ to generate initial guesses</li>
 <li><strong>max_num_threads</strong> (<em>int &gt; 0</em>) &#8211; maximum number of threads to use, &gt;= 1</li>
-<li><strong>status</strong> (<em>dict</em>) &#8211; status messages from C++ (e.g., reporting on optimizer success, etc.)</li>
+<li><strong>status</strong> (<em>dict</em>) &#8211; (output) status messages from C++ (e.g., reporting on optimizer success, etc.)</li>
 </ul>
 </td>
 </tr>
@@ -922,7 +932,7 @@ GaussianProcess that allows the GP to account for ongoing/incomplete experiments
 <li><strong>num_to_sample</strong> (<em>int &gt;= 1</em>) &#8211; how many simultaneous experiments you would like to run (i.e., the q in q,p-EI)</li>
 <li><strong>randomness</strong> (<em>RandomnessSourceContainer (C++ object; e.g., from C_GP.RandomnessSourceContainer())</em>) &#8211; RNGs used by C++ to generate initial guesses and as the source of normal random numbers when monte-carlo is used</li>
 <li><strong>max_num_threads</strong> (<em>int &gt; 0</em>) &#8211; maximum number of threads to use, &gt;= 1</li>
-<li><strong>status</strong> (<em>dict</em>) &#8211; status messages from C++ (e.g., reporting on optimizer success, etc.)</li>
+<li><strong>status</strong> (<em>dict</em>) &#8211; (output) status messages from C++ (e.g., reporting on optimizer success, etc.)</li>
 </ul>
 </td>
 </tr>
@@ -1540,7 +1550,7 @@ to functions for computing log marginal likelihood and its hyperparameter gradie
 
 <dl class="function">
 <dt id="moe.optimal_learning.python.cpp_wrappers.log_likelihood.evaluate_log_likelihood_at_hyperparameter_list">
-<tt class="descclassname">moe.optimal_learning.python.cpp_wrappers.log_likelihood.</tt><tt class="descname">evaluate_log_likelihood_at_hyperparameter_list</tt><big>(</big><em>log_likelihood_evaluator</em>, <em>hyperparameters_to_evaluate</em>, <em>max_num_threads=4</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/cpp_wrappers/log_likelihood.html#evaluate_log_likelihood_at_hyperparameter_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.cpp_wrappers.log_likelihood.evaluate_log_likelihood_at_hyperparameter_list" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">moe.optimal_learning.python.cpp_wrappers.log_likelihood.</tt><tt class="descname">evaluate_log_likelihood_at_hyperparameter_list</tt><big>(</big><em>log_likelihood_evaluator</em>, <em>hyperparameters_to_evaluate</em>, <em>max_num_threads=4</em>, <em>status=None</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/cpp_wrappers/log_likelihood.html#evaluate_log_likelihood_at_hyperparameter_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.cpp_wrappers.log_likelihood.evaluate_log_likelihood_at_hyperparameter_list" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the specified log likelihood measure at each input set of hyperparameters.</p>
 <p>Generally Newton or gradient descent is preferred but when they fail to converge this may be the only &#8220;robust&#8221; option.
 This function is also useful for plotting or debugging purposes (just to get a bunch of log likelihood values).</p>
@@ -1553,6 +1563,7 @@ This function is also useful for plotting or debugging purposes (just to get a b
 <li><strong>log_likelihood_evaluator</strong> (<em>cpp_wrappers.log_likelihood.LogLikelihood</em>) &#8211; object specifying which log likelihood measure to evaluate</li>
 <li><strong>hyperparameters_to_evaluate</strong> (<em>array of float64 with shape (num_to_eval, log_likelihood_evaluator.num_hyperparameters)</em>) &#8211; the hyperparameters at which to compute the specified log likelihood</li>
 <li><strong>max_num_threads</strong> (<em>int &gt; 0</em>) &#8211; maximum number of threads to use, &gt;= 1</li>
+<li><strong>status</strong> (<em>dict</em>) &#8211; (output) status messages from C++ (e.g., reporting on optimizer success, etc.)</li>
 </ul>
 </td>
 </tr>
@@ -1605,7 +1616,7 @@ the output will always be the first randomly chosen point. status will report fa
 <li><strong>num_multistarts</strong> (<em>int &gt; 0</em>) &#8211; number of times to multistart <tt class="docutils literal"><span class="pre">ei_optimizer</span></tt> (UNUSED, data is in log_likelihood_optimizer.optimizer_parameters)</li>
 <li><strong>randomness</strong> (<em>RandomnessSourceContainer (C++ object; e.g., from C_GP.RandomnessSourceContainer())</em>) &#8211; RNGs used by C++ to generate initial guesses</li>
 <li><strong>max_num_threads</strong> (<em>int &gt; 0</em>) &#8211; maximum number of threads to use, &gt;= 1</li>
-<li><strong>status</strong> (<em>dict</em>) &#8211; status messages from C++ (e.g., reporting on optimizer success, etc.)</li>
+<li><strong>status</strong> (<em>dict</em>) &#8211; (output) status messages from C++ (e.g., reporting on optimizer success, etc.)</li>
 </ul>
 </td>
 </tr>
@@ -1878,7 +1889,7 @@ and classes for model selection, gaussian process construction, expected improve
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.1.0',
+            VERSION:'0.2.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

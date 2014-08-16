@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>gpp_common &mdash; MOE 0.1.0 documentation</title>
+  <title>gpp_common &mdash; MOE 0.2.0 documentation</title>
   
 
   
@@ -32,9 +32,10 @@
   
     <link rel="stylesheet" href="_static/breathe.css" type="text/css" />
   
-    <link rel="top" title="MOE 0.1.0 documentation" href="index.html"/>
+    <link rel="top" title="MOE 0.2.0 documentation" href="index.html"/>
         <link rel="up" title="C++ Files" href="cpp_tree.html"/>
-        <link rel="prev" title="gpp_heuristic_expected_improvement_optimization" href="gpp_heuristic_expected_improvement_optimization.html"/> 
+        <link rel="next" title="gpp_expected_improvement_gpu_test" href="gpp_expected_improvement_gpu_test.html"/>
+        <link rel="prev" title="gpp_python_gaussian_process" href="gpp_python_gaussian_process.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -95,6 +96,13 @@
 <li class="toctree-l2"><a class="reference internal" href="objective_functions.html#example-of-objective-functions">Example of Objective Functions</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="bandit.html">Multi-Armed Bandits</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#what-is-the-multi-armed-bandit-problem">What is the multi-armed bandit problem?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#applications">Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#policies">Policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#pointers">Pointers</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="examples.html#minimizing-an-arbitrary-function">Minimizing an arbitrary function</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples.html#gaussian-process-regression-given-historical-data">Gaussian Process regression given historical data</a></li>
@@ -148,9 +156,11 @@
 <li class="toctree-l1 current"><a class="reference internal" href="cpp_tree.html">C++ Files</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimization_test.html">gpp_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_domain_test.html">gpp_domain_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_gpu.html">gpp_expected_improvement_gpu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_geometry.html">gpp_geometry</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_test_utils.html">gpp_test_utils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_logging.html">gpp_logging</a></li>
@@ -159,28 +169,29 @@
 <li class="toctree-l2"><a class="reference internal" href="gpp_domain.html">gpp_domain</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_python_common.html">gpp_python_common</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_hyperparameter_optimization_demo.html">gpp_hyperparameter_optimization_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_test_utils_test.html">gpp_test_utils_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_math_test.html">gpp_math_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_cuda_math.html">gpp_cuda_math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_python_model_selection.html">gpp_python_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_math.html">gpp_math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_random_test.html">gpp_random_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimizer_parameters.html">gpp_optimizer_parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_random.html">gpp_random</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_test_utils_test.html">gpp_test_utils_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra.html">gpp_linear_algebra</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_exception.html">gpp_exception</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_model_selection.html">gpp_model_selection</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_random.html">gpp_random</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_covariance_test.html">gpp_covariance_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_python.html">gpp_python</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_test.html">gpp_model_selection_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="">gpp_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_gpu_test.html">gpp_expected_improvement_gpu_test</a></li>
 </ul>
 </li>
 </ul>
@@ -243,11 +254,8 @@ of this.</p>
 In particular, this means that array outputs must be allocated by the caller.
 Additionally, class members should never be plain pointers&#8211;use std::unique_ptr to guarantee that
 memory is released appropriately.</p>
-<dl class="docutils">
-<dt>In fact, <tt class="docutils literal"><span class="pre">new</span></tt> and <tt class="docutils literal"><span class="pre">delete</span></tt> (as they pertain to memory) should almost NEVER be used.</dt>
-<dd><p class="first last">Exception: <tt class="docutils literal"><span class="pre">Clone()</span></tt> functions and inputs to std::unique_ptr&#8217;s ctor may use <tt class="docutils literal"><span class="pre">new</span></tt>.</p>
-</dd>
-</dl>
+<p>In fact, <tt class="docutils literal"><span class="pre">new</span></tt> and <tt class="docutils literal"><span class="pre">delete</span></tt> (as they pertain to memory) should almost NEVER be used.</p>
+<p>Exception: <tt class="docutils literal"><span class="pre">Clone()</span></tt> functions and inputs to std::unique_ptr&#8217;s ctor may use <tt class="docutils literal"><span class="pre">new</span></tt>.</p>
 <p>Finally, <tt class="docutils literal"><span class="pre">malloc</span></tt>/<tt class="docutils literal"><span class="pre">free</span></tt> should be AVOIDED ENTIRELY.  Use std::vector instead of malloc&#8217;d arrays and
 std::unique_ptr when singleton object allocation is desired.  If you <em>ABSOLUTELY</em> must, use <tt class="docutils literal"><span class="pre">new</span></tt>/<tt class="docutils literal"><span class="pre">delete</span></tt>
 and <tt class="docutils literal"><span class="pre">new[]</span></tt>/<tt class="docutils literal"><span class="pre">delete[]</span></tt>, NOT <tt class="docutils literal"><span class="pre">malloc</span></tt>/<tt class="docutils literal"><span class="pre">free</span></tt>.</p>
@@ -257,20 +265,28 @@ and <tt class="docutils literal"><span class="pre">new[]</span></tt>/<tt class="
 <p>However, for convenience, C multi-dimensional indexing will be used to describe
 matrices: e.g., A[dim1][dim2] is a matrix with dim1 rows and dim2 columns.  But
 dim1 is the most rapidly-varying index here.
-for example: <tt class="docutils literal"><span class="pre">A[3][4]</span> <span class="pre">=</span></tt>
-<tt class="docutils literal"><span class="pre">[4</span>&nbsp; <span class="pre">32</span>&nbsp; <span class="pre">5</span>&nbsp; <span class="pre">2</span></tt>
-`` 53 12  8  1``
-`` 81  2  93 0]``</p>
-<blockquote>
-<div><p>would be FLATTENED into an array:
-<tt class="docutils literal"><span class="pre">A_flat[12]</span> <span class="pre">=</span> <span class="pre">[4</span> <span class="pre">53</span> <span class="pre">81</span> <span class="pre">32</span> <span class="pre">12</span> <span class="pre">2</span> <span class="pre">5</span> <span class="pre">8</span> <span class="pre">93</span> <span class="pre">2</span> <span class="pre">1</span> <span class="pre">0]</span></tt></p>
-<p>So <tt class="docutils literal"><span class="pre">A[dim_1][dim_2]...[dim_n]</span></tt> would be represented as an array of size
-<tt class="docutils literal"><span class="pre">dim_1*dim_2*...*dim_n</span></tt>.
-If I wanted to access <tt class="docutils literal"><span class="pre">A[i_1][i_2]...[i_n]</span></tt> in a multi-dimensional array, I would perform the following
+for example:</p>
+<div class="highlight-python"><div class="highlight"><pre> A[3][4] =
+   [4  32  5  2
+    53 12  8  1
+    81  2  93 0]
+
+would be FLATTENED into an array:
+
+``A_flat[12] = [4 53 81 32 12 2 5 8 93 2 1 0]``
+
+So ``A[dim_1][dim_2]...[dim_n]`` would be represented as an array of size
+
+``dim_1*dim_2*...*dim_n``.
+
+If I wanted to access ``A[i_1][i_2]...[i_n]`` in a multi-dimensional array, I would perform the following
 in a flat array:
-<tt class="docutils literal"><span class="pre">A[i_n*dim_1*dim_2*...*dim_{n-1}</span> <span class="pre">+</span> <span class="pre">...</span> <span class="pre">+</span> <span class="pre">i_2*dim_1</span> <span class="pre">+</span> <span class="pre">i_1]</span></tt> (note that <tt class="docutils literal"><span class="pre">dim_n</span></tt> never appears in the index!)
-(See gpp_math.cpp header comments for more details on a more efficient way of array accessing.)</p>
-</div></blockquote>
+
+``A[i_n*dim_1*dim_2*...*dim_{n-1} + ... + i_2*dim_1 + i_1]`` (note that ``dim_n`` never appears in the index!)
+
+(See gpp_math.cpp header comments for more details on a more efficient way of array accessing.)
+</pre></div>
+</div>
 </li>
 </ol>
 <blockquote>
@@ -389,18 +405,41 @@ storing intermediate results.  Temporary storage can be overwitten with anything
 The State&#8217;s constructor must size them properly, but their contents can be <em>anything</em>.
 DO NOT rely on the values in these members!  Set before using!</li>
 </ol>
-<p>List of classes implementing this relationship:
-<tt class="docutils literal"><span class="pre">Class</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">State</span></tt>
-<tt class="docutils literal"><span class="pre">GaussianProcess</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">PointsToSampleState</span></tt>
-<tt class="docutils literal"><span class="pre">ExpectedImprovementEvaluator</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">ExpectedImprovementState</span></tt>
-<tt class="docutils literal"><span class="pre">OnePotentialSampleExpectedImprovementEvaluator</span>&nbsp; <span class="pre">OnePotentialSampleExpectedImprovementState</span></tt>
-<tt class="docutils literal"><span class="pre">LogMarginalLikelihoodEvaluator</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">LogMarginalLikelihoodState</span></tt>
-<tt class="docutils literal"><span class="pre">LeaveOneOutLogLikelihoodEvaluator</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">LeaveOneOutLogLikelihoodState</span></tt></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="51%" />
+<col width="49%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head" colspan="2">List of classes implementing the Evaluator/State relationship</th>
+</tr>
+<tr class="row-even"><th class="head">Class</th>
+<th class="head">State</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-odd"><td>GaussianProcess</td>
+<td>PointsToSampleState</td>
+</tr>
+<tr class="row-even"><td>ExpectedImprovementEvaluator</td>
+<td>ExpectedImprovementState</td>
+</tr>
+<tr class="row-odd"><td>OnePotentialSampleExpectedImprovementEvaluator</td>
+<td>OnePotentialSampleExpectedImprovementState</td>
+</tr>
+<tr class="row-even"><td>LogMarginalLikelihoodEvaluator</td>
+<td>LogMarginalLikelihoodState</td>
+</tr>
+<tr class="row-odd"><td>LeaveOneOutLogLikelihoodEvaluator</td>
+<td>LeaveOneOutLogLikelihoodState</td>
+</tr>
+</tbody>
+</table>
 <p>One set of noteable exceptions to this &#8216;rule&#8217; is the RNG classes.  These objects&#8217; sole purpose
 is to hold mutable state so there&#8217;s nothing to be gained from just splitting code and data members.</p>
 </li>
-<li><p class="first">Explicit [template] Instantiation.
-Summarizing the syntax briefly:</p>
+<li><p class="first">Explicit [template] Instantiation.</p>
+<p>Summarizing the syntax briefly:</p>
 <p><strong>FOR FUNCTIONS</strong></p>
 <p>IN THE HPP FILE:</p>
 <div class="highlight-python"><div class="highlight"><pre>template &lt;typename type1, typename type2, ...&gt;
@@ -544,8 +583,8 @@ easily if desired. Simply provide a wrapper class that saves the state and reset
 For example:</p>
 <div class="highlight-python"><div class="highlight"><pre>struct State {
   void ComputationWithBasicGuarantee(...);
-  void UpdateCurrentPoint(double *);
-  void GetCurrentPoint(doubl e*);
+  void SetCurrentPoint(double *);
+  void GetCurrentPoint(double *);
   int GetProblemSize();
 };
 
@@ -556,7 +595,7 @@ struct StateWrapper : public State {
     try {
       ComputationWithBasicGuarantee(...);
     } catch (const std::exception&amp; e) {
-      UpdateCurrentPoint(point.data());  // reset state
+      SetCurrentPoint(point.data());  // reset state
       throw;
     }
   }
@@ -576,13 +615,13 @@ the precise state of the RNG is. (Still if you do care, the RNG wrappers in gpp_
 </ol>
 </div></blockquote>
 <p>Lastly, some general mathematical notation:
-A vector &#8220;x&#8221; of length size may be represented: (LOWER CASE letters)
-<tt class="docutils literal"><span class="pre">x[size],</span> <span class="pre">x_i</span></tt></p>
-<p>A matrix &#8220;A&#8221; of size size_1 x size_2 (#rows x #columns) may be represented: (UPPER CASE letters)
-<tt class="docutils literal"><span class="pre">A[size_1][size_2],</span> <span class="pre">A_{i,j},</span> <span class="pre">A_ij</span></tt>
-<tt class="docutils literal"><span class="pre">A_i</span></tt> may also be used to refer to the i-th column of a matrix A.
-Matrices are stored flat in column-major (implementation note 2).  So the concept <tt class="docutils literal"><span class="pre">A[i][j]</span></tt> is actually accessed via:
-<tt class="docutils literal"><span class="pre">A[j*size_1</span> <span class="pre">+</span> <span class="pre">i]</span></tt></p>
+A vector &#8220;x&#8221; of length size may be represented: (LOWER CASE letters)</p>
+<p><tt class="docutils literal"><span class="pre">x[size],</span> <span class="pre">x_i</span></tt></p>
+<p>A matrix &#8220;A&#8221; of size size_1 x size_2 (#rows x #columns) may be represented: (UPPER CASE letters)</p>
+<p><tt class="docutils literal"><span class="pre">A[size_1][size_2],</span> <span class="pre">A_{i,j},</span> <span class="pre">A_ij</span></tt></p>
+<p><tt class="docutils literal"><span class="pre">A_i</span></tt> may also be used to refer to the i-th column of a matrix A.</p>
+<p>Matrices are stored flat in column-major (implementation note 2).  So the concept <tt class="docutils literal"><span class="pre">A[i][j]</span></tt> is actually accessed via:</p>
+<p><tt class="docutils literal"><span class="pre">A[j*size_1</span> <span class="pre">+</span> <span class="pre">i]</span></tt></p>
 <p>Finally, a note about function comment style:</p>
 <ol class="loweralpha">
 <li><p class="first">comments go above the function declaration or definition they describe</p>
@@ -866,13 +905,13 @@ to things that could potentially be compile-time constants.</p>
 <p>This means SQ will fail with non-constexpr inputs.</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p class="last">this is pass-by-VALUE.  In combination with constexpr, this fcn is only meant for very simple operations.</p>
+<p>this is pass-by-VALUE.  In combination with constexpr, this fcn is only meant for very simple operations.
+(i.e., this shouldn&#8217;t be used with a matrix class supporting operator*, and it probably wouldn&#8217;t compile anyway.)
+If you need pass-by-reference, be warned that it <tt class="docutils literal"><span class="pre">Square(const</span> <span class="pre">T&amp;)</span></tt> may fail in icc:</p>
+<p><a class="reference external" href="http://software.intel.com/en-us/articles/c0x-features-supported-by-intel-c-compiler">http://software.intel.com/en-us/articles/c0x-features-supported-by-intel-c-compiler</a>
+<a class="reference external" href="http://software.intel.com/en-us/forums/topic/391885">http://software.intel.com/en-us/forums/topic/391885</a></p>
+<p class="last">They claim it&#8217;ll be available in the 14.0 compiler.</p>
 </div>
-<p>(i.e., this shouldn&#8217;t be used with a matrix class supporting operator*, and it probably wouldn&#8217;t compile anyway.)
-If you need pass-by-reference, be warned that it <tt class="docutils literal"><span class="pre">Square(const</span> <span class="pre">T&amp;)</span></tt> may fail in icc:
-<a class="reference external" href="http://software.intel.com/en-us/articles/c0x-features-supported-by-intel-c-compiler">http://software.intel.com/en-us/articles/c0x-features-supported-by-intel-c-compiler</a>
-<a class="reference external" href="http://software.intel.com/en-us/forums/topic/391885">http://software.intel.com/en-us/forums/topic/391885</a>
-They claim it&#8217;ll be available in the 14.0 compiler.</p>
 <dl class="docutils">
 <dt><strong>Parameters</strong>:</dt>
 <dd><table class="first last docutils field-list" frame="void" rules="none">
@@ -951,8 +990,10 @@ SomeType y = decltype(f)::i;
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
+        <a href="gpp_expected_improvement_gpu_test.html" class="btn btn-neutral float-right" title="gpp_expected_improvement_gpu_test"/>Next <span class="fa fa-arrow-circle-right"></span></a>
       
-        <a href="gpp_heuristic_expected_improvement_optimization.html" class="btn btn-neutral" title="gpp_heuristic_expected_improvement_optimization"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+        <a href="gpp_python_gaussian_process.html" class="btn btn-neutral" title="gpp_python_gaussian_process"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -981,7 +1022,7 @@ SomeType y = decltype(f)::i;
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.1.0',
+            VERSION:'0.2.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

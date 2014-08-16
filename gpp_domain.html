@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>gpp_domain &mdash; MOE 0.1.0 documentation</title>
+  <title>gpp_domain &mdash; MOE 0.2.0 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
     <link rel="stylesheet" href="_static/breathe.css" type="text/css" />
   
-    <link rel="top" title="MOE 0.1.0 documentation" href="index.html"/>
+    <link rel="top" title="MOE 0.2.0 documentation" href="index.html"/>
         <link rel="up" title="C++ Files" href="cpp_tree.html"/>
         <link rel="next" title="gpp_python_common" href="gpp_python_common.html"/>
         <link rel="prev" title="gpp_python_test" href="gpp_python_test.html"/> 
@@ -96,6 +96,13 @@
 <li class="toctree-l2"><a class="reference internal" href="objective_functions.html#example-of-objective-functions">Example of Objective Functions</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="bandit.html">Multi-Armed Bandits</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#what-is-the-multi-armed-bandit-problem">What is the multi-armed bandit problem?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#applications">Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#policies">Policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bandit.html#pointers">Pointers</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="examples.html#minimizing-an-arbitrary-function">Minimizing an arbitrary function</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples.html#gaussian-process-regression-given-historical-data">Gaussian Process regression given historical data</a></li>
@@ -149,9 +156,11 @@
 <li class="toctree-l1 current"><a class="reference internal" href="cpp_tree.html">C++ Files</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimization_test.html">gpp_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_domain_test.html">gpp_domain_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_gpu.html">gpp_expected_improvement_gpu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_geometry.html">gpp_geometry</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_test_utils.html">gpp_test_utils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_logging.html">gpp_logging</a></li>
@@ -160,28 +169,29 @@
 <li class="toctree-l2 current"><a class="current reference internal" href="">gpp_domain</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_python_common.html">gpp_python_common</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_hyperparameter_optimization_demo.html">gpp_hyperparameter_optimization_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_test_utils_test.html">gpp_test_utils_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_math_test.html">gpp_math_test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_cuda_math.html">gpp_cuda_math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_python_model_selection.html">gpp_python_model_selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_math.html">gpp_math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_random_test.html">gpp_random_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_optimizer_parameters.html">gpp_optimizer_parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_random.html">gpp_random</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_geometry_test.html">gpp_geometry_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_test_utils_test.html">gpp_test_utils_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_linear_algebra.html">gpp_linear_algebra</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_exception.html">gpp_exception</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_model_selection.html">gpp_model_selection</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_random.html">gpp_random</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_covariance_test.html">gpp_covariance_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_python.html">gpp_python</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_model_selection_test.html">gpp_model_selection_test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gpp_common.html">gpp_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpp_expected_improvement_gpu_test.html">gpp_expected_improvement_gpu_test</a></li>
 </ul>
 </li>
 </ul>
@@ -294,625 +304,6 @@ used by the Python interface to communicate domain type to C++.</p>
 <div><p><span class="target" id="project0classoptimal__learning_1_1_dummy_domain_1a18c488648e986cd8ead1fef7b432e8ad"></span>constexpr char const * <strong>kName</strong></p>
 <blockquote>
 <div><p>string name of this domain for logging </p>
-<p></p>
-</div></blockquote>
-</div></blockquote>
-</div></blockquote>
-</p>
-<p><p id="project0classoptimal__learning_1_1_tensor_product_domain"><em>class</em> <strong>TensorProductDomain</strong></p>
-<blockquote>
-<div><p></p>
-<p><p>Domain type for a tensor product domain.</p>
-<p>A d-dimensional tensor product domain is <tt class="docutils literal"><span class="pre">D</span> <span class="pre">=</span> <span class="pre">[x_0_{min},</span> <span class="pre">x_0_{max}]</span> <span class="pre">X</span> <span class="pre">[x_1_{min},</span> <span class="pre">x_1_{max}]</span> <span class="pre">X</span> <span class="pre">...</span> <span class="pre">X</span> <span class="pre">[x_d_{min},</span> <span class="pre">x_d_{max}]</span></tt></p>
- </p>
-<em>Public Functions</em><blockquote>
-<div><p><span class="target" id="project0classoptimal__learning_1_1_tensor_product_domain_1a184fca10f7f4317ea27344c926519a8d"></span><div class="line-block">
-<div class="line"> <strong>TensorProductDomain</strong>()</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p></p>
-</div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_tensor_product_domain_1ae9b0997723d89bed042d9338bbeeb6bc"></span><div class="line-block">
-<div class="line"> <strong>TensorProductDomain</strong>(<a class="reference internal" href="gpp_geometry.html#project0structoptimal__learning_1_1_closed_interval"><em>ClosedInterval</em></a>  const *restrict domain, int dim_in)</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p><p>Constructs a TensorProductDomain.</p>
-<dl class="docutils">
-<dt><strong>Parameters</strong>:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">domain[dim]:</th><td class="field-body">array of ClosedInterval specifying the boundaries of a dim-dimensional tensor-product domain.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">dim_in:</th><td class="field-body">number of spatial dimensions</td>
-</tr>
-</tbody>
-</table>
-</dd>
-</dl>
- </p>
-</div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_tensor_product_domain_1aeb91f69de83514c7c4df8a93a4e29fe3"></span><div class="line-block">
-<div class="line">int <strong>dim</strong>()</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p></p>
-</div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_tensor_product_domain_1ae9fb5627bd5fd6421cc9596d1f46467f"></span><div class="line-block">
-<div class="line">void <strong>SetDomain</strong>(<a class="reference internal" href="gpp_geometry.html#project0structoptimal__learning_1_1_closed_interval"><em>ClosedInterval</em></a>  const *restrict domain)</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p><p>Explicitly set the domain boundaries. Assumes specified domain is non-empty.</p>
-<dl class="docutils">
-<dt><strong>Parameters</strong>:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">domain[dim]:</th><td class="field-body">array of ClosedInterval specifying the boundaries of a dim-dimensional tensor-product domain.</td>
-</tr>
-</tbody>
-</table>
-</dd>
-</dl>
- </p>
-</div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_tensor_product_domain_1af5735ab89504aacd15344d8bde5f129d"></span><div class="line-block">
-<div class="line">int <strong>GetMaxNumberOfBoundaryPlanes</strong>()</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p><p>Maximum number of planes that define the boundary of this domain.
-Used for testing.</p>
-<p>This result is exact.</p>
-<dl class="docutils">
-<dt><strong>Returns</strong>:</dt>
-<dd>max number of planes defining the boundary of this domain</dd>
-</dl>
- </p>
-</div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_tensor_product_domain_1a3293a05c7ccf894be2bb32c6c8379133"></span><div class="line-block">
-<div class="line">void <strong>GetBoundaryPlanes</strong>(<a class="reference internal" href="gpp_geometry.html#project0structoptimal__learning_1_1_plane"><em>Plane</em></a>  *restrict planes)</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p><p>Fills an input array with all bounding planes of this domain.
-See struct Plane in gpp_geometry.hpp for how to specify a plane.
-Used for testing.</p>
-<p>Let max_num_bound = GetMaxNumberOfBoundaryPlanes()
-<strong>Parameters</strong>:</p>
-<blockquote>
-<div><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">planes[max_num_bound]:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">properly allocated space: max_num_bound Plane objects in dim spatial dimensions</td>
-</tr>
-</tbody>
-</table>
-</div></blockquote>
-<dl class="docutils">
-<dt><strong>Outputs</strong>:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">planes[max_num_bound]:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">array of planes of this domain</td>
-</tr>
-</tbody>
-</table>
-</dd>
-</dl>
- </p>
-</div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_tensor_product_domain_1a136f4b59d5fe705e7862ebc1c50c2b14"></span><div class="line-block">
-<div class="line">bool <strong>CheckPointInside</strong>(double const *restrict point)</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p><p>Check if a point is inside the domain/on its boundary or outside.</p>
-<dl class="docutils">
-<dt><strong>Parameters</strong>:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">point[dim]:</th><td class="field-body">point to check</td>
-</tr>
-</tbody>
-</table>
-</dd>
-<dt><strong>Returns</strong>:</dt>
-<dd>true if point is inside the domain or on its boundary, false otherwise</dd>
-</dl>
- </p>
-</div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_tensor_product_domain_1a6d15ffaaeb66856713b688519daf12a4"></span><div class="line-block">
-<div class="line">bool <strong>GeneratePointInDomain</strong>(<a class="reference internal" href="gpp_random.html#project0structoptimal__learning_1_1_uniform_random_generator"><em>UniformRandomGenerator</em></a>  * uniform_generator, double *restrict random_point)</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p><p>Generates &#8220;point&#8221; such that CheckPointInside(point) returns true.</p>
-<dl class="docutils">
-<dt><strong>Parameters</strong>:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">uniform_generator[1]:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">a UniformRandomGenerator object providing the random engine for uniform random numbers</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">random_point[dim]:</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">properly sized array</td>
-</tr>
-</tbody>
-</table>
-</dd>
-<dt><strong>Outputs</strong>:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">uniform_generator[1]:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">UniformRandomGenerator object will have its state changed due to random draws</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">random_point[dim]:</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">point with coordinates inside the domain (left in invalid state if fcn returns false)</td>
-</tr>
-</tbody>
-</table>
-</dd>
-<dt><strong>Returns</strong>:</dt>
-<dd>true if point generation succeeded</dd>
-</dl>
- </p>
-</div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_tensor_product_domain_1a81ac402428fd923b14f38f0a6193831e"></span><div class="line-block">
-<div class="line">int <strong>GenerateUniformPointsInDomain</strong>(int num_points, <a class="reference internal" href="gpp_random.html#project0structoptimal__learning_1_1_uniform_random_generator"><em>UniformRandomGenerator</em></a>  * uniform_generator, double *restrict random_points)</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p><p>Generates num_points points in the domain (i.e., such that CheckPointInside(point) returns true).  The points
-will be uniformly distributed.</p>
-<dl class="docutils">
-<dt><strong>Parameters</strong>:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">num_points:</th><td class="field-body">number of random points to generate</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">uniform_generator[1]:</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">a UniformRandomGenerator object providing the random engine for uniform random numbers</td>
-</tr>
-<tr class="field-odd field"><th class="field-name" colspan="2">random_points[dim][num_points]:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">properly sized array</td>
-</tr>
-</tbody>
-</table>
-</dd>
-<dt><strong>Outputs</strong>:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">uniform_generator[1]:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">UniformRandomGenerator object will have its state changed due to random draws</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">random_points[dim][num_points]:</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">point with coordinates inside the domain</td>
-</tr>
-</tbody>
-</table>
-</dd>
-<dt><strong>Returns</strong>:</dt>
-<dd>number of points generated (always num_points; ok to not use this result)</dd>
-</dl>
- </p>
-</div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_tensor_product_domain_1a1c9140e57d6307685ebb71c86bce5ae0"></span><div class="line-block">
-<div class="line">void <strong>LimitUpdate</strong>(double max_relative_change, double const *restrict current_point, double *restrict update_vector)</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p><dl class="docutils">
-<dt>Changes update_vector so that:</dt>
-<dd><tt class="docutils literal"><span class="pre">point_new</span> <span class="pre">=</span> <span class="pre">point</span> <span class="pre">+</span> <span class="pre">update_vector</span></tt></dd>
-</dl>
-<p>has coordinates such that CheckPointInside(point_new) returns true.</p>
-<p>update_vector is UNMODIFIED if point_new is already inside the domain.</p>
-<p>Note: we modify update_vector (instead of returning point_new) so that further update
-limiting/testing may be performed.</p>
-<dl class="docutils">
-<dt><strong>Parameters</strong>:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">max_relative_change:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">max change allowed per update (as a relative fraction of current distance to boundary)</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">current_point[dim]:</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">starting point</td>
-</tr>
-<tr class="field-odd field"><th class="field-name" colspan="2">update_vector[dim]:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">proposed update</td>
-</tr>
-</tbody>
-</table>
-</dd>
-<dt><strong>Outputs</strong>:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">update_vector[dim]:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">modified update so that the final point remains inside the domain</td>
-</tr>
-</tbody>
-</table>
-</dd>
-</dl>
- </p>
-</div></blockquote>
-</div></blockquote>
-<em>Public Static Attributes</em><blockquote>
-<div><p><span class="target" id="project0classoptimal__learning_1_1_tensor_product_domain_1a3f1a825ded20d21a4115f143ad33fff7"></span>constexpr char const * <strong>kName</strong></p>
-<blockquote>
-<div><p>string name of this domain for logging </p>
-<p></p>
-</div></blockquote>
-</div></blockquote>
-<em>Private Members</em><blockquote>
-<div><p><span class="target" id="project0classoptimal__learning_1_1_tensor_product_domain_1aebf0b7c7c0dec6bec5aaecfba54e3ed4"></span>int <strong>dim_</strong></p>
-<blockquote>
-<div><p>the number of spatial dimensions of this domain </p>
-<p></p>
-</div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_tensor_product_domain_1a103b536392402ed27914e7182fd51c18"></span>std::vector&lt;  <a class="reference internal" href="gpp_geometry.html#project0structoptimal__learning_1_1_closed_interval"><em>ClosedInterval</em></a>  &gt; <strong>domain_</strong></p>
-<blockquote>
-<div><p>the list of <a class="reference internal" href="gpp_geometry.html#project0structoptimal__learning_1_1_closed_interval"><em>ClosedInterval</em></a> that define the boundaries of this tensor product domain </p>
-<p></p>
-</div></blockquote>
-</div></blockquote>
-<em>Private Static Attributes</em><blockquote>
-<div><p><span class="target" id="project0classoptimal__learning_1_1_tensor_product_domain_1ad151aeafe9473a8f7729d19866991acf"></span>constexpr double <strong>kInvalidStepScaleFactor</strong></p>
-<blockquote>
-<div><p>attempt to scale down the step-size (or distance to wall) by this factor when a domain-exiting (i.e., invalid) step is requested </p>
-<p></p>
-</div></blockquote>
-</div></blockquote>
-</div></blockquote>
-</p>
-<p><p id="project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain"><em>class</em> <strong>SimplexIntersectTensorProductDomain</strong></p>
-<blockquote>
-<div><p></p>
-<p><p>Domain class for the intersection of the unit simplex with an arbitrary tensor product domain.  To that end,
-this object has a TensorProductDomain object as a data member and uses its functions when possible.</p>
-<p>See TensorProductDomain for what that means.
-The unit d-simplex is defined as the set of <tt class="docutils literal"><span class="pre">x_i</span></tt> such that:</p>
-<ol class="arabic simple">
-<li><tt class="docutils literal"><span class="pre">x_i</span> <span class="pre">&gt;=</span> <span class="pre">0</span> <span class="pre">\forall</span> <span class="pre">i</span>&nbsp; <span class="pre">(i</span> <span class="pre">ranging</span> <span class="pre">over</span> <span class="pre">dimension)</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">\sum_i</span> <span class="pre">x_i</span> <span class="pre">&lt;=</span> <span class="pre">1</span></tt></li>
-</ol>
-<p>(Implying that <tt class="docutils literal"><span class="pre">x_i</span> <span class="pre">&lt;=</span> <span class="pre">1</span> <span class="pre">\forall</span> <span class="pre">i</span></tt>)</p>
-<p>ASSUMPTION: most of the volume of the tensor product region lies inside the simplex region.</p>
- </p>
-<em>Public Functions</em><blockquote>
-<div><p><span class="target" id="project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain_1a5c54bdaaf7c14f2813d46ede90034624"></span><div class="line-block">
-<div class="line"> <strong>SimplexIntersectTensorProductDomain</strong>()</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p></p>
-</div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain_1a31237c843950d0072d869206b2f5ca35"></span><div class="line-block">
-<div class="line"> <strong>SimplexIntersectTensorProductDomain</strong>(<a class="reference internal" href="gpp_geometry.html#project0structoptimal__learning_1_1_closed_interval"><em>ClosedInterval</em></a>  const *restrict domain, int dim_in)</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p><p>Constructs a SimplexIntersectTensorProductDomain.  The bounds of the tensor product region are specified through
-the &#8220;domain&#8221; input, just as with TensorProductDomain.</p>
-<dl class="docutils">
-<dt><strong>Parameters</strong>:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">domain[dim]:</th><td class="field-body">array of ClosedInterval specifying the boundaries of a dim-dimensional tensor-product domain.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">dim_in:</th><td class="field-body">number of spatial dimensions</td>
-</tr>
-</tbody>
-</table>
-</dd>
-</dl>
- </p>
-</div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain_1acbbbb145e0fcb38aed32421f8a8a040f"></span><div class="line-block">
-<div class="line">int <strong>dim</strong>()</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p></p>
-</div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain_1add3942fe923ab2bfa0096cd4b0eb4592"></span><div class="line-block">
-<div class="line">int <strong>GetMaxNumberOfBoundaryPlanes</strong>()</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p><p>Maximum number of planes that define the boundary of this domain.
-Used for testing.</p>
-<p>This result is NOT exact.</p>
-<dl class="docutils">
-<dt><strong>Returns</strong>:</dt>
-<dd>max number of planes defining the boundary of this domain</dd>
-</dl>
- </p>
-</div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain_1a5de47fa5d56e1a0bc00a246d75e75371"></span><div class="line-block">
-<div class="line">void <strong>GetBoundaryPlanes</strong>(<a class="reference internal" href="gpp_geometry.html#project0structoptimal__learning_1_1_plane"><em>Plane</em></a>  *restrict planes)</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p><p>Fills an input array with all bounding planes of this domain.
-See struct Plane in gpp_geometry.hpp for how to specify a plane.
-Used for testing.</p>
-<p>Let max_num_bound = GetMaxNumberOfBoundaryPlanes()
-<strong>Parameters</strong>:</p>
-<blockquote>
-<div><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">planes[max_num_bound]:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">properly allocated space: max_num_bound Plane objects in dim spatial dimensions</td>
-</tr>
-</tbody>
-</table>
-</div></blockquote>
-<dl class="docutils">
-<dt><strong>Outputs</strong>:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">planes[max_num_bound]:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">array of planes of this domain</td>
-</tr>
-</tbody>
-</table>
-</dd>
-</dl>
- </p>
-</div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain_1a520917fdcc8b2278c90111b33b94c4f8"></span><div class="line-block">
-<div class="line">bool <strong>CheckPointInside</strong>(double const *restrict point)</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p><p>Check if a point is inside the domain/on its domain or outside</p>
-<dl class="docutils">
-<dt><strong>Parameters</strong>:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">point[dim]:</th><td class="field-body">point to check</td>
-</tr>
-</tbody>
-</table>
-</dd>
-<dt><strong>Returns</strong>:</dt>
-<dd>true if point is inside the domain or on its boundary, false otherwise</dd>
-</dl>
- </p>
-</div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain_1ac0aa2546efb658e18a78674c05701f64"></span><div class="line-block">
-<div class="line">bool <strong>GeneratePointInDomain</strong>(<a class="reference internal" href="gpp_random.html#project0structoptimal__learning_1_1_uniform_random_generator"><em>UniformRandomGenerator</em></a>  * uniform_generator, double *restrict random_point)</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p><p>Generates &#8220;point&#8221; such that CheckPointInside(point) returns true.</p>
-<p>Uses rejection sampling so point generation may fail.</p>
-<dl class="docutils">
-<dt><strong>Parameters</strong>:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">uniform_generator[1]:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">a UniformRandomGenerator object providing the random engine for uniform random numbers</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">random_point[dim]:</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">properly sized array</td>
-</tr>
-</tbody>
-</table>
-</dd>
-<dt><strong>Outputs</strong>:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">uniform_generator[1]:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">UniformRandomGenerator object will have its state changed due to random draws</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">random_point[dim]:</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">point with coordinates inside the domain (left in invalid state if fcn returns false)</td>
-</tr>
-</tbody>
-</table>
-</dd>
-<dt><strong>Returns</strong>:</dt>
-<dd>true if point generation succeeded</dd>
-</dl>
- </p>
-</div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain_1a5d541da3e23d425fee508e556f8dfde6"></span><div class="line-block">
-<div class="line">int <strong>GenerateUniformPointsInDomain</strong>(int num_points, <a class="reference internal" href="gpp_random.html#project0structoptimal__learning_1_1_uniform_random_generator"><em>UniformRandomGenerator</em></a>  * uniform_generator, double *restrict random_points)</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p><p>Generates AT MOST num_points points in the domain (i.e., such that CheckPointInside(point) returns true).  The points
-will be uniformly distributed.</p>
-<p>Uses rejection sampling so we are not guaranteed to generate num_points samples.</p>
-<dl class="docutils">
-<dt><strong>Parameters</strong>:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">num_points:</th><td class="field-body">number of random points to generate</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">uniform_generator[1]:</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">a UniformRandomGenerator object providing the random engine for uniform random numbers</td>
-</tr>
-<tr class="field-odd field"><th class="field-name" colspan="2">random_points[dim][num_points]:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">properly sized array</td>
-</tr>
-</tbody>
-</table>
-</dd>
-<dt><strong>Outputs</strong>:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">uniform_generator[1]:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">UniformRandomGenerator object will have its state changed due to random draws</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">random_points[dim][num_points]:</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">point with coordinates inside the domain</td>
-</tr>
-</tbody>
-</table>
-</dd>
-<dt><strong>Returns</strong>:</dt>
-<dd>number of points actually generated</dd>
-</dl>
- </p>
-</div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain_1aa6a464a992d7c4aabfdd07fdc9a79300"></span><div class="line-block">
-<div class="line">void <strong>LimitUpdate</strong>(double max_relative_change, double const *restrict current_point, double *restrict update_vector)</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p><dl class="docutils">
-<dt>Changes update_vector so that:</dt>
-<dd><tt class="docutils literal"><span class="pre">point_new</span> <span class="pre">=</span> <span class="pre">point</span> <span class="pre">+</span> <span class="pre">update_vector</span></tt></dd>
-</dl>
-<p>has coordinates such that CheckPointInside(point_new) returns true.</p>
-<p>update_vector is UNMODIFIED if point_new is already inside the domain.</p>
-<p>Note: we modify update_vector (instead of returning point_new) so that further update
-limiting/testing may be performed.</p>
-<dl class="docutils">
-<dt><strong>Parameters</strong>:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">max_relative_change:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">max change allowed per update (as a relative fraction of current distance to boundary)</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">current_point[dim]:</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">starting point</td>
-</tr>
-<tr class="field-odd field"><th class="field-name" colspan="2">update_vector[dim]:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">proposed update</td>
-</tr>
-</tbody>
-</table>
-</dd>
-<dt><strong>Outputs</strong>:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">update_vector[dim]:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">modified update so that the final point remains inside the domain</td>
-</tr>
-</tbody>
-</table>
-</dd>
-</dl>
- </p>
-</div></blockquote>
-</div></blockquote>
-<em>Public Static Attributes</em><blockquote>
-<div><p><span class="target" id="project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain_1a0f6ba1d8eaa927d75921bc413529b62c"></span>constexpr char const * <strong>kName</strong></p>
-<blockquote>
-<div><p>string name of this domain for logging </p>
-<p></p>
-</div></blockquote>
-</div></blockquote>
-<em>Private Members</em><blockquote>
-<div><p><span class="target" id="project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain_1a237a37b352d3e6c4f022a1170ed81fa8"></span>int <strong>dim_</strong></p>
-<blockquote>
-<div><p>the number of spatial dimensions of this domain </p>
-<p></p>
-</div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain_1aec22b3824a3faaf517c06c6423f026c1"></span><a class="reference internal" href="#project0classoptimal__learning_1_1_tensor_product_domain"><em>TensorProductDomain</em></a> <strong>tensor_product_domain_</strong></p>
-<blockquote>
-<div><p>the tensor product domain to intersect with </p>
-<p></p>
-</div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain_1aa0ae8ab25a3baa08691fceef865ab16b"></span><a class="reference internal" href="gpp_geometry.html#project0structoptimal__learning_1_1_plane"><em>Plane</em></a> <strong>simplex_plane_</strong></p>
-<blockquote>
-<div><p>the plane defining the simplex </p>
-<p></p>
-</div></blockquote>
-</div></blockquote>
-<em>Private Static Attributes</em><blockquote>
-<div><p><span class="target" id="project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain_1a8f4cb7108ee68bf86ff5fe1f7fa65674"></span>constexpr double <strong>kPointGenerationRatio</strong></p>
-<blockquote>
-<div><p><a class="reference internal" href="#project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain_1a5d541da3e23d425fee508e556f8dfde6"><em>GenerateUniformPointsInDomain()</em></a> is happy if ratio*requested_points number of points is generated. </p>
-<p></p>
-</div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain_1a0621c1d1cb2e26c1e0a22112200ff68d"></span>constexpr double <strong>kValidPointRatioFloor</strong></p>
-<blockquote>
-<div><p>in <a class="reference internal" href="#project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain_1a5d541da3e23d425fee508e556f8dfde6"><em>GenerateUniformPointsInDomain()</em></a>, if the ratio of valid points is &gt; this, we retry requesting 1/ratio points. otherwise we retry with 5x the points (i.e., flooring ratio at 5) </p>
-<p></p>
-</div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain_1a15c2f2f4a5d38dadd98662065a5da91d"></span>constexpr int <strong>kMaxPointRatioGrowth</strong></p>
-<blockquote>
-<div><p>1/kValidPointRatioFloor; the most we&#8217;ll increase the number of requested points on a retry </p>
-<p></p>
-</div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain_1abd9869ad18f8f66cd1c36b0c5f24e40f"></span>constexpr double <strong>kInvalidStepScaleFactor</strong></p>
-<blockquote>
-<div><p>attempt to scale down the step-size (or distance to wall) by this factor when a domain-exiting (i.e., invalid) step is requested </p>
-<p></p>
-</div></blockquote>
-<p><span class="target" id="project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain_1a6036f749075cb1d03b7ef155cc4f3f1b"></span>constexpr double <strong>kRelativeChangeEpsilonTweak</strong></p>
-<blockquote>
-<div><p>small tweak to relative_change (to prevent max_relative_change == 1.0 exactly; see LimitUpdate comments) </p>
 <p></p>
 </div></blockquote>
 </div></blockquote>
@@ -1137,14 +528,16 @@ will be uniformly distributed.</p>
 </p>
 <blockquote>
 <div><p></p>
-<p><dl class="docutils">
-<dt>Changes update_vector so that:</dt>
-<dd><tt class="docutils literal"><span class="pre">point_new</span> <span class="pre">=</span> <span class="pre">point</span> <span class="pre">+</span> <span class="pre">update_vector</span></tt></dd>
-</dl>
-<p>has coordinates such that CheckPointInside(point_new) returns true.</p>
-<p>update_vector is UNMODIFIED if point_new is already inside the domain.</p>
-<p>Note: we modify update_vector (instead of returning point_new) so that further update
+<p><p>Changes update_vector so that:</p>
+<blockquote>
+<div><tt class="docutils literal"><span class="pre">point_new</span> <span class="pre">=</span> <span class="pre">point</span> <span class="pre">+</span> <span class="pre">update_vector</span></tt></div></blockquote>
+<p>has coordinates such that <tt class="docutils literal"><span class="pre">CheckPointInside(point_new)</span></tt> returns true.</p>
+<p><tt class="docutils literal"><span class="pre">update_vector</span></tt> is UNMODIFIED if point_new is already inside the domain.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">we modify update_vector (instead of returning <tt class="docutils literal"><span class="pre">point_new</span></tt>) so that further update
 limiting/testing may be performed.</p>
+</div>
 <dl class="docutils">
 <dt><strong>Parameters</strong>:</dt>
 <dd><table class="first last docutils field-list" frame="void" rules="none">
@@ -1187,6 +580,627 @@ limiting/testing may be performed.</p>
 <p><span class="target" id="project0classoptimal__learning_1_1_repeated_domain_1a826fcc66ef9eb1353da527012e48095f"></span>const DomainType *restrict <strong>domain_</strong></p>
 <blockquote>
 <div><p>pointer to the domain to repeat </p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</p>
+<p><p id="project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain"><em>class</em> <strong>SimplexIntersectTensorProductDomain</strong></p>
+<blockquote>
+<div><p></p>
+<p><p>Domain class for the intersection of the unit simplex with an arbitrary tensor product domain.  To that end,
+this object has a TensorProductDomain object as a data member and uses its functions when possible.</p>
+<p>See TensorProductDomain for what that means.
+The unit d-simplex is defined as the set of <tt class="docutils literal"><span class="pre">x_i</span></tt> such that:</p>
+<ol class="arabic simple">
+<li><tt class="docutils literal"><span class="pre">x_i</span> <span class="pre">&gt;=</span> <span class="pre">0</span> <span class="pre">\forall</span> <span class="pre">i</span>&nbsp; <span class="pre">(i</span> <span class="pre">ranging</span> <span class="pre">over</span> <span class="pre">dimension)</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">\sum_i</span> <span class="pre">x_i</span> <span class="pre">&lt;=</span> <span class="pre">1</span></tt></li>
+</ol>
+<p>(Implying that <tt class="docutils literal"><span class="pre">x_i</span> <span class="pre">&lt;=</span> <span class="pre">1</span> <span class="pre">\forall</span> <span class="pre">i</span></tt>)</p>
+<p>ASSUMPTION: most of the volume of the tensor product region lies inside the simplex region.</p>
+ </p>
+<em>Public Functions</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain_1a5c54bdaaf7c14f2813d46ede90034624"></span><div class="line-block">
+<div class="line"> <strong>SimplexIntersectTensorProductDomain</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain_1a31237c843950d0072d869206b2f5ca35"></span><div class="line-block">
+<div class="line"> <strong>SimplexIntersectTensorProductDomain</strong>(<a class="reference internal" href="gpp_geometry.html#project0structoptimal__learning_1_1_closed_interval"><em>ClosedInterval</em></a>  const *restrict domain, int dim_in)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Constructs a SimplexIntersectTensorProductDomain.  The bounds of the tensor product region are specified through
+the &#8220;domain&#8221; input, just as with TensorProductDomain.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">domain[dim]:</th><td class="field-body">array of ClosedInterval specifying the boundaries of a dim-dimensional tensor-product domain.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">dim_in:</th><td class="field-body">number of spatial dimensions</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain_1acbbbb145e0fcb38aed32421f8a8a040f"></span><div class="line-block">
+<div class="line">int <strong>dim</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain_1add3942fe923ab2bfa0096cd4b0eb4592"></span><div class="line-block">
+<div class="line">int <strong>GetMaxNumberOfBoundaryPlanes</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Maximum number of planes that define the boundary of this domain.
+Used for testing.</p>
+<p>This result is NOT exact.</p>
+<dl class="docutils">
+<dt><strong>Returns</strong>:</dt>
+<dd>max number of planes defining the boundary of this domain</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain_1a5de47fa5d56e1a0bc00a246d75e75371"></span><div class="line-block">
+<div class="line">void <strong>GetBoundaryPlanes</strong>(<a class="reference internal" href="gpp_geometry.html#project0structoptimal__learning_1_1_plane"><em>Plane</em></a>  *restrict planes)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Fills an input array with all bounding planes of this domain.
+See struct Plane in gpp_geometry.hpp for how to specify a plane.
+Used for testing.</p>
+<p>Let max_num_bound = GetMaxNumberOfBoundaryPlanes()</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">planes[max_num_bound]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">properly allocated space: max_num_bound Plane objects in dim spatial dimensions</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Outputs</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">planes[max_num_bound]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">array of planes of this domain</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain_1a520917fdcc8b2278c90111b33b94c4f8"></span><div class="line-block">
+<div class="line">bool <strong>CheckPointInside</strong>(double const *restrict point)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Check if a point is inside the domain/on its domain or outside</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">point[dim]:</th><td class="field-body">point to check</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd>true if point is inside the domain or on its boundary, false otherwise</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain_1ac0aa2546efb658e18a78674c05701f64"></span><div class="line-block">
+<div class="line">bool <strong>GeneratePointInDomain</strong>(<a class="reference internal" href="gpp_random.html#project0structoptimal__learning_1_1_uniform_random_generator"><em>UniformRandomGenerator</em></a>  * uniform_generator, double *restrict random_point)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Generates &#8220;point&#8221; such that CheckPointInside(point) returns true.</p>
+<p>Uses rejection sampling so point generation may fail.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">uniform_generator[1]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">a UniformRandomGenerator object providing the random engine for uniform random numbers</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">random_point[dim]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">properly sized array</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Outputs</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">uniform_generator[1]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">UniformRandomGenerator object will have its state changed due to random draws</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">random_point[dim]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">point with coordinates inside the domain (left in invalid state if fcn returns false)</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd>true if point generation succeeded</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain_1a5d541da3e23d425fee508e556f8dfde6"></span><div class="line-block">
+<div class="line">int <strong>GenerateUniformPointsInDomain</strong>(int num_points, <a class="reference internal" href="gpp_random.html#project0structoptimal__learning_1_1_uniform_random_generator"><em>UniformRandomGenerator</em></a>  * uniform_generator, double *restrict random_points)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Generates AT MOST num_points points in the domain (i.e., such that CheckPointInside(point) returns true).  The points
+will be uniformly distributed.</p>
+<p>Uses rejection sampling so we are not guaranteed to generate num_points samples.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">num_points:</th><td class="field-body">number of random points to generate</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">uniform_generator[1]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">a UniformRandomGenerator object providing the random engine for uniform random numbers</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">random_points[dim][num_points]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">properly sized array</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Outputs</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">uniform_generator[1]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">UniformRandomGenerator object will have its state changed due to random draws</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">random_points[dim][num_points]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">point with coordinates inside the domain</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd>number of points actually generated</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain_1aa6a464a992d7c4aabfdd07fdc9a79300"></span><div class="line-block">
+<div class="line">void <strong>LimitUpdate</strong>(double max_relative_change, double const *restrict current_point, double *restrict update_vector)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Changes update_vector so that:</p>
+<blockquote>
+<div><tt class="docutils literal"><span class="pre">point_new</span> <span class="pre">=</span> <span class="pre">point</span> <span class="pre">+</span> <span class="pre">update_vector</span></tt></div></blockquote>
+<p>has coordinates such that <tt class="docutils literal"><span class="pre">CheckPointInside(point_new)</span></tt> returns true.</p>
+<p><tt class="docutils literal"><span class="pre">update_vector</span></tt> is UNMODIFIED if point_new is already inside the domain.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">we modify update_vector (instead of returning <tt class="docutils literal"><span class="pre">point_new</span></tt>) so that further update
+limiting/testing may be performed.</p>
+</div>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">max_relative_change:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">max change allowed per update (as a relative fraction of current distance to boundary)</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">current_point[dim]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">starting point</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">update_vector[dim]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">proposed update</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Outputs</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">update_vector[dim]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">modified update so that the final point remains inside the domain</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+</div></blockquote>
+<em>Public Static Attributes</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain_1a0f6ba1d8eaa927d75921bc413529b62c"></span>constexpr char const * <strong>kName</strong></p>
+<blockquote>
+<div><p>string name of this domain for logging </p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Private Members</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain_1a237a37b352d3e6c4f022a1170ed81fa8"></span>int <strong>dim_</strong></p>
+<blockquote>
+<div><p>the number of spatial dimensions of this domain </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain_1aec22b3824a3faaf517c06c6423f026c1"></span><a class="reference internal" href="#project0classoptimal__learning_1_1_tensor_product_domain"><em>TensorProductDomain</em></a> <strong>tensor_product_domain_</strong></p>
+<blockquote>
+<div><p>the tensor product domain to intersect with </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain_1aa0ae8ab25a3baa08691fceef865ab16b"></span><a class="reference internal" href="gpp_geometry.html#project0structoptimal__learning_1_1_plane"><em>Plane</em></a> <strong>simplex_plane_</strong></p>
+<blockquote>
+<div><p>the plane defining the simplex </p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Private Static Attributes</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain_1a8f4cb7108ee68bf86ff5fe1f7fa65674"></span>constexpr double <strong>kPointGenerationRatio</strong></p>
+<blockquote>
+<div><p><a class="reference internal" href="#project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain_1a5d541da3e23d425fee508e556f8dfde6"><em>GenerateUniformPointsInDomain()</em></a> is happy if ratio*requested_points number of points is generated. </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain_1a0621c1d1cb2e26c1e0a22112200ff68d"></span>constexpr double <strong>kValidPointRatioFloor</strong></p>
+<blockquote>
+<div><p>in <a class="reference internal" href="#project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain_1a5d541da3e23d425fee508e556f8dfde6"><em>GenerateUniformPointsInDomain()</em></a>, if the ratio of valid points is &gt; this, we retry requesting 1/ratio points. otherwise we retry with 5x the points (i.e., flooring ratio at 5) </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain_1a15c2f2f4a5d38dadd98662065a5da91d"></span>constexpr int <strong>kMaxPointRatioGrowth</strong></p>
+<blockquote>
+<div><p>1/kValidPointRatioFloor; the most we&#8217;ll increase the number of requested points on a retry </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain_1abd9869ad18f8f66cd1c36b0c5f24e40f"></span>constexpr double <strong>kInvalidStepScaleFactor</strong></p>
+<blockquote>
+<div><p>attempt to scale down the step-size (or distance to wall) by this factor when a domain-exiting (i.e., invalid) step is requested </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain_1a6036f749075cb1d03b7ef155cc4f3f1b"></span>constexpr double <strong>kRelativeChangeEpsilonTweak</strong></p>
+<blockquote>
+<div><p>small tweak to relative_change (to prevent max_relative_change == 1.0 exactly; see LimitUpdate comments) </p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</p>
+<p><p id="project0classoptimal__learning_1_1_tensor_product_domain"><em>class</em> <strong>TensorProductDomain</strong></p>
+<blockquote>
+<div><p></p>
+<p><p>Domain type for a tensor product domain.</p>
+<p>A d-dimensional tensor product domain is <tt class="docutils literal"><span class="pre">D</span> <span class="pre">=</span> <span class="pre">[x_0_{min},</span> <span class="pre">x_0_{max}]</span> <span class="pre">X</span> <span class="pre">[x_1_{min},</span> <span class="pre">x_1_{max}]</span> <span class="pre">X</span> <span class="pre">...</span> <span class="pre">X</span> <span class="pre">[x_d_{min},</span> <span class="pre">x_d_{max}]</span></tt></p>
+ </p>
+<em>Public Functions</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_tensor_product_domain_1a184fca10f7f4317ea27344c926519a8d"></span><div class="line-block">
+<div class="line"> <strong>TensorProductDomain</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_tensor_product_domain_1ae9b0997723d89bed042d9338bbeeb6bc"></span><div class="line-block">
+<div class="line"> <strong>TensorProductDomain</strong>(<a class="reference internal" href="gpp_geometry.html#project0structoptimal__learning_1_1_closed_interval"><em>ClosedInterval</em></a>  const *restrict domain, int dim_in)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Constructs a TensorProductDomain.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">domain[dim]:</th><td class="field-body">array of ClosedInterval specifying the boundaries of a dim-dimensional tensor-product domain.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">dim_in:</th><td class="field-body">number of spatial dimensions</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_tensor_product_domain_1aeb91f69de83514c7c4df8a93a4e29fe3"></span><div class="line-block">
+<div class="line">int <strong>dim</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_tensor_product_domain_1ae9fb5627bd5fd6421cc9596d1f46467f"></span><div class="line-block">
+<div class="line">void <strong>SetDomain</strong>(<a class="reference internal" href="gpp_geometry.html#project0structoptimal__learning_1_1_closed_interval"><em>ClosedInterval</em></a>  const *restrict domain)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Explicitly set the domain boundaries. Assumes specified domain is non-empty.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">domain[dim]:</th><td class="field-body">array of ClosedInterval specifying the boundaries of a dim-dimensional tensor-product domain.</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_tensor_product_domain_1af5735ab89504aacd15344d8bde5f129d"></span><div class="line-block">
+<div class="line">int <strong>GetMaxNumberOfBoundaryPlanes</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Maximum number of planes that define the boundary of this domain.
+Used for testing.</p>
+<p>This result is exact.</p>
+<dl class="docutils">
+<dt><strong>Returns</strong>:</dt>
+<dd>max number of planes defining the boundary of this domain</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_tensor_product_domain_1a3293a05c7ccf894be2bb32c6c8379133"></span><div class="line-block">
+<div class="line">void <strong>GetBoundaryPlanes</strong>(<a class="reference internal" href="gpp_geometry.html#project0structoptimal__learning_1_1_plane"><em>Plane</em></a>  *restrict planes)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Fills an input array with all bounding planes of this domain.
+See struct Plane in gpp_geometry.hpp for how to specify a plane.
+Used for testing.</p>
+<p>Let max_num_bound = GetMaxNumberOfBoundaryPlanes()</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">planes[max_num_bound]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">properly allocated space: max_num_bound Plane objects in dim spatial dimensions</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Outputs</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">planes[max_num_bound]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">array of planes of this domain</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_tensor_product_domain_1a136f4b59d5fe705e7862ebc1c50c2b14"></span><div class="line-block">
+<div class="line">bool <strong>CheckPointInside</strong>(double const *restrict point)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Check if a point is inside the domain/on its boundary or outside.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">point[dim]:</th><td class="field-body">point to check</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd>true if point is inside the domain or on its boundary, false otherwise</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_tensor_product_domain_1a6d15ffaaeb66856713b688519daf12a4"></span><div class="line-block">
+<div class="line">bool <strong>GeneratePointInDomain</strong>(<a class="reference internal" href="gpp_random.html#project0structoptimal__learning_1_1_uniform_random_generator"><em>UniformRandomGenerator</em></a>  * uniform_generator, double *restrict random_point)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Generates &#8220;point&#8221; such that CheckPointInside(point) returns true.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">uniform_generator[1]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">a UniformRandomGenerator object providing the random engine for uniform random numbers</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">random_point[dim]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">properly sized array</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Outputs</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">uniform_generator[1]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">UniformRandomGenerator object will have its state changed due to random draws</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">random_point[dim]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">point with coordinates inside the domain (left in invalid state if fcn returns false)</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd>true if point generation succeeded</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_tensor_product_domain_1a81ac402428fd923b14f38f0a6193831e"></span><div class="line-block">
+<div class="line">int <strong>GenerateUniformPointsInDomain</strong>(int num_points, <a class="reference internal" href="gpp_random.html#project0structoptimal__learning_1_1_uniform_random_generator"><em>UniformRandomGenerator</em></a>  * uniform_generator, double *restrict random_points)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Generates num_points points in the domain (i.e., such that CheckPointInside(point) returns true).  The points
+will be uniformly distributed.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">num_points:</th><td class="field-body">number of random points to generate</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">uniform_generator[1]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">a UniformRandomGenerator object providing the random engine for uniform random numbers</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">random_points[dim][num_points]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">properly sized array</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Outputs</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">uniform_generator[1]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">UniformRandomGenerator object will have its state changed due to random draws</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">random_points[dim][num_points]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">point with coordinates inside the domain</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd>number of points generated (always num_points; ok to not use this result)</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_tensor_product_domain_1a1c9140e57d6307685ebb71c86bce5ae0"></span><div class="line-block">
+<div class="line">void <strong>LimitUpdate</strong>(double max_relative_change, double const *restrict current_point, double *restrict update_vector)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Changes update_vector so that:</p>
+<blockquote>
+<div><tt class="docutils literal"><span class="pre">point_new</span> <span class="pre">=</span> <span class="pre">point</span> <span class="pre">+</span> <span class="pre">update_vector</span></tt></div></blockquote>
+<p>has coordinates such that <tt class="docutils literal"><span class="pre">CheckPointInside(point_new)</span></tt> returns true.</p>
+<p><tt class="docutils literal"><span class="pre">update_vector</span></tt> is UNMODIFIED if point_new is already inside the domain.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">we modify update_vector (instead of returning <tt class="docutils literal"><span class="pre">point_new</span></tt>) so that further update
+limiting/testing may be performed.</p>
+</div>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">max_relative_change:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">max change allowed per update (as a relative fraction of current distance to boundary)</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">current_point[dim]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">starting point</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">update_vector[dim]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">proposed update</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Outputs</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">update_vector[dim]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">modified update so that the final point remains inside the domain</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+</div></blockquote>
+<em>Public Static Attributes</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_tensor_product_domain_1a3f1a825ded20d21a4115f143ad33fff7"></span>constexpr char const * <strong>kName</strong></p>
+<blockquote>
+<div><p>string name of this domain for logging </p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Private Members</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_tensor_product_domain_1aebf0b7c7c0dec6bec5aaecfba54e3ed4"></span>int <strong>dim_</strong></p>
+<blockquote>
+<div><p>the number of spatial dimensions of this domain </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_tensor_product_domain_1a103b536392402ed27914e7182fd51c18"></span>std::vector&lt;  <a class="reference internal" href="gpp_geometry.html#project0structoptimal__learning_1_1_closed_interval"><em>ClosedInterval</em></a>  &gt; <strong>domain_</strong></p>
+<blockquote>
+<div><p>the list of <a class="reference internal" href="gpp_geometry.html#project0structoptimal__learning_1_1_closed_interval"><em>ClosedInterval</em></a> that define the boundaries of this tensor product domain </p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
+<em>Private Static Attributes</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_tensor_product_domain_1ad151aeafe9473a8f7729d19866991acf"></span>constexpr double <strong>kInvalidStepScaleFactor</strong></p>
+<blockquote>
+<div><p>attempt to scale down the step-size (or distance to wall) by this factor when a domain-exiting (i.e., invalid) step is requested </p>
 <p></p>
 </div></blockquote>
 </div></blockquote>
@@ -1247,7 +1261,7 @@ limiting/testing may be performed.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.1.0',
+            VERSION:'0.2.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
