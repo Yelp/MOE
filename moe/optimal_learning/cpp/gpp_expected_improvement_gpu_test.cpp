@@ -30,6 +30,7 @@ namespace optimal_learning {
 #ifdef OL_GPU_ENABLED
 
 namespace {
+
 /*!\rst
   Test that the EI + grad EI computation (using MC integration) is consistent
   with the special analytic case of EI when there is only *ONE* potential point
@@ -247,7 +248,7 @@ int CudaExpectedImprovementOptimizationMultipleSamplesTest() {
   const double pre_mult = 1.0;
   const double max_relative_change = 1.0;
   const double tolerance = 1.0e-5;
-  const int max_gradient_descent_steps = 250;
+  const int max_gradient_descent_steps = 100;
   const int max_num_restarts = 3;
   const int num_multistarts = 20;
   GradientDescentParameters gd_params(num_multistarts, max_gradient_descent_steps,
@@ -262,7 +263,7 @@ int CudaExpectedImprovementOptimizationMultipleSamplesTest() {
   const int num_being_sampled = 0;
 
   std::vector<double> points_being_sampled(dim*num_being_sampled);
-  int max_int_steps = 1000000;
+  int max_int_steps = 10000;
 
   // random number generators
   UniformRandomGenerator uniform_generator(314);
@@ -350,7 +351,7 @@ int CudaExpectedImprovementOptimizationMultipleSamplesTest() {
   double tolerance_result = tolerance;
   {
     max_int_steps = 100000000;  // evaluate the final results with high accuracy
-    tolerance_result = 3.5e-3;  // reduce b/c we cannot achieve full accuracy in the monte-carlo case
+    tolerance_result = 7e-3;  // reduce b/c we cannot achieve full accuracy in the monte-carlo case
     // while still having this test run in a reasonable amt of time
     bool configure_for_gradients = true;
     CudaExpectedImprovementEvaluator ei_evaluator(*mock_gp_data.gaussian_process_ptr,
@@ -393,6 +394,7 @@ int CudaExpectedImprovementOptimizationMultipleSamplesTest() {
 
 /*!\rst
   Invoke all tests for GPU functions.
+
   \return
     number of test failures: 0 if all is working well.
 \endrst*/

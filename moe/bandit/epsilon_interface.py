@@ -10,9 +10,10 @@ import numpy
 
 from moe.bandit.constant import DEFAULT_EPSILON
 from moe.bandit.interfaces.bandit_interface import BanditInterface
+from moe.bandit.utils import get_winning_arm_names_from_payoff_arm_name_list
 
 
-class Epsilon(BanditInterface):
+class EpsilonInterface(BanditInterface):
 
     r"""Implementation of the constructor and common methods of Epsilon. Abstract method allocate_arms implemented in subclass.
 
@@ -32,9 +33,9 @@ class Epsilon(BanditInterface):
         """Construct an Epsilon object.
 
         :param historical_info: a dictionary of arms sampled
-        :type historical_info: dictionary of (String(), SampleArm()) pairs (see :class:`moe.bandit.data_containers.SampleArm` for more details)
+        :type historical_info: dictionary of (str, SampleArm()) pairs (see :class:`moe.bandit.data_containers.SampleArm` for more details)
         :param subtype: subtype of the epsilon bandit algorithm (default: None)
-        :type subtype: String()
+        :type subtype: str
         :param epsilon: epsilon hyperparameter for the epsilon bandit algorithm (default: :const:`~moe.bandit.constant.DEFAULT_EPSILON`)
         :type epsilon: float64 in range [0.0, 1.0]
 
@@ -51,9 +52,9 @@ class Epsilon(BanditInterface):
         Implementers of this interface will never override this method.
 
         :param arms_sampled: a dictionary of arm name to :class:`moe.bandit.data_containers.SampleArm`
-        :type arms_sampled: dictionary of (String(), SampleArm()) pairs
+        :type arms_sampled: dictionary of (str, SampleArm()) pairs
         :return: of set of names of the winning arms
-        :rtype: frozenset(String())
+        :rtype: frozenset(str)
         :raise: ValueError when ``arms_sampled`` are empty.
 
         """
@@ -64,12 +65,5 @@ class Epsilon(BanditInterface):
         for arm_name, sampled_arm in arms_sampled.iteritems():
             avg_payoff = numpy.float64(sampled_arm.win - sampled_arm.loss) / sampled_arm.total if sampled_arm.total > 0 else 0
             avg_payoff_arm_name_list.append((avg_payoff, arm_name))
-        avg_payoff_arm_name_list.sort(reverse=True)
 
-        best_payoff, _ = max(avg_payoff_arm_name_list)
-        # Filter out arms that have average payoff less than the best payoff
-        winning_arm_payoff_name_list = filter(lambda avg_payoff_arm_name: avg_payoff_arm_name[0] == best_payoff, avg_payoff_arm_name_list)
-        # Extract a list of winning arm names from a list of (average payoff, arm name) tuples.
-        _, winning_arm_name_list = map(list, zip(*winning_arm_payoff_name_list))
-        winning_arm_names = frozenset(winning_arm_name_list)
-        return winning_arm_names
+        return get_winning_arm_names_from_payoff_arm_name_list(avg_payoff_arm_name_list)

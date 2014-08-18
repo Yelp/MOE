@@ -5,6 +5,7 @@ See :mod:`moe.optimal_learning.python.interfaces.expected_improvement_interface`
 gpp_math.hpp/cpp for further details on expected improvement.
 
 """
+from collections import namedtuple
 import logging
 
 import numpy
@@ -34,6 +35,40 @@ MINIMUM_VARIANCE_EI = numpy.finfo(numpy.float64).tiny
 #: The 150.0 was determined by numerical experiment with the setup in test_1d_analytic_ei_edge_cases()
 #: in order to find a setting that would be robust (no 0/0) while introducing minimal error.
 MINIMUM_VARIANCE_GRAD_EI = 150 * MINIMUM_STD_DEV_GRAD_CHOLESKY ** 2
+
+
+# See MVNDSTParameters (below) for docstring.
+_BaseMVNDSTParameters = namedtuple('_BaseMVNDSTParameters', [
+    'releps',
+    'abseps',
+    'maxpts_per_dim',
+])
+
+
+class MVNDSTParameters(_BaseMVNDSTParameters):
+
+    """Container to hold parameters that specify the behavior of mvndst, which qEI uses to calculate EI.
+
+    For more information about these parameters, consult: http://www.math.wsu.edu/faculty/genz/software/fort77/mvndstpack.f
+
+    .. NOTE:: The actual accuracy used in mvndst is MAX(abseps, FINEST * releps), where FINEST is the estimate of the cdf integral.
+        Because of this, it is almost always the case that abseps should be set to 0 for releps to be used.
+
+    :ivar releps: (*float > 0.0*) relative accuracy at which to calculate the cdf of the multivariate gaussian (suggest: 1.0e-9)
+    :ivar abseps: (*float > 0.0*) absolute accuracy at which to calculate the cdf of the multivariate gaussian (suggest: 1.0e-9)
+    :ivar maxpts_per_dim: (*int > 0*) the maximum number of iterations mvndst will do is num_dimensions * maxpts_per_dim (suggest: 20000)
+
+    """
+
+    __slots__ = ()
+
+
+# EI mvndst computation defauls
+DEFAULT_MVNDST_PARAMS = MVNDSTParameters(
+        releps=1.0e-9,
+        abseps=1.0e-9,
+        maxpts_per_dim=20000,
+        )
 
 
 def multistart_expected_improvement_optimization(
@@ -118,6 +153,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
             points_being_sampled=None,
             num_mc_iterations=DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS,
             randomness=None,
+            mvndst_parameters=None
     ):
         """Construct an ExpectedImprovement object that supports q,p-EI.
 
@@ -151,6 +187,11 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
             self.current_point = numpy.zeros((1, gaussian_process.dim))
         else:
             self.current_point = points_to_sample
+
+        if mvndst_parameters is None:
+            self._mvndst_parameters = DEFAULT_MVNDST_PARAMS
+        else:
+            self._mvndst_parameters = mvndst_parameters
 
         self.log = logging.getLogger(__name__)
 
@@ -236,7 +277,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         This function is deterministic; it does not perform explicit numerical integration or require access
         to a random number generator.
 
-        If we denote PHI_q by the q-dimensional multivariate gaussian, this method requires q calls to PHI_q,
+        If we denote PHI_q as the cdf of a q-dimensional multivariate gaussian, this method requires q calls to PHI_q,
         where q is also the number of points being sampled, and q^2 calls to PHI_(q-1). This approach is therefore
         more tractable with moderate q (lower than 10). Higher values of q may require the Monte-Carlo approach.
 
@@ -279,8 +320,9 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
                  std_upper,  # The upper bound of integration
                  numpy.zeros(upper.size, dtype=int),  # For each dim, 0 means -inf for lower bound
                  corr_matrix[strict_lower_diag_indices],  # The vector of strict lower triangular correlation coefficients
-                 maxpts=20000 * upper.size,  # Maximum number of iterations for the mvndst function
-                 releps=1e-5,  # The error allowed relative to actual value
+                 maxpts=self._mvndst_parameters.maxpts_per_dim * upper.size,  # Maximum number of iterations for the mvndst function
+                 releps=self._mvndst_parameters.releps,  # The error allowed relative to actual value
+                 abseps=self._mvndst_parameters.abseps,  # The absolute error allowed
                  )
             return out[1]  # Index 1 corresponds to the actual value. 0 has the error, and 2 is a flag denoting whether releps was reached
 
@@ -335,6 +377,8 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
                     sum_term += cov_k[i, k] * singlevar_norm_pdf(m_k[i], cov_k[i, i], b_k[i]) * multivar_norm_cdf(c_k, cov_k_no_i)
 
             expected_improvement += (prob_term + sum_term)
+        if not numpy.isfinite(expected_improvement):
+            raise RuntimeError("Expected improvement not finite. Variance matrix may be singular.")
         return numpy.fmax(0.0, expected_improvement)
 
     def _compute_expected_improvement_1d_analytic(self, mu_star, var_star):

@@ -353,7 +353,7 @@ class GradientDescentOptimizer(OptimizerInterface):
 
     """
 
-    def __init__(self, domain, optimizable, optimizer_parameters):
+    def __init__(self, domain, optimizable, optimizer_parameters, num_random_samples=None):
         """Construct a GradientDescentOptimizer.
 
         :param domain: the domain that this optimizer operates over
@@ -578,7 +578,7 @@ class LBFGSBOptimizer(OptimizerInterface):
 
     """
 
-    def __init__(self, domain, optimizable, optimization_parameters):
+    def __init__(self, domain, optimizable, optimization_parameters, num_random_samples=None):
         """Construct a LBFGSBOptimizer.
 
         :param domain: the domain that this optimizer operates over
@@ -645,5 +645,4 @@ class LBFGSBOptimizer(OptimizerInterface):
             shaped_point = unshaped_point
         else:
             shaped_point = unshaped_point.reshape(self._num_points, self.domain.dim)
-
         self.objective_function.current_point = shaped_point

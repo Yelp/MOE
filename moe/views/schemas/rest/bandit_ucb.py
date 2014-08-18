@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
-"""Request/response schemas for ``bandit_epsilon`` endpoints."""
+"""Request/response schemas for ``bandit_ucb`` endpoints."""
 import colander
 
-from moe.bandit.constant import DEFAULT_EPSILON_SUBTYPE, EPSILON_SUBTYPES
+from moe.bandit.constant import DEFAULT_UCB_SUBTYPE, UCB_SUBTYPES
 from moe.views.schemas import base_schemas
 from moe.views.schemas.bandit_pretty_view import BanditHistoricalInfo
 
 
-class BanditEpsilonRequest(base_schemas.StrictMappingSchema):
+class BanditUCBRequest(base_schemas.StrictMappingSchema):
 
-    """A :mod:`moe.views.rest.bandit_epsilon` request colander schema.
+    """A :mod:`moe.views.rest.bandit_ucb` request colander schema.
 
     **Required fields**
 
@@ -17,8 +17,7 @@ class BanditEpsilonRequest(base_schemas.StrictMappingSchema):
 
     **Optional fields**
 
-    :ivar subtype: (*str*) subtype of the epsilon bandit algorithm (default: greedy)
-    :ivar hyperparameter_info: (:class:`~moe.views.schemas.bandit_pretty_view.BanditEpsilonFirstHyperparameterInfo` or :class:`~moe.views.schemas.bandit_pretty_view.BanditEpsilonGreedyHyperparameterInfo`) dict of hyperparameter information
+    :ivar subtype: (*str*) subtype of the UCB bandit algorithm (default: 1)
 
     **Example Minimal Request**
 
@@ -43,16 +42,13 @@ class BanditEpsilonRequest(base_schemas.StrictMappingSchema):
         Content-Type: text/javascript
 
         {
-            "subtype": "greedy",
+            "subtype": "UCB1-tuned",
             "historical_info": {
                 "arms_sampled": {
-                    "arm1": {"win": 20, "loss": 5, "total": 25},
-                    "arm2": {"win": 20, "loss": 10, "total": 30},
+                    "arm1": {"win": 20, "loss": 5, "total": 25, "variance": 0.1},
+                    "arm2": {"win": 20, "loss": 10, "total": 30, "variance": 0.2},
                     "arm3": {"win": 0, "loss": 0, "total": 0},
                     },
-                },
-            "hyperparameter_info": {
-                "epsilon": 0.05,
                 },
         }
 
@@ -60,11 +56,7 @@ class BanditEpsilonRequest(base_schemas.StrictMappingSchema):
 
     subtype = colander.SchemaNode(
             colander.String(),
-            validator=colander.OneOf(EPSILON_SUBTYPES),
-            missing=DEFAULT_EPSILON_SUBTYPE,
+            validator=colander.OneOf(UCB_SUBTYPES),
+            missing=DEFAULT_UCB_SUBTYPE,
             )
     historical_info = BanditHistoricalInfo()
-    hyperparameter_info = colander.SchemaNode(
-            colander.Mapping(unknown='preserve'),
-            missing={},
-            )

@@ -30,7 +30,7 @@ project(optimal_learning)
 
 #### Build type
 # Why wouldn't you always want the -g flag?
-if(NOT CMAKE_BUILD_TYPE)
+if (NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE RelWithDebInfo)
 endif()
 
@@ -38,16 +38,36 @@ endif()
 # Sometimes cmake has difficulty finding Python (e.g., multiple installations, especially on OS X with
 # system vs macport/homebrew versions); explicitly specify the location of Python when that happens.
 # See documentation in FindPythonLibs.cmake for more information.
-if (EXISTS ${MOE_PYTHON_INCLUDE_DIR})
-  set(PYTHON_INCLUDE_DIR
-    ${MOE_PYTHON_INCLUDE_DIR}
-    CACHE PATH "Path to where Python.h is found."
-    )
+
+# User specifies what directory to look for Python headers in
+if (DEFINED MOE_PYTHON_INCLUDE_DIR)
+  if (IS_DIRECTORY ${MOE_PYTHON_INCLUDE_DIR})
+    set(PYTHON_INCLUDE_DIR
+      ${MOE_PYTHON_INCLUDE_DIR}
+      CACHE PATH "*Full* path to where Python.h is found."
+      )
+  else()
+    message(FATAL_ERROR "MOE_PYTHON_INCLUDE_DIR is not a valid directory: " ${MOE_PYTHON_INCLUDE_DIR})
+  endif()
 endif()
-if (EXISTS ${MOE_PYTHON_LIBRARY})
-  set(PYTHON_LIBRARY
-    ${MOE_PYTHON_LIBRARY}
-    CACHE FILEPATH "Path to Python shared object (e.g., libpython2.7.so or .dylib)."
+
+# User specifies the location of the Python dynamic library
+if (DEFINED MOE_PYTHON_LIBRARY)
+  if (EXISTS ${MOE_PYTHON_LIBRARY} AND NOT IS_DIRECTORY ${MOE_PYTHON_LIBRARY})
+    set(PYTHON_LIBRARY
+      ${MOE_PYTHON_LIBRARY}
+      CACHE FILEPATH "*Full* path to Python shared object (e.g., libpython2.7.so or .dylib)."
+      )
+  else()
+    message(FATAL_ERROR "MOE_PYTHON_LIBRARY is not a valid file: " ${MOE_PYTHON_LIBRARY})
+  endif()
+endif()
+
+# User specifies priority Python versions to look for (in decreasing order of priority)
+if (DEFINED MOE_PYTHON_ADDITIONAL_VERSIONS)
+  set(Python_ADDITIONAL_VERSIONS
+    ${MOE_PYTHON_ADDITIONAL_VERSIONS}
+    CACHE STRING "List (semicolon-separated, NO SPACES) of Python version(s), ranked by priority; e.g., 2.7;2.6;3.2"
     )
 endif()
 
@@ -274,30 +294,47 @@ set(EXTRA_COMPILE_DEFINITIONS_GPU OL_GPU_ENABLED)
 set(GPU_CC ${CMAKE_C_COMPILER})
 set(GPU_CXX ${CMAKE_CXX_COMPILER})
 
-if (EXISTS ${MOE_GPU_CC})
+if (DEFINED MOE_GPU_CC)
+  if (EXISTS ${MOE_GPU_CC} AND NOT IS_DIRECTORY ${MOE_GPU_CC})
     set(GPU_CC ${MOE_GPU_CC})
+  else()
+    message(FATAL_ERROR "MOE_GPU_CC is not a valid file: " ${MOE_GPU_CC})
+  endif()
 endif()
-if (EXISTS ${MOE_GPU_CXX})
+
+if (DEFINED MOE_GPU_CXX)
+  if (EXISTS ${MOE_GPU_CXX} AND NOT IS_DIRECTORY ${MOE_GPU_CXX})
     set(GPU_CXX ${MOE_GPU_CXX})
+  else()
+    message(FATAL_ERROR "MOE_GPU_CXX is not a valid file: " ${MOE_GPU_CXX})
+  endif()
 endif()
 
 # If MOE_USE_GPU is turned on via MOE_CMAKE_OPTS, cmake will try to find CUDA
 # package and call gpu cmake to build CUDA code
 if (${MOE_USE_GPU} MATCHES "1")
-    if (NOT (EXISTS ${MOE_CUDA_SDK_INCLUDE_DIRS}))
-        message( FATAL_ERROR "MOE_CUDA_SDK_INCLUDE_DIRS not set!" )
+    if (DEFINED MOE_CUDA_SDK_INCLUDE_DIRS)
+        if (NOT IS_DIRECTORY ${MOE_CUDA_SDK_INCLUDE_DIRS})
+            message(FATAL_ERROR "MOE_CUDA_SDK_INCLUDE_DIRS is not a valid directory: " ${MOE_CUDA_SDK_INCLUDE_DIRS})
+        endif()
+    else()
+        message(FATAL_ERROR "MOE_CUDA_SDK_INCLUDE_DIRS not set!")
     endif()
+
     find_package(CUDA 5.0 REQUIRED)
     include_directories(${CUDA_INCLUDE_DIRS})
+
     set(EXTRA_COMPILE_DEFINITIONS ${EXTRA_COMPILE_DEFINITIONS}
        ${EXTRA_COMPILE_DEFINITIONS_GPU})
     set(MOE_GPU_CMAKE_OPTS
         "-D MOE_CUDA_SDK_INCLUDE_DIRS=${MOE_CUDA_SDK_INCLUDE_DIRS}")
+
     add_custom_target(
         GPU_FOLDER
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
         COMMAND mkdir -p ${CMAKE_BINARY_DIR}/gpu/
         )
+
     add_custom_target(
         GPU_LIB
         DEPENDS GPU_FOLDER
@@ -307,7 +344,6 @@ if (${MOE_USE_GPU} MATCHES "1")
         COMMAND make
         )
 endif()
-
 
 #### Object libraries
 # See configure_object_library() function comments for more details.

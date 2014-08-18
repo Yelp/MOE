@@ -58,7 +58,9 @@
   Now let X = training data; these are our experimental independent variables
   let f = training data observed values; this is our (SCALAR) dependent-variable
   So for ``(X_i, f_i)`` pairs, we say:
+
   ``f ~ GP(0, cov(X,X)) /equiv N(0, cov(X,X))``
+
   the training data, f, is distributed like a (multi-variate) Gaussian with mean 0 and ``variance = cov(X,X)``.
   Drawing from this GP requires conditioning on the result satisfying the training data.  That is, the realized
   function must pass through all points ``(X,f)``.  Between these, "essentially any" behavior is possible, although certain
@@ -72,13 +74,17 @@
   In code, the covariance function is specified through the CovarianceInterface class.
 
   In a noise-free setting (signal noise modifies ``K`` to become ``K + \sigma^2 * Id``, ``Id`` being identity), the joint
-  distribution of training inputs, ``f``, and test outputs, ``fs``, is:
-  ``[ f  ]  ~ N( 0, [ K(X,X)   K(X,Xs)  ]  = [ K     Ks  ]         (Equation 1, Rasmussen & Williams 2.18)``
-  ``[ fs ]          [ K(Xs,X)  K(Xs,Xs) ]    [ Ks^T  Kss ]``
+  distribution of training inputs, ``f``, and test outputs, ``fs``, is::
+
+    [ f  ]  ~ N( 0, [ K(X,X)   K(X,Xs)  ]  = [ K     Ks  ]         (Equation 1, Rasmussen & Williams 2.18)
+    [ fs ]          [ K(Xs,X)  K(Xs,Xs) ]    [ Ks^T  Kss ]
+
   where the test outputs are drawn from the prior.
-  ``K(X,X)`` and ``K(Xs,Xs)`` are computed in BuildCovarianceMatrix()
-  ``K(X,Xs)`` is computed by BuildMixCovarianceMatrix(); and ``K(Xs,X)`` is its transpose.
-  ``K + \sigma^2`` is computed in BuildCovarianceMatrixWithNoiseVariance(); almost all practical uses of GPs and EI will
+
+  | ``K(X,X)`` and ``K(Xs,Xs)`` are computed in BuildCovarianceMatrix()
+  | ``K(X,Xs)`` is computed by BuildMixCovarianceMatrix(); and ``K(Xs,X)`` is its transpose.
+  | ``K + \sigma^2`` is computed in BuildCovarianceMatrixWithNoiseVariance(); almost all practical uses of GPs and EI will
+
   be over data with nonzero noise variance.  However this is immaterial to the rest of the discussion here.
 
   **3b. SAMPLING FROM GPs**
@@ -87,14 +93,19 @@
   realizations that do not satisfy the observations (i.e., pass through all ``(X,f)`` pairs).  This is expensive.
 
   Instead, we can use math to compute the posterior by conditioning it on the prior:
+
   ``fs | Xs,X,f ~ N( mus, Vars)``
+
   where ``mus = K(Xs,X) * K(X,X)^-1 * f = Ks^T * K^-1 * f,  (Equation 2, Rasmussen & Williams 2.19)``
   which is computed in GaussianProcess::ComputeMeanOfPoints.
+
   and  ``Vars = K(Xs,Xs) - K(Xs,X) * K(X,X)^-1 * K(X,Xs) = Kss - Ks^T * K^-1 * Ks, (Equation 3, Rasumussen & Williams 2.19)``
   which is implemented in GaussianProcess::ComputeVarianceOfPoints (and provably SPD).
 
   Now we can draw from this multi-variate Gaussian by:
+
   ``y = mus + L * w    (Equation 4)``
+
   where ``L * L^T = Vars`` (cholesky-factorization) and w is a vector of samples from ``N(0,1)``
   Note that if our GP has 10 dimensions (variables), then y contains 10 sample values.
 
@@ -102,9 +113,10 @@
 
   .. Note:: these comments are copied in Python: interfaces/expected_improvement_interface.py
 
-  Then the improvement for this single sample is:
-  ``I = { best_known - min(y)   if (best_known - min(y) > 0)      (Equation 5)``
-  ``    {          0               else``
+  Then the improvement for this single sample is::
+
+    I = { best_known - min(y)   if (best_known - min(y) > 0)      (Equation 5)
+        {          0               else
 
   And the expected improvement, EI, can be computed by averaging repeated computations of I; i.e., monte-carlo integration.
   This is done in ExpectedImprovementEvaluator::ComputeExpectedImprovement(); we can also compute the gradient. This
@@ -271,9 +283,10 @@ namespace optimal_learning {
 namespace {  // utilities for A_{k,j,i}*x_j and building covariance matrices
 
 /*!\rst
-  Helper function to perform the following math (in index notation):
-  ``y_{k,i} = A_{k,j,i} * x_j``
-  ``0 <= i < dim_one, 0 <= j < dim_two, 0 <= k < dim_three``
+  Helper function to perform the following math (in index notation)::
+
+    y_{k,i} = A_{k,j,i} * x_j
+    0 <= i < dim_one, 0 <= j < dim_two, 0 <= k < dim_three
 
   This is nothing more than dim_one matrix-vector products ``A_{k,j} * x_j``, and could be implemented using a
   single GeneralMatrixMatrixMultiply if A were stored (full) block diagonal (but this wastes a lot of space).
@@ -302,7 +315,9 @@ OL_NONNULL_POINTERS void SpecialTensorVectorMultiply(double const * restrict ten
   .. NOTE:: These comments have been copied into build_covariance_matrix in python_version/python_utils.py.
 
   Compute the covariance matrix, ``K``, of a list of points, ``X_i``.  Matrix is computed as:
+
   ``A_{i,j} = covariance(X_i, X_j)``.
+
   Result is SPD assuming covariance operator is SPD and points are unique.
 
   Generally, this is called from other functions with "points_sampled" as the input and not any
@@ -335,6 +350,7 @@ OL_NONNULL_POINTERS void BuildCovarianceMatrix(const CovarianceInterface& covari
   Same as BuildCovarianceMatrix, except noise variance ``(\sigma_n^2)`` is added to the main diagonal.
 
   Only additional inputs listed; see BuildCovarianceMatrix() for other arguments.
+
   \param
     :noise_variance[num_sampled]: i-th entry is amt of noise variance to add to i-th diagonal entry; i.e., noise measuring i-th point
 \endrst*/
@@ -358,7 +374,9 @@ OL_NONNULL_POINTERS void BuildCovarianceMatrixWithNoiseVariance(const Covariance
 
   Compute the "mix" covariance matrix, ``Ks``, of ``X`` and ``Xs`` (``points_sampled`` and ``points_to_sample``, respectively).
   Matrix is computed as:
+
   ``A_{i,j} = covariance(X_i, Xs_j).``
+
   Result is not guaranteed to be SPD and need not even be square.
 
   Generally, this is called from other functions with "points_sampled" and "points_to_sample" as the
@@ -459,10 +477,13 @@ GaussianProcess::GaussianProcess(const GaussianProcess& source)
 
 /*!\rst
   Sets up precomputed quantities needed for mean, variance, and gradients thereof.  These quantities are:
+
   ``Ks := Ks_{k,i} = cov(X_k, Xs_i)`` (used by mean, variance)
+
   Then if we need gradients:
-  ``K^-1 * Ks := solution X of K_{k,l} * X_{l,i} = Ks{k,i}`` (used by variance, grad variance)
-  ``gradient of Ks := C_{d,k,i} = \pderiv{Ks_{k,i}}{Xs_{d,i}}`` (used by grad mean, grad variance)
+
+  | ``K^-1 * Ks := solution X of K_{k,l} * X_{l,i} = Ks{k,i}`` (used by variance, grad variance)
+  | ``gradient of Ks := C_{d,k,i} = \pderiv{Ks_{k,i}}{Xs_{d,i}}`` (used by grad mean, grad variance)
 \endrst*/
 void GaussianProcess::FillPointsToSampleState(StateType * points_to_sample_state) const {
   BuildMixCovarianceMatrix(points_to_sample_state->points_to_sample.data(),
@@ -489,7 +510,9 @@ void GaussianProcess::FillPointsToSampleState(StateType * points_to_sample_state
 
 /*!\rst
   Calculates the mean (from the GPP) of a set of points:
+
   ``mus = Ks^T * K^-1 * y``
+
   See Rasmussen and Willians page 19 alg 2.1
 \endrst*/
 void GaussianProcess::ComputeMeanOfPoints(const StateType& points_to_sample_state,
@@ -502,7 +525,9 @@ void GaussianProcess::ComputeMeanOfPoints(const StateType& points_to_sample_stat
   Gradient of the mean of a GP.  Note that the output storage skips known zeros (see declaration docs for details).
   See Scott Clark's PhD thesis for more spelled out mathematical details, but this is a reasonably straightforward
   differentiation of:
+
   ``mus = Ks^T * K^-1 * y``
+
   wrt ``Xs`` (so only Ks contributes derivative terms)
 \endrst*/
 void GaussianProcess::ComputeGradMeanOfPoints(const StateType& points_to_sample_state,
@@ -514,32 +539,47 @@ void GaussianProcess::ComputeGradMeanOfPoints(const StateType& points_to_sample_
 /*!\rst
   Mathematically, we are computing Vars (Var_star), the GP variance.  Vars is defined at the top of this file (Equation 3)
   and in Rasmussen & Williams, Equation 2.19:
-  ``L * L^T = K``
-  ``V = L^-1 * Ks``
-  ``Vars = Kss - (V^T * V)``
+
+  | ``L * L^T = K``
+  | ``V = L^-1 * Ks``
+  | ``Vars = Kss - (V^T * V)``
+
   This quantity is:
+
   ``Kss``: the covariance between test points based on the prior distribution
+
   minus
+
   ``V^T * V``: the information observations give us about the objective function
 
   Notice that Vars is clearly symmetric.  ``Kss`` is SPD. And
   ``V^T * V = (V^T * V)^T`` is symmetric (and is in fact SPD).
 
   ``V^T * V = Ks^T * K^-1 * K_s`` is SPD because:
+
   ``X^T * A * X`` is SPD when A is SPD AND ``X`` has full rank (``X`` need not be square)
-  Ks has full rank as long as ``K`` & ``Kss`` are SPD; ``K^-1`` is SPD because ``K`` is SPD.
+
+  ``Ks`` has full rank as long as ``K`` & ``Kss`` are SPD; ``K^-1`` is SPD because ``K`` is SPD.
 
   It turns out that ``Vars`` is SPD.
+
   In Equation 1 (Rasmussen & Williams 2.18), it is clear that the combined covariance matrix
-  is SPD (as long as no duplicate points and the covariance function is valid).  A matrix of the form
-  ``[ A   B ]``
-  ``[ B^T C ]``
+  is SPD (as long as no duplicate points and the covariance function is valid).  A matrix of the form::
+
+    [ A   B ]
+    [ B^T C ]
+
   is SPD if and only if ``A`` is SPD AND ``(C - B^T * A^-1 * B)`` is SPD.  Here, ``A = K, B = Ks, C = Kss``.
-  This can be shown readily:
-  ``[ A   B ] = [  I            0 ] * [  A    0                ] * [ I   A^-1 * B ]``
-  ``[ B^T C ]   [ (A^-1 * B)^T  I ] * [  0 (C - B^T * A^-1 * B)]   [ 0       I    ]``
+  This (aka Schur Complement) can be shown readily::
+
+    [ A   B ] = [  I            0 ] * [  A    0                ] * [ I   A^-1 * B ]
+    [ B^T C ]   [ (A^-1 * B)^T  I ] * [  0 (C - B^T * A^-1 * B)]   [ 0       I    ]
+
   This factorization is valid because ``A`` is SPD (and thus invertible).  Then by the ``X^T * A * X`` rule for SPD-ness,
   we know the block-diagonal matrix in the center is SPD.  Hence the SPD-ness of ``V^T * V`` follows readily.
+
+  For more information, see:
+  http://en.wikipedia.org/wiki/Schur_complement
 \endrst*/
 void GaussianProcess::ComputeVarianceOfPoints(StateType * points_to_sample_state,
                                               double * restrict var_star) const noexcept {
@@ -574,6 +614,7 @@ void GaussianProcess::ComputeVarianceOfPoints(StateType * points_to_sample_state
 
   Similar to ComputeGradCholeskyVarianceOfPoints() below, except this function does not account for the cholesky decomposition.  That is,
   it produces derivatives wrt ``Xs_{d,p}`` (``points_to_sample``) of:
+
   ``Vars = Kss - (V^T * V) = Kss - Ks^T * K^-1 * Ks`` (see ComputeVarianceOfPoints)
 
   .. NOTE:: normally ``Xs_p`` would be the ``p``-th point of Xs (all dimensions); here ``Xs_{d,p}`` more explicitly
@@ -582,6 +623,7 @@ void GaussianProcess::ComputeVarianceOfPoints(StateType * points_to_sample_state
   This function only returns the derivative wrt a single choice of ``p``, as specified by ``diff_index``.
 
   Expanded index notation:
+
   ``Vars_{i,j} = Kss_{i,j} - Ks^T_{i,l} * K^-1_{l,k} * Ks_{k,j}``
 
   Recall ``Ks_{k,i} = cov(X_k, Xs_i) = cov(Xs_i, Xs_k)`` where ``Xs`` is ``points_to_sample`` and ``X`` is ``points_sampled``.
@@ -592,30 +634,39 @@ void GaussianProcess::ComputeVarianceOfPoints(StateType * points_to_sample_state
   1. ``i,j`` range over ``num_to_sample``
   2. ``l,k`` are the only non-free indices; they range over ``num_sampled``
   3. ``d,p`` describe the SPECIFIC point being differentiated against in ``Xs`` (``points_to_sample``): ``d`` over dimension, ``p``\* over ``num_to_sample``
+
   \*NOTE: ``p`` is *fixed*! Unlike all other indices, ``p`` refers to a *SPECIFIC* point in the range ``[0, ..., num_to_sample-1]``.
           Thus, ``\pderiv{Ks_{k,i}}{Xs_{d,i}}`` is a 3-tensor (``A_{d,k,i}``) (repeated ``i`` is not summation since they denote
           components of a derivative) while ``\pderiv{Ks_{i,l}}{Xs_{d,p}}`` is a 2-tensor (``A_{d,l}``) b/c only
           ``\pderiv{Ks_{i=p,l}}{Xs_{d,p}}`` is nonzero, and ``{d,l}`` are the only remaining free indices.
 
   Then differentiating against ``Xs_{d,p}`` (recall that this is a specific point b/c p is fixed):
-  ``\pderiv{Vars_{i,j}}{Xs_{d,p}} = \pderiv{K_ss{i,j}}{Xs_{d,p}} -``
-  ``(\pderiv{Ks_{i,l}}{Xs_{d,p}} * K^-1_{l,k} * Ks_{k,j}   +  K_s{i,l} * K^-1_{l,k} * \pderiv{Ks_{k,j}}{Xs_{d,p}})``
+
+  | ``\pderiv{Vars_{i,j}}{Xs_{d,p}} = \pderiv{K_ss{i,j}}{Xs_{d,p}} -``
+  | ``(\pderiv{Ks_{i,l}}{Xs_{d,p}} * K^-1_{l,k} * Ks_{k,j}   +  K_s{i,l} * K^-1_{l,k} * \pderiv{Ks_{k,j}}{Xs_{d,p}})``
+
   Many of these terms are analytically known to be 0: ``\pderiv{Ks_{i,l}}{Xs_{d,p}} = 0`` when ``p != i`` (see NOTE above).
   A similar statement holds for the other gradient term.
 
   Observe that the second term in the parens, ``Ks_{i,l} * K^-1_{l,k} * \pderiv{Ks_{k,j}}{Xs_{d,p}}``, can be reordered
   to "look" like the first term.  We use three symmetries: ``K^-1{l,k} = K^-1{k,l}``, ``Ks_{i,l} = Ks_{l,i}``, and
+
   ``\pderiv{Ks_{k,j}}{Xs_{d,p}} = \pderiv{Ks_{j,k}}{Xs_{d,p}}``
+
   Then we can write:
+
   ``K_s{i,l} * K^-1_{l,k} * \pderiv{Ks_{k,j}}{Xs_{d,p}} = \pderiv{Ks_{j,k}}{Xs_{d,p}} * K^-1_{k,l} * K_s{l,i}``
+
   Now left and right terms have the same index ordering (i,j match; k,l are not free and thus immaterial)
 
-  The final result, accounting for analytic zeros is given here for convenience:
-  ``DVars_{d,i,j} \equiv \pderiv{Vars_{i,j}}{Xs_{d,p}} =``
-  ``  { \pderiv{K_ss{i,j}}{Xs_{d,p}} - 2*\pderiv{Ks_{i,l}}{Xs_{d,p}} * K^-1_{l,k} * Ks_{k,j}   :  WHEN p == i == j``
-  ``  { \pderiv{K_ss{i,j}}{Xs_{d,p}} -   \pderiv{Ks_{i,l}}{Xs_{d,p}} * K^-1_{l,k} * Ks_{k,j}   :  WHEN p == i != j``
-  ``  { \pderiv{K_ss{i,j}}{Xs_{d,p}} -   \pderiv{Ks_{j,k}}{Xs_{d,p}} * K^-1_{k,l} * K_s{l,i}   :  WHEN p == j != i``
-  ``  {                                    0                                                   :  otherwise``
+  The final result, accounting for analytic zeros is given here for convenience::
+
+    DVars_{d,i,j} \equiv \pderiv{Vars_{i,j}}{Xs_{d,p}} =``
+      { \pderiv{K_ss{i,j}}{Xs_{d,p}} - 2*\pderiv{Ks_{i,l}}{Xs_{d,p}} * K^-1_{l,k} * Ks_{k,j}   :  WHEN p == i == j
+      { \pderiv{K_ss{i,j}}{Xs_{d,p}} -   \pderiv{Ks_{i,l}}{Xs_{d,p}} * K^-1_{l,k} * Ks_{k,j}   :  WHEN p == i != j
+      { \pderiv{K_ss{i,j}}{Xs_{d,p}} -   \pderiv{Ks_{j,k}}{Xs_{d,p}} * K^-1_{k,l} * K_s{l,i}   :  WHEN p == j != i
+      {                                    0                                                   :  otherwise
+
   The first item has a factor of 2 b/c it gets a contribution from both parts of the sum since ``p == i`` and ``p == j``.
   The ordering ``DVars_{d,i,j}`` is significant: this is the ordering (d changes the fastest) in storage.
 
@@ -631,6 +682,7 @@ void GaussianProcess::ComputeVarianceOfPoints(StateType * points_to_sample_state
 
   Similarly, the next thing to notice is that if we ignore the case ``p == i == j``, then we see that the expressions for
   ``p == i`` and ``p == j`` are actually identical (e.g., take the ``p == j`` case and exchange ``j = i`` and ``k = l``).
+
   So think of ``DVars`` as a block matrix; each block has dimension entries, and the blocks are indexed over
   ``i`` (rows), ``j`` (cols).  Then we see that the code is block-symmetric: ``DVars_{d,i,j} = Dvars_{d,j,i}``.
   So we can compute it by filling in the ``p``-th block column and then copy that data into the ``p``-th block row.
@@ -639,6 +691,7 @@ void GaussianProcess::ComputeVarianceOfPoints(StateType * points_to_sample_state
   ``C_{l,j} = K^-1_{l,k} * Ks_{k,j}`` (and ``K^-1_{k,l} * Ks_{l,i}``, which is just a change of index labels) is
   a matrix product.  We compute this using back-substitutions to avoid explicitly forming ``K^-1``.  ``C_{l,j}``
   is ``num_sampled`` X ``num_to_sample``.
+
   Then ``D_{d,i=p,j} = \pderiv{Ks_{i=p,l}}{Xs_{d,p}} * C_{l,j}`` is another matrix product (result size ``dim * num_to_sample``)
   (``i = p`` indicates that index ``i`` collapses out since this deriv term is zero if ``p != i``).
   Note that we store ``\pderiv{Ks_{i=p,l}}{Xs_{d,p}} = \pderiv{Ks_{l,i=p}}{Xs_{d,p}}`` as ``A_{d,l,i}``
@@ -717,8 +770,10 @@ void GaussianProcess::ComputeGradVarianceOfPoints(StateType * points_to_sample_s
 
 /*!\rst
   Differentiates the cholesky factorization of the GP variance.
-  ``Vars = Kss - (V^T * V)``  (see ComputeVarianceOfPoints)
-  ``C * C^T = Vars``
+
+  | ``Vars = Kss - (V^T * V)``  (see ComputeVarianceOfPoints)
+  | ``C * C^T = Vars``
+
   This function differentiates ``C`` wrt the ``p``-th point of ``points_to_sample``; ``p`` specfied in ``diff_index``
 
   Just as users of a lower triangular matrix ``L[i][j]`` should not access the upper triangle (``j > i``), users of
@@ -940,13 +995,17 @@ ExpectedImprovementEvaluator::ExpectedImprovementEvaluator(const GaussianProcess
 /*!\rst
   Let ``Ls * Ls^T = Vars`` and ``w`` = vector of IID normal(0,1) variables
   Then:
+
   ``y = mus + Ls * w``  (Equation 4, from file docs)
+
   simulates drawing from our GP with mean mus and variance Vars.
 
   Then as given in the file docs, we compute the improvement:
-  Then the improvement for this single sample is:
-  ``I = { best_known - min(y)   if (best_known - min(y) > 0)      (Equation 5 from file docs)``
-  ``    {          0               else``
+  Then the improvement for this single sample is::
+
+    I = { best_known - min(y)   if (best_known - min(y) > 0)      (Equation 5 from file docs)
+        {          0               else
+
   This is implemented as ``max_{y} (best_known - y)``.  Notice that improvement takes the value 0 if it would be negative.
 
   Since we cannot compute ``min(y)`` directly, we do so via monte-carlo (MC) integration.  That is, we draw from the GP
@@ -993,7 +1052,7 @@ double ExpectedImprovementEvaluator::ComputeExpectedImprovement(StateType * ei_s
 
 /*!\rst
   Computes gradient of EI (see ExpectedImprovementEvaluator::ComputeGradExpectedImprovement) wrt points_to_sample (stored in
-  union_of_points[0:num_to_sample]).
+  ``union_of_points[0:num_to_sample]``).
 
   Mechanism is similar to the computation of EI, where points' contributions to the gradient are thrown out of their
   corresponding ``improvement <= 0.0``.

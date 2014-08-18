@@ -1,4 +1,6 @@
-![MOE logo](https://github.com/yelp/MOE/raw/master/moe/static/img/MOE_full_logo.png)
+<p align="center">
+    <img src="https://github.com/yelp/MOE/raw/master/moe/static/img/MOE_full_logo.png" alt="MOE Logo">
+</p>
 
 [![Build Status](https://travis-ci.org/Yelp/MOE.svg?branch=master)](https://travis-ci.org/Yelp/MOE)
 

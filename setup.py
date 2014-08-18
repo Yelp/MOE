@@ -6,17 +6,18 @@ import shutil
 import subprocess
 from collections import namedtuple
 
+from moe import __version__
+
 from setuptools import setup, find_packages
 from setuptools.command.install import install
+
 
 here = os.path.abspath(os.path.dirname(__file__))
 README = open(os.path.join(here, 'README.md')).read()
 
-# Following the versioning system at http://semver.org/
-MAJOR = 0
-MINOR = 1
-MICRO = 0
-VERSION = "{0:d}.{1:d}.{2:d}".format(MAJOR, MINOR, MICRO)
+
+VERSION = __version__
+
 
 CLASSIFIERS = """
         Development Status :: 4 - Beta
@@ -30,6 +31,7 @@ CLASSIFIERS = """
         Operating System :: MacOS
 
         """
+
 
 # If you change something here, change it in requirements.txt
 requires = [
@@ -47,6 +49,7 @@ requires = [
     'sphinxcontrib-httpdomain',
     'sphinx_rtd_theme',
     ]
+
 
 MoeExecutable = namedtuple('MoeExecutable', ['env_var', 'exe_name'])
 
@@ -86,7 +89,7 @@ class InstallCppComponents(install):
         env = os.environ.copy()
 
         # Sometimes we want to manually build the C++ (like in Docker)
-        if os.environ.get('MOE_NO_BUILD_CPP', 'False') == 'True':
+        if env.get('MOE_NO_BUILD_CPP', 'False') == 'True':
             return
 
         package_dir = os.path.join(self.install_lib, 'moe')
@@ -99,7 +102,7 @@ class InstallCppComponents(install):
                     )
                 )
 
-        cmake_options = os.environ.get('MOE_CMAKE_OPTS', '')
+        cmake_options = env.get('MOE_CMAKE_OPTS', '')
         if cmake_options == '':
             print "MOE_CMAKE_OPTS not set. Passing no extra args to cmake."
         else:

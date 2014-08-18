@@ -262,14 +262,8 @@ void CudaEvaluateEIAtPointList(const GaussianProcess& gaussian_process, const Th
 }
 
 /*!\rst
-  This is a simple wrapper around ComputeOptimalPointsToSampleWithRandomStarts() and
-  ComputeOptimalPointsToSampleViaLatinHypercubeSearch(). That is, this method attempts multistart gradient descent
-  and falls back to latin hypercube search if gradient descent fails (or is not desired).
-
-  TODO(GH-77): Instead of random search, we may want to fall back on the methods in
-  ``gpp_heuristic_expected_improvement_optimization.hpp`` if gradient descent fails; esp for larger q
-  (even ``q \approx 4``), latin hypercube search does a pretty terrible job.
-  This is more for general q,p-EI as these two things are equivalent for 1,0-EI.
+  This function is same as ComputeOptimalPointsToSample in gpp_math.cpp, except that it is
+  specifically used for GPU functions. Refer to gpp_math.cpp for detailed documentation.
 \endrst*/
 template <typename DomainType>
 void CudaComputeOptimalPointsToSample(const GaussianProcess& gaussian_process,
@@ -350,4 +344,3 @@ template void CudaComputeOptimalPointsToSample(
 #endif  // OL_GPU_ENABLED
 
 }  // end namespace optimal_learning
-

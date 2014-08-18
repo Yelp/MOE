@@ -51,7 +51,7 @@ class ArmsSampled(colander.MappingSchema):
         super(ArmsSampled, self).__init__(colander.Mapping(unknown='preserve'))
 
     def validator(self, node, cstruct):
-        """Raise an exception if the node value (cstruct) is not a valid dictionary of (arm name, SingleArm) key-value pairs.
+        """Raise an exception if the node value (cstruct) is not a valid dictionary of (arm name, SingleArm) key-value pairs. Default value for variance of an arm is None.
 
         :param node: the node being validated (usually self)
         :type node: colander.SchemaNode subclass instance
@@ -60,9 +60,11 @@ class ArmsSampled(colander.MappingSchema):
 
         """
         for arm_name, sample_arm in cstruct.iteritems():
-            if set(sample_arm.keys()) != set(['win', 'loss', 'total']):
-                raise colander.Invalid(node, msg='Value = {:f} must be a valid SampleArm.'.format(cstruct))
-            SampleArm(sample_arm['win'], sample_arm['loss'], sample_arm['total'])
+            if not (set(sample_arm.keys()) == set(['win', 'loss', 'total']) or set(sample_arm.keys()) == set(['win', 'loss', 'total', 'variance'])):
+                raise colander.Invalid(node, msg='Value = {:s} must be a valid SampleArm.'.format(sample_arm))
+            if 'variance' not in sample_arm:
+                sample_arm['variance'] = None
+            SampleArm(sample_arm['win'], sample_arm['loss'], sample_arm['total'], sample_arm['variance'])
 
 
 class BanditEpsilonFirstHyperparameterInfo(base_schemas.StrictMappingSchema):
@@ -127,3 +129,36 @@ class BanditHistoricalInfo(base_schemas.StrictMappingSchema):
     """
 
     arms_sampled = ArmsSampled()
+
+
+class BanditResponse(base_schemas.StrictMappingSchema):
+
+    """A :mod:`moe.views.rest.bandit_epsilon` and :mod:`moe.views.rest.bandit_ucb` response colander schema.
+
+    **Output fields**
+
+    :ivar endpoint: (*str*) the endpoint that was called
+    :ivar arms: (:class:`moe.views.schemas.bandit_pretty_view.ArmAllocations`) a dictionary of (arm name, allocation) key-value pairs
+    :ivar winner: (*str*) winning arm name
+
+    **Example Response**
+
+    .. sourcecode:: http
+
+        Content-Type: text/javascript
+
+        {
+            "endpoint":"bandit_epsilon",
+            "arm_allocations": {
+                "arm1": 0.95,
+                "arm2": 0.025,
+                "arm3": 0.025,
+                }
+            "winner": "arm1",
+        }
+
+    """
+
+    endpoint = colander.SchemaNode(colander.String())
+    arm_allocations = ArmAllocations()
+    winner = colander.SchemaNode(colander.String())
