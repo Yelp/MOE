@@ -44,3 +44,4 @@ docs/cpp_tree.rst
 
 # built binaries
 build
+/Debug

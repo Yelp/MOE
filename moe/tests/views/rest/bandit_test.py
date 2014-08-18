@@ -17,11 +17,12 @@ class TestBanditViews(BanditTestCase, RestTestCase):
     """Integration test for the /bandit endpoints."""
 
     _endpoint = None  # Define in a subclass
+    _historical_infos = None  # Define in a subclass
     _moe_route = None  # Define in a subclass
     _view = None  # Define in a subclass
 
     def _build_json_payload(self, subtype, historical_info):
-        """Create a json_payload to POST to the /bandit/ucb endpoint with all needed info."""
+        """Create a json_payload to POST to the /bandit/* endpoint with all needed info."""
         dict_to_dump = {
             'subtype': subtype,
             'historical_info': historical_info.json_payload(),
@@ -30,9 +31,9 @@ class TestBanditViews(BanditTestCase, RestTestCase):
         return json.dumps(dict_to_dump)
 
     def _test_historical_info_passed_through(self):
-        """Test that the historical info get passed through to the endpoint."""
+        """Test that the historical infos get passed through to the endpoint."""
         for subtype in BANDIT_ENDPOINTS_TO_SUBTYPES[self._endpoint]:
-            for historical_info in self.historical_infos_to_test:
+            for historical_info in self._historical_infos:
                 # Test default test parameters get passed through
                 json_payload = json.loads(self._build_json_payload(subtype, historical_info))
 
@@ -46,7 +47,7 @@ class TestBanditViews(BanditTestCase, RestTestCase):
     def _test_interface_returns_as_expected(self):
         """Integration test for the bandit endpoints."""
         for subtype in BANDIT_ENDPOINTS_TO_SUBTYPES[self._endpoint]:
-            for historical_info in self.historical_infos_to_test:
+            for historical_info in self._historical_infos:
                 json_payload = self._build_json_payload(subtype, historical_info)
                 arm_names = set([arm_name for arm_name in historical_info.arms_sampled.iterkeys()])
                 resp = self.testapp.post(self._moe_route.endpoint, json_payload)

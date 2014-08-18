@@ -136,7 +136,9 @@ def _make_bandit_historical_info_from_params(params):
     arms_sampled = {}
     # Load up the info
     for arm_name, sampled_arm in params.get("historical_info").get("arms_sampled").iteritems():
-        arms_sampled[arm_name] = SampleArm(win=sampled_arm.get("win"), loss=sampled_arm.get("loss"), total=sampled_arm.get("total"))
+        loss = sampled_arm.get("loss") if "loss" in sampled_arm else 0
+        variance = sampled_arm.get("variance") if "variance" in sampled_arm else None
+        arms_sampled[arm_name] = SampleArm(win=sampled_arm.get("win"), loss=loss, total=sampled_arm.get("total"), variance=variance)
 
     bandit_historical_info = BanditHistoricalData(sample_arms=arms_sampled)
 
