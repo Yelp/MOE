@@ -36,7 +36,7 @@ BLA_SUBTYPES = [
 #: Used in :func:`moe.bandit.ucb1_tuned.UCB1Tuned.get_ucb_payoff`.
 #: 0.25 is the maximum value the variance of a Bernoulli random variable can possibly take.
 #: Because the variance formula is :math:`p(1-p)` where *p* is the probability of success
-#: and the maximum value is when *p*=0.5. :math:`p(1-p) = 0.5(1-0.5) = 0.25`.
+#: and the maximum value is when *p* = 0.5. :math:`p(1-p) = 0.5(1-0.5) = 0.25`.
 #: See http://en.wikipedia.org/wiki/Bernoulli_distribution for more details.
 MAX_BERNOULLI_RANDOM_VARIABLE_VARIANCE = 0.25
 

@@ -71,6 +71,7 @@ LIKELIHOOD_TYPES = [
 # EI Monte-Carlo computation defaults
 DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS = 10000
 
+
 # Minimal parameters for testing and demos (where speed is more important than accuracy)
 TEST_EXPECTED_IMPROVEMENT_MC_ITERATIONS = 50
 TEST_OPTIMIZER_MULTISTARTS = 3
@@ -88,11 +89,11 @@ TEST_GRADIENT_DESCENT_PARAMETERS = python_optimization.GradientDescentParameters
 
 TEST_LBFGSB_PARAMETERS = python_optimization.LBFGSBParameters(
         approx_grad=True,
-        max_func_evals=5,
+        max_func_evals=3,
         max_metric_correc=10,
-        factr=10000000000.0,
-        pgtol=1.0e-1,
-        epsilon=1.0e-3,
+        factr=100000000.0,
+        pgtol=1.0e1,
+        epsilon=1.0e-1,
         )
 
 DEMO_OPTIMIZER_MULTISTARTS = 50
@@ -228,14 +229,16 @@ _MODEL_SELECTION_GRADIENT_DESCENT_OPTIMIZER = DefaultOptimizerInfoTuple(
 
 EI_COMPUTE_TYPE_ANALYTIC = 'ei_analytic'
 EI_COMPUTE_TYPE_MONTE_CARLO = 'ei_monte_carlo'
+SINGLE_POINT_EI = 'single_point_ei'
+MULTI_POINT_EI = 'multi_point_ei'
 
 #: dict mapping from tuples describing endpoints and objective functions to optimizer type strings;
 #: i.e., one of :const:`moe.optimal_learning.python.constant.OPTIMIZER_TYPES`.
 ENDPOINT_TO_DEFAULT_OPTIMIZER_TYPE = {
     views_constant.GP_NEXT_POINTS_KRIGING_ROUTE_NAME: GRADIENT_DESCENT_OPTIMIZER,
     views_constant.GP_NEXT_POINTS_CONSTANT_LIAR_ROUTE_NAME: GRADIENT_DESCENT_OPTIMIZER,
-    (views_constant.GP_NEXT_POINTS_EPI_ROUTE_NAME, EI_COMPUTE_TYPE_ANALYTIC): L_BFGS_B_OPTIMIZER,
-    (views_constant.GP_NEXT_POINTS_EPI_ROUTE_NAME, EI_COMPUTE_TYPE_MONTE_CARLO): GRADIENT_DESCENT_OPTIMIZER,
+    (views_constant.GP_NEXT_POINTS_EPI_ROUTE_NAME, MULTI_POINT_EI): L_BFGS_B_OPTIMIZER,
+    (views_constant.GP_NEXT_POINTS_EPI_ROUTE_NAME, SINGLE_POINT_EI): GRADIENT_DESCENT_OPTIMIZER,
     (views_constant.GP_HYPER_OPT_ROUTE_NAME, LEAVE_ONE_OUT_LOG_LIKELIHOOD): GRADIENT_DESCENT_OPTIMIZER,
     (views_constant.GP_HYPER_OPT_ROUTE_NAME, LOG_MARGINAL_LIKELIHOOD): NEWTON_OPTIMIZER,
 }
