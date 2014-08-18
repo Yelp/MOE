@@ -72,7 +72,7 @@ class OptimalLearningCudaException : public OptimalLearningException {
 struct CudaExpectedImprovementState;
 
 /*!\rst
-  This class has the same functionality as ExpectedImprovementEvaluator (see gpp_math.hpp),
+  This class has the same functionality as ``ExpectedImprovementEvaluator`` (see ``gpp_math.hpp``),
   except that computations are performed on GPU.
 \endrst*/
 class CudaExpectedImprovementEvaluator final {
@@ -160,23 +160,15 @@ class CudaExpectedImprovementEvaluator final {
 };
 
 /*!\rst
-  This has the same functionality as ExpectedImprovementState (see gpp_math.hpp) except that it is for GPU computing
+  This has the same functionality as ``ExpectedImprovementState`` (see ``gpp_math.hpp``) except that it is for GPU computing
 \endrst*/
 struct CudaExpectedImprovementState final {
   using EvaluatorType = CudaExpectedImprovementEvaluator;
 
   /*!\rst
-    Constructs an CudaExpectedImprovementState object with a specified source of randomness for
-    the purpose of computing EI(and its gradient) over the specified set of points to sample.
-    This establishes properly sized/initialized temporaries for EI computation, including dependent
-    state from the associated Gaussian Process (which arrives as part of the ei_evaluator).
-
-    .. WARNING:: This object is invalidated if the associated ei_evaluator is mutated.  SetupState()
-    should be called to reset.
-
-    .. WARNING::
-         Using this object to compute gradients when ``configure_for_gradients`` := false results in
-         UNDEFINED BEHAVIOR.
+    This struct has same functionality as ``ExpectedImprovementState`` in ``gpp_math.hpp``,
+    except that it is specifically for GPU EI evaluator. Refer to ``gpp_math.hpp`` for detailed
+    documentation.
 
     \param
       :ei_evaluator: expected improvement evaluator object that specifies the parameters & GP for EI evaluation
@@ -333,8 +325,8 @@ struct CudaExpectedImprovementState final {
 };
 
 /*!\rst
-  This function is the same as ComputeOptimalPointsToSampleViaMultistartGradientDescent in gpp_math.hpp except that it is
-  specifically used for GPU EI evaluators. Refer to gpp_math.hpp for detailed documentation.
+  This function is the same as ``ComputeOptimalPointsToSampleViaMultistartGradientDescent`` in ``gpp_math.hpp`` except that it is
+  specifically used for GPU EI evaluators. Refer to ``gpp_math.hpp`` for detailed documentation.
 
   \param
     :gaussian_process: GaussianProcess object (holds ``points_sampled``, ``values``, ``noise_variance``, derived quantities)
@@ -382,23 +374,10 @@ OL_NONNULL_POINTERS void CudaComputeOptimalPointsToSampleViaMultistartGradientDe
   bool configure_for_gradients = true;
   if (num_to_sample == 1 && num_being_sampled == 0) {
     // special analytic case when we are not using (or not accounting for) multiple, simultaneous experiments
-    OnePotentialSampleExpectedImprovementEvaluator ei_evaluator(gaussian_process, best_so_far);
-
-    std::vector<typename OnePotentialSampleExpectedImprovementEvaluator::StateType> ei_state_vector;
-    SetupExpectedImprovementState(ei_evaluator, start_point_set, thread_schedule.max_num_threads,
-                                  configure_for_gradients, &ei_state_vector);
-
-    // init winner to be first point in set and 'force' its value to be 0.0; we cannot do worse than this
-    OptimizationIOContainer io_container(ei_state_vector[0].GetProblemSize(), 0.0, start_point_set);
-
-    GradientDescentOptimizer<OnePotentialSampleExpectedImprovementEvaluator, DomainType> gd_opt;
-    MultistartOptimizer<GradientDescentOptimizer<OnePotentialSampleExpectedImprovementEvaluator, DomainType> > multistart_optimizer;
-    multistart_optimizer.MultistartOptimize(gd_opt, ei_evaluator, optimizer_parameters,
-                                            domain, thread_schedule, start_point_set,
-                                            num_multistarts,
-                                            ei_state_vector.data(), nullptr, &io_container);
-    *found_flag = io_container.found_flag;
-    std::copy(io_container.best_point.begin(), io_container.best_point.end(), best_next_point);
+    NormalRNG dummy_rng;
+    ComputeOptimalPointsToSampleViaMultistartGradientDescent(gaussian_process, optimizer_parameters, domain, thread_schedule,
+                                                             start_point_set, points_being_sampled, num_multistarts, 1, 0,
+                                                             best_so_far, max_int_steps, &dummy_rng, found_flag, best_next_point);
   } else {
     CudaExpectedImprovementEvaluator ei_evaluator(gaussian_process, max_int_steps, best_so_far, which_gpu);
 
@@ -423,8 +402,8 @@ OL_NONNULL_POINTERS void CudaComputeOptimalPointsToSampleViaMultistartGradientDe
 }
 
 /*!\rst
-  This function is the same as ComputeOptimalPointsToSampleWithRandomStarts in gpp_math.hpp except that it is
-  specifically used for GPU EI evaluators. Refer to gpp_math.hpp for detailed documentation.
+  This function is the same as ``ComputeOptimalPointsToSampleWithRandomStarts`` in ``gpp_math.hpp`` except that it is
+  specifically used for GPU EI evaluators. Refer to ``gpp_math.hpp`` for detailed documentation.
 
   \param
     :gaussian_process: GaussianProcess object (holds ``points_sampled``, ``values``, ``noise_variance``, derived quantities)
@@ -479,8 +458,8 @@ void CudaComputeOptimalPointsToSampleWithRandomStarts(const GaussianProcess& gau
 }
 
 /*!\rst
-  This function is the same as EvaluateEIAtPointList in gpp_math.hpp except that it is
-  specifically used for GPU EI evaluators. Refer to gpp_math.hpp for detailed documentation.
+  This function is the same as ``EvaluateEIAtPointList`` in ``gpp_math.hpp`` except that it is
+  specifically used for GPU EI evaluators. Refer to ``gpp_math.hpp`` for detailed documentation.
 
   \param
     :gaussian_process: GaussianProcess object (holds ``points_sampled``, ``values``, ``noise_variance``, derived quantities)
@@ -516,8 +495,8 @@ void CudaEvaluateEIAtPointList(const GaussianProcess& gaussian_process,
                                double * restrict best_next_point);
 
 /*!\rst
-  This function is the same as ComputeOptimalPointsToSampleViaLatinHypercubeSearch in gpp_math.hpp except that it is
-  specifically used for GPU EI evaluators. Refer to gpp_math.hpp for detailed documentation.
+  This function is the same as ``ComputeOptimalPointsToSampleViaLatinHypercubeSearch`` in ``gpp_math.hpp`` except that it is
+  specifically used for GPU EI evaluators. Refer to ``gpp_math.hpp`` for detailed documentation.
 
   \param
     :gaussian_process: GaussianProcess object (holds ``points_sampled``, ``values``, ``noise_variance``, derived quantities)
@@ -560,8 +539,8 @@ void CudaComputeOptimalPointsToSampleViaLatinHypercubeSearch(const GaussianProce
 }
 
 /*!\rst
-  This function is the same as ComputeOptimalPointsToSample in gpp_math.hpp except that it is
-  specifically used for GPU EI evaluators. Refer to gpp_math.hpp for detailed documentation.
+  This function is the same as ``ComputeOptimalPointsToSample`` in ``gpp_math.hpp`` except that it is
+  specifically used for GPU EI evaluators. Refer to ``gpp_math.hpp`` for detailed documentation.
 
   \param
     :gaussian_process: GaussianProcess object (holds ``points_sampled``, ``values``, ``noise_variance``, derived quantities)

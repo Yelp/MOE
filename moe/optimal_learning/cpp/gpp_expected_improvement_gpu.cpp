@@ -207,8 +207,8 @@ void CudaExpectedImprovementState::SetupState(const EvaluatorType& ei_evaluator,
 }
 
 /*!\rst
-  Routes the EI computation through MultistartOptimizer + NullOptimizer to perform EI function evaluations at the list of input
-  points, using the appropriate EI evaluator (e.g., monte carlo vs analytic) depending on inputs.
+  This function is same as ``EvaluateEIAtPointList`` in ``gpp_math.cpp``, except that it is
+  specifically used for GPU functions. Refer to ``gpp_math.cpp`` for detailed documentation.
 \endrst*/
 void CudaEvaluateEIAtPointList(const GaussianProcess& gaussian_process, const ThreadSchedule& thread_schedule,
                                double const * restrict initial_guesses, double const * restrict points_being_sampled,
@@ -225,23 +225,9 @@ void CudaEvaluateEIAtPointList(const GaussianProcess& gaussian_process, const Th
   bool configure_for_gradients = false;
   if (num_to_sample == 1 && num_being_sampled == 0) {
     // special analytic case when we are not using (or not accounting for) multiple, simultaneous experiments
-    OnePotentialSampleExpectedImprovementEvaluator ei_evaluator(gaussian_process, best_so_far);
-
-    std::vector<typename OnePotentialSampleExpectedImprovementEvaluator::StateType> ei_state_vector;
-    SetupExpectedImprovementState(ei_evaluator, initial_guesses, thread_schedule.max_num_threads,
-                                  configure_for_gradients, &ei_state_vector);
-
-    // init winner to be first point in set and 'force' its value to be 0.0; we cannot do worse than this
-    OptimizationIOContainer io_container(ei_state_vector[0].GetProblemSize(), 0.0, initial_guesses);
-
-    NullOptimizer<OnePotentialSampleExpectedImprovementEvaluator, DomainType> null_opt;
-    typename NullOptimizer<OnePotentialSampleExpectedImprovementEvaluator, DomainType>::ParameterStruct null_parameters;
-    MultistartOptimizer<NullOptimizer<OnePotentialSampleExpectedImprovementEvaluator, DomainType> > multistart_optimizer;
-    multistart_optimizer.MultistartOptimize(null_opt, ei_evaluator, null_parameters, dummy_domain,
-                                            thread_schedule, initial_guesses, num_multistarts,
-                                            ei_state_vector.data(), function_values, &io_container);
-    *found_flag = io_container.found_flag;
-    std::copy(io_container.best_point.begin(), io_container.best_point.end(), best_next_point);
+    NormalRNG dummy_rng;
+    EvaluateEIAtPointList(gaussian_process, thread_schedule, initial_guesses, points_being_sampled, num_multistarts,
+                          1, 0, best_so_far, max_int_steps, found_flag, &dummy_rng, function_values, best_next_point);
   } else {
     CudaExpectedImprovementEvaluator ei_evaluator(gaussian_process, max_int_steps, best_so_far, which_gpu);
 
@@ -262,8 +248,8 @@ void CudaEvaluateEIAtPointList(const GaussianProcess& gaussian_process, const Th
 }
 
 /*!\rst
-  This function is same as ComputeOptimalPointsToSample in gpp_math.cpp, except that it is
-  specifically used for GPU functions. Refer to gpp_math.cpp for detailed documentation.
+  This function is same as ``ComputeOptimalPointsToSample`` in ``gpp_math.cpp``, except that it is
+  specifically used for GPU functions. Refer to ``gpp_math.cpp`` for detailed documentation.
 \endrst*/
 template <typename DomainType>
 void CudaComputeOptimalPointsToSample(const GaussianProcess& gaussian_process,
