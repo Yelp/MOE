@@ -59,14 +59,9 @@ class SampleArm(object):
                 'variance': self.variance,
                 }
 
-    def validate(self, bernoulli_arm=False):
-        """Check this SampleArm passes basic validity checks: all values are finite. If bernoulli_arm is true, verify that this is a valid Bernoulli arm.
+    def validate(self):
+        """Check this SampleArm passes basic validity checks: all values are finite.
 
-        A Bernoulli arm has payoff 1 for a success and 0 for a failure.
-        See more details on Bernoulli distribution at http://en.wikipedia.org/wiki/Bernoulli_distribution
-
-        :param bernoulli_arm: boolean flag for Bernoulli arm validation. If bernoulli_arm is True, validates that arm is a valid Bernoulli arm.
-        :type bernoulli_arm: boolean
         :raises ValueError: if any member data is non-finite or out of range
 
         """
@@ -83,10 +78,6 @@ class SampleArm(object):
             raise ValueError('win or loss is not 0 when total is 0!')
         if self.variance is None and self.win > self.total:
             raise ValueError('win cannot be greater than total when default variance computation is used! Please specify variance.')
-        if bernoulli_arm is True and self.loss != 0.0:
-            raise ValueError('loss = {0} is not zero! This is not a Bernoulli arm'.format(self.loss))
-        if bernoulli_arm is True and self.win > self.total:
-            raise ValueError('win = {0} > total = {1}! This is not a Bernoulli arm'.format(self.win, self.total))
 
     @property
     def win(self):
@@ -107,6 +98,33 @@ class SampleArm(object):
     def variance(self):
         """Return the variance of sampled tries, always greater than or equal to zero, if there is no variance it is equal to None."""
         return self._variance
+
+
+class BernoulliArm(SampleArm):
+
+    """A Bernoulli arm (name, win, loss, total, variance) sampled from the objective function we are modeling/optimizing.
+
+    A Bernoulli arm has payoff 1 for a success and 0 for a failure.
+    See more details on Bernoulli distribution at http://en.wikipedia.org/wiki/Bernoulli_distribution
+
+    See superclass :class:`~moe.bandit.data_containers.SampleArm` for more details.
+
+    """
+
+    def validate(self):
+        """Check this Bernoulli arm is a valid Bernoulli arm. Also check that this BernoulliArm passes basic validity checks: all values are finite.
+
+        A Bernoulli arm has payoff 1 for a success and 0 for a failure.
+        See more details on Bernoulli distribution at http://en.wikipedia.org/wiki/Bernoulli_distribution
+
+        :raises ValueError: if any member data is non-finite or out of range or the arm is not a valid Bernoulli arm
+
+        """
+        super(BernoulliArm, self).validate()
+        if self.loss != 0.0:
+            raise ValueError('loss = {0} is not zero! This is not a Bernoulli arm'.format(self.loss))
+        if self.win > self.total:
+            raise ValueError('win = {0} > total = {1}! This is not a Bernoulli arm'.format(self.win, self.total))
 
 
 class HistoricalData(object):
@@ -167,20 +185,18 @@ class HistoricalData(object):
         return {'arms_sampled': json_arms_sampled}
 
     @staticmethod
-    def validate_sample_arms(sample_arms, bernoulli_arm=False):
+    def validate_sample_arms(sample_arms):
         """Check that sample_arms passes basic validity checks: all values are finite.
 
         :param sample_arms: already-sampled arms: names, wins, losses, and totals
         :type sample_arms: a dictionary of  (arm name, SampleArm) key-value pairs
-        :param bernoulli_arm: boolean flag for Bernoulli arm validation. If bernoulli_arm is True, validates that every arm is a valid Bernoulli arm.
-        :type bernoulli_arm: boolean
         :return: True if inputs are valid
         :rtype: boolean
 
         """
         if sample_arms:
             for arm in sample_arms.itervalues():
-                arm.validate(bernoulli_arm=bernoulli_arm)
+                arm.validate()
 
     def append_sample_arms(self, sample_arms, validate=True):
         """Append the contents of ``sample_arms`` to the data members of this class.

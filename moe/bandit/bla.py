@@ -8,7 +8,7 @@ import copy
 import random
 
 from moe.bandit.constant import DEFAULT_BLA_SUBTYPE
-from moe.bandit.data_containers import HistoricalData
+from moe.bandit.data_containers import BernoulliArm
 from moe.bandit.interfaces.bandit_interface import BanditInterface
 from moe.bandit.utils import get_winning_arm_names_from_payoff_arm_name_list, get_equal_arm_allocations
 
@@ -39,12 +39,16 @@ class BLA(BanditInterface):
         :param random_seed: for testing only (default: None), this flag allows us to provide the seed and get deterministic results for BLA
         :type subtype: float
 
+        :raises ValueError: if the arm is not a valid Bernoulli arm
+
         """
         self._historical_info = copy.deepcopy(historical_info)
         self._subtype = subtype
         self._random_seed = random_seed
-        # Validate that every arm is a valid Bernoulli arm.
-        HistoricalData.validate_sample_arms(sample_arms=self._historical_info.arms_sampled, bernoulli_arm=True)
+        # Validate that every arm is a Bernoulli arm.
+        for arm in self._historical_info.arms_sampled.itervalues():
+            if not isinstance(arm, BernoulliArm):
+                raise ValueError('All arms have to be Bernoulli arms!')
 
     def get_bla_payoff(self, sampled_arm):
         r"""Compute the BLA payoff using the BLA subtype formula.

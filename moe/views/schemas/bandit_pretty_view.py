@@ -64,7 +64,7 @@ class ArmsSampled(colander.MappingSchema):
                 sample_arm['loss'] = 0
             if 'variance' not in sample_arm:
                 sample_arm['variance'] = None
-            if not (set(sample_arm.keys()) == set(['win', 'loss', 'total', 'variance'])):
+            if not (set(sample_arm.keys()) == set(map(lambda s: s.lstrip('_'), SampleArm.__slots__))):
                 raise colander.Invalid(node, msg='Value = {:s} must be a valid SampleArm.'.format(sample_arm))
             SampleArm(sample_arm['win'], sample_arm['loss'], sample_arm['total'], sample_arm['variance'])
 

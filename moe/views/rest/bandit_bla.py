@@ -9,6 +9,7 @@ Includes:
 from pyramid.view import view_config
 
 from moe.bandit.constant import DEFAULT_BLA_SUBTYPE
+from moe.bandit.data_containers import BernoulliArm
 from moe.bandit.linkers import BLA_SUBTYPES_TO_BANDIT_METHODS
 from moe.views.bandit_pretty_view import BanditPrettyView
 from moe.views.constant import BANDIT_BLA_ROUTE_NAME, BANDIT_BLA_PRETTY_ROUTE_NAME
@@ -60,7 +61,7 @@ class BanditBLAView(BanditPrettyView):
         params = self.get_params_from_request()
 
         subtype = params.get('subtype')
-        historical_info = _make_bandit_historical_info_from_params(params)
+        historical_info = _make_bandit_historical_info_from_params(params, BernoulliArm)
 
         bandit_class = BLA_SUBTYPES_TO_BANDIT_METHODS[subtype].bandit_class(historical_info=historical_info)
         arms_to_allocations = bandit_class.allocate_arms()

@@ -2,7 +2,7 @@
 """Base test case class for bandit tests; includes different historical infos (different sampled arms)."""
 import testify as T
 
-from moe.bandit.data_containers import HistoricalData, SampleArm
+from moe.bandit.data_containers import BernoulliArm, HistoricalData, SampleArm
 
 
 class BanditTestCase(T.TestCase):
@@ -17,9 +17,9 @@ class BanditTestCase(T.TestCase):
     bandit_class = None  # Define in a subclass
 
     """Set up arms for test cases."""
-    one_arm_test_case = HistoricalData(sample_arms={"arm1": SampleArm(win=0, loss=0, total=0)})
-    two_unsampled_arms_test_case = HistoricalData(sample_arms={"arm1": SampleArm(win=0, loss=0, total=0), "arm2": SampleArm(win=0, loss=0, total=0)})
-    two_arms_test_case = HistoricalData(sample_arms={"arm1": SampleArm(win=1, loss=0, total=1), "arm2": SampleArm(win=0, loss=0, total=0)})
+    one_arm_test_case = HistoricalData(sample_arms={"arm1": BernoulliArm(win=0, loss=0, total=0)})
+    two_unsampled_arms_test_case = HistoricalData(sample_arms={"arm1": BernoulliArm(win=0, loss=0, total=0), "arm2": BernoulliArm(win=0, loss=0, total=0)})
+    two_arms_test_case = HistoricalData(sample_arms={"arm1": BernoulliArm(win=1, loss=0, total=1), "arm2": BernoulliArm(win=0, loss=0, total=0)})
     three_arms_test_case = HistoricalData(sample_arms={"arm1": SampleArm(win=2, loss=1, total=3), "arm2": SampleArm(win=1, loss=1, total=2), "arm3": SampleArm(win=0, loss=0, total=0)})
     three_arms_float_payoffs_test_case = HistoricalData(sample_arms={"arm1": SampleArm(win=2.2, loss=1.1, total=3), "arm2": SampleArm(win=2.1, loss=1.1, total=3), "arm3": SampleArm(win=0, loss=0, total=0)})
     three_arms_two_winners_test_case = HistoricalData(sample_arms={"arm1": SampleArm(win=2, loss=1, total=3), "arm2": SampleArm(win=2, loss=1, total=3), "arm3": SampleArm(win=0, loss=0, total=0)})
