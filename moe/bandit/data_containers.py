@@ -34,7 +34,7 @@ class SampleArm(object):
 
     def __str__(self):
         """Pretty print this object as a dict."""
-        return pprint.pformat(dict(self._asdict()))
+        return pprint.pformat(self.json_payload())
 
     def __add__(self, arm):
         """Overload Add operator to add sampled arm results to this arm.
@@ -49,6 +49,7 @@ class SampleArm(object):
         self._total += arm.total
         if self._variance is not None or arm.variance is not None:
             raise ValueError('Cannot add arms when variance is not None! Please combine arms manually.')
+        return self
 
     def json_payload(self):
         """Convert the sample_arm into a dict to be consumed by json for a REST request."""
@@ -146,9 +147,9 @@ class HistoricalData(object):
 
         """
         if pretty_print:
-            return pprint.pformat(self._arms_sampled)
+            return pprint.pformat(self.json_payload())
         else:
-            return repr(self._arms_sampled)
+            return repr(self.json_payload())
 
     def json_payload(self):
         """Construct a json serializeable and MOE REST recognizeable dictionary of the historical data."""
