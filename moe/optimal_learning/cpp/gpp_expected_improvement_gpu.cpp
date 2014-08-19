@@ -13,9 +13,12 @@
 #include <vector>
 
 #include "gpp_common.hpp"
+#include "gpp_domain.hpp"
 #include "gpp_exception.hpp"
 #include "gpp_logging.hpp"
 #include "gpp_math.hpp"
+#include "gpp_optimization.hpp"
+#include "gpp_optimizer_parameters.hpp"
 #include "gpp_random.hpp"
 
 #ifdef OL_GPU_ENABLED
@@ -193,7 +196,7 @@ int CudaExpectedImprovementState::GetVectorSize(int num_mc_itr, int num_threads,
   return ((static_cast<int>(num_mc_itr / (num_threads * num_blocks)) + 1) * (num_threads * num_blocks) * num_points);
 }
 
-void CudaExpectedImprovementState::UpdateCurrentPoint(const EvaluatorType& ei_evaluator, double const * restrict points_to_sample) {
+void CudaExpectedImprovementState::SetCurrentPoint(const EvaluatorType& ei_evaluator, double const * restrict points_to_sample) {
   // update points_to_sample in union_of_points
   std::copy(points_to_sample, points_to_sample + num_to_sample*dim, union_of_points.data());
 
@@ -203,9 +206,129 @@ void CudaExpectedImprovementState::UpdateCurrentPoint(const EvaluatorType& ei_ev
 
 void CudaExpectedImprovementState::SetupState(const EvaluatorType& ei_evaluator, double const * restrict points_to_sample) {
   // update quantities derived from points_to_sample
-  UpdateCurrentPoint(ei_evaluator, points_to_sample);
+  SetCurrentPoint(ei_evaluator, points_to_sample);
 }
 
+/*!\rst
+  This function is same as ``EvaluateEIAtPointList`` in ``gpp_math.cpp``, except that it is
+  specifically used for GPU functions. Refer to ``gpp_math.cpp`` for detailed documentation.
+\endrst*/
+void CudaEvaluateEIAtPointList(const GaussianProcess& gaussian_process, const ThreadSchedule& thread_schedule,
+                               double const * restrict initial_guesses, double const * restrict points_being_sampled,
+                               int num_multistarts, int num_to_sample, int num_being_sampled, double best_so_far,
+                               int max_int_steps, bool * restrict found_flag, int which_gpu,
+                               UniformRandomGenerator* uniform_rng, double * restrict function_values,
+                               double * restrict best_next_point) {
+  if (unlikely(num_multistarts <= 0)) {
+    OL_THROW_EXCEPTION(LowerBoundException<int>, "num_multistarts must be > 1", num_multistarts, 1);
+  }
+
+  using DomainType = DummyDomain;
+  DomainType dummy_domain;
+  bool configure_for_gradients = false;
+  if (num_to_sample == 1 && num_being_sampled == 0) {
+    // special analytic case when we are not using (or not accounting for) multiple, simultaneous experiments
+    EvaluateEIAtPointList(gaussian_process, thread_schedule, initial_guesses, points_being_sampled, num_multistarts,
+                          num_to_sample, num_being_sampled, best_so_far, max_int_steps, found_flag, nullptr, function_values, best_next_point);
+  } else {
+    CudaExpectedImprovementEvaluator ei_evaluator(gaussian_process, max_int_steps, best_so_far, which_gpu);
+
+    typename CudaExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, initial_guesses, points_being_sampled, num_to_sample, num_being_sampled, configure_for_gradients, uniform_rng);
+
+    // init winner to be first point in set and 'force' its value to be 0.0; we cannot do worse than this
+    OptimizationIOContainer io_container(ei_state.GetProblemSize(), 0.0, initial_guesses);
+
+    NullOptimizer<CudaExpectedImprovementEvaluator, DomainType> null_opt;
+    typename NullOptimizer<CudaExpectedImprovementEvaluator, DomainType>::ParameterStruct null_parameters;
+    MultistartOptimizer<NullOptimizer<CudaExpectedImprovementEvaluator, DomainType> > multistart_optimizer;
+    multistart_optimizer.MultistartOptimize(null_opt, ei_evaluator, null_parameters, dummy_domain,
+                                            thread_schedule, initial_guesses, num_multistarts,
+                                            &ei_state, function_values, &io_container);
+    *found_flag = io_container.found_flag;
+    std::copy(io_container.best_point.begin(), io_container.best_point.end(), best_next_point);
+  }
+}
+
+/*!\rst
+  This function is same as ``ComputeOptimalPointsToSample`` in ``gpp_math.cpp``, except that it is
+  specifically used for GPU functions. Refer to ``gpp_math.cpp`` for detailed documentation.
+\endrst*/
+template <typename DomainType>
+void CudaComputeOptimalPointsToSample(const GaussianProcess& gaussian_process,
+                                      const GradientDescentParameters& optimizer_parameters,
+                                      const DomainType& domain, const ThreadSchedule& thread_schedule,
+                                      double const * restrict points_being_sampled,
+                                      int num_to_sample, int num_being_sampled, double best_so_far,
+                                      int max_int_steps, bool lhc_search_only,
+                                      int num_lhc_samples, bool * restrict found_flag, int which_gpu,
+                                      UniformRandomGenerator * uniform_generator,
+                                      double * restrict best_points_to_sample) {
+  if (unlikely(num_to_sample <= 0)) {
+    return;
+  }
+
+  std::vector<double> next_points_to_sample(gaussian_process.dim()*num_to_sample);
+
+  bool found_flag_local = false;
+  if (lhc_search_only == false) {
+    CudaComputeOptimalPointsToSampleWithRandomStarts(gaussian_process, optimizer_parameters,
+                                                     domain, thread_schedule, points_being_sampled,
+                                                     num_to_sample, num_being_sampled,
+                                                     best_so_far, max_int_steps,
+                                                     &found_flag_local, which_gpu, uniform_generator,
+                                                     next_points_to_sample.data());
+  }
+
+  // if gradient descent EI optimization failed OR we're only doing latin hypercube searches
+  if (found_flag_local == false || lhc_search_only == true) {
+    if (unlikely(lhc_search_only == false)) {
+      OL_WARNING_PRINTF("WARNING: %d,%d-EI opt DID NOT CONVERGE\n", num_to_sample, num_being_sampled);
+      OL_WARNING_PRINTF("Attempting latin hypercube search\n");
+    }
+
+    if (num_lhc_samples > 0) {
+      // Note: using a schedule different than "static" may lead to flakiness in monte-carlo EI optimization tests.
+      // Besides, this is the fastest setting.
+      ThreadSchedule thread_schedule_naive_search(thread_schedule);
+      thread_schedule_naive_search.schedule = omp_sched_static;
+      CudaComputeOptimalPointsToSampleViaLatinHypercubeSearch(gaussian_process, domain,
+                                                              thread_schedule_naive_search,
+                                                              points_being_sampled,
+                                                              num_lhc_samples, num_to_sample,
+                                                              num_being_sampled, best_so_far,
+                                                              max_int_steps, &found_flag_local,
+                                                              which_gpu, uniform_generator,
+                                                              next_points_to_sample.data());
+
+      // if latin hypercube 'dumb' search failed
+      if (unlikely(found_flag_local == false)) {
+        OL_ERROR_PRINTF("ERROR: %d,%d-EI latin hypercube search FAILED on\n", num_to_sample, num_being_sampled);
+      }
+    } else {
+      OL_WARNING_PRINTF("num_lhc_samples <= 0. Skipping latin hypercube search\n");
+    }
+  }
+
+  // set outputs
+  *found_flag = found_flag_local;
+  std::copy(next_points_to_sample.begin(), next_points_to_sample.end(), best_points_to_sample);
+}
+
+// template explicit instantiation definitions, see gpp_common.hpp header comments, item 6
+template void CudaComputeOptimalPointsToSample(
+    const GaussianProcess& gaussian_process, const GradientDescentParameters& optimizer_parameters,
+    const TensorProductDomain& domain, const ThreadSchedule& thread_schedule,
+    double const * restrict points_being_sampled, int num_to_sample,
+    int num_being_sampled, double best_so_far, int max_int_steps, bool lhc_search_only,
+    int num_lhc_samples, bool * restrict found_flag, int which_gpu,
+    UniformRandomGenerator * uniform_generator, double * restrict best_points_to_sample);
+template void CudaComputeOptimalPointsToSample(
+    const GaussianProcess& gaussian_process, const GradientDescentParameters& optimizer_parameters,
+    const SimplexIntersectTensorProductDomain& domain, const ThreadSchedule& thread_schedule,
+    double const * restrict points_being_sampled,
+    int num_to_sample, int num_being_sampled, double best_so_far, int max_int_steps,
+    bool lhc_search_only, int num_lhc_samples, bool * restrict found_flag, int which_gpu,
+    UniformRandomGenerator * uniform_generator, double * restrict best_points_to_sample);
 #endif  // OL_GPU_ENABLED
 
 }  // end namespace optimal_learning

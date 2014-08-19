@@ -1,5 +1,7 @@
 * Features
 
+  * Connected GPU functions to multistart gradient descent optimizer. (#270)
+
 * Changes
 
 * Bugs
