@@ -225,16 +225,8 @@ int RunCudaEIvsCpuEITests() {
 }
 
 /*!\rst
-  At the moment, this test is very bare-bones.  It checks:
-
-  1. method succeeds
-  2. points returned are all inside the specified domain
-  3. points returned are not within epsilon of each other (i.e., distinct)
-  4. result of gradient-descent optimization is *no worse* than result of a random search
-  5. final grad EI is sufficiently small
-
-  The test sets up a toy problem by repeatedly drawing from a GP with made-up hyperparameters.
-  Then it runs EI optimization, attempting to sample 2 points simultaneously.
+  This function is the same as ``ExpectedImprovementOptimizationMultipleSamplesTest``
+  in ``gpp_math_test.cpp``. Refer to ``gpp_math_test.cpp`` for detailed documentation.
 \endrst*/
 int CudaExpectedImprovementOptimizationMultipleSamplesTest() {
   using DomainType = TensorProductDomain;
@@ -390,6 +382,129 @@ int CudaExpectedImprovementOptimizationMultipleSamplesTest() {
   return total_errors;
 }
 
+/*!\rst
+  This function tests GPU optimizer in the case of 1-EI, in which GPU optimizer
+  merely calls optimizer in ``gpp_math.hpp`` since we are not using MC simulation
+  anyway. The function definition is mostly copied from ``ExpectedImprovementOptimizationTestCore`` in ``gpp_math_test.cpp`` by preserving
+  its 1-EI part.
+\endrst*/
+int CudaExpectedImprovementOptimizationAnalyticTest() {
+  using DomainType = TensorProductDomain;
+  const int dim = 3;
+  const int which_gpu = 0;
+
+  int total_errors = 0;
+  int current_errors = 0;
+
+  // gradient descent parameters
+  const double gamma = 0.5;
+  const double pre_mult = 1.4;
+  const double max_relative_change = 1.0;
+  const double tolerance = 1.0e-7;
+  const int max_gradient_descent_steps = 1000;
+  const int max_num_restarts = 10;
+  const int num_multistarts = 20;
+  GradientDescentParameters gd_params(num_multistarts, max_gradient_descent_steps, max_num_restarts,
+                                      gamma, pre_mult, max_relative_change, tolerance);
+
+  // grid search parameters
+  int num_grid_search_points = 10000;
+
+  // 1,p-EI computation parameters
+  const int num_to_sample = 1;
+  int num_being_sampled = 0;
+  int max_int_steps = 6000;
+
+  // random number generators
+  UniformRandomGenerator uniform_generator(314);
+  boost::uniform_real<double> uniform_double_hyperparameter(0.4, 1.3);
+  boost::uniform_real<double> uniform_double_lower_bound(-2.0, 0.5);
+  boost::uniform_real<double> uniform_double_upper_bound(1.0, 2.5);
+
+  static const int kMaxNumThreads = 4;
+  ThreadSchedule thread_schedule(kMaxNumThreads, omp_sched_static);
+
+  int num_sampled = 20;
+
+  std::vector<double> noise_variance(num_sampled, 0.002);
+  MockGaussianProcessPriorData<DomainType> mock_gp_data(SquareExponential(dim, 1.0, 1.0), noise_variance,
+                                                        dim, num_sampled, uniform_double_lower_bound,
+                                                        uniform_double_upper_bound,
+                                                        uniform_double_hyperparameter,
+                                                        &uniform_generator);
+
+  // we will optimize over the expanded region
+  std::vector<ClosedInterval> domain_bounds(mock_gp_data.domain_bounds);
+  ExpandDomainBounds(1.5, &domain_bounds);
+  DomainType domain(domain_bounds.data(), dim);
+
+  std::vector<double> points_being_sampled(dim*num_being_sampled);
+
+  // optimize EI
+  bool found_flag = false;
+  std::vector<double> grid_search_best_point(dim*num_to_sample);
+  CudaComputeOptimalPointsToSampleViaLatinHypercubeSearch(*mock_gp_data.gaussian_process_ptr, domain,
+                                                          thread_schedule, points_being_sampled.data(),
+                                                          num_grid_search_points, num_to_sample,
+                                                          num_being_sampled, mock_gp_data.best_so_far,
+                                                          max_int_steps, &found_flag, which_gpu,
+                                                          &uniform_generator, grid_search_best_point.data());
+  if (!found_flag) {
+    ++total_errors;
+  }
+
+  std::vector<double> next_point(dim*num_to_sample);
+  found_flag = false;
+  CudaComputeOptimalPointsToSampleWithRandomStarts(*mock_gp_data.gaussian_process_ptr, gd_params,
+                                                   domain, thread_schedule, points_being_sampled.data(),
+                                                   num_to_sample, num_being_sampled,
+                                                   mock_gp_data.best_so_far, max_int_steps,
+                                                   &found_flag, which_gpu,
+                                                   &uniform_generator, next_point.data());
+  if (!found_flag) {
+    ++total_errors;
+  }
+
+  printf("next best point  : "); PrintMatrixTrans(next_point.data(), num_to_sample, dim);
+  printf("grid search point: "); PrintMatrixTrans(grid_search_best_point.data(), num_to_sample, dim);
+
+  // results
+  double ei_optimized, ei_grid_search;
+  std::vector<double> grad_ei(dim*num_to_sample);
+
+  // set up evaluators and state to check results
+  double tolerance_result = tolerance;
+  bool configure_for_gradients = true;
+
+  OnePotentialSampleExpectedImprovementEvaluator ei_evaluator(*mock_gp_data.gaussian_process_ptr,
+                                                              mock_gp_data.best_so_far);
+  OnePotentialSampleExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, next_point.data(),
+                                                                     configure_for_gradients);
+
+  ei_optimized = ei_evaluator.ComputeExpectedImprovement(&ei_state);
+  ei_evaluator.ComputeGradExpectedImprovement(&ei_state, grad_ei.data());
+
+  ei_state.SetCurrentPoint(ei_evaluator, grid_search_best_point.data());
+  ei_grid_search = ei_evaluator.ComputeExpectedImprovement(&ei_state);
+
+  printf("optimized EI: %.18E, grid_search_EI: %.18E\n", ei_optimized, ei_grid_search);
+  printf("grad_EI: "); PrintMatrixTrans(grad_ei.data(), num_to_sample, dim);
+
+  if (ei_optimized < ei_grid_search) {
+    ++total_errors;
+  }
+
+  current_errors = 0;
+  for (const auto& entry : grad_ei) {
+    if (!CheckDoubleWithinRelative(entry, 0.0, tolerance_result)) {
+      ++current_errors;
+    }
+  }
+  total_errors += current_errors;
+
+  return total_errors;
+}
+
 }  // end unnamed namespace
 
 /*!\rst
@@ -412,7 +527,15 @@ int RunGPUTests() {
   if (error != 0) {
     OL_FAILURE_PRINTF("cudaEI vs cpuEI consistency check failed\n");
   } else {
-    OL_SUCCESS_PRINTF("cudaEI vs cpuEI consistency check successed\n");
+    OL_SUCCESS_PRINTF("cudaEI vs cpuEI consistency check succeeded\n");
+  }
+  total_errors += error;
+
+  error = CudaExpectedImprovementOptimizationAnalyticTest();
+  if (error != 0) {
+    OL_FAILURE_PRINTF("GPU 1-EI optimization failed\n");
+  } else {
+    OL_SUCCESS_PRINTF("GPU 1-EI optimization succeeded\n");
   }
   total_errors += error;
 
@@ -420,7 +543,7 @@ int RunGPUTests() {
   if (error != 0) {
     OL_FAILURE_PRINTF("GPU optimizer failed\n");
   } else {
-    OL_SUCCESS_PRINTF("GPU optimizer check successed\n");
+    OL_SUCCESS_PRINTF("GPU optimizer succeeded\n");
   }
   total_errors += error;
 

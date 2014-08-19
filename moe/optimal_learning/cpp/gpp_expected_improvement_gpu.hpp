@@ -11,9 +11,12 @@
 #include <vector>
 
 #include "gpp_common.hpp"
+#include "gpp_domain.hpp"
 #include "gpp_exception.hpp"
 #include "gpp_logging.hpp"
 #include "gpp_math.hpp"
+#include "gpp_optimization.hpp"
+#include "gpp_optimizer_parameters.hpp"
 #include "gpp_random.hpp"
 
 #ifdef OL_GPU_ENABLED
@@ -374,10 +377,10 @@ OL_NONNULL_POINTERS void CudaComputeOptimalPointsToSampleViaMultistartGradientDe
   bool configure_for_gradients = true;
   if (num_to_sample == 1 && num_being_sampled == 0) {
     // special analytic case when we are not using (or not accounting for) multiple, simultaneous experiments
-    NormalRNG dummy_rng;
     ComputeOptimalPointsToSampleViaMultistartGradientDescent(gaussian_process, optimizer_parameters, domain, thread_schedule,
-                                                             start_point_set, points_being_sampled, num_multistarts, 1, 0,
-                                                             best_so_far, max_int_steps, &dummy_rng, found_flag, best_next_point);
+                                                             start_point_set, points_being_sampled, num_multistarts, num_to_sample,
+                                                             num_being_sampled, best_so_far, max_int_steps, nullptr, found_flag,
+                                                             best_next_point);
   } else {
     CudaExpectedImprovementEvaluator ei_evaluator(gaussian_process, max_int_steps, best_so_far, which_gpu);
 

@@ -13,9 +13,12 @@
 #include <vector>
 
 #include "gpp_common.hpp"
+#include "gpp_domain.hpp"
 #include "gpp_exception.hpp"
 #include "gpp_logging.hpp"
 #include "gpp_math.hpp"
+#include "gpp_optimization.hpp"
+#include "gpp_optimizer_parameters.hpp"
 #include "gpp_random.hpp"
 
 #ifdef OL_GPU_ENABLED
@@ -225,9 +228,8 @@ void CudaEvaluateEIAtPointList(const GaussianProcess& gaussian_process, const Th
   bool configure_for_gradients = false;
   if (num_to_sample == 1 && num_being_sampled == 0) {
     // special analytic case when we are not using (or not accounting for) multiple, simultaneous experiments
-    NormalRNG dummy_rng;
     EvaluateEIAtPointList(gaussian_process, thread_schedule, initial_guesses, points_being_sampled, num_multistarts,
-                          1, 0, best_so_far, max_int_steps, found_flag, &dummy_rng, function_values, best_next_point);
+                          num_to_sample, num_being_sampled, best_so_far, max_int_steps, found_flag, nullptr, function_values, best_next_point);
   } else {
     CudaExpectedImprovementEvaluator ei_evaluator(gaussian_process, max_int_steps, best_so_far, which_gpu);
 
