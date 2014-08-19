@@ -28,7 +28,6 @@ class BLA(BanditInterface):
             self,
             historical_info,
             subtype=DEFAULT_BLA_SUBTYPE,
-            random_seed=None,
     ):
         """Construct a BLA object. BLA only supports Bernoulli trials (payoff 1 for success and 0 for failure).
 
@@ -36,7 +35,6 @@ class BLA(BanditInterface):
         :type historical_info: dictionary of (str, SampleArm()) pairs (see :class:`moe.bandit.data_containers.SampleArm` for more details)
         :param subtype: subtype of the BLA bandit algorithm (default: :const:`~moe.bandit.constant.DEFAULT_BLA_SUBTYPE`)
         :type subtype: str
-        :param random_seed: for testing only (default: None), this flag allows us to provide the seed and get deterministic results for BLA
         :type subtype: float
 
         :raises ValueError: if the arm is not a valid Bernoulli arm
@@ -44,7 +42,6 @@ class BLA(BanditInterface):
         """
         self._historical_info = copy.deepcopy(historical_info)
         self._subtype = subtype
-        self._random_seed = random_seed
         # Validate that every arm is a Bernoulli arm.
         for arm in self._historical_info.arms_sampled.itervalues():
             if not isinstance(arm, BernoulliArm):
@@ -69,9 +66,6 @@ class BLA(BanditInterface):
         """
         if not sampled_arm:
             raise ValueError('sampled_arm is empty!')
-        # For testing only, set the seed so that the results are deterministic.
-        if self._random_seed is not None:
-            random.seed(self._random_seed)
         return random.betavariate(sampled_arm.win + 1, sampled_arm.total - sampled_arm.win + 1)
 
     def allocate_arms(self):
