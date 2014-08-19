@@ -1,5 +1,7 @@
 * Features
 
+  * Connected GPU functions to multistart gradient descent optimizer. (#270)
+
 * Changes
 
 * Bugs
@@ -18,7 +20,6 @@ SHA: ``8201917e3f9b47b8edd8039ea3278ef8631b0f2a``
   * Added support for the L-BFGS-B optimizer. (#296)
   * Added GPU implementation for q,p-EI and its gradient computation. (#219)
     * Speed up GPU functions by redesign of memory allocation. (#297)
-    * Connected GPU functions to multistart gradient descent optimizer. (#270)
 
 * Changes
 
