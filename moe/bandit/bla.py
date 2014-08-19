@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Classes (Python) to compute the Bandit BLA arm allocation and choosing the arm to pull next.
+"""Classes (Python) to compute the Bandit BLA (Bayesian Learning Automaton) arm allocation and choosing the arm to pull next.
 
 See :class:`moe.bandit.interfaces.bandit_interface` for further details on bandit.
 
@@ -15,7 +15,7 @@ from moe.bandit.utils import get_winning_arm_names_from_payoff_arm_name_list, ge
 
 class BLA(BanditInterface):
 
-    r"""Implementation of the constructor of BLA and method allocate_arms.
+    r"""Implementation of the constructor of BLA (Bayesian Learning Automaton) and method allocate_arms.
 
     A class to encapsulate the computation of bandit BLA.
     The Algorithm is from the paper: A Generic Solution to Multi-Armed Bernoulli Bandit Problems, Norheim, Bradland, Granmo, OOmmen (2010) ICAART.
@@ -117,5 +117,4 @@ class BLA(BanditInterface):
             raise ValueError('arms_sampled is empty!')
 
         bla_payoff_arm_name_list = [(self.get_bla_payoff(sampled_arm), arm_name) for arm_name, sampled_arm in arms_sampled.iteritems()]
-        print bla_payoff_arm_name_list
         return get_winning_arm_names_from_payoff_arm_name_list(bla_payoff_arm_name_list)

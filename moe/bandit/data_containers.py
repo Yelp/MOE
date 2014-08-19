@@ -50,6 +50,20 @@ class SampleArm(object):
         if self._variance is not None or arm.variance is not None:
             raise ValueError('Cannot add arms when variance is not None! Please combine arms manually.')
 
+    def __eq__(self, arm):
+        """Overload Equal operator to compare the given sampled arm ``arm`` to this arm.
+
+        :param arm: arm to compare to this arm
+        :type arm: a SampleArm object
+        :raise: ValueError when ``arm`` is not a valid SampleArm.
+
+        """
+        if not isinstance(arm, SampleArm):
+            raise ValueError('Given arm is not a SampleArm!')
+        if self.win == arm.win and self.loss == arm.loss and self.total == arm.total and self.variance == arm.variance:
+            return True
+        return False
+
     def json_payload(self):
         """Convert the sample_arm into a dict to be consumed by json for a REST request."""
         return {
@@ -113,7 +127,7 @@ class HistoricalData(object):
 
     """A data container for storing the historical data from an entire experiment in a layout convenient for this library.
 
-    Users will likely find it most convenient to store experiment historical data of arms in "tuples" of
+    Users will likely find it most convenient to store experiment historical data of arms in tuples of
     (win, loss, total, variance); for example, these could be the columns of a database row, part of an ORM, etc.
     The SampleArm class (above) provides a convenient representation of this input format, but users are *not* required
     to use it.
@@ -159,6 +173,18 @@ class HistoricalData(object):
         else:
             return repr(self._arms_sampled)
 
+    def __eq__(self, historical_data):
+        """Overload Equal operator to compare the given ``historical_data`` to this historical_data.
+
+        :param historical_data: historical data to compare to this historical data
+        :type historical_data: a HistoricalData object
+        :raise: ValueError when ``historical_data`` is not a valid HistoricalData.
+
+        """
+        if not isinstance(historical_data, HistoricalData):
+            raise ValueError('Given historical data is not a HistoricalData!')
+        return self.arms_sampled == historical_data.arms_sampled
+
     def json_payload(self):
         """Construct a json serializeable and MOE REST recognizeable dictionary of the historical data."""
         json_arms_sampled = {}
@@ -180,7 +206,7 @@ class HistoricalData(object):
         """
         if sample_arms:
             for arm in sample_arms.itervalues():
-                arm.validate(bernoulli_arm)
+                arm.validate(bernoulli_arm=bernoulli_arm)
 
     def append_sample_arms(self, sample_arms, validate=True):
         """Append the contents of ``sample_arms`` to the data members of this class.

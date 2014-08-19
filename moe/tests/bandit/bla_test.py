@@ -6,6 +6,8 @@ Test that the one arm case returns the given arm as the winning arm.
 Test that two-arm cases with specified random seeds return expected results.
 
 """
+import random
+
 import testify as T
 
 from moe.bandit.bla import BLA
@@ -26,15 +28,19 @@ class BLATest(BanditTestCase):
 
     def test_two_arms_one_winner(self):
         """Check that the two-arms case with random seed 0 always allocate arm1:1.0 and arm2:0.0."""
+        old_state = random.getstate()
         bandit = self.bandit_class(self.two_arms_test_case, DEFAULT_BLA_SUBTYPE, 0)
         arms_to_allocations = bandit.allocate_arms()
         T.assert_dicts_equal(arms_to_allocations, {"arm1": 1.0, "arm2": 0.0})
         T.assert_equal(bandit.choose_arm(arms_to_allocations), "arm1")
+        random.setstate(old_state)
 
     def test_two_unsampled_arms(self):
         """Check that the two-unsampled-arms case with random seed 0 always allocate each arm equally (the allocation is 0.5 for both arms). This tests num_unsampled_arms == num_arms > 1."""
+        old_state = random.getstate()
         bandit = self.bandit_class(self.two_unsampled_arms_test_case, DEFAULT_BLA_SUBTYPE, 0)
         T.assert_dicts_equal(bandit.allocate_arms(), {"arm1": 0.5, "arm2": 0.5})
+        random.setstate(old_state)
 
 if __name__ == "__main__":
     T.run()
