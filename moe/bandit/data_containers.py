@@ -41,15 +41,13 @@ class SampleArm(object):
 
         :param arm: arm samples to add to this arm
         :type arm: a SampleArm object
+        :return new SampleArm that is a result of adding two arms
         :raise: ValueError when ``arm.variance`` or self.variance is not None.
 
         """
-        self._win += arm.win
-        self._loss += arm.loss
-        self._total += arm.total
         if self._variance is not None or arm.variance is not None:
             raise ValueError('Cannot add arms when variance is not None! Please combine arms manually.')
-        return self
+        return SampleArm(win=self._win + arm.win, loss=self._loss + arm.loss, total=self._total + arm.total)
 
     def json_payload(self):
         """Convert the sample_arm into a dict to be consumed by json for a REST request."""

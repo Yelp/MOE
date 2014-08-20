@@ -32,8 +32,20 @@ class DataContainersTest(BanditTestCase):
 
     def test_sample_arm_add(self):
         """Test SampleArm's __add__ overload operator."""
-        arm = SampleArm(win=2, loss=1, total=3) + SampleArm(win=3, loss=2, total=5)
-        T.assert_equals(arm.json_payload(), SampleArm(win=5, loss=3, total=8).json_payload())
+        arm1 = SampleArm(win=2, loss=1, total=3)
+        arm2 = SampleArm(win=3, loss=2, total=5)
+        arm3 = arm1 + arm2
+        T.assert_equals(arm3.json_payload(), SampleArm(win=5, loss=3, total=8).json_payload())
+        # Verify that the + operator does not modify arm1 and arm2
+        T.assert_equals(arm1.json_payload(), SampleArm(win=2, loss=1, total=3).json_payload())
+        T.assert_equals(arm2.json_payload(), SampleArm(win=3, loss=2, total=5).json_payload())
+
+        arm1 += arm2
+        arm2 += arm1
+        T.assert_equals(arm1.json_payload(), SampleArm(win=5, loss=3, total=8).json_payload())
+        T.assert_equals(arm2.json_payload(), SampleArm(win=8, loss=5, total=13).json_payload())
+        # Verify that modifying arm1 and arm2 does not change arm3
+        T.assert_equals(arm3.json_payload(), SampleArm(win=5, loss=3, total=8).json_payload())
 
     def test_sample_arm_add_arm_with_variance_invalid(self):
         """Test that adding arms with variance causes a ValueError. Neither of the arms can have non-None variance."""
