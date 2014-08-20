@@ -1,10 +1,13 @@
 * Features
 
+  * Implemented  BLA (Bayesian Learning Automaton). (#373)
   * Connected GPU functions to multistart gradient descent optimizer. (#270)
 
 * Changes
 
 * Bugs
+
+  * variance in a sample arm is dropped in _make_bandit_historical_info_from_params (#385)
 
 ## v0.2.0 (2014-08-15)
 

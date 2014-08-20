@@ -9,7 +9,7 @@ class SampleArm(object):
 
     """An arm (name, win, loss, total, variance) sampled from the objective function we are modeling/optimizing.
 
-    This class is a representation of a "Sample Arm," which is defined by the three data members listed here.
+    This class is a representation of a "Sample Arm," which is defined by the four data members listed here.
     SampleArm is a convenient way of communicating data to the rest of the bandit library (via the
     HistoricalData container); it also provides a convenient grouping for interactive introspection.
 
@@ -101,12 +101,39 @@ class SampleArm(object):
         return self._variance
 
 
+class BernoulliArm(SampleArm):
+
+    """A Bernoulli arm (name, win, loss, total, variance) sampled from the objective function we are modeling/optimizing.
+
+    A Bernoulli arm has payoff 1 for a success and 0 for a failure.
+    See more details on Bernoulli distribution at http://en.wikipedia.org/wiki/Bernoulli_distribution
+
+    See superclass :class:`~moe.bandit.data_containers.SampleArm` for more details.
+
+    """
+
+    def validate(self):
+        """Check this Bernoulli arm is a valid Bernoulli arm. Also check that this BernoulliArm passes basic validity checks: all values are finite.
+
+        A Bernoulli arm has payoff 1 for a success and 0 for a failure.
+        See more details on Bernoulli distribution at http://en.wikipedia.org/wiki/Bernoulli_distribution
+
+        :raises ValueError: if any member data is non-finite or out of range or the arm is not a valid Bernoulli arm
+
+        """
+        super(BernoulliArm, self).validate()
+        if self.loss != 0.0:
+            raise ValueError('loss = {0} is not zero! This is not a Bernoulli arm'.format(self.loss))
+        if self.win > self.total:
+            raise ValueError('win = {0} > total = {1}! This is not a Bernoulli arm'.format(self.win, self.total))
+
+
 class HistoricalData(object):
 
     """A data container for storing the historical data from an entire experiment in a layout convenient for this library.
 
-    Users will likely find it most convenient to store experiment historical data of arms in "tuples" of
-    (win, loss, total); for example, these could be the columns of a database row, part of an ORM, etc.
+    Users will likely find it most convenient to store experiment historical data of arms in tuples of
+    (win, loss, total, variance); for example, these could be the columns of a database row, part of an ORM, etc.
     The SampleArm class (above) provides a convenient representation of this input format, but users are *not* required
     to use it.
 
@@ -193,7 +220,7 @@ class HistoricalData(object):
         self._update_historical_data(sample_arms)
 
     def _update_historical_data(self, sample_arms):
-        """Add arm sampled ersults from ``sample_arms`` into this object's data member.
+        """Add arm sampled results from ``sample_arms`` into this object's data member.
 
         :param sample_arms: the already-sampled arms: wins, losses, and totals
         :type sample_arms: dictionary of (arm name, SampleArm) key-value pairs

@@ -77,7 +77,7 @@ class HistoricalData(object):
 
     """A data container for storing the historical data from an entire experiment in a layout convenient for this library.
 
-    Users will likely find it most convenient to store experiment historical data in "tuples" of
+    Users will likely find it most convenient to store experiment historical data in tuples of
     (coordinates, value, noise); for example, these could be the columns of a database row, part of an ORM, etc.
     The :class:`moe.optimal_learning.python.SamplePoint` class (above) provides a convenient representation of this input format, but users are *not* required
     to use it.
