@@ -45,6 +45,8 @@ class SampleArm(object):
         :raise: ValueError when ``arm.variance`` or self.variance is not None.
 
         """
+        if (not isinstance(arm, SampleArm)):
+            raise ValueError('Given arm to add is not a SampleArm!')
         if self._variance is not None or arm.variance is not None:
             raise ValueError('Cannot add arms when variance is not None! Please combine arms manually.')
         return SampleArm(win=self._win + arm.win, loss=self._loss + arm.loss, total=self._total + arm.total)
