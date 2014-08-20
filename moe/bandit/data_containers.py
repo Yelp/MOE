@@ -42,7 +42,7 @@ class SampleArm(object):
         :param arm: arm samples to add to this arm
         :type arm: a SampleArm object
         :return new SampleArm that is a result of adding two arms
-        :raise: ValueError when ``arm.variance`` or self.variance is not None.
+        :raise: ValueError when given arm is not a SampleArm or when ``arm.variance`` or self.variance is not None.
 
         """
         if (not isinstance(arm, SampleArm)):
