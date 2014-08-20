@@ -7,6 +7,7 @@ import simplejson as json
 import testify as T
 
 from moe.bandit.constant import BANDIT_EPSILON_ENDPOINT, EPSILON_SUBTYPES_TO_DEFAULT_HYPERPARAMETER_INFOS, EPSILON_SUBTYPE_FIRST, EPSILON_SUBTYPE_GREEDY
+from moe.tests.bandit.bandit_test_case import BanditTestCase
 from moe.tests.views.rest.bandit_test import TestBanditViews
 from moe.views.constant import BANDIT_EPSILON_MOE_ROUTE
 from moe.views.rest.bandit_epsilon import BanditEpsilonView
@@ -17,6 +18,7 @@ class TestBanditEpsilonViews(TestBanditViews):
     """Integration test for the /bandit/epsilon endpoint."""
 
     _endpoint = BANDIT_EPSILON_ENDPOINT
+    _historical_infos = BanditTestCase.historical_infos_to_test
     _moe_route = BANDIT_EPSILON_MOE_ROUTE
     _view = BanditEpsilonView
 

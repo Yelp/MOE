@@ -2,7 +2,8 @@
 """Links between the implementations of bandit algorithms."""
 from collections import namedtuple
 
-from moe.bandit.constant import BANDIT_EPSILON_ENDPOINT, BANDIT_UCB_ENDPOINT, EPSILON_SUBTYPE_FIRST, EPSILON_SUBTYPE_GREEDY, EPSILON_SUBTYPES, UCB_SUBTYPE_1, UCB_SUBTYPE_1_TUNED, UCB_SUBTYPES
+from moe.bandit.bla import BLA
+from moe.bandit.constant import BANDIT_BLA_ENDPOINT, BANDIT_EPSILON_ENDPOINT, BANDIT_UCB_ENDPOINT, BLA_SUBTYPE_BLA, BLA_SUBTYPES, EPSILON_SUBTYPE_FIRST, EPSILON_SUBTYPE_GREEDY, EPSILON_SUBTYPES, UCB_SUBTYPE_1, UCB_SUBTYPE_1_TUNED, UCB_SUBTYPES
 from moe.bandit.epsilon_first import EpsilonFirst
 from moe.bandit.epsilon_greedy import EpsilonGreedy
 from moe.bandit.ucb1 import UCB1
@@ -40,8 +41,15 @@ UCB_SUBTYPES_TO_BANDIT_METHODS = {
             ),
         }
 
+BLA_SUBTYPES_TO_BANDIT_METHODS = {
+        BLA_SUBTYPE_BLA: BanditMethod(
+            subtype=BLA_SUBTYPE_BLA,
+            bandit_class=BLA,
+            ),
+        }
 
 BANDIT_ENDPOINTS_TO_SUBTYPES = {
+        BANDIT_BLA_ENDPOINT: BLA_SUBTYPES,
         BANDIT_EPSILON_ENDPOINT: EPSILON_SUBTYPES,
         BANDIT_UCB_ENDPOINT: UCB_SUBTYPES,
         }

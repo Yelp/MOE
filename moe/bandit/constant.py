@@ -2,8 +2,8 @@
 """Some default configuration parameters for bandit components."""
 DEFAULT_BANDIT_HISTORICAL_INFO = {
                            "arms_sampled": {
-                                            "arm1": {"win": 20, "loss": 5, "total": 25},
-                                            "arm2": {"win": 20, "loss": 10, "total": 30},
+                                            "arm1": {"win": 20, "loss": 0, "total": 25},
+                                            "arm2": {"win": 20, "loss": 0, "total": 30},
                                             "arm3": {"win": 0, "loss": 0, "total": 0},
                                             }
                            }
@@ -26,6 +26,13 @@ UCB_SUBTYPES = [
                 UCB_SUBTYPE_1_TUNED,
                 ]
 
+# BLA subtypes
+BLA_SUBTYPE_BLA = 'BLA'
+DEFAULT_BLA_SUBTYPE = BLA_SUBTYPE_BLA
+BLA_SUBTYPES = [
+                BLA_SUBTYPE_BLA,
+                ]
+
 #: Used in :func:`moe.bandit.ucb1_tuned.UCB1Tuned.get_ucb_payoff`.
 #: 0.25 is the maximum value the variance of a Bernoulli random variable can possibly take.
 #: Because the variance formula is :math:`p(1-p)` where *p* is the probability of success
@@ -43,9 +50,11 @@ EPSILON_SUBTYPES_TO_DEFAULT_HYPERPARAMETER_INFOS = {
         }
 
 # Bandit Endpoints
+BANDIT_BLA_ENDPOINT = 'bla_endpoint'
 BANDIT_EPSILON_ENDPOINT = 'epsilon_endpoint'
 BANDIT_UCB_ENDPOINT = 'ucb_endpoint'
 BANDIT_ENDPOINTS = [
-                    BANDIT_UCB_ENDPOINT,
+                    BANDIT_BLA_ENDPOINT,
                     BANDIT_EPSILON_ENDPOINT,
+                    BANDIT_UCB_ENDPOINT,
                     ]
