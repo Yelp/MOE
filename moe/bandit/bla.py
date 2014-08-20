@@ -5,7 +5,8 @@ See :class:`moe.bandit.interfaces.bandit_interface` for further details on bandi
 
 """
 import copy
-import random
+
+import numpy
 
 from moe.bandit.constant import DEFAULT_BLA_SUBTYPE
 from moe.bandit.data_containers import BernoulliArm
@@ -66,7 +67,7 @@ class BLA(BanditInterface):
         """
         if not sampled_arm:
             raise ValueError('sampled_arm is empty!')
-        return random.betavariate(sampled_arm.win + 1, sampled_arm.total - sampled_arm.win + 1)
+        return numpy.random.beta(sampled_arm.win + 1, sampled_arm.total - sampled_arm.win + 1)
 
     def allocate_arms(self):
         r"""Compute the allocation to each arm given ``historical_info``, running bandit ``subtype`` endpoint.
