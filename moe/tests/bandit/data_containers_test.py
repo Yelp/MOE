@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 """Tests for functions in SampleArm and HistoricalData."""
+import copy
+
 import logging
 
 import pprint
@@ -70,7 +72,7 @@ class DataContainersTest(BanditTestCase):
 
     def test_historical_data_append_arms(self):
         """Test that appending arms to HistoricalData updates historical info correctly."""
-        historical_info = self.three_arms_test_case
+        historical_info = copy.deepcopy(self.three_arms_test_case)
         historical_info.append_sample_arms(self.three_arms_two_winners_test_case.arms_sampled)
         expected_historical_info = HistoricalData(
             sample_arms={
@@ -86,7 +88,7 @@ class DataContainersTest(BanditTestCase):
 
     def test_historical_data_append_arms_with_variance_invalid(self):
         """Test that adding arms with variance causes a ValueError."""
-        historical_info = self.three_arms_with_variance_no_unsampled_arm_test_case
+        historical_info = copy.deepcopy(self.three_arms_with_variance_no_unsampled_arm_test_case)
         T.assert_raises(ValueError, historical_info.append_sample_arms, self.three_arms_with_variance_no_unsampled_arm_test_case.arms_sampled)
 
 
