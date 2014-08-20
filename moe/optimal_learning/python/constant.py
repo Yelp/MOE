@@ -37,6 +37,7 @@ DEFAULT_GAUSSIAN_PROCESS_PARAMETERS = GaussianProcessParameters(
 # Domain constants
 TENSOR_PRODUCT_DOMAIN_TYPE = 'tensor_product'
 SIMPLEX_INTERSECT_TENSOR_PRODUCT_DOMAIN_TYPE = 'simplex_intersect_tensor_product'
+LINEAR_CONSTRAINT_DOMAIN_TYPE = 'linear_constraints'
 
 #: Domain types supported by :mod:`moe`
 DOMAIN_TYPES = [

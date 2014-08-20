@@ -79,6 +79,13 @@ class RepeatedDomain(DomainInterface):
         """Return a list of ClosedIntervals representing a bounding box for this domain."""
         return self._domain.get_bounding_box()
 
+    def get_constraint_list(self, start_index=0):
+        """Return a list of lambda functions expressing the domain bounds as linear constraints. Used by COBYLA."""
+        constraints = []
+        for i in xrange(self.num_repeats):
+            constraints.extend(self._domain.get_constraint_list(start_index=self._domain.dim * i))
+        return constraints
+
     def generate_random_point_in_domain(self, random_source=None):
         """Generate ``point`` uniformly at random such that ``self.check_point_inside(point)`` is True.
 

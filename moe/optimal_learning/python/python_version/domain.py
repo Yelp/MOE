@@ -17,7 +17,7 @@ import copy
 
 import numpy
 
-from moe.optimal_learning.python.constant import TENSOR_PRODUCT_DOMAIN_TYPE
+from moe.optimal_learning.python.constant import TENSOR_PRODUCT_DOMAIN_TYPE, LINEAR_CONSTRAINT_DOMAIN_TYPE
 from moe.optimal_learning.python.geometry_utils import generate_grid_points, generate_latin_hypercube_points
 from moe.optimal_learning.python.interfaces.domain_interface import DomainInterface
 
@@ -84,6 +84,14 @@ class TensorProductDomain(DomainInterface):
     def get_bounding_box(self):
         """Return a list of ClosedIntervals representing a bounding box for this domain."""
         return copy.copy(self._domain_bounds)
+
+    def get_constraint_list(self, start_index=0):
+        """Return a list of lambda functions expressing the domain bounds as linear constraints. Used by COBYLA."""
+        constraints = []
+        for i, interval in enumerate(self._domain_bounds):
+            constraints.append((lambda x: x[i + start_index] - interval.min))
+            constraints.append((lambda x: interval.max - x[i + start_index]))
+        return constraints
 
     def generate_random_point_in_domain(self, random_source=None):
         """Generate ``point`` uniformly at random such that ``self.check_point_inside(point)`` is True.

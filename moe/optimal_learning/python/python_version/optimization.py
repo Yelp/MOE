@@ -324,6 +324,31 @@ class LBFGSBParameters(_BaseLBFGSBParameters):
     __slots__ = ()
 
 
+# See ConstrainedDFOParameters (below) for docstring.
+_BaseConstrainedDFOParameters = collections.namedtuple('_BaseConstrainedDFOParameters', [
+    'rhobeg',
+    'rhoend',
+    'maxfun',
+    'catol',
+])
+
+
+class ConstrainedDFOParameters(_BaseConstrainedDFOParameters):
+
+    r"""Container to hold parameters that specify the behavior of COBYLA.
+
+    Suggested values come from scipy documentation for scipy.optimize.fmin_cobyla.
+
+    :ivar rhobeg: (*float64 > 0.0*) reasonable initial changes to the variables (suggest: 1.0)
+    :ivar rhoend: (*float64 > 0.0*) final accuracy in the optimization (not precisely guaranteed), which is a lower bound on the size of the trust region (suggest: 1.0e-4)
+    :ivar maxfun: (*int > 0*) maximum number of objective function calls to make (suggest: 1000)
+    :ivar catol: (*float64 > 0.0*) absolute tolerance for constraint violations (suggest: 2.0e-4)
+
+    """
+
+    __slots__ = ()
+
+
 class NullOptimizer(OptimizerInterface):
 
     """A "null" or identity optimizer: this does nothing. It is used to perform "dumb" search with MultistartOptimizer."""
@@ -641,6 +666,78 @@ class LBFGSBOptimizer(OptimizerInterface):
             pgtol=self.optimization_parameters.pgtol,
             epsilon=self.optimization_parameters.epsilon,
         )[0]
+        if self._num_points == 1:
+            shaped_point = unshaped_point
+        else:
+            shaped_point = unshaped_point.reshape(self._num_points, self.domain.dim)
+        self.objective_function.current_point = shaped_point
+
+
+class ConstrainedDFOOptimizer(OptimizerInterface):
+
+    r"""Optimizes an objective function over the specified contraints with the COBYLA method.
+
+    .. Note:: See optimize() docstring for more details.
+
+    """
+
+    def __init__(self, domain, optimizable, optimization_parameters, num_random_samples=None):
+        """Construct a ConstrainedDFOOptimizer.
+
+        :param domain: the domain that this optimizer operates over
+        :type domain: interfaces.domain_interface.DomainInterface subclass. Only supports TensorProductDomain for now.
+        :param optimizable: object representing the objective function being optimized
+        :type optimizable: interfaces.optimization_interface.OptimizableInterface subclass
+        :param optimization_parameters: parameters describing how to perform optimization (tolerances, iterations, etc.)
+        :type optimization_parameters: python_version.optimization.ConstrainedDFOParameters object
+
+        """
+        self.domain = domain
+        self.objective_function = optimizable
+        self.optimization_parameters = optimization_parameters
+        self._num_points = 1
+        if hasattr(self.domain, 'num_repeats'):
+            self._num_points = self.domain.num_repeats
+
+    def _scipy_decorator(self, func, **kwargs):
+        """Wrapper function for expected improvement calculation to feed into COBYLA.
+
+        func should be of the form compute_* in interfaces.optimization_interface.OptimizableInterface.
+        """
+        def decorated(point):
+            """Decorator for compute_* functions in interfaces.optimization_interface.OptimizableInterface.
+
+            Converts the point to proper format and sets the current point before calling the compute function.
+
+            :param point: the point on which to do the calculation
+            :type point: array of float64 with shape (self._num_points * self.domain.dim)
+            """
+            shaped_point = point.reshape(self._num_points, self.domain.dim)
+            self.objective_function.current_point = shaped_point
+            value = -func(**kwargs)
+            if isinstance(value, (numpy.ndarray)):
+                return value.flatten()
+            else:
+                return value
+
+        return decorated
+
+    def optimize(self, **kwargs):
+        """Perform a COBYLA optimization given the parameters in optimization_parameters.
+
+        objective_function.current_point will be set to the optimal point found.
+        """
+        # Parameters defined above in LBFGSBParameters class.
+        unshaped_point = scipy.optimize.fmin_cobyla(
+            func=self._scipy_decorator(self.objective_function.compute_objective_function, **kwargs),
+            x0=self.objective_function.current_point.flatten(),
+            cons=self.domain.get_constraint_list(),
+            rhobeg=self.optimization_parameters.rhobeg,
+            rhoend=self.optimization_parameters.rhoend,
+            maxfun=self.optimization_parameters.maxfun,
+            catol=self.optimization_parameters.catol,
+            disp=0,  # Suppresses output from the routine.
+        )
         if self._num_points == 1:
             shaped_point = unshaped_point
         else:
