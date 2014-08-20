@@ -42,11 +42,9 @@ class SampleArm(object):
         :param arm: arm samples to add to this arm
         :type arm: a SampleArm object
         :return new SampleArm that is a result of adding two arms
-        :raise: ValueError when given arm is not a SampleArm or when ``arm.variance`` or self.variance is not None.
+        :raise: ValueError when ``arm.variance`` or self.variance is not None.
 
         """
-        if (not isinstance(arm, SampleArm)):
-            raise ValueError('Given arm to add is not a SampleArm!')
         if self._variance is not None or arm.variance is not None:
             raise ValueError('Cannot add arms when variance is not None! Please combine arms manually.')
         return SampleArm(win=self._win + arm.win, loss=self._loss + arm.loss, total=self._total + arm.total)
