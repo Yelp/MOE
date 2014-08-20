@@ -30,6 +30,18 @@ class DataContainersTest(BanditTestCase):
             for arm in historical_info.arms_sampled.itervalues():
                 T.assert_equals(str(arm), pprint.pformat(arm.json_payload()))
 
+    def test_sample_arm_add(self):
+        """Test SampleArm's __add__ overload operator."""
+        arm = SampleArm(win=2, loss=1, total=3) + SampleArm(win=3, loss=2, total=5)
+        T.assert_equals(arm.json_payload(), SampleArm(win=5, loss=3, total=8).json_payload())
+
+    def test_sample_arm_add_arm_with_variance_invalid(self):
+        """Test that adding arms with variance causes a ValueError. Neither of the arms can have non-None variance."""
+        arm = SampleArm(win=2, loss=1, total=500, variance=0.1)
+        T.assert_raises(ValueError, arm.__add__, SampleArm(win=2, loss=1, total=500, variance=None))
+        arm = SampleArm(win=2, loss=1, total=500, variance=None)
+        T.assert_raises(ValueError, arm.__add__, SampleArm(win=2, loss=1, total=500, variance=0.1))
+
     def test_historical_data_str(self):
         """Test HistoricalData's __str__ overload operator."""
         for historical_info in self.historical_infos_to_test:
@@ -48,7 +60,13 @@ class DataContainersTest(BanditTestCase):
         """Test that appending arms to HistoricalData updates historical info correctly."""
         historical_info = self.three_arms_test_case
         historical_info.append_sample_arms(self.three_arms_two_winners_test_case.arms_sampled)
-        expected_historical_info = HistoricalData(sample_arms={"arm1": SampleArm(win=4, loss=2, total=6), "arm2": SampleArm(win=3, loss=2, total=5), "arm3": SampleArm(win=0, loss=0, total=0)})
+        expected_historical_info = HistoricalData(
+            sample_arms={
+                "arm1": SampleArm(win=4, loss=2, total=6),
+                "arm2": SampleArm(win=3, loss=2, total=5),
+                "arm3": SampleArm(win=0, loss=0, total=0),
+                }
+            )
         T.assert_dicts_equal(
                 historical_info.json_payload(),
                 expected_historical_info.json_payload()
