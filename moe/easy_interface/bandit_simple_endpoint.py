@@ -2,7 +2,7 @@
 """Simple functions for hitting the REST endpoints of a MOE bandit service."""
 import simplejson as json
 
-from moe.easy_interface import call_endpoint_with_payload, DEFAULT_HOST, DEFAULT_PORT
+from moe.easy_interface.simple_endpoint import call_endpoint_with_payload, DEFAULT_HOST, DEFAULT_PORT
 from moe.views.constant import ALL_REST_ROUTES_ROUTE_NAME_TO_ENDPOINT, BANDIT_BLA_ROUTE_NAME
 from moe.views.schemas.bandit_pretty_view import BanditResponse
 

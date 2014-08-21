@@ -49,6 +49,10 @@ EPSILON_SUBTYPES_TO_DEFAULT_HYPERPARAMETER_INFOS = {
         EPSILON_SUBTYPE_GREEDY: {'epsilon': DEFAULT_EPSILON},
         }
 
+# Test Hyperparameters
+TEST_EPSILON = 0.1
+TEST_TOTAL_SAMPLES = 200
+
 # Bandit Endpoints
 BANDIT_BLA_ENDPOINT = 'bla_endpoint'
 BANDIT_EPSILON_ENDPOINT = 'epsilon_endpoint'

@@ -59,7 +59,10 @@ def run_example(
         bandit_ucb_kwargs = {}
     bandit_kwargs[BANDIT_UCB_ROUTE_NAME] = dict(kwargs.items() + bandit_ucb_kwargs.items())
 
-    historical_info = _make_bandit_historical_info_from_params(DEFAULT_BANDIT_HISTORICAL_INFO, arm_type=BernoulliArm)
+    historical_info = _make_bandit_historical_info_from_params(
+            {"historical_info": DEFAULT_BANDIT_HISTORICAL_INFO},
+            arm_type=BernoulliArm
+            )
 
     for type in BANDIT_ROUTE_NAMES:
         if verbose:
