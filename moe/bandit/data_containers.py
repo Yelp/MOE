@@ -31,7 +31,8 @@ class SampleArm(object):
         self._total = total
         self._variance = variance
         self.validate()
-
+    
+    #TODO this has a bug
     def __str__(self):
         """Pretty print this object as a dict."""
         return pprint.pformat(dict(self._asdict()))
@@ -49,6 +50,7 @@ class SampleArm(object):
         self._total += arm.total
         if self._variance is not None or arm.variance is not None:
             raise ValueError('Cannot add arms when variance is not None! Please combine arms manually.')
+        return self
 
     def json_payload(self):
         """Convert the sample_arm into a dict to be consumed by json for a REST request."""
