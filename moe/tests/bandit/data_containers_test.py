@@ -50,12 +50,15 @@ class DataContainersTest(BanditTestCase):
         T.assert_equals(arm3.json_payload(), SampleArm(win=5, loss=3, total=8).json_payload())
 
     def test_sample_arm_iadd(self):
-        """Test SampleArm's __iadd__ overload operator. Verify that after x += y, x still retains its old id."""
+        """Test SampleArm's __iadd__ overload operator. Verify that after x += y, x gets the new value x + y and still retains its old id."""
         arm1 = SampleArm(win=2, loss=1, total=3)
+        arm2 = SampleArm(win=3, loss=2, total=5)
+        arm3 = arm1 + arm2
         arm1_old_id = id(arm1)
-        arm1 += SampleArm(win=3, loss=2, total=5)
+        arm1 += arm2
         arm1_new_id = id(arm1)
         T.assert_equals(arm1_old_id, arm1_new_id)
+        T.assert_equals(arm1.json_payload(), arm3.json_payload())
 
     def test_sample_arm_add_arm_with_variance_invalid(self):
         """Test that adding arms with variance causes a ValueError. Neither of the arms can have non-None variance."""

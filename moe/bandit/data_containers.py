@@ -57,10 +57,10 @@ class SampleArm(object):
     def __iadd__(self, other):
         """Overload in-place Add operator to add other sampled arm results to this arm in-place.
 
-        :param arm: arm samples to add to this arm
-        :type arm: a SampleArm object
-        :return: this arm after adding the given arm
-         :rtype: SampleArm
+        :param other: arm samples to add to this arm
+        :type other: a SampleArm object
+        :return: this arm after adding other
+        :rtype: SampleArm
         :raise: ValueError when ``arm.variance`` or self.variance is not None.
 
         """
