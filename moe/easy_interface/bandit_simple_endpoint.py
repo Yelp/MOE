@@ -3,8 +3,7 @@
 import simplejson as json
 
 from moe.easy_interface import call_endpoint_with_payload, DEFAULT_HOST, DEFAULT_PORT
-from moe.bandit.data_containers import HistoricalData
-from moe.views.constant import ALL_REST_ROUTES_ROUTE_NAME_TO_ENDPOINT, BANDIT_BLA_ROUTE_NAME, BANDIT_EPSILON_ROUTE_NAME, BANDIT_UCB_ROUTE_NAME
+from moe.views.constant import ALL_REST_ROUTES_ROUTE_NAME_TO_ENDPOINT, BANDIT_BLA_ROUTE_NAME
 from moe.views.schemas.bandit_pretty_view import BanditResponse
 
 
