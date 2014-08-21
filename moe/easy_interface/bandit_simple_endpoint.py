@@ -10,16 +10,16 @@ from moe.views.schemas.bandit_pretty_view import BanditResponse
 
 def bandit(
         historical_info,
-        bandit_route_name=BANDIT_BLA_ROUTE_NAME,
-        subtype=DEFAULT_BLA_SUBTYPE,
+        type=BANDIT_BLA_ROUTE_NAME,
         rest_host=DEFAULT_HOST,
         rest_port=DEFAULT_PORT,
         testapp=None,
         **kwargs
         ):
     """Hit the rest endpoint for allocating arms of a bandit given arms already sampled (historical info)."""
-    endpoint = ALL_REST_ROUTES_ROUTE_NAME_TO_ENDPOINT[bandit_route_name]
+    endpoint = ALL_REST_ROUTES_ROUTE_NAME_TO_ENDPOINT[type]
     raw_payload = kwargs.copy()
+    raw_payload['historical_info'] = historical_info.json_payload()
 
     json_payload = json.dumps(raw_payload)
 

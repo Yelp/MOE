@@ -8,6 +8,7 @@ from moe.bandit.epsilon_first import EpsilonFirst
 from moe.bandit.epsilon_greedy import EpsilonGreedy
 from moe.bandit.ucb1 import UCB1
 from moe.bandit.ucb1_tuned import UCB1Tuned
+from moe.views.constant import BANDIT_BLA_ROUTE_NAME, BANDIT_EPSILON_ROUTE_NAME, BANDIT_UCB_ROUTE_NAME
 
 BanditMethod = namedtuple(
         'BanditMethod',
@@ -52,4 +53,10 @@ BANDIT_ENDPOINTS_TO_SUBTYPES = {
         BANDIT_BLA_ENDPOINT: BLA_SUBTYPES,
         BANDIT_EPSILON_ENDPOINT: EPSILON_SUBTYPES,
         BANDIT_UCB_ENDPOINT: UCB_SUBTYPES,
+        }
+
+BANDIT_ROUTE_NAMES_TO_SUBTYPES = {
+        BANDIT_BLA_ROUTE_NAME: BLA_SUBTYPES,
+        BANDIT_EPSILON_ROUTE_NAME: EPSILON_SUBTYPES,
+        BANDIT_UCB_ROUTE_NAME: UCB_SUBTYPES,
         }
