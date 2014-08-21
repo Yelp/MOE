@@ -48,9 +48,9 @@ class SampleArm(object):
         """
         if self._variance is not None or other.variance is not None:
             raise ValueError('Cannot add arms when variance is not None! Please combine arms manually.')
-        self.validate()
-        other.validate()
-        return SampleArm(win=self._win + other.win, loss=self._loss + other.loss, total=self._total + other.total)
+        out = SampleArm(win=self._win + other.win, loss=self._loss + other.loss, total=self._total + other.total)
+        out.validate()
+        return out
 
     __radd__ = __add__
 
