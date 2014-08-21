@@ -7,7 +7,8 @@
 
 * Bugs
 
-  * variance in a sample arm is dropped in _make_bandit_historical_info_from_params (#385)
+  * variance in a sample arm was dropped in _make_bandit_historical_info_from_params. (#385)
+  * SampleArm's __add__ and __str__ were broken. (#387)
 
 ## v0.2.0 (2014-08-15)
 
