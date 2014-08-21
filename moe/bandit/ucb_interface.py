@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Classes (Python) to compute the Bandit UCB arm allocation and choosing the arm to pull next.
+"""Classes (Python) to compute the Bandit UCB (Upper Confidence Bound) arm allocation and choosing the arm to pull next.
 
 See :class:`moe.bandit.interfaces.bandit_interface` for further details on bandit.
 
@@ -14,7 +14,7 @@ from moe.bandit.utils import get_winning_arm_names_from_payoff_arm_name_list, ge
 
 class UCBInterface(BanditInterface):
 
-    r"""Implementation of the constructor of UCB and method allocate_arms. The method get_ucb_payoff is implemented in subclass.
+    r"""Implementation of the constructor of UCB (Upper Confidence Bound) and method allocate_arms. The method get_ucb_payoff is implemented in subclass.
 
     A class to encapsulate the computation of bandit UCB.
     The Algorithm: http://moodle.technion.ac.il/pluginfile.php/192340/mod_resource/content/0/UCB.pdf

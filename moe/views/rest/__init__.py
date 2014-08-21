@@ -51,8 +51,24 @@
 
         .. http:post:: /bandit/epsilon
 
-           Calculates the arm allocations and the best arm to pull next, given subtype, historical data, hyperparameters.
+           Calculates the arm allocations and the best arm to pull next using Epsilon policy, given subtype, historical data, hyperparameters.
 
         .. http:get:: /bandit/epsilon/pretty
+
+    * :mod:`~moe.views.rest.bandit_ucb`
+
+        .. http:post:: /bandit/ucb
+
+           Calculates the arm allocations and the best arm to pull next using UCB policy, given subtype, historical data, hyperparameters.
+
+        .. http:get:: /bandit/ucb/pretty
+
+    * :mod:`~moe.views.rest.bandit_bla`
+
+        .. http:post:: /bandit/bla
+
+           Calculates the arm allocations and the best arm to pull next using BLA policy, given subtype, historical data, hyperparameters.
+
+        .. http:get:: /bandit/bla/pretty
 
 """

@@ -11,9 +11,12 @@
 #include <vector>
 
 #include "gpp_common.hpp"
+#include "gpp_domain.hpp"
 #include "gpp_exception.hpp"
 #include "gpp_logging.hpp"
 #include "gpp_math.hpp"
+#include "gpp_optimization.hpp"
+#include "gpp_optimizer_parameters.hpp"
 #include "gpp_random.hpp"
 
 #ifdef OL_GPU_ENABLED
@@ -72,7 +75,7 @@ class OptimalLearningCudaException : public OptimalLearningException {
 struct CudaExpectedImprovementState;
 
 /*!\rst
-  This class has the same functionality as ExpectedImprovementEvaluator (see gpp_math.hpp),
+  This class has the same functionality as ``ExpectedImprovementEvaluator`` (see ``gpp_math.hpp``),
   except that computations are performed on GPU.
 \endrst*/
 class CudaExpectedImprovementEvaluator final {
@@ -160,23 +163,15 @@ class CudaExpectedImprovementEvaluator final {
 };
 
 /*!\rst
-  This has the same functionality as ExpectedImprovementState (see gpp_math.hpp) except that it is for GPU computing
+  This has the same functionality as ``ExpectedImprovementState`` (see ``gpp_math.hpp``) except that it is for GPU computing
 \endrst*/
 struct CudaExpectedImprovementState final {
   using EvaluatorType = CudaExpectedImprovementEvaluator;
 
   /*!\rst
-    Constructs an CudaExpectedImprovementState object with a specified source of randomness for
-    the purpose of computing EI(and its gradient) over the specified set of points to sample.
-    This establishes properly sized/initialized temporaries for EI computation, including dependent
-    state from the associated Gaussian Process (which arrives as part of the ei_evaluator).
-
-    .. WARNING:: This object is invalidated if the associated ei_evaluator is mutated.  SetupState()
-    should be called to reset.
-
-    .. WARNING::
-         Using this object to compute gradients when ``configure_for_gradients`` := false results in
-         UNDEFINED BEHAVIOR.
+    This struct has same functionality as ``ExpectedImprovementState`` in ``gpp_math.hpp``,
+    except that it is specifically for GPU EI evaluator. Refer to ``gpp_math.hpp`` for detailed
+    documentation.
 
     \param
       :ei_evaluator: expected improvement evaluator object that specifies the parameters & GP for EI evaluation
@@ -261,7 +256,7 @@ struct CudaExpectedImprovementState final {
       :ei_evaluator: expected improvement evaluator object that specifies the parameters & GP for EI evaluation
       :points_to_sample[dim][num_to_sample]: potential future samples whose EI (and/or gradients) are being evaluated
   \endrst*/
-  void UpdateCurrentPoint(const EvaluatorType& ei_evaluator, double const * restrict points_to_sample) OL_NONNULL_POINTERS;
+  void SetCurrentPoint(const EvaluatorType& ei_evaluator, double const * restrict points_to_sample) OL_NONNULL_POINTERS;
 
   /*!\rst
     Configures this state object with new ``points_to_sample``, the location of the potential samples whose EI is to be evaluated.
@@ -331,6 +326,273 @@ struct CudaExpectedImprovementState final {
 
   OL_DISALLOW_DEFAULT_AND_COPY_AND_ASSIGN(CudaExpectedImprovementState);
 };
+
+/*!\rst
+  This function is the same as ``ComputeOptimalPointsToSampleViaMultistartGradientDescent`` in ``gpp_math.hpp`` except that it is
+  specifically used for GPU EI evaluators. Refer to ``gpp_math.hpp`` for detailed documentation.
+
+  \param
+    :gaussian_process: GaussianProcess object (holds ``points_sampled``, ``values``, ``noise_variance``, derived quantities)
+      that describes the underlying GP
+    :optimizer_parameters: GradientDescentParameters object that describes the parameters controlling EI optimization
+      (e.g., number of iterations, tolerances, learning rate)
+    :domain: object specifying the domain to optimize over (see ``gpp_domain.hpp``)
+    :thread_schedule: struct instructing OpenMP on how to schedule threads; i.e., (suggestions in parens)
+      max_num_threads (num cpu cores), schedule type (omp_sched_dynamic), chunk_size (0).
+    :start_point_set[dim][num_to_sample][num_multistarts]: set of initial guesses for MGD (one block of num_to_sample points per multistart)
+    :points_being_sampled[dim][num_being_sampled]: points that are being sampled in concurrent experiments
+    :num_multistarts: number of points in set of initial guesses
+    :num_to_sample: number of potential future samples; gradients are evaluated wrt these points (i.e., the "q" in q,p-EI)
+    :num_being_sampled: number of points being sampled concurrently (i.e., the "p" in q,p-EI)
+    :best_so_far: value of the best sample so far (must be ``min(points_sampled_value)``)
+    :max_int_steps: maximum number of MC iterations
+    :normal_rng[thread_schedule.max_num_threads]: a vector of NormalRNG objects that provide
+      the (pesudo)random source for MC integration
+  \output
+    :normal_rng[thread_schedule.max_num_threads]: NormalRNG objects will have their state changed due to random draws
+    :found_flag[1]: true if ``best_next_point`` corresponds to a nonzero EI
+    :best_next_point[dim][num_to_sample]: points yielding the best EI according to MGD
+\endrst*/
+template <typename DomainType>
+OL_NONNULL_POINTERS void CudaComputeOptimalPointsToSampleViaMultistartGradientDescent(
+    const GaussianProcess& gaussian_process,
+    const GradientDescentParameters& optimizer_parameters,
+    const DomainType& domain,
+    const ThreadSchedule thread_schedule,
+    double const * restrict start_point_set,
+    double const * restrict points_being_sampled,
+    int num_multistarts,
+    int num_to_sample,
+    int num_being_sampled,
+    double best_so_far,
+    int max_int_steps,
+    UniformRandomGenerator* uniform_rng,
+    bool * restrict found_flag,
+    int which_gpu,
+    double * restrict best_next_point) {
+  if (unlikely(num_multistarts <= 0)) {
+    OL_THROW_EXCEPTION(LowerBoundException<int>, "num_multistarts must be > 1", num_multistarts, 1);
+  }
+
+  bool configure_for_gradients = true;
+  if (num_to_sample == 1 && num_being_sampled == 0) {
+    // special analytic case when we are not using (or not accounting for) multiple, simultaneous experiments
+    ComputeOptimalPointsToSampleViaMultistartGradientDescent(gaussian_process, optimizer_parameters, domain, thread_schedule,
+                                                             start_point_set, points_being_sampled, num_multistarts, num_to_sample,
+                                                             num_being_sampled, best_so_far, max_int_steps, nullptr, found_flag,
+                                                             best_next_point);
+  } else {
+    CudaExpectedImprovementEvaluator ei_evaluator(gaussian_process, max_int_steps, best_so_far, which_gpu);
+
+    typename CudaExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, start_point_set, points_being_sampled,
+                                                                  num_to_sample, num_being_sampled, configure_for_gradients,
+                                                                  uniform_rng);
+
+    // init winner to be first point in set and 'force' its value to be 0.0; we cannot do worse than this
+    OptimizationIOContainer io_container(ei_state.GetProblemSize(), 0.0, start_point_set);
+
+    using RepeatedDomain = RepeatedDomain<DomainType>;
+    RepeatedDomain repeated_domain(domain, num_to_sample);
+    GradientDescentOptimizer<CudaExpectedImprovementEvaluator, RepeatedDomain> gd_opt;
+    MultistartOptimizer<GradientDescentOptimizer<CudaExpectedImprovementEvaluator, RepeatedDomain> > multistart_optimizer;
+    multistart_optimizer.MultistartOptimize(gd_opt, ei_evaluator, optimizer_parameters,
+                                            repeated_domain, thread_schedule, start_point_set,
+                                            num_multistarts,
+                                            &ei_state, nullptr, &io_container);
+    *found_flag = io_container.found_flag;
+    std::copy(io_container.best_point.begin(), io_container.best_point.end(), best_next_point);
+  }
+}
+
+/*!\rst
+  This function is the same as ``ComputeOptimalPointsToSampleWithRandomStarts`` in ``gpp_math.hpp`` except that it is
+  specifically used for GPU EI evaluators. Refer to ``gpp_math.hpp`` for detailed documentation.
+
+  \param
+    :gaussian_process: GaussianProcess object (holds ``points_sampled``, ``values``, ``noise_variance``, derived quantities)
+      that describes the underlying GP
+    :optimizer_parameters: GradientDescentParameters object that describes the parameters controlling EI optimization
+      (e.g., number of iterations, tolerances, learning rate)
+    :domain: object specifying the domain to optimize over (see ``gpp_domain.hpp``)
+    :thread_schedule: struct instructing OpenMP on how to schedule threads; i.e., (suggestions in parens)
+      max_num_threads (num cpu cores), schedule type (omp_sched_dynamic), chunk_size (0).
+    :points_being_sampled[dim][num_being_sampled]: points that are being sampled in concurrent experiments
+    :num_to_sample: number of potential future samples; gradients are evaluated wrt these points (i.e., the "q" in q,p-EI)
+    :num_being_sampled: number of points being sampled concurrently (i.e., the "p" in q,p-EI)
+    :best_so_far: value of the best sample so far (must be ``min(points_sampled_value)``)
+    :max_int_steps: maximum number of MC iterations
+    :uniform_generator[1]: a UniformRandomGenerator object providing the random engine for uniform random numbers
+    :normal_rng[thread_schedule.max_num_threads]: a vector of NormalRNG objects that provide
+      the (pesudo)random source for MC integration
+  \output
+    :found_flag[1]: true if best_next_point corresponds to a nonzero EI
+    :uniform_generator[1]: UniformRandomGenerator object will have its state changed due to random draws
+    :normal_rng[thread_schedule.max_num_threads]: NormalRNG objects will have their state changed due to random draws
+    :best_next_point[dim][num_to_sample]: points yielding the best EI according to MGD
+\endrst*/
+template <typename DomainType>
+void CudaComputeOptimalPointsToSampleWithRandomStarts(const GaussianProcess& gaussian_process,
+                                                      const GradientDescentParameters& optimizer_parameters,
+                                                      const DomainType& domain, const ThreadSchedule& thread_schedule,
+                                                      double const * restrict points_being_sampled,
+                                                      int num_to_sample, int num_being_sampled, double best_so_far,
+                                                      int max_int_steps, bool * restrict found_flag, int which_gpu,
+                                                      UniformRandomGenerator * uniform_generator,
+                                                      double * restrict best_next_point) {
+  std::vector<double> starting_points(gaussian_process.dim()*optimizer_parameters.num_multistarts*num_to_sample);
+
+  // GenerateUniformPointsInDomain() is allowed to return fewer than the requested number of multistarts
+  RepeatedDomain<DomainType> repeated_domain(domain, num_to_sample);
+  int num_multistarts = repeated_domain.GenerateUniformPointsInDomain(optimizer_parameters.num_multistarts,
+                                                                      uniform_generator, starting_points.data());
+
+  CudaComputeOptimalPointsToSampleViaMultistartGradientDescent(gaussian_process, optimizer_parameters, domain,
+                                                               thread_schedule, starting_points.data(),
+                                                               points_being_sampled, num_multistarts, num_to_sample,
+                                                               num_being_sampled, best_so_far, max_int_steps,
+                                                               uniform_generator, found_flag, which_gpu, best_next_point);
+#ifdef OL_WARNING_PRINT
+  if (false == *found_flag) {
+    OL_WARNING_PRINTF("WARNING: %s DID NOT CONVERGE\n", OL_CURRENT_FUNCTION_NAME);
+    OL_WARNING_PRINTF("First multistart point was returned:\n");
+    PrintMatrixTrans(starting_points.data(), num_to_sample, gaussian_process.dim());
+  }
+#endif
+}
+
+/*!\rst
+  This function is the same as ``EvaluateEIAtPointList`` in ``gpp_math.hpp`` except that it is
+  specifically used for GPU EI evaluators. Refer to ``gpp_math.hpp`` for detailed documentation.
+
+  \param
+    :gaussian_process: GaussianProcess object (holds ``points_sampled``, ``values``, ``noise_variance``, derived quantities)
+      that describes the underlying GP
+    :thread_schedule: struct instructing OpenMP on how to schedule threads; i.e., (suggestions in parens)
+      max_num_threads (num cpu cores), schedule type (omp_sched_static), chunk_size (0).
+    :initial_guesses[dim][num_to_sample][num_multistarts]: list of points at which to compute EI
+    :points_being_sampled[dim][num_being_sampled]: points that are being sampled in concurrent experiments
+    :num_multistarts: number of points to check
+    :num_to_sample: number of potential future samples; gradients are evaluated wrt these points (i.e., the "q" in q,p-EI)
+    :num_being_sampled: number of points being sampled concurrently (i.e., the "p" in q,p-EI)
+    :best_so_far: value of the best sample so far (must be ``min(points_sampled_value)``)
+    :max_int_steps: maximum number of MC iterations
+    :which_gpu: the device ID of GPU used for computation
+    :uniform_rng[1]: a UniformRandomGenerator object that provide
+      the (pesudo)random source for MC integration
+  \output
+    :found_flag[1]: true if best_next_point corresponds to a nonzero EI
+    :uniform_rng[1]: UniformRandomGenerator object will have its state changed due to random draws
+    :function_values[num_multistarts]: EI evaluated at each point of ``initial_guesses``, in the same order as
+      ``initial_guesses``; never dereferenced if nullptr
+    :best_next_point[dim][num_to_sample]: points yielding the best EI according to dumb search
+\endrst*/
+void CudaEvaluateEIAtPointList(const GaussianProcess& gaussian_process,
+                               const ThreadSchedule& thread_schedule,
+                               double const * restrict initial_guesses,
+                               double const * restrict points_being_sampled,
+                               int num_multistarts, int num_to_sample,
+                               int num_being_sampled, double best_so_far,
+                               int max_int_steps, bool * restrict found_flag,
+                               int which_gpu, UniformRandomGenerator* uniform_rng,
+                               double * restrict function_values,
+                               double * restrict best_next_point);
+
+/*!\rst
+  This function is the same as ``ComputeOptimalPointsToSampleViaLatinHypercubeSearch`` in ``gpp_math.hpp`` except that it is
+  specifically used for GPU EI evaluators. Refer to ``gpp_math.hpp`` for detailed documentation.
+
+  \param
+    :gaussian_process: GaussianProcess object (holds ``points_sampled``, ``values``, ``noise_variance``, derived quantities)
+      that describes the underlying GP
+    :domain: object specifying the domain to optimize over (see ``gpp_domain.hpp``)
+    :thread_schedule: struct instructing OpenMP on how to schedule threads; i.e., (suggestions in parens)
+      max_num_threads (num cpu cores), schedule type (omp_sched_static), chunk_size (0).
+    :points_being_sampled[dim][num_being_sampled]: points that are being sampled in concurrent experiments
+    :num_multistarts: number of random points to check
+    :num_to_sample: number of potential future samples; gradients are evaluated wrt these points (i.e., the "q" in q,p-EI)
+    :num_being_sampled: number of points being sampled concurrently (i.e., the "p" in q,p-EI)
+    :best_so_far: value of the best sample so far (must be ``min(points_sampled_value)``)
+    :max_int_steps: maximum number of MC iterations
+    :which_gpu: device ID of the GPU used for computation
+    :uniform_generator[1]: a UniformRandomGenerator object providing the random engine for uniform random numbers
+  \output
+    found_flag[1]: true if best_next_point corresponds to a nonzero EI
+    :uniform_generator[1]: UniformRandomGenerator object will have its state changed due to random draws
+    :best_next_point[dim][num_to_sample]: points yielding the best EI according to dumb search
+\endrst*/
+template <typename DomainType>
+void CudaComputeOptimalPointsToSampleViaLatinHypercubeSearch(const GaussianProcess& gaussian_process,
+                                                             const DomainType& domain,
+                                                             const ThreadSchedule& thread_schedule,
+                                                             double const * restrict points_being_sampled,
+                                                             int num_multistarts, int num_to_sample,
+                                                             int num_being_sampled, double best_so_far,
+                                                             int max_int_steps, bool * restrict found_flag,
+                                                             int which_gpu, UniformRandomGenerator * uniform_generator,
+                                                             double * restrict best_next_point) {
+  std::vector<double> initial_guesses(gaussian_process.dim()*num_multistarts*num_to_sample);
+  RepeatedDomain<DomainType> repeated_domain(domain, num_to_sample);
+  num_multistarts = repeated_domain.GenerateUniformPointsInDomain(num_multistarts, uniform_generator,
+                                                                  initial_guesses.data());
+
+  CudaEvaluateEIAtPointList(gaussian_process, thread_schedule, initial_guesses.data(),
+                            points_being_sampled, num_multistarts, num_to_sample,
+                            num_being_sampled, best_so_far, max_int_steps,
+                            found_flag, which_gpu, uniform_generator, nullptr, best_next_point);
+}
+
+/*!\rst
+  This function is the same as ``ComputeOptimalPointsToSample`` in ``gpp_math.hpp`` except that it is
+  specifically used for GPU EI evaluators. Refer to ``gpp_math.hpp`` for detailed documentation.
+
+  \param
+    :gaussian_process: GaussianProcess object (holds ``points_sampled``, ``values``, ``noise_variance``, derived quantities)
+      that describes the underlying GP
+    :optimizer_parameters: GradientDescentParameters object that describes the parameters controlling EI optimization
+      (e.g., number of iterations, tolerances, learning rate)
+    :domain: object specifying the domain to optimize over (see ``gpp_domain.hpp``)
+    :thread_schedule: struct instructing OpenMP on how to schedule threads; i.e., (suggestions in parens)
+      max_num_threads (num cpu cores), schedule type (omp_sched_dynamic), chunk_size (0).
+    :points_being_sampled[dim][num_being_sampled]: points that are being sampled in concurrent experiments
+    :num_to_sample: how many simultaneous experiments you would like to run (i.e., the q in q,p-EI)
+    :num_being_sampled: number of points being sampled concurrently (i.e., the p in q,p-EI)
+    :best_so_far: value of the best sample so far (must be ``min(points_sampled_value)``)
+    :max_int_steps: maximum number of MC iterations
+    :lhc_search_only: whether to ONLY use latin hypercube search (and skip gradient descent EI opt)
+    :num_lhc_samples: number of samples to draw if/when doing latin hypercube search
+    :which_gpu: device ID of GPU used for computation
+    :uniform_generator[1]: a UniformRandomGenerator object providing the random engine for uniform random numbers
+  \output
+    :found_flag[1]: true if best_points_to_sample corresponds to a nonzero EI if sampled simultaneously
+    :uniform_generator[1]: UniformRandomGenerator object will have its state changed due to random draws
+    :best_points_to_sample[num_to_sample*dim]: point yielding the best EI according to MGD
+\endrst*/
+template <typename DomainType>
+void CudaComputeOptimalPointsToSample(const GaussianProcess& gaussian_process,
+                                      const GradientDescentParameters& optimizer_parameters,
+                                      const DomainType& domain, const ThreadSchedule& thread_schedule,
+                                      double const * restrict points_being_sampled,
+                                      int num_to_sample, int num_being_sampled, double best_so_far,
+                                      int max_int_steps, bool lhc_search_only,
+                                      int num_lhc_samples, bool * restrict found_flag, int which_gpu,
+                                      UniformRandomGenerator * uniform_generator,
+                                      double * restrict best_points_to_sample);
+
+// template explicit instantiation definitions, see gpp_common.hpp header comments, item 6
+extern template void CudaComputeOptimalPointsToSample(
+    const GaussianProcess& gaussian_process, const GradientDescentParameters& optimizer_parameters,
+    const TensorProductDomain& domain, const ThreadSchedule& thread_schedule,
+    double const * restrict points_being_sampled, int num_to_sample,
+    int num_being_sampled, double best_so_far, int max_int_steps, bool lhc_search_only,
+    int num_lhc_samples, bool * restrict found_flag, int which_gpu,
+    UniformRandomGenerator * uniform_generator, double * restrict best_points_to_sample);
+extern template void CudaComputeOptimalPointsToSample(
+    const GaussianProcess& gaussian_process, const GradientDescentParameters& optimizer_parameters,
+    const SimplexIntersectTensorProductDomain& domain, const ThreadSchedule& thread_schedule,
+    double const * restrict points_being_sampled,
+    int num_to_sample, int num_being_sampled, double best_so_far, int max_int_steps,
+    bool lhc_search_only, int num_lhc_samples, bool * restrict found_flag, int which_gpu,
+    UniformRandomGenerator * uniform_generator, double * restrict best_points_to_sample);
 
 #endif  // OL_GPU_ENABLED
 

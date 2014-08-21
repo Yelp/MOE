@@ -9,10 +9,7 @@ This package includes:
 * Test cases/test setup files
 * Tests for bandit/epsilon
 * Tests for bandit/ucb
-
-**Files in this package**
-
-* bandit_test_case.py: test case with different sampled arm historical info inputs
+* Tests for bandit/bla
 
 This package includes:
 
@@ -23,6 +20,7 @@ This package includes:
 
 * :mod:`moe.tests.bandit.bandit_interface_test`: tests for :mod:`moe.bandit.interfaces.bandit_interface.BanditInterface`
 * :mod:`moe.tests.bandit.bandit_test_case`: base test case for bandit tests with a simple integration test case
+* :mod:`moe.tests.bandit.bla_test`: tests for :mod:`moe.bandit.bla.BLA`
 * :mod:`moe.tests.bandit.epsilon_first_test`: tests for :mod:`moe.bandit.epsilon_greedy.EpsilonFirst`
 * :mod:`moe.tests.bandit.epsilon_greedy_test`: tests for :mod:`moe.bandit.epsilon_greedy.EpsilonGreedy`
 * :mod:`moe.tests.bandit.epsilon_test`: tests for :mod:`moe.bandit.epsilon_greedy.Epsilon`
