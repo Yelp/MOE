@@ -1,6 +1,6 @@
 * Features
 
-  * The function multistart_expected_improvement_optimization in moe.optimal_learning.python.cpp_wrappers.expected_improvement
+  * The function ``multistart_expected_improvement_optimization`` in moe.optimal_learning.python.cpp_wrappers.expected_improvement
     now has the option of using GPU optimizer. (#368)
   * Implemented  BLA (Bayesian Learning Automaton). (#373)
   * Connected GPU functions to multistart gradient descent optimizer. (#270)
