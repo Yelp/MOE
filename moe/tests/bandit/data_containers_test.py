@@ -50,7 +50,11 @@ class DataContainersTest(BanditTestCase):
         T.assert_equals(arm3.json_payload(), SampleArm(win=5, loss=3, total=8).json_payload())
 
     def test_sample_arm_iadd(self):
-        """Test SampleArm's __iadd__ overload operator. Verify that after x += y, x gets the new value x + y and still retains its old id."""
+        """Test SampleArm's __iadd__ overload operator.
+
+        Verify that after x += y, x gets the new value x + y and still retains its old id.
+
+        """
         arm1 = SampleArm(win=2, loss=1, total=3)
         arm2 = SampleArm(win=3, loss=2, total=5)
         arm3 = arm1 + arm2
@@ -86,12 +90,12 @@ class DataContainersTest(BanditTestCase):
         historical_info = copy.deepcopy(self.three_arms_test_case)
         historical_info.append_sample_arms(self.three_arms_two_winners_test_case.arms_sampled)
         expected_historical_info = HistoricalData(
-            sample_arms={
-                "arm1": SampleArm(win=4, loss=2, total=6),
-                "arm2": SampleArm(win=3, loss=2, total=5),
-                "arm3": SampleArm(win=0, loss=0, total=0),
-                }
-            )
+                sample_arms={
+                    "arm1": SampleArm(win=4, loss=2, total=6),
+                    "arm2": SampleArm(win=3, loss=2, total=5),
+                    "arm3": SampleArm(win=0, loss=0, total=0),
+                    }
+                )
         T.assert_dicts_equal(
                 historical_info.json_payload(),
                 expected_historical_info.json_payload()
@@ -100,7 +104,11 @@ class DataContainersTest(BanditTestCase):
     def test_historical_data_append_arms_with_variance_invalid(self):
         """Test that adding arms with variance causes a ValueError."""
         historical_info = copy.deepcopy(self.three_arms_with_variance_no_unsampled_arm_test_case)
-        T.assert_raises(ValueError, historical_info.append_sample_arms, self.three_arms_with_variance_no_unsampled_arm_test_case.arms_sampled)
+        T.assert_raises(
+                ValueError,
+                historical_info.append_sample_arms,
+                self.three_arms_with_variance_no_unsampled_arm_test_case.arms_sampled
+                )
 
 
 if __name__ == "__main__":
