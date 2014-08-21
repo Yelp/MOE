@@ -29,6 +29,8 @@
 
 #include "gpp_common.hpp"
 #include "gpp_domain.hpp"
+#include "gpp_exception.hpp"
+#include "gpp_expected_improvement_gpu.hpp"
 #include "gpp_geometry.hpp"
 #include "gpp_heuristic_expected_improvement_optimization.hpp"
 #include "gpp_math.hpp"
@@ -135,7 +137,7 @@ void DispatchExpectedImprovementOptimization(const boost::python::object& optimi
                                              int num_to_sample, double best_so_far,
                                              int max_int_steps, int max_num_threads,
                                              RandomnessSourceContainer& randomness_source,
-                                             boost::python::dict& status,
+                                             boost::python::dict& status, bool use_gpu, int which_gpu,
                                              double * restrict best_points_to_sample) {
   bool found_flag = false;
   switch (optimizer_type) {
@@ -144,15 +146,28 @@ void DispatchExpectedImprovementOptimization(const boost::python::object& optimi
       // optimizer_parameters must contain an int num_random_samples field, extract it
       int num_random_samples = boost::python::extract<int>(optimizer_parameters.attr("num_random_samples"));
 
-      ComputeOptimalPointsToSampleViaLatinHypercubeSearch(gaussian_process, domain, thread_schedule,
-                                                          input_container.points_being_sampled.data(),
-                                                          num_random_samples, num_to_sample,
-                                                          input_container.num_being_sampled,
-                                                          best_so_far, max_int_steps,
-                                                          &found_flag, &randomness_source.uniform_generator,
-                                                          randomness_source.normal_rng_vec.data(),
-                                                          best_points_to_sample);
-
+      if (use_gpu == true) {
+#ifdef OL_GPU_ENABLED
+        CudaComputeOptimalPointsToSampleViaLatinHypercubeSearch(gaussian_process, domain, thread_schedule,
+                                                                input_container.points_being_sampled.data(),
+                                                                num_random_samples, num_to_sample,
+                                                                input_container.num_being_sampled,
+                                                                best_so_far, max_int_steps, &found_flag,
+                                                                which_gpu, &randomness_source.uniform_generator,
+                                                                best_points_to_sample);
+#else
+        OL_THROW_EXCEPTION(OptimalLearningException, "GPU is not installed or enabled!");
+#endif
+      } else {
+        ComputeOptimalPointsToSampleViaLatinHypercubeSearch(gaussian_process, domain, thread_schedule,
+                                                            input_container.points_being_sampled.data(),
+                                                            num_random_samples, num_to_sample,
+                                                            input_container.num_being_sampled,
+                                                            best_so_far, max_int_steps,
+                                                            &found_flag, &randomness_source.uniform_generator,
+                                                            randomness_source.normal_rng_vec.data(),
+                                                            best_points_to_sample);
+      }
       status[std::string("lhc_") + domain.kName + "_domain_found_update"] = found_flag;
       break;
     }  // end case kNull optimizer_type
@@ -164,13 +179,24 @@ void DispatchExpectedImprovementOptimization(const boost::python::object& optimi
       int num_random_samples = boost::python::extract<int>(optimizer_parameters.attr("num_random_samples"));
 
       bool random_search_only = false;
-      ComputeOptimalPointsToSample(gaussian_process, gradient_descent_parameters, domain, thread_schedule,
-                                   input_container.points_being_sampled.data(), num_to_sample,
-                                   input_container.num_being_sampled, best_so_far, max_int_steps,
-                                   random_search_only, num_random_samples, &found_flag,
-                                   &randomness_source.uniform_generator,
-                                   randomness_source.normal_rng_vec.data(), best_points_to_sample);
-
+      if (use_gpu == true) {
+#ifdef OL_GPU_ENABLED
+        CudaComputeOptimalPointsToSample(gaussian_process, gradient_descent_parameters, domain, thread_schedule,
+                                         input_container.points_being_sampled.data(), num_to_sample,
+                                         input_container.num_being_sampled, best_so_far, max_int_steps,
+                                         random_search_only, num_random_samples, &found_flag, which_gpu,
+                                         &randomness_source.uniform_generator, best_points_to_sample);
+#else
+        OL_THROW_EXCEPTION(OptimalLearningException, "GPU is not installed or enabled!");
+#endif
+      } else {
+        ComputeOptimalPointsToSample(gaussian_process, gradient_descent_parameters, domain, thread_schedule,
+                                     input_container.points_being_sampled.data(), num_to_sample,
+                                     input_container.num_being_sampled, best_so_far, max_int_steps,
+                                     random_search_only, num_random_samples, &found_flag,
+                                     &randomness_source.uniform_generator,
+                                     randomness_source.normal_rng_vec.data(), best_points_to_sample);
+      }
       status[std::string("gradient_descent_") + domain.kName + "_domain_found_update"] = found_flag;
       break;
     }  // end case kGradientDescent optimizer_type
@@ -188,7 +214,7 @@ boost::python::list MultistartExpectedImprovementOptimizationWrapper(const boost
                                                                      const boost::python::list& points_being_sampled,
                                                                      int num_to_sample, int num_being_sampled,
                                                                      double best_so_far, int max_int_steps,
-                                                                     int max_num_threads,
+                                                                     int max_num_threads, bool use_gpu, int which_gpu,
                                                                      RandomnessSourceContainer& randomness_source,
                                                                      boost::python::dict& status) {
   // TODO(GH-131): make domain objects constructible from python; and pass them in through
@@ -216,7 +242,7 @@ boost::python::list MultistartExpectedImprovementOptimizationWrapper(const boost
       DispatchExpectedImprovementOptimization(optimizer_parameters, gaussian_process, input_container,
                                               domain, optimizer_type, num_to_sample, best_so_far,
                                               max_int_steps, max_num_threads, randomness_source,
-                                              status, best_points_to_sample_C.data());
+                                              status, use_gpu, which_gpu, best_points_to_sample_C.data());
       break;
     }  // end case OptimizerTypes::kTensorProduct
     case DomainTypes::kSimplex: {
@@ -225,7 +251,7 @@ boost::python::list MultistartExpectedImprovementOptimizationWrapper(const boost
       DispatchExpectedImprovementOptimization(optimizer_parameters, gaussian_process, input_container,
                                               domain, optimizer_type, num_to_sample, best_so_far,
                                               max_int_steps, max_num_threads, randomness_source,
-                                              status, best_points_to_sample_C.data());
+                                              status, use_gpu, which_gpu, best_points_to_sample_C.data());
       break;
     }  // end case OptimizerTypes::kSimplex
     default: {
@@ -518,6 +544,9 @@ void ExportExpectedImprovementFunctions() {
     * optimizer_parameters (*Parameters struct (gpp_optimizer_parameters.hpp) where * matches optimizer_type
       unused if optimizer_type == kNull)
 
+    This function also has the option of using GPU to compute general q,p-EI via MC simulation. To enable it,
+    make sure you have installed GPU components of MOE, otherwise, it will throw Runtime excpetion.
+
     .. WARNING:: this function FAILS and returns an EMPTY LIST if the number of random sources < max_num_threads
 
     :param optimizer_parameters: python object containing the DomainTypes domain_type and
@@ -540,6 +569,10 @@ void ExportExpectedImprovementFunctions() {
     :type max_int_steps: int >= 0
     :param max_num_threads: max number of threads to use during EI optimization
     :type max_num_threads: int >= 1
+    :param use_gpu: set to 1 if user wants to use GPU for MC computation
+    :type use_gpu: bool
+    :param which_gpu: GPU device ID
+    :type which_gpu: int >= 0
     :param randomness_source: object containing randomness sources; only thread 0's source is used
     :type randomness_source: GPP.RandomnessSourceContainer
     :param status: pydict object (cannot be None!); modified on exit to describe whether convergence occurred
