@@ -7,10 +7,7 @@ The following function is used:
 
 The function requires some historical information to inform bandit.
 
-We first sample [0,0] from the function and then generate and sample 5 optimal points from moe sequentially
-We then update the hyperparameters of the GP (model selection)
-This process is repeated until we have sampled 20 points in total
-We then calculate the posterior mean and variance of the GP at several points
+We compute arm allocations for all bandit type and subtypes with the simple example of Bernoulli arms.
 """
 from moe.bandit.constant import DEFAULT_BANDIT_HISTORICAL_INFO
 from moe.bandit.data_containers import BernoulliArm
@@ -64,13 +61,22 @@ def run_example(
             arm_type=BernoulliArm
             )
 
+    # Run all multi-armed bandit strategies we have implemented. See :doc:`bandit` for more details on multi-armed bandits.
+    # We have implemented 3 bandit types: BLA (Bayesian Learning Optimization), Epsilon, and UCB (Upper Confidence Bound).
     for type in BANDIT_ROUTE_NAMES:
         if verbose:
             print "Running Bandit: {0:s}...".format(type)
+        # Each bandit type has different subtypes. If a user does not specify a subtype, we use the default subtype.
+        # For example, the bandit type Epsilon has two subtypes: epsilon-first and epsilon-greedy.
+        # See :class:`~moe.bandit.epsilon_first.EpsilonFirst` and :class:`~moe.bandit.epsilon_greedy.EpsilonGreedy` for more details.
         for subtype in BANDIT_ROUTE_NAMES_TO_SUBTYPES[type]:
             if verbose:
                 print "Running subtype: {0:s}...".format(subtype)
             bandit_kwargs[type]['subtype'] = subtype
+            # Compute and return arm allocations given the sample history of bandit arms.
+            # For example, the allocations {arm1: 0.3, arm2: 0.7} means
+            # if we have 10 arm pulls, we should pull arm1 3 times and arm2 7 times.
+            # See :func:`moe.bandit.interfaces.bandit_interface.BanditInterface.allocate_arms` for more details.
             arm_allocations = bandit(historical_info, type=type, testapp=testapp, **bandit_kwargs[type])
             if verbose:
                 print "Arm allocations {0:s}".format(str(arm_allocations))
