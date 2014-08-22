@@ -3,7 +3,7 @@
   * The function ``multistart_expected_improvement_optimization`` in moe.optimal_learning.python.cpp_wrappers.expected_improvement
     now has the option of using GPU optimizer, and in order to use that properly, you MUST set max_num_threads = 1,
     because currently GPU functions only works for single threading on CPU, and we will relax this restriction when
-    adding multi-GPU support in the future. (#368)
+    adding multi-GPUs support in the future. (#368)
   * Implemented  BLA (Bayesian Learning Automaton). (#373)
   * Connected GPU functions to multistart gradient descent optimizer. (#270)
 
