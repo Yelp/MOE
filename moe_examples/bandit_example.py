@@ -9,7 +9,6 @@ The function requires some historical information to inform bandit.
 
 We compute arm allocations for all bandit type and subtypes with the simple example of Bernoulli arms.
 """
-from moe.bandit.constant import DEFAULT_BANDIT_HISTORICAL_INFO
 from moe.bandit.data_containers import BernoulliArm
 from moe.bandit.linkers import BANDIT_ROUTE_NAMES_TO_SUBTYPES
 from moe.easy_interface.bandit_simple_endpoint import bandit
@@ -56,8 +55,18 @@ def run_example(
         bandit_ucb_kwargs = {}
     bandit_kwargs[BANDIT_UCB_ROUTE_NAME] = dict(kwargs.items() + bandit_ucb_kwargs.items())
 
+    # A BernoulliArm has payoff 1 for a success and 0 for a failure.
+    # See :class:`~moe.bandit.data_containers.BernoulliArm` for more details.
     historical_info = _make_bandit_historical_info_from_params(
-            {"historical_info": DEFAULT_BANDIT_HISTORICAL_INFO},
+            {
+                "historical_info": {
+                    "arms_sampled": {
+                        "arm1": {"win": 20, "loss": 0, "total": 25},
+                        "arm2": {"win": 20, "loss": 0, "total": 30},
+                        "arm3": {"win": 0, "loss": 0, "total": 0},
+                    }
+                },
+            },
             arm_type=BernoulliArm
             )
 
