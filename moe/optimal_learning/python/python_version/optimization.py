@@ -602,7 +602,7 @@ class _ScipyOptimizerWrapper(OptimizerInterface):
         :param optimizable: object representing the objective function being optimized
         :type optimizable: :class:`~moe.optimal_learning.python.interfaces.optimization_interface.OptimizableInterface` subclass
         :param optimization_parameters: parameters describing how to perform optimization (tolerances, iterations, etc.)
-        :type optimization_parameters: `python_version.optimization.*Parameters` object
+        :type optimization_parameters: ``python_version.optimization.*Parameters`` object
 
         """
         self.domain = domain
@@ -615,7 +615,7 @@ class _ScipyOptimizerWrapper(OptimizerInterface):
     def _scipy_decorator(self, func, **kwargs):
         """Wrapper function for expected improvement calculation to feed into the optimizer function.
 
-        func should be of the form `compute_*` in :class:`moe.optimal_learning.python.interfaces.optimization_interface.OptimizableInterface`.
+        func should be of the form ``compute_*`` in :class:`moe.optimal_learning.python.interfaces.optimization_interface.OptimizableInterface`.
         """
         def decorated(point):
             """Decorator for compute_* functions in interfaces.optimization_interface.OptimizableInterface.
