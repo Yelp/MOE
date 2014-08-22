@@ -79,10 +79,11 @@ class RepeatedDomain(DomainInterface):
         """Return a list of ClosedIntervals representing a bounding box for this domain."""
         return self._domain.get_bounding_box()
 
-    def get_constraint_list(self, start_index=0):
+    def get_constraint_list(self):
         """Return a list of lambda functions expressing the domain bounds as linear constraints. Used by COBYLA."""
         constraints = []
         for i in xrange(self.num_repeats):
+            # Using start_index, start each domain at the correct index when flattening out points in COBYLA.
             constraints.extend(self._domain.get_constraint_list(start_index=self._domain.dim * i))
         return constraints
 

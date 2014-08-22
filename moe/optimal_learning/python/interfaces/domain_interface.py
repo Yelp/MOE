@@ -32,7 +32,7 @@ class DomainInterface(object):
         pass
 
     @abstractmethod
-    def get_constraint_list(self, start_index=0):
+    def get_constraint_list(self):
         """Return a list of lambda functions expressing the domain bounds as linear constraints. Used by COBYLA."""
         pass
 

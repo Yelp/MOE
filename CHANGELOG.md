@@ -2,6 +2,7 @@
 
   * Implemented  BLA (Bayesian Learning Automaton). (#373)
   * Connected GPU functions to multistart gradient descent optimizer. (#270)
+  * Added the COBYLA optimizer to the expected improvement optimization class. (#370)
 
 * Changes
 
