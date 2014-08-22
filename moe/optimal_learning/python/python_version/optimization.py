@@ -616,6 +616,7 @@ class _ScipyOptimizerWrapper(OptimizerInterface):
         """Wrapper function for expected improvement calculation to feed into the optimizer function.
 
         func should be of the form ``compute_*`` in :class:`moe.optimal_learning.python.interfaces.optimization_interface.OptimizableInterface`.
+
         """
         def decorated(point):
             """Decorator for compute_* functions in interfaces.optimization_interface.OptimizableInterface.
@@ -625,6 +626,7 @@ class _ScipyOptimizerWrapper(OptimizerInterface):
 
             :param point: the point on which to do the calculation
             :type point: array of float64 with shape (self._num_points * self.domain.dim, )
+
             """
             shaped_point = point.reshape(self._num_points, self.domain.dim)
             self.objective_function.current_point = shaped_point
@@ -639,10 +641,11 @@ class _ScipyOptimizerWrapper(OptimizerInterface):
     def optimize(self, **kwargs):
         """Shape the point returned by the get_scipy_optimizer_unshaped_point function.
 
+        Calls the get_scipy_optimizer_unshaped_point method.
         objective_function.current_point will be set to the optimal point found.
+
         """
-        # Parameters defined above in LBFGSBParameters class.
-        unshaped_point = self.get_scipy_optimizer_unshaped_point(**kwargs)
+        unshaped_point = self._get_scipy_optimizer_unshaped_point(**kwargs)
 
         if not isinstance(unshaped_point, numpy.ndarray):
             unshaped_point = unshaped_point[0]
@@ -653,10 +656,15 @@ class _ScipyOptimizerWrapper(OptimizerInterface):
         self.objective_function.current_point = shaped_point
 
     @abstractmethod
-    def get_scipy_optimizer_unshaped_point(self, **kwargs):
+    def _get_scipy_optimizer_unshaped_point(self, **kwargs):
         """Should return an unshaped point corresponding to the output of the optimizer function from scipy.
 
-        See L-BFGS-B or COBYLA function for examples.
+        See :func:`~moe.optimal_learning.python.python_version.optimization.LBFGSOptimizer.get_scipy_optimizer_unshaped_point` or
+        :func:`~moe.optimal_learning.python.python_version.optimization.ConstrainedDFOOptimizer.get_scipy_optimizer_unshaped_point` function for examples.
+
+        :return: The unshaped optimal point from calling the scipy optimization method.
+        :rtype: array of float64 with shape (self._num_points, self.domain.dim)
+
         """
         pass
 
@@ -692,13 +700,13 @@ class LBFGSBOptimizer(_ScipyOptimizerWrapper):
         """
         super(LBFGSBOptimizer, self).__init__(domain, optimizable, optimization_parameters)
 
-    def get_scipy_optimizer_unshaped_point(self, **kwargs):
+    def _get_scipy_optimizer_unshaped_point(self, **kwargs):
         """Perform an L-BFGS-B optimization given the parameters in optimization_parameters."""
         domain_bounding_box = self.domain.get_bounding_box()
         domain_list = [(interval.min, interval.max) for interval in domain_bounding_box]
         domain_numpy = numpy.array(domain_list * self._num_points)
 
-        # Parameters defined above in LBFGSBParameters class.
+        # Parameters defined above in :class:`~moe.optimal_learning.python.python_version.optimization.LBFGSBParameters` class.
         return scipy.optimize.fmin_l_bfgs_b(
             func=self._scipy_decorator(self.objective_function.compute_objective_function, **kwargs),
             x0=self.objective_function.current_point.flatten(),
@@ -736,9 +744,9 @@ class ConstrainedDFOOptimizer(_ScipyOptimizerWrapper):
         """
         super(ConstrainedDFOOptimizer, self).__init__(domain, optimizable, optimization_parameters)
 
-    def get_scipy_optimizer_unshaped_point(self, **kwargs):
+    def _get_scipy_optimizer_unshaped_point(self, **kwargs):
         """Perform a COBYLA optimization given the parameters in optimization_parameters."""
-        # Parameters defined above in :class:`~moe.optimal_learning.python.python_version.optimization.LBFGSBParameters` class.
+        # Parameters defined above in :class:`~moe.optimal_learning.python.python_version.optimization.ConstrainedDFOParameters` class.
         return scipy.optimize.fmin_cobyla(
             func=self._scipy_decorator(self.objective_function.compute_objective_function, **kwargs),
             x0=self.objective_function.current_point.flatten(),

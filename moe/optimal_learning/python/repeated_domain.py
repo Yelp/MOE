@@ -80,7 +80,12 @@ class RepeatedDomain(DomainInterface):
         return self._domain.get_bounding_box()
 
     def get_constraint_list(self):
-        """Return a list of lambda functions expressing the domain bounds as linear constraints. Used by COBYLA."""
+        """Return a list of lambda functions expressing the domain bounds as linear constraints. Used by COBYLA.
+
+        :return: a list of lambda functions corresponding to constraints
+        :rtype: array of lambda functions with shape (dim * 2)
+
+        """
         constraints = []
         for i in xrange(self.num_repeats):
             # Using start_index, start each domain at the correct index when flattening out points in COBYLA.
