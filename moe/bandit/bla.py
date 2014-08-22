@@ -51,11 +51,18 @@ class BLA(BanditInterface):
     def get_bla_payoff(self, sampled_arm):
         r"""Compute the BLA payoff using the BLA subtype formula.
 
-        BLA payoff is computed by sampling from a beta distribution :math`Beta(\alpha, \beta)`
+        BLA payoff is computed as follows:
+
+        .. math:: r_j = Sample(Beta(\alpha_j, \beta_j))
+
+        where :math:`\alpha_j` is the number of arm *j* wins + 1 (``sampled_arm.win`` + 1) and
+        :math:`\beta_j` is the number of arm *j* losses + 1 (``sampled_arm.total`` - ``sampled_arm.win`` + 1).
+
+        In other words, BLA payoff is computed by sampling from a beta distribution :math:`Beta(\alpha, \beta)`
         with :math:`\alpha = number\_wins + 1` and
         :math:`\beta = number\_losses + 1 = number\_total - number\_wins + 1`.
 
-        Note that for an unsampled_arm, :math`Beta(1, 1)` is a uniform distribution.
+        Note that for an unsampled arm, :math:`Beta(1, 1)` is a uniform distribution.
         Learn more about beta distribution at http://en.wikipedia.org/wiki/Beta_distribution.
 
         :param sampled_arm: a sampled arm
