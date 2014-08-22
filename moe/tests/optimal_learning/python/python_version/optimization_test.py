@@ -139,11 +139,12 @@ class NullOptimizerTest(OptimalLearningTestCase):
         self.assert_vector_within_relative(test_values, truth, 0.0)
 
 
-class GradientDescentOptimizerTest(OptimalLearningTestCase):
+class OptimizerTest(OptimalLearningTestCase):
 
-    r"""Test Gradient Descent on a simple quadratic objective.
+    r"""Test the implemented optimizers on a simple quadratic objective.
 
     We check GD in an unconstrained setting, a constrained setting, and we test multistarting it.
+    For the other optimizers we check them in a constrained setting and a multistarted setting.
 
     We don't test the stochastic averaging option meaningfully. We check that the optimizer will average
     the number of steps specified by input. We also check that the simple unconstrained case can also be solved

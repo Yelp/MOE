@@ -173,6 +173,8 @@ can have exceptionally poor convergence characteristics or run too slowly.  In c
 fail, we commonly fall back to 'dumb' search.
 
 """
+from abc import abstractmethod
+
 import collections
 
 import numpy
@@ -584,35 +586,23 @@ class MultistartOptimizer(OptimizerInterface):
         return best_point, function_value_list
 
 
-class LBFGSBOptimizer(OptimizerInterface):
+class _ScipyOptimizerWrapper(OptimizerInterface):
 
-    r"""Optimizes an objective function over the specified domain with the L-BFGS-B method.
+    """Wrapper class to construct an optimizer from scipy optimization methods.
 
-    The BFGS (Broyden-Fletcher-Goldfarb-Shanno) algorithm is a quasi-Newton algorithm for optimization. It can
-    be used for DFO (Derivative-Free Optimization) when the gradient is not available, such as is the case for
-    the analytic qEI algorithm.
-
-    L-BFGS is a memory efficient version of BFGS, and BFGS-B is a variant that handles simple box constraints.
-    We use L-BFGS-B, which is a combination of the two, and is often the optimization algorithm of choice for
-    these types of problems.
-
-    For more information:
-    http://en.wikipedia.org/wiki/Limited-memory_BFGS
-    http://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.fmin_l_bfgs_b.html
-
-    .. Note:: See optimize() docstring for more details.
+    Requires the implementation of the :func:`~moe.optimal_learning.python.python_interface.optimization._ScipyOptimizerWrapper.get_scipy_optimizer_unshaped_point` method.
 
     """
 
-    def __init__(self, domain, optimizable, optimization_parameters, num_random_samples=None):
-        """Construct a LBFGSBOptimizer.
+    def __init__(self, domain, optimizable, optimization_parameters):
+        """Construct the optimizer.
 
         :param domain: the domain that this optimizer operates over
-        :type domain: interfaces.domain_interface.DomainInterface subclass. Only supports TensorProductDomain.
+        :type domain: :class:`~moe.optimal_learning.python.interfaces.domain_interface.DomainInterface` subclass.
         :param optimizable: object representing the objective function being optimized
-        :type optimizable: interfaces.optimization_interface.OptimizableInterface subclass
+        :type optimizable: :class:`~moe.optimal_learning.python.interfaces.optimization_interface.OptimizableInterface` subclass
         :param optimization_parameters: parameters describing how to perform optimization (tolerances, iterations, etc.)
-        :type optimization_parameters: python_version.optimization.LBFGSBParameters object
+        :type optimization_parameters: `python_version.optimization.*Parameters` object
 
         """
         self.domain = domain
@@ -623,7 +613,7 @@ class LBFGSBOptimizer(OptimizerInterface):
             self._num_points = self.domain.num_repeats
 
     def _scipy_decorator(self, func, **kwargs):
-        """Wrapper function for expected improvement calculation to feed into BFGS.
+        """Wrapper function for expected improvement calculation to feed into the optimizer function.
 
         func should be of the form `compute_*` in :class:`moe.optimal_learning.python.interfaces.optimization_interface.OptimizableInterface`.
         """
@@ -647,16 +637,69 @@ class LBFGSBOptimizer(OptimizerInterface):
         return decorated
 
     def optimize(self, **kwargs):
-        """Perform an L-BFGS-B optimization given the parameters in optimization_parameters.
+        """Shape the point returned by the get_scipy_optimizer_unshaped_point function.
 
         objective_function.current_point will be set to the optimal point found.
         """
+        # Parameters defined above in LBFGSBParameters class.
+        unshaped_point = self.get_scipy_optimizer_unshaped_point(**kwargs)
+
+        if not isinstance(unshaped_point, numpy.ndarray):
+            unshaped_point = unshaped_point[0]
+        if self._num_points == 1:
+            shaped_point = unshaped_point
+        else:
+            shaped_point = unshaped_point.reshape(self._num_points, self.domain.dim)
+        self.objective_function.current_point = shaped_point
+
+    @abstractmethod
+    def get_scipy_optimizer_unshaped_point(self, **kwargs):
+        """Should return an unshaped point corresponding to the output of the optimizer function from scipy.
+
+        See L-BFGS-B or COBYLA function for examples.
+        """
+        pass
+
+
+class LBFGSBOptimizer(_ScipyOptimizerWrapper):
+
+    r"""Optimizes an objective function over the specified domain with the L-BFGS-B method.
+
+    The BFGS (Broyden-Fletcher-Goldfarb-Shanno) algorithm is a quasi-Newton algorithm for optimization. It can
+    be used for DFO (Derivative-Free Optimization) when the gradient is not available, such as is the case for
+    the analytic qEI algorithm.
+
+    L-BFGS is a memory efficient version of BFGS, and BFGS-B is a variant that handles simple box constraints.
+    We use L-BFGS-B, which is a combination of the two, and is often the optimization algorithm of choice for
+    these types of problems.
+
+    For more information, visit the scipy docs and the wikipedia page on BFGS:
+    http://en.wikipedia.org/wiki/Limited-memory_BFGS
+    http://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.fmin_l_bfgs_b.html
+
+    """
+
+    def __init__(self, domain, optimizable, optimization_parameters, num_random_samples=None):
+        """Construct a LBFGSBOptimizer.
+
+        :param domain: the domain that this optimizer operates over
+        :type domain: :class:`~moe.optimal_learning.python.interfaces.domain_interface.DomainInterface` subclass. Only supports TensorProductDomain.
+        :param optimizable: object representing the objective function being optimized
+        :type optimizable: :class:`~moe.optimal_learning.python.interfaces.optimization_interface.OptimizableInterface` subclass
+        :param optimization_parameters: parameters describing how to perform optimization (tolerances, iterations, etc.)
+        :type optimization_parameters: :class:`~moe.optimal_learning.python.python_version.optimization.LBFGSBParameters` object
+
+        """
+        super(LBFGSBOptimizer, self).__init__(domain, optimizable, optimization_parameters)
+
+    def get_scipy_optimizer_unshaped_point(self, **kwargs):
+        """Perform an L-BFGS-B optimization given the parameters in optimization_parameters."""
         domain_bounding_box = self.domain.get_bounding_box()
         domain_list = [(interval.min, interval.max) for interval in domain_bounding_box]
         domain_numpy = numpy.array(domain_list * self._num_points)
 
         # Parameters defined above in LBFGSBParameters class.
-        unshaped_point = scipy.optimize.fmin_l_bfgs_b(
+        return scipy.optimize.fmin_l_bfgs_b(
             func=self._scipy_decorator(self.objective_function.compute_objective_function, **kwargs),
             x0=self.objective_function.current_point.flatten(),
             bounds=domain_numpy,
@@ -668,75 +711,35 @@ class LBFGSBOptimizer(OptimizerInterface):
             pgtol=self.optimization_parameters.pgtol,
             epsilon=self.optimization_parameters.epsilon,
         )[0]
-        if self._num_points == 1:
-            shaped_point = unshaped_point
-        else:
-            shaped_point = unshaped_point.reshape(self._num_points, self.domain.dim)
-        self.objective_function.current_point = shaped_point
 
 
-class ConstrainedDFOOptimizer(OptimizerInterface):
+class ConstrainedDFOOptimizer(_ScipyOptimizerWrapper):
 
     r"""Optimizes an objective function over the specified contraints with the COBYLA method.
 
-    .. Note:: See :func:`~moe.optimal_learning.python.python_version.optimization.ConstrainedDFOOptimizer.optimize()` docstring for more details.
+    For more information, visit the scipy docs page and the original paper by Powell:
+    http://docs.scipy.org/doc/scipy-0.13.0/reference/generated/scipy.optimize.fmin_cobyla.html
+    http://www.damtp.cam.ac.uk/user/na/NA_papers/NA2007_03.pdf
 
     """
 
-    def __init__(self, domain, optimizable, optimization_parameters, num_random_samples=None):
+    def __init__(self, domain, optimizable, optimization_parameters):
         """Construct a ConstrainedDFOOptimizer.
 
         :param domain: the domain that this optimizer operates over
-        :type domain: interfaces.domain_interface.DomainInterface subclass. Only supports TensorProductDomain for now.
+        :type domain: :class:`~moe.optimal_learning.python.interfaces.domain_interface.DomainInterface` subclass. Only supports TensorProductDomain for now.
         :param optimizable: object representing the objective function being optimized
-        :type optimizable: interfaces.optimization_interface.OptimizableInterface subclass
+        :type optimizable: :class:`~moe.optimal_learning.python.interfaces.optimization_interface.OptimizableInterface` subclass
         :param optimization_parameters: parameters describing how to perform optimization (tolerances, iterations, etc.)
-        :type optimization_parameters: python_version.optimization.ConstrainedDFOParameters object
+        :type optimization_parameters: :class:`~moe.optimal_learning.python.python_version.optimization.ConstrainedDFOParameters` object
 
         """
-        self.domain = domain
-        self.objective_function = optimizable
-        self.optimization_parameters = optimization_parameters
-        self._num_points = 1
-        # Check if this is a repeated domain, and if so set points equal to number of repeats.
-        if hasattr(self.domain, 'num_repeats'):
-            self._num_points = self.domain.num_repeats
+        super(ConstrainedDFOOptimizer, self).__init__(domain, optimizable, optimization_parameters)
 
-    def _scipy_decorator(self, func, **kwargs):
-        """Wrapper function for expected improvement calculation to feed into COBYLA.
-
-        func should be of the form compute_* in :class:`moe.optimal_learning.python.interfaces.optimization_interface.OptimizableInterface`.
-        """
-        def decorated(point):
-            """Decorator for compute_* functions in interfaces.optimization_interface.OptimizableInterface.
-
-            Converts the point to proper format (array with dim (self._num_points, self.domain.dim) instead of flat array)
-            and sets the current point before calling the compute function.
-
-            :param point: the point on which to do the calculation
-            :type point: array of float64 with shape (self._num_points * self.domain.dim)
-            """
-            shaped_point = point.reshape(self._num_points, self.domain.dim)
-            self.objective_function.current_point = shaped_point
-            value = -func(**kwargs)
-            if isinstance(value, (numpy.ndarray)):
-                return value.flatten()
-            else:
-                return value
-
-        return decorated
-
-    def optimize(self, **kwargs):
-        """Perform a COBYLA optimization given the parameters in optimization_parameters.
-
-        For more information, visit the scipy docs page and the original paper by Powell:
-        http://docs.scipy.org/doc/scipy-0.13.0/reference/generated/scipy.optimize.fmin_cobyla.html
-        http://www.damtp.cam.ac.uk/user/na/NA_papers/NA2007_03.pdf
-
-        objective_function.current_point will be set to the optimal point found.
-        """
+    def get_scipy_optimizer_unshaped_point(self, **kwargs):
+        """Perform a COBYLA optimization given the parameters in optimization_parameters."""
         # Parameters defined above in :class:`~moe.optimal_learning.python.python_version.optimization.LBFGSBParameters` class.
-        unshaped_point = scipy.optimize.fmin_cobyla(
+        return scipy.optimize.fmin_cobyla(
             func=self._scipy_decorator(self.objective_function.compute_objective_function, **kwargs),
             x0=self.objective_function.current_point.flatten(),
             cons=self.domain.get_constraint_list(),
@@ -746,8 +749,3 @@ class ConstrainedDFOOptimizer(OptimizerInterface):
             catol=self.optimization_parameters.catol,
             disp=0,  # Suppresses output from the routine.
         )
-        if self._num_points == 1:
-            shaped_point = unshaped_point
-        else:
-            shaped_point = unshaped_point.reshape(self._num_points, self.domain.dim)
-        self.objective_function.current_point = shaped_point
