@@ -5,6 +5,7 @@ The following function is used:
 
     1. :func:`moe.easy_interface.bandit_simple_endpoint.bandit`
 
+See :doc:`bandit` for more details on multi-armed bandits.
 The function requires some historical information to inform bandit.
 
 We compute arm allocations for all bandit type and subtypes with the simple example of Bernoulli arms.

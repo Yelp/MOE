@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
-"""Simple functions for hitting the REST endpoints of a MOE bandit service."""
+"""Simple functions for hitting the REST endpoints of a MOE bandit service.
+
+See :doc:`bandit` for more details on multi-armed bandits.
+
+"""
 import simplejson as json
 
 from moe.easy_interface.simple_endpoint import call_endpoint_with_payload, DEFAULT_HOST, DEFAULT_PORT
