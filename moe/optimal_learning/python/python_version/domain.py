@@ -86,7 +86,12 @@ class TensorProductDomain(DomainInterface):
         return copy.copy(self._domain_bounds)
 
     def get_constraint_list(self, start_index=0):
-        """Return a list of lambda functions expressing the domain bounds as linear constraints. Used by COBYLA."""
+        """Return a list of lambda functions expressing the domain bounds as linear constraints. Used by COBYLA.
+        
+        Since COBYLA in scipy only optimizes arrays, we flatten out our points while doing multipoint EI optimization. 
+        But in order for the constraints to access the correct index, the RepeatedDomain class has to signal which index
+        the TensorProductDomain should start from, using the start_index optional parameter.
+        """
         constraints = []
         for i, interval in enumerate(self._domain_bounds):
             constraints.append((lambda x: x[i + start_index] - interval.min))
