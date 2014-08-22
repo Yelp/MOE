@@ -17,7 +17,7 @@ import copy
 
 import numpy
 
-from moe.optimal_learning.python.constant import TENSOR_PRODUCT_DOMAIN_TYPE, LINEAR_CONSTRAINT_DOMAIN_TYPE
+from moe.optimal_learning.python.constant import TENSOR_PRODUCT_DOMAIN_TYPE
 from moe.optimal_learning.python.geometry_utils import generate_grid_points, generate_latin_hypercube_points
 from moe.optimal_learning.python.interfaces.domain_interface import DomainInterface
 

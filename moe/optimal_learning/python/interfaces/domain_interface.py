@@ -32,6 +32,11 @@ class DomainInterface(object):
         pass
 
     @abstractmethod
+    def get_constraint_list(self, start_index=0):
+        """Return a list of lambda functions expressing the domain bounds as linear constraints. Used by COBYLA."""
+        pass
+
+    @abstractmethod
     def generate_random_point_in_domain(self, random_source=None):
         """Generate ``point`` uniformly at random such that ``self.check_point_inside(point)`` is True.
 
