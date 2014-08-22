@@ -358,7 +358,7 @@ OL_NONNULL_POINTERS void CudaComputeOptimalPointsToSampleViaMultistartGradientDe
     const GaussianProcess& gaussian_process,
     const GradientDescentParameters& optimizer_parameters,
     const DomainType& domain,
-    const ThreadSchedule thread_schedule,
+    const ThreadSchedule& thread_schedule,
     double const * restrict start_point_set,
     double const * restrict points_being_sampled,
     int num_multistarts,
@@ -372,6 +372,10 @@ OL_NONNULL_POINTERS void CudaComputeOptimalPointsToSampleViaMultistartGradientDe
     double * restrict best_next_point) {
   if (unlikely(num_multistarts <= 0)) {
     OL_THROW_EXCEPTION(LowerBoundException<int>, "num_multistarts must be > 1", num_multistarts, 1);
+  }
+
+  if (unlikely(thread_schedule.max_num_threads > 1)) {
+    OL_THROW_EXCEPTION(OptimalLearningException, "max_num_threads must equal to 1 when using GPU functions!");
   }
 
   bool configure_for_gradients = true;

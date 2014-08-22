@@ -1363,7 +1363,7 @@ OL_NONNULL_POINTERS void ComputeOptimalPointsToSampleViaMultistartGradientDescen
     const GaussianProcess& gaussian_process,
     const GradientDescentParameters& optimizer_parameters,
     const DomainType& domain,
-    const ThreadSchedule thread_schedule,
+    const ThreadSchedule& thread_schedule,
     double const * restrict start_point_set,
     double const * restrict points_being_sampled,
     int num_multistarts,

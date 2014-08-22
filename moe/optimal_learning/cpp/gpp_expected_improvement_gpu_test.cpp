@@ -421,7 +421,7 @@ int CudaExpectedImprovementOptimizationAnalyticTest() {
   boost::uniform_real<double> uniform_double_lower_bound(-2.0, 0.5);
   boost::uniform_real<double> uniform_double_upper_bound(1.0, 2.5);
 
-  static const int kMaxNumThreads = 4;
+  static const int kMaxNumThreads = 1;
   ThreadSchedule thread_schedule(kMaxNumThreads, omp_sched_static);
 
   int num_sampled = 20;

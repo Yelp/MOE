@@ -223,6 +223,10 @@ void CudaEvaluateEIAtPointList(const GaussianProcess& gaussian_process, const Th
     OL_THROW_EXCEPTION(LowerBoundException<int>, "num_multistarts must be > 1", num_multistarts, 1);
   }
 
+  if (unlikely(thread_schedule.max_num_threads > 1)) {
+    OL_THROW_EXCEPTION(OptimalLearningException, "max_num_threads must equal to 1 when using GPU functions!");
+  }
+
   using DomainType = DummyDomain;
   DomainType dummy_domain;
   bool configure_for_gradients = false;
