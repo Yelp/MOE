@@ -337,7 +337,8 @@ class ConstrainedDFOParameters(_BaseConstrainedDFOParameters):
 
     r"""Container to hold parameters that specify the behavior of COBYLA.
 
-    Suggested values come from scipy documentation for scipy.optimize.fmin_cobyla.
+    Suggested values come from scipy documentation for scipy.optimize.fmin_cobyla:
+    http://docs.scipy.org/doc/scipy-0.13.0/reference/generated/scipy.optimize.fmin_cobyla.html
 
     :ivar rhobeg: (*float64 > 0.0*) reasonable initial changes to the variables (suggest: 1.0)
     :ivar rhoend: (*float64 > 0.0*) final accuracy in the optimization (not precisely guaranteed), which is a lower bound on the size of the trust region (suggest: 1.0e-4)
@@ -624,15 +625,16 @@ class LBFGSBOptimizer(OptimizerInterface):
     def _scipy_decorator(self, func, **kwargs):
         """Wrapper function for expected improvement calculation to feed into BFGS.
 
-        func should be of the form compute_* in interfaces.optimization_interface.OptimizableInterface.
+        func should be of the form `compute_*` in :class:`moe.optimal_learning.python.interfaces.optimization_interface.OptimizableInterface`.
         """
         def decorated(point):
             """Decorator for compute_* functions in interfaces.optimization_interface.OptimizableInterface.
 
-            Converts the point to proper format and sets the current point before calling the compute function.
+            Converts the point to proper format (array with dim (self._num_points, self.domain.dim) instead of flat array)
+            and sets the current point before calling the compute function.
 
             :param point: the point on which to do the calculation
-            :type point: array of float64 with shape (self._num_points * self.domain.dim)
+            :type point: array of float64 with shape (self._num_points * self.domain.dim, )
             """
             shaped_point = point.reshape(self._num_points, self.domain.dim)
             self.objective_function.current_point = shaped_point
@@ -677,7 +679,7 @@ class ConstrainedDFOOptimizer(OptimizerInterface):
 
     r"""Optimizes an objective function over the specified contraints with the COBYLA method.
 
-    .. Note:: See optimize() docstring for more details.
+    .. Note:: See :func:`~moe.optimal_learning.python.python_version.optimization.ConstrainedDFOOptimizer.optimize()` docstring for more details.
 
     """
 
@@ -696,18 +698,20 @@ class ConstrainedDFOOptimizer(OptimizerInterface):
         self.objective_function = optimizable
         self.optimization_parameters = optimization_parameters
         self._num_points = 1
+        # Check if this is a repeated domain, and if so set points equal to number of repeats.
         if hasattr(self.domain, 'num_repeats'):
             self._num_points = self.domain.num_repeats
 
     def _scipy_decorator(self, func, **kwargs):
         """Wrapper function for expected improvement calculation to feed into COBYLA.
 
-        func should be of the form compute_* in interfaces.optimization_interface.OptimizableInterface.
+        func should be of the form compute_* in :class:`moe.optimal_learning.python.interfaces.optimization_interface.OptimizableInterface`.
         """
         def decorated(point):
             """Decorator for compute_* functions in interfaces.optimization_interface.OptimizableInterface.
 
-            Converts the point to proper format and sets the current point before calling the compute function.
+            Converts the point to proper format (array with dim (self._num_points, self.domain.dim) instead of flat array)
+            and sets the current point before calling the compute function.
 
             :param point: the point on which to do the calculation
             :type point: array of float64 with shape (self._num_points * self.domain.dim)
@@ -725,9 +729,13 @@ class ConstrainedDFOOptimizer(OptimizerInterface):
     def optimize(self, **kwargs):
         """Perform a COBYLA optimization given the parameters in optimization_parameters.
 
+        For more information, visit the scipy docs page and the original paper by Powell:
+        http://docs.scipy.org/doc/scipy-0.13.0/reference/generated/scipy.optimize.fmin_cobyla.html
+        http://www.damtp.cam.ac.uk/user/na/NA_papers/NA2007_03.pdf
+
         objective_function.current_point will be set to the optimal point found.
         """
-        # Parameters defined above in LBFGSBParameters class.
+        # Parameters defined above in :class:`~moe.optimal_learning.python.python_version.optimization.LBFGSBParameters` class.
         unshaped_point = scipy.optimize.fmin_cobyla(
             func=self._scipy_decorator(self.objective_function.compute_objective_function, **kwargs),
             x0=self.objective_function.current_point.flatten(),
