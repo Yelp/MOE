@@ -7,7 +7,7 @@
 #ifndef MOE_OPTIMAL_LEARNING_CPP_GPU_GPP_CUDA_MATH_HPP_
 #define MOE_OPTIMAL_LEARNING_CPP_GPU_GPP_CUDA_MATH_HPP_
 
-#include <stdint.h>
+#include <cstdint>
 
 #include <driver_types.h>
 
@@ -43,8 +43,8 @@ struct CudaError {
     :chol_var[num_union][num_union]: cholesky factorization of the GP variance evaluated at points interested
     :num_union: number of the points interested
     :num_mc: number of iterations for Monte-Carlo simulation
-    :seed: seed for RNG
     :best: best function evaluation obtained so far
+    :base_seed: base seed for the GPU's RNG; will be offset by GPU thread index (see curand)
     :configure_for_test: whether record random_number_ei or not
     :random_number_ei[num_union][num_iteration][num_threads][num_blocks]: random numbers used for
       computing EI, for testing purpose only
@@ -64,13 +64,13 @@ struct CudaError {
     CudaError state, which contains error information, file name, line and function name of the function that occurs error
 \endrst*/
 extern "C" CudaError CudaGetEI(double * __restrict__ mu, double * __restrict__ chol_var, int num_union,
-                               int num_mc, uint64_t seed, double best, bool configure_for_test,
+                               int num_mc, double best, uint64_t base_seed, bool configure_for_test,
                                double* __restrict__ random_number_ei, double* __restrict__ ei_val,
                                double * __restrict__ gpu_mu, double * __restrict__ gpu_chol_var,
                                double* __restrict__ gpu_random_number_ei, double * __restrict__ gpu_ei_storage);
 
 /*!\rst
-  Compute Gradient of Expected Improvement by Monte-Carlo using GPU, and this function is only meant to be used by 
+  Compute Gradient of Expected Improvement by Monte-Carlo using GPU, and this function is only meant to be used by
   CudaExpectedImprovementEvaluator::ComputeGradExpectedImprovement(...) in gpp_expected_improvement_gpu.hpp/cpp
 
   \param
@@ -83,8 +83,8 @@ extern "C" CudaError CudaGetEI(double * __restrict__ mu, double * __restrict__ c
     :num_to_sample: number of points to sample (aka q)
     :dim: dimension of point space
     :num_mc: number of iterations for Monte-Carlo simulation
-    :seed: seed for RNG
     :best: best function evaluation obtained so far
+    :base_seed: base seed for the GPU's RNG; will be offset by GPU thread index (see curand)
     :configure_for_test: whether record random_number_grad_ei or not
     :random_number_grad_ei[num_union][num_threads][num_blocks]: random numbers used for computing gradEI,
       for testing purpose only
@@ -106,7 +106,7 @@ extern "C" CudaError CudaGetEI(double * __restrict__ mu, double * __restrict__ c
 \endrst*/
 extern "C" CudaError CudaGetGradEI(double * __restrict__ mu, double * __restrict__ chol_var, double * __restrict__ grad_mu,
                                    double * __restrict__ grad_chol_var, int num_union, int num_to_sample, int dim, int num_mc,
-                                   uint64_t seed, double best, bool configure_for_test, double* __restrict__ random_number_grad_ei,
+                                   double best, uint64_t base_seed, bool configure_for_test, double* __restrict__ random_number_grad_ei,
                                    double * __restrict__ grad_ei, double * __restrict__ gpu_mu, double * __restrict__ gpu_chol_var,
                                    double * __restrict__ gpu_grad_mu, double * __restrict__ gpu_grad_chol_var,
                                    double* __restrict__ gpu_random_number_grad_ei, double * __restrict__ gpu_grad_ei_storage);

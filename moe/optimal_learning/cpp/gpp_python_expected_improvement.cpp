@@ -140,6 +140,10 @@ void DispatchExpectedImprovementOptimization(const boost::python::object& optimi
                                              RandomnessSourceContainer& randomness_source,
                                              boost::python::dict& status,
                                              double * restrict best_points_to_sample) {
+#ifndef OL_GPU_ENABLED
+  (void) which_gpu;  // quiet the compiler warning (unused variable)
+#endif
+
   bool found_flag = false;
   switch (optimizer_type) {
     case OptimizerTypes::kNull: {

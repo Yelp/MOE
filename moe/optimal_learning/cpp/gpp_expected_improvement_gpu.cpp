@@ -7,7 +7,7 @@
 
 #include "gpp_expected_improvement_gpu.hpp"
 
-#include <stdint.h>
+#include <cstdint>
 
 #ifdef OL_GPU_ENABLED
 #include <driver_types.h>
