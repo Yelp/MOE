@@ -9,7 +9,7 @@
 
 #include <stdint.h>
 
-#include "driver_types.h"
+#include <driver_types.h>
 
 namespace optimal_learning {
 

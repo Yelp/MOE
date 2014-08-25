@@ -136,8 +136,9 @@ void DispatchExpectedImprovementOptimization(const boost::python::object& optimi
                                              OptimizerTypes optimizer_type,
                                              int num_to_sample, double best_so_far,
                                              int max_int_steps, int max_num_threads,
+                                             bool use_gpu, int which_gpu,
                                              RandomnessSourceContainer& randomness_source,
-                                             boost::python::dict& status, bool use_gpu, int which_gpu,
+                                             boost::python::dict& status,
                                              double * restrict best_points_to_sample) {
   bool found_flag = false;
   switch (optimizer_type) {
@@ -152,8 +153,8 @@ void DispatchExpectedImprovementOptimization(const boost::python::object& optimi
                                                                 input_container.points_being_sampled.data(),
                                                                 num_random_samples, num_to_sample,
                                                                 input_container.num_being_sampled,
-                                                                best_so_far, max_int_steps, &found_flag,
-                                                                which_gpu, &randomness_source.uniform_generator,
+                                                                best_so_far, max_int_steps, which_gpu, &found_flag,
+                                                                &randomness_source.uniform_generator,
                                                                 best_points_to_sample);
 #else
         OL_THROW_EXCEPTION(OptimalLearningException, "GPU is not installed or enabled!");
@@ -184,7 +185,7 @@ void DispatchExpectedImprovementOptimization(const boost::python::object& optimi
         CudaComputeOptimalPointsToSample(gaussian_process, gradient_descent_parameters, domain, thread_schedule,
                                          input_container.points_being_sampled.data(), num_to_sample,
                                          input_container.num_being_sampled, best_so_far, max_int_steps,
-                                         random_search_only, num_random_samples, &found_flag, which_gpu,
+                                         random_search_only, num_random_samples, which_gpu, &found_flag,
                                          &randomness_source.uniform_generator, best_points_to_sample);
 #else
         OL_THROW_EXCEPTION(OptimalLearningException, "GPU is not installed or enabled!");
@@ -241,8 +242,9 @@ boost::python::list MultistartExpectedImprovementOptimizationWrapper(const boost
 
       DispatchExpectedImprovementOptimization(optimizer_parameters, gaussian_process, input_container,
                                               domain, optimizer_type, num_to_sample, best_so_far,
-                                              max_int_steps, max_num_threads, randomness_source,
-                                              status, use_gpu, which_gpu, best_points_to_sample_C.data());
+                                              max_int_steps, max_num_threads, use_gpu, which_gpu,
+                                              randomness_source,
+                                              status, best_points_to_sample_C.data());
       break;
     }  // end case OptimizerTypes::kTensorProduct
     case DomainTypes::kSimplex: {
@@ -250,8 +252,9 @@ boost::python::list MultistartExpectedImprovementOptimizationWrapper(const boost
 
       DispatchExpectedImprovementOptimization(optimizer_parameters, gaussian_process, input_container,
                                               domain, optimizer_type, num_to_sample, best_so_far,
-                                              max_int_steps, max_num_threads, randomness_source,
-                                              status, use_gpu, which_gpu, best_points_to_sample_C.data());
+                                              max_int_steps, max_num_threads, use_gpu, which_gpu,
+                                              randomness_source,
+                                              status, best_points_to_sample_C.data());
       break;
     }  // end case OptimizerTypes::kSimplex
     default: {

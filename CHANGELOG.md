@@ -1,9 +1,6 @@
 * Features
 
-  * The function ``multistart_expected_improvement_optimization`` in moe.optimal_learning.python.cpp_wrappers.expected_improvement
-    now has the option of using GPU optimizer, and in order to use that properly, you MUST set max_num_threads = 1,
-    because currently GPU functions only works for single threading on CPU, and we will relax this restriction when
-    adding multi-GPUs support in the future. (#368)
+  * ``cpp_wrappers.expected_improvement.multistart_expected_improvement_optimization`` can use GPUs; requires ``max_num_threads == 1`` until future multi-GPU support (#368)
   * Implemented  BLA (Bayesian Learning Automaton). (#373)
   * Connected GPU functions to multistart gradient descent optimizer. (#270)
 
@@ -12,7 +9,8 @@
 * Bugs
 
   * variance in a sample arm was dropped in _make_bandit_historical_info_from_params. (#385)
-  * SampleArm's __add__ and __str__ were broken. (#387)
+  * SampleArm's ``__add__`` and ``__str__`` were broken. (#387)
+  * Specifying ``max_num_threads`` on GPU compute paths caused a segfault (#394)
 
 ## v0.2.0 (2014-08-15)
 
@@ -22,7 +20,7 @@ SHA: ``8201917e3f9b47b8edd8039ea3278ef8631b0f2a``
 
   * Added multi-armed bandit endpoint. (#255)
     * Implemented epsilon-greedy. (#255)
-    * Implemented epsilon-first. (#335) 
+    * Implemented epsilon-first. (#335)
     * Implemented UCB1. (#354)
     * Implemented UCB1-tuned. (#366)
   * Added support for the L-BFGS-B optimizer. (#296)

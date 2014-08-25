@@ -9,12 +9,13 @@
 #include "gpp_cuda_math.hpp"
 
 #include <stdint.h>
+
+#include <algorithm>
+
 #include <curand_kernel.h>
 #include <cuda_runtime.h>
 #include <helper_cuda.h>
 #include <helper_functions.h>
-
-#include <algorithm>
 
 /*!\rst
   Macro to stringify the expansion of a macro. For example, say we are on line 53:

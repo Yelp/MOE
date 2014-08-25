@@ -289,7 +289,7 @@ int CudaExpectedImprovementOptimizationMultipleSamplesTest() {
                                                           thread_schedule, points_being_sampled.data(),
                                                           num_grid_search_points, num_to_sample,
                                                           num_being_sampled, mock_gp_data.best_so_far,
-                                                          max_int_steps, &found_flag, which_gpu,
+                                                          max_int_steps, which_gpu, &found_flag,
                                                           &uniform_generator, grid_search_best_point_set.data());
   if (!found_flag) {
     ++total_errors;
@@ -303,7 +303,7 @@ int CudaExpectedImprovementOptimizationMultipleSamplesTest() {
                                    thread_schedule, points_being_sampled.data(),
                                    num_to_sample, num_being_sampled, mock_gp_data.best_so_far,
                                    max_int_steps, lhc_search_only,
-                                   num_grid_search_points, &found_flag, which_gpu,
+                                   num_grid_search_points, which_gpu, &found_flag,
                                    &uniform_generator, best_points_to_sample.data());
   if (!found_flag) {
     ++total_errors;
@@ -421,7 +421,7 @@ int CudaExpectedImprovementOptimizationAnalyticTest() {
   boost::uniform_real<double> uniform_double_lower_bound(-2.0, 0.5);
   boost::uniform_real<double> uniform_double_upper_bound(1.0, 2.5);
 
-  static const int kMaxNumThreads = 1;
+  static const int kMaxNumThreads = 4;
   ThreadSchedule thread_schedule(kMaxNumThreads, omp_sched_static);
 
   int num_sampled = 20;
@@ -447,7 +447,7 @@ int CudaExpectedImprovementOptimizationAnalyticTest() {
                                                           thread_schedule, points_being_sampled.data(),
                                                           num_grid_search_points, num_to_sample,
                                                           num_being_sampled, mock_gp_data.best_so_far,
-                                                          max_int_steps, &found_flag, which_gpu,
+                                                          max_int_steps, which_gpu, &found_flag,
                                                           &uniform_generator, grid_search_best_point.data());
   if (!found_flag) {
     ++total_errors;
@@ -459,7 +459,7 @@ int CudaExpectedImprovementOptimizationAnalyticTest() {
                                                    domain, thread_schedule, points_being_sampled.data(),
                                                    num_to_sample, num_being_sampled,
                                                    mock_gp_data.best_so_far, max_int_steps,
-                                                   &found_flag, which_gpu,
+                                                   which_gpu, &found_flag,
                                                    &uniform_generator, next_point.data());
   if (!found_flag) {
     ++total_errors;
