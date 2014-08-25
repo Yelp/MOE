@@ -66,7 +66,7 @@ double CudaExpectedImprovementEvaluator::ComputeExpectedImprovement(StateType * 
   }
   uint64_t seed_in = (ei_state->uniform_rng->GetEngine())();
   OL_CUDA_ERROR_THROW(CudaGetEI(ei_state->to_sample_mean.data(), ei_state->cholesky_to_sample_var.data(),
-                                num_union, num_mc_, seed_in, best_so_far_, ei_state->configure_for_test,
+                                num_union, num_mc_, best_so_far_, seed_in, ei_state->configure_for_test,
                                 ei_state->random_number_ei.data(), &EI_val, ei_state->gpu_mu.ptr,
                                 ei_state->gpu_chol_var.ptr, ei_state->gpu_random_number_ei.ptr,
                                 ei_state->gpu_ei_storage.ptr));
@@ -97,7 +97,7 @@ void CudaExpectedImprovementEvaluator::ComputeGradExpectedImprovement(StateType 
 
   OL_CUDA_ERROR_THROW(CudaGetGradEI(ei_state->to_sample_mean.data(), ei_state->cholesky_to_sample_var.data(),
                                     ei_state->grad_mu.data(), ei_state->grad_chol_decomp.data(), num_union,
-                                    num_to_sample, dim_, num_mc_, seed_in, best_so_far_, ei_state->configure_for_test,
+                                    num_to_sample, dim_, num_mc_, best_so_far_, seed_in, ei_state->configure_for_test,
                                     ei_state->random_number_grad_ei.data(), grad_ei, ei_state->gpu_mu.ptr,
                                     ei_state->gpu_chol_var.ptr, ei_state->gpu_grad_mu.ptr, ei_state->gpu_grad_chol_var.ptr,
                                     ei_state->gpu_random_number_grad_ei.ptr, ei_state->gpu_grad_ei_storage.ptr));
