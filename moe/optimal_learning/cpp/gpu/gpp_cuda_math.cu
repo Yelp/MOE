@@ -10,12 +10,12 @@
 
 #include <cstdint>
 
-#include <algorithm>
-
 #include <curand_kernel.h>
 #include <cuda_runtime.h>
 #include <helper_cuda.h>
 #include <helper_functions.h>
+
+#include <vector>
 
 /*!\rst
   Macro to stringify the expansion of a macro. For example, say we are on line 53:
@@ -318,10 +318,10 @@ __global__ void CudaComputeGradEIGpu(double const * __restrict__ mu, double cons
 }  // end unnamed namespace
 
 CudaError CudaAllocateMemForDoubleVector(int num_doubles, double** __restrict__ address_of_ptr_to_gpu_memory) {
-  CudaError _success = {cudaSuccess, OL_CUDA_STRINGIFY_FILE_AND_LINE, __func__};
   int mem_size = num_doubles * sizeof(**address_of_ptr_to_gpu_memory);
   OL_CUDA_ERROR_RETURN(cudaMalloc(reinterpret_cast<void**>(address_of_ptr_to_gpu_memory), mem_size));
-  return _success;
+
+  return {cudaSuccess, OL_CUDA_STRINGIFY_FILE_AND_LINE, __func__};
 }
 
 void CudaFreeMem(double* __restrict__ ptr_to_gpu_memory) {
@@ -333,7 +333,6 @@ CudaError CudaGetEI(double * __restrict__ mu, double * __restrict__ chol_var, in
                     double * __restrict__ ei_val, double * __restrict__ gpu_mu, double * __restrict__ gpu_chol_var,
                     double* __restrict__ gpu_random_number_ei, double * __restrict__ gpu_ei_storage) {
   *ei_val = 0.0;
-  CudaError _success = {cudaSuccess, OL_CUDA_STRINGIFY_FILE_AND_LINE, __func__};
 
   // We assign kEINumBlocks blocks and kEINumThreads threads/block for EI computation, so there are
   // (kEINumBlocks * kEINumThreads) threads in total to execute kernel function in parallel
@@ -366,7 +365,8 @@ CudaError CudaGetEI(double * __restrict__ mu, double * __restrict__ chol_var, in
       ave += ei_storage[i];
   }
   *ei_val = ave / static_cast<double>(kEINumThreads*kEINumBlocks);
-  return _success;
+
+  return {cudaSuccess, OL_CUDA_STRINGIFY_FILE_AND_LINE, __func__};
 }
 
 CudaError CudaGetGradEI(double * __restrict__ mu, double * __restrict__ chol_var, double * __restrict__ grad_mu,
@@ -375,10 +375,7 @@ CudaError CudaGetGradEI(double * __restrict__ mu, double * __restrict__ chol_var
                         double * __restrict__ grad_ei, double * __restrict__ gpu_mu, double * __restrict__ gpu_chol_var,
                         double * __restrict__ gpu_grad_mu, double * __restrict__ gpu_grad_chol_var,
                         double* __restrict__ gpu_random_number_grad_ei, double * __restrict__ gpu_grad_ei_storage) {
-  CudaError _success = {cudaSuccess, OL_CUDA_STRINGIFY_FILE_AND_LINE, __func__};
-
-  double grad_ei_storage[num_to_sample * dim * kGradEINumThreads * kGradEINumBlocks];
-  std::fill(grad_ei, grad_ei + num_to_sample * dim, 0.0);
+  std::vector<double> grad_ei_storage(num_to_sample * dim * kGradEINumThreads * kGradEINumBlocks);
 
   // We assign kGradEINumBlocks blocks and kGradEINumThreads threads/block for grad_ei computation,
   // so there are (kGradEINumBlocks * kGradEINumThreads) threads in total to execute kernel function
@@ -391,7 +388,7 @@ CudaError CudaGetGradEI(double * __restrict__ mu, double * __restrict__ chol_var
   int mem_size_grad_mu = num_to_sample * dim * sizeof(*mu);
   int mem_size_chol_var = num_union * num_union *sizeof(*mu);
   int mem_size_grad_chol_var = num_to_sample * num_union * num_union * dim * sizeof(*mu);
-  int mem_size_grad_ei_storage= kGradEINumThreads * kGradEINumBlocks * num_to_sample * dim * sizeof(*mu);
+  int mem_size_grad_ei_storage = kGradEINumThreads * kGradEINumBlocks * num_to_sample * dim * sizeof(*mu);
 
   OL_CUDA_ERROR_RETURN(cudaMemcpy(gpu_mu, mu, mem_size_mu, cudaMemcpyHostToDevice));
   OL_CUDA_ERROR_RETURN(cudaMemcpy(gpu_grad_mu, grad_mu, mem_size_grad_mu, cudaMemcpyHostToDevice));
@@ -406,7 +403,7 @@ CudaError CudaGetGradEI(double * __restrict__ mu, double * __restrict__ chol_var
                         num_iteration, best, base_seed, gpu_grad_ei_storage, gpu_random_number_grad_ei, configure_for_test);
   OL_CUDA_ERROR_RETURN(cudaPeekAtLastError());
 
-  OL_CUDA_ERROR_RETURN(cudaMemcpy(grad_ei_storage, gpu_grad_ei_storage, mem_size_grad_ei_storage, cudaMemcpyDeviceToHost));
+  OL_CUDA_ERROR_RETURN(cudaMemcpy(grad_ei_storage.data(), gpu_grad_ei_storage, mem_size_grad_ei_storage, cudaMemcpyDeviceToHost));
   // copy gpu_random_number_grad_ei back to CPU if configure_for_test is on
   if (configure_for_test) {
       int mem_size_random_number_grad_ei = num_iteration * kGradEINumThreads * kGradEINumBlocks * num_union * sizeof(*mu);
@@ -424,15 +421,16 @@ CudaError CudaGetGradEI(double * __restrict__ mu, double * __restrict__ chol_var
   for (int i = 0; i < num_to_sample*dim; ++i) {
       grad_ei[i] /= static_cast<double>(kGradEINumThreads*kGradEINumBlocks);
   }
-  return _success;
+
+  return {cudaSuccess, OL_CUDA_STRINGIFY_FILE_AND_LINE, __func__};
 }
 
 CudaError CudaSetDevice(int devID) {
-  CudaError _success = {cudaSuccess, OL_CUDA_STRINGIFY_FILE_AND_LINE, __func__};
   OL_CUDA_ERROR_RETURN(cudaSetDevice(devID));
   // Cuda API to set memory config preference: in our code we prefer to use more shared memory
   OL_CUDA_ERROR_RETURN(cudaDeviceSetCacheConfig(cudaFuncCachePreferShared));
-  return _success;
+
+  return {cudaSuccess, OL_CUDA_STRINGIFY_FILE_AND_LINE, __func__};
 }
 
 }    // end namespace optimal_learning
